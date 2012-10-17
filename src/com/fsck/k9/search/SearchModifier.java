@@ -7,8 +7,8 @@ import com.fsck.k9.mail.Flag;
  * This enum represents filtering parameters used by {@link com.fsck.k9.search.SearchAccount}.
  */
 public enum SearchModifier {
-    FLAGGED(R.string.flagged_modifier, new Flag[]{Flag.FLAGGED}, null),
-    UNREAD(R.string.unread_modifier, null, new Flag[]{Flag.SEEN});
+    FLAGGED(R.string.flagged_modifier, new Flag[] { Flag.FLAGGED }, null),
+    UNREAD(R.string.unread_modifier, null, new Flag[] { Flag.SEEN });
 
     public final int resId;
     public final Flag[] requiredFlags;

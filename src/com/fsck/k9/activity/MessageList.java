@@ -36,8 +36,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification;
-import com.fsck.k9.search.SearchSpecification.ATTRIBUTE;
-import com.fsck.k9.search.SearchSpecification.SEARCHFIELD;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 
 
@@ -134,8 +134,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                     mSearch.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
 
                     String query = intent.getStringExtra(SearchManager.QUERY);
-                    mSearch.or(new SearchCondition(SEARCHFIELD.SENDER, ATTRIBUTE.CONTAINS, query));
-                    mSearch.or(new SearchCondition(SEARCHFIELD.SUBJECT, ATTRIBUTE.CONTAINS, query));
+                    mSearch.or(new SearchCondition(Searchfield.SENDER, Attribute.CONTAINS, query));
+                    mSearch.or(new SearchCondition(Searchfield.SUBJECT, Attribute.CONTAINS, query));
 
                     mIsRemote = true;
                 }
@@ -583,7 +583,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public void showMoreFromSameSender(String senderAddress) {
         LocalSearch tmpSearch = new LocalSearch("From " + senderAddress);
         tmpSearch.addAccountUuids(mSearch.getAccountUuids());
-        tmpSearch.and(SEARCHFIELD.SENDER, senderAddress, ATTRIBUTE.CONTAINS);
+        tmpSearch.and(Searchfield.SENDER, senderAddress, Attribute.CONTAINS);
 
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
 
@@ -670,7 +670,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public void showThread(Account account, String folderName, long threadRootId) {
         LocalSearch tmpSearch = new LocalSearch();
         tmpSearch.addAccountUuids(mSearch.getAccountUuids());
-        tmpSearch.and(SEARCHFIELD.THREAD_ROOT, String.valueOf(threadRootId), ATTRIBUTE.EQUALS);
+        tmpSearch.and(Searchfield.THREAD_ROOT, String.valueOf(threadRootId), Attribute.EQUALS);
 
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
         addMessageListFragment(fragment);

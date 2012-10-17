@@ -9,8 +9,8 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fsck.k9.search.SearchSpecification.ATTRIBUTE;
-import com.fsck.k9.search.SearchSpecification.SEARCHFIELD;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 
 /**
@@ -19,12 +19,10 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
  *
  * TODO removing conditions from the tree
  * TODO implement NOT as a node again
- *
- * @author dzan
  */
-public class ConditionsTreeNode implements Parcelable{
+public class ConditionsTreeNode implements Parcelable {
 
-    public enum OPERATOR {
+    public enum Operator {
         AND, OR, CONDITION;
     }
 
@@ -36,7 +34,7 @@ public class ConditionsTreeNode implements Parcelable{
      * If mValue isn't CONDITION then mCondition contains a real
      * condition, otherwise it's null.
      */
-    public OPERATOR mValue;
+    public Operator mValue;
     public SearchCondition mCondition;
 
     /*
@@ -71,7 +69,7 @@ public class ConditionsTreeNode implements Parcelable{
         // other nodes
         while (cursor.moveToNext()) {
             tmp = buildNodeFromRow(cursor);
-            if (tmp.mRightMPTTMarker < stack.peek().mRightMPTTMarker ){
+            if (tmp.mRightMPTTMarker < stack.peek().mRightMPTTMarker) {
                 stack.peek().mLeft = tmp;
                 stack.push(tmp);
             } else {
@@ -94,11 +92,11 @@ public class ConditionsTreeNode implements Parcelable{
         ConditionsTreeNode result = null;
         SearchCondition condition = null;
 
-        OPERATOR tmpValue = ConditionsTreeNode.OPERATOR.valueOf(cursor.getString(5));
+        Operator tmpValue = ConditionsTreeNode.Operator.valueOf(cursor.getString(5));
 
-        if (tmpValue == OPERATOR.CONDITION) {
-            condition = new SearchCondition(SEARCHFIELD.valueOf(cursor.getString(0)),
-                    ATTRIBUTE.valueOf(cursor.getString(2)), cursor.getString(1));
+        if (tmpValue == Operator.CONDITION) {
+            condition = new SearchCondition(Searchfield.valueOf(cursor.getString(0)),
+                    Attribute.valueOf(cursor.getString(2)), cursor.getString(1));
         }
 
         result = new ConditionsTreeNode(condition);
@@ -116,10 +114,10 @@ public class ConditionsTreeNode implements Parcelable{
     public ConditionsTreeNode(SearchCondition condition) {
         mParent = null;
         mCondition = condition;
-        mValue = OPERATOR.CONDITION;
+        mValue = Operator.CONDITION;
     }
 
-    public ConditionsTreeNode(ConditionsTreeNode parent, OPERATOR op) {
+    public ConditionsTreeNode(ConditionsTreeNode parent, Operator op) {
         mParent = parent;
         mValue = op;
         mCondition = null;
@@ -138,7 +136,7 @@ public class ConditionsTreeNode implements Parcelable{
      * @throws Exception
      */
     public ConditionsTreeNode and(ConditionsTreeNode expr) throws Exception {
-        return add(expr, OPERATOR.AND);
+        return add(expr, Operator.AND);
     }
 
     /**
@@ -168,7 +166,7 @@ public class ConditionsTreeNode implements Parcelable{
      * @throws Exception
      */
     public ConditionsTreeNode or(ConditionsTreeNode expr) throws Exception {
-        return add(expr, OPERATOR.OR);
+        return add(expr, Operator.OR);
     }
 
     /**
@@ -244,10 +242,17 @@ public class ConditionsTreeNode implements Parcelable{
         Stack<ConditionsTreeNode> stack = new Stack<ConditionsTreeNode>();
         stack.push(this);
 
-        while(!stack.isEmpty()) {
-            ConditionsTreeNode current = stack.pop( );
-            if( current.mLeft != null ) stack.push( current.mLeft );
-            if( current.mRight != null ) stack.push( current.mRight );
+        while (!stack.isEmpty()) {
+            ConditionsTreeNode current = stack.pop();
+
+            if (current.mLeft != null) {
+                stack.push(current.mLeft);
+            }
+
+            if (current.mRight != null) {
+                stack.push(current.mRight);
+            }
+
             result.add(current);
         }
 
@@ -273,7 +278,7 @@ public class ConditionsTreeNode implements Parcelable{
      * @return New parent node, containing the operator.
      * @throws Exception Throws when the provided new node does not have a null parent.
      */
-    private ConditionsTreeNode add(ConditionsTreeNode node, OPERATOR op) throws Exception{
+    private ConditionsTreeNode add(ConditionsTreeNode node, Operator op) throws Exception {
         if (node.mParent != null) {
             throw new Exception("Can only add new expressions from root node down.");
         }
@@ -285,8 +290,8 @@ public class ConditionsTreeNode implements Parcelable{
         if (mParent != null) {
             mParent.updateChild(this, tmpNode);
         }
-        this.mParent = tmpNode;
 
+        this.mParent = tmpNode;
         node.mParent = tmpNode;
 
         return tmpNode;
@@ -317,21 +322,21 @@ public class ConditionsTreeNode implements Parcelable{
      * @return Set of leaves being completed.
      */
     private HashSet<ConditionsTreeNode> getLeafSet(HashSet<ConditionsTreeNode> leafSet) {
-        // if we ended up in a leaf, add ourself and return
         if (mLeft == null && mRight == null) {
+            // if we ended up in a leaf, add ourself and return
             leafSet.add(this);
             return leafSet;
-        // we didn't end up in a leaf
-        } else {
-            if (mLeft != null) {
-                mLeft.getLeafSet(leafSet);
-            }
-
-            if (mRight != null) {
-                mRight.getLeafSet(leafSet);
-            }
-            return leafSet;
         }
+
+        // we didn't end up in a leaf
+        if (mLeft != null) {
+            mLeft.getLeafSet(leafSet);
+        }
+
+        if (mRight != null) {
+            mRight.getLeafSet(leafSet);
+        }
+        return leafSet;
     }
 
     /**
@@ -343,12 +348,15 @@ public class ConditionsTreeNode implements Parcelable{
      */
     private int applyMPTTLabel(int label) {
         mLeftMPTTMarker = label;
-        if (mLeft != null){
+
+        if (mLeft != null) {
             label = mLeft.applyMPTTLabel(label += 1);
         }
-        if (mRight != null){
+
+        if (mRight != null) {
             label = mRight.applyMPTTLabel(label += 1);
         }
+
         ++label;
         mRightMPTTMarker = label;
         return label;
@@ -374,26 +382,31 @@ public class ConditionsTreeNode implements Parcelable{
         dest.writeParcelable(mRight, flags);
     }
 
-    public static final Parcelable.Creator<ConditionsTreeNode> CREATOR
-        = new Parcelable.Creator<ConditionsTreeNode>() {
+    public static final Parcelable.Creator<ConditionsTreeNode> CREATOR =
+            new Parcelable.Creator<ConditionsTreeNode>() {
+
+        @Override
         public ConditionsTreeNode createFromParcel(Parcel in) {
             return new ConditionsTreeNode(in);
         }
 
+        @Override
         public ConditionsTreeNode[] newArray(int size) {
             return new ConditionsTreeNode[size];
         }
     };
 
     private ConditionsTreeNode(Parcel in) {
-        mValue = OPERATOR.values()[in.readInt()];
+        mValue = Operator.values()[in.readInt()];
         mCondition = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
         mLeft = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
         mRight = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
         mParent = null;
+
         if (mLeft != null) {
             mLeft.mParent = this;
         }
+
         if (mRight != null) {
             mRight.mParent = this;
         }

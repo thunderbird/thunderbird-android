@@ -31,19 +31,21 @@ public class SearchAccount implements BaseAccount {
                 context.getString(R.string.integrated_inbox_detail));
     }
 
-    private String mEmail = null;
-    private String mDescription = null;
-    private LocalSearch mSearch = null;
-    private String mFakeUuid = null;
+    private String mEmail;
+    private String mDescription;
+    private LocalSearch mSearch;
+    private String mFakeUuid;
 
-    public SearchAccount(LocalSearch search, String description, String email) throws IllegalArgumentException{
+    public SearchAccount(LocalSearch search, String description, String email)
+            throws IllegalArgumentException {
+
         if (search == null) {
             throw new IllegalArgumentException("Provided LocalSearch was null");
         }
 
-        this.mSearch = search;
-        this.mDescription = description;
-        this.mEmail = email;
+        mSearch = search;
+        mDescription = description;
+        mEmail = email;
     }
 
     @Override
@@ -70,7 +72,6 @@ public class SearchAccount implements BaseAccount {
         return mSearch;
     }
 
-    @Override
     /*
      * This will only be used when accessed as an Account. If that
      * is the case we don't want to return the uuid of a real account since
@@ -78,8 +79,9 @@ public class SearchAccount implements BaseAccount {
      * a Search then methods from LocalSearch will be called which do handle
      * things nice.
      */
+    @Override
     public String getUuid() {
-        if (mFakeUuid == null){
+        if (mFakeUuid == null) {
             mFakeUuid = UUID.randomUUID().toString();
         }
         return mFakeUuid;

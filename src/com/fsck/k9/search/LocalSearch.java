@@ -12,11 +12,9 @@ import com.fsck.k9.mail.Flag;
 
 /**
  * This class represents a local search.
-
+ *
  * Removing conditions could be done through matching there unique id in the leafset and then
  * removing them from the tree.
- *
- * @author dzan
  *
  * TODO implement a complete addAllowedFolder method
  * TODO conflicting conditions check on add
@@ -43,7 +41,7 @@ public class LocalSearch implements SearchSpecification {
      * Use this only if the search won't be saved. Saved searches need
      * a name!
      */
-    public LocalSearch(){}
+    public LocalSearch() {}
 
     /**
      *
@@ -141,7 +139,7 @@ public class LocalSearch implements SearchSpecification {
      *
      * @throws IllegalConditionException
      */
-    public void and(SEARCHFIELD field, String value, ATTRIBUTE attribute) {
+    public void and(Searchfield field, String value, Attribute attribute) {
         and(new SearchCondition(field, attribute, value));
     }
 
@@ -226,7 +224,7 @@ public class LocalSearch implements SearchSpecification {
     public void allRequiredFlags(Flag[] requiredFlags) {
         if (requiredFlags != null) {
             for (Flag f : requiredFlags) {
-                and(new SearchCondition(SEARCHFIELD.FLAG, ATTRIBUTE.CONTAINS, f.name()));
+                and(new SearchCondition(Searchfield.FLAG, Attribute.CONTAINS, f.name()));
             }
         }
     }
@@ -240,7 +238,7 @@ public class LocalSearch implements SearchSpecification {
     public void allForbiddenFlags(Flag[] forbiddenFlags) {
         if (forbiddenFlags != null) {
             for (Flag f : forbiddenFlags) {
-                and(new SearchCondition(SEARCHFIELD.FLAG, ATTRIBUTE.NOT_CONTAINS, f.name()));
+                and(new SearchCondition(Searchfield.FLAG, Attribute.NOT_CONTAINS, f.name()));
             }
         }
     }
@@ -261,7 +259,7 @@ public class LocalSearch implements SearchSpecification {
          *  		- do and on root of it & rest of search
          *  		- do or between folder nodes
          */
-        mConditions = and(new SearchCondition(SEARCHFIELD.FOLDER, ATTRIBUTE.EQUALS, name));
+        mConditions = and(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, name));
     }
 
     /*
@@ -272,8 +270,8 @@ public class LocalSearch implements SearchSpecification {
     public List<String> getFolderNames() {
         ArrayList<String> results = new ArrayList<String>();
         for (ConditionsTreeNode node : mLeafSet) {
-            if (node.mCondition.field == SEARCHFIELD.FOLDER
-                    && node.mCondition.attribute == ATTRIBUTE.EQUALS) {
+            if (node.mCondition.field == Searchfield.FOLDER &&
+                    node.mCondition.attribute == Attribute.EQUALS) {
                 results.add(node.mCondition.value);
             }
         }
@@ -298,8 +296,8 @@ public class LocalSearch implements SearchSpecification {
      */
     public String getRemoteSearchArguments() {
         for (ConditionsTreeNode node : getLeafSet()) {
-            if (node.getCondition().field == SEARCHFIELD.SUBJECT
-                    || node.getCondition().field == SEARCHFIELD.SENDER ) {
+            if (node.getCondition().field == Searchfield.SUBJECT ||
+                    node.getCondition().field == Searchfield.SENDER ) {
                 return node.getCondition().value;
             }
         }
@@ -311,8 +309,9 @@ public class LocalSearch implements SearchSpecification {
      *
      * @return Name of the search.
      */
+    @Override
     public String getName() {
-        return (mName == null ? "" : mName);
+        return (mName == null) ? "" : mName;
     }
 
     /**
@@ -333,7 +332,7 @@ public class LocalSearch implements SearchSpecification {
     @Override
     public String[] getAccountUuids() {
         if (mAccountUuids.size() == 0) {
-            return new String[] {SearchSpecification.ALL_ACCOUNTS};
+            return new String[] { SearchSpecification.ALL_ACCOUNTS };
         }
 
         String[] tmp = new String[mAccountUuids.size()];
@@ -367,12 +366,15 @@ public class LocalSearch implements SearchSpecification {
         dest.writeParcelable(mConditions, flags);
     }
 
-    public static final Parcelable.Creator<LocalSearch> CREATOR
-        = new Parcelable.Creator<LocalSearch>() {
+    public static final Parcelable.Creator<LocalSearch> CREATOR =
+            new Parcelable.Creator<LocalSearch>() {
+
+        @Override
         public LocalSearch createFromParcel(Parcel in) {
             return new LocalSearch(in);
         }
 
+        @Override
         public LocalSearch[] newArray(int size) {
             return new LocalSearch[size];
         }
@@ -380,7 +382,7 @@ public class LocalSearch implements SearchSpecification {
 
     public LocalSearch(Parcel in) {
         mName = in.readString();
-        mPredefined = in.readByte() == 1;
+        mPredefined = (in.readByte() == 1);
         mAccountUuids.addAll(in.createStringArrayList());
         mConditions = in.readParcelable(LocalSearch.class.getClassLoader());
         mLeafSet = mConditions.getLeafSet();

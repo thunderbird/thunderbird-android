@@ -71,7 +71,7 @@ import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchSpecification.SEARCHFIELD;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 
 /**
  * <pre>
@@ -936,7 +936,7 @@ public class LocalStore extends Store implements Serializable {
 
         // update some references in the search that have to be bound to this one store
         for (ConditionsTreeNode node : search.getLeafSet()) {
-            if (node.mCondition.field == SEARCHFIELD.FOLDER) {
+            if (node.mCondition.field == Searchfield.FOLDER) {
                 // TODO find better solution
                 if (isFolderId(node.mCondition.value)) {
                     continue;

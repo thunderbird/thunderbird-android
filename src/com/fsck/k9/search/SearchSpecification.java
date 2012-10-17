@@ -34,13 +34,13 @@ public interface SearchSpecification extends Parcelable {
     ///////////////////////////////////////////////////////////////
     // ATTRIBUTE enum
     ///////////////////////////////////////////////////////////////
-    public enum ATTRIBUTE {
+    public enum Attribute {
         CONTAINS(false), EQUALS(false), STARTSWITH(false), ENDSWITH(false),
         NOT_CONTAINS(true), NOT_EQUALS(true), NOT_STARTSWITH(true), NOT_ENDSWITH(true);
 
         private boolean mNegation;
 
-        private ATTRIBUTE(boolean negation) {
+        private Attribute(boolean negation) {
             this.mNegation = negation;
         }
 
@@ -69,7 +69,7 @@ public interface SearchSpecification extends Parcelable {
 
             return (mNegation ? " NOT LIKE " : " LIKE ") + queryPart;
         }
-    };
+    }
 
     ///////////////////////////////////////////////////////////////
     // SEARCHFIELD enum
@@ -86,7 +86,7 @@ public interface SearchSpecification extends Parcelable {
      * 		preview, mime_type
      *
      */
-    public enum SEARCHFIELD {
+    public enum Searchfield {
         SUBJECT("subject"), DATE("date"), UID("uid"), FLAG("flags"),
         SENDER("sender_list"), TO("to_list"), CC("cc_list"), FOLDER("folder_id"),
         BCC("bcc_list"), REPLY_TO("reply_to_list"), MESSAGE("text_content"),
@@ -94,7 +94,7 @@ public interface SearchSpecification extends Parcelable {
 
         private String dbName;
 
-        private SEARCHFIELD(String dbName) {
+        private Searchfield(String dbName) {
             this.dbName = dbName;
         }
 
@@ -116,12 +116,12 @@ public interface SearchSpecification extends Parcelable {
      *
      * @author dzan
      */
-    public class SearchCondition implements Parcelable{
+    public class SearchCondition implements Parcelable {
         public String value;
-        public ATTRIBUTE attribute;
-        public SEARCHFIELD field;
+        public Attribute attribute;
+        public Searchfield field;
 
-        public SearchCondition(SEARCHFIELD field, ATTRIBUTE attribute, String value) {
+        public SearchCondition(Searchfield field, Attribute attribute, String value) {
             this.value = value;
             this.attribute = attribute;
             this.field = field;
@@ -129,8 +129,8 @@ public interface SearchSpecification extends Parcelable {
 
         private SearchCondition(Parcel in) {
             this.value = in.readString();
-            this.attribute = ATTRIBUTE.values()[in.readInt()];
-            this.field = SEARCHFIELD.values()[in.readInt()];
+            this.attribute = Attribute.values()[in.readInt()];
+            this.field = Searchfield.values()[in.readInt()];
         }
 
         public String toHumanString() {
@@ -146,16 +146,14 @@ public interface SearchSpecification extends Parcelable {
         public boolean equals(Object o) {
             if (o instanceof SearchCondition) {
                 SearchCondition tmp = (SearchCondition) o;
-                if (tmp.attribute == attribute
-                        && tmp.value.equals(value)
-                        && tmp.field == field) {
+                if (tmp.attribute == attribute &&
+                        tmp.field == field &&
+                        tmp.value.equals(value)) {
                     return true;
-                } else {
-                    return false;
                 }
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         @Override
@@ -170,12 +168,15 @@ public interface SearchSpecification extends Parcelable {
             dest.writeInt(field.ordinal());
         }
 
-        public static final Parcelable.Creator<SearchCondition> CREATOR
-            = new Parcelable.Creator<SearchCondition>() {
+        public static final Parcelable.Creator<SearchCondition> CREATOR =
+                new Parcelable.Creator<SearchCondition>() {
+
+            @Override
             public SearchCondition createFromParcel(Parcel in) {
                 return new SearchCondition(in);
             }
 
+            @Override
             public SearchCondition[] newArray(int size) {
                 return new SearchCondition[size];
             }
