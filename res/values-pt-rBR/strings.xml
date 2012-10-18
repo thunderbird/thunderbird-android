@@ -9,7 +9,7 @@
     <string name="beta_app_name">K-9 Mail BETA</string>
 
     <string name="shortcuts_title">Contas K-9</string>
-    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+    <!-- NEW: <string name="unread_widget_label">K-9 Não lidos</string>-->
 
     <string name="remote_control_label">Controle remoto para K-9 Mail</string>
     <string name="remote_control_desc">Permitir esta aplicação controlar atividades e configurações do K-9 Mail.</string>
@@ -18,7 +18,7 @@
     <!-- Used in the about dialog -->
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
     <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
-    <!-- NEW: <string name="app_license">Licensed under the Apache License, Version 2.0.</string>-->
+    <!-- NEW: <string name="app_license">Licenciado sob a Apache License, Versão 2.0.</string>-->
 
 
     <!-- Welcome message -->
@@ -55,8 +55,8 @@ http://k9mail.googlecode.com/
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
-    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+    <!-- NEW: <string name="import_dialog_error_message">Não existe um aplicativo adequado para a operação de importação. Instale um gerenciador de arquivos pela Google Play Store.</string>-->
+    <!-- NEW: <string name="open_market">Abrir a Play Store</string>-->
 
 
 
@@ -65,7 +65,7 @@ http://k9mail.googlecode.com/
     <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revisões e informações: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
-    <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
+    <!-- NEW: <string name="app_emoji_icons">Emoticons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
     <string name="read_attachment_label">Ler anexos do E-mail</string>
     <string name="read_attachment_desc">Permitir que o K-9 leia os anexos de seus e-mails.</string>
@@ -114,7 +114,7 @@ http://k9mail.googlecode.com/
     <string name="forward_action">Encaminhar</string>
     <string name="move_action">Mover</string>
     <string name="continue_action">Continuar</string>
-    <!-- NEW: <string name="back_action">Back</string>-->
+    <!-- NEW: <string name="back_action">Voltar</string>-->
     <string name="done_action">Pronto</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Descartar</string>
     <string name="save_draft_action">Salvar como rascunho</string>
@@ -124,7 +124,7 @@ http://k9mail.googlecode.com/
     <string name="send_messages_action">Enviar mensagens</string>
     <string name="list_folders_action">Lista de pastas</string>
     <string name="refresh_folders_action">Atualizar pastas</string>
-    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
+    <!-- NEW: <string name="filter_folders_action">Encontrar pasta</string>-->
     <string name="mark_all_as_read_action">Marcar todas as como lidas</string>
     <string name="add_account_action">Incluir conta</string>
     <string name="compose_action">Escrever</string>
@@ -238,7 +238,7 @@ http://k9mail.googlecode.com/
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Assunto</string>
     <string name="message_compose_content_hint">Texto da mensagem</string>
-    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
+    <!-- NEW: <string name="message_compose_signature_hint">Assinatura</string>-->
     <string name="message_compose_quote_header_separator">........ Mensagem Original ........</string>
     <string name="message_compose_quote_header_subject">Assunto:</string>
     <string name="message_compose_quote_header_send_date">Enviado:</string>
@@ -1040,7 +1040,7 @@ http://k9mail.googlecode.com/
     <string name="settings_export_failure">Falha na exportação</string>
     <string name="settings_import_failure">Falha na importação via <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_export_success_header">Exportação concluída</string>
-    <string name="settings_export_failed_header">Falha na export</string>
+    <string name="settings_export_failed_header">Falha na exportação</string>
     <string name="settings_import_success_header">Importação realizada</string>
     <string name="settings_import_failed_header">Falha na importação</string>
     <string name="settings_import_activate_account_header">Ativar conta</string>
