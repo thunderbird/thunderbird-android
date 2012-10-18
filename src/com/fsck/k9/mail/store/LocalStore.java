@@ -661,6 +661,10 @@ public class LocalStore extends Store implements Serializable {
         return new LocalFolder(name);
     }
 
+    public LocalFolder getFolderById(long folderId) {
+        return new LocalFolder(folderId);
+    }
+
     private long getFolderId(final String name) throws MessagingException {
         return database.execute(false, new DbCallback<Long>() {
             @Override

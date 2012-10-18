@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -24,6 +26,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -68,8 +71,10 @@ import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.helper.MessageHelper;
+import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -77,18 +82,15 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
+import com.fsck.k9.provider.EmailProvider.SpecialColumns;
 import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification;
-import com.fsck.k9.search.SearchSpecification.ATTRIBUTE;
-import com.fsck.k9.search.SearchSpecification.SEARCHFIELD;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -111,7 +113,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         MessageColumns.FOLDER_ID,
         MessageColumns.PREVIEW,
         MessageColumns.THREAD_ROOT,
-        MessageColumns.THREAD_PARENT
+        MessageColumns.THREAD_PARENT,
+        SpecialColumns.ACCOUNT_UUID
     };
 
     private static final int ID_COLUMN = 0;
@@ -128,6 +131,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int PREVIEW_COLUMN = 11;
     private static final int THREAD_ROOT_COLUMN = 12;
     private static final int THREAD_PARENT_COLUMN = 13;
+    private static final int ACCOUNT_UUID_COLUMN = 14;
 
 
     public static MessageListFragment newInstance(LocalSearch search, boolean remoteSearch) {
@@ -321,7 +325,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private MessagingController mController;
 
     private Account mAccount;
+    private String[] mAccountUuids;
     private int mUnreadMessageCount = 0;
+
+    private Map<Integer, Cursor> mCursors = new HashMap<Integer, Cursor>();
 
     /**
      * Stores the name of the folder that we want to open as soon as possible
@@ -386,6 +393,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private Context mContext;
 
     private final ActivityListener mListener = new MessageListActivityListener();
+
+    private Preferences mPreferences;
 
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
@@ -627,9 +636,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 //            long rootId = ((LocalMessage) message.message).getRootId();
 //            mFragmentListener.showThread(folder.getAccount(), folder.getName(), rootId);
         } else {
+            Account account = getAccountFromCursor(cursor);
+
+            long folderId = cursor.getLong(FOLDER_ID_COLUMN);
+            String folderName = getFolderNameById(account, folderId);
+
             MessageReference ref = new MessageReference();
-            ref.accountUuid = mAccount.getUuid();
-            ref.folderName = mCurrentFolder.name;
+            ref.accountUuid = account.getUuid();
+            ref.folderName = folderName;
             ref.uid = cursor.getString(UID_COLUMN);
             onOpenMessage(ref);
         }
@@ -653,6 +667,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mPreferences = Preferences.getPreferences(getActivity().getApplicationContext());
         mController = MessagingController.getInstance(getActivity().getApplication());
 
         mPreviewLines = K9.messageListPreviewLines();
@@ -686,7 +701,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         initializeMessageList();
 
-        getLoaderManager().initLoader(0, null, this);
+        LoaderManager loaderManager = getLoaderManager();
+        for (int i = 0, len = mAccountUuids.length; i < len; i++) {
+            loaderManager.initLoader(i, null, this);
+        }
     }
 
     private void decodeArguments() {
@@ -696,14 +714,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mSearch = args.getParcelable(ARG_SEARCH);
         mTitle = args.getString(mSearch.getName());
 
-        Context appContext = getActivity().getApplicationContext();
-        String[] accounts = mSearch.getAccountUuids();
+        String[] accountUuids = mSearch.getAccountUuids();
 
         mSingleAccountMode = false;
-        if (accounts != null && accounts.length == 1
-                && !accounts[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
+        if (accountUuids.length == 1 && !accountUuids[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
             mSingleAccountMode = true;
-            mAccount = Preferences.getPreferences(appContext).getAccount(accounts[0]);
+            mAccount = mPreferences.getAccount(accountUuids[0]);
         }
 
         mSingleFolderMode = false;
@@ -711,6 +727,23 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mSingleFolderMode = true;
             mFolderName = mSearch.getFolderNames().get(0);
             mCurrentFolder = getFolder(mFolderName, mAccount);
+        }
+
+        if (mSingleAccountMode) {
+            mAccountUuids = new String[] { mAccount.getUuid() };
+        } else {
+            if (accountUuids.length == 1 &&
+                    accountUuids[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
+
+                Account[] accounts = mPreferences.getAccounts();
+
+                mAccountUuids = new String[accounts.length];
+                for (int i = 0, len = accounts.length; i < len; i++) {
+                    mAccountUuids[i] = accounts[i].getUuid();
+                }
+            } else {
+                mAccountUuids = accountUuids;
+            }
         }
     }
 
@@ -741,6 +774,18 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             if (local_folder != null) {
                 local_folder.close();
             }
+        }
+    }
+
+    private String getFolderNameById(Account account, long folderId) {
+        try {
+            LocalStore localStore = account.getLocalStore();
+            LocalFolder localFolder = localStore.getFolderById(folderId);
+            localFolder.open(OpenMode.READ_ONLY);
+            return localFolder.getName();
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "getFolderNameById() failed.", e);
+            return null;
         }
     }
 
@@ -788,8 +833,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Context appContext = getActivity().getApplicationContext();
 
         mSenderAboveSubject = K9.messageListSenderAboveSubject();
-
-        final Preferences prefs = Preferences.getPreferences(appContext);
 
         // Check if we have connectivity.  Cache the value.
         if (mHasConnectivity == null) {
@@ -841,7 +884,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mSortAscending = account.isSortAscending(mSortType);
             mSortDateAscending = account.isSortAscending(SortType.SORT_DATE);
         } else {
-            accountsWithNotification = prefs.getAccounts();
+            accountsWithNotification = mPreferences.getAccounts();
             mSortType = K9.getSortType();
             mSortAscending = K9.isSortAscending(mSortType);
             mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
@@ -934,7 +977,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void changeSort(SortType sortType, Boolean sortAscending) {
         mSortType = sortType;
 
-        Preferences prefs = Preferences.getPreferences(getActivity().getApplicationContext());
         Account account = mAccount;
 
         if (account != null) {
@@ -948,7 +990,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             account.setSortAscending(mSortType, mSortAscending);
             mSortDateAscending = account.isSortAscending(SortType.SORT_DATE);
 
-            account.save(prefs);
+            account.save(mPreferences);
         } else {
             K9.setSortType(mSortType);
 
@@ -960,7 +1002,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             K9.setSortAscending(mSortType, mSortAscending);
             mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
 
-            Editor editor = prefs.getPreferences().edit();
+            Editor editor = mPreferences.getPreferences().edit();
             K9.save(editor);
             editor.commit();
         }
@@ -1244,8 +1286,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
 
-        //TODO: get account from cursor
-        Account account = mAccount;
+        Account account = getAccountFromCursor(cursor);
 
         String subject = cursor.getString(SUBJECT_COLUMN);
         String flagList = cursor.getString(FLAGS_COLUMN);
@@ -1511,8 +1552,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            //TODO: make this work for search results
-            Account account = mAccount;
+            Account account = getAccountFromCursor(cursor);
 
             String fromList = cursor.getString(SENDER_LIST_COLUMN);
             String toList = cursor.getString(TO_LIST_COLUMN);
@@ -2574,9 +2614,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return false;
         }
 
-        Context appContext = getActivity().getApplicationContext();
-        final Preferences prefs = Preferences.getPreferences(appContext);
-
         boolean allowRemoteSearch = false;
         final Account searchAccount = mAccount;
         if (searchAccount != null) {
@@ -2593,13 +2630,61 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String accountUuid = mAccount.getUuid();
+        String accountUuid = mAccountUuids[id];
+        Account account = mPreferences.getAccount(accountUuid);
 
         Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + accountUuid + "/messages");
 
+        StringBuilder query = new StringBuilder();
+        List<String> queryArgs = new ArrayList<String>();
+        buildQuery(account, mSearch.getConditions(), query, queryArgs);
+
+        String selection = query.toString();
+        String[] selectionArgs = queryArgs.toArray(new String[0]);
+
+        return new CursorLoader(getActivity(), uri, PROJECTION, selection, selectionArgs,
+                MessageColumns.DATE + " DESC");
+    }
+
+    private void buildQuery(Account account, ConditionsTreeNode node, StringBuilder query,
+            List<String> selectionArgs) {
+
+        if (node.mLeft == null && node.mRight == null) {
+            SearchCondition condition = node.mCondition;
+            switch (condition.field) {
+                case FOLDER: {
+                    String folderName;
+                    //TODO: Fix the search condition used by the Unified Inbox
+                    if (LocalSearch.GENERIC_INBOX_NAME.equals(condition.value) ||
+                            "1".equals(condition.value)) {
+                        folderName = account.getInboxFolderName();
+                    } else {
+                        folderName = condition.value;
+                    }
+                    long folderId = getFolderId(account, folderName);
+                    query.append("folder_id = ?");
+                    selectionArgs.add(Long.toString(folderId));
+                    break;
+                }
+                default: {
+                    query.append(condition.toString());
+                }
+            }
+        } else {
+            query.append("(");
+            buildQuery(account, node.mLeft, query, selectionArgs);
+            query.append(") ");
+            query.append(node.mValue.name());
+            query.append(" (");
+            buildQuery(account, node.mRight, query, selectionArgs);
+            query.append(")");
+        }
+    }
+
+    private long getFolderId(Account account, String folderName) {
         long folderId = 0;
         try {
-            LocalFolder folder = (LocalFolder) mCurrentFolder.folder;
+            LocalFolder folder = (LocalFolder) getFolder(folderName, account).folder;
             folder.open(OpenMode.READ_ONLY);
             folderId = folder.getId();
         } catch (MessagingException e) {
@@ -2607,22 +2692,35 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             e.printStackTrace();
         }
 
-        String selection = MessageColumns.FOLDER_ID + "=?";
-        String[] selectionArgs = { Long.toString(folderId) };
-
-        return new CursorLoader(getActivity(), uri, PROJECTION, selection, selectionArgs,
-                MessageColumns.DATE + " DESC");
+        return folderId;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mSelected = new SparseBooleanArray(data.getCount());
-        mAdapter.swapCursor(data);
+        mCursors.put(loader.getId(), data);
+
+        List<Integer> list = new LinkedList<Integer>(mCursors.keySet());
+        Collections.sort(list);
+        List<Cursor> cursors = new ArrayList<Cursor>(list.size());
+        for (Integer id : list) {
+            cursors.add(mCursors.get(id));
+        }
+
+        MergeCursorWithUniqueId cursor = new MergeCursorWithUniqueId(cursors);
+
+        mSelected = new SparseBooleanArray(cursor.getCount());
+        //TODO: use the (stable) IDs as index and reuse the old mSelected
+        mAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mSelected = null;
         mAdapter.swapCursor(null);
+    }
+
+    private Account getAccountFromCursor(Cursor cursor) {
+        String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+        return mPreferences.getAccount(accountUuid);
     }
 }

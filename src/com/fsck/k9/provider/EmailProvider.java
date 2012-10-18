@@ -1,6 +1,9 @@
 package com.fsck.k9.provider;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
@@ -12,6 +15,7 @@ import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 
+import android.annotation.TargetApi;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -67,6 +71,9 @@ public class EmailProvider extends ContentProvider {
         //matcher.addURI(AUTHORITY, "account/*/thread/#", MESSAGES_THREAD);
     }
 
+    public interface SpecialColumns {
+        public static final String ACCOUNT_UUID = "account_uuid";
+    }
 
     public interface MessageColumns {
         public static final String ID = "id";
@@ -126,14 +133,31 @@ public class EmailProvider extends ContentProvider {
                 List<String> segments = uri.getPathSegments();
                 String accountUuid = segments.get(1);
 
-                cursor = getMessages(accountUuid, projection, selection, selectionArgs, sortOrder);
+                List<String> dbColumnNames = new ArrayList<String>(projection.length);
+                Map<String, String> specialColumns = new HashMap<String, String>();
+                for (String columnName : projection) {
+                    if (SpecialColumns.ACCOUNT_UUID.equals(columnName)) {
+                        specialColumns.put(SpecialColumns.ACCOUNT_UUID, accountUuid);
+                    } else {
+                        dbColumnNames.add(columnName);
+                    }
+                }
+
+                String[] dbProjection = dbColumnNames.toArray(new String[0]);
+
+                cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs,
+                        sortOrder);
 
                 cursor.setNotificationUri(contentResolver, uri);
+
+                cursor = new SpecialColumnsCursor(new IdTrickeryCursor(cursor), projection,
+                        specialColumns);
+
                 break;
             }
         }
 
-        return new IdTrickeryCursor(cursor);
+        return cursor;
     }
 
     @Override
@@ -241,6 +265,165 @@ public class EmailProvider extends ContentProvider {
             }
 
             return super.getColumnIndexOrThrow(columnName);
+        }
+    }
+
+    static class SpecialColumnsCursor extends CursorWrapper {
+        private int[] mColumnMapping;
+        private String[] mSpecialColumnValues;
+        private String[] mColumnNames;
+
+        public SpecialColumnsCursor(Cursor cursor, String[] allColumnNames,
+                Map<String, String> specialColumns) {
+            super(cursor);
+
+            mColumnNames = allColumnNames;
+            mColumnMapping = new int[allColumnNames.length];
+            mSpecialColumnValues = new String[specialColumns.size()];
+            for (int i = 0, columnIndex = 0, specialColumnCount = 0, len = allColumnNames.length;
+                    i < len; i++) {
+
+                String columnName = allColumnNames[i];
+
+                if (specialColumns.containsKey(columnName)) {
+                    // This is a special column name, so save the value in mSpecialColumnValues
+                    mSpecialColumnValues[specialColumnCount] = specialColumns.get(columnName);
+
+                    // Write the index into mSpecialColumnValues negated into mColumnMapping
+                    mColumnMapping[i] = -(specialColumnCount + 1);
+                    specialColumnCount++;
+                } else {
+                    mColumnMapping[i] = columnIndex++;
+                }
+            }
+        }
+
+        @Override
+        public byte[] getBlob(int columnIndex) {
+            int realColumnIndex = mColumnMapping[columnIndex];
+            if (realColumnIndex < 0) {
+                throw new RuntimeException("Special column can only be retrieved as string.");
+            }
+
+            return super.getBlob(realColumnIndex);
+        }
+
+        @Override
+        public int getColumnCount() {
+            return mColumnMapping.length;
+        }
+
+        @Override
+        public int getColumnIndex(String columnName) {
+            for (int i = 0, len = mColumnNames.length; i < len; i++) {
+                if (mColumnNames[i].equals(columnName)) {
+                    return i;
+                }
+            }
+
+            return super.getColumnIndex(columnName);
+        }
+
+        @Override
+        public int getColumnIndexOrThrow(String columnName) throws IllegalArgumentException {
+            int index = getColumnIndex(columnName);
+
+            if (index == -1) {
+                throw new IllegalArgumentException("Unknown column name");
+            }
+
+            return index;
+        }
+
+        @Override
+        public String getColumnName(int columnIndex) {
+            return mColumnNames[columnIndex];
+        }
+
+        @Override
+        public String[] getColumnNames() {
+            return mColumnNames.clone();
+        }
+
+        @Override
+        public double getDouble(int columnIndex) {
+            int realColumnIndex = mColumnMapping[columnIndex];
+            if (realColumnIndex < 0) {
+                throw new RuntimeException("Special column can only be retrieved as string.");
+            }
+
+            return super.getDouble(realColumnIndex);
+        }
+
+        @Override
+        public float getFloat(int columnIndex) {
+            int realColumnIndex = mColumnMapping[columnIndex];
+            if (realColumnIndex < 0) {
+                throw new RuntimeException("Special column can only be retrieved as string.");
+            }
+
+            return super.getFloat(realColumnIndex);
+        }
+
+        @Override
+        public int getInt(int columnIndex) {
+            int realColumnIndex = mColumnMapping[columnIndex];
+            if (realColumnIndex < 0) {
+                throw new RuntimeException("Special column can only be retrieved as string.");
+            }
+
+            return super.getInt(realColumnIndex);
+        }
+
+        @Override
+        public long getLong(int columnIndex) {
+            int realColumnIndex = mColumnMapping[columnIndex];
+            if (realColumnIndex < 0) {
+                throw new RuntimeException("Special column can only be retrieved as string.");
+            }
+
+            return super.getLong(realColumnIndex);
+        }
+
+        @Override
+        public short getShort(int columnIndex) {
+            int realColumnIndex = mColumnMapping[columnIndex];
+            if (realColumnIndex < 0) {
+                throw new RuntimeException("Special column can only be retrieved as string.");
+            }
+
+            return super.getShort(realColumnIndex);
+        }
+
+        @Override
+        public String getString(int columnIndex) {
+            int realColumnIndex = mColumnMapping[columnIndex];
+            if (realColumnIndex < 0) {
+                return mSpecialColumnValues[-realColumnIndex - 1];
+            }
+
+            return super.getString(realColumnIndex);
+        }
+
+        @TargetApi(11)
+        @Override
+        public int getType(int columnIndex) {
+            int realColumnIndex = mColumnMapping[columnIndex];
+            if (realColumnIndex < 0) {
+                return FIELD_TYPE_STRING;
+            }
+
+            return super.getType(realColumnIndex);
+        }
+
+        @Override
+        public boolean isNull(int columnIndex) {
+            int realColumnIndex = mColumnMapping[columnIndex];
+            if (realColumnIndex < 0) {
+                return (mSpecialColumnValues[-realColumnIndex - 1] == null);
+            }
+
+            return super.isNull(realColumnIndex);
         }
     }
 }
