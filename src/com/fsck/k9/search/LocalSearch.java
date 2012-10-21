@@ -295,7 +295,12 @@ public class LocalSearch implements SearchSpecification {
      * very dirty fix for remotesearch support atm
      */
     public String getRemoteSearchArguments() {
-        for (ConditionsTreeNode node : getLeafSet()) {
+        Set<ConditionsTreeNode> leafSet = getLeafSet();
+        if (leafSet == null) {
+            return null;
+        }
+
+        for (ConditionsTreeNode node : leafSet) {
             if (node.getCondition().field == Searchfield.SUBJECT ||
                     node.getCondition().field == Searchfield.SENDER ) {
                 return node.getCondition().value;

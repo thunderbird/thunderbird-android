@@ -2649,6 +2649,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void buildQuery(Account account, ConditionsTreeNode node, StringBuilder query,
             List<String> selectionArgs) {
 
+        if (node == null) {
+            return;
+        }
+
         if (node.mLeft == null && node.mRight == null) {
             SearchCondition condition = node.mCondition;
             switch (condition.field) {
