@@ -712,7 +712,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mRemoteSearch = args.getBoolean(ARG_REMOTE_SEARCH, false);
         mSearch = args.getParcelable(ARG_SEARCH);
-        mTitle = args.getString(mSearch.getName());
+        mTitle = mSearch.getName();
 
         String[] accountUuids = mSearch.getAccountUuids();
 
