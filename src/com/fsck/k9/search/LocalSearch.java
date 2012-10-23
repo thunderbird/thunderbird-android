@@ -176,7 +176,8 @@ public class LocalSearch implements SearchSpecification {
             return node;
         }
 
-        return mConditions.and(node);
+        mConditions = mConditions.and(node);
+        return mConditions;
     }
 
     /**
@@ -212,7 +213,8 @@ public class LocalSearch implements SearchSpecification {
             return node;
         }
 
-        return mConditions.or(node);
+        mConditions = mConditions.or(node);
+        return mConditions;
     }
 
     /**

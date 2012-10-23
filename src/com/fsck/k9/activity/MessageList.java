@@ -30,8 +30,6 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.search.LocalSearch;
@@ -95,6 +93,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private boolean mSingleFolderMode;
     private boolean mSingleAccountMode;
     private boolean mIsRemote;
+    private boolean mThreadViewEnabled = true;  //TODO: this should be a setting
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,7 +115,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         if (mMessageListFragment == null) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            mMessageListFragment = MessageListFragment.newInstance(mSearch, mIsRemote);
+            mMessageListFragment = MessageListFragment.newInstance(mSearch, mThreadViewEnabled,
+                    mIsRemote);
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
         }
@@ -585,7 +585,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         tmpSearch.addAccountUuids(mSearch.getAccountUuids());
         tmpSearch.and(Searchfield.SENDER, senderAddress, Attribute.CONTAINS);
 
-        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
+        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false, false);
 
         addMessageListFragment(fragment);
     }
@@ -634,7 +634,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void remoteSearch(String searchAccount, String searchFolder, String queryString) {
-        MessageListFragment fragment = MessageListFragment.newInstance(mSearch, true);
+        MessageListFragment fragment = MessageListFragment.newInstance(mSearch, false, true);
 
         addMessageListFragment(fragment);
     }
@@ -669,10 +669,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     @Override
     public void showThread(Account account, String folderName, long threadRootId) {
         LocalSearch tmpSearch = new LocalSearch();
-        tmpSearch.addAccountUuids(mSearch.getAccountUuids());
+        tmpSearch.addAccountUuid(account.getUuid());
         tmpSearch.and(Searchfield.THREAD_ROOT, String.valueOf(threadRootId), Attribute.EQUALS);
+        tmpSearch.or(new SearchCondition(Searchfield.ID, Attribute.EQUALS, String.valueOf(threadRootId)));
 
-        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
+        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false, false);
         addMessageListFragment(fragment);
     }
 }

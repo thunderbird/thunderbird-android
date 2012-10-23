@@ -2,6 +2,7 @@ package com.fsck.k9.fragment;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -99,7 +100,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 public class MessageListFragment extends SherlockFragment implements OnItemClickListener,
         ConfirmationDialogFragmentListener, LoaderCallbacks<Cursor> {
 
-    private static final String[] PROJECTION = {
+    private static final String[] THREADED_PROJECTION = {
         MessageColumns.ID,
         MessageColumns.UID,
         MessageColumns.INTERNAL_DATE,
@@ -114,7 +115,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         MessageColumns.PREVIEW,
         MessageColumns.THREAD_ROOT,
         MessageColumns.THREAD_PARENT,
-        SpecialColumns.ACCOUNT_UUID
+        SpecialColumns.ACCOUNT_UUID,
+
+        MessageColumns.THREAD_COUNT,
     };
 
     private static final int ID_COLUMN = 0;
@@ -132,12 +135,18 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int THREAD_ROOT_COLUMN = 12;
     private static final int THREAD_PARENT_COLUMN = 13;
     private static final int ACCOUNT_UUID_COLUMN = 14;
+    private static final int THREAD_COUNT_COLUMN = 15;
+
+    private static final String[] PROJECTION = Arrays.copyOf(THREADED_PROJECTION,
+            THREAD_COUNT_COLUMN);
 
 
-    public static MessageListFragment newInstance(LocalSearch search, boolean remoteSearch) {
+    public static MessageListFragment newInstance(LocalSearch search, boolean threadedList,
+            boolean remoteSearch) {
         MessageListFragment fragment = new MessageListFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_SEARCH, search);
+        args.putBoolean(ARG_THREADED_LIST, threadedList);
         args.putBoolean(ARG_REMOTE_SEARCH, remoteSearch);
         fragment.setArguments(args);
         return fragment;
@@ -285,6 +294,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
 
     private static final String ARG_SEARCH = "searchObject";
+    private static final String ARG_THREADED_LIST = "threadedList";
     private static final String ARG_REMOTE_SEARCH = "remoteSearch";
     private static final String STATE_LIST_POSITION = "listPosition";
 
@@ -384,10 +394,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private DateFormat mTimeFormat;
 
-    //TODO: make this a setting
-    private boolean mThreadViewEnabled = true;
-
-    private long mThreadId;
+    private boolean mThreadedList;
 
 
     private Context mContext;
@@ -631,21 +638,22 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Cursor cursor = (Cursor) parent.getItemAtPosition(position);
         if (mSelectedCount > 0) {
             toggleMessageSelect(position);
-//        } else if (message.threadCount > 1) {
-//            Folder folder = message.message.getFolder();
-//            long rootId = ((LocalMessage) message.message).getRootId();
-//            mFragmentListener.showThread(folder.getAccount(), folder.getName(), rootId);
         } else {
             Account account = getAccountFromCursor(cursor);
 
             long folderId = cursor.getLong(FOLDER_ID_COLUMN);
             String folderName = getFolderNameById(account, folderId);
 
-            MessageReference ref = new MessageReference();
-            ref.accountUuid = account.getUuid();
-            ref.folderName = folderName;
-            ref.uid = cursor.getString(UID_COLUMN);
-            onOpenMessage(ref);
+            if (mThreadedList && cursor.getInt(THREAD_COUNT_COLUMN) > 1) {
+                long rootId = cursor.getLong(THREAD_ROOT_COLUMN);
+                mFragmentListener.showThread(account, folderName, rootId);
+            } else {
+                MessageReference ref = new MessageReference();
+                ref.accountUuid = account.getUuid();
+                ref.folderName = folderName;
+                ref.uid = cursor.getString(UID_COLUMN);
+                onOpenMessage(ref);
+            }
         }
     }
 
@@ -710,6 +718,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void decodeArguments() {
         Bundle args = getArguments();
 
+        mThreadedList = args.getBoolean(ARG_THREADED_LIST, false);
         mRemoteSearch = args.getBoolean(ARG_REMOTE_SEARCH, false);
         mSearch = args.getParcelable(ARG_SEARCH);
         mTitle = mSearch.getName();
@@ -1580,7 +1589,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 subject = getString(R.string.general_no_subject);
             }
 
-            int threadCount = 0;    //TODO: get thread count from cursor
+            int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
 
             String flagList = cursor.getString(FLAGS_COLUMN);
             String[] flags = flagList.split(",");
@@ -1641,7 +1650,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
 
             // Thread count
-            if (mThreadId == -1 && threadCount > 1) {
+            if (threadCount > 1) {
                 holder.threadCount.setText(Integer.toString(threadCount));
                 holder.threadCount.setVisibility(View.VISIBLE);
             } else {
@@ -2633,7 +2642,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         String accountUuid = mAccountUuids[id];
         Account account = mPreferences.getAccount(accountUuid);
 
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + accountUuid + "/messages");
+        Uri uri;
+        String[] projection;
+        if (mThreadedList) {
+            uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + accountUuid + "/messages/threaded");
+            projection = THREADED_PROJECTION;
+        } else {
+            uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + accountUuid + "/messages");
+            projection = PROJECTION;
+        }
 
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<String>();
@@ -2642,7 +2659,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         String selection = query.toString();
         String[] selectionArgs = queryArgs.toArray(new String[0]);
 
-        return new CursorLoader(getActivity(), uri, PROJECTION, selection, selectionArgs,
+        return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs,
                 MessageColumns.DATE + " DESC");
     }
 

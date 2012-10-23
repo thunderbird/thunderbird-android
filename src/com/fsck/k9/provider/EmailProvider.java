@@ -38,9 +38,6 @@ import android.net.Uri;
  * TODO:
  * - modify MessagingController (or LocalStore?) to call ContentResolver.notifyChange() to trigger
  *   notifications when the underlying data changes.
- * - add support for message threading
- * - add support for search views
- * - add support for querying multiple accounts (e.g. "Unified Inbox")
  * - add support for account list and folder list
  */
 public class EmailProvider extends ContentProvider {
@@ -56,18 +53,42 @@ public class EmailProvider extends ContentProvider {
      */
     private static final int MESSAGE_BASE = 0;
     private static final int MESSAGES = MESSAGE_BASE;
-    //private static final int MESSAGES_THREADED = MESSAGE_BASE + 1;
+    private static final int MESSAGES_THREADED = MESSAGE_BASE + 1;
     //private static final int MESSAGES_THREAD = MESSAGE_BASE + 2;
 
 
     private static final String MESSAGES_TABLE = "messages";
 
+    private static final String[] MESSAGES_COLUMNS = {
+        MessageColumns.ID,
+        MessageColumns.UID,
+        MessageColumns.INTERNAL_DATE,
+        MessageColumns.SUBJECT,
+        MessageColumns.DATE,
+        MessageColumns.MESSAGE_ID,
+        MessageColumns.SENDER_LIST,
+        MessageColumns.TO_LIST,
+        MessageColumns.CC_LIST,
+        MessageColumns.BCC_LIST,
+        MessageColumns.REPLY_TO_LIST,
+        MessageColumns.FLAGS,
+        MessageColumns.ATTACHMENT_COUNT,
+        MessageColumns.FOLDER_ID,
+        MessageColumns.PREVIEW,
+        MessageColumns.THREAD_ROOT,
+        MessageColumns.THREAD_PARENT,
+        InternalMessageColumns.DELETED,
+        InternalMessageColumns.EMPTY,
+        InternalMessageColumns.TEXT_CONTENT,
+        InternalMessageColumns.HTML_CONTENT,
+        InternalMessageColumns.MIME_TYPE
+    };
 
     static {
         UriMatcher matcher = sUriMatcher;
 
         matcher.addURI(AUTHORITY, "account/*/messages", MESSAGES);
-        //matcher.addURI(AUTHORITY, "account/*/messages/threaded", MESSAGES_THREADED);
+        matcher.addURI(AUTHORITY, "account/*/messages/threaded", MESSAGES_THREADED);
         //matcher.addURI(AUTHORITY, "account/*/thread/#", MESSAGES_THREAD);
     }
 
@@ -93,6 +114,7 @@ public class EmailProvider extends ContentProvider {
         public static final String PREVIEW = "preview";
         public static final String THREAD_ROOT = "thread_root";
         public static final String THREAD_PARENT = "thread_parent";
+        public static final String THREAD_COUNT = "thread_count";
     }
 
     private interface InternalMessageColumns extends MessageColumns {
@@ -129,7 +151,8 @@ public class EmailProvider extends ContentProvider {
         ContentResolver contentResolver = getContext().getContentResolver();
         Cursor cursor = null;
         switch (match) {
-            case MESSAGES: {
+            case MESSAGES:
+            case MESSAGES_THREADED: {
                 List<String> segments = uri.getPathSegments();
                 String accountUuid = segments.get(1);
 
@@ -145,8 +168,15 @@ public class EmailProvider extends ContentProvider {
 
                 String[] dbProjection = dbColumnNames.toArray(new String[0]);
 
-                cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs,
-                        sortOrder);
+                if (match == MESSAGES) {
+                    cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs,
+                            sortOrder);
+                } else if (match == MESSAGES_THREADED) {
+                    cursor = getThreadedMessages(accountUuid, dbProjection, selection,
+                            selectionArgs, sortOrder);
+                } else {
+                    throw new RuntimeException("Not implemented");
+                }
 
                 cursor.setNotificationUri(contentResolver, uri);
 
@@ -204,6 +234,78 @@ public class EmailProvider extends ContentProvider {
         } catch (UnavailableStorageException e) {
             throw new RuntimeException("Storage not available", e);
         }
+    }
+
+    protected Cursor getThreadedMessages(String accountUuid, final String[] projection,
+            final String selection, final String[] selectionArgs, final String sortOrder) {
+
+        Account account = getAccount(accountUuid);
+        LockableDatabase database = getDatabase(account);
+
+        try {
+            return database.execute(false, new DbCallback<Cursor>() {
+                @Override
+                public Cursor doDbWork(SQLiteDatabase db) throws WrappedException,
+                        UnavailableStorageException {
+
+                    StringBuilder query = new StringBuilder();
+                    query.append("SELECT ");
+                    boolean first = true;
+                    for (String columnName : projection) {
+                        if (!first) {
+                            query.append(",");
+                        } else {
+                            first = false;
+                        }
+
+                        if (MessageColumns.DATE.equals(columnName)) {
+                            query.append("MAX(m.date) AS " + MessageColumns.DATE);
+                        } else if (MessageColumns.THREAD_COUNT.equals(columnName)) {
+                            query.append("COUNT(h.id) AS " + MessageColumns.THREAD_COUNT);
+                        } else {
+                            query.append("m.");
+                            query.append(columnName);
+                            query.append(" AS ");
+                            query.append(columnName);
+                        }
+                    }
+
+                    query.append(
+                            " FROM messages h JOIN messages m " +
+                            "ON (h.id = m.thread_root OR h.id = m.id) " +
+                            "WHERE " +
+                            "(h.deleted = 0 AND m.deleted = 0 AND " +
+                            "(m.empty IS NULL OR m.empty != 1) AND " +
+                            "h.thread_root IS NULL) ");
+
+                    if (!StringUtils.isNullOrEmpty(selection)) {
+                        query.append("AND (");
+                        query.append(addPrefixToSelection(MESSAGES_COLUMNS, "h.", selection));
+                        query.append(") ");
+                    }
+
+                    query.append("GROUP BY h.id");
+
+                    if (!StringUtils.isNullOrEmpty(sortOrder)) {
+                        query.append(" ORDER BY ");
+                        query.append(sortOrder);
+                    }
+
+                    return db.rawQuery(query.toString(), selectionArgs);
+                }
+            });
+        } catch (UnavailableStorageException e) {
+            throw new RuntimeException("Storage not available", e);
+        }
+    }
+
+    private String addPrefixToSelection(String[] columnNames, String prefix, String selection) {
+        String result = selection;
+        for (String columnName : columnNames) {
+            result = result.replaceAll("\\b" + columnName + "\\b", prefix + columnName);
+        }
+
+        return result;
     }
 
     private Account getAccount(String accountUuid) {
