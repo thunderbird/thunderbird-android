@@ -857,15 +857,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         if (mSingleFolderMode) {
-            if (!mAccount.allowRemoteSearch()) {
-                mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
-                    @Override
-                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                        checkMail();
-                    }
-                });
-            // TODO this has to go! find better remote search integration
-            } else {
+            if (mRemoteSearch && mAccount.allowRemoteSearch()) {
                 mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
                     @Override
                     public void onRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -875,6 +867,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 });
                 mPullToRefreshView.setPullLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_pull));
                 mPullToRefreshView.setReleaseLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_release));
+            } else {
+                mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+                    @Override
+                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                        checkMail();
+                    }
+                });
             }
         } else {
             mPullToRefreshView.setMode(PullToRefreshBase.Mode.DISABLED);
