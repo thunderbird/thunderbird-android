@@ -88,15 +88,13 @@ public class LocalStore extends Store implements Serializable {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
 
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
-
     /*
      * a String containing the columns getMessages expects to work with
      * in the correct order.
      */
     static private String GET_MESSAGES_COLS =
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
-        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview, thread_root, thread_parent, empty ";
+        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview, thread_root, thread_parent ";
 
 
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
@@ -1960,76 +1958,6 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        public Message[] getThreadedMessages(final MessageRetrievalListener listener)
-                throws MessagingException {
-            try {
-                return database.execute(false, new DbCallback<Message[]>() {
-                    @Override
-                    public Message[] doDbWork(final SQLiteDatabase db) throws WrappedException,
-                            UnavailableStorageException {
-                        try {
-                            open(OpenMode.READ_WRITE);
-
-                            return LocalStore.this.getMessages(
-                                    listener,
-                                    LocalFolder.this,
-                                    "SELECT " +
-                                    "m.subject, m.sender_list, MAX(m.date), m.uid, m.flags, " +
-                                    "m.id, m.to_list, m.cc_list, m.bcc_list, m.reply_to_list, " +
-                                    "m.attachment_count, m.internal_date, m.message_id, " +
-                                    "m.folder_id, m.preview, m.thread_root, m.thread_parent, " +
-                                    "m.empty, COUNT(h.id) " +
-                                    "FROM messages h JOIN messages m " +
-                                    "ON (h.id = m.thread_root OR h.id = m.id) " +
-                                    "WHERE h.deleted = 0 AND m.deleted = 0 AND " +
-                                    "(m.empty IS NULL OR m.empty != 1) AND " +
-                                    "h.thread_root IS NULL AND h.folder_id = ? " +
-                                    "GROUP BY h.id",
-                                    new String[] { Long.toString(mFolderId) });
-                        } catch (MessagingException e) {
-                            throw new WrappedException(e);
-                        }
-                    }
-                });
-            } catch (WrappedException e) {
-                throw(MessagingException) e.getCause();
-            }
-        }
-
-        public Message[] getMessagesInThread(final long threadId,
-                final MessageRetrievalListener listener) throws MessagingException {
-            try {
-                return database.execute(false, new DbCallback<Message[]>() {
-                    @Override
-                    public Message[] doDbWork(final SQLiteDatabase db) throws WrappedException,
-                            UnavailableStorageException {
-                        try {
-                            open(OpenMode.READ_WRITE);
-
-                            String threadIdString = Long.toString(threadId);
-
-                            return LocalStore.this.getMessages(
-                                    listener,
-                                    LocalFolder.this,
-                                    "SELECT " + GET_MESSAGES_COLS + " " +
-                                    "FROM messages " +
-                                    "WHERE deleted = 0 AND (empty IS NULL OR empty != 1) AND " +
-                                    "(thread_root = ? OR id = ?) AND folder_id = ?",
-                                    new String[] {
-                                        threadIdString,
-                                        threadIdString,
-                                        Long.toString(mFolderId)
-                                    });
-                        } catch (MessagingException e) {
-                            throw new WrappedException(e);
-                        }
-                    }
-                });
-            } catch (WrappedException e) {
-                throw(MessagingException) e.getCause();
-            }
-        }
-
         @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
         throws MessagingException {
@@ -2125,11 +2053,11 @@ public class LocalStore extends Store implements Serializable {
 
                                     cv.clear();
                                     cv.put("thread_root", id);
-                                    int x = db.update("messages", cv, "thread_root = ?", oldIdArg);
+                                    db.update("messages", cv, "thread_root = ?", oldIdArg);
 
                                     cv.clear();
                                     cv.put("thread_parent", id);
-                                    x = db.update("messages", cv, "thread_parent = ?", oldIdArg);
+                                    db.update("messages", cv, "thread_parent = ?", oldIdArg);
                                 }
 
                                 /*
@@ -3303,23 +3231,11 @@ public class LocalStore extends Store implements Serializable {
 
         private String mPreview = "";
 
-        private boolean mToMeCalculated = false;
-        private boolean mCcMeCalculated = false;
-        private boolean mFromMeCalculated = false;
-        private boolean mToMe = false;
-        private boolean mCcMe = false;
-        private boolean mFromMe = false;
-
-
-
-
         private boolean mHeadersLoaded = false;
         private boolean mMessageDirty = false;
 
         private long mRootId;
         private long mParentId;
-        private boolean mEmpty;
-        private int mThreadCount = 0;
 
         public LocalMessage() {
         }
@@ -3377,12 +3293,6 @@ public class LocalStore extends Store implements Serializable {
 
             mRootId = (cursor.isNull(15)) ? -1 : cursor.getLong(15);
             mParentId = (cursor.isNull(16)) ? -1 : cursor.getLong(16);
-
-            mEmpty = (cursor.isNull(17)) ? false : (cursor.getInt(17) == 1);
-
-            if (cursor.getColumnCount() > 18) {
-                mThreadCount = cursor.getInt(18);
-            }
         }
 
         /**
@@ -3521,64 +3431,6 @@ public class LocalStore extends Store implements Serializable {
             }
             mMessageDirty = true;
         }
-
-
-        public boolean fromMe() {
-            if (!mFromMeCalculated) {
-                if (mAccount.isAnIdentity(getFrom())) {
-                    mFromMe = true;
-                    mFromMeCalculated = true;
-                }
-            }
-            return mFromMe;
-        }
-
-
-        public boolean toMe() {
-            try {
-                if (!mToMeCalculated) {
-                    for (Address address : getRecipients(RecipientType.TO)) {
-                        if (mAccount.isAnIdentity(address)) {
-                            mToMe = true;
-                            mToMeCalculated = true;
-                        }
-                    }
-                }
-            } catch (MessagingException e) {
-                // do something better than ignore this
-                // getRecipients can throw a messagingexception
-            }
-            return mToMe;
-        }
-
-
-
-
-
-        public boolean ccMe() {
-            try {
-
-                if (!mCcMeCalculated) {
-                    for (Address address : getRecipients(RecipientType.CC)) {
-                        if (mAccount.isAnIdentity(address)) {
-                            mCcMe = true;
-                            mCcMeCalculated = true;
-                        }
-                    }
-
-                }
-            } catch (MessagingException e) {
-                // do something better than ignore this
-                // getRecipients can throw a messagingexception
-            }
-
-            return mCcMe;
-        }
-
-
-
-
-
 
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
@@ -3886,10 +3738,6 @@ public class LocalStore extends Store implements Serializable {
             message.mAttachmentCount = mAttachmentCount;
             message.mSubject = mSubject;
             message.mPreview = mPreview;
-            message.mToMeCalculated = mToMeCalculated;
-            message.mCcMeCalculated = mCcMeCalculated;
-            message.mToMe = mToMe;
-            message.mCcMe = mCcMe;
             message.mHeadersLoaded = mHeadersLoaded;
             message.mMessageDirty = mMessageDirty;
 
@@ -3902,14 +3750,6 @@ public class LocalStore extends Store implements Serializable {
 
         public long getParentId() {
             return mParentId;
-        }
-
-        public boolean isEmpty() {
-            return mEmpty;
-        }
-
-        public int getThreadCount() {
-            return mThreadCount;
         }
     }
 
