@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 
 import android.app.Application;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -69,6 +70,7 @@ import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
+import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
@@ -112,6 +114,8 @@ public class LocalStore extends Store implements Serializable {
 
     private LockableDatabase database;
 
+    private ContentResolver mContentResolver;
+
     /**
      * local://localhost/path/to/database/uuid.db
      * This constructor is only used by {@link Store#getLocalInstance(Account, Application)}
@@ -124,6 +128,7 @@ public class LocalStore extends Store implements Serializable {
         database = new LockableDatabase(application, account.getUuid(), new StoreSchemaDefinition());
 
         mApplication = application;
+        mContentResolver = application.getContentResolver();
         database.setStorageProviderId(account.getLocalStorageProviderId());
         uUid = account.getUuid();
 
@@ -2191,6 +2196,9 @@ public class LocalStore extends Store implements Serializable {
                         return null;
                     }
                 });
+
+                notifyChange();
+
                 return uidMap;
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
@@ -2492,6 +2500,9 @@ public class LocalStore extends Store implements Serializable {
                         return null;
                     }
                 });
+
+                notifyChange();
+
                 return uidMap;
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
@@ -2572,6 +2583,8 @@ public class LocalStore extends Store implements Serializable {
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
             }
+
+            notifyChange();
         }
 
         /**
@@ -2821,6 +2834,9 @@ public class LocalStore extends Store implements Serializable {
                     return null;
                 }
             });
+
+            //TODO: remove this once the UI code exclusively uses the database id
+            notifyChange();
         }
 
         @Override
@@ -2865,6 +2881,8 @@ public class LocalStore extends Store implements Serializable {
                 }
             });
             resetUnreadAndFlaggedCounts();
+
+            notifyChange();
         }
 
         public void clearMessagesOlderThan(long cutoff) throws MessagingException {
@@ -3592,7 +3610,7 @@ public class LocalStore extends Store implements Serializable {
                 throw(MessagingException) e.getCause();
             }
 
-
+            notifyChange();
         }
 
         /*
@@ -3648,6 +3666,8 @@ public class LocalStore extends Store implements Serializable {
                 throw(MessagingException) e.getCause();
             }
             ((LocalFolder)mFolder).deleteHeaders(mId);
+
+            notifyChange();
         }
 
         /*
@@ -3768,6 +3788,8 @@ public class LocalStore extends Store implements Serializable {
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
             }
+
+            notifyChange();
         }
 
         private void updateFolderCountsOnFlag(Flag flag, boolean set) {
@@ -3961,5 +3983,10 @@ public class LocalStore extends Store implements Serializable {
 
     public LockableDatabase getDatabase() {
         return database;
+    }
+
+    private void notifyChange() {
+        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + uUid + "/messages");
+        mContentResolver.notifyChange(uri, null);
     }
 }
