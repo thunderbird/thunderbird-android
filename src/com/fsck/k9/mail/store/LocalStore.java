@@ -98,10 +98,6 @@ public class LocalStore extends Store implements Serializable {
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview, thread_root, thread_parent, empty ";
 
-    static private String GET_MESSAGES_COLS_PREFIX =
-            "m.subject, m.sender_list, m.date, m.uid, m.flags, m.id, m.to_list, m.cc_list, " +
-            "m.bcc_list, m.reply_to_list, m.attachment_count, m.internal_date, m.message_id, " +
-            "m.folder_id, m.preview, m.thread_root, m.thread_parent, m.empty ";
 
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
 
@@ -1883,23 +1879,13 @@ public class LocalStore extends Store implements Serializable {
 
                             try {
                                 cursor = db.rawQuery(
-                                        "SELECT " +
-                                        GET_MESSAGES_COLS_PREFIX + ", COUNT(c.id) " +
-                                        "FROM messages m LEFT JOIN messages c " +
-                                        "ON (" +
-                                            "(" +
-                                                "m.thread_root IN (c.thread_root, c.id)" +
-                                                " OR " +
-                                                "(m.thread_root IS NULL AND m.id IN (c.thread_root, c.id))" +
-                                            ") AND c.empty != 1) " +
-                                        "WHERE m.uid = ? AND m.folder_id = ?",
+                                             "SELECT "
+                                             + GET_MESSAGES_COLS
+                                             + "FROM messages WHERE uid = ? AND folder_id = ?",
                                              new String[] {
                                                  message.getUid(), Long.toString(mFolderId)
                                              });
-
-                                // Note: Because of the COUNT(c.id) we will always get one result
-                                //       row even if nothing was found. So we check if 'id' is NULL
-                                if (!cursor.moveToNext() || cursor.isNull(0)) {
+                                if (!cursor.moveToNext()) {
                                     return null;
                                 }
                                 message.populateFromGetMessageCursor(cursor);
