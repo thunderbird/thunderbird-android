@@ -102,7 +102,7 @@ public class LocalStore extends Store implements Serializable {
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
 
 
-    protected static final int DB_VERSION = 44;
+    protected static final int DB_VERSION = 45;
 
     protected String uUid = null;
 
@@ -204,7 +204,14 @@ public class LocalStore extends Store implements Serializable {
                         db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
 
-                        //TODO: add indices for the thread columns
+                        db.execSQL("DROP INDEX IF EXISTS msg_empty");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)");
+
+                        db.execSQL("DROP INDEX IF EXISTS msg_thread_root");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_root ON messages (thread_root)");
+
+                        db.execSQL("DROP INDEX IF EXISTS msg_thread_parent");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_parent ON messages (thread_parent)");
 
                         db.execSQL("DROP TABLE IF EXISTS attachments");
                         db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
@@ -397,6 +404,22 @@ public class LocalStore extends Store implements Serializable {
                                 db.execSQL("ALTER TABLE messages ADD thread_parent INTEGER");
                                 db.execSQL("ALTER TABLE messages ADD normalized_subject_hash INTEGER");
                                 db.execSQL("ALTER TABLE messages ADD empty INTEGER");
+                            } catch (SQLiteException e) {
+                                if (! e.getMessage().startsWith("duplicate column name:")) {
+                                    throw e;
+                                }
+                            }
+                        }
+                        if (db.getVersion() < 45) {
+                            try {
+                                db.execSQL("DROP INDEX IF EXISTS msg_empty");
+                                db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)");
+
+                                db.execSQL("DROP INDEX IF EXISTS msg_thread_root");
+                                db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_root ON messages (thread_root)");
+
+                                db.execSQL("DROP INDEX IF EXISTS msg_thread_parent");
+                                db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_parent ON messages (thread_parent)");
                             } catch (SQLiteException e) {
                                 if (! e.getMessage().startsWith("duplicate column name:")) {
                                     throw e;
