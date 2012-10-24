@@ -1810,6 +1810,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void setSelectionState(boolean selected) {
         if (selected) {
             mSelectedCount = mAdapter.getCount();
+            if (mSelectedCount == 0) {
+                // Nothing to do if there are no messages
+                return;
+            }
+
             for (int i = 0, end = mSelectedCount; i < end; i++) {
                 mSelected.put(i, true);
             }
