@@ -140,17 +140,22 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         if (intent.getStringExtra(SearchManager.QUERY) != null) {
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 //Query was received from Search Dialog
+                String query = intent.getStringExtra(SearchManager.QUERY);
+
+                mSearch = new LocalSearch(getString(R.string.search_results));
+                mNoThreading = true;
+
+                mSearch.or(new SearchCondition(Searchfield.SENDER, Attribute.CONTAINS, query));
+                mSearch.or(new SearchCondition(Searchfield.SUBJECT, Attribute.CONTAINS, query));
+
                 Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
-                    mSearch = new LocalSearch();
                     mSearch.addAccountUuid(appData.getString(EXTRA_SEARCH_ACCOUNT));
                     mSearch.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
 
-                    String query = intent.getStringExtra(SearchManager.QUERY);
-                    mSearch.or(new SearchCondition(Searchfield.SENDER, Attribute.CONTAINS, query));
-                    mSearch.or(new SearchCondition(Searchfield.SUBJECT, Attribute.CONTAINS, query));
-
                     mIsRemote = true;
+                } else {
+                    mSearch.addAccountUuid(LocalSearch.ALL_ACCOUNTS);
                 }
             }
         } else {
