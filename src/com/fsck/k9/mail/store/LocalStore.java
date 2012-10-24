@@ -976,8 +976,10 @@ public class LocalStore extends Store implements Serializable {
         }
 
         // build sql query
-        String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages WHERE deleted = 0 "
-                        + (search.getConditions() != null ? "AND (" + search.getConditions() + ")" : "") + " ORDER BY date DESC";
+        ConditionsTreeNode conditions = search.getConditions();
+        String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages WHERE " +
+                "((empty IS NULL OR empty != 1) AND deleted = 0)" +
+                ((conditions != null) ? " AND (" + conditions + ")" : "") + " ORDER BY date DESC";
 
         if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "Query = " + sqlQuery);
