@@ -901,9 +901,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 //                    mBatchArchiveButton.setVisibility(View.GONE);
                 }
             } else if (mQueryString != null) {
-                mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
-                // Don't show the archive button if this is a search.
-//                mBatchArchiveButton.setVisibility(View.GONE);
+                if (mSearchAccount != null) {
+                    mController.searchLocalMessages(new String[] {mSearchAccount}, new String[] {mSearchFolder}, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+                } else {
+                    mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+                }
             }
 
         } else {
