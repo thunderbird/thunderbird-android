@@ -763,8 +763,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mCurrentFolder = getFolder(mFolderName, mAccount);
         }
 
-        // Hide "Load up to x more" footer for search views
-        mFooterView.setVisibility((!mSingleFolderMode) ? View.GONE : View.VISIBLE);
+        if (mSingleFolderMode) {
+            mListView.addFooterView(getFooterView(mListView));
+            updateFooterView();
+        }
 
         mController = MessagingController.getInstance(getActivity().getApplication());
         mListView.setAdapter(mAdapter);
@@ -916,8 +918,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(false);
         mListView.setOnItemClickListener(this);
-        mListView.addFooterView(getFooterView(mListView));
-        //mListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
 
         registerForContextMenu(mListView);
     }
@@ -1778,6 +1778,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public void updateFooter(final String text, final boolean progressVisible) {
+        if (mFooterView == null) {
+            return;
+        }
+
         FooterViewHolder holder = (FooterViewHolder) mFooterView.getTag();
 
         holder.progress.setVisibility(progressVisible ? ProgressBar.VISIBLE : ProgressBar.INVISIBLE);
