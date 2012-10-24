@@ -625,7 +625,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         LocalSearch search = new LocalSearch(folder);
         search.addAccountUuid(mAccount.getUuid());
         search.addAllowedFolder(folder);
-        MessageList.actionDisplaySearch(this, search, false);
+        MessageList.actionDisplaySearch(this, search, false, false);
     }
 
     private void onCompact(Account account) {
@@ -1276,7 +1276,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             }
             search.addAllowedFolder(folderName);
             search.addAccountUuid(account.getUuid());
-            MessageList.actionDisplaySearch(FolderList.this, search, false);
+            MessageList.actionDisplaySearch(FolderList.this, search, true, false);
         }
     }
 

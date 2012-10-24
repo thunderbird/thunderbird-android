@@ -620,7 +620,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private boolean onOpenAccount(BaseAccount account) {
         if (account instanceof SearchAccount) {
             SearchAccount searchAccount = (SearchAccount)account;
-            MessageList.actionDisplaySearch(this, searchAccount.getRelatedSearch(), false);
+            MessageList.actionDisplaySearch(this, searchAccount.getRelatedSearch(), false, false);
         } else {
             Account realAccount = (Account)account;
             if (!realAccount.isEnabled()) {
@@ -640,7 +640,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
                 search.addAllowedFolder(realAccount.getAutoExpandFolderName());
                 search.addAccountUuid(realAccount.getUuid());
-                MessageList.actionDisplaySearch(this, search, true);}
+                MessageList.actionDisplaySearch(this, search, false, true);}
         }
         return true;
     }
@@ -1797,7 +1797,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             search.allRequiredFlags(searchModifier.requiredFlags);
             search.allForbiddenFlags(searchModifier.forbiddenFlags);
-            MessageList.actionDisplaySearch(Accounts.this, search, false);
+            MessageList.actionDisplaySearch(Accounts.this, search, true, false);
         }
 
     }

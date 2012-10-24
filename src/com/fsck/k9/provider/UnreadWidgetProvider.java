@@ -66,7 +66,8 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
                     LocalSearch search = new LocalSearch(account.getAutoExpandFolderName());
                     search.addAllowedFolder(account.getAutoExpandFolderName());
                     search.addAccountUuid(account.getUuid());
-                    clickIntent = MessageList.intentDisplaySearch(context, search, true, true);
+                    clickIntent = MessageList.intentDisplaySearch(context, search, false, true,
+                            true);
                 }
                 clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             }

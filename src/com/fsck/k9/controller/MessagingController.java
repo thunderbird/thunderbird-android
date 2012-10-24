@@ -3053,7 +3053,7 @@ public class MessagingController implements Runnable {
         LocalSearch search = new LocalSearch(account.getInboxFolderName());
         search.addAllowedFolder(account.getInboxFolderName());
         search.addAccountUuid(account.getUuid());
-        Intent intent = MessageList.intentDisplaySearch(mApplication, search, true, true);
+        Intent intent = MessageList.intentDisplaySearch(mApplication, search, false, true, true);
 
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
         builder.setContentIntent(pi);
@@ -3139,7 +3139,7 @@ public class MessagingController implements Runnable {
         LocalSearch search = new LocalSearch(account.getInboxFolderName());
         search.addAllowedFolder(account.getInboxFolderName());
         search.addAccountUuid(account.getUuid());
-        Intent intent = MessageList.intentDisplaySearch(mApplication, search, true, true);
+        Intent intent = MessageList.intentDisplaySearch(mApplication, search, false, true, true);
 
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
         builder.setContentIntent(pi);

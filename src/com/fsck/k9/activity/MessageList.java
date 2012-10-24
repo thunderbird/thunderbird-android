@@ -49,22 +49,28 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     // for this activity
     private static final String EXTRA_SEARCH = "search";
+    private static final String EXTRA_NO_THREADING = "no_threading";
 
     // used for remote search
     private static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
     private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
 
-    public static void actionDisplaySearch(Context context, SearchSpecification search, boolean newTask) {
-        actionDisplaySearch(context, search, newTask, true);
+    public static void actionDisplaySearch(Context context, SearchSpecification search,
+            boolean noThreading, boolean newTask) {
+        actionDisplaySearch(context, search, noThreading, newTask, true);
     }
 
-    public static void actionDisplaySearch(Context context, SearchSpecification search, boolean newTask, boolean clearTop) {
-        context.startActivity(intentDisplaySearch(context, search, newTask, clearTop));
+    public static void actionDisplaySearch(Context context, SearchSpecification search,
+            boolean noThreading, boolean newTask, boolean clearTop) {
+        context.startActivity(
+                intentDisplaySearch(context, search, noThreading, newTask, clearTop));
     }
 
-    public static Intent intentDisplaySearch(Context context, SearchSpecification search, boolean newTask, boolean clearTop) {
+    public static Intent intentDisplaySearch(Context context, SearchSpecification search,
+            boolean noThreading, boolean newTask, boolean clearTop) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_SEARCH, search);
+        intent.putExtra(EXTRA_NO_THREADING, noThreading);
 
         if (clearTop) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -95,6 +101,13 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private boolean mIsRemote;
     private boolean mThreadViewEnabled = true;  //TODO: this should be a setting
 
+    /**
+     * {@code true} if the message list should be displayed as flat list (i.e. no threading)
+     * regardless whether or not message threading was enabled in the settings. This is used for
+     * filtered views, e.g. when only displaying the unread messages in a folder.
+     */
+    private boolean mNoThreading;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,8 +128,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         if (mMessageListFragment == null) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            mMessageListFragment = MessageListFragment.newInstance(mSearch, mThreadViewEnabled,
-                    mIsRemote);
+            mMessageListFragment = MessageListFragment.newInstance(mSearch,
+                    (mThreadViewEnabled && !mNoThreading), mIsRemote);
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
         }
@@ -143,6 +156,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         } else {
             // regular LocalSearch object was passed
             mSearch = intent.getParcelableExtra(EXTRA_SEARCH);
+            mNoThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false);
         }
 
         String[] accounts = mSearch.getAccountUuids();
