@@ -338,7 +338,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private String[] mAccountUuids;
     private int mUnreadMessageCount = 0;
 
-    private Map<Integer, Cursor> mCursors = new HashMap<Integer, Cursor>();
+    private Cursor[] mCursors;
 
     /**
      * Stores the name of the folder that we want to open as soon as possible
@@ -700,7 +700,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         initializeMessageList();
 
         LoaderManager loaderManager = getLoaderManager();
-        for (int i = 0, len = mAccountUuids.length; i < len; i++) {
+        int len = mAccountUuids.length;
+        mCursors = new Cursor[len];
+        for (int i = 0; i < len; i++) {
             loaderManager.initLoader(i, null, this);
         }
     }
@@ -2757,16 +2759,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mCursors.put(loader.getId(), data);
+        mCursors[loader.getId()] = data;
 
-        List<Integer> list = new LinkedList<Integer>(mCursors.keySet());
-        Collections.sort(list);
-        List<Cursor> cursors = new ArrayList<Cursor>(list.size());
-        for (Integer id : list) {
-            cursors.add(mCursors.get(id));
-        }
-
-        MergeCursorWithUniqueId cursor = new MergeCursorWithUniqueId(cursors);
+        MergeCursorWithUniqueId cursor = new MergeCursorWithUniqueId(mCursors);
 
         mSelected = new SparseBooleanArray(cursor.getCount());
         //TODO: use the (stable) IDs as index and reuse the old mSelected

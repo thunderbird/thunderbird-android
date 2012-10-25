@@ -1,7 +1,23 @@
+/*
+ * Copyright (C) 2012 The K-9 Dog Walkers
+ * Copyright (C) 2006 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.fsck.k9.helper;
 
-import java.util.List;
-
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
@@ -18,7 +34,7 @@ public class MergeCursor implements Cursor {
     /**
      * List of the cursors combined in this object.
      */
-    protected final List<Cursor> mCursors;
+    protected final Cursor[] mCursors;
 
     /**
      * The currently active cursor.
@@ -32,6 +48,8 @@ public class MergeCursor implements Cursor {
      */
     protected int mActiveCursorIndex;
 
+    protected int mPosition;
+
     /**
      * Used to cache the value of {@link #getCount()}
      */
@@ -44,16 +62,24 @@ public class MergeCursor implements Cursor {
      * @param cursors
      *         The list of cursors this {@code MultiCursor} should combine.
      */
-    public MergeCursor(List<Cursor> cursors) {
-        mCursors = cursors;
-        mActiveCursorIndex = 0;
-        mActiveCursor = cursors.get(0);
+    public MergeCursor(Cursor[] cursors) {
+        mCursors = cursors.clone();
+
+        for (int i = 0, len = mCursors.length; i < len; i++) {
+            if (mCursors[i] != null) {
+                mActiveCursorIndex = i;
+                mActiveCursor = mCursors[mActiveCursorIndex];
+            }
+        }
+        mPosition = -1;
     }
 
     @Override
     public void close() {
         for (Cursor cursor : mCursors) {
-            cursor.close();
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
@@ -65,7 +91,9 @@ public class MergeCursor implements Cursor {
     @Override
     public void deactivate() {
         for (Cursor cursor : mCursors) {
-            cursor.deactivate();
+            if (cursor != null) {
+                cursor.deactivate();
+            }
         }
     }
 
@@ -105,7 +133,9 @@ public class MergeCursor implements Cursor {
         if (mCount == -1) {
             int count = 0;
             for (Cursor cursor : mCursors) {
-                count += cursor.getCount();
+                if (cursor != null) {
+                    count += cursor.getCount();
+                }
             }
 
             mCount = count;
@@ -136,12 +166,7 @@ public class MergeCursor implements Cursor {
 
     @Override
     public int getPosition() {
-        int pos = 0;
-        for (int i = 0; i < mActiveCursorIndex; i++) {
-            pos += mCursors.get(i).getCount();
-        }
-
-        return pos + mActiveCursor.getPosition();
+        return mPosition;
     }
 
     @Override
@@ -154,6 +179,7 @@ public class MergeCursor implements Cursor {
         return mActiveCursor.getString(columnIndex);
     }
 
+    @TargetApi(11)
     @Override
     public int getType(int columnIndex) {
         return mActiveCursor.getType(columnIndex);
@@ -166,20 +192,21 @@ public class MergeCursor implements Cursor {
 
     @Override
     public boolean isAfterLast() {
-        if (mActiveCursorIndex == mCursors.size() - 1) {
-            return mActiveCursor.isAfterLast();
+        int count = getCount();
+        if (count == 0) {
+            return true;
         }
 
-        return false;
+        return (mPosition == count);
     }
 
     @Override
     public boolean isBeforeFirst() {
-        if (mActiveCursorIndex == 0) {
-            return mActiveCursor.isBeforeFirst();
+        if (getCount() == 0) {
+            return true;
         }
 
-        return false;
+        return (mPosition == -1);
     }
 
     @Override
@@ -189,20 +216,21 @@ public class MergeCursor implements Cursor {
 
     @Override
     public boolean isFirst() {
-        if (mActiveCursorIndex == 0) {
-            return mActiveCursor.isFirst();
+        if (getCount() == 0) {
+            return false;
         }
 
-        return false;
+        return (mPosition == 0);
     }
 
     @Override
     public boolean isLast() {
-        if (mActiveCursorIndex == mCursors.size() - 1) {
-            return mActiveCursor.isLast();
+        int count = getCount();
+        if (count == 0) {
+            return false;
         }
 
-        return false;
+        return (mPosition == (count - 1));
     }
 
     @Override
@@ -212,81 +240,78 @@ public class MergeCursor implements Cursor {
 
     @Override
     public boolean move(int offset) {
-        int ofs = offset;
-        int pos = mActiveCursor.getPosition();
-        if (offset >= 0) {
-            while (pos + ofs > mActiveCursor.getCount() &
-                    mActiveCursorIndex < mCursors.size() - 1) {
-
-                // Adjust the "move offset"
-                ofs -= mActiveCursor.getCount() - pos;
-
-                // Move to the next cursor
-                mActiveCursor = mCursors.get(++mActiveCursorIndex);
-
-                // Move the new cursor to the first position
-                mActiveCursor.moveToFirst();
-                pos = 0;
-            }
-        } else {
-            while (pos + ofs < 0 && mActiveCursorIndex > 0) {
-                // Adjust the "move offset"
-                ofs += pos;
-
-                // Move to the next cursor
-                mActiveCursor = mCursors.get(--mActiveCursorIndex);
-
-                // Move the new cursor to the first position
-                mActiveCursor.moveToLast();
-                pos = mActiveCursor.getPosition();
-            }
-        }
-
-        return mActiveCursor.move(ofs);
+        return moveToPosition(mPosition + offset);
     }
 
     @Override
     public boolean moveToFirst() {
-        mActiveCursorIndex = 0;
-        mActiveCursor = mCursors.get(mActiveCursorIndex);
-        return mActiveCursor.moveToFirst();
+        return moveToPosition(0);
     }
 
     @Override
     public boolean moveToLast() {
-        mActiveCursorIndex = mCursors.size() - 1;
-        mActiveCursor = mCursors.get(mActiveCursorIndex);
-        return mActiveCursor.moveToLast();
+        return moveToPosition(getCount() - 1);
     }
 
     @Override
     public boolean moveToNext() {
-        return move(1);
+        return moveToPosition(mPosition + 1);
     }
 
     @Override
     public boolean moveToPosition(int position) {
-        // Start at the beginning
-        mActiveCursorIndex = 0;
-        mActiveCursor = mCursors.get(mActiveCursorIndex);
-
-        int pos = position;
-        while (pos > mActiveCursor.getCount() - 1 &&
-                mActiveCursorIndex < mCursors.size() - 1) {
-
-            // Adjust the position
-            pos -= mActiveCursor.getCount();
-
-            // Move to the next cursor
-            mActiveCursor = mCursors.get(++mActiveCursorIndex);
+        // Make sure position isn't past the end of the cursor
+        final int count = getCount();
+        if (position >= count) {
+            mPosition = count;
+            return false;
         }
 
-        return mActiveCursor.moveToPosition(pos);
+        // Make sure position isn't before the beginning of the cursor
+        if (position < 0) {
+            mPosition = -1;
+            return false;
+        }
+
+        // Check for no-op moves, and skip the rest of the work for them
+        if (position == mPosition) {
+            return true;
+        }
+
+        /* Find the right cursor */
+        mActiveCursor = null;
+        mActiveCursorIndex = -1;
+        mPosition = -1;
+        int cursorStartPos = 0;
+
+        for (int i = 0, len = mCursors.length; i < len; i++) {
+            if (mCursors[i] == null) {
+                continue;
+            }
+
+            if (position < (cursorStartPos + mCursors[i].getCount())) {
+                mActiveCursorIndex = i;
+                mActiveCursor = mCursors[mActiveCursorIndex];
+                break;
+            }
+
+            cursorStartPos += mCursors[i].getCount();
+        }
+
+        /* Move it to the right position */
+        if (mActiveCursor != null) {
+            boolean success = mActiveCursor.moveToPosition(position - cursorStartPos);
+            mPosition = (success) ? position : -1;
+
+            return success;
+        }
+
+        return false;
     }
 
     @Override
     public boolean moveToPrevious() {
-        return move(-1);
+        return moveToPosition(mPosition - 1);
     }
 
     @Override
