@@ -219,12 +219,14 @@ public class EmailProvider extends ContentProvider {
 
                     String where;
                     if (StringUtils.isNullOrEmpty(selection)) {
-                        where = InternalMessageColumns.DELETED + "=0 AND " +
-                                InternalMessageColumns.EMPTY + "!=1";
+                        where = InternalMessageColumns.DELETED + "=0 AND (" +
+                                InternalMessageColumns.EMPTY + " IS NULL OR " +
+                                InternalMessageColumns.EMPTY + "!=1)";
                     } else {
                         where = "(" + selection + ") AND " +
-                                InternalMessageColumns.DELETED + "=0 AND " +
-                                InternalMessageColumns.EMPTY + "!=1";
+                                InternalMessageColumns.DELETED + "=0 AND (" +
+                                InternalMessageColumns.EMPTY + " IS NULL OR " +
+                                InternalMessageColumns.EMPTY + "!=1)";
                     }
 
                     return db.query(MESSAGES_TABLE, projection, where, selectionArgs, null, null,
@@ -288,7 +290,7 @@ public class EmailProvider extends ContentProvider {
 
                     if (!StringUtils.isNullOrEmpty(sortOrder)) {
                         query.append(" ORDER BY ");
-                        query.append(sortOrder);
+                        query.append(addPrefixToSelection(MESSAGES_COLUMNS, "m.", sortOrder));
                     }
 
                     return db.rawQuery(query.toString(), selectionArgs);

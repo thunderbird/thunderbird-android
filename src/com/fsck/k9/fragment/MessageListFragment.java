@@ -413,16 +413,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * perform the operation in the calling thread.</p>
      */
     class MessageListHandler extends Handler {
-        private static final int ACTION_SORT_MESSAGES = 1;
-        private static final int ACTION_FOLDER_LOADING = 2;
-        private static final int ACTION_REFRESH_TITLE = 3;
-        private static final int ACTION_PROGRESS = 4;
+        private static final int ACTION_FOLDER_LOADING = 1;
+        private static final int ACTION_REFRESH_TITLE = 2;
+        private static final int ACTION_PROGRESS = 3;
 
-
-        public void sortMessages() {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_SORT_MESSAGES);
-            sendMessage(msg);
-        }
 
         public void folderLoading(String folder, boolean loading) {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_FOLDER_LOADING,
@@ -454,10 +448,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
-                case ACTION_SORT_MESSAGES: {
-                    mAdapter.sortMessages();
-                    break;
-                }
                 case ACTION_FOLDER_LOADING: {
                     String folder = (String) msg.obj;
                     boolean loading = (msg.arg1 == 1);
@@ -1024,7 +1014,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Toast toast = Toast.makeText(getActivity(), toastString, Toast.LENGTH_SHORT);
         toast.show();
 
-        mAdapter.sortMessages();
+        LoaderManager loaderManager = getLoaderManager();
+        for (int i = 0, len = mAccountUuids.length; i < len; i++) {
+            loaderManager.restartLoader(i, null, this);
+        }
     }
 
     public void onCycleSort() {
@@ -1451,7 +1444,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             if (updateForMe(account, folder)) {
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
-                mHandler.sortMessages();
             }
             super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
         }
@@ -1462,7 +1454,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             if (updateForMe(account, folder)) {
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
-                mHandler.sortMessages();
             }
             super.synchronizeMailboxFailed(account, folder, message);
         }
@@ -1508,12 +1499,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
          * @param selected Selection state to set.
          */
         public void setSelectionForAllMesages(final boolean selected) {
-            //TODO: implement
-
-            //notifyDataSetChanged();
-        }
-
-        public void sortMessages() {
             //TODO: implement
 
             //notifyDataSetChanged();
@@ -2667,8 +2652,54 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         String selection = query.toString();
         String[] selectionArgs = queryArgs.toArray(new String[0]);
 
+        String sortColumn = MessageColumns.ID;
+        switch (mSortType) {
+            case SORT_ARRIVAL: {
+                sortColumn = MessageColumns.INTERNAL_DATE;
+                break;
+            }
+            case SORT_ATTACHMENT: {
+                sortColumn = "(" + MessageColumns.ATTACHMENT_COUNT + " < 1)";
+                break;
+            }
+            case SORT_FLAGGED: {
+                sortColumn = "(" + MessageColumns.FLAGS + " NOT LIKE '%FLAGGED%')";
+                break;
+            }
+            case SORT_SENDER: {
+                //FIXME
+                sortColumn = MessageColumns.SENDER_LIST;
+                break;
+            }
+            case SORT_SUBJECT: {
+                sortColumn = MessageColumns.SUBJECT;
+                break;
+            }
+            case SORT_UNREAD: {
+                sortColumn = "(" + MessageColumns.FLAGS + " LIKE '%SEEN%')";
+                break;
+            }
+            case SORT_DATE:
+            default: {
+                sortColumn = MessageColumns.DATE;
+            }
+        }
+
+        String sortDirection;
+        String secondarySort;
+        if (mSortType == SortType.SORT_DATE) {
+            sortDirection = (mSortDateAscending) ? " ASC" : " DESC";
+            secondarySort = "";
+        } else {
+            sortDirection = (mSortAscending) ? " ASC" : " DESC";
+            secondarySort = MessageColumns.DATE + " DESC, ";
+        }
+
+        String sortOrder = sortColumn + sortDirection + ", " + secondarySort +
+                MessageColumns.ID + " DESC";
+
         return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs,
-                MessageColumns.DATE + " DESC");
+                sortOrder);
     }
 
     private void buildQuery(Account account, ConditionsTreeNode node, StringBuilder query,
