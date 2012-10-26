@@ -23,10 +23,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
-import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -38,6 +36,7 @@ import com.fsck.k9.search.SearchAccount;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -308,8 +307,7 @@ public class MessageProvider extends ContentProvider {
             final List<MessageInfoHolder> holders = queue.take();
 
             // TODO add sort order parameter
-            Collections.sort(holders, new MessageListFragment.ReverseComparator<MessageInfoHolder>(
-                                 new MessageListFragment.DateComparator()));
+            Collections.sort(holders, new ReverseDateComparator());
 
             final String[] projectionToUse;
             if (projection == null) {
@@ -1123,4 +1121,16 @@ public class MessageProvider extends ContentProvider {
         mUriMatcher.addURI(AUTHORITY, handler.getPath(), code);
     }
 
+    public static class ReverseDateComparator implements Comparator<MessageInfoHolder> {
+        @Override
+        public int compare(MessageInfoHolder object2, MessageInfoHolder object1) {
+            if (object1.compareDate == null) {
+                return (object2.compareDate == null ? 0 : 1);
+            } else if (object2.compareDate == null) {
+                return -1;
+            } else {
+                return object1.compareDate.compareTo(object2.compareDate);
+            }
+        }
+    }
 }
