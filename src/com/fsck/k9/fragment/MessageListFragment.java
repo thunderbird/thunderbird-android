@@ -2,7 +2,6 @@ package com.fsck.k9.fragment;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -74,6 +73,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.StringUtils;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -133,7 +133,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int ACCOUNT_UUID_COLUMN = 14;
     private static final int THREAD_COUNT_COLUMN = 15;
 
-    private static final String[] PROJECTION = Arrays.copyOf(THREADED_PROJECTION,
+    private static final String[] PROJECTION = Utility.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
 
 
