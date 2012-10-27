@@ -134,6 +134,11 @@ public interface SearchSpecification extends Parcelable {
             this.field = Searchfield.values()[in.readInt()];
         }
 
+        @Override
+        public SearchCondition clone() {
+            return new SearchCondition(field, attribute, value);
+        }
+
         public String toHumanString() {
             return field.toString() + attribute.toString();
         }

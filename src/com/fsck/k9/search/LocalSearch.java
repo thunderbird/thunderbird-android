@@ -80,6 +80,15 @@ public class LocalSearch implements SearchSpecification {
         }
     }
 
+    @Override
+    public LocalSearch clone() {
+        ConditionsTreeNode conditions = (mConditions == null) ? null : mConditions.cloneTree();
+
+        LocalSearch copy = new LocalSearch(mName, conditions, null, mPredefined);
+        copy.mAccountUuids = new HashSet<String>(mAccountUuids);
+
+        return copy;
+    }
 
     ///////////////////////////////////////////////////////////////
     // Public manipulation methods

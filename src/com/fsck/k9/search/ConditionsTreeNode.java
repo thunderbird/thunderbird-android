@@ -124,6 +124,35 @@ public class ConditionsTreeNode implements Parcelable {
     }
 
 
+    /* package */ ConditionsTreeNode cloneTree() {
+        if (mParent != null) {
+            throw new IllegalStateException("Can't call cloneTree() for a non-root node");
+        }
+
+        ConditionsTreeNode copy = new ConditionsTreeNode(mCondition.clone());
+
+        copy.mLeftMPTTMarker = mLeftMPTTMarker;
+        copy.mRightMPTTMarker = mRightMPTTMarker;
+
+        copy.mLeft = (mLeft == null) ? null : mLeft.cloneNode(copy);
+        copy.mRight = (mRight == null) ? null : mRight.cloneNode(copy);
+
+        return copy;
+    }
+
+    private ConditionsTreeNode cloneNode(ConditionsTreeNode parent) {
+        ConditionsTreeNode copy = new ConditionsTreeNode(parent, mValue);
+
+        copy.mCondition = mCondition.clone();
+        copy.mLeftMPTTMarker = mLeftMPTTMarker;
+        copy.mRightMPTTMarker = mRightMPTTMarker;
+
+        copy.mLeft = (mLeft == null) ? null : mLeft.cloneNode(copy);
+        copy.mRight = (mRight == null) ? null : mRight.cloneNode(copy);
+
+        return copy;
+    }
+
     ///////////////////////////////////////////////////////////////
     // Public modifiers
     ///////////////////////////////////////////////////////////////

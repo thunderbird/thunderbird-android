@@ -64,7 +64,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
-import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.WelcomeMessage;
@@ -1788,7 +1787,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             LocalSearch search = null;
 
             if (account instanceof SearchAccount) {
-                search = ((SearchAccount) account).getRelatedSearch();
+                search = ((SearchAccount) account).getRelatedSearch().clone();
                 search.setName(description);
             } else {
                 search = new LocalSearch(description);
