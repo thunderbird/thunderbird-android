@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -69,7 +67,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.FolderInfoHolder;
-import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -77,7 +74,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.StringUtils;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -173,7 +169,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             // arg1 & 2 are mixed up, this is done on purpose
             return mDelegate.compare(object2, object1);
         }
-
     }
 
     /**
@@ -182,7 +177,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param <T>
      */
     public static class ComparatorChain<T> implements Comparator<T> {
-
         private List<Comparator<T>> mChain;
 
         /**
@@ -204,89 +198,93 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
             return result;
         }
-
     }
 
-    public static class AttachmentComparator implements Comparator<MessageInfoHolder> {
+    public static class ReverseIdComparator implements Comparator<Cursor> {
+        private int mIdColumn = -1;
 
         @Override
-        public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            return (object1.message.hasAttachments() ? 0 : 1) - (object2.message.hasAttachments() ? 0 : 1);
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            if (mIdColumn == -1) {
+                mIdColumn = cursor1.getColumnIndex("_id");
+            }
+            long o1Id = cursor1.getLong(mIdColumn);
+            long o2Id = cursor2.getLong(mIdColumn);
+            return (o1Id > o2Id) ? -1 : 1;
         }
-
     }
 
-    public static class FlaggedComparator implements Comparator<MessageInfoHolder> {
+    public static class AttachmentComparator implements Comparator<Cursor> {
 
         @Override
-        public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            return (object1.flagged ? 0 : 1) - (object2.flagged ? 0 : 1);
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            int o1HasAttachment = (cursor1.getInt(ATTACHMENT_COUNT_COLUMN) > 0) ? 0 : 1;
+            int o2HasAttachment = (cursor2.getInt(ATTACHMENT_COUNT_COLUMN) > 0) ? 0 : 1;
+            return o1HasAttachment - o2HasAttachment;
         }
-
     }
 
-    public static class UnreadComparator implements Comparator<MessageInfoHolder> {
+    public static class FlaggedComparator implements Comparator<Cursor> {
 
         @Override
-        public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            return (object1.read ? 1 : 0) - (object2.read ? 1 : 0);
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            int o1IsFlagged = (cursor1.getString(FLAGS_COLUMN).contains("FLAGGED")) ? 0 : 1;
+            int o2IsFlagged = (cursor2.getString(FLAGS_COLUMN).contains("FLAGGED")) ? 0 : 1;
+            return o1IsFlagged - o2IsFlagged;
         }
-
     }
 
-    public static class SenderComparator implements Comparator<MessageInfoHolder> {
+    public static class UnreadComparator implements Comparator<Cursor> {
 
         @Override
-        public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            if (object1.compareCounterparty == null) {
-                return (object2.compareCounterparty == null ? 0 : 1);
-            } else if (object2.compareCounterparty == null) {
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            int o1IsUnread = (cursor1.getString(FLAGS_COLUMN).contains("SEEN")) ? 1 : 0;
+            int o2IsUnread = (cursor2.getString(FLAGS_COLUMN).contains("SEEN")) ? 1 : 0;
+            return o1IsUnread - o2IsUnread;
+        }
+    }
+
+    public static class DateComparator implements Comparator<Cursor> {
+
+        @Override
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            long o1Date = cursor1.getLong(DATE_COLUMN);
+            long o2Date = cursor2.getLong(DATE_COLUMN);
+            if (o1Date < o2Date) {
+                return -1;
+            } else if (o1Date == o2Date) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+    }
+
+    public static class ArrivalComparator implements Comparator<Cursor> {
+
+        @Override
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            long o1Date = cursor1.getLong(INTERNAL_DATE_COLUMN);
+            long o2Date = cursor2.getLong(INTERNAL_DATE_COLUMN);
+            if (o1Date == o2Date) {
+                return 0;
+            } else if (o1Date < o2Date) {
                 return -1;
             } else {
-                return object1.compareCounterparty.toLowerCase().compareTo(object2.compareCounterparty.toLowerCase());
+                return 1;
             }
         }
-
     }
 
-    public static class DateComparator implements Comparator<MessageInfoHolder> {
+    public static class SubjectComparator implements Comparator<Cursor> {
 
         @Override
-        public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            if (object1.compareDate == null) {
-                return (object2.compareDate == null ? 0 : 1);
-            } else if (object2.compareDate == null) {
-                return -1;
-            } else {
-                return object1.compareDate.compareTo(object2.compareDate);
-            }
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            String subject1 = cursor1.getString(SUBJECT_COLUMN);
+            String subject2 = cursor2.getString(SUBJECT_COLUMN);
+
+            return subject1.compareToIgnoreCase(subject2);
         }
-
-    }
-
-    public static class ArrivalComparator implements Comparator<MessageInfoHolder> {
-
-        @Override
-        public int compare(MessageInfoHolder object1, MessageInfoHolder object2) {
-            return object1.compareArrival.compareTo(object2.compareArrival);
-        }
-
-    }
-
-    public static class SubjectComparator implements Comparator<MessageInfoHolder> {
-
-        @Override
-        public int compare(MessageInfoHolder arg0, MessageInfoHolder arg1) {
-            // XXX doesn't respect the Comparator contract since it alters the compared object
-            if (arg0.compareSubject == null) {
-                arg0.compareSubject = Utility.stripSubject(arg0.message.getSubject());
-            }
-            if (arg1.compareSubject == null) {
-                arg1.compareSubject = Utility.stripSubject(arg1.message.getSubject());
-            }
-            return arg0.compareSubject.compareToIgnoreCase(arg1.compareSubject);
-        }
-
     }
 
 
@@ -301,17 +299,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     /**
      * Maps a {@link SortType} to a {@link Comparator} implementation.
      */
-    private static final Map<SortType, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
+    private static final Map<SortType, Comparator<Cursor>> SORT_COMPARATORS;
 
     static {
         // fill the mapping at class time loading
 
-        final Map<SortType, Comparator<MessageInfoHolder>> map = new EnumMap<SortType, Comparator<MessageInfoHolder>>(SortType.class);
+        final Map<SortType, Comparator<Cursor>> map =
+                new EnumMap<SortType, Comparator<Cursor>>(SortType.class);
         map.put(SortType.SORT_ATTACHMENT, new AttachmentComparator());
         map.put(SortType.SORT_DATE, new DateComparator());
         map.put(SortType.SORT_ARRIVAL, new ArrivalComparator());
         map.put(SortType.SORT_FLAGGED, new FlaggedComparator());
-        map.put(SortType.SORT_SENDER, new SenderComparator());
         map.put(SortType.SORT_SUBJECT, new SubjectComparator());
         map.put(SortType.SORT_UNREAD, new UnreadComparator());
 
@@ -471,35 +469,33 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @return The comparator to use to display messages in an ordered
      *         fashion. Never <code>null</code>.
      */
-    protected Comparator<MessageInfoHolder> getComparator() {
-        final List<Comparator<MessageInfoHolder>> chain = new ArrayList<Comparator<MessageInfoHolder>>(2 /* we add 2 comparators at most */);
+    protected Comparator<Cursor> getComparator() {
+        final List<Comparator<Cursor>> chain =
+                new ArrayList<Comparator<Cursor>>(3 /* we add 3 comparators at most */);
 
-        {
-            // add the specified comparator
-            final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(mSortType);
-            if (mSortAscending) {
-                chain.add(comparator);
+        // Add the specified comparator
+        final Comparator<Cursor> comparator = SORT_COMPARATORS.get(mSortType);
+        if (mSortAscending) {
+            chain.add(comparator);
+        } else {
+            chain.add(new ReverseComparator<Cursor>(comparator));
+        }
+
+        // Add the date comparator if not already specified
+        if (mSortType != SortType.SORT_DATE && mSortType != SortType.SORT_ARRIVAL) {
+            final Comparator<Cursor> dateComparator = SORT_COMPARATORS.get(SortType.SORT_DATE);
+            if (mSortDateAscending) {
+                chain.add(dateComparator);
             } else {
-                chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
+                chain.add(new ReverseComparator<Cursor>(dateComparator));
             }
         }
 
-        {
-            // add the date comparator if not already specified
-            if (mSortType != SortType.SORT_DATE && mSortType != SortType.SORT_ARRIVAL) {
-                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SortType.SORT_DATE);
-                if (mSortDateAscending) {
-                    chain.add(comparator);
-                } else {
-                    chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
-                }
-            }
-        }
+        // Add the id comparator
+        chain.add(new ReverseIdComparator());
 
-        // build the comparator chain
-        final Comparator<MessageInfoHolder> chainComparator = new ComparatorChain<MessageInfoHolder>(chain);
-
-        return chainComparator;
+        // Build the comparator chain
+        return new ComparatorChain<Cursor>(chain);
     }
 
     private void folderLoading(String folder, boolean loading) {
@@ -699,11 +695,26 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         initializeMessageList();
 
+        // This needs to be done before initializing the cursor loader below
+        initializeSortSettings();
+
         LoaderManager loaderManager = getLoaderManager();
         int len = mAccountUuids.length;
         mCursors = new Cursor[len];
         for (int i = 0; i < len; i++) {
             loaderManager.initLoader(i, null, this);
+        }
+    }
+
+    private void initializeSortSettings() {
+        if (mSingleAccountMode) {
+            mSortType = mAccount.getSortType();
+            mSortAscending = mAccount.isSortAscending(mSortType);
+            mSortDateAscending = mAccount.isSortAscending(SortType.SORT_DATE);
+        } else {
+            mSortType = K9.getSortType();
+            mSortAscending = K9.isSortAscending(mSortType);
+            mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
         }
     }
 
@@ -782,10 +793,23 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private String getFolderNameById(Account account, long folderId) {
         try {
+            Folder folder = getFolderById(account, folderId);
+            if (folder != null) {
+                return folder.getName();
+            }
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "getFolderNameById() failed.", e);
+        }
+
+        return null;
+    }
+
+    private Folder getFolderById(Account account, long folderId) {
+        try {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolderById(folderId);
             localFolder.open(OpenMode.READ_ONLY);
-            return localFolder.getName();
+            return localFolder;
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "getFolderNameById() failed.", e);
             return null;
@@ -879,17 +903,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Account[] accountsWithNotification;
 
         Account account = mAccount;
-
         if (account != null) {
             accountsWithNotification = new Account[] { account };
-            mSortType = account.getSortType();
-            mSortAscending = account.isSortAscending(mSortType);
-            mSortDateAscending = account.isSortAscending(SortType.SORT_DATE);
         } else {
             accountsWithNotification = mPreferences.getAccounts();
-            mSortType = K9.getSortType();
-            mSortAscending = K9.isSortAscending(mSortType);
-            mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
         }
 
         for (Account accountWithNotification : accountsWithNotification) {
@@ -1145,10 +1162,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             changeSort(SortType.SORT_SUBJECT);
             return true;
         }
-        case R.id.set_sort_sender: {
-            changeSort(SortType.SORT_SENDER);
-            return true;
-        }
+//        case R.id.set_sort_sender: {
+//            changeSort(SortType.SORT_SENDER);
+//            return true;
+//        }
         case R.id.set_sort_flag: {
             changeSort(SortType.SORT_FLAGGED);
             return true;
@@ -2496,8 +2513,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
         String uid = cursor.getString(UID_COLUMN);
 
-        //TODO: get account and folder from cursor
-        Folder folder = mCurrentFolder.folder;
+        Account account = getAccountFromCursor(cursor);
+        long folderId = cursor.getLong(FOLDER_ID_COLUMN);
+        Folder folder = getFolderById(account, folderId);
 
         try {
             return folder.getMessage(uid);
@@ -2668,13 +2686,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 sortColumn = "(" + MessageColumns.FLAGS + " NOT LIKE '%FLAGGED%')";
                 break;
             }
-            case SORT_SENDER: {
-                //FIXME
-                sortColumn = MessageColumns.SENDER_LIST;
-                break;
-            }
+//            case SORT_SENDER: {
+//                //FIXME
+//                sortColumn = MessageColumns.SENDER_LIST;
+//                break;
+//            }
             case SORT_SUBJECT: {
-                sortColumn = MessageColumns.SUBJECT;
+                sortColumn = MessageColumns.SUBJECT + " COLLATE NOCASE";
                 break;
             }
             case SORT_UNREAD: {
@@ -2687,14 +2705,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
-        String sortDirection;
+        String sortDirection = (mSortAscending) ? " ASC" : " DESC";
         String secondarySort;
-        if (mSortType == SortType.SORT_DATE) {
-            sortDirection = (mSortDateAscending) ? " ASC" : " DESC";
+        if (mSortType == SortType.SORT_DATE || mSortType == SortType.SORT_ARRIVAL) {
             secondarySort = "";
         } else {
-            sortDirection = (mSortAscending) ? " ASC" : " DESC";
-            secondarySort = MessageColumns.DATE + " DESC, ";
+            secondarySort = MessageColumns.DATE + ((mSortDateAscending) ? " ASC, " : " DESC, ");
         }
 
         String sortOrder = sortColumn + sortDirection + ", " + secondarySort +
@@ -2759,9 +2775,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mCursors[loader.getId()] = data;
-
-        MergeCursorWithUniqueId cursor = new MergeCursorWithUniqueId(mCursors);
+        Cursor cursor;
+        if (mCursors.length > 1) {
+            mCursors[loader.getId()] = data;
+            cursor = new MergeCursorWithUniqueId(mCursors, getComparator());
+        } else {
+            cursor = data;
+        }
 
         mSelected = new SparseBooleanArray(cursor.getCount());
         //TODO: use the (stable) IDs as index and reuse the old mSelected

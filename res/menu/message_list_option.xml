@@ -29,9 +29,11 @@
             <item
                 android:id="@+id/set_sort_subject"
                 android:title="@string/sort_by_subject"/>
+            <!--
             <item
                 android:id="@+id/set_sort_sender"
                 android:title="@string/sort_by_sender"/>
+            -->
             <item
                 android:id="@+id/set_sort_flag"
                 android:title="@string/sort_by_flag"/>

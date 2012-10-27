@@ -17,6 +17,8 @@
 
 package com.fsck.k9.helper;
 
+import java.util.Comparator;
+
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.database.CharArrayBuffer;
@@ -48,12 +50,20 @@ public class MergeCursor implements Cursor {
      */
     protected int mActiveCursorIndex;
 
+    /**
+     * The cursor's current position.
+     */
     protected int mPosition;
 
     /**
-     * Used to cache the value of {@link #getCount()}
+     * Used to cache the value of {@link #getCount()}.
      */
     private int mCount = -1;
+
+    /**
+     * The comparator that is used to decide how the individual cursors are merged.
+     */
+    private final Comparator<Cursor> mComparator;
 
 
     /**
@@ -61,17 +71,32 @@ public class MergeCursor implements Cursor {
      *
      * @param cursors
      *         The list of cursors this {@code MultiCursor} should combine.
+     * @param comparator
+     *         A comparator that is used to decide in what order the individual cursors are merged.
      */
-    public MergeCursor(Cursor[] cursors) {
+    public MergeCursor(Cursor[] cursors, Comparator<Cursor> comparator) {
         mCursors = cursors.clone();
+        mComparator = comparator;
+
+        resetCursors();
+    }
+
+    private void resetCursors() {
+        mActiveCursorIndex = -1;
+        mActiveCursor = null;
+        mPosition = -1;
 
         for (int i = 0, len = mCursors.length; i < len; i++) {
-            if (mCursors[i] != null) {
-                mActiveCursorIndex = i;
-                mActiveCursor = mCursors[mActiveCursorIndex];
+            Cursor cursor = mCursors[i];
+            if (cursor != null) {
+                cursor.moveToPosition(-1);
+
+                if (mActiveCursor == null) {
+                    mActiveCursorIndex = i;
+                    mActiveCursor = mCursors[mActiveCursorIndex];
+                }
             }
         }
-        mPosition = -1;
     }
 
     @Override
@@ -255,7 +280,50 @@ public class MergeCursor implements Cursor {
 
     @Override
     public boolean moveToNext() {
-        return moveToPosition(mPosition + 1);
+        int count = getCount();
+        if (mPosition == count) {
+            return false;
+        }
+
+        if (mPosition == count - 1) {
+            mActiveCursor.moveToNext();
+            mPosition++;
+            return false;
+        }
+
+        int smallest = -1;
+        for (int i = 0, len = mCursors.length; i < len; i++) {
+            if (mCursors[i] == null || mCursors[i].isLast()) {
+                continue;
+            }
+
+            if (smallest == -1) {
+                smallest = i;
+                mCursors[smallest].moveToNext();
+                continue;
+            }
+
+            Cursor left = mCursors[smallest];
+            Cursor right = mCursors[i];
+
+            right.moveToNext();
+
+            int result = mComparator.compare(left, right);
+            if (result > 0) {
+                smallest = i;
+                left.moveToPrevious();
+            } else {
+                right.moveToPrevious();
+            }
+        }
+
+        mPosition++;
+        if (smallest != -1) {
+            mActiveCursorIndex = smallest;
+            mActiveCursor = mCursors[mActiveCursorIndex];
+        }
+
+        return true;
     }
 
     @Override
@@ -278,40 +346,63 @@ public class MergeCursor implements Cursor {
             return true;
         }
 
-        /* Find the right cursor */
-        mActiveCursor = null;
-        mActiveCursorIndex = -1;
-        mPosition = -1;
-        int cursorStartPos = 0;
-
-        for (int i = 0, len = mCursors.length; i < len; i++) {
-            if (mCursors[i] == null) {
-                continue;
+        if (position > mPosition) {
+            for (int i = 0, end = position - mPosition; i < end; i++) {
+                if (!moveToNext()) {
+                    return false;
+                }
             }
-
-            if (position < (cursorStartPos + mCursors[i].getCount())) {
-                mActiveCursorIndex = i;
-                mActiveCursor = mCursors[mActiveCursorIndex];
-                break;
+        } else {
+            for (int i = 0, end = mPosition - position; i < end; i++) {
+                if (!moveToPrevious()) {
+                    return false;
+                }
             }
-
-            cursorStartPos += mCursors[i].getCount();
         }
 
-        /* Move it to the right position */
-        if (mActiveCursor != null) {
-            boolean success = mActiveCursor.moveToPosition(position - cursorStartPos);
-            mPosition = (success) ? position : -1;
-
-            return success;
-        }
-
-        return false;
+        return true;
     }
 
     @Override
     public boolean moveToPrevious() {
-        return moveToPosition(mPosition - 1);
+        if (mPosition < 0) {
+            return false;
+        }
+
+        mActiveCursor.moveToPrevious();
+
+        if (mPosition == 0) {
+            mPosition = -1;
+            return false;
+        }
+
+        int greatest = -1;
+        for (int i = 0, len = mCursors.length; i < len; i++) {
+            if (mCursors[i] == null || mCursors[i].isBeforeFirst()) {
+                continue;
+            }
+
+            if (greatest == -1) {
+                greatest = i;
+                continue;
+            }
+
+            Cursor left = mCursors[greatest];
+            Cursor right = mCursors[i];
+
+            int result = mComparator.compare(left, right);
+            if (result <= 0) {
+                greatest = i;
+            }
+        }
+
+        mPosition--;
+        if (greatest != -1) {
+            mActiveCursorIndex = greatest;
+            mActiveCursor = mCursors[mActiveCursorIndex];
+        }
+
+        return true;
     }
 
     @Override

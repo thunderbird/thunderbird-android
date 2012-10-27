@@ -1,5 +1,7 @@
 package com.fsck.k9.helper;
 
+import java.util.Comparator;
+
 import android.database.Cursor;
 
 
@@ -12,8 +14,8 @@ public class MergeCursorWithUniqueId extends MergeCursor {
     private int mIdColumnIndex = -1;
 
 
-    public MergeCursorWithUniqueId(Cursor[] cursors) {
-        super(cursors);
+    public MergeCursorWithUniqueId(Cursor[] cursors, Comparator<Cursor> comparator) {
+        super(cursors, comparator);
 
         if (cursors.length > MAX_CURSORS) {
             throw new IllegalArgumentException("This class only supports up to " +
