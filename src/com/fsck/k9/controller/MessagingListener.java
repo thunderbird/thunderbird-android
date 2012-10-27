@@ -207,4 +207,6 @@ public class MessagingListener {
      *         {@code false} otherwise.
      */
     public void controllerCommandCompleted(boolean moreCommandsToRun) {}
+
+    public void enableProgressIndicator(boolean enable) { }
 }

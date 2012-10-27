@@ -757,8 +757,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
         }
 
-        // Hide "Load up to x more" footer for search views
-        mFooterView.setVisibility((mQueryString != null) ? View.GONE : View.VISIBLE);
+        // Hide "Load up to x more" footer for local search views
+        mFooterView.setVisibility((mQueryString != null  && !mRemoteSearch) ? View.GONE : View.VISIBLE);
 
         mController = MessagingController.getInstance(getActivity().getApplication());
         mListView.setAdapter(mAdapter);
@@ -1416,6 +1416,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             public void remoteSearchStarted(Account acct, String folder) {
                 mHandler.progress(true);
                 mHandler.updateFooter(getString(R.string.remote_search_sending_query), true);
+            }
+
+            @Override
+            public void enableProgressIndicator(boolean enable) {
+                mHandler.progress(enable);
             }
 
 
