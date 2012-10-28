@@ -920,7 +920,18 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                         if (mFolderName != null) {
                             mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
                         } else if (mQueryString != null) {
-                            mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+                            if (mSearchAccount != null) {
+                                mController.searchLocalMessagesSynchronous(
+                                        new String[] { mSearchAccount },
+                                        new String[] { mSearchFolder }, null,
+                                        mQueryString, mIntegrate, mQueryFlags,
+                                        mForbiddenFlags, mAdapter.mListener);
+                            } else {
+                                mController.searchLocalMessagesSynchronous(
+                                        mAccountUuids, mFolderNames, null,
+                                        mQueryString, mIntegrate, mQueryFlags,
+                                        mForbiddenFlags, mAdapter.mListener);
+                            }
                         }
 
                         mHandler.post(new Runnable() {
