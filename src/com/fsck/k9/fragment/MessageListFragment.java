@@ -465,8 +465,20 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             post(new Runnable() {
                 @Override
                 public void run() {
+                    try {
                     mAdapter.addOrUpdateMessages(account, folderName, messages,
                             verifyAgainstSearch);
+                    } catch (IllegalArgumentException e) {
+                        /*
+                         * Probable source ("null context given"):
+                         * com.fsck.k9.activity.FolderInfoHolder.FolderInfoHolder(Context, Folder, Account).
+                         * Could happen if the activity is stopped (e.g., via screen rotation)
+                         * in the middle of a remote search.
+                         */
+
+                        Log.d(K9.LOG_TAG, "Adding or updating messages was interrupted with: " +
+                                e.getMessage());
+                    }
                 }
             });
         }
