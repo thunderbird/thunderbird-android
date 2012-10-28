@@ -99,7 +99,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private boolean mSingleFolderMode;
     private boolean mSingleAccountMode;
     private boolean mIsRemote;
-    private boolean mThreadViewEnabled = true;  //TODO: this should be a setting
 
     /**
      * {@code true} if the message list should be displayed as flat list (i.e. no threading)
@@ -129,7 +128,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         if (mMessageListFragment == null) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
             mMessageListFragment = MessageListFragment.newInstance(mSearch,
-                    (mThreadViewEnabled && !mNoThreading), mIsRemote);
+                    (K9.isThreadedViewEnabled() && !mNoThreading), mIsRemote);
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
         }
@@ -164,13 +163,13 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             mNoThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false);
         }
 
-        String[] accounts = mSearch.getAccountUuids();
-        mSingleAccountMode = ( accounts != null && accounts.length == 1
-                && !accounts[0].equals(SearchSpecification.ALL_ACCOUNTS));
+        String[] accountUuids = mSearch.getAccountUuids();
+        mSingleAccountMode = (accountUuids.length == 1 && !mSearch.searchAllAccounts());
         mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
 
         if (mSingleAccountMode) {
-            mAccount = Preferences.getPreferences(this).getAccount(accounts[0]);
+            Preferences prefs = Preferences.getPreferences(getApplicationContext());
+            mAccount = prefs.getAccount(accountUuids[0]);
 
             if (mAccount != null && !mAccount.isAvailable(this)) {
                 Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");

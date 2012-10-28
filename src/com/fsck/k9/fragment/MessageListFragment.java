@@ -729,7 +729,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         String[] accountUuids = mSearch.getAccountUuids();
 
         mSingleAccountMode = false;
-        if (accountUuids.length == 1 && !accountUuids[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
+        if (accountUuids.length == 1 && !mSearch.searchAllAccounts()) {
             mSingleAccountMode = true;
             mAccount = mPreferences.getAccount(accountUuids[0]);
         }

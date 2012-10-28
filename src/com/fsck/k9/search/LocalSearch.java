@@ -357,6 +357,15 @@ public class LocalSearch implements SearchSpecification {
     }
 
     /**
+     * Returns whether or not to search all accounts.
+     *
+     * @return {@code true} if all accounts should be searched.
+     */
+    public boolean searchAllAccounts() {
+        return (mAccountUuids.size() == 0);
+    }
+
+    /**
      * Get the condition tree.
      *
      * @return The root node of the related conditions tree.
