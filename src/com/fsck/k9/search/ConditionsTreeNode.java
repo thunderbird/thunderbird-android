@@ -239,18 +239,6 @@ public class ConditionsTreeNode implements Parcelable {
         return mCondition;
     }
 
-
-    /**
-     * This will traverse the tree inorder and call toString recursively resulting
-     * in a valid SQL where clause.
-     */
-    @Override
-    public String toString() {
-        return (mLeft == null ? "" : "(" + mLeft + ")")
-                + " " + ( mCondition == null ? mValue.name() : mCondition ) + " "
-                + (mRight == null ? "" : "(" + mRight + ")") ;
-    }
-
     /**
      * Get a set of all the leaves in the tree.
      * @return Set of all the leaves.

@@ -46,6 +46,7 @@ import com.fsck.k9.activity.Search;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -71,9 +72,8 @@ import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.provider.EmailProvider;
-import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SqlQueryBuilder;
 
 /**
  * <pre>
@@ -960,32 +960,23 @@ public class LocalStore extends Store implements Serializable {
     public Message[] searchForMessages(MessageRetrievalListener retrievalListener,
                                         LocalSearch search) throws MessagingException {
 
-        // update some references in the search that have to be bound to this one store
-        for (ConditionsTreeNode node : search.getLeafSet()) {
-            if (node.mCondition.field == Searchfield.FOLDER) {
-                // TODO find better solution
-                if (isFolderId(node.mCondition.value)) {
-                    continue;
-                }
+        StringBuilder query = new StringBuilder();
+        List<String> queryArgs = new ArrayList<String>();
+        SqlQueryBuilder.buildWhereClause(mAccount, search.getConditions(), query, queryArgs);
 
-                if (node.mCondition.value.equals(LocalSearch.GENERIC_INBOX_NAME)) {
-                    node.mCondition.value = mAccount.getInboxFolderName();
-                }
-                node.mCondition.value = String.valueOf(getFolderId(node.mCondition.value));
-            }
-        }
+        String where = query.toString();
+        String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
 
-        // build sql query
-        ConditionsTreeNode conditions = search.getConditions();
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages WHERE " +
                 "((empty IS NULL OR empty != 1) AND deleted = 0)" +
-                ((conditions != null) ? " AND (" + conditions + ")" : "") + " ORDER BY date DESC";
+                ((!StringUtils.isNullOrEmpty(where)) ? " AND (" + where + ")" : "") +
+                " ORDER BY date DESC";
 
         if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "Query = " + sqlQuery);
         }
 
-        return getMessages(retrievalListener, null, sqlQuery, new String[] {});
+        return getMessages(retrievalListener, null, sqlQuery, selectionArgs);
     }
 
     /*

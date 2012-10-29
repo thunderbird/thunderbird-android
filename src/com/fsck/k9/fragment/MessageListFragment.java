@@ -85,10 +85,9 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.provider.EmailProvider.SpecialColumns;
-import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification;
-import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.search.SqlQueryBuilder;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -2667,11 +2666,18 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<String>();
-        buildQuery(account, mSearch.getConditions(), query, queryArgs);
+        SqlQueryBuilder.buildWhereClause(account, mSearch.getConditions(), query, queryArgs);
 
         String selection = query.toString();
         String[] selectionArgs = queryArgs.toArray(new String[0]);
 
+        String sortOrder = buildSortOrder();
+
+        return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs,
+                sortOrder);
+    }
+
+    private String buildSortOrder() {
         String sortColumn = MessageColumns.ID;
         switch (mSortType) {
             case SORT_ARRIVAL: {
@@ -2715,62 +2721,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         String sortOrder = sortColumn + sortDirection + ", " + secondarySort +
                 MessageColumns.ID + " DESC";
-
-        return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs,
-                sortOrder);
-    }
-
-    private void buildQuery(Account account, ConditionsTreeNode node, StringBuilder query,
-            List<String> selectionArgs) {
-
-        if (node == null) {
-            return;
-        }
-
-        if (node.mLeft == null && node.mRight == null) {
-            SearchCondition condition = node.mCondition;
-            switch (condition.field) {
-                case FOLDER: {
-                    String folderName;
-                    //TODO: Fix the search condition used by the Unified Inbox
-                    if (LocalSearch.GENERIC_INBOX_NAME.equals(condition.value) ||
-                            "1".equals(condition.value)) {
-                        folderName = account.getInboxFolderName();
-                    } else {
-                        folderName = condition.value;
-                    }
-                    long folderId = getFolderId(account, folderName);
-                    query.append("folder_id = ?");
-                    selectionArgs.add(Long.toString(folderId));
-                    break;
-                }
-                default: {
-                    query.append(condition.toString());
-                }
-            }
-        } else {
-            query.append("(");
-            buildQuery(account, node.mLeft, query, selectionArgs);
-            query.append(") ");
-            query.append(node.mValue.name());
-            query.append(" (");
-            buildQuery(account, node.mRight, query, selectionArgs);
-            query.append(")");
-        }
-    }
-
-    private long getFolderId(Account account, String folderName) {
-        long folderId = 0;
-        try {
-            LocalFolder folder = (LocalFolder) getFolder(folderName, account).folder;
-            folder.open(OpenMode.READ_ONLY);
-            folderId = folder.getId();
-        } catch (MessagingException e) {
-            //FIXME
-            e.printStackTrace();
-        }
-
-        return folderId;
+        return sortOrder;
     }
 
     @Override

@@ -35,40 +35,17 @@ public interface SearchSpecification extends Parcelable {
     // ATTRIBUTE enum
     ///////////////////////////////////////////////////////////////
     public enum Attribute {
-        CONTAINS(false), EQUALS(false), STARTSWITH(false), ENDSWITH(false),
-        NOT_CONTAINS(true), NOT_EQUALS(true), NOT_STARTSWITH(true), NOT_ENDSWITH(true);
+        CONTAINS,
+        NOT_CONTAINS,
 
-        private boolean mNegation;
+        EQUALS,
+        NOT_EQUALS,
 
-        private Attribute(boolean negation) {
-            this.mNegation = negation;
-        }
+        STARTSWITH,
+        NOT_STARTSWITH,
 
-        public String formQuery(String value) {
-            String queryPart = "";
-
-            switch (this) {
-            case NOT_CONTAINS:
-            case CONTAINS:
-                queryPart = "'%"+value+"%'";
-                break;
-            case NOT_EQUALS:
-            case EQUALS:
-                queryPart = "'"+value+"'";
-                break;
-            case NOT_STARTSWITH:
-            case STARTSWITH:
-                queryPart = "'%"+value+"'";
-                break;
-            case NOT_ENDSWITH:
-            case ENDSWITH:
-                queryPart = "'"+value+"%'";
-                break;
-            default: queryPart = "'"+value+"'";
-            }
-
-            return (mNegation ? " NOT LIKE " : " LIKE ") + queryPart;
-        }
+        ENDSWITH,
+        NOT_ENDSWITH
     }
 
     ///////////////////////////////////////////////////////////////
@@ -87,21 +64,21 @@ public interface SearchSpecification extends Parcelable {
      *
      */
     public enum Searchfield {
-        SUBJECT("subject"), DATE("date"), UID("uid"), FLAG("flags"),
-        SENDER("sender_list"), TO("to_list"), CC("cc_list"), FOLDER("folder_id"),
-        BCC("bcc_list"), REPLY_TO("reply_to_list"), MESSAGE("text_content"),
-        ATTACHMENT_COUNT("attachment_count"), DELETED("deleted"), THREAD_ROOT("thread_root"),
-        ID("id");
-
-        private String dbName;
-
-        private Searchfield(String dbName) {
-            this.dbName = dbName;
-        }
-
-        public String getDatabaseName() {
-            return dbName;
-        }
+        SUBJECT,
+        DATE,
+        UID,
+        FLAG,
+        SENDER,
+        TO,
+        CC,
+        FOLDER,
+        BCC,
+        REPLY_TO,
+        MESSAGE_CONTENTS,
+        ATTACHMENT_COUNT,
+        DELETED,
+        THREAD_ROOT,
+        ID
     }
 
 
@@ -118,9 +95,9 @@ public interface SearchSpecification extends Parcelable {
      * @author dzan
      */
     public class SearchCondition implements Parcelable {
-        public String value;
-        public Attribute attribute;
-        public Searchfield field;
+        public final String value;
+        public final Attribute attribute;
+        public final Searchfield field;
 
         public SearchCondition(Searchfield field, Attribute attribute, String value) {
             this.value = value;
@@ -141,11 +118,6 @@ public interface SearchSpecification extends Parcelable {
 
         public String toHumanString() {
             return field.toString() + attribute.toString();
-        }
-
-        @Override
-        public String toString() {
-            return field.getDatabaseName() + attribute.formQuery(value);
         }
 
         @Override

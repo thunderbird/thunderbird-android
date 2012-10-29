@@ -112,6 +112,7 @@ public class LocalSearch implements SearchSpecification {
     public void addAccountUuid(String uuid) {
         if (uuid.equals(ALL_ACCOUNTS)) {
             mAccountUuids.clear();
+            return;
         }
         mAccountUuids.add(uuid);
     }
