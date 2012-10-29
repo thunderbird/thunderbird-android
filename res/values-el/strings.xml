@@ -111,7 +111,7 @@ http://k9mail.googlecode.com/
     <string name="archive_action">Αρχειοθέτηση</string>
     <string name="spam_action">Σκουπιδοταχυδρομείο</string>
     <string name="delete_all_action">Καθαρισμός φακέλου</string>
-    <string name="forward_action">Μπροστά</string>
+    <string name="forward_action">Προώθηση</string>
     <string name="move_action">Μετακίνηση</string>
     <string name="continue_action">Συνέχεια</string>
     <string name="back_action">Πίσω</string>
