@@ -8,6 +8,7 @@ import java.util.Map;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.StringUtils;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LockableDatabase;
@@ -36,8 +37,6 @@ import android.net.Uri;
  */
 /*
  * TODO:
- * - modify MessagingController (or LocalStore?) to call ContentResolver.notifyChange() to trigger
- *   notifications when the underlying data changes.
  * - add support for account list and folder list
  */
 public class EmailProvider extends ContentProvider {
@@ -94,6 +93,8 @@ public class EmailProvider extends ContentProvider {
 
     public interface SpecialColumns {
         public static final String ACCOUNT_UUID = "account_uuid";
+
+        public static final String FOLDER_NAME = "name";
     }
 
     public interface MessageColumns {
@@ -229,8 +230,42 @@ public class EmailProvider extends ContentProvider {
                                 InternalMessageColumns.EMPTY + "!=1)";
                     }
 
-                    return db.query(MESSAGES_TABLE, projection, where, selectionArgs, null, null,
-                            sortOrder);
+                    final Cursor cursor;
+                    if (Utility.arrayContains(projection, SpecialColumns.FOLDER_NAME)) {
+                        StringBuilder query = new StringBuilder();
+                        query.append("SELECT ");
+                        boolean first = true;
+                        for (String columnName : projection) {
+                            if (!first) {
+                                query.append(",");
+                            } else {
+                                first = false;
+                            }
+
+                            if (MessageColumns.ID.equals(columnName)) {
+                                query.append("m.");
+                                query.append(MessageColumns.ID);
+                                query.append(" AS ");
+                                query.append(MessageColumns.ID);
+                            } else {
+                                query.append(columnName);
+                            }
+                        }
+
+                        query.append(" FROM messages m " +
+                                "LEFT JOIN folders f ON (m.folder_id = f.id) " +
+                                "WHERE ");
+                        query.append(addPrefixToSelection(MESSAGES_COLUMNS, "m.", where));
+                        query.append(" ORDER BY ");
+                        query.append(addPrefixToSelection(MESSAGES_COLUMNS, "m.", sortOrder));
+
+                        cursor = db.rawQuery(query.toString(), selectionArgs);
+                    } else {
+                        cursor = db.query(MESSAGES_TABLE, projection, where, selectionArgs, null,
+                                null, sortOrder);
+                    }
+
+                    return cursor;
                 }
             });
         } catch (UnavailableStorageException e) {
@@ -264,6 +299,9 @@ public class EmailProvider extends ContentProvider {
                             query.append("MAX(m.date) AS " + MessageColumns.DATE);
                         } else if (MessageColumns.THREAD_COUNT.equals(columnName)) {
                             query.append("COUNT(h.id) AS " + MessageColumns.THREAD_COUNT);
+                        } else if (SpecialColumns.FOLDER_NAME.equals(columnName)) {
+                            query.append("f." + SpecialColumns.FOLDER_NAME + " AS " +
+                                    SpecialColumns.FOLDER_NAME);
                         } else {
                             query.append("m.");
                             query.append(columnName);
@@ -274,7 +312,13 @@ public class EmailProvider extends ContentProvider {
 
                     query.append(
                             " FROM messages h JOIN messages m " +
-                            "ON (h.id = m.thread_root OR h.id = m.id) " +
+                            "ON (h.id = m.thread_root OR h.id = m.id) ");
+
+                    if (Utility.arrayContains(projection, SpecialColumns.FOLDER_NAME)) {
+                        query.append("LEFT JOIN folders f ON (m.folder_id = f.id) ");
+                    }
+
+                    query.append(
                             "WHERE " +
                             "(h.deleted = 0 AND m.deleted = 0 AND " +
                             "(m.empty IS NULL OR m.empty != 1) AND " +

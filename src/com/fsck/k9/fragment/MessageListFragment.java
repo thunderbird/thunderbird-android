@@ -111,6 +111,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         MessageColumns.THREAD_ROOT,
         MessageColumns.THREAD_PARENT,
         SpecialColumns.ACCOUNT_UUID,
+        SpecialColumns.FOLDER_NAME,
 
         MessageColumns.THREAD_COUNT,
     };
@@ -130,7 +131,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int THREAD_ROOT_COLUMN = 12;
     private static final int THREAD_PARENT_COLUMN = 13;
     private static final int ACCOUNT_UUID_COLUMN = 14;
-    private static final int THREAD_COUNT_COLUMN = 15;
+    private static final int FOLDER_NAME_COLUMN = 15;
+    private static final int THREAD_COUNT_COLUMN = 16;
 
     private static final String[] PROJECTION = Utility.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
@@ -2440,13 +2442,16 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public ArrayList<MessageReference> getMessageReferences() {
         ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
 
-        /*
-        for (MessageInfoHolder holder : mAdapter.getMessages()) {
-            MessageReference ref = holder.message.makeMessageReference();
+        for (int i = 0, len = mAdapter.getCount(); i < len; i++) {
+            Cursor cursor = (Cursor) mAdapter.getItem(i);
+
+            MessageReference ref = new MessageReference();
+            ref.accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+            ref.folderName = cursor.getString(FOLDER_NAME_COLUMN);
+            ref.uid = cursor.getString(UID_COLUMN);
+
             messageRefs.add(ref);
         }
-        */
-        //TODO: implement
 
         return messageRefs;
     }
