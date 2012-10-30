@@ -866,6 +866,9 @@ public class MessagingController implements Runnable {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
+                if (listener != null) {
+                    listener.enableProgressIndicator(true);
+                }
                 try {
                     Store remoteStore = account.getRemoteStore();
                     LocalStore localStore = account.getLocalStore();
@@ -884,6 +887,10 @@ public class MessagingController implements Runnable {
                 } catch (MessagingException e) {
                     Log.e(K9.LOG_TAG, "Exception in loadSearchResults: " + e);
                     addErrorMessage(account, null, e);
+                } finally {
+                    if (listener != null) {
+                        listener.enableProgressIndicator(false);
+                    }
                 }
             }
         });
