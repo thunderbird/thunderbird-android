@@ -144,7 +144,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Bundle args = new Bundle();
         args.putParcelable(ARG_SEARCH, search);
         args.putBoolean(ARG_THREADED_LIST, threadedList);
-        args.putBoolean(ARG_REMOTE_SEARCH, remoteSearch);
+        //FIXME: Remote search temporarily disabled
+        //args.putBoolean(ARG_REMOTE_SEARCH, remoteSearch);
         fragment.setArguments(args);
         return fragment;
     }
