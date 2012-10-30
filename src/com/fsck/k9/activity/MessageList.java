@@ -146,6 +146,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
                 mSearch.or(new SearchCondition(Searchfield.SENDER, Attribute.CONTAINS, query));
                 mSearch.or(new SearchCondition(Searchfield.SUBJECT, Attribute.CONTAINS, query));
+                mSearch.or(new SearchCondition(Searchfield.MESSAGE_CONTENTS, Attribute.CONTAINS, query));
 
                 Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
