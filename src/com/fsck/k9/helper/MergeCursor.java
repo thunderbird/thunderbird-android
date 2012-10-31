@@ -293,7 +293,7 @@ public class MergeCursor implements Cursor {
 
         int smallest = -1;
         for (int i = 0, len = mCursors.length; i < len; i++) {
-            if (mCursors[i] == null || mCursors[i].isLast()) {
+            if (mCursors[i] == null || mCursors[i].getCount() == 0 || mCursors[i].isLast()) {
                 continue;
             }
 
