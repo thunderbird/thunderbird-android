@@ -80,9 +80,6 @@ import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchModifier;
-import com.fsck.k9.search.SearchSpecification;
-import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
@@ -129,8 +126,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     private AccountsHandler mHandler = new AccountsHandler();
     private AccountsAdapter mAdapter;
-    private SearchAccount unreadAccount = null;
-    private SearchAccount integratedInboxAccount = null;
+    private SearchAccount mAllMessagesAccount = null;
+    private SearchAccount mUnifiedInboxAccount = null;
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private MenuItem mRefreshMenuItem;
@@ -378,7 +375,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
         if (startup && K9.startIntegratedInbox() && !K9.isHideSpecialAccounts()) {
-            onOpenAccount(integratedInboxAccount);
+            onOpenAccount(mUnifiedInboxAccount);
             finish();
             return;
         } else if (startup && accounts.length == 1 && onOpenAccount(accounts[0])) {
@@ -427,8 +424,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Creates and initializes the special accounts ('Unified Inbox' and 'All Messages')
      */
     private void createSpecialAccounts() {
-        integratedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
-        unreadAccount = SearchAccount.createAllMessagesAccount(this);
+        mUnifiedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
+        mAllMessagesAccount = SearchAccount.createAllMessagesAccount(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -522,14 +519,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         List<BaseAccount> newAccounts;
         if (!K9.isHideSpecialAccounts() && accounts.length > 0) {
-            if (integratedInboxAccount == null || unreadAccount == null) {
+            if (mUnifiedInboxAccount == null || mAllMessagesAccount == null) {
                 createSpecialAccounts();
             }
 
             newAccounts = new ArrayList<BaseAccount>(accounts.length +
                     SPECIAL_ACCOUNTS_COUNT);
-            newAccounts.add(integratedInboxAccount);
-            newAccounts.add(unreadAccount);
+            newAccounts.add(mUnifiedInboxAccount);
+            newAccounts.add(mAllMessagesAccount);
         } else {
             newAccounts = new ArrayList<BaseAccount>(accounts.length);
         }
