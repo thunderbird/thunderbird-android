@@ -6,6 +6,8 @@ import android.content.Context;
 
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.R;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 
 /**
  * This class is basically a wrapper around a LocalSearch. It allows to expose it as
@@ -26,7 +28,7 @@ public class SearchAccount implements BaseAccount {
     public static SearchAccount createUnifiedInboxAccount(Context context) {
         String name = context.getString(R.string.integrated_inbox_title);
         LocalSearch tmpSearch = new LocalSearch(name);
-        tmpSearch.addAllowedFolder(SearchSpecification.GENERIC_INBOX_NAME);
+        tmpSearch.and(Searchfield.INTEGRATE, "1", Attribute.EQUALS);
         return new SearchAccount(tmpSearch, name,
                 context.getString(R.string.integrated_inbox_detail));
     }

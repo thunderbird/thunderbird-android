@@ -81,6 +81,8 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchModifier;
 import com.fsck.k9.search.SearchSpecification;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
@@ -425,18 +427,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Creates and initializes the special accounts ('Unified Inbox' and 'All Messages')
      */
     private void createSpecialAccounts() {
-        // create the unified inbox meta account ( all accounts is default when none specified )
-        String name = getString(R.string.integrated_inbox_title);
-        LocalSearch tmpSearch = new LocalSearch(name);
-        tmpSearch.addAllowedFolder(SearchSpecification.GENERIC_INBOX_NAME);
-        integratedInboxAccount = new SearchAccount(tmpSearch, name,
-                getString(R.string.integrated_inbox_detail));
-
-        // create the all messages search ( all accounts is default when none specified )
-        name = getString(R.string.search_all_messages_title);
-        tmpSearch = new LocalSearch(name);
-        unreadAccount = new SearchAccount(tmpSearch, name,
-                getString(R.string.search_all_messages_detail));
+        integratedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
+        unreadAccount = SearchAccount.createAllMessagesAccount(this);
     }
 
     @SuppressWarnings("unchecked")

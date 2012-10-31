@@ -93,9 +93,8 @@ public class LocalStore extends Store implements Serializable {
      * in the correct order.
      */
     static private String GET_MESSAGES_COLS =
-        "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
+        "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview, thread_root, thread_parent ";
-
 
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
 
@@ -967,7 +966,8 @@ public class LocalStore extends Store implements Serializable {
         String where = query.toString();
         String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
 
-        String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages WHERE " +
+        String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
+                "LEFT JOIN folders ON (folders.id = messages.id) WHERE " +
                 "((empty IS NULL OR empty != 1) AND deleted = 0)" +
                 ((!StringUtils.isNullOrEmpty(where)) ? " AND (" + where + ")" : "") +
                 " ORDER BY date DESC";

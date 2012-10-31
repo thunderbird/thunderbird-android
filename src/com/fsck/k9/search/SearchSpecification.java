@@ -29,7 +29,6 @@ public interface SearchSpecification extends Parcelable {
      * Some meta names for certain conditions.
      */
     public static final String ALL_ACCOUNTS = "allAccounts";
-    public static final String GENERIC_INBOX_NAME = "genericInboxName";
 
     ///////////////////////////////////////////////////////////////
     // ATTRIBUTE enum
@@ -78,7 +77,8 @@ public interface SearchSpecification extends Parcelable {
         ATTACHMENT_COUNT,
         DELETED,
         THREAD_ROOT,
-        ID
+        ID,
+        INTEGRATE
     }
 
 

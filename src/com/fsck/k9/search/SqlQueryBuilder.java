@@ -27,14 +27,7 @@ public class SqlQueryBuilder {
             SearchCondition condition = node.mCondition;
             switch (condition.field) {
                 case FOLDER: {
-                    String folderName;
-                    //TODO: Fix the search condition used by the Unified Inbox (we search all
-                    // folders with an enabled "Unify" folder setting).
-                    if (LocalSearch.GENERIC_INBOX_NAME.equals(condition.value)) {
-                        folderName = account.getInboxFolderName();
-                    } else {
-                        folderName = condition.value;
-                    }
+                    String folderName = condition.value;
                     long folderId = getFolderId(account, folderName);
                     query.append("folder_id = ?");
                     selectionArgs.add(Long.toString(folderId));
@@ -139,6 +132,10 @@ public class SqlQueryBuilder {
                 columnName = "uid";
                 break;
             }
+            case INTEGRATE: {
+                columnName = "integrate";
+                break;
+            }
         }
 
         if (columnName == null) {
@@ -191,7 +188,7 @@ public class SqlQueryBuilder {
             }
             case EQUALS: {
                 if (isNumberColumn(field)) {
-                    query.append("== ?");
+                    query.append("= ?");
                 } else {
                     query.append("LIKE ?");
                 }
@@ -214,6 +211,7 @@ public class SqlQueryBuilder {
             case DELETED:
             case FOLDER:
             case ID:
+            case INTEGRATE:
             case THREAD_ROOT: {
                 return true;
             }

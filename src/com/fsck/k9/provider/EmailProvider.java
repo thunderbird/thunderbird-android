@@ -95,6 +95,7 @@ public class EmailProvider extends ContentProvider {
         public static final String ACCOUNT_UUID = "account_uuid";
 
         public static final String FOLDER_NAME = "name";
+        public static final String INTEGRATE = "integrate";
     }
 
     public interface MessageColumns {
@@ -231,6 +232,7 @@ public class EmailProvider extends ContentProvider {
                     }
 
                     final Cursor cursor;
+                    //TODO: check projection and selection for folder columns
                     if (Utility.arrayContains(projection, SpecialColumns.FOLDER_NAME)) {
                         StringBuilder query = new StringBuilder();
                         query.append("SELECT ");
@@ -302,6 +304,9 @@ public class EmailProvider extends ContentProvider {
                         } else if (SpecialColumns.FOLDER_NAME.equals(columnName)) {
                             query.append("f." + SpecialColumns.FOLDER_NAME + " AS " +
                                     SpecialColumns.FOLDER_NAME);
+                        } else if (SpecialColumns.INTEGRATE.equals(columnName)) {
+                            query.append("f." + SpecialColumns.INTEGRATE + " AS " +
+                                    SpecialColumns.INTEGRATE);
                         } else {
                             query.append("m.");
                             query.append(columnName);
@@ -314,6 +319,7 @@ public class EmailProvider extends ContentProvider {
                             " FROM messages h JOIN messages m " +
                             "ON (h.id = m.thread_root OR h.id = m.id) ");
 
+                    //TODO: check projection and selection for folder columns
                     if (Utility.arrayContains(projection, SpecialColumns.FOLDER_NAME)) {
                         query.append("LEFT JOIN folders f ON (m.folder_id = f.id) ");
                     }
