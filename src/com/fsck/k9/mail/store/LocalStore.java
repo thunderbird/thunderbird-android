@@ -967,7 +967,7 @@ public class LocalStore extends Store implements Serializable {
         String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
 
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
-                "LEFT JOIN folders ON (folders.id = messages.id) WHERE " +
+                "LEFT JOIN folders ON (folders.id = messages.folder_id) WHERE " +
                 "((empty IS NULL OR empty != 1) AND deleted = 0)" +
                 ((!StringUtils.isNullOrEmpty(where)) ? " AND (" + where + ")" : "") +
                 " ORDER BY date DESC";
