@@ -6,8 +6,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 import android.app.Activity;
@@ -2218,21 +2220,39 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 menu.findItem(R.id.spam).setVisible(true);
                 menu.findItem(R.id.copy).setVisible(true);
 
-                // hide uncapable
-                /*
-                 *  TODO think of a better way then looping over all
-                 *  messages.
-                 */
-                Message[] messages = getCheckedMessages();
-                Account account;
+                Set<String> accountUuids = getAccountUuidsForSelected();
 
-                for (Message message : messages) {
-                    account = message.getFolder().getAccount();
-                    setContextCapabilities(account, menu);
+                for (String accountUuid : accountUuids) {
+                    Account account = mPreferences.getAccount(accountUuid);
+                    if (account != null) {
+                        setContextCapabilities(account, menu);
+                    }
                 }
 
             }
             return true;
+        }
+
+        /**
+         * Get the set of account UUIDs for the selected messages.
+         */
+        private Set<String> getAccountUuidsForSelected() {
+            int maxAccounts = mAccountUuids.length;
+            Set<String> accountUuids = new HashSet<String>(maxAccounts);
+
+            for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
+                if (mSelected.get(position, false)) {
+                    Cursor cursor = (Cursor) mAdapter.getItem(position);
+                    String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+                    accountUuids.add(accountUuid);
+
+                    if (accountUuids.size() == mAccountUuids.length) {
+                        break;
+                    }
+                }
+            }
+
+            return accountUuids;
         }
 
         @Override
