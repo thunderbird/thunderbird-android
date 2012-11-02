@@ -1815,14 +1815,22 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      */
     private void setSelectionState(boolean selected) {
         if (selected) {
-            mSelectedCount = mAdapter.getCount();
-            if (mSelectedCount == 0) {
+            if (mAdapter.getCount() == 0) {
                 // Nothing to do if there are no messages
                 return;
             }
 
-            for (int i = 0, end = mSelectedCount; i < end; i++) {
+            mSelectedCount = 0;
+            for (int i = 0, end = mAdapter.getCount(); i < end; i++) {
                 mSelected.put(i, true);
+
+                if (mThreadedList) {
+                    Cursor cursor = (Cursor) mAdapter.getItem(i);
+                    int threadCount = cursor.getInt(THREAD_COUNT_COLUMN);
+                    mSelectedCount += (threadCount > 1) ? threadCount : 1;
+                } else {
+                    mSelectedCount++;
+                }
             }
 
             if (mActionMode == null) {
@@ -1850,10 +1858,23 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         boolean selected = mSelected.get(adapterPosition, false);
-        mSelected.put(adapterPosition, !selected);
+        if (!selected) {
+            mSelected.put(adapterPosition, true);
+        } else {
+            mSelected.delete(adapterPosition);
+        }
+
+        int selectedCountDelta = 1;
+        if (mThreadedList) {
+            Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+            int threadCount = cursor.getInt(THREAD_COUNT_COLUMN);
+            if (threadCount > 1) {
+                selectedCountDelta = threadCount;
+            }
+        }
 
         if (mActionMode != null) {
-            if (mSelectedCount == 1 && selected) {
+            if (mSelectedCount == selectedCountDelta && selected) {
                 mActionMode.finish();
                 mActionMode = null;
                 return;
@@ -1863,9 +1884,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         if (selected) {
-            mSelectedCount -= 1;
+            mSelectedCount -= selectedCountDelta;
         } else {
-            mSelectedCount += 1;
+            mSelectedCount += selectedCountDelta;
         }
 
         computeBatchDirection();
@@ -1884,7 +1905,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void computeSelectAllVisibility() {
-        mActionModeCallback.showSelectAll(mSelectedCount != mAdapter.getCount());
+        mActionModeCallback.showSelectAll(mSelected.size() != mAdapter.getCount());
     }
 
     private void computeBatchDirection() {
