@@ -1515,16 +1515,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mForwardedAnsweredIcon = getResources().getDrawable(R.drawable.ic_email_forwarded_answered_small);
         }
 
-        /**
-         * Set the selection state for all messages at once.
-         * @param selected Selection state to set.
-         */
-        public void setSelectionForAllMesages(final boolean selected) {
-            //TODO: implement
-
-            //notifyDataSetChanged();
-        }
-
         private String recipientSigil(boolean toMe, boolean ccMe) {
             if (toMe) {
                 return getString(R.string.messagelist_sent_to_me_sigil);
