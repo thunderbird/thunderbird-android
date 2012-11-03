@@ -1943,7 +1943,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return;
         }
 
-        mController.setFlag(messages, flag, newState);
+        if (mThreadedList) {
+            mController.setFlagForThreads(messages, flag, newState);
+        } else {
+            mController.setFlag(messages, flag, newState);
+        }
 
         computeBatchDirection();
     }

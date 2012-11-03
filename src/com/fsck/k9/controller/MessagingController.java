@@ -2569,7 +2569,28 @@ public class MessagingController implements Runnable {
             }
 
         });
+    }
 
+    public void setFlagForThreads(final Message[] messages, final Flag flag,
+            final boolean newState) {
+
+        actOnMessages(messages, new MessageActor() {
+            @Override
+            public void act(final Account account, final Folder folder,
+                    final List<Message> accountMessages) {
+
+                try {
+                    List<Message> messagesInThreads = collectMessagesInThreads(account,
+                            accountMessages);
+
+                    setFlag(account, folder.getName(),
+                            messagesInThreads.toArray(EMPTY_MESSAGE_ARRAY), flag, newState);
+
+                } catch (MessagingException e) {
+                    addErrorMessage(account, "Something went wrong in setFlagForThreads()", e);
+                }
+            }
+        });
     }
 
     /**
@@ -3585,22 +3606,30 @@ public class MessagingController implements Runnable {
             List<Message> messages) {
 
         try {
-            LocalStore localStore = account.getLocalStore();
-
-            List<Message> messagesToDelete = new ArrayList<Message>();
-            for (Message message : messages) {
-                long rootId = ((LocalMessage) message).getRootId();
-                long threadId = (rootId == -1) ? message.getId() : rootId;
-
-                Message[] messagesInThread = localStore.getMessagesInThread(threadId);
-                Collections.addAll(messagesToDelete, messagesInThread);
-            }
+            List<Message> messagesToDelete = collectMessagesInThreads(account, messages);
 
             deleteMessagesSynchronous(account, folderName,
                     messagesToDelete.toArray(EMPTY_MESSAGE_ARRAY), null);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Something went wrong while deleting threads", e);
         }
+    }
+
+    public List<Message> collectMessagesInThreads(Account account, List<Message> messages)
+            throws MessagingException {
+
+        LocalStore localStore = account.getLocalStore();
+
+        List<Message> messagesInThreads = new ArrayList<Message>();
+        for (Message message : messages) {
+            long rootId = ((LocalMessage) message).getRootId();
+            long threadId = (rootId == -1) ? message.getId() : rootId;
+
+            Message[] messagesInThread = localStore.getMessagesInThread(threadId);
+            Collections.addAll(messagesInThreads, messagesInThread);
+        }
+
+        return messagesInThreads;
     }
 
     public void deleteMessages(final Message[] messages, final MessagingListener listener) {
