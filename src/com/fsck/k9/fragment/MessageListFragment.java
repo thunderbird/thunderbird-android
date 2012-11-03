@@ -36,7 +36,6 @@ import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -367,7 +366,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mSenderAboveSubject = false;
 
     private int mSelectedCount = 0;
-    private SparseBooleanArray mSelected;
+    private Set<Long> mSelected = new HashSet<Long>();
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
@@ -1630,8 +1629,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             int maybeBoldTypeface = (read) ? Typeface.NORMAL : Typeface.BOLD;
 
-            int adapterPosition = cursor.getPosition();
-            boolean selected = mSelected.get(adapterPosition, false);
+            long id = cursor.getLong(ID_COLUMN);
+            boolean selected = mSelected.contains(id);
 
             if (selected) {
                 holder.chip.setBackgroundDrawable(account.getCheckmarkChip().drawable());
@@ -1818,10 +1817,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             mSelectedCount = 0;
             for (int i = 0, end = mAdapter.getCount(); i < end; i++) {
-                mSelected.put(i, true);
+                Cursor cursor = (Cursor) mAdapter.getItem(i);
+                long id = cursor.getLong(ID_COLUMN);
+                mSelected.add(id);
 
                 if (mThreadedList) {
-                    Cursor cursor = (Cursor) mAdapter.getItem(i);
                     int threadCount = cursor.getInt(THREAD_COUNT_COLUMN);
                     mSelectedCount += (threadCount > 1) ? threadCount : 1;
                 } else {
@@ -1853,16 +1853,18 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return;
         }
 
-        boolean selected = mSelected.get(adapterPosition, false);
+        Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+        long id = cursor.getLong(ID_COLUMN);
+
+        boolean selected = mSelected.contains(id);
         if (!selected) {
-            mSelected.put(adapterPosition, true);
+            mSelected.add(id);
         } else {
-            mSelected.delete(adapterPosition);
+            mSelected.remove(id);
         }
 
         int selectedCountDelta = 1;
         if (mThreadedList) {
-            Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
             int threadCount = cursor.getInt(THREAD_COUNT_COLUMN);
             if (threadCount > 1) {
                 selectedCountDelta = threadCount;
@@ -1909,8 +1911,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         boolean isBatchRead = false;
 
         for (int i = 0, end = mAdapter.getCount(); i < end; i++) {
-            if (mSelected.get(i, false)) {
-                Cursor cursor = (Cursor) mAdapter.getItem(i);
+            Cursor cursor = (Cursor) mAdapter.getItem(i);
+            long id = cursor.getLong(ID_COLUMN);
+
+            if (mSelected.contains(id)) {
                 String flags = cursor.getString(FLAGS_COLUMN);
 
                 if (!flags.contains(Flag.FLAGGED.name())) {
@@ -2245,8 +2249,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             Set<String> accountUuids = new HashSet<String>(maxAccounts);
 
             for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
-                if (mSelected.get(position, false)) {
-                    Cursor cursor = (Cursor) mAdapter.getItem(position);
+                Cursor cursor = (Cursor) mAdapter.getItem(position);
+                long id = cursor.getLong(ID_COLUMN);
+
+                if (mSelected.contains(id)) {
                     String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
                     accountUuids.add(accountUuid);
 
@@ -2570,7 +2576,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Message[] messages = new Message[mSelected.size()];
         int out = 0;
         for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
-            if (mSelected.get(position, false)) {
+            Cursor cursor = (Cursor) mAdapter.getItem(position);
+            long id = cursor.getLong(ID_COLUMN);
+
+            if (mSelected.contains(id)) {
                 messages[out++] = getMessageAtPosition(position);
             }
         }
@@ -2775,9 +2784,25 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             cursor = data;
         }
 
-        mSelected = new SparseBooleanArray(cursor.getCount());
-        //TODO: use the (stable) IDs as index and reuse the old mSelected
+        cleanupSelected(cursor);
+
         mAdapter.swapCursor(cursor);
+    }
+
+    private void cleanupSelected(Cursor cursor) {
+        if (mSelected.size() == 0) {
+            return;
+        }
+
+        Set<Long> selected = new HashSet<Long>();
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            long id = cursor.getLong(ID_COLUMN);
+            if (mSelected.contains(id)) {
+                selected.add(id);
+            }
+        }
+
+        mSelected = selected;
     }
 
     @Override
