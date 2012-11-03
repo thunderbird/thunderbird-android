@@ -2217,9 +2217,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         if (operation == FolderOperation.MOVE) {
-            mController.moveMessages(account, folderName, outMessages, destination, null);
+            if (mThreadedList) {
+                mController.moveMessagesInThread(account, folderName, outMessages, destination);
+            } else {
+                mController.moveMessages(account, folderName, outMessages, destination, null);
+            }
         } else {
-            mController.copyMessages(account, folderName, outMessages, destination, null);
+            if (mThreadedList) {
+                mController.copyMessagesInThread(account, folderName, outMessages, destination);
+            } else {
+                mController.copyMessages(account, folderName, outMessages, destination, null);
+            }
         }
     }
 

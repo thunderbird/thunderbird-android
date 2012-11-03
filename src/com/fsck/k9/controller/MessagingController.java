@@ -3442,6 +3442,27 @@ public class MessagingController implements Runnable {
         });
     }
 
+    public void moveMessagesInThread(final Account account, final String srcFolder,
+            final List<Message> messages, final String destFolder) {
+
+        for (Message message : messages) {
+            suppressMessage(account, srcFolder, message);
+        }
+
+        putBackground("moveMessagesInThread", null, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
+                    moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
+                            false, null);
+                } catch (MessagingException e) {
+                    addErrorMessage(account, "Exception while moving messages", e);
+                }
+            }
+        });
+    }
+
     public void moveMessage(final Account account, final String srcFolder, final Message message,
             final String destFolder, final MessagingListener listener) {
 
@@ -3457,6 +3478,23 @@ public class MessagingController implements Runnable {
             public void run() {
                 moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, true,
                         listener);
+            }
+        });
+    }
+
+    public void copyMessagesInThread(final Account account, final String srcFolder,
+            final List<Message> messages, final String destFolder) {
+
+        putBackground("copyMessagesInThread", null, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
+                    moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
+                            true, null);
+                } catch (MessagingException e) {
+                    addErrorMessage(account, "Exception while copying messages", e);
+                }
             }
         });
     }
