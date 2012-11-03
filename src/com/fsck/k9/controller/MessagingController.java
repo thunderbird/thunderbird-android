@@ -3590,7 +3590,9 @@ public class MessagingController implements Runnable {
             List<Message> messagesToDelete = new ArrayList<Message>();
             for (Message message : messages) {
                 long rootId = ((LocalMessage) message).getRootId();
-                Message[] messagesInThread = localStore.getMessagesInThread(rootId);
+                long threadId = (rootId == -1) ? message.getId() : rootId;
+
+                Message[] messagesInThread = localStore.getMessagesInThread(threadId);
                 Collections.addAll(messagesToDelete, messagesInThread);
             }
 
