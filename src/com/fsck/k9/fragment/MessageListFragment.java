@@ -1908,13 +1908,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         boolean isBatchFlag = false;
         boolean isBatchRead = false;
 
-        /*
-        for (MessageInfoHolder holder : mAdapter.getMessages()) {
-            if (holder.selected) {
-                if (!holder.flagged) {
+        for (int i = 0, end = mAdapter.getCount(); i < end; i++) {
+            if (mSelected.get(i, false)) {
+                Cursor cursor = (Cursor) mAdapter.getItem(i);
+                String flags = cursor.getString(FLAGS_COLUMN);
+
+                if (!flags.contains(Flag.FLAGGED.name())) {
                     isBatchFlag = true;
                 }
-                if (!holder.read) {
+                if (!flags.contains(Flag.SEEN.name())) {
                     isBatchRead = true;
                 }
 
@@ -1923,8 +1925,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
             }
         }
-        */
-        //TODO: implement
 
         mActionModeCallback.showMarkAsRead(isBatchRead);
         mActionModeCallback.showFlag(isBatchFlag);
