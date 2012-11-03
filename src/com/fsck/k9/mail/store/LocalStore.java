@@ -73,6 +73,9 @@ import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
 
 /**
@@ -963,7 +966,10 @@ public class LocalStore extends Store implements Serializable {
         List<String> queryArgs = new ArrayList<String>();
         SqlQueryBuilder.buildWhereClause(mAccount, search.getConditions(), query, queryArgs);
 
-        String where = query.toString();
+        // Avoid "ambiguous column name" error by prefixing "id" with the message table name
+        String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
+                "messages.", query.toString());
+
         String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
 
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
@@ -1034,6 +1040,16 @@ public class LocalStore extends Store implements Serializable {
 
         return messages.toArray(EMPTY_MESSAGE_ARRAY);
 
+    }
+
+    public Message[] getMessagesInThread(final long rootId) throws MessagingException {
+        String rootIdString = Long.toString(rootId);
+
+        LocalSearch search = new LocalSearch();
+        search.and(Searchfield.THREAD_ROOT, rootIdString, Attribute.EQUALS);
+        search.or(new SearchCondition(Searchfield.ID, Attribute.EQUALS, rootIdString));
+
+        return searchForMessages(null, search);
     }
 
     public AttachmentInfo getAttachmentInfo(final String attachmentId) throws UnavailableStorageException {

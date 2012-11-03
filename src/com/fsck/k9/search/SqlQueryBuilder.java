@@ -220,4 +220,13 @@ public class SqlQueryBuilder {
             }
         }
     }
+
+    public static String addPrefixToSelection(String[] columnNames, String prefix, String selection) {
+        String result = selection;
+        for (String columnName : columnNames) {
+            result = result.replaceAll("\\b" + columnName + "\\b", prefix + columnName);
+        }
+
+        return result;
+    }
 }

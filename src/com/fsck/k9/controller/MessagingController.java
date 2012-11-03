@@ -3560,6 +3560,47 @@ public class MessagingController implements Runnable {
         }
     }
 
+    public void deleteThreads(final Message[] messages) {
+        actOnMessages(messages, new MessageActor() {
+
+            @Override
+            public void act(final Account account, final Folder folder,
+                    final List<Message> accountMessages) {
+
+                for (Message message : accountMessages) {
+                    suppressMessage(account, folder.getName(), message);
+                }
+
+                putBackground("deleteThreads", null, new Runnable() {
+                    @Override
+                    public void run() {
+                        deleteThreadsSynchronous(account, folder.getName(), accountMessages);
+                    }
+                });
+            }
+        });
+    }
+
+    public void deleteThreadsSynchronous(Account account, String folderName,
+            List<Message> messages) {
+
+        try {
+            LocalStore localStore = account.getLocalStore();
+
+            List<Message> messagesToDelete = new ArrayList<Message>();
+            for (Message message : messages) {
+                long rootId = ((LocalMessage) message).getRootId();
+                Message[] messagesInThread = localStore.getMessagesInThread(rootId);
+                Collections.addAll(messagesToDelete, messagesInThread);
+            }
+
+            deleteMessagesSynchronous(account, folderName,
+                    messagesToDelete.toArray(EMPTY_MESSAGE_ARRAY), null);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Something went wrong while deleting threads", e);
+        }
+    }
+
     public void deleteMessages(final Message[] messages, final MessagingListener listener) {
         actOnMessages(messages, new MessageActor() {
 

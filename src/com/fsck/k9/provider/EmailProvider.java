@@ -15,6 +15,7 @@ import com.fsck.k9.mail.store.LockableDatabase;
 import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.UnavailableStorageException;
+import com.fsck.k9.search.SqlQueryBuilder;
 
 import android.annotation.TargetApi;
 import android.content.ContentProvider;
@@ -257,9 +258,11 @@ public class EmailProvider extends ContentProvider {
                         query.append(" FROM messages m " +
                                 "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                                 "WHERE ");
-                        query.append(addPrefixToSelection(MESSAGES_COLUMNS, "m.", where));
+                        query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
+                                "m.", where));
                         query.append(" ORDER BY ");
-                        query.append(addPrefixToSelection(MESSAGES_COLUMNS, "m.", sortOrder));
+                        query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
+                                "m.", sortOrder));
 
                         cursor = db.rawQuery(query.toString(), selectionArgs);
                     } else {
@@ -332,7 +335,8 @@ public class EmailProvider extends ContentProvider {
 
                     if (!StringUtils.isNullOrEmpty(selection)) {
                         query.append("AND (");
-                        query.append(addPrefixToSelection(MESSAGES_COLUMNS, "h.", selection));
+                        query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
+                                "h.", selection));
                         query.append(") ");
                     }
 
@@ -340,7 +344,8 @@ public class EmailProvider extends ContentProvider {
 
                     if (!StringUtils.isNullOrEmpty(sortOrder)) {
                         query.append(" ORDER BY ");
-                        query.append(addPrefixToSelection(MESSAGES_COLUMNS, "m.", sortOrder));
+                        query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
+                                "m.", sortOrder));
                     }
 
                     return db.rawQuery(query.toString(), selectionArgs);
@@ -349,15 +354,6 @@ public class EmailProvider extends ContentProvider {
         } catch (UnavailableStorageException e) {
             throw new RuntimeException("Storage not available", e);
         }
-    }
-
-    private String addPrefixToSelection(String[] columnNames, String prefix, String selection) {
-        String result = selection;
-        for (String columnName : columnNames) {
-            result = result.replaceAll("\\b" + columnName + "\\b", prefix + columnName);
-        }
-
-        return result;
     }
 
     private Account getAccount(String accountUuid) {

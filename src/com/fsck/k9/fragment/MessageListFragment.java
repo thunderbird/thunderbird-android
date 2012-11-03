@@ -1068,7 +1068,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void onDelete(Message[] messages) {
-        mController.deleteMessages(messages, null);
+        if (mThreadedList) {
+            mController.deleteThreads(messages);
+        } else {
+            mController.deleteMessages(messages, null);
+        }
     }
 
     @Override
@@ -2563,7 +2567,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private Message[] getCheckedMessages() {
-        Message[] messages = new Message[mSelectedCount];
+        Message[] messages = new Message[mSelected.size()];
         int out = 0;
         for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
             if (mSelected.get(position, false)) {
