@@ -163,7 +163,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         /**
          * @param delegate
-         *            Never <code>null</code>.
+         *         Never {@code null}.
          */
         public ReverseComparator(final Comparator<T> delegate) {
             mDelegate = delegate;
@@ -186,7 +186,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         /**
          * @param chain
-         *            Comparator chain. Never <code>null</code>.
+         *         Comparator chain. Never {@code null}.
          */
         public ComparatorChain(final List<Comparator<T>> chain) {
             mChain = chain;
@@ -344,8 +344,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private Cursor[] mCursors;
 
     /**
-     * Stores the name of the folder that we want to open as soon as possible
-     * after load.
+     * Stores the name of the folder that we want to open as soon as possible after load.
      */
     private String mFolderName;
 
@@ -380,9 +379,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private Boolean mHasConnectivity;
 
     /**
-     * Relevant messages for the current context when we have to remember the
-     * chosen messages between user interactions (eg. Selecting a folder for
-     * move operation)
+     * Relevant messages for the current context when we have to remember the chosen messages
+     * between user interactions (e.g. selecting a folder for move operation).
      */
     private List<Message> mActiveMessages;
 
@@ -472,7 +470,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     /**
      * @return The comparator to use to display messages in an ordered
-     *         fashion. Never <code>null</code>.
+     *         fashion. Never {@code null}.
      */
     protected Comparator<Cursor> getComparator() {
         final List<Comparator<Cursor>> chain =
@@ -1385,9 +1383,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     /**
-     * Handle a select or unselect swipe event
-     * @param downMotion Event that started the swipe
-     * @param selected true if this was an attempt to select (i.e. left to right).
+     * Handle a select or unselect swipe event.
+     *
+     * @param downMotion
+     *         Event that started the swipe
+     * @param selected
+     *         {@code true} if this was an attempt to select (i.e. left to right).
      */
     private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
         int[] listPosition = new int[2];
@@ -1962,7 +1963,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * Display the message move activity.
      *
      * @param messages
-     *            Never {@code null}.
+     *         Never {@code null}.
      */
     private void onMove(List<Message> messages) {
         if (!checkCopyOrMovePossible(messages, FolderOperation.MOVE)) {
@@ -1983,7 +1984,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * Display the message copy activity.
      *
      * @param messages
-     *            Never {@code null}.
+     *         Never {@code null}.
      */
     private void onCopy(List<Message> messages) {
         if (!checkCopyOrMovePossible(messages, FolderOperation.COPY)) {
@@ -1997,19 +1998,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     /**
-     * Helper method to manage the invocation of
-     * {@link #startActivityForResult(Intent, int)} for a folder operation
-     * ({@link ChooseFolder} activity), while saving a list of associated
-     * messages.
+     * Helper method to manage the invocation of {@link #startActivityForResult(Intent, int)} for a
+     * folder operation ({@link ChooseFolder} activity), while saving a list of associated messages.
      *
      * @param requestCode
-     *            If >= 0, this code will be returned in onActivityResult() when
-     *            the activity exits.
+     *         If {@code >= 0}, this code will be returned in {@code onActivityResult()} when the
+     *         activity exits.
      * @param folder
-     *            Never {@code null}.
-     * @param holders
-     *            Messages to be affected by the folder operation. Never
-     *            {@code null}.
+     *         The source folder. Never {@code null}.
+     * @param messages
+     *         Messages to be affected by the folder operation. Never {@code null}.
+     *
      * @see #startActivityForResult(Intent, int)
      */
     private void displayFolderChoice(final int requestCode, final Folder folder, final List<Message> messages) {
@@ -2060,8 +2059,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     /**
-     * @param holders
-     *            Never {@code null}.
+     * Move messages to the spam folder.
+     *
+     * @param messages
+     *         The messages to move to the spam folder. Never {@code null}.
      */
     private void onSpam(List<Message> messages) {
         if (K9.confirmSpam()) {
@@ -2091,14 +2092,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     /**
-     * Display an Toast message if any message isn't synchronized
+     * Display a Toast message if any message isn't synchronized
      *
-     * @param holders
-     *            Never <code>null</code>.
+     * @param messages
+     *         The messages to copy or move. Never {@code null}.
      * @param operation
-     *            Never {@code null}.
+     *         The type of operation to perform. Never {@code null}.
      *
-     * @return <code>true</code> if operation is possible
+     * @return {@code true}, if operation is possible.
      */
     private boolean checkCopyOrMovePossible(final List<Message> messages,
             final FolderOperation operation) {
@@ -2133,8 +2134,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     /**
      * Copy the specified messages to the specified folder.
      *
-     * @param holders Never {@code null}.
-     * @param destination Never {@code null}.
+     * @param messages
+     *         List of messages to copy. Never {@code null}.
+     * @param destination
+     *         The name of the destination folder. Never {@code null}.
      */
     private void copy(List<Message> messages, final String destination) {
         copyOrMove(messages, destination, FolderOperation.COPY);
@@ -2143,8 +2146,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     /**
      * Move the specified messages to the specified folder.
      *
-     * @param holders Never {@code null}.
-     * @param destination Never {@code null}.
+     * @param messages
+     *         The list of messages to move. Never {@code null}.
+     * @param destination
+     *         The name of the destination folder. Never {@code null}.
      */
     private void move(List<Message> messages, final String destination) {
         copyOrMove(messages, destination, FolderOperation.MOVE);
@@ -2155,14 +2160,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * {@link #move(List, String)}. This method was added mainly because those 2
      * methods share common behavior.
      *
-     * Note: Must be called from the UI thread!
-     *
-     * @param holders
-     *            Never {@code null}.
+     * @param messages
+     *         The list of messages to copy or move. Never {@code null}.
      * @param destination
-     *            Never {@code null}.
+     *         The name of the destination folder. Never {@code null}.
      * @param operation
-     *            Never {@code null}.
+     *         Specifies what operation to perform. Never {@code null}.
      */
     private void copyOrMove(List<Message> messages, final String destination, final FolderOperation operation) {
         if (K9.FOLDER_NONE.equalsIgnoreCase(destination)) {
@@ -2208,29 +2211,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mController.copyMessages(account, folderName, outMessages, destination, null);
         }
     }
-
-    /**
-     * Return the currently "open" account if available.
-     *
-     * @param prefs
-     *         A {@link Preferences} instance that might be used to retrieve the current
-     *         {@link Account}.
-     *
-     * @return The {@code Account} all displayed messages belong to.
-     */
-    //TODO: remove
-    /*private Account getCurrentAccount(Preferences prefs) {
-        Account account = null;
-        if (mQueryString != null && !mIntegrate && mAccountUuids != null &&
-                mAccountUuids.length == 1) {
-            String uuid = mAccountUuids[0];
-            account = prefs.getAccount(uuid);
-        } else if (mAccount != null) {
-            account = mAccount;
-        }
-
-        return account;
-    }*/
 
 
     class ActionModeCallback implements ActionMode.Callback {
@@ -2316,42 +2296,41 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         /**
-         * Disables menu options based on if the account supports it or not.
-         * It also checks the controller and for now the 'mode' the messagelist
-         * is operation in ( query or not ).
+         * Disables menu options not supported by the account type or current "search view".
          *
-         * @param mAccount Account to check capabilities of.
-         * @param menu Menu to adapt.
+         * @param account
+         *         The account to query for its capabilities.
+         * @param menu
+         *         The menu to adapt.
          */
-        private void setContextCapabilities(Account mAccount, Menu menu) {
-            /*
-             * TODO get rid of this when we finally split the messagelist into
-             * a folder content display and a search result display
-             */
+        private void setContextCapabilities(Account account, Menu menu) {
             if (!mSingleAccountMode) {
+                // We don't support cross-account copy/move operations right now
                 menu.findItem(R.id.move).setVisible(false);
                 menu.findItem(R.id.copy).setVisible(false);
 
+                //TODO: we could support the archive and spam operations if all selected messages
+                // belong to non-POP3 accounts
                 menu.findItem(R.id.archive).setVisible(false);
                 menu.findItem(R.id.spam).setVisible(false);
 
             } else {
                 // hide unsupported
-                if (!mController.isCopyCapable(mAccount)) {
+                if (!mController.isCopyCapable(account)) {
                     menu.findItem(R.id.copy).setVisible(false);
                 }
 
-                if (!mController.isMoveCapable(mAccount)) {
+                if (!mController.isMoveCapable(account)) {
                     menu.findItem(R.id.move).setVisible(false);
                     menu.findItem(R.id.archive).setVisible(false);
                     menu.findItem(R.id.spam).setVisible(false);
                 }
 
-                if (!mAccount.hasArchiveFolder()) {
+                if (!account.hasArchiveFolder()) {
                     menu.findItem(R.id.archive).setVisible(false);
                 }
 
-                if (!mAccount.hasSpamFolder()) {
+                if (!account.hasSpamFolder()) {
                     menu.findItem(R.id.spam).setVisible(false);
                 }
             }
@@ -2481,8 +2460,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     /**
-     * We need to do some special clean up when leaving a remote search result screen.  If no remote search is
-     * in progress, this method does nothing special.
+     * We need to do some special clean up when leaving a remote search result screen. If no
+     * remote search is in progress, this method does nothing special.
      */
     @Override
     public void onStop() {
