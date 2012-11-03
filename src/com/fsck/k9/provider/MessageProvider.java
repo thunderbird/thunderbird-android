@@ -1023,7 +1023,8 @@ public class MessageProvider extends ContentProvider {
 
         // launch command to delete the message
         if ((myAccount != null) && (msg != null)) {
-            MessagingController.getInstance(K9.app).deleteMessages(new Message[] { msg }, null);
+            MessagingController controller = MessagingController.getInstance(K9.app);
+            controller.deleteMessages(Collections.singletonList(msg), null);
         }
 
         // FIXME return the actual number of deleted messages

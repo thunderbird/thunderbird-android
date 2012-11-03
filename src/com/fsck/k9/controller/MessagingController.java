@@ -43,7 +43,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.NotificationBuilder;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
@@ -2556,22 +2555,20 @@ public class MessagingController implements Runnable {
         processPendingCommands(account);
     }
 
-    public void setFlag(
-        final Message[] messages,
-        final Flag flag,
-        final boolean newState) {
+    public void setFlag(final List<Message> messages, final Flag flag, final boolean newState) {
+
         actOnMessages(messages, new MessageActor() {
             @Override
             public void act(final Account account, final Folder folder,
-            final List<Message> messages) {
-                setFlag(account, folder.getName(), messages.toArray(EMPTY_MESSAGE_ARRAY), flag,
+                    final List<Message> accountMessages) {
+
+                setFlag(account, folder.getName(), accountMessages.toArray(EMPTY_MESSAGE_ARRAY), flag,
                         newState);
             }
-
         });
     }
 
-    public void setFlagForThreads(final Message[] messages, final Flag flag,
+    public void setFlagForThreads(final List<Message> messages, final Flag flag,
             final boolean newState) {
 
         actOnMessages(messages, new MessageActor() {
@@ -2847,14 +2844,15 @@ public class MessagingController implements Runnable {
                                 false, true)) {
                             if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
                                 message.setFlag(Flag.SEEN, true);
-                                setFlag(new Message[] { message }, Flag.SEEN, true);
+                                setFlag(Collections.singletonList((Message) message),
+                                        Flag.SEEN, true);
                             }
                         }
                         return;
                     }
                     if (!message.isSet(Flag.SEEN)) {
                         message.setFlag(Flag.SEEN, true);
-                        setFlag(new Message[] { message }, Flag.SEEN, true);
+                        setFlag(Collections.singletonList((Message) message), Flag.SEEN, true);
                     }
 
                     for (MessagingListener l : getListeners(listener)) {
@@ -3427,40 +3425,52 @@ public class MessagingController implements Runnable {
             return false;
         }
     }
-    public void moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
-                             final MessagingListener listener) {
+    public void moveMessages(final Account account, final String srcFolder,
+            final List<Message> messages, final String destFolder,
+            final MessagingListener listener) {
+
         for (Message message : messages) {
             suppressMessage(account, srcFolder, message);
         }
+
         putBackground("moveMessages", null, new Runnable() {
             @Override
             public void run() {
-                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false, listener);
+                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false,
+                        listener);
             }
         });
     }
 
-    public void moveMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
-                            final MessagingListener listener) {
-        moveMessages(account, srcFolder, new Message[] { message }, destFolder, listener);
+    public void moveMessage(final Account account, final String srcFolder, final Message message,
+            final String destFolder, final MessagingListener listener) {
+
+        moveMessages(account, srcFolder, Collections.singletonList(message), destFolder, listener);
     }
 
-    public void copyMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
-                             final MessagingListener listener) {
+    public void copyMessages(final Account account, final String srcFolder,
+            final List<Message> messages, final String destFolder,
+            final MessagingListener listener) {
+
         putBackground("copyMessages", null, new Runnable() {
             @Override
             public void run() {
-                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, true, listener);
+                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, true,
+                        listener);
             }
         });
     }
-    public void copyMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
-                            final MessagingListener listener) {
-        copyMessages(account, srcFolder, new Message[] { message }, destFolder, listener);
+
+    public void copyMessage(final Account account, final String srcFolder, final Message message,
+            final String destFolder, final MessagingListener listener) {
+
+        copyMessages(account, srcFolder, Collections.singletonList(message), destFolder, listener);
     }
 
-    private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder, final Message[] inMessages,
-            final String destFolder, final boolean isCopy, MessagingListener listener) {
+    private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder,
+            final List<Message> inMessages, final String destFolder, final boolean isCopy,
+            MessagingListener listener) {
+
         try {
             Map<String, String> uidMap = new HashMap<String, String>();
             Store localStore = account.getLocalStore();
@@ -3571,7 +3581,7 @@ public class MessagingController implements Runnable {
             if (uid != null) {
                 Message message = localFolder.getMessage(uid);
                 if (message != null) {
-                    deleteMessages(new Message[] { message }, null);
+                    deleteMessages(Collections.singletonList(message), null);
                 }
             }
         } catch (MessagingException me) {
@@ -3581,7 +3591,7 @@ public class MessagingController implements Runnable {
         }
     }
 
-    public void deleteThreads(final Message[] messages) {
+    public void deleteThreads(final List<Message> messages) {
         actOnMessages(messages, new MessageActor() {
 
             @Override
@@ -3632,20 +3642,21 @@ public class MessagingController implements Runnable {
         return messagesInThreads;
     }
 
-    public void deleteMessages(final Message[] messages, final MessagingListener listener) {
+    public void deleteMessages(final List<Message> messages, final MessagingListener listener) {
         actOnMessages(messages, new MessageActor() {
 
             @Override
             public void act(final Account account, final Folder folder,
-            final List<Message> messages) {
-                for (Message message : messages) {
+            final List<Message> accountMessages) {
+                for (Message message : accountMessages) {
                     suppressMessage(account, folder.getName(), message);
                 }
 
                 putBackground("deleteMessages", null, new Runnable() {
                     @Override
                     public void run() {
-                        deleteMessagesSynchronous(account, folder.getName(), messages.toArray(EMPTY_MESSAGE_ARRAY), listener);
+                        deleteMessagesSynchronous(account, folder.getName(),
+                                accountMessages.toArray(EMPTY_MESSAGE_ARRAY), listener);
                     }
                 });
             }
@@ -4905,7 +4916,7 @@ public class MessagingController implements Runnable {
 
     }
 
-    private void actOnMessages(Message[] messages, MessageActor actor) {
+    private void actOnMessages(List<Message> messages, MessageActor actor) {
         Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
 
         for (Message message : messages) {

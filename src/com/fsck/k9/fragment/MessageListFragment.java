@@ -384,7 +384,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * chosen messages between user interactions (eg. Selecting a folder for
      * move operation)
      */
-    private Message[] mActiveMessages;
+    private List<Message> mActiveMessages;
 
     /* package visibility for faster inner class access */
     MessageHelper mMessageHelper;
@@ -1065,10 +1065,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void onDelete(Message message) {
-        onDelete(new Message[] { message });
+        onDelete(Collections.singletonList(message));
     }
 
-    private void onDelete(Message[] messages) {
+    private void onDelete(List<Message> messages) {
         if (mThreadedList) {
             mController.deleteThreads(messages);
         } else {
@@ -1090,13 +1090,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
 
             final String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-            final Message[] messages = mActiveMessages;
+            final List<Message> messages = mActiveMessages;
 
             if (destFolderName != null) {
 
                 mActiveMessages = null; // don't need it any more
 
-                final Account account = messages[0].getFolder().getAccount();
+                final Account account = messages.get(0).getFolder().getAccount();
                 account.setLastSelectedFolderName(destFolderName);
 
                 switch (requestCode) {
@@ -1130,7 +1130,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             case R.id.dialog_confirm_spam: {
                 String title = getString(R.string.dialog_confirm_spam_title);
 
-                int selectionSize = mActiveMessages.length;
+                int selectionSize = mActiveMessages.size();
                 String message = getResources().getQuantityString(
                         R.plurals.dialog_confirm_spam_message, selectionSize,
                         Integer.valueOf(selectionSize));
@@ -1937,11 +1937,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void setFlag(Message message, final Flag flag, final boolean newState) {
-        setFlag(new Message[] { message }, flag, newState);
+        setFlag(Collections.singletonList(message), flag, newState);
     }
 
-    private void setFlag(Message[] messages, final Flag flag, final boolean newState) {
-        if (messages.length == 0) {
+    private void setFlag(List<Message> messages, final Flag flag, final boolean newState) {
+        if (messages.size() == 0) {
             return;
         }
 
@@ -1955,40 +1955,44 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void onMove(Message message) {
-        onMove(new Message[] { message });
+        onMove(Collections.singletonList(message));
     }
 
     /**
      * Display the message move activity.
      *
-     * @param holders
+     * @param messages
      *            Never {@code null}.
      */
-    private void onMove(Message[] messages) {
+    private void onMove(List<Message> messages) {
         if (!checkCopyOrMovePossible(messages, FolderOperation.MOVE)) {
             return;
         }
 
-        final Folder folder = messages.length == 1 ? messages[0].getFolder() : mCurrentFolder.folder;
+        final Folder folder = (messages.size() == 1) ?
+                messages.get(0).getFolder() : mCurrentFolder.folder;
+
         displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folder, messages);
     }
 
     private void onCopy(Message message) {
-        onCopy(new Message[] { message });
+        onCopy(Collections.singletonList(message));
     }
 
     /**
      * Display the message copy activity.
      *
-     * @param holders
+     * @param messages
      *            Never {@code null}.
      */
-    private void onCopy(Message[] messages) {
+    private void onCopy(List<Message> messages) {
         if (!checkCopyOrMovePossible(messages, FolderOperation.COPY)) {
             return;
         }
 
-        final Folder folder = messages.length == 1 ? messages[0].getFolder() : mCurrentFolder.folder;
+        final Folder folder = (messages.size() == 1) ?
+                messages.get(0).getFolder() : mCurrentFolder.folder;
+
         displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folder, messages);
     }
 
@@ -2008,7 +2012,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *            {@code null}.
      * @see #startActivityForResult(Intent, int)
      */
-    private void displayFolderChoice(final int requestCode, final Folder folder, final Message[] messages) {
+    private void displayFolderChoice(final int requestCode, final Folder folder, final List<Message> messages) {
         final Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, folder.getAccount().getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
@@ -2019,10 +2023,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void onArchive(final Message message) {
-        onArchive(new Message[] { message });
+        onArchive(Collections.singletonList(message));
     }
 
-    private void onArchive(final Message[] messages) {
+    private void onArchive(final List<Message> messages) {
         Map<Account, List<Message>> messagesByAccount = groupMessagesByAccount(messages);
 
         for (Entry<Account, List<Message>> entry : messagesByAccount.entrySet()) {
@@ -2030,12 +2034,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             String archiveFolder = account.getArchiveFolderName();
 
             if (!K9.FOLDER_NONE.equals(archiveFolder)) {
-                move(entry.getValue().toArray(new Message[0]), archiveFolder);
+                move(entry.getValue(), archiveFolder);
             }
         }
     }
 
-    private Map<Account, List<Message>> groupMessagesByAccount(final Message[] messages) {
+    private Map<Account, List<Message>> groupMessagesByAccount(final List<Message> messages) {
         Map<Account, List<Message>> messagesByAccount = new HashMap<Account, List<Message>>();
         for (Message message : messages) {
             Account account = message.getFolder().getAccount();
@@ -2052,14 +2056,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void onSpam(Message message) {
-        onSpam(new Message[] { message });
+        onSpam(Collections.singletonList(message));
     }
 
     /**
      * @param holders
      *            Never {@code null}.
      */
-    private void onSpam(Message[] messages) {
+    private void onSpam(List<Message> messages) {
         if (K9.confirmSpam()) {
             // remember the message selection for #onCreateDialog(int)
             mActiveMessages = messages;
@@ -2069,7 +2073,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
     }
 
-    private void onSpamConfirmed(Message[] messages) {
+    private void onSpamConfirmed(List<Message> messages) {
         Map<Account, List<Message>> messagesByAccount = groupMessagesByAccount(messages);
 
         for (Entry<Account, List<Message>> entry : messagesByAccount.entrySet()) {
@@ -2077,7 +2081,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             String spamFolder = account.getSpamFolderName();
 
             if (!K9.FOLDER_NONE.equals(spamFolder)) {
-                move(entry.getValue().toArray(new Message[0]), spamFolder);
+                move(entry.getValue(), spamFolder);
             }
         }
     }
@@ -2096,8 +2100,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *
      * @return <code>true</code> if operation is possible
      */
-    private boolean checkCopyOrMovePossible(final Message[] messages, final FolderOperation operation) {
-        if (messages.length == 0) {
+    private boolean checkCopyOrMovePossible(final List<Message> messages,
+            final FolderOperation operation) {
+
+        if (messages.size() == 0) {
             return false;
         }
 
@@ -2130,7 +2136,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param holders Never {@code null}.
      * @param destination Never {@code null}.
      */
-    private void copy(Message[] messages, final String destination) {
+    private void copy(List<Message> messages, final String destination) {
         copyOrMove(messages, destination, FolderOperation.COPY);
     }
 
@@ -2140,7 +2146,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param holders Never {@code null}.
      * @param destination Never {@code null}.
      */
-    private void move(Message[] messages, final String destination) {
+    private void move(List<Message> messages, final String destination) {
         copyOrMove(messages, destination, FolderOperation.MOVE);
     }
 
@@ -2158,7 +2164,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param operation
      *            Never {@code null}.
      */
-    private void copyOrMove(Message[] messages, final String destination, final FolderOperation operation) {
+    private void copyOrMove(List<Message> messages, final String destination, final FolderOperation operation) {
         if (K9.FOLDER_NONE.equalsIgnoreCase(destination)) {
             return;
         }
@@ -2197,11 +2203,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         if (operation == FolderOperation.MOVE) {
-            mController.moveMessages(account, folderName, outMessages.toArray(new Message[outMessages.size()]), destination,
-                                     null);
+            mController.moveMessages(account, folderName, outMessages, destination, null);
         } else {
-            mController.copyMessages(account, folderName, outMessages.toArray(new Message[outMessages.size()]), destination,
-                                     null);
+            mController.copyMessages(account, folderName, outMessages, destination, null);
         }
     }
 
@@ -2375,7 +2379,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            Message[] messages = getCheckedMessages();
+            List<Message> messages = getCheckedMessages();
 
             /*
              * In the following we assume that we can't move or copy
@@ -2596,15 +2600,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         return null;
     }
 
-    private Message[] getCheckedMessages() {
-        Message[] messages = new Message[mSelected.size()];
-        int out = 0;
+    private List<Message> getCheckedMessages() {
+        List<Message> messages = new ArrayList<Message>(mSelected.size());
         for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
             Cursor cursor = (Cursor) mAdapter.getItem(position);
             long id = cursor.getLong(ID_COLUMN);
 
             if (mSelected.contains(id)) {
-                messages[out++] = getMessageAtPosition(position);
+                messages.add(getMessageAtPosition(position));
             }
         }
 
@@ -2614,7 +2617,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onDelete() {
         Message message = getSelectedMessage();
         if (message != null) {
-            onDelete(new Message[] { message });
+            onDelete(Collections.singletonList(message));
         }
     }
 
