@@ -6,9 +6,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Future;
 
@@ -2021,13 +2023,32 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void onArchive(final Message[] messages) {
-        final String folderName = messages[0].getFolder().getAccount().getArchiveFolderName();
-        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
-            return;
+        Map<Account, List<Message>> messagesByAccount = groupMessagesByAccount(messages);
+
+        for (Entry<Account, List<Message>> entry : messagesByAccount.entrySet()) {
+            Account account = entry.getKey();
+            String archiveFolder = account.getArchiveFolderName();
+
+            if (!K9.FOLDER_NONE.equals(archiveFolder)) {
+                move(entry.getValue().toArray(new Message[0]), archiveFolder);
+            }
         }
-        // TODO one should separate messages by account and call move afterwards
-        // (because each account might have a specific Archive folder name)
-        move(messages, folderName);
+    }
+
+    private Map<Account, List<Message>> groupMessagesByAccount(final Message[] messages) {
+        Map<Account, List<Message>> messagesByAccount = new HashMap<Account, List<Message>>();
+        for (Message message : messages) {
+            Account account = message.getFolder().getAccount();
+
+            List<Message> msgList = messagesByAccount.get(account);
+            if (msgList == null) {
+                msgList = new ArrayList<Message>();
+                messagesByAccount.put(account, msgList);
+            }
+
+            msgList.add(message);
+        }
+        return messagesByAccount;
     }
 
     private void onSpam(Message message) {
@@ -2048,18 +2069,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
     }
 
-    /**
-     * @param holders
-     *            Never {@code null}.
-     */
     private void onSpamConfirmed(Message[] messages) {
-        final String folderName = messages[0].getFolder().getAccount().getSpamFolderName();
-        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
-            return;
+        Map<Account, List<Message>> messagesByAccount = groupMessagesByAccount(messages);
+
+        for (Entry<Account, List<Message>> entry : messagesByAccount.entrySet()) {
+            Account account = entry.getKey();
+            String spamFolder = account.getSpamFolderName();
+
+            if (!K9.FOLDER_NONE.equals(spamFolder)) {
+                move(entry.getValue().toArray(new Message[0]), spamFolder);
+            }
         }
-        // TODO one should separate messages by account and call move afterwards
-        // (because each account might have a specific Spam folder name)
-        move(messages, folderName);
     }
 
     private static enum FolderOperation {
