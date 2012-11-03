@@ -2167,7 +2167,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param operation
      *         Specifies what operation to perform. Never {@code null}.
      */
-    private void copyOrMove(List<Message> messages, final String destination, final FolderOperation operation) {
+    private void copyOrMove(List<Message> messages, final String destination,
+            final FolderOperation operation) {
+
         if (K9.FOLDER_NONE.equalsIgnoreCase(destination)) {
             return;
         }
@@ -2181,27 +2183,36 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         for (Message message : messages) {
             if (first) {
                 first = false;
+
                 folderName = message.getFolder().getName();
                 account = message.getFolder().getAccount();
-                if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(account)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(account))) {
-                    // account is not copy/move capable
+
+                if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(account)) ||
+                        (operation == FolderOperation.COPY &&
+                        !mController.isCopyCapable(account))) {
+
+                    // Account is not copy/move capable
                     return;
                 }
-            } else if (!account.equals(message.getFolder().getAccount())
-                       || !folderName.equals(message.getFolder().getName())) {
-                // make sure all messages come from the same account/folder?
+            } else if (!message.getFolder().getAccount().equals(account) ||
+                    !message.getFolder().getName().equals(folderName)) {
+
+                // Make sure all messages come from the same account/folder
                 return;
             }
-            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) || (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
-                final Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
-                                                   Toast.LENGTH_LONG);
-                toast.show();
+
+            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) ||
+                    (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
+
+                Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
+                        Toast.LENGTH_LONG).show();
 
                 // XXX return meaningful error value?
 
                 // message isn't synchronized
                 return;
             }
+
             outMessages.add(message);
         }
 
