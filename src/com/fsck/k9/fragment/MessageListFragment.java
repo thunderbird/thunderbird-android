@@ -112,7 +112,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         MessageColumns.FOLDER_ID,
         MessageColumns.PREVIEW,
         MessageColumns.THREAD_ROOT,
-        MessageColumns.THREAD_PARENT,
         SpecialColumns.ACCOUNT_UUID,
         SpecialColumns.FOLDER_NAME,
 
@@ -132,10 +131,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int FOLDER_ID_COLUMN = 10;
     private static final int PREVIEW_COLUMN = 11;
     private static final int THREAD_ROOT_COLUMN = 12;
-    private static final int THREAD_PARENT_COLUMN = 13;
-    private static final int ACCOUNT_UUID_COLUMN = 14;
-    private static final int FOLDER_NAME_COLUMN = 15;
-    private static final int THREAD_COUNT_COLUMN = 16;
+    private static final int ACCOUNT_UUID_COLUMN = 13;
+    private static final int FOLDER_NAME_COLUMN = 14;
+    private static final int THREAD_COUNT_COLUMN = 15;
 
     private static final String[] PROJECTION = Utility.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
