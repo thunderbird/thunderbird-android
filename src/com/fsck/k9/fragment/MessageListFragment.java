@@ -340,6 +340,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private int mUnreadMessageCount = 0;
 
     private Cursor[] mCursors;
+    private int mUniqueIdColumn;
 
     /**
      * Stores the name of the folder that we want to open as soon as possible after load.
@@ -1630,8 +1631,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             int maybeBoldTypeface = (read) ? Typeface.NORMAL : Typeface.BOLD;
 
-            long id = cursor.getLong(ID_COLUMN);
-            boolean selected = mSelected.contains(id);
+            long uniqueId = cursor.getLong(mUniqueIdColumn);
+            boolean selected = mSelected.contains(uniqueId);
 
             if (selected) {
                 holder.chip.setBackgroundDrawable(account.getCheckmarkChip().drawable());
@@ -1819,8 +1820,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mSelectedCount = 0;
             for (int i = 0, end = mAdapter.getCount(); i < end; i++) {
                 Cursor cursor = (Cursor) mAdapter.getItem(i);
-                long id = cursor.getLong(ID_COLUMN);
-                mSelected.add(id);
+                long uniqueId = cursor.getLong(mUniqueIdColumn);
+                mSelected.add(uniqueId);
 
                 if (mThreadedList) {
                     int threadCount = cursor.getInt(THREAD_COUNT_COLUMN);
@@ -1855,13 +1856,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
-        long id = cursor.getLong(ID_COLUMN);
+        long uniqueId = cursor.getLong(mUniqueIdColumn);
 
-        boolean selected = mSelected.contains(id);
+        boolean selected = mSelected.contains(uniqueId);
         if (!selected) {
-            mSelected.add(id);
+            mSelected.add(uniqueId);
         } else {
-            mSelected.remove(id);
+            mSelected.remove(uniqueId);
         }
 
         int selectedCountDelta = 1;
@@ -1913,9 +1914,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         for (int i = 0, end = mAdapter.getCount(); i < end; i++) {
             Cursor cursor = (Cursor) mAdapter.getItem(i);
-            long id = cursor.getLong(ID_COLUMN);
+            long uniqueId = cursor.getLong(mUniqueIdColumn);
 
-            if (mSelected.contains(id)) {
+            if (mSelected.contains(uniqueId)) {
                 String flags = cursor.getString(FLAGS_COLUMN);
 
                 if (!flags.contains(Flag.FLAGGED.name())) {
@@ -2275,9 +2276,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
                 Cursor cursor = (Cursor) mAdapter.getItem(position);
-                long id = cursor.getLong(ID_COLUMN);
+                long uniqueId = cursor.getLong(mUniqueIdColumn);
 
-                if (mSelected.contains(id)) {
+                if (mSelected.contains(uniqueId)) {
                     String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
                     accountUuids.add(accountUuid);
 
@@ -2600,9 +2601,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         List<Message> messages = new ArrayList<Message>(mSelected.size());
         for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
             Cursor cursor = (Cursor) mAdapter.getItem(position);
-            long id = cursor.getLong(ID_COLUMN);
+            long uniqueId = cursor.getLong(mUniqueIdColumn);
 
-            if (mSelected.contains(id)) {
+            if (mSelected.contains(uniqueId)) {
                 messages.add(getMessageAtPosition(position));
             }
         }
@@ -2803,8 +2804,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (mCursors.length > 1) {
             mCursors[loader.getId()] = data;
             cursor = new MergeCursorWithUniqueId(mCursors, getComparator());
+            mUniqueIdColumn = cursor.getColumnIndex("_id");
         } else {
             cursor = data;
+            mUniqueIdColumn = ID_COLUMN;
         }
 
         cleanupSelected(cursor);
@@ -2819,9 +2822,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         Set<Long> selected = new HashSet<Long>();
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            long id = cursor.getLong(ID_COLUMN);
-            if (mSelected.contains(id)) {
-                selected.add(id);
+            long uniqueId = cursor.getLong(mUniqueIdColumn);
+            if (mSelected.contains(uniqueId)) {
+                selected.add(uniqueId);
             }
         }
 
