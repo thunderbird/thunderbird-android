@@ -398,6 +398,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 onEditPrefs();
                 return true;
             }
+            case R.id.search: {
+                mMessageListFragment.onSearchRequested();
+                return true;
+            }
             case R.id.search_remote: {
                 mMessageListFragment.onRemoteSearch();
                 return true;
@@ -453,6 +457,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             return;
         }
 
+        menu.findItem(R.id.search).setVisible(false);
         menu.findItem(R.id.search_remote).setVisible(false);
 
         if (mMessageListFragment == null) {
@@ -482,6 +487,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 }
 
             } else {
+                menu.findItem(R.id.search).setVisible(true);
                 menu.findItem(R.id.folder_settings).setVisible(true);
                 menu.findItem(R.id.account_settings).setVisible(true);
 
@@ -606,7 +612,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false, false);
 
-        addMessageListFragment(fragment);
+        addMessageListFragment(fragment, true);
     }
 
     @Override
@@ -655,14 +661,16 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public void remoteSearch(String searchAccount, String searchFolder, String queryString) {
         MessageListFragment fragment = MessageListFragment.newInstance(mSearch, false, true);
 
-        addMessageListFragment(fragment);
+        mMenu.findItem(R.id.search_remote).setVisible(false);
+        addMessageListFragment(fragment, false);
     }
 
-    private void addMessageListFragment(MessageListFragment fragment) {
+    private void addMessageListFragment(MessageListFragment fragment, boolean addToBackStack) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         ft.replace(R.id.message_list_container, fragment);
-        ft.addToBackStack(null);
+        if (addToBackStack)
+            ft.addToBackStack(null);
 
         mMessageListFragment = fragment;
         ft.commit();
@@ -693,6 +701,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         tmpSearch.or(new SearchCondition(Searchfield.ID, Attribute.EQUALS, String.valueOf(threadRootId)));
 
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false, false);
-        addMessageListFragment(fragment);
+        addMessageListFragment(fragment, true);
     }
 }

@@ -10,7 +10,7 @@
     <string name="beta_app_name">K-9 Mail BETA</string>
 
     <string name="shortcuts_title">K-9 fiókok</string>
-    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+    <string name="unread_widget_label">K-9 olvasatlan</string>
 
     <string name="remote_control_label">K-9 Mail távoli vezérlés</string>
     <string name="remote_control_desc">Lehetővé teszi, hogy az alkalmazás módosítsa a K9 mail beállításait.</string>
@@ -56,16 +56,16 @@
     <!-- === App Store-specific strings ======================================================= -->
 
     <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
-    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+    <string name="open_market">Play áruház megnyitása</string>
 
 
 
     <!-- === General strings ================================================================== -->
 
-    <!-- NEW: <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>-->
-    <!-- NEW: <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>-->
-    <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
-    <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
+    <string name="app_authors_fmt">Készítők: <xliff:g id="app_authors">%s</xliff:g></string>
+    <string name="app_revision_fmt">Verzió információk: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_libraries">A következő könyvtárakat használjuk: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_emoji_icons">Emoji ikonok: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">Levélmellékletek megnyitása</string>
     <string name="read_attachment_desc">Az alkalmazás engedélyezi a levélmellékletek megnyitását.</string>
@@ -74,7 +74,7 @@
     <string name="delete_messages_label">Levelek törlése</string>
     <string name="delete_messages_desc">Az alkalmazás engedélyezi az emailek törlését.</string>
 
-    <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_title_fmt">A <xliff:g id="app_name">%s</xliff:g> névjegye</string>
     <string name="accounts_title">Fióklista</string>
     <string name="advanced">Haladó beállítások</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
@@ -114,7 +114,7 @@
     <string name="forward_action">Továbbítás</string>
     <string name="move_action">Áthelyez</string>
     <string name="continue_action">Folytatás</string>
-    <!-- NEW: <string name="back_action">Back</string>-->
+    <string name="back_action">Vissza</string>
     <string name="done_action">Rendben</string>
     <string name="discard_action">Mégsem</string>
     <string name="save_draft_action">Piszkozat</string>
@@ -124,7 +124,7 @@
     <string name="send_messages_action">Üzenet küldése</string>
     <string name="list_folders_action">Mappa lista</string>
     <string name="refresh_folders_action">Mappák frissítése</string>
-    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
+    <string name="filter_folders_action">Mappa keresése</string>
     <string name="mark_all_as_read_action">Mindent olvasottnak jelöl</string>
     <string name="add_account_action">Új fiók</string>
     <string name="compose_action">Levélírás</string>
@@ -155,9 +155,9 @@
 
     <string name="mark_as_unread_action">Olvasatlannak jelöl</string>
     <string name="add_cc_bcc_action">Másolatot kap</string>
-    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
-    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
-    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
+    <string name="read_receipt">Olvasási jelentés</string>
+    <string name="read_receipt_enabled">Olvasási jelentés lesz kérve</string>
+    <string name="read_receipt_disabled">Nem lesz Olvasási jelentés lesz kérve</string>
     <string name="add_attachment_action">Melléklet</string>
     <string name="add_attachment_action_image">Kép-melléklet csatolása</string>
     <string name="add_attachment_action_video">Videó-melléklet csatolása</string>
@@ -240,7 +240,7 @@
     <string name="message_compose_bcc_hint">Titkos másolat</string>
     <string name="message_compose_subject_hint">Tárgy</string>
     <string name="message_compose_content_hint">Levél szövege</string>
-    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
+    <string name="message_compose_signature_hint">Aláírás</string>
     <string name="message_compose_quote_header_separator">-------- Eredeti levél --------</string>
     <string name="message_compose_quote_header_subject">Tárgy:</string>
     <string name="message_compose_quote_header_send_date">Küldve:</string>
@@ -251,12 +251,12 @@
     <string name="message_compose_error_no_recipients">Legalább egy címzetted adjon meg.</string>
     <string name="error_contact_address_not_found">E-mail cím nem található.</string>
     <string name="message_compose_attachments_skipped_toast">Néhány mellékletet nem lehet továbbítani, mert nem lettek letöltve.</string>
-    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <string name="message_compose_show_quoted_text_action">Idézet</string>
+    <string name="message_compose_description_add_to">Címzett hozzáadása (To)</string>
+    <string name="message_compose_description_add_cc">Címzett hozzáadása (CC)</string>
+    <string name="message_compose_description_add_bcc">Címzett hozzáadása (BCC)</string>
+    <string name="message_compose_description_delete_quoted_text">Idézett szöveg törlése</string>
+    <string name="message_compose_description_edit_quoted_text">Idézett szöveg szerkesztése</string>
 
     <string name="message_view_from_format">Feladó: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Címzett:</string>
@@ -271,13 +271,13 @@
     <string name="message_view_status_attachment_saved">%s mellékletei a SD kártyára mentve.</string>
     <string name="message_view_status_attachment_not_saved">Nem lehet a mellékletet az SD kártyára menteni.</string>
     <string name="message_view_show_pictures_action">Képek mutatása</string>
-    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
-    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
+    <string name="message_view_show_message_action">Üzenet megjelenítése</string>
+    <string name="message_view_show_attachments_action">Csatolmányok megjelenítése</string>
+    <string name="message_view_show_more_attachments_action">Egyéb&#8230;</string>
     <string name="message_view_fetching_attachment_toast">Melléklet letöltése.</string>
     <string name="message_view_no_viewer">%s nincs társítva semmihez.</string>
     <string name="message_view_download_remainder">Teljes üzenet letöltése</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Letöltés…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Nincs minden fejléc letöltve. Válassza a \"Minden levélfejléc letöltése\" opciót a bejövő szerverbeállításoknál.</string>
@@ -310,32 +310,32 @@
     <string name="global_settings_messageview_fixedwidth_summary">Fix szélességű betűtípus használata a sima szöveges üzeneteknél</string>
     <string name="global_settings_messageview_return_to_list_label">Visszalépés törlés után</string>
     <string name="global_settings_messageview_return_to_list_summary">Törlés után visszalép a levelek listájára</string>
-    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
-    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
+    <string name="global_settings_messageview_show_next_label">Mutassa a következő üzenetet törlés után</string>
+    <string name="global_settings_messageview_show_next_summary">A törlés után alapértelmezetten a következő üzenetet mutatja</string>
 
     <string name="global_settings_confirm_actions_title">Parancsok megerősítése</string>
     <string name="global_settings_confirm_actions_summary">Üzenet megjelenítése a parancs végrehatása előtt</string>
     <string name="global_settings_confirm_action_archive">Archivál</string>
     <string name="global_settings_confirm_action_delete">Törlés (csak üzenetek nézet)</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
+    <string name="global_settings_confirm_action_delete_starred">Csillagozott törlése (csak olvasható üzenet)</string>
     <string name="global_settings_confirm_action_spam">Levélszemét</string>
     <string name="global_settings_confirm_action_mark_all_as_read">Összes megjelölése olvasottként</string>
     <string name="global_settings_confirm_action_send">Küldés</string>
 
-    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+    <string name="global_settings_notification_hide_subject_title">Tárgy elrejtése az értesítésekben</string>
+    <string name="global_settings_notification_hide_subject_never">Soha</string>
+    <string name="global_settings_notification_hide_subject_when_locked">Ha a készülék le van zárva</string>
+    <string name="global_settings_notification_hide_subject_always">Mindig</string>
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
+    <string name="global_settings_mark_read">Olvasottnak/olvasatlannak jelöl</string>
+    <string name="global_settings_delete">Törlés</string>
+    <string name="global_settings_archive">Áthelyezés az archívumba</string>
+    <string name="global_settings_archive_disabled_reason">Nincs archívum mappa.</string>
+    <string name="global_settings_move">Áthelyezés</string>
     <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_unselect">Kijelölés megszüntetése</string>
 
     <string name="quiet_time">Csendes mód</string>
     <string name="quiet_time_description">Éjszakára kikapcsolja a jelzőhangokat, rezgést, villogást</string>
@@ -406,7 +406,7 @@
     <string name="account_setup_expunge_policy_on_poll">Frissítés után</string>
     <string name="account_setup_expunge_policy_manual">Kézileg</string>
 
-    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
+    <string name="account_setup_incoming_autodetect_namespace_label">IMAP névtér automatikus felismerése</string>
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP útvonal prefix</string>
 
     <string name="drafts_folder_label">Piszkozatok mappája</string>
@@ -520,8 +520,8 @@
     <string name="account_settings_notification_opens_unread_summary">Értesítésre kattintva megnyitja az olvasatlan üzeneteket</string>
     <string name="account_settings_notification_unread_count_label">Olvasatlanok kijelzése</string>
     <string name="account_settings_notification_unread_count_summary">Olvasatlan levelek száma az állapotsoron.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
+    <string name="account_settings_mark_message_as_read_on_view_label">Üzenet megjelölése olvasottnak megnyitáskor</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Olvasottnak jelöli az üzenetet, ha megnézik</string>
 
     <string name="account_settings_enable_move_buttons_label">Művelet gombok megjelenítése</string>
     <string name="account_settings_enable_move_buttons_summary">Mutassa a Mozgatás, Archív és Levélszemét gombokat</string>
@@ -533,8 +533,8 @@
 
     <string name="account_settings_composition">Levelek küldése</string>
 
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+    <string name="account_settings_default_quoted_text_shown_label">Válasznál eredeti levél megjelenítése</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Amikor választ ír, az eredeti üzenet is látható lesz a válszban.</string>
 
     <string name="account_settings_reply_after_quote_label">Válasz az idézet után</string>
     <string name="account_settings_reply_after_quote_summary">Válaszlevélnél az eredeti üzenet fent jelenik meg</string>
@@ -747,7 +747,7 @@
 
     <string name="sort_by">Rendezés…</string>
     <string name="sort_by_date">Dátum</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
+    <string name="sort_by_arrival">Érkezés</string>
     <string name="sort_by_sender">Feladó</string>
     <string name="sort_by_subject">Tárgy</string>
     <string name="sort_by_flag">Csillag</string>
@@ -775,14 +775,14 @@
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Kulcs elfogadva</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs elutasítva</string>
 
-    <!-- NEW: <string name="message_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AF - Forward\u000AJ or P - Previous
-    Message\u000AK, N - Next Message\u000AM - Move\u000AY - Copy\u000AZ - Zoom Out\u000AShift-Z -
-    Zoom In\u000aG - Star</string>
-    <string name="message_list_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aM -
-    Move\u000AY - Copy\u000AG - Star\u000AO - Sort type\u000AI - Sort order\u000AQ
-    - Return to Folders\u000AS - Select/deselect</string>-->
+    <string name="message_help_key">Del (or D) - Törlés\u000AR -
+    Válasz\u000AA - Válasz mindenkinek\u000AF - Továbbít\u000AJ or P - Előző
+    üzenet\u000AK, N - Kövtkető üzenet\u000AM - Move\u000AY - Másolás\u000AZ - Kicsinyít\u000AShift-Z -
+    Nagyít\u000aG - Csillagoz</string>
+    <string name="message_list_help_key">Del (or D) - Törlés\u000AR -
+    Válasz\u000AA - Válasz mindenkinek\u000AC - Írás\u000AF - Továbbít\u000aM -
+    Áthelyezés\u000AY - Násolás\u000AG - Csillagoz\u000AO - Rendezési típus\u000AI - Rendezési sorrend\u000AQ
+    - Vissza a mappákba\u000AS - Select/deselect</string>
 
     <!--NEW: <string name="folder_list_help_key">
     1 - Display only 1st Class folders\n
@@ -792,7 +792,7 @@
     Q - Return to Accounts\n
     S - Edit Account Settings</string>-->
 
-    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
+    <string name="folder_list_filter_hint">mappa neve</string>
 
     <string name="folder_list_display_mode_label">Mappák megjelenítése</string>
     <string name="folder_list_display_mode_all">Minen mappa</string>
@@ -827,7 +827,7 @@
     <string name="background_ops_always">Mindig</string>
     <string name="background_ops_enabled">"Ha a 'Háttéradatok' bekapcsolva"</string>
     <string name="background_ops_auto_sync">"Ha a 'Háttéradatok' és 'Auto-szink' bekapcsolva"</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">AMikor az \'Automatikus szinkronizáció\' be van kapcsolva</string>
 
     <string name="no_message_seletected_toast">Nincs levél kiválasztva</string>
 
@@ -931,8 +931,8 @@
     <string name="font_size_message_view_date">Dátum</string>
     <string name="font_size_message_view_content">Üzenet szövege</string>
 
-    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
-    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
+    <string name="font_size_message_compose">Üzenet írása</string>
+    <string name="font_size_message_compose_input">Szöveg beviteli mezők</string>
 
     <string name="font_size_tiniest">Mini</string>
     <string name="font_size_tiny">Pici</string>
@@ -975,8 +975,8 @@
     <string name="save_or_discard_draft_message_dlg_title">Menti piszkozatként?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Menti vagy mégsem az üzenetet?</string>
 
-    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
-    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+    <string name="confirm_discard_draft_message_title">Üzenet elvetése?</string>
+    <string name="confirm_discard_draft_message">Valóban elveti az üzenetet?</string>
 
     <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>-->
     <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
@@ -1018,38 +1018,38 @@
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Nem lehet kapcsolódni.</string>
 
-    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
-    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
-    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
-    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
-    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
-    <!-- NEW: <string name="settings_import">Import settings</string>-->
+    <string name="import_export_action">Beállítások importálása és exportálása</string>
+    <string name="settings_export_account">Fiókbeállítások exportálása</string>
+    <string name="settings_export_all">Fiókok és beállítások exportálása</string>
+    <string name="settings_import_dialog_title">Importálás</string>
+    <string name="settings_export_dialog_title">Exportálás</string>
+    <string name="settings_import">Beállítások importálása</string>
     <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
-    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
-    <!-- NEW: <string name="settings_exporting">Exporting settings…</string>-->
-    <!-- NEW: <string name="settings_importing">Importing settings…</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Scanning file…</string>-->
-    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_success">
-        <item quantity="one">1 account</item>
-        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
-    <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
-    <!-- NEW: <string name="settings_export_failed_header">Export failed</string>-->
-    <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
-    <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
+    <string name="settings_import_global_settings">Általános beállítások</string>
+    <string name="settings_exporting">Beállítások exportálása…</string>
+    <string name="settings_importing">Beállítások importálása…</string>
+    <string name="settings_import_scanning_file">Fájl beolvasása…</string>
+    <string name="settings_export_success">Exportált beállítások mentve ide: <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Az általános beállítások importálva innen: <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">A(z) <xliff:g id="accounts">%s</xliff:g> importálva innen: <xliff:g id="filename">%s</xliff:g></string>
+    <plurals name="settings_import_success">
+        <item quantity="one">1 fiók</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> fiók</item>
+    </plurals>
+    <string name="settings_export_failure">Beállítások exportálása sikertelen</string>
+    <string name="settings_import_failure">Beállítások importálása sikertelen innen: <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success_header">Exportálás sikeresen befejezve</string>
+    <string name="settings_export_failed_header">Exportálás sikertelen</string>
+    <string name="settings_import_success_header">Importálás sikeresen befejezve</string>
+    <string name="settings_import_failed_header">Importálás sikertelen</string>
+    <string name="settings_import_activate_account_header">Fiók aktiválása</string>
     <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s</xliff:g>.</string>-->
-    <!-- NEW: <plurals name="settings_import_server_passwords">
-        <item quantity="one">server password</item>
-        <item quantity="other">server passwords</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
+    <plurals name="settings_import_server_passwords">
+        <item quantity="one">szerver jelszava</item>
+        <item quantity="other">szerver jelszavai</item>
+    </plurals>
+    <string name="settings_import_incoming_server">Bwjövő szerver (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">Kimenü szerver (<xliff:g id="hostname">%s</xliff:g>):</string>
     <!-- NEW: <plurals name="settings_import_setting_passwords">
         <item quantity="one">Setting password…</item>
         <item quantity="other">Setting passwords…</item>
@@ -1065,39 +1065,39 @@
     <string name="attachment_save_title">Csatolményok mentése</string>
     <string name="attachment_save_desc">Nincs fájlkezelő. Hova szeretné mentni a csatolmányt?</string>
 
-    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
-    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
-    <!-- NEW: <string name="manage_accounts_moving_message">Moving account…</string>-->
+    <string name="manage_accounts_move_up_action">Mozgatás fel</string>
+    <string name="manage_accounts_move_down_action">Mozgatás le</string>
+    <string name="manage_accounts_moving_message">Fiók mozgatása…</string>
 
     <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
 
-    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
-    <!-- NEW: <string name="close">Close</string>-->
+    <string name="import_dialog_error_title">Nincs fájlkezleő alkalmazás</string>
+    <string name="close">Bezárás</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_empty_message">Nincs szöveg</string>
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+    <string name="webview_contextmenu_link_view_action">Megnyit és megtekint</string>
+    <string name="webview_contextmenu_link_share_action">Link megosztása</string>
+    <string name="webview_contextmenu_link_copy_action">Link másolása a vágólapra</string>
+    <string name="webview_contextmenu_link_clipboard_label">Link</string>
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+    <string name="webview_contextmenu_image_title">Kép</string>
+    <string name="webview_contextmenu_image_view_action">Kép megtekintése</string>
+    <string name="webview_contextmenu_image_save_action">Kép mentése</string>
+    <string name="webview_contextmenu_image_download_action">Kép letöltése</string>
+    <string name="webview_contextmenu_image_copy_action">Kép URL-jének másolás a vágólapra</string>
+    <string name="webview_contextmenu_image_clipboard_label">Kép URL</string>
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+    <string name="webview_contextmenu_phone_call_action">Szám hívása</string>
+    <string name="webview_contextmenu_phone_save_action">Menés a névjegyekhez</string>
+    <string name="webview_contextmenu_phone_copy_action">Szám másolása a vágólapra</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Telefonszám</string>
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+    <string name="webview_contextmenu_email_send_action">Levél küldése</string>
+    <string name="webview_contextmenu_email_save_action">Mentés a névjegyekzeh</string>
+    <string name="webview_contextmenu_email_copy_action">E-mail cím másolása a vágólapra</string>
+    <string name="webview_contextmenu_email_clipboard_label">E-mail cím</string>
 
-    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+    <string name="image_saved_as">Kép mentése: \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">A kép mentése sikertelen.</string>
 </resources>

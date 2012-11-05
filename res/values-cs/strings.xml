@@ -544,7 +544,7 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
 
     <string name="account_settings_reply_after_quote_label">Odpovědět za citovaným textem</string>
-    <string name="account_settings_reply_after_quote_summary">Při odpovídání na zprávu se původní zpráva objeví ned vaší odpovědí.</string>
+    <string name="account_settings_reply_after_quote_summary">Při odpovídání na zprávu se původní zpráva objeví nad vaší odpovědí.</string>
 
     <!-- NEW: <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>-->
     <!-- NEW: <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>-->

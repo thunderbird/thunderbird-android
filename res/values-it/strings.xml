@@ -274,7 +274,7 @@ http://k9mail.googlecode.com/
     <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato sulla scheda SD.</string>
     <string name="message_view_show_pictures_action">Mostra immagini</string>
     <string name="message_view_show_message_action">Mostra messaggio</string>
-    <string name="message_view_show_attachments_action">Mostra allegato</string>
+    <string name="message_view_show_attachments_action">Mostra allegati</string>
     <string name="message_view_show_more_attachments_action">Altro&#8230;</string>
     <string name="message_view_fetching_attachment_toast">Recupero allegato in corso.</string>
     <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>

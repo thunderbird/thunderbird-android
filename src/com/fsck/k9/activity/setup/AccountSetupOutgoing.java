@@ -138,19 +138,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mAuthTypeView.setAdapter(authTypesAdapter);
 
         /*
-         * Updates the port when the user changes the security type. This allows
-         * us to show a reasonable default which the user can change.
-         */
-        mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                updatePortFromSecurityType();
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        /*
          * Calls validateFields() which enables or disables the Next button
          * based on the fields' validity.
          */
@@ -223,12 +210,32 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 }
             }
 
-
+            // Select currently configured security type
             for (int i = 0; i < smtpSchemes.length; i++) {
                 if (smtpSchemes[i].equals(uri.getScheme())) {
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
                 }
             }
+
+            /*
+             * Updates the port when the user changes the security type. This allows
+             * us to show a reasonable default which the user can change.
+             *
+             * Note: It's important that we set the listener *after* an initial option has been
+             *       selected by the code above. Otherwise the listener might be called after
+             *       onCreate() has been processed and the current port value set later in this
+             *       method is overridden with the default port for the selected security type.
+             */
+            mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position,
+                        long id) {
+                    updatePortFromSecurityType();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
+            });
 
             if (uri.getHost() != null) {
                 mServerView.setText(uri.getHost());

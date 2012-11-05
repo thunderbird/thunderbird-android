@@ -48,6 +48,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -364,6 +367,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mSortAscending = true;
     private boolean mSortDateAscending = false;
     private boolean mSenderAboveSubject = false;
+    private boolean mCheckboxes = true;
 
     private int mSelectedCount = 0;
     private Set<Long> mSelected = new HashSet<Long>();
@@ -667,6 +671,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mController = MessagingController.getInstance(getActivity().getApplication());
 
         mPreviewLines = K9.messageListPreviewLines();
+        mCheckboxes = K9.messageListCheckboxes();
 
         decodeArguments();
     }
@@ -1556,6 +1561,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
 
+            holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
+            if (mCheckboxes) {
+                holder.selected.setOnCheckedChangeListener(holder);
+                holder.selected.setVisibility(View.VISIBLE);
+            } else {
+                holder.selected.setVisibility(View.GONE);
+            }
+
             view.setTag(holder);
 
             return view;
@@ -1634,11 +1647,24 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             long uniqueId = cursor.getLong(mUniqueIdColumn);
             boolean selected = mSelected.contains(uniqueId);
 
-            if (selected) {
+            if (!mCheckboxes && selected) {
                 holder.chip.setBackgroundDrawable(account.getCheckmarkChip().drawable());
             } else {
                 holder.chip.setBackgroundDrawable(account.generateColorChip(read, toMe, ccMe,
                         fromMe, flagged).drawable());
+            }
+
+            if (mCheckboxes) {
+                // Set holder.position to -1 to avoid MessageViewHolder.onCheckedChanged() toggling
+                // the selection state when setChecked() is called below.
+                holder.position = -1;
+
+                // Only set the UI state, don't actually toggle the message selection.
+                holder.selected.setChecked(selected);
+
+                // Now save the position so MessageViewHolder.onCheckedChanged() will know what
+                // message to (de)select.
+                holder.position = cursor.getPosition();
             }
 
             // Background indicator
@@ -1730,7 +1756,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
     }
 
-    class MessageViewHolder {
+    class MessageViewHolder implements OnCheckedChangeListener {
         public TextView subject;
         public TextView preview;
         public TextView from;
@@ -1738,6 +1764,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public TextView date;
         public View chip;
         public TextView threadCount;
+        public CheckBox selected;
+        public int position = -1;
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (position != -1) {
+                toggleMessageSelectWithAdapterPosition(position);
+            }
+        }
     }
 
 
@@ -1855,6 +1890,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return;
         }
 
+        toggleMessageSelectWithAdapterPosition(adapterPosition);
+    }
+
+    private void toggleMessageSelectWithAdapterPosition(int adapterPosition) {
         Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
         long uniqueId = cursor.getLong(mUniqueIdColumn);
 

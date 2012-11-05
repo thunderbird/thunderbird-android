@@ -27,6 +27,7 @@
           <path>/plugins/Android-PullToRefresh/library/res-overlay</path>
         </resOverlayFolders>
         <includeSystemProguardFile>true</includeSystemProguardFile>
+        <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
         <additionalNativeLibs />
       </configuration>
     </facet>
