@@ -1064,8 +1064,13 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             if (holder == null) {
                 holder = new FolderViewHolder();
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
-                holder.newMessageCount = (TextView) view.findViewById(R.id.folder_unread_message_count);
-                holder.flaggedMessageCount = (TextView) view.findViewById(R.id.folder_flagged_message_count);
+                holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
+                holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
+                holder.newMessageCountWrapper = (View) view.findViewById(R.id.new_message_count_wrapper);
+                holder.flaggedMessageCountWrapper = (View) view.findViewById(R.id.flagged_message_count_wrapper);
+                holder.newMessageCountIcon = (View) view.findViewById(R.id.new_message_count_icon);
+                holder.flaggedMessageCountIcon = (View) view.findViewById(R.id.flagged_message_count_icon);
+
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
                 holder.chip = view.findViewById(R.id.chip);
@@ -1108,19 +1113,21 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             if (folder.unreadMessageCount != 0) {
                 holder.newMessageCount.setText(Integer
                                                .toString(folder.unreadMessageCount));
-                holder.newMessageCount.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.UNREAD));
-                holder.newMessageCount.setVisibility(View.VISIBLE);
+                holder.newMessageCountWrapper.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.UNREAD));
+                holder.newMessageCountWrapper.setVisibility(View.VISIBLE);
+                holder.newMessageCountIcon.setBackgroundDrawable( mAccount.generateColorChip(false, false, false, false, false).drawable() );
             } else {
-                holder.newMessageCount.setVisibility(View.GONE);
+                holder.newMessageCountWrapper.setVisibility(View.GONE);
             }
 
             if (folder.flaggedMessageCount > 0) {
                 holder.flaggedMessageCount.setText(Integer
                                                    .toString(folder.flaggedMessageCount));
-                holder.flaggedMessageCount.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.FLAGGED));
-                holder.flaggedMessageCount.setVisibility(View.VISIBLE);
+                holder.flaggedMessageCountWrapper.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.FLAGGED));
+                holder.flaggedMessageCountWrapper.setVisibility(View.VISIBLE);
+                holder.flaggedMessageCountIcon.setBackgroundDrawable( mAccount.generateColorChip(false, false, false, false,true).drawable() );
             } else {
-                holder.flaggedMessageCount.setVisibility(View.GONE);
+                holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
             }
 
             holder.activeIcons.setOnClickListener(new OnClickListener() {
@@ -1131,8 +1138,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             }
                                                  );
 
-            holder.chip.setBackgroundDrawable(mAccount.generateColorChip().drawable());
-            holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
+            holder.chip.setBackgroundDrawable(mAccount.generateColorChip((folder.unreadMessageCount == 0 ? true : false ), false, false, false,false).drawable());
 
             holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderName());
             holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderStatus());
@@ -1236,6 +1242,10 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
         public TextView newMessageCount;
         public TextView flaggedMessageCount;
+        public View newMessageCountIcon;
+        public View flaggedMessageCountIcon;
+        public View newMessageCountWrapper;
+        public View flaggedMessageCountWrapper;
 
         public RelativeLayout activeIcons;
         public String rawFolderName;
