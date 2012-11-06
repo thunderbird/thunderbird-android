@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="other">確定要將選取的 %1$d 封郵件移至垃圾桶嗎？</item>
+        <item quantity="one">確定要將郵件移至垃圾桶嗎？</item>
+    </plurals>
+</resources>
