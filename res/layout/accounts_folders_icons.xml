@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/active_icons"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:paddingTop="2dip"
+    android:paddingBottom="0dip"
+    android:paddingLeft="6dip"
+    android:paddingRight="6dip"
+    android:layout_alignParentRight="true"
+    android:clickable="true" >
+
+    <LinearLayout
+        android:id="@+id/flagged_message_count_wrapper"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true" 
+        android:gravity="center_vertical"
+        android:paddingTop="6dip"
+        android:paddingBottom="4dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+    >
+    <View
+        android:id="@+id/flagged_message_count_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        />
+    <TextView
+        android:id="@+id/flagged_message_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/new_message_count_wrapper"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/flagged_message_count_wrapper"
+        android:clickable="true" 
+        android:gravity="center_vertical"
+        android:paddingTop="6dip"
+        android:paddingBottom="4dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+    >
+    <View
+        android:id="@+id/new_message_count_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        />
+    <TextView
+        android:id="@+id/new_message_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+    </LinearLayout>
+
+</RelativeLayout>
