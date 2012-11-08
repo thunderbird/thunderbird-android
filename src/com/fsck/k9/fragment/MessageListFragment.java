@@ -440,11 +440,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         public void updateFooter(final String message, final boolean showProgress) {
-            //TODO: use message
             post(new Runnable() {
                 @Override
                 public void run() {
-                    updateFooter(message, showProgress);
+                    MessageListFragment.this.updateFooter(message, showProgress);
                 }
             });
         }
