@@ -111,7 +111,7 @@ http://k9mail.googlecode.com/
     <string name="archive_action">Αρχειοθέτηση</string>
     <string name="spam_action">Σκουπιδοταχυδρομείο</string>
     <string name="delete_all_action">Καθαρισμός φακέλου</string>
-    <string name="forward_action">Μπροστά</string>
+    <string name="forward_action">Προώθηση</string>
     <string name="move_action">Μετακίνηση</string>
     <string name="continue_action">Συνέχεια</string>
     <string name="back_action">Πίσω</string>
@@ -142,7 +142,6 @@ http://k9mail.googlecode.com/
     <string name="mark_as_read_action">Σήμανση ως αναγνωσμένου</string>
     <string name="send_alternate_action">Διανομή</string>
     <string name="send_alternate_chooser_title">Επιλογή αποστολέα</string>
-
     <string name="mark_all_as_read_dlg_title">Σήμανση όλων των μηνυμάτων ως αναγνωσμένων</string>
     <string name="mark_all_as_read_dlg_instructions_fmt">Να σημανθούν όλα τα μηνύματα στο \'<xliff:g id="folder">%s</xliff:g>\' ως αναγνωσμένα; (θα συμπεριληφθούν
     τα μηνύματα στο φάκελο που δεν προβάλονται στο K-9)</string>
@@ -153,7 +152,6 @@ http://k9mail.googlecode.com/
     <string name="show_full_header_action">Προβολή πλήρους επικεφαλίδας</string>
     <string name="hide_full_header_action">Απόκρυψη πλήρους επικεφαλίδας</string>
     <string name="select_text_action">Επιλογή κειμένου</string>
-
     <string name="mark_as_unread_action">Σήμανση ως μη αναγνωσμένο</string>
     <string name="add_cc_bcc_action">Προσθήκη κοινοποίησης/Ιδιωτικής κοινοποίησης</string>
     <string name="read_receipt">Απόδειξη ανάγνωσης</string>
@@ -166,10 +164,8 @@ http://k9mail.googlecode.com/
     <string name="expunge_action">Εξάλειψη</string>
     <string name="clear_local_folder_action">Καθαρισμός τοπικών μηνυμάτων</string>
     <string name="about_action">Περί</string>
-
     <string name="prefs_title">Ρυθμίσεις</string>
     <string name="accounts_context_menu_title">Επιλογές λογαριασμού</string>
-
     <string name="general_no_subject">(Χωρίς θέμα)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_date">Χωρίς ημερομηνία</string>
     <string name="general_no_sender">Χωρίς αποστολέα</string>
@@ -284,32 +280,32 @@ http://k9mail.googlecode.com/
 
     <string name="folder_push_active_symbol">(Σπρώξιμο)</string>
 
-    <string name="from_same_sender">Περισσότερα από αυτόν τον αποστολέα</string>
+    <string name="from_same_sender">Από τον ίδιο αποστολέα</string>
 
-    <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε</string>
-    <string name="message_saved_toast">Το μήνυμα αποθηκεύτηκε στα πρόχειρα</string>
+    <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε.</string>
+    <string name="message_saved_toast">Το μήνυμα αποθηκεύτηκε στα πρόχειρα.</string>
 
     <string name="global_settings_flag_label">Προβολή αστεριών</string>
     <string name="global_settings_flag_summary">Τα αστέρια υποδηλώνουν σημαντικά μηνύματα</string>
     <string name="global_settings_checkbox_label">Κουτιά πολλαπλής επιλογής</string>
     <string name="global_settings_checkbox_summary">Προβολή κουτιών επιλογής πάντοτε</string>
-    <string name="global_settings_touchable_label">Προεπισκόπηση μηνυμάτων</string>
+    <string name="global_settings_touchable_label">Προεπισκ. μηνυμάτων</string>
     <string name="global_settings_touchable_summary">Ευρύχωρες λίστες με προεπισκόπηση μηνύματος</string>
-    <string name="global_settings_preview_lines_label">Προεπισκόπηση γραμμώνν</string>
-    <string name="global_settings_show_correspondent_names_label">Προβολή ονόματος επιστολογράφων</string>
+    <string name="global_settings_preview_lines_label">Προεπισκ. γραμμών</string>
+    <string name="global_settings_show_correspondent_names_label">Προβ. ονομάτων</string>
     <string name="global_settings_show_correspondent_names_summary">Προβολή ονόματος επιστολογράφων παρά των διευθύνσεων ηλεκτρονικού ταχυδρομείου</string>
-    <string name="global_settings_show_contact_name_label">Προβολή ονόματος από επαφές</string>
+    <string name="global_settings_show_contact_name_label">Προβ. ονομάτων επαφών</string>
     <string name="global_settings_show_contact_name_summary">Όνομα επιστολογράφων από Επαφές όταν είναι διαθέσιμο</string>
-    <string name="global_settings_registered_name_color_label">Χρωματισμός επαφών</string>
+    <string name="global_settings_registered_name_color_label">Χρωματισμός Επαφών</string>
     <string name="global_settings_registered_name_color_default">Να μην χρωματίζονται τα ονόματα στη λίστα επαφών</string>
     <string name="global_settings_registered_name_color_changed">Να χρωματίζονται τα ονόματα στη λίστα επαφών</string>
 
-    <string name="global_settings_messageview_fixedwidth_label">Γραμματοσειρά σταθερού πλάτους</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Να χρησιμοποιείται γραμματοσειρά σταθερού πλάτους όταν προβάλλονται μηνύματα απλού κειμένου</string>
-    <string name="global_settings_messageview_return_to_list_label">Επιστροφή στη λίστα μετά τη διαγραφή</string>
-    <string name="global_settings_messageview_return_to_list_summary">Επιστροφή στη λίστα μηνυμάτων μετά τη διαγραφή</string>
-    <string name="global_settings_messageview_show_next_label">Προβολή επόμενου μηνύματος μετά τη διαγραφή</string>
-    <string name="global_settings_messageview_show_next_summary">Προβολή επόμενου μηνύματος μετά τη διαγραφή</string>
+    <string name="global_settings_messageview_fixedwidth_label">Γράμματα σταθερού πλάτους</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Να χρησιμοποιείται γραμματοσειρά σταθερού πλάτους όταν προβάλλονται μηνύματα απλού κειμένου.</string>
+    <string name="global_settings_messageview_return_to_list_label">Επιστροφή στη λίστα</string>
+    <string name="global_settings_messageview_return_to_list_summary">Επιστροφή στη λίστα μηνυμάτων μετά τη διαγραφή ενός μηνύματος</string>
+    <string name="global_settings_messageview_show_next_label">Προβολή επόμενου μηνύματος</string>
+    <string name="global_settings_messageview_show_next_summary">Προβολή επόμενου μηνύματος μετά τη διαγραφή ενός μηνύματος</string>
 
     <string name="global_settings_confirm_actions_title">Επιβεβαίωση ενεργειών</string>
     <string name="global_settings_confirm_actions_summary">Προβολή διαλόγου όποτε εκτελούνται επιλεγμένες ενέργειες</string>
@@ -327,16 +323,16 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_batch_buttons">Πλήκτρα ομάδας μηνυμάτων</string>
     <string name="global_settings_batch_buttons_summary">Προσαρμογή πλήκτρων ομάδας μηνυμάτων</string>
-    <string name="global_settings_mark_read">Αναγνωσμένο/μη αναγν.</string>
+    <string name="global_settings_mark_read">Αναγνωσμένο/Μη αναγν.</string>
     <string name="global_settings_delete">Διαγραφή</string>
     <string name="global_settings_archive">Αρχειοθέτηση</string>
-    <string name="global_settings_archive_disabled_reason">Χωρίς φάκελλο αρχειοθέτησης</string>
+    <string name="global_settings_archive_disabled_reason">Χωρίς φάκελο αρχειοθέτησης</string>
     <string name="global_settings_move">Μετακίνηση</string>
     <string name="global_settings_flag">Σημαία</string>
     <string name="global_settings_unselect">Απο-επιλογή</string>
 
     <string name="quiet_time">Ώρες ησυχίας</string>
-    <string name="quiet_time_description">Απενεργοποιεί κουδούνισμα, και αναβοσβήσιμο τη νύχτα</string>
+    <string name="quiet_time_description">Απενεργοποιεί κουδούνισμα και αναβοσβήσιμο τη νύχτα</string>
     <string name="quiet_time_starts">Έναρξη ωρών ησυχίας</string>
     <string name="quiet_time_ends">Λήξη ωρών ησυχίας</string>
 
@@ -907,7 +903,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_settings_title">Μέγεθος γραμματοσειράς</string>
     <string name="font_size_settings_description">Ρύθμιση μεγέθους γραμματοσειράς</string>
 
-    <string name="font_size_account_list">Λίσα λογαριασμών</string>
+    <string name="font_size_account_list">Λίστα λογαριασμών</string>
     <string name="font_size_account_name">Όνομα λογαριασμού</string>
     <string name="font_size_account_description">Περιγραφή λογαριασμού</string>
 
