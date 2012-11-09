@@ -270,6 +270,66 @@
         <delete dir="${javadoc-dir}" verbose="${verbose}" />
     </target>
 
+    <target name="-git-submodule-init-update">
+        <if.contrib>
+            <and>
+                <resourceexists>
+                    <file file="plugins/ActionBarSherlock/.git" />
+                </resourceexists>
+                <resourceexists>
+                    <file file="plugins/Android-PullToRefresh/.git" />
+                </resourceexists>
+            </and>
+            <else>
+                <echo message="git submodule init" />
+                <exec executable="git" failonerror="true">
+                    <arg line="submodule init" />
+                </exec>
+                <echo message="git submodule update" />
+                <exec executable="git" failonerror="true">
+                    <arg line="submodule update" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+
+    <target name="-update-abs" depends="-git-submodule-init-update">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/ActionBarSherlock/library/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/ActionBarSherlock/library/" />
+                <exec executable="${sdk.dir}/tools/android" failonerror="true">
+                    <arg line="update lib-project -p plugins/ActionBarSherlock/library/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+
+    <target name="-update-ptr" depends="-git-submodule-init-update">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/Android-PullToRefresh/library/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/Android-PullToRefresh/library/" />
+                <exec executable="${sdk.dir}/tools/android" failonerror="true">
+                    <arg line="update lib-project -p plugins/Android-PullToRefresh/library/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+
+    <target name="init" depends="-update-abs, -update-ptr"
+            description="Initialize environment and submodules for building" />
+
+    <!-- overrides default "debug" target" -->
+    <!-- Builds debug output package -->
+    <target name="debug" depends="init, -set-debug-files, -do-debug, -post-build"
+            description="Builds the application and signs it with a debug key.">
+    </target>
+
     <!-- common to both build.xml and tests/build.xml -->
     <import file="build_common.xml" />
 
