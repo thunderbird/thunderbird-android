@@ -3257,7 +3257,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          * creating a new hierarchical dummy Uri object with the query
          * parameters of the original URI.
          */
-        Uri uri = Uri.parse("foo://bar?" + mailtoUri.getEncodedQuery());
+        Uri uri = Uri.parse("foo://bar?" + lowerCaseHfNames(mailtoUri.getEncodedQuery()));
 
         // Read additional recipients from the "to" parameter.
         List<String> to = uri.getQueryParameters("to");
@@ -3289,6 +3289,25 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (!body.isEmpty()) {
             mMessageContentView.setText(body.get(0));
         }
+    }
+
+    // Regex for URI parameter names
+    private static final Pattern QUERY_HFNAME = Pattern.compile("(?:^|&)([a-zA-Z]+)=");
+
+    /**
+     * Convert URI parameter names to lower case
+     * "foo=BaR&amp;Qux=BAZ&amp;ALLCAPS=lowcase" becomes "foo=BaR&amp;qux=BAZ&amp;allcaps=lowcase"
+     *
+     * @param encodedQuery
+     *         URI-encoded parameter list string
+     */
+    private String lowerCaseHfNames(String encodedQuery) {
+        final StringBuilder sb = new StringBuilder(encodedQuery);
+        final Matcher m = QUERY_HFNAME.matcher(sb);
+        while (m.find()) {
+            sb.replace(m.start(1), m.end(1), m.group(1).toLowerCase());
+        }
+        return sb.toString();
     }
 
     private class SendMessageTask extends AsyncTask<Void, Void, Void> {
