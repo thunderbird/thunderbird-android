@@ -3301,7 +3301,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param encodedQuery
      *         URI-encoded parameter list string
      */
-    private String lowerCaseHfNames(String encodedQuery) {
+    private static String lowerCaseHfNames(String encodedQuery) {
         final StringBuilder sb = new StringBuilder(encodedQuery);
         final Matcher m = QUERY_HFNAME.matcher(sb);
         while (m.find()) {
