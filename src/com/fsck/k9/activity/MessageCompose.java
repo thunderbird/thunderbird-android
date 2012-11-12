@@ -3292,7 +3292,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     // Regex for URI parameter names
-    private static final Pattern QUERY_HFNAME = Pattern.compile("(?:^|&)([a-zA-Z]+)=");
+    private static final Pattern QUERY_HFNAME = Pattern.compile("(?:^|&)([a-zA-Z]*[A-Z][a-zA-Z]*)=");
 
     /**
      * Convert URI parameter names to lower case
