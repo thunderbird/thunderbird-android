@@ -3257,7 +3257,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          * creating a new hierarchical dummy Uri object with the query
          * parameters of the original URI.
          */
-        Uri uri = Uri.parse("foo://bar?" + mailtoUri.getEncodedQuery());
+        CaseInsensitiveParamWrapper uri = new CaseInsensitiveParamWrapper(
+                Uri.parse("foo://bar?" + mailtoUri.getEncodedQuery()));
 
         // Read additional recipients from the "to" parameter.
         List<String> to = uri.getQueryParameters("to");
@@ -3288,6 +3289,24 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         List<String> body = uri.getQueryParameters("body");
         if (!body.isEmpty()) {
             mMessageContentView.setText(body.get(0));
+        }
+    }
+
+    private static class CaseInsensitiveParamWrapper {
+        private final Uri uri;
+
+        public CaseInsensitiveParamWrapper(Uri uri) {
+            this.uri = uri;
+        }
+
+        public List<String> getQueryParameters(String key) {
+            final List<String> params = new ArrayList<String>();
+            for (String paramName : uri.getQueryParameterNames()) {
+                if (paramName.equalsIgnoreCase(key)) {
+                    params.addAll(uri.getQueryParameters(paramName));
+                }
+            }
+            return params;
         }
     }
 
