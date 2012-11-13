@@ -98,7 +98,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private LocalSearch mSearch;
     private boolean mSingleFolderMode;
     private boolean mSingleAccountMode;
-    private boolean mIsRemote;
 
     /**
      * {@code true} if the message list should be displayed as flat list (i.e. no threading)
@@ -128,7 +127,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         if (mMessageListFragment == null) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
             mMessageListFragment = MessageListFragment.newInstance(mSearch,
-                    (K9.isThreadedViewEnabled() && !mNoThreading), mIsRemote);
+                    (K9.isThreadedViewEnabled() && !mNoThreading));
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
         }
@@ -142,6 +141,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 String query = intent.getStringExtra(SearchManager.QUERY);
 
                 mSearch = new LocalSearch(getString(R.string.search_results));
+                mSearch.setManualSearch(true);
                 mNoThreading = true;
 
                 mSearch.or(new SearchCondition(Searchfield.SENDER, Attribute.CONTAINS, query));
@@ -152,8 +152,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 if (appData != null) {
                     mSearch.addAccountUuid(appData.getString(EXTRA_SEARCH_ACCOUNT));
                     mSearch.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
-
-                    mIsRemote = true;
                 } else {
                     mSearch.addAccountUuid(LocalSearch.ALL_ACCOUNTS);
                 }
@@ -479,15 +477,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 menu.findItem(R.id.send_messages).setVisible(false);
                 menu.findItem(R.id.folder_settings).setVisible(false);
                 menu.findItem(R.id.account_settings).setVisible(false);
-
-                // If this is an explicit local search, show the option to search the cloud.
-                if (!mMessageListFragment.isRemoteSearch() &&
-                        mMessageListFragment.isRemoteSearchAllowed()) {
-                    menu.findItem(R.id.search_remote).setVisible(true);
-                }
-
             } else {
-                menu.findItem(R.id.search).setVisible(true);
                 menu.findItem(R.id.folder_settings).setVisible(true);
                 menu.findItem(R.id.account_settings).setVisible(true);
 
@@ -504,6 +494,14 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                     menu.findItem(R.id.check_mail).setVisible(false);
                     menu.findItem(R.id.expunge).setVisible(false);
                 }
+            }
+
+            // If this is an explicit local search, show the option to search the cloud.
+            if (!mMessageListFragment.isRemoteSearch() &&
+                    mMessageListFragment.isRemoteSearchAllowed()) {
+                menu.findItem(R.id.search_remote).setVisible(true);
+            } else if (!mMessageListFragment.isManualSearch()) {
+                menu.findItem(R.id.search).setVisible(true);
             }
         }
     }
@@ -610,7 +608,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         tmpSearch.addAccountUuids(mSearch.getAccountUuids());
         tmpSearch.and(Searchfield.SENDER, senderAddress, Attribute.CONTAINS);
 
-        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false, false);
+        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
 
         addMessageListFragment(fragment, true);
     }
@@ -657,14 +655,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         }
     }
 
-    @Override
-    public void remoteSearch(String searchAccount, String searchFolder, String queryString) {
-        MessageListFragment fragment = MessageListFragment.newInstance(mSearch, false, true);
-
-        mMenu.findItem(R.id.search_remote).setVisible(false);
-        addMessageListFragment(fragment, false);
-    }
-
     private void addMessageListFragment(MessageListFragment fragment, boolean addToBackStack) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
@@ -700,7 +690,13 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         tmpSearch.and(Searchfield.THREAD_ROOT, String.valueOf(threadRootId), Attribute.EQUALS);
         tmpSearch.or(new SearchCondition(Searchfield.ID, Attribute.EQUALS, String.valueOf(threadRootId)));
 
-        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false, false);
+        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
         addMessageListFragment(fragment, true);
+    }
+
+    @Override
+    public void remoteSearchStarted() {
+        // Remove action button for remote search
+        configureMenu(mMenu);
     }
 }

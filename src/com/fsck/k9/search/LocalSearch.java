@@ -27,6 +27,7 @@ public class LocalSearch implements SearchSpecification {
 
     private String mName;
     private boolean mPredefined;
+    private boolean mManualSearch = false;
 
     // since the uuid isn't in the message table it's not in the tree neither
     private HashSet<String> mAccountUuids = new HashSet<String>();
@@ -85,6 +86,7 @@ public class LocalSearch implements SearchSpecification {
         ConditionsTreeNode conditions = (mConditions == null) ? null : mConditions.cloneTree();
 
         LocalSearch copy = new LocalSearch(mName, conditions, null, mPredefined);
+        copy.mManualSearch = mManualSearch;
         copy.mAccountUuids = new HashSet<String>(mAccountUuids);
 
         return copy;
@@ -340,6 +342,14 @@ public class LocalSearch implements SearchSpecification {
         return mPredefined;
     }
 
+    public boolean isManualSearch() {
+        return mManualSearch;
+    }
+
+    public void setManualSearch(boolean manualSearch) {
+        mManualSearch = manualSearch;
+    }
+
     /**
      * Returns all the account uuids that this search will try to
      * match against.
@@ -388,6 +398,7 @@ public class LocalSearch implements SearchSpecification {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);
         dest.writeByte((byte) (mPredefined ? 1 : 0));
+        dest.writeByte((byte) (mManualSearch ? 1 : 0));
         dest.writeStringList(new ArrayList<String>(mAccountUuids));
         dest.writeParcelable(mConditions, flags);
     }
@@ -409,6 +420,7 @@ public class LocalSearch implements SearchSpecification {
     public LocalSearch(Parcel in) {
         mName = in.readString();
         mPredefined = (in.readByte() == 1);
+        mManualSearch = (in.readByte() == 1);
         mAccountUuids.addAll(in.createStringArrayList());
         mConditions = in.readParcelable(LocalSearch.class.getClassLoader());
         mLeafSet = (mConditions == null) ? null : mConditions.getLeafSet();
