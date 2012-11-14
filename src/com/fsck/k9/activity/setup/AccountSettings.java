@@ -180,12 +180,9 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mCryptoAutoEncrypt;
 
     private PreferenceScreen mSearchScreen;
-    //FIXME: Remote search is temporarily disabled
-    /*
     private CheckBoxPreference mCloudSearchEnabled;
     private ListPreference mRemoteSearchNumResults;
     private CheckBoxPreference mRemoteSearchFullText;
-    */
 
     private ListPreference mLocalStorageProvider;
     private ListPreference mArchiveFolder;
@@ -503,9 +500,6 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mSearchScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_SEARCH);
 
-        //FIXME: Remote search is temporarily disabled
-        mMainScreen.removePreference(mSearchScreen);
-        /*
         mCloudSearchEnabled = (CheckBoxPreference) findPreference(PREFERENCE_CLOUD_SEARCH_ENABLED);
         mRemoteSearchNumResults = (ListPreference) findPreference(PREFERENCE_REMOTE_SEARCH_NUM_RESULTS);
         mRemoteSearchNumResults.setOnPreferenceChangeListener(
@@ -518,7 +512,6 @@ public class AccountSettings extends K9PreferenceActivity {
         );
         updateRemoteSearchLimit(mRemoteSearchNumResults.getValue());
         mRemoteSearchFullText = (CheckBoxPreference) findPreference(PREFERENCE_REMOTE_SEARCH_FULL_TEXT);
-        */
 
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
         mIdleRefreshPeriod = (ListPreference) findPreference(PREFERENCE_IDLE_REFRESH_PERIOD);
@@ -526,12 +519,9 @@ public class AccountSettings extends K9PreferenceActivity {
         if (mIsPushCapable) {
             mPushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
 
-            //FIXME: Remote search is temporarily disabled
-            /*
             mCloudSearchEnabled.setChecked(mAccount.allowRemoteSearch());
             mRemoteSearchNumResults.setValue(Integer.toString(mAccount.getRemoteSearchNumResults()));
             mRemoteSearchFullText.setChecked(mAccount.isRemoteSearchFullText());
-            */
 
             mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
             mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());
@@ -805,12 +795,9 @@ public class AccountSettings extends K9PreferenceActivity {
             mAccount.setPushPollOnConnect(mPushPollOnConnect.isChecked());
             mAccount.setIdleRefreshMinutes(Integer.parseInt(mIdleRefreshPeriod.getValue()));
             mAccount.setMaxPushFolders(Integer.parseInt(mMaxPushFolders.getValue()));
-            //FIXME: Remote search is temporarily disabled
-            /*
             mAccount.setAllowRemoteSearch(mCloudSearchEnabled.isChecked());
             mAccount.setRemoteSearchNumResults(Integer.parseInt(mRemoteSearchNumResults.getValue()));
             mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
-            */
         }
 
         if (!mIsMoveCapable) {
@@ -995,8 +982,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 maxResults = getString(R.string.account_settings_remote_search_num_results_entries_all);
             }
 
-            //FIXME: Remote search is temporarily disabled
-            //mRemoteSearchNumResults.setSummary(String.format(getString(R.string.account_settings_remote_search_num_summary), maxResults));
+            mRemoteSearchNumResults.setSummary(String.format(getString(R.string.account_settings_remote_search_num_summary), maxResults));
         }
     }
 
