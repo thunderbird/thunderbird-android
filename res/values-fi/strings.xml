@@ -119,7 +119,6 @@ http://k9mail.googlecode.com/
     <string name="delete_all_action">Tyhjennä kansio</string>
     <string name="forward_action">Välitä</string>
     <string name="move_action">Siirrä</string>
-    <string name="move_or_copy_action">Siirrä tai kopioi</string>
     <string name="single_message_options_action">Viestin asetukset</string>
     <string name="continue_action">Jatka</string>
     <string name="back_action">Takaisin</string>

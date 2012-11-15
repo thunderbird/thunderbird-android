@@ -139,7 +139,6 @@ http://k9mail.googlecode.com/ (en anglais)
     <string name="delete_all_action">Vider le dossier</string>
     <string name="forward_action">Transférer</string>
     <string name="move_action">Déplacer</string>
-    <string name="move_or_copy_action">Déplacer ou Copier</string>
     <string name="single_message_options_action">Options de message</string>
     <string name="continue_action">Continuer</string>
     <string name="back_action">Retour</string>

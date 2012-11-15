@@ -117,7 +117,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="delete_all_action">フォルダクリア</string>
     <string name="forward_action">転送</string>
     <string name="move_action">移動</string>
-    <string name="move_or_copy_action">移動またはコピー</string>
     <string name="single_message_options_action">メッセージ操作</string>
     <string name="continue_action">継続</string>
     <string name="back_action">戻る</string>

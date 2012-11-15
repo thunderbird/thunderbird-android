@@ -12,29 +12,29 @@
     <string name="app_authors">谷歌以及幫著遛K-9的小朋友們。</string>
     <string name="app_copyright_fmt" formatted="false">版權所有 2008-%s The K-9 Dog Walkers. Portions Copyright 2006-%s the Android Open Source Project.</string>
     <string name="app_license">依據 Apache Version 2.0.規範授權</string>
-    <string name="accounts_welcome">"感謝安裝K-9。K-9是Android系統的開放原始碼的電子郵件客戶端，原始程式碼來自Android內建的電子郵件程式。 
+    <string name="accounts_welcome">"感謝安裝K-9。K-9是Android系統的開放原始碼的電子郵件客戶端，原始程式碼來自Android內建的電子郵件程式。
 
- 
-K-9改良的功能包括： 
- * 利用IMAP IDEL進行Push mail 
- * 更好的執行效率 
- * 重新發送郵件 
- * 郵件簽名 
- * 密件副本給自己 
- * 信件匣訂閱 
- * 同步全部信件匣 
- * 可以編輯回信收件人地址 
- * 鍵盤捷徑鍵 
- * 更完整支援IMAP 
- * 儲存附件到記憶卡 
- * 清空垃圾桶 
- * 郵件排序 
- * 以及其他很多功能～ 
- 
-請注意：K-9不支援絕大多數免費Hotmail帳戶。跟其他的電子郵件客戶端一樣，在和Microsoft Exchange伺服器溝通的時候存在一些詭異的問題。 
- 
+
+K-9改良的功能包括：
+ * 利用IMAP IDEL進行Push mail
+ * 更好的執行效率
+ * 重新發送郵件
+ * 郵件簽名
+ * 密件副本給自己
+ * 信件匣訂閱
+ * 同步全部信件匣
+ * 可以編輯回信收件人地址
+ * 鍵盤捷徑鍵
+ * 更完整支援IMAP
+ * 儲存附件到記憶卡
+ * 清空垃圾桶
+ * 郵件排序
+ * 以及其他很多功能～
+
+請注意：K-9不支援絕大多數免費Hotmail帳戶。跟其他的電子郵件客戶端一樣，在和Microsoft Exchange伺服器溝通的時候存在一些詭異的問題。
+
 請到http://k9mail.googlecode.com/提交錯誤報告、建議新功能或提出您的問題。"</string>
-    <string name="default_signature">"-- 
+    <string name="default_signature">"--
 抱歉暫時無法詳細說明。這份郵件是由安裝有K-9 Mail的Android手持設備寄送的。"</string>
     <string name="import_dialog_error_message">沒有找到合適的應用程式來處理匯入操作。請從GOOGLE PLAY商店下載安裝檔案管理應用程式。</string>
     <string name="open_market">開啟GOOGLE PLAY商店</string>
@@ -50,7 +50,7 @@ K-9改良的功能包括：
     <string name="delete_messages_desc">允許該程式刪除郵件。</string>
     <string name="about_title_fmt">關於%s</string>
     <string name="accounts_title">帳戶</string>
-	  <string name="welcome_message_title">歡迎使用K-9 Mail!</string>
+      <string name="welcome_message_title">歡迎使用K-9 Mail!</string>
     <string name="folders_title">信件匣</string>
     <string name="advanced">進階</string>
     <string name="folder_list_title">%s</string>
@@ -59,7 +59,7 @@ K-9改良的功能包括：
     <string name="choose_folder_title">選擇信件匣</string>
     <string name="activity_header_format" formatted="false">%s%s%s</string>
     <string name="activity_unread_count">" 〔%d〕"</string>
-	 <string name="status_loading_account_folder" formatted="false">正在接收%s:%s%s</string>
+     <string name="status_loading_account_folder" formatted="false">正在接收%s:%s%s</string>
     <string name="status_loading_account_folder_headers" formatted="false">正在接收郵件訊息%s:%s%s</string>
     <string name="status_sending_account" formatted="false">正在寄送%s%s</string>
     <string name="status_processing_account" formatted="false">正在處理%s:%s%s</string>
@@ -84,7 +84,6 @@ K-9改良的功能包括：
     <string name="delete_all_action">清空信件匣</string>
     <string name="forward_action">轉寄</string>
     <string name="move_action">移動</string>
-	 <string name="move_or_copy_action">移動或複製</string>
     <string name="single_message_options_action">訊息選項</string>
     <string name="continue_action">繼續</string>
     <string name="back_action">返回</string>
@@ -122,7 +121,7 @@ K-9改良的功能包括：
     <string name="show_full_header_action">顯示詳細訊息</string>
     <string name="hide_full_header_action">隱藏詳細訊息</string>
     <string name="select_text_action">選擇本文</string>
-	 <string name="message_view_theme_action_dark">切換為黑色主題</string>
+     <string name="message_view_theme_action_dark">切換為黑色主題</string>
     <string name="message_view_theme_action_light">切換為白色主題</string>
     <string name="mark_as_unread_action">標記為未讀</string>
     <string name="add_cc_bcc_action">新增副本/密件副本</string>
@@ -243,7 +242,7 @@ K-9改良的功能包括：
     <string name="global_settings_preview_lines_label">預覽行數</string>
     <string name="global_settings_show_correspondent_names_label">顯示收件人姓名</string>
     <string name="global_settings_show_correspondent_names_summary">用收件人姓名取代顯示電子郵件地址</string>
-	 <string name="global_settings_sender_above_subject_label">在主題上顯示寄件人姓名</string>
+     <string name="global_settings_sender_above_subject_label">在主題上顯示寄件人姓名</string>
     <string name="global_settings_sender_above_subject_summary">在信件匣主題上方顯示寄件人姓名，取代原先的主題下方顯示</string>
     <string name="global_settings_show_contact_name_label">顯示聯絡人姓名</string>
     <string name="global_settings_show_contact_name_summary">用聯絡人姓名取代顯示電子郵件地址</string>
@@ -264,7 +263,7 @@ K-9改良的功能包括：
     <string name="global_settings_confirm_action_spam">標記為垃圾</string>
     <string name="global_settings_confirm_action_mark_all_as_read">全部標示為已讀取</string>
     <string name="global_settings_confirm_action_send">寄送</string>
-	 <string name="global_settings_notification_hide_subject_title">進行通知時隱藏主題</string>
+     <string name="global_settings_notification_hide_subject_title">進行通知時隱藏主題</string>
     <string name="global_settings_notification_hide_subject_never">絕不</string>
     <string name="global_settings_notification_hide_subject_when_locked">當手持設備上鎖時</string>
     <string name="global_settings_notification_hide_subject_always">總是</string>
@@ -454,7 +453,7 @@ K-9改良的功能包括：
     <string name="account_settings_message_format_text">純文字 (圖片與格式編排會被移除)</string>
     <string name="account_settings_message_format_html">HTML (圖片與格式編排會被保留)</string>
     <string name="account_settings_message_format_auto">自動 (除非回覆HTML格式信件，否則以純文字處理)</string>
-	 <string name="account_settings_always_show_cc_bcc_label">預設顯示副本/密件副本</string>
+     <string name="account_settings_always_show_cc_bcc_label">預設顯示副本/密件副本</string>
     <string name="account_settings_always_show_cc_bcc_summary">在文字輸入框內顯示副本/密件副本</string>
     <string name="account_settings_message_read_receipt_label">讀取回條</string>
     <string name="account_settings_message_read_receipt_summary">永遠要求讀取回條</string>
@@ -701,7 +700,7 @@ K-9改良的功能包括：
     <string name="background_ops_always">預設</string>
     <string name="background_ops_enabled">當「背景資料」被勾選</string>
     <string name="background_ops_auto_sync">當「背景資料」&amp;「自動同步」被勾選</string>
-	<string name="background_ops_auto_sync_only">"當「自動同步」被勾選"</string>
+    <string name="background_ops_auto_sync_only">"當「自動同步」被勾選"</string>
     <string name="no_message_seletected_toast">沒有選擇任何郵件</string>
     <string name="date_format_label">日期格式</string>
     <string name="date_format_common">dd-MMM-yyyy</string>
@@ -856,7 +855,7 @@ K-9改良的功能包括：
     <string name="settings_import_incoming_server">內送伺服器 (%s):</string>
     <string name="settings_import_outgoing_server">外寄伺服器 (%s):</string>
     <string name="settings_import_use_incoming_server_password">使用內送伺服器密碼</string>
-	<string name="activate_account_action">啟動</string>
+    <string name="activate_account_action">啟動</string>
     <string name="settings_unknown_version">無法處理版本 %s 的檔案</string>
     <string name="account_unavailable">帳戶 \"%s\" 目前無法使用; 請檢查儲存空間</string>
     <string name="settings_attachment_default_path">另存附件…</string>
@@ -868,7 +867,7 @@ K-9改良的功能包括：
     <string name="unread_widget_select_account">顯示未讀數量…</string>
     <string name="import_dialog_error_title">沒有找到檔案管理應用程式</string>
     <string name="close">關閉</string>
-	 <string name="webview_empty_message">沒有內容</string>
+     <string name="webview_empty_message">沒有內容</string>
     <string name="webview_contextmenu_link_view_action">開啟檢視</string>
     <string name="webview_contextmenu_link_share_action">分享鏈結</string>
     <string name="webview_contextmenu_link_copy_action">複製鏈結到剪貼簿</string>
@@ -889,7 +888,7 @@ K-9改良的功能包括：
     <string name="webview_contextmenu_email_clipboard_label">電子郵件地址</string>
     <string name="image_saved_as">將圖片另存為 \"%s\"</string>
     <string name="image_saving_failed">儲存圖片失敗</string>
-	<string name="account_settings_remote_search_num_results_entries_all">全部</string>
+    <string name="account_settings_remote_search_num_results_entries_all">全部</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
