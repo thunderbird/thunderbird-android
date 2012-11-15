@@ -626,24 +626,28 @@ public class MessagingController implements Runnable {
             }
 
             List<Message> messages = remoteFolder.search(query, requiredFlags, forbiddenFlags);
-            if (listener != null) {
-                listener.remoteSearchServerQueryComplete(acct, folderName, messages.size());
-            }
 
             if (K9.DEBUG) {
                 Log.i("Remote Search", "Remote search got " + messages.size() + " results");
             }
 
-            Collections.sort(messages, new UidReverseComparator());
+            // There's no need to fetch messages already completely downloaded
+            List<Message> remoteMessages = localFolder.extractNewMessages(messages);
+            messages.clear();
 
-
-            int resultLimit = acct.getRemoteSearchNumResults();
-            if (resultLimit > 0 && messages.size() > resultLimit) {
-                extraResults = messages.subList(resultLimit, messages.size());
-                messages = messages.subList(0, resultLimit);
+            if (listener != null) {
+                listener.remoteSearchServerQueryComplete(acct, folderName, remoteMessages.size());
             }
 
-            loadSearchResultsSynchronous(messages, localFolder, remoteFolder, listener);
+            Collections.sort(remoteMessages, new UidReverseComparator());
+
+            int resultLimit = acct.getRemoteSearchNumResults();
+            if (resultLimit > 0 && remoteMessages.size() > resultLimit) {
+                extraResults = remoteMessages.subList(resultLimit, remoteMessages.size());
+                remoteMessages = remoteMessages.subList(0, resultLimit);
+            }
+
+            loadSearchResultsSynchronous(remoteMessages, localFolder, remoteFolder, listener);
 
 
         } catch (Exception e) {

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -101,6 +102,14 @@ public class LocalStore extends Store implements Serializable {
 
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
 
+    private static final String[] UID_CHECK_PROJECTION = { "uid" };
+
+    /**
+     * Number of UIDs to check for existence at once.
+     *
+     * @see LocalFolder#extractNewMessages(List)
+     */
+    private static final int UID_CHECK_BATCH_SIZE = 500;
 
     protected static final int DB_VERSION = 45;
 
@@ -3205,6 +3214,78 @@ public class LocalStore extends Store implements Serializable {
             //TODO: set in-reply-to "link" even if one already exists
 
             return new ThreadInfo(id, messageId, rootId, parentId);
+        }
+
+        public List<Message> extractNewMessages(final List<Message> messages)
+                throws MessagingException {
+
+            try {
+                return database.execute(false, new DbCallback<List<Message>>() {
+                    @Override
+                    public List<Message> doDbWork(final SQLiteDatabase db) throws WrappedException {
+                        try {
+                            open(OpenMode.READ_WRITE);
+                        } catch (MessagingException e) {
+                            throw new WrappedException(e);
+                        }
+
+                        List<Message> result = new ArrayList<Message>();
+
+                        List<String> selectionArgs = new ArrayList<String>();
+                        Set<String> existingMessages = new HashSet<String>();
+                        int start = 0;
+
+                        while (start < messages.size()) {
+                            StringBuilder selection = new StringBuilder();
+
+                            selection.append("folder_id = ? AND UID IN (");
+                            selectionArgs.add(Long.toString(mFolderId));
+
+                            int count = Math.min(messages.size() - start, UID_CHECK_BATCH_SIZE);
+
+                            for (int i = start, end = start + count; i < end; i++) {
+                                if (i > start) {
+                                    selection.append(",?");
+                                } else {
+                                    selection.append("?");
+                                }
+
+                                selectionArgs.add(messages.get(i).getUid());
+                            }
+
+                            selection.append(")");
+
+                            Cursor cursor = db.query("messages", UID_CHECK_PROJECTION,
+                                    selection.toString(), selectionArgs.toArray(EMPTY_STRING_ARRAY),
+                                    null, null, null);
+
+                            try {
+                                while (cursor.moveToNext()) {
+                                    String uid = cursor.getString(0);
+                                    existingMessages.add(uid);
+                                }
+                            } finally {
+                                Utility.closeQuietly(cursor);
+                            }
+
+                            for (int i = start, end = start + count; i < end; i++) {
+                                Message message = messages.get(i);
+                                if (!existingMessages.contains(message.getUid())) {
+                                    result.add(message);
+                                }
+                            }
+
+                            existingMessages.clear();
+                            selectionArgs.clear();
+                            start += count;
+                        }
+
+                        return result;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
         }
     }
 
