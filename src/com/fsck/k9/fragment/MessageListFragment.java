@@ -348,6 +348,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private boolean mRemoteSearchPerformed = false;
     private Future mRemoteSearchFuture = null;
+    public List<Message> mExtraSearchResults;
 
     private String mTitle;
     private LocalSearch mSearch = null;
@@ -606,26 +607,29 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (view == mFooterView) {
             if (mCurrentFolder != null && !mSearch.isManualSearch()) {
+
                 mController.loadMoreMessages(mAccount, mFolderName, null);
-            } /*else if (mRemoteSearch && mAdapter.mExtraSearchResults != null && mAdapter.mExtraSearchResults.size() > 0 && mSearchAccount != null) {
-                int numResults = mAdapter.mExtraSearchResults.size();
-                Context appContext = getActivity().getApplicationContext();
-                Account account = Preferences.getPreferences(appContext).getAccount(mSearchAccount);
-                if (account == null) {
-                    updateFooter("", false);
-                    return;
-                }
+
+            } else if (mCurrentFolder != null && isRemoteSearch() &&
+                    mExtraSearchResults != null && mExtraSearchResults.size() > 0) {
+
+                int numResults = mExtraSearchResults.size();
                 int limit = mAccount.getRemoteSearchNumResults();
-                List<Message> toProcess = mAdapter.mExtraSearchResults;
+
+                List<Message> toProcess = mExtraSearchResults;
+
                 if (limit > 0 && numResults > limit) {
                     toProcess = toProcess.subList(0, limit);
-                    mAdapter.mExtraSearchResults = mAdapter.mExtraSearchResults.subList(limit, mAdapter.mExtraSearchResults.size());
+                    mExtraSearchResults = mExtraSearchResults.subList(limit,
+                            mExtraSearchResults.size());
                 } else {
-                    mAdapter.mExtraSearchResults = null;
+                    mExtraSearchResults = null;
                     updateFooter("", false);
                 }
+
                 mController.loadSearchResults(mAccount, mCurrentFolder.name, toProcess, mListener);
-            }*/
+            }
+
             return;
         }
 
@@ -1444,6 +1448,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults) {
             mHandler.progress(false);
             mHandler.remoteSearchFinished();
+            mExtraSearchResults = extraResults;
             if (extraResults != null && extraResults.size() > 0) {
                 mHandler.updateFooter(String.format(mContext.getString(R.string.load_more_messages_fmt), acct.getRemoteSearchNumResults()), false);
             } else {
