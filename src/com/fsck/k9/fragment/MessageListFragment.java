@@ -1428,11 +1428,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     class MessageListActivityListener extends ActivityListener {
         @Override
         public void remoteSearchFailed(Account acct, String folder, final String err) {
-            //TODO: Better error handling
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getActivity(), err, Toast.LENGTH_LONG).show();
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        Toast.makeText(activity, R.string.remote_search_error,
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }

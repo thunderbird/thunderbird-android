@@ -1139,6 +1139,7 @@ http://k9mail.googlecode.com/
     <string name="remote_search_sending_query">Sending query to server</string>
     <string name="remote_search_downloading">Fetching %d results</string>
     <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>
+    <string name="remote_search_error">Remote search failed</string>
 
     <string name="account_settings_search">Search</string>
     <string name="account_settings_remote_search_enabled">Enable server search</string>
