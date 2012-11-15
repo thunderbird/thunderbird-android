@@ -450,6 +450,20 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         @Override
         public void handleMessage(android.os.Message msg) {
+            // The following messages don't need an attached activity.
+            switch (msg.what) {
+                case ACTION_REMOTE_SEARCH_FINISHED: {
+                    MessageListFragment.this.remoteSearchFinished();
+                    return;
+                }
+            }
+
+            // Discard messages if the fragment isn't attached to an activity anymore.
+            Activity activity = getActivity();
+            if (activity == null) {
+                return;
+            }
+
             switch (msg.what) {
                 case ACTION_FOLDER_LOADING: {
                     String folder = (String) msg.obj;
@@ -464,10 +478,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 case ACTION_PROGRESS: {
                     boolean progress = (msg.arg1 == 1);
                     MessageListFragment.this.progress(progress);
-                    break;
-                }
-                case ACTION_REMOTE_SEARCH_FINISHED: {
-                    MessageListFragment.this.remoteSearchFinished();
                     break;
                 }
             }
