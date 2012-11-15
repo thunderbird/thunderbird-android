@@ -396,6 +396,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 onEditPrefs();
                 return true;
             }
+            case R.id.account_settings: {
+                onEditAccount();
+                return true;
+            }
             case R.id.search: {
                 mMessageListFragment.onSearchRequested();
                 return true;
@@ -421,10 +425,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 if (mFolderName != null) {
                     FolderSettings.actionSettings(this, mAccount, mFolderName);
                 }
-                return true;
-            }
-            case R.id.account_settings: {
-                onEditAccount();
                 return true;
             }
             case R.id.expunge: {
@@ -478,7 +478,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 menu.findItem(R.id.folder_settings).setVisible(false);
                 menu.findItem(R.id.account_settings).setVisible(false);
             } else {
-                menu.findItem(R.id.folder_settings).setVisible(true);
+                menu.findItem(R.id.folder_settings).setVisible(mSingleFolderMode);
                 menu.findItem(R.id.account_settings).setVisible(true);
 
                 if (mMessageListFragment.isOutbox()) {
