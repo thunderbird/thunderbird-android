@@ -6,7 +6,6 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.BinaryTempFileBody.BinaryTempFileBodyInputStream;
@@ -20,6 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -2168,22 +2168,38 @@ public class MimeUtility {
         return null;
     }
 
+    static HashMap<String,String> defaultCharsetForK9Language;
+    static {
+        defaultCharsetForK9Language= new HashMap<String,String>();
+        defaultCharsetForK9Language.put("en", "us-ascii");
+        defaultCharsetForK9Language.put("ja", "iso-2022-jp");
+    }
+
+    static HashMap<Locale,String> defaultCharsetForLocale;
+    static {
+        defaultCharsetForLocale = new HashMap<Locale,String>();
+        defaultCharsetForLocale.put(Locale.ENGLISH, "us-ascii");
+        defaultCharsetForLocale.put(Locale.JAPAN,   "iso-2022-jp");
+    }
+
+    public static String getDefaultCharset() {
+        String charset;
+
+        charset = defaultCharsetForK9Language.get(K9.getK9Language());
+        if (charset != null) {
+            return charset;
+        }
+
+        charset = defaultCharsetForLocale.get(Locale.getDefault());
+        if (charset != null) {
+            return charset;
+        }
+        return "us-ascii";
+    }
+
     public static String fixupCharset(String charset, Message message) throws MessagingException {
         if (charset == null || "0".equals(charset)) {
-            if (StringUtils.isNullOrEmpty(K9.getK9Language())) {
-                if (Locale.JAPAN.equals(Locale.getDefault())) {
-                    charset = "ISO-2022-JP";
-                }
-            }
-            else {
-                if ("ja".equals(K9.getK9Language())) {
-                    charset = "ISO-2022-JP";
-                }
-            }
-
-            if (charset == null || "0".equals(charset)) {
-                charset = "US-ASCII";  // No encoding, so use us-ascii, which is the standard.
-            }
+            charset = MimeUtility.getDefaultCharset();
         }
 
         charset = charset.toLowerCase(Locale.US);
