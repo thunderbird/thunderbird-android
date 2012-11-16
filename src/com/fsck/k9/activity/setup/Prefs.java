@@ -87,8 +87,11 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final String PREFERENCE_ATTACHMENT_DEF_PATH = "attachment_default_path";
     private static final String PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR = "messagelist_background_as_unread_indicator";
+    private static final String PREFERENCE_THREADED_VIEW = "threaded_view";
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
+
+
     private ListPreference mLanguage;
     private ListPreference mTheme;
     private ListPreference mDateFormat;
@@ -128,6 +131,8 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mBatchButtonsFlag;
     private CheckBoxPreference mBatchButtonsUnselect;
     private CheckBoxPreference mBackgroundAsUnreadIndicator;
+    private CheckBoxPreference mThreadedView;
+
 
     public static void actionPrefs(Context context) {
         Intent i = new Intent(context, Prefs.class);
@@ -235,6 +240,10 @@ public class Prefs extends K9PreferenceActivity {
 
         mChangeContactNameColor = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR);
         mChangeContactNameColor.setChecked(K9.changeContactNameColor());
+
+        mThreadedView = (CheckBoxPreference) findPreference(PREFERENCE_THREADED_VIEW);
+        mThreadedView.setChecked(K9.isThreadedViewEnabled());
+
         if (K9.changeContactNameColor()) {
             mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
         } else {
@@ -418,6 +427,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMessageListSenderAboveSubject(mSenderAboveSubject.isChecked());
         K9.setShowContactName(mShowContactName.isChecked());
         K9.setUseBackgroundAsUnreadIndicator(mBackgroundAsUnreadIndicator.isChecked());
+        K9.setThreadedViewEnabled(mThreadedView.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());

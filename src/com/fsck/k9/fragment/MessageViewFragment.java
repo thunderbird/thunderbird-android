@@ -1,6 +1,7 @@
 package com.fsck.k9.fragment;
 
 import java.io.File;
+import java.util.Collections;
 
 import android.app.Activity;
 import android.content.Context;
@@ -274,7 +275,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
             mMenu.findItem(R.id.delete).setEnabled(false);
             Message messageToDelete = mMessage;
             mFragmentListener.showNextMessageOrReturn();
-            mController.deleteMessages(new Message[] {messageToDelete}, null);
+            mController.deleteMessages(Collections.singletonList(messageToDelete), null);
         }
     }
 

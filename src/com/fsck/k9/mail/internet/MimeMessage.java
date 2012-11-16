@@ -15,7 +15,6 @@ import java.util.UUID;
 
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
-import org.apache.james.mime4j.dom.field.ParsedField;
 import org.apache.james.mime4j.field.DefaultFieldParser;
 import org.apache.james.mime4j.io.EOLConvertingInputStream;
 import org.apache.james.mime4j.parser.ContentHandler;
@@ -23,7 +22,6 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
-import org.apache.james.mime4j.stream.RawField;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -346,11 +344,6 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void saveChanges() throws MessagingException {
-        throw new MessagingException("saveChanges not yet implemented");
-    }
-
-    @Override
     public Body getBody() {
         return mBody;
     }
@@ -591,22 +584,6 @@ public class MimeMessage extends Message {
         MimeMessage message = new MimeMessage();
         copy(message);
         return message;
-    }
-
-    public boolean toMe() {
-        return false;
-    }
-
-    public boolean ccMe() {
-        return false;
-    }
-
-    public boolean bccMe() {
-        return false;
-    }
-
-    public boolean fromMe() {
-        return false;
     }
 
     public long getId() {

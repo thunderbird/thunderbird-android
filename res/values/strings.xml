@@ -1139,6 +1139,7 @@ http://k9mail.googlecode.com/
     <string name="remote_search_sending_query">Sending query to server</string>
     <string name="remote_search_downloading">Fetching %d results</string>
     <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>
+    <string name="remote_search_error">Remote search failed</string>
 
     <string name="account_settings_search">Search</string>
     <string name="account_settings_remote_search_enabled">Enable server search</string>
@@ -1150,4 +1151,7 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>
     <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>
+
+    <string name="global_settings_threaded_view_label">Threaded view</string>
+    <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>
 </resources>

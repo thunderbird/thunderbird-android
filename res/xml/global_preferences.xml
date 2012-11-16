@@ -150,6 +150,12 @@
                 android:summary="@string/global_settings_background_as_unread_indicator_summary"
                 />
 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="threaded_view"
+                android:title="@string/global_settings_threaded_view_label"
+                android:summary="@string/global_settings_threaded_view_summary" />
+
         </PreferenceCategory>
 
         <PreferenceCategory

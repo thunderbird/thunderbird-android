@@ -499,6 +499,7 @@ public class AccountSettings extends K9PreferenceActivity {
         // IMAP-specific preferences
 
         mSearchScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_SEARCH);
+
         mCloudSearchEnabled = (CheckBoxPreference) findPreference(PREFERENCE_CLOUD_SEARCH_ENABLED);
         mRemoteSearchNumResults = (ListPreference) findPreference(PREFERENCE_REMOTE_SEARCH_NUM_RESULTS);
         mRemoteSearchNumResults.setOnPreferenceChangeListener(
