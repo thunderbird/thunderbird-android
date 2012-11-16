@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -12,6 +13,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -89,11 +91,14 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -3294,6 +3299,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private static class CaseInsensitiveParamWrapper {
         private final Uri uri;
+        private Set<String> mParamNames;
 
         public CaseInsensitiveParamWrapper(Uri uri) {
             this.uri = uri;
@@ -3301,12 +3307,32 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         public List<String> getQueryParameters(String key) {
             final List<String> params = new ArrayList<String>();
-            for (String paramName : uri.getQueryParameterNames()) {
+            for (String paramName : getQueryParameterNames()) {
                 if (paramName.equalsIgnoreCase(key)) {
                     params.addAll(uri.getQueryParameters(paramName));
                 }
             }
             return params;
+        }
+
+        @TargetApi(11)
+        private Set<String> getQueryParameterNames() {
+            if (Build.VERSION.SDK_INT >= 11) {
+                return uri.getQueryParameterNames();
+            }
+
+            return getQueryParameterNamesPreSdk11();
+        }
+
+        private Set<String> getQueryParameterNamesPreSdk11() {
+            if (mParamNames == null) {
+                String query = uri.getQuery();
+                Set<String> paramNames = new HashSet<String>();
+                Collections.addAll(paramNames, query.split("(=[^&]*(&|$))|&"));
+                mParamNames = paramNames;
+            }
+
+            return mParamNames;
         }
     }
 
