@@ -143,10 +143,6 @@ public abstract class Message implements Part, Body {
         return getContentType().startsWith(mimeType);
     }
 
-    public abstract boolean toMe();
-    public abstract boolean ccMe();
-    public abstract boolean bccMe();
-    public abstract boolean fromMe();
     public abstract long getId();
 
     public abstract String getPreview();
@@ -197,8 +193,6 @@ public abstract class Message implements Part, Body {
 
     public void destroy() throws MessagingException {}
 
-    public abstract void saveChanges() throws MessagingException;
-
     public abstract void setEncoding(String encoding) throws UnavailableStorageException;
 
     public abstract void setCharset(String charset) throws MessagingException;
@@ -211,11 +205,6 @@ public abstract class Message implements Part, Body {
             mReference.uid = mUid;
         }
         return mReference;
-    }
-
-    public boolean equalsReference(MessageReference ref) {
-        MessageReference tmpReference = makeMessageReference();
-        return tmpReference.equals(ref);
     }
 
     public long calculateSize() {

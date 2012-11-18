@@ -13,7 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +27,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 
 import android.app.Application;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -47,6 +47,7 @@ import com.fsck.k9.activity.Search;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -71,6 +72,12 @@ import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
+import com.fsck.k9.provider.EmailProvider;
+import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SqlQueryBuilder;
 
 /**
  * <pre>
@@ -82,33 +89,37 @@ public class LocalStore extends Store implements Serializable {
     private static final long serialVersionUID = -5142141896809423072L;
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
-
-    /**
-     * Immutable empty {@link String} array
-     */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
+    private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
 
     /*
      * a String containing the columns getMessages expects to work with
      * in the correct order.
      */
     static private String GET_MESSAGES_COLS =
-        "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
-        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
-
+        "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, "
+        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview, thread_root, thread_parent ";
 
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
 
+    private static final String[] UID_CHECK_PROJECTION = { "uid" };
 
-    protected static final int DB_VERSION = 43;
+    /**
+     * Number of UIDs to check for existence at once.
+     *
+     * @see LocalFolder#extractNewMessages(List)
+     */
+    private static final int UID_CHECK_BATCH_SIZE = 500;
+
+    protected static final int DB_VERSION = 45;
 
     protected String uUid = null;
 
     private final Application mApplication;
 
     private LockableDatabase database;
+
+    private ContentResolver mContentResolver;
 
     /**
      * local://localhost/path/to/database/uuid.db
@@ -122,6 +133,7 @@ public class LocalStore extends Store implements Serializable {
         database = new LockableDatabase(application, account.getUuid(), new StoreSchemaDefinition());
 
         mApplication = application;
+        mContentResolver = application.getContentResolver();
         database.setStorageProviderId(account.getLocalStorageProviderId());
         uUid = account.getUuid();
 
@@ -166,10 +178,31 @@ public class LocalStore extends Store implements Serializable {
 
                         db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
                         db.execSQL("DROP TABLE IF EXISTS messages");
-                        db.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
-                                   + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
-                                   + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT, "
-                                   + "mime_type TEXT)");
+                        db.execSQL("CREATE TABLE messages (" +
+                                "id INTEGER PRIMARY KEY, " +
+                                "deleted INTEGER default 0, " +
+                                "folder_id INTEGER, " +
+                                "uid TEXT, " +
+                                "subject TEXT, " +
+                                "date INTEGER, " +
+                                "flags TEXT, " +
+                                "sender_list TEXT, " +
+                                "to_list TEXT, " +
+                                "cc_list TEXT, " +
+                                "bcc_list TEXT, " +
+                                "reply_to_list TEXT, " +
+                                "html_content TEXT, " +
+                                "text_content TEXT, " +
+                                "attachment_count INTEGER, " +
+                                "internal_date INTEGER, " +
+                                "message_id TEXT, " +
+                                "preview TEXT, " +
+                                "mime_type TEXT, "+
+                                "thread_root INTEGER, " +
+                                "thread_parent INTEGER, " +
+                                "normalized_subject_hash INTEGER, " +
+                                "empty INTEGER" +
+                                ")");
 
                         db.execSQL("DROP TABLE IF EXISTS headers");
                         db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
@@ -179,6 +212,16 @@ public class LocalStore extends Store implements Serializable {
                         db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
                         db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+
+                        db.execSQL("DROP INDEX IF EXISTS msg_empty");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)");
+
+                        db.execSQL("DROP INDEX IF EXISTS msg_thread_root");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_root ON messages (thread_root)");
+
+                        db.execSQL("DROP INDEX IF EXISTS msg_thread_parent");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_parent ON messages (thread_parent)");
+
                         db.execSQL("DROP TABLE IF EXISTS attachments");
                         db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
                                    + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
@@ -362,6 +405,34 @@ public class LocalStore extends Store implements Serializable {
                                 }
                             } catch (Exception e) {
                                 Log.e(K9.LOG_TAG, "Error trying to fix the outbox folders", e);
+                            }
+                        }
+                        if (db.getVersion() < 44) {
+                            try {
+                                db.execSQL("ALTER TABLE messages ADD thread_root INTEGER");
+                                db.execSQL("ALTER TABLE messages ADD thread_parent INTEGER");
+                                db.execSQL("ALTER TABLE messages ADD normalized_subject_hash INTEGER");
+                                db.execSQL("ALTER TABLE messages ADD empty INTEGER");
+                            } catch (SQLiteException e) {
+                                if (! e.getMessage().startsWith("duplicate column name:")) {
+                                    throw e;
+                                }
+                            }
+                        }
+                        if (db.getVersion() < 45) {
+                            try {
+                                db.execSQL("DROP INDEX IF EXISTS msg_empty");
+                                db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)");
+
+                                db.execSQL("DROP INDEX IF EXISTS msg_thread_root");
+                                db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_root ON messages (thread_root)");
+
+                                db.execSQL("DROP INDEX IF EXISTS msg_thread_parent");
+                                db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_parent ON messages (thread_parent)");
+                            } catch (SQLiteException e) {
+                                if (! e.getMessage().startsWith("duplicate column name:")) {
+                                    throw e;
+                                }
                             }
                         }
                     }
@@ -623,6 +694,26 @@ public class LocalStore extends Store implements Serializable {
         return new LocalFolder(name);
     }
 
+    public LocalFolder getFolderById(long folderId) {
+        return new LocalFolder(folderId);
+    }
+
+    private long getFolderId(final String name) throws MessagingException {
+        return database.execute(false, new DbCallback<Long>() {
+            @Override
+            public Long doDbWork(final SQLiteDatabase db) {
+                Cursor cursor = null;
+                try {
+                    cursor = db.rawQuery("SELECT id FROM folders WHERE name = '" + name + "'", null);
+                    cursor.moveToFirst();
+                    return cursor.getLong(0);
+                } finally {
+                    Utility.closeQuietly(cursor);
+                }
+            }
+        });
+    }
+
     // TODO this takes about 260-300ms, seems slow.
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
@@ -855,97 +946,54 @@ public class LocalStore extends Store implements Serializable {
         return true;
     }
 
-    public Message[] searchForMessages(MessageRetrievalListener listener, String[] queryFields, String queryString,
-                                       List<LocalFolder> folders, Message[] messages, final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException {
-        List<String> args = new LinkedList<String>();
-
-        StringBuilder whereClause = new StringBuilder();
-        if (queryString != null && queryString.length() > 0) {
-            boolean anyAdded = false;
-            String likeString = "%" + queryString + "%";
-            whereClause.append(" AND (");
-            for (String queryField : queryFields) {
-
-                if (anyAdded) {
-                    whereClause.append(" OR ");
-                }
-                whereClause.append(queryField).append(" LIKE ? ");
-                args.add(likeString);
-                anyAdded = true;
-            }
-
-
-            whereClause.append(" )");
+    // TODO find beter solution
+    private static boolean isFolderId(String str) {
+        if (str == null) {
+                return false;
         }
-        if (folders != null && !folders.isEmpty()) {
-            whereClause.append(" AND folder_id in (");
-            boolean anyAdded = false;
-            for (LocalFolder folder : folders) {
-                if (anyAdded) {
-                    whereClause.append(",");
-                }
-                anyAdded = true;
-                whereClause.append("?");
-                args.add(Long.toString(folder.getId()));
-            }
-            whereClause.append(" )");
+        int length = str.length();
+        if (length == 0) {
+                return false;
         }
-        if (messages != null && messages.length > 0) {
-            whereClause.append(" AND ( ");
-            boolean anyAdded = false;
-            for (Message message : messages) {
-                if (anyAdded) {
-                    whereClause.append(" OR ");
-                }
-                anyAdded = true;
-                whereClause.append(" ( uid = ? AND folder_id = ? ) ");
-                args.add(message.getUid());
-                args.add(Long.toString(((LocalFolder)message.getFolder()).getId()));
-            }
-            whereClause.append(" )");
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            return false;
         }
-        if (forbiddenFlags != null && forbiddenFlags.length > 0) {
-            whereClause.append(" AND (");
-            boolean anyAdded = false;
-            for (Flag flag : forbiddenFlags) {
-                if (anyAdded) {
-                    whereClause.append(" AND ");
+        for (; i < length; i++) {
+                char c = str.charAt(i);
+                if (c <= '/' || c >= ':') {
+                        return false;
                 }
-                anyAdded = true;
-                whereClause.append(" flags NOT LIKE ?");
+        }
+        return true;
+    }
 
-                args.add("%" + flag.toString() + "%");
-            }
-            whereClause.append(" )");
-        }
-        if (requiredFlags != null && requiredFlags.length > 0) {
-            whereClause.append(" AND (");
-            boolean anyAdded = false;
-            for (Flag flag : requiredFlags) {
-                if (anyAdded) {
-                    whereClause.append(" OR ");
-                }
-                anyAdded = true;
-                whereClause.append(" flags LIKE ?");
+    public Message[] searchForMessages(MessageRetrievalListener retrievalListener,
+                                        LocalSearch search) throws MessagingException {
 
-                args.add("%" + flag.toString() + "%");
-            }
-            whereClause.append(" )");
-        }
+        StringBuilder query = new StringBuilder();
+        List<String> queryArgs = new ArrayList<String>();
+        SqlQueryBuilder.buildWhereClause(mAccount, search.getConditions(), query, queryArgs);
+
+        // Avoid "ambiguous column name" error by prefixing "id" with the message table name
+        String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
+                "messages.", query.toString());
+
+        String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
+
+        String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
+                "LEFT JOIN folders ON (folders.id = messages.folder_id) WHERE " +
+                "((empty IS NULL OR empty != 1) AND deleted = 0)" +
+                ((!StringUtils.isNullOrEmpty(where)) ? " AND (" + where + ")" : "") +
+                " ORDER BY date DESC";
 
         if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "whereClause = " + whereClause.toString());
-            Log.v(K9.LOG_TAG, "args = " + args);
+            Log.d(K9.LOG_TAG, "Query = " + sqlQuery);
         }
-        return getMessages(
-                   listener,
-                   null,
-                   "SELECT "
-                   + GET_MESSAGES_COLS
-                   + "FROM messages WHERE deleted = 0 " + whereClause.toString() + " ORDER BY date DESC"
-                   , args.toArray(EMPTY_STRING_ARRAY)
-               );
+
+        return getMessages(retrievalListener, null, sqlQuery, selectionArgs);
     }
+
     /*
      * Given a query string, actually do the query for the messages and
      * call the MessageRetrievalListener for each one
@@ -1001,6 +1049,16 @@ public class LocalStore extends Store implements Serializable {
 
         return messages.toArray(EMPTY_MESSAGE_ARRAY);
 
+    }
+
+    public Message[] getMessagesInThread(final long rootId) throws MessagingException {
+        String rootIdString = Long.toString(rootId);
+
+        LocalSearch search = new LocalSearch();
+        search.and(Searchfield.THREAD_ROOT, rootIdString, Attribute.EQUALS);
+        search.or(new SearchCondition(Searchfield.ID, Attribute.EQUALS, rootIdString));
+
+        return searchForMessages(null, search);
     }
 
     public AttachmentInfo getAttachmentInfo(final String attachmentId) throws UnavailableStorageException {
@@ -1285,7 +1343,7 @@ public class LocalStore extends Store implements Serializable {
                         }
                         Cursor cursor = null;
                         try {
-                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE deleted = 0 and folder_id = ?",
+                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE (empty IS NULL OR empty != 1) AND deleted = 0 and folder_id = ?",
                                                  new String[] {
                                                      Long.toString(mFolderId)
                                                  });
@@ -1901,7 +1959,7 @@ public class LocalStore extends Store implements Serializable {
                                        listener,
                                        LocalFolder.this,
                                        "SELECT " + GET_MESSAGES_COLS
-                                       + "FROM messages WHERE "
+                                       + "FROM messages WHERE (empty IS NULL OR empty != 1) AND "
                                        + (includeDeleted ? "" : "deleted = 0 AND ")
                                        + " folder_id = ? ORDER BY date DESC"
                                        , new String[] {
@@ -1917,7 +1975,6 @@ public class LocalStore extends Store implements Serializable {
                 throw(MessagingException) e.getCause();
             }
         }
-
 
         @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
@@ -1975,30 +2032,118 @@ public class LocalStore extends Store implements Serializable {
 
                                 String oldUID = message.getUid();
 
-                                if (K9.DEBUG)
+                                if (K9.DEBUG) {
                                     Log.d(K9.LOG_TAG, "Updating folder_id to " + lDestFolder.getId() + " for message with UID "
                                           + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
+                                }
 
                                 String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
                                 message.setUid(newUid);
 
                                 uidMap.put(oldUID, newUid);
 
-                                db.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[] {
-                                               lDestFolder.getId(),
-                                               message.getUid(),
-                                               lMessage.getId()
-                                           });
+                                // Message threading in the target folder
+                                ThreadInfo threadInfo = lDestFolder.doMessageThreading(db, message);
+
+                                /*
+                                 * "Move" the message into the new folder and thread structure
+                                 */
+                                long id = lMessage.getId();
+                                String[] idArg = new String[] { Long.toString(id) };
+
+                                ContentValues cv = new ContentValues();
+                                cv.put("folder_id", lDestFolder.getId());
+                                cv.put("uid", newUid);
+
+                                if (threadInfo.rootId != -1) {
+                                    cv.put("thread_root", threadInfo.rootId);
+                                }
+
+                                if (threadInfo.parentId != -1) {
+                                    cv.put("thread_parent", threadInfo.parentId);
+                                }
+
+                                db.update("messages", cv, "id = ?", idArg);
+
+                                if (threadInfo.id != -1) {
+                                    String[] oldIdArg =
+                                            new String[] { Long.toString(threadInfo.id) };
+
+                                    cv.clear();
+                                    cv.put("thread_root", id);
+                                    db.update("messages", cv, "thread_root = ?", oldIdArg);
+
+                                    cv.clear();
+                                    cv.put("thread_parent", id);
+                                    db.update("messages", cv, "thread_parent = ?", oldIdArg);
+                                }
 
                                 /*
                                  * Add a placeholder message so we won't download the original
                                  * message again if we synchronize before the remote move is
                                  * complete.
                                  */
-                                LocalMessage placeHolder = new LocalMessage(oldUID, LocalFolder.this);
-                                placeHolder.setFlagInternal(Flag.DELETED, true);
-                                placeHolder.setFlagInternal(Flag.SEEN, true);
-                                appendMessages(new Message[] { placeHolder });
+
+                                // We need to open this folder to get the folder id
+                                open(OpenMode.READ_WRITE);
+
+                                cv.clear();
+                                cv.put("uid", oldUID);
+                                cv.put("flags", serializeFlags(new Flag[] { Flag.DELETED, Flag.SEEN }));
+                                cv.put("deleted", 1);
+                                cv.put("folder_id", mFolderId);
+
+                                String messageId = message.getMessageId();
+                                if (messageId != null) {
+                                    cv.put("message_id", messageId);
+                                    cv.put("empty", 1);
+
+                                    long rootId = lMessage.getRootId();
+                                    if (rootId != -1) {
+                                        cv.put("thread_root", rootId);
+                                    }
+
+                                    long parentId = lMessage.getParentId();
+                                    if (parentId != -1) {
+                                        cv.put("thread_parent", parentId);
+                                    }
+                                }
+
+                                final long newId;
+                                if (threadInfo.id != -1) {
+                                    // There already existed an empty message in the target folder.
+                                    // Let's use it as placeholder.
+
+                                    newId = threadInfo.id;
+
+                                    db.update("messages", cv, "id = ?",
+                                            new String[] { Long.toString(newId) });
+                                } else {
+                                    newId = db.insert("messages", null, cv);
+                                }
+
+                                /*
+                                 * Replace all "thread links" to the original message with links to
+                                 * the placeholder message.
+                                 */
+
+                                String[] whereArgs = new String[] {
+                                        Long.toString(mFolderId),
+                                        Long.toString(id) };
+
+                                // Note: If there was an empty message in the target folder we
+                                // already reconnected some messages to point to 'id'. We don't
+                                // want to change those links again, so we limit the update
+                                // statements below to the source folder.
+                                cv.clear();
+                                cv.put("thread_root", newId);
+                                db.update("messages", cv, "folder_id = ? AND thread_root = ?",
+                                        whereArgs);
+
+                                cv.clear();
+                                cv.put("thread_parent", newId);
+                                db.update("messages", cv, "folder_id = ? AND thread_parent = ?",
+                                        whereArgs);
                             }
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
@@ -2006,6 +2151,9 @@ public class LocalStore extends Store implements Serializable {
                         return null;
                     }
                 });
+
+                notifyChange();
+
                 return uidMap;
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
@@ -2076,6 +2224,70 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
+        /**
+         * Get the (database) ID of the message with the specified message ID.
+         *
+         * @param db
+         *         A {@link SQLiteDatabase} instance to access the database.
+         * @param messageId
+         *         The message ID to search for.
+         * @param onlyEmptyMessages
+         *         {@code true} if only "empty messages" (placeholders for threading) should be
+         *         searched
+         *
+         * @return If exactly one message with the specified message ID was found, the database ID
+         *         of this message; {@code -1} otherwise.
+         */
+        private long getDatabaseIdByMessageId(SQLiteDatabase db, String messageId,
+                boolean onlyEmptyMessages) {
+            long id = -1;
+
+            Cursor cursor = db.query("messages",
+                    new String[] { "id" },
+                    (onlyEmptyMessages) ?
+                            "empty=1 AND folder_id=? AND message_id=?" :
+                            "folder_id=? AND message_id=?",
+                    new String[] { Long.toString(mFolderId), messageId },
+                    null, null, null);
+
+            if (cursor != null) {
+                try {
+                    if (cursor.getCount() == 1) {
+                        cursor.moveToFirst();
+                        id = cursor.getLong(0);
+                    }
+                } finally {
+                    cursor.close();
+                }
+            }
+
+            return id;
+        }
+
+        private ThreadInfo getThreadInfo(SQLiteDatabase db, String messageId) {
+            Cursor cursor = db.query("messages",
+                    new String[] { "id", "thread_root", "thread_parent" },
+                            "folder_id=? AND message_id=?",
+                    new String[] { Long.toString(mFolderId), messageId },
+                    null, null, null);
+
+            if (cursor != null) {
+                try {
+                    if (cursor.getCount() == 1) {
+                        cursor.moveToFirst();
+                        long id = cursor.getLong(0);
+                        long rootId = (cursor.isNull(1)) ? -1 : cursor.getLong(1);
+                        long parentId = (cursor.isNull(2)) ? -1 : cursor.getLong(2);
+
+                        return new ThreadInfo(id, messageId, rootId, parentId);
+                    }
+                } finally {
+                    cursor.close();
+                }
+            }
+
+            return null;
+        }
 
         /**
          * The method differs slightly from the contract; If an incoming message already has a uid
@@ -2143,6 +2355,17 @@ public class LocalStore extends Store implements Serializable {
                                     deleteAttachments(message.getUid());
                                 }
 
+                                long rootId = -1;
+                                long parentId = -1;
+
+                                if (oldMessageId == -1) {
+                                    // This is a new message. Do the message threading.
+                                    ThreadInfo threadInfo = doMessageThreading(db, message);
+                                    oldMessageId = threadInfo.id;
+                                    rootId = threadInfo.rootId;
+                                    parentId = threadInfo.parentId;
+                                }
+
                                 boolean isDraft = (message.getHeader(K9.IDENTITY_HEADER) != null);
 
                                 List<Part> attachments;
@@ -2176,7 +2399,7 @@ public class LocalStore extends Store implements Serializable {
                                     cv.put("sender_list", Address.pack(message.getFrom()));
                                     cv.put("date", message.getSentDate() == null
                                            ? System.currentTimeMillis() : message.getSentDate().getTime());
-                                    cv.put("flags", Utility.combine(message.getFlags(), ',').toUpperCase(Locale.US));
+                                    cv.put("flags", serializeFlags(message.getFlags()));
                                     cv.put("deleted", message.isSet(Flag.DELETED) ? 1 : 0);
                                     cv.put("folder_id", mFolderId);
                                     cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
@@ -2190,11 +2413,20 @@ public class LocalStore extends Store implements Serializable {
                                     cv.put("internal_date",  message.getInternalDate() == null
                                            ? System.currentTimeMillis() : message.getInternalDate().getTime());
                                     cv.put("mime_type", message.getMimeType());
+                                    cv.put("empty", 0);
 
                                     String messageId = message.getMessageId();
                                     if (messageId != null) {
                                         cv.put("message_id", messageId);
                                     }
+
+                                    if (rootId != -1) {
+                                        cv.put("thread_root", rootId);
+                                    }
+                                    if (parentId != -1) {
+                                        cv.put("thread_parent", parentId);
+                                    }
+
                                     long messageUid;
 
                                     if (oldMessageId == -1) {
@@ -2223,6 +2455,9 @@ public class LocalStore extends Store implements Serializable {
                         return null;
                     }
                 });
+
+                notifyChange();
+
                 return uidMap;
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
@@ -2270,7 +2505,7 @@ public class LocalStore extends Store implements Serializable {
                                                message.getSentDate() == null ? System
                                                .currentTimeMillis() : message.getSentDate()
                                                .getTime(),
-                                               Utility.combine(message.getFlags(), ',').toUpperCase(Locale.US),
+                                               serializeFlags(message.getFlags()),
                                                mFolderId,
                                                Address.pack(message
                                                             .getRecipients(RecipientType.TO)),
@@ -2303,6 +2538,8 @@ public class LocalStore extends Store implements Serializable {
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
             }
+
+            notifyChange();
         }
 
         /**
@@ -2337,7 +2574,8 @@ public class LocalStore extends Store implements Serializable {
 
                     db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
                                new Object[]
-                               { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(Locale.US), id });
+                               { serializeFlags(appendedFlags.toArray(EMPTY_FLAG_ARRAY)), id });
+
                     return null;
                 }
             });
@@ -2551,6 +2789,9 @@ public class LocalStore extends Store implements Serializable {
                     return null;
                 }
             });
+
+            //TODO: remove this once the UI code exclusively uses the database id
+            notifyChange();
         }
 
         @Override
@@ -2581,7 +2822,7 @@ public class LocalStore extends Store implements Serializable {
             Message[] messages  = LocalStore.this.getMessages(
                                       null,
                                       this,
-                                      "SELECT " + GET_MESSAGES_COLS + "FROM messages WHERE " + whereClause,
+                                      "SELECT " + GET_MESSAGES_COLS + "FROM messages WHERE (empty IS NULL OR empty != 1) AND (" + whereClause + ")",
                                       params);
 
             for (Message message : messages) {
@@ -2595,6 +2836,8 @@ public class LocalStore extends Store implements Serializable {
                 }
             });
             resetUnreadAndFlaggedCounts();
+
+            notifyChange();
         }
 
         public void clearMessagesOlderThan(long cutoff) throws MessagingException {
@@ -2883,6 +3126,167 @@ public class LocalStore extends Store implements Serializable {
             });
         }
 
+        private String serializeFlags(Flag[] flags) {
+            return Utility.combine(flags, ',').toUpperCase(Locale.US);
+        }
+
+        private ThreadInfo doMessageThreading(SQLiteDatabase db, Message message)
+                throws MessagingException {
+            long rootId = -1;
+            long parentId = -1;
+
+            String messageId = message.getMessageId();
+
+            // If there's already an empty message in the database, update that
+            long id = getDatabaseIdByMessageId(db, messageId, true);
+
+            // Get the message IDs from the "References" header line
+            String[] referencesArray = message.getHeader("References");
+            List<String> messageIds = null;
+            if (referencesArray != null && referencesArray.length > 0) {
+                messageIds = Utility.extractMessageIds(referencesArray[0]);
+            }
+
+            // Append the first message ID from the "In-Reply-To" header line
+            String[] inReplyToArray = message.getHeader("In-Reply-To");
+            String inReplyTo = null;
+            if (inReplyToArray != null && inReplyToArray.length > 0) {
+                inReplyTo = Utility.extractMessageId(inReplyToArray[0]);
+                if (inReplyTo != null) {
+                    if (messageIds == null) {
+                        messageIds = new ArrayList<String>(1);
+                        messageIds.add(inReplyTo);
+                    } else if (!messageIds.contains(inReplyTo)) {
+                        messageIds.add(inReplyTo);
+                    }
+                }
+            }
+
+            if (messageIds == null) {
+                // This is not a reply, nothing to do for us.
+                return new ThreadInfo(id, messageId, -1, -1);
+            }
+
+            for (String reference : messageIds) {
+                ThreadInfo threadInfo = getThreadInfo(db, reference);
+
+                if (threadInfo == null) {
+                    // Create placeholder message
+                    ContentValues cv = new ContentValues();
+                    cv.put("message_id", reference);
+                    cv.put("folder_id", mFolderId);
+                    cv.put("empty", 1);
+
+                    if (rootId != -1) {
+                        cv.put("thread_root", rootId);
+                    }
+                    if (parentId != -1) {
+                        cv.put("thread_parent", parentId);
+                    }
+
+                    parentId = db.insert("messages", null, cv);
+                    if (rootId == -1) {
+                        rootId = parentId;
+                    }
+                } else {
+                    if (rootId != -1 && threadInfo.rootId == -1 && rootId != threadInfo.id) {
+                        // We found an existing root container that is not
+                        // the root of our current path (References).
+                        // Connect it to the current parent.
+
+                        // Let all children know who's the new root
+                        ContentValues cv = new ContentValues();
+                        cv.put("thread_root", rootId);
+                        db.update("messages", cv, "thread_root=?",
+                                new String[] { Long.toString(threadInfo.id) });
+
+                        // Connect the message to the current parent
+                        cv.put("thread_parent", parentId);
+                        db.update("messages", cv, "id=?",
+                                new String[] { Long.toString(threadInfo.id) });
+                    } else {
+                        rootId = (threadInfo.rootId == -1) ? threadInfo.id : threadInfo.rootId;
+                    }
+                    parentId = threadInfo.id;
+                }
+            }
+
+            //TODO: set in-reply-to "link" even if one already exists
+
+            return new ThreadInfo(id, messageId, rootId, parentId);
+        }
+
+        public List<Message> extractNewMessages(final List<Message> messages)
+                throws MessagingException {
+
+            try {
+                return database.execute(false, new DbCallback<List<Message>>() {
+                    @Override
+                    public List<Message> doDbWork(final SQLiteDatabase db) throws WrappedException {
+                        try {
+                            open(OpenMode.READ_WRITE);
+                        } catch (MessagingException e) {
+                            throw new WrappedException(e);
+                        }
+
+                        List<Message> result = new ArrayList<Message>();
+
+                        List<String> selectionArgs = new ArrayList<String>();
+                        Set<String> existingMessages = new HashSet<String>();
+                        int start = 0;
+
+                        while (start < messages.size()) {
+                            StringBuilder selection = new StringBuilder();
+
+                            selection.append("folder_id = ? AND UID IN (");
+                            selectionArgs.add(Long.toString(mFolderId));
+
+                            int count = Math.min(messages.size() - start, UID_CHECK_BATCH_SIZE);
+
+                            for (int i = start, end = start + count; i < end; i++) {
+                                if (i > start) {
+                                    selection.append(",?");
+                                } else {
+                                    selection.append("?");
+                                }
+
+                                selectionArgs.add(messages.get(i).getUid());
+                            }
+
+                            selection.append(")");
+
+                            Cursor cursor = db.query("messages", UID_CHECK_PROJECTION,
+                                    selection.toString(), selectionArgs.toArray(EMPTY_STRING_ARRAY),
+                                    null, null, null);
+
+                            try {
+                                while (cursor.moveToNext()) {
+                                    String uid = cursor.getString(0);
+                                    existingMessages.add(uid);
+                                }
+                            } finally {
+                                Utility.closeQuietly(cursor);
+                            }
+
+                            for (int i = start, end = start + count; i < end; i++) {
+                                Message message = messages.get(i);
+                                if (!existingMessages.contains(message.getUid())) {
+                                    result.add(message);
+                                }
+                            }
+
+                            existingMessages.clear();
+                            selectionArgs.clear();
+                            start += count;
+                        }
+
+                        return result;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
+        }
     }
 
     public static class LocalTextBody extends TextBody {
@@ -2917,18 +3321,11 @@ public class LocalStore extends Store implements Serializable {
 
         private String mPreview = "";
 
-        private boolean mToMeCalculated = false;
-        private boolean mCcMeCalculated = false;
-        private boolean mFromMeCalculated = false;
-        private boolean mToMe = false;
-        private boolean mCcMe = false;
-        private boolean mFromMe = false;
-
-
-
-
         private boolean mHeadersLoaded = false;
         private boolean mMessageDirty = false;
+
+        private long mRootId;
+        private long mParentId;
 
         public LocalMessage() {
         }
@@ -2983,6 +3380,9 @@ public class LocalStore extends Store implements Serializable {
                 f.open(LocalFolder.OpenMode.READ_WRITE);
                 this.mFolder = f;
             }
+
+            mRootId = (cursor.isNull(15)) ? -1 : cursor.getLong(15);
+            mParentId = (cursor.isNull(16)) ? -1 : cursor.getLong(16);
         }
 
         /**
@@ -3122,64 +3522,6 @@ public class LocalStore extends Store implements Serializable {
             mMessageDirty = true;
         }
 
-
-        public boolean fromMe() {
-            if (!mFromMeCalculated) {
-                if (mAccount.isAnIdentity(getFrom())) {
-                    mFromMe = true;
-                    mFromMeCalculated = true;
-                }
-            }
-            return mFromMe;
-        }
-
-
-        public boolean toMe() {
-            try {
-                if (!mToMeCalculated) {
-                    for (Address address : getRecipients(RecipientType.TO)) {
-                        if (mAccount.isAnIdentity(address)) {
-                            mToMe = true;
-                            mToMeCalculated = true;
-                        }
-                    }
-                }
-            } catch (MessagingException e) {
-                // do something better than ignore this
-                // getRecipients can throw a messagingexception
-            }
-            return mToMe;
-        }
-
-
-
-
-
-        public boolean ccMe() {
-            try {
-
-                if (!mCcMeCalculated) {
-                    for (Address address : getRecipients(RecipientType.CC)) {
-                        if (mAccount.isAnIdentity(address)) {
-                            mCcMe = true;
-                            mCcMeCalculated = true;
-                        }
-                    }
-
-                }
-            } catch (MessagingException e) {
-                // do something better than ignore this
-                // getRecipients can throw a messagingexception
-            }
-
-            return mCcMe;
-        }
-
-
-
-
-
-
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
         }
@@ -3219,7 +3561,7 @@ public class LocalStore extends Store implements Serializable {
                 throw(MessagingException) e.getCause();
             }
 
-
+            notifyChange();
         }
 
         /*
@@ -3236,13 +3578,26 @@ public class LocalStore extends Store implements Serializable {
             try {
                 database.execute(true, new DbCallback<Void>() {
                     @Override
-                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                        db.execSQL("UPDATE messages SET " + "deleted = 1," + "subject = NULL, "
-                                   + "sender_list = NULL, " + "date = NULL, " + "to_list = NULL, "
-                                   + "cc_list = NULL, " + "bcc_list = NULL, " + "preview = NULL, "
-                                   + "html_content = NULL, " + "text_content = NULL, "
-                                   + "reply_to_list = NULL " + "WHERE id = ?", new Object[]
-                                   { mId });
+                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
+                            UnavailableStorageException {
+                        String[] idArg = new String[] { Long.toString(mId) };
+
+                        ContentValues cv = new ContentValues();
+                        cv.put("deleted", 1);
+                        cv.put("empty", 1);
+                        cv.putNull("subject");
+                        cv.putNull("sender_list");
+                        cv.putNull("date");
+                        cv.putNull("to_list");
+                        cv.putNull("cc_list");
+                        cv.putNull("bcc_list");
+                        cv.putNull("preview");
+                        cv.putNull("html_content");
+                        cv.putNull("text_content");
+                        cv.putNull("reply_to_list");
+
+                        db.update("messages", cv, "id = ?", idArg);
+
                         /*
                          * Delete all of the message's attachments to save space.
                          * We do this explicit deletion here because we're not deleting the record
@@ -3253,8 +3608,8 @@ public class LocalStore extends Store implements Serializable {
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
                         }
-                        db.execSQL("DELETE FROM attachments WHERE message_id = ?", new Object[]
-                                   { mId });
+
+                        db.delete("attachments", "message_id = ?", idArg);
                         return null;
                     }
                 });
@@ -3263,11 +3618,13 @@ public class LocalStore extends Store implements Serializable {
             }
             ((LocalFolder)mFolder).deleteHeaders(mId);
 
-
+            notifyChange();
         }
 
         /*
          * Completely remove a message from the local database
+         *
+         * TODO: document how this updates the thread structure
          */
         @Override
         public void destroy() throws MessagingException {
@@ -3277,9 +3634,102 @@ public class LocalStore extends Store implements Serializable {
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
                         UnavailableStorageException {
                         try {
+                            LocalFolder localFolder = (LocalFolder) mFolder;
+
                             updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
-                            ((LocalFolder) mFolder).deleteAttachments(mId);
-                            db.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
+                            localFolder.deleteAttachments(mId);
+
+                            String id = Long.toString(mId);
+
+                            // Check if this message has children in the thread hierarchy
+                            Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
+                                    "thread_root = ? OR thread_parent = ?",
+                                    new String[] {id, id},
+                                    null, null, null);
+
+                            try {
+                                if (cursor.moveToFirst() && cursor.getLong(0) > 0) {
+                                    // Make the message an empty message
+                                    ContentValues cv = new ContentValues();
+                                    cv.put("id", mId);
+                                    cv.put("folder_id", localFolder.getId());
+                                    cv.put("deleted", 0);
+                                    cv.put("message_id", getMessageId());
+                                    cv.put("empty", 1);
+
+                                    if (getRootId() != -1) {
+                                        cv.put("thread_root", getRootId());
+                                    }
+
+                                    if (getParentId() != -1) {
+                                        cv.put("thread_parent", getParentId());
+                                    }
+
+                                    db.replace("messages", null, cv);
+
+                                    // Nothing else to do
+                                    return null;
+                                }
+                            } finally {
+                                cursor.close();
+                            }
+
+                            long parentId = getParentId();
+
+                            // Check if 'parentId' is empty
+                            cursor = db.query("messages", new String[] { "id" },
+                                    "id = ? AND empty = 1",
+                                    new String[] { Long.toString(parentId) },
+                                    null, null, null);
+
+                            try {
+                                if (cursor.getCount() == 0) {
+                                    // If the message isn't empty we skip the loop below
+                                    parentId = -1;
+                                }
+                            } finally {
+                                cursor.close();
+                            }
+
+                            while (parentId != -1) {
+                                String parentIdString = Long.toString(parentId);
+
+                                // Get the parent of the message 'parentId'
+                                cursor = db.query("messages", new String[] { "thread_parent" },
+                                        "id = ? AND empty = 1",
+                                        new String[] { parentIdString },
+                                        null, null, null);
+                                try {
+                                    if (cursor.moveToFirst() && !cursor.isNull(0)) {
+                                        parentId = cursor.getLong(0);
+                                    } else {
+                                        parentId = -1;
+                                    }
+                                } finally {
+                                    cursor.close();
+                                }
+
+                                // Check if (the old) 'parentId' has any children
+                                cursor = db.query("messages", new String[] { "COUNT(id)" },
+                                        "thread_parent = ? AND id != ?",
+                                        new String[] { parentIdString, id },
+                                        null, null, null);
+
+                                try {
+                                    if (cursor.moveToFirst() && cursor.getLong(0) == 0) {
+                                        // If it has no children we can remove it
+                                        db.delete("messages", "id = ?",
+                                                new String[] { parentIdString });
+                                    } else {
+                                        break;
+                                    }
+                                } finally {
+                                    cursor.close();
+                                }
+                            }
+
+                            // Remove the placeholder message
+                            db.delete("messages", "id = ?",  new String[] { id });
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
                         }
@@ -3289,6 +3739,8 @@ public class LocalStore extends Store implements Serializable {
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
             }
+
+            notifyChange();
         }
 
         private void updateFolderCountsOnFlag(Flag flag, boolean set) {
@@ -3376,14 +3828,18 @@ public class LocalStore extends Store implements Serializable {
             message.mAttachmentCount = mAttachmentCount;
             message.mSubject = mSubject;
             message.mPreview = mPreview;
-            message.mToMeCalculated = mToMeCalculated;
-            message.mCcMeCalculated = mCcMeCalculated;
-            message.mToMe = mToMe;
-            message.mCcMe = mCcMe;
             message.mHeadersLoaded = mHeadersLoaded;
             message.mMessageDirty = mMessageDirty;
 
             return message;
+        }
+
+        public long getRootId() {
+            return mRootId;
+        }
+
+        public long getParentId() {
+            return mParentId;
         }
     }
 
@@ -3448,5 +3904,28 @@ public class LocalStore extends Store implements Serializable {
         public Uri getContentUri() {
             return mUri;
         }
+    }
+
+    static class ThreadInfo {
+        public final long id;
+        public final String messageId;
+        public final long rootId;
+        public final long parentId;
+
+        public ThreadInfo(long id, String messageId, long rootId, long parentId) {
+            this.id = id;
+            this.messageId = messageId;
+            this.rootId = rootId;
+            this.parentId = parentId;
+        }
+    }
+
+    public LockableDatabase getDatabase() {
+        return database;
+    }
+
+    private void notifyChange() {
+        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + uUid + "/messages");
+        mContentResolver.notifyChange(uri, null);
     }
 }

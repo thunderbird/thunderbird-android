@@ -222,6 +222,9 @@ public class GlobalSettings {
         s.put("useBackgroundAsUnreadIndicator", Settings.versions(
                 new V(19, new BooleanSetting(true))
             ));
+        s.put("threadedView", Settings.versions(
+                new V(20, new BooleanSetting(true))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

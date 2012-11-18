@@ -206,6 +206,8 @@ public class K9 extends Application {
     private static HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
 
     private static boolean sUseBackgroundAsUnreadIndicator = true;
+    private static boolean sThreadedViewEnabled = true;
+
 
     /**
      * The MIME type(s) of attachments we're willing to view.
@@ -473,6 +475,7 @@ public class K9 extends Application {
 
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
+        editor.putBoolean("threadedView", sThreadedViewEnabled);
         fontSizes.save(editor);
     }
 
@@ -643,6 +646,7 @@ public class K9 extends Application {
 
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
         sUseBackgroundAsUnreadIndicator = sprefs.getBoolean("useBackgroundAsUnreadIndicator", true);
+        sThreadedViewEnabled = sprefs.getBoolean("threadedView", true);
         fontSizes.load(sprefs);
 
         try {
@@ -1137,5 +1141,13 @@ public class K9 extends Application {
 
     public static synchronized void setUseBackgroundAsUnreadIndicator(boolean enabled) {
         sUseBackgroundAsUnreadIndicator = enabled;
+    }
+
+    public static synchronized boolean isThreadedViewEnabled() {
+        return sThreadedViewEnabled;
+    }
+
+    public static synchronized void setThreadedViewEnabled(boolean enable) {
+        sThreadedViewEnabled = enable;
     }
 }

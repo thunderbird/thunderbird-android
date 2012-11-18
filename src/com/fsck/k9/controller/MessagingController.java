@@ -40,11 +40,9 @@ import com.fsck.k9.K9.Intents;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.NotificationBuilder;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
@@ -70,6 +68,8 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.PendingCommand;
 import com.fsck.k9.mail.store.UnavailableAccountException;
 import com.fsck.k9.mail.store.UnavailableStorageException;
+import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchSpecification;
 
 
 /**
@@ -509,234 +509,38 @@ public class MessagingController implements Runnable {
         });
     }
 
-
-
-    /**
-     * List the messages in the local message store for the given folder asynchronously.
-     *
-     * @param account
-     * @param folder
-     * @param listener
-     * @throws MessagingException
-     */
-    public void listLocalMessages(final Account account, final String folder, final MessagingListener listener) {
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                listLocalMessagesSynchronous(account, folder, listener);
-            }
-        });
-    }
-
-
-    /**
-     * List the messages in the local message store for the given folder synchronously.
-     *
-     * @param account
-     * @param folder
-     * @param listener
-     * @throws MessagingException
-     */
-    public void listLocalMessagesSynchronous(final Account account, final String folder, final MessagingListener listener) {
-
-        for (MessagingListener l : getListeners(listener)) {
-            l.listLocalMessagesStarted(account, folder);
-        }
-
-        LocalFolder localFolder = null;
-        MessageRetrievalListener retrievalListener =
-        new MessageRetrievalListener() {
-            List<Message> pendingMessages = new ArrayList<Message>();
-
-
-            @Override
-            public void messageStarted(String message, int number, int ofTotal) {}
-            @Override
-            public void messageFinished(Message message, int number, int ofTotal) {
-
-                if (!isMessageSuppressed(account, folder, message)) {
-                    pendingMessages.add(message);
-                    if (pendingMessages.size() > 10) {
-                        addPendingMessages();
-                    }
-
-                } else {
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.listLocalMessagesRemoveMessage(account, folder, message);
-                    }
-                }
-            }
-            @Override
-            public void messagesFinished(int number) {
-                addPendingMessages();
-            }
-            private void addPendingMessages() {
-                for (MessagingListener l : getListeners(listener)) {
-                    l.listLocalMessagesAddMessages(account, folder, pendingMessages);
-                }
-                pendingMessages.clear();
-            }
-        };
-
-
-
-        try {
-            LocalStore localStore = account.getLocalStore();
-            localFolder = localStore.getFolder(folder);
-            localFolder.open(OpenMode.READ_WRITE);
-
-            //Purging followed by getting requires 2 DB queries.
-            //TODO: Fix getMessages to allow auto-pruning at visible limit?
-            localFolder.purgeToVisibleLimit(null);
-            localFolder.getMessages(
-                retrievalListener,
-                false // Skip deleted messages
-            );
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "Got ack that callbackRunner finished");
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.listLocalMessagesFinished(account, folder);
-            }
-        } catch (Exception e) {
-            for (MessagingListener l : getListeners(listener)) {
-                l.listLocalMessagesFailed(account, folder, e.getMessage());
-            }
-            addErrorMessage(account, null, e);
-        } finally {
-            closeFolder(localFolder);
-        }
-    }
-
-    public void searchLocalMessages(SearchSpecification searchSpecification, final Message[] messages, final MessagingListener listener) {
-        searchLocalMessages(searchSpecification.getAccountUuids(), searchSpecification.getFolderNames(), messages,
-                            searchSpecification.getQuery(), searchSpecification.isIntegrate(), searchSpecification.getRequiredFlags(), searchSpecification.getForbiddenFlags(), listener);
-    }
-
-
     /**
      * Find all messages in any local account which match the query 'query'
      * @throws MessagingException
      */
-    public void searchLocalMessages(final String[] accountUuids, final String[] folderNames, final Message[] messages, final String query, final boolean integrate,
-                                    final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
-        if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "searchLocalMessages ("
-                  + "accountUuids=" + Utility.combine(accountUuids, ',')
-                  + ", folderNames = " + Utility.combine(folderNames, ',')
-                  + ", messages.size() = " + (messages != null ? messages.length : -1)
-                  + ", query = " + query
-                  + ", integrate = " + integrate
-                  + ", requiredFlags = " + Utility.combine(requiredFlags, ',')
-                  + ", forbiddenFlags = " + Utility.combine(forbiddenFlags, ',')
-                  + ")");
-        }
-
+    public void searchLocalMessages(final LocalSearch search, final MessagingListener listener) {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                searchLocalMessagesSynchronous(accountUuids, folderNames, messages,  query, integrate, requiredFlags, forbiddenFlags, listener);
+                searchLocalMessagesSynchronous(search, listener);
             }
         });
     }
-    public void searchLocalMessagesSynchronous(final String[] accountUuids, final String[] folderNames, final Message[] messages, final String query, final boolean integrate, final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
 
+    public void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
         final AccountStats stats = new AccountStats();
-        final Set<String> accountUuidsSet = new HashSet<String>();
-        if (accountUuids != null) {
-            accountUuidsSet.addAll(Arrays.asList(accountUuids));
-        }
-        final Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
-        List<LocalFolder> foldersToSearch = null;
-        boolean displayableOnly = false;
-        boolean noSpecialFolders = true;
-        for (final Account account : prefs.getAvailableAccounts()) {
-            if (accountUuids != null && !accountUuidsSet.contains(account.getUuid())) {
+        final HashSet<String> uuidSet = new HashSet<String>(Arrays.asList(search.getAccountUuids()));
+        Account[] accounts = Preferences.getPreferences(mApplication.getApplicationContext()).getAccounts();
+        boolean allAccounts = uuidSet.contains(SearchSpecification.ALL_ACCOUNTS);
+
+        // for every account we want to search do the query in the localstore
+        for (final Account account : accounts) {
+
+            if (!allAccounts && !uuidSet.contains(account.getUuid())) {
                 continue;
             }
 
-            if (accountUuids != null && accountUuidsSet.contains(account.getUuid())) {
-                displayableOnly = true;
-                noSpecialFolders = true;
-            } else if (!integrate && folderNames == null) {
-                Account.Searchable searchableFolders = account.getSearchableFolders();
-                switch (searchableFolders) {
-                case NONE:
-                    continue;
-                case DISPLAYABLE:
-                    displayableOnly = true;
-                    break;
-
-                }
-            }
-            List<Message> messagesToSearch = null;
-            if (messages != null) {
-                messagesToSearch = new LinkedList<Message>();
-                for (Message message : messages) {
-                    if (message.getFolder().getAccount().getUuid().equals(account.getUuid())) {
-                        messagesToSearch.add(message);
-                    }
-                }
-                if (messagesToSearch.isEmpty()) {
-                    continue;
-                }
-            }
-            if (listener != null) {
-                listener.listLocalMessagesStarted(account, null);
-            }
-
-            if (integrate || displayableOnly || folderNames != null || noSpecialFolders) {
-                List<LocalFolder> tmpFoldersToSearch = new LinkedList<LocalFolder>();
-                try {
-                    LocalStore store = account.getLocalStore();
-                    List <? extends Folder > folders = store.getPersonalNamespaces(false);
-                    Set<String> folderNameSet = null;
-                    if (folderNames != null) {
-                        folderNameSet = new HashSet<String>();
-                        folderNameSet.addAll(Arrays.asList(folderNames));
-                    }
-                    for (Folder folder : folders) {
-                        LocalFolder localFolder = (LocalFolder)folder;
-                        boolean include = true;
-                        folder.refresh(prefs);
-                        String localFolderName = localFolder.getName();
-                        if (integrate) {
-                            include = localFolder.isIntegrate();
-                        } else {
-                            if (folderNameSet != null) {
-                                if (!folderNameSet.contains(localFolderName))
-
-                                {
-                                    include = false;
-                                }
-                            }
-                            // Never exclude the INBOX (see issue 1817)
-                            else if (noSpecialFolders && !localFolderName.equalsIgnoreCase(account.getInboxFolderName()) &&
-                                     !localFolderName.equals(account.getArchiveFolderName()) && account.isSpecialFolder(localFolderName)) {
-                                include = false;
-                            } else if (displayableOnly && modeMismatch(account.getFolderDisplayMode(), folder.getDisplayClass())) {
-                                include = false;
-                            }
-                        }
-
-                        if (include) {
-                            tmpFoldersToSearch.add(localFolder);
-                        }
-                    }
-                    if (tmpFoldersToSearch.size() < 1) {
-                        continue;
-                    }
-                    foldersToSearch = tmpFoldersToSearch;
-                } catch (MessagingException me) {
-                    Log.e(K9.LOG_TAG, "Unable to restrict search folders in Account " + account.getDescription() + ", searching all", me);
-                    addErrorMessage(account, null, me);
-                }
-
-            }
-
+            // Collecting statistics of the search result
             MessageRetrievalListener retrievalListener = new MessageRetrievalListener() {
                 @Override
                 public void messageStarted(String message, int number, int ofTotal) {}
+                @Override
+                public void messagesFinished(int number) {}
                 @Override
                 public void messageFinished(Message message, int number, int ofTotal) {
                     if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message)) {
@@ -749,22 +553,18 @@ public class MessagingController implements Runnable {
                             listener.listLocalMessagesAddMessages(account, null, messages);
                         }
                     }
-
-                }
-                @Override
-                public void messagesFinished(int number) {
-
                 }
             };
 
-            try {
-                String[] queryFields = {"html_content", "subject", "sender_list"};
-                LocalStore localStore = account.getLocalStore();
-                localStore.searchForMessages(retrievalListener, queryFields
-                                             , query, foldersToSearch,
-                                             messagesToSearch == null ? null : messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY),
-                                             requiredFlags, forbiddenFlags);
+            // alert everyone the search has started
+            if (listener != null) {
+                listener.listLocalMessagesStarted(account, null);
+            }
 
+            // build and do the query in the localstore
+            try {
+                LocalStore localStore = account.getLocalStore();
+                localStore.searchForMessages(retrievalListener, search);
             } catch (Exception e) {
                 if (listener != null) {
                     listener.listLocalMessagesFailed(account, null, e.getMessage());
@@ -776,6 +576,8 @@ public class MessagingController implements Runnable {
                 }
             }
         }
+
+        // publish the total search statistics
         if (listener != null) {
             listener.searchStats(stats);
         }
@@ -824,24 +626,28 @@ public class MessagingController implements Runnable {
             }
 
             List<Message> messages = remoteFolder.search(query, requiredFlags, forbiddenFlags);
-            if (listener != null) {
-                listener.remoteSearchServerQueryComplete(acct, folderName, messages.size());
-            }
 
             if (K9.DEBUG) {
                 Log.i("Remote Search", "Remote search got " + messages.size() + " results");
             }
 
-            Collections.sort(messages, new UidReverseComparator());
+            // There's no need to fetch messages already completely downloaded
+            List<Message> remoteMessages = localFolder.extractNewMessages(messages);
+            messages.clear();
 
-
-            int resultLimit = acct.getRemoteSearchNumResults();
-            if (resultLimit > 0 && messages.size() > resultLimit) {
-                extraResults = messages.subList(resultLimit, messages.size());
-                messages = messages.subList(0, resultLimit);
+            if (listener != null) {
+                listener.remoteSearchServerQueryComplete(acct, folderName, remoteMessages.size());
             }
 
-            loadSearchResultsSynchronous(messages, localFolder, remoteFolder, listener);
+            Collections.sort(remoteMessages, new UidReverseComparator());
+
+            int resultLimit = acct.getRemoteSearchNumResults();
+            if (resultLimit > 0 && remoteMessages.size() > resultLimit) {
+                extraResults = remoteMessages.subList(resultLimit, remoteMessages.size());
+                remoteMessages = remoteMessages.subList(0, resultLimit);
+            }
+
+            loadSearchResultsSynchronous(remoteMessages, localFolder, remoteFolder, listener);
 
 
         } catch (Exception e) {
@@ -2753,20 +2559,39 @@ public class MessagingController implements Runnable {
         processPendingCommands(account);
     }
 
-    public void setFlag(
-        final Message[] messages,
-        final Flag flag,
-        final boolean newState) {
+    public void setFlag(final List<Message> messages, final Flag flag, final boolean newState) {
+
         actOnMessages(messages, new MessageActor() {
             @Override
             public void act(final Account account, final Folder folder,
-            final List<Message> messages) {
-                setFlag(account, folder.getName(), messages.toArray(EMPTY_MESSAGE_ARRAY), flag,
+                    final List<Message> accountMessages) {
+
+                setFlag(account, folder.getName(), accountMessages.toArray(EMPTY_MESSAGE_ARRAY), flag,
                         newState);
             }
-
         });
+    }
 
+    public void setFlagForThreads(final List<Message> messages, final Flag flag,
+            final boolean newState) {
+
+        actOnMessages(messages, new MessageActor() {
+            @Override
+            public void act(final Account account, final Folder folder,
+                    final List<Message> accountMessages) {
+
+                try {
+                    List<Message> messagesInThreads = collectMessagesInThreads(account,
+                            accountMessages);
+
+                    setFlag(account, folder.getName(),
+                            messagesInThreads.toArray(EMPTY_MESSAGE_ARRAY), flag, newState);
+
+                } catch (MessagingException e) {
+                    addErrorMessage(account, "Something went wrong in setFlagForThreads()", e);
+                }
+            }
+        });
     }
 
     /**
@@ -3023,14 +2848,15 @@ public class MessagingController implements Runnable {
                                 false, true)) {
                             if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
                                 message.setFlag(Flag.SEEN, true);
-                                setFlag(new Message[] { message }, Flag.SEEN, true);
+                                setFlag(Collections.singletonList((Message) message),
+                                        Flag.SEEN, true);
                             }
                         }
                         return;
                     }
                     if (!message.isSet(Flag.SEEN)) {
                         message.setFlag(Flag.SEEN, true);
-                        setFlag(new Message[] { message }, Flag.SEEN, true);
+                        setFlag(Collections.singletonList((Message) message), Flag.SEEN, true);
                     }
 
                     for (MessagingListener l : getListeners(listener)) {
@@ -3247,8 +3073,11 @@ public class MessagingController implements Runnable {
         builder.setContentTitle(mApplication.getString(R.string.notification_bg_send_title));
         builder.setContentText(account.getDescription());
 
-        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account,
-                account.getInboxFolderName());
+        LocalSearch search = new LocalSearch(account.getInboxFolderName());
+        search.addAllowedFolder(account.getInboxFolderName());
+        search.addAccountUuid(account.getUuid());
+        Intent intent = MessageList.intentDisplaySearch(mApplication, search, false, true, true);
+
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
         builder.setContentIntent(pi);
 
@@ -3330,8 +3159,11 @@ public class MessagingController implements Runnable {
                 mApplication.getString(R.string.notification_bg_title_separator) +
                 folder.getName());
 
-        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account,
-                account.getInboxFolderName());
+        LocalSearch search = new LocalSearch(account.getInboxFolderName());
+        search.addAllowedFolder(account.getInboxFolderName());
+        search.addAccountUuid(account.getUuid());
+        Intent intent = MessageList.intentDisplaySearch(mApplication, search, false, true, true);
+
         PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
         builder.setContentIntent(pi);
 
@@ -3597,40 +3429,90 @@ public class MessagingController implements Runnable {
             return false;
         }
     }
-    public void moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
-                             final MessagingListener listener) {
+    public void moveMessages(final Account account, final String srcFolder,
+            final List<Message> messages, final String destFolder,
+            final MessagingListener listener) {
+
         for (Message message : messages) {
             suppressMessage(account, srcFolder, message);
         }
+
         putBackground("moveMessages", null, new Runnable() {
             @Override
             public void run() {
-                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false, listener);
+                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false,
+                        listener);
             }
         });
     }
 
-    public void moveMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
-                            final MessagingListener listener) {
-        moveMessages(account, srcFolder, new Message[] { message }, destFolder, listener);
+    public void moveMessagesInThread(final Account account, final String srcFolder,
+            final List<Message> messages, final String destFolder) {
+
+        for (Message message : messages) {
+            suppressMessage(account, srcFolder, message);
+        }
+
+        putBackground("moveMessagesInThread", null, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
+                    moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
+                            false, null);
+                } catch (MessagingException e) {
+                    addErrorMessage(account, "Exception while moving messages", e);
+                }
+            }
+        });
     }
 
-    public void copyMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
-                             final MessagingListener listener) {
+    public void moveMessage(final Account account, final String srcFolder, final Message message,
+            final String destFolder, final MessagingListener listener) {
+
+        moveMessages(account, srcFolder, Collections.singletonList(message), destFolder, listener);
+    }
+
+    public void copyMessages(final Account account, final String srcFolder,
+            final List<Message> messages, final String destFolder,
+            final MessagingListener listener) {
+
         putBackground("copyMessages", null, new Runnable() {
             @Override
             public void run() {
-                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, true, listener);
+                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, true,
+                        listener);
             }
         });
     }
-    public void copyMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
-                            final MessagingListener listener) {
-        copyMessages(account, srcFolder, new Message[] { message }, destFolder, listener);
+
+    public void copyMessagesInThread(final Account account, final String srcFolder,
+            final List<Message> messages, final String destFolder) {
+
+        putBackground("copyMessagesInThread", null, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
+                    moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
+                            true, null);
+                } catch (MessagingException e) {
+                    addErrorMessage(account, "Exception while copying messages", e);
+                }
+            }
+        });
     }
 
-    private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder, final Message[] inMessages,
-            final String destFolder, final boolean isCopy, MessagingListener listener) {
+    public void copyMessage(final Account account, final String srcFolder, final Message message,
+            final String destFolder, final MessagingListener listener) {
+
+        copyMessages(account, srcFolder, Collections.singletonList(message), destFolder, listener);
+    }
+
+    private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder,
+            final List<Message> inMessages, final String destFolder, final boolean isCopy,
+            MessagingListener listener) {
+
         try {
             Map<String, String> uidMap = new HashMap<String, String>();
             Store localStore = account.getLocalStore();
@@ -3741,7 +3623,7 @@ public class MessagingController implements Runnable {
             if (uid != null) {
                 Message message = localFolder.getMessage(uid);
                 if (message != null) {
-                    deleteMessages(new Message[] { message }, null);
+                    deleteMessages(Collections.singletonList(message), null);
                 }
             }
         } catch (MessagingException me) {
@@ -3751,20 +3633,72 @@ public class MessagingController implements Runnable {
         }
     }
 
-    public void deleteMessages(final Message[] messages, final MessagingListener listener) {
+    public void deleteThreads(final List<Message> messages) {
         actOnMessages(messages, new MessageActor() {
 
             @Override
             public void act(final Account account, final Folder folder,
-            final List<Message> messages) {
-                for (Message message : messages) {
+                    final List<Message> accountMessages) {
+
+                for (Message message : accountMessages) {
+                    suppressMessage(account, folder.getName(), message);
+                }
+
+                putBackground("deleteThreads", null, new Runnable() {
+                    @Override
+                    public void run() {
+                        deleteThreadsSynchronous(account, folder.getName(), accountMessages);
+                    }
+                });
+            }
+        });
+    }
+
+    public void deleteThreadsSynchronous(Account account, String folderName,
+            List<Message> messages) {
+
+        try {
+            List<Message> messagesToDelete = collectMessagesInThreads(account, messages);
+
+            deleteMessagesSynchronous(account, folderName,
+                    messagesToDelete.toArray(EMPTY_MESSAGE_ARRAY), null);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Something went wrong while deleting threads", e);
+        }
+    }
+
+    public List<Message> collectMessagesInThreads(Account account, List<Message> messages)
+            throws MessagingException {
+
+        LocalStore localStore = account.getLocalStore();
+
+        List<Message> messagesInThreads = new ArrayList<Message>();
+        for (Message message : messages) {
+            long rootId = ((LocalMessage) message).getRootId();
+            long threadId = (rootId == -1) ? message.getId() : rootId;
+
+            Message[] messagesInThread = localStore.getMessagesInThread(threadId);
+            Collections.addAll(messagesInThreads, messagesInThread);
+        }
+
+        return messagesInThreads;
+    }
+
+    public void deleteMessages(final List<Message> messages, final MessagingListener listener) {
+        actOnMessages(messages, new MessageActor() {
+
+            @Override
+            public void act(final Account account, final Folder folder,
+            final List<Message> accountMessages) {
+                for (Message message : accountMessages) {
                     suppressMessage(account, folder.getName(), message);
                 }
 
                 putBackground("deleteMessages", null, new Runnable() {
                     @Override
                     public void run() {
-                        deleteMessagesSynchronous(account, folder.getName(), messages.toArray(EMPTY_MESSAGE_ARRAY), listener);
+                        deleteMessagesSynchronous(account, folder.getName(),
+                                accountMessages.toArray(EMPTY_MESSAGE_ARRAY), listener);
                     }
                 });
             }
@@ -5024,7 +4958,7 @@ public class MessagingController implements Runnable {
 
     }
 
-    private void actOnMessages(Message[] messages, MessageActor actor) {
+    private void actOnMessages(List<Message> messages, MessageActor actor) {
         Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
 
         for (Message message : messages) {
