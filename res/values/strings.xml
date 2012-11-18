@@ -51,7 +51,7 @@ http://k9mail.googlecode.com/
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
+    <string name="default_signature">-- \nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>
 
 
 
@@ -340,7 +340,7 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>
     <string name="global_settings_notification_hide_subject_never">Never</string>
-    <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>
+    <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>
     <string name="global_settings_notification_hide_subject_always">Always</string>
 
     <string name="global_settings_batch_buttons">Batch buttons</string>
@@ -598,7 +598,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_color_summary">Choose the color of the account used in folder and account list</string>
 
     <string name="account_settings_led_color_label">Notification LED color</string>
-    <string name="account_settings_led_color_summary">Choose the color your phone LED should blink for this account</string>
+    <string name="account_settings_led_color_summary">Choose the color your device LED should blink for this account</string>
 
     <string name="account_settings_mail_display_count_label">Local folder size</string>
 
