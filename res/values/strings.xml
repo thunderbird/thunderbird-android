@@ -55,6 +55,14 @@ http://k9mail.googlecode.com/
     <string name="default_signature">-- \nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">Mark all messages in \'<xliff:g id="folder">%s</xliff:g>\' as read?  (including messages in the folder that are not displayed in K-9)</string>
+    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">All data for \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
+    <string name="account_clear_dlg_instructions_fmt">All messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
+    <string name="insufficient_apg_permissions">K-9 doesn\'t have permission to access APG fully, please reinstall K-9 to fix that.</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -151,8 +159,6 @@ http://k9mail.googlecode.com/
     <string name="send_alternate_chooser_title">Choose sender</string>
 
     <string name="mark_all_as_read_dlg_title">Mark all messages as read</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Mark all messages in \'<xliff:g id="folder">%s</xliff:g>\' as read?  (including
-    messages in the folder that are not displayed in K-9)</string>
 
     <string name="flag_action">Add star</string>
     <string name="unflag_action">Remove star</string>
@@ -772,13 +778,10 @@ http://k9mail.googlecode.com/
     <string name="sort_by_attach">Attachments</string>
 
     <string name="account_delete_dlg_title">Remove Account</string>
-    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Recreate Account</string>
-    <string name="account_recreate_dlg_instructions_fmt">All data for \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
 
     <string name="account_clear_dlg_title">Clear Account</string>
-    <string name="account_clear_dlg_instructions_fmt">All messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
 
     <string name="provider_note_live">Only some \"Plus\" accounts include POP access
         allowing this program to connect. If you are not able to sign in with
@@ -988,7 +991,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Verify</string>
     <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 doesn\'t have permission to access APG fully, please reinstall K-9 to fix that.</string>
     <string name="pgp_mime_unsupported">PGP/MIME messages are not supported yet.</string>
     <string name="attachment_encryption_unsupported">Warning: attachments are NOT signed or encrypted yet.</string>
     <string name="send_aborted">Send aborted.</string>
