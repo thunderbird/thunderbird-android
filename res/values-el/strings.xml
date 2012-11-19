@@ -53,7 +53,6 @@ http://k9mail.googlecode.com/
 
 
     <!-- General strings that include the app name -->
-    <string name="mark_all_as_read_dlg_instructions_fmt">Να σημανθούν όλα τα μηνύματα στο \'<xliff:g id="folder">%s</xliff:g>\' ως αναγνωσμένα; (θα συμπεριληφθούν τα μηνύματα στο φάκελο που δεν προβάλονται στο K-9)</string>
     <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
     <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
     <string name="account_clear_dlg_instructions_fmt">Όλα τα μηνύματα του λογαριασμού \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
@@ -86,7 +85,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_title">Λογαριασμοί</string>
     <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Προχωρημένα</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -112,14 +110,11 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">Άκυρο</string>
     <string name="send_action">Αποστολή</string>
     <string name="send_again_action">Αποστολή πάλι</string>
-    <string name="select_action">Επιλογή</string>
-    <string name="deselect_action">Απο-επιλογή</string>
     <string name="reply_action">Απάντηση</string>
     <string name="reply_all_action">Απάντηση σε όλους</string>
     <string name="delete_action">Διαγραφή</string>
     <string name="archive_action">Αρχειοθέτηση</string>
     <string name="spam_action">Σκουπιδοταχυδρομείο</string>
-    <string name="delete_all_action">Καθαρισμός φακέλου</string>
     <string name="forward_action">Μπροστά</string>
     <string name="move_action">Μετακίνηση</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
@@ -128,38 +123,28 @@ http://k9mail.googlecode.com/
     <string name="done_action">Συμπληρώθηκε</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Απόρριψη</string>
     <string name="save_draft_action">Αποθήκευση στα Πρόχειρα</string>
-    <string name="retry_action">Επανάληψη</string>
-    <string name="refresh_action">Ανανέωση</string>
     <string name="check_mail_action">Έλεγχος email</string>
     <string name="send_messages_action">Αποστολή μηνυμάτων</string>
-    <string name="list_folders_action">Λίστα φακέλων</string>
     <string name="refresh_folders_action">Ανανέωση φακέλων</string>
     <string name="filter_folders_action">Εύρεση φακέλου</string>
-    <string name="mark_all_as_read_action">Σήμανση όλων των μηνυμάτων ως αναγνωσμένων</string>
     <string name="add_account_action">Προσθήκη λογαριασμού</string>
     <string name="compose_action">Δημιουργία νέου</string>
     <string name="search_action">Αναζήτηση</string>
     <string name="search_results">Αποτελέσματα αναζήτησης</string>
     <string name="preferences_action">Ρυθμίσεις</string>
-    <string name="open_action">Άνοιγμα</string>
     <string name="account_settings_action">Ρυθμίσεις λογαριασμού</string>
     <string name="folder_settings_action">Ρυθμίσεις φακέλου</string>
     <string name="global_settings_action">Γενικές ρυθμίσεις</string>
     <string name="remove_account_action">Διαγραφή λογαριασμού</string>
     <string name="clear_pending_action">Καθαρισμός εκκρεμών ενεργειών (κίνδυνος!)</string>
 
-    <string name="accounts_action">Λογαριασμοί</string>
     <string name="mark_as_read_action">Σήμανση ως αναγνωσμένου</string>
     <string name="send_alternate_action">Διανομή</string>
     <string name="send_alternate_chooser_title">Επιλογή αποστολέα</string>
 
-    <string name="mark_all_as_read_dlg_title">Σήμανση όλων των μηνυμάτων ως αναγνωσμένων</string>
-
     <string name="flag_action">Προσθήκη αστεριού</string>
     <string name="unflag_action">Αφαίρεση αστεριού</string>
     <string name="copy_action">Αντιγραφή</string>
-    <string name="show_full_header_action">Προβολή πλήρους επικεφαλίδας</string>
-    <string name="hide_full_header_action">Απόκρυψη πλήρους επικεφαλίδας</string>
     <string name="select_text_action">Επιλογή κειμένου</string>
 
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
@@ -182,7 +167,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">Επιλογές λογαριασμού</string>
 
     <string name="general_no_subject">(Χωρίς θέμα)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_date">Χωρίς ημερομηνία</string>
     <string name="general_no_sender">Χωρίς αποστολέα</string>
     <string name="status_loading">Ενημέρωση</string>
     <string name="status_loading_more">Φόρτωση μηνυμάτων\u2026</string>
@@ -272,11 +256,6 @@ http://k9mail.googlecode.com/
     <string name="message_view_cc_label">Κοιν:</string>
     <string name="message_view_attachment_view_action">Άνοιγμα</string>
     <string name="message_view_attachment_download_action">Αποθήκευση</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Αρχειοθέτηση</string>
-    <string name="message_view_move_action">Μετακίνηση</string>
-    <string name="message_view_spam_action">Σκουπίδια</string>
     <string name="message_view_status_attachment_saved">Συνημμένο αποθηκεύτηκε στην κάρτα αποθήκευσης ως <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Αδύνατο να αποθηκευτεί το συνημμένο στην κάρτα αποθήκευσης.</string>
     <string name="message_view_show_pictures_action">Προβολή εικόνων</string>
@@ -300,12 +279,8 @@ http://k9mail.googlecode.com/
     <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε</string>
     <string name="message_saved_toast">Το μήνυμα αποθηκεύτηκε στα πρόχειρα</string>
 
-    <string name="global_settings_flag_label">Προβολή αστεριών</string>
-    <string name="global_settings_flag_summary">Τα αστέρια υποδηλώνουν σημαντικά μηνύματα</string>
     <string name="global_settings_checkbox_label">Κουτιά πολλαπλής επιλογής</string>
     <string name="global_settings_checkbox_summary">Προβολή κουτιών επιλογής πάντοτε</string>
-    <string name="global_settings_touchable_label">Προεπισκόπηση μηνυμάτων</string>
-    <string name="global_settings_touchable_summary">Ευρύχωρες λίστες με προεπισκόπηση μηνύματος</string>
     <string name="global_settings_preview_lines_label">Προεπισκόπηση γραμμώνν</string>
     <string name="global_settings_show_correspondent_names_label">Προβολή ονόματος επιστολογράφων</string>
     <string name="global_settings_show_correspondent_names_summary">Προβολή ονόματος επιστολογράφων παρά των διευθύνσεων ηλεκτρονικού ταχυδρομείου</string>
@@ -328,12 +303,9 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">Επιβεβαίωση ενεργειών</string>
     <string name="global_settings_confirm_actions_summary">Προβολή διαλόγου όποτε εκτελούνται επιλεγμένες ενέργειες</string>
-    <string name="global_settings_confirm_action_archive">Αρχειοθέτηση</string>
     <string name="global_settings_confirm_action_delete">Διαγραφή (προβολή μηνύματος μόνον)</string>
     <string name="global_settings_confirm_action_delete_starred">Διαγραφή με αστέρι (προβολή μηνύματος μόνον)</string>
     <string name="global_settings_confirm_action_spam">Σκουπίδια</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Σήμανση ως αναγνωσμέων</string>
-    <string name="global_settings_confirm_action_send">Αποστολή</string>
 
     <string name="global_settings_notification_hide_subject_title">Απόκρυψη θέματος στις ειδοποιήσεις</string>
     <string name="global_settings_notification_hide_subject_never">Ποτέ</string>
@@ -356,10 +328,8 @@ http://k9mail.googlecode.com/
     <string name="quiet_time_ends">Λήξη ωρών ησυχίας</string>
 
     <string name="account_setup_basics_title">Ρύθμιση νέου λογαριασμού</string>
-    <string name="account_setup_basics_instructions">Email του λογαριασμού:</string>
     <string name="account_setup_basics_email_hint">Διεύθυνση email</string>
     <string name="account_setup_basics_password_hint">Συνθηματικό</string>
-    <string name="account_setup_basics_default_label">Αποστολή email από αυτό το λογαριασμό εξ ορισμού</string>
     <string name="account_setup_basics_manual_setup_action">Χειροκίνητη ρύθμιση</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -371,7 +341,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">Ακύρωση\u2026</string>
 
     <string name="account_setup_names_title">Σχεδόν έτοιμο!</string>
-    <string name="account_setup_names_instructions">Ο λογαριασμός ρυθμίστηκε και τα μηνύματα έρχονται!</string>
     <string name="account_setup_names_account_name_label">Ονομασία λογαριασμού (Προαιρετικό):</string>
     <string name="account_setup_names_user_name_label">Όνομα αποστολέα (προβάλλεται στα εξερχόμενα μηνύματα):</string>
 
@@ -405,9 +374,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_mobile_label">Κινητής</string>
     <string name="account_setup_incoming_wifi_label">Ασύρματης Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Άλλο</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Ανάκτηση επικεφαλίδων</string>
-    <string name="account_setup_incoming_save_all_headers_label">Αποθήκευση επικεφαλίδων τοπικά</string>
 
     <string name="local_storage_provider_external_label">Εξωτερική αποθήκευση (SD card)</string>
     <string name="local_storage_provider_internal_label">Κανονική εσωτερική αποθήκευση</string>
@@ -443,21 +409,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">Εξυπηρέτης SMTP</string>
     <string name="account_setup_outgoing_port_label">Θύρα</string>
     <string name="account_setup_outgoing_security_label">Ασφάλεια</string>
-    <string name="account_setup_outgoing_security_none_label">Καμιά</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (αν υπάρχει)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (πάντοτε)</string>
     <string name="account_setup_outgoing_require_login_label">Απαιτείται πιστοποίηση.</string>
     <string name="account_setup_outgoing_username_label">Όνομα χρήστη</string>
     <string name="account_setup_outgoing_password_label">Συνθηματικό</string>
     <string name="account_setup_outgoing_authentication_label">Πιστοποίηση</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Όνομα χρήστη &amp; συνθηματικό</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Όνομα χρήστη</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Συνθηματικό</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP πριν SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP πριν SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) πριν SMTP</string>
 
     <string name="account_setup_bad_uri">Άκυρη ρύθμιση: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -740,7 +695,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">Αρχική ταυτότητα</string>
     <string name="choose_identity_title">Επιλογή ταυτότητας</string>
-    <string name="choose_account_title">Επιλογή λογαριασμού/ταυτότητας</string>
     <string name="send_as">Αποστολή ως</string>
 
     <string name="no_removable_identity">Δεν μπορείτε να διαγράψετε τη μοναδική ταυτότητα</string>
@@ -748,8 +702,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">Παλαιότερα μηνύματα πρώτα</string>
     <string name="sort_latest_first">Πρόσφατα μηνύματα πρώτα</string>
-    <string name="sort_sender_alpha">Αλφαβητικά κατά αποστολέα</string>
-    <string name="sort_sender_re_alpha">Ανάποδα αλφαβητικά κατά αποστολέα</string>
     <string name="sort_subject_alpha">Αλφαβητικά κατά θέμα</string>
     <string name="sort_subject_re_alpha">Ανάποδα αλφαβητικά κατά θέμα</string>
     <string name="sort_flagged_first">Πρώτα τα μηνύματα με αστέρι</string>
@@ -762,7 +714,6 @@ http://k9mail.googlecode.com/
     <string name="sort_by">Ταξινόμηση κατά…</string>
     <string name="sort_by_date">Ημερομηνία</string>
     <string name="sort_by_arrival">Άφιξη</string>
-    <string name="sort_by_sender">Αποστολέα</string>
     <string name="sort_by_subject">Θέμα</string>
     <string name="sort_by_flag">Αστέρι</string>
     <string name="sort_by_unread">Αναγνωσμένα</string>
@@ -844,8 +795,6 @@ http://k9mail.googlecode.com/
     <string name="background_ops_auto_sync">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\' &amp; \'Αυτόματο συγχρονισμός\'</string>
     <string name="background_ops_auto_sync_only">Όταν έχει επιλεγεί \'Auto-sync\'</string>
 
-    <string name="no_message_seletected_toast">Δεν επιλέχθηκε μήνυμα</string>
-
     <string name="date_format_label">Γραφή ημερομηνίας</string>
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
@@ -853,20 +802,7 @@ http://k9mail.googlecode.com/
     -->
     <string name="date_format_common">dd-MMM-yyyy</string>
 
-    <string name="batch_ops">Ομαδικές λειτουργίες</string>
-    <string name="batch_delete_op">Διαγραφή επιλεγμένων</string>
-    <string name="batch_mark_read_op">Σήμανση ως αναγνωσμένα</string>
-    <string name="batch_mark_unread_op">Σήμανση ως μη αναγνωσμένα</string>
-    <string name="batch_flag_op">Αστέρι στα επιλεγμένα</string>
-    <string name="batch_unflag_op">Αφαίρεση αστεριού</string>
-    <string name="batch_archive_op">Μετακίνηση στην Αρχειοθέτηση</string>
-    <string name="batch_spam_op">Μετακίνηση στα Σκουπίδια</string>
-    <string name="batch_move_op">Μετακίνηση</string>
-    <string name="batch_copy_op">Αντιγραφή επιλεγμένων</string>
-    <string name="batch_flag_mode">Αστέρι</string>
-    <string name="batch_plain_mode">Απλή επιλογή</string>
     <string name="batch_select_all">Επιλογή όλων</string>
-    <string name="batch_deselect_all">Καθαρισμός επιλεγμένων</string>
 
     <string name="account_setup_push_limit_label">Μέγιστο φακέλων για σπρώξιμο</string>
     <string name="account_setup_push_limit_10">10 φάκελοι</string>

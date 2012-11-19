@@ -52,7 +52,6 @@
 
 
     <!-- General strings that include the app name -->
-    <string name="mark_all_as_read_dlg_instructions_fmt">標記「<xliff:g id="folder">%s</xliff:g>」中全部的郵件（包括K-9中沒有顯示的文件匣中的郵件）為已讀？</string>
     <string name="account_delete_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」將從K-9 Mail中刪除。</string>
     <string name="account_recreate_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有相關資料將從K-9 Mail中刪除，僅保留帳戶設定。</string>
     <string name="account_clear_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有郵件將從K-9 Mail中刪除，僅保留帳戶設定。</string>
@@ -85,7 +84,6 @@
     <string name="accounts_title">帳戶</string>
     <string name="folders_title">信件匣</string>
     <string name="advanced">進階</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -105,7 +103,6 @@
     <string name="status_syncing_off">同步已停用</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
-    <string name="actionbar_string_selected"><xliff:g id="selection_count">\"%s\"</xliff:g>  已選擇</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">下一步</string>
     <string name="previous_action">上一步</string>
@@ -113,14 +110,11 @@
     <string name="cancel_action">取消</string>
     <string name="send_action">寄送</string>
     <string name="send_again_action">再次寄送</string>
-    <string name="select_action">選擇</string>
-    <string name="deselect_action">取消選擇</string>
     <string name="reply_action">回覆</string>
     <string name="reply_all_action">全部回覆</string>
     <string name="delete_action">刪除</string>
     <string name="archive_action">歸檔</string>
     <string name="spam_action">標記為垃圾</string>
-    <string name="delete_all_action">清空信件匣</string>
     <string name="forward_action">轉寄</string>
     <string name="move_action">移動</string>
     <string name="single_message_options_action">訊息選項</string>
@@ -129,38 +123,28 @@
     <string name="done_action">完成</string>
     <string name="discard_action">忽略</string>
     <string name="save_draft_action">儲存為草稿</string>
-    <string name="retry_action">重試</string>
-    <string name="refresh_action">重新整理</string>
     <string name="check_mail_action">檢查新郵件</string>
     <string name="send_messages_action">寄送</string>
-    <string name="list_folders_action">全部信件匣</string>
     <string name="refresh_folders_action">重整信件匣</string>
     <string name="filter_folders_action">Find folder</string>
-    <string name="mark_all_as_read_action">標記全部郵件為已讀</string>
     <string name="add_account_action">新增帳戶</string>
     <string name="compose_action">新郵件</string>
     <string name="search_action">搜尋</string>
     <string name="search_results">搜尋結果</string>
     <string name="preferences_action">設定</string>
-    <string name="open_action">打開</string>
     <string name="account_settings_action">帳戶設定</string>
     <string name="folder_settings_action">信件匣設定</string>
     <string name="global_settings_action">全域設定</string>
     <string name="remove_account_action">刪除帳戶</string>
     <string name="clear_pending_action">取消等待中操作項目（慎用）</string>
 
-    <string name="accounts_action">帳戶</string>
     <string name="mark_as_read_action">標記為已讀</string>
     <string name="send_alternate_action">分享</string>
     <string name="send_alternate_chooser_title">選擇寄件人</string>
 
-    <string name="mark_all_as_read_dlg_title">標記全部郵件為已讀</string>
-
     <string name="flag_action">加上星號</string>
     <string name="unflag_action">移除星號</string>
     <string name="copy_action">複製</string>
-    <string name="show_full_header_action">顯示詳細訊息</string>
-    <string name="hide_full_header_action">隱藏詳細訊息</string>
     <string name="select_text_action">選擇本文</string>
 
     <string name="message_view_theme_action_dark">切換為黑色主題</string>
@@ -183,7 +167,6 @@
     <string name="accounts_context_menu_title">帳戶選項</string>
 
     <string name="general_no_subject">（無主題）</string>
-    <string name="general_no_date">無日期</string>
     <string name="general_no_sender">無寄件人</string>
     <string name="status_loading">正在接收</string>
     <string name="status_loading_more">正在載入郵件…</string>
@@ -271,11 +254,6 @@
     <string name="message_view_cc_label">副本：</string>
     <string name="message_view_attachment_view_action">開啟</string>
     <string name="message_view_attachment_download_action">儲存</string>
-    <string name="message_view_prev_action">▼</string>
-    <string name="message_view_next_action">▲</string>
-    <string name="message_view_archive_action">歸檔</string>
-    <string name="message_view_move_action">移動</string>
-    <string name="message_view_spam_action">標記為垃圾</string>
     <string name="message_view_status_attachment_saved">附件已經儲存到記憶卡：<xliff:g id="filename">%s</xliff:g>。</string>
     <string name="message_view_status_attachment_not_saved">無法將附件儲存到記憶卡。</string>
     <string name="message_view_show_pictures_action">顯示圖片</string>
@@ -299,12 +277,8 @@
     <string name="message_discarded_toast">郵件已忽略</string>
     <string name="message_saved_toast">郵件已儲存為草稿</string>
 
-    <string name="global_settings_flag_label">顯示星號</string>
-    <string name="global_settings_flag_summary">顯示標記過星號的郵件</string>
     <string name="global_settings_checkbox_label">多選核取方塊</string>
     <string name="global_settings_checkbox_summary">預設顯示多選核取方塊</string>
-    <string name="global_settings_touchable_label">郵件預覽</string>
-    <string name="global_settings_touchable_summary">在列表中顯示郵件預覽</string>
     <string name="global_settings_preview_lines_label">預覽行數</string>
     <string name="global_settings_show_correspondent_names_label">顯示收件人姓名</string>
     <string name="global_settings_show_correspondent_names_summary">用收件人姓名取代顯示電子郵件地址</string>
@@ -327,12 +301,9 @@
 
     <string name="global_settings_confirm_actions_title">確認操作</string>
     <string name="global_settings_confirm_actions_summary">進行選擇操作時總是顯示一個對話框進行確認</string>
-    <string name="global_settings_confirm_action_archive">歸檔</string>
     <string name="global_settings_confirm_action_delete">刪除（僅檢視郵件時）</string>
     <string name="global_settings_confirm_action_delete_starred">移除星號 (僅檢視郵件時)</string>
     <string name="global_settings_confirm_action_spam">標記為垃圾</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">全部標示為已讀取</string>
-    <string name="global_settings_confirm_action_send">寄送</string>
 
     <string name="global_settings_notification_hide_subject_title">進行通知時隱藏主題</string>
     <string name="global_settings_notification_hide_subject_never">絕不</string>
@@ -355,10 +326,8 @@
     <string name="quiet_time_ends">結束靜音</string>
 
     <string name="account_setup_basics_title">設定新帳戶</string>
-    <string name="account_setup_basics_instructions">輸入該帳戶的電子郵件地址：</string>
     <string name="account_setup_basics_email_hint">電子郵件地址</string>
     <string name="account_setup_basics_password_hint">密碼</string>
-    <string name="account_setup_basics_default_label">預設使用這個帳戶寄送郵件</string>
     <string name="account_setup_basics_manual_setup_action">手動設定</string>
 
     <string name="account_setup_check_settings_title" />
@@ -370,7 +339,6 @@
     <string name="account_setup_check_settings_canceling_msg">正在取消…</string>
 
     <string name="account_setup_names_title">快要完成了！</string>
-    <string name="account_setup_names_instructions">你的帳戶已經設定完成，並且正在接收郵件！</string>
     <string name="account_setup_names_account_name_label">為這個帳戶選擇一個名稱（非必填）：</string>
     <string name="account_setup_names_user_name_label">輸入你的名字（將顯示在發出的郵件中）：</string>
 
@@ -404,9 +372,6 @@
     <string name="account_setup_incoming_mobile_label">手機行動網路</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">其他</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">下載郵件訊息</string>
-    <string name="account_setup_incoming_save_all_headers_label">在本地儲存全部郵件的訊息</string>
 
     <string name="local_storage_provider_external_label">外部儲存 (記憶卡)</string>
     <string name="local_storage_provider_internal_label">手機內部儲存</string>
@@ -442,20 +407,10 @@
     <string name="account_setup_outgoing_smtp_server_label">SMTP伺服器</string>
     <string name="account_setup_outgoing_port_label">埠號</string>
     <string name="account_setup_outgoing_security_label">加密類型</string>
-    <string name="account_setup_outgoing_security_none_label">無</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS（如果可用）</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS（預設）</string>
     <string name="account_setup_outgoing_require_login_label">要求登錄。</string>
     <string name="account_setup_outgoing_username_label">用戶名</string>
     <string name="account_setup_outgoing_password_label">密碼</string>
     <string name="account_setup_outgoing_authentication_label">身份驗證方法</string>
-    <string name="account_setup_outgoing_authentication_basic_label">使用者名稱與密碼</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">使用者名稱</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">密碼</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">在SMTP前POP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">在SMTP前IMAP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">在SMTP前WebDAV (Exchange)</string>
 
     <string name="account_setup_bad_uri">無效的設定：<xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -738,7 +693,6 @@
 
     <string name="default_identity_description">初始身份識別</string>
     <string name="choose_identity_title">選擇身份識別</string>
-    <string name="choose_account_title">選擇帳戶/身份識別</string>
     <string name="send_as">以身份寄送</string>
 
     <string name="no_removable_identity">您必須保留一個身份識別</string>
@@ -746,8 +700,6 @@
 
     <string name="sort_earliest_first">優先顯示最早的郵件</string>
     <string name="sort_latest_first">優先顯示最近的郵件</string>
-    <string name="sort_sender_alpha">按寄件人升冪</string>
-    <string name="sort_sender_re_alpha">按寄件人降冪</string>
     <string name="sort_subject_alpha">按主題升冪</string>
     <string name="sort_subject_re_alpha">按主題降冪</string>
     <string name="sort_flagged_first">優先顯示帶有星號的郵件</string>
@@ -760,7 +712,6 @@
     <string name="sort_by">排序方式</string>
     <string name="sort_by_date">日期</string>
     <string name="sort_by_arrival">收到日</string>
-    <string name="sort_by_sender">寄件人</string>
     <string name="sort_by_subject">主題</string>
     <string name="sort_by_flag">星號</string>
     <string name="sort_by_unread">已讀/未讀</string>
@@ -855,8 +806,6 @@
     <string name="background_ops_auto_sync">當「背景資料」&amp;「自動同步」被勾選</string>
     <string name="background_ops_auto_sync_only">"當「自動同步」被勾選"</string>
 
-    <string name="no_message_seletected_toast">沒有選擇任何郵件</string>
-
     <string name="date_format_label">日期格式</string>
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
@@ -864,20 +813,7 @@
     -->
     <string name="date_format_common">dd-MMM-yyyy</string>
 
-    <string name="batch_ops">批次操作</string>
-    <string name="batch_delete_op">刪除勾選的郵件</string>
-    <string name="batch_mark_read_op">將勾選的郵件標記為已讀</string>
-    <string name="batch_mark_unread_op">將勾選的郵件標記為未讀</string>
-    <string name="batch_flag_op">為勾選的郵件加上星號</string>
-    <string name="batch_unflag_op">為勾選的郵件移除星號</string>
-    <string name="batch_archive_op">移動勾選的郵件到歸檔信件匣</string>
-    <string name="batch_spam_op">移動勾選的郵件到垃圾郵件信件匣</string>
-    <string name="batch_move_op">移動勾選的郵件</string>
-    <string name="batch_copy_op">複製勾選的郵件</string>
-    <string name="batch_flag_mode">星號模式</string>
-    <string name="batch_plain_mode">水平模式</string>
     <string name="batch_select_all">選擇全部</string>
-    <string name="batch_deselect_all">清除勾選項目</string>
 
     <string name="account_setup_push_limit_label">推送時檢查信件匣上限數量</string>
     <string name="account_setup_push_limit_10">十個信件匣</string>

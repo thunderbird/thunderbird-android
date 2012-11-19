@@ -56,7 +56,6 @@ http://k9mail.googlecode.com/
 
 
     <!-- General strings that include the app name -->
-    <string name="mark_all_as_read_dlg_instructions_fmt">Merkitäänkö kaikki viestit kansiossa \'<xliff:g id="folder">%s</xliff:g>\' luetuiksi? (myös viestit, jotka ovat kansioissa, joita ei näytetä K-9:ssä)</string>
     <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta.</string>
     <string name="account_recreate_dlg_instructions_fmt">Kaikki tiedot tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
     <string name="account_clear_dlg_instructions_fmt">Kaikki viestit tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
@@ -89,7 +88,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_title">Tilit</string>
     <string name="folders_title">Kansiot</string>
     <string name="advanced">Lisäasetukset</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
 
@@ -109,7 +107,6 @@ http://k9mail.googlecode.com/
     <string name="status_syncing_off">Synkronointi pois päältä</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
-    <string name="actionbar_string_selected"><xliff:g id="selection_count">\"%s\"</xliff:g> valittu</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Seuraava</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Edellinen</string> <!-- Used as part of a multi-step process -->
@@ -117,14 +114,11 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">Peruuta</string>
     <string name="send_action">Lähetä</string>
     <string name="send_again_action">Lähetä uudelleen</string>
-    <string name="select_action">Valitse</string>
-    <string name="deselect_action">Poista valinta</string>
     <string name="reply_action">Vastaa</string>
     <string name="reply_all_action">Vastaa kaikille</string>
     <string name="delete_action">Poista</string>
     <string name="archive_action">Arkistoi</string>
     <string name="spam_action">Roskaposti</string>
-    <string name="delete_all_action">Tyhjennä kansio</string>
     <string name="forward_action">Välitä</string>
     <string name="move_action">Siirrä</string>
     <string name="single_message_options_action">Viestin asetukset</string>
@@ -133,38 +127,28 @@ http://k9mail.googlecode.com/
     <string name="done_action">Valmis</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Hylkää</string>
     <string name="save_draft_action">Tallenna luonnoksena</string>
-    <string name="retry_action">Yritä uudelleen</string>
-    <string name="refresh_action">Päivitä</string>
     <string name="check_mail_action">Tarkista posti</string>
     <string name="send_messages_action">Lähetä viestit</string>
-    <string name="list_folders_action">Kansiolista</string>
     <string name="refresh_folders_action">Päivitä kansiot</string>
     <string name="filter_folders_action">Etsi kansio</string>
-    <string name="mark_all_as_read_action">Merkitse kaikki viestit luetuiksi</string>
     <string name="add_account_action">Lisää tili</string>
     <string name="compose_action">Kirjoita</string>
     <string name="search_action">Etsi</string>
     <string name="search_results">Hakutulokset</string>
     <string name="preferences_action">Asetukset</string>
-    <string name="open_action">Avaa</string>
     <string name="account_settings_action">Tilin asetukset</string>
     <string name="folder_settings_action">Kansion asetukset</string>
     <string name="global_settings_action">Yleiset asetukset</string>
     <string name="remove_account_action">Poista tili</string>
     <string name="clear_pending_action">Tyhjennä odottavat toimenpiteet (vaara!)</string>
 
-    <string name="accounts_action">Tilit</string>
     <string name="mark_as_read_action">Merkitse luetuksi</string>
     <string name="send_alternate_action">Jaa</string>
     <string name="send_alternate_chooser_title">Valitse lähettäjä</string>
 
-    <string name="mark_all_as_read_dlg_title">Merkitse kaikki viestit luetuiksi</string>
-
     <string name="flag_action">Lisää tähti</string>
     <string name="unflag_action">Poista tähti</string>
     <string name="copy_action">Kopio</string>
-    <string name="show_full_header_action">Näytä täydet otsikkotiedot</string>
-    <string name="hide_full_header_action">Piilota täydet otsikkotiedot</string>
     <string name="select_text_action">Valitse teksti</string>
 
     <string name="message_view_theme_action_dark">Vaihda tummaan teemaan</string>
@@ -187,7 +171,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">Tilin asetukset</string>
 
     <string name="general_no_subject">(Ei aihetta)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_date">Ei päivämäärää</string>
     <string name="general_no_sender">Ei lähettäjää</string>
     <string name="status_loading">Ladataan</string>
     <string name="status_loading_more">Ladataan viestejä\u2026</string>
@@ -281,11 +264,6 @@ http://k9mail.googlecode.com/
     <string name="message_view_cc_label">Kopio:</string>
     <string name="message_view_attachment_view_action">Avaa</string>
     <string name="message_view_attachment_download_action">Tallenna</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Arkistoi</string>
-    <string name="message_view_move_action">Siirrä</string>
-    <string name="message_view_spam_action">Roskaposti</string>
     <string name="message_view_status_attachment_saved">Liite tallennettu SD -kortille nimellä <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Liitteen tallennus SD-kortille epäonnistui.</string>
     <string name="message_view_show_pictures_action">Näytä kuvat</string>
@@ -309,12 +287,8 @@ http://k9mail.googlecode.com/
     <string name="message_discarded_toast">Viesti peruutettu</string>
     <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
 
-    <string name="global_settings_flag_label">Viestin tähdet</string>
-    <string name="global_settings_flag_summary">Tähdet ilmaisevat merkityt viestit</string>
     <string name="global_settings_checkbox_label">Usean valinnan valintaruudut</string>
     <string name="global_settings_checkbox_summary">>Näytä aina usean valinnan valintaruudut</string>
-    <string name="global_settings_touchable_label">Viestin esikatselu</string>
-    <string name="global_settings_touchable_summary">tilavammat listan kohteet viestin esikatseluilla</string>
     <string name="global_settings_preview_lines_label">Rivien esikatselu</string>
     <string name="global_settings_show_correspondent_names_label">Näytä yhteyshenkilöiden nimet</string>
     <string name="global_settings_show_correspondent_names_summary">Näytä yhteyshenkilöiden nimet sähköpostiosoitteen sijaan</string>
@@ -337,12 +311,9 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">Vahvista toimenpiteet</string>
     <string name="global_settings_confirm_actions_summary">Näytä valintaikkuna valitun toimenpiteen suorituksesta</string>
-    <string name="global_settings_confirm_action_archive">Arkistoi</string>
     <string name="global_settings_confirm_action_delete">Poista (vain viestinäkymässä)</string>
     <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (vain viestinäkymässä)</string>
     <string name="global_settings_confirm_action_spam">Roskaposti</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Merkitse kaikki luetuiksi</string>
-    <string name="global_settings_confirm_action_send">Lähetä</string>
 
     <string name="global_settings_notification_hide_subject_title">Piilota aihe ilmoituksissa</string>
     <string name="global_settings_notification_hide_subject_never">Ei koskaan</string>
@@ -365,10 +336,8 @@ http://k9mail.googlecode.com/
     <string name="quiet_time_ends">Hiljainen aika päättyy</string>
 
     <string name="account_setup_basics_title">Lisää uusi tili</string>
-    <string name="account_setup_basics_instructions">Anna tilin sähköpostiosoite:</string>
     <string name="account_setup_basics_email_hint">Sähköpostiosoite</string>
     <string name="account_setup_basics_password_hint">Salasana</string>
-    <string name="account_setup_basics_default_label">Lähetä viestit oletusarvoisesti tältä tililtä</string>
     <string name="account_setup_basics_manual_setup_action">Määritä asetukset käsin</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -380,7 +349,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">Peruutetaan\u2026</string>
 
     <string name="account_setup_names_title">Melkein valmista!</string>
-    <string name="account_setup_names_instructions">Tilisi on määritetty ja postit ovat jo matkalla!</string>
     <string name="account_setup_names_account_name_label">Anna tilin nimi (ei pakollinen):</string>
     <string name="account_setup_names_user_name_label">Anna nimesi (näkyy lähtevissä viesteissä):</string>
 
@@ -414,9 +382,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_mobile_label">Mobiili</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Muu</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Lataa otsakkeet</string>
-    <string name="account_setup_incoming_save_all_headers_label">Tallenna kaikki otsakkeet paikallisesti</string>
 
     <string name="local_storage_provider_external_label">Ulkoinen muisti (SD-kortti)</string>
     <string name="local_storage_provider_internal_label">Sisäinen muisti</string>
@@ -452,21 +417,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">SMTP-palvelin</string>
     <string name="account_setup_outgoing_port_label">Portti</string>
     <string name="account_setup_outgoing_security_label">Suojaus</string>
-    <string name="account_setup_outgoing_security_none_label">Ei mitään</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (jos käytettävissä)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (aina)</string>
     <string name="account_setup_outgoing_require_login_label">Edellytä kirjautumista.</string>
     <string name="account_setup_outgoing_username_label">Käyttäjätunnus</string>
     <string name="account_setup_outgoing_password_label">Salasana</string>
     <string name="account_setup_outgoing_authentication_label">Todennustapa</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Käyttäjätunnus ja salasana</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Käyttäjätunnus</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Salasana</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP ennen SMTP:tä</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP ennen SMTP:tä</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) ennen SMTP:tä</string>
 
     <string name="account_setup_bad_uri">Virheellinen asetus: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -749,7 +703,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">Oletusidentiteetti</string>
     <string name="choose_identity_title">Valitse identiteetti</string>
-    <string name="choose_account_title">Valitse tili/identiteetti</string>
     <string name="send_as">Lähetä nimellä</string>
 
     <string name="no_removable_identity">Et voi poistaa ainoaa identiteettiäsi</string>
@@ -757,8 +710,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">Vanhemmat viestit ensin</string>
     <string name="sort_latest_first">Uusimmat viestit ensin</string>
-    <string name="sort_sender_alpha">Lähettäjän mukaan aakkosjärjestyksessä</string>
-    <string name="sort_sender_re_alpha">Lähettäjän mukaan käänteisessä aakkosjärjestyksessä</string>
     <string name="sort_subject_alpha">Aiheen mukaan aakkosjärjestyksessä</string>
     <string name="sort_subject_re_alpha">Aiheen mukaan käänteisessä aakkosjärjestyksessä</string>
     <string name="sort_flagged_first">Tähdellä merkityt ensin</string>
@@ -771,7 +722,6 @@ http://k9mail.googlecode.com/
     <string name="sort_by">Lajittele…</string>
     <string name="sort_by_date">Päivämäärän mukaan</string>
     <string name="sort_by_arrival">Saapumisajan mukaan</string>
-    <string name="sort_by_sender">Lähettäjän mukaan</string>
     <string name="sort_by_subject">Aiheen mukaan</string>
     <string name="sort_by_flag">Tähden mukaan</string>
     <string name="sort_by_unread">Luettujen/lukemattomien mukaan</string>
@@ -853,8 +803,6 @@ http://k9mail.googlecode.com/
     <string name="background_ops_auto_sync">Kun \'Taustadata\' ja \'Automaattinen synkronointi\' on valittu</string>
     <string name="background_ops_auto_sync_only">Kun Automaattinen synkronointi on valittu</string>
 
-    <string name="no_message_seletected_toast">Yhtään viestiä ei ole valittu</string>
-
     <string name="date_format_label">Päivämäärän muoto</string>
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
@@ -862,20 +810,7 @@ http://k9mail.googlecode.com/
     -->
     <string name="date_format_common">dd-MMM-yyyy</string>
 
-    <string name="batch_ops">Ryhmätoiminnot</string>
-    <string name="batch_delete_op">Poista valitut</string>
-    <string name="batch_mark_read_op">Merkitse valitut luetuiksi</string>
-    <string name="batch_mark_unread_op">Merkitse valitut lukemattomiksi</string>
-    <string name="batch_flag_op">Merkitse valitut tähdellä</string>
-    <string name="batch_unflag_op">Poista tähti valituista</string>
-    <string name="batch_archive_op">Siirrä valitut Arkistoon</string>
-    <string name="batch_spam_op">Siirrä valitut Roskaposti-kansioon</string>
-    <string name="batch_move_op">Siirrä valitut</string>
-    <string name="batch_copy_op">Kopioi valitut</string>
-    <string name="batch_flag_mode">Tähtitila</string>
-    <string name="batch_plain_mode">Pelkistetty tila</string>
     <string name="batch_select_all">Valitse kaikki</string>
-    <string name="batch_deselect_all">>Poista kaikki valinnat</string>
 
     <string name="account_setup_push_limit_label">Push-tilassa tarkistettavien kansioiden enimmäismäärä</string>
     <string name="account_setup_push_limit_10">10 kansiota</string>

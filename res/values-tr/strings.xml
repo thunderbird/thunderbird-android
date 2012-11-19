@@ -54,7 +54,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
 
 
     <!-- General strings that include the app name -->
-    <string name="mark_all_as_read_dlg_instructions_fmt">içindeki bütün mesajları \'<xliff:g id="folder">%s</xliff:g>\' okundu olarak işaretle?  (Klasöre eklenen mesajlar K-9 de gösterilemez.)</string>
     <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
     <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi \"<xliff:g id="account">%s</xliff:g>\" için K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
     <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar \"<xliff:g id="account">%s</xliff:g>\" içinden ve K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
@@ -87,7 +86,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="accounts_title">Hesaplar</string>
     <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Gelişmiş</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -113,14 +111,11 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="cancel_action">İptal</string>
     <string name="send_action">Gönder</string>
     <string name="send_again_action">Tekrar Gönder</string>
-    <string name="select_action">Seç</string>
-    <string name="deselect_action">Kaldır</string>
     <string name="reply_action">Cevap</string>
     <string name="reply_all_action">Hepsini Cevapla</string>
     <string name="delete_action">Sil</string>
     <string name="archive_action">Arşiv</string>
     <string name="spam_action">Spam</string>
-    <string name="delete_all_action">Klasörü temizle</string>
     <string name="forward_action">İlet</string>
     <string name="move_action">Taşı</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
@@ -129,38 +124,28 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="done_action">Tamam</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Çıkart</string>
     <string name="save_draft_action">Taslak olarak Kaydet</string>
-    <string name="retry_action">Yeniden dene</string>
-    <string name="refresh_action">Yinele</string>
     <string name="check_mail_action">E-postayı Kontrol et</string>
     <string name="send_messages_action">Mesajları Gönder</string>
-    <string name="list_folders_action">Klasör Listesi</string>
     <string name="refresh_folders_action">Klasörleri Yinele</string>
     <string name="filter_folders_action">Klasör ara</string>
-    <string name="mark_all_as_read_action">Hepsini Okundu olarak işaretle</string>
     <string name="add_account_action">Hesap Ekle</string>
     <string name="compose_action">Oluştur</string>
     <string name="search_action">Arama</string>
     <string name="search_results">Arama Sonuçları</string>
     <string name="preferences_action">Ayarlar</string>
-    <string name="open_action">Açık</string>
     <string name="account_settings_action">Hesap Ayarları</string>
     <string name="folder_settings_action">Klasör Ayarları</string>
     <string name="global_settings_action">Genel Ayarlar</string>
     <string name="remove_account_action">Hesabı Kaldır</string>
     <string name="clear_pending_action">Bekleyen faaliyetleri Temizle (Tehlike!)</string>
 
-    <string name="accounts_action">Hesaplar</string>
     <string name="mark_as_read_action">Okundu olarak işaretle</string>
     <string name="send_alternate_action">Paylaş</string>
     <string name="send_alternate_chooser_title">Gönderici Seç</string>
 
-    <string name="mark_all_as_read_dlg_title">Hepsini okundu olarak işaretle</string>
-
     <string name="flag_action">Yıldız Ekle</string>
     <string name="unflag_action">Yıldızı Kaldır</string>
     <string name="copy_action">Kopyala</string>
-    <string name="show_full_header_action">Tam Başlığı Göster</string>
-    <string name="hide_full_header_action">Tam Başlığı Sakla</string>
     <string name="select_text_action">Metin Seç</string>
 
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
@@ -183,7 +168,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="accounts_context_menu_title">Hesap Seçenekleri</string>
 
     <string name="general_no_subject">(Konu yok)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_date">Tarih yok</string>
     <string name="general_no_sender">Gönderen yok</string>
     <string name="status_loading">Seçim</string>
     <string name="status_loading_more">Yüklenen mesajlar\u2026</string>
@@ -277,11 +261,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_attachment_view_action">Açık</string>
     <string name="message_view_attachment_download_action">Kaydet</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Arşiv</string>
-    <string name="message_view_move_action">Taşı</string>
-    <string name="message_view_spam_action">Spam</string>
     <string name="message_view_status_attachment_saved">SD Karta Ek kaydedildi  <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">SD Karta Ek kaydedilemedi.</string>
     <string name="message_view_show_pictures_action">Resimleri Göster</string>
@@ -305,12 +284,8 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="message_discarded_toast">Mesaj silindi</string>
     <string name="message_saved_toast">Mesaj taslak olarak kaydedildi.</string>
 
-    <string name="global_settings_flag_label">Yıldızları Göster</string>
-    <string name="global_settings_flag_summary">Yıldızlar bayraklı mesajları gösterir.</string>
     <string name="global_settings_checkbox_label">Çoklu-seçim işaret kutuları</string>
     <string name="global_settings_checkbox_summary">Çoklu-seçim işaret kutularını Daima göster.</string>
-    <string name="global_settings_touchable_label">Mesaj önizleme</string>
-    <string name="global_settings_touchable_summary">Mesaj önizleme ile liste görünümü.</string>
     <string name="global_settings_preview_lines_label">Önizleme hatları</string>
     <string name="global_settings_show_correspondent_names_label">İlgili isimleri göster.</string>
     <string name="global_settings_show_correspondent_names_summary">İlgili e-posta adresleri yerine isimlerini göster.</string>
@@ -333,12 +308,9 @@ http://k9mail.googlecode.com/ adresine gönderin.
 
     <string name="global_settings_confirm_actions_title">Eylemleri Onaylayın</string>
     <string name="global_settings_confirm_actions_summary">Seçilmiş eylemleri yaptığınız zaman bir diyalog göster</string>
-    <string name="global_settings_confirm_action_archive">Arşiv</string>
     <string name="global_settings_confirm_action_delete">Sil (sadece mesaj görünümü)</string>
     <string name="global_settings_confirm_action_delete_starred">Yıldızlıları Sil (sadece mesaj görünümü)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Hepsini okundu olarak işaretle</string>
-    <string name="global_settings_confirm_action_send">Gönder</string>
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
@@ -361,10 +333,8 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="quiet_time_ends">Sessiz Zaman bitiş</string>
 
     <string name="account_setup_basics_title">Bir yeni hesap kurun</string>
-    <string name="account_setup_basics_instructions">Bu hesabın e-posta adresine giriş:</string>
     <string name="account_setup_basics_email_hint">E-posta adresi</string>
     <string name="account_setup_basics_password_hint">Şifre</string>
-    <string name="account_setup_basics_default_label">Postaları varsayılan olarak bu hesaptan gönder</string>
     <string name="account_setup_basics_manual_setup_action">El ile ayar</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -376,7 +346,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="account_setup_check_settings_canceling_msg">İptal ediliyor\u2026</string>
 
     <string name="account_setup_names_title">Hemen hemen tamam!</string>
-    <string name="account_setup_names_instructions">Hesabınız kurulu ve postalarınız yolda!</string>
     <string name="account_setup_names_account_name_label">Bu hesaba bir isim verin (isteğe bağlı):</string>
     <string name="account_setup_names_user_name_label">İsminizi yazın (Giden mesajlarda görüntülenir):</string>
 
@@ -410,9 +379,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="account_setup_incoming_mobile_label">Telefon</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Diğer</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Başlıkları indir</string>
-    <string name="account_setup_incoming_save_all_headers_label">Bütün mesaj başlıklarını yerel kaydet</string>
 
     <string name="local_storage_provider_external_label">Harici depolama (SD card)</string>
     <string name="local_storage_provider_internal_label">Düzenli dahili depolama</string>
@@ -448,21 +414,10 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="account_setup_outgoing_smtp_server_label">SMTP sunucu</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">Güvenlik Tipi</string>
-    <string name="account_setup_outgoing_security_none_label">Hiçbiri</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (Varsa)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (Daima)</string>
     <string name="account_setup_outgoing_require_login_label">Oturum açmayı gerektirir.</string>
     <string name="account_setup_outgoing_username_label">Kullanıcı Adı</string>
     <string name="account_setup_outgoing_password_label">Şifre</string>
     <string name="account_setup_outgoing_authentication_label">Kimlik Doğrulama Tipi</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Kullanıcı Adı &amp; şifre</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Kullanıcı Adı</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Şifre</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP before SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP before SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) before SMTP</string>
 
     <string name="account_setup_bad_uri">Geçersiz kurulum: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -745,7 +700,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
 
     <string name="default_identity_description">İlk kimlik</string>
     <string name="choose_identity_title">Kimlik seç</string>
-    <string name="choose_account_title">Hesap/Kimlik seç</string>
     <string name="send_as">Olarak gönderin</string>
 
     <string name="no_removable_identity">Son kimliğinizi kaldıramazsınız</string>
@@ -753,8 +707,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
 
     <string name="sort_earliest_first">En erken mesajlar ilk</string>
     <string name="sort_latest_first">En son mesajlar ilk</string>
-    <string name="sort_sender_alpha">Göndereni alfabetik sırala</string>
-    <string name="sort_sender_re_alpha">Göndereni ters alfabetik sırala</string>
     <string name="sort_subject_alpha">Konuyu alfabetik sırala</string>
     <string name="sort_subject_re_alpha">Konuyu ters alfabetik sırala</string>
     <string name="sort_flagged_first">Yıldızlı mesajlar ilk</string>
@@ -767,7 +719,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="sort_by">Şuna göre sırala…</string>
     <string name="sort_by_date">Tarih</string>
     <string name="sort_by_arrival">Ulaşma</string>
-    <string name="sort_by_sender">Gönderici</string>
     <string name="sort_by_subject">Konu</string>
     <string name="sort_by_flag">Yıldız</string>
     <string name="sort_by_unread">Okundu/Okunmadı</string>
@@ -849,28 +800,13 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="background_ops_auto_sync">\'Arkaplan verisi\' &amp; \'Oto. Senk.\' işaretli olduğu zaman</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="no_message_seletected_toast">Mesaj Seçilmedi</string>
-
     <string name="date_format_label">Tarih Biçimi</string>
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
       See Android SDK documentation for the class SimpleDateFormat.
     -->
 
-    <string name="batch_ops">Yığın Seçenekleri</string>
-    <string name="batch_delete_op">Seçileni Sil</string>
-    <string name="batch_mark_read_op">Seçilmiş olanı okundu işaretle</string>
-    <string name="batch_mark_unread_op">Seçilmiş olanı okunmadı işaretle</string>
-    <string name="batch_flag_op">Seçilmiş olana Yıldız ekle</string>
-    <string name="batch_unflag_op">Seçilmi olandan Yıldızı kaldır</string>
-    <string name="batch_archive_op">Seçilmişi Arşive Taşı</string>
-    <string name="batch_spam_op">Seçilmişi Spam\'a Taşı</string>
-    <string name="batch_move_op">Seçileni Taşı</string>
-    <string name="batch_copy_op">Seçileni Kopyala</string>
-    <string name="batch_flag_mode">Yıldız modu</string>
-    <string name="batch_plain_mode">Düz mod</string>
     <string name="batch_select_all">Hepsini Seç</string>
-    <string name="batch_deselect_all">Bütün seçimleri temizle</string>
 
     <string name="account_setup_push_limit_label">Push ile en fazla kontrol edilecek klasör sayısı</string>
     <string name="account_setup_push_limit_10">10 klasör</string>

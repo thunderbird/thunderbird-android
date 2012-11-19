@@ -53,7 +53,6 @@ http://k9mail.googlecode.com/
 
 
     <!-- General strings that include the app name -->
-    <string name="mark_all_as_read_dlg_instructions_fmt">Marker alle mails i \'<xliff:g id="folder">%s</xliff:g>\' som læst?  (incl. mails i mappe som ikke er vist i K-9)</string>
     <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
     <string name="account_recreate_dlg_instructions_fmt">Alle mails, vedhæftede filer, mapper og mappe-indstillinger for \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail, men kontoindstillinger vil blive husket.</string>
     <string name="account_clear_dlg_instructions_fmt">Alle mails i \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet, men kontoindstillinger vil blive husket.</string>
@@ -86,7 +85,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_title">Konti</string>
     <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Advanceret</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -112,14 +110,11 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">Fortryd</string>
     <string name="send_action">Send</string>
     <string name="send_again_action">Send igen</string>
-    <string name="select_action">Vælg</string>
-    <string name="deselect_action">Fravælg</string>
     <string name="reply_action">Svar</string>
     <string name="reply_all_action">Svar alle</string>
     <string name="delete_action">Slet</string>
     <string name="archive_action">Arkiver</string>
     <string name="spam_action">Spam</string>
-    <string name="delete_all_action">Tøm mappe</string>
     <string name="forward_action">Videresend</string>
     <string name="move_action">Flyt</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
@@ -128,38 +123,28 @@ http://k9mail.googlecode.com/
     <string name="done_action">Afslut</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Slet</string>
     <string name="save_draft_action">Gem som kladde</string>
-    <string name="retry_action">Forsøg igen</string>
-    <string name="refresh_action">Genindlæs</string>
     <string name="check_mail_action">Synkroniser mails</string>
     <string name="send_messages_action">Send mails</string>
-    <string name="list_folders_action">Mappeliste</string>
     <string name="refresh_folders_action">Genindlæs mapper</string>
     <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
-    <string name="mark_all_as_read_action">Marker alle mails som læst</string>
     <string name="add_account_action">Tilføj konto</string>
     <string name="compose_action">Skriv</string>
     <string name="search_action">Søg</string>
     <string name="search_results">Søgeresultater</string>
     <string name="preferences_action">Indstillinger</string>
-    <string name="open_action">Åbn</string>
     <string name="account_settings_action">Konto indstillinger</string>
     <string name="folder_settings_action">Mappe indstillinger</string>
     <string name="global_settings_action">Globale indstillinger</string>
     <string name="remove_account_action">Slet konto</string>
     <string name="clear_pending_action">Afbryd igangværende handlinger (farligt!)</string>
 
-    <string name="accounts_action">Konti</string>
     <string name="mark_as_read_action">Marker som læst</string>
     <string name="send_alternate_action">Del</string>
     <string name="send_alternate_chooser_title">Vælg afsender</string>
 
-    <string name="mark_all_as_read_dlg_title">Marker alle mails som læst</string>
-
     <string name="flag_action">Tilføj stjernemarkering</string>
     <string name="unflag_action">Fjern stjernemarkering</string>
     <string name="copy_action">Kopier</string>
-    <string name="show_full_header_action">Vis hele headeren</string>
-    <string name="hide_full_header_action">Skjul header</string>
     <string name="select_text_action">Vælg tekst</string>
 
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
@@ -182,7 +167,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">Kontoindstillinger</string>
 
     <string name="general_no_subject">(Intet emne)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_date">Ingen dato</string>
     <string name="general_no_sender">Ingen afsender</string>
     <string name="status_loading">Synkroniserer</string>
     <string name="status_loading_more">Henter mails\u2026</string>
@@ -276,11 +260,6 @@ http://k9mail.googlecode.com/
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_attachment_view_action">Åben</string>
     <string name="message_view_attachment_download_action">Gem</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Arkiver</string>
-    <string name="message_view_move_action">Flyt</string>
-    <string name="message_view_spam_action">Spam</string>
     <string name="message_view_status_attachment_saved">Vedhæftning gemt på SD kort som <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Kan ikke gemme vedhæftning på SD kort.</string>
     <string name="message_view_show_pictures_action">Vis billeder</string>
@@ -304,12 +283,8 @@ http://k9mail.googlecode.com/
     <string name="message_discarded_toast">Mail kasseret</string>
     <string name="message_saved_toast">Mail gemt som kladde</string>
 
-    <string name="global_settings_flag_label">Vis stjerner</string>
-    <string name="global_settings_flag_summary">Stjerne indikerer mails med flag</string>
     <string name="global_settings_checkbox_label">Checkbokse for multible valg</string>
     <string name="global_settings_checkbox_summary">Vis altid checkbokse for multible valg</string>
-    <string name="global_settings_touchable_label">Touch venlig visning</string>
-    <string name="global_settings_touchable_summary">Rummeligere listning i forhåndsvisning</string>
     <string name="global_settings_preview_lines_label">Linier i forhåndsvisning</string>
     <string name="global_settings_show_correspondent_names_label">Vis afsenders navne</string>
     <string name="global_settings_show_correspondent_names_summary">Vis afsendernavn fremfor deres mailaddresse</string>
@@ -332,12 +307,9 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">Bekræft handlinger</string>
     <string name="global_settings_confirm_actions_summary">Vis dialogvindue når du udfører valgte handlinger</string>
-    <string name="global_settings_confirm_action_archive">Arkiver</string>
     <string name="global_settings_confirm_action_delete">Slet mail (kun i forb. med visning af mails)</string>
     <string name="global_settings_confirm_action_delete_starred">Slet stjernemarkeringer (kun i forb. med visning af mails)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Marker alle som læst</string>
-    <string name="global_settings_confirm_action_send">Send</string>
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
@@ -360,10 +332,8 @@ http://k9mail.googlecode.com/
     <string name="quiet_time_ends">Slut tid</string>
 
     <string name="account_setup_basics_title">Opsætning af ny konto</string>
-    <string name="account_setup_basics_instructions">Indtast denne konto\'s mail-addresse:</string>
     <string name="account_setup_basics_email_hint">Mail addresse</string>
     <string name="account_setup_basics_password_hint">Password</string>
-    <string name="account_setup_basics_default_label">Send mail fra denne konto som standard</string>
     <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -375,7 +345,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">Afbryder\u2026</string>
 
     <string name="account_setup_names_title">Næsten færdig!</string>
-    <string name="account_setup_names_instructions">Din konto er nu konfigureret, og mails er på vej!</string>
     <string name="account_setup_names_account_name_label">Giv denne konto et navn (frivilligt):</string>
     <string name="account_setup_names_user_name_label">Indtast dit navn (vises på udgående mails):</string>
 
@@ -409,9 +378,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_mobile_label">Mobilt netværk</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Andet</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Hentning af mail headers</string>
-    <string name="account_setup_incoming_save_all_headers_label">Gem alle mail headers lokalt</string>
 
     <string name="local_storage_provider_external_label">Eksternt lager (SD kort)</string>
     <string name="local_storage_provider_internal_label">Almindelig internt lager</string>
@@ -447,21 +413,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">Sikkerhedstype</string>
-    <string name="account_setup_outgoing_security_none_label">Aldrig</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (hvis tilgængeligt)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (altid)</string>
     <string name="account_setup_outgoing_require_login_label">Kræv login.</string>
     <string name="account_setup_outgoing_username_label">Brugernavn</string>
     <string name="account_setup_outgoing_password_label">Password</string>
     <string name="account_setup_outgoing_authentication_label">Autentifikationstype</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Brugernavn &amp; password</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Brugernavn</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Password</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP før SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP før SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) før SMTP</string>
 
     <string name="account_setup_bad_uri">Ugyldig opsætning: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -744,7 +699,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">Oprindelige identitet</string>
     <string name="choose_identity_title">Vælg identitet</string>
-    <string name="choose_account_title">Vælg konto/identitet</string>
     <string name="send_as">Send som</string>
 
     <string name="no_removable_identity">Du kan ikke slette din eneste identitet</string>
@@ -752,8 +706,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">Ældste mails ført</string>
     <string name="sort_latest_first">Nyeste mails først</string>
-    <string name="sort_sender_alpha">Sorter efter afsender</string>
-    <string name="sort_sender_re_alpha">Sorter after afsender omvendt alfabetisk</string>
     <string name="sort_subject_alpha">Sorter efter emne</string>
     <string name="sort_subject_re_alpha">Sorter efter emne omvendt alfabetisk</string>
     <string name="sort_flagged_first">Stjernemarkerede mails først</string>
@@ -766,7 +718,6 @@ http://k9mail.googlecode.com/
     <string name="sort_by">Sorter efter…</string>
     <string name="sort_by_date">Dato</string>
     <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
-    <string name="sort_by_sender">Afsender</string>
     <string name="sort_by_subject">Emne</string>
     <string name="sort_by_flag">Stjernemarkering</string>
     <string name="sort_by_unread">Læst/ulæst</string>
@@ -847,8 +798,6 @@ http://k9mail.googlecode.com/
     <string name="background_ops_auto_sync">Når \"Baggrundsdata\" &amp; \"Auto-sync\" er aktiveret</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="no_message_seletected_toast">Ingen mail valgt</string>
-
     <string name="date_format_label">Datoformat</string>
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
@@ -856,20 +805,7 @@ http://k9mail.googlecode.com/
     -->
     <string name="date_format_common">dd-MMM-yyyy</string>
 
-    <string name="batch_ops">Batch operationer</string>
-    <string name="batch_delete_op">Slet valgte</string>
-    <string name="batch_mark_read_op">Marker valgte som læst</string>
-    <string name="batch_mark_unread_op">Marker valgte som ulæst</string>
-    <string name="batch_flag_op">Tilføj stjerne til valgte</string>
-    <string name="batch_unflag_op">Fjern stjerne fra valgte</string>
-    <string name="batch_archive_op">Flyt valgte til arkiv</string>
-    <string name="batch_spam_op">Flyt valgte til mappen Spam</string>
-    <string name="batch_move_op">Flyt valgte</string>
-    <string name="batch_copy_op">Kopier valgte</string>
-    <string name="batch_flag_mode">Stjerne tilstand</string>
-    <string name="batch_plain_mode">Standard tilstand</string>
     <string name="batch_select_all">Vælg alle</string>
-    <string name="batch_deselect_all">Fravælg alle</string>
 
     <string name="account_setup_push_limit_label">Max antal mapper som skal kontrolleres ved push</string>
     <string name="account_setup_push_limit_10">10 mapper</string>

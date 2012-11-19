@@ -54,7 +54,6 @@ http://k9mail.googlecode.com/
 
 
     <!-- General strings that include the app name -->
-    <string name="mark_all_as_read_dlg_instructions_fmt">Отметить все сообщения в \'<xliff:g id="folder">%s</xliff:g>\' как прочитанные?  (включая сообщения в папке, которые не отображаются)</string>
     <string name="account_delete_dlg_instructions_fmt">Учётная запись \"<xliff:g id="account">%s</xliff:g>\" будет удалена.</string>
     <string name="account_recreate_dlg_instructions_fmt">Все данные учётной записи \"<xliff:g id="account">%s</xliff:g>\" будут уничтожены, но настройки сохранятся.</string>
     <string name="account_clear_dlg_instructions_fmt">Все сообщения учётной записи \"<xliff:g id="account">%s</xliff:g>\" будут уничтожены, но настройки сохранятся.</string>
@@ -87,7 +86,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_title">Адреса</string>
     <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Дополнительные параметры</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -113,14 +111,11 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">Отменить</string>
     <string name="send_action">Отослать</string>
     <string name="send_again_action">Послать снова</string>
-    <string name="select_action">Выбрать</string>
-    <string name="deselect_action">Сброс выбора</string>
     <string name="reply_action">Ответить</string>
     <string name="reply_all_action">Ответить всем</string>
     <string name="delete_action">Удалить</string>
     <string name="archive_action">Архивировать</string>
     <string name="spam_action">Спам</string>
-    <string name="delete_all_action">Очистить папку</string>
     <string name="forward_action">Переслать</string>
     <string name="move_action">Переместить</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
@@ -129,38 +124,28 @@ http://k9mail.googlecode.com/
     <string name="done_action">Завершено</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Отбросить</string>
     <string name="save_draft_action">Сохранить как черновик</string>
-    <string name="retry_action">Повторить</string>
-    <string name="refresh_action">Обновить</string>
     <string name="check_mail_action">Проверить почту</string>
     <string name="send_messages_action">Отправить сообщения</string>
-    <string name="list_folders_action">Список папок</string>
     <string name="refresh_folders_action">Обновить список папок</string>
     <string name="filter_folders_action">Найти дирректорию</string>
-    <string name="mark_all_as_read_action">Отметить все сообщения как прочитанные</string>
     <string name="add_account_action">Добавить адрес</string>
     <string name="compose_action">Написать новое письмо</string>
     <string name="search_action">Поиск</string>
     <string name="search_results">Искать в результатах</string>
     <string name="preferences_action">Настройки</string>
-    <string name="open_action">Открыть</string>
     <string name="account_settings_action">Почтовые настройки</string>
     <string name="folder_settings_action">Настройки папки</string>
     <string name="global_settings_action">Глобальные настройки</string>
     <string name="remove_account_action">Удалить адрес</string>
     <string name="clear_pending_action">Остановить незаконченные действия (опасно!)</string>
 
-    <string name="accounts_action">Учётные записи</string>
     <string name="mark_as_read_action">Отметить как прочитанное</string>
     <string name="send_alternate_action">Переслать (альтернат.)</string>
     <string name="send_alternate_chooser_title">Выберать отправителя</string>
 
-    <string name="mark_all_as_read_dlg_title">Отметить все сообщения как прочитанные</string>
-
     <string name="flag_action">Добавить звезду</string>
     <string name="unflag_action">Удалить звезду</string>
     <string name="copy_action">Копировать</string>
-    <string name="show_full_header_action">Показать полный заголовок</string>
-    <string name="hide_full_header_action">Скрыть полный заголовок</string>
     <string name="select_text_action">Выбрать текст</string>
 
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
@@ -183,7 +168,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">Параметры адресов</string>
 
     <string name="general_no_subject">(Без темы)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_date">Нет даты</string>
     <string name="general_no_sender">Отправитель отсуствует</string>
     <string name="status_loading">Загрузка</string>
     <string name="status_loading_more">Загрузка сообщений\u2026</string>
@@ -271,11 +255,6 @@ http://k9mail.googlecode.com/
     <string name="message_view_cc_label">Копия:</string>
     <string name="message_view_attachment_view_action">Открыть</string>
     <string name="message_view_attachment_download_action">Сохранить</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Архивировать</string>
-    <string name="message_view_move_action">Перенести</string>
-    <string name="message_view_spam_action">Спам</string>
     <string name="message_view_status_attachment_saved">Вложение сохранено на карту SD под именем <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Не удалось сохранить вложение на карту SD.</string>
     <string name="message_view_show_pictures_action">Показать картинки</string>
@@ -299,12 +278,8 @@ http://k9mail.googlecode.com/
     <string name="message_discarded_toast">Сообщение отброшено</string>
     <string name="message_saved_toast">Сообщение сохранено в черновиках</string>
 
-    <string name="global_settings_flag_label">Показывать звёзды</string>
-    <string name="global_settings_flag_summary">Звёзды указывают отмеченные сообщения</string>
     <string name="global_settings_checkbox_label">Флажки множественного выбора</string>
     <string name="global_settings_checkbox_summary">Всегда показывать Флажки множественного выбора</string>
-    <string name="global_settings_touchable_label">Отображение удобное для управления пальцами</string>
-    <string name="global_settings_touchable_summary">Список сообщений с предпросмотром</string>
     <string name="global_settings_preview_lines_label">Строки предпросмотра</string>
     <string name="global_settings_show_correspondent_names_label">Показывать имя отправителя</string>
     <string name="global_settings_show_correspondent_names_summary">Показывать имя отправителя вместо e-mail, если это возмомжно</string>
@@ -327,12 +302,9 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">Подтверждение действий</string>
     <string name="global_settings_confirm_actions_summary">Показывать диалог при совершении действий</string>
-    <string name="global_settings_confirm_action_archive">Архивировать</string>
     <string name="global_settings_confirm_action_delete">Удалить (только представление сообщения)</string>
     <string name="global_settings_confirm_action_delete_starred">Удалить отмеченные (message view only)</string>
     <string name="global_settings_confirm_action_spam">Спам</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Пометить как прочитанное</string>
-    <string name="global_settings_confirm_action_send">Послать</string>
 
     <string name="global_settings_notification_hide_subject_title">Скрыть тему в оповещениях</string>
     <string name="global_settings_notification_hide_subject_never">Никогда</string>
@@ -355,10 +327,8 @@ http://k9mail.googlecode.com/
     <string name="quiet_time_ends">Конец времени тишины</string>
 
     <string name="account_setup_basics_title">Установить новый адрес</string>
-    <string name="account_setup_basics_instructions">Введите адрес электронной почты:</string>
     <string name="account_setup_basics_email_hint">Адрес электронной почты</string>
     <string name="account_setup_basics_password_hint">Пароль</string>
-    <string name="account_setup_basics_default_label">Отправлять почту с этого адреса по умолчанию</string>
     <string name="account_setup_basics_manual_setup_action">Ручная настройка</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -370,7 +340,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">Отмена\u2026</string>
 
     <string name="account_setup_names_title">Почти готово!</string>
-    <string name="account_setup_names_instructions">Ваш ящик создан и почта на пути!</string>
     <string name="account_setup_names_account_name_label">Дать этому ящику имя (необязательно):</string>
     <string name="account_setup_names_user_name_label">Ваше имя (отображается в исходящих сообщениях):</string>
 
@@ -404,9 +373,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_mobile_label">Мобильная</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Другие</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Загрузить заголовки</string>
-    <string name="account_setup_incoming_save_all_headers_label">Сохранить локально все заголовки</string>
 
     <string name="local_storage_provider_external_label">Внешнее хранилище (SD-карта)</string>
     <string name="local_storage_provider_internal_label">Стандартное внутреннее хранилище</string>
@@ -442,21 +408,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">Сервер SMTP</string>
     <string name="account_setup_outgoing_port_label">Порт</string>
     <string name="account_setup_outgoing_security_label">Тип защиты</string>
-    <string name="account_setup_outgoing_security_none_label">Никакой</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (если доступно)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (всегда)</string>
     <string name="account_setup_outgoing_require_login_label">Требовать входа в систему.</string>
     <string name="account_setup_outgoing_username_label">Имя пользователя</string>
     <string name="account_setup_outgoing_password_label">Пароль</string>
     <string name="account_setup_outgoing_authentication_label">Тип защиты</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Имя пользователя и пароль</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Имя пользователя</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Пароль</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP прежде SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP прежде SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) прежде SMTP</string>
 
     <string name="account_setup_bad_uri">Неверная установка: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -739,7 +694,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">Первоначальная личность</string>
     <string name="choose_identity_title">Выбрать личность</string>
-    <string name="choose_account_title">Выбрать учётную запись/личность</string>
     <string name="send_as">Послать как</string>
 
     <string name="no_removable_identity">Нельзя удалить единственную личность.</string>
@@ -747,8 +701,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">Сначала старые сообщения</string>
     <string name="sort_latest_first">Сначала новые сообщения</string>
-    <string name="sort_sender_alpha">Отправитель по алфавиту</string>
-    <string name="sort_sender_re_alpha">Отправитель по алфавиту в обратном порядке</string>
     <string name="sort_subject_alpha">Тема по алфавиту</string>
     <string name="sort_subject_re_alpha">Тема по алфавиту в обратном порядке</string>
     <string name="sort_flagged_first">Сначала сообщения со звёздами</string>
@@ -761,7 +713,6 @@ http://k9mail.googlecode.com/
     <string name="sort_by">Сортировка по…</string>
     <string name="sort_by_date">Дате</string>
     <string name="sort_by_arrival">Получению</string>
-    <string name="sort_by_sender">Отправителю</string>
     <string name="sort_by_subject">Теме</string>
     <string name="sort_by_flag">Звёздам</string>
     <string name="sort_by_unread">Прочитанном/не прочитанном</string>
@@ -841,8 +792,6 @@ http://k9mail.googlecode.com/
     <string name="background_ops_auto_sync">Когда \'Фоновые данные\' и \'Автосинхронизация\' включены</string>
     <string name="background_ops_auto_sync_only">Когда выбрана \'Автосинхронизация\'</string>
 
-    <string name="no_message_seletected_toast">Никаких сообщений не выбранно</string>
-
     <string name="date_format_label">Формат даты</string>
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
@@ -850,20 +799,7 @@ http://k9mail.googlecode.com/
     -->
     <string name="date_format_common">dd-MMM-yyyy</string>
 
-    <string name="batch_ops">Групповые операции</string>
-    <string name="batch_delete_op">Удалить выбранное</string>
-    <string name="batch_mark_read_op">Пометить выбранное как прочитанное</string>
-    <string name="batch_mark_unread_op">Пометить выбранное как не прочитанное</string>
-    <string name="batch_flag_op">Пометить выбранное звёздами</string>
-    <string name="batch_unflag_op">Удалить звёзды с выбранных</string>
-    <string name="batch_archive_op">Переместить выбранные в Архив</string>
-    <string name="batch_spam_op">Переместить выбранные в Спам</string>
-    <string name="batch_move_op">Переместить выбранное</string>
-    <string name="batch_copy_op">Скопировать выбранное</string>
-    <string name="batch_flag_mode">Режим звёзд</string>
-    <string name="batch_plain_mode">Простой режим</string>
     <string name="batch_select_all">Выбрать все</string>
-    <string name="batch_deselect_all">Очистить все выборы</string>
 
     <string name="account_setup_push_limit_label">Максимальное число папок для проверки с \"Push\"</string>
     <string name="account_setup_push_limit_10">10 папок</string>

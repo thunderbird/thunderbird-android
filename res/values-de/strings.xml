@@ -53,7 +53,6 @@ http://k9mail.googlecode.com/.
 
 
     <!-- General strings that include the app name -->
-    <string name="mark_all_as_read_dlg_instructions_fmt">Alle Nachrichten in \'<xliff:g id="folder">%s</xliff:g>\' als gelesen markieren? (inklusive Nachrichten in diesem Ordner, die nicht von K-9 dargestellt werden)</string>
     <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird gelöscht.</string>
     <string name="account_recreate_dlg_instructions_fmt">Alle Daten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von K-9 Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
     <string name="account_clear_dlg_instructions_fmt">Alle Nachrichten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von K-9 Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
@@ -86,7 +85,6 @@ http://k9mail.googlecode.com/.
     <string name="accounts_title">Ihre Konten</string>
     <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Erweitert</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
@@ -112,14 +110,11 @@ http://k9mail.googlecode.com/.
     <string name="cancel_action">Abbrechen</string>
     <string name="send_action">Senden</string>
     <string name="send_again_action">Erneut senden</string>
-    <string name="select_action">Auswählen</string>
-    <string name="deselect_action">Abwählen</string>
     <string name="reply_action">Antworten</string>
     <string name="reply_all_action">Allen antworten</string>
     <string name="delete_action">Löschen</string>
     <string name="archive_action">Archivieren</string>
     <string name="spam_action">Spam</string>
-    <string name="delete_all_action">Ordner leeren</string>
     <string name="forward_action">Weiterleiten</string>
     <string name="move_action">Verschieben</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
@@ -128,38 +123,28 @@ http://k9mail.googlecode.com/.
     <string name="done_action">Fertig</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Verwerfen</string>
     <string name="save_draft_action">Speichern</string>
-    <string name="retry_action">Erneut versuchen</string>
-    <string name="refresh_action">Aktualisieren</string>
     <string name="check_mail_action">Nachrichten abrufen</string>
     <string name="send_messages_action">Nachricht senden</string>
-    <string name="list_folders_action">Ordnerliste</string>
     <string name="refresh_folders_action">Ordnerliste aktualisieren</string>
     <string name="filter_folders_action">Finde Ordner</string>
-    <string name="mark_all_as_read_action">Alle als gelesen markieren</string>
     <string name="add_account_action">Konto hinzufügen</string>
     <string name="compose_action">Verfassen</string>
     <string name="search_action">Suchen</string>
     <string name="search_results">Suchergebnisse</string>
     <string name="preferences_action">Einstellungen</string>
-    <string name="open_action">Öffnen</string>
     <string name="account_settings_action">Kontoeinstellungen</string>
     <string name="folder_settings_action">Ordnereinstellungen</string>
     <string name="global_settings_action">Globale Einstellungen</string>
     <string name="remove_account_action">Konto entfernen</string>
     <string name="clear_pending_action">Ausstehende Aktionen abbrechen (Warnung!)</string>
 
-    <string name="accounts_action">Konten</string>
     <string name="mark_as_read_action">Als gelesen markieren</string>
     <string name="send_alternate_action">Weiterleiten (Alternativ)</string>
     <string name="send_alternate_chooser_title">Absender auswählen</string>
 
-    <string name="mark_all_as_read_dlg_title">Alle Nachrichten als gelesen markieren</string>
-
     <string name="flag_action">Als wichtig markieren</string>
     <string name="unflag_action">Wichtig-Markierung entfernen</string>
     <string name="copy_action">Kopieren</string>
-    <string name="show_full_header_action">Kompletten Header anzeigen</string>
-    <string name="hide_full_header_action">Kompakten Header anzeigen</string>
     <string name="select_text_action">Text auswählen</string>
 
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
@@ -182,7 +167,6 @@ http://k9mail.googlecode.com/.
     <string name="accounts_context_menu_title">Konto-Optionen</string>
 
     <string name="general_no_subject">(Kein Betreff)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_date">Kein Datum</string>
     <string name="general_no_sender">Kein Absender</string>
     <string name="status_loading">Lade</string>
     <string name="status_loading_more">Lade Nachrichten\u2026</string>
@@ -277,11 +261,6 @@ http://k9mail.googlecode.com/.
     <string name="message_view_cc_label">CC:</string>
     <string name="message_view_attachment_view_action">Öffnen</string>
     <string name="message_view_attachment_download_action">Speichern</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Archivieren</string>
-    <string name="message_view_move_action">Verschieben</string>
-    <string name="message_view_spam_action">Spam</string>
     <string name="message_view_status_attachment_saved">Anhänge auf SD-Karte gespeichert als <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Anhang konnte nicht auf SD-Karte gespeichert werden.</string>
     <string name="message_view_show_pictures_action">Bilder anzeigen</string>
@@ -305,12 +284,8 @@ http://k9mail.googlecode.com/.
     <string name="message_discarded_toast">Nachricht verworfen.</string>
     <string name="message_saved_toast">Nachricht als Entwurf gespeichert.</string>
 
-    <string name="global_settings_flag_label">Wichtige Nachrichten</string>
-    <string name="global_settings_flag_summary">Sterne weisen auf wichtige Nachrichten hin.</string>
     <string name="global_settings_checkbox_label">Mehrfachauswahl</string>
     <string name="global_settings_checkbox_summary">Immer Mehrfachauswahl-Checkboxen anzeigen</string>
-    <string name="global_settings_touchable_label">Berührungsfreundliche Ansicht</string>
-    <string name="global_settings_touchable_summary">Größere Darstellung mit Nachrichten-Vorschau</string>
     <string name="global_settings_preview_lines_label">Zeilenvorschau</string>
     <string name="global_settings_show_correspondent_names_label">Name anzeigen</string>
     <string name="global_settings_show_correspondent_names_summary">Zeige Namen des Korrespondenten statt der E-Mail-Adresse</string>
@@ -333,12 +308,9 @@ http://k9mail.googlecode.com/.
 
     <string name="global_settings_confirm_actions_title">Bestätigungsdialog</string>
     <string name="global_settings_confirm_actions_summary">Verlange Bestätigung bei gewissen Aktionen</string>
-    <string name="global_settings_confirm_action_archive">Archivieren</string>
     <string name="global_settings_confirm_action_delete">Löschen (nur in Nachrichtenansicht)</string>
     <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Alle als gelesen markieren</string>
-    <string name="global_settings_confirm_action_send">Senden</string>
 
     <string name="global_settings_notification_hide_subject_title">Betreff in Benachrichtigungen verbergen</string>
     <string name="global_settings_notification_hide_subject_never">Niemals</string>
@@ -361,10 +333,8 @@ http://k9mail.googlecode.com/.
     <string name="quiet_time_ends">Ruhezeit endet</string>
 
     <string name="account_setup_basics_title">E-Mail-Konto einrichten</string>
-    <string name="account_setup_basics_instructions">E-Mail-Adresse Ihres Kontos:</string>
     <string name="account_setup_basics_email_hint">E-Mail-Adresse</string>
     <string name="account_setup_basics_password_hint">Passwort</string>
-    <string name="account_setup_basics_default_label">Standardmäßig Nachrichten von diesem Konto aus senden.</string>
     <string name="account_setup_basics_manual_setup_action">Manuelle Einrichtung</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -376,7 +346,6 @@ http://k9mail.googlecode.com/.
     <string name="account_setup_check_settings_canceling_msg">Breche ab\u2026</string>
 
     <string name="account_setup_names_title">Fast fertig!</string>
-    <string name="account_setup_names_instructions">Ihr Konto ist eingerichtet, E-Mail ist auf dem Weg!</string>
     <string name="account_setup_names_account_name_label">Kontoname (optional):</string>
     <string name="account_setup_names_user_name_label">Ihr Name (Anzeige bei ausgehenden Nachrichten):</string>
 
@@ -410,9 +379,6 @@ http://k9mail.googlecode.com/.
     <string name="account_setup_incoming_mobile_label">Mobil</string>
     <string name="account_setup_incoming_wifi_label">WLAN</string>
     <string name="account_setup_incoming_other_label">Anderes</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Alle Mail-Header herunterladen</string>
-    <string name="account_setup_incoming_save_all_headers_label">Alle Header lokal speichern</string>
 
     <string name="local_storage_provider_external_label">Externes Medium (SD-Karte)</string>
     <string name="local_storage_provider_internal_label">Interner Speicher</string>
@@ -448,21 +414,10 @@ http://k9mail.googlecode.com/.
     <string name="account_setup_outgoing_smtp_server_label">SMTP-Server</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">Sicherheitstyp</string>
-    <string name="account_setup_outgoing_security_none_label">Keine Verschlüsselung</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (falls verfügbar)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (immer)</string>
     <string name="account_setup_outgoing_require_login_label">Anmeldung erforderlich.</string>
     <string name="account_setup_outgoing_username_label">Benutzername</string>
     <string name="account_setup_outgoing_password_label">Passwort</string>
     <string name="account_setup_outgoing_authentication_label">Authentifizierungsmethode</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Benutzername &amp; Passwort</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Benutzername</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Kennwort</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP vor SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP vor SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV(Exchange) vor SMTP</string>
 
     <string name="account_setup_bad_uri">Ungültige Einstellung: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -745,7 +700,6 @@ http://k9mail.googlecode.com/.
 
     <string name="default_identity_description">Standard-Identität</string>
     <string name="choose_identity_title">Identität auswählen</string>
-    <string name="choose_account_title">Konto/Identität auswählen</string>
     <string name="send_as">Sende als</string>
 
     <string name="no_removable_identity">Sie können Ihre einzige Identität nicht löschen</string>
@@ -753,8 +707,6 @@ http://k9mail.googlecode.com/.
 
     <string name="sort_earliest_first">Älteste Nachrichten zuerst</string>
     <string name="sort_latest_first">Neueste Nachrichten zuerst</string>
-    <string name="sort_sender_alpha">Alphabetisch nach Absender</string>
-    <string name="sort_sender_re_alpha">Umgekehrt-Alphabetisch nach Absender</string>
     <string name="sort_subject_alpha">Alphabetisch nach Betreff</string>
     <string name="sort_subject_re_alpha">Umgekehrt-Alphabetisch nach Betreff</string>
     <string name="sort_flagged_first">Markierte Nachrichten zuerst</string>
@@ -767,7 +719,6 @@ http://k9mail.googlecode.com/.
     <string name="sort_by">Sortieren nach…</string>
     <string name="sort_by_date">Datum</string>
     <string name="sort_by_arrival">Ankunftsdatum</string>
-    <string name="sort_by_sender">Absender</string>
     <string name="sort_by_subject">Betreff</string>
     <string name="sort_by_flag">Wichtigkeit</string>
     <string name="sort_by_unread">Gelesen/Ungelesen</string>
@@ -848,8 +799,6 @@ http://k9mail.googlecode.com/.
     <string name="background_ops_auto_sync">Wenn \'Hintergrunddaten\' &amp; \'Automatische Synchronisation\' aktiviert sind</string>
     <string name="background_ops_auto_sync_only">Wenn \'Automatische Synchronisation\' aktiviert ist</string>
 
-    <string name="no_message_seletected_toast">Keine Nachricht ausgewählt</string>
-
     <string name="date_format_label">Datumsformat</string>
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
@@ -857,20 +806,7 @@ http://k9mail.googlecode.com/.
     -->
     <string name="date_format_common">dd.MMM yyyy</string>
 
-    <string name="batch_ops">Gruppenoperationen</string>
-    <string name="batch_delete_op">Gewählte löschen</string>
-    <string name="batch_mark_read_op">Gewählte als gelesen markieren</string>
-    <string name="batch_mark_unread_op">Gewählte als ungelesen markieren</string>
-    <string name="batch_flag_op">Gewählte als wichtig markieren</string>
-    <string name="batch_unflag_op">Markierung bei Gewählten entfernen</string>
-    <string name="batch_archive_op">Gewählte archivieren</string>
-    <string name="batch_spam_op">Gewählte als Spam markieren</string>
-    <string name="batch_move_op">Gewählte verschieben</string>
-    <string name="batch_copy_op">Gewählte kopieren</string>
-    <string name="batch_flag_mode">Stern-Modus</string>
-    <string name="batch_plain_mode">Normaler Modus</string>
     <string name="batch_select_all">Alle auswählen</string>
-    <string name="batch_deselect_all">Alle abwählen</string>
 
     <string name="account_setup_push_limit_label">Max. Ordner mit Push abrufen</string>
     <string name="account_setup_push_limit_10">10 Ordner</string>

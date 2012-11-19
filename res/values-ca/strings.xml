@@ -53,7 +53,6 @@ http://k9mail.googlecode.com/
 
 
     <!-- General strings that include the app name -->
-    <string name="mark_all_as_read_dlg_instructions_fmt">Marca missatges a \'<xliff:g id="folder">%s</xliff:g>\' com ha llegits?  (incloent-hi missatges de la carpeta que no són mostrats a K-9)</string>
     <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" serà esborrat de K-9 Mail.</string>
     <string name="account_recreate_dlg_instructions_fmt">Totes les dades de \"<xliff:g id="account">%s</xliff:g>\" seran esborrades de K-9 Mail, però la configuració del compte romandrà.</string>
     <string name="account_clear_dlg_instructions_fmt">Tots els missatges a \"<xliff:g id="account">%s</xliff:g>\" seran esborrats de K-9 Mail, però la configuració del compte romandrà.</string>
@@ -86,7 +85,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_title">Comptes</string>
     <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Avançat</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g></string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
 
@@ -112,14 +110,11 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">Cancel·la</string>
     <string name="send_action">Envia</string>
     <string name="send_again_action">Torna a enviar</string>
-    <string name="select_action">Selecciona</string>
-    <string name="deselect_action">Desselecciona</string>
     <string name="reply_action">Respon</string>
     <string name="reply_all_action">Respon a tothom</string>
     <string name="delete_action">Esborra</string>
     <string name="archive_action">Arxiva</string>
     <string name="spam_action">Brossa</string>
-    <string name="delete_all_action">Buida la carpeta</string>
     <string name="forward_action">Reenvia</string>
     <string name="move_action">Mou</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
@@ -128,38 +123,28 @@ http://k9mail.googlecode.com/
     <string name="done_action">Fet</string>
     <string name="discard_action">Descarta</string>
     <string name="save_draft_action">Desa com a esborrany</string>
-    <string name="retry_action">Reintenta</string>
-    <string name="refresh_action">Refresca</string>
     <string name="check_mail_action">Comprova el correu</string>
     <string name="send_messages_action">Envia missatges</string>
-    <string name="list_folders_action">Llista de carpetes</string>
     <string name="refresh_folders_action">Refresca carpetes</string>
     <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
-    <string name="mark_all_as_read_action">Marca missatges com a llegits</string>
     <string name="add_account_action">Afegeix un compte nou</string>
     <string name="compose_action">Redacta</string>
     <string name="search_action">Cerca</string>
     <string name="search_results">Cerca resultats</string>
     <string name="preferences_action">Configuració</string>
-    <string name="open_action">Obre</string>
     <string name="account_settings_action">Configuració del compte</string>
     <string name="folder_settings_action">Configuració de la carpeta</string>
     <string name="global_settings_action">Configuració global</string>
     <string name="remove_account_action">Esborra el compte</string>
     <string name="clear_pending_action">Suprimeix totes les accions pendents (Compte!)</string>
 
-    <string name="accounts_action">Comptes</string>
     <string name="mark_as_read_action">Marca com a llegit</string>
     <string name="send_alternate_action">Comparteix</string>
     <string name="send_alternate_chooser_title">Selecciona remitent</string>
 
-    <string name="mark_all_as_read_dlg_title">Marca missatges com a llegits</string>
-
     <string name="flag_action">Afegeix un estel</string>
     <string name="unflag_action">Treu l’estel</string>
     <string name="copy_action">Copia</string>
-    <string name="show_full_header_action">Ensenya la capçalera sencera</string>
-    <string name="hide_full_header_action">Amaga tota la capçalera</string>
     <string name="select_text_action">Selecciona text</string>
 
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
@@ -182,7 +167,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">Opcions del compte</string>
 
     <string name="general_no_subject">(Sense assumpte)</string>
-    <string name="general_no_date">Sense data</string>
     <string name="general_no_sender">Sense remitent</string>
     <string name="status_loading">Comprovant</string>
     <string name="status_loading_more">S’estan carregant els missatges\u2026</string>
@@ -276,11 +260,6 @@ http://k9mail.googlecode.com/
     <string name="message_view_cc_label">A/c:</string>
     <string name="message_view_attachment_view_action">Obre</string>
     <string name="message_view_attachment_download_action">Desa</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Arxiu</string>
-    <string name="message_view_move_action">Mou</string>
-    <string name="message_view_spam_action">Brossa</string>
     <string name="message_view_status_attachment_saved">Adjunt desat a la SD com a <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">No s’ha pogut desar l’adjunt a la SD.</string>
     <string name="message_view_show_pictures_action">Mostra fotos</string>
@@ -305,12 +284,8 @@ http://k9mail.googlecode.com/
     <string name="message_discarded_toast">S’ha descartat el missatge</string>
     <string name="message_saved_toast">S’ha desat el missatge com a esborrany</string>
 
-    <string name="global_settings_flag_label">Mostra estels</string>
-    <string name="global_settings_flag_summary">Els estels indiquen els missatges senyalats</string>
     <string name="global_settings_checkbox_label">Selecció múltiple</string>
     <string name="global_settings_checkbox_summary">Ensenya sempre la selecció múltiple</string>
-    <string name="global_settings_touchable_label">Previsualització missatges</string>
-    <string name="global_settings_touchable_summary">Llista més espaiosa amb previsualització de missatges</string>
     <string name="global_settings_preview_lines_label">Previsualització de línies</string>
     <string name="global_settings_show_correspondent_names_label">Mostra noms dels contactes</string>
     <string name="global_settings_show_correspondent_names_summary">Mostra noms dels contactes enlloc dels correus</string>
@@ -333,12 +308,9 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">Confirma accions</string>
     <string name="global_settings_confirm_actions_summary">Mostra un diàleg cada vegada que executis accions seleccionades</string>
-    <string name="global_settings_confirm_action_archive">Arxiva</string>
     <string name="global_settings_confirm_action_delete">Esborra (només la vista del missatge)</string>
     <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
     <string name="global_settings_confirm_action_spam">Brossa</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Maca\'ls tots com a llegits</string>
-    <string name="global_settings_confirm_action_send">Envia</string>
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
@@ -361,10 +333,8 @@ http://k9mail.googlecode.com/
     <string name="quiet_time_ends">Mode silenciós acaba</string>
 
     <string name="account_setup_basics_title">Configura un compte nou</string>
-    <string name="account_setup_basics_instructions">Entra l’adreça de correu d’aquest compte:</string>
     <string name="account_setup_basics_email_hint">Adreça de correu electrònic</string>
     <string name="account_setup_basics_password_hint">Contrasenya</string>
-    <string name="account_setup_basics_default_label">Envia el correu per defecte des d’aquest compte</string>
     <string name="account_setup_basics_manual_setup_action">Configuració manual</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -376,7 +346,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">S’està cancel·lant\u2026</string>
 
     <string name="account_setup_names_title">Ja està gairebé fet!</string>
-    <string name="account_setup_names_instructions">S’ha configurat el compte, s’està comprovant correu nou!</string>
     <string name="account_setup_names_account_name_label">Dóna un nom a aquest compte (opcional):</string>
     <string name="account_setup_names_user_name_label">Escriu el teu nom (és el que es mostrarà en els missatges sortints):</string>
 
@@ -410,9 +379,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_mobile_label">Mòbil</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Un altre</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Descarrega capçaleres</string>
-    <string name="account_setup_incoming_save_all_headers_label">Desa localment totes les capçaleres dels missatges</string>
 
     <string name="local_storage_provider_external_label">Emmagatzematge extern (targeta SD)</string>
     <string name="local_storage_provider_internal_label">Emmagatzematge intern</string>
@@ -448,20 +414,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">Tipus de seguretat</string>
-    <string name="account_setup_outgoing_security_none_label">Cap</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (si és disponible)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (sempre)</string>
     <string name="account_setup_outgoing_require_login_label">Requereix inici de sessió.</string>
     <string name="account_setup_outgoing_username_label">Nom d’usuari</string>
     <string name="account_setup_outgoing_password_label">Contrasenya</string>
     <string name="account_setup_outgoing_authentication_label">Tipus d’autenticació</string>
-    <string name="account_setup_outgoing_authentication_basic_label">Nom d’usuari i contrasenya</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Nom d’usuari</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Contrasenya</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP abans de SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP abans de SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) abans de SMTP</string>
 
     <string name="account_setup_bad_uri">Configuració invàlida: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -744,7 +700,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">Identitat inicial</string>
     <string name="choose_identity_title">Tria identitat</string>
-    <string name="choose_account_title">Tria compte/identitat</string>
     <string name="send_as">Envia com</string>
 
     <string name="no_removable_identity">No pots esborrar una identitat si només en tens una</string>
@@ -752,8 +707,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">Missatges més antics primer</string>
     <string name="sort_latest_first">Darrers missatges primer</string>
-    <string name="sort_sender_alpha">Remitent alfabètic</string>
-    <string name="sort_sender_re_alpha">Remitent en ordre alfabètic invers</string>
     <string name="sort_subject_alpha">Assumpte alfabètic</string>
     <string name="sort_subject_re_alpha">Assumpte en ordre alfabètic invers</string>
     <string name="sort_flagged_first">Missatges senyalats primer</string>
@@ -766,7 +719,6 @@ http://k9mail.googlecode.com/
     <string name="sort_by">Ordenat per…</string>
     <string name="sort_by_date">Data</string>
     <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
-    <string name="sort_by_sender">Remitent</string>
     <string name="sort_by_subject">Assumpte</string>
     <string name="sort_by_flag">Estel</string>
     <string name="sort_by_unread">Llegit/no llegit</string>
@@ -848,8 +800,6 @@ http://k9mail.googlecode.com/
     <string name="background_ops_auto_sync">Quan s’està comprovant \'Dades en segon pla\' i \'Auto sincronització\'</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="no_message_seletected_toast">No s’ha seleccionat cap missatge</string>
-
     <string name="date_format_label">Format de la data</string>
     <!--
       The values of the date_format_* strings MUST be valid date format strings.
@@ -857,20 +807,7 @@ http://k9mail.googlecode.com/
     -->
     <string name="date_format_common">dd-MMM-yyyy</string>
 
-    <string name="batch_ops">Operacions en lot</string>
-    <string name="batch_delete_op">Esborra les seleccions</string>
-    <string name="batch_mark_read_op">Marca com a ha llegit les seleccion</string>
-    <string name="batch_mark_unread_op">Marca com a no llegit les seleccions</string>
-    <string name="batch_flag_op">Afegeix un estel a les seleccions</string>
-    <string name="batch_unflag_op">Treu l’estel del que s’ha seleccionat</string>
-    <string name="batch_archive_op">Mou les seleccions a l’arxiu</string>
-    <string name="batch_spam_op">Mou les seleccions a la brossa</string>
-    <string name="batch_move_op">Mou les seleccions</string>
-    <string name="batch_copy_op">Copia les seleccions</string>
-    <string name="batch_flag_mode">Mode estel</string>
-    <string name="batch_plain_mode">Mode net</string>
     <string name="batch_select_all">Selecciona-ho tot</string>
-    <string name="batch_deselect_all">Desselecciona-ho tot</string>
 
     <string name="account_setup_push_limit_label">Carpetes màximes a comprovar</string>
     <string name="account_setup_push_limit_10">10 carpetes</string>
