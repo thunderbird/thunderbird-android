@@ -26,7 +26,7 @@
 Καλώς ήλθατε στο K-9 Mail. Το K-9 είναι ένας πελάτης ηλεκτρονικού ταχυδρομείου ανοικτού κώδικα  για το Android που αρχικά βασίστηκε στον βασικό email client του Android.
 \n\n
 \nΤα βελτιωμένα χαρακτηριστικά του K-9 είναι:
-\n * Ταχυδρομείο με σπρώξιμο (push mail) με χρήση IMAP IDLE
+\n * Ταχυδρομείο με προώθηση (push mail) με χρήση IMAP IDLE
 \n * Καλύτερες επιδόσεις
 \n * Μετακίνηση μηνυμάτων σε φακέλους
 \n * Υπογραφές μηνυμάτων
@@ -83,7 +83,7 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">Περί του <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Λογαριασμοί</string>
-    <!-- NEW: <string name="folders_title">Folders</string>-->
+    <string name="folders_title">Φάκελοι</string>
     <string name="advanced">Προχωρημένα</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
@@ -115,9 +115,9 @@ http://k9mail.googlecode.com/
     <string name="delete_action">Διαγραφή</string>
     <string name="archive_action">Αρχειοθέτηση</string>
     <string name="spam_action">Σκουπιδοταχυδρομείο</string>
-    <string name="forward_action">Μπροστά</string>
+    <string name="forward_action">Προώθηση</string>
     <string name="move_action">Μετακίνηση</string>
-    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <string name="single_message_options_action">Επιλογές μηνύματος</string>
     <string name="continue_action">Συνέχεια</string>
     <string name="back_action">Πίσω</string>
     <string name="done_action">Συμπληρώθηκε</string> <!--  Used to complete a multi-step process -->
@@ -136,7 +136,7 @@ http://k9mail.googlecode.com/
     <string name="folder_settings_action">Ρυθμίσεις φακέλου</string>
     <string name="global_settings_action">Γενικές ρυθμίσεις</string>
     <string name="remove_account_action">Διαγραφή λογαριασμού</string>
-    <string name="clear_pending_action">Καθαρισμός εκκρεμών ενεργειών (κίνδυνος!)</string>
+    <string name="clear_pending_action">Καθαρισμός εκκρεμών ενεργειών (Προσοχή!)</string>
 
     <string name="mark_as_read_action">Σήμανση ως αναγνωσμένου</string>
     <string name="send_alternate_action">Διανομή</string>
@@ -147,8 +147,8 @@ http://k9mail.googlecode.com/
     <string name="copy_action">Αντιγραφή</string>
     <string name="select_text_action">Επιλογή κειμένου</string>
 
-    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
-    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
+    <string name="message_view_theme_action_dark">Εφαρμογή σκούρας εμφάνισης</string>
+    <string name="message_view_theme_action_light">Εφαρμογή φωτεινής εμφάνισης</string>
 
     <string name="mark_as_unread_action">Σήμανση ως μη αναγνωσμένο</string>
     <string name="add_cc_bcc_action">Προσθήκη κοινοποίησης/Ιδιωτικής κοινοποίησης</string>
@@ -156,8 +156,8 @@ http://k9mail.googlecode.com/
     <string name="read_receipt_enabled">Θα ζητηθεί απόδειξη ανάγνωσης</string>
     <string name="read_receipt_disabled">Δεν θα ζητηθεί απόδειξη ανάγνωσης</string>
     <string name="add_attachment_action">Προσθήκη συνημμένου</string>
-    <string name="add_attachment_action_image">Προσθήκη συνημμένου (εικόνα)</string>
-    <string name="add_attachment_action_video">Προσθήκη συνημμένου (βίντεο)</string>
+    <string name="add_attachment_action_image">Προσθήκη συνημμένης εικόνας</string>
+    <string name="add_attachment_action_video">Προσθήκη συνημμένου βίντεο</string>
     <string name="empty_trash_action">Άδειασμα σκουπιδιών</string>
     <string name="expunge_action">Εξάλειψη</string>
     <string name="clear_local_folder_action">Καθαρισμός τοπικών μηνυμάτων</string>
@@ -274,32 +274,32 @@ http://k9mail.googlecode.com/
 
     <string name="folder_push_active_symbol">(Σπρώξιμο)</string>
 
-    <string name="from_same_sender">Περισσότερα από αυτόν τον αποστολέα</string>
+    <string name="from_same_sender">Από τον ίδιο αποστολέα</string>
 
     <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε</string>
     <string name="message_saved_toast">Το μήνυμα αποθηκεύτηκε στα πρόχειρα</string>
 
     <string name="global_settings_checkbox_label">Κουτιά πολλαπλής επιλογής</string>
     <string name="global_settings_checkbox_summary">Προβολή κουτιών επιλογής πάντοτε</string>
-    <string name="global_settings_preview_lines_label">Προεπισκόπηση γραμμώνν</string>
+    <string name="global_settings_preview_lines_label">Προεπισκ. μηνυμάτων</string>
     <string name="global_settings_show_correspondent_names_label">Προβολή ονόματος επιστολογράφων</string>
     <string name="global_settings_show_correspondent_names_summary">Προβολή ονόματος επιστολογράφων παρά των διευθύνσεων ηλεκτρονικού ταχυδρομείου</string>
 
-    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
-    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+    <string name="global_settings_sender_above_subject_label">Αποστολέας πάνω από το θέμα</string>
+    <string name="global_settings_sender_above_subject_summary">Προβολή επιστολογράφων πάνω από τη γραμμή του θέματος και όχι από κάτω</string>
 
-    <string name="global_settings_show_contact_name_label">Προβολή ονόματος από επαφές</string>
+    <string name="global_settings_show_contact_name_label">Προβ. ονομάτων επαφών</string>
     <string name="global_settings_show_contact_name_summary">Όνομα επιστολογράφων από Επαφές όταν είναι διαθέσιμο</string>
-    <string name="global_settings_registered_name_color_label">Χρωματισμός επαφών</string>
+    <string name="global_settings_registered_name_color_label">Χρωματισμός Επαφών</string>
     <string name="global_settings_registered_name_color_default">Να μην χρωματίζονται τα ονόματα στη λίστα επαφών</string>
     <string name="global_settings_registered_name_color_changed">Να χρωματίζονται τα ονόματα στη λίστα επαφών</string>
 
-    <string name="global_settings_messageview_fixedwidth_label">Γραμματοσειρά σταθερού πλάτους</string>
+    <string name="global_settings_messageview_fixedwidth_label">Γράμματα σταθερού πλάτους</string>
     <string name="global_settings_messageview_fixedwidth_summary">Να χρησιμοποιείται γραμματοσειρά σταθερού πλάτους όταν προβάλλονται μηνύματα απλού κειμένου</string>
-    <string name="global_settings_messageview_return_to_list_label">Επιστροφή στη λίστα μετά τη διαγραφή</string>
-    <string name="global_settings_messageview_return_to_list_summary">Επιστροφή στη λίστα μηνυμάτων μετά τη διαγραφή</string>
-    <string name="global_settings_messageview_show_next_label">Προβολή επόμενου μηνύματος μετά τη διαγραφή</string>
-    <string name="global_settings_messageview_show_next_summary">Προβολή επόμενου μηνύματος μετά τη διαγραφή</string>
+    <string name="global_settings_messageview_return_to_list_label">Επιστροφή στη λίστα</string>
+    <string name="global_settings_messageview_return_to_list_summary">Επιστροφή στη λίστα μηνυμάτων μετά τη διαγραφή ενός μηνύματος</string>
+    <string name="global_settings_messageview_show_next_label">Προβολή επόμενου μηνύματος</string>
+    <string name="global_settings_messageview_show_next_summary">Προβολή επόμενου μηνύματος μετά τη διαγραφή ενός μηνύματος</string>
 
     <string name="global_settings_confirm_actions_title">Επιβεβαίωση ενεργειών</string>
     <string name="global_settings_confirm_actions_summary">Προβολή διαλόγου όποτε εκτελούνται επιλεγμένες ενέργειες</string>
@@ -314,16 +314,16 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_batch_buttons">Πλήκτρα ομάδας μηνυμάτων</string>
     <string name="global_settings_batch_buttons_summary">Προσαρμογή πλήκτρων ομάδας μηνυμάτων</string>
-    <string name="global_settings_mark_read">Αναγνωσμένο/μη αναγν.</string>
+    <string name="global_settings_mark_read">Αναγνωσμένο/Μη αναγν.</string>
     <string name="global_settings_delete">Διαγραφή</string>
     <string name="global_settings_archive">Αρχειοθέτηση</string>
-    <string name="global_settings_archive_disabled_reason">Χωρίς φάκελλο αρχειοθέτησης</string>
+    <string name="global_settings_archive_disabled_reason">Χωρίς φάκελο αρχειοθέτησης</string>
     <string name="global_settings_move">Μετακίνηση</string>
     <string name="global_settings_flag">Σημαία</string>
     <string name="global_settings_unselect">Απο-επιλογή</string>
 
     <string name="quiet_time">Ώρες ησυχίας</string>
-    <string name="quiet_time_description">Απενεργοποιεί κουδούνισμα, και αναβοσβήσιμο τη νύχτα</string>
+    <string name="quiet_time_description">Απενεργοποιεί κουδούνισμα και αναβοσβήσιμο τη νύχτα</string>
     <string name="quiet_time_starts">Έναρξη ωρών ησυχίας</string>
     <string name="quiet_time_ends">Λήξη ωρών ησυχίας</string>
 
@@ -332,7 +332,7 @@ http://k9mail.googlecode.com/
     <string name="account_setup_basics_password_hint">Συνθηματικό</string>
     <string name="account_setup_basics_manual_setup_action">Χειροκίνητη ρύθμιση</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title">Έλεγχος ρυθμίσεων</string>
     <string name="account_setup_check_settings_retr_info_msg">Ανάκτηση πληροφοριών λογαριασμού\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Έλεγχος ρυθμίσεων εισερχόμενης αλληλογραφίας\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Έλεγχος ρυθμίσεων εξερχόμενης αλληλογραφίας\u2026</string>
@@ -858,7 +858,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_settings_title">Μέγεθος γραμματοσειράς</string>
     <string name="font_size_settings_description">Ρύθμιση μεγέθους γραμματοσειράς</string>
 
-    <string name="font_size_account_list">Λίσα λογαριασμών</string>
+    <string name="font_size_account_list">Λίστα λογαριασμών</string>
     <string name="font_size_account_name">Όνομα λογαριασμού</string>
     <string name="font_size_account_description">Περιγραφή λογαριασμού</string>
 
@@ -1051,35 +1051,35 @@ http://k9mail.googlecode.com/
     <string name="image_saved_as">Αποθήκευση μηνύματος ως \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Αποτυχία αποθήκευσης της εικόνας</string>
 
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
-    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
-    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
-    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
-    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+    <string name="account_settings_remote_search_num_results_entries_all">Όλα</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Όριο εξυπηρέτη για αναζήτηση αποτελεσμάτων</string>
+    <string name="account_settings_remote_search_num_summary">Η αναζήτηση θα διακοπεί όταν βρεθούν <xliff:g id="num_results">%s</xliff:g> αποτελέσματα.</string>
+    <string name="account_settings_remote_search">Αναζήτηση σε απομακρυσμένο φάκελο</string>
+    <string name="account_settings_remote_search_full_text">Συμπερίληψη κειμένου μηνύματος στην αναζήτηση</string>
+    <string name="account_settings_remote_search_full_text_summary">Οι αναζητήσεις πλήρους κειμένου μπορεί να καθυστερούν.</string>
+    <string name="remote_search_sending_query">Αποστολή ερωτήματος στον εξυπηρέτη</string>
+    <string name="remote_search_downloading">Ανάκληση %d αποτελεσμάτων</string>
+    <string name="remote_search_downloading_limited">Ανάκληση %1$d από %2$d αποτελέσματα</string>
+    <string name="remote_search_error">Η απομακρυσμένη αναζήτηση απέτυχε.</string>
 
-    <!-- NEW: <string name="account_settings_search">Search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
-    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <string name="account_settings_search">Αναζήτηση</string>
+    <string name="account_settings_remote_search_enabled">Ενεργοποίηση αναζήτησης στον εξυπηρέτη</string>
+    <string name="account_settings_remote_search_enabled_summary">Αναζήτηση μηνυμάτων στον εξυπηρέτη επιπρόσθετα αυτών που είναι στη συσκευή σας</string>
+    <string name="action_remote_search">Αναζήτηση μηνυμάτων στον εξυπηρέτη</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Προώθηση στον εξυπηρέτη αναζήτησης</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Αποδέσμευση στον εξυπηρέτη αναζήτησης</string>
+    <string name="remote_search_unavailable_no_network">Η απομακρυσμένη αναζήτηση δεν είναι διαθέσιμη χωρίς σύνδεση δικτύου.</string>
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <string name="global_settings_background_as_unread_indicator_label">Χρήση φόντου ως ένδειξη (μη) αναγνωσμένου</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Προβολή αναγνωσμένων και μη αναγνωσμένων μηνυμάτων με διαφορετικά χρώματα φόντου</string>
 
-    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <string name="global_settings_threaded_view_label">Προβολή συζήτησης</string>
+    <string name="global_settings_threaded_view_summary">Σύντμηση μηνυμάτων που ανήκουν στον ίδιο νήμα</string>
 </resources>
