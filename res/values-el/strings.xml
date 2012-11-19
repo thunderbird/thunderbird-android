@@ -411,7 +411,7 @@ http://k9mail.googlecode.com/
 
     <string name="local_storage_provider_external_label">Εξωτερική αποθήκευση (SD card)</string>
     <string name="local_storage_provider_internal_label">Κανονική εσωτερική αποθήκευση</string>
-    <string name="local_storage_provider_samsunggalaxy_label">%1$ πρόσθετη εσωτερική αποθήκευση</string>
+    <string name="local_storage_provider_samsunggalaxy_label">%1$s πρόσθετη εσωτερική αποθήκευση</string>
     <string name="local_storage_provider_label">Θέση αποθήκευσης</string>
 
     <string name="account_setup_expunge_policy_label">Εξάλειψη διαγραμμένων μηνυμάτων</string>
