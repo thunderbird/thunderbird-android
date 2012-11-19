@@ -22,6 +22,7 @@
 
 
     <!-- Welcome message -->
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
     <string name="accounts_welcome">
 感谢安装K-9。K-9是Android下的开源电子邮件客户端，其最初的代码来自Android默认的电子邮件程序。
 \n\n
@@ -51,6 +52,14 @@
     <string name="default_signature">-- \n抱歉暂时无法详细说明。这份邮件是使用安装有K-9 Mail的Android移动设备发送的。</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">标记“<xliff:g id="folder">%s</xliff:g>”中全部的邮件（包括K-9中没有显示的文件夹中的邮件）为已读么？</string>
+    <string name="account_delete_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”将从K-9 Mail中删除。</string>
+    <string name="account_recreate_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”的全部数据将从K-9 Mail中删除，但是账户设置将保留。</string>
+    <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”中的全部邮件将从K-9 Mail中删除，但是账户设置将保留。</string>
+    <string name="insufficient_apg_permissions">K-9没有被允许完全访问APG，请重新安装K-9以便修复这一问题。</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -75,6 +84,7 @@
 
     <string name="about_title_fmt">关于<xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">账户</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">高级</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g></string>
 
@@ -112,6 +122,7 @@
     <string name="delete_all_action">清空文件夹</string>
     <string name="forward_action">转发</string>
     <string name="move_action">移动</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">继续</string>
     <string name="back_action">返回</string>
     <string name="done_action">完成</string> <!--  Used to complete a multi-step process -->
@@ -143,7 +154,6 @@
     <string name="send_alternate_chooser_title">选择发件人</string>
 
     <string name="mark_all_as_read_dlg_title">标记全部邮件为已读</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">标记“<xliff:g id="folder">%s</xliff:g>”中全部的邮件（包括K-9中没有显示的文件夹中的邮件）为已读么？</string>
 
     <string name="flag_action">添加星标</string>
     <string name="unflag_action">移除星标</string>
@@ -151,6 +161,9 @@
     <string name="show_full_header_action">显示详细信息</string>
     <string name="hide_full_header_action">隐藏详细信息</string>
     <string name="select_text_action">选择文本</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">标记为未读</string>
     <string name="add_cc_bcc_action">添加抄送/暗送</string>
@@ -294,6 +307,10 @@
     <string name="global_settings_preview_lines_label">预览行数</string>
     <string name="global_settings_show_correspondent_names_label">显示收件人姓名</string>
     <string name="global_settings_show_correspondent_names_summary">如果可能则使用收件人姓名代替收件地址</string>
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">显示联系人姓名</string>
     <string name="global_settings_show_contact_name_summary">如果可能则使用联系人姓名代替收件地址</string>
     <string name="global_settings_registered_name_color_label">使用颜色标记联系人</string>
@@ -750,13 +767,10 @@
     <string name="sort_by_attach">附件</string>
 
     <string name="account_delete_dlg_title">删除账户</string>
-    <string name="account_delete_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”将从K-9 Mail中删除。</string>
 
     <string name="account_recreate_dlg_title">重建账户</string>
-    <string name="account_recreate_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”的全部数据将从K-9 Mail中删除，但是账户设置将保留。</string>
 
     <string name="account_clear_dlg_title">清除账户</string>
-    <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”中的全部邮件将从K-9 Mail中删除，但是账户设置将保留。</string>
 
     <string name="provider_note_live">只有一些“高级账户”允许POP访问并允许该程序连接。如果您使用了正确的用户名和密码却仍旧无法登录，则您可能没有购买这些“高级账户”。请使用浏览器来访问这些账户。</string>
     <string name="provider_note_yahoojp">如果您想使用POP3，请在Yahoo mail的设置页面里设置允许POP3。</string>
@@ -961,7 +975,6 @@
     <string name="btn_verify">验证</string>
     <string name="unknown_crypto_signature_user_id">&lt;未知&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9没有被允许完全访问APG，请重新安装K-9以便修复这一问题。</string>
     <string name="pgp_mime_unsupported">暂时还不支持PGP/MIME邮件。</string>
     <string name="attachment_encryption_unsupported">警告：附件还 *没有* 被签名或者加密。</string>
     <string name="send_aborted">发送操作已经取消。</string>
@@ -1083,4 +1096,36 @@
 
     <string name="image_saved_as">保存图片到文件 \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">保存图片失败</string>
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

@@ -27,6 +27,7 @@
 
 
     <!-- Welcome message -->
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
     <string name="accounts_welcome">
 Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro Android původně založený na standardním klientovi E-mail v Androidu.
 \n\n
@@ -52,8 +53,17 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
 http://k9mail.googlecode.com/
     </string>
 
+
     <!-- Default signature -->
     <string name="default_signature">-- \nOdesláno z mého telefonu s Androidem pomocí pošty K-9 Mail. Omluvte prosím mou stručnost.</string>
+
+
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">Označit všechny zprávy ve složce \'<xliff:g id="folder">%s</xliff:g>\' jako přečtené? (včetně zpráv, které v té složce nejsou zobrazeny v K-9)</string>
+    <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z pošty K-9 Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Všechna data účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněna, ale nastavení účtu bude zachováno.</string>
+    <string name="account_clear_dlg_instructions_fmt">Všechny zprávy v účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněny, ale nastavení účtu bude zachováno.</string>
+    <string name="insufficient_apg_permissions">K-9 nemá oprávnění k plnému přístupu k APG, přeinstalujte prosím pro opravu balíček K-9.</string>
 
 
 
@@ -80,6 +90,7 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">O aplikaci <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Účty</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Pokročilé</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
@@ -117,6 +128,7 @@ http://k9mail.googlecode.com/
     <string name="delete_all_action">Vyčistit složku</string>
     <string name="forward_action">Přeposlat</string>
     <string name="move_action">Přesunout</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">Pokračovat</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">Hotovo</string> <!--  Used to complete a multi-step process -->
@@ -148,8 +160,6 @@ http://k9mail.googlecode.com/
     <string name="send_alternate_chooser_title">Vybrat odesílatele</string>
 
     <string name="mark_all_as_read_dlg_title">Označit všechny zprávy jako přečtené</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Označit všechny zprávy ve složce \'<xliff:g id="folder">%s</xliff:g>\' jako přečtené? (včetně
-    zpráv, které v té složce nejsou zobrazeny v K-9)</string>
 
     <string name="flag_action">Přidat \u2605</string>
     <string name="unflag_action">Odebrat \u2606</string>
@@ -157,6 +167,9 @@ http://k9mail.googlecode.com/
     <string name="show_full_header_action">Zobrazit úplné záhlaví</string>
     <string name="hide_full_header_action">Skrýt úplné záhlaví</string>
     <string name="select_text_action">Vybrat text</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">Označit jako nepřečtené</string>
     <string name="add_cc_bcc_action">Přidat kopii/skrytou</string>
@@ -306,6 +319,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_preview_lines_label">Počet řádků náhledu</string>
     <!-- NEW: <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>-->
     <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>-->
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">Zobrazit jména kontaktů</string>
     <string name="global_settings_show_contact_name_summary">Použít jména příjemců ze Seznamu kontaktů, je-li to možné</string>
     <string name="global_settings_registered_name_color_label">Obarvit kontakty</string>
@@ -762,13 +779,10 @@ http://k9mail.googlecode.com/
     <string name="sort_by_attach">Příloha</string>
 
     <string name="account_delete_dlg_title">Odstranit účet</string>
-    <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z pošty K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Obnovit účet</string>
-    <string name="account_recreate_dlg_instructions_fmt">Všechna data účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněna, ale nastavení účtu bude zachováno.</string>
 
     <string name="account_clear_dlg_title">Vyčistit účet</string>
-    <string name="account_clear_dlg_instructions_fmt">Všechny zprávy v účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněny, ale nastavení účtu bude zachováno.</string>
 
     <string name="provider_note_live">Jen některé \"Plus\" účty zahrnují POP přístup,
         který umožňuje tomuto programu se připojit. Pokud nejste schopni se připojit
@@ -978,7 +992,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Ověřit</string>
     <string name="unknown_crypto_signature_user_id">&lt;neznámý&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 nemá oprávnění k plnému přístupu k APG, přeinstalujte prosím pro opravu balíček K-9.</string>
     <string name="pgp_mime_unsupported">Formát zpráv PGP/MIME ještě není podporován.</string>
     <string name="attachment_encryption_unsupported">Upozornění: přílohy ještě NELZE podepsat nebo šifrovat.</string>
     <string name="send_aborted">Odeslání přerušeno.</string>
@@ -1110,4 +1123,36 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
     <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

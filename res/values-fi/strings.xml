@@ -22,6 +22,7 @@
 
 
     <!-- Welcome message -->
+    <string name="welcome_message_title">Tervetuloa K-9 Mailiin!</string>
     <string name="accounts_welcome">
 Tervetuloa K-9 Mailin asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiakasohjelma Android-käyttöjärjestelmälle. Ohjelma perustuu
 standardiin Androidin sähköpostiasiakasohjelmaan.
@@ -54,6 +55,14 @@ http://k9mail.googlecode.com/
     <string name="default_signature">-- \nLähetetty Android-puhelimesta K-9 Mail -ohjelmalla</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">Merkitäänkö kaikki viestit kansiossa \'<xliff:g id="folder">%s</xliff:g>\' luetuiksi? (myös viestit, jotka ovat kansioissa, joita ei näytetä K-9:ssä)</string>
+    <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Kaikki tiedot tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
+    <string name="account_clear_dlg_instructions_fmt">Kaikki viestit tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
+    <string name="insufficient_apg_permissions">K-9:llä ei ole oikeuksia kaikkien APG:n ominaisuuksien käyttämiseen. Ole hyvä ja asenna K-9 uudelleen.</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -78,7 +87,6 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">Tietoja <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Tilit</string>
-    <string name="welcome_message_title">Tervetuloa K-9 Mailiin!</string>
     <string name="folders_title">Kansiot</string>
     <string name="advanced">Lisäasetukset</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
@@ -151,8 +159,6 @@ http://k9mail.googlecode.com/
     <string name="send_alternate_chooser_title">Valitse lähettäjä</string>
 
     <string name="mark_all_as_read_dlg_title">Merkitse kaikki viestit luetuiksi</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Merkitäänkö kaikki viestit kansiossa \'<xliff:g id="folder">%s</xliff:g>\' luetuiksi? (myös
-      viestit, jotka ovat kansioissa, joita ei näytetä K-9:ssä)</string>
 
     <string name="flag_action">Lisää tähti</string>
     <string name="unflag_action">Poista tähti</string>
@@ -772,13 +778,10 @@ http://k9mail.googlecode.com/
     <string name="sort_by_attach">Liitteiden mukaan</string>
 
     <string name="account_delete_dlg_title">Poista tili</string>
-    <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta.</string>
 
     <string name="account_recreate_dlg_title">Luo tili uudelleen</string>
-    <string name="account_recreate_dlg_instructions_fmt">Kaikki tiedot tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
 
     <string name="account_clear_dlg_title">Tyhjennä tili</string>
-    <string name="account_clear_dlg_instructions_fmt">Kaikki viestit tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
 
     <string name="provider_note_live">Vain jotkin Plus-tilit sisältävät POP-yhteyden,
         joka mahdollistaa yhdistämisen tällä ohjelmalla. Jos et voi kirjautua
@@ -988,7 +991,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Vahvista</string>
     <string name="unknown_crypto_signature_user_id">&lt;tuntematon&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9:llä ei ole oikeuksia kaikkien APG:n ominaisuuksien käyttämiseen. Ole hyvä ja asenna K-9 uudelleen.</string>
     <string name="pgp_mime_unsupported">PGP/MIME -viestejä ei vielä tueta.</string>
     <string name="attachment_encryption_unsupported">Varoitus: Liitteitä ei allekirjoiteta tai salata tässä versiossa.</string>
     <string name="send_aborted">Lähetys keskeytetty.</string>
@@ -1121,4 +1123,36 @@ http://k9mail.googlecode.com/
 
     <string name="image_saved_as">Kuva tallennettu nimellä <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="image_saving_failed">Kuvan tallennus epäonnistui.</string>
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

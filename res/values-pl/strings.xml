@@ -36,6 +36,7 @@
 
 
     <!-- Welcome message -->
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
     <string name="accounts_welcome">
 Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
 \n\n
@@ -65,6 +66,14 @@ http://k9mail.googlecode.com/
     <string name="default_signature">-- \nWysłane za pomocą K-9 Mail.</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">Oznaczyć wszystkie wiadomości w  \'<xliff:g id="folder">%s</xliff:g>\' jako przeczytane (włączając wiadomości znajdujące się w folderze, które nie są wyświetlone w programie K-9)?</string>
+    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie dane zostaną usunięte z bazy programu.</string>
+    <string name="account_clear_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie wiadomości zostaną usunięte z bazy programu.</string>
+    <string name="insufficient_apg_permissions">K-9 nie ma pełnego dostępu do APG, aby naprawić przeinstaluj K-9.</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -89,6 +98,7 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Konta</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Zaawansowane</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
@@ -126,6 +136,7 @@ http://k9mail.googlecode.com/
     <string name="delete_all_action">Wyczyśc folder</string>
     <string name="forward_action">Prześlij dalej</string>
     <string name="move_action">Przenieś</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">Kontynuuj</string>
     <string name="back_action">Cofnij</string>
     <string name="done_action">Gotowe</string> <!--  Used to complete a multi-step process -->
@@ -157,7 +168,6 @@ http://k9mail.googlecode.com/
     <string name="send_alternate_chooser_title">Wybierz nadawcę</string>
 
     <string name="mark_all_as_read_dlg_title">Wszystkie jako przeczytane</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Oznaczyć wszystkie wiadomości w  \'<xliff:g id="folder">%s</xliff:g>\' jako przeczytane (włączając wiadomości znajdujące się w folderze, które nie są wyświetlone w programie K-9)?</string>
 
     <string name="flag_action">Dodaj gwiazdkę</string>
     <string name="unflag_action">Usuń gwiazdkę</string>
@@ -165,6 +175,9 @@ http://k9mail.googlecode.com/
     <string name="show_full_header_action">Pokaż pełne nagłówki</string>
     <string name="hide_full_header_action">Ukryj pełne nagłówki</string>
     <string name="select_text_action">Zaznacz tekst</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">Jako nieprzeczytane</string>
     <string name="add_cc_bcc_action">Dodaj DW/UDW</string>
@@ -308,6 +321,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_preview_lines_label">Podglądaj linie</string>
     <string name="global_settings_show_correspondent_names_label">Pokazuj nazwiska korespondentów</string>
     <string name="global_settings_show_correspondent_names_summary">Pokazuj nazwiska korespondentów zamiast ich adresów email</string>
+
+    <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>
+    <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>
+
     <string name="global_settings_show_contact_name_label">Pokazuj nazwę kontaktu</string>
     <string name="global_settings_show_contact_name_summary">Użyj nazw nadawców, jeżeli występują w Twojej książce kontaktowej</string>
     <string name="global_settings_registered_name_color_label">Koloruj kontakty</string>
@@ -764,13 +781,10 @@ http://k9mail.googlecode.com/
     <string name="sort_by_attach">Załącznikach</string>
 
     <string name="account_delete_dlg_title">Usuwanie</string>
-    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9.</string>
 
     <string name="account_recreate_dlg_title">Odtwórz konto</string>
-    <string name="account_recreate_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie dane zostaną usunięte z bazy programu.</string>
 
     <string name="account_clear_dlg_title">Wyczyść konto</string>
-    <string name="account_clear_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie wiadomości zostaną usunięte z bazy programu.</string>
 
     <string name="provider_note_live">Tylko niektóre konta Yahoo! \"Plus\" obsługują protokół POP3,
         umożliwiający K-9 odbiór poczty. Jeśli nie możesz zalogować się
@@ -1002,7 +1016,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Potwiedź</string>
     <string name="unknown_crypto_signature_user_id">&lt;nieznany&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 nie ma pełnego dostępu do APG, aby naprawić przeinstaluj K-9.</string>
     <string name="pgp_mime_unsupported">Wiadomości PGP/MIME nie są jeszcze wspierane.</string>
     <string name="attachment_encryption_unsupported">Uwaga: załączniki nie są jeszcze podpisane i kodowane.</string>
     <string name="send_aborted">Anulowano.</string>
@@ -1124,4 +1137,36 @@ http://k9mail.googlecode.com/
 
     <string name="image_saved_as">Obraz zapisany jako \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Błąd zapisu obrazu.</string>
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

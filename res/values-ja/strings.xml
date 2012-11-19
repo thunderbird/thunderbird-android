@@ -22,6 +22,7 @@
 
 
     <!-- Welcome message -->
+    <string name="welcome_message_title">K-9 Mailへようこそ!</string>
     <string name="accounts_welcome">
 K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメールクライアントを元に作成したAndroid用のオープンソースのメールクライアントです。
 \n
@@ -52,6 +53,14 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">\&apos;<xliff:g id="folder">%s</xliff:g>\&apos;フォルダのすべてのメールを既読にしても良いですか？(一覧に表示されていないメッセージも既読にします)</string>
+    <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
+    <string name="account_recreate_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" の全データはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
+    <string name="account_clear_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" の全メッセージはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
+    <string name="insufficient_apg_permissions">K-9 にAPGを利用するための権限がありません。これを解決するためには、K-9 を再インストールしてください。</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -76,7 +85,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">アカウント一覧</string>
-    <string name="welcome_message_title">K-9 Mailへようこそ!</string>
     <string name="folders_title">フォルダ一覧</string>
     <string name="advanced">拡張機能</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
@@ -149,7 +157,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="send_alternate_chooser_title">アプリケーションを選択</string>
 
     <string name="mark_all_as_read_dlg_title">すべてのメールを既読にする</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">\&apos;<xliff:g id="folder">%s</xliff:g>\&apos;フォルダのすべてのメールを既読にしても良いですか？(一覧に表示されていないメッセージも既読にします)</string>
 
     <string name="flag_action">スターを付ける</string>
     <string name="unflag_action">スターをはずす</string>
@@ -768,13 +775,10 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="sort_by_attach">添付</string>
 
     <string name="account_delete_dlg_title">アカウント削除</string>
-    <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
 
     <string name="account_recreate_dlg_title">アカウント再作成</string>
-    <string name="account_recreate_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" の全データはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
 
     <string name="account_clear_dlg_title">アカウントクリア</string>
-    <string name="account_clear_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" の全メッセージはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
 
     <string name="provider_note_live">このプログラムでPOPアクセスが許可されているのは一部の「Plus」アカウントだけです。有料の「Plus」アカウントがなければ、正しいメールアドレスとパスワードを入力してもログインできません。これらのアカウントにはブラウザからアクセスしてください。</string>
     <string name="provider_note_yahoojp">Yahoo! JapanでPOP3アクセスを行う場合は、Yahoo!メールサイトの「メールの設定」にてPOPアクセスが許可されていることを確認してください。</string>
@@ -979,7 +983,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="btn_verify">検証</string>
     <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 にAPGを利用するための権限がありません。これを解決するためには、K-9 を再インストールしてください。</string>
     <string name="pgp_mime_unsupported">PGP/MIMEで暗号化されたメッセージはまだサポートされていません</string>
     <string name="attachment_encryption_unsupported">警告：添付ファイルは署名も暗号化もされていません</string>
     <string name="send_aborted">送信中断</string>
@@ -1124,6 +1127,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="remote_search_sending_query">サーバにて検索中</string>
     <string name="remote_search_downloading">%d件の結果を取得中</string>
     <string name="remote_search_downloading_limited">%2$d件中%1$d件の結果を取得した</string>
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
 
     <string name="account_settings_search">検索</string>
     <string name="account_settings_remote_search_enabled">サーバでの検索を有効にする</string>
@@ -1135,4 +1139,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="global_settings_background_as_unread_indicator_label">背景色で未読を示す</string>
     <string name="global_settings_background_as_unread_indicator_summary">背景色の違いでメッセージの既読／未読を表す</string>
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

@@ -22,6 +22,7 @@
 
 
     <!-- Welcome message -->
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
     <string name="accounts_welcome">
 K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클라이언트를 기반으로 한 안드로이드용 오픈소스 메일 클라이언트 입니다.
 \n\n
@@ -51,6 +52,14 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">\'<xliff:g id="folder">%s</xliff:g>\' 폴더의 모든 메시지를 읽은 메시지로 표시하시겠습니까? (K-9에서 보여지지 않은 폴더의 메시지포함)</string>
+    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
+    <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 데이타가 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
+    <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 메일이 K-9에서 삭제될것입니다. 하지만 계정 설정은 보존됩니다.</string>
+    <string name="insufficient_apg_permissions">K-9 는 APG를 완벽하게 접근할 권한이 없습니다. K-9 재설치를 통해 고쳐질 수 있습니다.</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -75,6 +84,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">계정</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">고급</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
@@ -112,6 +122,7 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="delete_all_action">폴더 비우기</string>
     <string name="forward_action">전달</string>
     <string name="move_action">이동</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">계속</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">완료</string> <!--  Used to complete a multi-step process -->
@@ -143,8 +154,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="send_alternate_chooser_title">발신자 선택</string>
 
     <string name="mark_all_as_read_dlg_title">모든 편지를 읽음으로 표시</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">\'<xliff:g id="folder">%s</xliff:g>\' 폴더의 모든 메시지를 읽은 메시지로 표시하시겠습니까?
-    (K-9에서 보여지지 않은 폴더의 메시지포함)</string>
 
     <string name="flag_action">즐겨찾기 등록</string>
     <string name="unflag_action">즐겨찾기 해제</string>
@@ -152,6 +161,9 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="show_full_header_action">헤더 보기</string>
     <string name="hide_full_header_action">헤더 숨기기</string>
     <string name="select_text_action">텍스트 선택</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">읽지 않은 메일로 표시</string>
     <string name="add_cc_bcc_action">참조/숨은참조 추가</string>
@@ -300,6 +312,10 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="global_settings_preview_lines_label">미리보기 라인</string>
     <string name="global_settings_show_correspondent_names_label">발신자 이름을 보여줌</string>
     <string name="global_settings_show_correspondent_names_summary">이메일 주소를 보여주지않고 발신자 이름을 보여줌</string>
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">주소록(Contact) 이름 보기</string>
     <string name="global_settings_show_contact_name_summary">받는사람 이름을 주소록(Contact)에서 가져옵니다.</string>
     <string name="global_settings_registered_name_color_label">주소록 색표시</string>
@@ -756,13 +772,10 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="sort_by_attach">첨부</string>
 
     <string name="account_delete_dlg_title">계정 삭제</string>
-    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
 
     <string name="account_recreate_dlg_title">계정 재생성</string>
-    <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 데이타가 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
 
     <string name="account_clear_dlg_title">계정 비우기</string>
-    <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 메일이 K-9에서 삭제될것입니다. 하지만 계정 설정은 보존됩니다.</string>
 
     <string name="provider_note_live">\"Plus\" 계정만이 이 프로그램을 POP 접근 하도록 허락합니다.
     올바른 이메일 주소와 비밀번호로 로그인 실패할 경우 \"Plus\" 계정을 위해 유료전환 해야 할 것입니다.
@@ -970,7 +983,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <string name="btn_verify">인증(Verify)</string>
     <string name="unknown_crypto_signature_user_id">&lt;알수없음&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 는 APG를 완벽하게 접근할 권한이 없습니다. K-9 재설치를 통해 고쳐질 수 있습니다.</string>
     <string name="pgp_mime_unsupported">PGP/MIME 메시지는 아직 지원하지 않습니다.</string>
     <string name="attachment_encryption_unsupported">경고: 첨부파일이 아직 암호화 안 되었습니다</string>
     <string name="send_aborted">보내기 실패.</string>
@@ -1103,4 +1115,36 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
 
     <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
     <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

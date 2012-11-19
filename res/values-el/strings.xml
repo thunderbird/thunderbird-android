@@ -52,6 +52,14 @@ http://k9mail.googlecode.com/
     <string name="default_signature">-- \nΑποστολή με K-9 Mail από το Android κινητό μου. Συγχωρήστε τη συντομία.</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">Να σημανθούν όλα τα μηνύματα στο \'<xliff:g id="folder">%s</xliff:g>\' ως αναγνωσμένα; (θα συμπεριληφθούν τα μηνύματα στο φάκελο που δεν προβάλονται στο K-9)</string>
+    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
+    <string name="account_clear_dlg_instructions_fmt">Όλα τα μηνύματα του λογαριασμού \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
+    <string name="insufficient_apg_permissions">Το K-9 Mail δεν έχει δικαίωμα να προσπελαύνει πλήρως το APG. Επαναλάβετε την εγκατάσταση του K-9 Mail για να το διορθώσετε.</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -76,6 +84,7 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">Περί του <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Λογαριασμοί</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Προχωρημένα</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
@@ -113,6 +122,7 @@ http://k9mail.googlecode.com/
     <string name="delete_all_action">Καθαρισμός φακέλου</string>
     <string name="forward_action">Μπροστά</string>
     <string name="move_action">Μετακίνηση</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">Συνέχεια</string>
     <string name="back_action">Πίσω</string>
     <string name="done_action">Συμπληρώθηκε</string> <!--  Used to complete a multi-step process -->
@@ -144,8 +154,6 @@ http://k9mail.googlecode.com/
     <string name="send_alternate_chooser_title">Επιλογή αποστολέα</string>
 
     <string name="mark_all_as_read_dlg_title">Σήμανση όλων των μηνυμάτων ως αναγνωσμένων</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Να σημανθούν όλα τα μηνύματα στο \'<xliff:g id="folder">%s</xliff:g>\' ως αναγνωσμένα; (θα συμπεριληφθούν
-    τα μηνύματα στο φάκελο που δεν προβάλονται στο K-9)</string>
 
     <string name="flag_action">Προσθήκη αστεριού</string>
     <string name="unflag_action">Αφαίρεση αστεριού</string>
@@ -153,6 +161,9 @@ http://k9mail.googlecode.com/
     <string name="show_full_header_action">Προβολή πλήρους επικεφαλίδας</string>
     <string name="hide_full_header_action">Απόκρυψη πλήρους επικεφαλίδας</string>
     <string name="select_text_action">Επιλογή κειμένου</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">Σήμανση ως μη αναγνωσμένο</string>
     <string name="add_cc_bcc_action">Προσθήκη κοινοποίησης/Ιδιωτικής κοινοποίησης</string>
@@ -298,6 +309,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_preview_lines_label">Προεπισκόπηση γραμμώνν</string>
     <string name="global_settings_show_correspondent_names_label">Προβολή ονόματος επιστολογράφων</string>
     <string name="global_settings_show_correspondent_names_summary">Προβολή ονόματος επιστολογράφων παρά των διευθύνσεων ηλεκτρονικού ταχυδρομείου</string>
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">Προβολή ονόματος από επαφές</string>
     <string name="global_settings_show_contact_name_summary">Όνομα επιστολογράφων από Επαφές όταν είναι διαθέσιμο</string>
     <string name="global_settings_registered_name_color_label">Χρωματισμός επαφών</string>
@@ -693,8 +708,11 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_identities_label">Ρύθμιση ταυτοτήτων</string>
     <string name="account_settings_identities_summary">Ορισμός εναλλακτικών διευθύνσεων \'Από\' και υπογραφών</string>
+
     <string name="manage_identities_title">Ρύθμιση ταυτοτήτων</string>
+
     <string name="manage_identities_context_menu_title">Ρύθμιση ταυτότητας</string>
+
     <string name="edit_identity_title">Διόρθωση ταυτότητας</string>
     <string name="new_identity_action">Νέα ταυτότητα</string>
 
@@ -751,13 +769,10 @@ http://k9mail.googlecode.com/
     <string name="sort_by_attach">Συνημμένα</string>
 
     <string name="account_delete_dlg_title">Διαγραφή λογαριασμού</string>
-    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Αναδημιουργία λογαριασμού</string>
-    <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
 
     <string name="account_clear_dlg_title">Εξάλειψη λογαριασμού</string>
-    <string name="account_clear_dlg_instructions_fmt">Όλα τα μηνύματα του λογαριασμού \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
 
     <string name="provider_note_live">Μόνο μερικοί λογαριασμοί \'Plus\' περιλαμβάνουν προσπέλαση POP
         επιτρέποντας σε αυτό το πρόγραμμα να συνδεθεί. Αν δεν μπορείτε να συνδεθείτε με τη
@@ -967,7 +982,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Επιβεβαίωση</string>
     <string name="unknown_crypto_signature_user_id">&lt;άγνωστος&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">Το K-9 Mail δεν έχει δικαίωμα να προσπελαύνει πλήρως το APG. Επαναλάβετε την εγκατάσταση του K-9 Mail για να το διορθώσετε.</string>
     <string name="pgp_mime_unsupported">Μηνύματα PGP/MIME δεν υποστηρίζονται ακόμη.</string>
     <string name="attachment_encryption_unsupported">Προειδοποίηση: τα συνημμένα δεν είναι υπογραμμένα ούτε κρυπτογραφημένα ακόμη.</string>
     <string name="send_aborted">Αποστολή ματαιώθηκε.</string>
@@ -1100,4 +1114,36 @@ http://k9mail.googlecode.com/
 
     <string name="image_saved_as">Αποθήκευση μηνύματος ως \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Αποτυχία αποθήκευσης της εικόνας</string>
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

@@ -23,6 +23,7 @@
 
 
     <!-- Welcome message -->
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
     <string name="accounts_welcome">
 Üdvözöljük a K-9 Mail beállításokban. A K-9 egy nyílt forráskódú levelezőprogram Androidra, a sima mail kliens alapjaira helyezve.
 \n\n
@@ -52,6 +53,14 @@
     <string name="default_signature">-- \nEzt a levelet mobiltelefonról küldtem, K-9 Mail-el. Elnézést a levél rövidségéért és az esetleges hibákért.</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">A \'<xliff:g id="folder">%s</xliff:g>\' fiók minden üzenetét olvasottnak jelöli?</string>
+    <string name="account_delete_dlg_instructions_fmt">A \"<xliff:g id="account">%s</xliff:g>\" fiók törölve a K9 Mail-ból.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Az összes üzenet, melléklet, mappa és beállításai törlődni fognak a \"<xliff:g id="account">%s</xliff:g>\" fiókból. A fiók beállításai megmaradnak.</string>
+    <string name="account_clear_dlg_instructions_fmt">Minden levél törlődni fog a \"<xliff:g id="account">%s</xliff:g>\" fiókból, de a beállítások megmaradnak.</string>
+    <string name="insufficient_apg_permissions">A K-9-nek nincs hozzáférési joga az APG-hez. Kérem telepítse újra a K-9 Mail.</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -76,6 +85,7 @@
 
     <string name="about_title_fmt">A <xliff:g id="app_name">%s</xliff:g> névjegye</string>
     <string name="accounts_title">Fióklista</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Haladó beállítások</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
@@ -113,6 +123,7 @@
     <string name="delete_all_action">Mappa törlése</string>
     <string name="forward_action">Továbbítás</string>
     <string name="move_action">Áthelyez</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">Folytatás</string>
     <string name="back_action">Vissza</string>
     <string name="done_action">Rendben</string>
@@ -144,7 +155,6 @@
     <string name="send_alternate_chooser_title">Küldő választása</string>
 
     <string name="mark_all_as_read_dlg_title">Mindent olvasottnak jelöl</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">A \'<xliff:g id="folder">%s</xliff:g>\' fiók minden üzenetét olvasottnak jelöli?</string>
 
     <string name="flag_action">Csillagos</string>
     <string name="unflag_action">Csillag törlése</string>
@@ -152,6 +162,9 @@
     <string name="show_full_header_action">Mutassa a teljes fejlécet</string>
     <string name="hide_full_header_action">Kompakt fejléc mutatása</string>
     <string name="select_text_action">Szöveg kijelölése</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">Olvasatlannak jelöl</string>
     <string name="add_cc_bcc_action">Másolatot kap</string>
@@ -300,6 +313,10 @@
     <string name="global_settings_preview_lines_label">Előnézeti sorok száma</string>
     <string name="global_settings_show_correspondent_names_label">Nevek mutatása</string>
     <string name="global_settings_show_correspondent_names_summary">Ha a címtárban szerepel az email cím, a hozzá tartozó név megjelenítése</string>
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">Névjegyek mutatása</string>
     <string name="global_settings_show_contact_name_summary">Használja a címzettek nevét ha címtárban szerepel</string>
     <string name="global_settings_registered_name_color_label">Névjegyek színe</string>
@@ -755,13 +772,10 @@
     <string name="sort_by_attach">Melléklet</string>
 
     <string name="account_delete_dlg_title">Fiók törlése</string>
-    <string name="account_delete_dlg_instructions_fmt">A \"<xliff:g id="account">%s</xliff:g>\" fiók törölve a K9 Mail-ból.</string>
 
     <string name="account_recreate_dlg_title">Fiók újbóli létrehozása</string>
-    <string name="account_recreate_dlg_instructions_fmt">Az összes üzenet, melléklet, mappa és beállításai törlődni fognak a \"<xliff:g id="account">%s</xliff:g>\" fiókból. A fiók beállításai megmaradnak.</string>
 
     <string name="account_clear_dlg_title">Fiók tisztítása</string>
-    <string name="account_clear_dlg_instructions_fmt">Minden levél törlődni fog a \"<xliff:g id="account">%s</xliff:g>\" fiókból, de a beállítások megmaradnak.</string>
 
     <string name="provider_note_live">Csak néhány \"Plusz\" postafiók tartalmaz POP hozzáférést. Ha nem tud bejelentkezni a helyes jelszavával, akkor lehet nem fizett elő a \"Plusz\" postafiókra. Kérem használja a webes felülelet hogy hozzáférjen a fiók leveleihez.</string>
     <string name="provider_note_yahoojp">Ha POP3-at szeretne használni ehhez a szolgáltatóhoz, akkor engedélyezze a Yahoo mail beállításai oldalon.</string>
@@ -967,7 +981,6 @@
     <string name="btn_verify">Ellenőrzés</string>
     <string name="unknown_crypto_signature_user_id">&lt;ismeretlen></string>
     <string name="key_id">azonosító: %s</string>
-    <string name="insufficient_apg_permissions">A K-9-nek nincs hozzáférési joga az APG-hez. Kérem telepítse újra a K-9 Mail.</string>
     <string name="pgp_mime_unsupported">PGP/MIME üzenetek még nem támogatottak.</string>
     <string name="attachment_encryption_unsupported">Figyelem: a mellékletek nincsenek aláírva vagy nem titkosítottak.</string>
     <string name="send_aborted">Küldés megszakítva.</string>
@@ -1100,4 +1113,36 @@
 
     <string name="image_saved_as">Kép mentése: \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">A kép mentése sikertelen.</string>
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

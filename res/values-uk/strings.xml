@@ -22,6 +22,7 @@
 
 
     <!-- Welcome message -->
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
     <string name="accounts_welcome">
 Ласкаво просимо до налаштувань K-9 Mail.  K-9 це поштовий клієнт з відкритим вихідним кодом для Android, який базується на основі стадартної програми Android Mail client.
 \n\n
@@ -52,6 +53,14 @@ http://k9mail.googlecode.com/
     <string name="default_signature">-- \nНадіслано з мого Android телефону програмою K-9 Mail. Будь ласка, вибачте за стислість.</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">Відмітити усі повідомлення у \'<xliff:g id="folder">%s</xliff:g>\' як прочитані?  (включаючи повідомлення в папці, які не відображються в K-9)</string>
+    <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Усі дані \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
+    <string name="account_clear_dlg_instructions_fmt">Усі повідомлення у \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
+    <string name="insufficient_apg_permissions">K-9 не має дозволу для повного доступу до APG, перевстановіть K-9 для виправлення.</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -76,6 +85,7 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">Про <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Облікові записи</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Додатково</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
@@ -113,6 +123,7 @@ http://k9mail.googlecode.com/
     <string name="delete_all_action">Очистити папку</string>
     <string name="forward_action">Переслати</string>
     <string name="move_action">Перемістити</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">Продовжити</string>
     <string name="back_action">Назад</string>
     <string name="done_action">Готово</string> <!--  Used to complete a multi-step process -->
@@ -144,8 +155,6 @@ http://k9mail.googlecode.com/
     <string name="send_alternate_chooser_title">Вибрати відправника</string>
 
     <string name="mark_all_as_read_dlg_title">Відмітити усі повідомлення як прочитані</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Відмітити усі повідомлення у \'<xliff:g id="folder">%s</xliff:g>\' як прочитані?  (включаючи
-    повідомлення в папці, які не відображються в K-9)</string>
 
     <string name="flag_action">Додати зірочку</string>
     <string name="unflag_action">Видалити зірочку</string>
@@ -153,6 +162,9 @@ http://k9mail.googlecode.com/
     <string name="show_full_header_action">Показати повний заголовок</string>
     <string name="hide_full_header_action">Приховати повний заголовок</string>
     <string name="select_text_action">Вибрати текст</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">Відмітити як прочитаний</string>
     <string name="add_cc_bcc_action">Додати копію/приховану</string>
@@ -302,6 +314,10 @@ http://k9mail.googlecode.com/
     <string name="global_settings_preview_lines_label">Рядки попереднього перегляду</string>
     <string name="global_settings_show_correspondent_names_label">Показувати ім’я відправника</string>
     <string name="global_settings_show_correspondent_names_summary">Показувати ім’я відправника замість електронної адреси</string>
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">Показувати ім’я одержувача</string>
     <string name="global_settings_show_contact_name_summary">Використовувати ім’я одержувача із контактів, якщо це можливо</string>
     <string name="global_settings_registered_name_color_label">Колір контактів</string>
@@ -758,13 +774,10 @@ http://k9mail.googlecode.com/
     <string name="sort_by_attach">Вкладенням</string>
 
     <string name="account_delete_dlg_title">Видалити обліковий запис</string>
-    <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Створити наново обліковий запис</string>
-    <string name="account_recreate_dlg_instructions_fmt">Усі дані \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
 
     <string name="account_clear_dlg_title">Очистити обліковий запис</string>
-    <string name="account_clear_dlg_instructions_fmt">Усі повідомлення у \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
 
     <string name="provider_note_live"> Тільки деякі скриньки \"Plus\" підтримують отримання пошти через POP. Якщо ви не можете підключитися з правильними даними,
         то, можливо, ви не маєте такої
@@ -972,7 +985,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Перевірити</string>
     <string name="unknown_crypto_signature_user_id">&lt;невідомий&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 не має дозволу для повного доступу до APG, перевстановіть K-9 для виправлення.</string>
     <string name="pgp_mime_unsupported">PGP/MIME повідомлення ще не підтримуються.</string>
     <string name="attachment_encryption_unsupported">Увага: вкладення ще не підписані та не зашифровані.</string>
     <string name="send_aborted">Надсилання скасовано.</string>
@@ -1107,4 +1119,36 @@ http://k9mail.googlecode.com/
 
     <string name="image_saved_as">Зберегти зображеня як \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Збереження зображення скасовано.</string>
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

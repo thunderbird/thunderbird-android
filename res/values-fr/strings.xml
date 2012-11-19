@@ -46,6 +46,7 @@ Android Localizer (aiLocalizer)
 
 
     <!-- Welcome message -->
+    <string name="welcome_message_title">Bienvenue sur K-9 Mail!</string>
     <string name="accounts_welcome">
 Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messagerie open source pour Android basé sur le client standard Android Mail.
 \n\n
@@ -74,6 +75,14 @@ http://k9mail.googlecode.com/ (en anglais)
     <string name="default_signature">-- \nEnvoyé de mon téléphone Android avec K-9 Mail. Excusez la brièveté.</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="mark_all_as_read_dlg_instructions_fmt">Marquer tous les messages dans \'<xliff:g id="folder">%s</xliff:g>\' comme lus\u00A0? (incluant les messages dans le dossier qui ne sont pas affichés\u00A0?)</string>
+    <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera supprimé de K-9 Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Toutes les données du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacées de K-9 Mail, mais les paramètres seront conservés.</string>
+    <string name="account_clear_dlg_instructions_fmt">Tous les messages du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacés de K-9 Mail, mais les paramètres seront conservés.</string>
+    <string name="insufficient_apg_permissions">K-9 Mail n\'a pas la permission d\'accéder à AGP, veuillez réinstaller K-9 Mail pour corriger cela.</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
@@ -98,7 +107,6 @@ http://k9mail.googlecode.com/ (en anglais)
 
     <string name="about_title_fmt">À propos de <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Comptes</string>
-    <string name="welcome_message_title">Bienvenue sur K-9 Mail!</string>
     <string name="folders_title">Dossiers</string>
     <string name="advanced">Avancé</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g></string>
@@ -171,8 +179,6 @@ http://k9mail.googlecode.com/ (en anglais)
     <string name="send_alternate_chooser_title">Choisir l\'expéditeur</string>
 
     <string name="mark_all_as_read_dlg_title">Marquer tous les messages comme lus</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Marquer tous les messages dans \'<xliff:g id="folder">%s</xliff:g>\' comme lus\u00A0? (incluant
- les messages dans le dossier qui ne sont pas affichés\u00A0?)</string>
 
     <string name="flag_action">Ajouter une étoile</string>
     <string name="unflag_action">Enlever l\'étoile</string>
@@ -792,13 +798,10 @@ de plus</string>
     <string name="sort_by_attach">Pièces jointes</string>
 
     <string name="account_delete_dlg_title">Supprimer</string>
-    <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera supprimé de K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Recréer compte</string>
-    <string name="account_recreate_dlg_instructions_fmt">Toutes les données du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacées de K-9 Mail, mais les paramètres seront conservés.</string>
 
     <string name="account_clear_dlg_title">Vider le compte</string>
-    <string name="account_clear_dlg_instructions_fmt">Tous les messages du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacés de K-9 Mail, mais les paramètres seront conservés.</string>
 
     <string name="provider_note_live">Seuls certains comptes «\u00A0Plus\u00A0» autorisent l\'accès POP
     permettant à ce programme de se connecter. Si vous ne pouvez pas
@@ -1008,7 +1011,6 @@ de plus</string>
     <string name="btn_verify">Vérifier</string>
     <string name="unknown_crypto_signature_user_id">«\u00A0inconnu\u00A0»</string>
     <string name="key_id">id\u00A0: %s</string>
-    <string name="insufficient_apg_permissions">K-9 Mail n\'a pas la permission d\'accéder à AGP, veuillez réinstaller K-9 Mail pour corriger cela.</string>
     <string name="pgp_mime_unsupported">Les messages PGP/MIME ne sont pas encore supportés</string>
     <string name="attachment_encryption_unsupported">Attention\u00A0: La signature et le chiffrement des pièces jointes ne sont pas encore supportés.</string>
     <string name="send_aborted">Envoi annulé.</string>
@@ -1147,6 +1149,7 @@ de plus</string>
     <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
     <string name="remote_search_downloading">Récupération de %d résultats</string>
     <string name="remote_search_downloading_limited">Récupération %1$d sur %2$d résultats</string>
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
 
     <string name="account_settings_search">Rechercher</string>
     <string name="account_settings_remote_search_enabled">Activer la recherche distante</string>
@@ -1158,4 +1161,7 @@ de plus</string>
 
     <string name="global_settings_background_as_unread_indicator_label">Utiliser le fond comme indicateur de lecture</string>
     <string name="global_settings_background_as_unread_indicator_summary">Montrer les messages lus et non lus avec différentes couleurs de fond</string>
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>
