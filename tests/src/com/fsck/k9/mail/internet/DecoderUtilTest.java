@@ -57,8 +57,7 @@ public class DecoderUtilTest extends TestCase {
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
 
         body = "=??q?a?=";
-        expect = "=??q?a?=";
-        //expect = "a";
+        expect = "a";
         message = null;
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
 
@@ -88,8 +87,7 @@ public class DecoderUtilTest extends TestCase {
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
 
         body = "=?x?q?X?=";
-        expect = "=?x?q?X?=";
-        //expect = "X";
+        expect = "X";
         message = null;
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
 
