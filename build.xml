@@ -86,6 +86,11 @@
     <property name="rclib" value="${out.dir}/K9RemoteControl.jar" />
     <property name="rcdir" value="com/fsck/k9/remotecontrol/**" />
 
+    <condition property="android.executable" value="android.bat">
+        <os family="windows" />
+    </condition>
+    <property name="android.executable" value="android" />
+
     <target name="-get-version" depends="-get-version-name">
         <echo>Building version number ${current-version-name}</echo>
     </target>
@@ -300,7 +305,7 @@
             </resourceexists>
             <else>
                 <echo message="android update lib-project -p plugins/ActionBarSherlock/library/" />
-                <exec executable="${sdk.dir}/tools/android" failonerror="true">
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
                     <arg line="update lib-project -p plugins/ActionBarSherlock/library/" />
                 </exec>
             </else>
@@ -314,7 +319,7 @@
             </resourceexists>
             <else>
                 <echo message="android update lib-project -p plugins/Android-PullToRefresh/library/" />
-                <exec executable="${sdk.dir}/tools/android" failonerror="true">
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
                     <arg line="update lib-project -p plugins/Android-PullToRefresh/library/" />
                 </exec>
             </else>
