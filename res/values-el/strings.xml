@@ -22,6 +22,7 @@
 
 
     <!-- Welcome message -->
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
     <string name="accounts_welcome">
 Καλώς ήλθατε στο K-9 Mail. Το K-9 είναι ένας πελάτης ηλεκτρονικού ταχυδρομείου ανοικτού κώδικα  για το Android που αρχικά βασίστηκε στον βασικό email client του Android.
 \n\n

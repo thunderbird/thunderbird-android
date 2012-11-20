@@ -22,6 +22,7 @@
 
 
     <!-- Welcome message -->
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
     <string name="accounts_welcome">
 Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
 \n\n
