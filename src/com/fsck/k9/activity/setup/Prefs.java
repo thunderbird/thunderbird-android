@@ -407,7 +407,14 @@ public class Prefs extends K9PreferenceActivity {
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
 
         K9.setK9Language(mLanguage.getValue());
-        K9.setK9Theme(mTheme.getValue().equals("dark") ? K9.THEME_DARK : K9.THEME_LIGHT);
+
+        int newTheme = mTheme.getValue().equals("dark") ? K9.THEME_DARK : K9.THEME_LIGHT;
+        if (K9.getK9Theme() != newTheme) {
+            // Reset the message view theme when the app theme changes
+            K9.setK9MessageViewTheme(newTheme);
+        }
+        K9.setK9Theme(newTheme);
+
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
         K9.setUseVolumeKeysForNavigation(mVolumeNavigation.getCheckedItems()[0]);
