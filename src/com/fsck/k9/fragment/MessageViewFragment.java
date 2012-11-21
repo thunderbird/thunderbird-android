@@ -535,6 +535,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.message_view_fragment, menu);
         mMenu = menu;
+        configureMenu(menu);
     }
 
     private void configureMenu(Menu menu) {
