@@ -280,6 +280,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.LauncherFolderShortcuts"
+            android:label="K-9 Folder"
+            android:configChanges="locale"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activity.AccessibleEmailContentActivity"
             >
         </activity>
