@@ -30,7 +30,6 @@ import com.actionbarsherlock.view.Window;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -103,7 +102,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener {
+public class MessageCompose extends K9Activity implements OnClickListener {
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
     private static final int DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY = 3;
@@ -150,10 +149,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
-    private static final int MSG_UPDATE_TITLE = 3;
-    private static final int MSG_SKIPPED_ATTACHMENTS = 4;
-    private static final int MSG_SAVED_DRAFT = 5;
-    private static final int MSG_DISCARDED_DRAFT = 6;
+    private static final int MSG_SKIPPED_ATTACHMENTS = 3;
+    private static final int MSG_SAVED_DRAFT = 4;
+    private static final int MSG_DISCARDED_DRAFT = 5;
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
     private static final int CONTACT_PICKER_TO = 4;
@@ -333,9 +331,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 break;
             case MSG_PROGRESS_OFF:
                 setSupportProgressBarIndeterminateVisibility(false);
-                break;
-            case MSG_UPDATE_TITLE:
-                updateTitle();
                 break;
             case MSG_SKIPPED_ATTACHMENTS:
                 Toast.makeText(
@@ -665,9 +660,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mBccView.setTokenizer(new Rfc822Tokenizer());
         mBccView.setValidator(mAddressValidator);
 
-
-        mSubjectView.setOnFocusChangeListener(this);
-
         if (savedInstanceState != null) {
             /*
              * This data gets used in onCreate, so grab it here instead of onRestoreInstanceState
@@ -741,8 +733,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (mAction != Action.EDIT_DRAFT) {
                 addAddresses(mBccView, mAccount.getAlwaysBcc());
             }
-
-            updateTitle();
         }
 
         if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
@@ -830,6 +820,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mSignatureView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
 
         updateMessageFormat();
+
+        setTitle();
     }
 
     /**
@@ -1116,18 +1108,25 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         updateMessageFormat();
     }
 
-    private void updateTitle() {
-        if (mSubjectView.getText().length() == 0) {
-            setTitle(R.string.compose_title);
-        } else {
-            setTitle(mSubjectView.getText().toString());
-        }
-    }
-
-    @Override
-    public void onFocusChange(View view, boolean focused) {
-        if (!focused) {
-            updateTitle();
+    private void setTitle() {
+        switch (mAction) {
+            case REPLY: {
+                setTitle(R.string.compose_title_reply);
+                break;
+            }
+            case REPLY_ALL: {
+                setTitle(R.string.compose_title_reply_all);
+                break;
+            }
+            case FORWARD: {
+                setTitle(R.string.compose_title_forward);
+                break;
+            }
+            case COMPOSE:
+            default: {
+                setTitle(R.string.compose_title_compose);
+                break;
+            }
         }
     }
 
