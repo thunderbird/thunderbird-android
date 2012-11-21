@@ -112,9 +112,9 @@ http://k9mail.googlecode.com/ (en anglais)
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
 
     <string name="compose_title_compose">Composer</string>
-    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
-    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
-    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+    <string name="compose_title_reply">Répondre</string>
+    <string name="compose_title_reply_all">Répondre à tous</string>
+    <string name="compose_title_forward">Transférer</string>
 
     <string name="choose_folder_title">Choisir un dossier</string>
 
@@ -1088,7 +1088,7 @@ de plus</string>
     <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
     <string name="remote_search_downloading">Récupération de %d résultats</string>
     <string name="remote_search_downloading_limited">Récupération %1$d sur %2$d résultats</string>
-    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+    <string name="remote_search_error">Echec de la recherche distante</string>
 
     <string name="account_settings_search">Rechercher</string>
     <string name="account_settings_remote_search_enabled">Activer la recherche distante</string>
@@ -1101,6 +1101,6 @@ de plus</string>
     <string name="global_settings_background_as_unread_indicator_label">Utiliser le fond comme indicateur de lecture</string>
     <string name="global_settings_background_as_unread_indicator_summary">Montrer les messages lus et non lus avec différentes couleurs de fond</string>
 
-    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <string name="global_settings_threaded_view_label">Vue par fil</string>
+    <string name="global_settings_threaded_view_summary">Réduire les messages appartenant à un même fil</string>
 </resources>
