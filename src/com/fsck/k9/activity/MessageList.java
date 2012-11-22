@@ -126,7 +126,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         if (mMessageListFragment == null) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            mMessageListFragment = MessageListFragment.newInstance(mSearch,
+            mMessageListFragment = MessageListFragment.newInstance(mSearch, false,
                     (K9.isThreadedViewEnabled() && !mNoThreading));
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
@@ -608,7 +608,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         tmpSearch.addAccountUuids(mSearch.getAccountUuids());
         tmpSearch.and(Searchfield.SENDER, senderAddress, Attribute.CONTAINS);
 
-        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
+        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false, false);
 
         addMessageListFragment(fragment, true);
     }
@@ -690,7 +690,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         tmpSearch.and(Searchfield.THREAD_ROOT, String.valueOf(threadRootId), Attribute.EQUALS);
         tmpSearch.or(new SearchCondition(Searchfield.ID, Attribute.EQUALS, String.valueOf(threadRootId)));
 
-        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false);
+        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, true, false);
         addMessageListFragment(fragment, true);
     }
 

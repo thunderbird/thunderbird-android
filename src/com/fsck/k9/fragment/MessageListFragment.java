@@ -142,10 +142,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             THREAD_COUNT_COLUMN);
 
 
-    public static MessageListFragment newInstance(LocalSearch search, boolean threadedList) {
+    public static MessageListFragment newInstance(LocalSearch search, boolean isThreadDisplay, boolean threadedList) {
         MessageListFragment fragment = new MessageListFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_SEARCH, search);
+        args.putBoolean(ARG_IS_THREAD_DISPLAY, isThreadDisplay);
         args.putBoolean(ARG_THREADED_LIST, threadedList);
         fragment.setArguments(args);
         return fragment;
@@ -296,6 +297,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private static final String ARG_SEARCH = "searchObject";
     private static final String ARG_THREADED_LIST = "threadedList";
+    private static final String ARG_IS_THREAD_DISPLAY = "isThreadedDisplay";
     private static final String STATE_LIST_POSITION = "listPosition";
 
     /**
@@ -394,6 +396,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private boolean mThreadedList;
 
+    private boolean mIsThreadDisplay;
 
     private Context mContext;
 
@@ -745,6 +748,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Bundle args = getArguments();
 
         mThreadedList = args.getBoolean(ARG_THREADED_LIST, false);
+        mIsThreadDisplay = args.getBoolean(ARG_IS_THREAD_DISPLAY, false);
         mSearch = args.getParcelable(ARG_SEARCH);
         mTitle = mSearch.getName();
 
@@ -2873,6 +2877,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         } else {
             cursor = data;
             mUniqueIdColumn = ID_COLUMN;
+        }
+
+        if (mIsThreadDisplay) {
+            cursor.moveToFirst();
+            mTitle = cursor.getString(SUBJECT_COLUMN);
+            if (StringUtils.isNullOrEmpty(mTitle)) {
+               mTitle = getString(R.string.general_no_subject);
+            }
+            refreshTitle();
         }
 
         cleanupSelected(cursor);
