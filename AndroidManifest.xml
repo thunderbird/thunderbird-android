@@ -398,7 +398,7 @@ otherwise it would make K-9 start at the wrong time
             />
         <provider
             android:name=".provider.EmailProvider"
-            android:authorities="org.k9mail.provider.email"
+            android:authorities="com.fsck.k9.provider.email"
             android:exported="false"
             />
 

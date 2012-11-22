@@ -43,7 +43,7 @@ import android.net.Uri;
 public class EmailProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    public static final String AUTHORITY = "org.k9mail.provider.email";
+    public static final String AUTHORITY = "com.fsck.k9.provider.email";
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
