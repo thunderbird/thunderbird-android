@@ -447,11 +447,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             sendMessage(msg);
         }
 
-        public void updateFooter(final String message, final boolean showProgress) {
+        public void updateFooter(final String message) {
             post(new Runnable() {
                 @Override
                 public void run() {
-                    MessageListFragment.this.updateFooter(message, showProgress);
+                    MessageListFragment.this.updateFooter(message);
                 }
             });
         }
@@ -633,7 +633,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                             mExtraSearchResults.size());
                 } else {
                     mExtraSearchResults = null;
-                    updateFooter("", false);
+                    updateFooter("");
                 }
 
                 mController.loadSearchResults(mAccount, mCurrentFolder.name, toProcess, mListener);
@@ -1505,7 +1505,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         @Override
         public void remoteSearchStarted(Account acct, String folder) {
             mHandler.progress(true);
-            mHandler.updateFooter(mContext.getString(R.string.remote_search_sending_query), true);
+            mHandler.updateFooter(mContext.getString(R.string.remote_search_sending_query));
         }
 
 
@@ -1515,9 +1515,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mHandler.remoteSearchFinished();
             mExtraSearchResults = extraResults;
             if (extraResults != null && extraResults.size() > 0) {
-                mHandler.updateFooter(String.format(mContext.getString(R.string.load_more_messages_fmt), acct.getRemoteSearchNumResults()), false);
+                mHandler.updateFooter(String.format(mContext.getString(R.string.load_more_messages_fmt), acct.getRemoteSearchNumResults()));
             } else {
-                mHandler.updateFooter("", false);
+                mHandler.updateFooter("");
             }
             mFragmentListener.setMessageListProgress(Window.PROGRESS_END);
 
@@ -1527,9 +1527,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults) {
             mHandler.progress(true);
             if (account != null &&  account.getRemoteSearchNumResults() != 0 && numResults > account.getRemoteSearchNumResults()) {
-                mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults), true);
+                mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults));
             } else {
-                mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading, numResults), true);
+                mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading, numResults));
             }
             mFragmentListener.setMessageListProgress(Window.PROGRESS_START);
         }
@@ -1837,8 +1837,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mFooterView = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
             mFooterView.setId(R.layout.message_list_item_footer);
             FooterViewHolder holder = new FooterViewHolder();
-            holder.progress = (ProgressBar) mFooterView.findViewById(R.id.message_list_progress);
-            holder.progress.setIndeterminate(true);
             holder.main = (TextView) mFooterView.findViewById(R.id.main_text);
             mFooterView.setTag(holder);
         }
@@ -1850,7 +1848,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (!mSearch.isManualSearch() && mCurrentFolder != null && mAccount != null) {
             if (mCurrentFolder.loading) {
                 final boolean showProgress = true;
-                updateFooter(mContext.getString(R.string.status_loading_more), showProgress);
+                updateFooter(mContext.getString(R.string.status_loading_more));
             } else {
                 String message;
                 if (!mCurrentFolder.lastCheckFailed) {
@@ -1863,26 +1861,25 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     message = mContext.getString(R.string.status_loading_more_failed);
                 }
                 final boolean showProgress = false;
-                updateFooter(message, showProgress);
+                updateFooter(message);
             }
         } else {
             final boolean showProgress = false;
-            updateFooter(null, showProgress);
+            updateFooter(null);
         }
     }
 
-    public void updateFooter(final String text, final boolean progressVisible) {
+    public void updateFooter(final String text) {
         if (mFooterView == null) {
             return;
         }
 
         FooterViewHolder holder = (FooterViewHolder) mFooterView.getTag();
 
-        holder.progress.setVisibility(progressVisible ? ProgressBar.VISIBLE : ProgressBar.GONE);
         if (text != null) {
             holder.main.setText(text);
         }
-        if (progressVisible || holder.main.getText().length() > 0) {
+        if (holder.main.getText().length() > 0) {
             holder.main.setVisibility(View.VISIBLE);
         } else {
             holder.main.setVisibility(View.GONE);
@@ -1890,7 +1887,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     static class FooterViewHolder {
-        public ProgressBar progress;
         public TextView main;
     }
 
