@@ -57,15 +57,15 @@ http://k9mail.googlecode.com/
 
     <!-- General strings that include the app name -->
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
-    <string name="account_recreate_dlg_instructions_fmt">All data for \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
-    <string name="account_clear_dlg_instructions_fmt">All messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
+    <string name="account_recreate_dlg_instructions_fmt">All local data for \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
+    <string name="account_clear_dlg_instructions_fmt">Local copies of messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
     <string name="insufficient_apg_permissions">K-9 doesn\'t have permission to access APG fully, please reinstall K-9 to fix that.</string>
 
 
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>
+    <string name="import_dialog_error_message">Please install a file manager to continue with this import.</string>
     <string name="open_market">Open Play Store</string>
 
 
@@ -315,11 +315,11 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
-    <string name="global_settings_confirm_action_delete">Delete (message view only)</string>
-    <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>
+    <string name="global_settings_confirm_action_delete">Delete (in message view)</string>
+    <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
 
-    <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>
+    <string name="global_settings_notification_hide_subject_title">Hide subject in notificationss</string>
     <string name="global_settings_notification_hide_subject_never">Never</string>
     <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>
     <string name="global_settings_notification_hide_subject_always">Always</string>
@@ -392,10 +392,10 @@ http://k9mail.googlecode.com/
     <string name="local_storage_provider_samsunggalaxy_label">%1$s additional internal storage</string>
     <string name="local_storage_provider_label">Storage location</string>
 
-    <string name="account_setup_expunge_policy_label">Expunge deleted messages</string>
+    <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_setup_expunge_policy_immediately">Immediately</string>
     <string name="account_setup_expunge_policy_on_poll">When polling</string>
-    <string name="account_setup_expunge_policy_manual">Only manually</string>
+    <string name="account_setup_expunge_policy_manual">Manually</string>
 
     <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
@@ -514,29 +514,29 @@ http://k9mail.googlecode.com/
 
     <string name="account_settings_composition">Sending mail</string>
 
-    <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>
-    <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>
+    <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Include the original message is in your reply.</string>
 
     <string name="account_settings_reply_after_quote_label">Reply after quoted text</string>
-    <string name="account_settings_reply_after_quote_summary">When replying to messages, the original message will appear above your reply.</string>
+    <string name="account_settings_reply_after_quote_summary">The original message will appear above your reply.</string>
 
-    <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>
-    <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>
+    <string name="account_settings_strip_signature_label">Strip signatures on reply</string>
+    <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>
 
     <string name="account_settings_message_format_label">Message Format</string>
-    <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>
-    <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>
-    <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>
+    <string name="account_settings_message_format_text">Plain Text (remove images and formatting)</string>
+    <string name="account_settings_message_format_html">HTML (keep images and formatting)</string>
+    <string name="account_settings_message_format_auto">Automatic</string>
 
-    <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>
+    <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>
+    <string name="account_settings_always_show_cc_bcc_summary"></string>
 
     <string name="account_settings_message_read_receipt_label">Read receipt</string>
     <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
 
     <string name="account_settings_quote_style_label">Reply quoting style</string>
-    <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>
-    <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>
+    <string name="account_settings_quote_style_prefix">Prefix (like Gmail)</string>
+    <string name="account_settings_quote_style_header">Header (like Outlook)</string>
 
     <string name="account_settings_general_title">General settings</string>
     <string name="account_settings_display_prefs_title">Display</string>
@@ -559,10 +559,10 @@ http://k9mail.googlecode.com/
     <string name="account_settings_storage_title">Storage</string>
 
     <string name="account_settings_color_label">Account color</string>
-    <string name="account_settings_color_summary">Choose the color of the account used in folder and account list</string>
+    <string name="account_settings_color_summary">The accent color of this account used in folder and account list</string>
 
     <string name="account_settings_led_color_label">Notification LED color</string>
-    <string name="account_settings_led_color_summary">Choose the color your device LED should blink for this account</string>
+    <string name="account_settings_led_color_summary">The color your device LED should blink for this account</string>
 
     <string name="account_settings_mail_display_count_label">Local folder size</string>
 
@@ -742,12 +742,12 @@ http://k9mail.googlecode.com/
         your correct email address and password, you may not have a paid
         \"Plus\" account. Please launch the Web browser to gain access to
         these mail accounts.</string>
-    <string name="provider_note_yahoojp">If you would like to use POP3 for this provider, You should permit to use POP3 on Yahoo mail settings page.</string>
-    <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>
-    <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>
-    <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>
-    <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>
-    <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>
+    <string name="provider_note_yahoojp">Be sure to enable POP3 on the Yahoo mail settings page.</string>
+    <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>
+    <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>
+    <string name="provider_note_hanmail">Be sure to enable IMAP or POP3 on the Hanmail(Daum) mail settings page.</string>
+    <string name="provider_note_paran">Be sure to enable IMAP or POP3 on the Paran mail settings page.</string>
+    <string name="provider_note_nate">Be sure to enable IMAP or POP3 on the Nate mail settings page.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
@@ -779,8 +779,8 @@ http://k9mail.googlecode.com/
     <string name="folder_list_display_mode_not_second_class">Display all except 2nd Class folders</string>
 
     <string name="account_settings_signature__location_label">Signature position</string>
-    <string name="account_settings_signature__location_before_quoted_text">Before quoted text</string>
-    <string name="account_settings_signature__location_after_quoted_text">After quoted text</string>
+    <string name="account_settings_signature__location_before_quoted_text">Before quoted message</string>
+    <string name="account_settings_signature__location_after_quoted_text">After quoted message</string>
     <string name="setting_theme_dark">Dark</string>
     <string name="setting_theme_light">Light</string>
     <string name="display_preferences">Display</string>
@@ -795,7 +795,7 @@ http://k9mail.googlecode.com/
     <string name="settings_theme_label">Theme</string>
     <string name="settings_language_label">Language</string>
 
-    <string name="settings_messageview_mobile_layout_label">Single-column layout</string>
+    <string name="settings_messageview_mobile_layout_label">Condensed layout</string>
     <string name="settings_messageview_mobile_layout_summary">Reformat HTML messages for smaller screens</string>
 
     <string name="setting_language_system">System default</string>
@@ -828,15 +828,15 @@ http://k9mail.googlecode.com/
     <string name="animations_title">Animation</string>
     <string name="animations_summary">Use gaudy visual effects</string>
     <string name="gestures_title">Gestures</string>
-    <string name="gestures_summary">Accept gesture control</string>
+    <string name="gestures_summary">Enable gesture control</string>
 
     <string name="volume_navigation_title">Volume key navigation</string>
-    <string name="volume_navigation_summary">Flip through items using the volume controls</string>
-    <string name="volume_navigation_message">Message view</string>
-    <string name="volume_navigation_list">Various list views</string>
+    <string name="volume_navigation_summary"></string>
+    <string name="volume_navigation_message">In message views</string>
+    <string name="volume_navigation_list">In list views</string>
 
     <string name="start_integrated_inbox_title">Start in Unified Inbox</string>
-    <string name="start_integrated_inbox_summary">Show the Unified Inbox after startup</string>
+    <string name="start_integrated_inbox_summary"></string>
 
     <string name="measure_accounts_title">Show account size</string>
     <string name="measure_accounts_summary">Turn off for faster display</string>
@@ -950,8 +950,8 @@ http://k9mail.googlecode.com/
 
     <string name="dialog_confirm_delete_title">Confirm deletion</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
-    <string name="dialog_confirm_delete_confirm_button">Delete</string>
-    <string name="dialog_confirm_delete_cancel_button">Do not delete</string>
+    <string name="dialog_confirm_delete_confirm_button">Yes</string>
+    <string name="dialog_confirm_delete_cancel_button">No</string>
 
     <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>
     <plurals name="dialog_confirm_spam_message">
@@ -974,7 +974,7 @@ http://k9mail.googlecode.com/
 
     <string name="dialog_attachment_progress_title">Downloading attachment</string>
 
-    <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>
+    <string name="debug_logging_enabled">Debug logging enabled</string>
 
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
@@ -1072,9 +1072,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Server search result limit</string>
-    <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>
+    <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g>.</string>
     <string name="account_settings_remote_search">Remote folder searching</string>
-    <string name="account_settings_remote_search_full_text">Include body text in server search</string>
+    <string name="account_settings_remote_search_full_text">Include messages text in server search</string>
     <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>
     <string name="remote_search_sending_query">Sending query to server</string>
     <string name="remote_search_downloading">Fetching %d results</string>
@@ -1087,11 +1087,11 @@ http://k9mail.googlecode.com/
     <string name="action_remote_search">Search messages on server</string>
     <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>
     <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>
-    <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>
+    <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>
 
-    <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>
-    <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>
+    <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>
+    <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>
 
     <string name="global_settings_threaded_view_label">Threaded view</string>
-    <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>
+    <string name="global_settings_threaded_view_summary">Group messages by conversation</string>
 </resources>
