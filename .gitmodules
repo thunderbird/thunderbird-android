@@ -1,6 +1,0 @@
-[submodule "plugins/ActionBarSherlock"]
-	path = plugins/ActionBarSherlock
-	url = https://github.com/JakeWharton/ActionBarSherlock
-[submodule "plugins/Android-PullToRefresh"]
-	path = plugins/Android-PullToRefresh
-	url = https://github.com/chrisbanes/Android-PullToRefresh.git
