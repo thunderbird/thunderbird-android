@@ -67,7 +67,7 @@ public class ColorChip {
             mDrawable = new ShapeDrawable(new PathShape(shape, 320f, 320f));
         }
         if (shape.equals(CHECKMARK)) {
-            mDrawable.getPaint().setStrokeWidth(30);
+            mDrawable.getPaint().setStrokeWidth(50);
         } else {
             mDrawable.getPaint().setStrokeWidth(20);
         }
