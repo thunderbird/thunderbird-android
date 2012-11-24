@@ -45,6 +45,9 @@
         <attr name="backgroundColorChooseAccountHeader" format="color" />
         <attr name="messageListReadItemBackgroundColor" format="reference|color"/>
         <attr name="messageListUnreadItemBackgroundColor" format="reference|color"/>
+        <attr name="messageListThreadCountForegroundColor" format="reference|color"/>
+        <attr name="messageListThreadCountBackground" format="reference|color"/>
+
     </declare-styleable>
 
 </resources>

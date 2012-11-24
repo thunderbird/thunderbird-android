@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/chip_wrapper"
         android:layout_below="@+id/subject"
-        android:layout_toLeftOf="@+id/thread_count"
+        android:layout_toLeftOf="@+id/thread_count_wrapper"
         android:layout_marginLeft="1dip"
         android:layout_marginBottom="3dip"
         android:layout_marginRight="3dip"
@@ -64,21 +64,6 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorPrimary" />
 
-    <TextView
-        android:id="@+id/thread_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dip"
-        android:layout_marginRight="12dip"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/subject"
-        android:gravity="center_vertical|center_horizontal"
-        android:paddingLeft="4dip"
-        android:paddingRight="4dip"
-        android:paddingTop="2dip"
-        android:paddingBottom="2dip"
-        android:background="#50000000"
-        android:focusable="false" />
 
 
     <TextView
@@ -92,5 +77,27 @@
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorSecondary" />
-
+    <LinearLayout
+            android:id="@+id/thread_count_wrapper"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date"
+            android:layout_alignTop="@+id/preview"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="2dip"
+            android:background="?attr/messageListThreadCountBackground"
+            >
+    <TextView
+        android:id="@+id/thread_count"
+        android:layout_gravity="center|center_vertical"
+        android:textColor="?attr/messageListThreadCountForegroundColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="4dip"
+        android:paddingBottom="1dip"
+        android:paddingLeft="4dip"
+        android:focusable="false" />
+    </LinearLayout>
 </RelativeLayout>
