@@ -24,8 +24,7 @@
     <!-- Welcome message -->
     <string name="welcome_message_title">Welcome to K-9 Mail!</string>
     <string name="accounts_welcome">
-Welcome to K-9 Mail setup. K-9 is an open source mail client for Android originally based on the
-standard Android Mail client.
+        Welcome to K-9 Mail! K-9 is a powerful free email client for Android.
 \n\n
 \nK-9\'s improved features include:
 \n * Push mail using IMAP IDLE
@@ -133,7 +132,7 @@ http://k9mail.googlecode.com/
     <string name="save_draft_action">Save as draft</string>
     <string name="check_mail_action">Check mail</string>
     <string name="send_messages_action">Send messages</string>
-    <string name="refresh_folders_action">Refresh folders</string>
+    <string name="refresh_folders_action">Refresh folder list</string>
     <string name="filter_folders_action">Find folder</string>
     <string name="add_account_action">Add account</string>
     <string name="compose_action">Compose</string>
@@ -158,11 +157,11 @@ http://k9mail.googlecode.com/
     <string name="message_view_theme_action_dark">Switch to dark theme</string>
     <string name="message_view_theme_action_light">Switch to light theme</string>
 
-    <string name="mark_as_unread_action">Mark as unread</string>
+    <string name="mark_as_unread_action">Mark unread</string>
     <string name="add_cc_bcc_action">Add Cc/Bcc</string>
     <string name="read_receipt">Read receipt</string>
-    <string name="read_receipt_enabled">Read receipt will be requested</string>
-    <string name="read_receipt_disabled">Read receipt will not be requested</string>
+    <string name="read_receipt_enabled">Request Read receipt</string>
+    <string name="read_receipt_disabled">Do not request Read receipt</string>
     <string name="add_attachment_action">Add attachment</string>
     <string name="add_attachment_action_image">Add attachment (Image)</string>
     <string name="add_attachment_action_video">Add attachment (Video)</string>
@@ -430,7 +429,7 @@ http://k9mail.googlecode.com/
 
     <string name="account_setup_options_title">Account options</string>
 
-    <string name="compact_action">Compact</string>
+    <string name="compact_action">Compact account</string>
     <string name="clear_action">Clear messages (danger!)</string>
     <string name="recreate_action">Recreate data (Last Resort!)</string>
 
@@ -772,11 +771,11 @@ http://k9mail.googlecode.com/
 
     <string name="folder_list_filter_hint">folder name contains</string>
 
-    <string name="folder_list_display_mode_label">Folders</string>
-    <string name="folder_list_display_mode_all">Display all folders</string>
-    <string name="folder_list_display_mode_first_class">Display only 1st Class folders</string>
-    <string name="folder_list_display_mode_first_and_second_class">Display 1st and 2nd Class folders</string>
-    <string name="folder_list_display_mode_not_second_class">Display all except 2nd Class folders</string>
+    <string name="folder_list_display_mode_label">Show folders...</string>
+    <string name="folder_list_display_mode_all">All folders</string>
+    <string name="folder_list_display_mode_first_class">1st Class folders</string>
+    <string name="folder_list_display_mode_first_and_second_class">1st &amp; 2nd Class folders</string>
+    <string name="folder_list_display_mode_not_second_class">Hide 2nd Class folders</string>
 
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_signature__location_before_quoted_text">Before quoted message</string>
