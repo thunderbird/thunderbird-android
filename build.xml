@@ -275,30 +275,7 @@
         <delete dir="${javadoc-dir}" verbose="${verbose}" />
     </target>
 
-    <target name="-git-submodule-init-update">
-        <if.contrib>
-            <and>
-                <resourceexists>
-                    <file file="plugins/ActionBarSherlock/.git" />
-                </resourceexists>
-                <resourceexists>
-                    <file file="plugins/Android-PullToRefresh/.git" />
-                </resourceexists>
-            </and>
-            <else>
-                <echo message="git submodule init" />
-                <exec executable="git" failonerror="true">
-                    <arg line="submodule init" />
-                </exec>
-                <echo message="git submodule update" />
-                <exec executable="git" failonerror="true">
-                    <arg line="submodule update" />
-                </exec>
-            </else>
-        </if.contrib>
-    </target>
-
-    <target name="-update-abs" depends="-git-submodule-init-update">
+    <target name="-update-abs">
         <if.contrib>
             <resourceexists>
                 <file file="plugins/ActionBarSherlock/library/build.xml" />
@@ -312,7 +289,7 @@
         </if.contrib>
     </target>
 
-    <target name="-update-ptr" depends="-git-submodule-init-update">
+    <target name="-update-ptr">
         <if.contrib>
             <resourceexists>
                 <file file="plugins/Android-PullToRefresh/library/build.xml" />
@@ -327,7 +304,7 @@
     </target>
 
     <target name="init" depends="-update-abs, -update-ptr"
-            description="Initialize environment and submodules for building" />
+            description="Initialize environment for building" />
 
     <!-- overrides default "debug" target" -->
     <!-- Builds debug output package -->
