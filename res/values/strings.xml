@@ -160,8 +160,8 @@ http://k9mail.googlecode.com/
     <string name="mark_as_unread_action">Mark unread</string>
     <string name="add_cc_bcc_action">Add Cc/Bcc</string>
     <string name="read_receipt">Read receipt</string>
-    <string name="read_receipt_enabled">Request Read receipt</string>
-    <string name="read_receipt_disabled">Do not request Read receipt</string>
+    <string name="read_receipt_enabled">Will request read receipt</string>
+    <string name="read_receipt_disabled">Will not not request read receipt</string>
     <string name="add_attachment_action">Add attachment</string>
     <string name="add_attachment_action_image">Add attachment (Image)</string>
     <string name="add_attachment_action_video">Add attachment (Video)</string>
@@ -1037,7 +1037,7 @@ http://k9mail.googlecode.com/
 
     <string name="webview_empty_message">No text</string>
 
-    <string name="webview_contextmenu_link_view_action">Open for viewing</string>
+    <string name="webview_contextmenu_link_view_action">Open link</string>
     <string name="webview_contextmenu_link_share_action">Share link</string>
     <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>
     <string name="webview_contextmenu_link_clipboard_label">Link</string>
@@ -1051,12 +1051,12 @@ http://k9mail.googlecode.com/
 
     <string name="webview_contextmenu_phone_call_action">Call number</string>
     <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>
-    <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>
+    <string name="webview_contextmenu_phone_copy_action">Copy number to clipboard</string>
     <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>
 
     <string name="webview_contextmenu_email_send_action">Send mail</string>
     <string name="webview_contextmenu_email_save_action">Save to Contacts</string>
-    <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>
+    <string name="webview_contextmenu_email_copy_action">Copy address to clipboard</string>
     <string name="webview_contextmenu_email_clipboard_label">Email address</string>
 
     <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>
@@ -1070,8 +1070,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Server search result limit</string>
-    <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g>.</string>
+    <string name="account_settings_remote_search_num_label">Server search limit</string>
+    <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>
     <string name="account_settings_remote_search">Remote folder searching</string>
     <string name="account_settings_remote_search_full_text">Include messages text in server search</string>
     <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>
