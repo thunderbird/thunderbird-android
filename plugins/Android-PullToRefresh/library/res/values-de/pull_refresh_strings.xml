@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="pull_to_refresh_pull_label">Ziehen zum Aktualisieren&#8230;</string>
+  <string name="pull_to_refresh_release_label">Loslassen zum Aktualisieren&#8230;</string>
+  <string name="pull_to_refresh_refreshing_label">Laden&#8230;</string>
+</resources>

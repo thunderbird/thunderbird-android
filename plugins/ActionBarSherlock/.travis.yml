@@ -1,0 +1,11 @@
+language: java
+
+notifications:
+  email: false
+
+before_install:
+  - wget http://dl.google.com/android/android-sdk_r20.0.3-linux.tgz
+  - tar -zxf android-sdk_r20.0.3-linux.tgz
+  - export ANDROID_HOME=~/builds/JakeWharton/ActionBarSherlock/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  - android update sdk --filter 1,5 --no-ui --force

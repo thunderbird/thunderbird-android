@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="pull_to_refresh_pull_label">画面を引っ張って&#8230;</string>
+  <string name="pull_to_refresh_release_label">指を離すと更新&#8230;</string>
+  <string name="pull_to_refresh_refreshing_label">読み込み中&#8230;</string>
+</resources>

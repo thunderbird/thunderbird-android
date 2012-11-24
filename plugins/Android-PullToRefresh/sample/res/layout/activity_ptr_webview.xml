@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+<!--     The PullToRefreshWebView replaces a standard WebView widget. -->
+
+    <com.handmark.pulltorefresh.library.PullToRefreshWebView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/pull_refresh_webview"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        ptr:ptrMode="both" />
+
+</LinearLayout>

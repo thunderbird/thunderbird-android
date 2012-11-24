@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="pull_to_refresh_pull_label">Tažením aktualizujete&#8230;</string>
+  <string name="pull_to_refresh_release_label">Uvolněním aktualizujete&#8230;</string>
+  <string name="pull_to_refresh_refreshing_label">Načítání&#8230;</string>
+</resources>

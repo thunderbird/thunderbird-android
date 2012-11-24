@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>PullToRefreshWebView2 Sample</title>
+
+<script language="javascript" type="text/javascript">
+ function isReadyForPullDown() {
+   var result = document.body.scrollTop == 0;
+   ptr.isReadyForPullDownResponse(result);
+ }
+ 
+ function isReadyForPullUp() {
+   var result = document.body.scrollTop + document.body.clientHeight >= document.body.scrollHeight;
+   ptr.isReadyForPullUpResponse(result);
+ }
+</script>
+
+</head>
+
+<body>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin mauris varius lacus porttitor eget blandit massa facilisis. Nulla pellentesque odio sed purus fermentum vitae viverra orci faucibus. Sed ullamcorper condimentum vulputate. Curabitur sit amet convallis velit. Vestibulum posuere eleifend risus ac adipiscing. Nam pulvinar nulla a velit faucibus imperdiet. Praesent eget nisi ac justo blandit sagittis. Maecenas at leo nisi, nec varius nisl.</p>
+<p>In hac habitasse platea dictumst. Morbi neque tortor, vestibulum sed viverra a, luctus vel lorem. Nunc turpis eros, varius eget commodo et, euismod at eros. Sed tincidunt mi purus, vel posuere dui. Vestibulum ante lectus, porta sed mattis bibendum, scelerisque cursus sapien. Cras ultrices imperdiet fermentum. Aenean nisi nulla, euismod non blandit ac, dictum quis libero. Morbi consectetur tempor mollis. Suspendisse eget nunc arcu, vel ullamcorper augue. Integer malesuada, diam nec faucibus mollis, nisl velit euismod enim, ac mattis justo neque sit amet mauris. Vivamus pretium imperdiet pharetra.</p>
+<p>Integer sagittis augue sit amet lectus pulvinar sit amet commodo tortor mattis. Maecenas quis tellus eget ante eleifend sollicitudin non et nibh. Maecenas luctus euismod tristique. Fusce in odio nec diam blandit facilisis. Sed nec arcu eros. Vivamus quis tortor a metus tempus aliquam eget volutpat magna. Pellentesque id ultrices dolor. Sed blandit aliquet quam. Phasellus dapibus euismod vulputate. Aenean blandit, elit vitae vestibulum tincidunt, metus dui accumsan nulla, sit amet vehicula mauris lacus in est. Etiam dignissim pellentesque nulla vel malesuada. Cras vel lorem justo.</p>
+<p>Sed condimentum nisl sit amet libero vestibulum hendrerit. Duis auctor tempus placerat. Proin velit ante, ornare nec dictum nec, hendrerit eu arcu. Etiam ut diam ornare quam venenatis pulvinar vitae vel leo. Vivamus consectetur, ante id interdum rhoncus, magna eros pulvinar lacus, a gravida nibh arcu vitae eros. Nulla scelerisque laoreet feugiat. Mauris sit amet gravida felis.</p>
+<p>Nulla ac dolor sapien, vestibulum venenatis justo. Cras placerat velit vitae nibh pellentesque ultricies. Suspendisse adipiscing enim eu justo iaculis eu pretium urna fermentum. Duis porttitor nunc non nunc mattis vestibulum. Etiam elit tellus, feugiat in bibendum eget, adipiscing nec metus. Ut ut sem lacus, quis faucibus diam. Curabitur a nulla fermentum tortor dignissim posuere. Fusce faucibus ante ut sem imperdiet imperdiet eget vitae lorem. Etiam fringilla ornare ipsum, in sagittis quam ornare vitae. Nullam venenatis orci sit amet sapien adipiscing gravida. Proin turpis lectus, hendrerit vitae vehicula ut, auctor ac lectus. Pellentesque sollicitudin blandit ligula quis commodo. Mauris vulputate lectus in velit luctus aliquam. Quisque eget tincidunt elit. Quisque et augue quam, sed scelerisque eros.</p>
+</body>
+
+</html>
+

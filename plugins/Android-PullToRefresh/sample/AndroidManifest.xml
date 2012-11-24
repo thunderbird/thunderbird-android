@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.handmark.pulltorefresh.samples"
+    android:versionCode="1420"
+    android:versionName="1.4.2" >
+
+    <uses-sdk
+        android:minSdkVersion="4"
+        android:targetSdkVersion="10" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Light" >
+        <activity
+            android:name=".LauncherActivity"
+            android:label="PullToRefresh Samples" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PullToRefreshListActivity"
+            android:label="PtR ListView" >
+        </activity>
+        <activity
+            android:name=".PullToRefreshListFragmentActivity"
+            android:label="PtR ListView Fragment" >
+        </activity>
+        <activity
+            android:name=".PullToRefreshGridActivity"
+            android:label="PtR GridView" >
+        </activity>
+        <activity
+            android:name=".PullToRefreshExpandableListActivity"
+            android:label="PtR ExpandableListView" >
+        </activity>
+        <activity
+            android:name=".PullToRefreshWebViewActivity"
+            android:label="PtR WebView" >
+        </activity>
+        <activity
+            android:name=".PullToRefreshScrollViewActivity"
+            android:label="PtR ScrollView" >
+        </activity>
+        <activity
+            android:name=".PullToRefreshWebView2Activity"
+            android:label="PtR WebView Advanced" >
+        </activity>
+    </application>
+
+    <!-- For WebView Sample -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <supports-screens android:anyDensity="true" />
+
+</manifest>
