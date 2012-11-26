@@ -1294,12 +1294,9 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         String description = getString(R.string.search_title, mAccount.getDescription(), getString(R.string.unread_modifier));
         LocalSearch search = new LocalSearch(description);
         search.addAccountUuid(account.getUuid());
-        try {
-            search.allRequiredFlags(new Flag[]{Flag.SEEN});
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        search.allForbiddenFlags(new Flag[] { Flag.SEEN });
+
+        MessageList.actionDisplaySearch(context, search, true, false);
     }
 
 }
