@@ -14,12 +14,15 @@ import com.fsck.k9.search.SearchSpecification.Searchfield;
  * an account. This is a meta-account containing all the e-mail that matches the search.
  */
 public class SearchAccount implements BaseAccount {
+    public static final String ALL_MESSAGES = "all_messages";
+    public static final String UNIFIED_INBOX = "unified_inbox";
+
 
     // create the all messages search ( all accounts is default when none specified )
     public static SearchAccount createAllMessagesAccount(Context context) {
         String name = context.getString(R.string.search_all_messages_title);
         LocalSearch tmpSearch = new LocalSearch(name);
-        return new SearchAccount(tmpSearch, name,
+        return new SearchAccount(ALL_MESSAGES, tmpSearch, name,
                 context.getString(R.string.search_all_messages_detail));
     }
 
@@ -29,25 +32,31 @@ public class SearchAccount implements BaseAccount {
         String name = context.getString(R.string.integrated_inbox_title);
         LocalSearch tmpSearch = new LocalSearch(name);
         tmpSearch.and(Searchfield.INTEGRATE, "1", Attribute.EQUALS);
-        return new SearchAccount(tmpSearch, name,
+        return new SearchAccount(UNIFIED_INBOX, tmpSearch, name,
                 context.getString(R.string.integrated_inbox_detail));
     }
 
+    private String mId;
     private String mEmail;
     private String mDescription;
     private LocalSearch mSearch;
     private String mFakeUuid;
 
-    public SearchAccount(LocalSearch search, String description, String email)
+    public SearchAccount(String id, LocalSearch search, String description, String email)
             throws IllegalArgumentException {
 
         if (search == null) {
             throw new IllegalArgumentException("Provided LocalSearch was null");
         }
 
+        mId = id;
         mSearch = search;
         mDescription = description;
         mEmail = email;
+    }
+
+    public String getId() {
+        return mId;
     }
 
     @Override

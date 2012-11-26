@@ -33,6 +33,7 @@ import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
@@ -50,6 +51,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     // for this activity
     private static final String EXTRA_SEARCH = "search";
     private static final String EXTRA_NO_THREADING = "no_threading";
+
+    private static final String ACTION_SHORTCUT = "shortcut";
+    private static final String EXTRA_SPECIAL_FOLDER = "special_folder";
 
     // used for remote search
     private static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
@@ -78,6 +82,16 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         if (newTask) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
+
+        return intent;
+    }
+
+    public static Intent shortcutIntent(Context context, String specialFolder) {
+        Intent intent = new Intent(context, MessageList.class);
+        intent.setAction(ACTION_SHORTCUT);
+        intent.putExtra(EXTRA_SPECIAL_FOLDER, specialFolder);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         return intent;
     }
@@ -134,8 +148,16 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void decodeExtras(Intent intent) {
-        // check if this intent comes from the system search ( remote )
-        if (intent.getStringExtra(SearchManager.QUERY) != null) {
+        if (ACTION_SHORTCUT.equals(intent.getAction())) {
+            // Handle shortcut intents
+            String specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER);
+            if (SearchAccount.UNIFIED_INBOX.equals(specialFolder)) {
+                mSearch = SearchAccount.createUnifiedInboxAccount(this).getRelatedSearch();
+            } else if (SearchAccount.ALL_MESSAGES.equals(specialFolder)) {
+                mSearch = SearchAccount.createAllMessagesAccount(this).getRelatedSearch();
+            }
+        } else if (intent.getStringExtra(SearchManager.QUERY) != null) {
+            // check if this intent comes from the system search ( remote )
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 //Query was received from Search Dialog
                 String query = intent.getStringExtra(SearchManager.QUERY);
