@@ -73,7 +73,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         intent.putExtra(EXTRA_NO_THREADING, noThreading);
 
         if (clearTop) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
         if (newTask) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
