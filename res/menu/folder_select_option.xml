@@ -8,7 +8,7 @@
         <menu>-->
            <item
             android:id="@+id/filter_folders"
-            android:icon="?attr/iconActionSearch"
+            android:icon="?attr/iconActionSearchFolder"
             android:showAsAction="always"
             android:title="@string/filter_folders_action"
            />
