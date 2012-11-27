@@ -98,9 +98,12 @@ public class LocalStore extends Store implements Serializable {
         "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, " +
         "bcc_list, reply_to_list, attachment_count, internal_date, messages.message_id, " +
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +
-        "forwarded ";
+        "forwarded, unseen ";
 
-    static private String GET_FOLDER_COLS = "folders.id, name, SUM(read=0), visible_limit, last_updated, status, push_state, last_pushed, SUM(flagged), integrate, top_group, poll_class, push_class, display_class";
+    static private String GET_FOLDER_COLS =
+        "folders.id, name, SUM(read=0), SUM(unseen), visible_limit, "
+        + "last_updated, status, push_state, last_pushed, SUM(flagged), "
+        + "integrate, top_group, poll_class, push_class, display_class";
 
     private static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -125,7 +128,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 400;
 
-    public static final int DB_VERSION = 47;
+    public static final int DB_VERSION = 48;
 
     protected String uUid = null;
 
@@ -185,7 +188,7 @@ public class LocalStore extends Store implements Serializable {
 
                         db.execSQL("DROP TABLE IF EXISTS folders");
                         db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                                   + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
+                                   + "last_updated INTEGER, unread_count INTEGER, unseen_count INTEGER, visible_limit INTEGER, status TEXT, "
                                    + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
                                    + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT"
                                    + ")");
@@ -217,7 +220,8 @@ public class LocalStore extends Store implements Serializable {
                                 "read INTEGER default 0, " +
                                 "flagged INTEGER default 0, " +
                                 "answered INTEGER default 0, " +
-                                "forwarded INTEGER default 0" +
+                                "forwarded INTEGER default 0, " +
+                                "unseen INTEGER default 0" +
                                 ")");
 
                         db.execSQL("DROP TABLE IF EXISTS headers");
@@ -234,6 +238,9 @@ public class LocalStore extends Store implements Serializable {
 
                         db.execSQL("DROP INDEX IF EXISTS msg_read");
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_read ON messages (read)");
+
+                        db.execSQL("DROP INDEX IF EXISTS msg_unseen");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_unseen ON messages (unseen)");
 
                         db.execSQL("DROP INDEX IF EXISTS msg_flagged");
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_flagged ON messages (flagged)");
@@ -557,7 +564,6 @@ public class LocalStore extends Store implements Serializable {
                             db.execSQL("CREATE INDEX IF NOT EXISTS msg_read ON messages (read)");
                             db.execSQL("CREATE INDEX IF NOT EXISTS msg_flagged ON messages (flagged)");
                         }
-
                         if (db.getVersion() < 47) {
                             // Create new 'threads' table
                             db.execSQL("DROP TABLE IF EXISTS threads");
@@ -626,6 +632,17 @@ public class LocalStore extends Store implements Serializable {
                             cv.putNull("thread_root");
                             cv.putNull("thread_parent");
                             db.update("messages", cv, null, null);
+                        }
+                        if (db.getVersion() < 48) {
+                            try {
+                                db.execSQL("ALTER TABLE messages ADD unseen INTEGER default 0");
+                            } catch (SQLiteException e) {
+                                if (! e.getMessage().startsWith("duplicate column name:")) {
+                                    throw e;
+                                }
+                            }
+                            db.execSQL("DROP INDEX IF EXISTS msg_unseen");
+                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_unseen ON messages (unseen)");
                         }
                     }
                 } catch (SQLiteException e) {
@@ -848,7 +865,7 @@ public class LocalStore extends Store implements Serializable {
                                 continue;
                             }
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
-                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
+                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getLong(5), cursor.getString(6), cursor.getString(7), cursor.getLong(8), cursor.getInt(9), cursor.getInt(10), cursor.getInt(11), cursor.getString(12), cursor.getString(13), cursor.getString(14));
 
                             folders.add(folder);
                         }
@@ -1256,7 +1273,8 @@ public class LocalStore extends Store implements Serializable {
                 case SEEN:
                 case FLAGGED:
                 case ANSWERED:
-                case FORWARDED: {
+                case FORWARDED:
+                case X_UNSEEN: {
                     break;
                 }
                 default: {
@@ -1276,6 +1294,7 @@ public class LocalStore extends Store implements Serializable {
         private String mName = null;
         private long mFolderId = -1;
         private int mUnreadMessageCount = -1;
+        private int mUnseenMessageCount = -1;
         private int mFlaggedMessageCount = -1;
         private int mVisibleLimit = -1;
         private String prefId = null;
@@ -1342,7 +1361,7 @@ public class LocalStore extends Store implements Serializable {
                             if (cursor.moveToFirst() && !cursor.isNull(0)) {
                                 int folderId = cursor.getInt(0);
                                 if (folderId > 0) {
-                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
+                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getLong(5), cursor.getString(6), cursor.getString(7), cursor.getLong(8), cursor.getInt(9), cursor.getInt(10), cursor.getInt(11), cursor.getString(12), cursor.getString(13), cursor.getString(14));
                                 }
                             } else {
                                 Log.w(K9.LOG_TAG, "Creating folder " + getName() + " with existing id " + getId());
@@ -1362,10 +1381,11 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass, String pushClass, String displayClass) throws MessagingException {
+        private void open(int id, String name, int unreadCount, int unseenCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass, String pushClass, String displayClass) throws MessagingException {
             mFolderId = id;
             mName = name;
             mUnreadMessageCount = unreadCount;
+            mUnseenMessageCount = unseenCount;
             mVisibleLimit = visibleLimit;
             mPushState = pushState;
             mFlaggedMessageCount = flaggedCount;
@@ -1516,9 +1536,69 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
+        public int getUnseenMessageCount() throws MessagingException {
+            if (this.mAccount.isSpecialFolder(mName) && ! mName.equalsIgnoreCase(this.mAccount.getInboxFolderName())) {
+                return 0;
+            }
+            if (!isOpen()) {
+                // open() sums up the number of unread messages in the database
+                open(OpenMode.READ_WRITE);
+                return mUnseenMessageCount;
+            }
+
+            // Folder was already opened. Unread count might be outdated so query the database now.
+            try {
+                return database.execute(false, new DbCallback<Integer>() {
+                    @Override
+                    public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
+                        int unseenMessageCount = 0;
+                        Cursor cursor = db.query("messages", new String[] { "SUM(unseen)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                                new String[] { Long.toString(mFolderId) }, null, null, null);
+
+                        try {
+                            if (cursor.moveToFirst()) {
+                                unseenMessageCount = cursor.getInt(0);
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
+                        return unseenMessageCount;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
+        }
+
+        @Override
         public int getFlaggedMessageCount() throws MessagingException {
             open(OpenMode.READ_WRITE);
             return mFlaggedMessageCount;
+        }
+
+        public void clearUnseenMessages() throws MessagingException {
+            Log.d(K9.LOG_TAG,String.format("clearUnseenMessages() called on %s:%s", mAccount.getDescription(), mName));
+            try {
+                database.execute(true, new DbCallback<Void>() {
+                    @Override
+                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
+                            UnavailableStorageException {
+                        try {
+                            open(OpenMode.READ_WRITE);
+                        } catch (MessagingException e) {
+                            throw new WrappedException(e);
+                        }
+                        ContentValues cv = new ContentValues();
+                        cv.put("unseen", "0");
+                        db.update("messages", cv, "folder_id = ? AND unseen = 1", new String[] { Long.toString(mFolderId) });
+                        return null;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
         }
 
         @Override
@@ -2417,6 +2497,7 @@ public class LocalStore extends Store implements Serializable {
                                 }
 
                                 long oldMessageId = -1;
+                                boolean oldUnseen = false;
                                 String uid = message.getUid();
                                 if (uid == null || copy) {
                                     /*
@@ -2443,6 +2524,9 @@ public class LocalStore extends Store implements Serializable {
 
                                     if (oldMessage != null) {
                                         oldMessageId = oldMessage.getId();
+                                        if (oldMessage.isSet(Flag.X_UNSEEN) && !message.isSet(Flag.SEEN) && !message.isSet(Flag.DELETED)) {
+                                            oldUnseen = true;
+                                        }
                                     }
 
                                     deleteAttachments(message.getUid());
@@ -2498,6 +2582,7 @@ public class LocalStore extends Store implements Serializable {
                                     cv.put("flagged", message.isSet(Flag.FLAGGED) ? 1 : 0);
                                     cv.put("answered", message.isSet(Flag.ANSWERED) ? 1 : 0);
                                     cv.put("forwarded", message.isSet(Flag.FORWARDED) ? 1 : 0);
+                                    cv.put("unseen", oldUnseen ? 1 : 0);
                                     cv.put("folder_id", mFolderId);
                                     cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
                                     cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
@@ -2595,7 +2680,7 @@ public class LocalStore extends Store implements Serializable {
                                            + "uid = ?, subject = ?, sender_list = ?, date = ?, flags = ?, "
                                            + "folder_id = ?, to_list = ?, cc_list = ?, bcc_list = ?, "
                                            + "html_content = ?, text_content = ?, preview = ?, reply_to_list = ?, "
-                                           + "attachment_count = ?, read = ?, flagged = ?, answered = ?, forwarded = ? "
+                                           + "attachment_count = ?, read = ?, flagged = ?, answered = ?, forwarded = ?, unseen = ? "
                                            + "WHERE id = ?",
                                            new Object[] {
                                                message.getUid(),
@@ -2621,6 +2706,7 @@ public class LocalStore extends Store implements Serializable {
                                                message.isSet(Flag.FLAGGED) ? 1 : 0,
                                                message.isSet(Flag.ANSWERED) ? 1 : 0,
                                                message.isSet(Flag.FORWARDED) ? 1 : 0,
+                                               message.isSet(Flag.X_UNSEEN) ? 1 : 0,
                                                message.mId
                                            });
 
@@ -3472,12 +3558,14 @@ public class LocalStore extends Store implements Serializable {
             boolean flagged = (cursor.getInt(19) == 1);
             boolean answered = (cursor.getInt(20) == 1);
             boolean forwarded = (cursor.getInt(21) == 1);
+            boolean unseen = (cursor.getInt(22) == 1);
 
             setFlagInternal(Flag.DELETED, deleted);
             setFlagInternal(Flag.SEEN, read);
             setFlagInternal(Flag.FLAGGED, flagged);
             setFlagInternal(Flag.ANSWERED, answered);
             setFlagInternal(Flag.FORWARDED, forwarded);
+            setFlagInternal(Flag.X_UNSEEN, unseen);
         }
 
         /**
@@ -3648,6 +3736,7 @@ public class LocalStore extends Store implements Serializable {
                         cv.put("flagged", isSet(Flag.FLAGGED) ? 1 : 0);
                         cv.put("answered", isSet(Flag.ANSWERED) ? 1 : 0);
                         cv.put("forwarded", isSet(Flag.FORWARDED) ? 1 : 0);
+                        cv.put("unseen", isSet(Flag.X_UNSEEN) ? 1 : 0);
 
                         db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
 

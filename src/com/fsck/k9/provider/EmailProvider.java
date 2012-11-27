@@ -100,6 +100,7 @@ public class EmailProvider extends ContentProvider {
         FolderColumns.NAME,
         FolderColumns.LAST_UPDATED,
         FolderColumns.UNREAD_COUNT,
+        FolderColumns.UNSEEN_COUNT,
         FolderColumns.VISIBLE_LIMIT,
         FolderColumns.STATUS,
         FolderColumns.PUSH_STATE,
@@ -160,6 +161,7 @@ public class EmailProvider extends ContentProvider {
         public static final String FLAGGED = "flagged";
         public static final String ANSWERED = "answered";
         public static final String FORWARDED = "forwarded";
+        public static final String UNSEEN = "unseen";
     }
 
     private interface InternalMessageColumns extends MessageColumns {
@@ -175,6 +177,7 @@ public class EmailProvider extends ContentProvider {
         public static final String NAME = "name";
         public static final String LAST_UPDATED = "last_updated";
         public static final String UNREAD_COUNT = "unread_count";
+        public static final String UNSEEN_COUNT = "unseen_count";
         public static final String VISIBLE_LIMIT = "visible_limit";
         public static final String STATUS = "status";
         public static final String PUSH_STATE = "push_state";
@@ -196,11 +199,13 @@ public class EmailProvider extends ContentProvider {
 
     public interface StatsColumns {
         public static final String UNREAD_COUNT = "unread_count";
+        public static final String UNSEEN_COUNT = "unseen_count";
         public static final String FLAGGED_COUNT = "flagged_count";
     }
 
     private static final String[] STATS_DEFAULT_PROJECTION = {
             StatsColumns.UNREAD_COUNT,
+            StatsColumns.UNSEEN_COUNT,
             StatsColumns.FLAGGED_COUNT
     };
 
@@ -565,6 +570,8 @@ public class EmailProvider extends ContentProvider {
 
             if (StatsColumns.UNREAD_COUNT.equals(columnName)) {
                 sql.append("SUM(" + MessageColumns.READ + "=0) AS " + StatsColumns.UNREAD_COUNT);
+            } else if (StatsColumns.UNSEEN_COUNT.equals(columnName)) {
+                sql.append("SUM(" + MessageColumns.UNSEEN + ") AS " + StatsColumns.UNSEEN_COUNT);
             } else if (StatsColumns.FLAGGED_COUNT.equals(columnName)) {
                 sql.append("SUM(" + MessageColumns.FLAGGED + ") AS " + StatsColumns.FLAGGED_COUNT);
             } else {

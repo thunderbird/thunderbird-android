@@ -8,17 +8,20 @@ import android.graphics.drawable.shapes.PathShape;
 
 public class ColorChip {
     public static final Path CIRCULAR = new Path();
+    public static final Path EYE = new Path();
     public static final Path LEFT_POINTING = new Path();
     public static final Path RIGHT_POINTING = new Path();
     public static final Path RIGHT_NOTCH = new Path();
     public static final Path STAR = new Path();
     public static final Path CHECKMARK = new Path();
 
-
     static {
 
         CIRCULAR.addCircle(160,160,70f,Path.Direction.CW);
         CIRCULAR.close();
+
+        EYE.addCircle(160,160,50f,Path.Direction.CW);
+        EYE.addArc(new RectF(30f,110f,290f,210f), 0, 360);
 
         RIGHT_POINTING.addArc(new RectF(80f,80f,240f,240f) , 90, 180);
         RIGHT_POINTING.arcTo(new RectF(160f,0f,320f,160f), 180,   -90);
@@ -71,13 +74,12 @@ public class ColorChip {
         } else {
             mDrawable.getPaint().setStrokeWidth(20);
         }
-        if (messageRead) {
-            // Read messages get an outlined circle
+        if (messageRead || shape.equals(EYE)) {
+            // Read messages get an outlined circle, eye shape doesn't get filled
             mDrawable.getPaint().setStyle(Paint.Style.STROKE);
         } else {
             // Unread messages get filled, while retaining the outline, so that they stay the same size
             mDrawable.getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
-
         }
         mDrawable.getPaint().setColor(color);
 

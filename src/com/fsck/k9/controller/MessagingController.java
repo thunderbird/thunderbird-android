@@ -1621,6 +1621,10 @@ public class MessagingController implements Runnable {
                     // not marked as read.
                     if (!localMessage.isSet(Flag.SEEN)) {
                         newMessages.incrementAndGet();
+                        // also flag it unseen if it's actually new
+                        if (isInterestingMessage(account, localFolder, message)) {
+                            localMessage.setFlag(Flag.X_UNSEEN, true);
+                        }
                     }
 
                     if (K9.DEBUG)
@@ -1764,6 +1768,10 @@ public class MessagingController implements Runnable {
             // not marked as read.
             if (!localMessage.isSet(Flag.SEEN)) {
                 newMessages.incrementAndGet();
+                // also flag it unseen if it's actually new
+                if (isInterestingMessage(account, localFolder, message)) {
+                    localMessage.setFlag(Flag.X_UNSEEN, true);
+                }
             }
 
             for (MessagingListener l : getListeners()) {
@@ -1863,6 +1871,9 @@ public class MessagingController implements Runnable {
             for (Flag flag : MessagingController.SYNC_FLAGS) {
                 if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                     localMessage.setFlag(flag, remoteMessage.isSet(flag));
+                    if (flag.equals(flag.SEEN) && localMessage.isSet(flag)) {
+                        localMessage.setFlag(flag.X_UNSEEN, false);
+                    }
                     messageChanged = true;
                 }
             }
@@ -3604,10 +3615,12 @@ public class MessagingController implements Runnable {
         ContentResolver cr = mApplication.getContentResolver();
 
         int unreadMessageCount = 0;
+        int unseenMessageCount = 0;
         int flaggedMessageCount = 0;
 
         String[] projection = {
                 StatsColumns.UNREAD_COUNT,
+                StatsColumns.UNSEEN_COUNT,
                 StatsColumns.FLAGGED_COUNT
         };
 
@@ -3628,7 +3641,8 @@ public class MessagingController implements Runnable {
             try {
                 if (cursor.moveToFirst()) {
                     unreadMessageCount += cursor.getInt(0);
-                    flaggedMessageCount += cursor.getInt(1);
+                    unseenMessageCount += cursor.getInt(1);
+                    flaggedMessageCount += cursor.getInt(2);
                 }
             } finally {
                 cursor.close();
@@ -3638,6 +3652,7 @@ public class MessagingController implements Runnable {
         // Create AccountStats instance...
         AccountStats stats = new AccountStats();
         stats.unreadMessageCount = unreadMessageCount;
+        stats.unseenMessageCount = unseenMessageCount;
         stats.flaggedMessageCount = flaggedMessageCount;
 
         // ...and notify the listener
@@ -4339,7 +4354,7 @@ public class MessagingController implements Runnable {
                     account.setRingNotified(false);
                     try {
                         AccountStats stats = account.getStats(context);
-                        if (stats == null || stats.unreadMessageCount == 0) {
+                        if (stats == null || stats.unreadMessageCount == 0 || stats.unseenMessageCount == 0) {
                             notifyAccountCancel(context, account);
                         }
                     } catch (MessagingException e) {
@@ -4495,29 +4510,32 @@ public class MessagingController implements Runnable {
         });
     }
 
-
-    private boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
-        // If we don't even have an account name, don't show the notification.
-        // (This happens during initial account setup)
-        if (account.getName() == null) {
-            return false;
-        }
-
-        // Do not notify if the user does not have notifications enabled or if the message has
-        // been read.
-        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN)) {
+    /**
+     * Whether or not the message is a new unseen message that we care about.
+     * This is used both for deciding wether to post a notification about the
+     * incoming message and for whether to set the "unseen" flag on it as it
+     * comes in.
+     * 
+     * @param account
+     * @param localFolder
+     * @param message
+     * @return
+     */
+    private boolean isInterestingMessage(Account account, LocalFolder localFolder, Message message) {
+        // If the message has already been read, don't notify or flag unseen
+        if (message.isSet(Flag.SEEN)) {
             return false;
         }
 
         // If the account is a POP3 account and the message is older than the oldest message we've
-        // previously seen, then don't notify about it.
+        // previously seen, then don't notify or flag unseen.
         if (account.getStoreUri().startsWith("pop3") &&
                 message.olderThan(new Date(account.getLatestOldMessageSeenTime()))) {
             return false;
         }
 
-        // No notification for new messages in Trash, Drafts, Spam or Sent folder.
-        // But do notify if it's the INBOX (see issue 1817).
+        // No notification on unseen flag for new messages in Trash, Drafts, Spam or Sent folder.
+        // But do notify and flag unseen if it's the INBOX (see issue 1817).
         Folder folder = message.getFolder();
         if (folder != null) {
             String folderName = folder.getName();
@@ -4530,6 +4548,9 @@ public class MessagingController implements Runnable {
             }
         }
 
+        // if the message has a numeric UID we assume they're sequential and any message with
+        // a higher UID than we've seen before is actually new (as opposed to a re-downloaded
+        // older message when newer ones have been deleted
         if (message.getUid() != null && localFolder.getLastUid() != null) {
             try {
                 Integer messageUid = Integer.parseInt(message.getUid());
@@ -4544,13 +4565,28 @@ public class MessagingController implements Runnable {
             }
         }
 
+        return true;
+    }
+
+    private boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
+        // If we don't even have an account name, don't show the notification.
+        // (This happens during initial account setup)
+        if (account.getName() == null) {
+            return false;
+        }
+
+        // Do not notify if the user does not have notifications enabled
+        if (!account.isNotifyNewMail()) {
+            return false;
+        }
+
         // Don't notify if the sender address matches one of our identities and the user chose not
         // to be notified for such messages.
         if (account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail()) {
             return false;
         }
 
-        return true;
+        return isInterestingMessage(account, localFolder, message);
     }
 
     /**

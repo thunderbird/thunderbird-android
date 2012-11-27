@@ -1671,10 +1671,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.description = (TextView) view.findViewById(R.id.description);
                 holder.email = (TextView) view.findViewById(R.id.email);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
+                holder.unseenMessageCount = (TextView) view.findViewById(R.id.unseen_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
                 holder.newMessageCountWrapper = (View) view.findViewById(R.id.new_message_count_wrapper);
+                holder.unseenMessageCountWrapper = (View) view.findViewById(R.id.unseen_message_count_wrapper);
                 holder.flaggedMessageCountWrapper = (View) view.findViewById(R.id.flagged_message_count_wrapper);
                 holder.newMessageCountIcon = (View) view.findViewById(R.id.new_message_count_icon);
+                holder.unseenMessageCountIcon = (View) view.findViewById(R.id.unseen_message_count_icon);
                 holder.flaggedMessageCountIcon = (View) view.findViewById(R.id.flagged_message_count_icon);
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
 
@@ -1706,15 +1709,21 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             holder.description.setText(description);
 
             Integer unreadMessageCount = null;
+            Integer unseenMessageCount = null;
             if (stats != null) {
                 unreadMessageCount = stats.unreadMessageCount;
+                unseenMessageCount = stats.unseenMessageCount;
                 holder.newMessageCount.setText(Integer.toString(unreadMessageCount));
                 holder.newMessageCountWrapper.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
+
+                holder.unseenMessageCount.setText(Integer.toString(unseenMessageCount));
+                holder.unseenMessageCountWrapper.setVisibility(unseenMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setVisibility(stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearch(account));
+                holder.unseenMessageCountWrapper.setOnClickListener(createUnreadSearch(account));
                 holder.newMessageCountWrapper.setOnClickListener(createUnreadSearch(account));
 
                 view.getBackground().setAlpha(stats.available ? 0 : 127);
@@ -1729,6 +1738,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
+                holder.unseenMessageCountWrapper.setVisibility(View.GONE);
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
                 view.getBackground().setAlpha(0);
             }
@@ -1745,11 +1755,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 }
 
                 holder.flaggedMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false,true).drawable() );
+                holder.unseenMessageCountIcon.setBackgroundDrawable( realAccount.generateUnseenColorChip().drawable() );
                 holder.newMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false, false).drawable() );
 
             } else {
                 holder.chip.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable());
                 holder.newMessageCountIcon.setBackgroundDrawable( new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable() );
+                holder.unseenMessageCountIcon.setBackgroundDrawable( new ColorChip(0xff999999, false, ColorChip.EYE).drawable() );
                 holder.flaggedMessageCountIcon.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.STAR).drawable());
             }
 
@@ -1821,10 +1833,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             public TextView description;
             public TextView email;
             public TextView newMessageCount;
+            public TextView unseenMessageCount;
             public TextView flaggedMessageCount;
             public View newMessageCountIcon;
+            public View unseenMessageCountIcon;
             public View flaggedMessageCountIcon;
             public View newMessageCountWrapper;
+            public View unseenMessageCountWrapper;
             public View flaggedMessageCountWrapper;
             public RelativeLayout activeIcons;
             public View chip;

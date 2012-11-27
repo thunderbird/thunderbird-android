@@ -40,11 +40,38 @@
         />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/new_message_count_wrapper"
+        android:id="@+id/unseen_message_count_wrapper"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/flagged_message_count_wrapper"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:paddingTop="6dip"
+        android:paddingBottom="4dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+    >
+    <View
+        android:id="@+id/unseen_message_count_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        />
+    <TextView
+        android:id="@+id/unseen_message_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/new_message_count_wrapper"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/unseen_message_count_wrapper"
         android:clickable="true" 
         android:gravity="center_vertical"
         android:paddingTop="6dip"

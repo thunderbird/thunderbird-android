@@ -55,4 +55,12 @@ public enum Flag {
      * the server (if the message is still there).
      */
     X_GOT_ALL_HEADERS,
+
+    /**
+     * Indicates that the folder containing the message hasn't been viewed by
+     * the user yet since the message was downloaded. This is cleared on all
+     * messages in the folder when the folder is opened in the UI.
+     */
+    X_UNSEEN,
+
 }
