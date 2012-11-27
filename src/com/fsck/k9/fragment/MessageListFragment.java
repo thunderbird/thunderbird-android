@@ -378,9 +378,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
-    private MenuItem mRefreshMenuItem;
     private ActionMode mActionMode;
-    private View mActionBarProgressView;
 
     private Boolean mHasConnectivity;
 
@@ -608,16 +606,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void progress(final boolean progress) {
-        // Make sure we don't try this before the menu is initialized
-        // this could happen while the activity is initialized.
-        if (mRefreshMenuItem != null) {
-            if (progress) {
-                mRefreshMenuItem.setActionView(mActionBarProgressView);
-            } else {
-                mRefreshMenuItem.setActionView(null);
-            }
-        }
-
+        mFragmentListener.enableActionBarProgress(progress);
         if (mPullToRefreshView != null && !progress) {
             mPullToRefreshView.onRefreshComplete();
         }
@@ -711,8 +700,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mInflater = inflater;
 
         View view = inflater.inflate(R.layout.message_list_fragment, container, false);
-
-        mActionBarProgressView = inflater.inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
 
         initializePullToRefresh(inflater, view);
 
@@ -2699,6 +2686,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public interface MessageListFragmentListener {
+        void enableActionBarProgress(boolean enable);
         void setMessageListProgress(int level);
         void showThread(Account account, String folderName, long rootId);
         void showMoreFromSameSender(String senderAddress);

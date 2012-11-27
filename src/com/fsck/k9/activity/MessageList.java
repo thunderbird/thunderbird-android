@@ -11,8 +11,10 @@ import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -114,6 +116,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private LocalSearch mSearch;
     private boolean mSingleFolderMode;
     private boolean mSingleAccountMode;
+    private ProgressBar mActionBarProgress;
+    private MenuItem mMenuButtonCheckMail;
+    private View mActionButtonIndeterminateProgress;
 
     /**
      * {@code true} if the message list should be displayed as flat list (i.e. no threading)
@@ -246,6 +251,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
         mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
         mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
+        mActionBarProgress = (ProgressBar) customView.findViewById(R.id.actionbar_progress);
+        mActionButtonIndeterminateProgress =
+                getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -472,6 +480,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.message_list_option, menu);
         mMenu = menu;
+        mMenuButtonCheckMail= menu.findItem(R.id.check_mail);
         return true;
     }
 
@@ -730,5 +739,24 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public void remoteSearchStarted() {
         // Remove action button for remote search
         configureMenu(mMenu);
+    }
+    public void enableActionBarProgress(boolean enable) {
+        if (mMenuButtonCheckMail != null && mMenuButtonCheckMail.isVisible()) {
+            mActionBarProgress.setVisibility(ProgressBar.GONE);
+            if (enable) {
+                mMenuButtonCheckMail
+                        .setActionView(mActionButtonIndeterminateProgress);
+            } else {
+                mMenuButtonCheckMail.setActionView(null);
+            }
+        } else {
+            if (mMenuButtonCheckMail != null)
+                mMenuButtonCheckMail.setActionView(null);
+            if (enable) {
+                mActionBarProgress.setVisibility(ProgressBar.VISIBLE);
+            } else {
+                mActionBarProgress.setVisibility(ProgressBar.GONE);
+            }
+        }
     }
 }

@@ -30,6 +30,14 @@
             android:textColor="?android:attr/textColorSecondary" />
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/actionbar_progress"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        style="?android:attr/indeterminateProgressStyle"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/actionbar_unread_count"
         android:layout_width="wrap_content"
@@ -38,16 +46,5 @@
         android:paddingRight="12dip"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="36sp" />
-
-    <ImageButton
-        android:id="@+id/actionbar_remote_search"
-        android:gravity="center_vertical"
-        android:focusable="false"
-        android:layout_marginRight="3dip"
-        android:background="?attr/iconActionRemoteSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/action_remote_search"
-        android:visibility="gone"/>
 
 </LinearLayout>
