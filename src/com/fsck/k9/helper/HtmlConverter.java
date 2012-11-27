@@ -262,9 +262,6 @@ public class HtmlConverter {
                     if (isStartOfLine) {
                         // Not a quote character and not a space.  Content is starting now.
                         isStartOfLine = false;
-                        if (K9.DEBUG) {
-                            Log.d(K9.LOG_TAG, "currentQuoteDepth: " + quoteDepth + " quotesThisLine: " + quotesThisLine);
-                        }
                         // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
                         if (quotesThisLine > quoteDepth) {
                             for (int i = quoteDepth; i < quotesThisLine; i++) {
