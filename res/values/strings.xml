@@ -318,7 +318,7 @@ http://k9mail.googlecode.com/
     <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
 
-    <string name="global_settings_notification_hide_subject_title">Hide subject in notificationss</string>
+    <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>
     <string name="global_settings_notification_hide_subject_never">Never</string>
     <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>
     <string name="global_settings_notification_hide_subject_always">Always</string>
@@ -514,7 +514,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_composition">Sending mail</string>
 
     <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Include the original message is in your reply.</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Include the original message in your reply.</string>
 
     <string name="account_settings_reply_after_quote_label">Reply after quoted text</string>
     <string name="account_settings_reply_after_quote_summary">The original message will appear above your reply.</string>
