@@ -2795,11 +2795,30 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
-        public void setFlags(Message[] messages, Flag[] flags, boolean value)
+        public void setFlags(final Message[] messages, final Flag[] flags, final boolean value)
         throws MessagingException {
             open(OpenMode.READ_WRITE);
-            for (Message message : messages) {
-                message.setFlags(flags, value);
+
+            // Use one transaction to set all flags
+            try {
+                database.execute(true, new DbCallback<Void>() {
+                    @Override
+                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
+                            UnavailableStorageException {
+
+                        for (Message message : messages) {
+                            try {
+                                message.setFlags(flags, value);
+                            } catch (MessagingException e) {
+                                Log.e(K9.LOG_TAG, "Something went wrong while setting flag", e);
+                            }
+                        }
+
+                        return null;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
             }
         }
 
