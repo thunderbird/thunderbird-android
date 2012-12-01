@@ -421,5 +421,13 @@ otherwise it would make K-9 start at the wrong time
         <activity
             android:name=".activity.AccountList">
         </activity>
+        <activity
+            android:name=".activity.UpgradeDatabases"
+            android:label="@string/upgrade_databases_title">
+        </activity>
+        <service
+            android:name=".service.DatabaseUpgradeService"
+            android:exported="false">
+        </service>
     </application>
 </manifest>

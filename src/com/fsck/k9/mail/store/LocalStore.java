@@ -111,7 +111,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int UID_CHECK_BATCH_SIZE = 500;
 
-    protected static final int DB_VERSION = 45;
+    public static final int DB_VERSION = 45;
 
     protected String uUid = null;
 

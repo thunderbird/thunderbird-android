@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -27,12 +28,14 @@ import android.util.Log;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
+import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
@@ -63,6 +66,23 @@ public class K9 extends Application {
     public static Application app = null;
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
+
+    /**
+     * Name of the {@link SharedPreferences} file used to store the last known version of the
+     * accounts' databases.
+     *
+     * <p>
+     * See {@link UpgradeDatabases} for a detailed explanation of the database upgrade process.
+     * </p>
+     */
+    private static final String DATABASE_VERSION_CACHE = "database_version_cache";
+
+    /**
+     * Key used to store the last known database version of the accounts' databases.
+     *
+     * @see #DATABASE_VERSION_CACHE
+     */
+    private static final String KEY_LAST_ACCOUNT_DATABASE_VERSION = "last_account_database_version";
 
     /**
      * Components that are interested in knowing when the K9 instance is
@@ -150,6 +170,16 @@ public class K9 extends Application {
     public static boolean ENABLE_ERROR_FOLDER = true;
     public static String ERROR_FOLDER_NAME = "K9mail-errors";
 
+    /**
+     * A reference to the {@link SharedPreferences} used for caching the last known database
+     * version.
+     *
+     * @see #checkCachedDatabaseVersion()
+     * @see #setDatabasesUpToDate(boolean)
+     */
+    private static SharedPreferences sDatabaseVersionCache;
+
+
     private static boolean mAnimations = true;
 
     private static boolean mConfirmDelete = false;
@@ -207,6 +237,11 @@ public class K9 extends Application {
 
     private static boolean sUseBackgroundAsUnreadIndicator = true;
     private static boolean sThreadedViewEnabled = true;
+
+    /**
+     * @see #areDatabasesUpToDate()
+     */
+    private static boolean sDatabasesUpToDate = false;
 
 
     /**
@@ -487,6 +522,8 @@ public class K9 extends Application {
 
         galleryBuggy = checkForBuggyGallery();
 
+        checkCachedDatabaseVersion();
+
         Preferences prefs = Preferences.getPreferences(this);
         loadPrefs(prefs);
 
@@ -579,6 +616,31 @@ public class K9 extends Application {
         });
 
         notifyObservers();
+    }
+
+    /**
+     * Loads the last known database version of the accounts' databases from a
+     * {@link SharedPreference}.
+     *
+     * <p>
+     * If the stored version matches {@link LocalStore#DB_VERSION} we know that the databases are
+     * up to date.<br>
+     * Using {@code SharedPreferences} should be a lot faster than opening all SQLite databases to
+     * get the current database version.
+     * </p><p>
+     * See {@link UpgradeDatabases} for a detailed explanation of the database upgrade process.
+     * </p>
+     *
+     * @see #areDatabasesUpToDate()
+     */
+    public void checkCachedDatabaseVersion() {
+        sDatabaseVersionCache = getSharedPreferences(DATABASE_VERSION_CACHE, MODE_PRIVATE);
+
+        int cachedVersion = sDatabaseVersionCache.getInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, 0);
+
+        if (cachedVersion < LocalStore.DB_VERSION) {
+            K9.setDatabasesUpToDate(false);
+        }
     }
 
     public static void loadPrefs(Preferences prefs) {
@@ -1149,5 +1211,39 @@ public class K9 extends Application {
 
     public static synchronized void setThreadedViewEnabled(boolean enable) {
         sThreadedViewEnabled = enable;
+    }
+
+    /**
+     * Check if we already know whether all databases are using the current database schema.
+     *
+     * <p>
+     * This method is only used for optimizations. If it returns {@code true} we can be certain that
+     * getting a {@link LocalStore} instance won't trigger a schema upgrade.
+     * </p>
+     *
+     * @return {@code true}, if we know that all databases are using the current database schema.
+     *         {@code false}, otherwise.
+     */
+    public static synchronized boolean areDatabasesUpToDate() {
+        return sDatabasesUpToDate;
+    }
+
+    /**
+     * Remember that all account databases are using the most recent database schema.
+     *
+     * @param save
+     *         Whether or not to write the current database version to the
+     *         {@code SharedPreferences} {@link #DATABASE_VERSION_CACHE}.
+     *
+     * @see #areDatabasesUpToDate()
+     */
+    public static synchronized void setDatabasesUpToDate(boolean save) {
+        sDatabasesUpToDate = true;
+
+        if (save) {
+            Editor editor = sDatabaseVersionCache.edit();
+            editor.putInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, LocalStore.DB_VERSION);
+            editor.commit();
+        }
     }
 }

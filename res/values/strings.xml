@@ -1093,4 +1093,8 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_threaded_view_label">Threaded view</string>
     <string name="global_settings_threaded_view_summary">Group messages by conversation</string>
+
+    <string name="upgrade_databases_title">Upgrading databases</string>
+    <string name="upgrade_databases_unspecified">Upgrading databases…</string>
+    <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>
 </resources>

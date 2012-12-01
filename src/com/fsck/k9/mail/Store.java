@@ -3,6 +3,7 @@ package com.fsck.k9.mail;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.Application;
 import android.content.Context;
@@ -33,10 +34,16 @@ public abstract class Store {
     private static HashMap<String, Store> sStores = new HashMap<String, Store>();
 
     /**
-     * Local stores indexed by UUid because the Uri may change due to migration to/from SD-card.
+     * Local stores indexed by UUID because the Uri may change due to migration to/from SD-card.
      */
-    private static HashMap<String, Store> sLocalStores = new HashMap<String, Store>();
+    private static ConcurrentHashMap<String, Store> sLocalStores = new ConcurrentHashMap<String, Store>();
 
+    /**
+     * Lock objects indexed by account UUID.
+     *
+     * @see #getLocalInstance(Account, Application)
+     */
+    private static ConcurrentHashMap<String, Object> sAccountLocks = new ConcurrentHashMap<String, Object>();
 
     /**
      * Get an instance of a remote mail store.
@@ -72,16 +79,36 @@ public abstract class Store {
 
     /**
      * Get an instance of a local mail store.
-     * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
+     *
+     * @throws UnavailableStorageException
+     *          if not {@link StorageProvider#isReady(Context)}
      */
-    public synchronized static LocalStore getLocalInstance(Account account, Application application) throws MessagingException {
-        Store store = sLocalStores.get(account.getUuid());
-        if (store == null) {
-            store = new LocalStore(account, application);
-            sLocalStores.put(account.getUuid(), store);
-        }
+    public static LocalStore getLocalInstance(Account account, Application application)
+            throws MessagingException {
 
-        return (LocalStore) store;
+        String accountUuid = account.getUuid();
+
+        // Create new per-account lock object if necessary
+        sAccountLocks.putIfAbsent(accountUuid, new Object());
+
+        // Get the account's lock object
+        Object lock = sAccountLocks.get(accountUuid);
+
+        // Use per-account locks so DatabaseUpgradeService always knows which account database is
+        // currently upgraded.
+        synchronized (lock) {
+            Store store = sLocalStores.get(accountUuid);
+
+            if (store == null) {
+                // Creating a LocalStore instance will create or upgrade the database if
+                // necessary. This could take some time.
+                store = new LocalStore(account, application);
+
+                sLocalStores.put(accountUuid, store);
+            }
+
+            return (LocalStore) store;
+        }
     }
 
     /**

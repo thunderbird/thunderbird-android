@@ -371,6 +371,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         if (accounts.length < 1) {
             WelcomeMessage.showWelcomeMessage(this);
             finish();
+            return;
+        }
+
+        if (UpgradeDatabases.actionUpgradeDatabases(this, intent)) {
+            finish();
+            return;
         }
 
         boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
