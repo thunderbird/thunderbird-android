@@ -22,7 +22,7 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="welcome_message_title">Добро пожаловавть в K-9 Mail!</string>
     <string name="accounts_welcome">
 Добро пожаловать на K-9 Mail настройки.  K-9 Mail это программа электронной почты для Android операционных систем с открытым исходным кодом, первоначально основанная на стандартной программе Android Mail.
 \n\n
@@ -84,15 +84,15 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">О программе <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Адреса</string>
-    <!-- NEW: <string name="folders_title">Folders</string>-->
+    <string name="folders_title">Папки</string>
     <string name="advanced">Дополнительные параметры</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Написать новое письмо</string>
-    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
-    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
-    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+    <string name="compose_title_reply">Ответить</string>
+    <string name="compose_title_reply_all">Ответить всем</string>
+    <string name="compose_title_forward">Переслать</string>
 
     <string name="choose_folder_title">Выберите папку</string>
 
@@ -122,7 +122,7 @@ http://k9mail.googlecode.com/
     <string name="spam_action">Спам</string>
     <string name="forward_action">Переслать</string>
     <string name="move_action">Переместить</string>
-    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <string name="single_message_options_action">Опции сообщения</string>
     <string name="continue_action">Продолжить</string>
     <string name="back_action">Назад</string>
     <string name="done_action">Завершено</string> <!--  Used to complete a multi-step process -->
@@ -152,8 +152,8 @@ http://k9mail.googlecode.com/
     <string name="copy_action">Копировать</string>
     <string name="select_text_action">Выбрать текст</string>
 
-    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
-    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
+    <string name="message_view_theme_action_dark">Переключиться на тёмную тему</string>
+    <string name="message_view_theme_action_light">Переключиться на светлую тему</string>
 
     <string name="mark_as_unread_action">Отметить как непрочитанное</string>
     <string name="add_cc_bcc_action">Добавить Копию/СК</string>
@@ -288,8 +288,8 @@ http://k9mail.googlecode.com/
     <string name="global_settings_show_correspondent_names_label">Показывать имя отправителя</string>
     <string name="global_settings_show_correspondent_names_summary">Показывать имя отправителя вместо e-mail, если это возмомжно</string>
 
-    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
-    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+    <string name="global_settings_sender_above_subject_label">Отобразить имена адресатов ниже поля темы</string>
+    <string name="global_settings_sender_above_subject_summary">Отобразить имена адресатов над полем темы</string>
 
     <string name="global_settings_show_contact_name_label">Показывать имя получателя</string>
     <string name="global_settings_show_contact_name_summary">Использовать имя получателя из списка контактов</string>
@@ -1054,35 +1054,35 @@ http://k9mail.googlecode.com/
     <string name="image_saved_as">Сохранить изображение как \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Не удалось сохранить изображение.</string>
 
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
-    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
-    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
-    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
-    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+    <string name="account_settings_remote_search_num_results_entries_all">Все</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Ограничение результатов поиска на сервере</string>
+    <string name="account_settings_remote_search_num_summary">Поиск остановить после нахождения <xliff:g id="num_results">%s</xliff:g> результатов.</string>
+    <string name="account_settings_remote_search">Удалённый поиск папки</string>
+    <string name="account_settings_remote_search_full_text">Включать текст сообщения в удалённом поиске</string>
+    <string name="account_settings_remote_search_full_text_summary">Поиск по всему тексту может быть медленным.</string>
+    <string name="remote_search_sending_query">Отправка запроса на сервер</string>
+    <string name="remote_search_downloading">Извлечение %d результатов</string>
+    <string name="remote_search_downloading_limited">Извлечено %1$d из %2$d результатов</string>
+    <string name="remote_search_error">Удалённый поиск прошёл неуспешно</string>
 
-    <!-- NEW: <string name="account_settings_search">Search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
-    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <string name="account_settings_search">Поиск</string>
+    <string name="account_settings_remote_search_enabled">Включить поиск на сервере</string>
+    <string name="account_settings_remote_search_enabled_summary">Искать сообщения не только локально на устройстве, но и на сервере</string>
+    <string name="action_remote_search">Поиск сообщений на сервере</string>
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Получение результатов поиска…</string>
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <string name="remote_search_unavailable_no_network">Удалённый поиск не доступен без сетевого соединения.</string>
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <string name="global_settings_background_as_unread_indicator_label">Использовать фоновый цвет как индикатор прочтения</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Отображение прочитанных и непрочитанных сообщений с различным цветом фона</string>
 
-    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <string name="global_settings_threaded_view_label">Режим отображения</string>
+    <string name="global_settings_threaded_view_summary">Совместить сообщения принадлежащие одной теме</string>
 </resources>
