@@ -77,6 +77,10 @@ public class EmailProvider extends ContentProvider {
         MessageColumns.PREVIEW,
         MessageColumns.THREAD_ROOT,
         MessageColumns.THREAD_PARENT,
+        MessageColumns.READ,
+        MessageColumns.FLAGGED,
+        MessageColumns.ANSWERED,
+        MessageColumns.FORWARDED,
         InternalMessageColumns.DELETED,
         InternalMessageColumns.EMPTY,
         InternalMessageColumns.TEXT_CONTENT,
@@ -118,6 +122,10 @@ public class EmailProvider extends ContentProvider {
         public static final String THREAD_ROOT = "thread_root";
         public static final String THREAD_PARENT = "thread_parent";
         public static final String THREAD_COUNT = "thread_count";
+        public static final String READ = "read";
+        public static final String FLAGGED = "flagged";
+        public static final String ANSWERED = "answered";
+        public static final String FORWARDED = "forwarded";
     }
 
     private interface InternalMessageColumns extends MessageColumns {

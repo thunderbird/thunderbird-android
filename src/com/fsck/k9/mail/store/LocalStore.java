@@ -98,7 +98,7 @@ public class LocalStore extends Store implements Serializable {
      */
     static private String GET_MESSAGES_COLS =
         "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, "
-        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview, thread_root, thread_parent ";
+        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview, thread_root, thread_parent, deleted, read, flagged, answered, forwarded ";
 
     static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
 
@@ -111,7 +111,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int UID_CHECK_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 45;
+    public static final int DB_VERSION = 46;
 
     protected String uUid = null;
 
@@ -201,7 +201,11 @@ public class LocalStore extends Store implements Serializable {
                                 "thread_root INTEGER, " +
                                 "thread_parent INTEGER, " +
                                 "normalized_subject_hash INTEGER, " +
-                                "empty INTEGER" +
+                                "empty INTEGER, " +
+                                "read INTEGER default 0, " +
+                                "flagged INTEGER default 0, " +
+                                "answered INTEGER default 0, " +
+                                "forwarded INTEGER default 0" +
                                 ")");
 
                         db.execSQL("DROP TABLE IF EXISTS headers");
@@ -221,6 +225,12 @@ public class LocalStore extends Store implements Serializable {
 
                         db.execSQL("DROP INDEX IF EXISTS msg_thread_parent");
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_parent ON messages (thread_parent)");
+
+                        db.execSQL("DROP INDEX IF EXISTS msg_read");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_read ON messages (read)");
+
+                        db.execSQL("DROP INDEX IF EXISTS msg_flagged");
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_flagged ON messages (flagged)");
 
                         db.execSQL("DROP TABLE IF EXISTS attachments");
                         db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
@@ -434,6 +444,94 @@ public class LocalStore extends Store implements Serializable {
                                     throw e;
                                 }
                             }
+                        }
+                        if (db.getVersion() < 46) {
+                            db.execSQL("ALTER TABLE messages ADD read INTEGER default 0");
+                            db.execSQL("ALTER TABLE messages ADD flagged INTEGER default 0");
+                            db.execSQL("ALTER TABLE messages ADD answered INTEGER default 0");
+                            db.execSQL("ALTER TABLE messages ADD forwarded INTEGER default 0");
+
+                            String[] projection = { "id", "flags" };
+
+                            ContentValues cv = new ContentValues();
+                            List<Flag> extraFlags = new ArrayList<Flag>();
+
+                            Cursor cursor = db.query("messages", projection, null, null, null, null, null);
+                            try {
+                                while (cursor.moveToNext()) {
+                                    long id = cursor.getLong(0);
+                                    String flagList = cursor.getString(1);
+
+                                    boolean read = false;
+                                    boolean flagged = false;
+                                    boolean answered = false;
+                                    boolean forwarded = false;
+
+                                    if (flagList != null && flagList.length() > 0) {
+                                        String[] flags = flagList.split(",");
+
+                                        for (String flagStr : flags) {
+                                            try {
+                                                Flag flag = Flag.valueOf(flagStr);
+
+                                                switch (flag) {
+                                                    case ANSWERED: {
+                                                        answered = true;
+                                                        break;
+                                                    }
+                                                    case DELETED: {
+                                                        // Don't store this in column 'flags'
+                                                        break;
+                                                    }
+                                                    case FLAGGED: {
+                                                        flagged = true;
+                                                        break;
+                                                    }
+                                                    case FORWARDED: {
+                                                        forwarded = true;
+                                                        break;
+                                                    }
+                                                    case SEEN: {
+                                                        read = true;
+                                                        break;
+                                                    }
+                                                    case DRAFT:
+                                                    case RECENT:
+                                                    case X_DESTROYED:
+                                                    case X_DOWNLOADED_FULL:
+                                                    case X_DOWNLOADED_PARTIAL:
+                                                    case X_GOT_ALL_HEADERS:
+                                                    case X_REMOTE_COPY_STARTED:
+                                                    case X_SEND_FAILED:
+                                                    case X_SEND_IN_PROGRESS: {
+                                                        extraFlags.add(flag);
+                                                        break;
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                // Ignore bad flags
+                                            }
+                                        }
+                                    }
+
+
+                                    cv.put("flags", serializeFlags(extraFlags.toArray(EMPTY_FLAG_ARRAY)));
+                                    cv.put("read", read);
+                                    cv.put("flagged", flagged);
+                                    cv.put("answered", answered);
+                                    cv.put("forwarded", forwarded);
+
+                                    db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
+
+                                    cv.clear();
+                                    extraFlags.clear();
+                                }
+                            } finally {
+                                cursor.close();
+                            }
+
+                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_read ON messages (read)");
+                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_flagged ON messages (flagged)");
                         }
                     }
                 } catch (SQLiteException e) {
@@ -1146,6 +1244,28 @@ public class LocalStore extends Store implements Serializable {
                 return null;
             }
         });
+    }
+
+
+    private String serializeFlags(Flag[] flags) {
+        List<Flag> extraFlags = new ArrayList<Flag>();
+
+        for (Flag flag : flags) {
+            switch (flag) {
+                case DELETED:
+                case SEEN:
+                case FLAGGED:
+                case ANSWERED:
+                case FORWARDED: {
+                    break;
+                }
+                default: {
+                    extraFlags.add(flag);
+                }
+            }
+        }
+
+        return Utility.combine(extraFlags.toArray(EMPTY_FLAG_ARRAY), ',').toUpperCase(Locale.US);
     }
 
     public class LocalFolder extends Folder implements Serializable {
@@ -2089,7 +2209,8 @@ public class LocalStore extends Store implements Serializable {
 
                                 cv.clear();
                                 cv.put("uid", oldUID);
-                                cv.put("flags", serializeFlags(new Flag[] { Flag.DELETED, Flag.SEEN }));
+                                cv.putNull("flags");
+                                cv.put("read", 1);
                                 cv.put("deleted", 1);
                                 cv.put("folder_id", mFolderId);
 
@@ -2401,6 +2522,10 @@ public class LocalStore extends Store implements Serializable {
                                            ? System.currentTimeMillis() : message.getSentDate().getTime());
                                     cv.put("flags", serializeFlags(message.getFlags()));
                                     cv.put("deleted", message.isSet(Flag.DELETED) ? 1 : 0);
+                                    cv.put("read", message.isSet(Flag.SEEN) ? 1 : 0);
+                                    cv.put("flagged", message.isSet(Flag.FLAGGED) ? 1 : 0);
+                                    cv.put("answered", message.isSet(Flag.ANSWERED) ? 1 : 0);
+                                    cv.put("forwarded", message.isSet(Flag.FORWARDED) ? 1 : 0);
                                     cv.put("folder_id", mFolderId);
                                     cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
                                     cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
@@ -2497,7 +2622,8 @@ public class LocalStore extends Store implements Serializable {
                                            + "uid = ?, subject = ?, sender_list = ?, date = ?, flags = ?, "
                                            + "folder_id = ?, to_list = ?, cc_list = ?, bcc_list = ?, "
                                            + "html_content = ?, text_content = ?, preview = ?, reply_to_list = ?, "
-                                           + "attachment_count = ? WHERE id = ?",
+                                           + "attachment_count = ?, read = ?, flagged = ?, answered = ?, forwarded = ? "
+                                           + "WHERE id = ?",
                                            new Object[] {
                                                message.getUid(),
                                                message.getSubject(),
@@ -2518,6 +2644,10 @@ public class LocalStore extends Store implements Serializable {
                                                preview.length() > 0 ? preview : null,
                                                Address.pack(message.getReplyTo()),
                                                attachments.size(),
+                                               message.isSet(Flag.SEEN) ? 1 : 0,
+                                               message.isSet(Flag.FLAGGED) ? 1 : 0,
+                                               message.isSet(Flag.ANSWERED) ? 1 : 0,
+                                               message.isSet(Flag.FORWARDED) ? 1 : 0,
                                                message.mId
                                            });
 
@@ -3145,10 +3275,6 @@ public class LocalStore extends Store implements Serializable {
             });
         }
 
-        private String serializeFlags(Flag[] flags) {
-            return Utility.combine(flags, ',').toUpperCase(Locale.US);
-        }
-
         private ThreadInfo doMessageThreading(SQLiteDatabase db, Message message)
                 throws MessagingException {
             long rootId = -1;
@@ -3402,6 +3528,18 @@ public class LocalStore extends Store implements Serializable {
 
             mRootId = (cursor.isNull(15)) ? -1 : cursor.getLong(15);
             mParentId = (cursor.isNull(16)) ? -1 : cursor.getLong(16);
+
+            boolean deleted = (cursor.getInt(17) == 1);
+            boolean read = (cursor.getInt(18) == 1);
+            boolean flagged = (cursor.getInt(19) == 1);
+            boolean answered = (cursor.getInt(20) == 1);
+            boolean forwarded = (cursor.getInt(21) == 1);
+
+            setFlagInternal(Flag.DELETED, deleted);
+            setFlagInternal(Flag.SEEN, read);
+            setFlagInternal(Flag.FLAGGED, flagged);
+            setFlagInternal(Flag.ANSWERED, answered);
+            setFlagInternal(Flag.FORWARDED, forwarded);
         }
 
         /**
@@ -3571,8 +3709,15 @@ public class LocalStore extends Store implements Serializable {
                         /*
                          * Set the flags on the message.
                          */
-                        db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
-                                   { Utility.combine(getFlags(), ',').toUpperCase(Locale.US), mId });
+                        ContentValues cv = new ContentValues();
+                        cv.put("flags", serializeFlags(getFlags()));
+                        cv.put("read", isSet(Flag.SEEN) ? 1 : 0);
+                        cv.put("flagged", isSet(Flag.FLAGGED) ? 1 : 0);
+                        cv.put("answered", isSet(Flag.ANSWERED) ? 1 : 0);
+                        cv.put("forwarded", isSet(Flag.FORWARDED) ? 1 : 0);
+
+                        db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
+
                         return null;
                     }
                 });

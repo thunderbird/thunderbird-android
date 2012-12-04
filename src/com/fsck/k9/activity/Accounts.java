@@ -79,7 +79,8 @@ import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
-import com.fsck.k9.search.SearchModifier;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
@@ -1695,8 +1696,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setVisibility(stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
 
-                holder.flaggedMessageCountWrapper.setOnClickListener(new AccountClickListener(account, SearchModifier.FLAGGED));
-                holder.newMessageCountWrapper.setOnClickListener(new AccountClickListener(account, SearchModifier.UNREAD));
+                holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearch(account));
+                holder.newMessageCountWrapper.setOnClickListener(createUnreadSearch(account));
 
                 view.getBackground().setAlpha(stats.available ? 0 : 127);
 
@@ -1753,6 +1754,43 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             return view;
         }
 
+
+        private OnClickListener createFlaggedSearch(BaseAccount account) {
+            String searchTitle = getString(R.string.search_title, account.getDescription(),
+                    getString(R.string.flagged_modifier));
+
+            LocalSearch search;
+            if (account instanceof SearchAccount) {
+                search = ((SearchAccount) account).getRelatedSearch().clone();
+                search.setName(searchTitle);
+            } else {
+                search = new LocalSearch(searchTitle);
+                search.addAccountUuid(account.getUuid());
+            }
+
+            search.and(Searchfield.FLAGGED, "1", Attribute.EQUALS);
+
+            return new AccountClickListener(search);
+        }
+
+        private OnClickListener createUnreadSearch(BaseAccount account) {
+            String searchTitle = getString(R.string.search_title, account.getDescription(),
+                    getString(R.string.unread_modifier));
+
+            LocalSearch search;
+            if (account instanceof SearchAccount) {
+                search = ((SearchAccount) account).getRelatedSearch().clone();
+                search.setName(searchTitle);
+            } else {
+                search = new LocalSearch(searchTitle);
+                search.addAccountUuid(account.getUuid());
+            }
+
+            search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
+
+            return new AccountClickListener(search);
+        }
+
         class AccountViewHolder {
             public TextView description;
             public TextView email;
@@ -1783,27 +1821,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     private class AccountClickListener implements OnClickListener {
 
-        final BaseAccount account;
-        final SearchModifier searchModifier;
-        AccountClickListener(BaseAccount nAccount, SearchModifier nSearchModifier) {
-            account = nAccount;
-            searchModifier = nSearchModifier;
+        final LocalSearch search;
+
+        AccountClickListener(LocalSearch search) {
+            this.search = search;
         }
+
         @Override
         public void onClick(View v) {
-            final String description = getString(R.string.search_title, account.getDescription(), getString(searchModifier.resId));
-            LocalSearch search = null;
-
-            if (account instanceof SearchAccount) {
-                search = ((SearchAccount) account).getRelatedSearch().clone();
-                search.setName(description);
-            } else {
-                search = new LocalSearch(description);
-                search.addAccountUuid(account.getUuid());
-            }
-
-            search.allRequiredFlags(searchModifier.requiredFlags);
-            search.allForbiddenFlags(searchModifier.forbiddenFlags);
             MessageList.actionDisplaySearch(Accounts.this, search, true, false);
         }
 

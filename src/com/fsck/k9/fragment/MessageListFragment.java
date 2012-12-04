@@ -110,7 +110,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         MessageColumns.SENDER_LIST,
         MessageColumns.TO_LIST,
         MessageColumns.CC_LIST,
-        MessageColumns.FLAGS,
+        MessageColumns.READ,
+        MessageColumns.FLAGGED,
+        MessageColumns.ANSWERED,
+        MessageColumns.FORWARDED,
         MessageColumns.ATTACHMENT_COUNT,
         MessageColumns.FOLDER_ID,
         MessageColumns.PREVIEW,
@@ -129,14 +132,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int SENDER_LIST_COLUMN = 5;
     private static final int TO_LIST_COLUMN = 6;
     private static final int CC_LIST_COLUMN = 7;
-    private static final int FLAGS_COLUMN = 8;
-    private static final int ATTACHMENT_COUNT_COLUMN = 9;
-    private static final int FOLDER_ID_COLUMN = 10;
-    private static final int PREVIEW_COLUMN = 11;
-    private static final int THREAD_ROOT_COLUMN = 12;
-    private static final int ACCOUNT_UUID_COLUMN = 13;
-    private static final int FOLDER_NAME_COLUMN = 14;
-    private static final int THREAD_COUNT_COLUMN = 15;
+    private static final int READ_COLUMN = 8;
+    private static final int FLAGGED_COLUMN = 9;
+    private static final int ANSWERED_COLUMN = 10;
+    private static final int FORWARDED_COLUMN = 11;
+    private static final int ATTACHMENT_COUNT_COLUMN = 12;
+    private static final int FOLDER_ID_COLUMN = 13;
+    private static final int PREVIEW_COLUMN = 14;
+    private static final int THREAD_ROOT_COLUMN = 15;
+    private static final int ACCOUNT_UUID_COLUMN = 16;
+    private static final int FOLDER_NAME_COLUMN = 17;
+    private static final int THREAD_COUNT_COLUMN = 18;
 
     private static final String[] PROJECTION = Utility.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
@@ -232,8 +238,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            int o1IsFlagged = (cursor1.getString(FLAGS_COLUMN).contains("FLAGGED")) ? 0 : 1;
-            int o2IsFlagged = (cursor2.getString(FLAGS_COLUMN).contains("FLAGGED")) ? 0 : 1;
+            int o1IsFlagged = (cursor1.getInt(FLAGGED_COLUMN) == 1) ? 0 : 1;
+            int o2IsFlagged = (cursor2.getInt(FLAGGED_COLUMN) == 1) ? 0 : 1;
             return o1IsFlagged - o2IsFlagged;
         }
     }
@@ -242,8 +248,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            int o1IsUnread = (cursor1.getString(FLAGS_COLUMN).contains("SEEN")) ? 1 : 0;
-            int o2IsUnread = (cursor2.getString(FLAGS_COLUMN).contains("SEEN")) ? 1 : 0;
+            int o1IsUnread = cursor1.getInt(READ_COLUMN);
+            int o2IsUnread = cursor2.getInt(READ_COLUMN);
             return o1IsUnread - o2IsUnread;
         }
     }
@@ -1345,27 +1351,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Account account = getAccountFromCursor(cursor);
 
         String subject = cursor.getString(SUBJECT_COLUMN);
-        String flagList = cursor.getString(FLAGS_COLUMN);
-        String[] flags = flagList.split(",");
-        boolean read = false;
-        boolean flagged = false;
-        for (int i = 0, len = flags.length; i < len; i++) {
-            try {
-                switch (Flag.valueOf(flags[i])) {
-                    case SEEN: {
-                        read = true;
-                        break;
-                    }
-                    case FLAGGED: {
-                        flagged = true;
-                        break;
-                    }
-                    default: {
-                        // We don't care about the other flags
-                    }
-                }
-            } catch (Exception e) { /* ignore */ }
-        }
+        boolean read = (cursor.getInt(READ_COLUMN) == 1);
+        boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
 
         menu.setHeaderTitle(subject);
 
@@ -1637,37 +1624,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
 
-            String flagList = cursor.getString(FLAGS_COLUMN);
-            String[] flags = flagList.split(",");
-            boolean read = false;
-            boolean flagged = false;
-            boolean answered = false;
-            boolean forwarded = false;
-            for (int i = 0, len = flags.length; i < len; i++) {
-                try {
-                    switch (Flag.valueOf(flags[i])) {
-                        case SEEN: {
-                            read = true;
-                            break;
-                        }
-                        case FLAGGED: {
-                            flagged = true;
-                            break;
-                        }
-                        case ANSWERED: {
-                            answered = true;
-                            break;
-                        }
-                        case FORWARDED: {
-                            forwarded = true;
-                            break;
-                        }
-                        default: {
-                            // We don't care about the other flags
-                        }
-                    }
-                } catch (Exception e) { /* ignore */ }
-            }
+            boolean read = (cursor.getInt(READ_COLUMN) == 1);
+            boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
+            boolean answered = (cursor.getInt(ANSWERED_COLUMN) == 1);
+            boolean forwarded = (cursor.getInt(FORWARDED_COLUMN) == 1);
 
             boolean hasAttachments = (cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0);
 
@@ -1988,12 +1948,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             long uniqueId = cursor.getLong(mUniqueIdColumn);
 
             if (mSelected.contains(uniqueId)) {
-                String flags = cursor.getString(FLAGS_COLUMN);
+                boolean read = (cursor.getInt(READ_COLUMN) == 1);
+                boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
 
-                if (!flags.contains(Flag.FLAGGED.name())) {
+                if (!flagged) {
                     isBatchFlag = true;
                 }
-                if (!flags.contains(Flag.SEEN.name())) {
+                if (!read) {
                     isBatchRead = true;
                 }
 
@@ -2834,7 +2795,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 break;
             }
             case SORT_FLAGGED: {
-                sortColumn = "(" + MessageColumns.FLAGS + " NOT LIKE '%FLAGGED%')";
+                sortColumn = "(" + MessageColumns.FLAGGED + " != 1)";
                 break;
             }
 //            case SORT_SENDER: {
@@ -2847,7 +2808,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 break;
             }
             case SORT_UNREAD: {
-                sortColumn = "(" + MessageColumns.FLAGS + " LIKE '%SEEN%')";
+                sortColumn = MessageColumns.READ;
                 break;
             }
             case SORT_DATE:
@@ -2894,6 +2855,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         cleanupSelected(cursor);
 
         mAdapter.swapCursor(cursor);
+
+        computeBatchDirection();
     }
 
     private void cleanupSelected(Cursor cursor) {

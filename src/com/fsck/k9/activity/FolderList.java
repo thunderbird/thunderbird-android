@@ -62,14 +62,13 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchModifier;
-import com.fsck.k9.search.SearchSpecification;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.service.MailService;
 
 /**
@@ -1118,7 +1117,8 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             if (folder.unreadMessageCount != 0) {
                 holder.newMessageCount.setText(Integer
                                                .toString(folder.unreadMessageCount));
-                holder.newMessageCountWrapper.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.UNREAD));
+                holder.newMessageCountWrapper.setOnClickListener(
+                        createUnreadSearch(mAccount, folder));
                 holder.newMessageCountWrapper.setVisibility(View.VISIBLE);
                 holder.newMessageCountIcon.setBackgroundDrawable( mAccount.generateColorChip(false, false, false, false, false).drawable() );
             } else {
@@ -1128,7 +1128,8 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             if (folder.flaggedMessageCount > 0) {
                 holder.flaggedMessageCount.setText(Integer
                                                    .toString(folder.flaggedMessageCount));
-                holder.flaggedMessageCountWrapper.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.FLAGGED));
+                holder.flaggedMessageCountWrapper.setOnClickListener(
+                        createFlaggedSearch(mAccount, folder));
                 holder.flaggedMessageCountWrapper.setVisibility(View.VISIBLE);
                 holder.flaggedMessageCountIcon.setBackgroundDrawable( mAccount.generateColorChip(false, false, false, false,true).drawable() );
             } else {
@@ -1150,6 +1151,36 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
 
             return view;
+        }
+
+        private OnClickListener createFlaggedSearch(Account account, FolderInfoHolder folder) {
+            String searchTitle = getString(R.string.search_title,
+                    getString(R.string.message_list_title, account.getDescription(),
+                            folder.displayName),
+                    getString(R.string.flagged_modifier));
+
+            LocalSearch search = new LocalSearch(searchTitle);
+            search.and(Searchfield.FLAGGED, "1", Attribute.EQUALS);
+
+            search.addAllowedFolder(folder.name);
+            search.addAccountUuid(account.getUuid());
+
+            return new FolderClickListener(search);
+        }
+
+        private OnClickListener createUnreadSearch(Account account, FolderInfoHolder folder) {
+            String searchTitle = getString(R.string.search_title,
+                    getString(R.string.message_list_title, account.getDescription(),
+                            folder.displayName),
+                    getString(R.string.unread_modifier));
+
+            LocalSearch search = new LocalSearch(searchTitle);
+            search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
+
+            search.addAllowedFolder(folder.name);
+            search.addAccountUuid(account.getUuid());
+
+            return new FolderClickListener(search);
         }
 
         @Override
@@ -1260,32 +1291,14 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
     private class FolderClickListener implements OnClickListener {
 
-        final BaseAccount account;
-        final String folderName;
-        final String displayName;
-        final SearchModifier searchModifier;
-        FolderClickListener(BaseAccount nAccount, String folderName, String displayName, SearchModifier nSearchModifier) {
-            account = nAccount;
-            this.folderName = folderName;
-            searchModifier = nSearchModifier;
-            this.displayName = displayName;
+        final LocalSearch search;
+
+        FolderClickListener(LocalSearch search) {
+            this.search = search;
         }
+
         @Override
         public void onClick(View v) {
-            final String description = getString(R.string.search_title,
-                                           getString(R.string.message_list_title, account.getDescription(), displayName),
-                                           getString(searchModifier.resId));
-
-            LocalSearch search = new LocalSearch(description);
-            try {
-                search.allRequiredFlags(searchModifier.requiredFlags);
-                search.allForbiddenFlags(searchModifier.forbiddenFlags);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            search.addAllowedFolder(folderName);
-            search.addAccountUuid(account.getUuid());
             MessageList.actionDisplaySearch(FolderList.this, search, true, false);
         }
     }
@@ -1294,7 +1307,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         String description = getString(R.string.search_title, mAccount.getDescription(), getString(R.string.unread_modifier));
         LocalSearch search = new LocalSearch(description);
         search.addAccountUuid(account.getUuid());
-        search.allForbiddenFlags(new Flag[] { Flag.SEEN });
+        search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
 
         MessageList.actionDisplaySearch(context, search, true, false);
     }

@@ -78,7 +78,9 @@ public interface SearchSpecification extends Parcelable {
         DELETED,
         THREAD_ROOT,
         ID,
-        INTEGRATE
+        INTEGRATE,
+        READ,
+        FLAGGED
     }
 
 

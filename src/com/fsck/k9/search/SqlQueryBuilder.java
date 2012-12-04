@@ -136,6 +136,14 @@ public class SqlQueryBuilder {
                 columnName = "integrate";
                 break;
             }
+            case READ: {
+                columnName = "read";
+                break;
+            }
+            case FLAGGED: {
+                columnName = "flagged";
+                break;
+            }
         }
 
         if (columnName == null) {

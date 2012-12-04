@@ -230,34 +230,6 @@ public class LocalSearch implements SearchSpecification {
     }
 
     /**
-     * Add all the flags to this node as required flags. The
-     * provided flags will be combined using AND with the root.
-     *
-     * @param requiredFlags Array of required flags.
-     */
-    public void allRequiredFlags(Flag[] requiredFlags) {
-        if (requiredFlags != null) {
-            for (Flag f : requiredFlags) {
-                and(new SearchCondition(Searchfield.FLAG, Attribute.CONTAINS, f.name()));
-            }
-        }
-    }
-
-    /**
-     * Add all the flags to this node as forbidden flags. The
-     * provided flags will be combined using AND with the root.
-     *
-     * @param forbiddenFlags Array of forbidden flags.
-     */
-    public void allForbiddenFlags(Flag[] forbiddenFlags) {
-        if (forbiddenFlags != null) {
-            for (Flag f : forbiddenFlags) {
-                and(new SearchCondition(Searchfield.FLAG, Attribute.NOT_CONTAINS, f.name()));
-            }
-        }
-    }
-
-    /**
      * TODO
      * FOR NOW: And the folder with the root.
      *
