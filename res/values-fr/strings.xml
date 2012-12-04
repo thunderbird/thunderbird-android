@@ -1103,4 +1103,8 @@ de plus</string>
 
     <string name="global_settings_threaded_view_label">Vue par fil</string>
     <string name="global_settings_threaded_view_summary">Réduire les messages appartenant à un même fil</string>
+
+    <string name="upgrade_databases_title">Mise à jour base de données</string>
+    <string name="upgrade_databases_unspecified">Mise à jour base de données…</string>
+    <string name="upgrade_database_format">Mise à jour base de données du compte \"<xliff:g id="account">%s</xliff:g>\"</string>
 </resources>
