@@ -111,6 +111,13 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int UID_CHECK_BATCH_SIZE = 500;
 
+    /**
+     * Number of messages to perform flag updates at once.
+     *
+     * @see #setFlag(List, Flag, boolean, boolean)
+     */
+    private static final int FLAG_UPDATE_BATCH_SIZE = 500;
+
     public static final int DB_VERSION = 46;
 
     protected String uUid = null;
@@ -4091,5 +4098,274 @@ public class LocalStore extends Store implements Serializable {
     private void notifyChange() {
         Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + uUid + "/messages");
         mContentResolver.notifyChange(uri, null);
+    }
+
+    /**
+     * Split database operations with a large set of arguments into multiple SQL statements.
+     *
+     * <p>
+     * At the time of this writing (2012-12-06) SQLite only supports around 1000 arguments. That's
+     * why we have to split SQL statements with a large set of arguments into multiple SQL
+     * statements each working on a subset of the arguments.
+     * </p>
+     *
+     * @param selectionCallback
+     *         Supplies the argument set and the code to query/update the database.
+     * @param batchSize
+     *         The maximum size of the selection set in each SQL statement.
+     *
+     * @throws MessagingException
+     */
+    public void doBatchSetSelection(final BatchSetSelection selectionCallback, final int batchSize)
+            throws MessagingException {
+
+        final List<String> selectionArgs = new ArrayList<String>();
+        int start = 0;
+
+        while (start < selectionCallback.getListSize()) {
+            final StringBuilder selection = new StringBuilder();
+
+            selection.append(" IN (");
+
+            int count = Math.min(selectionCallback.getListSize() - start, batchSize);
+
+            for (int i = start, end = start + count; i < end; i++) {
+                if (i > start) {
+                    selection.append(",?");
+                } else {
+                    selection.append("?");
+                }
+
+                selectionArgs.add(selectionCallback.getListItem(i));
+            }
+
+            selection.append(")");
+
+            try {
+                database.execute(true, new DbCallback<Void>() {
+                    @Override
+                    public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
+                            UnavailableStorageException {
+
+                        selectionCallback.doDbWork(db, selection.toString(),
+                                selectionArgs.toArray(EMPTY_STRING_ARRAY));
+
+                        return null;
+                    }
+                });
+
+                selectionCallback.postDbWork();
+
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
+
+            selectionArgs.clear();
+            start += count;
+        }
+    }
+
+    /**
+     * Defines the behavior of {@link LocalStore#doBatchSetSelection(BatchSetSelection, int)}.
+     */
+    public interface BatchSetSelection {
+        /**
+         * @return The size of the argument list.
+         */
+        int getListSize();
+
+        /**
+         * Get a specific item of the argument list.
+         *
+         * @param index
+         *         The index of the item.
+         *
+         * @return Item at position {@code i} of the argument list.
+         */
+        String getListItem(int index);
+
+        /**
+         * Execute the SQL statement.
+         *
+         * @param db
+         *         Use this {@link SQLiteDatabase} instance for your SQL statement.
+         * @param selectionSet
+         *         A partial selection string containing place holders for the argument list, e.g.
+         *         {@code " IN (?,?,?)"} (starts with a space).
+         * @param selectionArgs
+         *         The current subset of the argument list.
+         * @throws UnavailableStorageException
+         */
+        void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
+                throws UnavailableStorageException;
+
+        /**
+         * This will be executed after each invocation of
+         * {@link #doDbWork(SQLiteDatabase, String, String[])} (after the transaction has been
+         * committed).
+         */
+        void postDbWork();
+    }
+
+    /**
+     * Change the state of a flag for a list of messages.
+     *
+     * <p>
+     * The goal of this method is to be fast. Currently this means using as few SQL UPDATE
+     * statements as possible.<br>
+     * Current benchmarks show that updating 1000 messages takes about 8 seconds on a Nexus 7. So
+     * there should be room for further improvement.
+     * </p>
+     *
+     * @param messageIds
+     *         A list of primary keys in the "messages" table.
+     * @param flag
+     *         The flag to change. This must be a flag with a separate column in the database.
+     * @param newState
+     *         {@code true}, if the flag should be set. {@code false}, otherwise.
+     * @param threadRootIds
+     *         If this is {@code true}, {@code messageIds} contains the IDs of the messages at the
+     *         root of a thread. In that case the flag is changed for all messages in these threads.
+     *         If this is {@code false} only the messages in {@code messageIds} are changed.
+     *
+     * @throws MessagingException
+     */
+    public void setFlag(final List<Long> messageIds, final Flag flag,
+            final boolean newState, final boolean threadRootIds) throws MessagingException {
+
+        final ContentValues cv = new ContentValues();
+
+        switch (flag) {
+            case SEEN: {
+                cv.put("read", newState);
+                break;
+            }
+            case FLAGGED: {
+                cv.put("flagged", newState);
+                break;
+            }
+            case ANSWERED: {
+                cv.put("answered", newState);
+                break;
+            }
+            case FORWARDED: {
+                cv.put("forwarded", newState);
+                break;
+            }
+            default: {
+                throw new IllegalArgumentException("Flag must be a special column flag");
+            }
+        }
+
+        doBatchSetSelection(new BatchSetSelection() {
+
+            @Override
+            public int getListSize() {
+                return messageIds.size();
+            }
+
+            @Override
+            public String getListItem(int index) {
+                return Long.toString(messageIds.get(index));
+            }
+
+            @Override
+            public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
+                    throws UnavailableStorageException {
+
+                db.update("messages", cv, "(empty IS NULL OR empty != 1) AND id" + selectionSet,
+                        selectionArgs);
+
+                if (threadRootIds) {
+                    db.update("messages", cv, "(empty IS NULL OR empty != 1) AND thread_root" +
+                            selectionSet, selectionArgs);
+                }
+            }
+
+            @Override
+            public void postDbWork() {
+                notifyChange();
+            }
+        }, FLAG_UPDATE_BATCH_SIZE);
+    }
+
+    /**
+     * Get folder name and UID for the supplied messages.
+     *
+     * @param messageIds
+     *         A list of primary keys in the "messages" table.
+     * @param threadedList
+     *         If this is {@code true}, {@code messageIds} contains the IDs of the messages at the
+     *         root of a thread. In that case return UIDs for all messages in these threads.
+     *         If this is {@code false} only the UIDs for messages in {@code messageIds} are
+     *         returned.
+     *
+     * @return The list of UIDs for the messages grouped by folder name.
+     *
+     * @throws MessagingException
+     */
+    public Map<String, List<String>> getFoldersAndUids(final List<Long> messageIds,
+            final boolean threadedList) throws MessagingException {
+
+        final Map<String, List<String>> folderMap = new HashMap<String, List<String>>();
+
+        doBatchSetSelection(new BatchSetSelection() {
+
+            @Override
+            public int getListSize() {
+                return messageIds.size();
+            }
+
+            @Override
+            public String getListItem(int index) {
+                return Long.toString(messageIds.get(index));
+            }
+
+            @Override
+            public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
+                    throws UnavailableStorageException {
+
+                String sqlPrefix =
+                        "SELECT m.uid, f.name " +
+                        "FROM messages m " +
+                        "JOIN folders f ON (m.folder_id = f.id) " +
+                        "WHERE (m.empty IS NULL OR m.empty != 1) AND ";
+
+                String sql = sqlPrefix + "m.id" + selectionSet;
+                getDataFromCursor(db.rawQuery(sql, selectionArgs));
+
+                if (threadedList) {
+                    String threadSql = sqlPrefix + "m.thread_root" + selectionSet;
+                    getDataFromCursor(db.rawQuery(threadSql, selectionArgs));
+                }
+            }
+
+            private void getDataFromCursor(Cursor cursor) {
+                try {
+                    while (cursor.moveToNext()) {
+                        String uid = cursor.getString(0);
+                        String folderName = cursor.getString(1);
+
+                        List<String> uidList = folderMap.get(folderName);
+                        if (uidList == null) {
+                            uidList = new ArrayList<String>();
+                            folderMap.put(folderName, uidList);
+                        }
+
+                        uidList.add(uid);
+                    }
+                } finally {
+                    cursor.close();
+                }
+            }
+
+            @Override
+            public void postDbWork() {
+                notifyChange();
+
+            }
+        }, UID_CHECK_BATCH_SIZE);
+
+        return folderMap;
     }
 }

@@ -1257,22 +1257,25 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         int adapterPosition = listViewToAdapterPosition(info.position);
-        Message message = getMessageAtPosition(adapterPosition);
 
         switch (item.getItemId()) {
             case R.id.reply: {
+                Message message = getMessageAtPosition(adapterPosition);
                 onReply(message);
                 break;
             }
             case R.id.reply_all: {
+                Message message = getMessageAtPosition(adapterPosition);
                 onReplyAll(message);
                 break;
             }
             case R.id.forward: {
+                Message message = getMessageAtPosition(adapterPosition);
                 onForward(message);
                 break;
             }
             case R.id.send_again: {
+                Message message = getMessageAtPosition(adapterPosition);
                 onResendMessage(message);
                 mSelectedCount = 0;
                 break;
@@ -1286,40 +1289,45 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 break;
             }
             case R.id.delete: {
+                Message message = getMessageAtPosition(adapterPosition);
                 onDelete(message);
                 break;
             }
             case R.id.mark_as_read: {
-                setFlag(message, Flag.SEEN, true);
+                setFlag(adapterPosition, Flag.SEEN, true);
                 break;
             }
             case R.id.mark_as_unread: {
-                setFlag(message, Flag.SEEN, false);
+                setFlag(adapterPosition, Flag.SEEN, false);
                 break;
             }
             case R.id.flag: {
-                setFlag(message, Flag.FLAGGED, true);
+                setFlag(adapterPosition, Flag.FLAGGED, true);
                 break;
             }
             case R.id.unflag: {
-                setFlag(message, Flag.FLAGGED, false);
+                setFlag(adapterPosition, Flag.FLAGGED, false);
                 break;
             }
 
             // only if the account supports this
             case R.id.archive: {
+                Message message = getMessageAtPosition(adapterPosition);
                 onArchive(message);
                 break;
             }
             case R.id.spam: {
+                Message message = getMessageAtPosition(adapterPosition);
                 onSpam(message);
                 break;
             }
             case R.id.move: {
+                Message message = getMessageAtPosition(adapterPosition);
                 onMove(message);
                 break;
             }
             case R.id.copy: {
+                Message message = getMessageAtPosition(adapterPosition);
                 onCopy(message);
                 break;
             }
@@ -1968,19 +1976,59 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mActionModeCallback.showFlag(isBatchFlag);
     }
 
-    private void setFlag(Message message, final Flag flag, final boolean newState) {
-        setFlag(Collections.singletonList(message), flag, newState);
-    }
-
-    private void setFlag(List<Message> messages, final Flag flag, final boolean newState) {
-        if (messages.size() == 0) {
+    private void setFlag(int adapterPosition, final Flag flag, final boolean newState) {
+        if (adapterPosition == AdapterView.INVALID_POSITION) {
             return;
         }
 
-        if (mThreadedList) {
-            mController.setFlagForThreads(messages, flag, newState);
-        } else {
-            mController.setFlag(messages, flag, newState);
+        Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+        Account account = mPreferences.getAccount(cursor.getString(ACCOUNT_UUID_COLUMN));
+        long id = cursor.getLong(ID_COLUMN);
+
+        mController.setFlag(account, Collections.singletonList(Long.valueOf(id)), flag, newState,
+                mThreadedList);
+
+        computeBatchDirection();
+    }
+
+    private void setFlagForSelected(final Flag flag, final boolean newState) {
+        if (mSelected.size() == 0) {
+            return;
+        }
+
+        Map<Account, List<Long>> accountMapping = new HashMap<Account, List<Long>>();
+        Set<Account> accounts = new HashSet<Account>();
+
+        for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
+            Cursor cursor = (Cursor) mAdapter.getItem(position);
+            long uniqueId = cursor.getLong(mUniqueIdColumn);
+
+            if (mSelected.contains(uniqueId)) {
+                String uuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+                Account account = mPreferences.getAccount(uuid);
+
+                accounts.add(account);
+                List<Long> messageIdList = accountMapping.get(account);
+                if (messageIdList == null) {
+                    messageIdList = new ArrayList<Long>();
+                    accountMapping.put(account, messageIdList);
+                }
+
+                long selectionId;
+                if (mThreadedList) {
+                    selectionId = (cursor.isNull(THREAD_ROOT_COLUMN)) ?
+                            cursor.getLong(ID_COLUMN) : cursor.getLong(THREAD_ROOT_COLUMN);
+                } else {
+                    selectionId = cursor.getLong(ID_COLUMN);
+                }
+
+                messageIdList.add(selectionId);
+            }
+        }
+
+        for (Account account : accounts) {
+            List<Long> messageIds = accountMapping.get(account);
+            mController.setFlag(account, messageIds, flag, newState, mThreadedList);
         }
 
         computeBatchDirection();
@@ -2408,8 +2456,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            List<Message> messages = getCheckedMessages();
-
             /*
              * In the following we assume that we can't move or copy
              * mails to the same folder. Also that spam isn't available if we are
@@ -2419,26 +2465,25 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
              */
             switch (item.getItemId()) {
             case R.id.delete: {
+                List<Message> messages = getCheckedMessages();
                 onDelete(messages);
-
-                //FIXME
                 mSelectedCount = 0;
                 break;
             }
             case R.id.mark_as_read: {
-                setFlag(messages, Flag.SEEN, true);
+                setFlagForSelected(Flag.SEEN, true);
                 break;
             }
             case R.id.mark_as_unread: {
-                setFlag(messages, Flag.SEEN, false);
+                setFlagForSelected(Flag.SEEN, false);
                 break;
             }
             case R.id.flag: {
-                setFlag(messages, Flag.FLAGGED, true);
+                setFlagForSelected(Flag.FLAGGED, true);
                 break;
             }
             case R.id.unflag: {
-                setFlag(messages, Flag.FLAGGED, false);
+                setFlagForSelected(Flag.FLAGGED, false);
                 break;
             }
             case R.id.select_all: {
@@ -2448,21 +2493,25 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             // only if the account supports this
             case R.id.archive: {
+                List<Message> messages = getCheckedMessages();
                 onArchive(messages);
                 mSelectedCount = 0;
                 break;
             }
             case R.id.spam: {
+                List<Message> messages = getCheckedMessages();
                 onSpam(messages);
                 mSelectedCount = 0;
                 break;
             }
             case R.id.move: {
+                List<Message> messages = getCheckedMessages();
                 onMove(messages);
                 mSelectedCount = 0;
                 break;
             }
             case R.id.copy: {
+                List<Message> messages = getCheckedMessages();
                 onCopy(messages);
                 mSelectedCount = 0;
                 break;
@@ -2608,6 +2657,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         return getMessageAtPosition(adapterPosition);
     }
 
+    private int getAdapterPositionForSelectedMessage() {
+        int listViewPosition = mListView.getSelectedItemPosition();
+        return listViewToAdapterPosition(listViewPosition);
+    }
+
     private Message getMessageAtPosition(int adapterPosition) {
         if (adapterPosition == AdapterView.INVALID_POSITION) {
             return null;
@@ -2654,11 +2708,23 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         toggleMessageSelect(mListView.getSelectedItemPosition());
     }
 
-    public void onToggleFlag() {
-        Message message = getSelectedMessage();
-        if (message != null) {
-            setFlag(message, Flag.FLAGGED, !message.isSet(Flag.FLAGGED));
+    public void onToggleFlagged() {
+        onToggleFlag(Flag.FLAGGED, FLAGGED_COLUMN);
+    }
+
+    public void onToggleRead() {
+        onToggleFlag(Flag.SEEN, READ_COLUMN);
+    }
+
+    private void onToggleFlag(Flag flag, int flagColumn) {
+        int adapterPosition = getAdapterPositionForSelectedMessage();
+        if (adapterPosition == ListView.INVALID_POSITION) {
+            return;
         }
+
+        Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+        boolean flagState = (cursor.getInt(flagColumn) == 1);
+        setFlag(adapterPosition, flag, !flagState);
     }
 
     public void onMove() {
@@ -2679,13 +2745,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         Message message = getSelectedMessage();
         if (message != null) {
             onCopy(message);
-        }
-    }
-
-    public void onToggleRead() {
-        Message message = getSelectedMessage();
-        if (message != null) {
-            setFlag(message, Flag.SEEN, !message.isSet(Flag.SEEN));
         }
     }
 

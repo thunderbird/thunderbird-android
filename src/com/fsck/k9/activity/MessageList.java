@@ -297,7 +297,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                     return true;
                 }
                 case KeyEvent.KEYCODE_G: {
-                    mMessageListFragment.onToggleFlag();
+                    mMessageListFragment.onToggleFlagged();
                     return true;
                 }
                 case KeyEvent.KEYCODE_M: {

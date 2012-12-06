@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -2559,39 +2560,65 @@ public class MessagingController implements Runnable {
         processPendingCommands(account);
     }
 
-    public void setFlag(final List<Message> messages, final Flag flag, final boolean newState) {
+    public void setFlag(final Account account, final List<Long> messageIds, final Flag flag,
+            final boolean newState, final boolean threadedList) {
 
-        actOnMessages(messages, new MessageActor() {
+        threadPool.execute(new Runnable() {
             @Override
-            public void act(final Account account, final Folder folder,
-                    final List<Message> accountMessages) {
-
-                setFlag(account, folder.getName(), accountMessages.toArray(EMPTY_MESSAGE_ARRAY), flag,
-                        newState);
+            public void run() {
+                setFlagSynchronous(account, messageIds, flag, newState, threadedList);
             }
         });
     }
 
-    public void setFlagForThreads(final List<Message> messages, final Flag flag,
-            final boolean newState) {
+    private void setFlagSynchronous(final Account account, final List<Long> messageIds,
+            final Flag flag, final boolean newState, final boolean threadedList) {
 
-        actOnMessages(messages, new MessageActor() {
-            @Override
-            public void act(final Account account, final Folder folder,
-                    final List<Message> accountMessages) {
+        LocalStore localStore;
+        try {
+            localStore = account.getLocalStore();
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Couldn't get LocalStore instance", e);
+            return;
+        }
 
-                try {
-                    List<Message> messagesInThreads = collectMessagesInThreads(account,
-                            accountMessages);
+        // Update affected messages in the database. This should be as fast as possible so the UI
+        // can be updated with the new state.
+        try {
+            localStore.setFlag(messageIds, flag, newState, threadedList);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Couldn't set flags in local database", e);
+        }
 
-                    setFlag(account, folder.getName(),
-                            messagesInThreads.toArray(EMPTY_MESSAGE_ARRAY), flag, newState);
+        // Notify listeners of changed folder status
+//        for (MessagingListener l : getListeners()) {
+//            l.folderStatusChanged(account, folderName, localFolder.getUnreadMessageCount());
+//        }
 
-                } catch (MessagingException e) {
-                    addErrorMessage(account, "Something went wrong in setFlagForThreads()", e);
-                }
+        // Read folder name and UID of messages from the database
+        Map<String, List<String>> folderMap;
+        try {
+            folderMap = localStore.getFoldersAndUids(messageIds, threadedList);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Couldn't get folder name and UID of messages", e);
+            return;
+        }
+
+        // Loop over all folders
+        for (Entry<String, List<String>> entry : folderMap.entrySet()) {
+            String folderName = entry.getKey();
+
+            // The error folder is always a local folder
+            // TODO: Skip the remote part for all local-only folders
+            if (account.getErrorFolderName().equals(folderName)) {
+                continue;
             }
-        });
+
+            // Send flag change to server
+            String[] uids = entry.getValue().toArray(EMPTY_STRING_ARRAY);
+            queueSetFlag(account, folderName, Boolean.toString(newState), flag.toString(), uids);
+            processPendingCommands(account);
+        }
     }
 
     /**
@@ -2848,15 +2875,18 @@ public class MessagingController implements Runnable {
                                 false, true)) {
                             if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
                                 message.setFlag(Flag.SEEN, true);
-                                setFlag(Collections.singletonList((Message) message),
-                                        Flag.SEEN, true);
+
+                                setFlagSynchronous(account, Collections.singletonList(Long.valueOf(message.getId())), Flag.SEEN, true, false);
+//                                setFlag(Collections.singletonList((Message) message),
+//                                        Flag.SEEN, true);
                             }
                         }
                         return;
                     }
                     if (!message.isSet(Flag.SEEN)) {
                         message.setFlag(Flag.SEEN, true);
-                        setFlag(Collections.singletonList((Message) message), Flag.SEEN, true);
+                        setFlagSynchronous(account, Collections.singletonList(Long.valueOf(message.getId())), Flag.SEEN, true, false);
+//                        setFlag(Collections.singletonList((Message) message), Flag.SEEN, true);
                     }
 
                     for (MessagingListener l : getListeners(listener)) {
