@@ -367,8 +367,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 if (fragmentManager.getBackStackEntryCount() > 0) {
                     fragmentManager.popBackStack();
-                } else if (!mSingleFolderMode || mMessageListFragment.isManualSearch()) {
+                } else if (mMessageListFragment.isManualSearch()) {
                     onBackPressed();
+                } else if (!mSingleFolderMode) {
+                    onAccounts();
                 } else {
                     onShowFolderList();
                 }
