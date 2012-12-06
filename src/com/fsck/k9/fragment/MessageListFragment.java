@@ -895,6 +895,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mSenderAboveSubject = K9.messageListSenderAboveSubject();
 
+        // Refresh the message list
+        LoaderManager loaderManager = getLoaderManager();
+        for (int i = 0; i < mAccountUuids.length; i++) {
+            loaderManager.restartLoader(i, null, this);
+        }
+
         // Check if we have connectivity.  Cache the value.
         if (mHasConnectivity == null) {
             final ConnectivityManager connectivityManager =
