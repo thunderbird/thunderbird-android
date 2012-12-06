@@ -712,6 +712,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mActionBarProgressView = inflater.inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
 
         mPullToRefreshView = (PullToRefreshListView) view.findViewById(R.id.message_list);
+        View loadingView = inflater.inflate(R.layout.message_list_loading, null);
+        mPullToRefreshView.setEmptyView(loadingView);
 
         initializeLayout();
         mListView.setVerticalFadingEdgeEnabled(false);
@@ -2891,6 +2893,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mPullToRefreshView.setEmptyView(null);
+
         Cursor cursor;
         if (mCursors.length > 1) {
             mCursors[loader.getId()] = data;
