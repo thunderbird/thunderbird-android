@@ -21,7 +21,10 @@ public class SearchAccount implements BaseAccount {
     // create the all messages search ( all accounts is default when none specified )
     public static SearchAccount createAllMessagesAccount(Context context) {
         String name = context.getString(R.string.search_all_messages_title);
+
         LocalSearch tmpSearch = new LocalSearch(name);
+        tmpSearch.and(Searchfield.SEARCHABLE, "1", Attribute.EQUALS);
+
         return new SearchAccount(ALL_MESSAGES, tmpSearch, name,
                 context.getString(R.string.search_all_messages_detail));
     }

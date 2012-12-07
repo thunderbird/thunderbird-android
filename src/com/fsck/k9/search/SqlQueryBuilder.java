@@ -21,6 +21,7 @@ public class SqlQueryBuilder {
     private static void buildWhereClauseInternal(Account account, ConditionsTreeNode node,
             StringBuilder query, List<String> selectionArgs) {
         if (node == null) {
+            query.append("1");
             return;
         }
 
@@ -36,6 +37,33 @@ public class SqlQueryBuilder {
                         query.append("folder_id != ?");
                     }
                     selectionArgs.add(Long.toString(folderId));
+                    break;
+                }
+                case SEARCHABLE: {
+                    switch (account.getSearchableFolders()) {
+                        case ALL: {
+                            // Dummy condition, always select
+                            query.append("1");
+                            break;
+                        }
+                        case DISPLAYABLE: {
+                            // Create temporary LocalSearch object so we can use...
+                            LocalSearch tempSearch = new LocalSearch();
+                            // ...the helper methods in Account to create the necessary conditions
+                            // to limit the selection to displayable, non-special folders.
+                            account.excludeSpecialFolders(tempSearch);
+                            account.limitToDisplayableFolders(tempSearch);
+
+                            buildWhereClauseInternal(account, tempSearch.getConditions(), query,
+                                    selectionArgs);
+                            break;
+                        }
+                        case NONE: {
+                            // Dummy condition, never select
+                            query.append("0");
+                            break;
+                        }
+                    }
                     break;
                 }
                 default: {
@@ -101,10 +129,6 @@ public class SqlQueryBuilder {
                 columnName = "flags";
                 break;
             }
-            case FOLDER: {
-                columnName = "folder_id";
-                break;
-            }
             case ID: {
                 columnName = "id";
                 break;
@@ -151,6 +175,11 @@ public class SqlQueryBuilder {
             }
             case DISPLAY_CLASS: {
                 columnName = "display_class";
+                break;
+            }
+            case FOLDER:
+            case SEARCHABLE: {
+                // Special cases handled in buildWhereClauseInternal()
                 break;
             }
         }
