@@ -38,7 +38,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -702,81 +701,6 @@ public class LocalStore extends Store implements Serializable {
             }
         });
     }
-
-    public void getMessageCounts(final AccountStats stats) throws MessagingException {
-        final Account.FolderMode displayMode = mAccount.getFolderDisplayMode();
-
-        database.execute(false, new DbCallback<Integer>() {
-            @Override
-            public Integer doDbWork(final SQLiteDatabase db) {
-                Cursor cursor = null;
-                try {
-                    // Always count messages in the INBOX but exclude special folders and possibly
-                    // more (depending on the folder display mode)
-                    String baseQuery = "SELECT SUM(unread_count), SUM(flagged_count) " +
-                                       "FROM folders " +
-                                       "WHERE (name = ?)" +  /* INBOX */
-                                       " OR (" +
-                                       "name NOT IN (?, ?, ?, ?, ?)" +  /* special folders */
-                                       "%s)";  /* placeholder for additional constraints */
-
-                    List<String> queryParam = new ArrayList<String>();
-                    queryParam.add(mAccount.getInboxFolderName());
-
-                    queryParam.add((mAccount.getTrashFolderName() != null) ?
-                                   mAccount.getTrashFolderName() : "");
-                    queryParam.add((mAccount.getDraftsFolderName() != null) ?
-                                   mAccount.getDraftsFolderName() : "");
-                    queryParam.add((mAccount.getSpamFolderName() != null) ?
-                                   mAccount.getSpamFolderName() : "");
-                    queryParam.add((mAccount.getOutboxFolderName() != null) ?
-                                   mAccount.getOutboxFolderName() : "");
-                    queryParam.add((mAccount.getSentFolderName() != null) ?
-                                   mAccount.getSentFolderName() : "");
-
-                    final String extraWhere;
-                    switch (displayMode) {
-                    case FIRST_CLASS:
-                        // Count messages in the INBOX and non-special first class folders
-                        extraWhere = " AND (display_class = ?)";
-                        queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
-                        break;
-                    case FIRST_AND_SECOND_CLASS:
-                        // Count messages in the INBOX and non-special first and second class folders
-                        extraWhere = " AND (display_class IN (?, ?))";
-                        queryParam.add(Folder.FolderClass.FIRST_CLASS.name());
-                        queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
-                        break;
-                    case NOT_SECOND_CLASS:
-                        // Count messages in the INBOX and non-special non-second-class folders
-                        extraWhere = " AND (display_class != ?)";
-                        queryParam.add(Folder.FolderClass.SECOND_CLASS.name());
-                        break;
-                    case ALL:
-                        // Count messages in the INBOX and non-special folders
-                        extraWhere = "";
-                        break;
-                    default:
-                        Log.e(K9.LOG_TAG, "asked to compute account statistics for an impossible folder mode " + displayMode);
-                        stats.unreadMessageCount = 0;
-                        stats.flaggedMessageCount = 0;
-                        return null;
-                    }
-
-                    String query = String.format(Locale.US, baseQuery, extraWhere);
-                    cursor = db.rawQuery(query, queryParam.toArray(EMPTY_STRING_ARRAY));
-
-                    cursor.moveToFirst();
-                    stats.unreadMessageCount = cursor.getInt(0);
-                    stats.flaggedMessageCount = cursor.getInt(1);
-                    return null;
-                } finally {
-                    Utility.closeQuietly(cursor);
-                }
-            }
-        });
-    }
-
 
     public int getFolderCount() throws MessagingException {
         return database.execute(false, new DbCallback<Integer>() {
@@ -1493,24 +1417,42 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public int getUnreadMessageCount() throws MessagingException {
-            open(OpenMode.READ_WRITE);
-            return mUnreadMessageCount;
+            if (!isOpen()) {
+                // open() sums up the number of unread messages in the database
+                open(OpenMode.READ_WRITE);
+                return mUnreadMessageCount;
+            }
+
+            // Folder was already opened. Unread count might be outdated so query the database now.
+            try {
+                return database.execute(false, new DbCallback<Integer>() {
+                    @Override
+                    public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
+                        int unreadMessageCount = 0;
+                        Cursor cursor = db.query("messages", new String[] { "SUM(read=0)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                                new String[] { Long.toString(mFolderId) }, null, null, null);
+
+                        try {
+                            if (cursor.moveToFirst()) {
+                                unreadMessageCount = cursor.getInt(0);
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
+                        return unreadMessageCount;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
         }
 
         @Override
         public int getFlaggedMessageCount() throws MessagingException {
             open(OpenMode.READ_WRITE);
             return mFlaggedMessageCount;
-        }
-
-        public void setUnreadMessageCount(final int unreadMessageCount) throws MessagingException {
-            mUnreadMessageCount = Math.max(0, unreadMessageCount);
-            updateFolderColumn("unread_count", mUnreadMessageCount);
-        }
-
-        public void setFlaggedMessageCount(final int flaggedMessageCount) throws MessagingException {
-            mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
-            updateFolderColumn("flagged_count", mFlaggedMessageCount);
         }
 
         @Override
@@ -2152,16 +2094,6 @@ public class LocalStore extends Store implements Serializable {
                             for (Message message : msgs) {
                                 LocalMessage lMessage = (LocalMessage)message;
 
-                                if (!message.isSet(Flag.SEEN)) {
-                                    setUnreadMessageCount(getUnreadMessageCount() - 1);
-                                    lDestFolder.setUnreadMessageCount(lDestFolder.getUnreadMessageCount() + 1);
-                                }
-
-                                if (message.isSet(Flag.FLAGGED)) {
-                                    setFlaggedMessageCount(getFlaggedMessageCount() - 1);
-                                    lDestFolder.setFlaggedMessageCount(lDestFolder.getFlaggedMessageCount() + 1);
-                                }
-
                                 String oldUID = message.getUid();
 
                                 if (K9.DEBUG) {
@@ -2476,13 +2408,6 @@ public class LocalStore extends Store implements Serializable {
 
                                     if (oldMessage != null) {
                                         oldMessageId = oldMessage.getId();
-
-                                        if (!oldMessage.isSet(Flag.SEEN)) {
-                                            setUnreadMessageCount(getUnreadMessageCount() - 1);
-                                        }
-                                        if (oldMessage.isSet(Flag.FLAGGED)) {
-                                            setFlaggedMessageCount(getFlaggedMessageCount() - 1);
-                                        }
                                     }
 
                                     deleteAttachments(message.getUid());
@@ -2576,12 +2501,6 @@ public class LocalStore extends Store implements Serializable {
                                         saveAttachment(messageUid, attachment, copy);
                                     }
                                     saveHeaders(messageUid, (MimeMessage)message);
-                                    if (!message.isSet(Flag.SEEN)) {
-                                        setUnreadMessageCount(getUnreadMessageCount() + 1);
-                                    }
-                                    if (message.isSet(Flag.FLAGGED)) {
-                                        setFlaggedMessageCount(getFlaggedMessageCount() + 1);
-                                    }
                                 } catch (Exception e) {
                                     throw new MessagingException("Error appending message", e);
                                 }
@@ -2996,7 +2915,6 @@ public class LocalStore extends Store implements Serializable {
                     return null;
                 }
             });
-            resetUnreadAndFlaggedCounts();
 
             notifyChange();
         }
@@ -3025,27 +2943,6 @@ public class LocalStore extends Store implements Serializable {
             setLastChecked(0);
             setVisibleLimit(mAccount.getDisplayCount());
         }
-
-        public void resetUnreadAndFlaggedCounts() {
-            try {
-                int newUnread = 0;
-                int newFlagged = 0;
-                Message[] messages = getMessages(null);
-                for (Message message : messages) {
-                    if (!message.isSet(Flag.SEEN)) {
-                        newUnread++;
-                    }
-                    if (message.isSet(Flag.FLAGGED)) {
-                        newFlagged++;
-                    }
-                }
-                setUnreadMessageCount(newUnread);
-                setFlaggedMessageCount(newFlagged);
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Unable to fetch all messages from LocalStore", e);
-            }
-        }
-
 
         @Override
         public void delete(final boolean recurse) throws MessagingException {
@@ -3711,9 +3608,6 @@ public class LocalStore extends Store implements Serializable {
                                 delete();
                             }
 
-                            updateFolderCountsOnFlag(flag, set);
-
-
                             LocalMessage.super.setFlag(flag, set);
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
@@ -3812,7 +3706,6 @@ public class LocalStore extends Store implements Serializable {
                         try {
                             LocalFolder localFolder = (LocalFolder) mFolder;
 
-                            updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
                             localFolder.deleteAttachments(mId);
 
                             String id = Long.toString(mId);
@@ -3917,39 +3810,6 @@ public class LocalStore extends Store implements Serializable {
             }
 
             notifyChange();
-        }
-
-        private void updateFolderCountsOnFlag(Flag flag, boolean set) {
-            /*
-             * Update the unread count on the folder.
-             */
-            try {
-                LocalFolder folder = (LocalFolder)mFolder;
-                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED) {
-                    if (!isSet(Flag.SEEN)) {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + (set ? -1 : 1));
-                    }
-                    if (isSet(Flag.FLAGGED)) {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ? -1 : 1));
-                    }
-                }
-
-
-                if (!isSet(Flag.DELETED)) {
-
-                    if (flag == Flag.SEEN && set != isSet(Flag.SEEN)) {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + (set ? -1 : 1));
-                    }
-
-                    if (flag == Flag.FLAGGED) {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
-                    }
-                }
-            } catch (MessagingException me) {
-                Log.e(K9.LOG_TAG, "Unable to update LocalStore unread message count",
-                      me);
-                throw new RuntimeException(me);
-            }
         }
 
         private void loadHeaders() throws UnavailableStorageException {

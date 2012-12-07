@@ -55,8 +55,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
         try {
             Account account = Preferences.getPreferences(context).getAccount(accountUuid);
             if (account != null) {
-                AccountStats stats = new AccountStats();
-                account.getLocalStore().getMessageCounts(stats);
+                AccountStats stats = account.getStats(context);
                 unreadCount = stats.unreadMessageCount;
                 accountName = account.getDescription();
                 if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName())) {

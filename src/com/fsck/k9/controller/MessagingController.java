@@ -971,10 +971,7 @@ public class MessagingController implements Runnable {
              */
             int newMessages = downloadMessages(account, remoteFolder, localFolder, remoteMessages, false);
 
-            int unreadMessageCount = setLocalUnreadCountToRemote(localFolder, remoteFolder,  newMessages);
-            setLocalFlaggedCountToRemote(localFolder, remoteFolder);
-
-
+            int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : getListeners()) {
                 l.folderStatusChanged(account, folder, unreadMessageCount);
             }
@@ -1069,38 +1066,6 @@ public class MessagingController implements Runnable {
             }
         }
         return true;
-    }
-    private int setLocalUnreadCountToRemote(LocalFolder localFolder, Folder remoteFolder, int newMessageCount) throws MessagingException {
-        int remoteUnreadMessageCount = remoteFolder.getUnreadMessageCount();
-        if (remoteUnreadMessageCount != -1) {
-            localFolder.setUnreadMessageCount(remoteUnreadMessageCount);
-        } else {
-            int unreadCount = 0;
-            Message[] messages = localFolder.getMessages(null, false);
-            for (Message message : messages) {
-                if (!message.isSet(Flag.SEEN) && !message.isSet(Flag.DELETED)) {
-                    unreadCount++;
-                }
-            }
-            localFolder.setUnreadMessageCount(unreadCount);
-        }
-        return localFolder.getUnreadMessageCount();
-    }
-
-    private void setLocalFlaggedCountToRemote(LocalFolder localFolder, Folder remoteFolder) throws MessagingException {
-        int remoteFlaggedMessageCount = remoteFolder.getFlaggedMessageCount();
-        if (remoteFlaggedMessageCount != -1) {
-            localFolder.setFlaggedMessageCount(remoteFlaggedMessageCount);
-        } else {
-            int flaggedCount = 0;
-            Message[] messages = localFolder.getMessages(null, false);
-            for (Message message : messages) {
-                if (message.isSet(Flag.FLAGGED) && !message.isSet(Flag.DELETED)) {
-                    flaggedCount++;
-                }
-            }
-            localFolder.setFlaggedMessageCount(flaggedCount);
-        }
     }
 
     /**
@@ -2453,7 +2418,7 @@ public class MessagingController implements Runnable {
                     }
                 }
             }
-            localFolder.setUnreadMessageCount(0);
+
             for (MessagingListener l : getListeners()) {
                 l.folderStatusChanged(account, folder, 0);
             }
@@ -3947,8 +3912,6 @@ public class MessagingController implements Runnable {
                     localFolder = (LocalFolder) localStore.getFolder(account.getTrashFolderName());
                     localFolder.open(OpenMode.READ_WRITE);
                     localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
-                    localFolder.setUnreadMessageCount(0);
-                    localFolder.setFlaggedMessageCount(0);
 
                     for (MessagingListener l : getListeners()) {
                         l.emptyTrashCompleted(account);
@@ -4797,9 +4760,8 @@ public class MessagingController implements Runnable {
 
                     account.setRingNotified(false);
                     int newCount = downloadMessages(account, remoteFolder, localFolder, messages, flagSyncOnly);
-                    int unreadMessageCount = setLocalUnreadCountToRemote(localFolder, remoteFolder,  messages.size());
 
-                    setLocalFlaggedCountToRemote(localFolder, remoteFolder);
+                    int unreadMessageCount = localFolder.getUnreadMessageCount();
 
                     localFolder.setLastPush(System.currentTimeMillis());
                     localFolder.setStatus(null);
