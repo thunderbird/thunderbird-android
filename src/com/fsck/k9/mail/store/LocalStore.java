@@ -1308,9 +1308,9 @@ public class LocalStore extends Store implements Serializable {
                         if (cursor.moveToFirst()) {
                             int folderId = cursor.getInt(0);
                             return (folderId > 0);
-                        } else {
-                            return false;
                         }
+
+                        return false;
                     } finally {
                         Utility.closeQuietly(cursor);
                     }
@@ -1505,30 +1505,20 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public FolderClass getSyncClass() {
-            if (FolderClass.INHERITED == mSyncClass) {
-                return getDisplayClass();
-            } else {
-                return mSyncClass;
-            }
+            return (FolderClass.INHERITED == mSyncClass) ? getDisplayClass() : mSyncClass;
         }
 
         public FolderClass getRawSyncClass() {
             return mSyncClass;
-
         }
 
         @Override
         public FolderClass getPushClass() {
-            if (FolderClass.INHERITED == mPushClass) {
-                return getSyncClass();
-            } else {
-                return mPushClass;
-            }
+            return (FolderClass.INHERITED == mPushClass) ? getSyncClass() : mPushClass;
         }
 
         public FolderClass getRawPushClass() {
             return mPushClass;
-
         }
 
         public void setDisplayClass(FolderClass displayClass) throws MessagingException {
@@ -2231,7 +2221,7 @@ public class LocalStore extends Store implements Serializable {
             return appendMessages(messages, false);
         }
 
-        public void destroyMessages(final Message[] messages) throws MessagingException {
+        public void destroyMessages(final Message[] messages) {
             try {
                 database.execute(true, new DbCallback<Void>() {
                     @Override
@@ -2787,10 +2777,10 @@ public class LocalStore extends Store implements Serializable {
             } catch (WrappedException e) {
                 final Throwable cause = e.getCause();
                 if (cause instanceof IOException) {
-                    throw(IOException) cause;
-                } else {
-                    throw(MessagingException) cause;
+                    throw (IOException) cause;
                 }
+
+                throw (MessagingException) cause;
             }
         }
 
@@ -3061,12 +3051,7 @@ public class LocalStore extends Store implements Serializable {
             // Remove any whitespace at the beginning and end of the string.
             text = text.trim();
 
-            if (text.length() <= 512) {
-                return text;
-            } else {
-                return text.substring(0, 512);
-            }
-
+            return (text.length() <= 512) ? text : text.substring(0, 512);
         }
 
         @Override
@@ -3466,6 +3451,7 @@ public class LocalStore extends Store implements Serializable {
             mMessageDirty = false;
         }
 
+        @Override
         public String getPreview() {
             return mPreview;
         }
@@ -3489,13 +3475,9 @@ public class LocalStore extends Store implements Serializable {
             mMessageDirty = true;
         }
 
+        @Override
         public boolean hasAttachments() {
-            if (mAttachmentCount > 0) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return (mAttachmentCount > 0);
         }
 
         public int getAttachmentCount() {
@@ -3554,6 +3536,7 @@ public class LocalStore extends Store implements Serializable {
             super.setFlag(flag, set);
         }
 
+        @Override
         public long getId() {
             return mId;
         }
@@ -3877,6 +3860,7 @@ public class LocalStore extends Store implements Serializable {
             mUri = uri;
         }
 
+        @Override
         public InputStream getInputStream() throws MessagingException {
             try {
                 return mApplication.getContentResolver().openInputStream(mUri);
@@ -3889,6 +3873,7 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
+        @Override
         public void writeTo(OutputStream out) throws IOException, MessagingException {
             InputStream in = getInputStream();
             Base64OutputStream base64Out = new Base64OutputStream(out);
