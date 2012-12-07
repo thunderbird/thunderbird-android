@@ -662,9 +662,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             String folderName = getFolderNameById(account, folderId);
 
             if (mThreadedList && cursor.getInt(THREAD_COUNT_COLUMN) > 1) {
+                // If threading is enabled and this item represents a thread, display the thread contents.
                 long rootId = cursor.getLong(THREAD_ROOT_COLUMN);
                 mFragmentListener.showThread(account, folderName, rootId);
             } else {
+                // This item represents a message; just display the message.
                 MessageReference ref = new MessageReference();
                 ref.accountUuid = account.getUuid();
                 ref.folderName = folderName;
@@ -1633,12 +1635,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 preview = "";
             }
 
+            int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
+
             String subject = cursor.getString(SUBJECT_COLUMN);
             if (StringUtils.isNullOrEmpty(subject)) {
                 subject = getString(R.string.general_no_subject);
+            } else if (threadCount > 1) {
+                // If this is a thread, strip the RE/FW from the subject.  "Be like Outlook."
+                subject = Utility.stripSubject(subject);
             }
-
-            int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
 
             boolean read = (cursor.getInt(READ_COLUMN) == 1);
             boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
