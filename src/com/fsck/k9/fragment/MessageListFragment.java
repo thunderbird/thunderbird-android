@@ -1830,7 +1830,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         FooterViewHolder holder = (FooterViewHolder) mFooterView.getTag();
 
-        holder.progress.setVisibility(progressVisible ? ProgressBar.VISIBLE : ProgressBar.INVISIBLE);
+        holder.progress.setVisibility(progressVisible ? ProgressBar.VISIBLE : ProgressBar.GONE);
         if (text != null) {
             holder.main.setText(text);
         }
