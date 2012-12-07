@@ -1,7 +1,5 @@
 package com.fsck.k9.search;
 
-import java.util.UUID;
-
 import android.content.Context;
 
 import com.fsck.k9.BaseAccount;
@@ -43,7 +41,6 @@ public class SearchAccount implements BaseAccount {
     private String mEmail;
     private String mDescription;
     private LocalSearch mSearch;
-    private String mFakeUuid;
 
     public SearchAccount(String id, LocalSearch search, String description, String email)
             throws IllegalArgumentException {
@@ -86,18 +83,18 @@ public class SearchAccount implements BaseAccount {
         return mSearch;
     }
 
-    /*
-     * This will only be used when accessed as an Account. If that
-     * is the case we don't want to return the uuid of a real account since
-     * this is posing as a fake meta-account. If this object is accesed as
-     * a Search then methods from LocalSearch will be called which do handle
-     * things nice.
+    /**
+     * Returns the ID of this {@code SearchAccount} instance.
+     *
+     * <p>
+     * This isn't really a UUID. But since we don't expose this value to other apps and we only
+     * use the account UUID as opaque string (e.g. as key in a {@code Map}) we're fine.<br>
+     * Using a constant string is necessary to identify the same search account even when the
+     * corresponding {@link SearchAccount} object has been recreated.
+     * </p>
      */
     @Override
     public String getUuid() {
-        if (mFakeUuid == null) {
-            mFakeUuid = UUID.randomUUID().toString();
-        }
-        return mFakeUuid;
+        return mId;
     }
 }
