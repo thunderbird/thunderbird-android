@@ -13,8 +13,10 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
@@ -28,6 +30,8 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+import com.fsck.k9.provider.EmailProvider;
+import com.fsck.k9.provider.EmailProvider.StatsColumns;
 import com.fsck.k9.view.ColorChip;
 
 import java.util.HashMap;
@@ -766,16 +770,37 @@ public class Account implements BaseAccount {
         if (!isAvailable(context)) {
             return null;
         }
-        long startTime = System.currentTimeMillis();
+
         AccountStats stats = new AccountStats();
+
+        ContentResolver cr = context.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
+                "account/" + getUuid() + "/stats");
+
+        String[] projection = {
+                StatsColumns.UNREAD_COUNT,
+                StatsColumns.FLAGGED_COUNT
+        };
+
+        //TODO: Only count messages in folders that are displayed, exclude special folders like
+        //      Trash, Spam, Outbox, Drafts, Sent.
+
+        Cursor cursor = cr.query(uri, projection, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                stats.unreadMessageCount = cursor.getInt(0);
+                stats.flaggedMessageCount = cursor.getInt(1);
+            }
+        } finally {
+            cursor.close();
+        }
+
         LocalStore localStore = getLocalStore();
         if (K9.measureAccounts()) {
             stats.size = localStore.getSize();
         }
-        localStore.getMessageCounts(stats);
-        long endTime = System.currentTimeMillis();
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;");
+
         return stats;
     }
 

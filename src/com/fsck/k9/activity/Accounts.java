@@ -547,26 +547,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
         pendingWork.clear();
 
+        MessagingController controller = MessagingController.getInstance(getApplication());
+
         for (BaseAccount account : newAccounts) {
+            pendingWork.put(account, "true");
 
             if (account instanceof Account) {
-                pendingWork.put(account, "true");
-                Account realAccount = (Account)account;
-                MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, realAccount, mListener);
+                Account realAccount = (Account) account;
+                controller.getAccountStats(this, realAccount, mListener);
             } else if (K9.countSearchMessages() && account instanceof SearchAccount) {
-                pendingWork.put(account, "true");
-                final SearchAccount searchAccount = (SearchAccount)account;
-
-                MessagingController.getInstance(getApplication())
-                    .searchLocalMessages(searchAccount.getRelatedSearch(), new MessagingListener() {
-                    @Override
-                    public void searchStats(AccountStats stats) {
-                        mListener.accountStatusChanged(searchAccount, stats);
-                    }
-                });
+                final SearchAccount searchAccount = (SearchAccount) account;
+                controller.getSearchAccountStats(searchAccount, mListener);
             }
         }
-
     }
 
     private void onAddNewAccount() {

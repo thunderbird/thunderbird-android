@@ -24,8 +24,10 @@ import android.app.Application;
 import android.app.KeyguardManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
@@ -69,8 +71,13 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.PendingCommand;
 import com.fsck.k9.mail.store.UnavailableAccountException;
 import com.fsck.k9.mail.store.UnavailableStorageException;
+import com.fsck.k9.provider.EmailProvider;
+import com.fsck.k9.provider.EmailProvider.StatsColumns;
+import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
+import com.fsck.k9.search.SqlQueryBuilder;
 
 
 /**
@@ -3390,22 +3397,90 @@ public class MessagingController implements Runnable {
     }
 
     public void getAccountStats(final Context context, final Account account,
-                                final MessagingListener l) {
-        Runnable unreadRunnable = new Runnable() {
+            final MessagingListener listener) {
+
+        threadPool.execute(new Runnable() {
             @Override
             public void run() {
                 try {
                     AccountStats stats = account.getStats(context);
-                    l.accountStatusChanged(account, stats);
+                    listener.accountStatusChanged(account, stats);
                 } catch (MessagingException me) {
-                    Log.e(K9.LOG_TAG, "Count not get unread count for account " + account.getDescription(),
-                          me);
+                    Log.e(K9.LOG_TAG, "Count not get unread count for account " +
+                            account.getDescription(), me);
                 }
 
             }
-        };
+        });
+    }
 
-        put("getAccountStats:" + account.getDescription(), l, unreadRunnable);
+    public void getSearchAccountStats(final SearchAccount searchAccount,
+            final MessagingListener listener) {
+
+        threadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                Preferences preferences = Preferences.getPreferences(mApplication);
+                LocalSearch search = searchAccount.getRelatedSearch();
+
+                // Collect accounts that belong to the search
+                String[] accountUuids = search.getAccountUuids();
+                Account[] accounts;
+                if (search.searchAllAccounts()) {
+                    accounts = preferences.getAccounts();
+                } else {
+                    accounts = new Account[accountUuids.length];
+                    for (int i = 0, len = accountUuids.length; i < len; i++) {
+                        String accountUuid = accountUuids[i];
+                        accounts[i] = preferences.getAccount(accountUuid);
+                    }
+                }
+
+                ContentResolver cr = mApplication.getContentResolver();
+
+                int unreadMessageCount = 0;
+                int flaggedMessageCount = 0;
+
+                String[] projection = {
+                        StatsColumns.UNREAD_COUNT,
+                        StatsColumns.FLAGGED_COUNT
+                };
+
+                for (Account account : accounts) {
+                    StringBuilder query = new StringBuilder();
+                    List<String> queryArgs = new ArrayList<String>();
+                    ConditionsTreeNode conditions = search.getConditions();
+                    SqlQueryBuilder.buildWhereClause(account, conditions, query, queryArgs);
+
+                    // Make sure we don't use the empty string as selection
+                    String selection = (query.length() == 0) ? null : query.toString();
+
+                    String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
+
+                    Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
+                            "account/" + account.getUuid() + "/stats");
+
+                    // Query content provider to get the account stats
+                    Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
+                    try {
+                        if (cursor.moveToFirst()) {
+                            unreadMessageCount += cursor.getInt(0);
+                            flaggedMessageCount += cursor.getInt(1);
+                        }
+                    } finally {
+                        cursor.close();
+                    }
+                }
+
+                // Create AccountStats instance...
+                AccountStats stats = new AccountStats();
+                stats.unreadMessageCount = unreadMessageCount;
+                stats.flaggedMessageCount = flaggedMessageCount;
+
+                // ...and notify the listener
+                listener.accountStatusChanged(searchAccount, stats);
+            }
+        });
     }
 
     public void getFolderUnreadMessageCount(final Account account, final String folderName,
