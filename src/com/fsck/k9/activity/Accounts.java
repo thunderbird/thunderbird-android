@@ -326,6 +326,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     };
 
     private static String ACCOUNT_STATS = "accountStats";
+    private static String STATE_UNREAD_COUNT = "unreadCount";
     private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
 
     public static final String EXTRA_STARTUP = "startup";
@@ -441,6 +442,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (oldStats != null) {
                 accountStats.putAll(oldStats);
             }
+            mUnreadMessageCount = icicle.getInt(STATE_UNREAD_COUNT);
         }
     }
 
@@ -450,6 +452,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         if (mSelectedContextAccount != null) {
             outState.putString(SELECTED_CONTEXT_ACCOUNT, mSelectedContextAccount.getUuid());
         }
+        outState.putSerializable(STATE_UNREAD_COUNT, mUnreadMessageCount);
         outState.putSerializable(ACCOUNT_STATS, accountStats);
     }
 
