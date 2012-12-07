@@ -27,11 +27,18 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.StatsColumns;
+import com.fsck.k9.search.ConditionsTreeNode;
+import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SqlQueryBuilder;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.ColorChip;
 
 import java.util.HashMap;
@@ -783,10 +790,22 @@ public class Account implements BaseAccount {
                 StatsColumns.FLAGGED_COUNT
         };
 
-        //TODO: Only count messages in folders that are displayed, exclude special folders like
-        //      Trash, Spam, Outbox, Drafts, Sent.
+        // Create LocalSearch instance to exclude special folders (Trash, Drafts, Spam, Outbox,
+        // Sent) and limit the search to displayable folders.
+        LocalSearch search = new LocalSearch();
+        excludeSpecialFolders(search);
+        limitToDisplayableFolders(search);
 
-        Cursor cursor = cr.query(uri, projection, null, null, null);
+        // Use the LocalSearch instance to create a WHERE clause to query the content provider
+        StringBuilder query = new StringBuilder();
+        List<String> queryArgs = new ArrayList<String>();
+        ConditionsTreeNode conditions = search.getConditions();
+        SqlQueryBuilder.buildWhereClause(this, conditions, query, queryArgs);
+
+        String selection = query.toString();
+        String[] selectionArgs = queryArgs.toArray(new String[0]);
+
+        Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
         try {
             if (cursor.moveToFirst()) {
                 stats.unreadMessageCount = cursor.getInt(0);
@@ -1763,5 +1782,83 @@ public class Account implements BaseAccount {
         mRemoteSearchFullText = val;
     }
 
+    /**
+     * Modify the supplied {@link LocalSearch} instance to limit the search to displayable folders.
+     *
+     * <p>
+     * This method uses the current folder display mode to decide what folders to include/exclude.
+     * </p>
+     *
+     * @param search
+     *         The {@code LocalSearch} instance to modify.
+     *
+     * @see #getFolderDisplayMode()
+     */
+    public void limitToDisplayableFolders(LocalSearch search) {
+        final Account.FolderMode displayMode = getFolderDisplayMode();
 
+        switch (displayMode) {
+            case FIRST_CLASS: {
+                // Count messages in the INBOX and non-special first class folders
+                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                        Attribute.EQUALS);
+                break;
+            }
+            case FIRST_AND_SECOND_CLASS: {
+                // Count messages in the INBOX and non-special first and second class folders
+                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                        Attribute.EQUALS);
+
+                // TODO: Create a proper interface for creating arbitrary condition trees
+                SearchCondition searchCondition = new SearchCondition(Searchfield.DISPLAY_CLASS,
+                        Attribute.EQUALS, FolderClass.SECOND_CLASS.name());
+                ConditionsTreeNode root = search.getConditions();
+                if (root.mRight != null) {
+                    root.mRight.or(searchCondition);
+                } else {
+                    search.or(searchCondition);
+                }
+                break;
+            }
+            case NOT_SECOND_CLASS: {
+                // Count messages in the INBOX and non-special non-second-class folders
+                search.and(Searchfield.DISPLAY_CLASS, FolderClass.SECOND_CLASS.name(),
+                        Attribute.NOT_EQUALS);
+                break;
+            }
+            default:
+            case ALL: {
+                // Count messages in the INBOX and non-special folders
+                break;
+            }
+        }
+    }
+
+    /**
+     * Modify the supplied {@link LocalSearch} instance to exclude special folders.
+     *
+     * <p>
+     * Currently the following folders are excluded:
+     * <ul>
+     *   <li>Trash</li>
+     *   <li>Drafts</li>
+     *   <li>Spam</li>
+     *   <li>Outbox</li>
+     *   <li>Sent</li>
+     * </ul>
+     * The Inbox will always be included even if one of the special folders is configured to point
+     * to the Inbox.
+     * </p>
+     *
+     * @param search
+     *         The {@code LocalSearch} instance to modify.
+     */
+    public void excludeSpecialFolders(LocalSearch search) {
+        search.and(Searchfield.FOLDER, getTrashFolderName(), Attribute.NOT_EQUALS);
+        search.and(Searchfield.FOLDER, getDraftsFolderName(), Attribute.NOT_EQUALS);
+        search.and(Searchfield.FOLDER, getSpamFolderName(), Attribute.NOT_EQUALS);
+        search.and(Searchfield.FOLDER, getOutboxFolderName(), Attribute.NOT_EQUALS);
+        search.and(Searchfield.FOLDER, getSentFolderName(), Attribute.NOT_EQUALS);
+        search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+    }
 }

@@ -91,6 +91,27 @@ public class EmailProvider extends ContentProvider {
         InternalMessageColumns.MIME_TYPE
     };
 
+    private static final String[] FIXUP_MESSAGES_COLUMNS = {
+        MessageColumns.ID
+    };
+
+    private static final String[] FOLDERS_COLUMNS = {
+        FolderColumns.ID,
+        FolderColumns.NAME,
+        FolderColumns.LAST_UPDATED,
+        FolderColumns.UNREAD_COUNT,
+        FolderColumns.VISIBLE_LIMIT,
+        FolderColumns.STATUS,
+        FolderColumns.PUSH_STATE,
+        FolderColumns.LAST_PUSHED,
+        FolderColumns.FLAGGED_COUNT,
+        FolderColumns.INTEGRATE,
+        FolderColumns.TOP_GROUP,
+        FolderColumns.POLL_CLASS,
+        FolderColumns.PUSH_CLASS,
+        FolderColumns.DISPLAY_CLASS
+    };
+
     static {
         UriMatcher matcher = sUriMatcher;
 
@@ -141,6 +162,23 @@ public class EmailProvider extends ContentProvider {
         public static final String MIME_TYPE = "mime_type";
     }
 
+    public interface FolderColumns {
+        public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String LAST_UPDATED = "last_updated";
+        public static final String UNREAD_COUNT = "unread_count";
+        public static final String VISIBLE_LIMIT = "visible_limit";
+        public static final String STATUS = "status";
+        public static final String PUSH_STATE = "push_state";
+        public static final String LAST_PUSHED = "last_pushed";
+        public static final String FLAGGED_COUNT = "flagged_count";
+        public static final String INTEGRATE = "integrate";
+        public static final String TOP_GROUP = "top_group";
+        public static final String POLL_CLASS = "poll_class";
+        public static final String PUSH_CLASS = "push_class";
+        public static final String DISPLAY_CLASS = "display_class";
+    }
+
     public interface StatsColumns {
         public static final String UNREAD_COUNT = "unread_count";
         public static final String FLAGGED_COUNT = "flagged_count";
@@ -150,6 +188,7 @@ public class EmailProvider extends ContentProvider {
             StatsColumns.UNREAD_COUNT,
             StatsColumns.FLAGGED_COUNT
     };
+
 
     private Preferences mPreferences;
 
@@ -267,8 +306,7 @@ public class EmailProvider extends ContentProvider {
                     }
 
                     final Cursor cursor;
-                    //TODO: check projection and selection for folder columns
-                    if (Utility.arrayContains(projection, SpecialColumns.FOLDER_NAME)) {
+                    if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
                         StringBuilder query = new StringBuilder();
                         query.append("SELECT ");
                         boolean first = true;
@@ -292,10 +330,10 @@ public class EmailProvider extends ContentProvider {
                         query.append(" FROM messages m " +
                                 "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                                 "WHERE ");
-                        query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
+                        query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
                                 "m.", where));
                         query.append(" ORDER BY ");
-                        query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
+                        query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
                                 "m.", sortOrder));
 
                         cursor = db.rawQuery(query.toString(), selectionArgs);
@@ -356,8 +394,7 @@ public class EmailProvider extends ContentProvider {
                             " FROM messages h JOIN messages m " +
                             "ON (h.id = m.thread_root OR h.id = m.id) ");
 
-                    //TODO: check projection and selection for folder columns
-                    if (Utility.arrayContains(projection, SpecialColumns.FOLDER_NAME)) {
+                    if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
                         query.append("LEFT JOIN folders f ON (m.folder_id = f.id) ");
                     }
 
@@ -424,13 +461,14 @@ public class EmailProvider extends ContentProvider {
 
         // Table selection
         sql.append(" FROM messages");
-        if (selection != null && selection.contains(SpecialColumns.INTEGRATE)) {
+
+        if (StringUtils.containsAny(selection, FOLDERS_COLUMNS)) {
             sql.append(" JOIN folders ON (folders.id = messages.folder_id)");
         }
 
         // WHERE clause
         sql.append(" WHERE (deleted=0 AND (empty IS NULL OR empty!=1))");
-        if (selection != null) {
+        if (!StringUtils.isNullOrEmpty(selection)) {
             sql.append(" AND (");
             sql.append(selection);
             sql.append(")");

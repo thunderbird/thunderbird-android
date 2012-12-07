@@ -3452,9 +3452,7 @@ public class MessagingController implements Runnable {
                     ConditionsTreeNode conditions = search.getConditions();
                     SqlQueryBuilder.buildWhereClause(account, conditions, query, queryArgs);
 
-                    // Make sure we don't use the empty string as selection
-                    String selection = (query.length() == 0) ? null : query.toString();
-
+                    String selection = query.toString();
                     String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
 
                     Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,

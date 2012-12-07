@@ -75,6 +75,15 @@ public class Utility {
         return false;
     }
 
+    public static boolean arrayContainsAny(Object[] a, Object... o) {
+        for (Object element : a) {
+            if (arrayContains(o, element)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Combines the given array of Objects into a single String using
      * each Object's toString() method and the separator character

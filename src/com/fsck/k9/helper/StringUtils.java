@@ -6,4 +6,17 @@ public final class StringUtils {
         return string == null || string.length() == 0;
     }
 
+    public static boolean containsAny(String haystack, String[] needles) {
+        if (haystack == null) {
+            return false;
+        }
+
+        for (String needle : needles) {
+            if (haystack.contains(needle)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

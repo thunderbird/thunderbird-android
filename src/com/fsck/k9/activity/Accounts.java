@@ -68,7 +68,6 @@ import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.WelcomeMessage;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.ServerSettings;
@@ -1759,6 +1758,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             } else {
                 search = new LocalSearch(searchTitle);
                 search.addAccountUuid(account.getUuid());
+
+                Account realAccount = (Account) account;
+                realAccount.excludeSpecialFolders(search);
+                realAccount.limitToDisplayableFolders(search);
             }
 
             search.and(Searchfield.FLAGGED, "1", Attribute.EQUALS);
@@ -1777,6 +1780,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             } else {
                 search = new LocalSearch(searchTitle);
                 search.addAccountUuid(account.getUuid());
+
+                Account realAccount = (Account) account;
+                realAccount.excludeSpecialFolders(search);
+                realAccount.limitToDisplayableFolders(search);
             }
 
             search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);

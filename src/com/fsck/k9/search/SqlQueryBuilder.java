@@ -7,6 +7,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 
@@ -29,7 +30,11 @@ public class SqlQueryBuilder {
                 case FOLDER: {
                     String folderName = condition.value;
                     long folderId = getFolderId(account, folderName);
-                    query.append("folder_id = ?");
+                    if (condition.attribute == Attribute.EQUALS) {
+                        query.append("folder_id = ?");
+                    } else {
+                        query.append("folder_id != ?");
+                    }
                     selectionArgs.add(Long.toString(folderId));
                     break;
                 }
@@ -144,6 +149,10 @@ public class SqlQueryBuilder {
                 columnName = "flagged";
                 break;
             }
+            case DISPLAY_CLASS: {
+                columnName = "display_class";
+                break;
+            }
         }
 
         if (columnName == null) {
@@ -220,7 +229,9 @@ public class SqlQueryBuilder {
             case FOLDER:
             case ID:
             case INTEGRATE:
-            case THREAD_ROOT: {
+            case THREAD_ROOT:
+            case READ:
+            case FLAGGED: {
                 return true;
             }
             default: {
