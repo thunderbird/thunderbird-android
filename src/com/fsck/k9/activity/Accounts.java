@@ -407,6 +407,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         restoreAccountStats(icicle);
+        mHandler.setViewTitle();
 
         // Handle activity restarts because of a configuration change (e.g. rotating the screen)
         mNonConfigurationInstance = (NonConfigurationInstance) getLastNonConfigurationInstance();
