@@ -727,22 +727,6 @@ public class LocalStore extends Store implements Serializable {
         return new LocalFolder(folderId);
     }
 
-    private long getFolderId(final String name) throws MessagingException {
-        return database.execute(false, new DbCallback<Long>() {
-            @Override
-            public Long doDbWork(final SQLiteDatabase db) {
-                Cursor cursor = null;
-                try {
-                    cursor = db.rawQuery("SELECT id FROM folders WHERE name = '" + name + "'", null);
-                    cursor.moveToFirst();
-                    return cursor.getLong(0);
-                } finally {
-                    Utility.closeQuietly(cursor);
-                }
-            }
-        });
-    }
-
     // TODO this takes about 260-300ms, seems slow.
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
@@ -975,28 +959,6 @@ public class LocalStore extends Store implements Serializable {
 
     @Override
     public boolean isCopyCapable() {
-        return true;
-    }
-
-    // TODO find beter solution
-    private static boolean isFolderId(String str) {
-        if (str == null) {
-                return false;
-        }
-        int length = str.length();
-        if (length == 0) {
-                return false;
-        }
-        int i = 0;
-        if (str.charAt(0) == '-') {
-            return false;
-        }
-        for (; i < length; i++) {
-                char c = str.charAt(i);
-                if (c <= '/' || c >= ':') {
-                        return false;
-                }
-        }
         return true;
     }
 
