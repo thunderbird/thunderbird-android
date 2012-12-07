@@ -785,7 +785,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
                     return;
                 }
                 mUnreadMessageCount = stats.unreadMessageCount;
-                super.accountStatusChanged(account, stats);
+                mHandler.refreshTitle();
             }
 
             @Override
