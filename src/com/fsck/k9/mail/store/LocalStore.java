@@ -100,7 +100,7 @@ public class LocalStore extends Store implements Serializable {
         "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview, thread_root, thread_parent, deleted, read, flagged, answered, forwarded ";
 
-    static private String GET_FOLDER_COLS = "id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count, integrate, top_group, poll_class, push_class, display_class";
+    static private String GET_FOLDER_COLS = "folders.id, name, SUM(read=0), visible_limit, last_updated, status, push_state, last_pushed, SUM(flagged), integrate, top_group, poll_class, push_class, display_class";
 
     private static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -830,7 +830,10 @@ public class LocalStore extends Store implements Serializable {
                     Cursor cursor = null;
 
                     try {
-                        cursor = db.rawQuery("SELECT " + GET_FOLDER_COLS + " FROM folders ORDER BY name ASC", null);
+                        cursor = db.rawQuery("SELECT " + GET_FOLDER_COLS + " FROM folders " +
+                                "LEFT JOIN messages ON (folder_id = folders.id AND" +
+                                " (empty IS NULL OR empty != 1) AND deleted = 0) " +
+                                "GROUP BY folders.id ORDER BY name ASC", null);
                         while (cursor.moveToNext()) {
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
                             folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
@@ -1336,7 +1339,9 @@ public class LocalStore extends Store implements Serializable {
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                         Cursor cursor = null;
                         try {
-                            String baseQuery = "SELECT " + GET_FOLDER_COLS + " FROM folders ";
+                            String baseQuery = "SELECT " + GET_FOLDER_COLS + " FROM folders " +
+                                    "LEFT JOIN messages ON (folder_id = folders.id AND" +
+                                    " (empty IS NULL OR empty != 1) AND deleted = 0) ";
 
                             if (mName != null) {
                                 cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });

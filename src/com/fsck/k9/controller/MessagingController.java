@@ -2597,11 +2597,6 @@ public class MessagingController implements Runnable {
             Log.e(K9.LOG_TAG, "Couldn't set flags in local database", e);
         }
 
-        // Notify listeners of changed folder status
-//        for (MessagingListener l : getListeners()) {
-//            l.folderStatusChanged(account, folderName, localFolder.getUnreadMessageCount());
-//        }
-
         // Read folder name and UID of messages from the database
         Map<String, List<String>> folderMap;
         try {
@@ -2614,6 +2609,17 @@ public class MessagingController implements Runnable {
         // Loop over all folders
         for (Entry<String, List<String>> entry : folderMap.entrySet()) {
             String folderName = entry.getKey();
+
+            // Notify listeners of changed folder status
+            LocalFolder localFolder = localStore.getFolder(folderName);
+            try {
+                int unreadMessageCount = localFolder.getUnreadMessageCount();
+                for (MessagingListener l : getListeners()) {
+                    l.folderStatusChanged(account, folderName, unreadMessageCount);
+                }
+            } catch (MessagingException e) {
+                Log.w(K9.LOG_TAG, "Couldn't get unread count for folder: " + folderName, e);
+            }
 
             // The error folder is always a local folder
             // TODO: Skip the remote part for all local-only folders
