@@ -22,7 +22,7 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="welcome_message_title">Καλώς ήλθατε στο K-9 Mail!</string>
     <string name="accounts_welcome">
 Καλώς ήλθατε στο K-9 Mail. Το K-9 είναι ένας πελάτης ηλεκτρονικού ταχυδρομείου ανοικτού κώδικα  για το Android που αρχικά βασίστηκε στον βασικό email client του Android.
 \n\n
@@ -90,9 +90,9 @@ http://k9mail.googlecode.com/
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Σύνθεση</string>
-    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
-    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
-    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+    <string name="compose_title_reply">Απάντηση</string>
+    <string name="compose_title_reply_all">Απάντηση σε όλους</string>
+    <string name="compose_title_forward">Προώθηση</string>
 
     <string name="choose_folder_title">Επιλογή φακέλου</string>
 
