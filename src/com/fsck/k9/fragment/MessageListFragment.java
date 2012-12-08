@@ -304,7 +304,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final String ARG_SEARCH = "searchObject";
     private static final String ARG_THREADED_LIST = "threadedList";
     private static final String ARG_IS_THREAD_DISPLAY = "isThreadedDisplay";
-    private static final String STATE_LIST_POSITION = "listPosition";
+
     private static final String STATE_SELECTED_MESSAGES = "selectedMessages";
 
     /**
@@ -380,7 +380,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private MenuItem mRefreshMenuItem;
     private ActionMode mActionMode;
     private View mActionBarProgressView;
-    private Bundle mState = null;
 
     private Boolean mHasConnectivity;
 
@@ -901,30 +900,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onPause() {
         super.onPause();
         mController.removeListener(mListener);
-        saveListState();
-    }
-
-    public void saveListState() {
-        mState = new Bundle();
-        mState.putInt(STATE_LIST_POSITION, mListView.getSelectedItemPosition());
-    }
-
-    public void restoreListState() {
-        if (mState == null) {
-            return;
-        }
-
-        int pos = mState.getInt(STATE_LIST_POSITION, ListView.INVALID_POSITION);
-
-        if (pos >= mListView.getCount()) {
-            pos = mListView.getCount() - 1;
-        }
-
-        if (pos == ListView.INVALID_POSITION) {
-            mListView.setSelected(false);
-        } else {
-            mListView.setSelection(pos);
-        }
     }
 
     /**
