@@ -2611,7 +2611,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 final Folder remoteFolder = mCurrentFolder.folder;
                 remoteFolder.close();
                 // Send a remoteSearchFinished() message for good measure.
-                //mAdapter.mListener.remoteSearchFinished(searchAccount, mCurrentFolder.name, 0, null);
+                mListener.remoteSearchFinished(searchAccount, mCurrentFolder.name, 0, null);
             } catch (Exception e) {
                 // Since the user is going back, log and squash any exceptions.
                 Log.e(K9.LOG_TAG, "Could not abort remote search before going back", e);
