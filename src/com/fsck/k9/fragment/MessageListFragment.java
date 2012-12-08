@@ -305,6 +305,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final String ARG_THREADED_LIST = "threadedList";
     private static final String ARG_IS_THREAD_DISPLAY = "isThreadedDisplay";
     private static final String STATE_LIST_POSITION = "listPosition";
+    private static final String STATE_SELECTED_MESSAGES = "selectedMessages";
 
     /**
      * Maps a {@link SortType} to a {@link Comparator} implementation.
@@ -734,11 +735,55 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         // This needs to be done before initializing the cursor loader below
         initializeSortSettings();
 
+        restoreInstanceState(savedInstanceState);
+
         LoaderManager loaderManager = getLoaderManager();
         int len = mAccountUuids.length;
         mCursors = new Cursor[len];
         for (int i = 0; i < len; i++) {
             loaderManager.initLoader(i, null, this);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        saveSelectedMessages(outState);
+    }
+
+    /**
+     * Restore the state of a previous {@link MessageListFragment} instance.
+     *
+     * @see #onSaveInstanceState(Bundle)
+     */
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return;
+        }
+
+        restoreSelectedMessages(savedInstanceState);
+    }
+
+    /**
+     * Write the unique IDs of selected messages to a {@link Bundle}.
+     */
+    private void saveSelectedMessages(Bundle outState) {
+        long[] selected = new long[mSelected.size()];
+        int i = 0;
+        for (Long id : mSelected) {
+            selected[i++] = Long.valueOf(id);
+        }
+        outState.putLongArray(STATE_SELECTED_MESSAGES, selected);
+    }
+
+    /**
+     * Restore selected messages from a {@link Bundle}.
+     */
+    private void restoreSelectedMessages(Bundle savedInstanceState) {
+        long[] selected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES);
+        for (long id : selected) {
+            mSelected.add(Long.valueOf(id));
         }
     }
 
@@ -2930,6 +2975,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mAdapter.swapCursor(cursor);
 
+        resetActionMode();
         computeBatchDirection();
     }
 
@@ -2947,6 +2993,51 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         mSelected = selected;
+    }
+
+    /**
+     * Starts or finishes the action mode when necessary.
+     */
+    private void resetActionMode() {
+        if (mSelected.size() == 0) {
+            if (mActionMode != null) {
+                mActionMode.finish();
+            }
+            return;
+        }
+
+        if (mActionMode == null) {
+            mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
+        }
+
+        recalculateSelectionCount();
+        updateActionModeTitle();
+    }
+
+    /**
+     * Recalculates the selection count.
+     *
+     * <p>
+     * For non-threaded lists this is simply the number of visibly selected messages. If threaded
+     * view is enabled this method counts the number of messages in the selected threads.
+     * </p>
+     */
+    private void recalculateSelectionCount() {
+        if (!mThreadedList) {
+            mSelectedCount = mSelected.size();
+            return;
+        }
+
+        mSelectedCount = 0;
+        for (int i = 0, end = mAdapter.getCount(); i < end; i++) {
+            Cursor cursor = (Cursor) mAdapter.getItem(i);
+            long uniqueId = cursor.getLong(mUniqueIdColumn);
+
+            if (mSelected.contains(uniqueId)) {
+                int threadCount = cursor.getInt(THREAD_COUNT_COLUMN);
+                mSelectedCount += (threadCount > 1) ? threadCount : 1;
+            }
+        }
     }
 
     @Override
