@@ -501,9 +501,6 @@ http://k9mail.googlecode.com/.
     <string name="account_settings_mark_message_as_read_on_view_label">Nachricht beim Öffnen als gelesen markieren</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Markiert eine Nachricht als gelesen, sobald sie zum Betrachten geöffnet wird.</string>
 
-    <string name="account_settings_enable_move_buttons_label">Spam-Leiste</string>
-    <string name="account_settings_enable_move_buttons_summary">Zeige Archivieren-, Verschieben- und Spam-Schaltfläche.</string>
-
     <string name="account_settings_show_pictures_label">Bilder automatisch anzeigen</string>
     <string name="account_settings_show_pictures_never">Niemals</string>
     <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>

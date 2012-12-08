@@ -497,9 +497,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensagem como lida ao abrir</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida ao abrir e visualizar</string>
 
-    <string name="account_settings_enable_move_buttons_label">Habilitar botão de ações</string>
-    <string name="account_settings_enable_move_buttons_summary">Mostrar botões de Arquivar, Mover e Span.</string>
-
     <string name="account_settings_show_pictures_label">Sempre mostrar imagens</string>
     <string name="account_settings_show_pictures_never">Não</string>
     <string name="account_settings_show_pictures_only_from_contacts">Dos contatos</string>

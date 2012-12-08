@@ -506,9 +506,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
-    <string name="account_settings_enable_move_buttons_label">Povolit přesměrovací tlačítka</string>
-    <string name="account_settings_enable_move_buttons_summary">Zobrazit tlačítka Archív, Přesunout a Nevyžádaná.</string>
-
     <string name="account_settings_show_pictures_label">Vždy zobrazovat obrázky</string>
     <string name="account_settings_show_pictures_never">Ne</string>
     <string name="account_settings_show_pictures_only_from_contacts">Jen od kontaktů</string>

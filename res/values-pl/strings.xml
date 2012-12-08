@@ -508,9 +508,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_mark_message_as_read_on_view_label">Oznacz jako przeczytane</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Oznacz wiadomość jako przeczytaną przy otwieraniu</string>
 
-    <string name="account_settings_enable_move_buttons_label">Użyj przycisków refile</string>
-    <string name="account_settings_enable_move_buttons_summary">Pokaż przyciski Archiwum, Przenieś, Spam.</string>
-
     <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazki</string>
     <string name="account_settings_show_pictures_never">Nie</string>
     <string name="account_settings_show_pictures_only_from_contacts">Od kontaktów</string>

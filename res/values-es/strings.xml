@@ -500,9 +500,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensaje como leído tras abrirlo</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Marcar mensaje como leído cuando se abre para verlo</string>
 
-    <string name="account_settings_enable_move_buttons_label">Habilitar botones de copia</string>
-    <string name="account_settings_enable_move_buttons_summary">Mostrar botones de archivar, mover y SPAM</string>
-
     <string name="account_settings_show_pictures_label">Mostrar imágenes</string>
     <string name="account_settings_show_pictures_never">Nunca</string>
     <string name="account_settings_show_pictures_only_from_contacts">Sólo de mis contactos</string>

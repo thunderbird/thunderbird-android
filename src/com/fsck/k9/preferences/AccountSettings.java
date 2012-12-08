@@ -71,9 +71,6 @@ public class AccountSettings {
         s.put("draftsFolderName", Settings.versions(
                 new V(1, new StringSetting("Drafts"))
             ));
-        s.put("enableMoveButtons", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("expungePolicy", Settings.versions(
                 new V(1, new StringResourceSetting(Account.EXPUNGE_IMMEDIATELY,
                         R.array.account_setup_expunge_policy_values))

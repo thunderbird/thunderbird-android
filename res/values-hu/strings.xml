@@ -500,9 +500,6 @@
     <string name="account_settings_mark_message_as_read_on_view_label">Üzenet megjelölése olvasottnak megnyitáskor</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Olvasottnak jelöli az üzenetet, ha megnézik</string>
 
-    <string name="account_settings_enable_move_buttons_label">Művelet gombok megjelenítése</string>
-    <string name="account_settings_enable_move_buttons_summary">Mutassa a Mozgatás, Archív és Levélszemét gombokat</string>
-
     <string name="account_settings_show_pictures_label">Képek megjelenítése</string>
     <string name="account_settings_show_pictures_never">Soha</string>
     <string name="account_settings_show_pictures_only_from_contacts">Csak az ismerősökét</string>

@@ -563,33 +563,26 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
         updateUnreadToggleTitle();
 
-        // comply with the setting
-        if (!mAccount.getEnableMoveButtons()) {
+        // check message, folder capability
+        if (!mController.isCopyCapable(mAccount)) {
+            menu.findItem(R.id.copy).setVisible(false);
+        }
+
+        if (mController.isMoveCapable(mAccount)) {
+            menu.findItem(R.id.move).setVisible(true);
+
+            menu.findItem(R.id.archive).setVisible(
+                !mMessageReference.folderName.equals(mAccount.getArchiveFolderName())
+                    && mAccount.hasArchiveFolder());
+
+            menu.findItem(R.id.spam).setVisible(
+                !mMessageReference.folderName.equals(mAccount.getSpamFolderName())
+                    && mAccount.hasSpamFolder());
+        } else {
+            menu.findItem(R.id.copy).setVisible(false);
             menu.findItem(R.id.move).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
             menu.findItem(R.id.spam).setVisible(false);
-        } else {
-            // check message, folder capability
-            if (!mController.isCopyCapable(mAccount)) {
-                menu.findItem(R.id.copy).setVisible(false);
-            }
-
-            if (mController.isMoveCapable(mAccount)) {
-                menu.findItem(R.id.move).setVisible(true);
-
-                menu.findItem(R.id.archive).setVisible(
-                    !mMessageReference.folderName.equals(mAccount.getArchiveFolderName())
-                        && mAccount.hasArchiveFolder());
-
-                menu.findItem(R.id.spam).setVisible(
-                    !mMessageReference.folderName.equals(mAccount.getSpamFolderName())
-                        && mAccount.hasSpamFolder());
-            } else {
-                menu.findItem(R.id.copy).setVisible(false);
-                menu.findItem(R.id.move).setVisible(false);
-                menu.findItem(R.id.archive).setVisible(false);
-                menu.findItem(R.id.spam).setVisible(false);
-            }
         }
     }
 

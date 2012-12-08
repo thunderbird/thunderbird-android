@@ -499,9 +499,6 @@ K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클�
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
-    <string name="account_settings_enable_move_buttons_label">재정리(refile) 버튼 활성화</string>
-    <string name="account_settings_enable_move_buttons_summary">보관, 이동, 스팸 버튼을 보이기</string>
-
     <string name="account_settings_show_pictures_label">항상 그림 보기</string>
     <string name="account_settings_show_pictures_never">아니오</string>
     <string name="account_settings_show_pictures_only_from_contacts">주소록에 등록된 경우</string>

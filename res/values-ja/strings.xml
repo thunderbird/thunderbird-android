@@ -501,9 +501,6 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_mark_message_as_read_on_view_label">開くと同時に既読にする</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを参照したときに既読にする</string>
 
-    <string name="account_settings_enable_move_buttons_label">メール整理ボタンを有効にする</string>
-    <string name="account_settings_enable_move_buttons_summary">アーカイブ、移動、迷惑メールボタンを表示</string>
-
     <string name="account_settings_show_pictures_label">画像を自動で表示</string>
     <string name="account_settings_show_pictures_never">しない</string>
     <string name="account_settings_show_pictures_only_from_contacts">連絡先に登録しているユーザからのメールのみ</string>

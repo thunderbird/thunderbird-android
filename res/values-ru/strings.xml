@@ -495,9 +495,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_mark_message_as_read_on_view_label">Отметить сообщение как прочитанное при открытии</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение как прочитанное при открытии для просмотра</string>
 
-    <string name="account_settings_enable_move_buttons_label">Разрешить кнопки переноса сообщений</string>
-    <string name="account_settings_enable_move_buttons_summary">Показывает кнопки: Архив, Переместить и Спам.</string>
-
     <string name="account_settings_show_pictures_label">Показывать изображения</string>
     <string name="account_settings_show_pictures_never">Никогда</string>
     <string name="account_settings_show_pictures_only_from_contacts">От контактов</string>

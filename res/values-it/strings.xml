@@ -501,9 +501,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_mark_message_as_read_on_view_label">Segna messaggio come letto all\'apertura</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Segna messaggio come letto quando aperto</string>
 
-    <string name="account_settings_enable_move_buttons_label">Abilita pulsanti archiviazione</string>
-    <string name="account_settings_enable_move_buttons_summary">Mostra i pulsanti Archivia, Sposta e Spam.</string>
-
     <string name="account_settings_show_pictures_label">Mostra sempre le immagini</string>
     <string name="account_settings_show_pictures_never">No</string>
     <string name="account_settings_show_pictures_only_from_contacts">Dai contatti</string>

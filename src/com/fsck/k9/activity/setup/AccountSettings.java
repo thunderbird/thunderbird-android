@@ -73,7 +73,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
-    private static final String PREFERENCE_ENABLE_MOVE_BUTTONS = "enable_move_buttons";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
@@ -144,7 +143,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
     private ListPreference mAccountShowPictures;
-    private CheckBoxPreference mAccountEnableMoveButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
     private CheckBoxPreference mAccountLed;
@@ -452,10 +450,6 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountDefault = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT);
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
-
-        mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
-        mAccountEnableMoveButtons.setEnabled(mIsMoveCapable);
-        mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
 
         mAccountShowPictures = (ListPreference) findPreference(PREFERENCE_SHOW_PICTURES);
         mAccountShowPictures.setValue("" + mAccount.getShowPictures());
@@ -798,12 +792,6 @@ public class AccountSettings extends K9PreferenceActivity {
             mAccount.setAllowRemoteSearch(mCloudSearchEnabled.isChecked());
             mAccount.setRemoteSearchNumResults(Integer.parseInt(mRemoteSearchNumResults.getValue()));
             mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
-        }
-
-        if (!mIsMoveCapable) {
-            mAccount.setEnableMoveButtons(false);
-        } else {
-            mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
         }
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));

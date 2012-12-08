@@ -494,9 +494,6 @@
     <string name="account_settings_mark_message_as_read_on_view_label">邮件打开时标记为已读</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">当邮件打开时标记为已读</string>
 
-    <string name="account_settings_enable_move_buttons_label">启用整理按钮</string>
-    <string name="account_settings_enable_move_buttons_summary">显示归档、移动和标记为垃圾按钮</string>
-
     <string name="account_settings_show_pictures_label">显示图片</string>
     <string name="account_settings_show_pictures_never">从不</string>
     <string name="account_settings_show_pictures_only_from_contacts">来自您的联系人的邮件</string>

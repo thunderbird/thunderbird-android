@@ -503,9 +503,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>
 
-    <string name="account_settings_enable_move_buttons_label">Enable refile buttons</string>
-    <string name="account_settings_enable_move_buttons_summary">Show the Archive, Move, and Spam buttons.</string>
-
     <string name="account_settings_show_pictures_label">Always show images</string>
     <string name="account_settings_show_pictures_never">No</string>
     <string name="account_settings_show_pictures_only_from_contacts">From contacts</string>

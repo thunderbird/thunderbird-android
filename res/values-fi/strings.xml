@@ -504,9 +504,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_mark_message_as_read_on_view_label">Merkitse viesti luetuksi avattaessa</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se avataan katseltavaksi</string>
 
-    <string name="account_settings_enable_move_buttons_label">Ota käyttöön Siirrä-painikkeet</string>
-    <string name="account_settings_enable_move_buttons_summary">Näytä Arkistoi-, Siirrä- ja Roskaposti-painikkeet.</string>
-
     <string name="account_settings_show_pictures_label">Näytä kuvat automaattisesti</string>
     <string name="account_settings_show_pictures_never">Ei koskaan</string>
     <string name="account_settings_show_pictures_only_from_contacts">Vain yhteystiedoissa olevilta lähettäjiltä</string>

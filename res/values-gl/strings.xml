@@ -500,9 +500,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
-    <string name="account_settings_enable_move_buttons_label">Habilitar botóns de copia</string>
-    <string name="account_settings_enable_move_buttons_summary">Amosar botóns de arquivar, mover e SPAM</string>
-
     <string name="account_settings_show_pictures_label">Amosar imaxes</string>
     <string name="account_settings_show_pictures_never">Nunca</string>
     <string name="account_settings_show_pictures_only_from_contacts">Só dos meuis contactos</string>

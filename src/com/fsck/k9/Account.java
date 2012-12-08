@@ -170,7 +170,6 @@ public class Account implements BaseAccount {
     private SortType mSortType;
     private HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
     private ShowPictures mShowPictures;
-    private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
@@ -279,7 +278,6 @@ public class Account implements BaseAccount {
         mSortType = DEFAULT_SORT_TYPE;
         mSortAscending.put(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING);
         mShowPictures = ShowPictures.NEVER;
-        mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = INBOX;
@@ -425,8 +423,6 @@ public class Account implements BaseAccount {
             mShowPictures = ShowPictures.NEVER;
         }
 
-        mEnableMoveButtons = prefs.getBoolean(mUuid + ".enableMoveButtons", false);
-
         mNotificationSetting.setVibrate(prefs.getBoolean(mUuid + ".vibrate", false));
         mNotificationSetting.setVibratePattern(prefs.getInt(mUuid + ".vibratePattern", 0));
         mNotificationSetting.setVibrateTimes(prefs.getInt(mUuid + ".vibrateTimes", 5));
@@ -567,7 +563,6 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".cryptoAutoSignature");
         editor.remove(mUuid + ".cryptoAutoEncrypt");
         editor.remove(mUuid + ".enabled");
-        editor.remove(mUuid + ".enableMoveButtons");
         editor.remove(mUuid + ".hideMoveButtonsEnum");
         editor.remove(mUuid + ".markMessageAsReadOnView");
         editor.remove(mUuid + ".alwaysShowCcBcc");
@@ -696,7 +691,6 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".sortTypeEnum", mSortType.name());
         editor.putBoolean(mUuid + ".sortAscending", mSortAscending.get(mSortType));
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
-        editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
         editor.putString(mUuid + ".folderPushMode", mFolderPushMode.name());
@@ -1652,14 +1646,6 @@ public class Account implements BaseAccount {
 
     public synchronized void setStripSignature(boolean stripSignature) {
         mStripSignature = stripSignature;
-    }
-
-    public boolean getEnableMoveButtons() {
-        return mEnableMoveButtons;
-    }
-
-    public void setEnableMoveButtons(boolean enableMoveButtons) {
-        mEnableMoveButtons = enableMoveButtons;
     }
 
     public String getCryptoApp() {

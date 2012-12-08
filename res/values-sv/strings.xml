@@ -501,9 +501,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
-    <string name="account_settings_enable_move_buttons_label">Aktivera flyttknappar</string>
-    <string name="account_settings_enable_move_buttons_summary">Visa knappar för att arkivera, flytta och spam-markera e-post.</string>
-
     <string name="account_settings_show_pictures_label">Visa bilder automatiskt</string>
     <string name="account_settings_show_pictures_never">Aldrig</string>
     <string name="account_settings_show_pictures_only_from_contacts">Bara från kontakter</string>

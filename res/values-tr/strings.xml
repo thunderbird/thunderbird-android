@@ -501,9 +501,6 @@ http://k9mail.googlecode.com/ adresine gönderin.
     <string name="account_settings_mark_message_as_read_on_view_label">Mesaj açılırken okundu işaretle</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Mesaj okunmak üzere açıldığında okundu olarak işaretle</string>
 
-    <string name="account_settings_enable_move_buttons_label">İşaretleme düğmelerini etkinleştir</string>
-    <string name="account_settings_enable_move_buttons_summary">Arşiv, Taşıma ve Spam düğmelerini göster.</string>
-
     <string name="account_settings_show_pictures_label">Daima resimleri göster</string>
     <string name="account_settings_show_pictures_never">Hayır</string>
     <string name="account_settings_show_pictures_only_from_contacts">Kişilerden</string>

@@ -497,9 +497,6 @@ http://k9mail.googlecode.com/
     <string name="account_settings_mark_message_as_read_on_view_label">Σημείωση ως αναγνωσμένου με την ανάγνωση</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
 
-    <string name="account_settings_enable_move_buttons_label">Ενεργοποίηση πλήκτρων αρχειοθέτησης</string>
-    <string name="account_settings_enable_move_buttons_summary">Προβολή πλήκτρων Αρχειοθέτηση, Μετακίνηση και Σκουπίδια.</string>
-
     <string name="account_settings_show_pictures_label">Προβολή εικόνων πάντα</string>
     <string name="account_settings_show_pictures_never">Όχι</string>
     <string name="account_settings_show_pictures_only_from_contacts">Από τις επαφές</string>
