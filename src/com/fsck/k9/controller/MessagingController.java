@@ -3391,65 +3391,75 @@ public class MessagingController implements Runnable {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                Preferences preferences = Preferences.getPreferences(mApplication);
-                LocalSearch search = searchAccount.getRelatedSearch();
-
-                // Collect accounts that belong to the search
-                String[] accountUuids = search.getAccountUuids();
-                Account[] accounts;
-                if (search.searchAllAccounts()) {
-                    accounts = preferences.getAccounts();
-                } else {
-                    accounts = new Account[accountUuids.length];
-                    for (int i = 0, len = accountUuids.length; i < len; i++) {
-                        String accountUuid = accountUuids[i];
-                        accounts[i] = preferences.getAccount(accountUuid);
-                    }
-                }
-
-                ContentResolver cr = mApplication.getContentResolver();
-
-                int unreadMessageCount = 0;
-                int flaggedMessageCount = 0;
-
-                String[] projection = {
-                        StatsColumns.UNREAD_COUNT,
-                        StatsColumns.FLAGGED_COUNT
-                };
-
-                for (Account account : accounts) {
-                    StringBuilder query = new StringBuilder();
-                    List<String> queryArgs = new ArrayList<String>();
-                    ConditionsTreeNode conditions = search.getConditions();
-                    SqlQueryBuilder.buildWhereClause(account, conditions, query, queryArgs);
-
-                    String selection = query.toString();
-                    String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
-
-                    Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
-                            "account/" + account.getUuid() + "/stats");
-
-                    // Query content provider to get the account stats
-                    Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
-                    try {
-                        if (cursor.moveToFirst()) {
-                            unreadMessageCount += cursor.getInt(0);
-                            flaggedMessageCount += cursor.getInt(1);
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-                }
-
-                // Create AccountStats instance...
-                AccountStats stats = new AccountStats();
-                stats.unreadMessageCount = unreadMessageCount;
-                stats.flaggedMessageCount = flaggedMessageCount;
-
-                // ...and notify the listener
-                listener.accountStatusChanged(searchAccount, stats);
+                getSearchAccountStatsSynchronous(searchAccount, listener);
             }
         });
+    }
+
+    public AccountStats getSearchAccountStatsSynchronous(final SearchAccount searchAccount,
+            final MessagingListener listener) {
+
+        Preferences preferences = Preferences.getPreferences(mApplication);
+        LocalSearch search = searchAccount.getRelatedSearch();
+
+        // Collect accounts that belong to the search
+        String[] accountUuids = search.getAccountUuids();
+        Account[] accounts;
+        if (search.searchAllAccounts()) {
+            accounts = preferences.getAccounts();
+        } else {
+            accounts = new Account[accountUuids.length];
+            for (int i = 0, len = accountUuids.length; i < len; i++) {
+                String accountUuid = accountUuids[i];
+                accounts[i] = preferences.getAccount(accountUuid);
+            }
+        }
+
+        ContentResolver cr = mApplication.getContentResolver();
+
+        int unreadMessageCount = 0;
+        int flaggedMessageCount = 0;
+
+        String[] projection = {
+                StatsColumns.UNREAD_COUNT,
+                StatsColumns.FLAGGED_COUNT
+        };
+
+        for (Account account : accounts) {
+            StringBuilder query = new StringBuilder();
+            List<String> queryArgs = new ArrayList<String>();
+            ConditionsTreeNode conditions = search.getConditions();
+            SqlQueryBuilder.buildWhereClause(account, conditions, query, queryArgs);
+
+            String selection = query.toString();
+            String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
+
+            Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
+                    "account/" + account.getUuid() + "/stats");
+
+            // Query content provider to get the account stats
+            Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
+            try {
+                if (cursor.moveToFirst()) {
+                    unreadMessageCount += cursor.getInt(0);
+                    flaggedMessageCount += cursor.getInt(1);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
+        // Create AccountStats instance...
+        AccountStats stats = new AccountStats();
+        stats.unreadMessageCount = unreadMessageCount;
+        stats.flaggedMessageCount = flaggedMessageCount;
+
+        // ...and notify the listener
+        if (listener != null) {
+            listener.accountStatusChanged(searchAccount, stats);
+        }
+
+        return stats;
     }
 
     public void getFolderUnreadMessageCount(final Account account, final String folderName,

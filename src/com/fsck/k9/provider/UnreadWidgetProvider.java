@@ -2,13 +2,16 @@ package com.fsck.k9.provider;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.BaseAccount;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.UnreadWidgetConfiguration;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchAccount;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -53,22 +56,48 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
         String accountName = context.getString(R.string.app_name);
         Intent clickIntent = null;
         try {
-            Account account = Preferences.getPreferences(context).getAccount(accountUuid);
-            if (account != null) {
-                AccountStats stats = account.getStats(context);
-                unreadCount = stats.unreadMessageCount;
-                accountName = account.getDescription();
-                if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName())) {
-                    clickIntent = FolderList.actionHandleAccountIntent(context, account, null,
-                            false);
-                } else {
-                    LocalSearch search = new LocalSearch(account.getAutoExpandFolderName());
-                    search.addAllowedFolder(account.getAutoExpandFolderName());
-                    search.addAccountUuid(account.getUuid());
-                    clickIntent = MessageList.intentDisplaySearch(context, search, false, true,
-                            true);
+            BaseAccount account = null;
+            AccountStats stats = null;
+
+            SearchAccount searchAccount = null;
+            if (SearchAccount.UNIFIED_INBOX.equals(accountUuid)) {
+                searchAccount = SearchAccount.createUnifiedInboxAccount(context);
+            } else if (SearchAccount.ALL_MESSAGES.equals(accountUuid)) {
+                searchAccount = SearchAccount.createAllMessagesAccount(context);
+            }
+
+            if (searchAccount != null) {
+                account = searchAccount;
+                MessagingController controller = MessagingController.getInstance(K9.app);
+                stats = controller.getSearchAccountStatsSynchronous(searchAccount, null);
+                clickIntent = MessageList.intentDisplaySearch(context,
+                        searchAccount.getRelatedSearch(), false, true, true);
+            } else {
+                Account realAccount = Preferences.getPreferences(context).getAccount(accountUuid);
+                if (realAccount != null) {
+                    account = realAccount;
+                    stats = realAccount.getStats(context);
+
+                    if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName())) {
+                        clickIntent = FolderList.actionHandleAccountIntent(context, realAccount,
+                                null, false);
+                    } else {
+                        LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
+                        search.addAllowedFolder(realAccount.getAutoExpandFolderName());
+                        search.addAccountUuid(account.getUuid());
+                        clickIntent = MessageList.intentDisplaySearch(context, search, false, true,
+                                true);
+                    }
+                    clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 }
-                clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            }
+
+            if (account != null) {
+                accountName = account.getDescription();
+            }
+
+            if (stats != null) {
+                unreadCount = stats.unreadMessageCount;
             }
         } catch (Exception e) {
             if (K9.DEBUG) {
