@@ -306,6 +306,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final String ARG_IS_THREAD_DISPLAY = "isThreadedDisplay";
 
     private static final String STATE_SELECTED_MESSAGES = "selectedMessages";
+    private static final String STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed";
 
     /**
      * Maps a {@link SortType} to a {@link Comparator} implementation.
@@ -749,6 +750,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         super.onSaveInstanceState(outState);
 
         saveSelectedMessages(outState);
+
+        outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, mRemoteSearchPerformed);
     }
 
     /**
@@ -762,6 +765,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         restoreSelectedMessages(savedInstanceState);
+
+        mRemoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
     }
 
     /**
