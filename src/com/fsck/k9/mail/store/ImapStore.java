@@ -1145,6 +1145,20 @@ public class ImapStore extends Store {
             try {
                 String remoteDestName = encodeString(encodeFolderName(iFolder.getPrefixedName()));
 
+                //TODO: Try to copy/move the messages first and only create the folder if the
+                //      operation fails. This will save a roundtrip if the folder already exists.
+                if (!exists(remoteDestName)) {
+                    /*
+                     * If the remote folder doesn't exist we try to create it.
+                     */
+                    if (K9.DEBUG) {
+                        Log.i(K9.LOG_TAG, "ImapFolder.copyMessages: attempting to create remote " +
+                                "folder '" + remoteDestName + "' for " + getLogId());
+                    }
+
+                    iFolder.create(FolderType.HOLDS_MESSAGES);
+                }
+
                 //TODO: Split this into multiple commands if the command exceeds a certain length.
                 List<ImapResponse> responses = executeSimpleCommand(String.format("UID COPY %s %s",
                                                       Utility.combine(uids, ','),
