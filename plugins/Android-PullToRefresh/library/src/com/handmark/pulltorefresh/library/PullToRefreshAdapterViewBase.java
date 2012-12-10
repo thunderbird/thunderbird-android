@@ -170,14 +170,14 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 
 			refreshableViewWrapper.addView(newEmptyView, ViewGroup.LayoutParams.MATCH_PARENT,
 					ViewGroup.LayoutParams.MATCH_PARENT);
-
-			if (mRefreshableView instanceof EmptyViewMethodAccessor) {
-				((EmptyViewMethodAccessor) mRefreshableView).setEmptyViewInternal(newEmptyView);
-			} else {
-				mRefreshableView.setEmptyView(newEmptyView);
-			}
-			mEmptyView = newEmptyView;
 		}
+
+		if (mRefreshableView instanceof EmptyViewMethodAccessor) {
+			((EmptyViewMethodAccessor) mRefreshableView).setEmptyViewInternal(newEmptyView);
+		} else {
+			mRefreshableView.setEmptyView(newEmptyView);
+		}
+		mEmptyView = newEmptyView;
 	}
 
 	/**
