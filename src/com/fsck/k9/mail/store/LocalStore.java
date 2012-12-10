@@ -743,6 +743,9 @@ public class LocalStore extends Store implements Serializable {
                                 " (empty IS NULL OR empty != 1) AND deleted = 0) " +
                                 "GROUP BY folders.id ORDER BY name ASC", null);
                         while (cursor.moveToNext()) {
+                            if (cursor.isNull(0)) {
+                                continue;
+                            }
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
                             folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
 
@@ -1235,7 +1238,7 @@ public class LocalStore extends Store implements Serializable {
                                 cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(mFolderId) });
                             }
 
-                            if (cursor.moveToFirst()) {
+                            if (cursor.moveToFirst() && !cursor.isNull(0)) {
                                 int folderId = cursor.getInt(0);
                                 if (folderId > 0) {
                                     open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
