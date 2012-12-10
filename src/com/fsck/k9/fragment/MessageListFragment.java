@@ -586,7 +586,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         // set unread count
-        if (mUnreadMessageCount == 0) {
+        if (mUnreadMessageCount <= 0) {
             mFragmentListener.setUnreadCount(0);
         } else {
             if (!mSingleFolderMode && mTitle == null) {
