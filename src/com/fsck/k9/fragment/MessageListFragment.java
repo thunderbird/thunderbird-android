@@ -714,9 +714,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mActionBarProgressView = inflater.inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
 
-        mPullToRefreshView = (PullToRefreshListView) view.findViewById(R.id.message_list);
-        View loadingView = inflater.inflate(R.layout.message_list_loading, null);
-        mPullToRefreshView.setEmptyView(loadingView);
+        initializePullToRefresh(inflater, view);
 
         initializeLayout();
         mListView.setVerticalFadingEdgeEnabled(false);
@@ -941,29 +939,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
-        if (mSingleFolderMode) {
-            if (mSearch.isManualSearch() && mAccount.allowRemoteSearch()) {
-                mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
-                    @Override
-                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                        mPullToRefreshView.onRefreshComplete();
-                        onRemoteSearchRequested();
-                    }
-                });
-                mPullToRefreshView.setPullLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_pull));
-                mPullToRefreshView.setReleaseLabel(getString(R.string.pull_to_refresh_remote_search_from_local_search_release));
-            } else {
-                mPullToRefreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
-                    @Override
-                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                        checkMail();
-                    }
-                });
-            }
-        } else {
-            mPullToRefreshView.setMode(PullToRefreshBase.Mode.DISABLED);
-        }
-
         mController.addListener(mListener);
 
         //Cancel pending new mail notifications when we open an account
@@ -985,6 +960,62 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         refreshTitle();
+    }
+
+    private void initializePullToRefresh(LayoutInflater inflater, View layout) {
+        mPullToRefreshView = (PullToRefreshListView) layout.findViewById(R.id.message_list);
+
+        // Set empty view
+        View loadingView = inflater.inflate(R.layout.message_list_loading, null);
+        mPullToRefreshView.setEmptyView(loadingView);
+
+        if (isPullToRefreshAllowed()) {
+            if (mSearch.isManualSearch() && mAccount.allowRemoteSearch()) {
+                // "Pull to search server"
+                mPullToRefreshView.setOnRefreshListener(
+                        new PullToRefreshBase.OnRefreshListener<ListView>() {
+                    @Override
+                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                        mPullToRefreshView.onRefreshComplete();
+                        onRemoteSearchRequested();
+                    }
+                });
+                mPullToRefreshView.setPullLabel(getString(
+                        R.string.pull_to_refresh_remote_search_from_local_search_pull));
+                mPullToRefreshView.setReleaseLabel(getString(
+                        R.string.pull_to_refresh_remote_search_from_local_search_release));
+            } else {
+                // "Pull to refresh"
+                mPullToRefreshView.setOnRefreshListener(
+                        new PullToRefreshBase.OnRefreshListener<ListView>() {
+                    @Override
+                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                        checkMail();
+                    }
+                });
+            }
+        }
+
+        // Disable pull-to-refresh until the message list has been loaded
+        setPullToRefreshEnabled(false);
+    }
+
+    /**
+     * Returns whether or not pull-to-refresh is allowed in this message list.
+     */
+    private boolean isPullToRefreshAllowed() {
+        return mSingleFolderMode;
+    }
+
+    /**
+     * Enable or disable pull-to-refresh.
+     *
+     * @param enable
+     *         {@code true} to enable. {@code false} to disable.
+     */
+    private void setPullToRefreshEnabled(boolean enable) {
+        mPullToRefreshView.setMode((enable) ?
+                PullToRefreshBase.Mode.PULL_DOWN_TO_REFRESH : PullToRefreshBase.Mode.DISABLED);
     }
 
     private void initializeLayout() {
@@ -2929,7 +2960,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Remove the "Loading..." view
         mPullToRefreshView.setEmptyView(null);
+
+        // Enable pull-to-refresh if allowed
+        if (isPullToRefreshAllowed()) {
+            setPullToRefreshEnabled(true);
+        }
 
         Cursor cursor;
         if (mCursors.length > 1) {
