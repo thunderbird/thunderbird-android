@@ -49,6 +49,7 @@
     </style>
 
     <style name="Theme.K9.Dark.Base" parent="Theme.Sherlock">
+        <item name="android:windowBackground">@android:color/black</item>
         <item name="iconFolder">@drawable/folder_dark</item>
         <item name="listDivider">@drawable/divider_dark</item>
         <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_dark</item>
