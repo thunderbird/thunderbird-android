@@ -683,7 +683,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		if (state instanceof Bundle) {
 			Bundle bundle = (Bundle) state;
 
-			mMode = Mode.mapIntToValue(bundle.getInt(STATE_MODE, 0));
+			setMode(Mode.mapIntToValue(bundle.getInt(STATE_MODE, 0)));
 			mCurrentMode = Mode.mapIntToValue(bundle.getInt(STATE_CURRENT_MODE, 0));
 
 			mDisableScrollingWhileRefreshing = bundle.getBoolean(STATE_DISABLE_SCROLLING_REFRESHING, true);
