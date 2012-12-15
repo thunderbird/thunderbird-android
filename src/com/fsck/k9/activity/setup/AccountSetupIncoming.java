@@ -367,7 +367,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 try {
                     String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8");
                     String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8");
-                    URI oldUri = new URI(mAccount.getTransportUri());
+                    URI oldUri = new URI(mAccount.getTransportUri(0));
                     URI uri = new URI(
                         oldUri.getScheme(),
                         usernameEnc + ":" + passwordEnc,
@@ -376,7 +376,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         null,
                         null,
                         null);
-                    mAccount.setTransportUri(uri.toString());
+                    mAccount.setTransportUri(0, uri.toString());
                 } catch (UnsupportedEncodingException enc) {
                     // This really shouldn't happen since the encoding is hardcoded to UTF-8
                     Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
@@ -388,7 +388,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
 
 
-                AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mMakeDefault);
+                AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, 0, mMakeDefault);
                 finish();
             }
         }
@@ -432,7 +432,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount.setCompression(Account.TYPE_OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, 0, true, false);
         } catch (Exception e) {
             failure(e);
         }

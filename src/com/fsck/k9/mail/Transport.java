@@ -11,8 +11,8 @@ public abstract class Transport {
     // RFC 1047
     protected static final int SOCKET_READ_TIMEOUT = 300000;
 
-    public synchronized static Transport getInstance(Account account) throws MessagingException {
-        String uri = account.getTransportUri();
+    public synchronized static Transport getInstance(Account account, int index) throws MessagingException {
+        String uri = account.getTransportUri(index);
         if (uri.startsWith("smtp")) {
             return new SmtpTransport(uri);
         } else if (uri.startsWith("webdav")) {

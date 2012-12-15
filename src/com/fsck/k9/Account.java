@@ -4,6 +4,7 @@ package com.fsck.k9;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -23,6 +24,7 @@ import android.util.Log;
 
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
@@ -143,7 +145,7 @@ public class Account implements BaseAccount {
      * storage
      */
     private String mLocalStorageProviderId;
-    private String mTransportUri;
+    private List<String> mTransportUri;
     private String mDescription;
     private String mAlwaysBcc;
     private int mAutomaticCheckIntervalMinutes;
@@ -311,7 +313,7 @@ public class Account implements BaseAccount {
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
         mAlwaysShowCcBcc = false;
-
+        mTransportUri = new ArrayList<String>();
         searchableFolders = Searchable.ALL;
 
         identities = new ArrayList<Identity>();
@@ -347,7 +349,13 @@ public class Account implements BaseAccount {
 
         mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
-        mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
+        String smtp = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
+        mTransportUri = new ArrayList<String>();
+        if (smtp.length() > 0){
+        	String[] splitted = smtp.split(";");
+        	for (String s:splitted) 
+        		mTransportUri.add(s);	
+        }        
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
@@ -667,7 +675,7 @@ public class Account implements BaseAccount {
 
         editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
         editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
-        editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
+        editor.putString(mUuid + ".transportUri", Utility.base64Encode(StringUtils.join(mTransportUri, ";")));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
@@ -901,14 +909,29 @@ public class Account implements BaseAccount {
         this.mStoreUri = storeUri;
     }
 
-    public synchronized String getTransportUri() {
-        return mTransportUri;
+    public synchronized int getTransportUriCount() {
+        return mTransportUri.size();
+    }    
+    
+    public synchronized String getTransportUris() {
+        return StringUtils.join(mTransportUri, ";");
+    }
+    
+    public synchronized String getTransportUri(int index) {
+        return mTransportUri.get(index);
     }
 
-    public synchronized void setTransportUri(String transportUri) {
-        this.mTransportUri = transportUri;
+    public synchronized void setTransportUri(int index, String transportUri) {
+    	if (index < mTransportUri.size())
+    		this.mTransportUri.set(index, transportUri);
+    	else
+    		this.mTransportUri.add(transportUri);
     }
 
+    public synchronized void removeTransportUri(int index) {
+        this.mTransportUri.remove(index);
+    }
+    
     public synchronized String getDescription() {
         return mDescription;
     }

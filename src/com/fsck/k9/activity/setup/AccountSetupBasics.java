@@ -45,6 +45,7 @@ public class AccountSetupBasics extends K9Activity
     private Button mNextButton;
     private Button mManualSetupButton;
     private Account mAccount;
+    private int mIndex;
     private Provider mProvider;
 
     private EmailAddressValidator mEmailValidator = new EmailAddressValidator();
@@ -78,6 +79,8 @@ public class AccountSetupBasics extends K9Activity
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_PROVIDER)) {
             mProvider = (Provider)savedInstanceState.getSerializable(STATE_KEY_PROVIDER);
         }
+        
+        mIndex = 0;
     }
 
     @Override
@@ -214,7 +217,7 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setName(getOwnerName());
             mAccount.setEmail(email);
             mAccount.setStoreUri(incomingUri.toString());
-            mAccount.setTransportUri(outgoingUri.toString());
+            mAccount.setTransportUri(0, outgoingUri.toString());
             mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
             mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
             mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
@@ -230,7 +233,7 @@ public class AccountSetupBasics extends K9Activity
             } else if (incomingUri.toString().startsWith("pop3")) {
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
             }
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, true);
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, mIndex, true, true);
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
@@ -292,7 +295,7 @@ public class AccountSetupBasics extends K9Activity
             URI uri = new URI("placeholder", userEnc + ":" + passwordEnc, "mail." + domain, -1, null,
                               null, null);
             mAccount.setStoreUri(uri.toString());
-            mAccount.setTransportUri(uri.toString());
+            mAccount.setTransportUri(0, uri.toString());
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);

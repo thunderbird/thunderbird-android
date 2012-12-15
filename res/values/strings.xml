@@ -1096,4 +1096,6 @@ http://k9mail.googlecode.com/
     <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="message_list_loading">Loading…</string>
+    <string name="add_action">Add</string>
+    <string name="remove_action">Remove</string>
 </resources>

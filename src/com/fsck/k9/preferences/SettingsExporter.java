@@ -248,7 +248,7 @@ public class SettingsExporter {
 
 
         // Write outgoing server settings
-        ServerSettings outgoing = Transport.decodeTransportUri(account.getTransportUri());
+        ServerSettings outgoing = Transport.decodeTransportUri(account.getTransportUri(0));
         serializer.startTag(null, OUTGOING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, outgoing.type);
 

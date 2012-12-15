@@ -17,6 +17,7 @@
         android:layout_height="fill_parent"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/account_server_label"
             android:text="@string/account_setup_outgoing_smtp_server_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
@@ -109,5 +110,5 @@
             android:layout_weight="1" />
     </LinearLayout>
 	</ScrollView>
-    <include layout="@layout/wizard_next" />
+    <include layout="@layout/wizard_next_add" />
 </LinearLayout>

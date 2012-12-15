@@ -720,7 +720,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         private void show(final Accounts activity, boolean restore) {
             ServerSettings incoming = Store.decodeStoreUri(mAccount.getStoreUri());
-            ServerSettings outgoing = Transport.decodeTransportUri(mAccount.getTransportUri());
+            ServerSettings outgoing = Transport.decodeTransportUri(mAccount.getTransportUri(0));
 
             // Don't ask for the password to the outgoing server for WebDAV accounts, because
             // incoming and outgoing servers are identical for this account type.
@@ -909,11 +909,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
                 if (mOutgoingPassword != null) {
                     // Set outgoing server password
-                    String transportUri = mAccount.getTransportUri();
+                    String transportUri = mAccount.getTransportUri(0);
                     ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
                     ServerSettings newOutgoing = outgoing.newPassword(mOutgoingPassword);
                     String newTransportUri = Transport.createTransportUri(newOutgoing);
-                    mAccount.setTransportUri(newTransportUri);
+                    mAccount.setTransportUri(0, newTransportUri);
                 }
 
                 // Mark account as enabled

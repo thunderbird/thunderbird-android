@@ -125,7 +125,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
 
 
-    private Account mAccount;
+    private Account mAccount;    
     private boolean mIsMoveCapable = false;
     private boolean mIsPushCapable = false;
     private boolean mIsExpungeCapable = false;
@@ -865,7 +865,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private void onOutgoingSettings() {
-        AccountSetupOutgoing.actionEditOutgoingSettings(this, mAccount);
+        AccountSetupOutgoing.actionEditOutgoingSettings(this, mAccount, 0);
     }
 
     public void onChooseChipColor() {
