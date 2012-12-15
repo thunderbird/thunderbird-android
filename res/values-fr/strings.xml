@@ -1104,4 +1104,6 @@ de plus</string>
     <string name="upgrade_databases_title">Mise à jour base de données</string>
     <string name="upgrade_databases_unspecified">Mise à jour base de données…</string>
     <string name="upgrade_database_format">Mise à jour base de données du compte \"<xliff:g id="account">%s</xliff:g>\"</string>
+
+    <string name="message_list_loading">Chargement…</string
 </resources>
