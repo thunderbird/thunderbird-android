@@ -247,33 +247,31 @@ public class SettingsExporter {
         serializer.endTag(null, INCOMING_SERVER_ELEMENT);
 
 
-        // Write outgoing servers settings
-        for (int i=0; i<account.getTransportUriCount(); i++){
-	        ServerSettings outgoing = Transport.decodeTransportUri(account.getTransportUri(i));
-	        serializer.startTag(null, OUTGOING_SERVER_ELEMENT);
-	        serializer.attribute(null, TYPE_ATTRIBUTE, outgoing.type);
-	        
-	        writeElement(serializer, HOST_ELEMENT, outgoing.host);
-	        if (outgoing.port != -1) {
-	            writeElement(serializer, PORT_ELEMENT, Integer.toString(outgoing.port));
-	        }
-	        writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
-	        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType);
-	        writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
-	        
-	        // XXX For now we don't export the password
-	        //writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
+        // Write outgoing server settings
+        ServerSettings outgoing = Transport.decodeTransportUri(account.getTransportUri(0));
+        serializer.startTag(null, OUTGOING_SERVER_ELEMENT);
+        serializer.attribute(null, TYPE_ATTRIBUTE, outgoing.type);
 
-	        extras = outgoing.getExtra();
-	        if (extras != null && extras.size() > 0) {
-	            serializer.startTag(null, EXTRA_ELEMENT);
-	            for (Entry<String, String> extra : extras.entrySet()) {
-	                writeKeyValue(serializer, extra.getKey(), extra.getValue());
-	            }
-	            serializer.endTag(null, EXTRA_ELEMENT);
-	        }
-	        serializer.endTag(null, OUTGOING_SERVER_ELEMENT);
-        }       
+        writeElement(serializer, HOST_ELEMENT, outgoing.host);
+        if (outgoing.port != -1) {
+            writeElement(serializer, PORT_ELEMENT, Integer.toString(outgoing.port));
+        }
+        writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
+        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType);
+        writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
+        // XXX For now we don't export the password
+        //writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
+
+        extras = outgoing.getExtra();
+        if (extras != null && extras.size() > 0) {
+            serializer.startTag(null, EXTRA_ELEMENT);
+            for (Entry<String, String> extra : extras.entrySet()) {
+                writeKeyValue(serializer, extra.getKey(), extra.getValue());
+            }
+            serializer.endTag(null, EXTRA_ELEMENT);
+        }
+
+        serializer.endTag(null, OUTGOING_SERVER_ELEMENT);
 
 
         // Write account settings
