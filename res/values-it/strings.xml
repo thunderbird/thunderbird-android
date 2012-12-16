@@ -109,7 +109,7 @@ http://k9mail.googlecode.com/
     <string name="status_syncing_off">Sincronizzazione disabilitata</string>
 
     <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Successivo</string> <!-- Used as part of a multi-step process -->
+    <string name="next_action">Avanti</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Precedente</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Annulla</string>
@@ -1056,7 +1056,9 @@ http://k9mail.googlecode.com/
 
     <string name="image_saved_as">Immagine salvata in \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Errore nel salvataggio dell\'immagine.</string>
-
+    <string name="add_action">Nuovo</string>
+    <string name="remove_action">Cancella</string>
+    
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
