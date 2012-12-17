@@ -118,7 +118,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mNextButton = (Button)findViewById(R.id.next);
         mAddButton = (Button)findViewById(R.id.add);
         mRemoveButton = (Button)findViewById(R.id.remove);
-
+        mRemoveButton.setEnabled(mAccount.getTransportUriCount() > 1 || mIndex > 0);
+        
         TextView lbl = (TextView)findViewById(R.id.account_server_label);
         int total = mAccount.getTransportUriCount();
         if (mIndex + 1 > total)
@@ -197,77 +198,79 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
 
         try {
-            URI uri = new URI(mAccount.getTransportUri(mIndex));
-            String username = null;
-            String password = null;
-            String authType = null;
-            if (uri.getUserInfo() != null) {
-                String[] userInfoParts = uri.getUserInfo().split(":");
-
-                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                if (userInfoParts.length > 1) {
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-                if (userInfoParts.length > 2) {
-                    authType = userInfoParts[2];
-                }
-            }
-
-            if (username != null) {
-                mUsernameView.setText(username);
-                mRequireLoginView.setChecked(true);
-            }
-
-            if (password != null) {
-                mPasswordView.setText(password);
-            }
-
-            if (authType != null) {
-                for (int i = 0; i < authTypes.length; i++) {
-                    if (authTypes[i].equals(authType)) {
-                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
-                    }
-                }
-            }
-
-            // Select currently configured security type
-            for (int i = 0; i < smtpSchemes.length; i++) {
-                if (smtpSchemes[i].equals(uri.getScheme())) {
-                    SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
-                }
-            }
-
-            /*
-             * Updates the port when the user changes the security type. This allows
-             * us to show a reasonable default which the user can change.
-             *
-             * Note: It's important that we set the listener *after* an initial option has been
-             *       selected by the code above. Otherwise the listener might be called after
-             *       onCreate() has been processed and the current port value set later in this
-             *       method is overridden with the default port for the selected security type.
-             */
-            mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position,
-                        long id) {
-                    updatePortFromSecurityType();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
-            });
-
-            if (uri.getHost() != null) {
-                mServerView.setText(uri.getHost());
-            }
-
-            if (uri.getPort() != -1) {
-                mPortView.setText(Integer.toString(uri.getPort()));
-            } else {
-                updatePortFromSecurityType();
-            }
-
-            validateFields();
+        	if (mIndex < mAccount.getTransportUriCount()){
+	            URI uri = new URI(mAccount.getTransportUri(mIndex));
+	            String username = null;
+	            String password = null;
+	            String authType = null;
+	            if (uri.getUserInfo() != null) {
+	                String[] userInfoParts = uri.getUserInfo().split(":");
+	
+	                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+	                if (userInfoParts.length > 1) {
+	                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
+	                }
+	                if (userInfoParts.length > 2) {
+	                    authType = userInfoParts[2];
+	                }
+	            }
+	
+	            if (username != null) {
+	                mUsernameView.setText(username);
+	                mRequireLoginView.setChecked(true);
+	            }
+	
+	            if (password != null) {
+	                mPasswordView.setText(password);
+	            }
+	
+	            if (authType != null) {
+	                for (int i = 0; i < authTypes.length; i++) {
+	                    if (authTypes[i].equals(authType)) {
+	                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
+	                    }
+	                }
+	            }
+	
+	            // Select currently configured security type
+	            for (int i = 0; i < smtpSchemes.length; i++) {
+	                if (smtpSchemes[i].equals(uri.getScheme())) {
+	                    SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
+	                }
+	            }
+	
+	            /*
+	             * Updates the port when the user changes the security type. This allows
+	             * us to show a reasonable default which the user can change.
+	             *
+	             * Note: It's important that we set the listener *after* an initial option has been
+	             *       selected by the code above. Otherwise the listener might be called after
+	             *       onCreate() has been processed and the current port value set later in this
+	             *       method is overridden with the default port for the selected security type.
+	             */
+	            mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	                @Override
+	                public void onItemSelected(AdapterView<?> parent, View view, int position,
+	                        long id) {
+	                    updatePortFromSecurityType();
+	                }
+	
+	                @Override
+	                public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
+	            });
+	
+	            if (uri.getHost() != null) {
+	                mServerView.setText(uri.getHost());
+	            }
+	
+	            if (uri.getPort() != -1) {
+	                mPortView.setText(Integer.toString(uri.getPort()));
+	            } else {
+	                updatePortFromSecurityType();
+	            }
+	
+	            validateFields();
+        	}
         } catch (Exception e) {
             /*
              * We should always be able to parse our own settings.
@@ -355,13 +358,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     protected void onRemove() {
-    	if (mAccount.getTransportUriCount() > 1){
+    	if (mAccount.getTransportUriCount() > 1)
     		mAccount.removeTransportUri(mIndex);
-    		if (mAccount.getTransportUriCount() > 1)
-    			AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mIndex, mMakeDefault);    		
-    		else
-    			AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, 0, mMakeDefault);
-    	}
+		if (mAccount.getTransportUriCount() > 1)
+			AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mIndex, mMakeDefault);    		
+		else
+			AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, 0, mMakeDefault);
     } 
     
     protected void onAdd() {
