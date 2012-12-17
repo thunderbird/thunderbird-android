@@ -22,31 +22,36 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">K-9 Mailへようこそ!</string>
-    <string name="accounts_welcome">
-K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメールクライアントを元に作成したAndroid用のオープンソースのメールクライアントです。
-\n
-\nK-9で改良された機能:
-\n * IMAP IDLEを利用したプッシュメール
-\n * パフォーマンス改善
-\n * メッセージ整理
-\n * 電子メール署名
-\n * Bcc-to-self
-\n * フォルダ購読
-\n * 全フォルダ同期
-\n * 返信先の設定
-\n * キーボードショートカット
-\n * より良いIMAPサポート
-\n * 添付ファイルのSDカードへの保存
-\n * ゴミ箱を空にする機能
-\n * メッセージのソート
-\n * …他にもたくさんあります
-\n
-\nK-9 は大多数のメールクライアントと同様に、ほとんどのフリーHotmailアカウントをサポートしていません。また、 Microsoft Exchange との通信において少し癖を持っていることに注意してください。
-\n
-\nバグレポートや新機能の貢献、質問は http://k9mail.googlecode.com/ にお願いします。
-\n日本語で質問などがある場合は http://groups.google.co.jp/group/k9mail_ja/ を参照してください。
-    </string>
+    <string name="welcome_message_title">K-9 Mailへようこそ</string>
+    <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 は標準のAndroidメールクライアントを元に作成したAndroid用のオープンソースのメールクライアントです。
+</p><p>
+K-9で改良された機能:
+</p>
+<ul>
+  <li>IMAP IDLEを利用したプッシュメール</li>
+  <li>パフォーマンス改善</li>
+  <li>メッセージ整理</li>
+  <li>電子メール署名</li>
+  <li>Bcc-to-self</li>
+  <li>フォルダ購読</li>
+  <li>全フォルダ同期</li>
+  <li>返信先の設定</li>
+  <li>キーボードショートカット</li>
+  <li>より良いIMAPサポート</li>
+  <li>添付ファイルのSDカードへの保存</li>
+  <li>ゴミ箱を空にする機能</li>
+  <li>メッセージのソート</li>
+  <li>…他にもたくさんあります</li>
+</ul>
+<p>
+K-9 は大多数のメールクライアントと同様に、ほとんどのフリーHotmailアカウントをサポートしていません。また、 Microsoft Exchange との通信において少し癖を持っていることに注意してください。
+</p><p>
+バグレポートや新機能の貢献、質問は http://k9mail.googlecode.com/ にお願いします。<br>
+日本語で質問などがある場合は <a href="http://groups.google.co.jp/group/k9mail_ja/">http://groups.google.co.jp/group/k9mail_ja/</a> を参照してください。
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->

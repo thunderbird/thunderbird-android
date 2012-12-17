@@ -22,31 +22,36 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
-    <string name="accounts_welcome">
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="accounts_welcome"><![CDATA[
+<p>
 ברוכים הבאים ל-K-9 הגדרת דואר. K-9 הוא קוד פתוח של תוכנת מייל לאנדרואיד המבוססת במקור על תוכנת המייל הסטנדרטית של האנדרואיד
-\n\n
-\nתכונות משופרות של K-9 כוללת:
-\n * דחוף דואר באמצעות IMAP IDLE
-\n * ביצועים טובים יותר
-\n * הודעה refiling
-\n * חתימות דוא"ל
-\n * עותק מוסתר אל עצמי
-\n * תיקיות מנויים
-\n * כל התיקיות מסונכרנות
-\n * חזור- כתובת תצורה
-\n * מקלדת קיצורי דרך
-\n * תמיכה טובה יותר ב-IMAP
-\n * שמירת קבצים מצורפים אל SD
-\n * רוקן אשפה
-\n * מיון הודעת
-\n * ועוד …
-\n
-\nלידיעתך, K-9 אינו תומך ברוב חשבונות Hotmail החינמיים, כמו תוכנות דואר רבות, יש כמה מוזרויות כאשר מדברים על Microsoft Exchange.
-\n
-\nנא לשלוח דיווחי באגים, לתרום תכונות חדשות ולשאול שאלות על
-http://k9mail.googlecode.com/
-    </string>
+</p><p>
+תכונות משופרות של K-9 כוללת:
+</p>
+<ul>
+  <li>דחוף דואר באמצעות IMAP IDLE</li>
+  <li>ביצועים טובים יותר</li>
+  <li>הודעה refiling</li>
+  <li>חתימות דוא"ל</li>
+  <li>עותק מוסתר אל עצמי</li>
+  <li>תיקיות מנויים</li>
+  <li>כל התיקיות מסונכרנות</li>
+  <li>חזור- כתובת תצורה</li>
+  <li>מקלדת קיצורי דרך</li>
+  <li>תמיכה טובה יותר ב-IMAP</li>
+  <li>שמירת קבצים מצורפים אל SD</li>
+  <li>רוקן אשפה</li>
+  <li>מיון הודעת</li>
+  <li>ועוד …</li>
+</ul>
+<p>
+לידיעתך, K-9 אינו תומך ברוב חשבונות Hotmail החינמיים, כמו תוכנות דואר רבות, יש כמה מוזרויות כאשר מדברים על Microsoft Exchange.
+</p><p>
+נא לשלוח דיווחי באגים, לתרום תכונות חדשות ולשאול שאלות על
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->
