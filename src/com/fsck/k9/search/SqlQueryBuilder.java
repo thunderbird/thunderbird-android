@@ -177,6 +177,14 @@ public class SqlQueryBuilder {
                 columnName = "display_class";
                 break;
             }
+            case SPAM_STATUS: {
+                columnName = "x_spam_status";
+                break;
+            }
+            case SPAM_FLAG: {
+                columnName = "x_spam_flag";
+                break;
+            }
             case FOLDER:
             case SEARCHABLE: {
                 // Special cases handled in buildWhereClauseInternal()

@@ -115,6 +115,16 @@ public class MessageProvider extends ContentProvider {
          */
         @Deprecated
         String INCREMENT = "id";
+
+        /**
+         * <P>Type: TEXT</P>
+         */
+ 		String SPAM_FLAG = "spamFlag";
+ 		
+        /**
+         * <P>Type: TEXT</P>
+         */
+ 		String SPAM_STATUS = "spamStatus";
     }
 
     protected static interface QueryHandler {
@@ -371,6 +381,10 @@ public class MessageProvider extends ContentProvider {
                     extractors.put(field, new AccountColorExtractor());
                 } else if (MessageColumns.ACCOUNT_NUMBER.equals(field)) {
                     extractors.put(field, new AccountNumberExtractor());
+                } else if (MessageColumns.SPAM_FLAG.equals(field)) {
+                    Log.d("K9-Mail", "SPAM_FLAG: " + field);
+                } else if (MessageColumns.SPAM_STATUS.equals(field)) {
+                    Log.d("K9-Mail", "SPAM_STATUS: " + field);
                 } else if (MessageColumns.HAS_ATTACHMENTS.equals(field)) {
                     extractors.put(field, new HasAttachmentsExtractor());
                 } else if (MessageColumns.HAS_STAR.equals(field)) {
@@ -941,7 +955,7 @@ public class MessageProvider extends ContentProvider {
     private MessageHelper mMessageHelper;
 
     /**
-     * How many simultaneous cursors we can affort to expose at once
+     * How many simultaneous cursors we can afford to expose at once
      */
     /* package */
     Semaphore mSemaphore = new Semaphore(1);

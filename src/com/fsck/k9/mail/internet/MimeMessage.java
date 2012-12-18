@@ -23,6 +23,8 @@ import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 
+import android.util.Log;
+
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -51,6 +53,9 @@ public class MimeMessage extends Message {
     protected Date mSentDate;
     protected SimpleDateFormat mDateFormat;
 
+    protected String mSpamFlag;
+    protected String mSpamStatus;
+    
     protected Body mBody;
     protected int mSize;
 
@@ -85,6 +90,9 @@ public class MimeMessage extends Message {
 
         mBody = null;
 
+        mSpamFlag = null;
+        mSpamStatus= null;
+        
         MimeConfig parserConfig  = new MimeConfig();
         parserConfig.setMaxHeaderLen(-1); // The default is a mere 10k
         parserConfig.setMaxLineLen(-1); // The default is 1000 characters. Some MUAs generate
@@ -96,7 +104,6 @@ public class MimeMessage extends Message {
             parser.parse(new EOLConvertingInputStream(in));
         } catch (MimeException me) {
             throw new Error(me);
-
         }
     }
 
@@ -577,6 +584,9 @@ public class MimeMessage extends Message {
         message.mReplyTo = mReplyTo;
         message.mReferences = mReferences;
         message.mInReplyTo = mInReplyTo;
+        
+        message.mSpamFlag = mSpamFlag;
+        message.mSpamStatus = mSpamStatus;
     }
 
     @Override
@@ -597,4 +607,56 @@ public class MimeMessage extends Message {
     public boolean hasAttachments() {
         return false;
     }
+
+
+	@Override
+	public String getSpamFlag() {
+		if (mSpamFlag == null) {
+			String flag = MimeUtility.unfold(getFirstHeader("X-Spam-Flag"));
+			// Log.d("K9-Mail", "getSpamFlag(): " + flag);
+			if (flag != null) {
+				mSpamFlag = flag;
+			} else {
+				mSpamFlag = "NO";
+			}
+		}
+		return mSpamFlag;
+	}
+
+
+	@Override
+	public String getSpamStatus() {
+		if (mSpamStatus == null) {
+			String status = MimeUtility.unfold(getFirstHeader("X-Spam-Status"));
+			// Log.d("K9-Mail", "getSpamStatus(): " + status);
+			if (status != null) {
+				mSpamStatus = status;
+			} else {
+				mSpamStatus = "No";
+			}
+		}
+		return mSpamStatus;
+	}
+	
+	public void setSpamFlag(String flag) {
+		// mSpamFlag = MimeUtility.unfold(getFirstHeader("X-Spam-Flag"));
+        try {
+			setHeader("X-Spam-Flag", flag);
+		} catch (UnavailableStorageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        mSpamFlag = flag;
+	}
+	
+	public void setSpamStatus(String status) {
+		// mSpamStatus = MimeUtility.unfold(getFirstHeader("X-Spam-Status"));
+        try {
+			setHeader("X-Spam-Status", status);
+		} catch (UnavailableStorageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        mSpamStatus = status;
+	}
 }

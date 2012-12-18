@@ -927,6 +927,12 @@ public class MessagingController implements Runnable {
                         l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
                     }
                     Message localMessage = localUidMap.get(thisMess.getUid());
+                	if (localMessage.getSpamFlag().equals("YES")) {
+                		Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is SPAM");
+                		continue;
+                 	} else {
+                		Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is not SPAM");
+                	}                    
                     if (localMessage == null || !localMessage.olderThan(earliestDate)) {
                         remoteMessages.add(thisMess);
                         remoteUidMap.put(thisMess.getUid(), thisMess);

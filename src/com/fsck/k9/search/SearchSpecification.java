@@ -82,7 +82,9 @@ public interface SearchSpecification extends Parcelable {
         READ,
         FLAGGED,
         DISPLAY_CLASS,
-        SEARCHABLE
+        SEARCHABLE,
+        SPAM_FLAG,
+        SPAM_STATUS
     }
 
 

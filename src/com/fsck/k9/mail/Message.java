@@ -80,6 +80,9 @@ public abstract class Message implements Part, Body {
         return mFolder;
     }
 
+    public abstract String getSpamFlag();
+    public abstract String getSpamStatus();
+    
     public abstract String getSubject();
 
     public abstract void setSubject(String subject) throws MessagingException;

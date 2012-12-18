@@ -76,6 +76,9 @@ public class MimeHeader {
         for (Field field : mFields) {
             if (field.name.equalsIgnoreCase(name)) {
                 values.add(field.value);
+                // Since we found the value, don't keep traversing the
+                // list of header fields.
+                break;
             }
         }
         if (values.isEmpty()) {
