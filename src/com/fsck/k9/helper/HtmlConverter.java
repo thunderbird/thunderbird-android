@@ -248,7 +248,11 @@ public class HtmlConverter {
                     if (isStartOfLine) {
                         quotesThisLine++;
                     } else {
-                        buff.append("&gt;");
+                        // We use a token here which can't occur in htmlified text because &gt; is valid
+                        // within links (where > is not), and linkifying links will include it if we
+                        // do it here. We'll make another pass and change this back to &gt; after
+                        // the linkification is done.
+                        buff.append("<gt>");
                     }
                     break;
                 case '\r':
@@ -321,6 +325,9 @@ public class HtmlConverter {
         }
 
         text = sb.toString();
+
+        // Above we replaced > with <gt>, now make it &gt;
+        text = text.replaceAll("<gt>", "&gt;");
 
         return text;
     }
