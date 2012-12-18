@@ -1,0 +1,19 @@
+Current K9 sources from git require SDK AI level 16, so the properties
+files needed to be updated to Android SDK API level 16 instead of
+15.
+
+There are three imports that need to be done to add this to
+eclipse. It's also possible to use 'ant' if your build.xml 
+files are correct. You can set those up with the correct build path
+using this command from the top level directory:
+
+      android update project --path `pwd` --subprojects
+
+The first two projects to import are libraries, which are
+ActionBarSherlock and Android-PullToRefresh. These import weird, so
+after they get imported as 'library', rename them. 
+
+To build, use eclipse or type 'ant debug' at the top level. To install
+the package, it must first be removed, do that like this:
+    
+    adb install -r bin/k9-mail.apk
