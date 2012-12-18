@@ -35,6 +35,7 @@
         <item name="iconMenuInbox">@drawable/ic_menu_inbox</item>
         <item name="iconMenuPreferences">@drawable/ic_menu_preferences</item>
         <item name="iconMenuRefresh">@drawable/ic_menu_refresh</item>
+        <item name="iconMenuFoldersRefresh">@drawable/ic_menu_folders_refresh</item>
         <item name="iconMenuReplyReceipt">@drawable/ic_menu_reply_receipt</item>
         <item name="iconMenuSaveDraft">@drawable/ic_menu_save_draft</item>
         <item name="iconMenuSearch">@drawable/ic_menu_search</item>
@@ -83,6 +84,7 @@
         <item name="iconMenuInbox">@drawable/ic_menu_inbox</item>
         <item name="iconMenuPreferences">@drawable/ic_menu_preferences</item>
         <item name="iconMenuRefresh">@drawable/ic_menu_refresh</item>
+        <item name="iconMenuFoldersRefresh">@drawable/ic_menu_folders_refresh</item>
         <item name="iconMenuReplyReceipt">@drawable/ic_menu_reply_receipt</item>
         <item name="iconMenuSaveDraft">@drawable/ic_menu_save_draft</item>
         <item name="iconMenuSearch">@drawable/ic_menu_search</item>

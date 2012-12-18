@@ -35,6 +35,7 @@
         <attr name="iconMenuInbox" format="reference" />
         <attr name="iconMenuPreferences" format="reference" />
         <attr name="iconMenuRefresh" format="reference" />
+        <attr name="iconMenuFoldersRefresh" format="reference" />
         <attr name="iconMenuReplyReceipt" format="reference" />
         <attr name="iconMenuSaveDraft" format="reference" />
         <attr name="iconMenuSearch" format="reference" />

@@ -50,6 +50,7 @@
         android:title="@string/compact_action"/>
     <item
         android:id="@+id/list_folders"
+        android:icon="?attr/iconMenuFoldersRefresh"
         android:title="@string/refresh_folders_action"/>
     <item
         android:id="@+id/settings"
