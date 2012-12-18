@@ -400,7 +400,7 @@ public class EmailProvider extends ContentProvider {
 
                     query.append(
                             "WHERE " +
-                            "(h.deleted = 0 AND m.deleted = 0 AND " +
+                            "(m.deleted = 0 AND " +
                             "(m.empty IS NULL OR m.empty != 1) AND " +
                             "h.thread_root IS NULL) ");
 
