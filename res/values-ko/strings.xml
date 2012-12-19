@@ -22,35 +22,30 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9은 표준 안드로이드 메일 클라이언트를 기반으로 한 안드로이드용 오픈소스 메일 클라이언트 입니다.
-</p><p>
-K-9의 향상된 기능:
-</p>
-<ul>
-  <li>IMAP IDLE를 이용한 메일 푸시(PUSH)기능</li>
-  <li>더 나은 성능</li>
-  <li>메시지 재정리</li>
-  <li>이메일 서명</li>
-  <li>Bcc-to-self</li>
-  <li>폴더 구독</li>
-  <li>모든 폴더 동기화</li>
-  <li>회신주소 수정</li>
-  <li>키보드 단축키</li>
-  <li>향상된 IMAP 지원</li>
-  <li>SD 카드에 첨부파일 저장</li>
-  <li>휴지통 비우기</li>
-  <li>메시지 정렬</li>
-  <li>…그리고 그 밖에</li>
-</ul>
-<p>
-K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무료 hotmail 계정을 Microsoft Exchange와 연결할때 발생되는 문제로 인해 지원하지 않습니다.
-</p><p>
-버그 리포트, 새로운 기능 그리고 질문에 대한 문의는 <a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a> 로 남겨주시기바랍니다.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+K-9 메일 설치를 환영합니다.  K-9은 표준 안드로이드 메일 클라이언트를 기반으로 한 안드로이드용 오픈소스 메일 클라이언트 입니다.
+\n\n
+\nK-9의 향상된 기능:
+\n * IMAP IDLE를 이용한 메일 푸시(PUSH)기능
+\n * 더 나은 성능
+\n * 메시지 재정리
+\n * 이메일 서명
+\n * Bcc-to-self
+\n * 폴더 구독
+\n * 모든 폴더 동기화
+\n * 회신주소 수정
+\n * 키보드 단축키
+\n * 향상된 IMAP 지원
+\n * SD 카드에 첨부파일 저장
+\n * 휴지통 비우기
+\n * 메시지 정렬
+\n * …그리고 그 밖에
+\n
+\nK-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무료 hotmail 계정을 Microsoft Exchange와 연결할때 발생되는 문제로 인해 지원하지 않습니다.
+\n
+\n버그 리포트, 새로운 기능 그리고 질문에 대한 문의는 http://k9mail.googlecode.com/ 로 남겨주시기바랍니다.
+    </string>
 
 
     <!-- Default signature -->

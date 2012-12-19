@@ -23,36 +23,30 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-A K-9 egy nyílt forráskódú levelezőprogram Androidra, a sima mail kliens alapjaira helyezve.
-</p><p>
-K-9 továbbfejlesztett funkciói:
-</p>
-<ul>
-  <li>Push mail using IMAP IDLE</li>
-  <li>Jobb teljesítmény</li>
-  <li>Message refiling</li>
-  <li>E-mail aláírások</li>
-  <li>Titkos másolat</li>
-  <li>Mappa-előfizetések</li>
-  <li>Minden mappa szinkronizálása</li>
-  <li>Válasz cím beállítása</li>
-  <li>Gyorsbillentyűk</li>
-  <li>Jobb IMAP támogatás</li>
-  <li>Mellékletek mentése a memóriakártyára</li>
-  <li>Kuka ürítése</li>
-  <li>Üzenetek válogatás</li>
-  <li>…és még sok más</li>
-</ul>
-<p>
-Vegye figyelembe, hogy a K-9 nem támogatja a legtöbb ingyenes hotmail fiókot és még sok más klienst. Történnek furcsaságok, ha Microsoft Exchange-el kommunikál.
-</p><p>
-Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérdéseit itt teheti fel
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+Üdvözöljük a K-9 Mail beállításokban. A K-9 egy nyílt forráskódú levelezőprogram Androidra, a sima mail kliens alapjaira helyezve.
+\n\n
+\nK-9 továbbfejlesztett funkciói:
+\n * Push mail using IMAP IDLE
+\n * Jobb teljesítmény
+\n * Message refiling
+\n * E-mail aláírások
+\n * Titkos másolat
+\n * Mappa-előfizetések
+\n * Minden mappa szinkronizálása
+\n * Válasz cím beállítása
+\n * Gyorsbillentyűk
+\n * Jobb IMAP támogatás
+\n * Mellékletek mentése a memóriakártyára
+\n * Kuka ürítése
+\n * Üzenetek válogatás
+\n * …és még sok más
+\n
+\nVegye figyelembe, hogy a K-9 nem támogatja a legtöbb ingyenes hotmail fiókot és még sok más klienst. Történnek furcsaságok, ha Microsoft Exchange-el kommunikál.
+\n
+\nHibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérdéseit itt teheti fel http://k9mail.googlecode.com/
+    </string>
 
 
     <!-- Default signature -->

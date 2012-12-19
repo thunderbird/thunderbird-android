@@ -22,38 +22,33 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 on avoimen lähdekoodin sähköpostiasiakasohjelma Android-käyttöjärjestelmälle. Ohjelma perustuu
+    <string name="welcome_message_title">Tervetuloa K-9 Mailiin!</string>
+    <string name="accounts_welcome">
+Tervetuloa K-9 Mailin asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiakasohjelma Android-käyttöjärjestelmälle. Ohjelma perustuu
 standardiin Androidin sähköpostiasiakasohjelmaan.
-</p><p>
-K-9:n parannettuja ominaisuuksia ovat mm.:
-</p>
-<ul>
-  <li>Ilmoitus uusista viesteistä IMAP IDLE -ominaisuuden avulla</li>
-  <li>Parempi suorituskyky</li>
-  <li>Viestien arkistointi</li>
-  <li>Viestien allekirjoitukset</li>
-  <li>Piilokopion lähetys itselle</li>
-  <li>Kansioiden tilaukset</li>
-  <li>Kansioiden synkronointi</li>
-  <li>Vastaus-osoitteen määrittely</li>
-  <li>Pikanäppäimet</li>
-  <li>Parempi IMAP-tuki</li>
-  <li>Liitetiedostojen tallennus SD-kortille</li>
-  <li>Roskakorin tyhjennys</li>
-  <li>Viestien lajittelu</li>
-  <li>…ja paljon muuta</li>
-</ul>
-<p>
-K-9 ei valitettavasti sisällä tukea yleisimmille ilmaisille web-sähköposteille (esim. hotmail). Lisäksi Microsoft Exchange -toimivuudessa on
+\n\n
+\nK-9:n parannettuja ominaisuuksia ovat mm.:
+\n * Ilmoitus uusista viesteistä IMAP IDLE -ominaisuuden avulla
+\n * Parempi suorituskyky
+\n * Viestien arkistointi
+\n * Viestien allekirjoitukset
+\n * Piilokopion lähetys itselle
+\n * Kansioiden tilaukset
+\n * Kansioiden synkronointi
+\n * Vastaus-osoitteen määrittely
+\n * Pikanäppäimet
+\n * Parempi IMAP-tuki
+\n * Liitetiedostojen tallennus SD-kortille
+\n * Roskakorin tyhjennys
+\n * Viestien lajittelu
+\n * …ja paljon muuta
+\n
+\nK-9 ei valitettavasti sisällä tukea yleisimmille ilmaisille web-sähköposteille (esim. hotmail). Lisäksi Microsoft Exchange -toimivuudessa on
 ongelmia, kuten monissa muissakin sähköpostiasiakasohjelmissa.
-</p><p>
-Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+\n
+\nVirheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
+http://k9mail.googlecode.com/
+    </string>
 
 
     <!-- Default signature -->

@@ -47,9 +47,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     private static final String EXTRA_ACCOUNT = "account";
 
+    private static final String EXTRA_INDEX = "index";
+    
     private static final String EXTRA_CHECK_INCOMING = "checkIncoming";
 
-    private static final String EXTRA_CHECK_OUTGOING = "checkOutgoing";
+    private static final String EXTRA_CHECK_OUTGOING = "checkOutgoing";    
 
     private Handler mHandler = new Handler();
 
@@ -58,6 +60,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     private TextView mMessageView;
 
     private Account mAccount;
+    
+    private int mIndex;
 
     private boolean mCheckIncoming;
 
@@ -67,10 +71,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     private boolean mDestroyed;
 
-    public static void actionCheckSettings(Activity context, Account account,
+    public static void actionCheckSettings(Activity context, Account account, int index,
                                            boolean checkIncoming, boolean checkOutgoing) {
         Intent i = new Intent(context, AccountSetupCheckSettings.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
+        i.putExtra(EXTRA_INDEX, index);
         i.putExtra(EXTRA_CHECK_INCOMING, checkIncoming);
         i.putExtra(EXTRA_CHECK_OUTGOING, checkOutgoing);
         context.startActivityForResult(i, ACTIVITY_REQUEST_CODE);
@@ -89,6 +94,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mIndex = getIntent().getIntExtra(EXTRA_INDEX, 0);
         mCheckIncoming = getIntent().getBooleanExtra(EXTRA_CHECK_INCOMING, false);
         mCheckOutgoing = getIntent().getBooleanExtra(EXTRA_CHECK_OUTGOING, false);
 
@@ -132,7 +138,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         if (!(mAccount.getRemoteStore() instanceof WebDavStore)) {
                             setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
                         }
-                        Transport transport = Transport.getInstance(mAccount);
+                        Transport transport = Transport.getInstance(mAccount, mIndex);
                         transport.close();
                         transport.open();
                         transport.close();
@@ -278,7 +284,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
                             // we need these for matching
                             String storeURIHost = (Uri.parse(mAccount.getStoreUri())).getHost();
-                            String transportURIHost = (Uri.parse(mAccount.getTransportUri())).getHost();
+                            String transportURIHost = (Uri.parse(mAccount.getTransportUri(mIndex))).getHost();
 
                             for (List<?> subjectAlternativeName : subjectAlternativeNames) {
                                 Integer type = (Integer)subjectAlternativeName.get(0);
@@ -370,7 +376,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                 R.string.account_setup_failed_dlg_certificate_message_fmt,
                                 e.getMessage() == null ? "" : e.getMessage());
                         }
-                        AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
+                        AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount, mIndex,
                                 mCheckIncoming, mCheckOutgoing);
                     }
                 })

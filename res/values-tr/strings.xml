@@ -22,36 +22,31 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail standart Android E-posta istemcisi üzerinde yazılmış açık kaynak kodlu bir e-posta istemcisidir.
-</p><p>
-K-9\'un iyileştirilmiş özellikleri:
-</p>
-<ul>
-  <li>IMAP IDLE kullanarak PUSH mail</li>
-  <li>Daha iyi performans</li>
-  <li>Mesaj bekletimi</li>
-  <li>E-posta imzaları</li>
-  <li>Kendine BCC (gizli karbon kopya)</li>
-  <li>Klasör abonelikleri</li>
-  <li>Tüm klasör senkronizasyonları</li>
-  <li>Yanıtlama adres yapılandırması</li>
-  <li>Klavye kısayolları</li>
-  <li>İyileştirilmiş IMAP desteği</li>
-  <li>Ekleri SD karta kaydetme</li>
-  <li>Çöp kutusu boşaltma</li>
-  <li>Mesaj sıralama</li>
-  <li>…ve daha fazlası</li>
-</ul>
-<p>
-Lütfen K-9\'un diğer çoğu e-posta istemcisi gibi Microsoft Exchange haberleşme problemi nedeniyle ücretsiz Hotmail hesaplarını desteklemediğini bilin.
-</p><p>
-Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a> adresine gönderin.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+K-9 Mail kurulumuna hoş geldiniz. K-9 standart Android E-posta istemcisi üzerinde yazılmış açık kaynak kodlu bir e-posta istemcisidir.
+\n\n
+\nK-9\'un iyileştirilmiş özellikleri:
+\n * IMAP IDLE kullanarak PUSH mail
+\n * Daha iyi performans
+\n * Mesaj bekletimi
+\n * E-posta imzaları
+\n * Kendine BCC (gizli karbon kopya)
+\n * Klasör abonelikleri
+\n * Tüm klasör senkronizasyonları
+\n * Yanıtlama adres yapılandırması
+\n * Klavye kısayolları
+\n * İyileştirilmiş IMAP desteği
+\n * Ekleri SD karta kaydetme
+\n * Çöp kutusu boşaltma
+\n * Mesaj sıralama
+\n * …ve daha fazlası
+\n
+\nLütfen K-9\'un diğer çoğu e-posta istemcisi gibi Microsoft Exchange haberleşme problemi nedeniyle ücretsiz Hotmail hesaplarını desteklemediğini bilin.
+\n
+\nLütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
+http://k9mail.googlecode.com/ adresine gönderin.
+    </string>
 
 
     <!-- Default signature -->

@@ -23,6 +23,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.DateFormatter;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
@@ -391,14 +392,20 @@ public class SettingsImporter {
 
         if (account.outgoing != null) {
             // Write outgoing server settings (transportUri)
-            ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
-            String transportUri = Transport.createTransportUri(outgoing);
-            putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
-
+        	List<String> uris = new ArrayList<String>();
+        	boolean pwd = false;
+        	for(int i=0; i<account.outgoing.size(); i++){
+	            ServerSettings outgoing = new ImportedServerSettings(account.outgoing.get(i));
+	            if (outgoing.password != null && outgoing.password.length() > 0)
+	            	pwd = true;
+	            String transportUri = Transport.createTransportUri(outgoing);
+	            uris.add(transportUri);
+        	}
+        	
+            putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(StringUtils.join(uris, ";")));        	
             // Mark account as disabled if the settings file didn't contain a password
-            if (outgoing.password == null || outgoing.password.length() == 0) {
-                createAccountDisabled = true;
-            }
+            if (!pwd)
+                createAccountDisabled = true;	
         }
 
         // Write key to mark account as disabled if necessary
@@ -913,7 +920,9 @@ public class SettingsImporter {
                         if (overview) {
                             skipToEndTag(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT);
                         } else {
-                            account.outgoing = parseServerSettings(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT);
+                        	if (account.outgoing == null)
+                        		account.outgoing = new ArrayList<ImportedServer>();
+                            account.outgoing.add(parseServerSettings(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT));
                         }
                     } else if (SettingsExporter.SETTINGS_ELEMENT.equals(element)) {
                         if (overview) {
@@ -1127,7 +1136,7 @@ public class SettingsImporter {
         public String uuid;
         public String name;
         public ImportedServer incoming;
-        public ImportedServer outgoing;
+        public List<ImportedServer> outgoing;
         public ImportedSettings settings;
         public List<ImportedIdentity> identities;
         public List<ImportedFolder> folders;

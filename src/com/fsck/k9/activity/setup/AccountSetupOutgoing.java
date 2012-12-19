@@ -27,7 +27,8 @@ import java.net.URLEncoder;
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     OnCheckedChangeListener {
     private static final String EXTRA_ACCOUNT = "account";
-
+    private static final String EXTRA_URI_INDEX = "index";
+    
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
     private static final int smtpPorts[] = {
@@ -63,20 +64,26 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private Spinner mSecurityTypeView;
     private Spinner mAuthTypeView;
     private Button mNextButton;
+    private Button mAddButton;
+    private Button mRemoveButton;
     private Account mAccount;
+    private String mAction;
+    private int mIndex;
     private boolean mMakeDefault;
 
-    public static void actionOutgoingSettings(Context context, Account account, boolean makeDefault) {
+    public static void actionOutgoingSettings(Context context, Account account, int index, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupOutgoing.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
+        i.putExtra(EXTRA_URI_INDEX, index);
         context.startActivity(i);
     }
 
-    public static void actionEditOutgoingSettings(Context context, Account account) {
+    public static void actionEditOutgoingSettings(Context context, Account account, int index) {
         Intent i = new Intent(context, AccountSetupOutgoing.class);
         i.setAction(Intent.ACTION_EDIT);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
+        i.putExtra(EXTRA_URI_INDEX, index);
         context.startActivity(i);
     }
 
@@ -87,11 +94,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-
+        mIndex = getIntent().getIntExtra(EXTRA_URI_INDEX,0);
+        
         try {
             if (new URI(mAccount.getStoreUri()).getScheme().startsWith("webdav")) {
-                mAccount.setTransportUri(mAccount.getStoreUri());
-                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+                mAccount.setTransportUri(mIndex, mAccount.getStoreUri());
+                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, mIndex, false, true);
             }
         } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
@@ -108,8 +116,19 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
         mAuthTypeView = (Spinner)findViewById(R.id.account_auth_type);
         mNextButton = (Button)findViewById(R.id.next);
-
+        mAddButton = (Button)findViewById(R.id.add);
+        mRemoveButton = (Button)findViewById(R.id.remove);
+        mRemoveButton.setEnabled(mAccount.getTransportUriCount() > 1 || mIndex > 0);
+        
+        TextView lbl = (TextView)findViewById(R.id.account_server_label);
+        int total = mAccount.getTransportUriCount();
+        if (mIndex + 1 > total)
+        	total = mIndex + 1; 
+        lbl.setText(lbl.getText() + String.format(" %d/%d", mIndex + 1, total));
+        
         mNextButton.setOnClickListener(this);
+        mAddButton.setOnClickListener(this);
+        mRemoveButton.setOnClickListener(this);
         mRequireLoginView.setOnCheckedChangeListener(this);
 
         SpinnerOption securityTypes[] = {
@@ -166,7 +185,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mMakeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
-
+        mIndex = getIntent().getIntExtra(EXTRA_URI_INDEX, 0);
+        
         /*
          * If we're being reloaded we override the original account with the one
          * we saved
@@ -174,80 +194,83 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+            mIndex = savedInstanceState.getInt(EXTRA_URI_INDEX, 0);
         }
 
         try {
-            URI uri = new URI(mAccount.getTransportUri());
-            String username = null;
-            String password = null;
-            String authType = null;
-            if (uri.getUserInfo() != null) {
-                String[] userInfoParts = uri.getUserInfo().split(":");
-
-                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                if (userInfoParts.length > 1) {
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-                if (userInfoParts.length > 2) {
-                    authType = userInfoParts[2];
-                }
-            }
-
-            if (username != null) {
-                mUsernameView.setText(username);
-                mRequireLoginView.setChecked(true);
-            }
-
-            if (password != null) {
-                mPasswordView.setText(password);
-            }
-
-            if (authType != null) {
-                for (int i = 0; i < authTypes.length; i++) {
-                    if (authTypes[i].equals(authType)) {
-                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
-                    }
-                }
-            }
-
-            // Select currently configured security type
-            for (int i = 0; i < smtpSchemes.length; i++) {
-                if (smtpSchemes[i].equals(uri.getScheme())) {
-                    SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
-                }
-            }
-
-            /*
-             * Updates the port when the user changes the security type. This allows
-             * us to show a reasonable default which the user can change.
-             *
-             * Note: It's important that we set the listener *after* an initial option has been
-             *       selected by the code above. Otherwise the listener might be called after
-             *       onCreate() has been processed and the current port value set later in this
-             *       method is overridden with the default port for the selected security type.
-             */
-            mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position,
-                        long id) {
-                    updatePortFromSecurityType();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
-            });
-
-            if (uri.getHost() != null) {
-                mServerView.setText(uri.getHost());
-            }
-
-            if (uri.getPort() != -1) {
-                mPortView.setText(Integer.toString(uri.getPort()));
-            } else {
-                updatePortFromSecurityType();
-            }
-
-            validateFields();
+        	if (mIndex < mAccount.getTransportUriCount()){
+	            URI uri = new URI(mAccount.getTransportUri(mIndex));
+	            String username = null;
+	            String password = null;
+	            String authType = null;
+	            if (uri.getUserInfo() != null) {
+	                String[] userInfoParts = uri.getUserInfo().split(":");
+	
+	                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+	                if (userInfoParts.length > 1) {
+	                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
+	                }
+	                if (userInfoParts.length > 2) {
+	                    authType = userInfoParts[2];
+	                }
+	            }
+	
+	            if (username != null) {
+	                mUsernameView.setText(username);
+	                mRequireLoginView.setChecked(true);
+	            }
+	
+	            if (password != null) {
+	                mPasswordView.setText(password);
+	            }
+	
+	            if (authType != null) {
+	                for (int i = 0; i < authTypes.length; i++) {
+	                    if (authTypes[i].equals(authType)) {
+	                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
+	                    }
+	                }
+	            }
+	
+	            // Select currently configured security type
+	            for (int i = 0; i < smtpSchemes.length; i++) {
+	                if (smtpSchemes[i].equals(uri.getScheme())) {
+	                    SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
+	                }
+	            }
+	
+	            /*
+	             * Updates the port when the user changes the security type. This allows
+	             * us to show a reasonable default which the user can change.
+	             *
+	             * Note: It's important that we set the listener *after* an initial option has been
+	             *       selected by the code above. Otherwise the listener might be called after
+	             *       onCreate() has been processed and the current port value set later in this
+	             *       method is overridden with the default port for the selected security type.
+	             */
+	            mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	                @Override
+	                public void onItemSelected(AdapterView<?> parent, View view, int position,
+	                        long id) {
+	                    updatePortFromSecurityType();
+	                }
+	
+	                @Override
+	                public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
+	            });
+	
+	            if (uri.getHost() != null) {
+	                mServerView.setText(uri.getHost());
+	            }
+	
+	            if (uri.getPort() != -1) {
+	                mPortView.setText(Integer.toString(uri.getPort()));
+	            } else {
+	                updatePortFromSecurityType();
+	            }
+	
+	            validateFields();
+        	}
         } catch (Exception e) {
             /*
              * We should always be able to parse our own settings.
@@ -261,6 +284,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
+        outState.putInt(EXTRA_URI_INDEX, mIndex);
     }
 
     private void validateFields() {
@@ -282,6 +306,14 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+        	if (mAction == "add"){
+        		AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mAccount.getTransportUriCount(), mMakeDefault);
+        		return;
+        	}else if (mAction == "next"){
+        		AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mIndex + 1, mMakeDefault);
+        		return;
+        	}
+        	
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                 mAccount.save(Preferences.getPreferences(this));
                 finish();
@@ -292,7 +324,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
     }
 
-    protected void onNext() {
+    protected boolean CheckSettings(String action)
+    {
+    	mAction = action;
         int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
         URI uri;
         try {
@@ -306,19 +340,41 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             }
             uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
                           Integer.parseInt(mPortView.getText().toString()), null, null, null);
-            mAccount.setTransportUri(uri.toString());
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+            mAccount.setTransportUri(mIndex, uri.toString());
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, mIndex, false, true);
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
+            return false;
         } catch (Exception e) {
             /*
              * It's unrecoverable if we cannot create a URI from components that
              * we validated to be safe.
              */
             failure(e);
+            return false;
         }
+        return true;
+    }
 
+    protected void onRemove() {
+    	if (mAccount.getTransportUriCount() > 1)
+    		mAccount.removeTransportUri(mIndex);
+		if (mAccount.getTransportUriCount() > 1)
+			AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mIndex, mMakeDefault);    		
+		else
+			AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, 0, mMakeDefault);
+    } 
+    
+    protected void onAdd() {
+    	CheckSettings("add");
+    }   
+    
+    protected void onNext() {
+    	if (mIndex < mAccount.getTransportUriCount() - 1)
+        	CheckSettings("next");
+    	else
+    		CheckSettings("");
     }
 
     public void onClick(View v) {
@@ -326,6 +382,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         case R.id.next:
             onNext();
             break;
+        case R.id.add:
+            onAdd();
+            break;
+        case R.id.remove:
+            onRemove();
+            break;               
         }
     }
 

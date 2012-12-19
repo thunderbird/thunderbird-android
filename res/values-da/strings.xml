@@ -22,36 +22,31 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
-</p><p>
-K-9\'s forbedrede funktioner inkluderer:
-</p>
-<ul>
-  <li>Push mail ved hjælp af IMAP IDLE</li>
-  <li>Bedre performance</li>
-  <li>Omflytning af mails</li>
-  <li>Mailsignaturer</li>
-  <li>Bcc til dig selv</li>
-  <li>Mappe subscriptions</li>
-  <li>Synkronisering af alle mapper</li>
-  <li>Indstil afsender-adresse</li>
-  <li>Tastatur genveje</li>
-  <li>Bedre IMAP understøttelse</li>
-  <li>Gem vedhæftninger til SD kort</li>
-  <li>Tøm papirkurv</li>
-  <li>Sortering af mails</li>
-  <li>…og mere</li>
-</ul>
-<p>
-Bemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
-</p><p>
-Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
+\n\n
+\nK-9\'s forbedrede funktioner inkluderer:
+\n * Push mail ved hjælp af IMAP IDLE
+\n * Bedre performance
+\n * Omflytning af mails
+\n * Mailsignaturer
+\n * Bcc til dig selv
+\n * Mappe subscriptions
+\n * Synkronisering af alle mapper
+\n * Indstil afsender-adresse
+\n * Tastatur genveje
+\n * Bedre IMAP understøttelse
+\n * Gem vedhæftninger til SD kort
+\n * Tøm papirkurv
+\n * Sortering af mails
+\n * …og mere
+\n
+\nBemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
+\n
+\nVær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til
+http://k9mail.googlecode.com/
+    </string>
 
 
     <!-- Default signature -->

@@ -22,36 +22,31 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail è un client di posta open source per Android originariamente basato sul client di posta standard di Android.
-</p><p>
-Le funzionalità migliorate di K-9 includono:
-</p>
-<ul>
-  <li>Push mail utilizzando IMAP IDLE</li>
-  <li>Migliori prestazioni</li>
-  <li>Archiviazione dei messaggi</li>
-  <li>Firme nei messaggi</li>
-  <li>Ccn a se stessi</li>
-  <li>Sottoscrizioni delle cartelle</li>
-  <li>Sincronizzazione di tutte le cartelle</li>
-  <li>Configurazione dell\'indirizzo per le risposte</li>
-  <li>Tasti di scelta rapida</li>
-  <li>Miglior supporto IMAP</li>
-  <li>Salvataggio degli allegati nella SD</li>
-  <li>Possibilità di svuotare il cestino</li>
-  <li>Ordinamento dei messaggi</li>
-  <li>…ed altro</li>
-</ul>
-<p>
-Si noti che K-9 non supporta gli account free di Hotmail e, come molti client di posta, ha alcune bizzarrie quando si parla di Microsoft Exchange.
-</p><p>
-Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni su
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+Benvenuto nella configurazione della posta di K-9. K-9 è un client di posta open source per Android originariamente basato sul client di posta standard di Android.
+\n\n
+\nLe funzionalità migliorate di K-9 includono:
+\n * Push mail utilizzando IMAP IDLE
+\n * Migliori prestazioni
+\n * Archiviazione dei messaggi
+\n * Firme nei messaggi
+\n * Ccn a se stessi
+\n * Sottoscrizioni delle cartelle
+\n * Sincronizzazione di tutte le cartelle
+\n * Configurazione dell\'indirizzo per le risposte
+\n * Tasti di scelta rapida
+\n * Miglior supporto IMAP
+\n * Salvataggio degli allegati nella SD
+\n * Possibilità di svuotare il cestino
+\n * Ordinamento dei messaggi
+\n * …ed altro
+\n
+\nSi noti che K-9 non supporta gli account free di Hotmail e, come molti client di posta, ha alcune bizzarrie quando si parla di Microsoft Exchange.
+\n
+\nInvia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni su
+http://k9mail.googlecode.com/
+    </string>
 
 
     <!-- Default signature -->
@@ -114,7 +109,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="status_syncing_off">Sincronizzazione disabilitata</string>
 
     <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Successivo</string> <!-- Used as part of a multi-step process -->
+    <string name="next_action">Avanti</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Precedente</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Annulla</string>
@@ -1061,7 +1056,9 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
 
     <string name="image_saved_as">Immagine salvata in \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Errore nel salvataggio dell\'immagine.</string>
-
+    <string name="add_action">Nuovo</string>
+    <string name="remove_action">Cancella</string>
+    
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->

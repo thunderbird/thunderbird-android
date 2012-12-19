@@ -21,36 +21,31 @@
     <string name="app_license">Llicenciat sota Llicència Apache, Versió 2.0.</string>
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-El K-9 és un client de codi obert per Android, originalment basat en l’estàndard de client de Correu d’Android.
-</p><p>
-El K-9 inclou les característiques millorades de:
-</p>
-<ul>
-  <li>Push mail utilitzant IMAP IDLE</li>
-  <li>Millor rendiment</li>
-  <li>Reclassificació de missatges</li>
-  <li>Signatura de correu</li>
-  <li>C/o a un mateix</li>
-  <li>Subscripció a carpetes</li>
-  <li>Sincronització a totes les carpetes</li>
-  <li>Configuració de l’adreça de retorn</li>
-  <li>Dreceres de teclat</li>
-  <li>Millor suport IMAP</li>
-  <li>Desat dels adjunts a la SD</li>
-  <li>Buidat de la paperera</li>
-  <li>Ordenació de missatges</li>
-  <li>…i més</li>
-</ul>
-<p>
-Si us plau, tingueu en compte que el K-9 no funciona amb la majoria de comptes Hotmail gratuïts i, com molts clients de correu, fa coses estranyes quan es comunica amb Microsoft Exchange.
-</p><p>
-Si us plau, envia’ns els errors, contribueix a millorar-lo a
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+Benvingut a la configuració del K-9.  El K-9 és un client de codi obert per Android, originalment basat en l’estàndard de client de Correu d’Android.
+\n\n
+\nEl K-9 inclou les característiques millorades de:
+\n * Push mail utilitzant IMAP IDLE
+\n * Millor rendiment
+\n * Reclassificació de missatges
+\n * Signatura de correu
+\n * C/o a un mateix
+\n * Subscripció a carpetes
+\n * Sincronització a totes les carpetes
+\n * Configuració de l’adreça de retorn
+\n * Dreceres de teclat
+\n * Millor suport IMAP
+\n * Desat dels adjunts a la SD
+\n * Buidat de la paperera
+\n * Ordenació de missatges
+\n * …i més
+\n
+\nSi us plau, tingueu en compte que el K-9 no funciona amb la majoria de comptes Hotmail gratuïts i, com molts clients de correu, fa coses estranyes quan es comunica amb Microsoft Exchange.
+\n
+\nSi us plau, envia’ns els errors, contribueix a millorar-lo a
+http://k9mail.googlecode.com/
+    </string>
 
 
     <!-- Default signature -->

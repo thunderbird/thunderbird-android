@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="-45dip"
+        android:background="@android:drawable/bottom_bar"
+        android:gravity="bottom|right"
+        android:padding="0dip" >
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dip"
+            android:layout_weight="1"
+            android:minWidth="@dimen/button_minWidth"
+            android:text="@string/add_action" />
+
+        <Button
+            android:id="@+id/remove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dip"
+            android:layout_weight="1"
+            android:minWidth="@dimen/button_minWidth"
+            android:text="@string/remove_action" />
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dip"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/button_indicator_next"
+            android:minWidth="@dimen/button_minWidth"
+            android:text="@string/next_action" />
+
+    </LinearLayout>

@@ -22,35 +22,29 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">歡迎使用K-9 Mail</string>
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail是Android系統的開放原始碼的電子郵件客戶端，原始程式碼來自Android內建的電子郵件程式。
-</p><p>
-K-9改良的功能包括：
-</p>
-<ul>
-  <li>利用IMAP IDEL進行Push mail</li>
-  <li>更好的執行效率</li>
-  <li>重新發送郵件</li>
-  <li>郵件簽名</li>
-  <li>密件副本給自己</li>
-  <li>信件匣訂閱</li>
-  <li>同步全部信件匣</li>
-  <li>可以編輯回信收件人地址</li>
-  <li>鍵盤捷徑鍵</li>
-  <li>更完整支援IMAP</li>
-  <li>儲存附件到記憶卡</li>
-  <li>清空垃圾桶</li>
-  <li>郵件排序</li>
-  <li>以及其他很多功能～</li>
-</ul>
-<p>
-請注意：K-9不支援絕大多數免費Hotmail帳戶。跟其他的電子郵件客戶端一樣，在和Microsoft Exchange伺服器溝通的時候存在一些詭異的問題。
-</p><p>
-請到<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>提交錯誤報告、建議新功能或提出您的問題。
-</p>
-    ]]></string>
+    <string name="welcome_message_title">歡迎使用K-9 Mail!</string>
+    <string name="accounts_welcome">感謝安裝K-9。K-9是Android系統的開放原始碼的電子郵件客戶端，原始程式碼來自Android內建的電子郵件程式。
+\n\n
+\nK-9改良的功能包括：
+\n * 利用IMAP IDEL進行Push mail
+\n * 更好的執行效率
+\n * 重新發送郵件
+\n * 郵件簽名
+\n * 密件副本給自己
+\n * 信件匣訂閱
+\n * 同步全部信件匣
+\n * 可以編輯回信收件人地址
+\n * 鍵盤捷徑鍵
+\n * 更完整支援IMAP
+\n * 儲存附件到記憶卡
+\n * 清空垃圾桶
+\n * 郵件排序
+\n * 以及其他很多功能～
+\n
+\n請注意：K-9不支援絕大多數免費Hotmail帳戶。跟其他的電子郵件客戶端一樣，在和Microsoft Exchange伺服器溝通的時候存在一些詭異的問題。
+\n
+\n請到http://k9mail.googlecode.com/提交錯誤報告、建議新功能或提出您的問題。
+    </string>
 
 
     <!-- Default signature -->

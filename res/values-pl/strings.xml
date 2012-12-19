@@ -36,36 +36,30 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android.
-</p><p>
-Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
-</p>
-<ul>
-  <li>Obsługa Push Mail z użyciem IMAP IDLE</li>
-  <li>Lepsza wydajność</li>
-  <li>Message refiling</li>
-  <li>Obsługa sygnaturek</li>
-  <li>Kopia UDW-do-siebie</li>
-  <li>Subscrypcja wybranych folderów</li>
-  <li>Synchronizacja wszystkich folderów</li>
-  <li>Konfiguracja adresu zwrotnego</li>
-  <li>Skróty klawiszowe</li>
-  <li>Lepsza obsługa protokołu IMAP</li>
-  <li>Zapisywanie załączników na kartę SD</li>
-  <li>Opróźnianie folderu \"Trash\"</li>
-  <li>Sortowanie wiadomości</li>
-  <li>… i wiele innych</li>
-</ul>
-<p>
-K-9 nie obsługuje darmowych kont Hotmail oraz, jak wiele innych programów pocztowych może być kapryśny przy połączeniach z serwerem Microsoft Exchange.
-</p><p>
-Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać za pośrednictwem strony projektu:
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
+\n\n
+\n * Obsługa Push Mail z użyciem IMAP IDLE
+\n * Lepsza wydajność
+\n * Message refiling
+\n * Obsługa sygnaturek
+\n * Kopia UDW-do-siebie
+\n * Subscrypcja wybranych folderów
+\n * Synchronizacja wszystkich folderów
+\n * Konfiguracja adresu zwrotnego
+\n * Skróty klawiszowe
+\n * Lepsza obsługa protokołu IMAP
+\n * Zapisywanie załączników na kartę SD
+\n * Opróźnianie folderu \"Trash\"
+\n * Sortowanie wiadomości
+\n * … i wiele innych
+\n
+\nK-9 nie obsługuje darmowych kont Hotmail oraz, jak wiele innych programów pocztowych może być kapryśny przy połączeniach z serwerem Microsoft Exchange.
+\n
+\nWszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać za pośrednictwem strony projektu:
+http://k9mail.googlecode.com/
+    </string>
 
 
     <!-- Default signature -->

@@ -27,36 +27,31 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 je open source poštovní klient pro Android původně založený na standardním klientovi E-mail v Androidu.
-</p><p>
-Vylepšené funkce K-9 zahrnují:
-</p>
-<ul>
-  <li>Podpora rozšíření Push při použití IMAP IDLE</li>
-  <li>Lepší výkon</li>
-  <li>Doplňování zpráv</li>
-  <li>Podpisy zpráv</li>
-  <li>Kopie sobě</li>
-  <li>Odebírané složky</li>
-  <li>Synchronizace všech složek</li>
-  <li>Konfigurace zpáteční adresy</li>
-  <li>Klávesové zkratky</li>
-  <li>Lepší podpora IMAP</li>
-  <li>Ukládání příloh na SD</li>
-  <li>Vysypání koše</li>
-  <li>Třídění zpráv</li>
-  <li>…a další</li>
-</ul>
-<p>
-Všimněte si prosím, že K-9 nepodporuje většinu zdarma účtů Hotmail a jako mnoho poštovních klientů vykazuje zvláštnosti při komunikaci s Microsoft Exchange.
-</p><p>
-Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte se na
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro Android původně založený na standardním klientovi E-mail v Androidu.
+\n\n
+\nVylepšené funkce K-9 zahrnují:
+\n * Podpora rozšíření Push při použití IMAP IDLE
+\n * Lepší výkon
+\n * Doplňování zpráv
+\n * Podpisy zpráv
+\n * Kopie sobě
+\n * Odebírané složky
+\n * Synchronizace všech složek
+\n * Konfigurace zpáteční adresy
+\n * Klávesové zkratky
+\n * Lepší podpora IMAP
+\n * Ukládání příloh na SD
+\n * Vysypání koše
+\n * Třídění zpráv
+\n * …a další
+\n
+\nVšimněte si prosím, že K-9 nepodporuje většinu zdarma účtů Hotmail a jako mnoho poštovních klientů vykazuje zvláštnosti při komunikaci s Microsoft Exchange.
+\n
+\nPosílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte se na
+http://k9mail.googlecode.com/
+    </string>
 
 
     <!-- Default signature -->

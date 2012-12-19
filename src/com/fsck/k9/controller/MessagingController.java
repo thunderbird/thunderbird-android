@@ -3249,7 +3249,6 @@ public class MessagingController implements Runnable {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + ((LocalFolder)localFolder).getId() + ") for messages to send");
 
-            Transport transport = Transport.getInstance(account);
             for (Message message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
                     message.destroy();
@@ -3288,7 +3287,22 @@ public class MessagingController implements Runnable {
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "Sending message with UID " + message.getUid());
-                        transport.sendMessage(message);
+                        
+                        // Loop through all transport defined and try to send the message:
+                        int index = 0;
+                        Transport transport = Transport.getInstance(account, index);                        
+                        while(true){
+	                        try {
+	                        	transport.sendMessage(message);
+	                        	break;
+	                        } catch (Exception e) {                        
+	                        	// If there's another transport defined try to use it
+	                        	if (++index < account.getTransportUriCount())
+	                        		transport = Transport.getInstance(account, index);
+	                        	else 
+	                        		throw e;
+	                        }
+                        }
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
                         message.setFlag(Flag.SEEN, true);
                         progress++;
