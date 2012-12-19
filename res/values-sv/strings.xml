@@ -22,36 +22,31 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail är en e-postklient med öppen källkod för Android, ursprungligen baserad på standard-e-postklienten i Android.
-</p><p>
-K-9\'s förbättrade funktioner inkluderar:
-</p>
-<ul>
-  <li>Push-mail med hjälp av IMAP IDLE</li>
-  <li>Bättre prestanda</li>
-  <li>Omarkivering av e-post</li>
-  <li>E-post-signaturer</li>
-  <li>Bcc till dig själv</li>
-  <li>Mapp-prenumerationer</li>
-  <li>Synkronisera alla mappar</li>
-  <li>Inställning av avsändaradress</li>
-  <li>Tangentbordsgenvägar</li>
-  <li>Bättre support för IMAP</li>
-  <li>Spara bilagor till SD-kort</li>
-  <li>Töm papperskorgen</li>
-  <li>Meddelandesortering</li>
-  <li>…och mer</li>
-</ul>
-<p>
-Vänligen notera att K-9 inte har någon support för gratis Hotmail-konton och liksom många andra e-postklienter har vissa problem vid kommunikation med Microsoft Exchange.
-</p><p>
-Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor på
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen källkod för Android, ursprungligen baserad på standard-e-postklienten i Android.
+\n\n
+\nK-9\'s förbättrade funktioner inkluderar:
+\n * Push-mail med hjälp av IMAP IDLE
+\n * Bättre prestanda
+\n * Omarkivering av e-post
+\n * E-post-signaturer
+\n * Bcc till dig själv
+\n * Mapp-prenumerationer
+\n * Synkronisera alla mappar
+\n * Inställning av avsändaradress
+\n * Tangentbordsgenvägar
+\n * Bättre support för IMAP
+\n * Spara bilagor till SD-kort
+\n * Töm papperskorgen
+\n * Meddelandesortering
+\n * …och mer
+\n
+\nVänligen notera att K-9 inte har någon support för gratis Hotmail-konton och liksom många andra e-postklienter har vissa problem vid kommunikation med Microsoft Exchange.
+\n
+\nVänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor på
+http://k9mail.googlecode.com/
+    </string>
 
 
     <!-- Default signature -->

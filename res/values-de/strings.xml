@@ -22,35 +22,30 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
-</p><p>
-Verbesserte Funktionen in K-9:
-</p>
-<ul>
-  <li>Benachrichtigung über neue Nachrichten per IMAP IDLE</li>
-  <li>Höhere Performance</li>
-  <li>E-Mail-Signaturen</li>
-  <li>Automatische Blindkopie an sich selbst</li>
-  <li>Ordner-Abonnements</li>
-  <li>Synchronisation aller Ordner</li>
-  <li>Konfiguration einer Antwort-Adresse</li>
-  <li>Tastatur-Shortcuts</li>
-  <li>Verbesserte IMAP-Unterstützung</li>
-  <li>Speichern von Anhängen auf SD-Karte</li>
-  <li>Papierkorb leeren</li>
-  <li>Sortieren der Nachrichten</li>
-  <li>…und viele mehr</li>
-</ul>
-<p>
-Bitte beachten Sie, dass K-9, wie viele andere E-Mail-Anwendungen auch, die meisten kostenlosen Hotmail-Accounts nicht unterstützt. Zudem gibt es einige Probleme mit Microsoft Exchange-Servern.
-</p><p>
-Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuchen Sie die Homepage unter
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
+\n\n
+\nVerbesserte Funktionen in K-9:
+\n * Benachrichtigung über neue Nachrichten per IMAP IDLE
+\n * Höhere Performance
+\n * E-Mail-Signaturen
+\n * Automatische Blindkopie an sich selbst
+\n * Ordner-Abonnements
+\n * Synchronisation aller Ordner
+\n * Konfiguration einer Antwort-Adresse
+\n * Tastatur-Shortcuts
+\n * Verbesserte IMAP-Unterstützung
+\n * Speichern von Anhängen auf SD-Karte
+\n * Papierkorb leeren
+\n * Sortieren der Nachrichten
+\n * …und viele mehr
+\n
+\nBitte beachten Sie, dass K-9, wie viele andere E-Mail-Anwendungen auch, die meisten kostenlosen Hotmail-Accounts nicht unterstützt. Zudem gibt es einige Probleme mit Microsoft Exchange-Servern.
+\n
+\nUm Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuchen Sie die Homepage unter
+http://k9mail.googlecode.com/.
+    </string>
 
 
     <!-- Default signature -->

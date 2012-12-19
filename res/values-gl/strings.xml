@@ -22,36 +22,32 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 é un cliente de correo OpenSource para Android, baseado no Android Mail.
-</p><p>
-K-9 implementa estas características:
-</p>
-<ul>
-  <li>Push mail e IMAP IDLE</li>
-  <li>Mellor rendimento</li>
-  <li>Reclasificación de mensaxes</li>
-  <li>Sinaturas</li>
-  <li>Copia oculta a un mesmo</li>
-  <li>Subscripcións a carpetas</li>
-  <li>Todas as carpetas sincronizadas</li>
-  <li>Correo de retorno</li>
-  <li>Atallos de teclado</li>
-  <li>Mellor soporte para IMAP</li>
-  <li>Almacenamento de adxuntos na SD</li>
-  <li>Valeirado do lixo</li>
-  <li>Ordenación de mensaxes</li>
-  <li>… e moitas máis.</li>
-</ul>
-<p>
-Date conta de que K-9 non soporta moitas das contas de hotmail, coma muchos outros clientes de correo, que teñen certas peculiaridades cando se comunican con Microsoft Exchange.
-</p><p>
-Por favor, envía os erros detectados, contribúe con novas funcionalidas e pregunta en
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
+    <string name="accounts_welcome">
+Benvido á Configuración de K-9. K-9 é un cliente de correo OpenSource para Android, baseado no Android Mail.
+\n\n
+\nK-9 implementa estas características:
+\n * Push mail e IMAP IDLE
+\n * Mellor rendimento
+\n * Reclasificación de mensaxes
+\n * Sinaturas
+\n * Copia oculta a un mesmo
+\n * Subscripcións a carpetas
+\n * Todas as carpetas sincronizadas
+\n * Correo de retorno
+\n * Atallos de teclado
+\n * Mellor soporte para IMAP
+\n * Almacenamento de adxuntos na SD
+\n * Valeirado do lixo
+\n * Ordenación de mensaxes
+\n * … e moitas máis.
+\n
+\nDate conta de que K-9 non soporta moitas das contas de hotmail, coma muchos outros clientes de correo, que teñen certas peculiaridades cando se comunican con Microsoft Exchange.
+\n
+\nPor favor, envía os erros detectados, contribúe con novas funcionalidas e pregunta en
+http://k9mail.googlecode.com/
+    </string>
+
 
     <!-- Default signature -->
     <string name="default_signature">-- \nEnviado dende o meu teléfono Android con K-9 Mail. Desculpa a miña brevedade</string>
