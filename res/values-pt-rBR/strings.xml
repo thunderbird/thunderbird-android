@@ -22,31 +22,36 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
-    <string name="accounts_welcome">
-Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código aberto para Android e é originalmente baseado no cliente de e-mail padrão do Android.
-\n\n
-\nK-9\'s recursos aprimorados incluídos:
-\n * Puxar e-mail usando IMAP IDLE
-\n * Melhor performance
-\n * Reclassificação de mensagens
-\n * E-mails com assinaturas
-\n * Cópia oculta pra você mesmo
-\n * Subscrição de pastas
-\n * Sincronização de todas as pastas
-\n * Configuração de um endereço de retorno
-\n * Atalhos de teclado
-\n * Melhor suporte para IMAP
-\n * Salvar anexos no cartão de memória
-\n * Esvaziar Lixeira
-\n * Ordenação de mensagens
-\n * …e mais
-\n
-\nPor favor, note que K-9 não suporta mais contas grátis do hotmail e, como muitos clientes de e-mail, tem algumas peculiaridades para utilizar Microsoft Exchange.
-\n
-\nPor favor, nos envie relatórios de bugs, contribua para novas melhorias e faça suas perguntas na página
-http://k9mail.googlecode.com/
-    </string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail é um cliente de e-mail com código aberto para Android e é originalmente baseado no cliente de e-mail padrão do Android.
+</p><p>
+K-9\'s recursos aprimorados incluídos:
+</p>
+<ul>
+  <li>Puxar e-mail usando IMAP IDLE</li>
+  <li>Melhor performance</li>
+  <li>Reclassificação de mensagens</li>
+  <li>E-mails com assinaturas</li>
+  <li>Cópia oculta pra você mesmo</li>
+  <li>Subscrição de pastas</li>
+  <li>Sincronização de todas as pastas</li>
+  <li>Configuração de um endereço de retorno</li>
+  <li>Atalhos de teclado</li>
+  <li>Melhor suporte para IMAP</li>
+  <li>Salvar anexos no cartão de memória</li>
+  <li>Esvaziar Lixeira</li>
+  <li>Ordenação de mensagens</li>
+  <li>…e mais</li>
+</ul>
+<p>
+Por favor, note que K-9 não suporta mais contas grátis do hotmail e, como muitos clientes de e-mail, tem algumas peculiaridades para utilizar Microsoft Exchange.
+</p><p>
+Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça suas perguntas na página
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->

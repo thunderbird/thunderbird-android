@@ -22,31 +22,36 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
-    <string name="accounts_welcome">
-Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, gebaseerd op de standaard Android Mail cliënt.
-\n\n
-\nK-9\Verbeterde opties inclusief:
-\n * Push mail die IMAP IDLE gebruikt
-\n * Betere prestaties
-\n * Bericht heropenen
-\n * E-mail handtekeningen
-\n * Bcc naar jezelf
-\n * Map abonnementen
-\n * Alle mappen synchronisatie
-\n * Return-adres configuratie
-\n * Toetsenbord snelkoppelingen
-\n * Betere IMAP ondersteuning
-\n * Bijlage opslaan naar SD
-\n * Prullenbak legen
-\n * Berichten sorteren
-\n * …en meer
-\n
-\nHoud er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange.
-\n
-\nGraag foutrapporten, bijdrage nieuwe functies en vragen stellen op
-http://k9mail.googlecode.com/
-    </string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail is een open source mail cliënt voor Android, gebaseerd op de standaard Android Mail cliënt.
+</p><p>
+K-9\Verbeterde opties inclusief:
+</p>
+<ul>
+  <li>Push mail die IMAP IDLE gebruikt</li>
+  <li>Betere prestaties</li>
+  <li>Bericht heropenen</li>
+  <li>E-mail handtekeningen</li>
+  <li>Bcc naar jezelf</li>
+  <li>Map abonnementen</li>
+  <li>Alle mappen synchronisatie</li>
+  <li>Return-adres configuratie</li>
+  <li>Toetsenbord snelkoppelingen</li>
+  <li>Betere IMAP ondersteuning</li>
+  <li>Bijlage opslaan naar SD</li>
+  <li>Prullenbak legen</li>
+  <li>Berichten sorteren</li>
+  <li>…en meer</li>
+</ul>
+<p>
+Houd er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange.
+</p><p>
+Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->

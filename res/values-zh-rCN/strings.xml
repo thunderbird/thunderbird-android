@@ -22,30 +22,35 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
-    <string name="accounts_welcome">
-感谢安装K-9。K-9是Android下的开源电子邮件客户端，其最初的代码来自Android默认的电子邮件程序。
-\n\n
-\nK-9改进的功能包括：
-\n * 利用IMAP IDEL进行Push mail
-\n * 更好的性能
-\n * 重新装入邮件
-\n * 邮件签名
-\n * 暗送给自己
-\n * 文件夹订阅
-\n * 同步全部文件夹
-\n * 可以编辑回件地址
-\n * 键盘快捷键
-\n * 更好的IMAP支持
-\n * 保存附件到SD卡
-\n * 清空垃圾箱
-\n * 邮件排序
-\n * 以及其他很多哦～
-\n
-\n请注意K-9不支持绝大多数免费Hotmail账户，以及，和很多邮件客户端一样，在和Microsoft Exchange沟通的时候存在一些奇妙的问题。
-\n
-\n请到http://k9mail.googlecode.com/提交错误报告、贡献新功能或提出您的问题。
-    </string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail是Android下的开源电子邮件客户端，其最初的代码来自Android默认的电子邮件程序。
+</p><p>
+K-9改进的功能包括：
+</p>
+<ul>
+  <li>利用IMAP IDEL进行Push mail</li>
+  <li>更好的性能</li>
+  <li>重新装入邮件</li>
+  <li>邮件签名</li>
+  <li>暗送给自己</li>
+  <li>文件夹订阅</li>
+  <li>同步全部文件夹</li>
+  <li>可以编辑回件地址</li>
+  <li>键盘快捷键</li>
+  <li>更好的IMAP支持</li>
+  <li>保存附件到SD卡</li>
+  <li>清空垃圾箱</li>
+  <li>邮件排序</li>
+  <li>以及其他很多哦～</li>
+</ul>
+<p>
+请注意K-9不支持绝大多数免费Hotmail账户，以及，和很多邮件客户端一样，在和Microsoft Exchange沟通的时候存在一些奇妙的问题。
+</p><p>
+请到<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>提交错误报告、贡献新功能或提出您的问题。
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->

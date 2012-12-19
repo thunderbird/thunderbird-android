@@ -22,32 +22,37 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Welcome to K-9 Mail!</string>
-    <string name="accounts_welcome">
-        Welcome to K-9 Mail! K-9 is a powerful free email client for Android.
-\n\n
-\nK-9\'s improved features include:
-\n * Push mail using IMAP IDLE
-\n * Better performance
-\n * Message refiling
-\n * Email signatures
-\n * Bcc-to-self
-\n * Folder subscriptions
-\n * All folder synchronization
-\n * Return-address configuration
-\n * Keyboard shortcuts
-\n * Better IMAP support
-\n * Saving attachments to SD
-\n * Empty Trash
-\n * Message sorting
-\n * …and more
-\n
-\nPlease note that K-9 does not support most free Hotmail accounts and, like many mail clients, has
+    <string name="welcome_message_title">Welcome to K-9 Mail</string>
+    <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail is a powerful free email client for Android.
+</p><p>
+Its improved features include:
+</p>
+<ul>
+  <li>Push mail using IMAP IDLE</li>
+  <li>Better performance</li>
+  <li>Message refiling</li>
+  <li>Email signatures</li>
+  <li>Bcc-to-self</li>
+  <li>Folder subscriptions</li>
+  <li>All folder synchronization</li>
+  <li>Return-address configuration</li>
+  <li>Keyboard shortcuts</li>
+  <li>Better IMAP support</li>
+  <li>Saving attachments to SD</li>
+  <li>Empty Trash</li>
+  <li>Message sorting</li>
+  <li>…and more</li>
+</ul>
+<p>
+Please note that K-9 does not support most free Hotmail accounts and, like many mail clients, has
 some quirks when talking to Microsoft Exchange.
-\n
-\nPlease submit bug reports, contribute new features and ask questions at
-http://k9mail.googlecode.com/
-    </string>
+</p><p>
+Please submit bug reports, contribute new features and ask questions at
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->
@@ -500,7 +505,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_notification_opens_unread_summary">Searches for unread messages when Notification is opened</string>
     <string name="account_settings_notification_unread_count_label">Show unread count</string>
     <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>
 
     <string name="account_settings_show_pictures_label">Always show images</string>
@@ -535,11 +540,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_quote_style_header">Header (like Outlook)</string>
 
     <string name="account_settings_general_title">General settings</string>
-    <string name="account_settings_display_prefs_title">Display</string>
+    <string name="account_settings_reading_mail">Reading mail</string>
     <string name="account_settings_sync">Fetching mail</string>
     <string name="account_settings_folders">Folders</string>
-    <string name="account_settings_message_lists">Listing messages</string>
-    <string name="account_settings_message_view">Viewing messages</string>
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
     <string name="account_settings_crypto">Cryptography</string>
     <string name="account_settings_crypto_app">OpenPGP Provider</string>
@@ -549,6 +552,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_crypto_auto_signature_summary">Use the account\'s email address to guess the signature key.</string>
     <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>
+    <string name="account_settings_crypto_apg_not_installed">APG not installed</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -784,7 +788,6 @@ http://k9mail.googlecode.com/
     <string name="debug_preferences">Debugging</string>
     <string name="privacy_preferences">Privacy</string>
     <string name="network_preferences">Network</string>
-    <string name="interaction_preferences">Interaction</string>
     <string name="accountlist_preferences">Account list</string>
     <string name="messagelist_preferences">Message lists</string>
     <string name="messageview_preferences">Messages</string>

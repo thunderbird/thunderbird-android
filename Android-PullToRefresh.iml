@@ -9,8 +9,6 @@
         <option name="RES_FOLDER_RELATIVE_PATH" value="/plugins/Android-PullToRefresh/library/res" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/plugins/Android-PullToRefresh/library/assets" />
         <option name="LIBS_FOLDER_RELATIVE_PATH" value="/plugins/Android-PullToRefresh/library/libs" />
-        <option name="REGENERATE_R_JAVA" value="true" />
-        <option name="REGENERATE_JAVA_BY_AIDL" value="true" />
         <option name="USE_CUSTOM_APK_RESOURCE_FOLDER" value="false" />
         <option name="CUSTOM_APK_RESOURCE_FOLDER" value="/plugins/Android-PullToRefresh/library/target/generated-sources/combined-resources/res" />
         <option name="USE_CUSTOM_COMPILER_MANIFEST" value="false" />

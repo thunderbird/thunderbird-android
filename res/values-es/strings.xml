@@ -22,31 +22,36 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail!</string>-->
-    <string name="accounts_welcome">
-Bienvenido a la Configuración de K-9. K-9 es un cliente de correo OpenSource para Android, basado en el estandard Android Mail.
-\n\n
-\nK-9 implementa estas características:
-\n * Push mail y IMAP IDLE
-\n * Mejor rendimiento
-\n * Reclasificación de mensajes
-\n * Firmas
-\n * Copia oculta a uno mismo
-\n * Subscripciones a carpetas
-\n * Todas las carpetas sincronizadas
-\n * Correo de retorno
-\n * Atajos de teclado
-\n * Mejor soporte para IMAP
-\n * Almacenamiento de adjuntos en la SD
-\n * Vaciado de papelera
-\n * Ordenación de mensajes
-\n * …y muchas más.
-\n
-\nDate cuenta que K-9 no soporta muchas de las cuentas de hotmail, como muchos otros clientes de correo, que tiene ciertas peculiaridades cuando se comunicacn con Microsoft Exchange.
-\n
-\nPor favor, envía los errores detectados, contribuye con nuevas funcionalidas y pregunta en
-http://k9mail.googlecode.com/
-    </string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail es un cliente de correo OpenSource para Android, basado en el estandard Android Mail.
+</p><p>
+K-9 implementa estas características:
+</p>
+<ul>
+  <li>Push mail y IMAP IDLE</li>
+  <li>Mejor rendimiento</li>
+  <li>Reclasificación de mensajes</li>
+  <li>Firmas</li>
+  <li>Copia oculta a uno mismo</li>
+  <li>Subscripciones a carpetas</li>
+  <li>Todas las carpetas sincronizadas</li>
+  <li>Correo de retorno</li>
+  <li>Atajos de teclado</li>
+  <li>Mejor soporte para IMAP</li>
+  <li>Almacenamiento de adjuntos en la SD</li>
+  <li>Vaciado de papelera</li>
+  <li>Ordenación de mensajes</li>
+  <li>…y muchas más.</li>
+</ul>
+<p>
+Date cuenta que K-9 no soporta muchas de las cuentas de hotmail, como muchos otros clientes de correo, que tiene ciertas peculiaridades cuando se comunicacn con Microsoft Exchange.
+</p><p>
+Por favor, envía los errores detectados, contribuye con nuevas funcionalidas y pregunta en
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->

@@ -16,10 +16,10 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/welcome_message"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:padding="8dip"
-                android:text="@string/accounts_welcome"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="14sp" />
 
