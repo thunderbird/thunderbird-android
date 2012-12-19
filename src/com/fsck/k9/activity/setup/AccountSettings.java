@@ -174,6 +174,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mPushPollOnConnect;
     private ListPreference mIdleRefreshPeriod;
     private ListPreference mMaxPushFolders;
+    private boolean mHasCrypto = false;
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
     private CheckBoxPreference mCryptoAutoEncrypt;
@@ -683,8 +684,8 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        final boolean hasCryptoAvailable = new Apg().isAvailable(this);
-        if (hasCryptoAvailable) {
+        mHasCrypto = new Apg().isAvailable(this);
+        if (mHasCrypto) {
             mCryptoApp = (ListPreference) findPreference(PREFERENCE_CRYPTO_APP);
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
             mCryptoApp.setSummary(mCryptoApp.getEntry());
@@ -764,10 +765,12 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setDefaultQuotedTextShown(mAccountDefaultQuotedTextShown.isChecked());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setStripSignature(mStripSignature.isChecked());
-        mAccount.setCryptoApp(mCryptoApp.getValue());
-        mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
-        mAccount.setCryptoAutoEncrypt(mCryptoAutoEncrypt.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
+        if (mHasCrypto) {
+            mAccount.setCryptoApp(mCryptoApp.getValue());
+            mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
+            mAccount.setCryptoAutoEncrypt(mCryptoAutoEncrypt.isChecked());
+        }
 
         // In webdav account we use the exact folder name also for inbox,
         // since it varies because of internationalization
