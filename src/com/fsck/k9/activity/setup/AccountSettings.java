@@ -108,6 +108,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_STRIP_SIGNATURE = "strip_signature";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
+    private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
     private static final String PREFERENCE_CRYPTO_AUTO_ENCRYPT = "crypto_auto_encrypt";
@@ -682,38 +683,37 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        mCryptoApp = (ListPreference) findPreference(PREFERENCE_CRYPTO_APP);
-        CharSequence cryptoAppEntries[] = mCryptoApp.getEntries();
-        if (!new Apg().isAvailable(this)) {
-            int apgIndex = mCryptoApp.findIndexOfValue(Apg.NAME);
-            if (apgIndex >= 0) {
-                cryptoAppEntries[apgIndex] = "APG (" + getResources().getString(R.string.account_settings_crypto_app_not_available) + ")";
-                mCryptoApp.setEntries(cryptoAppEntries);
-            }
-        }
-        mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
-        mCryptoApp.setSummary(mCryptoApp.getEntry());
-        mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String value = newValue.toString();
-                int index = mCryptoApp.findIndexOfValue(value);
-                mCryptoApp.setSummary(mCryptoApp.getEntries()[index]);
-                mCryptoApp.setValue(value);
-                handleCryptoAppDependencies();
-                if (Apg.NAME.equals(value)) {
-                    Apg.createInstance(null).test(AccountSettings.this);
+        final boolean hasCryptoAvailable = new Apg().isAvailable(this);
+        if (hasCryptoAvailable) {
+            mCryptoApp = (ListPreference) findPreference(PREFERENCE_CRYPTO_APP);
+            mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
+            mCryptoApp.setSummary(mCryptoApp.getEntry());
+            mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    String value = newValue.toString();
+                    int index = mCryptoApp.findIndexOfValue(value);
+                    mCryptoApp.setSummary(mCryptoApp.getEntries()[index]);
+                    mCryptoApp.setValue(value);
+                    handleCryptoAppDependencies();
+                    if (Apg.NAME.equals(value)) {
+                        Apg.createInstance(null).test(AccountSettings.this);
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        mCryptoAutoSignature = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_SIGNATURE);
-        mCryptoAutoSignature.setChecked(mAccount.getCryptoAutoSignature());
+            mCryptoAutoSignature = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_SIGNATURE);
+            mCryptoAutoSignature.setChecked(mAccount.getCryptoAutoSignature());
 
-        mCryptoAutoEncrypt = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_ENCRYPT);
-        mCryptoAutoEncrypt.setChecked(mAccount.isCryptoAutoEncrypt());
+            mCryptoAutoEncrypt = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_ENCRYPT);
+            mCryptoAutoEncrypt.setChecked(mAccount.isCryptoAutoEncrypt());
 
-        handleCryptoAppDependencies();
+            handleCryptoAppDependencies();
+        } else {
+            final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
+            mCryptoMenu.setEnabled(false);
+            mCryptoMenu.setSummary(R.string.account_settings_crypto_apg_not_installed);
+        }
     }
 
     private void handleCryptoAppDependencies() {
