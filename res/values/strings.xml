@@ -541,11 +541,8 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_settings_general_title">General settings</string>
     <string name="account_settings_reading_mail">Reading mail</string>
-    <string name="account_settings_display_prefs_title">Display</string>
     <string name="account_settings_sync">Fetching mail</string>
     <string name="account_settings_folders">Folders</string>
-    <string name="account_settings_message_lists">Listing messages</string>
-    <string name="account_settings_message_view">Viewing messages</string>
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
     <string name="account_settings_crypto">Cryptography</string>
     <string name="account_settings_crypto_app">OpenPGP Provider</string>
@@ -791,7 +788,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="debug_preferences">Debugging</string>
     <string name="privacy_preferences">Privacy</string>
     <string name="network_preferences">Network</string>
-    <string name="interaction_preferences">Interaction</string>
     <string name="accountlist_preferences">Account list</string>
     <string name="messagelist_preferences">Message lists</string>
     <string name="messageview_preferences">Messages</string>
