@@ -3493,7 +3493,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
             StringBuilder header = new StringBuilder();
             header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\n");
-            header.append("<hr style='border:none;border-top:solid #B5C4DF 1.0pt'>\n"); // This gets converted into a horizontal line during html to text conversion.
+            header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\n"); // This gets converted into a horizontal line during html to text conversion.
             if (mSourceMessage.getFrom() != null && Address.toString(mSourceMessage.getFrom()).length() != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ").append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getFrom()))).append("<br>\n");
             }
