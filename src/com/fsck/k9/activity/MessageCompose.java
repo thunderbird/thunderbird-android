@@ -3495,19 +3495,29 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\n");
             header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\n"); // This gets converted into a horizontal line during html to text conversion.
             if (mSourceMessage.getFrom() != null && Address.toString(mSourceMessage.getFrom()).length() != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ").append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getFrom()))).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ")
+                    .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getFrom())))
+                    .append("<br>\n");
             }
             if (mSourceMessage.getSentDate() != null) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_send_date)).append("</b> ").append(mSourceMessage.getSentDate()).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_send_date)).append("</b> ")
+                    .append(mSourceMessage.getSentDate())
+                    .append("<br>\n");
             }
             if (mSourceMessage.getRecipients(RecipientType.TO) != null && mSourceMessage.getRecipients(RecipientType.TO).length != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_to)).append("</b> ").append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.TO)))).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_to)).append("</b> ")
+                    .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.TO))))
+                    .append("<br>\n");
             }
             if (mSourceMessage.getRecipients(RecipientType.CC) != null && mSourceMessage.getRecipients(RecipientType.CC).length != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_cc)).append("</b> ").append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.CC)))).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_cc)).append("</b> ")
+                    .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.CC))))
+                    .append("<br>\n");
             }
             if (mSourceMessage.getSubject() != null) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_subject)).append("</b> ").append(HtmlConverter.textToHtmlFragment(mSourceMessage.getSubject())).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_subject)).append("</b> ")
+                    .append(HtmlConverter.textToHtmlFragment(mSourceMessage.getSubject()))
+                    .append("<br>\n");
             }
             header.append("</div>\n");
             header.append("<br>\n");
