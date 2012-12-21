@@ -2545,8 +2545,9 @@ public class LocalStore extends Store implements Serializable {
                                                message.isSet(Flag.FLAGGED) ? 1 : 0,
                                                message.isSet(Flag.ANSWERED) ? 1 : 0,
                                                message.isSet(Flag.FORWARDED) ? 1 : 0,
-                                               message.getSpamStatus() == null ? "Yess" : message.getSpamStatus(),
-					                           message.getSpamFlag() == null ? "Yess" : message.getSpamFlag(),
+                                               /* The spam header fields aren't in all message unless you use SpamAssassin */
+                                               message.getSpamStatus() == null ? "NO" : message.getSpamStatus(),
+					                           message.getSpamFlag() == null ? "NO" : message.getSpamFlag(),
                                                message.mId
                                            });
 
@@ -3407,8 +3408,9 @@ public class LocalStore extends Store implements Serializable {
             boolean answered = (cursor.getInt(20) == 1);
             boolean forwarded = (cursor.getInt(21) == 1);
 
-            this.mSpamStatus = (cursor.isNull(22)) ? "Noo" : cursor.getString(22);
-            this.mSpamFlag = (cursor.isNull(23)) ? "Noo" : cursor.getString(23);           
+            /* The spam header fields aren't in all message unless you use SpamAssassin */
+            this.mSpamStatus = (cursor.isNull(22)) ? "NO" : cursor.getString(22);
+            this.mSpamFlag = (cursor.isNull(23)) ? "NO" : cursor.getString(23);           
              
             setFlagInternal(Flag.DELETED, deleted);
             setFlagInternal(Flag.SEEN, read);
