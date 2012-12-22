@@ -20,6 +20,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -646,6 +647,11 @@ public class K9 extends Application {
     public static void loadPrefs(Preferences prefs) {
         SharedPreferences sprefs = prefs.getPreferences();
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
+        if (!DEBUG && Debug.isDebuggerConnected()) {
+            // If the debugger is attached, we're probably (surprise surprise) debugging something.
+            DEBUG = true;
+            Log.i(K9.LOG_TAG, "Debugger attached; enabling debug logging.");
+        }
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", false);
