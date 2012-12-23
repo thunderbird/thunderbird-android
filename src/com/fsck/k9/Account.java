@@ -193,6 +193,7 @@ public class Account implements BaseAccount {
     private boolean mReplyAfterQuote;
     private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
+    private boolean mSpamassFilter;
     private String mCryptoApp;
     private boolean mCryptoAutoSignature;
     private boolean mCryptoAutoEncrypt;
@@ -302,6 +303,7 @@ public class Account implements BaseAccount {
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
+        mSpamassFilter = true;
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
         mCryptoAutoEncrypt = false;
@@ -371,7 +373,8 @@ public class Account implements BaseAccount {
         mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName", "Spam");
         mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
-
+        mSpamassFilter = prefs.getBoolean(mUuid  + ".spamassFilter", true);
+        
         mMaxPushFolders = prefs.getInt(mUuid + ".maxPushFolders", 10);
         goToUnreadMessageSearch = prefs.getBoolean(mUuid + ".goToUnreadMessageSearch", false);
         mNotificationShowsUnreadCount = prefs.getBoolean(mUuid + ".notificationUnreadCount", true);
@@ -698,6 +701,7 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
         editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
         editor.putBoolean(mUuid + ".syncRemoteDeletions", mSyncRemoteDeletions);
+        editor.putBoolean(mUuid + ".spamassfilter", mSpamassFilter);
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
         editor.putString(mUuid + ".searchableFolders", searchableFolders.name());
         editor.putInt(mUuid + ".chipColor", mChipColor);
@@ -1706,7 +1710,15 @@ public class Account implements BaseAccount {
         mSyncRemoteDeletions = syncRemoteDeletions;
     }
 
-    public synchronized String getLastSelectedFolderName() {
+    public synchronized boolean spamassFilter() {
+        return mSpamassFilter;
+    }
+
+    public synchronized void setSpamassFilter(boolean spamassFilter) {
+        mSpamassFilter = spamassFilter;
+    }
+
+   public synchronized String getLastSelectedFolderName() {
         return lastSelectedFolderName;
     }
 
