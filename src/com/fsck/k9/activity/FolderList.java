@@ -632,6 +632,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 folderMenuItem.collapseActionView();
+                mActionBarTitle.setText(getString(R.string.filter_folders_action));
                 return true;
             }
 
@@ -639,6 +640,15 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             public boolean onQueryTextChange(String newText) {
                 mAdapter.getFilter().filter(newText);
                 return true;
+            }
+        });
+
+        folderSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            
+            @Override
+            public boolean onClose() {
+                mActionBarTitle.setText(getString(R.string.folders_title));
+                return false;
             }
         });
     }
