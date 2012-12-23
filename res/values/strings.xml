@@ -627,6 +627,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_sync_remote_deletetions_label">Sync server deletions</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
 
+    <string name="account_settings_spamass_label">Filter using Spamassassin</string>
+    <string name="account_settings_spamass_summary">Move Flagged Spam messages to Spam folder.</string>
+    
     <string name="folder_settings_title">Folder settings</string>
 
     <string name="folder_settings_in_top_group_label">Show in top group</string>
