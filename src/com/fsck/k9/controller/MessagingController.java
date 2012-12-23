@@ -927,12 +927,6 @@ public class MessagingController implements Runnable {
                         l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
                     }
                     Message localMessage = localUidMap.get(thisMess.getUid());
-                	if (localMessage.getSpamFlag().equals("YES")) {
-                		Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is SPAM");
-                		continue;
-                 	} else {
-                		Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is not SPAM");
-                	}                    
                     if (localMessage == null || !localMessage.olderThan(earliestDate)) {
                         remoteMessages.add(thisMess);
                         remoteUidMap.put(thisMess.getUid(), thisMess);
@@ -950,7 +944,7 @@ public class MessagingController implements Runnable {
                 throw new Exception("Message count " + remoteMessageCount + " for folder " + folder);
             }
 
-            /*
+           /*
              * Remove any messages that are in the local store but no longer on the remote store or are too old
              */
             if (account.syncRemoteDeletions()) {
@@ -961,7 +955,6 @@ public class MessagingController implements Runnable {
                     }
                 }
 
-
                 localFolder.destroyMessages(destroyMessages.toArray(EMPTY_MESSAGE_ARRAY));
 
                 for (Message destroyMessage : destroyMessages) {
@@ -970,12 +963,27 @@ public class MessagingController implements Runnable {
                     }
                 }
             }
+
             localMessages = null;
 
             /*
              * Now we download the actual content of messages.
              */
             int newMessages = downloadMessages(account, remoteFolder, localFolder, remoteMessages, false);
+
+            /* Check the messages we just fetched from the remote folder for the spamassassin header fields */
+            if (account.spamassFilter()) {
+            	Message[] allMessages = localFolder.getMessages(null);
+                for (Message localMessage : allMessages) {
+                	if (localMessage.getSpamFlag().equalsIgnoreCase("YES")) {
+                		Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is SPAM");
+                		moveToSpam(localMessage, remoteFolder);
+                		continue;
+                	} else {
+                		Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is not SPAM");
+                	}
+                }
+            }
 
             int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : getListeners()) {
@@ -1041,7 +1049,19 @@ public class MessagingController implements Runnable {
     }
 
 
-    private void closeFolder(Folder f) {
+    private void moveToSpam(Message message, Folder localFolder) {
+		// Move the message to the user specified spam folder.
+    	Log.d("K9-Mail", "moving messages to SPAM folder, from: " + Address.toString(message.getFrom()));
+  		Folder spamFolder = null;
+		try {
+			localFolder.moveMessages(new Message[] { message }, spamFolder);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	private void closeFolder(Folder f) {
         if (f != null) {
             f.close();
         }
