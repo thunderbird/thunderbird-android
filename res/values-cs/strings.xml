@@ -543,11 +543,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <!-- NEW: <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>-->
 
     <string name="account_settings_general_title">Hlavní nastavení</string>
-    <string name="account_settings_display_prefs_title">Zobrazení</string>
     <string name="account_settings_sync">Stahování pošty</string>
     <string name="account_settings_folders">Složky</string>
-    <string name="account_settings_message_lists">Seznam zpráv</string>
-    <string name="account_settings_message_view">Prohlížení zpráv</string>
     <string name="account_settings_quote_prefix_label">Předpona citovaného textu</string>
     <string name="account_settings_crypto">Šifrování</string>
     <string name="account_settings_crypto_app">Poskytovatel OpenPGP</string>

@@ -538,11 +538,8 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="account_settings_quote_style_header">Capçalera (com a l’Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Configuració general</string>
-    <string name="account_settings_display_prefs_title">Mostra</string>
     <string name="account_settings_sync">Recuperació correu</string>
     <string name="account_settings_folders">Carpetes</string>
-    <string name="account_settings_message_lists">S’estan llistant els missatges</string>
-    <string name="account_settings_message_view">S’estan veien els missatges</string>
     <string name="account_settings_quote_prefix_label">Prefix de cita del text</string>
     <string name="account_settings_crypto">Criptografia</string>
     <string name="account_settings_crypto_app">Proveïdor d’OpenPGP</string>

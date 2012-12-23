@@ -541,11 +541,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_settings_quote_style_header">Otsikko (kuten Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Yleiset asetukset</string>
-    <string name="account_settings_display_prefs_title">Näytä</string>
     <string name="account_settings_sync">Viestien hakeminen</string>
     <string name="account_settings_folders">Kansiot</string>
-    <string name="account_settings_message_lists">Viestien listaus</string>
-    <string name="account_settings_message_view">Viestien katselu</string>
     <string name="account_settings_quote_prefix_label">Lainauksen etuliite</string>
     <string name="account_settings_crypto">Salausmenetelmä</string>
     <string name="account_settings_crypto_app">OpenPGP</string>
