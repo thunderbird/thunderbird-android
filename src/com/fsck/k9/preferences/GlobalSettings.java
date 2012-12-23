@@ -198,7 +198,7 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("wrapFolderNames", Settings.versions(
-                new V(21, new BooleanSetting(false))
+                new V(22, new BooleanSetting(false))
             ));
         s.put("batchButtonsMarkRead", Settings.versions(
                 new V(8, new BooleanSetting(true))
