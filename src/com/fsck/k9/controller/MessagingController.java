@@ -976,9 +976,10 @@ public class MessagingController implements Runnable {
                 for (Message localMessage : allMessages) {
                 	if (localMessage.getSpamFlag().equalsIgnoreCase("YES")) {
                 		// Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is SPAM");                		// Folder spamFolder = remoteStore.getFolder("Spam");
+                		Log.d("K9-Mail", "moving messages to SPAM folder, from: " + Address.toString(localMessage.getFrom()));
                 		String spamfolder = account.getSpamFolderName();
                 		String inbox = account.getInboxFolderName();
-                		moveToSpam(localMessage, account, inbox, spamfolder);
+                		moveMessage(account, inbox, localMessage, spamfolder, null);
                 		continue;
                 	} else {
                 		// Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is not SPAM");
@@ -1048,13 +1049,6 @@ public class MessagingController implements Runnable {
         }
 
     }
-
-
-    private void moveToSpam(Message message, Account account, String inbox, String spamFolder) {
-		// Move the message to the user specified spam folder.
-    	Log.d("K9-Mail", "moving messages to SPAM folder, from: " + Address.toString(message.getFrom()));
-		moveMessage(account, inbox, message, spamFolder, null);
-	}
 
 	private void closeFolder(Folder f) {
         if (f != null) {
