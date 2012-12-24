@@ -844,8 +844,7 @@ public class MessagingController implements Runnable {
                     return;
                 }
 
-
-                /*
+               /*
                  * Synchronization process:
                  *
                 Open the folder
@@ -976,11 +975,13 @@ public class MessagingController implements Runnable {
             	Message[] allMessages = localFolder.getMessages(null);
                 for (Message localMessage : allMessages) {
                 	if (localMessage.getSpamFlag().equalsIgnoreCase("YES")) {
-                		Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is SPAM");
-                		moveToSpam(localMessage, remoteFolder);
+                		// Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is SPAM");                		// Folder spamFolder = remoteStore.getFolder("Spam");
+                		String spamfolder = account.getSpamFolderName();
+                		String inbox = account.getInboxFolderName();
+                		moveToSpam(localMessage, account, inbox, spamfolder);
                 		continue;
                 	} else {
-                		Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is not SPAM");
+                		// Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is not SPAM");
                 	}
                 }
             }
@@ -1049,16 +1050,10 @@ public class MessagingController implements Runnable {
     }
 
 
-    private void moveToSpam(Message message, Folder localFolder) {
+    private void moveToSpam(Message message, Account account, String inbox, String spamFolder) {
 		// Move the message to the user specified spam folder.
     	Log.d("K9-Mail", "moving messages to SPAM folder, from: " + Address.toString(message.getFrom()));
-  		Folder spamFolder = null;
-		try {
-			localFolder.moveMessages(new Message[] { message }, spamFolder);
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		moveMessage(account, inbox, message, spamFolder, null);
 	}
 
 	private void closeFolder(Folder f) {
