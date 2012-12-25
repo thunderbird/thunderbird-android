@@ -303,7 +303,7 @@ public class Account implements BaseAccount {
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
-        mSpamassFilter = true;
+        mSpamassFilter = false;
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
         mCryptoAutoEncrypt = false;
@@ -373,7 +373,7 @@ public class Account implements BaseAccount {
         mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName", "Spam");
         mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
-        mSpamassFilter = prefs.getBoolean(mUuid  + ".spamassFilter", true);
+        mSpamassFilter = prefs.getBoolean(mUuid  + ".spamassFilter", false);
         
         mMaxPushFolders = prefs.getInt(mUuid + ".maxPushFolders", 10);
         goToUnreadMessageSearch = prefs.getBoolean(mUuid + ".goToUnreadMessageSearch", false);
