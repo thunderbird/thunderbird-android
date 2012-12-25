@@ -975,14 +975,14 @@ public class MessagingController implements Runnable {
             	Message[] allMessages = localFolder.getMessages(null);
                 for (Message localMessage : allMessages) {
                 	if (localMessage.getSpamFlag().equalsIgnoreCase("YES")) {
-                		// Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is SPAM");                		// Folder spamFolder = remoteStore.getFolder("Spam");
-                		Log.d("K9-Mail", "moving messages to SPAM folder, from: " + Address.toString(localMessage.getFrom()));
+                		// Log.d("K9.LOG_TAG", "Message " +  Address.toString(localMessage.getFrom()) + " is SPAM");                		// Folder spamFolder = remoteStore.getFolder("Spam");
+                		Log.d("K9.LOG_TAG", "moving messages to SPAM folder, from: " + Address.toString(localMessage.getFrom()));
                 		String spamfolder = account.getSpamFolderName();
                 		String inbox = account.getInboxFolderName();
                 		moveMessage(account, inbox, localMessage, spamfolder, null);
                 		continue;
                 	} else {
-                		// Log.d("K9-Mail", "Message " +  Address.toString(localMessage.getFrom()) + " is not SPAM");
+                		// Log.d("K9.LOG_TAG", "Message " +  Address.toString(localMessage.getFrom()) + " is not SPAM");
                 	}
                 }
             }

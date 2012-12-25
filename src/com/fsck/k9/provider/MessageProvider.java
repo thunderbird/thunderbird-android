@@ -382,9 +382,9 @@ public class MessageProvider extends ContentProvider {
                 } else if (MessageColumns.ACCOUNT_NUMBER.equals(field)) {
                     extractors.put(field, new AccountNumberExtractor());
                 } else if (MessageColumns.SPAM_FLAG.equals(field)) {
-                    Log.d("K9-Mail", "SPAM_FLAG: " + field);
+                    Log.d(K9.LOG_TAG, "SPAM_FLAG: " + field);
                 } else if (MessageColumns.SPAM_STATUS.equals(field)) {
-                    Log.d("K9-Mail", "SPAM_STATUS: " + field);
+                    Log.d(K9.LOG_TAG, "SPAM_STATUS: " + field);
                 } else if (MessageColumns.HAS_ATTACHMENTS.equals(field)) {
                     extractors.put(field, new HasAttachmentsExtractor());
                 } else if (MessageColumns.HAS_STAR.equals(field)) {

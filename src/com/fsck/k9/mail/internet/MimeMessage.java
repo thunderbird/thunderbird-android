@@ -613,7 +613,7 @@ public class MimeMessage extends Message {
 	public String getSpamFlag() {
 		if (mSpamFlag == null) {
 			String flag = MimeUtility.unfold(getFirstHeader("X-Spam-Flag"));
-			// Log.d("K9-Mail", "getSpamFlag(): " + flag);
+			// Log.d(K9.LOG_TAG, "getSpamFlag(): " + flag);
 			if (flag != null) {
 				mSpamFlag = flag;
 			} else {
@@ -628,7 +628,7 @@ public class MimeMessage extends Message {
 	public String getSpamStatus() {
 		if (mSpamStatus == null) {
 			String status = MimeUtility.unfold(getFirstHeader("X-Spam-Status"));
-			// Log.d("K9-Mail", "getSpamStatus(): " + status);
+			// Log.d(K9.LOG_TAG, "getSpamStatus(): " + status);
 			if (status != null) {
 				mSpamStatus = status;
 			} else {
