@@ -26,6 +26,13 @@ Android Localizer (aiLocalizer)
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
+    <!--
+         When removing strings from the main file, please cleanup the translations.
+         
+         This doesn't work on multiline strings, nor strings with the NEW tag.
+         find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
+     -->
+
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
@@ -57,6 +64,7 @@ Voici ce que K-9 Mail apporte de plus\u00A0:
   <li>La technologie PUSH en passant par le protocole IMAP</li>
   <li>De meilleures performances</li>
   <li>Signer ses messages</li>
+  <li>Cci à soi</li>
   <li>S\'envoyer une copie des messages automatiquement</li>
   <li>Choisir les dossiers à synchroniser</li>
   <li>Choisir l\'adresse e-mail de réponse</li>
@@ -561,6 +569,7 @@ de plus</string>
     <string name="account_settings_quote_style_header">En-tête (Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Paramètres généraux</string>
+    <string name="account_settings_reading_mail">Lecture mail</string>
     <string name="account_settings_sync">Synchronisation de dossiers</string>
     <string name="account_settings_folders">Dossiers</string>
     <string name="account_settings_quote_prefix_label">Préfixe de citation</string>
@@ -572,6 +581,7 @@ de plus</string>
     <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse e-mail du compte pour déduire la clé de signature</string>
     <string name="account_settings_crypto_auto_encrypt">Cryptation automatique</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Cryptation automatique si une clé publique correspond au destinataire.</string>
+    <string name="account_settings_crypto_apg_not_installed">APG non installé</string>
 
     <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
 
