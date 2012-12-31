@@ -97,9 +97,9 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
 
     <string name="compose_title">Kirjoita</string>
-    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
-    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
-    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+    <string name="compose_title_reply">Vastaa</string>
+    <string name="compose_title_reply_all">Vastaa kaikille</string>
+    <string name="compose_title_forward">Välitä</string>
 
     <string name="choose_folder_title">Valitse kansio</string>
 
@@ -1062,35 +1062,35 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="image_saved_as">Kuva tallennettu nimellä <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="image_saving_failed">Kuvan tallennus epäonnistui.</string>
 
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
-    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
-    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
-    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
-    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+    <string name="account_settings_remote_search_num_results_entries_all">Kaikki</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Etähaun tulosten rajoitus</string>
+    <string name="account_settings_remote_search_num_summary">Haku päättyy, kun <xliff:g id="num_results">%s</xliff:g> tulosta on löytynyt.</string>
+    <string name="account_settings_remote_search">Etäkansioiden haku</string>
+    <string name="account_settings_remote_search_full_text">Sisällytä etähakuun viestin teksti</string>
+    <string name="account_settings_remote_search_full_text_summary">Koko tekstin haut voivat olla hitaita.</string>
+    <string name="remote_search_sending_query">Lähetetään pyyntöä palvelimelle</string>
+    <string name="remote_search_downloading">Noudetaan %d tulosta</string>
+    <string name="remote_search_downloading_limited">Noudetaan tulosta %1$d / %2$d</string>
+    <string name="remote_search_error">Etähaku epäonnistui</string>
 
-    <!-- NEW: <string name="account_settings_search">Search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
-    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <string name="account_settings_search">Hae</string>
+    <string name="account_settings_remote_search_enabled">Ota etähaku käyttöön</string>
+    <string name="account_settings_remote_search_enabled_summary">Etsi viestejä palvelimelta laitteessasi olevien lisäksi</string>
+    <string name="action_remote_search">Etsi viestejä palvelimelta</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Edistä etähakua…</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Vapauta etähaku…</string>
+    <string name="remote_search_unavailable_no_network">Etähaku ei ole käytettävissä ilman verkkoyhteyttä.</string>
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <string name="global_settings_background_as_unread_indicator_label">Käytä taustaa lukemattomien/luettujen ilmaisimena</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Näytä luetut ja lukemattomat viestit eri taustaväreillä</string>
 
-    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <string name="global_settings_threaded_view_label">Ketjunäkymä</string>
+    <string name="global_settings_threaded_view_summary">Kutista samaan ketjuun kuuluvat viestit</string>
 </resources>
