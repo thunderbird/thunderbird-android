@@ -32,6 +32,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -45,7 +46,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
-import com.fsck.k9.helper.NotificationBuilder;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
@@ -3071,7 +3071,7 @@ public class MessagingController implements Runnable {
         NotificationManager notifMgr =
             (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationBuilder builder = NotificationBuilder.createInstance(mApplication);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
         builder.setSmallIcon(R.drawable.ic_menu_refresh);
         builder.setWhen(System.currentTimeMillis());
         builder.setOngoing(true);
@@ -3121,7 +3121,7 @@ public class MessagingController implements Runnable {
         NotificationManager notifMgr =
                 (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationBuilder builder = NotificationBuilder.createInstance(mApplication);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
         builder.setSmallIcon(R.drawable.stat_notify_email_generic);
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
@@ -3156,7 +3156,7 @@ public class MessagingController implements Runnable {
         final NotificationManager notifMgr =
                 (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationBuilder builder = NotificationBuilder.createInstance(mApplication);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
         builder.setSmallIcon(R.drawable.ic_menu_refresh);
         builder.setWhen(System.currentTimeMillis());
         builder.setOngoing(true);
@@ -4422,7 +4422,7 @@ public class MessagingController implements Runnable {
         NotificationManager notifMgr =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationBuilder builder = NotificationBuilder.createInstance(context);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.drawable.stat_notify_email_generic);
         builder.setWhen(System.currentTimeMillis());
         builder.setTicker(messageNotice);
@@ -4464,7 +4464,7 @@ public class MessagingController implements Runnable {
                 K9.NOTIFICATION_LED_BLINK_SLOW,
                 ringAndVibrate);
 
-        notifMgr.notify(account.getAccountNumber(), builder.getNotification());
+        notifMgr.notify(account.getAccountNumber(), builder.build());
     }
 
     /**
@@ -4485,7 +4485,7 @@ public class MessagingController implements Runnable {
      * @param ringAndVibrate
      *          {@code true}, if ringtone/vibration are allowed. {@code false}, otherwise.
      */
-    private void configureNotification(NotificationBuilder builder, String ringtone,
+    private void configureNotification(NotificationCompat.Builder builder, String ringtone,
             long[] vibrationPattern, Integer ledColor, int ledSpeed, boolean ringAndVibrate) {
 
         // if it's quiet time, then we shouldn't be ringing, buzzing or flashing
