@@ -18,5 +18,7 @@
         <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
+    <style name="TextAppearance.StatusBar.EventContent.Emphasized" parent="@android:style/TextAppearance.StatusBar.EventContent">
+    </style>
 </resources>
 
