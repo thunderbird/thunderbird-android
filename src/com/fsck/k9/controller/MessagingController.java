@@ -48,6 +48,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -4419,25 +4420,24 @@ public class MessagingController implements Runnable {
 
     private CharSequence getMessageSender(Context context, Account account, Message message) {
         try {
-            String from = null;
             boolean isSelf = false;
+            final Contacts contacts = K9.showContactName() ? Contacts.getInstance(context) : null;
+            final Address[] fromAddrs = message.getFrom();
 
-            if (message.getFrom() != null) {
-                Address[] fromAddrs = message.getFrom();
-                if (fromAddrs.length > 0) {
-                    from = fromAddrs[0].toFriendly().toString();
-                }
+            if (fromAddrs != null) {
                 isSelf = account.isAnIdentity(fromAddrs);
+                if (!isSelf && fromAddrs.length > 0) {
+                    return fromAddrs[0].toFriendly(contacts).toString();
+                }
             }
 
-            if (from != null && !isSelf) {
-                return from;
-            } else if (isSelf) {
+            if (isSelf) {
                 // show To: if the message was sent from me
                 Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
-                String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
-                if (to != null) {
-                    return context.getString(R.string.message_to_fmt, to);
+
+                if (rcpts != null && rcpts.length > 0) {
+                    return context.getString(R.string.message_to_fmt,
+                            rcpts[0].toFriendly(contacts).toString());
                 }
 
                 return context.getString(R.string.general_no_sender);
