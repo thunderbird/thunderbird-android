@@ -4458,7 +4458,15 @@ public class MessagingController implements Runnable {
         return context.getString(R.string.general_no_subject);
     }
 
-    private CharSequence getMessagePreview(Context context, Message message, boolean useSpans) {
+    private static TextAppearanceSpan sEmphasizedSpan;
+    private void ensureEmphasizedSpan(Context context) {
+        if (sEmphasizedSpan == null) {
+            sEmphasizedSpan = new TextAppearanceSpan(context,
+                    R.style.TextAppearance_StatusBar_EventContent_Emphasized);
+        }
+    }
+
+    private CharSequence getMessagePreview(Context context, Message message) {
         CharSequence subject = getMessageSubject(context, message);
         String snippet = null;
 
@@ -4497,38 +4505,27 @@ public class MessagingController implements Runnable {
         preview.append('\n');
         preview.append(snippet);
 
-        if (useSpans) {
-            final TextAppearanceSpan subjectSpan = new TextAppearanceSpan(context,
-                    R.style.TextAppearance_StatusBar_EventContent_Emphasized);
-            preview.setSpan(subjectSpan, 0, subject.length(), 0);
-        }
+        ensureEmphasizedSpan(context);
+        preview.setSpan(sEmphasizedSpan, 0, subject.length(), 0);
 
         return preview;
     }
 
-    private CharSequence buildMessageSummary(Context context, CharSequence sender,
-            CharSequence subject, boolean useSpans) {
+    private CharSequence buildMessageSummary(Context context, CharSequence sender, CharSequence subject) {
 
         if (sender == null) {
             return subject;
         }
 
-        if (useSpans) {
-            SpannableStringBuilder summary = new SpannableStringBuilder();
-            final TextAppearanceSpan senderSpan = new TextAppearanceSpan(context,
-                    R.style.TextAppearance_StatusBar_EventContent_Emphasized);
-            summary.append(sender);
-            summary.append(" ");
-            summary.append(subject);
-            summary.setSpan(senderSpan, 0, sender.length(), 0);
-            return summary;
-        } else {
-            StringBuilder summary = new StringBuilder();
-            summary.append(sender);
-            summary.append(": ");
-            summary.append(subject);
-            return summary.toString();
-        }
+        SpannableStringBuilder summary = new SpannableStringBuilder();
+        summary.append(sender);
+        summary.append(" ");
+        summary.append(subject);
+
+        ensureEmphasizedSpan(context);
+        summary.setSpan(sEmphasizedSpan, 0, sender.length(), 0);
+
+        return summary;
     }
 
     private static boolean platformShowsNumberInNotification() {
@@ -4552,7 +4549,7 @@ public class MessagingController implements Runnable {
         final KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         final CharSequence sender = getMessageSender(context, account, message);
         final CharSequence subject = getMessageSubject(context, message);
-        CharSequence summary = buildMessageSummary(context, sender, subject, false);
+        CharSequence summary = buildMessageSummary(context, sender, subject);
 
         // If privacy mode active and keyguard active
         // OR
@@ -4593,8 +4590,9 @@ public class MessagingController implements Runnable {
                     // multiple messages pending, show inbox style
                     NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
                     for (Message m : data.messages) {
-                        style.addLine(buildMessageSummary(context, getMessageSender(context, account, m),
-                                getMessageSubject(context, m), true));
+                        style.addLine(buildMessageSummary(context,
+                                getMessageSender(context, account, m),
+                                getMessageSubject(context, m)));
                     }
                     if (data.droppedMessages > 0) {
                         style.setSummaryText(context.getString(
@@ -4608,7 +4606,7 @@ public class MessagingController implements Runnable {
                 } else {
                     // single message pending, show big text
                     NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle(builder);
-                    CharSequence preview = getMessagePreview(context, message, true);
+                    CharSequence preview = getMessagePreview(context, message);
                     if (preview != null) {
                         style.bigText(preview);
                     }
