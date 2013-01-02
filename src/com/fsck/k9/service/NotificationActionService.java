@@ -25,7 +25,7 @@ public class NotificationActionService extends CoreService {
 
     private final static String EXTRA_ACCOUNT = "account";
     private final static String EXTRA_MESSAGE = "message";
-    private final static String EXTRA_MESSAGE_IDS = "message_ids";
+    private final static String EXTRA_MESSAGE_LIST = "messages";
 
     public static PendingIntent getReplyIntent(Context context, final Account account, final Message message) {
         Intent i = new Intent(context, NotificationActionService.class);
@@ -37,15 +37,15 @@ public class NotificationActionService extends CoreService {
     }
 
     public static PendingIntent getReadAllMessagesIntent(Context context, final Account account, final Collection<Message> messages) {
-        ArrayList<Long> messageIds = new ArrayList<Long>();
+        ArrayList<MessageReference> refs = new ArrayList<MessageReference>();
 
         for (Message m : messages) {
-            messageIds.add(m.getId());
+            refs.add(m.makeMessageReference());
         }
         
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_IDS, messageIds);
+        i.putExtra(EXTRA_MESSAGE_LIST, refs);
         i.setAction(READ_ALL_ACTION);
         
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -64,9 +64,11 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
 
-                ArrayList<Long> messageIds = (ArrayList<Long>) intent.getSerializableExtra(EXTRA_MESSAGE_IDS);
-
-                controller.setFlag(account, messageIds, Flag.SEEN, true, false);
+                ArrayList<MessageReference> refs = (ArrayList<MessageReference>)
+                        intent.getSerializableExtra(EXTRA_MESSAGE_LIST);
+                for (MessageReference ref : refs) {
+                    controller.setFlag(account, ref.folderName, ref.uid, Flag.SEEN, true);
+                }
             } else if (REPLY_ACTION.equals(intent.getAction())) {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService initiating reply");
