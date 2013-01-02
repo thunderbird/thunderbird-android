@@ -205,7 +205,12 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="recreating_account">Konto \"<xliff:g id="account">%s</xliff:g>\" wiederherstellen</string>
 
     <string name="notification_new_title">Neue Nachricht</string>
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> neue Nachrichten</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ungelesen (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_additional_messages">und <xliff:g id="additional_messages">%d</xliff:g> weitere (<xliff:g id="account">%s</xliff:g>)</string>
+
+    <string name="notification_action_reply">Antworten</string>
+    <string name="notification_action_read">Gelesen</string>
 
     <string name="notification_bg_sync_ticker">Auf neue Nachrichten prüfen: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Auf neue Nachrichten prüfen</string>
