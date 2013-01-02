@@ -81,6 +81,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SqlQueryBuilder;
+import com.fsck.k9.service.NotificationActionService;
 
 
 /**
@@ -4615,7 +4616,14 @@ public class MessagingController implements Runnable {
                     builder.setSubText(accountDescr);
                     builder.setContentTitle(sender);
                     builder.setStyle(style);
+
+                    builder.addAction(R.drawable.ic_action_single_message_options_dark,
+                            context.getString(R.string.notification_action_reply),
+                            NotificationActionService.getReplyIntent(context, account, message));
                 }
+                builder.addAction(R.drawable.ic_action_mark_as_read_dark,
+                        context.getString(R.string.notification_action_read),
+                        NotificationActionService.getReadAllMessagesIntent(context, account, data.messages));
             } else {
                 String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
                         unreadCount, accountDescr);
