@@ -361,6 +361,11 @@ otherwise it would make K-9 start at the wrong time
             >
         </service>
         <service
+            android:name=".service.NotificationActionService"
+            android:enabled="true"
+            >
+        </service>
+        <service
              android:name=".service.PushService"
              android:enabled="true"
              >
