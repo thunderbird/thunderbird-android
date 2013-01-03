@@ -48,6 +48,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.power.TracingPowerManager;
@@ -203,7 +204,7 @@ public class MessagingController implements Runnable {
     private static class NotificationData {
         int unreadBeforeNotification;
         LinkedList<Message> messages;
-        int droppedMessages;
+        LinkedList<MessageReference> droppedMessages;
 
         // There's no point in storing more than 5 messages for the notification, as a single notification
         // can't display more than that anyway.
@@ -212,18 +213,22 @@ public class MessagingController implements Runnable {
         @SuppressWarnings("serial")
         public NotificationData(int unread) {
             unreadBeforeNotification = unread;
-            droppedMessages = 0;
+            droppedMessages = new LinkedList<MessageReference>();
             messages = new LinkedList<Message>() {
                 @Override
                 public boolean add(Message m) {
                     while (size() >= MAX_MESSAGES) {
-                        super.remove();
-                        droppedMessages++;
+                        Message dropped = super.remove();
+                        droppedMessages.add(dropped.makeMessageReference());
                     }
                     super.add(m);
                     return true;
                 }
             };
+        }
+
+        public int getNewMessageCount() {
+            return messages.size() + droppedMessages.size();
         }
     };
 
@@ -1718,6 +1723,7 @@ public class MessagingController implements Runnable {
                 Message localMessage = localFolder.getMessage(remoteMessage.getUid());
                 boolean messageChanged = syncFlags(localMessage, remoteMessage);
                 if (messageChanged) {
+                    boolean shouldBeNotifiedOf = false;
                     if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(account, folder, localMessage)) {
                         for (MessagingListener l : getListeners()) {
                             l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
@@ -1726,8 +1732,38 @@ public class MessagingController implements Runnable {
                         for (MessagingListener l : getListeners()) {
                             l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                         }
+                        if (shouldNotifyForMessage(account, localFolder, localMessage)) {
+                            shouldBeNotifiedOf = true;
+                        }
                     }
 
+                    NotificationData data = getNotificationData(account, -1);
+                    if (data != null) {
+                        synchronized (data) {
+                            boolean needUpdateNotification = false;
+                            String uid = localMessage.getUid();
+
+                            for (Message m : data.messages) {
+                                if (uid.equals(m.getUid()) && !shouldBeNotifiedOf) {
+                                    data.messages.remove(m);
+                                    needUpdateNotification = true;
+                                    break;
+                                }
+                            }
+                            if (!needUpdateNotification) {
+                                for (MessageReference dropped : data.droppedMessages) {
+                                    if (uid.equals(dropped.uid) && !shouldBeNotifiedOf) {
+                                        data.droppedMessages.remove(dropped.uid);
+                                        needUpdateNotification = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (needUpdateNotification) {
+                                notifyAccountWithDataLocked(mApplication, account, null, data);
+                            }
+                        }
+                    }
                 }
                 progress.incrementAndGet();
                 for (MessagingListener l : getListeners()) {
@@ -4409,7 +4445,7 @@ public class MessagingController implements Runnable {
 
         synchronized (notificationData) {
             data = notificationData.get(account.getAccountNumber());
-            if (data == null) {
+            if (data == null && previousUnreadMessageCount >= 0) {
                 data = new NotificationData(previousUnreadMessageCount);
                 notificationData.put(account.getAccountNumber(), data);
             }
@@ -4540,11 +4576,49 @@ public class MessagingController implements Runnable {
         return Build.VERSION.SDK_INT >= 16;
     }
 
+    private Message findNewestMessageForNotificationLocked(Account account, NotificationData data) {
+        int count = data.messages.size();
+        if (count > 0) {
+            return data.messages.get(count - 1);
+        }
+
+        count = data.droppedMessages.size();
+        if (count > 0) {
+            MessageReference ref = data.droppedMessages.get(count - 1);
+            try {
+                return account.getLocalStore().getFolder(ref.folderName).getMessage(ref.uid);
+            } catch (MessagingException e) {
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Creates a notification of a newly received message.
      */
-    private void notifyAccount(Context context, Account account, Message message,
-                               int previousUnreadMessageCount) {
+    private void notifyAccount(Context context, Account account,
+            Message message, int previousUnreadMessageCount) {
+        final NotificationData data = getNotificationData(account, previousUnreadMessageCount);
+        synchronized (data) {
+            notifyAccountWithDataLocked(context, account, message, data);
+        }
+    }
+
+    private void notifyAccountWithDataLocked(Context context, Account account,
+            Message message, NotificationData data) {
+        boolean updateSilently = false;
+
+        if (message == null) {
+            /* this can happen if a message we previously notified for is read or deleted remotely */
+            message = findNewestMessageForNotificationLocked(account, data);
+            updateSilently = true;
+            if (message == null) {
+                return;
+            }
+        } else {
+            data.messages.add(message);
+        }
 
         final KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         final CharSequence sender = getMessageSender(context, account, message);
@@ -4569,65 +4643,62 @@ public class MessagingController implements Runnable {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.drawable.stat_notify_email_generic);
         builder.setWhen(System.currentTimeMillis());
-        builder.setTicker(summary);
+        if (!updateSilently) {
+            builder.setTicker(summary);
+        }
 
-        NotificationData data = getNotificationData(account, previousUnreadMessageCount);
-        synchronized (data) {
-            data.messages.add(message);
+        final int newMessages = data.getNewMessageCount();
+        final int unreadCount = data.unreadBeforeNotification + newMessages;
 
-            final int newMessages = data.messages.size() + data.droppedMessages;
-            final int unreadCount = data.unreadBeforeNotification + newMessages;
+        if (account.isNotificationShowsUnreadCount() || platformShowsNumberInNotification()) {
+            builder.setNumber(unreadCount);
+        }
 
-            if (account.isNotificationShowsUnreadCount() || platformShowsNumberInNotification()) {
-                builder.setNumber(unreadCount);
-            }
+        String accountDescr = (account.getDescription() != null) ?
+                account.getDescription() : account.getEmail();
 
-            String accountDescr = (account.getDescription() != null) ?
-                    account.getDescription() : account.getEmail();
-
-            if (platformSupportsExtendedNotifications()) {
-                if (newMessages > 1) {
-                    // multiple messages pending, show inbox style
-                    NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
-                    for (Message m : data.messages) {
-                        style.addLine(buildMessageSummary(context,
-                                getMessageSender(context, account, m),
-                                getMessageSubject(context, m)));
-                    }
-                    if (data.droppedMessages > 0) {
-                        style.setSummaryText(context.getString(
-                                R.string.notification_additional_messages, data.droppedMessages));
-                    }
-                    String title = context.getString(R.string.notification_new_messages_title, newMessages, accountDescr);
-                    style.setBigContentTitle(title);
-                    builder.setContentTitle(title);
-                    builder.setSubText(accountDescr);
-                    builder.setStyle(style);
-                } else {
-                    // single message pending, show big text
-                    NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle(builder);
-                    CharSequence preview = getMessagePreview(context, message);
-                    if (preview != null) {
-                        style.bigText(preview);
-                    }
-                    builder.setContentText(subject);
-                    builder.setSubText(accountDescr);
-                    builder.setContentTitle(sender);
-                    builder.setStyle(style);
-
-                    builder.addAction(R.drawable.ic_action_single_message_options_dark,
-                            context.getString(R.string.notification_action_reply),
-                            NotificationActionService.getReplyIntent(context, account, message));
+        if (platformSupportsExtendedNotifications()) {
+            if (newMessages > 1) {
+                // multiple messages pending, show inbox style
+                NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
+                for (Message m : data.messages) {
+                    style.addLine(buildMessageSummary(context,
+                            getMessageSender(context, account, m),
+                            getMessageSubject(context, m)));
                 }
-                builder.addAction(R.drawable.ic_action_mark_as_read_dark,
-                        context.getString(R.string.notification_action_read),
-                        NotificationActionService.getReadAllMessagesIntent(context, account, data.messages));
+                if (data.droppedMessages.size() > 0) {
+                    style.setSummaryText(context.getString(
+                            R.string.notification_additional_messages, data.droppedMessages.size()));
+                }
+                String title = context.getString(R.string.notification_new_messages_title, newMessages, accountDescr);
+                style.setBigContentTitle(title);
+                builder.setContentTitle(title);
+                builder.setSubText(accountDescr);
+                builder.setStyle(style);
             } else {
-                String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
-                        unreadCount, accountDescr);
-                builder.setContentTitle(accountNotice);
-                builder.setContentText(summary);
+                // single message pending, show big text
+                NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle(builder);
+                CharSequence preview = getMessagePreview(context, message);
+                if (preview != null) {
+                    style.bigText(preview);
+                }
+                builder.setContentText(subject);
+                builder.setSubText(accountDescr);
+                builder.setContentTitle(sender);
+                builder.setStyle(style);
+
+                builder.addAction(R.drawable.ic_action_single_message_options_dark,
+                        context.getString(R.string.notification_action_reply),
+                        NotificationActionService.getReplyIntent(context, account, message));
             }
+            builder.addAction(R.drawable.ic_action_mark_as_read_dark,
+                    context.getString(R.string.notification_action_read),
+                    NotificationActionService.getReadAllMessagesIntent(context, account, data.messages));
+        } else {
+            String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
+                    unreadCount, accountDescr);
+            builder.setContentTitle(accountNotice);
+            builder.setContentText(summary);
         }
 
         Intent i = FolderList.actionHandleNotification(context, account,
@@ -4637,7 +4708,7 @@ public class MessagingController implements Runnable {
 
         // Only ring or vibrate if we have not done so already on this account and fetch
         boolean ringAndVibrate = false;
-        if (!account.isRingNotified()) {
+        if (!updateSilently && !account.isRingNotified()) {
             account.setRingNotified(true);
             ringAndVibrate = true;
         }
