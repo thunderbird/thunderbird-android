@@ -46,6 +46,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.NotificationBuilder;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
@@ -1731,7 +1732,14 @@ public class MessagingController implements Runnable {
         if (rootCause instanceof MessagingException) {
             return rootCause.getMessage();
         } else {
-            return rootCause.toString();
+            // Remove the namespace on the exception so we have a fighting chance of seeing more of the error in the
+            // notification.
+            String cause = rootCause.toString();
+            if (StringUtils.isNullOrEmpty(cause)) {
+                return cause;
+            } else {
+                return cause.replaceFirst("^[\\w.]+?([\\w]+:)", "$1");
+            }
         }
     }
 
