@@ -3134,7 +3134,7 @@ public class MessagingController implements Runnable {
         }
 
         notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
-                builder.getNotification());
+                builder.build());
     }
 
     private void notifySendTempFailed(Account account, Exception lastFailure) {
@@ -3175,7 +3175,7 @@ public class MessagingController implements Runnable {
                 K9.NOTIFICATION_LED_BLINK_FAST, true);
 
         notifMgr.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(),
-                builder.getNotification());
+                builder.build());
     }
 
     /**
@@ -3220,7 +3220,7 @@ public class MessagingController implements Runnable {
         }
 
         notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
-                builder.getNotification());
+                builder.build());
     }
 
     private void notifyFetchingMailCancel(final Account account) {
