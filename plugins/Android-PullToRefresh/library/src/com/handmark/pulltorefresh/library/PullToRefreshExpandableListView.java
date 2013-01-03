@@ -20,7 +20,6 @@ import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -40,13 +39,17 @@ public class PullToRefreshExpandableListView extends PullToRefreshAdapterViewBas
 		super(context, mode);
 	}
 
-	@Override
-	public ContextMenuInfo getContextMenuInfo() {
-		return ((InternalExpandableListView) getRefreshableView()).getContextMenuInfo();
+	public PullToRefreshExpandableListView(Context context, Mode mode, AnimationStyle style) {
+		super(context, mode, style);
 	}
 
 	@Override
-	protected final ExpandableListView createRefreshableView(Context context, AttributeSet attrs) {
+	public final Orientation getPullToRefreshScrollDirection() {
+		return Orientation.VERTICAL;
+	}
+
+	@Override
+	protected ExpandableListView createRefreshableView(Context context, AttributeSet attrs) {
 		final ExpandableListView lv;
 		if (VERSION.SDK_INT >= VERSION_CODES.GINGERBREAD) {
 			lv = new InternalExpandableListViewSDK9(context, attrs);
@@ -63,10 +66,6 @@ public class PullToRefreshExpandableListView extends PullToRefreshAdapterViewBas
 
 		public InternalExpandableListView(Context context, AttributeSet attrs) {
 			super(context, attrs);
-		}
-
-		public ContextMenuInfo getContextMenuInfo() {
-			return super.getContextMenuInfo();
 		}
 
 		@Override
@@ -95,7 +94,8 @@ public class PullToRefreshExpandableListView extends PullToRefreshAdapterViewBas
 					scrollRangeY, maxOverScrollX, maxOverScrollY, isTouchEvent);
 
 			// Does all of the hard work...
-			OverscrollHelper.overScrollBy(PullToRefreshExpandableListView.this, deltaY, scrollY, isTouchEvent);
+			OverscrollHelper.overScrollBy(PullToRefreshExpandableListView.this, deltaX, scrollX, deltaY, scrollY,
+					isTouchEvent);
 
 			return returnValue;
 		}

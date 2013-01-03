@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="pull_to_refresh_pull_label">משוך לרענון…</string>
+  <string name="pull_to_refresh_release_label">שחרר לרענון…</string>
+  <string name="pull_to_refresh_refreshing_label">טוען…</string>
+</resources>

@@ -15,7 +15,10 @@
  *******************************************************************************/
 package com.handmark.pulltorefresh.library.internal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -25,10 +28,12 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.R;
 
+@SuppressLint("ViewConstructor")
 public class IndicatorLayout extends FrameLayout implements AnimationListener {
 
 	static final int DEFAULT_ROTATION_ANIMATION_DURATION = 150;
@@ -40,26 +45,33 @@ public class IndicatorLayout extends FrameLayout implements AnimationListener {
 
 	public IndicatorLayout(Context context, PullToRefreshBase.Mode mode) {
 		super(context);
-
 		mArrowImageView = new ImageView(context);
+
+		Drawable arrowD = getResources().getDrawable(R.drawable.indicator_arrow);
+		mArrowImageView.setImageDrawable(arrowD);
+
 		final int padding = getResources().getDimensionPixelSize(R.dimen.indicator_internal_padding);
 		mArrowImageView.setPadding(padding, padding, padding, padding);
 		addView(mArrowImageView);
 
 		int inAnimResId, outAnimResId;
 		switch (mode) {
-			case PULL_UP_TO_REFRESH:
+			case PULL_FROM_END:
 				inAnimResId = R.anim.slide_in_from_bottom;
 				outAnimResId = R.anim.slide_out_to_bottom;
 				setBackgroundResource(R.drawable.indicator_bg_bottom);
-				mArrowImageView.setImageResource(R.drawable.arrow_up);
+
+				// Rotate Arrow so it's pointing the correct way
+				mArrowImageView.setScaleType(ScaleType.MATRIX);
+				Matrix matrix = new Matrix();
+				matrix.setRotate(180f, arrowD.getIntrinsicWidth() / 2f, arrowD.getIntrinsicHeight() / 2f);
+				mArrowImageView.setImageMatrix(matrix);
 				break;
 			default:
-			case PULL_DOWN_TO_REFRESH:
+			case PULL_FROM_START:
 				inAnimResId = R.anim.slide_in_from_top;
 				outAnimResId = R.anim.slide_out_to_top;
 				setBackgroundResource(R.drawable.indicator_bg_top);
-				mArrowImageView.setImageResource(R.drawable.arrow_down);
 				break;
 		}
 

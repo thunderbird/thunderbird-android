@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="pull_to_refresh_pull_label">Потяните для обновления&#8230;</string>
-  <string name="pull_to_refresh_release_label">Отпустите для обновления&#8230;</string>
-  <string name="pull_to_refresh_refreshing_label">Загрузка&#8230;</string>
+  <string name="pull_to_refresh_pull_label">Потяните для обновления…</string>
+  <string name="pull_to_refresh_release_label">Отпустите для обновления…</string>
+  <string name="pull_to_refresh_refreshing_label">Загрузка…</string>
 </resources>

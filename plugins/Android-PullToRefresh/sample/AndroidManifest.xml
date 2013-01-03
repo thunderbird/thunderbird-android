@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.handmark.pulltorefresh.samples"
-    android:versionCode="1420"
-    android:versionName="1.4.2" >
+    android:versionCode="2110"
+    android:versionName="2.1.1" >
 
     <uses-sdk
         android:minSdkVersion="4"
-        android:targetSdkVersion="10" />
+        android:targetSdkVersion="15" />
 
     <application
+        android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light" >
+        android:label="@string/app_name" >
         <activity
             android:name=".LauncherActivity"
             android:label="PullToRefresh Samples" >
@@ -30,6 +30,10 @@
             android:label="PtR ListView Fragment" >
         </activity>
         <activity
+            android:name=".PullToRefreshListInViewPagerActivity"
+            android:label="PtR ListView in ViewPager" >
+        </activity>
+        <activity
             android:name=".PullToRefreshGridActivity"
             android:label="PtR GridView" >
         </activity>
@@ -44,6 +48,14 @@
         <activity
             android:name=".PullToRefreshScrollViewActivity"
             android:label="PtR ScrollView" >
+        </activity>
+        <activity
+            android:name=".PullToRefreshHorizontalScrollViewActivity"
+            android:label="PtR HorizontalScrollView" >
+        </activity>
+        <activity
+            android:name=".PullToRefreshViewPagerActivity"
+            android:label="PtR ViewPager" >
         </activity>
         <activity
             android:name=".PullToRefreshWebView2Activity"

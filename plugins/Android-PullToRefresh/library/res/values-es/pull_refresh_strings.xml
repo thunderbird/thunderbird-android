@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="pull_to_refresh_pull_label">Tire para actualizar&#8230;</string>
-  <string name="pull_to_refresh_release_label">Deslice para actualizar&#8230;</string>
-  <string name="pull_to_refresh_refreshing_label">Cargando&#8230;</string>
+  <string name="pull_to_refresh_pull_label">Tirar para actualizar…</string>
+  <string name="pull_to_refresh_release_label">Soltar para actualizar…</string>
+  <string name="pull_to_refresh_refreshing_label">Cargando…</string>
 </resources>

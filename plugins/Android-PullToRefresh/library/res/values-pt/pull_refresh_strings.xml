@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="pull_to_refresh_pull_label">Puxe para atualizar&#8230;</string>
-  <string name="pull_to_refresh_release_label">Liberação para atualizar&#8230;</string>
-  <string name="pull_to_refresh_refreshing_label">A carregar&#8230;</string>
+  <string name="pull_to_refresh_pull_label">Puxe para atualizar…</string>
+  <string name="pull_to_refresh_release_label">Liberação para atualizar…</string>
+  <string name="pull_to_refresh_refreshing_label">A carregar…</string>
 </resources>

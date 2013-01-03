@@ -4,8 +4,7 @@
     <dimen name="indicator_right_padding">10dp</dimen>
     <dimen name="indicator_corner_radius">12dp</dimen>
     <dimen name="indicator_internal_padding">4dp</dimen>
-    <dimen name="header_footer_left_right_padding">25dp</dimen>
-    <dimen name="header_footer_top_bottom_padding">10dp</dimen>
-    <dimen name="header_footer_internal_padding">20dp</dimen>
+    <dimen name="header_footer_left_right_padding">24dp</dimen>
+    <dimen name="header_footer_top_bottom_padding">12dp</dimen>
 
 </resources>

@@ -16,9 +16,7 @@
 package com.handmark.pulltorefresh.samples;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +32,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 
 public final class PullToRefreshExpandableListActivity extends ExpandableListActivity {
 	private static final String KEY = "key";
-	private LinkedList<String> mListItems, mGroupItems;
+
+	private List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
+	private List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
+
 	private PullToRefreshExpandableListView mPullRefreshListView;
 	private SimpleExpandableListAdapter mAdapter;
 
@@ -55,13 +56,6 @@ public final class PullToRefreshExpandableListActivity extends ExpandableListAct
 			}
 		});
 
-		mListItems = new LinkedList<String>();
-		mListItems.addAll(Arrays.asList(mChildStrings));
-		mGroupItems = new LinkedList<String>();
-		mGroupItems.addAll(Arrays.asList(mGroupStrings));
-
-		List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
-		List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
 		for (String group : mGroupStrings) {
 			Map<String, String> groupMap1 = new HashMap<String, String>();
 			groupData.add(groupMap1);
@@ -96,7 +90,18 @@ public final class PullToRefreshExpandableListActivity extends ExpandableListAct
 
 		@Override
 		protected void onPostExecute(String[] result) {
-			mListItems.addFirst("Added after refresh...");
+			Map<String, String> newMap = new HashMap<String, String>();
+			newMap.put(KEY, "Added after refresh...");
+			groupData.add(newMap);
+
+			List<Map<String, String>> childList = new ArrayList<Map<String, String>>();
+			for (String string : mChildStrings) {
+				Map<String, String> childMap = new HashMap<String, String>();
+				childMap.put(KEY, string);
+				childList.add(childMap);
+			}
+			childData.add(childList);
+
 			mAdapter.notifyDataSetChanged();
 
 			// Call onRefreshComplete when the list has been refreshed.
@@ -106,8 +111,7 @@ public final class PullToRefreshExpandableListActivity extends ExpandableListAct
 		}
 	}
 
-	private final String[] mChildStrings = { "Child One", "Child Two", "Child Three", "Child Four", "Child Five",
-			"Child Six" };
+	private String[] mChildStrings = { "Child One", "Child Two", "Child Three", "Child Four", "Child Five", "Child Six" };
 
-	private final String[] mGroupStrings = { "Group One", "Group Two", "Group Three" };
+	private String[] mGroupStrings = { "Group One", "Group Two", "Group Three" };
 }

@@ -25,8 +25,25 @@ import android.widget.ScrollView;
 
 public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
 
+	public PullToRefreshScrollView(Context context) {
+		super(context);
+	}
+
 	public PullToRefreshScrollView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+	}
+
+	public PullToRefreshScrollView(Context context, Mode mode) {
+		super(context, mode);
+	}
+
+	public PullToRefreshScrollView(Context context, Mode mode, AnimationStyle style) {
+		super(context, mode, style);
+	}
+
+	@Override
+	public final Orientation getPullToRefreshScrollDirection() {
+		return Orientation.VERTICAL;
 	}
 
 	@Override
@@ -43,12 +60,12 @@ public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
 	}
 
 	@Override
-	protected boolean isReadyForPullDown() {
+	protected boolean isReadyForPullStart() {
 		return mRefreshableView.getScrollY() == 0;
 	}
 
 	@Override
-	protected boolean isReadyForPullUp() {
+	protected boolean isReadyForPullEnd() {
 		View scrollViewChild = mRefreshableView.getChildAt(0);
 		if (null != scrollViewChild) {
 			return mRefreshableView.getScrollY() >= (scrollViewChild.getHeight() - getHeight());
@@ -71,8 +88,8 @@ public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
 					scrollRangeY, maxOverScrollX, maxOverScrollY, isTouchEvent);
 
 			// Does all of the hard work...
-			OverscrollHelper
-					.overScrollBy(PullToRefreshScrollView.this, deltaY, scrollY, getScrollRange(), isTouchEvent);
+			OverscrollHelper.overScrollBy(PullToRefreshScrollView.this, deltaX, scrollX, deltaY, scrollY,
+					getScrollRange(), isTouchEvent);
 
 			return returnValue;
 		}

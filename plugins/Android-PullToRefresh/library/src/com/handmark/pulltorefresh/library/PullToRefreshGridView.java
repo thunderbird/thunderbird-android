@@ -20,7 +20,6 @@ import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.GridView;
 
@@ -40,9 +39,13 @@ public class PullToRefreshGridView extends PullToRefreshAdapterViewBase<GridView
 		super(context, mode);
 	}
 
+	public PullToRefreshGridView(Context context, Mode mode, AnimationStyle style) {
+		super(context, mode, style);
+	}
+
 	@Override
-	public ContextMenuInfo getContextMenuInfo() {
-		return ((InternalGridView) getRefreshableView()).getContextMenuInfo();
+	public final Orientation getPullToRefreshScrollDirection() {
+		return Orientation.VERTICAL;
 	}
 
 	@Override
@@ -66,11 +69,6 @@ public class PullToRefreshGridView extends PullToRefreshAdapterViewBase<GridView
 		}
 
 		@Override
-		public ContextMenuInfo getContextMenuInfo() {
-			return super.getContextMenuInfo();
-		}
-
-		@Override
 		public void setEmptyView(View emptyView) {
 			PullToRefreshGridView.this.setEmptyView(emptyView);
 		}
@@ -80,7 +78,7 @@ public class PullToRefreshGridView extends PullToRefreshAdapterViewBase<GridView
 			super.setEmptyView(emptyView);
 		}
 	}
-	
+
 	@TargetApi(9)
 	final class InternalGridViewSDK9 extends InternalGridView {
 
@@ -96,7 +94,7 @@ public class PullToRefreshGridView extends PullToRefreshAdapterViewBase<GridView
 					scrollRangeY, maxOverScrollX, maxOverScrollY, isTouchEvent);
 
 			// Does all of the hard work...
-			OverscrollHelper.overScrollBy(PullToRefreshGridView.this, deltaY, scrollY, isTouchEvent);
+			OverscrollHelper.overScrollBy(PullToRefreshGridView.this, deltaX, scrollX, deltaY, scrollY, isTouchEvent);
 
 			return returnValue;
 		}

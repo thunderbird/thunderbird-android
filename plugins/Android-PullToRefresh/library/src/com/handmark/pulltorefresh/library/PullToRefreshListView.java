@@ -19,11 +19,11 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
@@ -39,124 +39,80 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 
 	private FrameLayout mLvFooterLoadingFrame;
 
+	private boolean mListViewExtrasEnabled;
+
 	public PullToRefreshListView(Context context) {
 		super(context);
-		setDisableScrollingWhileRefreshing(false);
 	}
 
 	public PullToRefreshListView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setDisableScrollingWhileRefreshing(false);
 	}
 
 	public PullToRefreshListView(Context context, Mode mode) {
 		super(context, mode);
-		setDisableScrollingWhileRefreshing(false);
+	}
+
+	public PullToRefreshListView(Context context, Mode mode, AnimationStyle style) {
+		super(context, mode, style);
 	}
 
 	@Override
-	public ContextMenuInfo getContextMenuInfo() {
-		return ((InternalListView) getRefreshableView()).getContextMenuInfo();
+	public final Orientation getPullToRefreshScrollDirection() {
+		return Orientation.VERTICAL;
 	}
 
 	@Override
-	public void setLastUpdatedLabel(CharSequence label) {
-		super.setLastUpdatedLabel(label);
-
-		if (null != mHeaderLoadingView) {
-			mHeaderLoadingView.setSubHeaderText(label);
-		}
-		if (null != mFooterLoadingView) {
-			mFooterLoadingView.setSubHeaderText(label);
-		}
-	}
-
-	@Override
-	public void setLoadingDrawable(Drawable drawable, Mode mode) {
-		super.setLoadingDrawable(drawable, mode);
-
-		if (null != mHeaderLoadingView && mode.canPullDown()) {
-			mHeaderLoadingView.setLoadingDrawable(drawable);
-		}
-		if (null != mFooterLoadingView && mode.canPullUp()) {
-			mFooterLoadingView.setLoadingDrawable(drawable);
-		}
-	}
-
-	public void setPullLabel(CharSequence pullLabel, Mode mode) {
-		super.setPullLabel(pullLabel, mode);
-
-		if (null != mHeaderLoadingView && mode.canPullDown()) {
-			mHeaderLoadingView.setPullLabel(pullLabel);
-		}
-		if (null != mFooterLoadingView && mode.canPullUp()) {
-			mFooterLoadingView.setPullLabel(pullLabel);
-		}
-	}
-
-	public void setRefreshingLabel(CharSequence refreshingLabel, Mode mode) {
-		super.setRefreshingLabel(refreshingLabel, mode);
-
-		if (null != mHeaderLoadingView && mode.canPullDown()) {
-			mHeaderLoadingView.setRefreshingLabel(refreshingLabel);
-		}
-		if (null != mFooterLoadingView && mode.canPullUp()) {
-			mFooterLoadingView.setRefreshingLabel(refreshingLabel);
-		}
-	}
-
-	public void setReleaseLabel(CharSequence releaseLabel, Mode mode) {
-		super.setReleaseLabel(releaseLabel, mode);
-
-		if (null != mHeaderLoadingView && mode.canPullDown()) {
-			mHeaderLoadingView.setReleaseLabel(releaseLabel);
-		}
-		if (null != mFooterLoadingView && mode.canPullUp()) {
-			mFooterLoadingView.setReleaseLabel(releaseLabel);
-		}
-	}
-
-	@Override
-	void onRefreshing(final boolean doScroll) {
-
-		// If we're not showing the Refreshing view, or the list is empty, then
-		// the header/footer views won't show so we use the
-		// normal method
+	protected void onRefreshing(final boolean doScroll) {
+		/**
+		 * If we're not showing the Refreshing view, or the list is empty, the
+		 * the header/footer views won't show so we use the normal method.
+		 */
 		ListAdapter adapter = mRefreshableView.getAdapter();
-		if (!getShowViewWhileRefreshing() || null == adapter || adapter.isEmpty()) {
+		if (!mListViewExtrasEnabled || !getShowViewWhileRefreshing() || null == adapter || adapter.isEmpty()) {
 			super.onRefreshing(doScroll);
 			return;
 		}
 
 		super.onRefreshing(false);
 
-		final LoadingLayout originalLoadingLayout, listViewLoadingLayout;
+		final LoadingLayout origLoadingView, listViewLoadingView, oppositeListViewLoadingView;
 		final int selection, scrollToY;
 
 		switch (getCurrentMode()) {
-			case PULL_UP_TO_REFRESH:
-				originalLoadingLayout = getFooterLayout();
-				listViewLoadingLayout = mFooterLoadingView;
+			case MANUAL_REFRESH_ONLY:
+			case PULL_FROM_END:
+				origLoadingView = getFooterLayout();
+				listViewLoadingView = mFooterLoadingView;
+				oppositeListViewLoadingView = mHeaderLoadingView;
 				selection = mRefreshableView.getCount() - 1;
-				scrollToY = getScrollY() - getFooterHeight();
+				scrollToY = getScrollY() - getFooterSize();
 				break;
-			case PULL_DOWN_TO_REFRESH:
+			case PULL_FROM_START:
 			default:
-				originalLoadingLayout = getHeaderLayout();
-				listViewLoadingLayout = mHeaderLoadingView;
+				origLoadingView = getHeaderLayout();
+				listViewLoadingView = mHeaderLoadingView;
+				oppositeListViewLoadingView = mFooterLoadingView;
 				selection = 0;
-				scrollToY = getScrollY() + getHeaderHeight();
+				scrollToY = getScrollY() + getHeaderSize();
 				break;
 		}
 
 		// Hide our original Loading View
-		originalLoadingLayout.setVisibility(View.INVISIBLE);
+		origLoadingView.reset();
+		origLoadingView.hideAllViews();
 
-		// Show the ListView Loading View and set it to refresh
-		listViewLoadingLayout.setVisibility(View.VISIBLE);
-		listViewLoadingLayout.refreshing();
+		// Make sure the opposite end is hidden too
+		oppositeListViewLoadingView.setVisibility(View.GONE);
+
+		// Show the ListView Loading View and set it to refresh.
+		listViewLoadingView.setVisibility(View.VISIBLE);
+		listViewLoadingView.refreshing();
 
 		if (doScroll) {
+			// We need to disable the automatic visibility changes for now
+			disableLoadingLayoutVisibilityChanges();
+
 			// We scroll slightly so that the ListView's header/footer is at the
 			// same Y position as our normal header/footer
 			setHeaderScroll(scrollToY);
@@ -171,57 +127,79 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 	}
 
 	@Override
-	void onReset() {
-
-		// If we're not showing the Refreshing view, or the list is empty, then
-		// the header/footer views won't show so we use the
-		// normal method
-		ListAdapter adapter = mRefreshableView.getAdapter();
-		if (!getShowViewWhileRefreshing() || null == adapter || adapter.isEmpty()) {
+	protected void onReset() {
+		/**
+		 * If the extras are not enabled, just call up to super and return.
+		 */
+		if (!mListViewExtrasEnabled) {
 			super.onReset();
 			return;
 		}
 
-		LoadingLayout originalLoadingLayout, listViewLoadingLayout;
-		int scrollToHeight, selection;
-		boolean scrollLvToEdge;
+		final LoadingLayout originalLoadingLayout, listViewLoadingLayout;
+		final int scrollToHeight, selection;
+		final boolean scrollLvToEdge;
 
 		switch (getCurrentMode()) {
-			case PULL_UP_TO_REFRESH:
+			case MANUAL_REFRESH_ONLY:
+			case PULL_FROM_END:
 				originalLoadingLayout = getFooterLayout();
 				listViewLoadingLayout = mFooterLoadingView;
 				selection = mRefreshableView.getCount() - 1;
-				scrollToHeight = getFooterHeight();
+				scrollToHeight = getFooterSize();
 				scrollLvToEdge = Math.abs(mRefreshableView.getLastVisiblePosition() - selection) <= 1;
 				break;
-			case PULL_DOWN_TO_REFRESH:
+			case PULL_FROM_START:
 			default:
 				originalLoadingLayout = getHeaderLayout();
 				listViewLoadingLayout = mHeaderLoadingView;
-				scrollToHeight = -getHeaderHeight();
+				scrollToHeight = -getHeaderSize();
 				selection = 0;
 				scrollLvToEdge = Math.abs(mRefreshableView.getFirstVisiblePosition() - selection) <= 1;
 				break;
 		}
 
-		// Set our Original View to Visible
-		originalLoadingLayout.setVisibility(View.VISIBLE);
+		// If the ListView header loading layout is showing, then we need to
+		// flip so that the original one is showing instead
+		if (listViewLoadingLayout.getVisibility() == View.VISIBLE) {
 
-		/**
-		 * Scroll so the View is at the same Y as the ListView header/footer,
-		 * but only scroll if: we've pulled to refresh, it's positioned
-		 * correctly, and we're currently showing the ListViewLoadingLayout
-		 */
-		if (scrollLvToEdge && getState() != State.MANUAL_REFRESHING
-				&& listViewLoadingLayout.getVisibility() == View.VISIBLE) {
-			mRefreshableView.setSelection(selection);
-			setHeaderScroll(scrollToHeight);
+			// Set our Original View to Visible
+			originalLoadingLayout.showInvisibleViews();
+
+			// Hide the ListView Header/Footer
+			listViewLoadingLayout.setVisibility(View.GONE);
+
+			/**
+			 * Scroll so the View is at the same Y as the ListView
+			 * header/footer, but only scroll if: we've pulled to refresh, it's
+			 * positioned correctly
+			 */
+			if (scrollLvToEdge && getState() != State.MANUAL_REFRESHING) {
+				mRefreshableView.setSelection(selection);
+				setHeaderScroll(scrollToHeight);
+			}
 		}
 
-		// Hide the ListView Header/Footer
-		listViewLoadingLayout.setVisibility(View.GONE);
-
+		// Finally, call up to super
 		super.onReset();
+	}
+
+	@Override
+	protected LoadingLayoutProxy createLoadingLayoutProxy(final boolean includeStart, final boolean includeEnd) {
+		LoadingLayoutProxy proxy = super.createLoadingLayoutProxy(includeStart, includeEnd);
+
+		if (mListViewExtrasEnabled) {
+			final Mode mode = getMode();
+
+			if (includeStart && mode.showHeaderLoadingLayout()) {
+				proxy.addLayout(mHeaderLoadingView);
+			}
+			if (includeEnd && mode.showFooterLoadingLayout()) {
+				proxy.addLayout(mFooterLoadingView);
+			}
+		}
+
+		return proxy;
 	}
 
 	protected ListView createListView(Context context, AttributeSet attrs) {
@@ -235,30 +213,44 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 	}
 
 	@Override
-	protected final ListView createRefreshableView(Context context, AttributeSet attrs) {
+	protected ListView createRefreshableView(Context context, AttributeSet attrs) {
 		ListView lv = createListView(context, attrs);
-
-		// Get Styles from attrs
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PullToRefresh);
-
-		// Create Loading Views ready for use later
-		FrameLayout frame = new FrameLayout(context);
-		mHeaderLoadingView = createLoadingLayout(context, Mode.PULL_DOWN_TO_REFRESH, a);
-		frame.addView(mHeaderLoadingView, FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-		mHeaderLoadingView.setVisibility(View.GONE);
-		lv.addHeaderView(frame, null, false);
-
-		mLvFooterLoadingFrame = new FrameLayout(context);
-		mFooterLoadingView = createLoadingLayout(context, Mode.PULL_UP_TO_REFRESH, a);
-		mLvFooterLoadingFrame.addView(mFooterLoadingView, FrameLayout.LayoutParams.MATCH_PARENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
-		mFooterLoadingView.setVisibility(View.GONE);
-
-		a.recycle();
 
 		// Set it to this so it can be used in ListActivity/ListFragment
 		lv.setId(android.R.id.list);
 		return lv;
+	}
+
+	@Override
+	protected void handleStyledAttributes(TypedArray a) {
+		super.handleStyledAttributes(a);
+
+		mListViewExtrasEnabled = a.getBoolean(R.styleable.PullToRefresh_ptrListViewExtrasEnabled, true);
+
+		if (mListViewExtrasEnabled) {
+			final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+					FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
+
+			// Create Loading Views ready for use later
+			FrameLayout frame = new FrameLayout(getContext());
+			mHeaderLoadingView = createLoadingLayout(getContext(), Mode.PULL_FROM_START, a);
+			mHeaderLoadingView.setVisibility(View.GONE);
+			frame.addView(mHeaderLoadingView, lp);
+			mRefreshableView.addHeaderView(frame, null, false);
+
+			mLvFooterLoadingFrame = new FrameLayout(getContext());
+			mFooterLoadingView = createLoadingLayout(getContext(), Mode.PULL_FROM_END, a);
+			mFooterLoadingView.setVisibility(View.GONE);
+			mLvFooterLoadingFrame.addView(mFooterLoadingView, lp);
+
+			/**
+			 * If the value for Scrolling While Refreshing hasn't been
+			 * explicitly set via XML, enable Scrolling While Refreshing.
+			 */
+			if (!a.hasValue(R.styleable.PullToRefresh_ptrScrollingWhileRefreshingEnabled)) {
+				setScrollingWhileRefreshingEnabled(true);
+			}
+		}
 	}
 
 	@TargetApi(9)
@@ -276,7 +268,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 					scrollRangeY, maxOverScrollX, maxOverScrollY, isTouchEvent);
 
 			// Does all of the hard work...
-			OverscrollHelper.overScrollBy(PullToRefreshListView.this, deltaY, scrollY, isTouchEvent);
+			OverscrollHelper.overScrollBy(PullToRefreshListView.this, deltaX, scrollX, deltaY, scrollY, isTouchEvent);
 
 			return returnValue;
 		}
@@ -291,27 +283,38 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 		}
 
 		@Override
-		public void draw(Canvas canvas) {
+		protected void dispatchDraw(Canvas canvas) {
 			/**
-			 * This is a bit hacky, but ListView has got a bug in it when using
-			 * Header/Footer Views and the list is empty. This masks the issue
-			 * so that it doesn't cause an FC. See Issue #66.
+			 * This is a bit hacky, but Samsung's ListView has got a bug in it
+			 * when using Header/Footer Views and the list is empty. This masks
+			 * the issue so that it doesn't cause an FC. See Issue #66.
 			 */
 			try {
-				super.draw(canvas);
-			} catch (Exception e) {
+				super.dispatchDraw(canvas);
+			} catch (IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			}
 		}
 
-		public ContextMenuInfo getContextMenuInfo() {
-			return super.getContextMenuInfo();
+		@Override
+		public boolean dispatchTouchEvent(MotionEvent ev) {
+			/**
+			 * This is a bit hacky, but Samsung's ListView has got a bug in it
+			 * when using Header/Footer Views and the list is empty. This masks
+			 * the issue so that it doesn't cause an FC. See Issue #66.
+			 */
+			try {
+				return super.dispatchTouchEvent(ev);
+			} catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+				return false;
+			}
 		}
 
 		@Override
 		public void setAdapter(ListAdapter adapter) {
 			// Add the Footer View at the last possible moment
-			if (!mAddedLvFooter) {
+			if (null != mLvFooterLoadingFrame && !mAddedLvFooter) {
 				addFooterView(mLvFooterLoadingFrame, null, false);
 				mAddedLvFooter = true;
 			}
