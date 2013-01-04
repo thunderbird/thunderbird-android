@@ -205,8 +205,8 @@ public class MessagingController implements Runnable {
 
     private static class NotificationData {
         int unreadBeforeNotification;
-        LinkedList<Message> messages;
-        LinkedList<MessageReference> droppedMessages;
+        LinkedList<Message> messages; // newest one first
+        LinkedList<MessageReference> droppedMessages; // newest one first
 
         // There's no point in storing more than 5 messages for the notification, as a single notification
         // can't display more than that anyway.
@@ -221,9 +221,9 @@ public class MessagingController implements Runnable {
                 public boolean add(Message m) {
                     while (size() >= MAX_MESSAGES) {
                         Message dropped = super.remove();
-                        droppedMessages.add(dropped.makeMessageReference());
+                        droppedMessages.add(0, dropped.makeMessageReference());
                     }
-                    super.add(m);
+                    super.add(0, m);
                     return true;
                 }
             };
@@ -231,10 +231,10 @@ public class MessagingController implements Runnable {
 
         public ArrayList<MessageReference> getAllMessageRefs() {
             ArrayList<MessageReference> refs = new ArrayList<MessageReference>();
-            refs.addAll(droppedMessages);
             for (Message m : messages) {
                 refs.add(m.makeMessageReference());
             }
+            refs.addAll(droppedMessages);
             return refs;
         }
 
@@ -4588,14 +4588,12 @@ public class MessagingController implements Runnable {
     }
 
     private Message findNewestMessageForNotificationLocked(Account account, NotificationData data) {
-        int count = data.messages.size();
-        if (count > 0) {
-            return data.messages.get(count - 1);
+        if (data.messages.size() > 0) {
+            return data.messages.get(0);
         }
 
-        count = data.droppedMessages.size();
-        if (count > 0) {
-            MessageReference ref = data.droppedMessages.get(count - 1);
+        if (data.droppedMessages.size() > 0) {
+            MessageReference ref = data.droppedMessages.get(0);
             try {
                 return account.getLocalStore().getFolder(ref.folderName).getMessage(ref.uid);
             } catch (MessagingException e) {
@@ -4667,6 +4665,7 @@ public class MessagingController implements Runnable {
 
         String accountDescr = (account.getDescription() != null) ?
                 account.getDescription() : account.getEmail();
+        final ArrayList<MessageReference> allRefs = data.getAllMessageRefs();
 
         if (platformSupportsExtendedNotifications()) {
             if (newMessages > 1) {
@@ -4703,8 +4702,6 @@ public class MessagingController implements Runnable {
                         NotificationActionService.getReplyIntent(context, account, message.makeMessageReference()));
             }
 
-            final ArrayList<MessageReference> allRefs = data.getAllMessageRefs();
-
             builder.addAction(R.drawable.ic_action_mark_as_read_dark,
                     context.getString(R.string.notification_action_read),
                     NotificationActionService.getReadAllMessagesIntent(context, account, allRefs));
@@ -4727,9 +4724,23 @@ public class MessagingController implements Runnable {
             builder.setContentText(summary);
         }
 
-        Intent i = FolderList.actionHandleNotification(context, account,
-                message.getFolder().getName());
-        PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+        String initialFolder = message.getFolder().getName();
+        /* only go to folder if all messages are in the same folder, else go to folder list */
+        for (MessageReference ref : allRefs) {
+            if (!TextUtils.equals(initialFolder, ref.folderName)) {
+                initialFolder = null;
+                break;
+            }
+        }
+        for (Message m : data.messages) {
+            if (m.isSet(Flag.FLAGGED)) {
+                builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                break;
+            }
+        }
+
+        Intent i = FolderList.actionHandleNotification(context, account, initialFolder);
+        PendingIntent pi = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pi);
 
         // Only ring or vibrate if we have not done so already on this account and fetch
