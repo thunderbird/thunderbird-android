@@ -186,6 +186,7 @@ public class K9 extends Application {
     private static boolean mConfirmDelete = false;
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
+    private static boolean mConfirmDeleteFromNotification = true;
 
     private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
 
@@ -195,6 +196,17 @@ public class K9 extends Application {
     public enum NotificationHideSubject {
         ALWAYS,
         WHEN_LOCKED,
+        NEVER
+    }
+
+    private static NotificationQuickDelete sNotificationQuickDelete = NotificationQuickDelete.NEVER;
+
+    /**
+     * Controls behaviour of delete button in notifications.
+     */
+    public enum NotificationQuickDelete {
+        ALWAYS,
+        FOR_SINGLE_MSG,
         NEVER
     }
 
@@ -503,11 +515,13 @@ public class K9 extends Application {
         editor.putBoolean("confirmDelete", mConfirmDelete);
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
+        editor.putBoolean("confirmDeleteFromNotification", mConfirmDeleteFromNotification);
 
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
         editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
+        editor.putString("notificationQuickDelete", sNotificationQuickDelete.toString());
 
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
@@ -691,6 +705,7 @@ public class K9 extends Application {
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
         mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
         mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
+        mConfirmDeleteFromNotification = sprefs.getBoolean("confirmDeleteFromNotification", true);
 
         try {
             String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
@@ -710,6 +725,11 @@ public class K9 extends Application {
                     NotificationHideSubject.WHEN_LOCKED : NotificationHideSubject.NEVER;
         } else {
             sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
+        }
+
+        String notificationQuickDelete = sprefs.getString("notificationQuickDelete", null);
+        if (notificationQuickDelete != null) {
+            sNotificationQuickDelete = NotificationQuickDelete.valueOf(notificationQuickDelete);
         }
 
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
@@ -1107,12 +1127,28 @@ public class K9 extends Application {
         mConfirmSpam = confirm;
     }
 
+    public static boolean confirmDeleteFromNotification() {
+        return mConfirmDeleteFromNotification;
+    }
+
+    public static void setConfirmDeleteFromNotification(final boolean confirm) {
+        mConfirmDeleteFromNotification = confirm;
+    }
+
     public static NotificationHideSubject getNotificationHideSubject() {
         return sNotificationHideSubject;
     }
 
     public static void setNotificationHideSubject(final NotificationHideSubject mode) {
         sNotificationHideSubject = mode;
+    }
+
+    public static NotificationQuickDelete getNotificationQuickDeleteBehaviour() {
+        return sNotificationQuickDelete;
+    }
+
+    public static void setNotificationQuickDeleteBehaviour(final NotificationQuickDelete mode) {
+        sNotificationQuickDelete = mode;
     }
 
     public static boolean batchButtonsMarkRead() {

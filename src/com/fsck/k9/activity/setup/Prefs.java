@@ -17,15 +17,18 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceScreen;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
+import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
@@ -72,6 +75,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_QUIET_TIME_ENABLED = "quiet_time_enabled";
     private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
+    private static final String PREFERENCE_NOTIF_QUICK_DELETE = "notification_quick_delete";
     private static final String PREFERENCE_BATCH_BUTTONS_MARK_READ = "batch_buttons_mark_read";
     private static final String PREFERENCE_BATCH_BUTTONS_DELETE = "batch_buttons_delete";
     private static final String PREFERENCE_BATCH_BUTTONS_ARCHIVE = "batch_buttons_archive";
@@ -122,6 +126,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mQuietTimeEnabled;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeEnds;
+    private ListPreference mNotificationQuickDelete;
     private Preference mAttachmentPathPreference;
 
     private CheckBoxPreference mBatchButtonsMarkRead;
@@ -196,16 +201,25 @@ public class Prefs extends K9PreferenceActivity {
         mStartIntegratedInbox.setChecked(K9.startIntegratedInbox());
 
         mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
-        mConfirmActions.setItems(new CharSequence[] {
-                                     getString(R.string.global_settings_confirm_action_delete),
-                                     getString(R.string.global_settings_confirm_action_delete_starred),
-                                     getString(R.string.global_settings_confirm_action_spam),
-                                 });
-        mConfirmActions.setCheckedItems(new boolean[] {
-                                            K9.confirmDelete(),
-                                            K9.confirmDeleteStarred(),
-                                            K9.confirmSpam(),
-                                        });
+
+        boolean canDeleteFromNotification = MessagingController.platformSupportsExtendedNotifications();
+        CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 4 : 3];
+        boolean[] confirmActionValues = new boolean[canDeleteFromNotification ? 4 : 3];
+        int index = 0;
+
+        confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete);
+        confirmActionValues[index++] = K9.confirmDelete();
+        confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete_starred);
+        confirmActionValues[index++] = K9.confirmDeleteStarred();
+        if (canDeleteFromNotification) {
+            confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete_notif);
+            confirmActionValues[index++] = K9.confirmDeleteFromNotification();
+        }
+        confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_spam);
+        confirmActionValues[index++] = K9.confirmSpam();
+
+        mConfirmActions.setItems(confirmActionEntries);
+        mConfirmActions.setCheckedItems(confirmActionValues);
 
         mNotificationHideSubject = setupListPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT,
                 K9.getNotificationHideSubject().toString());
@@ -305,8 +319,13 @@ public class Prefs extends K9PreferenceActivity {
             }
         });
 
-
-
+        mNotificationQuickDelete = setupListPreference(PREFERENCE_NOTIF_QUICK_DELETE,
+                K9.getNotificationQuickDeleteBehaviour().toString());
+        if (!MessagingController.platformSupportsExtendedNotifications()) {
+            PreferenceScreen prefs = (PreferenceScreen) findPreference("notification_preferences");
+            prefs.removePreference(mNotificationQuickDelete);
+            mNotificationQuickDelete = null;
+        }
 
         mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().toString());
         // In ICS+ there is no 'background data' setting that apps can chose to ignore anymore. So
@@ -420,10 +439,15 @@ public class Prefs extends K9PreferenceActivity {
         K9.setUseVolumeKeysForNavigation(mVolumeNavigation.getCheckedItems()[0]);
         K9.setUseVolumeKeysForListNavigation(mVolumeNavigation.getCheckedItems()[1]);
         K9.setStartIntegratedInbox(!mHideSpecialAccounts.isChecked() && mStartIntegratedInbox.isChecked());
-        K9.setConfirmDelete(mConfirmActions.getCheckedItems()[0]);
-        K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[1]);
-        K9.setConfirmSpam(mConfirmActions.getCheckedItems()[2]);
         K9.setNotificationHideSubject(NotificationHideSubject.valueOf(mNotificationHideSubject.getValue()));
+
+        int index = 0;
+        K9.setConfirmDelete(mConfirmActions.getCheckedItems()[index++]);
+        K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[index++]);
+        if (MessagingController.platformSupportsExtendedNotifications()) {
+            K9.setConfirmDeleteFromNotification(mConfirmActions.getCheckedItems()[index++]);
+        }
+        K9.setConfirmSpam(mConfirmActions.getCheckedItems()[index++]);
 
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());
@@ -444,6 +468,11 @@ public class Prefs extends K9PreferenceActivity {
 
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
         K9.setQuietTimeEnds(mQuietTimeEnds.getTime());
+
+        if (mNotificationQuickDelete != null) {
+            K9.setNotificationQuickDeleteBehaviour(
+                    NotificationQuickDelete.valueOf(mNotificationQuickDelete.getValue()));
+        }
 
         K9.setBatchButtonsMarkRead(mBatchButtonsMarkRead.isChecked());
         K9.setBatchButtonsDelete(mBatchButtonsDelete.isChecked());

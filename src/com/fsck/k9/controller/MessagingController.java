@@ -43,12 +43,14 @@ import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.Intents;
+import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.activity.NotificationDeleteConfirmation;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.power.TracingPowerManager;
@@ -225,6 +227,15 @@ public class MessagingController implements Runnable {
                     return true;
                 }
             };
+        }
+
+        public ArrayList<MessageReference> getAllMessageRefs() {
+            ArrayList<MessageReference> refs = new ArrayList<MessageReference>();
+            refs.addAll(droppedMessages);
+            for (Message m : messages) {
+                refs.add(m.makeMessageReference());
+            }
+            return refs;
         }
 
         public int getNewMessageCount() {
@@ -4564,13 +4575,13 @@ public class MessagingController implements Runnable {
         return summary;
     }
 
-    private static boolean platformShowsNumberInNotification() {
+    private static final boolean platformShowsNumberInNotification() {
         // Honeycomb and newer don't show the number as overlay on the notification icon.
         // However, the number will appear in the detailed notification view.
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
     }
 
-    private static boolean platformSupportsExtendedNotifications() {
+    public static final boolean platformSupportsExtendedNotifications() {
         // supported in Jellybean
         // TODO: use constant once target SDK is set to >= 16
         return Build.VERSION.SDK_INT >= 16;
@@ -4689,11 +4700,26 @@ public class MessagingController implements Runnable {
 
                 builder.addAction(R.drawable.ic_action_single_message_options_dark,
                         context.getString(R.string.notification_action_reply),
-                        NotificationActionService.getReplyIntent(context, account, message));
+                        NotificationActionService.getReplyIntent(context, account, message.makeMessageReference()));
             }
+
+            final ArrayList<MessageReference> allRefs = data.getAllMessageRefs();
+
             builder.addAction(R.drawable.ic_action_mark_as_read_dark,
                     context.getString(R.string.notification_action_read),
-                    NotificationActionService.getReadAllMessagesIntent(context, account, data.messages));
+                    NotificationActionService.getReadAllMessagesIntent(context, account, allRefs));
+
+            NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
+            boolean showDeleteAction = deleteOption == NotificationQuickDelete.ALWAYS ||
+                    (deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG && newMessages == 1);
+
+            if (showDeleteAction) {
+                // we need to pass the action directly to the activity, otherwise the
+                // status bar won't be pulled up and we won't see the confirmation (if used)
+                builder.addAction(R.drawable.ic_action_delete_dark,
+                        context.getString(R.string.notification_action_delete),
+                        NotificationDeleteConfirmation.getIntent(context, account, allRefs));
+            }
         } else {
             String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
                     unreadCount, accountDescr);
