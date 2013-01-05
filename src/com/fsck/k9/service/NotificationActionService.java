@@ -56,26 +56,6 @@ public class NotificationActionService extends CoreService {
         return i;
     }
 
-    private static Message getMessageFromRef(final Account account, MessageReference ref) {
-        try {
-            Folder folder = account.getLocalStore().getFolder(ref.folderName);
-            if (folder != null) {
-                Message message = folder.getMessage(ref.uid);
-                if (message != null) {
-                    return message;
-                } else {
-                    Log.w(K9.LOG_TAG, "Could not find message for notification action.");
-                }
-            } else {
-                Log.w(K9.LOG_TAG, "Could not find folder for notification action.");
-            }
-        } catch (MessagingException e) {
-            Log.w(K9.LOG_TAG, "Could not retrieve message for reference.", e);
-        }
-
-        return null;
-    }
-
     @Override
     public int startService(Intent intent, int startId) {
         if (K9.DEBUG)
@@ -103,7 +83,7 @@ public class NotificationActionService extends CoreService {
                 ArrayList<Message> messages = new ArrayList<Message>();
 
                 for (MessageReference ref : refs) {
-                    Message m = getMessageFromRef(account, ref);
+                    Message m = ref.restoreToLocalMessage(this);
                     if (m != null) {
                         messages.add(m);
                     }
@@ -115,7 +95,7 @@ public class NotificationActionService extends CoreService {
                     Log.i(K9.LOG_TAG, "NotificationActionService initiating reply");
 
                 MessageReference ref = (MessageReference) intent.getParcelableExtra(EXTRA_MESSAGE);
-                Message message = getMessageFromRef(account, ref);
+                Message message = ref.restoreToLocalMessage(this);
                 if (message != null) {
                     Intent i = MessageCompose.getActionReplyIntent(this, account, message, false, null);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

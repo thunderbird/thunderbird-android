@@ -200,9 +200,6 @@ public class MessagingController implements Runnable {
     // Key is accountUuid:folderName:messageUid   ,   value is unimportant
     private ConcurrentHashMap<String, String> deletedUids = new ConcurrentHashMap<String, String>();
 
-    // maximum length of the message preview text returned by getMessagePreview()
-    private final static int MAX_PREVIEW_LENGTH = 300;
-
     private static class NotificationData {
         int unreadBeforeNotification;
         LinkedList<Message> messages; // newest one first
@@ -4506,40 +4503,17 @@ public class MessagingController implements Runnable {
     }
 
     private static TextAppearanceSpan sEmphasizedSpan;
-    private void ensureEmphasizedSpan(Context context) {
+    private TextAppearanceSpan getEmphasizedSpan(Context context) {
         if (sEmphasizedSpan == null) {
             sEmphasizedSpan = new TextAppearanceSpan(context,
                     R.style.TextAppearance_StatusBar_EventContent_Emphasized);
         }
+        return sEmphasizedSpan;
     }
 
     private CharSequence getMessagePreview(Context context, Message message) {
         CharSequence subject = getMessageSubject(context, message);
-        String snippet = null;
-
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            if (part != null) {
-                // We successfully found an HTML part; do the necessary character set decoding.
-                snippet = MimeUtility.getTextFromPart(part);
-                if (snippet != null) {
-                    snippet = HtmlConverter.htmlToText(snippet);
-                }
-            }
-            if (snippet == null) {
-                // no HTML part -> try and get a text part.
-                part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                if (part != null) {
-                    snippet = MimeUtility.getTextFromPart(part);
-                }
-            }
-        } catch (MessagingException e) {
-            Log.d(K9.LOG_TAG, "Could not extract message preview", e);
-        }
-
-        if (snippet != null && snippet.length() > MAX_PREVIEW_LENGTH) {
-            snippet = snippet.substring(0,  MAX_PREVIEW_LENGTH);
-        }
+        String snippet = message.getPreview();
 
         if (TextUtils.isEmpty(subject)) {
             return snippet;
@@ -4552,14 +4526,12 @@ public class MessagingController implements Runnable {
         preview.append('\n');
         preview.append(snippet);
 
-        ensureEmphasizedSpan(context);
-        preview.setSpan(sEmphasizedSpan, 0, subject.length(), 0);
+        preview.setSpan(getEmphasizedSpan(context), 0, subject.length(), 0);
 
         return preview;
     }
 
     private CharSequence buildMessageSummary(Context context, CharSequence sender, CharSequence subject) {
-
         if (sender == null) {
             return subject;
         }
@@ -4569,8 +4541,7 @@ public class MessagingController implements Runnable {
         summary.append(" ");
         summary.append(subject);
 
-        ensureEmphasizedSpan(context);
-        summary.setSpan(sEmphasizedSpan, 0, sender.length(), 0);
+        summary.setSpan(getEmphasizedSpan(context), 0, sender.length(), 0);
 
         return summary;
     }
@@ -4587,17 +4558,14 @@ public class MessagingController implements Runnable {
         return Build.VERSION.SDK_INT >= 16;
     }
 
-    private Message findNewestMessageForNotificationLocked(Account account, NotificationData data) {
-        if (data.messages.size() > 0) {
+    private Message findNewestMessageForNotificationLocked(Context context,
+            Account account, NotificationData data) {
+        if (!data.messages.isEmpty()) {
             return data.messages.get(0);
         }
 
-        if (data.droppedMessages.size() > 0) {
-            MessageReference ref = data.droppedMessages.get(0);
-            try {
-                return account.getLocalStore().getFolder(ref.folderName).getMessage(ref.uid);
-            } catch (MessagingException e) {
-            }
+        if (!data.droppedMessages.isEmpty()) {
+            return data.droppedMessages.get(0).restoreToLocalMessage(context);
         }
 
         return null;
@@ -4620,7 +4588,7 @@ public class MessagingController implements Runnable {
 
         if (message == null) {
             /* this can happen if a message we previously notified for is read or deleted remotely */
-            message = findNewestMessageForNotificationLocked(account, data);
+            message = findNewestMessageForNotificationLocked(context, account, data);
             updateSilently = true;
             if (message == null) {
                 return;
@@ -4676,7 +4644,7 @@ public class MessagingController implements Runnable {
                             getMessageSender(context, account, m),
                             getMessageSubject(context, m)));
                 }
-                if (data.droppedMessages.size() > 0) {
+                if (!data.droppedMessages.isEmpty()) {
                     style.setSummaryText(context.getString(
                             R.string.notification_additional_messages, data.droppedMessages.size()));
                 }

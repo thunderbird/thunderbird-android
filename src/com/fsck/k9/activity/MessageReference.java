@@ -1,11 +1,17 @@
 package com.fsck.k9.activity;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 
 import java.util.StringTokenizer;
@@ -120,6 +126,31 @@ public class MessageReference implements Parcelable {
                ", uid='" + uid + '\'' +
                ", flag=" + flag +
                '}';
+    }
+
+    public Message restoreToLocalMessage(Context context) {
+        try {
+            Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+            if (account != null) {
+                Folder folder = account.getLocalStore().getFolder(folderName);
+                if (folder != null) {
+                    Message message = folder.getMessage(uid);
+                    if (message != null) {
+                        return message;
+                    } else {
+                        Log.d(K9.LOG_TAG, "Could not restore message, uid " + uid + " is unknown.");
+                    }
+                } else {
+                    Log.d(K9.LOG_TAG, "Could not restore message, folder " + folderName + " is unknown.");
+                }
+            } else {
+                Log.d(K9.LOG_TAG, "Could not restore message, account " + accountUuid + " is unknown.");
+            }
+        } catch (MessagingException e) {
+            Log.w(K9.LOG_TAG, "Could not retrieve message for reference.", e);
+        }
+
+        return null;
     }
 
     public static final Creator<MessageReference> CREATOR = new Creator<MessageReference>() {

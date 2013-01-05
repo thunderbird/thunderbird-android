@@ -2403,7 +2403,7 @@ public class LocalStore extends Store implements Serializable {
                                     html = HtmlConverter.convertEmoji2Img(container.html);
                                 }
 
-                                String preview = calculateContentPreview(text);
+                                String preview = Message.calculateContentPreview(text);
 
                                 try {
                                     ContentValues cv = new ContentValues();
@@ -2501,7 +2501,7 @@ public class LocalStore extends Store implements Serializable {
                             String text = container.text;
                             String html = HtmlConverter.convertEmoji2Img(container.html);
 
-                            String preview = calculateContentPreview(text);
+                            String preview = Message.calculateContentPreview(text);
 
                             try {
                                 db.execSQL("UPDATE messages SET "
@@ -3008,53 +3008,6 @@ public class LocalStore extends Store implements Serializable {
             } catch (WrappedException e) {
                 throw(MessagingException) e.getCause();
             }
-        }
-
-        /*
-         * calculateContentPreview
-         * Takes a plain text message body as a string.
-         * Returns a message summary as a string suitable for showing in a message list
-         *
-         * A message summary should be about the first 160 characters
-         * of unique text written by the message sender
-         * Quoted text, "On $date" and so on will be stripped out.
-         * All newlines and whitespace will be compressed.
-         *
-         */
-        public String calculateContentPreview(String text) {
-            if (text == null) {
-                return null;
-            }
-
-            // Only look at the first 8k of a message when calculating
-            // the preview.  This should avoid unnecessary
-            // memory usage on large messages
-            if (text.length() > 8192) {
-                text = text.substring(0, 8192);
-            }
-
-            // try to remove lines of dashes in the preview
-            text = text.replaceAll("(?m)^----.*?$", "");
-            // remove quoted text from the preview
-            text = text.replaceAll("(?m)^[#>].*$", "");
-            // Remove a common quote header from the preview
-            text = text.replaceAll("(?m)^On .*wrote.?$", "");
-            // Remove a more generic quote header from the preview
-            text = text.replaceAll("(?m)^.*\\w+:$", "");
-            // Remove horizontal rules.
-            text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", " ");
-
-            // URLs in the preview should just be shown as "..." - They're not
-            // clickable and they usually overwhelm the preview
-            text = text.replaceAll("https?://\\S+", "...");
-            // Don't show newlines in the preview
-            text = text.replaceAll("(\\r|\\n)+", " ");
-            // Collapse whitespace in the preview
-            text = text.replaceAll("\\s+", " ");
-            // Remove any whitespace at the beginning and end of the string.
-            text = text.trim();
-
-            return (text.length() <= 512) ? text : text.substring(0, 512);
         }
 
         @Override
