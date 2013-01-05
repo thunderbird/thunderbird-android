@@ -41,7 +41,6 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
 
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
-    private static final String EXTRA_MESSAGE_LIST_EXTRAS = "com.fsck.k9.MessageView_messageListExtras";
 
     /**
      * @see #mLastDirection
@@ -50,14 +49,13 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
     private static final int NEXT = 2;
 
 
-    public static void actionView(Context context, MessageReference messRef,
-            ArrayList<MessageReference> messReferences, Bundle messageListExtras) {
+    public static Intent actionView(Context context, MessageReference messRef,
+            ArrayList<MessageReference> messReferences) {
         Intent i = new Intent(context, MessageView.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.putExtra(EXTRA_MESSAGE_LIST_EXTRAS, messageListExtras);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
         i.putParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES, messReferences);
-        context.startActivity(i);
+        return i;
     }
 
 
@@ -438,7 +436,9 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
 
     private void showNextMessage() {
         findSurroundingMessagesUid();
-        mMessageReferences.remove(mMessageReference);
+        if (mMessageReferences == null) {
+            mMessageReferences.remove(mMessageReference);
+        }
         if (mLastDirection == NEXT && mNextMessage != null) {
             onNext();
         } else if (mLastDirection == PREVIOUS && mPreviousMessage != null) {
@@ -490,6 +490,10 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
 
     private void findSurroundingMessagesUid() {
         mNextMessage = mPreviousMessage = null;
+
+        if (mMessageReferences == null) {
+            return;
+        }
 
         int i = mMessageReferences.indexOf(mMessageReference);
         if (i < 0) {

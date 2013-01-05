@@ -50,6 +50,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.activity.MessageView;
 import com.fsck.k9.activity.NotificationDeleteConfirmation;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
@@ -4692,14 +4693,6 @@ public class MessagingController implements Runnable {
             builder.setContentText(summary);
         }
 
-        String initialFolder = message.getFolder().getName();
-        /* only go to folder if all messages are in the same folder, else go to folder list */
-        for (MessageReference ref : allRefs) {
-            if (!TextUtils.equals(initialFolder, ref.folderName)) {
-                initialFolder = null;
-                break;
-            }
-        }
         for (Message m : data.messages) {
             if (m.isSet(Flag.FLAGGED)) {
                 builder.setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -4707,8 +4700,23 @@ public class MessagingController implements Runnable {
             }
         }
 
-        Intent i = FolderList.actionHandleNotification(context, account, initialFolder);
-        PendingIntent pi = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent targetIntent;
+
+        if (unreadCount == 1) {
+            targetIntent = MessageView.actionView(context, message.makeMessageReference(), null);
+        } else {
+            String initialFolder = message.getFolder().getName();
+            /* only go to folder if all messages are in the same folder, else go to folder list */
+            for (MessageReference ref : allRefs) {
+                if (!TextUtils.equals(initialFolder, ref.folderName)) {
+                    initialFolder = null;
+                    break;
+                }
+            }
+
+            targetIntent = FolderList.actionHandleNotification(context, account, initialFolder);
+        }
+        PendingIntent pi = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pi);
 
         // Only ring or vibrate if we have not done so already on this account and fetch
