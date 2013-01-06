@@ -1734,12 +1734,9 @@ public class MessagingController implements Runnable {
         } else {
             // Remove the namespace on the exception so we have a fighting chance of seeing more of the error in the
             // notification.
-            String cause = rootCause.toString();
-            if (StringUtils.isNullOrEmpty(cause)) {
-                return cause;
-            } else {
-                return cause.replaceFirst("^[\\w.]+?([\\w]+:)", "$1");
-            }
+            return (rootCause.getLocalizedMessage() != null)
+                ? (rootCause.getClass().getSimpleName() + ": " + rootCause.getLocalizedMessage())
+                : rootCause.getClass().getSimpleName();
         }
     }
 
