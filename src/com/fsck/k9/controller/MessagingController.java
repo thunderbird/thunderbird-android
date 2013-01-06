@@ -4703,7 +4703,8 @@ public class MessagingController implements Runnable {
         Intent targetIntent;
 
         if (unreadCount == 1) {
-            targetIntent = MessageView.actionView(context, message.makeMessageReference(), null);
+            targetIntent = MessageView.actionHandleNotificationIntent(
+                    context, message.makeMessageReference());
         } else {
             String initialFolder = message.getFolder().getName();
             /* only go to folder if all messages are in the same folder, else go to folder list */

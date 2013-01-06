@@ -14,6 +14,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.SwipeGestureDetector;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.fragment.MessageViewFragment.MessageViewFragmentListener;
@@ -41,6 +42,7 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
 
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
+    private static final String EXTRA_FROM_NOTIFICATION ="com.fsck.k9.MessageView_fromNotification";
 
     /**
      * @see #mLastDirection
@@ -49,7 +51,7 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
     private static final int NEXT = 2;
 
 
-    public static Intent actionView(Context context, MessageReference messRef,
+    public static Intent actionViewIntent(Context context, MessageReference messRef,
             ArrayList<MessageReference> messReferences) {
         Intent i = new Intent(context, MessageView.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -58,6 +60,12 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
         return i;
     }
 
+    public static Intent actionHandleNotificationIntent(Context context, MessageReference ref) {
+        Intent i = actionViewIntent(context, ref, null);
+        i.setFlags(i.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra(EXTRA_FROM_NOTIFICATION, true);
+        return i;
+    }
 
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
     private Account mAccount;
@@ -162,6 +170,9 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
         if (!mAccount.isAvailable(this)) {
             onAccountUnavailable();
             return;
+        }
+        if (getIntent().getBooleanExtra(EXTRA_FROM_NOTIFICATION, false)) {
+            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
         }
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
     }
