@@ -4701,8 +4701,18 @@ public class MessagingController implements Runnable {
         }
 
         Intent targetIntent;
+        boolean treatAsSingleMessageNotification;
 
-        if (unreadCount == 1) {
+        if (platformSupportsExtendedNotifications()) {
+            // in the new-style notifications, we focus on the new messages, not the unread ones
+            treatAsSingleMessageNotification = newMessages == 1;
+        } else {
+            // in the old-style notifications, we focus on unread messages, as we don't have a
+            // good way to express the new message count
+            treatAsSingleMessageNotification = unreadCount == 1;
+        }
+
+        if (treatAsSingleMessageNotification) {
             targetIntent = MessageView.actionHandleNotificationIntent(
                     context, message.makeMessageReference());
         } else {
@@ -4717,6 +4727,7 @@ public class MessagingController implements Runnable {
 
             targetIntent = FolderList.actionHandleNotification(context, account, initialFolder);
         }
+
         PendingIntent pi = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pi);
 
