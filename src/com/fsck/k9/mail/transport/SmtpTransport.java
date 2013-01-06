@@ -182,6 +182,7 @@ public class SmtpTransport extends Transport {
     }
 
 
+    Account mAccount;
     String mHost;
     int mPort;
     String mUsername;
@@ -194,14 +195,15 @@ public class SmtpTransport extends Transport {
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
 
-    public SmtpTransport(String uri) throws MessagingException {
+    public SmtpTransport(Account account) throws MessagingException {
         ServerSettings settings;
         try {
-            settings = decodeUri(uri);
+            settings = decodeUri(account.getTransportUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding transport URI", e);
         }
 
+        mAccount = account;
         mHost = settings.host;
         mPort = settings.port;
 
@@ -387,7 +389,7 @@ public class SmtpTransport extends Transport {
                 }
             }
         } catch (SSLException e) {
-            throw new CertificateValidationException(e.getMessage(), e);
+            throw new CertificateValidationException(e.getMessage(), e, mAccount, false);
         } catch (GeneralSecurityException gse) {
             throw new MessagingException(
                 "Unable to open connection to SMTP server due to security error.", gse);

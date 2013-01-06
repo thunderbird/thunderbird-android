@@ -429,6 +429,10 @@ public class ImapStore extends Store {
             mCombinedPrefix = prefix;
         }
 
+        @Override
+        public Account getAccount() {
+            return mAccount;
+        }
     }
 
     private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
@@ -2623,7 +2627,7 @@ public class ImapStore extends Store {
 
 
             } catch (SSLException e) {
-                throw new CertificateValidationException(e.getMessage(), e);
+                throw new CertificateValidationException(e.getMessage(), e, mSettings.getAccount(), true);
             } catch (GeneralSecurityException gse) {
                 throw new MessagingException(
                     "Unable to open connection to IMAP server due to security error.", gse);
