@@ -205,7 +205,13 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="recreating_account">Konto \"<xliff:g id="account">%s</xliff:g>\" wiederherstellen</string>
 
     <string name="notification_new_title">Neue Nachricht</string>
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> neue Nachrichten</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ungelesen (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_additional_messages">und <xliff:g id="additional_messages">%d</xliff:g> weitere (<xliff:g id="account">%s</xliff:g>)</string>
+
+    <string name="notification_action_reply">Antworten</string>
+    <string name="notification_action_read">Gelesen</string>
+    <string name="notification_action_delete">Löschen</string>
 
     <string name="notification_bg_sync_ticker">Auf neue Nachrichten prüfen: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Auf neue Nachrichten prüfen</string>
@@ -320,11 +326,18 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="global_settings_confirm_action_delete">Löschen (nur in Nachrichtenansicht)</string>
     <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_delete_notif">Löschen (aus Benachrichtigung)</string>
 
     <string name="global_settings_notification_hide_subject_title">Betreff in Benachrichtigungen verbergen</string>
     <string name="global_settings_notification_hide_subject_never">Niemals</string>
     <string name="global_settings_notification_hide_subject_when_locked">Wenn der Bildschirm gesperrt ist</string>
     <string name="global_settings_notification_hide_subject_always">Immer</string>
+
+    <string name="global_settings_notification_quick_delete_title">Löschen erlauben</string>
+    <string name="global_settings_notification_quick_delete_never">Nie</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Für einzelne Nachricht</string>
+    <string name="global_settings_notification_quick_delete_always">Immer</string>
+    <string name="global_settings_notification_quick_delete_description">Der Benachrichtigung eine Schaltfläche zum Löschen der Nachrichten hinzufügen</string>
 
     <string name="global_settings_batch_buttons">Gruppenoperationen-Schaltflächen</string>
     <string name="global_settings_batch_buttons_summary">Zeige folgende Schaltflächen in der Nachrichtenliste an</string>
@@ -945,6 +958,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="dialog_confirm_delete_title">Löschen bestätigen</string>
     <string name="dialog_confirm_delete_message">Wollen Sie diese Nachricht löschen?</string>
+    <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Wollen Sie diese Nachricht wirklich löschen?</item>
+        <item quantity="other">Wollen Sie wirklich <xliff:g id="message_count">%1$d</xliff:g> Nachrichten löschen?</item>
+    </plurals>
     <string name="dialog_confirm_delete_confirm_button">Löschen</string>
     <string name="dialog_confirm_delete_cancel_button">Nicht löschen</string>
 

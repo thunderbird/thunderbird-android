@@ -586,7 +586,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
             Log.i(K9.LOG_TAG, "MessageList sending message " + messageReference);
 
-            MessageView.actionView(this, messageReference, messageRefs, getIntent().getExtras());
+            Intent i = MessageView.actionViewIntent(this, messageReference, messageRefs);
+            startActivity(i);
         }
 
         /*

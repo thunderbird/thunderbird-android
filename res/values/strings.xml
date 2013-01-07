@@ -214,7 +214,13 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="recreating_account">Recreating account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">New mail</string>
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
+
+    <string name="notification_action_reply">Reply</string>
+    <string name="notification_action_read">Read</string>
+    <string name="notification_action_delete">Delete</string>
 
     <string name="notification_bg_sync_ticker">Checking mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Checking mail</string>
@@ -329,11 +335,18 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_confirm_action_delete">Delete (in message view)</string>
     <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>
 
     <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>
     <string name="global_settings_notification_hide_subject_never">Never</string>
     <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>
     <string name="global_settings_notification_hide_subject_always">Always</string>
+
+    <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>
+    <string name="global_settings_notification_quick_delete_never">Never</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>
+    <string name="global_settings_notification_quick_delete_always">Always</string>
+    <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>
 
     <string name="global_settings_batch_buttons">Batch buttons</string>
     <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>
@@ -957,6 +970,10 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="dialog_confirm_delete_title">Confirm deletion</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
+    <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Do you really want to delete this message?</item>
+        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    </plurals>
     <string name="dialog_confirm_delete_confirm_button">Yes</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
 

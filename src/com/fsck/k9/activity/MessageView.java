@@ -14,6 +14,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.SwipeGestureDetector;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.fragment.MessageViewFragment.MessageViewFragmentListener;
@@ -41,7 +42,7 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
 
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
-    private static final String EXTRA_MESSAGE_LIST_EXTRAS = "com.fsck.k9.MessageView_messageListExtras";
+    private static final String EXTRA_FROM_NOTIFICATION ="com.fsck.k9.MessageView_fromNotification";
 
     /**
      * @see #mLastDirection
@@ -50,16 +51,21 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
     private static final int NEXT = 2;
 
 
-    public static void actionView(Context context, MessageReference messRef,
-            ArrayList<MessageReference> messReferences, Bundle messageListExtras) {
+    public static Intent actionViewIntent(Context context, MessageReference messRef,
+            ArrayList<MessageReference> messReferences) {
         Intent i = new Intent(context, MessageView.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.putExtra(EXTRA_MESSAGE_LIST_EXTRAS, messageListExtras);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
         i.putParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES, messReferences);
-        context.startActivity(i);
+        return i;
     }
 
+    public static Intent actionHandleNotificationIntent(Context context, MessageReference ref) {
+        Intent i = actionViewIntent(context, ref, null);
+        i.setFlags(i.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra(EXTRA_FROM_NOTIFICATION, true);
+        return i;
+    }
 
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
     private Account mAccount;
@@ -164,6 +170,9 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
         if (!mAccount.isAvailable(this)) {
             onAccountUnavailable();
             return;
+        }
+        if (getIntent().getBooleanExtra(EXTRA_FROM_NOTIFICATION, false)) {
+            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
         }
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
     }
@@ -438,7 +447,9 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
 
     private void showNextMessage() {
         findSurroundingMessagesUid();
-        mMessageReferences.remove(mMessageReference);
+        if (mMessageReferences == null) {
+            mMessageReferences.remove(mMessageReference);
+        }
         if (mLastDirection == NEXT && mNextMessage != null) {
             onNext();
         } else if (mLastDirection == PREVIOUS && mPreviousMessage != null) {
@@ -490,6 +501,10 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
 
     private void findSurroundingMessagesUid() {
         mNextMessage = mPreviousMessage = null;
+
+        if (mMessageReferences == null) {
+            return;
+        }
 
         int i = mMessageReferences.indexOf(mMessageReference);
         if (i < 0) {

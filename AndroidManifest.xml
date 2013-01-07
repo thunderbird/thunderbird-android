@@ -172,6 +172,14 @@
             android:configChanges="locale"
             >
         </activity>
+        <activity
+            android:name=".activity.NotificationDeleteConfirmation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            >
+        </activity>
         <!-- XXX Note: this activity is hacked to ignore config changes,
              since it doesn't currently handle them correctly in code. -->
         <activity
@@ -357,6 +365,11 @@ otherwise it would make K-9 start at the wrong time
         </receiver>
         <service
             android:name=".service.MailService"
+            android:enabled="true"
+            >
+        </service>
+        <service
+            android:name=".service.NotificationActionService"
             android:enabled="true"
             >
         </service>
