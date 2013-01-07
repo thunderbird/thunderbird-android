@@ -4730,6 +4730,7 @@ public class MessagingController implements Runnable {
 
         PendingIntent pi = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pi);
+        builder.setDeleteIntent(NotificationActionService.getAcknowledgeIntent(context, account));
 
         // Only ring or vibrate if we have not done so already on this account and fetch
         boolean ringAndVibrate = false;
