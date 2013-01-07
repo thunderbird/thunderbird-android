@@ -171,6 +171,8 @@ public abstract class Message implements Part, Body {
             text = text.substring(0, 8192);
         }
 
+        // Remove (correctly delimited by '-- \n') signatures
+        text = text.replaceAll("(?ms)^-- [\\r\\n]+.*", "");
         // try to remove lines of dashes in the preview
         text = text.replaceAll("(?m)^----.*?$", "");
         // remove quoted text from the preview
