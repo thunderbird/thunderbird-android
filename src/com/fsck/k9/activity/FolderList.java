@@ -71,6 +71,8 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.service.MailService;
 
+import de.cketti.library.changelog.ChangeLog;
+
 /**
  * FolderList is the primary user interface for the program. This
  * Activity shows list of the Account's folders
@@ -308,6 +310,11 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         onNewIntent(getIntent());
 
         context = this;
+
+        ChangeLog cl = new ChangeLog(this);
+        if (cl.isFirstRun()) {
+            cl.getLogDialog().show();
+        }
     }
 
     private void initializeActionBar() {

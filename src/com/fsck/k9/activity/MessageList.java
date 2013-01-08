@@ -39,6 +39,8 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 
+import de.cketti.library.changelog.ChangeLog;
+
 
 /**
  * MessageList is the primary user interface for the program. This Activity
@@ -144,6 +146,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                     (K9.isThreadedViewEnabled() && !mNoThreading));
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
+        }
+
+        ChangeLog cl = new ChangeLog(this);
+        if (cl.isFirstRun()) {
+            cl.getLogDialog().show();
         }
     }
 

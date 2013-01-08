@@ -89,6 +89,8 @@ import com.fsck.k9.preferences.SettingsImporter.AccountDescriptionPair;
 import com.fsck.k9.preferences.SettingsImporter.ImportContents;
 import com.fsck.k9.preferences.SettingsImporter.ImportResults;
 
+import de.cketti.library.changelog.ChangeLog;
+
 
 public class Accounts extends K9ListActivity implements OnItemClickListener {
 
@@ -413,6 +415,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         mNonConfigurationInstance = (NonConfigurationInstance) getLastNonConfigurationInstance();
         if (mNonConfigurationInstance != null) {
             mNonConfigurationInstance.restore(this);
+        }
+
+        ChangeLog cl = new ChangeLog(this);
+        if (cl.isFirstRun()) {
+            cl.getLogDialog().show();
         }
     }
 

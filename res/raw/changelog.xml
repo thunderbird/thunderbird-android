@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+
+    <release version="4.320" versioncode="17021" >
+        <change>New feature here</change>
+    </release>
+
+    <release version="4.319" versioncode="17020" >
+        <change>Added Jelly Bean-style notifications</change>
+    </release>
+
+</changelog>
