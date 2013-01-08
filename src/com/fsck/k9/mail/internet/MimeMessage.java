@@ -595,32 +595,6 @@ public class MimeMessage extends Message {
     }
 
     public String getPreview() {
-        String preview = null;
-
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
-            if (part != null) {
-                // We successfully found an HTML part; do the necessary character set decoding.
-                preview = MimeUtility.getTextFromPart(part);
-                if (preview != null) {
-                    preview = HtmlConverter.htmlToText(preview);
-                }
-            }
-            if (preview == null) {
-                // no HTML part -> try and get a text part.
-                part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
-                if (part != null) {
-                    preview = MimeUtility.getTextFromPart(part);
-                }
-            }
-        } catch (MessagingException e) {
-            Log.d(K9.LOG_TAG, "Could not extract message preview", e);
-        }
-
-        if (preview != null) {
-            return calculateContentPreview(preview);
-        }
-
         return "";
     }
 

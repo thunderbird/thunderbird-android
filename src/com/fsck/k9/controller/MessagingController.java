@@ -1558,7 +1558,8 @@ public class MessagingController implements Runnable {
                     // Send a notification of this message
 
                     if (shouldNotifyForMessage(account, localFolder, message)) {
-                        notifyAccount(mApplication, account, message, unreadBeforeStart);
+                        // Notify with the localMessage so that we don't have to recalculate the content preview.
+                        notifyAccount(mApplication, account, localMessage, unreadBeforeStart);
                     }
 
                 } catch (MessagingException me) {
@@ -1676,6 +1677,7 @@ public class MessagingController implements Runnable {
 
             // Update the listener with what we've found
             progress.incrementAndGet();
+            // TODO do we need to re-fetch this here?
             Message localMessage = localFolder.getMessage(message.getUid());
 
             // Increment the number of "new messages" if the newly downloaded message is
@@ -1694,7 +1696,8 @@ public class MessagingController implements Runnable {
 
             // Send a notification of this message
             if (shouldNotifyForMessage(account, localFolder, message)) {
-                notifyAccount(mApplication, account, message, unreadBeforeStart);
+                // Notify with the localMessage so that we don't have to recalculate the content preview.
+                notifyAccount(mApplication, account, localMessage, unreadBeforeStart);
             }
 
         }//for large messages
