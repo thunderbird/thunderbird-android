@@ -223,14 +223,28 @@ public class MessagingController implements Runnable {
             messages.addFirst(m);
         }
 
-        public void removeMessage(Context context, Message m) {
-            if (messages.remove(m) && !droppedMessages.isEmpty()) {
-                Message message = droppedMessages.getFirst().restoreToLocalMessage(context);
-                if (message != null) {
-                    messages.addLast(message);
-                    droppedMessages.removeFirst();
+        public boolean removeMatchingMessage(Context context, MessageReference ref) {
+            for (MessageReference dropped : droppedMessages) {
+                if (dropped.equals(ref)) {
+                    droppedMessages.remove(dropped);
+                    return true;
                 }
             }
+
+            for (Message message : messages) {
+                if (message.makeMessageReference().equals(ref)) {
+                    if (messages.remove(message) && !droppedMessages.isEmpty()) {
+                        Message restoredMessage = droppedMessages.getFirst().restoreToLocalMessage(context);
+                        if (restoredMessage != null) {
+                            messages.addLast(restoredMessage);
+                            droppedMessages.removeFirst();
+                        }
+                    }
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public ArrayList<MessageReference> getAllMessageRefs() {
@@ -1755,30 +1769,15 @@ public class MessagingController implements Runnable {
                         }
                     }
 
-                    NotificationData data = getNotificationData(account, -1);
-                    if (data != null) {
-                        synchronized (data) {
-                            boolean needUpdateNotification = false;
-                            String uid = localMessage.getUid();
-
-                            for (Message m : data.messages) {
-                                if (uid.equals(m.getUid()) && !shouldBeNotifiedOf) {
-                                    data.removeMessage(mApplication, m);
-                                    needUpdateNotification = true;
-                                    break;
+                    // we're only interested in messages that need removing
+                    if (!shouldBeNotifiedOf) {
+                        NotificationData data = getNotificationData(account, -1);
+                        if (data != null) {
+                            synchronized (data) {
+                                MessageReference ref = localMessage.makeMessageReference();
+                                if (data.removeMatchingMessage(mApplication, ref)) {
+                                    notifyAccountWithDataLocked(mApplication, account, null, data);
                                 }
-                            }
-                            if (!needUpdateNotification) {
-                                for (MessageReference dropped : data.droppedMessages) {
-                                    if (uid.equals(dropped.uid) && !shouldBeNotifiedOf) {
-                                        data.droppedMessages.remove(dropped);
-                                        needUpdateNotification = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (needUpdateNotification) {
-                                notifyAccountWithDataLocked(mApplication, account, null, data);
                             }
                         }
                     }
@@ -4605,6 +4604,9 @@ public class MessagingController implements Runnable {
             message = findNewestMessageForNotificationLocked(context, account, data);
             updateSilently = true;
             if (message == null) {
+                // seemingly both the message list as well as the overflow list is empty;
+                // it probably is a good idea to cancel the notification in that case
+                notifyAccountCancel(context, account);
                 return;
             }
         } else {
