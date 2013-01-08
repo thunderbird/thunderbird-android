@@ -137,6 +137,14 @@ public abstract class Folder {
     public void expunge() throws MessagingException
         {}
 
+    /**
+     * Populate a list of messages based upon a FetchProfile.  See {@link FetchProfile} for the things that can
+     * be fetched.
+     * @param messages Messages to populate
+     * @param fp Things to download
+     * @param listener Listener to notify as we fetch messages.
+     * @throws MessagingException
+     */
     public abstract void fetch(Message[] messages, FetchProfile fp,
                                MessageRetrievalListener listener) throws MessagingException;
 
