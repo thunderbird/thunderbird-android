@@ -201,29 +201,36 @@ public class MessagingController implements Runnable {
     private ConcurrentHashMap<String, String> deletedUids = new ConcurrentHashMap<String, String>();
 
     private static class NotificationData {
-        int unreadBeforeNotification;
-        LinkedList<Message> messages; // newest one first
-        LinkedList<MessageReference> droppedMessages; // newest one first
+        private int unreadBeforeNotification;
+        private LinkedList<Message> messages; // newest one first
+        private LinkedList<MessageReference> droppedMessages; // newest one first
 
         // There's no point in storing more than 5 messages for the notification, as a single notification
         // can't display more than that anyway.
         private final static int MAX_MESSAGES = 5;
 
-        @SuppressWarnings("serial")
         public NotificationData(int unread) {
             unreadBeforeNotification = unread;
             droppedMessages = new LinkedList<MessageReference>();
-            messages = new LinkedList<Message>() {
-                @Override
-                public boolean add(Message m) {
-                    while (size() >= MAX_MESSAGES) {
-                        Message dropped = super.removeLast();
-                        droppedMessages.add(0, dropped.makeMessageReference());
-                    }
-                    super.add(0, m);
-                    return true;
+            messages = new LinkedList<Message>();
+        }
+
+        public void addMessage(Message m) {
+            while (messages.size() >= MAX_MESSAGES) {
+                Message dropped = messages.removeLast();
+                droppedMessages.addFirst(dropped.makeMessageReference());
+            }
+            messages.addFirst(m);
+        }
+
+        public void removeMessage(Context context, Message m) {
+            if (messages.remove(m) && !droppedMessages.isEmpty()) {
+                Message message = droppedMessages.getFirst().restoreToLocalMessage(context);
+                if (message != null) {
+                    messages.addLast(message);
+                    droppedMessages.removeFirst();
                 }
-            };
+            }
         }
 
         public ArrayList<MessageReference> getAllMessageRefs() {
@@ -1756,7 +1763,7 @@ public class MessagingController implements Runnable {
 
                             for (Message m : data.messages) {
                                 if (uid.equals(m.getUid()) && !shouldBeNotifiedOf) {
-                                    data.messages.remove(m);
+                                    data.removeMessage(mApplication, m);
                                     needUpdateNotification = true;
                                     break;
                                 }
@@ -1764,7 +1771,7 @@ public class MessagingController implements Runnable {
                             if (!needUpdateNotification) {
                                 for (MessageReference dropped : data.droppedMessages) {
                                     if (uid.equals(dropped.uid) && !shouldBeNotifiedOf) {
-                                        data.droppedMessages.remove(dropped.uid);
+                                        data.droppedMessages.remove(dropped);
                                         needUpdateNotification = true;
                                         break;
                                     }
@@ -4568,11 +4575,11 @@ public class MessagingController implements Runnable {
     private Message findNewestMessageForNotificationLocked(Context context,
             Account account, NotificationData data) {
         if (!data.messages.isEmpty()) {
-            return data.messages.get(0);
+            return data.messages.getFirst();
         }
 
         if (!data.droppedMessages.isEmpty()) {
-            return data.droppedMessages.get(0).restoreToLocalMessage(context);
+            return data.droppedMessages.getFirst().restoreToLocalMessage(context);
         }
 
         return null;
@@ -4601,7 +4608,7 @@ public class MessagingController implements Runnable {
                 return;
             }
         } else {
-            data.messages.add(message);
+            data.addMessage(message);
         }
 
         final KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
