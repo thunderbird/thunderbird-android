@@ -647,6 +647,12 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         case R.id.clear_local_folder:
             onClearFolder(mAccount, folder.name);
             break;
+        case R.id.refresh_folder:
+            checkMail(folder);
+            break;
+        case R.id.folder_settings:
+            FolderSettings.actionSettings(this, mAccount, folder.name);
+            break;
         }
 
         return super.onContextItemSelected(item);
