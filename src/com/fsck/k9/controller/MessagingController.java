@@ -53,9 +53,6 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.MessageView;
 import com.fsck.k9.activity.NotificationDeleteConfirmation;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.helper.NotificationBuilder;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
@@ -4762,7 +4759,7 @@ public class MessagingController implements Runnable {
      * Configure the notification sound and LED
      *
      * @param builder
-     *         {@link NotificationBuilder} instance used to configure the notification.
+     *         {@link NotificationCompat.Builder} instance used to configure the notification.
      *         Never {@code null}.
      * @param ringtone
      *          String name of ringtone. {@code null}, if no ringtone should be played.
