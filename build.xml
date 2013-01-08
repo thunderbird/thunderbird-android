@@ -303,7 +303,21 @@
         </if.contrib>
     </target>
 
-    <target name="init" depends="-update-abs, -update-ptr"
+	<target name="-update-cl">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/ckChangeLog/library/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/ckChangeLog/library/" />
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
+                    <arg line="update lib-project -p plugins/ckChangeLog/library/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+	
+    <target name="init" depends="-update-abs, -update-ptr, -update-cl"
             description="Initialize environment for building" />
 
     <!-- overrides default "debug" target" -->
