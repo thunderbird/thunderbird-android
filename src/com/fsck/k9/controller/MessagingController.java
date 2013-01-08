@@ -200,32 +200,100 @@ public class MessagingController implements Runnable {
     // Key is accountUuid:folderName:messageUid   ,   value is unimportant
     private ConcurrentHashMap<String, String> deletedUids = new ConcurrentHashMap<String, String>();
 
+    /**
+     * A holder class for pending notification data
+     *
+     * This class holds all pieces of information for constructing
+     * a notification with message preview.
+     */
     private static class NotificationData {
+        /** Number of unread messages before constructing the notification */
         int unreadBeforeNotification;
-        LinkedList<Message> messages; // newest one first
-        LinkedList<MessageReference> droppedMessages; // newest one first
+        /**
+         * List of messages that should be used for the inbox-style overview.
+         * It's sorted from newest to oldest message.
+         * Don't modify this list directly, but use {@link addMessage} and
+         * {@link removeMatchingMessage} instead.
+         */
+        LinkedList<Message> messages;
+        /**
+         * List of references for messages that the user is still to be notified of,
+         * but which don't fit into the inbox style anymore. It's sorted from newest
+         * to oldest message.
+         */
+        LinkedList<MessageReference> droppedMessages;
 
-        // There's no point in storing more than 5 messages for the notification, as a single notification
-        // can't display more than that anyway.
+        /**
+         * Maximum number of messages to keep for the inbox-style overview.
+         * As of Jellybean, phone notifications show a maximum of 5 lines, while tablet
+         * notifications show 7 lines. To make sure no lines are silently dropped,
+         * we default to 5 lines.
+         */
         private final static int MAX_MESSAGES = 5;
 
-        @SuppressWarnings("serial")
+        /**
+         * Constructs a new data instance.
+         *
+         * @param unread Number of unread messages prior to instance construction
+         */
         public NotificationData(int unread) {
             unreadBeforeNotification = unread;
             droppedMessages = new LinkedList<MessageReference>();
-            messages = new LinkedList<Message>() {
-                @Override
-                public boolean add(Message m) {
-                    while (size() >= MAX_MESSAGES) {
-                        Message dropped = super.removeLast();
-                        droppedMessages.add(0, dropped.makeMessageReference());
-                    }
-                    super.add(0, m);
-                    return true;
-                }
-            };
+            messages = new LinkedList<Message>();
         }
 
+        /**
+         * Adds a new message to the list of pending messages for this notification.
+         *
+         * The implementation will take care of keeping a meaningful amount of
+         * messages in {@link #messages}.
+         *
+         * @param m The new message to add.
+         */
+        public void addMessage(Message m) {
+            while (messages.size() >= MAX_MESSAGES) {
+                Message dropped = messages.removeLast();
+                droppedMessages.addFirst(dropped.makeMessageReference());
+            }
+            messages.addFirst(m);
+        }
+
+        /**
+         * Remove a certain message from the message list.
+         *
+         * @param context A context.
+         * @param ref Reference of the message to remove
+         * @return true if message was found and removed, false otherwise
+         */
+        public boolean removeMatchingMessage(Context context, MessageReference ref) {
+            for (MessageReference dropped : droppedMessages) {
+                if (dropped.equals(ref)) {
+                    droppedMessages.remove(dropped);
+                    return true;
+                }
+            }
+
+            for (Message message : messages) {
+                if (message.makeMessageReference().equals(ref)) {
+                    if (messages.remove(message) && !droppedMessages.isEmpty()) {
+                        Message restoredMessage = droppedMessages.getFirst().restoreToLocalMessage(context);
+                        if (restoredMessage != null) {
+                            messages.addLast(restoredMessage);
+                            droppedMessages.removeFirst();
+                        }
+                    }
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Gets a list of references for all pending messages for the notification.
+         *
+         * @return Message reference list
+         */
         public ArrayList<MessageReference> getAllMessageRefs() {
             ArrayList<MessageReference> refs = new ArrayList<MessageReference>();
             for (Message m : messages) {
@@ -235,6 +303,11 @@ public class MessagingController implements Runnable {
             return refs;
         }
 
+        /**
+         * Gets the total number of messages the user is to be notified of.
+         *
+         * @return Amount of new messages the notification notifies for
+         */
         public int getNewMessageCount() {
             return messages.size() + droppedMessages.size();
         }
@@ -1748,30 +1821,15 @@ public class MessagingController implements Runnable {
                         }
                     }
 
-                    NotificationData data = getNotificationData(account, -1);
-                    if (data != null) {
-                        synchronized (data) {
-                            boolean needUpdateNotification = false;
-                            String uid = localMessage.getUid();
-
-                            for (Message m : data.messages) {
-                                if (uid.equals(m.getUid()) && !shouldBeNotifiedOf) {
-                                    data.messages.remove(m);
-                                    needUpdateNotification = true;
-                                    break;
+                    // we're only interested in messages that need removing
+                    if (!shouldBeNotifiedOf) {
+                        NotificationData data = getNotificationData(account, null);
+                        if (data != null) {
+                            synchronized (data) {
+                                MessageReference ref = localMessage.makeMessageReference();
+                                if (data.removeMatchingMessage(mApplication, ref)) {
+                                    notifyAccountWithDataLocked(mApplication, account, null, data);
                                 }
-                            }
-                            if (!needUpdateNotification) {
-                                for (MessageReference dropped : data.droppedMessages) {
-                                    if (uid.equals(dropped.uid) && !shouldBeNotifiedOf) {
-                                        data.droppedMessages.remove(dropped.uid);
-                                        needUpdateNotification = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (needUpdateNotification) {
-                                notifyAccountWithDataLocked(mApplication, account, null, data);
                             }
                         }
                     }
@@ -4455,12 +4513,23 @@ public class MessagingController implements Runnable {
         return true;
     }
 
-    private NotificationData getNotificationData(Account account, int previousUnreadMessageCount) {
+    /**
+     * Get the pending notification data for an account.
+     * See {@link NotificationData}.
+     *
+     * @param account The account to retrieve the pending data for
+     * @param previousUnreadMessageCount The number of currently pending messages, which will be used
+     *                                    if there's no pending data yet. If passed as null, a new instance
+     *                                    won't be created if currently not existent.
+     * @return A pending data instance, or null if one doesn't exist and
+     *          previousUnreadMessageCount was passed as null.
+     */
+    private NotificationData getNotificationData(Account account, Integer previousUnreadMessageCount) {
         NotificationData data;
 
         synchronized (notificationData) {
             data = notificationData.get(account.getAccountNumber());
-            if (data == null && previousUnreadMessageCount >= 0) {
+            if (data == null && previousUnreadMessageCount != null) {
                 data = new NotificationData(previousUnreadMessageCount);
                 notificationData.put(account.getAccountNumber(), data);
             }
@@ -4568,11 +4637,11 @@ public class MessagingController implements Runnable {
     private Message findNewestMessageForNotificationLocked(Context context,
             Account account, NotificationData data) {
         if (!data.messages.isEmpty()) {
-            return data.messages.get(0);
+            return data.messages.getFirst();
         }
 
         if (!data.droppedMessages.isEmpty()) {
-            return data.droppedMessages.get(0).restoreToLocalMessage(context);
+            return data.droppedMessages.getFirst().restoreToLocalMessage(context);
         }
 
         return null;
@@ -4598,10 +4667,13 @@ public class MessagingController implements Runnable {
             message = findNewestMessageForNotificationLocked(context, account, data);
             updateSilently = true;
             if (message == null) {
+                // seemingly both the message list as well as the overflow list is empty;
+                // it probably is a good idea to cancel the notification in that case
+                notifyAccountCancel(context, account);
                 return;
             }
         } else {
-            data.messages.add(message);
+            data.addMessage(message);
         }
 
         final KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
