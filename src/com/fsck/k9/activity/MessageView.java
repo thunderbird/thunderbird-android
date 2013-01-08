@@ -447,7 +447,7 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
 
     private void showNextMessage() {
         findSurroundingMessagesUid();
-        if (mMessageReferences == null) {
+        if (mMessageReferences != null) {
             mMessageReferences.remove(mMessageReference);
         }
         if (mLastDirection == NEXT && mNextMessage != null) {
