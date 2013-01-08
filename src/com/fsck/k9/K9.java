@@ -345,12 +345,14 @@ public class K9 extends Application {
 
 
 
-    public static final int NOTIFICATION_LED_SENDING_FAILURE_COLOR = 0xffff0000;
+    public static final int NOTIFICATION_LED_FAILURE_COLOR = 0xffff0000;
 
     // Must not conflict with an account number
     public static final int FETCHING_EMAIL_NOTIFICATION      = -5000;
     public static final int SEND_FAILED_NOTIFICATION      = -1500;
     public static final int CONNECTIVITY_ID = -3;
+    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING = -4;
+    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING = -5;
 
 
     public static class Intents {

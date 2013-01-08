@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
-    private static final String EXTRA_ACCOUNT = "account";
+    public static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
     private static final int[] POP3_PORTS = {
