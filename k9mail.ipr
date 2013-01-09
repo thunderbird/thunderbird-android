@@ -155,7 +155,6 @@
         <module name="ActionBarSherlock" />
         <module name="Android-PullToRefresh" />
         <module name="ckChangeLog" />
-        <module name="library" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -163,7 +162,6 @@
       <module name="Android-PullToRefresh" target="1.6" />
       <module name="ckChangeLog" target="1.6" />
       <module name="k9mail" target="1.6" />
-      <module name="library" target="1.6" />
     </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="">
