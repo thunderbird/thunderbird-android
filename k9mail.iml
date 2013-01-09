@@ -44,6 +44,7 @@
     <orderEntry type="library" scope="PROVIDED" name="compile-only-libs" level="project" />
     <orderEntry type="module" module-name="ActionBarSherlock" />
     <orderEntry type="module" module-name="Android-PullToRefresh" />
+    <orderEntry type="module" module-name="ckChangeLog" />
     <orderEntry type="inheritedJdk" />
   </component>
 </module>
