@@ -64,6 +64,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
+import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.WelcomeMessage;
@@ -961,6 +962,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         showDialog(DIALOG_REMOVE_ACCOUNT);
     }
 
+    private void onEditAccount(Account account) {
+        AccountSettings.actionSettings(this, account);
+    }
+
     @Override
     public Dialog onCreateDialog(int id) {
         // Android recreates our dialogs on configuration changes even when they have been
@@ -1105,6 +1110,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         switch (item.getItemId()) {
         case R.id.delete_account:
             onDeleteAccount(realAccount);
+            break;
+        case R.id.account_settings:
+            onEditAccount(realAccount);
             break;
         case R.id.activate:
             onActivateAccount(realAccount);
