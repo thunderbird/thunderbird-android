@@ -197,6 +197,9 @@ public class GlobalSettings {
         s.put("useVolumeKeysForNavigation", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
+        s.put("wrapFolderNames", Settings.versions(
+                new V(22, new BooleanSetting(false))
+            ));
         s.put("batchButtonsMarkRead", Settings.versions(
                 new V(8, new BooleanSetting(true))
             ));
