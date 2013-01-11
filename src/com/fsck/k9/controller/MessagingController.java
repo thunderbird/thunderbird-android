@@ -3758,8 +3758,9 @@ public class MessagingController implements Runnable {
 
         List<Message> messagesInThreads = new ArrayList<Message>();
         for (Message message : messages) {
-            long rootId = ((LocalMessage) message).getRootId();
-            long threadId = (rootId == -1) ? message.getId() : rootId;
+            LocalMessage localMessage = (LocalMessage) message;
+            long rootId = localMessage.getRootId();
+            long threadId = (rootId == -1) ? localMessage.getThreadId() : rootId;
 
             Message[] messagesInThread = localStore.getMessagesInThread(threadId);
             Collections.addAll(messagesInThreads, messagesInThread);

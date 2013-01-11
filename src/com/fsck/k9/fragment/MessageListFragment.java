@@ -91,8 +91,12 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.provider.EmailProvider.SpecialColumns;
+import com.fsck.k9.provider.EmailProvider.ThreadColumns;
+import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification;
+import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -117,11 +121,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         MessageColumns.ATTACHMENT_COUNT,
         MessageColumns.FOLDER_ID,
         MessageColumns.PREVIEW,
-        MessageColumns.THREAD_ROOT,
+        ThreadColumns.ROOT,
         SpecialColumns.ACCOUNT_UUID,
         SpecialColumns.FOLDER_NAME,
 
-        MessageColumns.THREAD_COUNT,
+        SpecialColumns.THREAD_COUNT,
     };
 
     private static final int ID_COLUMN = 0;
@@ -2083,15 +2087,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     accountMapping.put(account, messageIdList);
                 }
 
-                long selectionId;
-                if (mThreadedList) {
-                    selectionId = (cursor.isNull(THREAD_ROOT_COLUMN)) ?
-                            cursor.getLong(ID_COLUMN) : cursor.getLong(THREAD_ROOT_COLUMN);
-                } else {
-                    selectionId = cursor.getLong(ID_COLUMN);
-                }
-
-                messageIdList.add(selectionId);
+                messageIdList.add(cursor.getLong(ID_COLUMN));
             }
         }
 
@@ -2888,19 +2884,30 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         String accountUuid = mAccountUuids[id];
         Account account = mPreferences.getAccount(accountUuid);
 
+        String threadId = getThreadId(mSearch);
+
         Uri uri;
         String[] projection;
-        if (mThreadedList) {
+        boolean needConditions;
+        if (threadId != null) {
+            uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + accountUuid + "/thread/" + threadId);
+            projection = PROJECTION;
+            needConditions = false;
+        } else if (mThreadedList) {
             uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + accountUuid + "/messages/threaded");
             projection = THREADED_PROJECTION;
+            needConditions = true;
         } else {
             uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + accountUuid + "/messages");
             projection = PROJECTION;
+            needConditions = true;
         }
 
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<String>();
-        SqlQueryBuilder.buildWhereClause(account, mSearch.getConditions(), query, queryArgs);
+        if (needConditions) {
+            SqlQueryBuilder.buildWhereClause(account, mSearch.getConditions(), query, queryArgs);
+        }
 
         String selection = query.toString();
         String[] selectionArgs = queryArgs.toArray(new String[0]);
@@ -2909,6 +2916,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs,
                 sortOrder);
+    }
+
+    private String getThreadId(LocalSearch search) {
+        for (ConditionsTreeNode node : search.getLeafSet()) {
+            SearchCondition condition = node.mCondition;
+            if (condition.field == Searchfield.THREAD_ID) {
+                return condition.value;
+            }
+        }
+
+        return null;
     }
 
     private String buildSortOrder() {

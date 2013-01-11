@@ -711,8 +711,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public void showThread(Account account, String folderName, long threadRootId) {
         LocalSearch tmpSearch = new LocalSearch();
         tmpSearch.addAccountUuid(account.getUuid());
-        tmpSearch.and(Searchfield.THREAD_ROOT, String.valueOf(threadRootId), Attribute.EQUALS);
-        tmpSearch.or(new SearchCondition(Searchfield.ID, Attribute.EQUALS, String.valueOf(threadRootId)));
+        tmpSearch.and(Searchfield.THREAD_ID, String.valueOf(threadRootId), Attribute.EQUALS);
 
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, true, false);
         addMessageListFragment(fragment, true);
