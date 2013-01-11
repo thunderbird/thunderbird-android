@@ -35,7 +35,6 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
@@ -500,11 +499,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         MessagingController.getInstance(getApplication()).emptyTrash(account, null);
     }
 
-    private void onExpunge(final Account account, String folderName) {
-        MessagingController.getInstance(getApplication()).expunge(account, folderName, null);
-    }
-
-
     private void onClearFolder(Account account, String folderName) {
         // There has to be a cheaper way to get at the localFolder object than this
         LocalFolder localFolder = null;
@@ -671,8 +665,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
         return super.onContextItemSelected(item);
     }
-
-    private FolderInfoHolder mSelectedContextFolder = null;
 
     @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
