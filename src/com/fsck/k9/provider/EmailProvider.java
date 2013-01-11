@@ -385,6 +385,7 @@ public class EmailProvider extends ContentProvider {
                         UnavailableStorageException {
 
                     StringBuilder query = new StringBuilder();
+
                     query.append("SELECT ");
                     boolean first = true;
                     for (String columnName : projection) {
@@ -394,66 +395,91 @@ public class EmailProvider extends ContentProvider {
                             first = false;
                         }
 
-                        if (MessageColumns.DATE.equals(columnName)) {
-                            query.append("MAX(m.date) AS " + MessageColumns.DATE);
+                        if (MessageColumns.ID.equals(columnName)) {
+                            query.append("u." + MessageColumns.ID + " AS " + MessageColumns.ID);
+                        } else if (MessageColumns.DATE.equals(columnName)) {
+                            query.append("MAX(date) AS " + MessageColumns.DATE);
                         } else if (SpecialColumns.THREAD_COUNT.equals(columnName)) {
-                            query.append("COUNT(h.id) AS " + SpecialColumns.THREAD_COUNT);
-                        } else if (SpecialColumns.FOLDER_NAME.equals(columnName)) {
-                            query.append("f." + SpecialColumns.FOLDER_NAME + " AS " +
-                                    SpecialColumns.FOLDER_NAME);
-                        } else if (SpecialColumns.INTEGRATE.equals(columnName)) {
-                            query.append("f." + SpecialColumns.INTEGRATE + " AS " +
-                                    SpecialColumns.INTEGRATE);
-                        } else if (ThreadColumns.ROOT.equals(columnName)) {
-                            // Always return the thread ID of the root message (even for the root
-                            // message itself)
-                            query.append("CASE WHEN t2." + ThreadColumns.ROOT + " IS NULL THEN " +
-                                    "t2." + ThreadColumns.ID + " ELSE t2." + ThreadColumns.ROOT +
-                                    " END AS " + ThreadColumns.ROOT);
+                            query.append("COUNT(g) AS " + SpecialColumns.THREAD_COUNT);
                         } else {
-                            query.append("m.");
-                            query.append(columnName);
-                            query.append(" AS ");
                             query.append(columnName);
                         }
                     }
 
-                    query.append(
-                            " FROM messages h " +
-                            "LEFT JOIN threads t1 ON (t1.message_id = h.id) " +
-                            "LEFT JOIN threads t2 ON (t1.id = t2.id OR t1.id = t2.root) " +
-                            "LEFT JOIN messages m ON (m.id = t2.message_id) ");
+                    query.append(" FROM (");
 
-                    if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
-                        query.append("LEFT JOIN folders f ON (m.folder_id = f.id) ");
-                    }
+                    createThreadedSubQuery(projection, selection, selectionArgs, "t1.id = t2.id", query);
+                    query.append(" UNION ALL ");
+                    createThreadedSubQuery(projection, selection, selectionArgs, "t1.id = t2.root", query);
 
-                    query.append(
-                            "WHERE " +
-                            "(t1.root IS NULL AND " +
-                            "m.deleted = 0 AND " +
-                            "(m.empty IS NULL OR m.empty != 1)) ");
-
-                    if (!StringUtils.isNullOrEmpty(selection)) {
-                        query.append("AND (");
-                        query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
-                                "h.", selection));
-                        query.append(") ");
-                    }
-
-                    query.append("GROUP BY h.id");
+                    query.append(") u GROUP BY g");
 
                     if (!StringUtils.isNullOrEmpty(sortOrder)) {
                         query.append(" ORDER BY ");
                         query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
-                                "m.", sortOrder));
+                                "u.", sortOrder));
                     }
 
-                    return db.rawQuery(query.toString(), selectionArgs);
+                    // We need the selection arguments twice. Once for each sub query.
+                    String[] args = new String[selectionArgs.length * 2];
+                    System.arraycopy(selectionArgs, 0, args, 0, selectionArgs.length);
+                    System.arraycopy(selectionArgs, 0, args, selectionArgs.length, selectionArgs.length);
+
+                    return db.rawQuery(query.toString(), args);
                 }
             });
         } catch (UnavailableStorageException e) {
             throw new RuntimeException("Storage not available", e);
+        }
+    }
+
+    private void createThreadedSubQuery(String[] projection, String selection,
+            String[] selectionArgs, String join, StringBuilder query) {
+
+        query.append("SELECT h." + MessageColumns.ID + " AS g");
+        for (String columnName : projection) {
+            if (SpecialColumns.THREAD_COUNT.equals(columnName)) {
+                // Skip
+            } else if (SpecialColumns.FOLDER_NAME.equals(columnName) ||
+                    SpecialColumns.INTEGRATE.equals(columnName)) {
+                query.append("," + columnName);
+            } else if (ThreadColumns.ROOT.equals(columnName)) {
+                // Always return the thread ID of the root message (even for the root
+                // message itself)
+                query.append(",CASE WHEN t2." + ThreadColumns.ROOT + " IS NULL THEN " +
+                        "t2." + ThreadColumns.ID + " ELSE t2." + ThreadColumns.ROOT +
+                        " END AS " + ThreadColumns.ROOT);
+            } else {
+                query.append(",m.");
+                query.append(columnName);
+                query.append(" AS ");
+                query.append(columnName);
+            }
+        }
+
+        query.append(
+                " FROM messages h " +
+                "LEFT JOIN threads t1 ON (t1.message_id = h.id) " +
+                "JOIN threads t2 ON (");
+        query.append(join);
+        query.append(") " +
+                "LEFT JOIN messages m ON (m.id = t2.message_id) ");
+
+        if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
+            query.append("LEFT JOIN folders f ON (m.folder_id = f.id) ");
+        }
+
+        query.append(
+                "WHERE " +
+                "(t1.root IS NULL AND " +
+                "m.deleted = 0 AND " +
+                "(m.empty IS NULL OR m.empty != 1))");
+
+        if (!StringUtils.isNullOrEmpty(selection)) {
+            query.append(" AND (");
+            query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
+                    "h.", selection));
+            query.append(")");
         }
     }
 
