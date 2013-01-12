@@ -1199,7 +1199,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         new String[] {"Mime4j", "http://james.apache.org/mime4j/"},
         new String[] {"HtmlCleaner", "http://htmlcleaner.sourceforge.net/"},
         new String[] {"ActionBarSherlock", "http://actionbarsherlock.com/"},
-        new String[] {"Android-PullToRefresh", "https://github.com/chrisbanes/Android-PullToRefresh"}
+        new String[] {"Android-PullToRefresh", "https://github.com/chrisbanes/Android-PullToRefresh"},
+        new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"}
     };
 
     private void onAbout() {
