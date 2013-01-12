@@ -1199,8 +1199,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
                 mActiveMessages = null; // don't need it any more
 
-                final Account account = messages.get(0).getFolder().getAccount();
-                account.setLastSelectedFolderName(destFolderName);
+                // We currently only support copy/move in 'single account mode', so it's okay to
+                // use mAccount.
+                mAccount.setLastSelectedFolderName(destFolderName);
 
                 switch (requestCode) {
                 case ACTIVITY_CHOOSE_FOLDER_MOVE:
@@ -2139,10 +2140,16 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return;
         }
 
-        final Folder folder = (messages.size() == 1) ?
-                messages.get(0).getFolder() : mCurrentFolder.folder;
+        final Folder folder;
+        if (mIsThreadDisplay) {
+            folder = messages.get(0).getFolder();
+        } else if (mSingleFolderMode) {
+            folder = mCurrentFolder.folder;
+        } else {
+            folder = null;
+        }
 
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folder, messages);
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, mAccount, folder, messages);
     }
 
     private void onCopy(Message message) {
@@ -2160,10 +2167,16 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return;
         }
 
-        final Folder folder = (messages.size() == 1) ?
-                messages.get(0).getFolder() : mCurrentFolder.folder;
+        final Folder folder;
+        if (mIsThreadDisplay) {
+            folder = messages.get(0).getFolder();
+        } else if (mSingleFolderMode) {
+            folder = mCurrentFolder.folder;
+        } else {
+            folder = null;
+        }
 
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folder, messages);
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, mAccount, folder, messages);
     }
 
     /**
@@ -2180,11 +2193,19 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *
      * @see #startActivityForResult(Intent, int)
      */
-    private void displayFolderChoice(final int requestCode, final Folder folder, final List<Message> messages) {
-        final Intent intent = new Intent(getActivity(), ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, folder.getAccount().getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
-        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
+    private void displayFolderChoice(int requestCode, Account account, Folder folder,
+            List<Message> messages) {
+
+        Intent intent = new Intent(getActivity(), ChooseFolder.class);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, account.getUuid());
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, account.getLastSelectedFolderName());
+
+        if (folder == null) {
+            intent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
+        } else {
+            intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
+        }
+
         // remember the selected messages for #onActivityResult
         mActiveMessages = messages;
         startActivityForResult(intent, requestCode);
@@ -2339,37 +2360,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void copyOrMove(List<Message> messages, final String destination,
             final FolderOperation operation) {
 
-        if (K9.FOLDER_NONE.equalsIgnoreCase(destination)) {
+        if (K9.FOLDER_NONE.equalsIgnoreCase(destination) || !mSingleAccountMode) {
             return;
         }
 
-        boolean first = true;
-        Account account = null;
-        String folderName = null;
-
-        List<Message> outMessages = new ArrayList<Message>();
+        Account account = mAccount;
+        Map<String, List<Message>> folderMap = new HashMap<String, List<Message>>();
 
         for (Message message : messages) {
-            if (first) {
-                first = false;
-
-                folderName = message.getFolder().getName();
-                account = message.getFolder().getAccount();
-
-                if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(account)) ||
-                        (operation == FolderOperation.COPY &&
-                        !mController.isCopyCapable(account))) {
-
-                    // Account is not copy/move capable
-                    return;
-                }
-            } else if (!message.getFolder().getAccount().equals(account) ||
-                    !message.getFolder().getName().equals(folderName)) {
-
-                // Make sure all messages come from the same account/folder
-                return;
-            }
-
             if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) ||
                     (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
 
@@ -2382,20 +2380,36 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 return;
             }
 
+            String folderName = message.getFolder().getName();
+            if (folderName.equals(destination)) {
+                // Skip messages already in the destination folder
+                continue;
+            }
+
+            List<Message> outMessages = folderMap.get(folderName);
+            if (outMessages == null) {
+                outMessages = new ArrayList<Message>();
+                folderMap.put(folderName, outMessages);
+            }
+
             outMessages.add(message);
         }
 
-        if (operation == FolderOperation.MOVE) {
-            if (mThreadedList) {
-                mController.moveMessagesInThread(account, folderName, outMessages, destination);
+        for (String folderName : folderMap.keySet()) {
+            List<Message> outMessages = folderMap.get(folderName);
+
+            if (operation == FolderOperation.MOVE) {
+                if (mThreadedList) {
+                    mController.moveMessagesInThread(account, folderName, outMessages, destination);
+                } else {
+                    mController.moveMessages(account, folderName, outMessages, destination, null);
+                }
             } else {
-                mController.moveMessages(account, folderName, outMessages, destination, null);
-            }
-        } else {
-            if (mThreadedList) {
-                mController.copyMessagesInThread(account, folderName, outMessages, destination);
-            } else {
-                mController.copyMessages(account, folderName, outMessages, destination, null);
+                if (mThreadedList) {
+                    mController.copyMessagesInThread(account, folderName, outMessages, destination);
+                } else {
+                    mController.copyMessages(account, folderName, outMessages, destination, null);
+                }
             }
         }
     }
