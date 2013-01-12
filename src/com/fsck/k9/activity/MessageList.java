@@ -371,16 +371,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         int itemId = item.getItemId();
         switch (itemId) {
             case android.R.id.home: {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                if (fragmentManager.getBackStackEntryCount() > 0) {
-                    fragmentManager.popBackStack();
-                } else if (mMessageListFragment.isManualSearch()) {
-                    onBackPressed();
-                } else if (!mSingleFolderMode) {
-                    onAccounts();
-                } else {
-                    onShowFolderList();
-                }
+                goBack();
                 return true;
             }
             case R.id.compose: {
@@ -719,8 +710,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public void showThread(Account account, String folderName, long threadRootId) {
         LocalSearch tmpSearch = new LocalSearch();
         tmpSearch.addAccountUuid(account.getUuid());
-        tmpSearch.and(Searchfield.THREAD_ROOT, String.valueOf(threadRootId), Attribute.EQUALS);
-        tmpSearch.or(new SearchCondition(Searchfield.ID, Attribute.EQUALS, String.valueOf(threadRootId)));
+        tmpSearch.and(Searchfield.THREAD_ID, String.valueOf(threadRootId), Attribute.EQUALS);
 
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, true, false);
         addMessageListFragment(fragment, true);
@@ -730,5 +720,19 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public void remoteSearchStarted() {
         // Remove action button for remote search
         configureMenu(mMenu);
+    }
+
+    @Override
+    public void goBack() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else if (mMessageListFragment.isManualSearch()) {
+            onBackPressed();
+        } else if (!mSingleFolderMode) {
+            onAccounts();
+        } else {
+            onShowFolderList();
+        }
     }
 }

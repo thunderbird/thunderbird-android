@@ -2680,17 +2680,28 @@ public class MessagingController implements Runnable {
     }
 
     public void setFlag(final Account account, final List<Long> messageIds, final Flag flag,
-            final boolean newState, final boolean threadedList) {
+            final boolean newState) {
 
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                setFlagSynchronous(account, messageIds, flag, newState, threadedList);
+                setFlagSynchronous(account, messageIds, flag, newState, false);
             }
         });
     }
 
-    private void setFlagSynchronous(final Account account, final List<Long> messageIds,
+    public void setFlagForThreads(final Account account, final List<Long> threadRootIds,
+            final Flag flag, final boolean newState) {
+
+        threadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                setFlagSynchronous(account, threadRootIds, flag, newState, true);
+            }
+        });
+    }
+
+    private void setFlagSynchronous(final Account account, final List<Long> ids,
             final Flag flag, final boolean newState, final boolean threadedList) {
 
         LocalStore localStore;
@@ -2704,7 +2715,11 @@ public class MessagingController implements Runnable {
         // Update affected messages in the database. This should be as fast as possible so the UI
         // can be updated with the new state.
         try {
-            localStore.setFlag(messageIds, flag, newState, threadedList);
+            if (threadedList) {
+                localStore.setFlagForThreads(ids, flag, newState);
+            } else {
+                localStore.setFlag(ids, flag, newState);
+            }
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Couldn't set flags in local database", e);
         }
@@ -2712,7 +2727,7 @@ public class MessagingController implements Runnable {
         // Read folder name and UID of messages from the database
         Map<String, List<String>> folderMap;
         try {
-            folderMap = localStore.getFoldersAndUids(messageIds, threadedList);
+            folderMap = localStore.getFoldersAndUids(ids, threadedList);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Couldn't get folder name and UID of messages", e);
             return;
@@ -3905,8 +3920,9 @@ public class MessagingController implements Runnable {
 
         List<Message> messagesInThreads = new ArrayList<Message>();
         for (Message message : messages) {
-            long rootId = ((LocalMessage) message).getRootId();
-            long threadId = (rootId == -1) ? message.getId() : rootId;
+            LocalMessage localMessage = (LocalMessage) message;
+            long rootId = localMessage.getRootId();
+            long threadId = (rootId == -1) ? localMessage.getThreadId() : rootId;
 
             Message[] messagesInThread = localStore.getMessagesInThread(threadId);
             Collections.addAll(messagesInThreads, messagesInThread);

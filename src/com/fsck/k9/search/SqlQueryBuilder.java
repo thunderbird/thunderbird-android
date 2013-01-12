@@ -66,6 +66,12 @@ public class SqlQueryBuilder {
                     }
                     break;
                 }
+                case THREAD_ID: {
+                    query.append("threads.id = ? OR threads.root = ?");
+                    selectionArgs.add(condition.value);
+                    selectionArgs.add(condition.value);
+                    break;
+                }
                 default: {
                     appendCondition(condition, query, selectionArgs);
                 }
@@ -149,10 +155,6 @@ public class SqlQueryBuilder {
                 columnName = "subject";
                 break;
             }
-            case THREAD_ROOT: {
-                columnName = "thread_root";
-                break;
-            }
             case TO: {
                 columnName = "to_list";
                 break;
@@ -177,6 +179,7 @@ public class SqlQueryBuilder {
                 columnName = "display_class";
                 break;
             }
+            case THREAD_ID:
             case FOLDER:
             case SEARCHABLE: {
                 // Special cases handled in buildWhereClauseInternal()
@@ -258,7 +261,7 @@ public class SqlQueryBuilder {
             case FOLDER:
             case ID:
             case INTEGRATE:
-            case THREAD_ROOT:
+            case THREAD_ID:
             case READ:
             case FLAGGED: {
                 return true;
@@ -272,7 +275,7 @@ public class SqlQueryBuilder {
     public static String addPrefixToSelection(String[] columnNames, String prefix, String selection) {
         String result = selection;
         for (String columnName : columnNames) {
-            result = result.replaceAll("\\b" + columnName + "\\b", prefix + columnName);
+            result = result.replaceAll("(?<=^|[^\\.])\\b" + columnName + "\\b", prefix + columnName);
         }
 
         return result;

@@ -76,7 +76,7 @@ public interface SearchSpecification extends Parcelable {
         MESSAGE_CONTENTS,
         ATTACHMENT_COUNT,
         DELETED,
-        THREAD_ROOT,
+        THREAD_ID,
         ID,
         INTEGRATE,
         READ,
