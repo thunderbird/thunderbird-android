@@ -1258,6 +1258,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 d.dismiss();
             }
         })
+        .setNeutralButton(R.string.changelog_full_title, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface d, int c) {
+                new ChangeLog(Accounts.this).getFullLogDialog().show();
+            }
+        })
         .show();
     }
 
