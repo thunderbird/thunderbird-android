@@ -1080,7 +1080,7 @@ public class LocalStore extends Store implements Serializable {
         String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
 
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
-                "JOIN threads ON (threads.message_id = messages.id) " +
+                "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                 "LEFT JOIN folders ON (folders.id = messages.folder_id) WHERE " +
                 "((empty IS NULL OR empty != 1) AND deleted = 0)" +
                 ((!StringUtils.isNullOrEmpty(where)) ? " AND (" + where + ")" : "") +
@@ -2051,7 +2051,7 @@ public class LocalStore extends Store implements Serializable {
                                              "SELECT " +
                                              GET_MESSAGES_COLS +
                                              "FROM messages " +
-                                             "JOIN threads ON (threads.message_id = messages.id) " +
+                                             "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                                              "WHERE uid = ? AND folder_id = ?",
                                              new String[] {
                                                  message.getUid(), Long.toString(mFolderId)
@@ -2092,7 +2092,7 @@ public class LocalStore extends Store implements Serializable {
                                        LocalFolder.this,
                                        "SELECT " + GET_MESSAGES_COLS +
                                        "FROM messages " +
-                                       "JOIN threads ON (threads.message_id = messages.id) " +
+                                       "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                                        "WHERE (empty IS NULL OR empty != 1) AND " +
                                        (includeDeleted ? "" : "deleted = 0 AND ") +
                                        "folder_id = ? ORDER BY date DESC",
@@ -2364,8 +2364,8 @@ public class LocalStore extends Store implements Serializable {
 
         private ThreadInfo getThreadInfo(SQLiteDatabase db, String messageId) {
             String sql = "SELECT t.id, t.message_id, t.root, t.parent " +
-                    "FROM threads t " +
-                    "JOIN messages m ON (t.message_id = m.id) " +
+                    "FROM messages m " +
+                    "LEFT JOIN threads t ON (t.message_id = m.id) " +
                     "WHERE m.folder_id = ? AND m.message_id = ?";
             String[] selectionArgs = { Long.toString(mFolderId), messageId };
             Cursor cursor = db.rawQuery(sql, selectionArgs);
@@ -2947,7 +2947,7 @@ public class LocalStore extends Store implements Serializable {
                                       this,
                                       "SELECT " + GET_MESSAGES_COLS +
                                       "FROM messages " +
-                                      "JOIN threads ON (threads.message_id = messages.id) " +
+                                      "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                                       "WHERE (empty IS NULL OR empty != 1) AND " +
                                       "(folder_id = ? and date < ?)",
                                       new String[] {
@@ -3852,7 +3852,7 @@ public class LocalStore extends Store implements Serializable {
                     "SELECT m.id " +
                     "FROM threads t1 " +
                     "JOIN threads t2 ON (t1.parent = t2.id) " +
-                    "JOIN messages m ON (t2.message_id = m.id) " +
+                    "LEFT JOIN messages m ON (t2.message_id = m.id) " +
                     "WHERE t1.message_id = ? AND m.empty = 1",
                     new String[] { Long.toString(messageId) });
 
