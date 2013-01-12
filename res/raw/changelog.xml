@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.321" versioncode="17022" >
+        <change>Fixed some bugs related to message threading</change>
+    </release>
+
     <release version="4.320" versioncode="17021" >
-        <change>New feature here</change>
+        <change>Added 'Account settings' back to the account context menu</change>
+        <change>Added 'Refresh' and 'Settings' back to the folder context menu</change>
+        <change>Minor bug fixes</change>
     </release>
 
     <release version="4.319" versioncode="17020" >
