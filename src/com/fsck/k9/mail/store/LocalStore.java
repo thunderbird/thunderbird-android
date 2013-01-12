@@ -4326,8 +4326,8 @@ public class LocalStore extends Store implements Serializable {
      * @param messageIds
      *         A list of primary keys in the "messages" table.
      * @param threadedList
-     *         If this is {@code true}, {@code messageIds} contains the IDs of the messages at the
-     *         root of a thread. In that case return UIDs for all messages in these threads.
+     *         If this is {@code true}, {@code messageIds} contains the thread IDs of the messages
+     *         at the root of a thread. In that case return UIDs for all messages in these threads.
      *         If this is {@code false} only the UIDs for messages in {@code messageIds} are
      *         returned.
      *
@@ -4358,25 +4358,26 @@ public class LocalStore extends Store implements Serializable {
 
                 if (threadedList) {
                     String sql = "SELECT m.uid, f.name " +
-                            "FROM messages h " +
-                            "JOIN threads t1 ON (t1.message_id = h.id) " +
-                            "JOIN threads t2 ON " +
-                                "(t1.root IN (t2.id, t2.root) OR t1.id IN (t2.id, t2.root)) " +
-                            "JOIN messages m ON (t2.message_id = m.id) " +
-                            "JOIN folders f ON (m.folder_id = f.id) " +
+                            "FROM threads t " +
+                            "LEFT JOIN messages m ON (t.message_id = m.id) " +
+                            "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                             "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
-                            "AND h.id" + selectionSet;
+                            "AND (t.id" + selectionSet + " OR t.root" + selectionSet + ")";
 
-                    getDataFromCursor(db.rawQuery(sql, selectionArgs));
+                    int len = selectionArgs.length;
+                    String[] args = new String[len * 2];
+                    System.arraycopy(selectionArgs, 0, args, 0, len);
+                    System.arraycopy(selectionArgs, 0, args, len, len);
+
+                    getDataFromCursor(db.rawQuery(sql, args));
 
                 } else {
-                    String sqlPrefix =
+                    String sql =
                             "SELECT m.uid, f.name " +
                             "FROM messages m " +
-                            "JOIN folders f ON (m.folder_id = f.id) " +
-                            "WHERE (m.empty IS NULL OR m.empty != 1) AND ";
+                            "LEFT JOIN folders f ON (m.folder_id = f.id) " +
+                            "WHERE (m.empty IS NULL OR m.empty != 1) AND m.id" + selectionSet;
 
-                    String sql = sqlPrefix + "m.id" + selectionSet;
                     getDataFromCursor(db.rawQuery(sql, selectionArgs));
                 }
             }
