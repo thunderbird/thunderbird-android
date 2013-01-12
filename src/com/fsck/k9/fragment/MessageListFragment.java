@@ -1508,6 +1508,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mHandler.updateFooter(mContext.getString(R.string.remote_search_sending_query));
         }
 
+        @Override
+        public void enableProgressIndicator(boolean enable) {
+            mHandler.progress(enable);
+        }
 
         @Override
         public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults) {
