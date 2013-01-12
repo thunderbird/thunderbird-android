@@ -364,16 +364,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         int itemId = item.getItemId();
         switch (itemId) {
             case android.R.id.home: {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                if (fragmentManager.getBackStackEntryCount() > 0) {
-                    fragmentManager.popBackStack();
-                } else if (mMessageListFragment.isManualSearch()) {
-                    onBackPressed();
-                } else if (!mSingleFolderMode) {
-                    onAccounts();
-                } else {
-                    onShowFolderList();
-                }
+                goBack();
                 return true;
             }
             case R.id.compose: {
@@ -721,5 +712,19 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public void remoteSearchStarted() {
         // Remove action button for remote search
         configureMenu(mMenu);
+    }
+
+    @Override
+    public void goBack() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else if (mMessageListFragment.isManualSearch()) {
+            onBackPressed();
+        } else if (!mSingleFolderMode) {
+            onAccounts();
+        } else {
+            onShowFolderList();
+        }
     }
 }

@@ -429,6 +429,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         private static final int ACTION_REFRESH_TITLE = 2;
         private static final int ACTION_PROGRESS = 3;
         private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
+        private static final int ACTION_GO_BACK = 5;
 
 
         public void folderLoading(String folder, boolean loading) {
@@ -462,6 +463,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             });
         }
 
+        public void goBack() {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_GO_BACK);
+            sendMessage(msg);
+        }
+
         @Override
         public void handleMessage(android.os.Message msg) {
             // The following messages don't need an attached activity.
@@ -492,6 +498,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 case ACTION_PROGRESS: {
                     boolean progress = (msg.arg1 == 1);
                     MessageListFragment.this.progress(progress);
+                    break;
+                }
+                case ACTION_GO_BACK: {
+                    mFragmentListener.goBack();
                     break;
                 }
             }
@@ -2748,6 +2758,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         void onCompose(Account account);
         boolean startSearch(Account account, String folderName);
         void remoteSearchStarted();
+        void goBack();
     }
 
     public void onReverseSort() {
@@ -3017,6 +3028,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (mIsThreadDisplay && data.getCount() == 0) {
+            mHandler.goBack();
+            return;
+        }
+
         // Remove the "Loading..." view
         mPullToRefreshView.setEmptyView(null);
 
