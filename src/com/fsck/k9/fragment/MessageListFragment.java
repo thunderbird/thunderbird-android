@@ -2056,10 +2056,16 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
         Account account = mPreferences.getAccount(cursor.getString(ACCOUNT_UUID_COLUMN));
-        long id = cursor.getLong(ID_COLUMN);
 
-        mController.setFlag(account, Collections.singletonList(Long.valueOf(id)), flag, newState,
-                mThreadedList);
+        if (mThreadedList && cursor.getInt(THREAD_COUNT_COLUMN) > 1) {
+            long threadRootId = cursor.getLong(THREAD_ROOT_COLUMN);
+            mController.setFlagForThreads(account,
+                    Collections.singletonList(Long.valueOf(threadRootId)), flag, newState);
+        } else {
+            long id = cursor.getLong(ID_COLUMN);
+            mController.setFlag(account, Collections.singletonList(Long.valueOf(id)), flag,
+                    newState);
+        }
 
         computeBatchDirection();
     }
@@ -2069,7 +2075,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return;
         }
 
-        Map<Account, List<Long>> accountMapping = new HashMap<Account, List<Long>>();
+        Map<Account, List<Long>> messageMap = new HashMap<Account, List<Long>>();
+        Map<Account, List<Long>> threadMap = new HashMap<Account, List<Long>>();
         Set<Account> accounts = new HashSet<Account>();
 
         for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
@@ -2079,21 +2086,39 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             if (mSelected.contains(uniqueId)) {
                 String uuid = cursor.getString(ACCOUNT_UUID_COLUMN);
                 Account account = mPreferences.getAccount(uuid);
-
                 accounts.add(account);
-                List<Long> messageIdList = accountMapping.get(account);
-                if (messageIdList == null) {
-                    messageIdList = new ArrayList<Long>();
-                    accountMapping.put(account, messageIdList);
-                }
 
-                messageIdList.add(cursor.getLong(ID_COLUMN));
+                if (mThreadedList && cursor.getInt(THREAD_COUNT_COLUMN) > 1) {
+                    List<Long> threadRootIdList = threadMap.get(account);
+                    if (threadRootIdList == null) {
+                        threadRootIdList = new ArrayList<Long>();
+                        threadMap.put(account, threadRootIdList);
+                    }
+
+                    threadRootIdList.add(cursor.getLong(THREAD_ROOT_COLUMN));
+                } else {
+                    List<Long> messageIdList = messageMap.get(account);
+                    if (messageIdList == null) {
+                        messageIdList = new ArrayList<Long>();
+                        messageMap.put(account, messageIdList);
+                    }
+
+                    messageIdList.add(cursor.getLong(ID_COLUMN));
+                }
             }
         }
 
         for (Account account : accounts) {
-            List<Long> messageIds = accountMapping.get(account);
-            mController.setFlag(account, messageIds, flag, newState, mThreadedList);
+            List<Long> messageIds = messageMap.get(account);
+            List<Long> threadRootIds = threadMap.get(account);
+
+            if (messageIds != null) {
+                mController.setFlag(account, messageIds, flag, newState);
+            }
+
+            if (threadRootIds != null) {
+                mController.setFlagForThreads(account, threadRootIds, flag, newState);
+            }
         }
 
         computeBatchDirection();

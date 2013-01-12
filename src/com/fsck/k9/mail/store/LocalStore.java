@@ -118,6 +118,13 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int FLAG_UPDATE_BATCH_SIZE = 500;
 
+    /**
+     * Number of threads to perform flag updates on at once.
+     *
+     * @see #setFlagForThreads(List, Flag, boolean)
+     */
+    private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 400;
+
     public static final int DB_VERSION = 47;
 
     protected String uUid = null;
@@ -4169,10 +4176,7 @@ public class LocalStore extends Store implements Serializable {
      *
      * <p>
      * The goal of this method is to be fast. Currently this means using as few SQL UPDATE
-     * statements as possible.<br>
-     * Current benchmarks show that updating 1000 messages takes about 8 seconds on a Nexus 7. So
-     * there should be room for further improvement.
-     * </p>
+     * statements as possible.
      *
      * @param messageIds
      *         A list of primary keys in the "messages" table.
@@ -4180,23 +4184,9 @@ public class LocalStore extends Store implements Serializable {
      *         The flag to change. This must be a flag with a separate column in the database.
      * @param newState
      *         {@code true}, if the flag should be set. {@code false}, otherwise.
-     * @param threadRootIds
-     *         If this is {@code true}, {@code messageIds} contains the IDs of the messages at the
-     *         root of a thread. In that case the flag is changed for all messages in these threads.
-     *         If this is {@code false} only the messages in {@code messageIds} are changed.
      *
      * @throws MessagingException
      */
-    public void setFlag(List<Long> messageIds, Flag flag, boolean newState, boolean threadRootIds)
-            throws MessagingException {
-
-        if (threadRootIds) {
-            setFlagForThreads(messageIds, flag, newState);
-        } else {
-            setFlag(messageIds, flag, newState);
-        }
-    }
-
     public void setFlag(final List<Long> messageIds, final Flag flag, final boolean newState)
             throws MessagingException {
 
@@ -4251,7 +4241,23 @@ public class LocalStore extends Store implements Serializable {
         }, FLAG_UPDATE_BATCH_SIZE);
     }
 
-    public void setFlagForThreads(final List<Long> messageIds, Flag flag, final boolean newState)
+    /**
+     * Change the state of a flag for a list of threads.
+     *
+     * <p>
+     * The goal of this method is to be fast. Currently this means using as few SQL UPDATE
+     * statements as possible.
+     *
+     * @param threadRootIds
+     *         A list of root thread IDs.
+     * @param flag
+     *         The flag to change. This must be a flag with a separate column in the database.
+     * @param newState
+     *         {@code true}, if the flag should be set. {@code false}, otherwise.
+     *
+     * @throws MessagingException
+     */
+    public void setFlagForThreads(final List<Long> threadRootIds, Flag flag, final boolean newState)
             throws MessagingException {
 
         final String flagColumn;
@@ -4281,35 +4287,37 @@ public class LocalStore extends Store implements Serializable {
 
             @Override
             public int getListSize() {
-                return messageIds.size();
+                return threadRootIds.size();
             }
 
             @Override
             public String getListItem(int index) {
-                return Long.toString(messageIds.get(index));
+                return Long.toString(threadRootIds.get(index));
             }
 
             @Override
             public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
                     throws UnavailableStorageException {
 
+                int len = selectionArgs.length;
+                String[] args = new String[len * 2];
+                System.arraycopy(selectionArgs, 0, args, 0, len);
+                System.arraycopy(selectionArgs, 0, args, len, len);
+
                 db.execSQL("UPDATE messages SET " + flagColumn + " = " + ((newState) ? "1" : "0") +
                         " WHERE id IN (" +
-                        "SELECT m.id FROM messages h " +
-                        "JOIN threads t1 ON (t1.message_id = h.id) " +
-                        "JOIN threads t2 ON " +
-                            "(t1.root IN (t2.id, t2.root) OR t1.id IN (t2.id, t2.root)) " +
-                        "JOIN messages m ON (t2.message_id = m.id) " +
+                        "SELECT m.id FROM threads t " +
+                        "LEFT JOIN messages m ON (t.message_id = m.id) " +
                         "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
-                        "AND h.id" + selectionSet + ")",
-                        selectionArgs);
+                        "AND (t.id" + selectionSet + " OR t.root" + selectionSet + "))",
+                        args);
             }
 
             @Override
             public void postDbWork() {
                 notifyChange();
             }
-        }, FLAG_UPDATE_BATCH_SIZE);
+        }, THREAD_FLAG_UPDATE_BATCH_SIZE);
     }
 
     /**
