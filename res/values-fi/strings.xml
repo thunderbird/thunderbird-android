@@ -2,6 +2,13 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
+    <!--
+         When removing strings from the main file, please cleanup the translations.
+         
+         This doesn't work on multiline strings, nor strings with the NEW tag.
+         find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
+     -->
+
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
@@ -25,8 +32,7 @@
     <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 on avoimen lähdekoodin sähköpostiasiakasohjelma Android-käyttöjärjestelmälle. Ohjelma perustuu
-standardiin Androidin sähköpostiasiakasohjelmaan.
+K-9 Mail on tehokas avoimen lähdekoodin sähköpostiasiakasohjelma Android-käyttöjärjestelmälle.
 </p><p>
 K-9:n parannettuja ominaisuuksia ovat mm.:
 </p>
@@ -57,13 +63,13 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nLähetetty Android-puhelimesta K-9 Mail -ohjelmalla</string>
+    <string name="default_signature">-- \nLähetetty Android-laitteesta K-9 Mail -ohjelmalla</string>
 
 
     <!-- General strings that include the app name -->
     <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Kaikki tiedot tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
-    <string name="account_clear_dlg_instructions_fmt">Kaikki viestit tililtä \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta, mutta tilin asetukset säilyvät.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Kaikki tilin \"<xliff:g id="account">%s</xliff:g>\" paikalliset tiedot poistetaan, mutta tilin asetukset säilyvät.</string>
+    <string name="account_clear_dlg_instructions_fmt">Kaikki tilin \"<xliff:g id="account">%s</xliff:g>\" paikalliset viestit poistetaan, mutta tilin asetukset säilyvät.</string>
     <string name="insufficient_apg_permissions">K-9:llä ei ole oikeuksia kaikkien APG:n ominaisuuksien käyttämiseen. Ole hyvä ja asenna K-9 uudelleen.</string>
 
 
@@ -208,7 +214,13 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="recreating_account">Luodaan uudelleen tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Uusi sähköpostiviesti</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Lukematonta (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> uutta viestiä</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> lukematonta (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> viestiä lisää tilillä <xliff:g id="account">%s</xliff:g></string>
+
+    <string name="notification_action_reply">Vastaa</string>
+    <string name="notification_action_read">Lue</string>
+    <string name="notification_action_delete">Poista</string>
 
     <string name="notification_bg_sync_ticker">Tarkistetaan viestejä: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Tarkistetaan viestejä</string>
@@ -237,7 +249,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="end_of_folder">Ei enempää viestejä</string>
 
     <string name="debug_version_fmt">Versio: <xliff:g id="version">%s</xliff:g></string>
-    <string name="debug_enable_debug_logging_title">Käytä virheenjäljitystietojen  lokiinkirjausta</string>
+    <string name="debug_enable_debug_logging_title">Käytä virheenkorjaustietojen  lokiinkirjausta</string>
     <string name="debug_enable_debug_logging_summary">Kirjoita lokiin laajempi kuvaus ongelmista</string>
     <string name="debug_enable_sensitive_logging_title">Kirjaa lokiin arkaluontoisia tietoja</string>
     <string name="debug_enable_sensitive_logging_summary">Salasanat saattavat näkyä lokeissa.</string>
@@ -318,16 +330,23 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="global_settings_messageview_show_next_label">Näytä poiston jälkeen seuraava viesti</string>
     <string name="global_settings_messageview_show_next_summary">Näytä viestin poiston jälkeen oletusarvoisesti seuraava viesti</string>
 
-    <string name="global_settings_confirm_actions_title">Vahvista toimenpiteet</string>
-    <string name="global_settings_confirm_actions_summary">Näytä valintaikkuna valitun toimenpiteen suorituksesta</string>
-    <string name="global_settings_confirm_action_delete">Poista (vain viestinäkymässä)</string>
-    <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (vain viestinäkymässä)</string>
+    <string name="global_settings_confirm_actions_title">Vahvista toiminnot</string>
+    <string name="global_settings_confirm_actions_summary">Näytä valintaikkuna valitun toiminnon suorittamisesta</string>
+    <string name="global_settings_confirm_action_delete">Poista (viestinäkymässä)</string>
+    <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (viestinäkymässä)</string>
     <string name="global_settings_confirm_action_spam">Roskaposti</string>
+    <string name="global_settings_confirm_action_delete_notif">Poista (ilmoituksessa)</string>
 
     <string name="global_settings_notification_hide_subject_title">Piilota aihe ilmoituksissa</string>
     <string name="global_settings_notification_hide_subject_never">Ei koskaan</string>
-    <string name="global_settings_notification_hide_subject_when_locked">Kun puhelin on lukittu</string>
+    <string name="global_settings_notification_hide_subject_when_locked">Kun laite on lukittu</string>
     <string name="global_settings_notification_hide_subject_always">Aina</string>
+
+    <string name="global_settings_notification_quick_delete_title">Näytä Poista-painike</string>
+    <string name="global_settings_notification_quick_delete_never">Ei koskaan</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Yksittäisen viestin ilmoituksessa</string>
+    <string name="global_settings_notification_quick_delete_always">Aina</string>
+    <string name="global_settings_notification_quick_delete_description">Näytä ilmoituksessa painike, joka mahdollistaa nopean viestin poistamisen</string>
 
     <string name="global_settings_batch_buttons">Ryhmätoimintopainikkeet</string>
     <string name="global_settings_batch_buttons_summary">Määritä viestilistan ryhmätoimintopainikkeet</string>
@@ -509,7 +528,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_settings_mark_message_as_read_on_view_label">Merkitse viesti luetuksi avattaessa</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se avataan katseltavaksi</string>
 
-    <string name="account_settings_show_pictures_label">Näytä kuvat automaattisesti</string>
+    <string name="account_settings_show_pictures_label">Näytä aina kuvat</string>
     <string name="account_settings_show_pictures_never">Ei koskaan</string>
     <string name="account_settings_show_pictures_only_from_contacts">Vain yhteystiedoissa olevilta lähettäjiltä</string>
     <string name="account_settings_show_pictures_always">Keneltä tahansa</string>
@@ -541,6 +560,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_settings_quote_style_header">Otsikko (kuten Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Yleiset asetukset</string>
+    <string name="account_settings_reading_mail">Viestien lukeminen</string>
     <string name="account_settings_sync">Viestien hakeminen</string>
     <string name="account_settings_folders">Kansiot</string>
     <string name="account_settings_quote_prefix_label">Lainauksen etuliite</string>
@@ -552,6 +572,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_settings_crypto_auto_signature_summary">Käytä tilin sähköpostiosoitetta allekirjoitusavaimen arvaamiseen.</string>
     <string name="account_settings_crypto_auto_encrypt">Automaattinen salaus</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Salaa automaattisesti, jos julkinen avain täsmää vastaanottajan avaimeen.</string>
+    <string name="account_settings_crypto_apg_not_installed">APG:tä ei ole asennettu</string>
 
     <string name="account_settings_mail_check_frequency_label">Kansioiden tarkistus</string>
 
@@ -561,7 +582,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_settings_color_summary">Valitse väri tilin kansio- ja tililistaan</string>
 
     <string name="account_settings_led_color_label">LED-ilmoitusvalon väri</string>
-    <string name="account_settings_led_color_summary">Valitse väri, jota puhelimesi LED vilkuttaa tälle tilille</string>
+    <string name="account_settings_led_color_summary">Valitse väri, jota laitteesi vilkuttaa tälle tilille</string>
 
     <string name="account_settings_mail_display_count_label">Paikallisen kansion koko</string>
 
@@ -934,7 +955,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="send_aborted">Lähetys keskeytetty.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Tallenna luonnos?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Tallenna tai hylkää tämä viesti?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Tallennetaanko vai hylätäänkö tämä viesti?</string>
 
     <string name="confirm_discard_draft_message_title">Hylkää viesti?</string>
     <string name="confirm_discard_draft_message">Haluatko varmasti hylätä tämän viestin?</string>
@@ -949,8 +970,12 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="dialog_confirm_delete_title">Vahvista poisto</string>
     <string name="dialog_confirm_delete_message">Haluatko poistaa tämän viestin?</string>
-    <string name="dialog_confirm_delete_confirm_button">Poista</string>
-    <string name="dialog_confirm_delete_cancel_button">Älä poista</string>
+    <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Haluatko varmasti poistaa tämän viestin?</item>
+        <item quantity="other">Haluatko varmasti poistaa <xliff:g id="message_count">%1$d</xliff:g> viestiä?</item>
+    </plurals>
+    <string name="dialog_confirm_delete_confirm_button">Kyllä</string>
+    <string name="dialog_confirm_delete_cancel_button">Ei</string>
 
     <string name="dialog_confirm_spam_title">Vahvista roskapostikansioon siirtäminen</string>
     <plurals name="dialog_confirm_spam_message">
@@ -1093,4 +1118,10 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="global_settings_threaded_view_label">Ketjunäkymä</string>
     <string name="global_settings_threaded_view_summary">Kutista samaan ketjuun kuuluvat viestit</string>
+
+    <string name="upgrade_databases_title">Päivitetään tietokantoja</string>
+    <string name="upgrade_databases_unspecified">Päivitetään tietokantoja…</string>
+    <string name="upgrade_database_format">Päivitetään tilin \"<xliff:g id="account">%s</xliff:g>\" tietokantaa</string>
+
+    <string name="message_list_loading">Ladataan…</string>
 </resources>
