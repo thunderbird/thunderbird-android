@@ -4822,8 +4822,8 @@ public class MessagingController implements Runnable {
             targetIntent = FolderList.actionHandleNotification(context, account, initialFolder);
         }
 
-        PendingIntent pi = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pi);
+        builder.setContentIntent(PendingIntent.getActivity(context,
+                account.getAccountNumber(), targetIntent, PendingIntent.FLAG_UPDATE_CURRENT));
         builder.setDeleteIntent(NotificationActionService.getAcknowledgeIntent(context, account));
 
         // Only ring or vibrate if we have not done so already on this account and fetch
