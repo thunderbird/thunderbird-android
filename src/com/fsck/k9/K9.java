@@ -653,7 +653,7 @@ public class K9 extends Application {
 
         int cachedVersion = sDatabaseVersionCache.getInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, 0);
 
-        if (cachedVersion > 0 && cachedVersion <= LocalStore.DB_VERSION) {
+        if (cachedVersion >= LocalStore.DB_VERSION) {
             K9.setDatabasesUpToDate(false);
         }
     }
