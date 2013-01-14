@@ -125,6 +125,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
+            finish();
+            return;
+        }
+
         setContentView(R.layout.message_list);
 
         mActionBar = getSupportActionBar();
