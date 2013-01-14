@@ -537,6 +537,11 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
             return true;
 
+        case R.id.search:
+            onSearchRequested();
+
+            return true;
+
         case R.id.compose:
             MessageCompose.actionCompose(this, mAccount);
 
@@ -597,6 +602,14 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public boolean onSearchRequested() {
+         Bundle appData = new Bundle();
+         appData.putString(MessageList.EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
+         startSearch(null, false, appData, false);
+         return true;
+     }
 
     private void onOpenFolder(String folder) {
         LocalSearch search = new LocalSearch(folder);
