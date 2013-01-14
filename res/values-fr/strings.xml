@@ -18,6 +18,8 @@ Translator for FR version:
 Pierre-Luc Auclair (p-l<DOT>auclair<AT>velourbain.qc.ca)
 Corrected by
 Antoine Aflalo ( antoineaf<AT>gmail<DOT>com )
+Updated by
+Erkan (https://github.com/rk4an)
 
 Editor:
 ArtfulBits Inc. (c) 2005-2009 (http://www.artfulbits.com)
@@ -236,7 +238,13 @@ de plus</string>
     <string name="recreating_account">Recréation du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
 
     <string name="notification_new_title">Nouvel e-mail</string>
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nouveaux messages</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> sur <xliff:g id="account">%s</xliff:g></string>
+
+    <string name="notification_action_reply">Répondre</string>
+    <string name="notification_action_read">Lire</string>
+    <string name="notification_action_delete">Supprimer</string>
 
     <string name="notification_bg_sync_ticker">Vérification des messages\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Vérification des messages</string>
@@ -351,11 +359,18 @@ de plus</string>
     <string name="global_settings_confirm_action_delete">Supprimer (mode lecture)</string>
     <string name="global_settings_confirm_action_delete_starred">Supprimer étoilé (mode lecture)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_delete_notif">Supprimer (depuis notification)</string>
 
     <string name="global_settings_notification_hide_subject_title">Masquer le sujet du message lors de la nofication</string>
     <string name="global_settings_notification_hide_subject_never">Jamais</string>
     <string name="global_settings_notification_hide_subject_when_locked">Lorsque le téléphone est verouillé</string>
     <string name="global_settings_notification_hide_subject_always">Toujours</string>
+
+   <string name="global_settings_notification_quick_delete_title">Afficher le bouton \'Supprimer\'</string>
+    <string name="global_settings_notification_quick_delete_never">Jamais</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Pour la notification de message unique</string>
+    <string name="global_settings_notification_quick_delete_always">Toujours</string>
+    <string name="global_settings_notification_quick_delete_description">Affiche un bouton dans les notification permettant de supprimer rapidement les messages</string>
 
     <string name="global_settings_batch_buttons">Boutons batch</string>
     <string name="global_settings_batch_buttons_summary">Configurer les boutons batch de la liste des messages</string>
