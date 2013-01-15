@@ -6,13 +6,6 @@
     android:background="@drawable/message_list_item_footer_background"
     android:gravity="center"
     android:orientation="horizontal">
-    <ProgressBar
-        android:id="@+id/message_list_progress"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        style="?android:attr/progressBarStyleSmall"
-        android:paddingRight="10dip"
-        />
     <TextView
         android:id="@+id/main_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
