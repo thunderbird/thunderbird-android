@@ -136,7 +136,7 @@ public class FontSizes {
         accountName = MEDIUM;
         accountDescription = SMALL;
 
-        folderName = FONT_16SP;
+        folderName = MEDIUM;
         folderStatus = SMALL;
 
         messageListSubject = FONT_16SP;
