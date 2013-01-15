@@ -14,7 +14,7 @@ public abstract class Transport {
     public synchronized static Transport getInstance(Account account) throws MessagingException {
         String uri = account.getTransportUri();
         if (uri.startsWith("smtp")) {
-            return new SmtpTransport(uri);
+            return new SmtpTransport(account);
         } else if (uri.startsWith("webdav")) {
             return new WebDavTransport(account);
         } else {

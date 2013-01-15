@@ -221,6 +221,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_action_reply">Reply</string>
     <string name="notification_action_read">Read</string>
     <string name="notification_action_delete">Delete</string>
+    <string name="notification_certificate_error_title">Certificate error</string>
+    <string name="notification_certificate_error_text">Check your server settings</string>
 
     <string name="notification_bg_sync_ticker">Checking mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Checking mail</string>
