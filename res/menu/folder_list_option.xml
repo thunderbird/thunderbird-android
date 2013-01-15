@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
+    <item
+        android:id="@+id/search"
+        android:icon="?attr/iconActionSearch"
+        android:showAsAction="always"
+        android:title="@string/search_action"/>
+    <item
+        android:id="@+id/filter_folders"
+        android:icon="?attr/iconActionSearchFolder"
+        android:showAsAction="always|collapseActionView"
+        android:title="@string/filter_folders_action"
+        android:actionViewClass="com.actionbarsherlock.widget.SearchView"/>
     <item
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
@@ -29,9 +39,6 @@
             <item
                 android:id="@+id/display_not_second_class"
                 android:title="@string/folder_list_display_mode_not_second_class"/>
-            <item
-                android:id="@+id/filter_folders"
-                android:title="@string/filter_folders_action"/>
         </menu>
     </item>
     <item

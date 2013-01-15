@@ -60,7 +60,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private static final String EXTRA_SPECIAL_FOLDER = "special_folder";
 
     // used for remote search
-    private static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
+    public static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
     private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
@@ -191,7 +191,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
                     mSearch.addAccountUuid(appData.getString(EXTRA_SEARCH_ACCOUNT));
-                    mSearch.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
+                    // searches started from a folder list activity will provide an account, but no folder
+                    if (appData.getString(EXTRA_SEARCH_FOLDER) != null) {
+                        mSearch.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
+                    }
                 } else {
                     mSearch.addAccountUuid(LocalSearch.ALL_ACCOUNTS);
                 }

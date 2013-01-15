@@ -6,22 +6,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.actionbarsherlock.widget.SearchView;
 
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -172,7 +168,28 @@ public class ChooseFolder extends K9ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getSupportMenuInflater().inflate(R.menu.folder_select_option, menu);
+        configureFolderSearchView(menu);
         return true;
+    }
+
+    private void configureFolderSearchView(Menu menu) {
+        final MenuItem folderMenuItem = menu.findItem(R.id.filter_folders);
+        final SearchView folderSearchView = (SearchView) folderMenuItem.getActionView();
+        folderSearchView.setQueryHint(getString(R.string.folder_list_filter_hint));
+        folderSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                folderMenuItem.collapseActionView();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -198,10 +215,6 @@ public class ChooseFolder extends K9ListActivity {
                 onRefresh();
                 return true;
             }
-            case R.id.filter_folders: {
-                onEnterFilter();
-                return true;
-            }
             default: {
                 return super.onOptionsItemSelected(item);
             }
@@ -210,50 +223,6 @@ public class ChooseFolder extends K9ListActivity {
 
     private void onRefresh() {
         MessagingController.getInstance(getApplication()).listFolders(mAccount, true, mListener);
-    }
-
-    /**
-     * Show an alert with an input-field for a filter-expression.
-     * Filter {@link #mAdapter} with the user-input.
-     */
-    private void onEnterFilter() {
-        final AlertDialog.Builder filterAlert = new AlertDialog.Builder(this);
-
-        final EditText input = new EditText(this);
-        input.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mAdapter.getFilter().filter(input.getText().toString());
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                /* not used */ }
-
-            @Override
-            public void afterTextChanged(Editable s) { /* not used */ }
-        });
-        input.setHint(R.string.folder_list_filter_hint);
-        filterAlert.setView(input);
-
-        String okay = getString(R.string.okay_action);
-        filterAlert.setPositiveButton(okay, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String value = input.getText().toString().trim();
-                mAdapter.getFilter().filter(value);
-            }
-        });
-
-        String cancel = getString(R.string.cancel_action);
-        filterAlert.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int whichButton) {
-                mAdapter.getFilter().filter("");
-            }
-        });
-
-        filterAlert.show();
     }
 
     private void setDisplayMode(FolderMode aMode) {
