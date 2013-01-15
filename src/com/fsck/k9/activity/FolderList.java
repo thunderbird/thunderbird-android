@@ -6,17 +6,13 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.TextUtils.TruncateAt;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -30,7 +26,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
@@ -41,9 +36,9 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.AccountStats;
@@ -52,7 +47,6 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.FolderList.FolderListAdapter.FolderListFilter;
 import com.fsck.k9.activity.misc.ActionBarNavigationSpinner;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -79,11 +73,6 @@ import de.cketti.library.changelog.ChangeLog;
  */
 
 public class FolderList extends K9ListActivity implements OnNavigationListener {
-    /*
-     * Constants for showDialog() etc.
-     */
-    private static final int DIALOG_FIND_FOLDER = 2;
-
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
@@ -499,14 +488,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
     }
 
-    /**
-     * Show an alert with an input-field for a filter-expression.
-     * Filter {@link #mAdapter} with the user-input.
-     */
-    private void onEnterFilter() {
-        showDialog(DIALOG_FIND_FOLDER);
-    }
-
     private void onEditPrefs() {
         Prefs.actionPrefs(this);
     }
@@ -524,11 +505,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
         MessagingController.getInstance(getApplication()).emptyTrash(account, null);
     }
-
-    private void onExpunge(final Account account, String folderName) {
-        MessagingController.getInstance(getApplication()).expunge(account, folderName, null);
-    }
-
 
     private void onClearFolder(Account account, String folderName) {
         // There has to be a cheaper way to get at the localFolder object than this
@@ -567,6 +543,11 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
             return true;
 
+        case R.id.search:
+            onSearchRequested();
+
+            return true;
+
         case R.id.compose:
             MessageCompose.actionCompose(this, mAccount);
 
@@ -584,11 +565,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
         case R.id.list_folders:
             onRefresh(REFRESH_REMOTE);
-
-            return true;
-
-        case R.id.filter_folders:
-            onEnterFilter();
 
             return true;
 
@@ -633,6 +609,14 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         }
     }
 
+    @Override
+    public boolean onSearchRequested() {
+         Bundle appData = new Bundle();
+         appData.putString(MessageList.EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
+         startSearch(null, false, appData, false);
+         return true;
+     }
+
     private void onOpenFolder(String folder) {
         LocalSearch search = new LocalSearch(folder);
         search.addAccountUuid(mAccount.getUuid());
@@ -649,7 +633,38 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         super.onCreateOptionsMenu(menu);
         getSupportMenuInflater().inflate(R.menu.folder_list_option, menu);
         mRefreshMenuItem = menu.findItem(R.id.check_mail);
+        configureFolderSearchView(menu);
         return true;
+    }
+
+    private void configureFolderSearchView(Menu menu) {
+        final MenuItem folderMenuItem = menu.findItem(R.id.filter_folders);
+        final SearchView folderSearchView = (SearchView) folderMenuItem.getActionView();
+        folderSearchView.setQueryHint(getString(R.string.folder_list_filter_hint));
+        folderSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                folderMenuItem.collapseActionView();
+                mActionBarTitle.setText(getString(R.string.filter_folders_action));
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
+        folderSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            
+            @Override
+            public boolean onClose() {
+                mActionBarTitle.setText(getString(R.string.folders_title));
+                return false;
+            }
+        });
     }
 
     @Override public boolean onContextItemSelected(android.view.MenuItem item) {
@@ -669,83 +684,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         }
 
         return super.onContextItemSelected(item);
-    }
-
-    private FolderInfoHolder mSelectedContextFolder = null;
-
-    @Override
-    public Dialog onCreateDialog(int id) {
-        switch (id) {
-        case DIALOG_FIND_FOLDER: {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.filter_folders_action);
-
-            final EditText input = new EditText(this);
-            input.setId(R.id.filter_folders);
-            input.setHint(R.string.folder_list_filter_hint);
-            input.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mAdapter.getFilter().filter(input.getText());
-                }
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count,
-                int after) {
-                    /* not used */
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    /* not used */
-                }
-            });
-
-            builder.setView(input);
-
-            builder.setPositiveButton(getString(R.string.okay_action),
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    String value = input.getText().toString();
-                    mAdapter.getFilter().filter(value);
-                }
-            });
-
-            builder.setNegativeButton(getString(R.string.cancel_action),
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    mAdapter.getFilter().filter(null);
-                }
-            });
-
-            return builder.create();
-        }
-        }
-
-        return super.onCreateDialog(id);
-    }
-
-    @Override
-    public void onPrepareDialog(int id, Dialog dialog) {
-        switch (id) {
-        case DIALOG_FIND_FOLDER: {
-            AlertDialog alertDialog = (AlertDialog) dialog;
-            EditText input = (EditText) alertDialog.findViewById(R.id.filter_folders);
-
-            // Populate the EditText with the current search term
-            FolderListFilter filter = (FolderListFilter) mAdapter.getFilter();
-            input.setText(filter.getSearchTerm());
-
-            // Place the cursor at the end of the text
-            input.setSelection(input.getText().length());
-            break;
-        }
-        default: {
-            super.onPrepareDialog(id, dialog);
-        }
-        }
     }
 
     @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -1166,6 +1104,14 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             holder.chip.setBackgroundDrawable(mAccount.generateColorChip((folder.unreadMessageCount == 0 ? true : false ), false, false, false,false).drawable());
 
             holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderName());
+            if (K9.wrapFolderNames()) {
+                holder.folderName.setEllipsize(null);
+                holder.folderName.setSingleLine(false);
+            }
+            else {
+                holder.folderName.setEllipsize(TruncateAt.START);
+                holder.folderName.setSingleLine(true);
+            }
             holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderStatus());
 
 

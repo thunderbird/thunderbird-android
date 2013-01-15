@@ -6,6 +6,13 @@
         android:icon="@drawable/ic_show_folders"
     >
         <menu>-->
+           <item
+            android:id="@+id/filter_folders"
+            android:icon="?attr/iconActionSearchFolder"
+            android:showAsAction="always|collapseActionView"
+            android:title="@string/filter_folders_action"
+            android:actionViewClass="com.actionbarsherlock.widget.SearchView"
+           />
             <item
             android:id="@+id/display_all"
             android:title="@string/folder_list_display_mode_all"
@@ -30,11 +37,6 @@
             android:id="@+id/list_folders"
             android:title="@string/refresh_folders_action"
             android:icon="?attr/iconMenuRefresh"
-         />
-           <item
-            android:id="@+id/filter_folders"
-            android:title="@string/filter_folders_action"
-            android:icon="?attr/iconMenuSearch"
          />
         
     <!--     </menu>

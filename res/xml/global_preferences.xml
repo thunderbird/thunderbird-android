@@ -176,6 +176,18 @@
 
         </PreferenceCategory>
 
+        <PreferenceCategory
+            android:key="folderlist_preferences"
+            android:title="@string/folderlist_preferences">
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="folderlist_wrap_folder_name"
+                android:title="@string/global_settings_folderlist_wrap_folder_names_label"
+                android:summary="@string/global_settings_folderlist_wrap_folder_names_summary" />
+
+        </PreferenceCategory>
+
     </PreferenceScreen>
 
     <PreferenceScreen

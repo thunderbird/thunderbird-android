@@ -16,6 +16,7 @@
         <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_light</item>
         <item name="iconActionRefresh">@drawable/ic_action_refresh_light</item>
         <item name="iconActionSearch">@drawable/ic_action_search_light</item>
+        <item name="iconActionSearchFolder">@drawable/action_search_folder_light</item>
         <item name="iconActionSend">@drawable/ic_action_send_light</item>
         <item name="iconActionSettings">@drawable/ic_action_settings_light</item>
         <item name="iconActionSingleMessageOptions">@drawable/ic_action_single_message_options_light</item>
@@ -64,6 +65,7 @@
         <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_dark</item>
         <item name="iconActionRefresh">@drawable/ic_action_refresh_dark</item>
         <item name="iconActionSearch">@drawable/ic_action_search_dark</item>
+        <item name="iconActionSearchFolder">@drawable/action_search_folder_dark</item>
         <item name="iconActionSend">@drawable/ic_action_send_dark</item>
         <item name="iconActionSettings">@drawable/ic_action_settings_dark</item>
         <item name="iconActionSingleMessageOptions">@drawable/ic_action_single_message_options_dark</item>
