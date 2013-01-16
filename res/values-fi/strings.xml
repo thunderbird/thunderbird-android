@@ -221,6 +221,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="notification_action_reply">Vastaa</string>
     <string name="notification_action_read">Lue</string>
     <string name="notification_action_delete">Poista</string>
+    <string name="notification_certificate_error_title">Varmennevirhe</string>
+    <string name="notification_certificate_error_text">Tarkista palvelinasetuksesi</string>
 
     <string name="notification_bg_sync_ticker">Tarkistetaan viestejä: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Tarkistetaan viestejä</string>
@@ -297,7 +299,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_view_downloading">Ladataan…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
-    <string name="message_additional_headers_not_downloaded">Kaikkia otsikkotietoja ei ole ladattu tai tallennettu. Valitse \"Tallenna kaikki otsikkotiedot\" tilin Tulevien viestien palvelimen asetuksissa.</string>
+    <string name="message_additional_headers_not_downloaded">Kaikkia otsikkotietoja ei ole ladattu tai tallennettu. Valitse \"Tallenna kaikki otsikkotiedot\" tilin saapuvan postin palvelimen asetuksissa.</string>
     <string name="message_no_additional_headers_available">Kaikki otsikkotiedot on ladattu, mutta näytettäviä ei ole enempää.</string>
     <string name="message_additional_headers_retrieval_failed">Lisäotsikkotietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
 
@@ -322,6 +324,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="global_settings_registered_name_color_label">Väritä yhteystiedot</string>
     <string name="global_settings_registered_name_color_default">Älä väritä nimiä yhteystiedoissa</string>
     <string name="global_settings_registered_name_color_changed">Väritä nimet yhteystiedoissa</string>
+    <string name="global_settings_folderlist_wrap_folder_names_label">Rivitä pitkät kansionimet</string>
+    <string name="global_settings_folderlist_wrap_folder_names_summary">Näytä pitkät kansionimet usealla rivillä</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Kiinteä kirjasinleveys</string>
     <string name="global_settings_messageview_fixedwidth_summary">Käytä kiinteää kirjasinleveyttä muotoilemattomille viesteille</string>
@@ -769,7 +773,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="provider_note_paran">Jos haluat käyttää IMAP:ia tai POP3:a tällä palveluntarjoajalla, sinun tulee sallia IMAP:in tai POP3:n käyttö Paran-sähköpostiasetukset-sivulla.</string>
     <string name="provider_note_nate">Jos haluat käyttää IMAP:ia tai POP3:a tällä palveluntarjoajalla, sinun tulee sallia IMAP:in tai POP3:n käyttö Nate-sähköpostiasetukset-sivulla.</string>
 
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton sertifikaatti</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton varmenne</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
 
@@ -805,13 +809,14 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="setting_theme_light">Vaalea</string>
     <string name="display_preferences">Näytä</string>
     <string name="global_preferences">Yleiset</string>
-    <string name="debug_preferences">Virheenjäljitys</string>
+    <string name="debug_preferences">Virheenkorjaus</string>
     <string name="privacy_preferences">Yksityisyys</string>
     <string name="network_preferences">Verkko</string>
     <string name="interaction_preferences">Toimintoasetukset</string>
     <string name="accountlist_preferences">Tililista</string>
     <string name="messagelist_preferences">Viestilistat</string>
     <string name="messageview_preferences">Viestit</string>
+    <string name="folderlist_preferences">Kansiolistat</string>
     <string name="settings_theme_label">Teema</string>
     <string name="settings_language_label">Kieli</string>
 
@@ -998,7 +1003,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="dialog_attachment_progress_title">Ladataan liitettä</string>
 
-    <string name="debug_logging_enabled">Virheenjäljityslokin tallennus Androidin lokijärjestelmään otettu käyttöön</string>
+    <string name="debug_logging_enabled">Virheenkorjauslokin tallennus Androidin lokijärjestelmään otettu käyttöön</string>
 
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
