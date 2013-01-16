@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.322" versioncode="17023" >
+        <change>Fixed a bug that caused the app to load too many messages when you clicked "Load more messages"</change>
+        <change>Updated Finnish translation</change>
+    </release>
     <release version="4.321" versioncode="17022" >
         <change>Fixed some bugs related to message threading</change>
+        <change>Improved search for folders in the folder list</change>
+        <change>Added support for wrapping long folder names in the folder list</change>
+        <change>Added a progress indicator for remote searches</change>
+        <change>Reworked messagelist progress indicators</change>
+        <change>Improved notifications on SSL certificate validation failures</change>
+        <change>Updated Finnish, French, Spanish translations</change>
+        <change>Fixes to the new notificiations</change>
+        <change>Improvements to database upgrade infrastructure</change>
+        <change>Added the ability to search all local messages from the folder list</change>
+        <change>Added button to show this about screen</change>
+        <change>Close thread view when last message has been moved/deleted</change>
+        <change>Performance improvements</change>
+
     </release>
 
     <release version="4.320" versioncode="17021" >
