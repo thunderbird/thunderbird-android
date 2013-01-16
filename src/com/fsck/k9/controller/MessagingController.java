@@ -866,7 +866,7 @@ public class MessagingController implements Runnable {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(folder);
             if (localFolder.getVisibleLimit() > 0) {
-                localFolder.setVisibleLimit(localFolder.getVisibleLimit() + localFolder.getMessageCount());
+                localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
             }
             synchronizeMailbox(account, folder, listener, null);
         } catch (MessagingException me) {
