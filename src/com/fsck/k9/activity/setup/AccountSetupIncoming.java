@@ -2,6 +2,7 @@
 package com.fsck.k9.activity.setup;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
-    public static final String EXTRA_ACCOUNT = "account";
+    private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
     private static final int[] POP3_PORTS = {
@@ -90,10 +91,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     public static void actionEditIncomingSettings(Activity context, Account account) {
+        context.startActivity(intentActionEditIncomingSettings(context, account));
+    }
+
+    public static Intent intentActionEditIncomingSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
         i.setAction(Intent.ACTION_EDIT);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        context.startActivity(i);
+        return i;
     }
 
     @Override
