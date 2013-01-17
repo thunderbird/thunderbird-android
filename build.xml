@@ -316,8 +316,22 @@
             </else>
         </if.contrib>
     </target>
+
+	<target name="-update-hcp">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/HoloColorPicker/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/HoloColorPicker/" />
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
+                    <arg line="update lib-project -p plugins/HoloColorPicker/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
 	
-    <target name="init" depends="-update-abs, -update-ptr, -update-cl"
+    <target name="init" depends="-update-abs, -update-ptr, -update-cl, -update-hcp"
             description="Initialize environment for building" />
 
     <!-- overrides default "debug" target" -->
