@@ -45,6 +45,7 @@
     <orderEntry type="module" module-name="ActionBarSherlock" />
     <orderEntry type="module" module-name="Android-PullToRefresh" />
     <orderEntry type="module" module-name="ckChangeLog" />
+    <orderEntry type="module" module-name="HoloColorPicker" />
     <orderEntry type="inheritedJdk" />
   </component>
 </module>

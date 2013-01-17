@@ -126,6 +126,8 @@
       <directory url="file://$PROJECT_DIR$/plugins/ckChangeLog/library/target/generated-test-sources/test-annotations" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/annotations" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/plugins/ActionBarSherlock/library/target/generated-test-sources/test-annotations" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/plugins/HoloColorPicker/target/generated-sources/r" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/plugins/HoloColorPicker/library/target/generated-sources/r" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
@@ -155,12 +157,15 @@
         <module name="ActionBarSherlock" />
         <module name="Android-PullToRefresh" />
         <module name="ckChangeLog" />
+        <module name="HoloColorPicker" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="ActionBarSherlock" target="1.6" />
       <module name="Android-PullToRefresh" target="1.6" />
       <module name="ckChangeLog" target="1.6" />
+      <module name="colorpicker" target="1.6" />
+      <module name="HoloColorPicker" target="1.6" />
       <module name="k9mail" target="1.6" />
     </bytecodeTargetLevel>
   </component>
@@ -174,6 +179,7 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/plugins/ActionBarSherlock/library" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/plugins/Android-PullToRefresh/library" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plugins/HoloColorPicker" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/plugins/ckChangeLog/library" charset="UTF-8" />
   </component>
   <component name="EntryPointsManager">
@@ -232,6 +238,7 @@
         <option value="$PROJECT_DIR$/plugins/ActionBarSherlock/library/pom.xml" />
         <option value="$PROJECT_DIR$/plugins/Android-PullToRefresh/library/pom.xml" />
         <option value="$PROJECT_DIR$/plugins/ckChangeLog/library/pom.xml" />
+        <option value="$PROJECT_DIR$/plugins/HoloColorPicker/pom.xml" />
       </list>
     </option>
   </component>
@@ -402,6 +409,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ActionBarSherlock.iml" filepath="$PROJECT_DIR$/ActionBarSherlock.iml" />
       <module fileurl="file://$PROJECT_DIR$/Android-PullToRefresh.iml" filepath="$PROJECT_DIR$/Android-PullToRefresh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HoloColorPicker.iml" filepath="$PROJECT_DIR$/HoloColorPicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/ckChangeLog.iml" filepath="$PROJECT_DIR$/ckChangeLog.iml" />
       <module fileurl="file://$PROJECT_DIR$/k9mail.iml" filepath="$PROJECT_DIR$/k9mail.iml" />
     </modules>
