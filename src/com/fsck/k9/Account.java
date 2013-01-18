@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,6 +39,7 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.ColorChip;
+import com.larswerkman.colorpicker.ColorPicker;
 
 import java.util.HashMap;
 
@@ -283,11 +283,7 @@ public class Account implements BaseAccount {
         mAutoExpandFolderName = INBOX;
         mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
-        Random random = new Random((long)mAccountNumber + 4);
-        mChipColor = (random.nextInt(0x70) +
-                                  (random.nextInt(0x70) * 0xff) +
-                                  (random.nextInt(0x70) * 0xffff) +
-                                  0xff000000);
+        mChipColor = ColorPicker.getRandomColor();
         goToUnreadMessageSearch = false;
         mNotificationShowsUnreadCount = true;
         subscribedFoldersOnly = false;
@@ -399,13 +395,7 @@ public class Account implements BaseAccount {
 
         mAccountNumber = prefs.getInt(mUuid + ".accountNumber", 0);
 
-        Random random = new Random((long)mAccountNumber + 4);
-
-        mChipColor = prefs.getInt(mUuid + ".chipColor",
-                                  (random.nextInt(0x70)) +
-                                  (random.nextInt(0x70) * 0xff) +
-                                  (random.nextInt(0x70) * 0xffff) +
-                                  0xff000000);
+        mChipColor = prefs.getInt(mUuid + ".chipColor", ColorPicker.getRandomColor());
 
         try {
             mSortType = SortType.valueOf(prefs.getString(mUuid + ".sortTypeEnum",
