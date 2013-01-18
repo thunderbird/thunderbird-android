@@ -110,12 +110,9 @@ public class Account implements BaseAccount {
         }
 
         public int getToast(boolean ascending) {
-            if (ascending) {
-                return ascendingToast;
-            } else {
-                return descendingToast;
-            }
+            return (ascending) ? ascendingToast : descendingToast;
         }
+
         public boolean isDefaultAscending() {
             return defaultAscending;
         }
@@ -837,44 +834,44 @@ public class Account implements BaseAccount {
     }
 
 
-    public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean ccMe, boolean fromMe, boolean messageFlagged) {
+    public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean ccMe,
+            boolean fromMe, boolean messageFlagged) {
+        ColorChip chip;
 
         if (messageRead) {
             if (messageFlagged) {
-                return mFlaggedReadColorChip;
+                chip = mFlaggedReadColorChip;
             } else if (toMe) {
-                return mToMeReadColorChip;
+                chip = mToMeReadColorChip;
             } else if (ccMe) {
-                return mCcMeReadColorChip;
+                chip = mCcMeReadColorChip;
             } else if (fromMe) {
-                return mFromMeReadColorChip;
+                chip = mFromMeReadColorChip;
             } else {
-                return mReadColorChip;
+                chip = mReadColorChip;
             }
-
         } else {
             if (messageFlagged) {
-                return mFlaggedUnreadColorChip;
+                chip = mFlaggedUnreadColorChip;
             } else if (toMe) {
-                return mToMeUnreadColorChip;
+                chip = mToMeUnreadColorChip;
             } else if (ccMe) {
-                return mCcMeUnreadColorChip;
+                chip = mCcMeUnreadColorChip;
             } else if (fromMe) {
-                return mFromMeUnreadColorChip;
+                chip = mFromMeUnreadColorChip;
             } else {
-                return mUnreadColorChip;
+                chip = mUnreadColorChip;
             }
-
-
         }
 
+        return chip;
     }
 
     public ColorChip generateColorChip() {
         return new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
     }
 
-
+    @Override
     public String getUuid() {
         return mUuid;
     }
@@ -899,10 +896,12 @@ public class Account implements BaseAccount {
         this.mTransportUri = transportUri;
     }
 
+    @Override
     public synchronized String getDescription() {
         return mDescription;
     }
 
+    @Override
     public synchronized void setDescription(String description) {
         this.mDescription = description;
     }
@@ -931,10 +930,12 @@ public class Account implements BaseAccount {
         identities.get(0).setSignature(signature);
     }
 
+    @Override
     public synchronized String getEmail() {
         return identities.get(0).getEmail();
     }
 
+    @Override
     public synchronized void setEmail(String email) {
         identities.get(0).setEmail(email);
     }
@@ -982,11 +983,6 @@ public class Account implements BaseAccount {
         }
 
     }
-
-//    public synchronized void setLocalStoreUri(String localStoreUri)
-//    {
-//        this.mLocalStoreUri = localStoreUri;
-//    }
 
     /**
      * Returns -1 for never.
@@ -1050,24 +1046,16 @@ public class Account implements BaseAccount {
         this.mDeletePolicy = deletePolicy;
     }
 
-
     public boolean isSpecialFolder(String folderName) {
-        if (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
-                                   folderName.equals(getTrashFolderName()) ||
-                                   folderName.equals(getDraftsFolderName()) ||
-                                   folderName.equals(getArchiveFolderName()) ||
-                                   folderName.equals(getSpamFolderName()) ||
-                                   folderName.equals(getOutboxFolderName()) ||
-                                   folderName.equals(getSentFolderName()) ||
-                                   folderName.equals(getErrorFolderName()))) {
-            return true;
-
-        } else {
-            return false;
-        }
-
+        return (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
+                folderName.equals(getTrashFolderName()) ||
+                folderName.equals(getDraftsFolderName()) ||
+                folderName.equals(getArchiveFolderName()) ||
+                folderName.equals(getSpamFolderName()) ||
+                folderName.equals(getOutboxFolderName()) ||
+                folderName.equals(getSentFolderName()) ||
+                folderName.equals(getErrorFolderName())));
     }
-
 
     public synchronized String getDraftsFolderName() {
         return mDraftsFolderName;
@@ -1297,11 +1285,7 @@ public class Account implements BaseAccount {
     // to get this, but that's expensive and not easily accessible
     // during initialization
     public boolean isSearchByDateCapable() {
-        if (getStoreUri().startsWith("imap")) {
-            return true;
-        } else {
-            return false;
-        }
+        return (getStoreUri().startsWith("imap"));
     }
 
 
@@ -1318,9 +1302,9 @@ public class Account implements BaseAccount {
         Boolean useCompression = compressionMap.get(networkType);
         if (useCompression == null) {
             return true;
-        } else {
-            return useCompression;
         }
+
+        return useCompression;
     }
 
     public boolean useCompression(int type) {
@@ -1577,9 +1561,9 @@ public class Account implements BaseAccount {
                 }
 
             return now.getTime();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public MessageFormat getMessageFormat() {
