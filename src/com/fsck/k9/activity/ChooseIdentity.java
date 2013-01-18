@@ -29,6 +29,7 @@ public class ChooseIdentity extends K9ListActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.list_content_simple);
 
         getListView().setTextFilterEnabled(true);
         getListView().setItemsCanFocus(false);
