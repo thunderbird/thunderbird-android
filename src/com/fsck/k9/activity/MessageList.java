@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -138,7 +137,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         setContentView(R.layout.message_list);
 
-        mActionBar = getSupportActionBar();
         initializeActionBar();
 
         // Enable gesture detection for MessageLists
@@ -146,6 +144,15 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         decodeExtras(getIntent());
 
+        initializeFragments();
+
+        ChangeLog cl = new ChangeLog(this);
+        if (cl.isFirstRun()) {
+            cl.getLogDialog().show();
+        }
+    }
+
+    private void initializeFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.addOnBackStackChangedListener(this);
 
@@ -157,11 +164,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                     (K9.isThreadedViewEnabled() && !mNoThreading));
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
-        }
-
-        ChangeLog cl = new ChangeLog(this);
-        if (cl.isFirstRun()) {
-            cl.getLogDialog().show();
         }
     }
 
@@ -253,6 +255,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void initializeActionBar() {
+        mActionBar = getSupportActionBar();
+
         mActionBar.setDisplayShowCustomEnabled(true);
         mActionBar.setCustomView(R.layout.actionbar_custom);
 
@@ -754,6 +758,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         }
     }
 
+    @Override
     public void enableActionBarProgress(boolean enable) {
         if (mMenuButtonCheckMail != null && mMenuButtonCheckMail.isVisible()) {
             mActionBarProgress.setVisibility(ProgressBar.GONE);
