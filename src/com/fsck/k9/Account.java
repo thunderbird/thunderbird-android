@@ -13,18 +13,24 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.text.InputType;
 import android.util.Log;
+import android.widget.EditText;
 
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
@@ -137,6 +143,7 @@ public class Account implements BaseAccount {
 
     private final String mUuid;
     private String mStoreUri;
+    private String mStoreUriWithPassword;
 
     /**
      * Storage provider ID, used to locate and manage the underlying DB/file
@@ -144,6 +151,7 @@ public class Account implements BaseAccount {
      */
     private String mLocalStorageProviderId;
     private String mTransportUri;
+    private String mTransportUriWithPassword;
     private String mDescription;
     private String mAlwaysBcc;
     private int mAutomaticCheckIntervalMinutes;
@@ -348,8 +356,10 @@ public class Account implements BaseAccount {
         SharedPreferences prefs = preferences.getPreferences();
 
         mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
+        mStoreUriWithPassword = mStoreUri;
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
         mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
+        mTransportUriWithPassword = mTransportUri;
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
@@ -867,23 +877,34 @@ public class Account implements BaseAccount {
     }
 
     public synchronized String getStoreUri() {
-        return mStoreUri;
+        return mStoreUriWithPassword;
     }
 
     public synchronized void setStoreUri(String storeUri) {
         this.mStoreUri = storeUri;
+        this.mStoreUriWithPassword = storeUri; 
     }
 
     public synchronized String getTransportUri() {
-        return mTransportUri;
+        return mTransportUriWithPassword;
     }
 
     public synchronized void setTransportUri(String transportUri) {
         this.mTransportUri = transportUri;
+        this.mTransportUriWithPassword = transportUri;
     }
 
     public synchronized String getDescription() {
-        return mDescription;
+    	String Result = mDescription;
+        final ServerSettings outgoing = Transport.decodeTransportUri(mTransportUriWithPassword);
+        if ((outgoing.password != null) && outgoing.password.equals("DONT_STORE_MY_PASSWORD")) {
+        	Result = "["+Result+"]";
+        }
+        final ServerSettings incoming = Store.decodeStoreUri(mStoreUriWithPassword);   	
+        if ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD")) {
+        	Result = "("+Result+")";
+        }
+        return Result;      	
     }
 
     public synchronized void setDescription(String description) {
@@ -1750,4 +1771,68 @@ public class Account implements BaseAccount {
     }
 
 
+    public interface CommandAfter{
+    	  	  public void execute();    	 
+    	}
+    
+    public void AskIncomingPasswordIfNecessary(Context mContext, final CommandAfter cmd) {
+        final ServerSettings incoming = Store.decodeStoreUri(mStoreUriWithPassword);   	
+        if ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD"))
+    	{
+    		AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+    		alert.setTitle("Password required");
+    		alert.setMessage("Please enter your password");
+    		final EditText input = new EditText(mContext);
+    		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    		alert.setView(input);
+    		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog, int whichButton) {
+    				String value = input.getText().toString();
+    				ServerSettings newIncoming = incoming.newPassword(value);
+    				mStoreUriWithPassword = Store.createStoreUri(newIncoming);
+    				cmd.execute();
+    				}
+    			});
+    		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog, int whichButton) {
+    				// do nothing
+    				}
+    			});
+    		alert.show();
+    	} else
+    	{
+    		cmd.execute();
+    	}   	
+	}
+    
+    public void AskOutgoingPasswordIfNecessary(Context mContext, final CommandAfter cmd) {
+        final ServerSettings outgoing = Transport.decodeTransportUri(mTransportUriWithPassword);
+        if ((outgoing.password != null) && outgoing.password.equals("DONT_STORE_MY_PASSWORD"))
+    	{
+    		AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+    		alert.setTitle("Password required");
+    		alert.setMessage("Please enter your password");
+    		final EditText input = new EditText(mContext);
+    		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    		alert.setView(input);
+    		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog, int whichButton) {
+    				String value = input.getText().toString();
+    				ServerSettings newOutgoing = outgoing.newPassword(value);
+    				mTransportUriWithPassword = Transport.createTransportUri(newOutgoing);
+    				cmd.execute();
+    				}
+    			});
+    		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog, int whichButton) {
+    				// do nothing
+    				}
+    			});
+    		alert.show();
+    	} else
+    	{
+    		cmd.execute();
+    	}
+    }
+    
 }

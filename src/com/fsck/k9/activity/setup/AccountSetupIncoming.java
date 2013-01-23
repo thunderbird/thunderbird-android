@@ -32,7 +32,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AccountSetupIncoming extends K9Activity implements OnClickListener {
+public class AccountSetupIncoming extends K9Activity implements OnClickListener, OnCheckedChangeListener {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
@@ -65,6 +65,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private String mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
+    private CheckBox mPasswordNotStored;
     private EditText mServerView;
     private EditText mPortView;
     private Spinner mSecurityTypeView;
@@ -103,6 +104,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
         mUsernameView = (EditText)findViewById(R.id.account_username);
         mPasswordView = (EditText)findViewById(R.id.account_password);
+        mPasswordNotStored = (CheckBox)findViewById(R.id.account_password_not_stored);
         TextView serverLabelView = (TextView) findViewById(R.id.account_server_label);
         mServerView = (EditText)findViewById(R.id.account_server);
         mPortView = (EditText)findViewById(R.id.account_port);
@@ -120,6 +122,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mSubscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
 
         mNextButton.setOnClickListener(this);
+        mPasswordNotStored.setOnCheckedChangeListener(this);
 
         mImapAutoDetectNamespaceView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
@@ -208,7 +211,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             if (settings.password != null) {
-                mPasswordView.setText(settings.password);
+            	if (settings.password.equals("DONT_STORE_MY_PASSWORD")) {
+            		mPasswordNotStored.setChecked(true);
+            	} else {
+                	mPasswordView.setText(settings.password);
+            	}
             }
 
             if (settings.authenticationType != null) {
@@ -331,6 +338,20 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
     }
 
+    protected void onPasswordNotStoredClicked(boolean isChecked) {
+    	mPasswordView.setEnabled(!isChecked);
+        validateFields();
+    }
+    	
+    	
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    	switch (buttonView.getId()) {
+        case R.id.account_password_not_stored:
+        	onPasswordNotStoredClicked(isChecked);
+            break;
+        }
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -340,7 +361,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private void validateFields() {
         mNextButton
         .setEnabled(Utility.requiredFieldValid(mUsernameView)
-                    && Utility.requiredFieldValid(mPasswordView)
+                    && (Utility.requiredFieldValid(mPasswordView)
+                       || mPasswordNotStored.isChecked())
                     && Utility.domainFieldValid(mServerView)
                     && Utility.requiredFieldValid(mPortView));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
@@ -401,6 +423,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             String username = mUsernameView.getText().toString();
             String password = mPasswordView.getText().toString();
+            if (mPasswordNotStored.isChecked())
+            	password = "DONT_STORE_MY_PASSWORD";
             String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
             String host = mServerView.getText().toString();
             int port = Integer.parseInt(mPortView.getText().toString());

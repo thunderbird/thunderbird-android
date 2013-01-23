@@ -1093,4 +1093,5 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_threaded_view_label">Threaded view</string>
     <string name="global_settings_threaded_view_summary">Group messages by conversation</string>
+    <string name="account_setup_password_not_stored">Don\'t store my password</string>
 </resources>

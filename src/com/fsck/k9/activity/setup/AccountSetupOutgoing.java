@@ -56,6 +56,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     private EditText mUsernameView;
     private EditText mPasswordView;
+    private CheckBox mPasswordNotStored;
     private EditText mServerView;
     private EditText mPortView;
     private CheckBox mRequireLoginView;
@@ -101,6 +102,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         mUsernameView = (EditText)findViewById(R.id.account_username);
         mPasswordView = (EditText)findViewById(R.id.account_password);
+        mPasswordNotStored = (CheckBox)findViewById(R.id.account_password_not_stored);
         mServerView = (EditText)findViewById(R.id.account_server);
         mPortView = (EditText)findViewById(R.id.account_port);
         mRequireLoginView = (CheckBox)findViewById(R.id.account_require_login);
@@ -110,6 +112,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mNextButton = (Button)findViewById(R.id.next);
 
         mNextButton.setOnClickListener(this);
+        mPasswordNotStored.setOnCheckedChangeListener(this);
         mRequireLoginView.setOnCheckedChangeListener(this);
 
         SpinnerOption securityTypes[] = {
@@ -199,7 +202,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             }
 
             if (password != null) {
-                mPasswordView.setText(password);
+            	if (password.equals("DONT_STORE_MY_PASSWORD")) {
+            		mPasswordNotStored.setChecked(true);
+            	} else {
+                	mPasswordView.setText(password);
+            	}
             }
 
             if (authType != null) {
@@ -270,7 +277,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             Utility.requiredFieldValid(mPortView) &&
             (!mRequireLoginView.isChecked() ||
              (Utility.requiredFieldValid(mUsernameView) &&
-              Utility.requiredFieldValid(mPasswordView))));
+              (Utility.requiredFieldValid(mPasswordView) || mPasswordNotStored.isChecked())
+              )));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -297,7 +305,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         URI uri;
         try {
             String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8");
-            String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8");
+            String password = mPasswordView.getText().toString();
+            if (mPasswordNotStored.isChecked())
+            	password = "DONT_STORE_MY_PASSWORD";
+            String passwordEnc = URLEncoder.encode(password, "UTF-8");
 
             String userInfo = null;
             String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
@@ -329,9 +340,25 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
     }
 
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    protected void onRequireLoginClicked(boolean isChecked) {
         mRequireLoginSettingsView.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         validateFields();
+    }
+
+    protected void onPasswordNotStoredClicked(boolean isChecked) {
+    	mPasswordView.setEnabled(!isChecked);
+        validateFields();
+    }
+
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    	switch (buttonView.getId()) {
+    	case R.id.account_require_login:
+    		onRequireLoginClicked(isChecked);
+            break;
+        case R.id.account_password_not_stored:
+        	onPasswordNotStoredClicked(isChecked);
+            break;
+        }
     }
     private void failure(Exception use) {
         Log.e(K9.LOG_TAG, "Failure", use);

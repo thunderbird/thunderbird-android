@@ -3938,6 +3938,25 @@ public class MessagingController implements Runnable {
                           final boolean useManualWakeLock,
                           final MessagingListener listener) {
 
+    	if (account == null) {
+    		checkMail2(context, account, ignoreLastCheckedTime, useManualWakeLock, listener);
+    	}
+    	else {
+        	account.AskIncomingPasswordIfNecessary(context, new Account.CommandAfter() {
+    			@Override
+    			public void execute() {
+    				checkMail2(context, account, ignoreLastCheckedTime, useManualWakeLock, listener);
+    			}
+    		});
+    		
+    	}
+    }
+
+    	public void checkMail2(final Context context, final Account account,
+                          final boolean ignoreLastCheckedTime,
+                          final boolean useManualWakeLock,
+                          final MessagingListener listener) {
+
         TracingWakeLock twakeLock = null;
         if (useManualWakeLock) {
             TracingPowerManager pm = TracingPowerManager.getPowerManager(context);
