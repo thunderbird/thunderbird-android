@@ -4,7 +4,7 @@
 
     <!--
          When removing strings from the main file, please cleanup the translations.
-         
+
          This doesn't work on multiline strings, nor strings with the NEW tag.
          find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
      -->
@@ -1129,4 +1129,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="message_list_loading">Loading…</string>
+
+    <string name="global_settings_splitview_mode_label">Show split-screen</string>
+    <string name="global_settings_splitview_always">Always</string>
+    <string name="global_settings_splitview_never">Never</string>
+    <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>
 </resources>

@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -66,6 +67,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
     private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
 
+    private static final String STATE_DISPLAY_MODE = "displayMode";
+
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
         actionDisplaySearch(context, search, noThreading, newTask, true);
@@ -103,6 +106,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         return intent;
     }
 
+    private enum DisplayMode {
+        MESSAGE_LIST,
+        MESSAGE_VIEW,
+        SPLIT_VIEW
+    }
+
 
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
 
@@ -112,6 +121,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private TextView mActionBarUnread;
     private Menu mMenu;
 
+    private ViewGroup mMessageListContainer;
     private ViewGroup mMessageViewContainer;
     private View mMessageViewPlaceHolder;
 
@@ -134,6 +144,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
      */
     private boolean mNoThreading;
 
+    private DisplayMode mDisplayMode;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +165,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         decodeExtras(getIntent());
         initializeFragments();
+        initializeDisplayMode(savedInstanceState);
         initializeLayout();
 
         ChangeLog cl = new ChangeLog(this);
@@ -176,12 +190,56 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         }
     }
 
+    private void initializeDisplayMode(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mDisplayMode = (DisplayMode) savedInstanceState.getSerializable(STATE_DISPLAY_MODE);
+        } else {
+            mDisplayMode = DisplayMode.MESSAGE_LIST;
+        }
+
+        switch (K9.getSplitViewMode()) {
+            case ALWAYS: {
+                mDisplayMode = DisplayMode.SPLIT_VIEW;
+                break;
+            }
+            case NEVER: {
+                // Either use the restored setting or DisplayMode.MESSAGE_LIST set above
+                break;
+            }
+            case WHEN_IN_LANDSCAPE: {
+                int orientation = getResources().getConfiguration().orientation;
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    mDisplayMode = DisplayMode.SPLIT_VIEW;
+                } else if (mMessageViewFragment != null) {
+                    mDisplayMode = DisplayMode.MESSAGE_VIEW;
+                } else {
+                    mDisplayMode = DisplayMode.MESSAGE_LIST;
+                }
+                break;
+            }
+        }
+    }
+
     private void initializeLayout() {
+        mMessageListContainer = (ViewGroup) findViewById(R.id.message_list_container);
         mMessageViewContainer = (ViewGroup) findViewById(R.id.message_view_container);
         mMessageViewPlaceHolder = getLayoutInflater().inflate(R.layout.empty_message_view, null);
 
-        if (mMessageViewFragment == null) {
-            showMessageViewPlaceHolder();
+        switch (mDisplayMode) {
+            case MESSAGE_LIST: {
+                showMessageList();
+                break;
+            }
+            case MESSAGE_VIEW: {
+                showMessageView();
+                break;
+            }
+            case SPLIT_VIEW: {
+                if (mMessageViewFragment == null) {
+                    showMessageViewPlaceHolder();
+                }
+                break;
+            }
         }
     }
 
@@ -270,6 +328,13 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             return;
         }
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(STATE_DISPLAY_MODE, mDisplayMode);
     }
 
     private void initializeActionBar() {
@@ -628,7 +693,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             mMessageViewFragment = fragment;
             ft.commit();
 
-            mMessageListFragment.setActiveMessage(messageReference);
+            if (mDisplayMode == DisplayMode.SPLIT_VIEW) {
+                mMessageListFragment.setActiveMessage(messageReference);
+            } else {
+                showMessageView();
+            }
         }
     }
 
@@ -673,8 +742,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         FragmentManager fragmentManager = getSupportFragmentManager();
         mMessageListFragment = (MessageListFragment) fragmentManager.findFragmentById(
                 R.id.message_list_container);
+        mMessageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(
+                R.id.message_view_container);
 
-        showMessageViewPlaceHolder();
+        if (mDisplayMode == DisplayMode.SPLIT_VIEW) {
+            showMessageViewPlaceHolder();
+        }
 
         configureMenu(mMenu);
     }
@@ -753,13 +826,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void showMessageViewPlaceHolder() {
-        // Remove MessageViewFragment if necessary
-        if (mMessageViewFragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.remove(mMessageViewFragment);
-            mMessageViewFragment = null;
-            ft.commit();
-        }
+        removeMessageViewFragment();
 
         // Add placeholder view if necessary
         if (mMessageViewPlaceHolder.getParent() == null) {
@@ -767,6 +834,18 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         }
 
         mMessageListFragment.setActiveMessage(null);
+    }
+
+    /**
+     * Remove MessageViewFragment if necessary.
+     */
+    private void removeMessageViewFragment() {
+        if (mMessageViewFragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.remove(mMessageViewFragment);
+            mMessageViewFragment = null;
+            ft.commit();
+        }
     }
 
     @Override
@@ -778,9 +857,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     @Override
     public void goBack() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() > 0) {
+        if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+            showMessageList();
+        } else if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
-            showMessageViewPlaceHolder();
         } else if (mMessageListFragment.isManualSearch()) {
             onBackPressed();
         } else if (!mSingleFolderMode) {
@@ -870,5 +950,21 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     private void showNextMessage() {
         //TODO: implement
+    }
+
+    private void showMessageList() {
+        mDisplayMode = DisplayMode.MESSAGE_LIST;
+
+        mMessageViewContainer.setVisibility(View.GONE);
+        mMessageListContainer.setVisibility(View.VISIBLE);
+        removeMessageViewFragment();
+        mMessageListFragment.setActiveMessage(null);
+    }
+
+    private void showMessageView() {
+        mDisplayMode = DisplayMode.MESSAGE_VIEW;
+
+        mMessageListContainer.setVisibility(View.GONE);
+        mMessageViewContainer.setVisibility(View.VISIBLE);
     }
 }

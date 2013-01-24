@@ -210,6 +210,15 @@ public class K9 extends Application {
         NEVER
     }
 
+    /**
+     * Controls when to use the message list split view.
+     */
+    public enum SplitViewMode {
+        ALWAYS,
+        NEVER,
+        WHEN_IN_LANDSCAPE
+    }
+
     private static boolean mMessageListCheckboxes = false;
     private static int mMessageListPreviewLines = 2;
 
@@ -251,6 +260,7 @@ public class K9 extends Application {
 
     private static boolean sUseBackgroundAsUnreadIndicator = true;
     private static boolean sThreadedViewEnabled = true;
+    private static SplitViewMode sSplitViewMode = SplitViewMode.WHEN_IN_LANDSCAPE;
 
     /**
      * @see #areDatabasesUpToDate()
@@ -530,6 +540,7 @@ public class K9 extends Application {
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
         editor.putBoolean("threadedView", sThreadedViewEnabled);
+        editor.putString("splitViewMode", sSplitViewMode.name());
         fontSizes.save(editor);
     }
 
@@ -735,6 +746,11 @@ public class K9 extends Application {
         String notificationQuickDelete = sprefs.getString("notificationQuickDelete", null);
         if (notificationQuickDelete != null) {
             sNotificationQuickDelete = NotificationQuickDelete.valueOf(notificationQuickDelete);
+        }
+
+        String splitViewMode = sprefs.getString("splitViewMode", null);
+        if (splitViewMode != null) {
+            sSplitViewMode = SplitViewMode.valueOf(splitViewMode);
         }
 
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
@@ -1218,10 +1234,10 @@ public class K9 extends Application {
     }
 
     public static boolean wrapFolderNames() {
-    	return mWrapFolderNames;
+        return mWrapFolderNames;
     }
     public static void setWrapFolderNames(final boolean state) {
-    	mWrapFolderNames = state;
+        mWrapFolderNames = state;
     }
 
     public static String getAttachmentDefaultPath() {
@@ -1265,6 +1281,14 @@ public class K9 extends Application {
 
     public static synchronized void setThreadedViewEnabled(boolean enable) {
         sThreadedViewEnabled = enable;
+    }
+
+    public static synchronized SplitViewMode getSplitViewMode() {
+        return sSplitViewMode;
+    }
+
+    public static synchronized void setSplitViewMode(SplitViewMode mode) {
+        sSplitViewMode = mode;
     }
 
     /**

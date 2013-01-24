@@ -24,6 +24,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ColorPickerDialog;
@@ -93,6 +94,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR = "messagelist_background_as_unread_indicator";
     private static final String PREFERENCE_THREADED_VIEW = "threaded_view";
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
+    private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
@@ -139,6 +141,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mBatchButtonsUnselect;
     private CheckBoxPreference mBackgroundAsUnreadIndicator;
     private CheckBoxPreference mThreadedView;
+    private ListPreference mSplitViewMode;
 
 
     public static void actionPrefs(Context context) {
@@ -396,7 +399,7 @@ public class Prefs extends K9PreferenceActivity {
                 }
             };
         });
-        
+
         mWrapFolderNames = (CheckBoxPreference)findPreference(PREFERENCE_FOLDERLIST_WRAP_NAME);
         mWrapFolderNames.setChecked(K9.wrapFolderNames());
 
@@ -425,6 +428,10 @@ public class Prefs extends K9PreferenceActivity {
             mBatchButtonsArchive.setEnabled(false);
             mBatchButtonsArchive.setSummary(R.string.global_settings_archive_disabled_reason);
         }
+
+        mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
+        initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
+                mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
     }
 
     private void saveSettings() {
@@ -487,6 +494,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setBatchButtonsFlag(mBatchButtonsFlag.isChecked());
         K9.setBatchButtonsUnselect(mBatchButtonsUnselect.isChecked());
 
+        K9.setSplitViewMode(SplitViewMode.valueOf(mSplitViewMode.getValue()));
         K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
         K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());

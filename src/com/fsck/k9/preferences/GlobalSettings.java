@@ -18,6 +18,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
+import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.helper.DateFormatter;
@@ -227,6 +228,9 @@ public class GlobalSettings {
             ));
         s.put("threadedView", Settings.versions(
                 new V(20, new BooleanSetting(true))
+            ));
+        s.put("splitViewMode", Settings.versions(
+                new V(23, new EnumSetting(SplitViewMode.class, SplitViewMode.WHEN_IN_LANDSCAPE))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);

@@ -156,6 +156,14 @@
                 android:title="@string/global_settings_threaded_view_label"
                 android:summary="@string/global_settings_threaded_view_summary" />
 
+            <ListPreference
+                android:persistent="false"
+                android:key="splitview_mode"
+                android:title="@string/global_settings_splitview_mode_label"
+                android:entries="@array/global_settings_splitview_mode_entries"
+                android:entryValues="@array/global_settings_splitview_mode_values"
+                android:dialogTitle="@string/global_settings_splitview_mode_label" />
+
         </PreferenceCategory>
 
         <PreferenceCategory
