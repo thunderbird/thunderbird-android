@@ -48,6 +48,7 @@
         <attr name="messageListUnreadItemBackgroundColor" format="reference|color"/>
         <attr name="messageListThreadCountForegroundColor" format="reference|color"/>
         <attr name="messageListThreadCountBackground" format="reference|color"/>
+        <attr name="messageListActiveItemBackgroundColor" format="reference|color"/>
 
     </declare-styleable>
 

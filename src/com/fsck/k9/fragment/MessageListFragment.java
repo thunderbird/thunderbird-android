@@ -310,6 +310,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final String ARG_IS_THREAD_DISPLAY = "isThreadedDisplay";
 
     private static final String STATE_SELECTED_MESSAGES = "selectedMessages";
+    private static final String STATE_ACTIVE_MESSAGE = "activeMessage";
     private static final String STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed";
 
     /**
@@ -412,6 +413,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private final ActivityListener mListener = new MessageListActivityListener();
 
     private Preferences mPreferences;
+
+    private MessageReference mActiveMessage;
 
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
@@ -751,6 +754,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         saveSelectedMessages(outState);
 
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, mRemoteSearchPerformed);
+        outState.putParcelable(STATE_ACTIVE_MESSAGE, mActiveMessage);
     }
 
     /**
@@ -766,6 +770,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         restoreSelectedMessages(savedInstanceState);
 
         mRemoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
+        mActiveMessage = savedInstanceState.getParcelable(STATE_ACTIVE_MESSAGE);
     }
 
     /**
@@ -1749,6 +1754,21 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 TypedValue outValue = new TypedValue();
                 getActivity().getTheme().resolveAttribute(res, outValue, true);
                 view.setBackgroundColor(outValue.data);
+            }
+
+            if (mActiveMessage != null) {
+                String uid = cursor.getString(UID_COLUMN);
+                String folderName = cursor.getString(FOLDER_NAME_COLUMN);
+
+                if (account.getUuid().equals(mActiveMessage.accountUuid) &&
+                        folderName.equals(mActiveMessage.folderName) &&
+                        uid.equals(mActiveMessage.uid)) {
+                    int res = R.attr.messageListActiveItemBackgroundColor;
+
+                    TypedValue outValue = new TypedValue();
+                    getActivity().getTheme().resolveAttribute(res, outValue, true);
+                    view.setBackgroundColor(outValue.data);
+                }
             }
 
             // Thread count
@@ -3134,5 +3154,23 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private void remoteSearchFinished() {
         mRemoteSearchFuture = null;
+    }
+
+    /**
+     * Mark a message as 'active'.
+     *
+     * <p>
+     * The active message is the one currently displayed in the message view portion of the split
+     * view.
+     * </p>
+     *
+     * @param messageReference
+     *         {@code null} to not mark any message as being 'active'.
+     */
+    public void setActiveMessage(MessageReference messageReference) {
+        mActiveMessage = messageReference;
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

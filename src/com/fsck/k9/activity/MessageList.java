@@ -627,6 +627,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             ft.replace(R.id.message_view_container, fragment);
             mMessageViewFragment = fragment;
             ft.commit();
+
+            mMessageListFragment.setActiveMessage(messageReference);
         }
     }
 
@@ -763,6 +765,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         if (mMessageViewPlaceHolder.getParent() == null) {
             mMessageViewContainer.addView(mMessageViewPlaceHolder);
         }
+
+        mMessageListFragment.setActiveMessage(null);
     }
 
     @Override

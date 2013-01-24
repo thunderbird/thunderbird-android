@@ -47,6 +47,7 @@
         <item name="messageListUnreadItemBackgroundColor">#00ffffff</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_light</item>
+        <item name="messageListActiveItemBackgroundColor">#ff2ea7d1</item>
     </style>
 
     <style name="Theme.K9.Dark.Base" parent="Theme.Sherlock">
@@ -96,6 +97,7 @@
         <item name="messageListUnreadItemBackgroundColor">#805a5a5a</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_dark</item>
+        <item name="messageListActiveItemBackgroundColor">#ff33b5e5</item>
     </style>
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Base">
@@ -131,5 +133,5 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-	</style>
+    </style>
 </resources>
