@@ -1,10 +1,9 @@
 package com.fsck.k9.activity;
 
-import java.util.ArrayList;
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
@@ -13,6 +12,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +29,11 @@ import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
+import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageListFragment;
+import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
+import com.fsck.k9.fragment.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.search.LocalSearch;
@@ -39,6 +42,7 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.view.MessageHeader;
 
 import de.cketti.library.changelog.ChangeLog;
 
@@ -49,7 +53,7 @@ import de.cketti.library.changelog.ChangeLog;
  * From this Activity the user can perform all standard message operations.
  */
 public class MessageList extends K9FragmentActivity implements MessageListFragmentListener,
-        OnBackStackChangedListener, OnSwipeGestureListener {
+        MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener {
 
     // for this activity
     private static final String EXTRA_SEARCH = "search";
@@ -108,7 +112,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private TextView mActionBarUnread;
     private Menu mMenu;
 
+    private ViewGroup mMessageViewContainer;
+    private View mMessageViewPlaceHolder;
+
     private MessageListFragment mMessageListFragment;
+    private MessageViewFragment mMessageViewFragment;
 
     private Account mAccount;
     private String mFolderName;
@@ -135,7 +143,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             return;
         }
 
-        setContentView(R.layout.message_list);
+        setContentView(R.layout.split_message_list);
 
         initializeActionBar();
 
@@ -143,8 +151,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         setupGestureDetector(this);
 
         decodeExtras(getIntent());
-
         initializeFragments();
+        initializeLayout();
 
         ChangeLog cl = new ChangeLog(this);
         if (cl.isFirstRun()) {
@@ -157,6 +165,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         fragmentManager.addOnBackStackChangedListener(this);
 
         mMessageListFragment = (MessageListFragment) fragmentManager.findFragmentById(R.id.message_list_container);
+        mMessageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(R.id.message_view_container);
 
         if (mMessageListFragment == null) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -164,6 +173,15 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                     (K9.isThreadedViewEnabled() && !mNoThreading));
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
+        }
+    }
+
+    private void initializeLayout() {
+        mMessageViewContainer = (ViewGroup) findViewById(R.id.message_view_container);
+        mMessageViewPlaceHolder = getLayoutInflater().inflate(R.layout.empty_message_view, null);
+
+        if (mMessageViewFragment == null) {
+            showMessageViewPlaceHolder();
         }
     }
 
@@ -602,24 +620,14 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         if (folderName.equals(account.getDraftsFolderName())) {
             MessageCompose.actionEditDraft(this, messageReference);
         } else {
-            ArrayList<MessageReference> messageRefs = mMessageListFragment.getMessageReferences();
+            mMessageViewContainer.removeView(mMessageViewPlaceHolder);
 
-            Log.i(K9.LOG_TAG, "MessageList sending message " + messageReference);
-
-            Intent i = MessageView.actionViewIntent(this, messageReference, messageRefs);
-            startActivity(i);
+            MessageViewFragment fragment = MessageViewFragment.newInstance(messageReference);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.message_view_container, fragment);
+            mMessageViewFragment = fragment;
+            ft.commit();
         }
-
-        /*
-         * We set read=true here for UI performance reasons. The actual value
-         * will get picked up on the refresh when the Activity is resumed but
-         * that may take a second or so and we don't want this to show and
-         * then go away. I've gone back and forth on this, and this gives a
-         * better UI experience, so I am putting it back in.
-         */
-//        if (!message.read) {
-//            message.read = true;
-//        }
     }
 
     @Override
@@ -663,6 +671,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         FragmentManager fragmentManager = getSupportFragmentManager();
         mMessageListFragment = (MessageListFragment) fragmentManager.findFragmentById(
                 R.id.message_list_container);
+
+        showMessageViewPlaceHolder();
 
         configureMenu(mMenu);
     }
@@ -730,12 +740,29 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void showThread(Account account, String folderName, long threadRootId) {
+        showMessageViewPlaceHolder();
+
         LocalSearch tmpSearch = new LocalSearch();
         tmpSearch.addAccountUuid(account.getUuid());
         tmpSearch.and(Searchfield.THREAD_ID, String.valueOf(threadRootId), Attribute.EQUALS);
 
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, true, false);
         addMessageListFragment(fragment, true);
+    }
+
+    private void showMessageViewPlaceHolder() {
+        // Remove MessageViewFragment if necessary
+        if (mMessageViewFragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.remove(mMessageViewFragment);
+            mMessageViewFragment = null;
+            ft.commit();
+        }
+
+        // Add placeholder view if necessary
+        if (mMessageViewPlaceHolder.getParent() == null) {
+            mMessageViewContainer.addView(mMessageViewPlaceHolder);
+        }
     }
 
     @Override
@@ -749,6 +776,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
+            showMessageViewPlaceHolder();
         } else if (mMessageListFragment.isManualSearch()) {
             onBackPressed();
         } else if (!mSingleFolderMode) {
@@ -777,5 +805,66 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 mActionBarProgress.setVisibility(ProgressBar.GONE);
             }
         }
+    }
+
+    @Override
+    public void restartActivity() {
+        // restart the current activity, so that the theme change can be applied
+        if (Build.VERSION.SDK_INT < 11) {
+            Intent intent = getIntent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            overridePendingTransition(0, 0); // disable animations to speed up the switch
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        } else {
+            recreate();
+        }
+    }
+
+    @Override
+    public void displayMessageSubject(String subject) {
+        setTitle(subject);
+    }
+
+    @Override
+    public void onReply(Message message, PgpData pgpData) {
+        MessageCompose.actionReply(this, mAccount, message, false, pgpData.getDecryptedData());
+        finish();
+    }
+
+    @Override
+    public void onReplyAll(Message message, PgpData pgpData) {
+        MessageCompose.actionReply(this, mAccount, message, true, pgpData.getDecryptedData());
+        finish();
+    }
+
+    @Override
+    public void onForward(Message mMessage, PgpData mPgpData) {
+        MessageCompose.actionForward(this, mAccount, mMessage, mPgpData.getDecryptedData());
+        finish();
+    }
+
+    @Override
+    public void showNextMessageOrReturn() {
+        if (K9.messageViewReturnToList()) {
+            finish();
+        } else {
+            showNextMessage();
+        }
+    }
+
+    @Override
+    public void setProgress(boolean enable) {
+        setSupportProgressBarIndeterminateVisibility(enable);
+    }
+
+    @Override
+    public void messageHeaderViewAvailable(MessageHeader header) {
+        //TODO: implement
+    }
+
+    private void showNextMessage() {
+        //TODO: implement
     }
 }
