@@ -235,6 +235,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 break;
             }
             case SPLIT_VIEW: {
+                findViewById(R.id.message_list_divider).setVisibility(View.VISIBLE);
                 if (mMessageViewFragment == null) {
                     showMessageViewPlaceHolder();
                 }
