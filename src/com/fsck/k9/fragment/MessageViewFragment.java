@@ -326,7 +326,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         }
     }
 
-    public void onFlag() {
+    public void onToggleFlagged() {
         if (mMessage != null) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
@@ -362,6 +362,10 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         }
 
         startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY);
+    }
+
+    public void onArchive() {
+        onRefile(mAccount.getArchiveFolderName());
     }
 
     private void onToggleColors() {
@@ -453,7 +457,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         }
     }
 
-    private void onToggleRead() {
+    public void onToggleRead() {
         if (mMessage != null) {
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
                     new Message[] { mMessage }, Flag.SEEN, !mMessage.isSet(Flag.SEEN));
@@ -667,7 +671,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                     mMessageView.setOnFlagListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onFlag();
+                            onToggleFlagged();
                         }
                     });
                 }
@@ -896,6 +900,13 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     @Override
     public void dialogCancelled(int dialogId) {
         /* do nothing */
+    }
+
+    /**
+     * Get the {@link MessageReference} of the currently displayed message.
+     */
+    public MessageReference getMessageReference() {
+        return mMessageReference;
     }
 
 

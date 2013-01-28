@@ -356,22 +356,66 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        boolean ret = false;
+        if (KeyEvent.ACTION_DOWN == event.getAction()) {
+            ret = onCustomKeyDown(event.getKeyCode(), event);
+        }
+        if (!ret) {
+            ret = super.dispatchKeyEvent(event);
+        }
+        return ret;
+    }
+
+    /**
+     * Handle hotkeys
+     *
+     * <p>
+     * This method is called by {@link #dispatchKeyEvent(KeyEvent)} before any view had the chance
+     * to consume this key event.
+     * </p>
+     *
+     * @param keyCode
+     *         The value in {@code event.getKeyCode()}.
+     * @param event
+     *         Description of the key event.
+     *
+     * @return {@code true} if this event was consumed.
+     */
+    public boolean onCustomKeyDown(final int keyCode, final KeyEvent event) {
         // Shortcuts that work no matter what is selected
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP: {
-                if (K9.useVolumeKeysForListNavigationEnabled()) {
+                if (mMessageViewFragment != null && mDisplayMode != DisplayMode.MESSAGE_LIST &&
+                        K9.useVolumeKeysForNavigationEnabled()) {
+                    MessageReference ref = mMessageViewFragment.getMessageReference();
+                    if (ref != null) {
+                        mMessageListFragment.openPrevious(ref);
+                    }
+                    return true;
+                } else if (mDisplayMode != DisplayMode.MESSAGE_VIEW &&
+                        K9.useVolumeKeysForListNavigationEnabled()) {
                     mMessageListFragment.onMoveUp();
                     return true;
                 }
-                return false;
+
+                break;
             }
             case KeyEvent.KEYCODE_VOLUME_DOWN: {
-                if (K9.useVolumeKeysForListNavigationEnabled()) {
+                if (mMessageViewFragment != null && mDisplayMode != DisplayMode.MESSAGE_LIST &&
+                        K9.useVolumeKeysForNavigationEnabled()) {
+                    MessageReference ref = mMessageViewFragment.getMessageReference();
+                    if (ref != null) {
+                        mMessageListFragment.openNext(ref);
+                    }
+                    return true;
+                } else if (mDisplayMode != DisplayMode.MESSAGE_VIEW &&
+                        K9.useVolumeKeysForListNavigationEnabled()) {
                     mMessageListFragment.onMoveDown();
                     return true;
                 }
-                return false;
+
+                break;
             }
             case KeyEvent.KEYCODE_C: {
                 mMessageListFragment.onCompose();
@@ -389,50 +433,107 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 mMessageListFragment.onReverseSort();
                 return true;
             }
+            case KeyEvent.KEYCODE_DEL:
+            case KeyEvent.KEYCODE_D: {
+                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                    mMessageListFragment.onDelete();
+                } else if (mMessageViewFragment != null) {
+                    mMessageViewFragment.onDelete();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_S: {
+                mMessageListFragment.toggleMessageSelect();
+                return true;
+            }
+            case KeyEvent.KEYCODE_G: {
+                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                    mMessageListFragment.onToggleFlagged();
+                } else if (mMessageViewFragment != null) {
+                    mMessageViewFragment.onToggleFlagged();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_M: {
+                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                    mMessageListFragment.onMove();
+                } else if (mMessageViewFragment != null) {
+                    mMessageViewFragment.onMove();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_V: {
+                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                    mMessageListFragment.onArchive();
+                } else if (mMessageViewFragment != null) {
+                    mMessageViewFragment.onArchive();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_Y: {
+                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                    mMessageListFragment.onCopy();
+                } else if (mMessageViewFragment != null) {
+                    mMessageViewFragment.onCopy();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_Z: {
+                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                    mMessageListFragment.onToggleRead();
+                } else if (mMessageViewFragment != null) {
+                    mMessageViewFragment.onToggleRead();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_F: {
+                if (mMessageViewFragment != null) {
+                    mMessageViewFragment.onForward();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_A: {
+                if (mMessageViewFragment != null) {
+                    mMessageViewFragment.onReplyAll();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_R: {
+                if (mMessageViewFragment != null) {
+                    mMessageViewFragment.onReply();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_J:
+            case KeyEvent.KEYCODE_P: {
+                MessageReference ref = mMessageViewFragment.getMessageReference();
+                if (ref != null) {
+                    mMessageListFragment.openPrevious(ref);
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_N:
+            case KeyEvent.KEYCODE_K: {
+                MessageReference ref = mMessageViewFragment.getMessageReference();
+                if (ref != null) {
+                    mMessageListFragment.openNext(ref);
+                }
+                return true;
+            }
+            /* FIXME
+            case KeyEvent.KEYCODE_Z: {
+                mMessageViewFragment.zoom(event);
+                return true;
+            }*/
             case KeyEvent.KEYCODE_H: {
                 Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
                 toast.show();
                 return true;
             }
+
         }
 
-        boolean retval = true;
-        try {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_DEL:
-                case KeyEvent.KEYCODE_D: {
-                    mMessageListFragment.onDelete();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_S: {
-                    mMessageListFragment.toggleMessageSelect();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_G: {
-                    mMessageListFragment.onToggleFlagged();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_M: {
-                    mMessageListFragment.onMove();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_V: {
-                    mMessageListFragment.onArchive();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_Y: {
-                    mMessageListFragment.onCopy();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_Z: {
-                    mMessageListFragment.onToggleRead();
-                    return true;
-                }
-            }
-        } finally {
-            retval = super.onKeyDown(keyCode, event);
-        }
-        return retval;
+        return false;
     }
 
     @Override

@@ -318,7 +318,7 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
             return true;
         }
         case KeyEvent.KEYCODE_G: {
-            mMessageViewFragment.onFlag();
+            mMessageViewFragment.onToggleFlagged();
             return true;
         }
         case KeyEvent.KEYCODE_M: {

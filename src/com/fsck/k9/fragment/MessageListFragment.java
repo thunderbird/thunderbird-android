@@ -431,6 +431,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         private static final int ACTION_PROGRESS = 3;
         private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
         private static final int ACTION_GO_BACK = 5;
+        private static final int ACTION_OPEN_MESSAGE = 6;
 
 
         public void folderLoading(String folder, boolean loading) {
@@ -469,6 +470,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             sendMessage(msg);
         }
 
+        public void openMessage(MessageReference messageReference) {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_OPEN_MESSAGE,
+                    messageReference);
+            sendMessage(msg);
+        }
+
         @Override
         public void handleMessage(android.os.Message msg) {
             // The following messages don't need an attached activity.
@@ -503,6 +510,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
                 case ACTION_GO_BACK: {
                     mFragmentListener.goBack();
+                    break;
+                }
+                case ACTION_OPEN_MESSAGE: {
+                    MessageReference messageReference = (MessageReference) msg.obj;
+                    mFragmentListener.openMessage(messageReference);
                     break;
                 }
             }
@@ -663,22 +675,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (mSelectedCount > 0) {
             toggleMessageSelect(position);
         } else {
-            Account account = getAccountFromCursor(cursor);
-
-            long folderId = cursor.getLong(FOLDER_ID_COLUMN);
-            String folderName = getFolderNameById(account, folderId);
-
             if (mThreadedList && cursor.getInt(THREAD_COUNT_COLUMN) > 1) {
+                Account account = getAccountFromCursor(cursor);
+                long folderId = cursor.getLong(FOLDER_ID_COLUMN);
+                String folderName = getFolderNameById(account, folderId);
+
                 // If threading is enabled and this item represents a thread, display the thread contents.
                 long rootId = cursor.getLong(THREAD_ROOT_COLUMN);
                 mFragmentListener.showThread(account, folderName, rootId);
             } else {
                 // This item represents a message; just display the message.
-                MessageReference ref = new MessageReference();
-                ref.accountUuid = account.getUuid();
-                ref.folderName = folderName;
-                ref.uid = cursor.getString(UID_COLUMN);
-                onOpenMessage(ref);
+                openMessageAtPosition(listViewToAdapterPosition(position));
             }
         }
     }
@@ -1502,6 +1509,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private int listViewToAdapterPosition(int position) {
         if (position > 0 && position <= mAdapter.getCount()) {
             return position - 1;
+        }
+
+        return AdapterView.INVALID_POSITION;
+    }
+
+    private int adapterToListViewPosition(int position) {
+        if (position >= 0 && position < mAdapter.getCount()) {
+            return position + 1;
         }
 
         return AdapterView.INVALID_POSITION;
@@ -2748,6 +2763,63 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (currentPosition < mListView.getCount()) {
             mListView.setSelection(currentPosition + 1);
         }
+    }
+
+    public void openPrevious(MessageReference messageReference) {
+        int position = getPosition(messageReference);
+        if (position <= 0) {
+            return;
+        }
+
+        openMessageAtPosition(position - 1);
+    }
+
+    public void openNext(MessageReference messageReference) {
+        int position = getPosition(messageReference);
+        if (position < 0 || position == mAdapter.getCount() - 1) {
+            return;
+        }
+
+        openMessageAtPosition(position + 1);
+    }
+
+    private void openMessageAtPosition(int position) {
+        // Scroll message into view if necessary
+        int listViewPosition = adapterToListViewPosition(position);
+        if (listViewPosition != AdapterView.INVALID_POSITION &&
+                (listViewPosition < mListView.getFirstVisiblePosition() ||
+                listViewPosition > mListView.getLastVisiblePosition())) {
+            mListView.setSelection(listViewPosition);
+        }
+
+        Cursor cursor = (Cursor) mAdapter.getItem(position);
+        MessageReference ref = new MessageReference();
+        ref.accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+        ref.folderName = cursor.getString(FOLDER_NAME_COLUMN);
+        ref.uid = cursor.getString(UID_COLUMN);
+
+        // For some reason the mListView.setSelection() above won't do anything when we call
+        // onOpenMessage() (and consequently mAdapter.notifyDataSetChanged()) right away. So we
+        // defer the call using MessageListHandler.
+        mHandler.openMessage(ref);
+    }
+
+    private int getPosition(MessageReference messageReference) {
+        for (int i = 0, len = mAdapter.getCount(); i < len; i++) {
+            Cursor cursor = (Cursor) mAdapter.getItem(i);
+
+            String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+            String folderName = cursor.getString(FOLDER_NAME_COLUMN);
+            String uid = cursor.getString(UID_COLUMN);
+
+            if (accountUuid.equals(messageReference.accountUuid) &&
+                    folderName.equals(messageReference.folderName) &&
+                    uid.equals(messageReference.uid)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     public interface MessageListFragmentListener {
