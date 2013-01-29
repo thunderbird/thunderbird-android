@@ -368,6 +368,15 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         return ret;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+            showMessageList();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     /**
      * Handle hotkeys
      *
@@ -1077,7 +1086,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         } else if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
         } else if (mMessageListFragment.isManualSearch()) {
-            onBackPressed();
+            finish();
         } else if (!mSingleFolderMode) {
             onAccounts();
         } else {
