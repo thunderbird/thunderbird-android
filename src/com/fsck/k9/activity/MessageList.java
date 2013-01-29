@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -584,6 +585,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 mMessageListFragment.onCompose();
                 return true;
             }
+            case R.id.toggle_message_view_theme: {
+                onToggleTheme();
+                return true;
+            }
+            // MessageList
             case R.id.check_mail: {
                 mMessageListFragment.checkMail();
                 return true;
@@ -636,6 +642,51 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 mMessageListFragment.onRemoteSearch();
                 return true;
             }
+            // MessageView
+            case R.id.delete: {
+                mMessageViewFragment.onDelete();
+                return true;
+            }
+            case R.id.reply: {
+                mMessageViewFragment.onReply();
+                return true;
+            }
+            case R.id.reply_all: {
+                mMessageViewFragment.onReplyAll();
+                return true;
+            }
+            case R.id.forward: {
+                mMessageViewFragment.onForward();
+                return true;
+            }
+            case R.id.share: {
+                mMessageViewFragment.onSendAlternate();
+                return true;
+            }
+            case R.id.toggle_unread: {
+                mMessageViewFragment.onToggleRead();
+                return true;
+            }
+            case R.id.archive: {
+                mMessageViewFragment.onArchive();
+                return true;
+            }
+            case R.id.spam: {
+                mMessageViewFragment.onSpam();
+                return true;
+            }
+            case R.id.move: {
+                mMessageViewFragment.onMove();
+                return true;
+            }
+            case R.id.copy: {
+                mMessageViewFragment.onCopy();
+                return true;
+            }
+            case R.id.select_text: {
+                mMessageViewFragment.onSelectText();
+                return true;
+            }
         }
 
         if (!mSingleFolderMode) {
@@ -679,53 +730,115 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         return true;
     }
 
+    /**
+     * Hide menu items not appropriate for the current context.
+     *
+     * <p><strong>Note:</strong>
+     * Please adjust the comments in {@code res/menu/message_list_option.xml} if you change the
+     * visibility of a menu item in this method.
+     * </p>
+     *
+     * @param menu
+     *         The {@link Menu} instance that should be modified. May be {@code null}; in that case
+     *         the method does nothing and immediately returns.
+     */
     private void configureMenu(Menu menu) {
         if (menu == null) {
             return;
         }
 
+        // Set visibility of account/folder settings menu items
+        if (mMessageListFragment == null) {
+            menu.findItem(R.id.account_settings).setVisible(false);
+            menu.findItem(R.id.folder_settings).setVisible(false);
+        } else {
+            menu.findItem(R.id.account_settings).setVisible(
+                    mMessageListFragment.isSingleAccountMode());
+            menu.findItem(R.id.folder_settings).setVisible(
+                    mMessageListFragment.isSingleFolderMode());
+        }
+
+        /*
+         * Set visibility of menu items related to the message view
+         */
+
+        if (mMessageViewFragment == null) {
+            menu.findItem(R.id.delete).setVisible(false);
+            menu.findItem(R.id.single_message_options).setVisible(false);
+            menu.findItem(R.id.archive).setVisible(false);
+            menu.findItem(R.id.spam).setVisible(false);
+            menu.findItem(R.id.move).setVisible(false);
+            menu.findItem(R.id.copy).setVisible(false);
+            menu.findItem(R.id.toggle_unread).setVisible(false);
+            menu.findItem(R.id.select_text).setVisible(false);
+            menu.findItem(R.id.toggle_message_view_theme).setVisible(false);
+        } else {
+            // Set title of menu item to switch to dark/light theme
+            MenuItem toggleTheme = menu.findItem(R.id.toggle_message_view_theme);
+            if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
+                toggleTheme.setTitle(R.string.message_view_theme_action_light);
+            } else {
+                toggleTheme.setTitle(R.string.message_view_theme_action_dark);
+            }
+            toggleTheme.setVisible(true);
+
+            // Set title of menu item to toggle the read state of the currently displayed message
+            if (mMessageViewFragment.isMessageRead()) {
+                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action);
+            } else {
+                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action);
+            }
+
+            menu.findItem(R.id.copy).setVisible(mMessageViewFragment.isCopyCapable());
+
+            if (mMessageViewFragment.isMoveCapable()) {
+                menu.findItem(R.id.move).setVisible(true);
+                menu.findItem(R.id.archive).setVisible(mMessageViewFragment.canMessageBeArchived());
+                menu.findItem(R.id.spam).setVisible(mMessageViewFragment.canMessageBeMovedToSpam());
+            } else {
+                menu.findItem(R.id.move).setVisible(false);
+                menu.findItem(R.id.archive).setVisible(false);
+                menu.findItem(R.id.spam).setVisible(false);
+            }
+        }
+
+
+        /*
+         * Set visibility of menu items related to the message list
+         */
+
+        // Hide both search menu items by default and enable one when appropriate
         menu.findItem(R.id.search).setVisible(false);
         menu.findItem(R.id.search_remote).setVisible(false);
 
-        if (mMessageListFragment == null) {
-            // Hide everything (except "compose") if no MessageListFragment instance is available
+        if (mDisplayMode == DisplayMode.MESSAGE_VIEW || mMessageListFragment == null) {
             menu.findItem(R.id.check_mail).setVisible(false);
             menu.findItem(R.id.set_sort).setVisible(false);
             menu.findItem(R.id.select_all).setVisible(false);
             menu.findItem(R.id.send_messages).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
-            menu.findItem(R.id.settings).setVisible(false);
         } else {
             menu.findItem(R.id.set_sort).setVisible(true);
             menu.findItem(R.id.select_all).setVisible(true);
-            menu.findItem(R.id.settings).setVisible(true);
 
-            if (!mSingleAccountMode) {
+            if (!mMessageListFragment.isSingleAccountMode()) {
                 menu.findItem(R.id.expunge).setVisible(false);
                 menu.findItem(R.id.check_mail).setVisible(false);
                 menu.findItem(R.id.send_messages).setVisible(false);
-                menu.findItem(R.id.folder_settings).setVisible(false);
-                menu.findItem(R.id.account_settings).setVisible(false);
             } else {
-                menu.findItem(R.id.folder_settings).setVisible(mSingleFolderMode);
-                menu.findItem(R.id.account_settings).setVisible(true);
-
-                if (mMessageListFragment.isOutbox()) {
-                    menu.findItem(R.id.send_messages).setVisible(true);
-                } else {
-                    menu.findItem(R.id.send_messages).setVisible(false);
-                }
+                menu.findItem(R.id.send_messages).setVisible(mMessageListFragment.isOutbox());
 
                 if (mMessageListFragment.isRemoteFolder()) {
                     menu.findItem(R.id.check_mail).setVisible(true);
-                    menu.findItem(R.id.expunge).setVisible(mMessageListFragment.isAccountExpungeCapable());
+                    menu.findItem(R.id.expunge).setVisible(
+                            mMessageListFragment.isAccountExpungeCapable());
                 } else {
                     menu.findItem(R.id.check_mail).setVisible(false);
                     menu.findItem(R.id.expunge).setVisible(false);
                 }
             }
 
-            // If this is an explicit local search, show the option to search the cloud.
+            // If this is an explicit local search, show the option to search on the server
             if (!mMessageListFragment.isRemoteSearch() &&
                     mMessageListFragment.isRemoteSearchAllowed()) {
                 menu.findItem(R.id.search_remote).setVisible(true);
@@ -993,8 +1106,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         }
     }
 
-    @Override
-    public void restartActivity() {
+    private void restartActivity() {
         // restart the current activity, so that the theme change can be applied
         if (Build.VERSION.SDK_INT < 11) {
             Intent intent = getIntent();
@@ -1068,5 +1180,36 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         mMessageListContainer.setVisibility(View.GONE);
         mMessageViewContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void updateMenu() {
+        configureMenu(mMenu);
+    }
+
+    @Override
+    public void disableDeleteAction() {
+        mMenu.findItem(R.id.delete).setEnabled(false);
+    }
+
+    private void onToggleTheme() {
+        if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
+            K9.setK9MessageViewTheme(K9.THEME_LIGHT);
+        } else {
+            K9.setK9MessageViewTheme(K9.THEME_DARK);
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Context appContext = getApplicationContext();
+                Preferences prefs = Preferences.getPreferences(appContext);
+                Editor editor = prefs.getPreferences().edit();
+                K9.save(editor);
+                editor.commit();
+            }
+        }).start();
+
+        restartActivity();
     }
 }

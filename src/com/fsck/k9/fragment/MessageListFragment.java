@@ -3245,4 +3245,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mAdapter.notifyDataSetChanged();
         }
     }
+
+    public boolean isSingleAccountMode() {
+        return mSingleAccountMode;
+    }
+
+    public boolean isSingleFolderMode() {
+        return mSingleFolderMode;
+    }
 }

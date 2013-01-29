@@ -6,9 +6,7 @@ import java.util.Collections;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences.Editor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -22,9 +20,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -75,15 +70,12 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
     private SingleMessageView mMessageView;
     private PgpData mPgpData;
-    private Menu mMenu;
     private Account mAccount;
     private MessageReference mMessageReference;
     private Message mMessage;
     private MessagingController mController;
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
-
-    private MenuItem mToggleMessageViewMenu;
 
     /** this variable is used to save the calling AttachmentView
      *  until the onActivityResult is called.
@@ -254,7 +246,8 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         mMessageView.resetHeaderView();
 
         mController.loadMessageForView(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
-        configureMenu(mMenu);
+
+        mFragmentListener.updateMenu();
     }
 
     /**
@@ -272,7 +265,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         if (mMessage != null) {
             // Disable the delete button after it's tapped (to try to prevent
             // accidental clicks)
-            mMenu.findItem(R.id.delete).setEnabled(false);
+            mFragmentListener.disableDeleteAction();
             Message messageToDelete = mMessage;
             mFragmentListener.showNextMessageOrReturn();
             mController.deleteMessages(Collections.singletonList(messageToDelete), null);
@@ -368,26 +361,12 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         onRefile(mAccount.getArchiveFolderName());
     }
 
-    private void onToggleColors() {
-        if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
-            K9.setK9MessageViewTheme(K9.THEME_LIGHT);
-        } else {
-            K9.setK9MessageViewTheme(K9.THEME_DARK);
-        }
+    public void onSpam() {
+        onRefile(mAccount.getSpamFolderName());
+    }
 
-        new AsyncTask<Object, Object, Object>() {
-            @Override
-            protected Object doInBackground(Object... params) {
-                Context appContext = getActivity().getApplicationContext();
-                Preferences prefs = Preferences.getPreferences(appContext);
-                Editor editor = prefs.getPreferences().edit();
-                K9.save(editor);
-                editor.commit();
-                return null;
-            }
-        }.execute();
-
-        mFragmentListener.restartActivity();
+    public void onSelectText() {
+        mMessageView.beginSelectingText();
     }
 
     private void startRefileActivity(int activity) {
@@ -451,7 +430,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         }
     }
 
-    private void onSendAlternate() {
+    public void onSendAlternate() {
         if (mMessage != null) {
             mController.sendAlternate(getActivity(), mAccount, mMessage);
         }
@@ -464,7 +443,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
             mMessageView.setHeaders(mMessage, mAccount);
             String subject = mMessage.getSubject();
             displayMessageSubject(subject);
-            updateUnreadToggleTitle();
+            mFragmentListener.updateMenu();
         }
     }
 
@@ -487,125 +466,6 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 onDownloadRemainder();
                 break;
             }
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.delete:
-            onDelete();
-            break;
-        case R.id.reply:
-            onReply();
-            break;
-        case R.id.reply_all:
-            onReplyAll();
-            break;
-        case R.id.forward:
-            onForward();
-            break;
-        case R.id.share:
-            onSendAlternate();
-            break;
-        case R.id.toggle_unread:
-            onToggleRead();
-            break;
-        case R.id.archive:
-            onRefile(mAccount.getArchiveFolderName());
-            break;
-        case R.id.spam:
-            onRefile(mAccount.getSpamFolderName());
-            break;
-        case R.id.move:
-            onMove();
-            break;
-        case R.id.copy:
-            onCopy();
-            break;
-        case R.id.select_text:
-            mMessageView.beginSelectingText();
-            break;
-        case R.id.toggle_message_view_theme:
-            onToggleColors();
-            break;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.message_view_fragment, menu);
-        mMenu = menu;
-        configureMenu(menu);
-    }
-
-    private void configureMenu(Menu menu) {
-        // In Android versions prior to 4.2 onCreateOptionsMenu() (which calls us) is called before
-        // onActivityCreated() when mAccount isn't initialized yet. In that case we do nothing and
-        // wait for displayMessage() to call us again.
-        if (menu == null || mAccount == null) {
-            return;
-        }
-
-        // enable them all
-        menu.findItem(R.id.copy).setVisible(true);
-        menu.findItem(R.id.move).setVisible(true);
-        menu.findItem(R.id.archive).setVisible(true);
-        menu.findItem(R.id.spam).setVisible(true);
-
-        mToggleMessageViewMenu = menu.findItem(R.id.toggle_message_view_theme);
-        if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
-            mToggleMessageViewMenu.setTitle(R.string.message_view_theme_action_light);
-        } else {
-            mToggleMessageViewMenu.setTitle(R.string.message_view_theme_action_dark);
-        }
-
-        toggleActionsState(menu, true);
-
-        updateUnreadToggleTitle();
-
-        // check message, folder capability
-        if (!mController.isCopyCapable(mAccount)) {
-            menu.findItem(R.id.copy).setVisible(false);
-        }
-
-        if (mController.isMoveCapable(mAccount)) {
-            menu.findItem(R.id.move).setVisible(true);
-
-            menu.findItem(R.id.archive).setVisible(
-                !mMessageReference.folderName.equals(mAccount.getArchiveFolderName())
-                    && mAccount.hasArchiveFolder());
-
-            menu.findItem(R.id.spam).setVisible(
-                !mMessageReference.folderName.equals(mAccount.getSpamFolderName())
-                    && mAccount.hasSpamFolder());
-        } else {
-            menu.findItem(R.id.copy).setVisible(false);
-            menu.findItem(R.id.move).setVisible(false);
-            menu.findItem(R.id.archive).setVisible(false);
-            menu.findItem(R.id.spam).setVisible(false);
-        }
-    }
-
-    /**
-     * Set the title of the "Toggle Unread" menu item based upon the current read state of the message.
-     */
-    public void updateUnreadToggleTitle() {
-        if (mMessage != null && mMenu != null) {
-            if (mMessage.isSet(Flag.SEEN)) {
-                mMenu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action);
-            } else {
-                mMenu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action);
-            }
-        }
-    }
-
-    private void toggleActionsState(Menu menu, boolean state) {
-        for (int i = 0; i < menu.size(); ++i) {
-            menu.getItem(i).setEnabled(state);
         }
     }
 
@@ -694,7 +554,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                         mMessage = message;
                         mMessageView.setMessage(account, (LocalMessage) message, mPgpData,
                                 mController, mListener);
-                        updateUnreadToggleTitle();
+                        mFragmentListener.updateMenu();
 
                     } catch (MessagingException e) {
                         Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
@@ -909,15 +769,37 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         return mMessageReference;
     }
 
+    public boolean isMessageRead() {
+        return (mMessage != null) ? mMessage.isSet(Flag.SEEN) : false;
+    }
+
+    public boolean isCopyCapable() {
+        return mController.isCopyCapable(mAccount);
+    }
+
+    public boolean isMoveCapable() {
+        return mController.isMoveCapable(mAccount);
+    }
+
+    public boolean canMessageBeArchived() {
+        return (!mMessageReference.folderName.equals(mAccount.getArchiveFolderName())
+                && mAccount.hasArchiveFolder());
+    }
+
+    public boolean canMessageBeMovedToSpam() {
+        return (!mMessageReference.folderName.equals(mAccount.getSpamFolderName())
+                && mAccount.hasSpamFolder());
+    }
 
     public interface MessageViewFragmentListener {
         public void onForward(Message mMessage, PgpData mPgpData);
+        public void disableDeleteAction();
         public void onReplyAll(Message mMessage, PgpData mPgpData);
         public void onReply(Message mMessage, PgpData mPgpData);
         public void displayMessageSubject(String title);
         public void setProgress(boolean b);
-        public void restartActivity();
         public void showNextMessageOrReturn();
         public void messageHeaderViewAvailable(MessageHeader messageHeaderView);
+        public void updateMenu();
     }
 }

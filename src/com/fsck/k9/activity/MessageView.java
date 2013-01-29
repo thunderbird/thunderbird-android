@@ -539,22 +539,6 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
         public void onMount(String providerId) { /* no-op */ }
     }
 
-
-    @Override
-    public void restartActivity() {
-        // restart the current activity, so that the theme change can be applied
-        if (Build.VERSION.SDK_INT < 11) {
-            Intent intent = getIntent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            finish();
-            overridePendingTransition(0, 0); // disable animations to speed up the switch
-            startActivity(intent);
-            overridePendingTransition(0, 0);
-        } else {
-            recreate();
-        }
-    }
-
     @Override
     public void displayMessageSubject(String subject) {
         setTitle(subject);
@@ -576,5 +560,15 @@ public class MessageView extends K9FragmentActivity implements MessageViewFragme
     public void onForward(Message mMessage, PgpData mPgpData) {
         MessageCompose.actionForward(this, mAccount, mMessage, mPgpData.getDecryptedData());
         finish();
+    }
+
+    @Override
+    public void updateMenu() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void disableDeleteAction() {
+        // TODO Auto-generated method stub
     }
 }

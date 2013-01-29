@@ -1,28 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <!--
+    The comments preceding the (top level) menu items denote which part of the combined message
+    list/view activity the item belongs to. Either "MessageList", "MessageView", or "always" (as in:
+    always show this item, no matter what display mode we're in).
+
+    The comments are for informational purposes only. Please make sure to adjust the code in
+    MessageList.configureMenu() if you make any changes to this file.
+    -->
+
+    <!-- MessageList -->
     <item
         android:id="@+id/search"
         android:icon="?attr/iconActionSearch"
         android:showAsAction="always"
         android:title="@string/search_action"/>
+
+    <!-- MessageList -->
     <item
         android:id="@+id/search_remote"
         android:icon="?attr/iconActionRemoteSearch"
         android:showAsAction="always"
         android:title="@string/action_remote_search"
-        android:visible="false"
-        />
+        android:visible="false"/>
+
+    <!-- MessageList -->
     <item
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
         android:showAsAction="always"
         android:title="@string/check_mail_action"/>
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/delete"
+        android:alphabeticShortcut="q"
+        android:icon="?attr/iconActionDelete"
+        android:showAsAction="always"
+        android:title="@string/delete_action"/>
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/single_message_options"
+        android:icon="?attr/iconActionSingleMessageOptions"
+        android:showAsAction="ifRoom"
+        android:title="@string/single_message_options_action">
+        <menu>
+            <item
+                android:id="@+id/reply"
+                android:title="@string/reply_action"/>
+            <item
+                android:id="@+id/reply_all"
+                android:title="@string/reply_all_action"/>
+            <item
+                android:id="@+id/forward"
+                android:title="@string/forward_action"/>
+            <item
+                android:id="@+id/share"
+                android:title="@string/send_alternate_action"/>
+        </menu>
+    </item>
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/archive"
+        android:icon="?attr/iconActionArchive"
+        android:showAsAction="ifRoom"
+        android:title="@string/archive_action"/>
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/spam"
+        android:icon="?attr/iconActionSpam"
+        android:showAsAction="ifRoom"
+        android:title="@string/spam_action"/>
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/move"
+        android:icon="?attr/iconActionMoveOrCopy"
+        android:showAsAction="ifRoom"
+        android:title="@string/move_action"/>
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/copy"
+        android:title="@string/copy_action"/>
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/toggle_unread"
+        android:alphabeticShortcut="u"
+        android:showAsAction="never"
+        android:title="@string/mark_as_unread_action"/>
+
+    <!-- MessageList -->
     <item
         android:id="@+id/set_sort"
         android:icon="?attr/iconActionSort"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/sort_by">
         <menu>
             <item
@@ -50,27 +128,49 @@
                 android:title="@string/sort_by_attach"/>
         </menu>
     </item>
+
+    <!-- always -->
     <item
         android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:icon="?attr/iconActionCompose"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/compose_action"/>
+
+    <!-- MessageList -->
     <item
         android:id="@+id/select_all"
         android:icon="?attr/iconMenuSelectAll"
         android:showAsAction="never"
         android:title="@string/batch_select_all"/>
+
+    <!-- MessageList -->
     <item
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
         android:showAsAction="never"
         android:title="@string/send_messages_action"/>
+
+    <!-- MessageList -->
     <item
         android:id="@+id/expunge"
         android:showAsAction="never"
         android:title="@string/expunge_action"/>
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/select_text"
+        android:showAsAction="never"
+        android:title="@string/select_text_action"/>
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/toggle_message_view_theme"
+        android:showAsAction="never"
+        android:title="@string/message_view_theme_action_dark"/>
+
+    <!-- always -->
     <item
         android:id="@+id/settings"
         android:icon="?attr/iconMenuPreferences"
