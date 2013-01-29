@@ -398,10 +398,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             case KeyEvent.KEYCODE_VOLUME_UP: {
                 if (mMessageViewFragment != null && mDisplayMode != DisplayMode.MESSAGE_LIST &&
                         K9.useVolumeKeysForNavigationEnabled()) {
-                    MessageReference ref = mMessageViewFragment.getMessageReference();
-                    if (ref != null) {
-                        mMessageListFragment.openPrevious(ref);
-                    }
+                    showPreviousMessage();
                     return true;
                 } else if (mDisplayMode != DisplayMode.MESSAGE_VIEW &&
                         K9.useVolumeKeysForListNavigationEnabled()) {
@@ -414,10 +411,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             case KeyEvent.KEYCODE_VOLUME_DOWN: {
                 if (mMessageViewFragment != null && mDisplayMode != DisplayMode.MESSAGE_LIST &&
                         K9.useVolumeKeysForNavigationEnabled()) {
-                    MessageReference ref = mMessageViewFragment.getMessageReference();
-                    if (ref != null) {
-                        mMessageListFragment.openNext(ref);
-                    }
+                    showNextMessage();
                     return true;
                 } else if (mDisplayMode != DisplayMode.MESSAGE_VIEW &&
                         K9.useVolumeKeysForListNavigationEnabled()) {
@@ -516,18 +510,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             }
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P: {
-                MessageReference ref = mMessageViewFragment.getMessageReference();
-                if (ref != null) {
-                    mMessageListFragment.openPrevious(ref);
-                }
+                showPreviousMessage();
                 return true;
             }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K: {
-                MessageReference ref = mMessageViewFragment.getMessageReference();
-                if (ref != null) {
-                    mMessageListFragment.openNext(ref);
-                }
+                showNextMessage();
                 return true;
             }
             /* FIXME
@@ -1155,7 +1143,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     @Override
     public void showNextMessageOrReturn() {
         if (K9.messageViewReturnToList()) {
-            finish();
+            if (mDisplayMode == DisplayMode.SPLIT_VIEW) {
+                showMessageViewPlaceHolder();
+            } else {
+                showMessageList();
+            }
         } else {
             showNextMessage();
         }
@@ -1172,7 +1164,17 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void showNextMessage() {
-        //TODO: implement
+        MessageReference ref = mMessageViewFragment.getMessageReference();
+        if (ref != null) {
+            mMessageListFragment.openNext(ref);
+        }
+    }
+
+    private void showPreviousMessage() {
+        MessageReference ref = mMessageViewFragment.getMessageReference();
+        if (ref != null) {
+            mMessageListFragment.openPrevious(ref);
+        }
     }
 
     private void showMessageList() {
