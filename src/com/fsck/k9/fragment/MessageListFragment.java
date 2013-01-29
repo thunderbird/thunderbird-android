@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -1495,15 +1496,24 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *         {@code true} if this was an attempt to select (i.e. left to right).
      */
     private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
-        int[] listPosition = new int[2];
-        mListView.getLocationOnScreen(listPosition);
+        int x = (int) downMotion.getRawX();
+        int y = (int) downMotion.getRawY();
 
-        int listX = (int) downMotion.getRawX() - listPosition[0];
-        int listY = (int) downMotion.getRawY() - listPosition[1];
+        Rect headerRect = new Rect();
+        mListView.getGlobalVisibleRect(headerRect);
 
-        int listViewPosition = mListView.pointToPosition(listX, listY);
+        // Only handle swipes in the visible area of the message list
+        if (headerRect.contains(x, y)) {
+            int[] listPosition = new int[2];
+            mListView.getLocationOnScreen(listPosition);
 
-        toggleMessageSelect(listViewPosition);
+            int listX = x - listPosition[0];
+            int listY = y - listPosition[1];
+
+            int listViewPosition = mListView.pointToPosition(listX, listY);
+
+            toggleMessageSelect(listViewPosition);
+        }
     }
 
     private int listViewToAdapterPosition(int position) {
