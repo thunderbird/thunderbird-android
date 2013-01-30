@@ -402,6 +402,8 @@ public class EmailProvider extends ContentProvider {
 
                         if (MessageColumns.ID.equals(columnName)) {
                             query.append("u." + MessageColumns.ID + " AS " + MessageColumns.ID);
+                        } else if (MessageColumns.READ.equals(columnName)) {
+                            query.append("MIN(read) AS " + MessageColumns.READ);
                         } else if (MessageColumns.DATE.equals(columnName)) {
                             query.append("MAX(date) AS " + MessageColumns.DATE);
                         } else if (SpecialColumns.THREAD_COUNT.equals(columnName)) {

@@ -1659,7 +1659,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
 
-            holder.preview.setLines(mPreviewLines);
+            // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
+            holder.preview.setLines(Math.max(mPreviewLines,1));
             holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
             holder.threadCountWrapper = (View) view.findViewById(R.id.thread_count_wrapper);
@@ -1696,11 +1697,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             Date sentDate = new Date(cursor.getLong(DATE_COLUMN));
             String displayDate = mMessageHelper.formatDate(sentDate);
-
-            String preview = cursor.getString(PREVIEW_COLUMN);
-            if (preview == null) {
-                preview = "";
-            }
 
             int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
 
@@ -1768,11 +1764,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             String sigil = recipientSigil(toMe, ccMe);
 
-            holder.preview.setText(
-                    new SpannableStringBuilder(sigil)
-                        .append(beforePreviewText)
-                        .append(" ")
-                        .append(preview), TextView.BufferType.SPANNABLE);
+            SpannableStringBuilder messageStringBuilder = new SpannableStringBuilder(sigil)
+                    .append(beforePreviewText);
+
+            if (mPreviewLines > 0) {
+                String preview = cursor.getString(PREVIEW_COLUMN);
+                if (preview != null) {
+                    messageStringBuilder.append(" ").append(preview);
+                }
+            }
+
+            holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE);
 
             Spannable str = (Spannable)holder.preview.getText();
 
@@ -1782,7 +1784,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     mFontSizes.getMessageListSender();
 
             AbsoluteSizeSpan span = new AbsoluteSizeSpan(fontSize, true);
-            str.setSpan(span, 0, beforePreviewText.length() + 1,
+            str.setSpan(span, 0, beforePreviewText.length() + sigil.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             //TODO: make this part of the theme
@@ -1791,7 +1793,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     Color.rgb(160, 160, 160);
 
             // Set span (color) for preview message
-            str.setSpan(new ForegroundColorSpan(color), beforePreviewText.length() + 1,
+            str.setSpan(new ForegroundColorSpan(color), beforePreviewText.length() + sigil.length(),
                     str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             Drawable statusHolder = null;
