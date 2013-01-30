@@ -1779,7 +1779,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     mFontSizes.getMessageListSender();
 
             AbsoluteSizeSpan span = new AbsoluteSizeSpan(fontSize, true);
-            str.setSpan(span, 0, beforePreviewText.length() + 1,
+            str.setSpan(span, 0, beforePreviewText.length() + sigil.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             //TODO: make this part of the theme
@@ -1788,7 +1788,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     Color.rgb(160, 160, 160);
 
             // Set span (color) for preview message
-            str.setSpan(new ForegroundColorSpan(color), beforePreviewText.length() + 1,
+            str.setSpan(new ForegroundColorSpan(color), beforePreviewText.length() + sigil.length(),
                     str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             Drawable statusHolder = null;
