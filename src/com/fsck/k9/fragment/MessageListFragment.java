@@ -334,8 +334,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         SORT_COMPARATORS = Collections.unmodifiableMap(map);
     }
 
-    private boolean mResumed;
-
     private ListView mListView;
     private PullToRefreshListView mPullToRefreshView;
     private Parcelable mSavedListState;
@@ -418,6 +416,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private Preferences mPreferences;
 
+    private boolean mLoaderJustInitialized;
+
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
      *
@@ -433,6 +433,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         private static final int ACTION_PROGRESS = 3;
         private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
         private static final int ACTION_GO_BACK = 5;
+        private static final int ACTION_RESTORE_LIST_POSITION = 6;
 
 
         public void folderLoading(String folder, boolean loading) {
@@ -471,6 +472,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             sendMessage(msg);
         }
 
+        public void restoreListPosition() {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION);
+            sendMessage(msg);
+        }
+
         @Override
         public void handleMessage(android.os.Message msg) {
             // The following messages don't need an attached activity.
@@ -505,6 +511,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
                 case ACTION_GO_BACK: {
                     mFragmentListener.goBack();
+                    break;
+                }
+                case ACTION_RESTORE_LIST_POSITION: {
+                    mListView.onRestoreInstanceState(mSavedListState);
+                    mSavedListState = null;
                     break;
                 }
             }
@@ -747,6 +758,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         restoreInstanceState(savedInstanceState);
 
+        mLoaderJustInitialized = true;
         LoaderManager loaderManager = getLoaderManager();
         int len = mAccountUuids.length;
         mCursors = new Cursor[len];
@@ -915,7 +927,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public void onPause() {
-        mResumed = false;
         super.onPause();
         mController.removeListener(mListener);
     }
@@ -929,19 +940,21 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onResume() {
         super.onResume();
 
-        mResumed = true;
-
         setupFormats();
 
         Context appContext = getActivity().getApplicationContext();
 
         mSenderAboveSubject = K9.messageListSenderAboveSubject();
 
-        // Refresh the message list
-        LoaderManager loaderManager = getLoaderManager();
-        for (int i = 0; i < mAccountUuids.length; i++) {
-            loaderManager.restartLoader(i, null, this);
-            mCursorValid[i] = false;
+        if (!mLoaderJustInitialized) {
+            // Refresh the message list
+            LoaderManager loaderManager = getLoaderManager();
+            for (int i = 0; i < mAccountUuids.length; i++) {
+                loaderManager.restartLoader(i, null, this);
+                mCursorValid[i] = false;
+            }
+        } else {
+            mLoaderJustInitialized = false;
         }
 
         // Check if we have connectivity.  Cache the value.
@@ -3081,15 +3094,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         resetActionMode();
         computeBatchDirection();
 
-        if (mSavedListState != null && mResumed) {
+        if (mSavedListState != null) {
             boolean loadFinished = true;
             for (int i = 0; i < mCursorValid.length; i++) {
                 loadFinished &= mCursorValid[i];
             }
 
-            if (loadFinished && mSavedListState != null) {
-                mListView.onRestoreInstanceState(mSavedListState);
-                mSavedListState = null;
+            if (loadFinished) {
+                mHandler.restoreListPosition();
             }
         }
     }
