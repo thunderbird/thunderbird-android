@@ -312,6 +312,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private static final String STATE_SELECTED_MESSAGES = "selectedMessages";
     private static final String STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed";
+    private static final String STATE_MESSAGE_LIST = "listState";
 
     /**
      * Maps a {@link SortType} to a {@link Comparator} implementation.
@@ -473,8 +474,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         public void restoreListPosition() {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION);
-            sendMessage(msg);
+            if (!hasMessages(ACTION_RESTORE_LIST_POSITION)) {
+                android.os.Message msg = android.os.Message.obtain(this,
+                        ACTION_RESTORE_LIST_POSITION);
+                sendMessage(msg);
+            }
         }
 
         @Override
@@ -776,6 +780,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         saveSelectedMessages(outState);
 
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, mRemoteSearchPerformed);
+        outState.putParcelable(STATE_MESSAGE_LIST, mListView.onSaveInstanceState());
     }
 
     /**
@@ -791,6 +796,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         restoreSelectedMessages(savedInstanceState);
 
         mRemoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
+        mSavedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST);
     }
 
     /**
