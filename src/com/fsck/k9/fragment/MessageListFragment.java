@@ -27,6 +27,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -333,8 +334,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         SORT_COMPARATORS = Collections.unmodifiableMap(map);
     }
 
+    private boolean mResumed;
+
     private ListView mListView;
     private PullToRefreshListView mPullToRefreshView;
+    private Parcelable mSavedListState;
 
     private int mPreviewLines = 0;
 
@@ -353,6 +357,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private int mUnreadMessageCount = 0;
 
     private Cursor[] mCursors;
+    private boolean[] mCursorValid;
     private int mUniqueIdColumn;
 
     /**
@@ -724,6 +729,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     @Override
+    public void onDestroyView() {
+        mSavedListState = mListView.onSaveInstanceState();
+        super.onDestroyView();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -739,8 +750,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         LoaderManager loaderManager = getLoaderManager();
         int len = mAccountUuids.length;
         mCursors = new Cursor[len];
+        mCursorValid = new boolean[len];
         for (int i = 0; i < len; i++) {
             loaderManager.initLoader(i, null, this);
+            mCursorValid[i] = false;
         }
     }
 
@@ -902,6 +915,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public void onPause() {
+        mResumed = false;
         super.onPause();
         mController.removeListener(mListener);
     }
@@ -915,6 +929,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onResume() {
         super.onResume();
 
+        mResumed = true;
+
         setupFormats();
 
         Context appContext = getActivity().getApplicationContext();
@@ -925,6 +941,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         LoaderManager loaderManager = getLoaderManager();
         for (int i = 0; i < mAccountUuids.length; i++) {
             loaderManager.restartLoader(i, null, this);
+            mCursorValid[i] = false;
         }
 
         // Check if we have connectivity.  Cache the value.
@@ -3031,9 +3048,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             setPullToRefreshEnabled(true);
         }
 
+        final int loaderId = loader.getId();
+        mCursors[loaderId] = data;
+        mCursorValid[loaderId] = true;
+
         Cursor cursor;
         if (mCursors.length > 1) {
-            mCursors[loader.getId()] = data;
             cursor = new MergeCursorWithUniqueId(mCursors, getComparator());
             mUniqueIdColumn = cursor.getColumnIndex("_id");
         } else {
@@ -3060,6 +3080,18 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         resetActionMode();
         computeBatchDirection();
+
+        if (mSavedListState != null && mResumed) {
+            boolean loadFinished = true;
+            for (int i = 0; i < mCursorValid.length; i++) {
+                loadFinished &= mCursorValid[i];
+            }
+
+            if (loadFinished && mSavedListState != null) {
+                mListView.onRestoreInstanceState(mSavedListState);
+                mSavedListState = null;
+            }
+        }
     }
 
     private void cleanupSelected(Cursor cursor) {
