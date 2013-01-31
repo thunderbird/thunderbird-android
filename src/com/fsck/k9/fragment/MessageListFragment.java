@@ -27,6 +27,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -311,6 +312,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private static final String STATE_SELECTED_MESSAGES = "selectedMessages";
     private static final String STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed";
+    private static final String STATE_MESSAGE_LIST = "listState";
 
     /**
      * Maps a {@link SortType} to a {@link Comparator} implementation.
@@ -335,6 +337,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private ListView mListView;
     private PullToRefreshListView mPullToRefreshView;
+    private Parcelable mSavedListState;
 
     private int mPreviewLines = 0;
 
@@ -353,6 +356,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private int mUnreadMessageCount = 0;
 
     private Cursor[] mCursors;
+    private boolean[] mCursorValid;
     private int mUniqueIdColumn;
 
     /**
@@ -413,6 +417,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private Preferences mPreferences;
 
+    private boolean mLoaderJustInitialized;
+
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
      *
@@ -428,6 +434,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         private static final int ACTION_PROGRESS = 3;
         private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
         private static final int ACTION_GO_BACK = 5;
+        private static final int ACTION_RESTORE_LIST_POSITION = 6;
 
 
         public void folderLoading(String folder, boolean loading) {
@@ -466,6 +473,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             sendMessage(msg);
         }
 
+        public void restoreListPosition() {
+            if (!hasMessages(ACTION_RESTORE_LIST_POSITION)) {
+                android.os.Message msg = android.os.Message.obtain(this,
+                        ACTION_RESTORE_LIST_POSITION);
+                sendMessage(msg);
+            }
+        }
+
         @Override
         public void handleMessage(android.os.Message msg) {
             // The following messages don't need an attached activity.
@@ -500,6 +515,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
                 case ACTION_GO_BACK: {
                     mFragmentListener.goBack();
+                    break;
+                }
+                case ACTION_RESTORE_LIST_POSITION: {
+                    mListView.onRestoreInstanceState(mSavedListState);
+                    mSavedListState = null;
                     break;
                 }
             }
@@ -724,6 +744,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     @Override
+    public void onDestroyView() {
+        mSavedListState = mListView.onSaveInstanceState();
+        super.onDestroyView();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -736,11 +762,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         restoreInstanceState(savedInstanceState);
 
+        mLoaderJustInitialized = true;
         LoaderManager loaderManager = getLoaderManager();
         int len = mAccountUuids.length;
         mCursors = new Cursor[len];
+        mCursorValid = new boolean[len];
         for (int i = 0; i < len; i++) {
             loaderManager.initLoader(i, null, this);
+            mCursorValid[i] = false;
         }
     }
 
@@ -751,6 +780,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         saveSelectedMessages(outState);
 
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, mRemoteSearchPerformed);
+        outState.putParcelable(STATE_MESSAGE_LIST, mListView.onSaveInstanceState());
     }
 
     /**
@@ -766,6 +796,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         restoreSelectedMessages(savedInstanceState);
 
         mRemoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
+        mSavedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST);
     }
 
     /**
@@ -921,10 +952,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mSenderAboveSubject = K9.messageListSenderAboveSubject();
 
-        // Refresh the message list
-        LoaderManager loaderManager = getLoaderManager();
-        for (int i = 0; i < mAccountUuids.length; i++) {
-            loaderManager.restartLoader(i, null, this);
+        if (!mLoaderJustInitialized) {
+            // Refresh the message list
+            LoaderManager loaderManager = getLoaderManager();
+            for (int i = 0; i < mAccountUuids.length; i++) {
+                loaderManager.restartLoader(i, null, this);
+                mCursorValid[i] = false;
+            }
+        } else {
+            mLoaderJustInitialized = false;
         }
 
         // Check if we have connectivity.  Cache the value.
@@ -3036,9 +3072,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             setPullToRefreshEnabled(true);
         }
 
+        final int loaderId = loader.getId();
+        mCursors[loaderId] = data;
+        mCursorValid[loaderId] = true;
+
         Cursor cursor;
         if (mCursors.length > 1) {
-            mCursors[loader.getId()] = data;
             cursor = new MergeCursorWithUniqueId(mCursors, getComparator());
             mUniqueIdColumn = cursor.getColumnIndex("_id");
         } else {
@@ -3065,6 +3104,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         resetActionMode();
         computeBatchDirection();
+
+        if (mSavedListState != null) {
+            boolean loadFinished = true;
+            for (int i = 0; i < mCursorValid.length; i++) {
+                loadFinished &= mCursorValid[i];
+            }
+
+            if (loadFinished) {
+                mHandler.restoreListPosition();
+            }
+        }
     }
 
     private void cleanupSelected(Cursor cursor) {
