@@ -13,6 +13,7 @@ import android.database.CursorWindow;
 import android.database.DataSetObserver;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
@@ -460,6 +461,10 @@ public class MessageProvider extends ContentProvider {
             int accountId = -1;
             segments = uri.getPathSegments();
             accountId = Integer.parseInt(segments.get(1));
+
+            /* We may be queried from a third party app which does not have
+             * access to our EmailProvider. Use our own identity instead. */
+            Binder.clearCallingIdentity();
             return getAccountUnread(accountId);
         }
 
@@ -825,12 +830,19 @@ public class MessageProvider extends ContentProvider {
                             String sortOrder) throws Exception {
             mSemaphore.acquire();
 
-            final Cursor cursor;
-            cursor = mDelegate.query(uri, projection, selection, selectionArgs, sortOrder);
+            Cursor cursor = null;
+            try {
+                cursor = mDelegate.query(uri, projection, selection, selectionArgs, sortOrder);
+            } finally {
+                if (cursor == null) {
+                    mSemaphore.release();
+                }
+            }
 
             /* Android content resolvers can only process CrossProcessCursor instances */
             if (!(cursor instanceof CrossProcessCursor)) {
                 Log.w(K9.LOG_TAG, "Unsupported cursor, returning null: " + cursor);
+                mSemaphore.release();
                 return null;
             }
 
