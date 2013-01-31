@@ -1,10 +1,14 @@
 package com.fsck.k9.activity;
 
+import java.util.Collection;
+import java.util.List;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -64,6 +68,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private static final String ACTION_SHORTCUT = "shortcut";
     private static final String EXTRA_SPECIAL_FOLDER = "special_folder";
 
+    private static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
+
     // used for remote search
     public static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
     private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
@@ -107,6 +113,22 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         return intent;
     }
 
+    public static Intent actionDisplayMessageIntent(Context context,
+            MessageReference messageReference) {
+        Intent intent = new Intent(context, MessageList.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
+        return intent;
+    }
+
+    public static Intent actionHandleNotificationIntent(Context context,
+            MessageReference messageReference) {
+        Intent intent = actionDisplayMessageIntent(context, messageReference);
+        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent;
+    }
+
+
     private enum DisplayMode {
         MESSAGE_LIST,
         MESSAGE_VIEW,
@@ -146,6 +168,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private boolean mNoThreading;
 
     private DisplayMode mDisplayMode;
+    private MessageReference mMessageReference;
 
 
     @Override
@@ -165,9 +188,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         setupGestureDetector(this);
 
         decodeExtras(getIntent());
-        initializeFragments();
+        findFragments();
         initializeDisplayMode(savedInstanceState);
         initializeLayout();
+        initializeFragments();
+        displayViews();
 
         ChangeLog cl = new ChangeLog(this);
         if (cl.isFirstRun()) {
@@ -175,27 +200,77 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         }
     }
 
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        setIntent(intent);
+
+        removeMessageListFragment();
+        removeMessageViewFragment();
+
+        decodeExtras(intent);
+        initializeDisplayMode(null);
+        initializeFragments();
+        displayViews();
+    }
+
+    /**
+     * Get references to existing fragments if the activity was restarted.
+     */
+    private void findFragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        mMessageListFragment = (MessageListFragment) fragmentManager.findFragmentById(
+                R.id.message_list_container);
+        mMessageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(
+                R.id.message_view_container);
+    }
+
+    /**
+     * Create fragment instances if necessary.
+     *
+     * @see #findFragments()
+     */
     private void initializeFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.addOnBackStackChangedListener(this);
 
-        mMessageListFragment = (MessageListFragment) fragmentManager.findFragmentById(R.id.message_list_container);
-        mMessageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(R.id.message_view_container);
+        boolean hasMessageListFragment = (mMessageListFragment != null);
 
-        if (mMessageListFragment == null) {
+        if (!hasMessageListFragment) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
             mMessageListFragment = MessageListFragment.newInstance(mSearch, false,
                     (K9.isThreadedViewEnabled() && !mNoThreading));
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
         }
+
+        // Check if the fragment wasn't restarted and has a MessageReference in the arguments. If
+        // so, open the referenced message.
+        if (!hasMessageListFragment && mMessageViewFragment == null &&
+                mMessageReference != null) {
+            openMessage(mMessageReference);
+        }
     }
 
+    /**
+     * Set the initial display mode (message list, message view, or split view).
+     *
+     * <p><strong>Note:</strong>
+     * This method has to be called after {@link #findFragments()} because the result depends on
+     * the availability of a {@link MessageViewFragment} instance.
+     * </p>
+     *
+     * @param savedInstanceState
+     *         The saved instance state that was passed to the activity as argument to
+     *         {@link #onCreate(Bundle)}. May be {@code null}.
+     */
     private void initializeDisplayMode(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             mDisplayMode = (DisplayMode) savedInstanceState.getSerializable(STATE_DISPLAY_MODE);
         } else {
-            mDisplayMode = DisplayMode.MESSAGE_LIST;
+            boolean displayMessage = (mMessageReference != null);
+            mDisplayMode = (displayMessage) ? DisplayMode.MESSAGE_VIEW : DisplayMode.MESSAGE_LIST;
         }
 
         switch (K9.getSplitViewMode()) {
@@ -204,14 +279,15 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 break;
             }
             case NEVER: {
-                // Either use the restored setting or DisplayMode.MESSAGE_LIST set above
+                // Use the value set at the beginning of this method.
                 break;
             }
             case WHEN_IN_LANDSCAPE: {
                 int orientation = getResources().getConfiguration().orientation;
                 if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     mDisplayMode = DisplayMode.SPLIT_VIEW;
-                } else if (mMessageViewFragment != null) {
+                } else if (mMessageViewFragment != null ||
+                        mDisplayMode == DisplayMode.MESSAGE_VIEW) {
                     mDisplayMode = DisplayMode.MESSAGE_VIEW;
                 } else {
                     mDisplayMode = DisplayMode.MESSAGE_LIST;
@@ -225,7 +301,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mMessageListContainer = (ViewGroup) findViewById(R.id.message_list_container);
         mMessageViewContainer = (ViewGroup) findViewById(R.id.message_view_container);
         mMessageViewPlaceHolder = getLayoutInflater().inflate(R.layout.empty_message_view, null);
+    }
 
+    private void displayViews() {
         switch (mDisplayMode) {
             case MESSAGE_LIST: {
                 showMessageList();
@@ -239,6 +317,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 findViewById(R.id.message_list_divider).setVisibility(View.VISIBLE);
                 if (mMessageViewFragment == null) {
                     showMessageViewPlaceHolder();
+                } else {
+                    MessageReference activeMessage = mMessageViewFragment.getMessageReference();
+                    if (activeMessage != null) {
+                        mMessageListFragment.setActiveMessage(activeMessage);
+                    }
                 }
                 break;
             }
@@ -246,7 +329,23 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void decodeExtras(Intent intent) {
-        if (ACTION_SHORTCUT.equals(intent.getAction())) {
+        String action = intent.getAction();
+        if (Intent.ACTION_VIEW.equals(action)) {
+            Uri uri = intent.getData();
+            List<String> segmentList = uri.getPathSegments();
+
+            String accountId = segmentList.get(0);
+            Collection<Account> accounts = Preferences.getPreferences(this).getAvailableAccounts();
+            for (Account account : accounts) {
+                if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
+                    mMessageReference = new MessageReference();
+                    mMessageReference.accountUuid = account.getUuid();
+                    mMessageReference.folderName = segmentList.get(1);
+                    mMessageReference.uid = segmentList.get(2);
+                    break;
+                }
+            }
+        } else if (ACTION_SHORTCUT.equals(action)) {
             // Handle shortcut intents
             String specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER);
             if (SearchAccount.UNIFIED_INBOX.equals(specialFolder)) {
@@ -268,7 +367,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 mSearch.or(new SearchCondition(Searchfield.SUBJECT, Attribute.CONTAINS, query));
                 mSearch.or(new SearchCondition(Searchfield.MESSAGE_CONTENTS, Attribute.CONTAINS, query));
 
-                Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
+                Bundle appData = intent.getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
                     mSearch.addAccountUuid(appData.getString(EXTRA_SEARCH_ACCOUNT));
                     // searches started from a folder list activity will provide an account, but no folder
@@ -283,6 +382,16 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             // regular LocalSearch object was passed
             mSearch = intent.getParcelableExtra(EXTRA_SEARCH);
             mNoThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false);
+        }
+
+        if (mMessageReference == null) {
+            mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+        }
+
+        if (mMessageReference != null) {
+            mSearch = new LocalSearch();
+            mSearch.addAccountUuid(mMessageReference.accountUuid);
+            mSearch.addAllowedFolder(mMessageReference.folderName);
         }
 
         String[] accountUuids = mSearch.getAccountUuids();
@@ -1058,6 +1167,13 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             mMessageViewFragment = null;
             ft.commit();
         }
+    }
+
+    private void removeMessageListFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(mMessageListFragment);
+        mMessageListFragment = null;
+        ft.commit();
     }
 
     @Override

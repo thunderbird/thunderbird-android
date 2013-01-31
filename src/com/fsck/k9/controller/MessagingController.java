@@ -50,7 +50,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.activity.MessageView;
 import com.fsck.k9.activity.NotificationDeleteConfirmation;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.power.TracingPowerManager;
@@ -4831,7 +4830,7 @@ public class MessagingController implements Runnable {
         }
 
         if (treatAsSingleMessageNotification) {
-            targetIntent = MessageView.actionHandleNotificationIntent(
+            targetIntent = MessageList.actionHandleNotificationIntent(
                     context, message.makeMessageReference());
         } else {
             String initialFolder = message.getFolder().getName();
