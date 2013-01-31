@@ -170,6 +170,13 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private DisplayMode mDisplayMode;
     private MessageReference mMessageReference;
 
+    /**
+     * {@code true} when the message list was displayed once. This is used in
+     * {@link #onBackPressed()} to decide whether to go from the message view to the message list or
+     * finish the activity.
+     */
+    private boolean mMessageListWasDisplayed = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -314,6 +321,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 break;
             }
             case SPLIT_VIEW: {
+                mMessageListWasDisplayed = true;
                 findViewById(R.id.message_list_divider).setVisibility(View.VISIBLE);
                 if (mMessageViewFragment == null) {
                     showMessageViewPlaceHolder();
@@ -479,7 +487,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void onBackPressed() {
-        if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+        if (mDisplayMode == DisplayMode.MESSAGE_VIEW && mMessageListWasDisplayed) {
             showMessageList();
         } else {
             super.onBackPressed();
@@ -1294,6 +1302,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void showMessageList() {
+        mMessageListWasDisplayed = true;
         mDisplayMode = DisplayMode.MESSAGE_LIST;
 
         mMessageViewContainer.setVisibility(View.GONE);
