@@ -4,7 +4,7 @@
 
     <!--
          When removing strings from the main file, please cleanup the translations.
-         
+
          This doesn't work on multiline strings, nor strings with the NEW tag.
          find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
      -->
@@ -777,14 +777,25 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
 
-    <string name="message_help_key">Del (tai D) - Poista\u000AR -
-      Vastaa\u000AA - Vastaa kaikille\u000AF - Välitä\u000AJ tai P - Edellinen
-      Viesti\u000AK, N - Seuraava Viesti\u000AM - Siirrä\u000AY - Kopioi\u000AZ - Pienennä\u000AShift-Z -
-      Suurenna\u000aG - Tähti</string>
-    <string name="message_list_help_key">Del (tai D) - Poista\u000AR -
-      Vastaa\u000AA - Vastaa kaikille\u000AC - Kirjoita\u000AF - Välitä\u000aM -
-      Siirrä\u000AY - Kopioi\u000AG - Tähti\u000AO - Lajittelutyyppi\u000AI - Lajittelujärjestys\u000AQ
-      - Palaa kansioihin\u000AS - Valitse/poista valinta</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (tai D) - Poista\n
+    R - Vastaa\n
+    A - Vastaa kaikille\n
+    C - Kirjoita\n
+    F - Välitä\n
+    M - Siirrä\n
+    V - Archive\n
+    Y - Kopioi\n
+    Z - Mark (Un)read\n
+    G - Tähti\n
+    O - Lajittelutyyppi\n
+    I - Lajittelujärjestys\n
+    Q - Palaa kansioihin\n
+    S - Valitse/poista valinta\n
+    J tai P - Edellinen Viesti\n
+    K tai N - Seuraava Viesti
+    </string>
 
     <string name="folder_list_help_key">
         1 - Näytä vain 1. luokan kansiot\u000A

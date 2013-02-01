@@ -745,14 +745,25 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
 
-    <string name="message_help_key">Del (or D) - 삭제\u000AR -
-    회신\u000AA - 전체 회신\u000AF - 전달\u000AJ or P - Previous
-    메시지\u000AK, N - 다음 메시지\u000AM - 이동\u000AY - 복사\u000AZ - Zoom Out\u000AShift-Z -
-    Zoom In\u000aG - Star</string>
-    <string name="message_list_help_key">Del (or D) - 삭제\u000AR -
-    회신\u000AA - 전체 회신\u000AC - 작성\u000AF - 전달\u000aM -
-    이동\u000AY - 복사\u000AG - Star\u000AO - Sort type\u000AI - 정렬 순서\u000AQ
-    - 폴더로 돌아가기\u000AS - 선택/선택해제</string>
+    <!-- NEW: V, Z, G, O, "Previous" untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - 삭제\n
+    R - 회신\n
+    A - 전체 회신\n
+    C - 작성\n
+    F - 전달\n
+    M - 이동\n
+    V - Archive\n
+    Y - 복사\n
+    Z - Mark (Un)read\n
+    G - Star\n
+    O - Sort type\n
+    I - 정렬 순서\n
+    Q - 폴더로 돌아가기\n
+    S - 선택/선택해제\n
+    J, P - Previous 메시지\n
+    K, N - 다음 메시지
+    </string>
 
     <string name="folder_list_help_key">
     1 - 첫 번째 클래스 폴더만 보기\u000A

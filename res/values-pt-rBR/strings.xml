@@ -744,14 +744,25 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Recusar chave</string>
 
-    <string name="message_help_key">Del (or D) - Excluir\u000AR -
-    Responder\u000AA - Responder a todos\u000AF - Encaminhar\u000AJ or P - Anterior
-    Mensagem\u000AK, N - Próxima mensagem\u000AM - Mover\u000AY - Copiar\u000AZ - Menos zoom\u000AShift-Z -
-    Mais zoom\u000aG - Favoritar</string>
-    <string name="message_list_help_key">Del (or D) - Excluir\u000AR -
-    Responder\u000AA - Responder a todos\u000AC - Escrever\u000AF - Encaminhar\u000aM -
-    Mover\u000AY - Copiar\u000AG - Favoritar\u000AO - Tipo de ordenação\u000AI - Ordernar\u000AQ
-    - Retornar à pastas\u000AS - Selecionar/desselecionar</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - Excluir\n
+    R - Responder\n
+    A - Responder a todos\n
+    C - Escrever\n
+    F - Encaminhar\n
+    M - Mover\n
+    V - Archive\n
+    Y - Copiar\n
+    Z - Mark (Un)read\n
+    G - Favoritar\n
+    O - Tipo de ordenação\n
+    I - Ordernar\n
+    Q - Retornar à pastas\n
+    S - Selecionar/desselecionar\n
+    J, P - Anterior Mensagem\n
+    K, N - Próxima mensagem
+    </string>
 
     <string name="folder_list_help_key">
     1 - Mostrar apenas pastas de Primeira Classe\u000A

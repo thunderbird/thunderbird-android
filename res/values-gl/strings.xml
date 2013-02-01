@@ -745,14 +745,25 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar certificado</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rexeitar certificado</string>
 
-    <string name="message_help_key">Del (ou D) - Borrar\u000AR -
-    Responder\u000AA - Responder todos\u000AF - Desvío\u000AJ ou P - Mensaxe
-    Previo\u000AK, N - Seguinte mensaxe\u000AM - Mover\u000AY - Copiar\u000AZ - Ampliar Zoom\u000AShift-Z -
-    Disminuir Zoom\u000aG - Estrela</string>
-    <string name="message_list_help_key">Del (ou D) - Borrar\u000AR -
-    Responder\u000AA - Responder todos\u000AC - Redactar\u000AF - Desvío\u000aM -
-    Mover\u000AY - Copiar\u000AG - Estrela\u000AO - Tipo ordeación\u000AI - Ordear\u000AQ
-    - Voltar a carpetas\u000AS - Des/Marcar</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (ou D) - Borrar\n
+    R - Responder\n
+    A - Responder todos\n
+    C - Redactar\n
+    F - Desvío\n
+    M - Mover\n
+    V - Archive\n
+    Y - Copiar\n
+    Z - Mark (Un)read\n
+    G - Estrela\n
+    O - Tipo ordeación\n
+    I - Ordear\n
+    Q - Voltar a carpetas\n
+    S - Des/Marcar\n
+    J ou P - Mensaxe Previo\n
+    K ou N - Seguinte mensaxe
+    </string>
 
     <string name="folder_list_help_key">
     1 - Ver carpetas 1a Clase\u000A

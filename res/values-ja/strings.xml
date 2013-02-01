@@ -745,13 +745,24 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="account_setup_failed_dlg_invalid_certificate_accept">許可</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">拒否</string>
 
-    <string name="message_help_key">Del (or D) - 削除\u000AR -
-    返信\u000AA - 全員に返信\u000AF - 転送\u000AJ or P - 前に
-    本文\u000AK, N - 次へ\u000AM - 移動\u000AY - コピー\u000AZ - ズームアウト\u000AShift-Z -
-    ズームイン\u000aG - フラグ</string>
-    <string name="message_list_help_key">Del (or D) - 削除\u000AR -
-    返信\u000AA - 全員に返信\u000AC - 作成\u000AF - 転送\u000aM - 移動\u000AY - コピー\u000AG - フラグ\u000AO - Sort type\u000AI - Sort order\u000AQ
-    - アカウント情報へ</string>
+    <!-- NEW: V, Z, O, I untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - 削除\n
+    R - 返信\n
+    A - 全員に返信\n
+    C - 作成\n
+    F - 転送\n
+    M - 移動\n
+    V - Archive\n
+    Y - コピー\n
+    Z - Mark (Un)read\n
+    G - フラグ\n
+    O - Sort type\n
+    I - Sort order\n
+    Q - アカウント情報へ\n
+    J, P - 前に 本文\n
+    K, N - 次へ
+    </string>
 
     <string name="folder_list_help_key">
     1 - 1st クラスフォルダ表示\u000A

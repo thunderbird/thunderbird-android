@@ -745,14 +745,25 @@
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Αποδοχή κλειδιού</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Απόρριψη κλειδιού</string>
 
-    <string name="message_help_key">Del (or D) - Διαγραφή\u000AR -
-    Απάντηση\u000AA - Απάντηση σε όλους\u000AF - Προώθηση\u000AJ ή P - Προηγούμενο
-    μήνυμα\u000AK, N - Επόμενο μήνυμα\u000AM - Μετακίνηση\u000AY - Αντιγραφή\u000AZ - Σμίκρυνση\u000AShift-Z -
-    Μεγέθυνση\u000aG - Αστέρι</string>
-    <string name="message_list_help_key">Del (ή D) - Διαγραφή\u000AR -
-    Απάντηση\u000AA - Απάντηση σε όλους\u000AC - Σύνθεση\u000AF - Προώθηση\u000aM -
-    Μετακίνηση\u000AY - Αντιγραφή\u000AG - Αστέρι\u000AO - Ταξινόμηση\u000AI - Σειρά ταξινόμησης\u000AQ
-    - Επιστροφή στους φακέλους\u000AS - Επιλογή/Αποεπιλογή</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (ή D) - Διαγραφή\n
+    R - Απάντηση\n
+    A - Απάντηση σε όλους\n
+    C - Σύνθεση\n
+    F - Προώθηση\n
+    M - Μετακίνηση\n
+    V - Archive\n
+    Y - Αντιγραφή\n
+    Z - Mark (Un)read\n
+    G - Αστέρι\n
+    O - Ταξινόμηση\n
+    I - Σειρά ταξινόμησης\n
+    Q - Επιστροφή στους φακέλους\n
+    S - Επιλογή/Αποεπιλογή\n
+    J ή P - Προηγούμενο μήνυμα\n
+    K ή N - Επόμενο μήνυμα
+    </string>
 
     <string name="folder_list_help_key">
     1 - Προβολή φακλέλων πρώτου επιπέδου\u000A

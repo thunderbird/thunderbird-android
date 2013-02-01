@@ -738,13 +738,25 @@ K-9改进的功能包括：
     <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
 
-    <string name="message_help_key">Del (or D) - 删除\u000AR -
-    回复\u000AA - 全部回复\u000AF - 转发\u000AJ or P - 上一封邮件\u000AK, N - 下一封邮件\u000AM - 移动\u000AY - 拷贝\u000AZ - 缩小\u000AShift-Z -
-    放大\u000aG - 星标</string>
-    <string name="message_list_help_key">Del (or D) - 删除\u000AR -
-    回复\u000AA - 全部回复\u000AC - 新邮件\u000AF - 转发\u000aM -
-    移动\u000AY - 拷贝\u000AG - 星标\u000AO - 排序方式\u000AI - 升序/降序\u000AQ
-    - 返回文件夹\u000AS - 选择/取消选择</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - 删除\n
+    R - 回复\n
+    A - 全部回复\n
+    C - 新邮件\n
+    F - 转发\n
+    M - 移动\n
+    V - Archive\n
+    Y - 拷贝\n
+    Z - Mark (Un)read\n
+    G - 星标\n
+    O - 排序方式\n
+    I - 升序/降序\n
+    Q - 返回文件夹\n
+    S - 选择/取消选择\n
+    J, P - 上一封邮件\n
+    K, N - 下一封邮件
+    </string>
 
     <string name="folder_list_help_key">
     1 - 只显示初级文件夹\u000A

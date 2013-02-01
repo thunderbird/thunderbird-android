@@ -746,29 +746,24 @@
     <string name="account_setup_failed_dlg_invalid_certificate_accept">קבל מפתח</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">דחה מפתח</string>
 
-    <string name="message_help_key">Del (or D) - מחק
-\nR - השב
-\nA - השב לכולם
-\nF - קדימה
-\nJ, P - הודעה קודמת
-\nK, N - הודעה הבאה
-\nM - העבר
-\nY - העתק
-\nZ - זום החוצה
-\nShift-Z - זום פנימה
-\nG - כוכב</string>
+    <!-- NEW: V, Z untranslated -->
     <string name="message_list_help_key">Del (or D) - מחק
 \nR - השב
 \nA - השב לכולם
 \nC - לחבר
 \nF - קדימה
 \nM - העבר
+\nV - Archive
 \nY - העתק
+\nZ - Mark (Un)read
 \nG - כוכב
 \nO - סוג מיון
 \nI - סדר מיון
 \nQ - חזור לתיקיות
-\nS - בחר / בטל בחירה</string>
+\nS - בחר / בטל בחירה
+\nJ, P - הודעה קודמת
+\nK, N - הודעה הבאה
+    </string>
 
     <!-- NEW: Note: only partly translated -->
     <string name="folder_list_help_key">1 - Display only 1st Class folders

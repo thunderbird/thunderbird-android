@@ -749,14 +749,25 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepta la clau</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rebutja la clau</string>
 
-    <string name="message_help_key">Del (or D) - Esborra\u000AR -
-    Respon\u000AA - Respon a tothom\u000AF - Reenvia\u000AJ or P - Previ
-    Missatge\u000AK, N – Missatge següent\u000AM - Mou\u000AY - Copia\u000AZ – Allunya el zoom\u000AShift-Z -
-    Apropa el zoom\u000aG - Estel</string>
-    <string name="message_list_help_key">Del (or D) - Esborra\u000AR -
-    Respon\u000AA – Respon a tothom\u000AC - Redacta\u000AF - Reenvia\u000aM -
-    Mou\u000AY - Copia\u000AG - Estel\u000AO – Tipus d’ordenació\u000AI – Tipus d’ordre\u000AQ
-    - Retorna a les carpetes\u000AS - Selecciona/desselecciona</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - Esborra\n
+    R - Respon\n
+    A - Respon a tothom\n
+    C - Redacta\n
+    F - Reenvia\n
+    M - Mou\n
+    V - Archive\n
+    Y - Copia\n
+    Z - Mark (Un)read\n
+    G - Estel\n
+    O - Tipus d’ordenació\n
+    I - Tipus d’ordre\n
+    Q - Retorna a les carpetes\n
+    S - Selecciona/desselecciona\n
+    J, P - Previ Missatge\n
+    K, N - Missatge següent
+    </string>
 
     <string name="folder_list_help_key">
     1 – Mostra només les carpetes de 1a Classe\u000A

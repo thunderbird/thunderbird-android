@@ -762,13 +762,24 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Zertifikat ablehnen</string>
 
-    <string name="message_help_key">Del (or D) - Löschen\u000AR -
-    Antworten\u000AA - Allen antworten\u000AF - Weiterleiten\u000AJ or P - Vorherige
-    Nachricht\u000AK, N - Nächste Nachricht\u000AM - Verschieben\u000AY - Kopieren\u000AZ - Heraus-Zoomen\u000AShift-Z -
-    Hinein-Zoomen\u000aG - Markieren</string>
-    <string name="message_list_help_key">Del (or D) - Löschen\u000AR -
-    Antworten\u000AA - Allen Antworten\u000AC - Verfassen\u000AF - Weiterleiten\u000aM - Verschieben\u000AY - Kopieren\u000AG - Markieren\u000AO - Sortierung\u000AI - Sortierungsreihenfolge\u000AQ
-    - zurück zu den Konten\u000AS - Auswählen/abwählen</string>
+    <string name="message_list_help_key">
+    Del (oder D) - Löschen\n
+    R - Antworten\n
+    A - Allen Antworten\n
+    C - Verfassen\n
+    F - Weiterleiten\n
+    M - Verschieben\n
+    V - Archivieren\n
+    Y - Kopieren\n
+    Z - Als (un)gelesen markieren\n
+    G - Markieren\n
+    O - Sortierung\n
+    I - Sortierungsreihenfolge\n
+    Q - Zurück zur Ordnerliste\n
+    S - Auswählen/abwählen
+    J oder P - Vorherige Nachricht\n
+    K oder N - Nächste Nachricht
+    </string>
 
     <string name="folder_list_help_key">
       1 - Nur Hauptordner anzeigen\u000A

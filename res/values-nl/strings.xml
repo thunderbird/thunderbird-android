@@ -745,14 +745,25 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
 
-    <string name="message_help_key">Del (of D) - Verwijder\u000AR -
-    Antwoord\u000AA - Antwoord Alle\u000AF - Doorsturen\u000AJ or V - Vorige
-    Bericht\u000AK, N - Volgende bericht\u000AM - Verplaats\u000AY - Kopieer\u000AZ - Zoom Uit\u000AShift-Z -
-    Zoom In\u000aG - Ster</string>
-    <string name="message_list_help_key">Del (or D) - Verwijder\u000AR -
-    Antwoord\u000AA - Antwoord Alle\u000AC - Ontwerp\u000AF - Doorsturen\u000aM -
-    Verplaats\u000AY - Kopieer\u000AG - Ster\u000AO - Sort type\u000AI - Sort grootte\u000AQ
-    - Terug naar Mappen\u000AS - Selecteer/de-selecteer</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - Verwijder\n
+    R - Antwoord\n
+    A - Antwoord Alle\n
+    C - Ontwerp\n
+    F - Doorsturen\n
+    M - Verplaats\n
+    V - Archive\n
+    Y - Kopieer\n
+    Z - Mark (Un)read\n
+    G - Ster\n
+    O - Sort type\n
+    I - Sort grootte\n
+    Q - Terug naar Mappen\n
+    S - Selecteer/de-selecteer\n
+    J, V - Vorige Bericht\n
+    K, N - Volgende bericht
+    </string>
 
     <string name="folder_list_help_key">
     1 - Laat alleen 1 klasse mappen zien\u000A
