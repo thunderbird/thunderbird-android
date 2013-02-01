@@ -791,6 +791,12 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 && mAccount.hasSpamFolder());
     }
 
+    public void updateTitle() {
+        if (mMessage != null) {
+            displayMessageSubject(mMessage.getSubject());
+        }
+    }
+
     public interface MessageViewFragmentListener {
         public void onForward(Message mMessage, PgpData mPgpData);
         public void disableDeleteAction();

@@ -44,8 +44,7 @@
                         android:textSize="10sp"
                         android:textStyle="bold"
                         android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:visibility="gone"/>
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     <!-- From -->
                     <LinearLayout

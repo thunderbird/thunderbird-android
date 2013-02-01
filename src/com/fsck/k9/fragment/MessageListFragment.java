@@ -418,6 +418,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private MessageReference mActiveMessage;
 
     /**
+     * {@code true} after {@link #onCreate(Bundle)} was executed. Used in {@link #updateTitle()} to
+     * make sure we don't access member variables before initialization is complete.
+     */
+    private boolean mInitialized = false;
+
+    /**
      * This class is used to run operations that modify UI elements in the UI thread.
      *
      * <p>We are using convenience methods that add a {@link android.os.Message} instance or a
@@ -501,7 +507,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     break;
                 }
                 case ACTION_REFRESH_TITLE: {
-                    MessageListFragment.this.refreshTitle();
+                    updateTitle();
                     break;
                 }
                 case ACTION_PROGRESS: {
@@ -562,7 +568,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         updateFooterView();
     }
 
-    private void refreshTitle() {
+    public void updateTitle() {
+        if (!mInitialized) {
+            return;
+        }
+
         setWindowTitle();
         if (!mSearch.isManualSearch()) {
             setWindowProgress();
@@ -716,6 +726,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mCheckboxes = K9.messageListCheckboxes();
 
         decodeArguments();
+
+        mInitialized = true;
     }
 
     @Override
@@ -973,7 +985,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mListener);
         }
 
-        refreshTitle();
+        updateTitle();
     }
 
     private void initializePullToRefresh(LayoutInflater inflater, View layout) {
@@ -3148,7 +3160,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 if (StringUtils.isNullOrEmpty(mTitle)) {
                    mTitle = getString(R.string.general_no_subject);
                 }
-                refreshTitle();
+                updateTitle();
             } else {
                 //TODO: empty thread view -> return to full message list
             }

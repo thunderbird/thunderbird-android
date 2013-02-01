@@ -49,6 +49,7 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.view.MessageHeader;
+import com.fsck.k9.view.MessageTitleView;
 
 import de.cketti.library.changelog.ChangeLog;
 
@@ -139,6 +140,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
 
     private ActionBar mActionBar;
+    private View mActionBarMessageList;
+    private View mActionBarMessageView;
+    private MessageTitleView mActionBarSubject;
     private TextView mActionBarTitle;
     private TextView mActionBarSubTitle;
     private TextView mActionBarUnread;
@@ -463,6 +467,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mActionBar.setCustomView(R.layout.actionbar_custom);
 
         View customView = mActionBar.getCustomView();
+        mActionBarMessageList = customView.findViewById(R.id.actionbar_message_list);
+        mActionBarMessageView = customView.findViewById(R.id.actionbar_message_view);
+        mActionBarSubject = (MessageTitleView) customView.findViewById(R.id.message_title_view);
         mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
         mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
         mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
@@ -1174,6 +1181,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             ft.remove(mMessageViewFragment);
             mMessageViewFragment = null;
             ft.commit();
+
+            showDefaultTitleView();
         }
     }
 
@@ -1243,7 +1252,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void displayMessageSubject(String subject) {
-        setTitle(subject);
+        if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+            mActionBarSubject.setText(subject);
+        }
     }
 
     @Override
@@ -1284,7 +1295,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void messageHeaderViewAvailable(MessageHeader header) {
-        //TODO: implement
+        mActionBarSubject.setMessageHeader(header);
     }
 
     private void showNextMessage() {
@@ -1309,6 +1320,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mMessageListContainer.setVisibility(View.VISIBLE);
         removeMessageViewFragment();
         mMessageListFragment.setActiveMessage(null);
+
+        showDefaultTitleView();
     }
 
     private void showMessageView() {
@@ -1316,6 +1329,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         mMessageListContainer.setVisibility(View.GONE);
         mMessageViewContainer.setVisibility(View.VISIBLE);
+
+        showMessageTitleView();
     }
 
     @Override
@@ -1347,5 +1362,25 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         }).start();
 
         restartActivity();
+    }
+
+    private void showDefaultTitleView() {
+        mActionBarMessageView.setVisibility(View.GONE);
+        mActionBarMessageList.setVisibility(View.VISIBLE);
+
+        if (mMessageListFragment != null) {
+            mMessageListFragment.updateTitle();
+        }
+
+        mActionBarSubject.setMessageHeader(null);
+    }
+
+    private void showMessageTitleView() {
+        mActionBarMessageList.setVisibility(View.GONE);
+        mActionBarMessageView.setVisibility(View.VISIBLE);
+
+        if (mMessageViewFragment != null) {
+            mMessageViewFragment.updateTitle();
+        }
     }
 }

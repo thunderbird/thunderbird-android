@@ -431,10 +431,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         }
     }
 
-    /**
-     * The subject line defaults to GONE.  Make it visible.
-     */
-    public void showSubjectLine() {
-        mSubjectView.setVisibility(VISIBLE);
+    public void hideSubjectLine() {
+        mSubjectView.setVisibility(GONE);
     }
 }
