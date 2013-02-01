@@ -17,7 +17,7 @@
         android:id="@+id/message_list_divider"
         android:layout_width="1px"
         android:layout_height="fill_parent"
-        android:background="#ffcccccc"
+        android:background="?attr/messageListDividerColor"
         android:visibility="gone"
         tools:ignore="PxUsage" />
 
