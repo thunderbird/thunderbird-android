@@ -517,7 +517,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
      * @return {@code true} if this event was consumed.
      */
     public boolean onCustomKeyDown(final int keyCode, final KeyEvent event) {
-        // Shortcuts that work no matter what is selected
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP: {
                 if (mMessageViewFragment != null && mDisplayMode != DisplayMode.MESSAGE_LIST &&
@@ -634,12 +633,16 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             }
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P: {
-                showPreviousMessage();
+                if (mMessageViewFragment != null) {
+                    showPreviousMessage();
+                }
                 return true;
             }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K: {
-                showNextMessage();
+                if (mMessageViewFragment != null) {
+                    showNextMessage();
+                }
                 return true;
             }
             /* FIXME
