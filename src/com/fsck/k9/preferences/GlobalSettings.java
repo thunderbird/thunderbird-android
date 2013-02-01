@@ -230,7 +230,7 @@ public class GlobalSettings {
                 new V(20, new BooleanSetting(true))
             ));
         s.put("splitViewMode", Settings.versions(
-                new V(23, new EnumSetting(SplitViewMode.class, SplitViewMode.WHEN_IN_LANDSCAPE))
+                new V(23, new EnumSetting(SplitViewMode.class, SplitViewMode.NEVER))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);

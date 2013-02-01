@@ -260,7 +260,7 @@ public class K9 extends Application {
 
     private static boolean sUseBackgroundAsUnreadIndicator = true;
     private static boolean sThreadedViewEnabled = true;
-    private static SplitViewMode sSplitViewMode = SplitViewMode.WHEN_IN_LANDSCAPE;
+    private static SplitViewMode sSplitViewMode = SplitViewMode.NEVER;
 
     /**
      * @see #areDatabasesUpToDate()
