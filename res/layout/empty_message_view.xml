@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Please select a message on the left"
+        android:text="@string/message_view_empty"
         android:textColor="?android:attr/textColorSecondary" />
 
 </RelativeLayout>
