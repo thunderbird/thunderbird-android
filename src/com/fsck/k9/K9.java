@@ -361,9 +361,9 @@ public class K9 extends Application {
     // Must not conflict with an account number
     public static final int FETCHING_EMAIL_NOTIFICATION      = -5000;
     public static final int SEND_FAILED_NOTIFICATION      = -1500;
+    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING = -2000;
+    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING = -2500;
     public static final int CONNECTIVITY_ID = -3;
-    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING = -4;
-    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING = -5;
 
 
     public static class Intents {
