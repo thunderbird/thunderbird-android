@@ -889,7 +889,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
          * Set visibility of menu items related to the message view
          */
 
-        if (mMessageViewFragment == null) {
+        if (mMessageViewFragment == null || !mMessageViewFragment.isInitialized()) {
             menu.findItem(R.id.delete).setVisible(false);
             menu.findItem(R.id.single_message_options).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);

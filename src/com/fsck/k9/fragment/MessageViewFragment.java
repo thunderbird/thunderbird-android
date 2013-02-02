@@ -91,6 +91,13 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
     private MessageViewFragmentListener mFragmentListener;
 
+    /**
+     * {@code true} after {@link #onCreate(Bundle)} has been executed. This is used by
+     * {@code MessageList.configureMenu()} to make sure the fragment has been initialized before
+     * it is used.
+     */
+    private boolean mInitialized = false;
+
 
     class MessageViewHandler extends Handler {
 
@@ -153,6 +160,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         setHasOptionsMenu(true);
 
         mController = MessagingController.getInstance(getActivity().getApplication());
+        mInitialized = true;
     }
 
     @Override
@@ -807,5 +815,9 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         public void showNextMessageOrReturn();
         public void messageHeaderViewAvailable(MessageHeader messageHeaderView);
         public void updateMenu();
+    }
+
+    public boolean isInitialized() {
+        return mInitialized ;
     }
 }
