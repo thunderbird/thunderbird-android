@@ -245,6 +245,8 @@ de plus</string>
     <string name="notification_action_reply">Répondre</string>
     <string name="notification_action_read">Lire</string>
     <string name="notification_action_delete">Supprimer</string>
+    <string name="notification_certificate_error_title">Erreur de certificat</string>
+    <string name="notification_certificate_error_text">Vérifier les paramètres serveur</string>
 
     <string name="notification_bg_sync_ticker">Vérification des messages\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Vérification des messages</string>
@@ -346,6 +348,8 @@ de plus</string>
     <string name="global_settings_registered_name_color_label">Couleur des contacts connus</string>
     <string name="global_settings_registered_name_color_default">Ne pas mettre en évidence les contacts connus</string>
     <string name="global_settings_registered_name_color_changed">Mettre en évidence (couleur) les contacts connus</string>
+    <string name="global_settings_folderlist_wrap_folder_names_label">Couper les noms de dossier long</string>
+    <string name="global_settings_folderlist_wrap_folder_names_summary">Utiliser les sauts de lignes pour les noms de dossier long</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Polices à taille fixe</string>
     <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à taille fixe pour les messages en texte brut</string>
@@ -847,6 +851,7 @@ de plus</string>
     <string name="accountlist_preferences">Liste de comptes</string>
     <string name="messagelist_preferences">Liste de messages</string>
     <string name="messageview_preferences">Messages</string>
+    <string name="folderlist_preferences">Liste des dossiers</string>
     <string name="settings_theme_label">Thème</string>
     <string name="settings_language_label">Langue</string>
 
@@ -1005,6 +1010,10 @@ de plus</string>
 
     <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
+    <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Voulez-vous vraiment supprimer ce message?</item>
+        <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    </plurals>
     <string name="dialog_confirm_delete_confirm_button">Supprimer</string>
     <string name="dialog_confirm_delete_cancel_button">Ne pas supprimer</string>
 
@@ -1012,7 +1021,18 @@ de plus</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Voulez-vous déplacer ce message vers le dossiers à spams\u00A0?</item>
         <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> messages vers le dossiers à spams\u00A0?</item>
-    </plurals>
+<!--
+  Translators:
+
+  Please review how to handle pluralization for your language at (1) and ajust
+  the <item> elements accordingly
+
+  Possible values for 'quantity': zero, one, two, few, many, other
+
+  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+--> 
+   </plurals>
     <string name="dialog_confirm_spam_confirm_button">Déplacer</string>
     <string name="dialog_confirm_spam_cancel_button">Ne pas déplacer</string>
 

@@ -630,6 +630,7 @@
     </string-array>
 
     <string-array name="settings_preview_lines_values">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -639,6 +640,7 @@
     </string-array>
 
     <string-array name="settings_preview_lines_entries">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>

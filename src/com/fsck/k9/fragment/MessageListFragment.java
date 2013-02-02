@@ -28,6 +28,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -313,6 +314,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final String STATE_SELECTED_MESSAGES = "selectedMessages";
     private static final String STATE_ACTIVE_MESSAGE = "activeMessage";
     private static final String STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed";
+    private static final String STATE_MESSAGE_LIST = "listState";
 
     /**
      * Maps a {@link SortType} to a {@link Comparator} implementation.
@@ -337,6 +339,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private ListView mListView;
     private PullToRefreshListView mPullToRefreshView;
+    private Parcelable mSavedListState;
 
     private int mPreviewLines = 0;
 
@@ -355,6 +358,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private int mUnreadMessageCount = 0;
 
     private Cursor[] mCursors;
+    private boolean[] mCursorValid;
     private int mUniqueIdColumn;
 
     /**
@@ -415,6 +419,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private Preferences mPreferences;
 
+    private boolean mLoaderJustInitialized;
     private MessageReference mActiveMessage;
 
     /**
@@ -438,7 +443,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         private static final int ACTION_PROGRESS = 3;
         private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
         private static final int ACTION_GO_BACK = 5;
-        private static final int ACTION_OPEN_MESSAGE = 6;
+        private static final int ACTION_RESTORE_LIST_POSITION = 6;
+        private static final int ACTION_OPEN_MESSAGE = 7;
 
 
         public void folderLoading(String folder, boolean loading) {
@@ -475,6 +481,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public void goBack() {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_GO_BACK);
             sendMessage(msg);
+        }
+
+        public void restoreListPosition() {
+            if (!hasMessages(ACTION_RESTORE_LIST_POSITION)) {
+                android.os.Message msg = android.os.Message.obtain(this,
+                        ACTION_RESTORE_LIST_POSITION);
+                sendMessage(msg);
+            }
         }
 
         public void openMessage(MessageReference messageReference) {
@@ -517,6 +531,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
                 case ACTION_GO_BACK: {
                     mFragmentListener.goBack();
+                    break;
+                }
+                case ACTION_RESTORE_LIST_POSITION: {
+                    mListView.onRestoreInstanceState(mSavedListState);
+                    mSavedListState = null;
                     break;
                 }
                 case ACTION_OPEN_MESSAGE: {
@@ -747,6 +766,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     @Override
+    public void onDestroyView() {
+        mSavedListState = mListView.onSaveInstanceState();
+        super.onDestroyView();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -759,11 +784,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         restoreInstanceState(savedInstanceState);
 
+        mLoaderJustInitialized = true;
         LoaderManager loaderManager = getLoaderManager();
         int len = mAccountUuids.length;
         mCursors = new Cursor[len];
+        mCursorValid = new boolean[len];
         for (int i = 0; i < len; i++) {
             loaderManager.initLoader(i, null, this);
+            mCursorValid[i] = false;
         }
     }
 
@@ -774,6 +802,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         saveSelectedMessages(outState);
 
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, mRemoteSearchPerformed);
+        outState.putParcelable(STATE_MESSAGE_LIST, mListView.onSaveInstanceState());
         outState.putParcelable(STATE_ACTIVE_MESSAGE, mActiveMessage);
     }
 
@@ -790,6 +819,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         restoreSelectedMessages(savedInstanceState);
 
         mRemoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
+        mSavedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST);
         mActiveMessage = savedInstanceState.getParcelable(STATE_ACTIVE_MESSAGE);
     }
 
@@ -946,10 +976,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mSenderAboveSubject = K9.messageListSenderAboveSubject();
 
-        // Refresh the message list
-        LoaderManager loaderManager = getLoaderManager();
-        for (int i = 0; i < mAccountUuids.length; i++) {
-            loaderManager.restartLoader(i, null, this);
+        if (!mLoaderJustInitialized) {
+            // Refresh the message list
+            LoaderManager loaderManager = getLoaderManager();
+            for (int i = 0; i < mAccountUuids.length; i++) {
+                loaderManager.restartLoader(i, null, this);
+                mCursorValid[i] = false;
+            }
+        } else {
+            mLoaderJustInitialized = false;
         }
 
         // Check if we have connectivity.  Cache the value.
@@ -1053,10 +1088,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mListView.setOnItemClickListener(this);
 
         registerForContextMenu(mListView);
-    }
-
-    private void onOpenMessage(MessageReference reference) {
-        mFragmentListener.openMessage(reference);
     }
 
     public void onCompose() {
@@ -1696,7 +1727,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
 
-            holder.preview.setLines(mPreviewLines);
+            // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
+            holder.preview.setLines(Math.max(mPreviewLines,1));
             holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
             holder.threadCountWrapper = (View) view.findViewById(R.id.thread_count_wrapper);
@@ -1733,11 +1765,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             Date sentDate = new Date(cursor.getLong(DATE_COLUMN));
             String displayDate = mMessageHelper.formatDate(sentDate);
-
-            String preview = cursor.getString(PREVIEW_COLUMN);
-            if (preview == null) {
-                preview = "";
-            }
 
             int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
 
@@ -1820,11 +1847,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             String sigil = recipientSigil(toMe, ccMe);
 
-            holder.preview.setText(
-                    new SpannableStringBuilder(sigil)
-                        .append(beforePreviewText)
-                        .append(" ")
-                        .append(preview), TextView.BufferType.SPANNABLE);
+            SpannableStringBuilder messageStringBuilder = new SpannableStringBuilder(sigil)
+                    .append(beforePreviewText);
+
+            if (mPreviewLines > 0) {
+                String preview = cursor.getString(PREVIEW_COLUMN);
+                if (preview != null) {
+                    messageStringBuilder.append(" ").append(preview);
+                }
+            }
+
+            holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE);
 
             Spannable str = (Spannable)holder.preview.getText();
 
@@ -1834,7 +1867,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     mFontSizes.getMessageListSender();
 
             AbsoluteSizeSpan span = new AbsoluteSizeSpan(fontSize, true);
-            str.setSpan(span, 0, beforePreviewText.length() + 1,
+            str.setSpan(span, 0, beforePreviewText.length() + sigil.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             //TODO: make this part of the theme
@@ -1843,7 +1876,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     Color.rgb(160, 160, 160);
 
             // Set span (color) for preview message
-            str.setSpan(new ForegroundColorSpan(color), beforePreviewText.length() + 1,
+            str.setSpan(new ForegroundColorSpan(color), beforePreviewText.length() + sigil.length(),
                     str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             Drawable statusHolder = null;
@@ -3143,9 +3176,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             setPullToRefreshEnabled(true);
         }
 
+        final int loaderId = loader.getId();
+        mCursors[loaderId] = data;
+        mCursorValid[loaderId] = true;
+
         Cursor cursor;
         if (mCursors.length > 1) {
-            mCursors[loader.getId()] = data;
             cursor = new MergeCursorWithUniqueId(mCursors, getComparator());
             mUniqueIdColumn = cursor.getColumnIndex("_id");
         } else {
@@ -3172,6 +3208,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         resetActionMode();
         computeBatchDirection();
+
+        if (mSavedListState != null) {
+            boolean loadFinished = true;
+            for (int i = 0; i < mCursorValid.length; i++) {
+                loadFinished &= mCursorValid[i];
+            }
+
+            if (loadFinished) {
+                mHandler.restoreListPosition();
+            }
+        }
     }
 
     private void cleanupSelected(Cursor cursor) {

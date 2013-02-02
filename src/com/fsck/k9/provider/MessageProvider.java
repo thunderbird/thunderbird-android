@@ -13,6 +13,7 @@ import android.database.CursorWindow;
 import android.database.DataSetObserver;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
@@ -258,7 +259,7 @@ public class MessageProvider extends ContentProvider {
     }
 
     /**
-     * @deprecated having an incremential value has no real interest,
+     * @deprecated having an incremental value has no real interest,
      *             implemented for compatibility only
      */
     @Deprecated
@@ -460,10 +461,22 @@ public class MessageProvider extends ContentProvider {
             int accountId = -1;
             segments = uri.getPathSegments();
             accountId = Integer.parseInt(segments.get(1));
-            return getAccountUnread(accountId);
+
+            /*
+             * This method below calls Account.getStats() which uses EmailProvider to do its work.
+             * For this to work we need to clear the calling identity. Otherwise accessing
+             * EmailProvider will fail because it's not exported so third-party apps can't access it
+             * directly.
+             */
+            long identityToken = Binder.clearCallingIdentity();
+            try {
+                return getAccountUnread(accountId);
+            } finally {
+                Binder.restoreCallingIdentity(identityToken);
+            }
         }
 
-        public Cursor getAccountUnread(int accountNumber) {
+        private Cursor getAccountUnread(int accountNumber) {
             String[] projection = new String[] { "accountName", "unread" };
 
             MatrixCursor ret = new MatrixCursor(projection);
@@ -711,6 +724,7 @@ public class MessageProvider extends ContentProvider {
             return mCursor.isFirst();
         }
 
+        @Override
         public boolean isLast() {
             checkClosed();
             return mCursor.isLast();
@@ -770,6 +784,7 @@ public class MessageProvider extends ContentProvider {
             mCursor.registerDataSetObserver(observer);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public boolean requery() {
             checkClosed();
@@ -825,12 +840,19 @@ public class MessageProvider extends ContentProvider {
                             String sortOrder) throws Exception {
             mSemaphore.acquire();
 
-            final Cursor cursor;
-            cursor = mDelegate.query(uri, projection, selection, selectionArgs, sortOrder);
+            Cursor cursor = null;
+            try {
+                cursor = mDelegate.query(uri, projection, selection, selectionArgs, sortOrder);
+            } finally {
+                if (cursor == null) {
+                    mSemaphore.release();
+                }
+            }
 
             /* Android content resolvers can only process CrossProcessCursor instances */
             if (!(cursor instanceof CrossProcessCursor)) {
                 Log.w(K9.LOG_TAG, "Unsupported cursor, returning null: " + cursor);
+                mSemaphore.release();
                 return null;
             }
 
