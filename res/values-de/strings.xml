@@ -214,7 +214,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="notification_action_read">Gelesen</string>
     <string name="notification_action_delete">Löschen</string>
 
-    <string name="notification_certificate_error_title">Zertifikatsproblem</string>
+    <string name="notification_certificate_error_title">Zertifikatsproblem (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_certificate_error_text">Servereinstellungen überprüfen</string>
 
     <string name="notification_bg_sync_ticker">Neue Nachrichten in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> werden abgerufen</string>
