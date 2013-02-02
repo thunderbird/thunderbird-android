@@ -220,8 +220,8 @@ public class AccountSettings extends K9PreferenceActivity {
         mMainScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_MAIN);
 
         mAccountDescription = (EditTextPreference) findPreference(PREFERENCE_DESCRIPTION);
-        mAccountDescription.setSummary(mAccount.getDescriptionForEdit());
-        mAccountDescription.setText(mAccount.getDescriptionForEdit());
+        mAccountDescription.setSummary(mAccount.getUndecoratedDescription());
+        mAccountDescription.setText(mAccount.getUndecoratedDescription());
         mAccountDescription.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String summary = newValue.toString();

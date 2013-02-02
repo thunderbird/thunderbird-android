@@ -146,7 +146,7 @@ public class Account implements BaseAccount {
 
     private final String mUuid;
     private String mStoreUri;
-    private String mStoreUriWithPassword;
+    private boolean mStoreUri_DontStorePassword;
 
     /**
      * Storage provider ID, used to locate and manage the underlying DB/file
@@ -154,7 +154,7 @@ public class Account implements BaseAccount {
      */
     private String mLocalStorageProviderId;
     private String mTransportUri;
-    private String mTransportUriWithPassword;
+    private boolean mTransportUri_DontStorePassword;
     private String mDescription;
     private String mAlwaysBcc;
     private int mAutomaticCheckIntervalMinutes;
@@ -358,11 +358,11 @@ public class Account implements BaseAccount {
 
         SharedPreferences prefs = preferences.getPreferences();
 
-        mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
-        mStoreUriWithPassword = mStoreUri;
+        mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));        
+        mStoreUri_DontStorePassword = decodeIfDontStoreIncomingPassword(mStoreUri);
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
         mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
-        mTransportUriWithPassword = mTransportUri;
+        mTransportUri_DontStorePassword = decodeIfDontStoreOutgoingPassword(mTransportUri);
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
@@ -683,9 +683,9 @@ public class Account implements BaseAccount {
             editor.putString("accountUuids", accountUuids);
         }
 
-        editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
+        editor.putString(mUuid + ".storeUri", Utility.base64Encode(encodeIfDontStoreIncomingPassword(mStoreUri, mStoreUri_DontStorePassword)));
         editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
-        editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
+        editor.putString(mUuid + ".transportUri", Utility.base64Encode(encodeIfDontStoreOutgoingPassword(mTransportUri, mStoreUri_DontStorePassword)));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
@@ -880,43 +880,68 @@ public class Account implements BaseAccount {
     }
 
     public synchronized String getStoreUri() {
-        return mStoreUriWithPassword;
+        return mStoreUri;
     }
 
     public synchronized void setStoreUri(String storeUri) {
         this.mStoreUri = storeUri;
-        this.mStoreUriWithPassword = storeUri; 
     }
 
     public synchronized String getTransportUri() {
-        return mTransportUriWithPassword;
+        return mTransportUri;
     }
 
     public synchronized void setTransportUri(String transportUri) {
         this.mTransportUri = transportUri;
-        this.mTransportUriWithPassword = transportUri;
     }
 
-    public synchronized String getDescriptionForEdit() {
+    public synchronized String getUndecoratedDescription() {
     	return mDescription;
+    }
+
+    boolean decodeIfDontStoreIncomingPassword(String storeUri) {
+		ServerSettings incoming = Store.decodeStoreUri(storeUri);
+		return ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD"));    	
+    }
+
+    String encodeIfDontStoreIncomingPassword(String storeUri, boolean DontStorePassword) {
+    	if (DontStorePassword) {
+    		ServerSettings incoming = Store.decodeStoreUri(storeUri);
+    		ServerSettings newIncoming = incoming.newPassword("DONT_STORE_MY_PASSWORD");
+    		return Store.createStoreUri(newIncoming);    		
+    	}
+    	else
+    		return storeUri;
+    }
+    
+    boolean decodeIfDontStoreOutgoingPassword(String transportUri) {
+		ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
+		return ((outgoing.password != null) && outgoing.password.equals("DONT_STORE_MY_PASSWORD"));    	
+    }
+    
+    String encodeIfDontStoreOutgoingPassword(String transportUri, boolean DontStorePassword) {
+    	if (DontStorePassword) {
+    		ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
+    		ServerSettings newOutgoing = outgoing.newPassword("DONT_STORE_MY_PASSWORD");
+    		return Transport.createTransportUri(newOutgoing);
+    	}
+    	else
+    		return transportUri;
+    }
+    
+    public synchronized boolean needsToAskForSessionPasswords() {
+    	if (mStoreUri_DontStorePassword && decodeIfDontStoreIncomingPassword(mStoreUri))
+   			return true;
+    	if (mTransportUri_DontStorePassword && decodeIfDontStoreOutgoingPassword(mTransportUri))
+   			return true;
+        return false;
     }
     
     public synchronized String getDescription() {
-    	StringBuilder sb = new StringBuilder();
-        final ServerSettings incoming = Store.decodeStoreUri(mStoreUriWithPassword);   	
-        final ServerSettings outgoing = Transport.decodeTransportUri(mTransportUriWithPassword);
-        boolean needsIncomingPwd = ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD"));
-        boolean needsOutgoingPwd = ((outgoing.password != null) && outgoing.password.equals("DONT_STORE_MY_PASSWORD"));
-        if (needsIncomingPwd || needsOutgoingPwd) {
-        	sb.append("[");
-        	if (needsIncomingPwd)
-        		sb.append("I");
-        	if (needsOutgoingPwd)
-        		sb.append("O");
-        	sb.append("]");
-        }
-    	sb.append(mDescription);
-        return sb.toString();
+    	if (needsToAskForSessionPasswords())
+    		return "[-]"+mDescription;
+    	else
+    		return mDescription;
     }
 
     public synchronized void setDescription(String description) {
@@ -1752,7 +1777,7 @@ public class Account implements BaseAccount {
     }
 
     public synchronized boolean isEnabled() {
-        return mEnabled;
+        return mEnabled && !needsToAskForSessionPasswords();
     }
 
     public synchronized void setEnabled(boolean enabled) {
@@ -1788,51 +1813,8 @@ public class Account implements BaseAccount {
     	}
     
     public void AskPasswordIfNecessary(Context mContext, final CommandAfter cmd) {
-        final ServerSettings incoming = Store.decodeStoreUri(mStoreUriWithPassword);
-        final ServerSettings outgoing = Transport.decodeTransportUri(mTransportUriWithPassword);
-        if ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD"))
-    	{
-    		AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-    		alert.setTitle("Password required");
-    		//alert.setMessage("Incoming password");
-    		
-    		LinearLayout pwdLayout = new LinearLayout(mContext);
-    		pwdLayout.setOrientation(LinearLayout.VERTICAL);
-    		TextView textPwd1 = new TextView(mContext);
-    		textPwd1.setText("Incoming password");
-    		pwdLayout.addView(textPwd1);    		
-    		final EditText inputPwd1 = new EditText(mContext);
-    		inputPwd1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-    		pwdLayout.addView(inputPwd1);
-    		TextView textPwd2 = new TextView(mContext);
-    		textPwd2.setText("Outgoing password");
-    		pwdLayout.addView(textPwd2);    		
-    		final EditText inputPwd2 = new EditText(mContext);
-    		inputPwd2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-    		pwdLayout.addView(inputPwd2);
-    		
-    		alert.setView(pwdLayout);
-    		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog, int whichButton) {
-    				String value1 = inputPwd1.getText().toString();
-    				ServerSettings newIncoming = incoming.newPassword(value1);
-    				mStoreUriWithPassword = Store.createStoreUri(newIncoming);
-    				String value2 = inputPwd2.getText().toString();
-    				ServerSettings newOutgoing = outgoing.newPassword(TextUtils.isEmpty(value2)?value1:value2);
-    				mTransportUriWithPassword = Transport.createTransportUri(newOutgoing);
-    				cmd.execute();
-    				}
-    			});
-    		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog, int whichButton) {
-    				// do nothing
-    				}
-    			});
-    		alert.show();
-    	} else
-    	{
-    		cmd.execute();
-    	}   	
+    	// *** remove me
+		cmd.execute();
 	}
     
 }

@@ -728,7 +728,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             // Create the dialog
             final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle(activity.getString(R.string.settings_import_activate_account_header));
+            int titleID = (mAccount.needsToAskForSessionPasswords())?R.string.settings_import_activate_account_header2:R.string.settings_import_activate_account_header;
+            builder.setTitle(activity.getString(titleID));
             builder.setView(scrollView);
             builder.setPositiveButton(activity.getString(R.string.okay_action),
             new DialogInterface.OnClickListener() {
@@ -756,6 +757,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     activity.setNonConfigurationInstance(null);
+
+                    if (mAccount.needsToAskForSessionPasswords())
+                    	FolderList.actionHandleAccount(activity, mAccount);
                 }
             });
             mDialog = builder.create();
@@ -769,8 +773,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             String serverPasswords = activity.getResources().getQuantityString(
                                          R.plurals.settings_import_server_passwords,
                                          (configureOutgoingServer) ? 2 : 1);
-            intro.setText(activity.getString(R.string.settings_import_activate_account_intro,
-                                             mAccount.getDescription(), serverPasswords));
+            int introID = (mAccount.needsToAskForSessionPasswords())?R.string.settings_import_activate_account_intro2:R.string.settings_import_activate_account_intro;
+            intro.setText(activity.getString(introID, mAccount.getDescription(), serverPasswords));
 
             // Display the hostname of the incoming server
             TextView incomingText = (TextView) layout.findViewById(
