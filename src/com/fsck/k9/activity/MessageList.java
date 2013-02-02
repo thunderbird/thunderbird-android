@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
@@ -50,6 +52,7 @@ import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageTitleView;
+import com.fsck.k9.view.ViewSwitcher;
 
 import de.cketti.library.changelog.ChangeLog;
 
@@ -148,7 +151,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private TextView mActionBarUnread;
     private Menu mMenu;
 
-    private ViewGroup mMessageListContainer;
     private ViewGroup mMessageViewContainer;
     private View mMessageViewPlaceHolder;
 
@@ -180,6 +182,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
      * finish the activity.
      */
     private boolean mMessageListWasDisplayed = false;
+    private ViewSwitcher mViewSwitcher;
 
 
     @Override
@@ -191,7 +194,17 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             return;
         }
 
-        setContentView(R.layout.split_message_list);
+        if (useSplitView()) {
+            setContentView(R.layout.split_message_list);
+        } else {
+            setContentView(R.layout.message_list);
+            mViewSwitcher = (ViewSwitcher) findViewById(R.id.container);
+            mViewSwitcher.setAnimateFirstView(false);
+            mViewSwitcher.setFirstInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_left));
+            mViewSwitcher.setFirstOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_right));
+            mViewSwitcher.setSecondInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_right));
+            mViewSwitcher.setSecondOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_left));
+        }
 
         initializeActionBar();
 
@@ -284,32 +297,23 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             mDisplayMode = (displayMessage) ? DisplayMode.MESSAGE_VIEW : DisplayMode.MESSAGE_LIST;
         }
 
-        switch (K9.getSplitViewMode()) {
-            case ALWAYS: {
-                mDisplayMode = DisplayMode.SPLIT_VIEW;
-                break;
-            }
-            case NEVER: {
-                // Use the value set at the beginning of this method.
-                break;
-            }
-            case WHEN_IN_LANDSCAPE: {
-                int orientation = getResources().getConfiguration().orientation;
-                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    mDisplayMode = DisplayMode.SPLIT_VIEW;
-                } else if (mMessageViewFragment != null ||
-                        mDisplayMode == DisplayMode.MESSAGE_VIEW) {
-                    mDisplayMode = DisplayMode.MESSAGE_VIEW;
-                } else {
-                    mDisplayMode = DisplayMode.MESSAGE_LIST;
-                }
-                break;
-            }
+        if (useSplitView()) {
+            mDisplayMode = DisplayMode.SPLIT_VIEW;
+        } else if (mMessageViewFragment != null || mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+            mDisplayMode = DisplayMode.MESSAGE_VIEW;
         }
     }
 
+    private boolean useSplitView() {
+        SplitViewMode splitViewMode = K9.getSplitViewMode();
+        int orientation = getResources().getConfiguration().orientation;
+
+        return (splitViewMode == SplitViewMode.ALWAYS ||
+                (splitViewMode == SplitViewMode.WHEN_IN_LANDSCAPE &&
+                orientation == Configuration.ORIENTATION_LANDSCAPE));
+    }
+
     private void initializeLayout() {
-        mMessageListContainer = (ViewGroup) findViewById(R.id.message_list_container);
         mMessageViewContainer = (ViewGroup) findViewById(R.id.message_view_container);
         mMessageViewPlaceHolder = getLayoutInflater().inflate(R.layout.empty_message_view, null);
     }
@@ -326,7 +330,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             }
             case SPLIT_VIEW: {
                 mMessageListWasDisplayed = true;
-                findViewById(R.id.message_list_divider).setVisibility(View.VISIBLE);
                 if (mMessageViewFragment == null) {
                     showMessageViewPlaceHolder();
                 } else {
@@ -1319,8 +1322,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mMessageListWasDisplayed = true;
         mDisplayMode = DisplayMode.MESSAGE_LIST;
 
-        mMessageViewContainer.setVisibility(View.GONE);
-        mMessageListContainer.setVisibility(View.VISIBLE);
+        mViewSwitcher.showFirstView();
+
         removeMessageViewFragment();
         mMessageListFragment.setActiveMessage(null);
 
@@ -1330,8 +1333,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private void showMessageView() {
         mDisplayMode = DisplayMode.MESSAGE_VIEW;
 
-        mMessageListContainer.setVisibility(View.GONE);
-        mMessageViewContainer.setVisibility(View.VISIBLE);
+        mViewSwitcher.showSecondView();
 
         showMessageTitleView();
     }

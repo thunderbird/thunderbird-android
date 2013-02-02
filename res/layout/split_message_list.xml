@@ -18,7 +18,6 @@
         android:layout_width="1px"
         android:layout_height="fill_parent"
         android:background="?attr/messageListDividerColor"
-        android:visibility="gone"
         tools:ignore="PxUsage" />
 
     <FrameLayout
