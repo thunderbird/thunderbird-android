@@ -259,7 +259,7 @@ public class MessageProvider extends ContentProvider {
     }
 
     /**
-     * @deprecated having an incremential value has no real interest,
+     * @deprecated having an incremental value has no real interest,
      *             implemented for compatibility only
      */
     @Deprecated
@@ -724,6 +724,7 @@ public class MessageProvider extends ContentProvider {
             return mCursor.isFirst();
         }
 
+        @Override
         public boolean isLast() {
             checkClosed();
             return mCursor.isLast();
@@ -783,6 +784,7 @@ public class MessageProvider extends ContentProvider {
             mCursor.registerDataSetObserver(observer);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public boolean requery() {
             checkClosed();
