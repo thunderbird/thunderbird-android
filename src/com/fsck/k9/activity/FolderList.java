@@ -623,7 +623,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
     public void onSendPendingMessages() {
     	final Account mAccount1 = mAccount;
-    	mAccount.AskOutgoingPasswordIfNecessary(this, new Account.CommandAfter() {
+    	mAccount.AskPasswordIfNecessary(this, new Account.CommandAfter() {
 			@Override
 			public void execute() {
 				MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount1, null);

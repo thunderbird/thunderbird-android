@@ -1245,7 +1245,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     public void onSendPendingMessages() {
     	final Account mAccount1 = mAccount;
-    	mAccount.AskOutgoingPasswordIfNecessary(getActivity(), new Account.CommandAfter() {
+    	mAccount.AskPasswordIfNecessary(getActivity(), new Account.CommandAfter() {
 			@Override
 			public void execute() {
 		        mController.sendPendingMessages(mAccount1, null);
@@ -2553,7 +2553,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void checkMail() {
     	final String mFolderName1 = mFolderName;
     	final Account mAccount1 = mAccount;
-    	mAccount.AskIncomingPasswordIfNecessary(getActivity(), new Account.CommandAfter() {
+    	mAccount.AskPasswordIfNecessary(getActivity(), new Account.CommandAfter() {
 			@Override
 			public void execute() {
 		        mController.synchronizeMailbox(mAccount1, mFolderName1, mListener, null);

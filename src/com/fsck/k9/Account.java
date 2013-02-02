@@ -20,8 +20,11 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
@@ -894,21 +897,30 @@ public class Account implements BaseAccount {
         this.mTransportUriWithPassword = transportUri;
     }
 
+    public synchronized String getDescriptionForEdit() {
+    	return mDescription;
+    }
+    
     public synchronized String getDescription() {
-    	String Result = mDescription;
-        final ServerSettings outgoing = Transport.decodeTransportUri(mTransportUriWithPassword);
-        if ((outgoing.password != null) && outgoing.password.equals("DONT_STORE_MY_PASSWORD")) {
-        	Result = "["+Result+"]";
-        }
+    	StringBuilder sb = new StringBuilder();
         final ServerSettings incoming = Store.decodeStoreUri(mStoreUriWithPassword);   	
-        if ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD")) {
-        	Result = "("+Result+")";
+        final ServerSettings outgoing = Transport.decodeTransportUri(mTransportUriWithPassword);
+        boolean needsIncomingPwd = ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD"));
+        boolean needsOutgoingPwd = ((outgoing.password != null) && outgoing.password.equals("DONT_STORE_MY_PASSWORD"));
+        if (needsIncomingPwd || needsOutgoingPwd) {
+        	sb.append("[");
+        	if (needsIncomingPwd)
+        		sb.append("I");
+        	if (needsOutgoingPwd)
+        		sb.append("O");
+        	sb.append("]");
         }
-        return Result;      	
+    	sb.append(mDescription);
+        return sb.toString();
     }
 
     public synchronized void setDescription(String description) {
-        this.mDescription = description;
+   		this.mDescription = description;
     }
 
     public synchronized String getName() {
@@ -1775,21 +1787,39 @@ public class Account implements BaseAccount {
     	  	  public void execute();    	 
     	}
     
-    public void AskIncomingPasswordIfNecessary(Context mContext, final CommandAfter cmd) {
-        final ServerSettings incoming = Store.decodeStoreUri(mStoreUriWithPassword);   	
+    public void AskPasswordIfNecessary(Context mContext, final CommandAfter cmd) {
+        final ServerSettings incoming = Store.decodeStoreUri(mStoreUriWithPassword);
+        final ServerSettings outgoing = Transport.decodeTransportUri(mTransportUriWithPassword);
         if ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD"))
     	{
     		AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
     		alert.setTitle("Password required");
-    		alert.setMessage("Please enter your password");
-    		final EditText input = new EditText(mContext);
-    		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-    		alert.setView(input);
+    		//alert.setMessage("Incoming password");
+    		
+    		LinearLayout pwdLayout = new LinearLayout(mContext);
+    		pwdLayout.setOrientation(LinearLayout.VERTICAL);
+    		TextView textPwd1 = new TextView(mContext);
+    		textPwd1.setText("Incoming password");
+    		pwdLayout.addView(textPwd1);    		
+    		final EditText inputPwd1 = new EditText(mContext);
+    		inputPwd1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    		pwdLayout.addView(inputPwd1);
+    		TextView textPwd2 = new TextView(mContext);
+    		textPwd2.setText("Outgoing password");
+    		pwdLayout.addView(textPwd2);    		
+    		final EditText inputPwd2 = new EditText(mContext);
+    		inputPwd2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    		pwdLayout.addView(inputPwd2);
+    		
+    		alert.setView(pwdLayout);
     		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
     			public void onClick(DialogInterface dialog, int whichButton) {
-    				String value = input.getText().toString();
-    				ServerSettings newIncoming = incoming.newPassword(value);
+    				String value1 = inputPwd1.getText().toString();
+    				ServerSettings newIncoming = incoming.newPassword(value1);
     				mStoreUriWithPassword = Store.createStoreUri(newIncoming);
+    				String value2 = inputPwd2.getText().toString();
+    				ServerSettings newOutgoing = outgoing.newPassword(TextUtils.isEmpty(value2)?value1:value2);
+    				mTransportUriWithPassword = Transport.createTransportUri(newOutgoing);
     				cmd.execute();
     				}
     			});
@@ -1804,35 +1834,5 @@ public class Account implements BaseAccount {
     		cmd.execute();
     	}   	
 	}
-    
-    public void AskOutgoingPasswordIfNecessary(Context mContext, final CommandAfter cmd) {
-        final ServerSettings outgoing = Transport.decodeTransportUri(mTransportUriWithPassword);
-        if ((outgoing.password != null) && outgoing.password.equals("DONT_STORE_MY_PASSWORD"))
-    	{
-    		AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-    		alert.setTitle("Password required");
-    		alert.setMessage("Please enter your password");
-    		final EditText input = new EditText(mContext);
-    		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-    		alert.setView(input);
-    		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog, int whichButton) {
-    				String value = input.getText().toString();
-    				ServerSettings newOutgoing = outgoing.newPassword(value);
-    				mTransportUriWithPassword = Transport.createTransportUri(newOutgoing);
-    				cmd.execute();
-    				}
-    			});
-    		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog, int whichButton) {
-    				// do nothing
-    				}
-    			});
-    		alert.show();
-    	} else
-    	{
-    		cmd.execute();
-    	}
-    }
     
 }

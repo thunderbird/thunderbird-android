@@ -3942,7 +3942,7 @@ public class MessagingController implements Runnable {
     		checkMail2(context, account, ignoreLastCheckedTime, useManualWakeLock, listener);
     	}
     	else {
-        	account.AskIncomingPasswordIfNecessary(context, new Account.CommandAfter() {
+        	account.AskPasswordIfNecessary(context, new Account.CommandAfter() {
     			@Override
     			public void execute() {
     				checkMail2(context, account, ignoreLastCheckedTime, useManualWakeLock, listener);
