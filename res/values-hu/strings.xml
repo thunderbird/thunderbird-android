@@ -745,14 +745,25 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Kulcs elfogadva</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs elutasítva</string>
 
-    <string name="message_help_key">Del (or D) - Törlés\u000AR -
-    Válasz\u000AA - Válasz mindenkinek\u000AF - Továbbít\u000AJ or P - Előző
-    üzenet\u000AK, N - Kövtkető üzenet\u000AM - Move\u000AY - Másolás\u000AZ - Kicsinyít\u000AShift-Z -
-    Nagyít\u000aG - Csillagoz</string>
-    <string name="message_list_help_key">Del (or D) - Törlés\u000AR -
-    Válasz\u000AA - Válasz mindenkinek\u000AC - Írás\u000AF - Továbbít\u000aM -
-    Áthelyezés\u000AY - Násolás\u000AG - Csillagoz\u000AO - Rendezési típus\u000AI - Rendezési sorrend\u000AQ
-    - Vissza a mappákba\u000AS - Select/deselect</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - Törlés\n
+    R - Válasz\n
+    A - Válasz mindenkinek\n
+    C - Írás\n
+    F - Továbbít\n
+    M - Áthelyezés\n
+    V - Archive\n
+    Y - Násolás\n
+    Z - Mark (Un)read\n
+    G - Csillagoz\n
+    O - Rendezési típus\n
+    I - Rendezési sorrend\n
+    Q - Vissza a mappákba\n
+    S - Select/deselect\n
+    J, P - Előző üzenet\n
+    K, N - Kövtkető üzenet
+    </string>
 
     <!--NEW: <string name="folder_list_help_key">
     1 - Display only 1st Class folders\n

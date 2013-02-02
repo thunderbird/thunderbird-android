@@ -757,19 +757,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
 
-    <string name="message_help_key">
-        Del lub D - Usuń\n
-        R - Odpowiedz\n
-        A - Odp. wszystim\n
-        F - Prześlij dalej\n
-        J lub P - Poprzednia wiadomość\n
-        K, N - Następna wiadomość\n
-        M - Przenieś\n
-        Y - Skopiuj\n
-        Z - Pomniejsz\n
-        Shift-Z - Powiększ\n
-        G - Gwiazdka
-    </string>
+    <!-- NEW: V untranslated -->
     <string name="message_list_help_key">
         Del lub D - Usuń\n
         R - Odpowiedz\n
@@ -777,15 +765,16 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
         C - Napisz\n
         F - Prześlij dalej\n
         M - Przenieś\n
+        V - Archive\n
         Y - Skopiuj\n
+        Z - Przełącz przeczytane/nieprzeczytane\n
         G - Gwiazdka\n
         O - Typ sortowania\n
         I - Porządek sortowania\n
         Q - Widok folderów\n
         S - Zaznacz/odznacz\n
-        Z - Przełącz przeczytane/nieprzeczytane\n
-        / - Szukaj\n
-        5 - Sprawdź pocztę
+        J lub P - Poprzednia wiadomość\n
+        K lub N - Następna wiadomość
     </string>
 
     <string name="folder_list_help_key">

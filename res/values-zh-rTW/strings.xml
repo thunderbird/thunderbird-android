@@ -739,18 +739,7 @@ K-9改良的功能包括：
     <string name="account_setup_failed_dlg_invalid_certificate_accept">接收金鑰</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">拒絕金鑰</string>
 
-    <string name="message_help_key">
-    Del (or D) - 刪除\n
-    R - 回覆\n
-    A - 全部回覆\n
-    F - 轉寄\n
-    J or P - 上一封郵件\n
-    K, N - 下一封郵件\n
-    M - 移動\n
-    Y - 複製\n
-    Z - 縮小\n
-    Shift-Z - 放大\n
-    G - 星號</string>
+    <!-- NEW: V, Z untranslated -->
     <string name="message_list_help_key">
     Del (or D) - 刪除\n
     R - 回覆\n
@@ -758,12 +747,17 @@ K-9改良的功能包括：
     C - 新郵件\n
     F - 轉寄\n
     M - 移動\n
+    V - Archive\n
     Y - 複製\n
+    Z - Mark (Un)read\n
     G - 星號\n
     O - 排序方式\n
     I - 升冪/降冪\n
     Q - 返回信件匣\n
-    S - 選擇/取消選擇</string>
+    S - 選擇/取消選擇\n
+    J, P - 上一封郵件\n
+    K, N - 下一封郵件\n
+    </string>
 
     <string name="folder_list_help_key">
     1 - 只顯示上層信件匣\n

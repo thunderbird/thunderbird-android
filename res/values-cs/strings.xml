@@ -754,14 +754,25 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
 
-    <string name="message_help_key">Del (nebo D) - Smazat\u000AR -
-    Odpovědět\u000AA - Odpovědět všem\u000AF - Přeposlat\u000AJ nebo P - Předchozí
-    zpráva\u000AK, N - Další zpráva\u000AM - Přesun\u000AY - Kopie\u000AZ - Zmenšit\u000AShift-Z -
-    Zvětšit\u000aG - Star</string>
-    <string name="message_list_help_key">Del (nebo D) - Smazat\u000AR -
-    Odpovědět\u000AA - Odpovědět všem\u000AC - Nová\u000AF - Přeposlat\u000aM -
-    Přesun\u000AY - Kopie\u000AG - Hvězdička\u000AO - Typ třídění\u000AI - Pořadí třídění\u000AQ
-    - Návrat do složek\u000AS - Vybrat/zrušit výběr</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (nebo D) - Smazat\n
+    R - Odpovědět\n
+    A - Odpovědět všem\n
+    C - Nová\n
+    F - Přeposlat\n
+    M - Přesun\n
+    V - Archive\n
+    Y - Kopie\n
+    Z - Mark (Un)read\n
+    G - Hvězdička\n
+    O - Typ třídění\n
+    I - Pořadí třídění\n
+    Q - Návrat do složek\n
+    S - Vybrat/zrušit výběr\n
+    J nebo P - Předchozí zpráva\n
+    K nebo N - Další zpráva
+    </string>
 
     <string name="folder_list_help_key">
       1 - Zobrazit jen složky 1. třídy\u000A

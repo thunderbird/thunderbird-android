@@ -1,50 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:layout_height="wrap_content" >
 
     <LinearLayout
-        android:id="@+id/title_layout"
-        android:layout_width="0dip"
+        android:id="@+id/actionbar_message_list"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center_vertical"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/title_layout"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/actionbar_title_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="start"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/actionbar_title_sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorSecondary" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/actionbar_progress"
+            style="?android:attr/indeterminateProgressStyle"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/actionbar_title_first"
+            android:id="@+id/actionbar_unread_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="start"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="36sp" />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/actionbar_title_sub"
+    <LinearLayout
+        android:id="@+id/actionbar_message_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
+
+        <com.fsck.k9.view.MessageTitleView
+            android:id="@+id/message_title_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorSecondary" />
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:textSize="16sp" />
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/actionbar_progress"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center"
-        style="?android:attr/indeterminateProgressStyle"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/actionbar_unread_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="12dip"
-        android:paddingRight="12dip"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="36sp" />
-
-</LinearLayout>
+</FrameLayout>

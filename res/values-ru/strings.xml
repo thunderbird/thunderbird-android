@@ -741,14 +741,25 @@ K-9 Mail это программа электронной почты для Andr
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Принять сертификат</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Отклонить сертификат</string>
 
-    <string name="message_help_key">Del (или D) - Удалить\u000AR -
-    Ответить\u000AA - Ответить Всем\u000AF - Переслать\u000AJ or P - Предыдущее
-    Сообщение\u000AK, N - Следующее сообщение\u000AM - Переместить\u000AY - Скопировать\u000AZ - Уменьшить\u000AShift-Z -
-    Увеличить\u000aG - Звезда</string>
-    <string name="message_list_help_key">Del (or D) - Удалить\u000AR -
-    Ответить\u000AA - Ответить Всем\u000AC - Составить\u000AF - Переслать\u000aM -
-    Переместить\u000AY - Скопировать\u000AG - Звезда\u000AO - Тип сортировки\u000AI - Порядок сортировки\u000AQ
-    - Вернуться к папкам\u000AS - Отметить/Отказаться</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - Удалить\n
+    R - Ответить\n
+    A - Ответить Всем\n
+    C - Составить\n
+    F - Переслать\n
+    M - Переместить\n
+    V - Archive\n
+    Y - Скопировать\n
+    Z - Mark (Un)read\n
+    G - Звезда\n
+    O - Тип сортировки\n
+    I - Порядок сортировки\n
+    Q - Вернуться к папкам\n
+    S - Отметить/Отказаться\n
+    J, P - Предыдущее Сообщение\n
+    K, N - Следующее сообщение
+    </string>
 
     <string name="folder_list_help_key">
     1 - Показывать только папки 1-го класса\u000A

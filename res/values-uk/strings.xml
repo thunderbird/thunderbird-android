@@ -747,14 +747,25 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Прийняти сертифікат</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Відхилити сертифікат</string>
 
-    <string name="message_help_key">Del (or D) - Видалити\u000AR -
-    Відповісти\u000AA - Відповісти усі\u000AF - Переслати\u000AJ або P - Попереднє
-    Повідомлення\u000AK, N - Наступне повідомлення\u000AM - Перемістити\u000AY - Копіювати\u000AZ - Зменшити\u000AShift-Z -
-    Збільшити\u000aG - Зірочка</string>
-    <string name="message_list_help_key">Del (or D) - Видалити\u000AR -
-    Відповісти\u000AA - Відповісти усім\u000AC - Написати\u000AF - Переслати\u000aM -
-    Перемістити\u000AY - Копіювати\u000AG - Зірочка\u000AO - Тип упорядкування\u000AI - Порядок упорядкування\u000AQ
-    - Повернутися до папок\u000AS - Виділити/зняти виділення</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (або D) - Видалити\n
+    R - Відповісти\n
+    A - Відповісти усім\n
+    C - Написати\n
+    F - Переслати\n
+    M - Перемістити\n
+    V - Archive\n
+    Y - Копіювати\n
+    Z - Mark (Un)read\n
+    G - Зірочка\n
+    O - Тип упорядкування\n
+    I - Порядок упорядкування\n
+    Q - Повернутися до папок\n
+    S - Виділити/зняти виділення\n
+    J або P - Попереднє Повідомлення\n
+    K або N - Наступне повідомлення
+    </string>
 
     <string name="folder_list_help_key">
     1 - Відображати тільки папки 1-го класу\u000A

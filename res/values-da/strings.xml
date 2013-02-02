@@ -748,14 +748,25 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter nøgle</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Afvis nøgle</string>
 
-    <string name="message_help_key">Del (or D) - Slet\u000AR -
-    Svar\u000AA - Svar alle\u000AF - Videresend\u000AJ or P - Foregående
-    mail\u000AK, N - Næste mail\u000AM - Flyt\u000AY - Kopier\u000AZ - Zoom ud\u000AShift-Z -
-    Zoom ind\u000aG - Stjerne</string>
-    <string name="message_list_help_key">Del (or D) - Slet\u000AR -
-    Svar\u000AA - Svar alle\u000AC - Skriv\u000AF - Videresend\u000aM -
-    Flyt\u000AY - Kopier\u000AG - Stjerne\u000AO - Sorteringstype\u000AI - Sorteringsorden\u000AQ
-    - Returner til Mapper\u000AS - Vælg/fravælg</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - Slet\n
+    R - Svar\n
+    A - Svar alle\n
+    C - Skriv\n
+    F - Videresend\n
+    M - Flyt\n
+    V - Archive\n
+    Y - Kopier\n
+    Z - Mark (Un)read\n
+    G - Stjerne\n
+    O - Sorteringstype\n
+    I - Sorteringsorden\n
+    Q - Returner til Mapper\n
+    S - Vælg/fravælg\n
+    J or P - Foregående mail\n
+    K or N - Næste mail
+    </string>
 
     <string name="folder_list_help_key">
     1 - Vis kun primære mapper\u000A

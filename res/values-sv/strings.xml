@@ -748,14 +748,25 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Neka nyckel</string>
 
-    <string name="message_help_key">Del (eller D) - Radera\u000AR -
-    Svara\u000AA - Svara alla\u000AF - Vidarebefordra\u000AJ eller P - Föregående
-    brev\u000AK, N - Nästa brev\u000AM - Flytta\u000AY - Kopiera\u000AZ - Zooma ut\u000AShift-Z -
-    Zooma in\u000aG - Stjärna</string>
-    <string name="message_list_help_key">Del (eller D) - Radera\u000AR -
-    Svara\u000AA - Svara alla\u000AC - Skriv\u000AF - Vidarebefordra\u000aM -
-    Flytta\u000AY - Kopiera\u000AG - Stjärna\u000AO - Sorteringstyp\u000AI - Sorteringsordning\u000AQ
-    - Återvänd till mappar\u000AS - Markera/avmarkera</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (eller D) - Radera\n
+    R - Svara\n
+    A - Svara alla\n
+    C - Skriv\n
+    F - Vidarebefordra\n
+    M - Flytta\n
+    V - Archive\n
+    Y - Kopiera\n
+    Z - Mark (Un)read\n
+    G - Stjärna\n
+    O - Sorteringstyp\n
+    I - Sorteringsordning\n
+    Q - Återvänd till mappar\n
+    S - Markera/avmarkera\n
+    J eller P - Föregående brev\n
+    K eller N - Nästa brev
+    </string>
 
     <string name="folder_list_help_key">
     1 - Visa endast första klassens mappar\u000A

@@ -746,14 +746,25 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar certificado</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rechazar certificado</string>
 
-    <string name="message_help_key">Del (or D) - Borrar\u000AR -
-    Responder\u000AA - Responder todos\u000AF - Desvío\u000AJ or P - Mensaje
-    Previo\u000AK, N - Siguiente mensaje\u000AM - Mover\u000AY - Copiar\u000AZ - Ampliar Zoom\u000AShift-Z -
-    Disminuir Zoom\u000aG - Estrella</string>
-    <string name="message_list_help_key">Del (or D) - Borrar\u000AR -
-    Responder\u000AA - Responder todos\u000AC - Redactar\u000AF - Desvío\u000aM -
-    Mover\u000AY - Copiar\u000AG - Estrella\u000AO - Tipo ordenación\u000AI - Ordenar\u000AQ
-    - Volver a carpetas\u000AS - Des/Marcar</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - Borrar\n
+    R - Responder\n
+    A - Responder todos\n
+    C - Redactar\n
+    F - Desvío\n
+    M - Mover\n
+    V - Archive\n
+    Y - Copiar\n
+    Z - Mark (Un)read\n
+    G - Estrella\n
+    O - Tipo ordenación\n
+    I - Ordenar\n
+    Q - Volver a carpetas\n
+    S - Des/Marcar\n
+    J, P - Mensaje Previo\n
+    K, N - Siguiente mensaje
+    </string>
 
     <string name="folder_list_help_key">
     1 - Ver carpetas 1a Clase\u000A

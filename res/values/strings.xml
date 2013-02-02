@@ -4,7 +4,7 @@
 
     <!--
          When removing strings from the main file, please cleanup the translations.
-         
+
          This doesn't work on multiline strings, nor strings with the NEW tag.
          find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
      -->
@@ -777,14 +777,24 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
 
-    <string name="message_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AF - Forward\u000AJ or P - Previous
-    Message\u000AK, N - Next Message\u000AM - Move\u000AY - Copy\u000AZ - Zoom Out\u000AShift-Z -
-    Zoom In\u000aG - Star</string>
-    <string name="message_list_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aM -
-    Move\u000AY - Copy\u000AG - Star\u000AO - Sort type\u000AI - Sort order\u000AQ
-    - Return to Folders\u000AS - Select/deselect</string>
+    <string name="message_list_help_key">
+    Del (or D) - Delete\n
+    R - Reply\n
+    A - Reply All\n
+    C - Compose\n
+    F - Forward\n
+    M - Move\n
+    V - Archive\n
+    Y - Copy\n
+    Z - Mark (Un)read\n
+    G - Star\n
+    O - Sort type\n
+    I - Sort order\n
+    Q - Return to Folders\n
+    S - Select/deselect\n
+    J or P - Previous Message\n
+    K or N - Next Message\n
+    </string>
 
     <string name="folder_list_help_key">
     1 - Display only 1st Class folders\u000A
@@ -1129,4 +1139,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="message_list_loading">Loading…</string>
+
+    <string name="global_settings_splitview_mode_label">Show split-screen</string>
+    <string name="global_settings_splitview_always">Always</string>
+    <string name="global_settings_splitview_never">Never</string>
+    <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>
+
+    <string name="message_view_empty">Please select a message on the left</string>
 </resources>

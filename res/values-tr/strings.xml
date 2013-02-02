@@ -748,15 +748,25 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Kabul Tuşu</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
 
-    <string name="message_help_key">Del (veya D) - Sil\u000AR -
-    Cevapla\u000AA - Hepsini cevapla\u000AF - İlet\u000AJ or P - Önceki
-    Mesaj\u000AK, N - Sonraki Mesaj\u000AM - Taşı\u000AY - Kopyala\u000AZ - Uzaklaş\u000AShift-Z -
-    Yakınlaş\u000aG - Yıldız</string>
-    <string name="message_list_help_key">Del (veya D) - Sil\u000AR -
-    Cevapla\u000AA - Hepsini cevapla\u000AC - Oluştur\u000AF - İlet\u000aM -
-    Taşı\u000AY - Kopyala\u000AG - Yıldız\u000AO - Sıralama tipi\u000AI - Sıralama şekli\u000AQ
-    - Klasörlere dön\u000AS - Seç/seçme\u000AZ - Geçiş oku/okuma\u000A/
-    - Ara\u000A5 - Postayı kontrol et</string>
+    <!-- NEW: V untranslated -->
+    <string name="message_list_help_key">
+    Del (veya D) - Sil\n
+    R - Cevapla\n
+    A - Hepsini cevapla\n
+    C - Oluştur\n
+    F - İlet\n
+    M - Taşı\n
+    V - Archive\n
+    Y - Kopyala\n
+    Z - Geçiş oku/okuma\n
+    G - Yıldız\n
+    O - Sıralama tipi\n
+    I - Sıralama şekli\n
+    Q - Klasörlere dön\n
+    S - Seç/seçme\n
+    J, P - Önceki Mesaj\n
+    K, N - Sonraki Mesaj
+    </string>
 
     <string name="folder_list_help_key">
     1 - Yalnız 1. sınıf klasörleri göster\u000A

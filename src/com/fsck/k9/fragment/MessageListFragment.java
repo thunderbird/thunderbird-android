@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -311,6 +312,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final String ARG_IS_THREAD_DISPLAY = "isThreadedDisplay";
 
     private static final String STATE_SELECTED_MESSAGES = "selectedMessages";
+    private static final String STATE_ACTIVE_MESSAGE = "activeMessage";
     private static final String STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed";
     private static final String STATE_MESSAGE_LIST = "listState";
 
@@ -418,6 +420,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private Preferences mPreferences;
 
     private boolean mLoaderJustInitialized;
+    private MessageReference mActiveMessage;
+
+    /**
+     * {@code true} after {@link #onCreate(Bundle)} was executed. Used in {@link #updateTitle()} to
+     * make sure we don't access member variables before initialization is complete.
+     */
+    private boolean mInitialized = false;
 
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
@@ -435,6 +444,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
         private static final int ACTION_GO_BACK = 5;
         private static final int ACTION_RESTORE_LIST_POSITION = 6;
+        private static final int ACTION_OPEN_MESSAGE = 7;
 
 
         public void folderLoading(String folder, boolean loading) {
@@ -481,6 +491,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
+        public void openMessage(MessageReference messageReference) {
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_OPEN_MESSAGE,
+                    messageReference);
+            sendMessage(msg);
+        }
+
         @Override
         public void handleMessage(android.os.Message msg) {
             // The following messages don't need an attached activity.
@@ -505,7 +521,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     break;
                 }
                 case ACTION_REFRESH_TITLE: {
-                    MessageListFragment.this.refreshTitle();
+                    updateTitle();
                     break;
                 }
                 case ACTION_PROGRESS: {
@@ -520,6 +536,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 case ACTION_RESTORE_LIST_POSITION: {
                     mListView.onRestoreInstanceState(mSavedListState);
                     mSavedListState = null;
+                    break;
+                }
+                case ACTION_OPEN_MESSAGE: {
+                    MessageReference messageReference = (MessageReference) msg.obj;
+                    mFragmentListener.openMessage(messageReference);
                     break;
                 }
             }
@@ -566,7 +587,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         updateFooterView();
     }
 
-    private void refreshTitle() {
+    public void updateTitle() {
+        if (!mInitialized) {
+            return;
+        }
+
         setWindowTitle();
         if (!mSearch.isManualSearch()) {
             setWindowProgress();
@@ -680,22 +705,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (mSelectedCount > 0) {
             toggleMessageSelect(position);
         } else {
-            Account account = getAccountFromCursor(cursor);
-
-            long folderId = cursor.getLong(FOLDER_ID_COLUMN);
-            String folderName = getFolderNameById(account, folderId);
-
             if (mThreadedList && cursor.getInt(THREAD_COUNT_COLUMN) > 1) {
+                Account account = getAccountFromCursor(cursor);
+                long folderId = cursor.getLong(FOLDER_ID_COLUMN);
+                String folderName = getFolderNameById(account, folderId);
+
                 // If threading is enabled and this item represents a thread, display the thread contents.
                 long rootId = cursor.getLong(THREAD_ROOT_COLUMN);
                 mFragmentListener.showThread(account, folderName, rootId);
             } else {
                 // This item represents a message; just display the message.
-                MessageReference ref = new MessageReference();
-                ref.accountUuid = account.getUuid();
-                ref.folderName = folderName;
-                ref.uid = cursor.getString(UID_COLUMN);
-                onOpenMessage(ref);
+                openMessageAtPosition(listViewToAdapterPosition(position));
             }
         }
     }
@@ -725,6 +745,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mCheckboxes = K9.messageListCheckboxes();
 
         decodeArguments();
+
+        mInitialized = true;
     }
 
     @Override
@@ -781,6 +803,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, mRemoteSearchPerformed);
         outState.putParcelable(STATE_MESSAGE_LIST, mListView.onSaveInstanceState());
+        outState.putParcelable(STATE_ACTIVE_MESSAGE, mActiveMessage);
     }
 
     /**
@@ -797,6 +820,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mRemoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
         mSavedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST);
+        mActiveMessage = savedInstanceState.getParcelable(STATE_ACTIVE_MESSAGE);
     }
 
     /**
@@ -1001,7 +1025,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
-        refreshTitle();
+        updateTitle();
     }
 
     private void initializePullToRefresh(LayoutInflater inflater, View layout) {
@@ -1069,10 +1093,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mListView.setOnItemClickListener(this);
 
         registerForContextMenu(mListView);
-    }
-
-    private void onOpenMessage(MessageReference reference) {
-        mFragmentListener.openMessage(reference);
     }
 
     public void onCompose() {
@@ -1524,20 +1544,37 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *         {@code true} if this was an attempt to select (i.e. left to right).
      */
     private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
-        int[] listPosition = new int[2];
-        mListView.getLocationOnScreen(listPosition);
+        int x = (int) downMotion.getRawX();
+        int y = (int) downMotion.getRawY();
 
-        int listX = (int) downMotion.getRawX() - listPosition[0];
-        int listY = (int) downMotion.getRawY() - listPosition[1];
+        Rect headerRect = new Rect();
+        mListView.getGlobalVisibleRect(headerRect);
 
-        int listViewPosition = mListView.pointToPosition(listX, listY);
+        // Only handle swipes in the visible area of the message list
+        if (headerRect.contains(x, y)) {
+            int[] listPosition = new int[2];
+            mListView.getLocationOnScreen(listPosition);
 
-        toggleMessageSelect(listViewPosition);
+            int listX = x - listPosition[0];
+            int listY = y - listPosition[1];
+
+            int listViewPosition = mListView.pointToPosition(listX, listY);
+
+            toggleMessageSelect(listViewPosition);
+        }
     }
 
     private int listViewToAdapterPosition(int position) {
         if (position > 0 && position <= mAdapter.getCount()) {
             return position - 1;
+        }
+
+        return AdapterView.INVALID_POSITION;
+    }
+
+    private int adapterToListViewPosition(int position) {
+        if (position >= 0 && position < mAdapter.getCount()) {
+            return position + 1;
         }
 
         return AdapterView.INVALID_POSITION;
@@ -1786,6 +1823,21 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 TypedValue outValue = new TypedValue();
                 getActivity().getTheme().resolveAttribute(res, outValue, true);
                 view.setBackgroundColor(outValue.data);
+            }
+
+            if (mActiveMessage != null) {
+                String uid = cursor.getString(UID_COLUMN);
+                String folderName = cursor.getString(FOLDER_NAME_COLUMN);
+
+                if (account.getUuid().equals(mActiveMessage.accountUuid) &&
+                        folderName.equals(mActiveMessage.folderName) &&
+                        uid.equals(mActiveMessage.uid)) {
+                    int res = R.attr.messageListActiveItemBackgroundColor;
+
+                    TypedValue outValue = new TypedValue();
+                    getActivity().getTheme().resolveAttribute(res, outValue, true);
+                    view.setBackgroundColor(outValue.data);
+                }
             }
 
             // Thread count
@@ -2773,6 +2825,63 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
     }
 
+    public void openPrevious(MessageReference messageReference) {
+        int position = getPosition(messageReference);
+        if (position <= 0) {
+            return;
+        }
+
+        openMessageAtPosition(position - 1);
+    }
+
+    public void openNext(MessageReference messageReference) {
+        int position = getPosition(messageReference);
+        if (position < 0 || position == mAdapter.getCount() - 1) {
+            return;
+        }
+
+        openMessageAtPosition(position + 1);
+    }
+
+    private void openMessageAtPosition(int position) {
+        // Scroll message into view if necessary
+        int listViewPosition = adapterToListViewPosition(position);
+        if (listViewPosition != AdapterView.INVALID_POSITION &&
+                (listViewPosition < mListView.getFirstVisiblePosition() ||
+                listViewPosition > mListView.getLastVisiblePosition())) {
+            mListView.setSelection(listViewPosition);
+        }
+
+        Cursor cursor = (Cursor) mAdapter.getItem(position);
+        MessageReference ref = new MessageReference();
+        ref.accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+        ref.folderName = cursor.getString(FOLDER_NAME_COLUMN);
+        ref.uid = cursor.getString(UID_COLUMN);
+
+        // For some reason the mListView.setSelection() above won't do anything when we call
+        // onOpenMessage() (and consequently mAdapter.notifyDataSetChanged()) right away. So we
+        // defer the call using MessageListHandler.
+        mHandler.openMessage(ref);
+    }
+
+    private int getPosition(MessageReference messageReference) {
+        for (int i = 0, len = mAdapter.getCount(); i < len; i++) {
+            Cursor cursor = (Cursor) mAdapter.getItem(i);
+
+            String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+            String folderName = cursor.getString(FOLDER_NAME_COLUMN);
+            String uid = cursor.getString(UID_COLUMN);
+
+            if (accountUuid.equals(messageReference.accountUuid) &&
+                    folderName.equals(messageReference.folderName) &&
+                    uid.equals(messageReference.uid)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     public interface MessageListFragmentListener {
         void enableActionBarProgress(boolean enable);
         void setMessageListProgress(int level);
@@ -3092,7 +3201,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 if (StringUtils.isNullOrEmpty(mTitle)) {
                    mTitle = getString(R.string.general_no_subject);
                 }
-                refreshTitle();
+                updateTitle();
             } else {
                 //TODO: empty thread view -> return to full message list
             }
@@ -3191,5 +3300,31 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private void remoteSearchFinished() {
         mRemoteSearchFuture = null;
+    }
+
+    /**
+     * Mark a message as 'active'.
+     *
+     * <p>
+     * The active message is the one currently displayed in the message view portion of the split
+     * view.
+     * </p>
+     *
+     * @param messageReference
+     *         {@code null} to not mark any message as being 'active'.
+     */
+    public void setActiveMessage(MessageReference messageReference) {
+        mActiveMessage = messageReference;
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public boolean isSingleAccountMode() {
+        return mSingleAccountMode;
+    }
+
+    public boolean isSingleFolderMode() {
+        return mSingleFolderMode;
     }
 }

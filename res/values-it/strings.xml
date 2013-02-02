@@ -749,14 +749,25 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta chiave</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifiuta chiave</string>
 
-    <string name="message_help_key">Canc (o D) - Elimina\u000AR -
-    Rispondi\u000AA - Rispondi a tutti\u000AF - Inoltra\u000AJ o P - Messaggio
-    Precedente\u000AK, N - Messaggio successivo\u000AM - Sposta\u000AY - Copia\u000AZ - Ingrandisci\u000AShift-Z -
-    Rimpicciolisci\u000aG - Stella</string>
-    <string name="message_list_help_key">Canc (o D) - Elimina\u000AR -
-    Rispondi\u000AA - Rispondi a tutti\u000AC - Componi\u000AF - Inoltra\u000aM -
-    Sposta\u000AY - Copia\u000AG - Stella\u000AO - Tipo ordinamento\u000AI - Verso ordinamento\u000AQ
-    - Ritorna alle cartelle\u000AS - Seleziona/deseleziona</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Canc (o D) - Elimina\n
+    R - Rispondi\n
+    A - Rispondi a tutti\n
+    C - Componi\n
+    F - Inoltra\n
+    M - Sposta\n
+    V - Archive\n
+    Y - Copia\n
+    Z - Mark (Un)read\n
+    G - Stella\n
+    O - Tipo ordinamento\n
+    I - Verso ordinamento\n
+    Q - Ritorna alle cartelle\n
+    S - Seleziona/deseleziona\n
+    J o P - Messaggio Precedente\n
+    K o N - Messaggio successivo
+    </string>
 
     <string name="folder_list_help_key">
     1 - Visualizza soltanto cartelle di 1a classe\u000A

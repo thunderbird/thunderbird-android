@@ -30,7 +30,7 @@ Android Localizer (aiLocalizer)
 
     <!--
          When removing strings from the main file, please cleanup the translations.
-         
+
          This doesn't work on multiline strings, nor strings with the NEW tag.
          find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
      -->
@@ -801,14 +801,25 @@ de plus</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter le certificat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejetter le certificat</string>
 
-    <string name="message_help_key">Suppr (ou D) - Effacer\u000AR -
-    Répondre\u000AA - Répondre à tous\u000AF - Transférer\u000AJ ou P - Message
-    précédent\u000AK, N - Prochain message\u000AM - Déplacer\u000AY - Copier\u000AZ - Zoom arrière\u000AShift-Z -
-    Zoom avant\u000aG - Étoile</string>
-    <string name="message_list_help_key">Suppr (ou D) - Supprimer\u000AR -
-    Répondre\u000AA - Répondre à tous\u000AC - Composer\u000AF - Transférer\u000aM -
-    Déplacer\u000AY - Copier\u000AG - Étoile\u000AO - Trier\u000AI - Ordre de tri\u000AQ
-    - Retourner aux dossiers\u000AS - Sélectionner/Désélectionner</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Suppr (ou D) - Supprimer\n
+    R - Répondre\n
+    A - Répondre à tous\n
+    C - Composer\n
+    F - Transférer\n
+    M - Déplacer\n
+    V - Archive\n
+    Y - Copier\n
+    Z - Mark (Un)read\n
+    G - Étoile\n
+    O - Trier\n
+    I - Ordre de tri\n
+    Q - Retourner aux dossiers\n
+    S - Sélectionner/Désélectionner\n
+    J ou P - Message précédent\n
+    K ou N - Prochain message
+    </string>
 
     <string name="folder_list_help_key">
     1 - Afficher seulement les dossiers de 1ère classe \u000A
