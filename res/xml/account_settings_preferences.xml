@@ -359,7 +359,6 @@
           See com.fsck.k9.activity.setup.AccountSettings
         -->
         <RingtonePreference
-            android:layout="?android:attr/preferenceLayoutChild"
             android:dependency="account_notify"
             android:key="account_ringtone"
             android:title="@string/account_settings_ringtone"
@@ -368,7 +367,6 @@
 
         <CheckBoxPreference
             android:persistent="false"
-            android:layout="?android:attr/preferenceLayoutChild"
             android:dependency="account_notify"
             android:key="account_vibrate"
             android:defaultValue="false"
@@ -377,6 +375,7 @@
 
         <ListPreference
             android:persistent="false"
+            android:layout="?android:attr/preferenceLayoutChild"
             android:dependency="account_vibrate"
             android:key="account_vibrate_pattern"
             android:title="@string/account_settings_vibrate_pattern_label"
@@ -386,6 +385,7 @@
 
         <ListPreference
             android:persistent="false"
+            android:layout="?android:attr/preferenceLayoutChild"
             android:dependency="account_vibrate"
             android:key="account_vibrate_times"
             android:title="@string/account_settings_vibrate_times"
