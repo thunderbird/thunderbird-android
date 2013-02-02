@@ -840,12 +840,19 @@ public class MessageProvider extends ContentProvider {
                             String sortOrder) throws Exception {
             mSemaphore.acquire();
 
-            final Cursor cursor;
-            cursor = mDelegate.query(uri, projection, selection, selectionArgs, sortOrder);
+            Cursor cursor = null;
+            try {
+                cursor = mDelegate.query(uri, projection, selection, selectionArgs, sortOrder);
+            } finally {
+                if (cursor == null) {
+                    mSemaphore.release();
+                }
+            }
 
             /* Android content resolvers can only process CrossProcessCursor instances */
             if (!(cursor instanceof CrossProcessCursor)) {
                 Log.w(K9.LOG_TAG, "Unsupported cursor, returning null: " + cursor);
+                mSemaphore.release();
                 return null;
             }
 
