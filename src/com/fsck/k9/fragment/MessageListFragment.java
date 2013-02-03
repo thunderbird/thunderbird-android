@@ -661,6 +661,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private DateFormat getTimeFormat() {
+        if (mTimeFormat == null) {
+            setupFormats();
+        }
+
         return mTimeFormat;
     }
 
