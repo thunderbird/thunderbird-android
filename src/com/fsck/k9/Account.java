@@ -13,18 +13,11 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
@@ -685,7 +678,7 @@ public class Account implements BaseAccount {
 
         editor.putString(mUuid + ".storeUri", Utility.base64Encode(encodeIfDontStoreIncomingPassword(mStoreUri, mStoreUri_DontStorePassword)));
         editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
-        editor.putString(mUuid + ".transportUri", Utility.base64Encode(encodeIfDontStoreOutgoingPassword(mTransportUri, mStoreUri_DontStorePassword)));
+        editor.putString(mUuid + ".transportUri", Utility.base64Encode(encodeIfDontStoreOutgoingPassword(mTransportUri, mTransportUri_DontStorePassword)));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
@@ -887,6 +880,17 @@ public class Account implements BaseAccount {
         this.mStoreUri = storeUri;
     }
 
+    public synchronized boolean getStoreUri_DontStorePassword() {
+        return mStoreUri_DontStorePassword;
+    }
+
+    public synchronized void setStoreUri_DontStorePassword(boolean dontStorePassword) {
+        this.mStoreUri_DontStorePassword = dontStorePassword;
+        if (dontStorePassword) {
+        	this.mStoreUri = encodeIfDontStoreIncomingPassword(mStoreUri, true);
+        }
+    }
+   
     public synchronized String getTransportUri() {
         return mTransportUri;
     }
@@ -895,16 +899,27 @@ public class Account implements BaseAccount {
         this.mTransportUri = transportUri;
     }
 
+    public synchronized boolean getTransportUri_DontStorePassword() {
+        return mTransportUri_DontStorePassword;
+    }
+
+    public synchronized void setTransportUri_DontStorePassword(boolean dontStorePassword) {
+        this.mTransportUri_DontStorePassword = dontStorePassword;
+        if (dontStorePassword) {
+        	this.mTransportUri = encodeIfDontStoreOutgoingPassword(mTransportUri, true);
+        }
+    }
+
     public synchronized String getUndecoratedDescription() {
     	return mDescription;
     }
 
-    boolean decodeIfDontStoreIncomingPassword(String storeUri) {
+    protected boolean decodeIfDontStoreIncomingPassword(String storeUri) {
 		ServerSettings incoming = Store.decodeStoreUri(storeUri);
 		return ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD"));    	
     }
 
-    String encodeIfDontStoreIncomingPassword(String storeUri, boolean DontStorePassword) {
+    protected String encodeIfDontStoreIncomingPassword(String storeUri, boolean DontStorePassword) {
     	if (DontStorePassword) {
     		ServerSettings incoming = Store.decodeStoreUri(storeUri);
     		ServerSettings newIncoming = incoming.newPassword("DONT_STORE_MY_PASSWORD");
@@ -914,12 +929,12 @@ public class Account implements BaseAccount {
     		return storeUri;
     }
     
-    boolean decodeIfDontStoreOutgoingPassword(String transportUri) {
+    protected boolean decodeIfDontStoreOutgoingPassword(String transportUri) {
 		ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
 		return ((outgoing.password != null) && outgoing.password.equals("DONT_STORE_MY_PASSWORD"));    	
     }
     
-    String encodeIfDontStoreOutgoingPassword(String transportUri, boolean DontStorePassword) {
+    protected String encodeIfDontStoreOutgoingPassword(String transportUri, boolean DontStorePassword) {
     	if (DontStorePassword) {
     		ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
     		ServerSettings newOutgoing = outgoing.newPassword("DONT_STORE_MY_PASSWORD");
@@ -1808,13 +1823,4 @@ public class Account implements BaseAccount {
     }
 
 
-    public interface CommandAfter{
-    	  	  public void execute();    	 
-    	}
-    
-    public void AskPasswordIfNecessary(Context mContext, final CommandAfter cmd) {
-    	// *** remove me
-		cmd.execute();
-	}
-    
 }

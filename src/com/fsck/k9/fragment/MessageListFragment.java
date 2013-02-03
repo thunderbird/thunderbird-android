@@ -1244,16 +1244,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public void onSendPendingMessages() {
-    	final Account mAccount1 = mAccount;
-    	mAccount.AskPasswordIfNecessary(getActivity(), new Account.CommandAfter() {
-			@Override
-			public void execute() {
-		        mController.sendPendingMessages(mAccount1, null);
-			}
-		});
+        mController.sendPendingMessages(mAccount, null);
     }
 
-    
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
@@ -2551,15 +2544,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public void checkMail() {
-    	final String mFolderName1 = mFolderName;
-    	final Account mAccount1 = mAccount;
-    	mAccount.AskPasswordIfNecessary(getActivity(), new Account.CommandAfter() {
-			@Override
-			public void execute() {
-		        mController.synchronizeMailbox(mAccount1, mFolderName1, mListener, null);
-		        mController.sendPendingMessages(mAccount1, mListener);			
-			}
-		});
+        mController.synchronizeMailbox(mAccount, mFolderName, mListener, null);
+        mController.sendPendingMessages(mAccount, mListener);
     }
 
     /**

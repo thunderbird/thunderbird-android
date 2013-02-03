@@ -210,12 +210,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
                 mUsernameView.setText(settings.username);
             }
 
-            if (settings.password != null) {
-            	if (settings.password.equals("DONT_STORE_MY_PASSWORD")) {
-            		mPasswordNotStored.setChecked(true);
-            	} else {
-                	mPasswordView.setText(settings.password);
-            	}
+            if (mAccount.getStoreUri_DontStorePassword()) {
+        		mPasswordNotStored.setChecked(true);
+            }
+            else if (settings.password != null) {
+               	mPasswordView.setText(settings.password);
             }
 
             if (settings.authenticationType != null) {
@@ -423,8 +422,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
 
             String username = mUsernameView.getText().toString();
             String password = mPasswordView.getText().toString();
-            if (mPasswordNotStored.isChecked())
-            	password = "DONT_STORE_MY_PASSWORD";
             String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
             String host = mServerView.getText().toString();
             int port = Integer.parseInt(mPortView.getText().toString());
@@ -450,6 +447,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
                     connectionSecurity, authType, username, password, extra);
 
             mAccount.setStoreUri(Store.createStoreUri(settings));
+            mAccount.setStoreUri_DontStorePassword(mPasswordNotStored.isChecked());
 
             mAccount.setCompression(Account.TYPE_MOBILE, mCompressionMobile.isChecked());
             mAccount.setCompression(Account.TYPE_WIFI, mCompressionWifi.isChecked());

@@ -201,12 +201,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 mRequireLoginView.setChecked(true);
             }
 
-            if (password != null) {
-            	if (password.equals("DONT_STORE_MY_PASSWORD")) {
-            		mPasswordNotStored.setChecked(true);
-            	} else {
-                	mPasswordView.setText(password);
-            	}
+            if (mAccount.getTransportUri_DontStorePassword()) {
+        		mPasswordNotStored.setChecked(true);
+            }
+            else if (password != null) {
+               	mPasswordView.setText(password);
             }
 
             if (authType != null) {
@@ -305,10 +304,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         URI uri;
         try {
             String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8");
-            String password = mPasswordView.getText().toString();
-            if (mPasswordNotStored.isChecked())
-            	password = "DONT_STORE_MY_PASSWORD";
-            String passwordEnc = URLEncoder.encode(password, "UTF-8");
+            String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8");
 
             String userInfo = null;
             String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
@@ -318,6 +314,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
                           Integer.parseInt(mPortView.getText().toString()), null, null, null);
             mAccount.setTransportUri(uri.toString());
+            mAccount.setTransportUri_DontStorePassword(mPasswordNotStored.isChecked());
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8

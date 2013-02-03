@@ -237,7 +237,9 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setName(getOwnerName());
             mAccount.setEmail(email);
             mAccount.setStoreUri(incomingUri.toString());
+            mAccount.setStoreUri_DontStorePassword(mPasswordNotStored.isChecked());
             mAccount.setTransportUri(outgoingUri.toString());
+            mAccount.setTransportUri_DontStorePassword(mPasswordNotStored.isChecked());
             mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
             mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
             mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
