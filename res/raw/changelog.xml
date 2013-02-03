@@ -2,9 +2,17 @@
 <changelog>
 
     <release version="4.322" versioncode="17023" >
+        <change>Added a setting to enable split-screen mode (display message list next to message content)</change>
+        <change>Show a thread as unread/starred if at least one message is unread/starred</change>
+        <change>Modified the preview lines setting to allow disabling message preview in message list</change>
+        <change>Remember the scroll position of the message list</change>
+        <change>Changed the color picker</change>
+        <change>Improved certificate failure notifications</change>
+        <change>Fixed a bug that prevented third-party apps from reading the number of unread messages</change>
         <change>Fixed a bug that caused the app to load too many messages when you clicked "Load more messages"</change>
-        <change>Updated Finnish translation</change>
+        <change>Updated Finnish, French, German, Dutch translations</change>
     </release>
+
     <release version="4.321" versioncode="17022" >
         <change>Fixed some bugs related to message threading</change>
         <change>Improved search for folders in the folder list</change>
@@ -19,7 +27,6 @@
         <change>Added button to show this about screen</change>
         <change>Close thread view when last message has been moved/deleted</change>
         <change>Performance improvements</change>
-
     </release>
 
     <release version="4.320" versioncode="17021" >

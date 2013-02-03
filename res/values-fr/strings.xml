@@ -245,7 +245,7 @@ de plus</string>
     <string name="notification_action_reply">Répondre</string>
     <string name="notification_action_read">Lire</string>
     <string name="notification_action_delete">Supprimer</string>
-    <string name="notification_certificate_error_title">Erreur de certificat</string>
+    <string name="notification_certificate_error_title">Erreur de certificat (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_certificate_error_text">Vérifier les paramètres serveur</string>
 
     <string name="notification_bg_sync_ticker">Vérification des messages\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>

@@ -103,6 +103,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
         public void progress(final boolean progress) {
             post(new Runnable() {
+                @Override
                 public void run() {
                     setProgress(progress);
                 }
@@ -111,6 +112,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
         public void addAttachment(final View attachmentView) {
             post(new Runnable() {
+                @Override
                 public void run() {
                     mMessageView.addAttachment(attachmentView);
                 }
@@ -120,6 +122,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         /* A helper for a set of "show a toast" methods */
         private void showToast(final String message, final int toastLength)  {
             post(new Runnable() {
+                @Override
                 public void run() {
                     Toast.makeText(getActivity(), message, toastLength).show();
                 }
@@ -523,6 +526,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
             final Message clonedMessage = message.clone();
 
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     if (!clonedMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
                             !clonedMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
@@ -578,6 +582,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 return;
             }
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     setProgress(false);
                     if (t instanceof IllegalArgumentException) {
@@ -599,6 +604,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 return;
             }
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     setProgress(false);
                     mMessageView.setShowDownloadButton(message);
@@ -613,6 +619,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 return;
             }
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     setProgress(true);
                 }
@@ -625,6 +632,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 return;
             }
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     mMessageView.setAttachmentsEnabled(false);
                     showDialog(R.id.dialog_attachment_progress);
@@ -641,6 +649,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 return;
             }
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     mMessageView.setAttachmentsEnabled(true);
                     removeDialog(R.id.dialog_attachment_progress);
@@ -662,6 +671,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 return;
             }
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     mMessageView.setAttachmentsEnabled(true);
                     removeDialog(R.id.dialog_attachment_progress);

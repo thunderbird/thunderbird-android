@@ -2,6 +2,8 @@ package com.fsck.k9.controller;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
+import java.security.cert.CertPathValidatorException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -51,6 +53,8 @@ import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.NotificationDeleteConfirmation;
+import com.fsck.k9.activity.setup.AccountSetupIncoming;
+import com.fsck.k9.activity.setup.AccountSetupOutgoing;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -62,6 +66,7 @@ import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
@@ -1151,6 +1156,7 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners(listener)) {
                 l.synchronizeMailboxFailed(account, folder, rootMessage);
             }
+            notifyUserIfCertificateProblem(mApplication, e, account, true);
             addErrorMessage(account, null, e);
             Log.e(K9.LOG_TAG, "Failed synchronizing folder " + account.getDescription() + ":" + folder + " @ " + new Date());
 
@@ -2005,6 +2011,7 @@ public class MessagingController implements Runnable {
                 }
             }
         } catch (MessagingException me) {
+            notifyUserIfCertificateProblem(mApplication, me, account, true);
             addErrorMessage(account, null, me);
             Log.e(K9.LOG_TAG, "Could not process command '" + processingCommand + "'", me);
             throw me;
@@ -2613,6 +2620,60 @@ public class MessagingController implements Runnable {
         }
     }
 
+    private void notifyUserIfCertificateProblem(Context context, Exception e,
+            Account account, boolean incoming) {
+        if (!(e instanceof CertificateValidationException)) {
+            return;
+        }
+
+        CertificateValidationException cve = (CertificateValidationException) e;
+        if (!cve.needsUserAttention()) {
+            return;
+        }
+
+        final int id = incoming
+                ? K9.CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING + account.getAccountNumber()
+                : K9.CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING + account.getAccountNumber();
+        final Intent i = incoming
+                ? AccountSetupIncoming.intentActionEditIncomingSettings(context, account)
+                : AccountSetupOutgoing.intentActionEditOutgoingSettings(context, account);
+        final PendingIntent pi = PendingIntent.getActivity(context,
+                account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
+        final String title = context.getString(
+                R.string.notification_certificate_error_text, account.getName());
+
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setSmallIcon(R.drawable.stat_notify_email_generic);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setAutoCancel(true);
+        builder.setTicker(title);
+        builder.setContentTitle(title);
+        builder.setContentText(context.getString(R.string.notification_certificate_error_text));
+        builder.setContentIntent(pi);
+
+        configureNotification(builder, null, null,
+                K9.NOTIFICATION_LED_FAILURE_COLOR,
+                K9.NOTIFICATION_LED_BLINK_FAST, true);
+
+        final NotificationManager nm = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(null, id, builder.build());
+    }
+
+    public void clearCertificateErrorNotifications(Context context,
+            final Account account, boolean incoming, boolean outgoing) {
+        final NotificationManager nm = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (incoming) {
+            nm.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING + account.getAccountNumber());
+        }
+        if (outgoing) {
+            nm.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING + account.getAccountNumber());
+        }
+    }
+
+
     static long uidfill = 0;
     static AtomicBoolean loopCatch = new AtomicBoolean();
     public void addErrorMessage(Account account, String subject, Throwable t) {
@@ -2997,6 +3058,7 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners(listener)) {
                 l.loadMessageForViewFailed(account, folder, uid, e);
             }
+            notifyUserIfCertificateProblem(mApplication, e, account, true);
             addErrorMessage(account, null, e);
             return false;
         } finally {
@@ -3145,6 +3207,7 @@ public class MessagingController implements Runnable {
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadAttachmentFailed(account, message, part, tag, me.getMessage());
                     }
+                    notifyUserIfCertificateProblem(mApplication, me, account, true);
                     addErrorMessage(account, null, me);
 
                 } finally {
@@ -3317,23 +3380,6 @@ public class MessagingController implements Runnable {
 
         notifMgr.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(),
                 builder.build());
-    }
-
-    public void notify(String tag, int id, String title, String text, PendingIntent pi) {
-        final NotificationManager notifMgr = (NotificationManager) mApplication
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
-        builder.setSmallIcon(R.drawable.stat_notify_email_generic);
-        builder.setWhen(System.currentTimeMillis());
-        builder.setAutoCancel(true);
-        builder.setTicker(title);
-        builder.setContentTitle(title);
-        builder.setContentText(text);
-        builder.setContentIntent(pi);
-        configureNotification(builder, null, null,
-                K9.NOTIFICATION_LED_FAILURE_COLOR,
-                K9.NOTIFICATION_LED_BLINK_FAST, true);
-        notifMgr.notify(tag, id, builder.build());
     }
 
     /**
@@ -3521,6 +3567,7 @@ public class MessagingController implements Runnable {
                             localFolder.moveMessages(new Message[] { message }, (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
                         }
 
+                        notifyUserIfCertificateProblem(mApplication, e, account, false);
                         message.setFlag(Flag.X_SEND_FAILED, true);
                         Log.e(K9.LOG_TAG, "Failed to send message", e);
                         for (MessagingListener l : getListeners()) {
@@ -4138,7 +4185,6 @@ public class MessagingController implements Runnable {
                     throw new UnavailableAccountException(e);
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "emptyTrash failed", e);
-
                     addErrorMessage(account, null, e);
                 } finally {
                     closeFolder(localFolder);
