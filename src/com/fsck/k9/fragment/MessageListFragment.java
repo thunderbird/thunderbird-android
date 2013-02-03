@@ -54,7 +54,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -367,7 +366,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private String mFolderName;
 
     private boolean mRemoteSearchPerformed = false;
-    private Future mRemoteSearchFuture = null;
+    private Future<?> mRemoteSearchFuture = null;
     public List<Message> mExtraSearchResults;
 
     private String mTitle;
@@ -1080,7 +1079,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      */
     private void setPullToRefreshEnabled(boolean enable) {
         mPullToRefreshView.setMode((enable) ?
-                PullToRefreshBase.Mode.PULL_DOWN_TO_REFRESH : PullToRefreshBase.Mode.DISABLED);
+                PullToRefreshBase.Mode.PULL_FROM_START : PullToRefreshBase.Mode.DISABLED);
     }
 
     private void initializeLayout() {
@@ -1735,7 +1734,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.preview.setLines(Math.max(mPreviewLines,1));
             holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
-            holder.threadCountWrapper = (View) view.findViewById(R.id.thread_count_wrapper);
+            holder.threadCountWrapper = view.findViewById(R.id.thread_count_wrapper);
 
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
             if (mCheckboxes) {
@@ -1960,7 +1959,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void updateFooterView() {
         if (!mSearch.isManualSearch() && mCurrentFolder != null && mAccount != null) {
             if (mCurrentFolder.loading) {
-                final boolean showProgress = true;
                 updateFooter(mContext.getString(R.string.status_loading_more));
             } else {
                 String message;
@@ -1973,11 +1971,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 } else {
                     message = mContext.getString(R.string.status_loading_more_failed);
                 }
-                final boolean showProgress = false;
                 updateFooter(message);
             }
         } else {
-            final boolean showProgress = false;
             updateFooter(null);
         }
     }
