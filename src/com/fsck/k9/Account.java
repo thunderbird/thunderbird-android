@@ -947,15 +947,11 @@ public class Account implements BaseAccount {
     }
     
     public synchronized boolean needsToAskForSessionPasswords() {
-    	if (mStoreUri_DontStorePassword && decodeIfDontStoreIncomingPassword(mStoreUri))
-   			return true;
-    	if (mTransportUri_DontStorePassword && decodeIfDontStoreOutgoingPassword(mTransportUri))
-   			return true;
-        return false;
+    	return (!mEnabled) && (mStoreUri_DontStorePassword || mTransportUri_DontStorePassword);
     }
     
     public synchronized String getDescription() {
-    	if (needsToAskForSessionPasswords())
+    	if (!mEnabled)
     		return "[-]"+mDescription;
     	else
     		return mDescription;
