@@ -99,6 +99,7 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
+import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -1044,9 +1045,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                         onRemoteSearchRequested();
                     }
                 });
-                mPullToRefreshView.setPullLabel(getString(
+                ILoadingLayout proxy = mPullToRefreshView.getLoadingLayoutProxy();
+                proxy.setPullLabel(getString(
                         R.string.pull_to_refresh_remote_search_from_local_search_pull));
-                mPullToRefreshView.setReleaseLabel(getString(
+                proxy.setReleaseLabel(getString(
                         R.string.pull_to_refresh_remote_search_from_local_search_release));
             } else {
                 // "Pull to refresh"
