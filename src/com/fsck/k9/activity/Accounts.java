@@ -728,7 +728,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             // Create the dialog
             final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            int titleID = (mAccount.needsToAskForSessionPasswords())?R.string.settings_import_activate_account_header2:R.string.settings_import_activate_account_header;
+            int titleID = (mAccount.needsToAskForSessionPasswords())?R.string.settings_import_activate_account_header_session_pwd:R.string.settings_import_activate_account_header;
             builder.setTitle(activity.getString(titleID));
             builder.setView(scrollView);
             builder.setPositiveButton(activity.getString(R.string.okay_action),
@@ -773,7 +773,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             String serverPasswords = activity.getResources().getQuantityString(
                                          R.plurals.settings_import_server_passwords,
                                          (configureOutgoingServer) ? 2 : 1);
-            int introID = (mAccount.needsToAskForSessionPasswords())?R.string.settings_import_activate_account_intro2:R.string.settings_import_activate_account_intro;
+            int introID = (mAccount.needsToAskForSessionPasswords())?R.string.settings_import_activate_account_intro_session_pwd:R.string.settings_import_activate_account_intro;
             intro.setText(activity.getString(introID, mAccount.getDescription(), serverPasswords));
 
             // Display the hostname of the incoming server

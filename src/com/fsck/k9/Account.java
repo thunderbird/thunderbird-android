@@ -487,7 +487,7 @@ public class Account implements BaseAccount {
         mRemoteSearchFullText = prefs.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = prefs.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
 
-        mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
+        mEnabled = prefs.getBoolean(mUuid + ".enabled", true) && !mStoreUri_DontStorePassword && !mTransportUri_DontStorePassword;
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
         mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
 
@@ -888,6 +888,7 @@ public class Account implements BaseAccount {
         this.mStoreUri_DontStorePassword = dontStorePassword;
         if (dontStorePassword) {
         	this.mStoreUri = encodeIfDontStoreIncomingPassword(mStoreUri, true);
+        	this.mEnabled = false; // Setting changed => disabling account until password is entered
         }
     }
    
@@ -907,6 +908,7 @@ public class Account implements BaseAccount {
         this.mTransportUri_DontStorePassword = dontStorePassword;
         if (dontStorePassword) {
         	this.mTransportUri = encodeIfDontStoreOutgoingPassword(mTransportUri, true);
+        	this.mEnabled = false; // Setting changed => disabling account until password is entered
         }
     }
 
@@ -1792,7 +1794,7 @@ public class Account implements BaseAccount {
     }
 
     public synchronized boolean isEnabled() {
-        return mEnabled && !needsToAskForSessionPasswords();
+        return mEnabled;
     }
 
     public synchronized void setEnabled(boolean enabled) {
