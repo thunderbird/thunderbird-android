@@ -801,7 +801,6 @@ de plus</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter le certificat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejetter le certificat</string>
 
-    <!-- NEW: V, Z untranslated -->
     <string name="message_list_help_key">
     Suppr (ou D) - Supprimer\n
     R - Répondre\n
@@ -811,7 +810,7 @@ de plus</string>
     M - Déplacer\n
     V - Archive\n
     Y - Copier\n
-    Z - Mark (Un)read\n
+    Z - Marquer (Non)lu\n
     G - Étoile\n
     O - Trier\n
     I - Ordre de tri\n
@@ -1164,4 +1163,11 @@ de plus</string>
     <string name="upgrade_database_format">Mise à jour base de données du compte \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="message_list_loading">Chargement…</string>
+
+    <string name="global_settings_splitview_mode_label">Afficher un écran partagé</string>
+    <string name="global_settings_splitview_always">Toujours</string>
+    <string name="global_settings_splitview_never">Jamais</string>
+    <string name="global_settings_splitview_when_in_landscape">En mode paysage</string>
+
+    <string name="message_view_empty">Sélectionner un message sur la gauche</string>
 </resources>
