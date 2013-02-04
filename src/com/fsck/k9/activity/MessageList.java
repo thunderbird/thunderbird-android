@@ -777,6 +777,14 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 return true;
             }
             // MessageView
+            case R.id.next_message: {
+                showNextMessage();
+                return true;
+            }
+            case R.id.previous_message: {
+                showPreviousMessage();
+                return true;
+            }
             case R.id.delete: {
                 mMessageViewFragment.onDelete();
                 return true;
@@ -897,6 +905,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
          */
 
         if (mMessageViewFragment == null || !mMessageViewFragment.isInitialized()) {
+            menu.findItem(R.id.next_message).setVisible(false);
+            menu.findItem(R.id.previous_message).setVisible(false);
             menu.findItem(R.id.delete).setVisible(false);
             menu.findItem(R.id.single_message_options).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
@@ -907,6 +917,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             menu.findItem(R.id.select_text).setVisible(false);
             menu.findItem(R.id.toggle_message_view_theme).setVisible(false);
         } else {
+            // hide prev/next buttons in split mode
+            if (mDisplayMode != DisplayMode.MESSAGE_VIEW) {
+                menu.findItem(R.id.next_message).setVisible(false);
+                menu.findItem(R.id.previous_message).setVisible(false);
+            }
             // Set title of menu item to switch to dark/light theme
             MenuItem toggleTheme = menu.findItem(R.id.toggle_message_view_theme);
             if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
@@ -1347,7 +1362,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void updateMenu() {
-        configureMenu(mMenu);
+        invalidateOptionsMenu();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.fsck.k9.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -32,7 +34,6 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
@@ -159,7 +160,9 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             mHeaderPlaceHolder.removeView(mHeaderContainer);
             // the HTC version of WebView tries to force the background of the
             // titlebar, which is really unfair.
-            mHeaderContainer.setBackgroundColor(((K9ActivityMagic)activity).getThemeBackgroundColor());
+            TypedValue outValue = new TypedValue();
+            getContext().getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+            mHeaderContainer.setBackgroundColor(outValue.data);
 
             mTitleBarHeaderContainer = new LinearLayout(activity);
             mMessageContentView.setEmbeddedTitleBarCompat(mTitleBarHeaderContainer);

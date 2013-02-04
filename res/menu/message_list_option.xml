@@ -10,6 +10,22 @@
     MessageList.configureMenu() if you make any changes to this file.
     -->
 
+    <!-- MessageView -->
+    <item
+        android:id="@+id/next_message"
+        android:title="@string/next_action"
+        android:icon="?attr/iconActionNextMessage"
+        android:showAsAction="always"
+    />
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/previous_message"
+        android:title="@string/previous_action"
+        android:icon="?attr/iconActionPreviousMessage"
+        android:showAsAction="always"
+    />
+
     <!-- MessageList -->
     <item
         android:id="@+id/search"
