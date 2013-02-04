@@ -1347,7 +1347,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void updateMenu() {
-        configureMenu(mMenu);
+        invalidateOptionsMenu();
     }
 
     @Override
