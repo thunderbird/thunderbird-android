@@ -19,7 +19,6 @@ import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.HashMap;
@@ -58,8 +57,6 @@ public class Pop3Store extends Store {
     private static final String PIPELINING_CAPABILITY = "PIPELINING";
     private static final String USER_CAPABILITY = "USER";
     private static final String TOP_CAPABILITY = "TOP";
-
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED };
 
     /**
      * Decodes a Pop3Store URI.
@@ -1155,6 +1152,8 @@ public class Pop3Store extends Store {
      * Exception that is thrown if the server returns an error response.
      */
     static class Pop3ErrorResponse extends MessagingException {
+        private static final long serialVersionUID = 3672087845857867174L;
+
         public Pop3ErrorResponse(String message) {
             super(message, true);
         }

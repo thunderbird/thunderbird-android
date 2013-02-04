@@ -8,8 +8,6 @@ import java.util.Set;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fsck.k9.mail.Flag;
-
 /**
  * This class represents a local search.
  *

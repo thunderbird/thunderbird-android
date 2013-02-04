@@ -124,13 +124,6 @@ public class EmailProvider extends ContentProvider {
 
     private static final String THREADS_TABLE = "threads";
 
-    private static final String[] THREADS_COLUMNS = {
-        ThreadColumns.ID,
-        ThreadColumns.MESSAGE_ID,
-        ThreadColumns.ROOT,
-        ThreadColumns.PARENT
-    };
-
     static {
         UriMatcher matcher = sUriMatcher;
 

@@ -800,7 +800,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         boolean hiddenAttachmentsVisible;
         boolean showPictures;
 
-        @SuppressWarnings("hiding")
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
             @Override

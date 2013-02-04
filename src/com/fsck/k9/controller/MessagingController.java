@@ -2,8 +2,6 @@ package com.fsck.k9.controller;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
-import java.security.cert.CertPathValidatorException;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -721,7 +719,8 @@ public class MessagingController implements Runnable {
 
 
 
-    public Future searchRemoteMessages(final String acctUuid, final String folderName, final String query, final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
+    public Future<?> searchRemoteMessages(final String acctUuid, final String folderName, final String query,
+            final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
         if (K9.DEBUG) {
             String msg = "searchRemoteMessages ("
                          + "acct=" + acctUuid
@@ -5387,6 +5386,8 @@ public class MessagingController implements Runnable {
                             break;
                         case FINISHED:
                             other.setPushActive(memory.account, memory.folderName, false);
+                            break;
+                        case FAILED:
                             break;
                         }
                     }

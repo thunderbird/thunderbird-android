@@ -26,13 +26,13 @@ public class FolderSettings {
          */
 
         s.put("displayMode", Settings.versions(
-                new V(1, new EnumSetting(FolderClass.class, FolderClass.NO_CLASS))
+                new V(1, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.NO_CLASS))
             ));
         s.put("syncMode", Settings.versions(
-                new V(1, new EnumSetting(FolderClass.class, FolderClass.INHERITED))
+                new V(1, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.INHERITED))
             ));
         s.put("pushMode", Settings.versions(
-                new V(1, new EnumSetting(FolderClass.class, FolderClass.INHERITED))
+                new V(1, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.INHERITED))
             ));
         s.put("inTopGroup", Settings.versions(
                 new V(1, new BooleanSetting(false))

@@ -386,7 +386,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     static class SavedState extends BaseSavedState {
         boolean additionalHeadersVisible;
 
-        @SuppressWarnings("hiding")
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
             @Override

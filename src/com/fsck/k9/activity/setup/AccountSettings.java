@@ -7,12 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,8 +22,6 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
 import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;

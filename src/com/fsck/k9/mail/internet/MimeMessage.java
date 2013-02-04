@@ -23,10 +23,6 @@ import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 
-import android.util.Log;
-
-import com.fsck.k9.K9;
-import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
