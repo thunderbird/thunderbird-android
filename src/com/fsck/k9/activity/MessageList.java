@@ -79,6 +79,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
 
     private static final String STATE_DISPLAY_MODE = "displayMode";
+    private static final String STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed";
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
@@ -461,6 +462,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         super.onSaveInstanceState(outState);
 
         outState.putSerializable(STATE_DISPLAY_MODE, mDisplayMode);
+        outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, mMessageListWasDisplayed);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        mMessageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED);
     }
 
     private void initializeActionBar() {
