@@ -62,7 +62,6 @@ public class K9ActivityCommon {
      * in {@link K9ActivityCommon}.</p>
      */
     public interface K9ActivityMagic {
-        int getThemeBackgroundColor();
         void setupGestureDetector(OnSwipeGestureListener listener);
     }
 

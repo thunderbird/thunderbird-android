@@ -26,11 +26,6 @@ public class K9Activity extends SherlockActivity implements K9ActivityMagic {
     }
 
     @Override
-    public int getThemeBackgroundColor() {
-        return mBase.getThemeBackgroundColor();
-    }
-
-    @Override
     public void setupGestureDetector(OnSwipeGestureListener listener) {
         mBase.setupGestureDetector(listener);
     }

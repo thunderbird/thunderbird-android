@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -169,8 +170,10 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.message, container, false);
+        Context context = new ContextThemeWrapper(getActivity().getApplicationContext(),
+                K9.getK9ThemeResourceId(K9.getK9MessageViewTheme()));
+        LayoutInflater localInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = localInflater.inflate(R.layout.message, container, false);
 
 
         mMessageView = (SingleMessageView) view.findViewById(R.id.message_view);
