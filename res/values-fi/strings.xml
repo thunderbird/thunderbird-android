@@ -221,7 +221,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="notification_action_reply">Vastaa</string>
     <string name="notification_action_read">Lue</string>
     <string name="notification_action_delete">Poista</string>
-    <string name="notification_certificate_error_title">Varmennevirhe</string>
+    <string name="notification_certificate_error_title">Varmennevirhe tilissä <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Tarkista palvelinasetuksesi</string>
 
     <string name="notification_bg_sync_ticker">Tarkistetaan viestejä: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -777,7 +777,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
 
-    <!-- NEW: V, Z untranslated -->
     <string name="message_list_help_key">
     Del (tai D) - Poista\n
     R - Vastaa\n
@@ -785,9 +784,9 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     C - Kirjoita\n
     F - Välitä\n
     M - Siirrä\n
-    V - Archive\n
+    V - Arkistoi\n
     Y - Kopioi\n
-    Z - Mark (Un)read\n
+    Z - Merkitse lukemattomaksi/luetuksi\n
     G - Tähti\n
     O - Lajittelutyyppi\n
     I - Lajittelujärjestys\n
@@ -1140,4 +1139,11 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="upgrade_database_format">Päivitetään tilin \"<xliff:g id="account">%s</xliff:g>\" tietokantaa</string>
 
     <string name="message_list_loading">Ladataan…</string>
+
+    <string name="global_settings_splitview_mode_label">Näytä jaettu näyttö</string>
+    <string name="global_settings_splitview_always">Aina</string>
+    <string name="global_settings_splitview_never">Ei koskaan</string>
+    <string name="global_settings_splitview_when_in_landscape">Kun laite on vaaka-asennossa</string>
+
+    <string name="message_view_empty">Valitse viesti vasemmalta</string>
 </resources>
