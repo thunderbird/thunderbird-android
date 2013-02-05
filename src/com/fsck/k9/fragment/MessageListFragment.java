@@ -535,6 +535,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
                 case ACTION_RESTORE_LIST_POSITION: {
                     mListView.onRestoreInstanceState(mSavedListState);
+                    /*
+                     * FIXME: horrible kludge
+                     * All this is supposed to do is enforcing the list view to apply the restored state
+                     * instantly instead of asynchronously, so potential data changes (which in turn cause
+                     * an internal position save/restore) don't overwrite our saved position. There's no
+                     * 'sync now' API in ListView, so we use a method which just happens to carry out the sync.
+                     */
+                    mListView.onTouchModeChanged(true);
                     mSavedListState = null;
                     break;
                 }
