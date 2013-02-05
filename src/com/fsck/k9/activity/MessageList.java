@@ -53,6 +53,7 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
+import com.fsck.k9.view.ViewSwitcher.OnAnimationEndListener;
 
 import de.cketti.library.changelog.ChangeLog;
 
@@ -63,7 +64,8 @@ import de.cketti.library.changelog.ChangeLog;
  * From this Activity the user can perform all standard message operations.
  */
 public class MessageList extends K9FragmentActivity implements MessageListFragmentListener,
-        MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener {
+        MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
+        OnAnimationEndListener {
 
     // for this activity
     private static final String EXTRA_SEARCH = "search";
@@ -204,6 +206,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             mViewSwitcher.setFirstOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_right));
             mViewSwitcher.setSecondInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_right));
             mViewSwitcher.setSecondOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_left));
+            mViewSwitcher.setOnAnimationEndListener(this);
         }
 
         initializeActionBar();
@@ -1362,7 +1365,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mMessageListFragment.setActiveMessage(null);
 
         showDefaultTitleView();
-        removeMessageViewFragment();
     }
 
     private void showMessageView() {
@@ -1425,6 +1427,13 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         if (mMessageViewFragment != null) {
             displayMessageSubject(null);
             mMessageViewFragment.updateTitle();
+        }
+    }
+
+    @Override
+    public void onAnimationEnd(int displayedChild) {
+        if (displayedChild == 0) {
+            removeMessageViewFragment();
         }
     }
 }
