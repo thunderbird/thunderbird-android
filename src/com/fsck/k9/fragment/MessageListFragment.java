@@ -747,6 +747,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mPreviewLines = K9.messageListPreviewLines();
         mCheckboxes = K9.messageListCheckboxes();
 
+        restoreInstanceState(savedInstanceState);
         decodeArguments();
 
         mInitialized = true;
@@ -784,8 +785,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         // This needs to be done before initializing the cursor loader below
         initializeSortSettings();
-
-        restoreInstanceState(savedInstanceState);
 
         mLoaderJustInitialized = true;
         LoaderManager loaderManager = getLoaderManager();
