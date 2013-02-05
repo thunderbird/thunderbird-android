@@ -1419,6 +1419,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mActionBarMessageView.setVisibility(View.VISIBLE);
 
         if (mMessageViewFragment != null) {
+            displayMessageSubject(null);
             mMessageViewFragment.updateTitle();
         }
     }
