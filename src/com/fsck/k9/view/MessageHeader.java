@@ -86,9 +86,10 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mContacts = Contacts.getInstance(mContext);
     }
 
-    private void initializeLayout() {
+    @Override
+    protected void onFinishInflate() {
         mAnsweredIcon = findViewById(R.id.answered);
-        mForwardedIcon= findViewById(R.id.forwarded);
+        mForwardedIcon = findViewById(R.id.forwarded);
         mFromView = (TextView) findViewById(R.id.from);
         mToView = (TextView) findViewById(R.id.to);
         mCcView = (TextView) findViewById(R.id.cc);
@@ -105,10 +106,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTime());
         mDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewDate());
         mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewAdditionalHeaders());
-        hideAdditionalHeaders();
-
-        mAnsweredIcon.setVisibility(View.GONE);
-        mForwardedIcon.setVisibility(View.GONE);
 
         mFromView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSender());
         mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
@@ -118,6 +115,13 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
+
+        resetViews();
+    }
+
+    private void resetViews() {
+        mSubjectView.setVisibility(VISIBLE);
+        hideAdditionalHeaders();
     }
 
     @Override
@@ -226,7 +230,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mMessage = message;
         mAccount = account;
 
-        initializeLayout();
+        resetViews();
+
         final String subject = message.getSubject();
         if (StringUtils.isNullOrEmpty(subject)) {
             mSubjectView.setText(mContext.getText(R.string.general_no_subject));
