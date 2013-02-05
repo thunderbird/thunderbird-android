@@ -1,6 +1,5 @@
 package com.fsck.k9.view;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
