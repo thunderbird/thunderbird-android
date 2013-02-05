@@ -484,11 +484,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         public void restoreListPosition() {
-            if (!hasMessages(ACTION_RESTORE_LIST_POSITION)) {
-                android.os.Message msg = android.os.Message.obtain(this,
-                        ACTION_RESTORE_LIST_POSITION);
-                sendMessage(msg);
-            }
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION,
+                    mSavedListState);
+            mSavedListState = null;
+            sendMessage(msg);
         }
 
         public void openMessage(MessageReference messageReference) {
@@ -534,7 +533,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     break;
                 }
                 case ACTION_RESTORE_LIST_POSITION: {
-                    mListView.onRestoreInstanceState(mSavedListState);
+                    mListView.onRestoreInstanceState((Parcelable) msg.obj);
                     mSavedListState = null;
                     break;
                 }
