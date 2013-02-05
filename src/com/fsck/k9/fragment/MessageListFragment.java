@@ -2838,6 +2838,24 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         openMessageAtPosition(position + 1);
     }
 
+    public boolean isFirst(MessageReference messageReference) {
+        return messageReference.equals(getReferenceForPosition(0));
+    }
+
+    public boolean isLast(MessageReference messageReference) {
+        return messageReference.equals(getReferenceForPosition(mAdapter.getCount() - 1));
+    }
+
+    private MessageReference getReferenceForPosition(int position) {
+        Cursor cursor = (Cursor) mAdapter.getItem(position);
+        MessageReference ref = new MessageReference();
+        ref.accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+        ref.folderName = cursor.getString(FOLDER_NAME_COLUMN);
+        ref.uid = cursor.getString(UID_COLUMN);
+
+        return ref;
+    }
+
     private void openMessageAtPosition(int position) {
         // Scroll message into view if necessary
         int listViewPosition = adapterToListViewPosition(position);
@@ -2847,11 +2865,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mListView.setSelection(listViewPosition);
         }
 
-        Cursor cursor = (Cursor) mAdapter.getItem(position);
-        MessageReference ref = new MessageReference();
-        ref.accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
-        ref.folderName = cursor.getString(FOLDER_NAME_COLUMN);
-        ref.uid = cursor.getString(UID_COLUMN);
+        MessageReference ref = getReferenceForPosition(position);
 
         // For some reason the mListView.setSelection() above won't do anything when we call
         // onOpenMessage() (and consequently mAdapter.notifyDataSetChanged()) right away. So we
