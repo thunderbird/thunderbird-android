@@ -77,7 +77,6 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -962,7 +961,7 @@ public class ImapStore extends Store {
          */
         private void parseFlags(ImapList flags) {
             for (Object flag : flags) {
-                flag = flag.toString().toLowerCase();
+                flag = flag.toString().toLowerCase(Locale.US);
                 if (flag.equals("\\deleted")) {
                     mPermanentFlagsIndex.add(Flag.DELETED);
                 } else if (flag.equals("\\answered")) {
@@ -1606,7 +1605,8 @@ public class ImapStore extends Store {
             String fetch;
             String partId = parts[0];
             if ("TEXT".equalsIgnoreCase(partId)) {
-                fetch = String.format("BODY.PEEK[TEXT]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize());
+                fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>",
+                        mAccount.getMaximumAutoDownloadMessageSize());
             } else {
                 fetch = String.format("BODY.PEEK[%s]", partId);
             }
@@ -2282,6 +2282,9 @@ public class ImapStore extends Store {
                                 case RECENT:
                                     imapQuery += "RECENT ";
                                     break;
+
+                                default:
+                                    break;
                             }
                         }
                     }
@@ -2310,6 +2313,9 @@ public class ImapStore extends Store {
 
                                 case RECENT:
                                     imapQuery += "UNRECENT ";
+                                    break;
+
+                                default:
                                     break;
                             }
                         }

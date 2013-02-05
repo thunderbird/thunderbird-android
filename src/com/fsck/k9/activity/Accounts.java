@@ -70,7 +70,6 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.WelcomeMessage;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.SizeFormatter;
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
@@ -99,11 +98,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Immutable empty {@link BaseAccount} array
      */
     private static final BaseAccount[] EMPTY_BASE_ACCOUNT_ARRAY = new BaseAccount[0];
-
-    /**
-     * Immutable empty {@link Flag} array
-     */
-    private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
 
     /**
      * URL used to open Android Market application
@@ -1846,18 +1840,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             public ImageButton folders;
             public LinearLayout accountsItemLayout;
         }
-    }
-    private Flag[] combine(Flag[] set1, Flag[] set2) {
-        if (set1 == null) {
-            return set2;
-        }
-        if (set2 == null) {
-            return set1;
-        }
-        Set<Flag> flags = new HashSet<Flag>();
-        flags.addAll(Arrays.asList(set1));
-        flags.addAll(Arrays.asList(set2));
-        return flags.toArray(EMPTY_FLAG_ARRAY);
     }
 
     private class AccountClickListener implements OnClickListener {

@@ -756,12 +756,16 @@ public class Base64 {
     }
 
     static class DecoderException extends Exception {
+        private static final long serialVersionUID = -3786485780312120437L;
+
         DecoderException(String error) {
             super(error);
         }
     }
 
     static class EncoderException extends Exception {
+        private static final long serialVersionUID = -5204809025392124652L;
+
         EncoderException(String error) {
             super(error);
         }

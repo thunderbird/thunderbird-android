@@ -79,6 +79,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
 
     private static final String STATE_DISPLAY_MODE = "displayMode";
+    private static final String STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed";
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
@@ -461,6 +462,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         super.onSaveInstanceState(outState);
 
         outState.putSerializable(STATE_DISPLAY_MODE, mDisplayMode);
+        outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, mMessageListWasDisplayed);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        mMessageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED);
     }
 
     private void initializeActionBar() {
@@ -770,6 +777,14 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 return true;
             }
             // MessageView
+            case R.id.next_message: {
+                showNextMessage();
+                return true;
+            }
+            case R.id.previous_message: {
+                showPreviousMessage();
+                return true;
+            }
             case R.id.delete: {
                 mMessageViewFragment.onDelete();
                 return true;
@@ -890,6 +905,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
          */
 
         if (mMessageViewFragment == null || !mMessageViewFragment.isInitialized()) {
+            menu.findItem(R.id.next_message).setVisible(false);
+            menu.findItem(R.id.previous_message).setVisible(false);
             menu.findItem(R.id.delete).setVisible(false);
             menu.findItem(R.id.single_message_options).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
@@ -900,6 +917,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             menu.findItem(R.id.select_text).setVisible(false);
             menu.findItem(R.id.toggle_message_view_theme).setVisible(false);
         } else {
+            // hide prev/next buttons in split mode
+            if (mDisplayMode != DisplayMode.MESSAGE_VIEW) {
+                menu.findItem(R.id.next_message).setVisible(false);
+                menu.findItem(R.id.previous_message).setVisible(false);
+            }
             // Set title of menu item to switch to dark/light theme
             MenuItem toggleTheme = menu.findItem(R.id.toggle_message_view_theme);
             if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
@@ -1340,7 +1362,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void updateMenu() {
-        configureMenu(mMenu);
+        invalidateOptionsMenu();
     }
 
     @Override

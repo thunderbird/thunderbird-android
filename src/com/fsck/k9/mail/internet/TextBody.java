@@ -37,6 +37,7 @@ public class TextBody implements Body {
                 QuotedPrintableOutputStream qp = new QuotedPrintableOutputStream(out, false);
                 qp.write(bytes);
                 qp.flush();
+                qp.close();
             }
         }
     }

@@ -1121,4 +1121,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="upgrade_database_format">Aktualisiere Datenbank für Konto \'<xliff:g id="account">%s</xliff:g>\'</string>
 
     <string name="message_list_loading">Lade…</string>
+
+    <string name="global_settings_splitview_mode_label">Geteilte Ansicht</string>
+    <string name="global_settings_splitview_always">Immer</string>
+    <string name="global_settings_splitview_never">Nie</string>
+    <string name="global_settings_splitview_when_in_landscape">Im Querformat</string>
+
+    <string name="message_view_empty">Nachricht aus der Liste auswählen, um sie anzuzeigen</string>
 </resources>

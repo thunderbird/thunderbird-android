@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
@@ -39,7 +38,6 @@ public class AccountSetupBasics extends K9Activity
     private final static String STATE_KEY_PROVIDER =
         "com.fsck.k9.AccountSetupBasics.provider";
 
-    private Preferences mPrefs;
     private EditText mEmailView;
     private EditText mPasswordView;
     private Button mNextButton;
@@ -58,7 +56,6 @@ public class AccountSetupBasics extends K9Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_basics);
-        mPrefs = Preferences.getPreferences(this);
         mEmailView = (EditText)findViewById(R.id.account_email);
         mPasswordView = (EditText)findViewById(R.id.account_password);
         mNextButton = (Button)findViewById(R.id.next);

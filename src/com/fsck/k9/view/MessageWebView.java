@@ -173,7 +173,7 @@ public class MessageWebView extends TitleBarWebView {
 
             KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
                                                     KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
-            shiftPressEvent.dispatch(this);
+            shiftPressEvent.dispatch(this, null, null);
             Toast.makeText(getContext() , R.string.select_text_now, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);

@@ -457,19 +457,18 @@ public class Settings {
      * {@link Enum#toString()} is used to obtain the "pretty" string representation.
      * </p>
      */
-    public static class EnumSetting extends SettingsDescription {
-        private Class<? extends Enum<?>> mEnumClass;
+    public static class EnumSetting<T extends Enum<T>> extends SettingsDescription {
+        private Class<T> mEnumClass;
 
-        public EnumSetting(Class<? extends Enum<?>> enumClass, Object defaultValue) {
+        public EnumSetting(Class<T> enumClass, Object defaultValue) {
             super(defaultValue);
             mEnumClass = enumClass;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public Object fromString(String value) throws InvalidSettingValueException {
             try {
-                return Enum.valueOf((Class<? extends Enum>)mEnumClass, value);
+                return Enum.valueOf(mEnumClass, value);
             } catch (Exception e) {
                 throw new InvalidSettingValueException();
             }

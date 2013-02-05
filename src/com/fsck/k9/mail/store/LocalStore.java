@@ -2402,46 +2402,6 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        /**
-         * Get the (database) ID of the message with the specified message ID.
-         *
-         * @param db
-         *         A {@link SQLiteDatabase} instance to access the database.
-         * @param messageId
-         *         The message ID to search for.
-         * @param onlyEmptyMessages
-         *         {@code true} if only "empty messages" (placeholders for threading) should be
-         *         searched
-         *
-         * @return If exactly one message with the specified message ID was found, the database ID
-         *         of this message; {@code -1} otherwise.
-         */
-        private long getDatabaseIdByMessageId(SQLiteDatabase db, String messageId,
-                boolean onlyEmptyMessages) {
-            long id = -1;
-
-            Cursor cursor = db.query("messages",
-                    new String[] { "id" },
-                    (onlyEmptyMessages) ?
-                            "empty=1 AND folder_id=? AND message_id=?" :
-                            "folder_id=? AND message_id=?",
-                    new String[] { Long.toString(mFolderId), messageId },
-                    null, null, null);
-
-            if (cursor != null) {
-                try {
-                    if (cursor.getCount() == 1) {
-                        cursor.moveToFirst();
-                        id = cursor.getLong(0);
-                    }
-                } finally {
-                    cursor.close();
-                }
-            }
-
-            return id;
-        }
-
         private ThreadInfo getThreadInfo(SQLiteDatabase db, String messageId) {
             String sql = "SELECT t.id, t.message_id, t.root, t.parent " +
                     "FROM messages m " +

@@ -1951,7 +1951,7 @@ public class WebDavStore extends Store {
                     if (!messageURL.endsWith("/")) {
                         messageURL += "/";
                     }
-                    messageURL += URLEncoder.encode(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
+                    messageURL += URLEncoder.encode(message.getUid() + ":" + System.currentTimeMillis() + ".eml", "UTF-8");
 
                     Log.i(K9.LOG_TAG, "Uploading message as " + messageURL);
 
