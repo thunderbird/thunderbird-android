@@ -325,7 +325,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 break;
             }
             case MESSAGE_VIEW: {
-                mViewSwitcher.setAnimateFirstView(true);
                 showMessageView();
                 break;
             }
@@ -1369,6 +1368,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private void showMessageView() {
         mDisplayMode = DisplayMode.MESSAGE_VIEW;
 
+        if (!mMessageListWasDisplayed) {
+            mViewSwitcher.setAnimateFirstView(false);
+        }
         mViewSwitcher.showSecondView();
 
         showMessageTitleView();
