@@ -77,6 +77,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     private MessagingController mController;
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
+    private LayoutInflater mLayoutInflater;
 
     /** this variable is used to save the calling AttachmentView
      *  until the onActivityResult is called.
@@ -172,8 +173,8 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
             Bundle savedInstanceState) {
         Context context = new ContextThemeWrapper(getActivity().getApplicationContext(),
                 K9.getK9ThemeResourceId(K9.getK9MessageViewTheme()));
-        LayoutInflater localInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = localInflater.inflate(R.layout.message, container, false);
+        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = mLayoutInflater.inflate(R.layout.message, container, false);
 
 
         mMessageView = (SingleMessageView) view.findViewById(R.id.message_view);
@@ -832,5 +833,9 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
     public boolean isInitialized() {
         return mInitialized ;
+    }
+
+    public LayoutInflater getFragmentLayoutInflater() {
+        return mLayoutInflater;
     }
 }
