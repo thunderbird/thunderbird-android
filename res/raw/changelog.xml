@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+
+    <release version="4.323" versioncode="17024" >
+        <change>Bug fixes</change>
+        <change>Uodates to Finnish and French translations</change>
+        <change>Put back prev/next buttons in non-split message views</change>
+    </release>
     <release version="4.322" versioncode="17023" >
         <change>Added a setting to enable split-screen mode (display message list next to message content)</change>
         <change>Show a thread as unread/starred if at least one message is unread/starred</change>
