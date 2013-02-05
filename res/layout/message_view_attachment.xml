@@ -11,7 +11,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/text_box"
+            android:background="?attr/messageViewAttachmentBackground"
             android:gravity="center_vertical">
             <ImageView
                 android:id="@+id/attachment_icon"
