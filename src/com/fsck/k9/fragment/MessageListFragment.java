@@ -1736,7 +1736,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.preview.setLines(Math.max(mPreviewLines,1));
             holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
-            holder.threadCountWrapper = view.findViewById(R.id.thread_count_wrapper);
 
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
             if (mCheckboxes) {
@@ -1843,9 +1842,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             // Thread count
             if (threadCount > 1) {
                 holder.threadCount.setText(Integer.toString(threadCount));
-                holder.threadCountWrapper.setVisibility(View.VISIBLE);
+                holder.threadCount.setVisibility(View.VISIBLE);
             } else {
-                holder.threadCountWrapper.setVisibility(View.GONE);
+                holder.threadCount.setVisibility(View.GONE);
             }
 
             CharSequence beforePreviewText = (mSenderAboveSubject) ? subject : displayName;
@@ -1933,7 +1932,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public TextView date;
         public View chip;
         public TextView threadCount;
-        public View threadCountWrapper;
         public CheckBox selected;
         public int position = -1;
 
