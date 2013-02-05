@@ -922,15 +922,17 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 menu.findItem(R.id.next_message).setVisible(false);
                 menu.findItem(R.id.previous_message).setVisible(false);
             } else {
-                final MessageReference ref = mMessageViewFragment.getMessageReference();
-                final boolean canDoPrev = mMessageListFragment != null && !mMessageListFragment.isFirst(ref);
-                final boolean canDoNext = mMessageListFragment != null && !mMessageListFragment.isLast(ref);
+                MessageReference ref = mMessageViewFragment.getMessageReference();
+                boolean initialized = (mMessageListFragment != null &&
+                        mMessageListFragment.isLoadFinished());
+                boolean canDoPrev = (initialized && !mMessageListFragment.isFirst(ref));
+                boolean canDoNext = (initialized && !mMessageListFragment.isLast(ref));
 
-                final MenuItem prev = menu.findItem(R.id.previous_message);
+                MenuItem prev = menu.findItem(R.id.previous_message);
                 prev.setEnabled(canDoPrev);
                 prev.getIcon().setAlpha(canDoPrev ? 255 : 127);
 
-                final MenuItem next = menu.findItem(R.id.next_message);
+                MenuItem next = menu.findItem(R.id.next_message);
                 next.setEnabled(canDoNext);
                 next.getIcon().setAlpha(canDoNext ? 255 : 127);
             }

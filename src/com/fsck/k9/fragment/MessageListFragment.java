@@ -2915,6 +2915,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         boolean startSearch(Account account, String folderName);
         void remoteSearchStarted();
         void goBack();
+        void updateMenu();
     }
 
     public void onReverseSort() {
@@ -3230,16 +3231,22 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         resetActionMode();
         computeBatchDirection();
 
-        if (mSavedListState != null) {
-            boolean loadFinished = true;
-            for (int i = 0; i < mCursorValid.length; i++) {
-                loadFinished &= mCursorValid[i];
-            }
-
-            if (loadFinished) {
+        if (isLoadFinished()) {
+            if (mSavedListState != null) {
                 mHandler.restoreListPosition();
             }
+
+            mFragmentListener.updateMenu();
         }
+    }
+
+    public boolean isLoadFinished() {
+        boolean loadFinished = true;
+        for (int i = 0; i < mCursorValid.length; i++) {
+            loadFinished &= mCursorValid[i];
+        }
+
+        return loadFinished;
     }
 
     private void cleanupSelected(Cursor cursor) {
