@@ -804,9 +804,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         super.onSaveInstanceState(outState);
 
         saveSelectedMessages(outState);
+        saveListState(outState);
 
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, mRemoteSearchPerformed);
-        outState.putParcelable(STATE_MESSAGE_LIST, mListView.onSaveInstanceState());
         outState.putParcelable(STATE_ACTIVE_MESSAGE, mActiveMessage);
     }
 
@@ -846,6 +846,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         long[] selected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES);
         for (long id : selected) {
             mSelected.add(Long.valueOf(id));
+        }
+    }
+
+    private void saveListState(Bundle outState) {
+        if (mSavedListState != null) {
+            // The previously saved state was never restored, so just use that.
+            outState.putParcelable(STATE_MESSAGE_LIST, mSavedListState);
+        } else if (mListView != null) {
+            outState.putParcelable(STATE_MESSAGE_LIST, mListView.onSaveInstanceState());
         }
     }
 
