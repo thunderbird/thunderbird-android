@@ -171,7 +171,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        Context context = new ContextThemeWrapper(getActivity().getApplicationContext(),
+        Context context = new ContextThemeWrapper(inflater.getContext(),
                 K9.getK9ThemeResourceId(K9.getK9MessageViewTheme()));
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = mLayoutInflater.inflate(R.layout.message, container, false);
