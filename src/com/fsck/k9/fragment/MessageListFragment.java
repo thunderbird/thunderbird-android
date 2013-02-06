@@ -534,7 +534,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
                 case ACTION_RESTORE_LIST_POSITION: {
                     mListView.onRestoreInstanceState((Parcelable) msg.obj);
-                    mSavedListState = null;
                     break;
                 }
                 case ACTION_OPEN_MESSAGE: {
