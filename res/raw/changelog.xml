@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.324" versioncode="17025" >
+        <change>Bug fixes</change>
+        <change>Improved animations when showing the message list</change>
+
+    </release>
     <release version="4.323" versioncode="17024" >
         <change>Bug fixes</change>
         <change>Updates to Finnish and French translations</change>
