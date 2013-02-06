@@ -53,7 +53,7 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
-import com.fsck.k9.view.ViewSwitcher.OnAnimationEndListener;
+import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 
 import de.cketti.library.changelog.ChangeLog;
 
@@ -65,7 +65,7 @@ import de.cketti.library.changelog.ChangeLog;
  */
 public class MessageList extends K9FragmentActivity implements MessageListFragmentListener,
         MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
-        OnAnimationEndListener {
+        OnSwitchCompleteListener {
 
     // for this activity
     private static final String EXTRA_SEARCH = "search";
@@ -206,7 +206,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             mViewSwitcher.setFirstOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_right));
             mViewSwitcher.setSecondInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_right));
             mViewSwitcher.setSecondOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_left));
-            mViewSwitcher.setOnAnimationEndListener(this);
+            mViewSwitcher.setOnSwitchCompleteListener(this);
         }
 
         initializeActionBar();
@@ -1436,7 +1436,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     @Override
-    public void onAnimationEnd(int displayedChild) {
+    public void onSwitchComplete(int displayedChild) {
         if (displayedChild == 0) {
             removeMessageViewFragment();
         }

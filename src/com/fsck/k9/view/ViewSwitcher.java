@@ -17,7 +17,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     private Animation mFirstOutAnimation;
     private Animation mSecondInAnimation;
     private Animation mSecondOutAnimation;
-    private OnAnimationEndListener mListener;
+    private OnSwitchCompleteListener mListener;
 
 
     public ViewSwitcher(Context context) {
@@ -35,6 +35,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
 
         setupAnimations(mFirstInAnimation, mFirstOutAnimation);
         setDisplayedChild(0);
+        handleSwitchCompleteCallback();
     }
 
     public void showSecondView() {
@@ -44,15 +45,23 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
 
         setupAnimations(mSecondInAnimation, mSecondOutAnimation);
         setDisplayedChild(1);
+        handleSwitchCompleteCallback();
     }
 
     private void setupAnimations(Animation in, Animation out) {
         if (K9.showAnimations()) {
             setInAnimation(in);
             setOutAnimation(out);
+            out.setAnimationListener(this);
         } else {
             setInAnimation(null);
             setOutAnimation(null);
+        }
+    }
+
+    private void handleSwitchCompleteCallback() {
+        if (!K9.showAnimations()) {
+            onAnimationEnd(null);
         }
     }
 
@@ -88,14 +97,14 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
         mSecondOutAnimation = outAnimation;
     }
 
-    public void setOnAnimationEndListener(OnAnimationEndListener listener) {
+    public void setOnSwitchCompleteListener(OnSwitchCompleteListener listener) {
         mListener = listener;
     }
 
     @Override
     public void onAnimationEnd(Animation animation) {
         if (mListener != null) {
-            mListener.onAnimationEnd(getDisplayedChild());
+            mListener.onSwitchComplete(getDisplayedChild());
         }
     }
 
@@ -109,13 +118,13 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
         // unused
     }
 
-    public interface OnAnimationEndListener {
+    public interface OnSwitchCompleteListener {
         /**
-         * This method will be called after the switch animation has ended.
+         * This method will be called after the switch (including animation) has ended.
          *
          * @param displayedChild
          *         Contains the zero-based index of the child view that is now displayed.
          */
-        void onAnimationEnd(int displayedChild);
+        void onSwitchComplete(int displayedChild);
     }
 }
