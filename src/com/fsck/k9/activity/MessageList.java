@@ -964,6 +964,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
             menu.findItem(R.id.copy).setVisible(mMessageViewFragment.isCopyCapable());
 
+            // Jellybean has built-in long press selection support
+            menu.findItem(R.id.select_text).setVisible(Build.VERSION.SDK_INT < 16);
+
             if (mMessageViewFragment.isMoveCapable()) {
                 menu.findItem(R.id.move).setVisible(true);
                 menu.findItem(R.id.archive).setVisible(mMessageViewFragment.canMessageBeArchived());
