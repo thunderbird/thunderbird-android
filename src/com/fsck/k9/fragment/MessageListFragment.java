@@ -2855,6 +2855,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private MessageReference getReferenceForPosition(int position) {
         Cursor cursor = (Cursor) mAdapter.getItem(position);
+        if (cursor == null) return null;
         MessageReference ref = new MessageReference();
         ref.accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
         ref.folderName = cursor.getString(FOLDER_NAME_COLUMN);
