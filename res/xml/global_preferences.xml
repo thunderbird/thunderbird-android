@@ -65,6 +65,14 @@
                 android:entryValues="@array/settings_message_theme_values"
                 android:dialogTitle="@string/settings_message_theme_label" />
 
+            <ListPreference
+                android:persistent="false"
+                android:key="messageComposeTheme"
+                android:title="@string/settings_compose_theme_label"
+                android:entries="@array/settings_message_theme_entries"
+                android:entryValues="@array/settings_message_theme_values"
+                android:dialogTitle="@string/settings_compose_theme_label" />
+
             <Preference
                 android:persistent="false"
                 android:key="font_size"

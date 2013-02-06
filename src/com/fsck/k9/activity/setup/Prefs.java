@@ -55,6 +55,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_THEME = "theme";
     private static final String PREFERENCE_MESSAGE_VIEW_THEME = "messageViewTheme";
     private static final String PREFERENCE_FIXED_MESSAGE_THEME = "fixedMessageViewTheme";
+    private static final String PREFERENCE_COMPOSER_THEME = "messageComposeTheme";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
     private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
     private static final String PREFERENCE_ANIMATIONS = "animations";
@@ -106,6 +107,7 @@ public class Prefs extends K9PreferenceActivity {
     private ListPreference mTheme;
     private CheckBoxPreference mFixedMessageTheme;
     private ListPreference mMessageTheme;
+    private ListPreference mComposerTheme;
     private ListPreference mDateFormat;
     private CheckBoxPreference mAnimations;
     private CheckBoxPreference mGestures;
@@ -180,6 +182,8 @@ public class Prefs extends K9PreferenceActivity {
         mFixedMessageTheme.setChecked(K9.useFixedMessageViewTheme());
         mMessageTheme = setupListPreference(PREFERENCE_MESSAGE_VIEW_THEME,
                 themeIdToName(K9.getK9MessageViewThemeSetting()));
+        mComposerTheme = setupListPreference(PREFERENCE_COMPOSER_THEME,
+                themeIdToName(K9.getK9ComposerThemeSetting()));
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
         new Preference.OnPreferenceClickListener() {
@@ -468,6 +472,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setK9Theme(themeNameToId(mTheme.getValue()));
         K9.setUseFixedMessageViewTheme(mFixedMessageTheme.isChecked());
         K9.setK9MessageViewThemeSetting(themeNameToId(mMessageTheme.getValue()));
+        K9.setK9ComposerThemeSetting(themeNameToId(mComposerTheme.getValue()));
 
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
