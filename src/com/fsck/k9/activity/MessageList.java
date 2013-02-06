@@ -293,17 +293,24 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
      *         {@link #onCreate(Bundle)}. May be {@code null}.
      */
     private void initializeDisplayMode(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            mDisplayMode = (DisplayMode) savedInstanceState.getSerializable(STATE_DISPLAY_MODE);
-        } else {
-            boolean displayMessage = (mMessageReference != null);
-            mDisplayMode = (displayMessage) ? DisplayMode.MESSAGE_VIEW : DisplayMode.MESSAGE_LIST;
-        }
-
         if (useSplitView()) {
             mDisplayMode = DisplayMode.SPLIT_VIEW;
-        } else if (mMessageViewFragment != null || mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+            return;
+        }
+
+        if (savedInstanceState != null) {
+            DisplayMode savedDisplayMode =
+                    (DisplayMode) savedInstanceState.getSerializable(STATE_DISPLAY_MODE);
+            if (savedDisplayMode != DisplayMode.SPLIT_VIEW) {
+                mDisplayMode = savedDisplayMode;
+                return;
+            }
+        }
+
+        if (mMessageViewFragment != null || mMessageReference != null) {
             mDisplayMode = DisplayMode.MESSAGE_VIEW;
+        } else {
+            mDisplayMode = DisplayMode.MESSAGE_LIST;
         }
     }
 
