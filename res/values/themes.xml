@@ -52,7 +52,6 @@
         <item name="messageViewHeaderBackgroundColor">#ffffffff</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_light</item>
         <item name="composerBackgroundColor">@android:color/white</item>
-        <item name="composerTextColor">@android:color/black</item>
     </style>
 
     <style name="Theme.K9.Dark.Base" parent="Theme.Sherlock">
@@ -107,7 +106,6 @@
         <item name="messageViewHeaderBackgroundColor">#000000</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_dark</item>
         <item name="composerBackgroundColor">@android:color/black</item>
-        <item name="composerTextColor">@android:color/white</item>
     </style>
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Base">

@@ -486,9 +486,22 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             finish();
             return;
         }
-
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.message_compose);
+
+        if (K9.getK9ComposerThemeSetting() != K9.Theme.USE_GLOBAL) {
+            // theme the whole content according to the theme (except the action bar)
+            ContextThemeWrapper wrapper = new ContextThemeWrapper(this,
+                    K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
+            View v = ((LayoutInflater) wrapper.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+                    inflate(R.layout.message_compose, null);
+            TypedValue outValue = new TypedValue();
+            // background color needs to be forced
+            wrapper.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+            v.setBackgroundColor(outValue.data);
+            setContentView(v);
+        } else {
+            setContentView(R.layout.message_compose);
+        }
 
         final Intent intent = getIntent();
 
@@ -553,18 +566,6 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
-
-        if (K9.getK9ComposerThemeSetting() != K9.Theme.USE_GLOBAL) {
-            ContextThemeWrapper wrapper = new ContextThemeWrapper(this,
-                    K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
-            TypedValue outValue = new TypedValue();
-            EditText[] editors = new EditText[] { mMessageContentView, upperSignature, lowerSignature };
-
-            wrapper.getTheme().resolveAttribute(R.attr.composerBackgroundColor, outValue, true);
-            for (EditText edit : editors) edit.setBackgroundColor(outValue.data);
-            wrapper.getTheme().resolveAttribute(R.attr.composerTextColor, outValue, true);
-            for (EditText edit : editors) edit.setTextColor(outValue.data);
-        }
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextShow = (Button)findViewById(R.id.quoted_text_show);
