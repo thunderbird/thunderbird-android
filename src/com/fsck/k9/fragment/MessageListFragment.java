@@ -920,7 +920,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             updateFooterView();
         }
 
-        mController = MessagingController.getInstance(getActivity().getApplication());
         mListView.setAdapter(mAdapter);
     }
 
@@ -3348,5 +3347,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     public boolean isSingleFolderMode() {
         return mSingleFolderMode;
+    }
+
+    public boolean isInitialized() {
+        return mInitialized;
     }
 }

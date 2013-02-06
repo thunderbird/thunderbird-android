@@ -978,7 +978,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         menu.findItem(R.id.search).setVisible(false);
         menu.findItem(R.id.search_remote).setVisible(false);
 
-        if (mDisplayMode == DisplayMode.MESSAGE_VIEW || mMessageListFragment == null) {
+        if (mDisplayMode == DisplayMode.MESSAGE_VIEW || mMessageListFragment == null ||
+                !mMessageListFragment.isInitialized()) {
             menu.findItem(R.id.check_mail).setVisible(false);
             menu.findItem(R.id.set_sort).setVisible(false);
             menu.findItem(R.id.select_all).setVisible(false);
