@@ -421,8 +421,7 @@ public class EmailProvider extends ContentProvider {
 
                     if (!StringUtils.isNullOrEmpty(sortOrder)) {
                         query.append(" ORDER BY ");
-                        query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
-                                "u.", sortOrder));
+                        query.append(sortOrder);
                     }
 
                     // We need the selection arguments twice. Once for each sub query.
