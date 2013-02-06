@@ -1880,7 +1880,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             //TODO: make this part of the theme
-            int color = (K9.getK9Theme() == K9.THEME_LIGHT) ?
+            int color = (K9.getK9Theme() == K9.Theme.LIGHT) ?
                     Color.rgb(105, 105, 105) :
                     Color.rgb(160, 160, 160);
 

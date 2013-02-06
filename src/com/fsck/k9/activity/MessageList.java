@@ -961,7 +961,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 toggleTheme.setVisible(false);
             } else {
                 // Set title of menu item to switch to dark/light theme
-                if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
+                if (K9.getK9MessageViewTheme() == K9.Theme.DARK) {
                     toggleTheme.setTitle(R.string.message_view_theme_action_light);
                 } else {
                     toggleTheme.setTitle(R.string.message_view_theme_action_dark);
@@ -1424,10 +1424,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void onToggleTheme() {
-        if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
-            K9.setK9MessageViewThemeSetting(K9.THEME_LIGHT);
+        if (K9.getK9MessageViewTheme() == K9.Theme.DARK) {
+            K9.setK9MessageViewThemeSetting(K9.Theme.LIGHT);
         } else {
-            K9.setK9MessageViewThemeSetting(K9.THEME_DARK);
+            K9.setK9MessageViewThemeSetting(K9.Theme.DARK);
         }
 
         new Thread(new Runnable() {

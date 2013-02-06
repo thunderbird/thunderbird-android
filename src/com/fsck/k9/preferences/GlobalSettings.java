@@ -185,10 +185,10 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("theme", Settings.versions(
-                new V(1, new ThemeSetting(K9.THEME_LIGHT))
+                new V(1, new ThemeSetting(K9.Theme.LIGHT.ordinal()))
             ));
         s.put("messageViewTheme", Settings.versions(
-                new V(16, new ThemeSetting(K9.THEME_LIGHT))
+                new V(16, new ThemeSetting(K9.Theme.LIGHT.ordinal()))
             ));
         s.put("useGalleryBugWorkaround", Settings.versions(
                 new V(1, new GalleryBugWorkaroundSetting())
@@ -363,14 +363,14 @@ public class GlobalSettings {
         public Object fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer theme = Integer.parseInt(value);
-                if (theme == K9.THEME_LIGHT ||
+                if (theme == K9.Theme.LIGHT.ordinal() ||
                         // We used to store the resource ID of the theme in the preference storage,
                         // but don't use the database upgrade mechanism to update the values. So
                         // we have to deal with the old format here.
                         theme == android.R.style.Theme_Light) {
-                    return K9.THEME_LIGHT;
-                } else if (theme == K9.THEME_DARK || theme == android.R.style.Theme) {
-                    return K9.THEME_DARK;
+                    return K9.Theme.LIGHT;
+                } else if (theme == K9.Theme.DARK.ordinal() || theme == android.R.style.Theme) {
+                    return K9.Theme.DARK;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }
 
@@ -380,9 +380,9 @@ public class GlobalSettings {
         @Override
         public Object fromPrettyString(String value) throws InvalidSettingValueException {
             if (THEME_LIGHT.equals(value)) {
-                return K9.THEME_LIGHT;
+                return K9.Theme.LIGHT;
             } else if (THEME_DARK.equals(value)) {
-                return K9.THEME_DARK;
+                return K9.Theme.DARK;
             }
 
             throw new InvalidSettingValueException();
@@ -390,7 +390,7 @@ public class GlobalSettings {
 
         @Override
         public String toPrettyString(Object value) {
-            return (((Integer)value).intValue() == K9.THEME_LIGHT) ? THEME_LIGHT : THEME_DARK;
+            return (((Integer)value).intValue() == K9.Theme.LIGHT.ordinal()) ? THEME_LIGHT : THEME_DARK;
         }
     }
 

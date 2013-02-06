@@ -446,21 +446,21 @@ public class Prefs extends K9PreferenceActivity {
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
     }
 
-    private static String themeIdToName(int theme) {
+    private static String themeIdToName(K9.Theme theme) {
         switch (theme) {
-            case K9.THEME_DARK: return "dark";
-            case K9.THEME_GLOBAL: return "global";
+            case DARK: return "dark";
+            case USE_GLOBAL: return "global";
             default: return "light";
         }
     }
 
-    private static int themeNameToId(String theme) {
+    private static K9.Theme themeNameToId(String theme) {
         if (TextUtils.equals(theme, "dark")) {
-            return K9.THEME_DARK;
+            return K9.Theme.DARK;
         } else if (TextUtils.equals(theme, "global")) {
-            return K9.THEME_GLOBAL;
+            return K9.Theme.USE_GLOBAL;
         } else {
-            return K9.THEME_LIGHT;
+            return K9.Theme.LIGHT;
         }
     }
 

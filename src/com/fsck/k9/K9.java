@@ -44,10 +44,6 @@ import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 
 public class K9 extends Application {
-    public static final int THEME_LIGHT = 0;
-    public static final int THEME_DARK = 1;
-    public static final int THEME_GLOBAL = 2;
-
     /**
      * Components that are interested in knowing when the K9 instance is
      * available and ready (Android invokes Application.onCreate() after other
@@ -99,9 +95,9 @@ public class K9 extends Application {
     }
 
     private static String language = "";
-    private static int theme = THEME_LIGHT;
-    private static int messageViewTheme = THEME_GLOBAL;
-    private static int composerTheme = THEME_GLOBAL;
+    private static Theme theme = Theme.LIGHT;
+    private static Theme messageViewTheme = Theme.USE_GLOBAL;
+    private static Theme composerTheme = Theme.USE_GLOBAL;
     private static boolean useFixedMessageTheme = true;
 
     private static final FontSizes fontSizes = new FontSizes();
@@ -525,9 +521,9 @@ public class K9 extends Application {
         editor.putBoolean("batchButtonsUnselect", mBatchButtonsUnselect);
 
         editor.putString("language", language);
-        editor.putInt("theme", theme);
-        editor.putInt("messageViewTheme", messageViewTheme);
-        editor.putInt("messageComposeTheme", composerTheme);
+        editor.putInt("theme", theme.ordinal());
+        editor.putInt("messageViewTheme", messageViewTheme.ordinal());
+        editor.putInt("messageComposeTheme", composerTheme.ordinal());
         editor.putBoolean("fixedMessageViewTheme", useFixedMessageTheme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
@@ -771,20 +767,20 @@ public class K9 extends Application {
 
         K9.setK9Language(sprefs.getString("language", ""));
 
-        int theme = sprefs.getInt("theme", THEME_LIGHT);
-
+        int themeValue = sprefs.getInt("theme", Theme.LIGHT.ordinal());
         // We used to save the resource ID of the theme. So convert that to the new format if
         // necessary.
-        if (theme == THEME_DARK || theme == android.R.style.Theme) {
-            theme = THEME_DARK;
+        if (themeValue == Theme.DARK.ordinal() || themeValue == android.R.style.Theme) {
+            K9.setK9Theme(Theme.DARK);
         } else {
-            theme = THEME_LIGHT;
+            K9.setK9Theme(Theme.LIGHT);
         }
-        K9.setK9Theme(theme);
 
-        K9.setK9MessageViewThemeSetting(sprefs.getInt("messageViewTheme", THEME_GLOBAL));
+        themeValue = sprefs.getInt("messageViewTheme", Theme.USE_GLOBAL.ordinal());
+        K9.setK9MessageViewThemeSetting(Theme.values()[themeValue]);
+        themeValue = sprefs.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
+        K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
         K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
-        K9.setK9ComposerThemeSetting(sprefs.getInt("messageComposeTheme", THEME_GLOBAL));
     }
 
     private void maybeSetupStrictMode() {
@@ -843,40 +839,47 @@ public class K9 extends Application {
         language = nlanguage;
     }
 
-    public static int getK9ThemeResourceId(int themeId) {
-        return (themeId == THEME_LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
+    public enum Theme {
+        LIGHT,
+        DARK,
+        USE_GLOBAL
+    }
+
+    public static int getK9ThemeResourceId(Theme themeId) {
+        return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
     }
 
     public static int getK9ThemeResourceId() {
         return getK9ThemeResourceId(theme);
     }
 
-    public static int getK9MessageViewTheme() {
-        return messageViewTheme == THEME_GLOBAL ? theme : messageViewTheme;
+    public static Theme getK9MessageViewTheme() {
+        return messageViewTheme == Theme.USE_GLOBAL ? theme : messageViewTheme;
     }
 
-    public static int getK9MessageViewThemeSetting() {
+    public static Theme getK9MessageViewThemeSetting() {
         return messageViewTheme;
     }
 
-    public static int getK9ComposerTheme() {
-        return composerTheme == THEME_GLOBAL ? theme : composerTheme;
+    public static Theme getK9ComposerTheme() {
+        return composerTheme == Theme.USE_GLOBAL ? theme : composerTheme;
     }
 
-    public static int getK9ComposerThemeSetting() {
+    public static Theme getK9ComposerThemeSetting() {
         return composerTheme;
     }
 
-    public static int getK9Theme() {
+    public static Theme getK9Theme() {
         return theme;
     }
 
-    public static void setK9Theme(int ntheme) {
-        assert ntheme != THEME_GLOBAL;
-        theme = ntheme;
+    public static void setK9Theme(Theme ntheme) {
+        if (ntheme != Theme.USE_GLOBAL) {
+            theme = ntheme;
+        }
     }
 
-    public static void setK9MessageViewThemeSetting(int nMessageViewTheme) {
+    public static void setK9MessageViewThemeSetting(Theme nMessageViewTheme) {
         messageViewTheme = nMessageViewTheme;
     }
 
@@ -884,13 +887,13 @@ public class K9 extends Application {
         return useFixedMessageTheme;
     }
 
-    public static void setK9ComposerThemeSetting(int compTheme) {
+    public static void setK9ComposerThemeSetting(Theme compTheme) {
         composerTheme = compTheme;
     }
 
     public static void setUseFixedMessageViewTheme(boolean useFixed) {
         useFixedMessageTheme = useFixed;
-        if (!useFixedMessageTheme && messageViewTheme == THEME_GLOBAL) {
+        if (!useFixedMessageTheme && messageViewTheme == Theme.USE_GLOBAL) {
             messageViewTheme = theme;
         }
     }

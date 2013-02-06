@@ -554,7 +554,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        if (K9.getK9ComposerThemeSetting() != K9.THEME_GLOBAL) {
+        if (K9.getK9ComposerThemeSetting() != K9.Theme.USE_GLOBAL) {
             ContextThemeWrapper wrapper = new ContextThemeWrapper(this,
                     K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
             TypedValue outValue = new TypedValue();
@@ -2381,7 +2381,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             .create();
         case DIALOG_CHOOSE_IDENTITY:
             Context context = new ContextThemeWrapper(this,
-                    (K9.getK9Theme() == K9.THEME_LIGHT) ?
+                    (K9.getK9Theme() == K9.Theme.LIGHT) ?
                             R.style.Theme_K9_Dialog_Light :
                             R.style.Theme_K9_Dialog_Dark);
             Builder builder = new AlertDialog.Builder(context);
