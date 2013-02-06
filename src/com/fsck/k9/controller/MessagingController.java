@@ -3080,21 +3080,13 @@ public class MessagingController implements Runnable {
                             !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
                         if (loadMessageForViewRemoteSynchronous(account, folder, uid, listener,
                                 false, true)) {
-                            if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
-                                message.setFlag(Flag.SEEN, true);
 
-                                setFlagSynchronous(account, Collections.singletonList(Long.valueOf(message.getId())), Flag.SEEN, true, false);
-//                                setFlag(Collections.singletonList((Message) message),
-//                                        Flag.SEEN, true);
-                            }
+                            markMessageAsReadOnView(account, message);
                         }
                         return;
                     }
-                    if (!message.isSet(Flag.SEEN)) {
-                        message.setFlag(Flag.SEEN, true);
-                        setFlagSynchronous(account, Collections.singletonList(Long.valueOf(message.getId())), Flag.SEEN, true, false);
-//                        setFlag(Collections.singletonList((Message) message), Flag.SEEN, true);
-                    }
+
+                    markMessageAsReadOnView(account, message);
 
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
@@ -3125,6 +3117,29 @@ public class MessagingController implements Runnable {
                 }
             }
         });
+    }
+
+    /**
+     * Mark the provided message as read if not disabled by the account setting.
+     *
+     * @param account
+     *         The account the message belongs to.
+     * @param message
+     *         The message to mark as read. This {@link Message} instance will be modify by calling
+     *         {@link Message#setFlag(Flag, boolean)} on it.
+     *
+     * @throws MessagingException
+     *
+     * @see Account#isMarkMessageAsReadOnView()
+     */
+    private void markMessageAsReadOnView(Account account, Message message)
+            throws MessagingException {
+
+        if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
+            message.setFlag(Flag.SEEN, true);
+            setFlagSynchronous(account, Collections.singletonList(Long.valueOf(message.getId())),
+                    Flag.SEEN, true, false);
+        }
     }
 
     /**
