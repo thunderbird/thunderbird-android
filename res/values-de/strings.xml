@@ -823,6 +823,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="folderlist_preferences">Ordnerliste</string>
     <string name="settings_theme_label">Design</string>
     <string name="settings_message_theme_label">Nachrichten-Design</string>
+    <string name="settings_compose_theme_label">Editor-Design</string>
     <string name="settings_language_label">Sprache</string>
 
     <string name="settings_message_theme_selection_label">Festes Nachrichten-Design</string>

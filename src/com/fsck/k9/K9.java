@@ -101,6 +101,7 @@ public class K9 extends Application {
     private static String language = "";
     private static int theme = THEME_LIGHT;
     private static int messageViewTheme = THEME_GLOBAL;
+    private static int composerTheme = THEME_GLOBAL;
     private static boolean useFixedMessageTheme = true;
 
     private static final FontSizes fontSizes = new FontSizes();
@@ -526,6 +527,7 @@ public class K9 extends Application {
         editor.putString("language", language);
         editor.putInt("theme", theme);
         editor.putInt("messageViewTheme", messageViewTheme);
+        editor.putInt("messageComposeTheme", composerTheme);
         editor.putBoolean("fixedMessageViewTheme", useFixedMessageTheme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
@@ -782,6 +784,7 @@ public class K9 extends Application {
 
         K9.setK9MessageViewThemeSetting(sprefs.getInt("messageViewTheme", THEME_GLOBAL));
         K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
+        K9.setK9ComposerThemeSetting(sprefs.getInt("messageComposeTheme", THEME_GLOBAL));
     }
 
     private void maybeSetupStrictMode() {
@@ -856,6 +859,14 @@ public class K9 extends Application {
         return messageViewTheme;
     }
 
+    public static int getK9ComposerTheme() {
+        return composerTheme == THEME_GLOBAL ? theme : composerTheme;
+    }
+
+    public static int getK9ComposerThemeSetting() {
+        return composerTheme;
+    }
+
     public static int getK9Theme() {
         return theme;
     }
@@ -871,6 +882,10 @@ public class K9 extends Application {
 
     public static boolean useFixedMessageViewTheme() {
         return useFixedMessageTheme;
+    }
+
+    public static void setK9ComposerThemeSetting(int compTheme) {
+        composerTheme = compTheme;
     }
 
     public static void setUseFixedMessageViewTheme(boolean useFixed) {

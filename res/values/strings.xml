@@ -830,6 +830,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folderlist_preferences">Folder lists</string>
     <string name="settings_theme_label">Theme</string>
     <string name="settings_message_theme_label">Message view theme</string>
+    <string name="settings_compose_theme_label">Composer theme</string>
     <string name="settings_language_label">Language</string>
 
     <string name="settings_message_theme_selection_label">Fixed message theme</string>
