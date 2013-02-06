@@ -18,6 +18,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -52,6 +53,8 @@ public class Prefs extends K9PreferenceActivity {
      */
     private static final String PREFERENCE_LANGUAGE = "language";
     private static final String PREFERENCE_THEME = "theme";
+    private static final String PREFERENCE_MESSAGE_VIEW_THEME = "messageViewTheme";
+    private static final String PREFERENCE_FIXED_MESSAGE_THEME = "fixedMessageViewTheme";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
     private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
     private static final String PREFERENCE_ANIMATIONS = "animations";
@@ -101,6 +104,8 @@ public class Prefs extends K9PreferenceActivity {
 
     private ListPreference mLanguage;
     private ListPreference mTheme;
+    private CheckBoxPreference mFixedMessageTheme;
+    private ListPreference mMessageTheme;
     private ListPreference mDateFormat;
     private CheckBoxPreference mAnimations;
     private CheckBoxPreference mGestures;
@@ -170,8 +175,11 @@ public class Prefs extends K9PreferenceActivity {
                            entryVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY),
                            entryValueVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
 
-        final String theme = (K9.getK9Theme() == K9.THEME_DARK) ? "dark" : "light";
-        mTheme = setupListPreference(PREFERENCE_THEME, theme);
+        mTheme = setupListPreference(PREFERENCE_THEME, themeIdToName(K9.getK9Theme()));
+        mFixedMessageTheme = (CheckBoxPreference) findPreference(PREFERENCE_FIXED_MESSAGE_THEME);
+        mFixedMessageTheme.setChecked(K9.useFixedMessageViewTheme());
+        mMessageTheme = setupListPreference(PREFERENCE_MESSAGE_VIEW_THEME,
+                themeIdToName(K9.getK9MessageViewThemeSetting()));
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
         new Preference.OnPreferenceClickListener() {
@@ -434,17 +442,32 @@ public class Prefs extends K9PreferenceActivity {
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
     }
 
+    private static String themeIdToName(int theme) {
+        switch (theme) {
+            case K9.THEME_DARK: return "dark";
+            case K9.THEME_GLOBAL: return "global";
+            default: return "light";
+        }
+    }
+
+    private static int themeNameToId(String theme) {
+        if (TextUtils.equals(theme, "dark")) {
+            return K9.THEME_DARK;
+        } else if (TextUtils.equals(theme, "global")) {
+            return K9.THEME_GLOBAL;
+        } else {
+            return K9.THEME_LIGHT;
+        }
+    }
+
     private void saveSettings() {
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
 
         K9.setK9Language(mLanguage.getValue());
 
-        int newTheme = mTheme.getValue().equals("dark") ? K9.THEME_DARK : K9.THEME_LIGHT;
-        if (K9.getK9Theme() != newTheme) {
-            // Reset the message view theme when the app theme changes
-            K9.setK9MessageViewTheme(newTheme);
-        }
-        K9.setK9Theme(newTheme);
+        K9.setK9Theme(themeNameToId(mTheme.getValue()));
+        K9.setUseFixedMessageViewTheme(mFixedMessageTheme.isChecked());
+        K9.setK9MessageViewThemeSetting(themeNameToId(mMessageTheme.getValue()));
 
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
