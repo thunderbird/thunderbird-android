@@ -901,6 +901,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             menu.findItem(R.id.folder_settings).setVisible(
                     mMessageListFragment.isSingleFolderMode());
         }
+        menu.findItem(R.id.settings).setVisible(mDisplayMode != DisplayMode.MESSAGE_VIEW);
 
         /*
          * Set visibility of menu items related to the message view
