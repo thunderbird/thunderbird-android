@@ -1,5 +1,7 @@
 package com.fsck.k9.view;
 
+import com.fsck.k9.K9;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
@@ -31,8 +33,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
             return;
         }
 
-        setInAnimation(mFirstInAnimation);
-        setOutAnimation(mFirstOutAnimation);
+        setupAnimations(mFirstInAnimation, mFirstOutAnimation);
         setDisplayedChild(0);
     }
 
@@ -41,9 +42,18 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
             return;
         }
 
-        setInAnimation(mSecondInAnimation);
-        setOutAnimation(mSecondOutAnimation);
+        setupAnimations(mSecondInAnimation, mSecondOutAnimation);
         setDisplayedChild(1);
+    }
+
+    private void setupAnimations(Animation in, Animation out) {
+        if (K9.showAnimations()) {
+            setInAnimation(in);
+            setOutAnimation(out);
+        } else {
+            setInAnimation(null);
+            setOutAnimation(null);
+        }
     }
 
     public Animation getFirstInAnimation() {
