@@ -906,7 +906,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
          * Set visibility of menu items related to the message view
          */
 
-        if (mMessageViewFragment == null || !mMessageViewFragment.isInitialized()) {
+        if (mDisplayMode == DisplayMode.MESSAGE_LIST
+                || mMessageViewFragment == null
+                || !mMessageViewFragment.isInitialized()) {
             menu.findItem(R.id.next_message).setVisible(false);
             menu.findItem(R.id.previous_message).setVisible(false);
             menu.findItem(R.id.delete).setVisible(false);
@@ -1365,6 +1367,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mMessageListFragment.setActiveMessage(null);
 
         showDefaultTitleView();
+        configureMenu(mMenu);
     }
 
     private void showMessageView() {
@@ -1376,6 +1379,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mViewSwitcher.showSecondView();
 
         showMessageTitleView();
+        configureMenu(mMenu);
     }
 
     @Override
