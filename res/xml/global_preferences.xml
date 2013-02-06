@@ -49,6 +49,22 @@
                 android:entryValues="@array/settings_theme_values"
                 android:dialogTitle="@string/settings_theme_label" />
 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="fixedMessageViewTheme"
+                android:title="@string/settings_message_theme_selection_label"
+                android:summaryOff="@string/settings_message_theme_selection_summary_off"
+                android:summaryOn="@string/settings_message_theme_selection_summary_on" />
+
+            <ListPreference
+                android:persistent="false"
+                android:dependency="fixedMessageViewTheme"
+                android:key="messageViewTheme"
+                android:title="@string/settings_message_theme_label"
+                android:entries="@array/settings_message_theme_entries"
+                android:entryValues="@array/settings_message_theme_values"
+                android:dialogTitle="@string/settings_message_theme_label" />
+
             <Preference
                 android:persistent="false"
                 android:key="font_size"

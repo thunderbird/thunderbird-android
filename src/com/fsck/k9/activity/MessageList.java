@@ -955,14 +955,19 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 next.setEnabled(canDoNext);
                 next.getIcon().setAlpha(canDoNext ? 255 : 127);
             }
-            // Set title of menu item to switch to dark/light theme
+
             MenuItem toggleTheme = menu.findItem(R.id.toggle_message_view_theme);
-            if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
-                toggleTheme.setTitle(R.string.message_view_theme_action_light);
+            if (K9.useFixedMessageViewTheme()) {
+                toggleTheme.setVisible(false);
             } else {
-                toggleTheme.setTitle(R.string.message_view_theme_action_dark);
+                // Set title of menu item to switch to dark/light theme
+                if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
+                    toggleTheme.setTitle(R.string.message_view_theme_action_light);
+                } else {
+                    toggleTheme.setTitle(R.string.message_view_theme_action_dark);
+                }
+                toggleTheme.setVisible(true);
             }
-            toggleTheme.setVisible(true);
 
             // Set title of menu item to toggle the read state of the currently displayed message
             if (mMessageViewFragment.isMessageRead()) {
@@ -1417,9 +1422,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     private void onToggleTheme() {
         if (K9.getK9MessageViewTheme() == K9.THEME_DARK) {
-            K9.setK9MessageViewTheme(K9.THEME_LIGHT);
+            K9.setK9MessageViewThemeSetting(K9.THEME_LIGHT);
         } else {
-            K9.setK9MessageViewTheme(K9.THEME_DARK);
+            K9.setK9MessageViewThemeSetting(K9.THEME_DARK);
         }
 
         new Thread(new Runnable() {

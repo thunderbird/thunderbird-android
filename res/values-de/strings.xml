@@ -808,6 +808,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_settings_signature__location_label">Position der Signatur</string>
     <string name="account_settings_signature__location_before_quoted_text">Vor zitierter Nachricht</string>
     <string name="account_settings_signature__location_after_quoted_text">Nach zitierter Nachricht</string>
+    <string name="setting_theme_global">Anwendungsdesign verwenden</string>
     <string name="setting_theme_dark">Dunkel</string>
     <string name="setting_theme_light">Hell</string>
     <string name="display_preferences">Anzeige</string>
@@ -821,7 +822,12 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="messageview_preferences">Nachrichten</string>
     <string name="folderlist_preferences">Ordnerliste</string>
     <string name="settings_theme_label">Design</string>
+    <string name="settings_message_theme_label">Nachrichten-Design</string>
     <string name="settings_language_label">Sprache</string>
+
+    <string name="settings_message_theme_selection_label">Festes Nachrichten-Design</string>
+    <string name="settings_message_theme_selection_summary_off">Nachrichten-Design während des Ansehens der Nachricht auswählen</string>
+    <string name="settings_message_theme_selection_summary_on">Immer das ausgewählte Nachrichten-Design verwenden</string>
 
     <string name="settings_messageview_mobile_layout_label">Einfaches Layout</string>
     <string name="settings_messageview_mobile_layout_summary">HTML-Nachrichten für kleine Displays optimieren</string>
