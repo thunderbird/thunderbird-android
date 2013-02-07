@@ -153,34 +153,16 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <!-- Show more/less indicator -->
-                    <ImageView
-                        android:id="@+id/show_additional_headers_icon"
-                        android:src="@drawable/show_more"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="4dp"
-                        android:paddingRight="12dp"
-                        android:scaleType="fitEnd"/>
-
                     <TextView
                         android:id="@+id/additional_headers_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/show_additional_headers_icon"
                         android:layout_marginRight="10dp"
                         android:singleLine="false"
                         android:ellipsize="none"
                         android:textColor="?android:attr/textColorSecondary"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                </RelativeLayout>
 
             </LinearLayout>
 

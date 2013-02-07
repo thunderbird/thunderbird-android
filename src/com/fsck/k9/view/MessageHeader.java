@@ -59,7 +59,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private Account mAccount;
     private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
-    private ImageView mShowAdditionalHeadersIcon;
     private SavedState mSavedState;
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
@@ -99,7 +98,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mDateView = (TextView) findViewById(R.id.date);
         mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
-        mShowAdditionalHeadersIcon = (ImageView) findViewById(R.id.show_additional_headers_icon);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSubject());
@@ -111,7 +109,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
         mCcView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
 
-        mShowAdditionalHeadersIcon.setOnClickListener(this);
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
@@ -127,10 +124,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.show_additional_headers_icon: {
-                onShowAdditionalHeaders();
-                break;
-            }
             case R.id.from: {
                 onAddSenderToContacts();
                 break;
@@ -173,7 +166,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private void hideAdditionalHeaders() {
         mAdditionalHeadersView.setVisibility(View.GONE);
         mAdditionalHeadersView.setText("");
-        mShowAdditionalHeadersIcon.setImageResource(R.drawable.show_more);
     }
 
 
@@ -192,7 +184,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
                 // Show the additional headers that we have got.
                 populateAdditionalHeadersView(additionalHeaders);
                 mAdditionalHeadersView.setVisibility(View.VISIBLE);
-                mShowAdditionalHeadersIcon.setImageResource(R.drawable.show_less);
             }
             if (!allHeadersDownloaded) {
                 /*
