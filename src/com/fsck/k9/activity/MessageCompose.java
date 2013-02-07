@@ -479,6 +479,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
@@ -552,6 +553,19 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
+
+        if (K9.getK9ComposerThemeSetting() != K9.THEME_GLOBAL) {
+            ContextThemeWrapper wrapper = new ContextThemeWrapper(this,
+                    K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
+            TypedValue outValue = new TypedValue();
+            EditText[] editors = new EditText[] { mMessageContentView, upperSignature, lowerSignature };
+
+            wrapper.getTheme().resolveAttribute(R.attr.composerBackgroundColor, outValue, true);
+            for (EditText edit : editors) edit.setBackgroundColor(outValue.data);
+            wrapper.getTheme().resolveAttribute(R.attr.composerTextColor, outValue, true);
+            for (EditText edit : editors) edit.setTextColor(outValue.data);
+        }
+
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextShow = (Button)findViewById(R.id.quoted_text_show);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);

@@ -815,6 +815,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_signature__location_before_quoted_text">Before quoted message</string>
     <string name="account_settings_signature__location_after_quoted_text">After quoted message</string>
+    <string name="setting_theme_global">Use app theme</string>
     <string name="setting_theme_dark">Dark</string>
     <string name="setting_theme_light">Light</string>
     <string name="display_preferences">Display</string>
@@ -828,7 +829,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_preferences">Messages</string>
     <string name="folderlist_preferences">Folder lists</string>
     <string name="settings_theme_label">Theme</string>
+    <string name="settings_message_theme_label">Message view theme</string>
+    <string name="settings_compose_theme_label">Composer theme</string>
     <string name="settings_language_label">Language</string>
+
+    <string name="settings_message_theme_selection_label">Fixed message theme</string>
+    <string name="settings_message_theme_selection_summary">Use a fixed message view theme instead of selecting it on the fly</string>
 
     <string name="settings_messageview_mobile_layout_label">Condensed layout</string>
     <string name="settings_messageview_mobile_layout_summary">Reformat HTML messages for smaller screens</string>

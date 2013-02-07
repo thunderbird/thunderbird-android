@@ -46,6 +46,7 @@ import com.fsck.k9.service.StorageGoneReceiver;
 public class K9 extends Application {
     public static final int THEME_LIGHT = 0;
     public static final int THEME_DARK = 1;
+    public static final int THEME_GLOBAL = 2;
 
     /**
      * Components that are interested in knowing when the K9 instance is
@@ -99,7 +100,9 @@ public class K9 extends Application {
 
     private static String language = "";
     private static int theme = THEME_LIGHT;
-    private static int messageViewTheme = THEME_LIGHT;
+    private static int messageViewTheme = THEME_GLOBAL;
+    private static int composerTheme = THEME_GLOBAL;
+    private static boolean useFixedMessageTheme = true;
 
     private static final FontSizes fontSizes = new FontSizes();
 
@@ -524,6 +527,8 @@ public class K9 extends Application {
         editor.putString("language", language);
         editor.putInt("theme", theme);
         editor.putInt("messageViewTheme", messageViewTheme);
+        editor.putInt("messageComposeTheme", composerTheme);
+        editor.putBoolean("fixedMessageViewTheme", useFixedMessageTheme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
         editor.putBoolean("confirmDelete", mConfirmDelete);
@@ -777,7 +782,9 @@ public class K9 extends Application {
         }
         K9.setK9Theme(theme);
 
-        K9.setK9MessageViewTheme(sprefs.getInt("messageViewTheme", THEME_LIGHT));
+        K9.setK9MessageViewThemeSetting(sprefs.getInt("messageViewTheme", THEME_GLOBAL));
+        K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
+        K9.setK9ComposerThemeSetting(sprefs.getInt("messageComposeTheme", THEME_GLOBAL));
     }
 
     private void maybeSetupStrictMode() {
@@ -836,8 +843,8 @@ public class K9 extends Application {
         language = nlanguage;
     }
 
-    public static int getK9ThemeResourceId(int theme) {
-        return (theme == THEME_LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
+    public static int getK9ThemeResourceId(int themeId) {
+        return (themeId == THEME_LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
     }
 
     public static int getK9ThemeResourceId() {
@@ -845,7 +852,19 @@ public class K9 extends Application {
     }
 
     public static int getK9MessageViewTheme() {
+        return messageViewTheme == THEME_GLOBAL ? theme : messageViewTheme;
+    }
+
+    public static int getK9MessageViewThemeSetting() {
         return messageViewTheme;
+    }
+
+    public static int getK9ComposerTheme() {
+        return composerTheme == THEME_GLOBAL ? theme : composerTheme;
+    }
+
+    public static int getK9ComposerThemeSetting() {
+        return composerTheme;
     }
 
     public static int getK9Theme() {
@@ -853,11 +872,27 @@ public class K9 extends Application {
     }
 
     public static void setK9Theme(int ntheme) {
+        assert ntheme != THEME_GLOBAL;
         theme = ntheme;
     }
 
-    public static void setK9MessageViewTheme(int nMessageViewTheme) {
+    public static void setK9MessageViewThemeSetting(int nMessageViewTheme) {
         messageViewTheme = nMessageViewTheme;
+    }
+
+    public static boolean useFixedMessageViewTheme() {
+        return useFixedMessageTheme;
+    }
+
+    public static void setK9ComposerThemeSetting(int compTheme) {
+        composerTheme = compTheme;
+    }
+
+    public static void setUseFixedMessageViewTheme(boolean useFixed) {
+        useFixedMessageTheme = useFixed;
+        if (!useFixedMessageTheme && messageViewTheme == THEME_GLOBAL) {
+            messageViewTheme = theme;
+        }
     }
 
     public static BACKGROUND_OPS getBackgroundOps() {
