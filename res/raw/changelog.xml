@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.325" versioncode="17026" >
+        <change>Bug fixes (threading, checkboxes)</change>
+        <change>German translation update</change>
+
+    </release>
     <release version="4.324" versioncode="17025" >
         <change>Bug fixes</change>
         <change>Improved animations when showing the message list</change>
