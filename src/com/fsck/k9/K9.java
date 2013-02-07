@@ -839,6 +839,13 @@ public class K9 extends Application {
         language = nlanguage;
     }
 
+    /**
+     * Possible values for the different theme settings.
+     *
+     * <p><strong>Important:</strong>
+     * Do not change the order of the items! The ordinal value (position) is used when saving the
+     * settings.</p>
+     */
     public enum Theme {
         LIGHT,
         DARK,
