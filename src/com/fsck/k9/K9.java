@@ -226,6 +226,7 @@ public class K9 extends Application {
     private static boolean mShowContactName = false;
     private static boolean mChangeContactNameColor = false;
     private static int mContactNameColor = 0xff00008f;
+    private static boolean sShowContactPicture = true;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
     private static boolean mMessageViewShowNext = false;
@@ -506,6 +507,7 @@ public class K9 extends Application {
         editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
         editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
         editor.putBoolean("showContactName", mShowContactName);
+        editor.putBoolean("showContactPicture", sShowContactPicture);
         editor.putBoolean("changeRegisteredNameColor", mChangeContactNameColor);
         editor.putInt("registeredNameColor", mContactNameColor);
         editor.putBoolean("messageViewFixedWidthFont", mMessageViewFixedWidthFont);
@@ -703,6 +705,7 @@ public class K9 extends Application {
 
         mShowCorrespondentNames = sprefs.getBoolean("showCorrespondentNames", true);
         mShowContactName = sprefs.getBoolean("showContactName", false);
+        sShowContactPicture = sprefs.getBoolean("showContactPicture", true);
         mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
         mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
@@ -1334,6 +1337,14 @@ public class K9 extends Application {
 
     public static synchronized void setSplitViewMode(SplitViewMode mode) {
         sSplitViewMode = mode;
+    }
+
+    public static boolean showContactPicture() {
+        return sShowContactPicture;
+    }
+
+    public static void setShowContactPicture(boolean show) {
+        sShowContactPicture = show;
     }
 
     /**

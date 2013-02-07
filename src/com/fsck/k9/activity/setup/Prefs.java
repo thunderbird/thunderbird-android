@@ -73,6 +73,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES = "messagelist_show_correspondent_names";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
     private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
+    private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE = "messagelist_show_contact_picture";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
@@ -124,6 +125,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mShowCorrespondentNames;
     private CheckBoxPreference mShowContactName;
     private CheckBoxPreference mChangeContactNameColor;
+    private CheckBoxPreference mShowContactPicture;
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
@@ -265,6 +267,9 @@ public class Prefs extends K9PreferenceActivity {
 
         mShowContactName = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME);
         mShowContactName.setChecked(K9.showContactName());
+
+        mShowContactPicture = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE);
+        mShowContactPicture.setChecked(K9.showContactPicture());
 
         mBackgroundAsUnreadIndicator = (CheckBoxPreference)findPreference(PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR);
         mBackgroundAsUnreadIndicator.setChecked(K9.useBackgroundAsUnreadIndicator());
@@ -497,6 +502,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setShowCorrespondentNames(mShowCorrespondentNames.isChecked());
         K9.setMessageListSenderAboveSubject(mSenderAboveSubject.isChecked());
         K9.setShowContactName(mShowContactName.isChecked());
+        K9.setShowContactPicture(mShowContactPicture.isChecked());
         K9.setUseBackgroundAsUnreadIndicator(mBackgroundAsUnreadIndicator.isChecked());
         K9.setThreadedViewEnabled(mThreadedView.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());

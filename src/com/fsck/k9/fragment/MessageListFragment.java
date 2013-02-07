@@ -750,8 +750,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mPreviewLines = K9.messageListPreviewLines();
         mCheckboxes = K9.messageListCheckboxes();
 
-        mContactsPictureLoader = new ContactPictureLoader(getActivity(),
-                R.drawable.ic_contact_picture);
+        if (K9.showContactPicture()) {
+            mContactsPictureLoader = new ContactPictureLoader(getActivity(),
+                    R.drawable.ic_contact_picture);
+        }
 
         restoreInstanceState(savedInstanceState);
         decodeArguments();
@@ -1733,7 +1735,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.date = (TextView) view.findViewById(R.id.date);
             holder.chip = view.findViewById(R.id.chip);
             holder.preview = (TextView) view.findViewById(R.id.preview);
-            holder.contactBadge = (QuickContactBadge) view.findViewById(R.id.contact_badge);
+
+            QuickContactBadge contactBadge =
+                    (QuickContactBadge) view.findViewById(R.id.contact_badge);
+            if (mContactsPictureLoader != null) {
+                holder.contactBadge = contactBadge;
+            } else {
+                contactBadge.setVisibility(View.GONE);
+            }
 
             if (mSenderAboveSubject) {
                 holder.from = (TextView) view.findViewById(R.id.subject);
