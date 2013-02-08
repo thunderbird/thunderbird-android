@@ -23,6 +23,11 @@ import com.fsck.k9.helper.Contacts;
 
 public class ContactPictureLoader {
     /**
+     * Resize the pictures to the following value (device-independent pixels).
+     */
+    private static final int PICTURE_SIZE = 48;
+
+    /**
      * Maximum number of email addresses to store in {@link #mUnknownContactsCache}.
      */
     private static final int MAX_UNKNOWN_CONTACTS = 1000;
@@ -37,6 +42,7 @@ public class ContactPictureLoader {
     private Resources mResources;
     private Contacts mContactsHelper;
     private Bitmap mDefaultPicture;
+    private int mPictureSizeInPx;
 
     /**
      * LRU cache of contact pictures.
@@ -63,6 +69,9 @@ public class ContactPictureLoader {
         mResources = appContext.getResources();
         mContactsHelper = Contacts.getInstance(appContext);
         mDefaultPicture = BitmapFactory.decodeResource(mResources, defaultPictureResource);
+
+        float scale = mResources.getDisplayMetrics().density;
+        mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
 
         ActivityManager activityManager =
                 (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
@@ -228,7 +237,12 @@ public class ContactPictureLoader {
                     InputStream stream = mContentResolver.openInputStream(x);
                     if (stream != null) {
                         try {
-                            bitmap = BitmapFactory.decodeStream(stream);
+                            Bitmap tempBitmap = BitmapFactory.decodeStream(stream);
+                            bitmap = Bitmap.createScaledBitmap(tempBitmap, mPictureSizeInPx,
+                                    mPictureSizeInPx, true);
+                            if (tempBitmap != bitmap) {
+                                tempBitmap.recycle();
+                            }
                         } finally {
                             try { stream.close(); } catch (IOException e) { /* ignore */ }
                         }
