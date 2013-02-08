@@ -44,9 +44,6 @@ import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 
 public class K9 extends Application {
-    public static final int THEME_LIGHT = 0;
-    public static final int THEME_DARK = 1;
-
     /**
      * Components that are interested in knowing when the K9 instance is
      * available and ready (Android invokes Application.onCreate() after other
@@ -98,8 +95,10 @@ public class K9 extends Application {
     }
 
     private static String language = "";
-    private static int theme = THEME_LIGHT;
-    private static int messageViewTheme = THEME_LIGHT;
+    private static Theme theme = Theme.LIGHT;
+    private static Theme messageViewTheme = Theme.USE_GLOBAL;
+    private static Theme composerTheme = Theme.USE_GLOBAL;
+    private static boolean useFixedMessageTheme = true;
 
     private static final FontSizes fontSizes = new FontSizes();
 
@@ -227,6 +226,7 @@ public class K9 extends Application {
     private static boolean mShowContactName = false;
     private static boolean mChangeContactNameColor = false;
     private static int mContactNameColor = 0xff00008f;
+    private static boolean sShowContactPicture = true;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
     private static boolean mMessageViewShowNext = false;
@@ -507,6 +507,7 @@ public class K9 extends Application {
         editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
         editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
         editor.putBoolean("showContactName", mShowContactName);
+        editor.putBoolean("showContactPicture", sShowContactPicture);
         editor.putBoolean("changeRegisteredNameColor", mChangeContactNameColor);
         editor.putInt("registeredNameColor", mContactNameColor);
         editor.putBoolean("messageViewFixedWidthFont", mMessageViewFixedWidthFont);
@@ -522,8 +523,10 @@ public class K9 extends Application {
         editor.putBoolean("batchButtonsUnselect", mBatchButtonsUnselect);
 
         editor.putString("language", language);
-        editor.putInt("theme", theme);
-        editor.putInt("messageViewTheme", messageViewTheme);
+        editor.putInt("theme", theme.ordinal());
+        editor.putInt("messageViewTheme", messageViewTheme.ordinal());
+        editor.putInt("messageComposeTheme", composerTheme.ordinal());
+        editor.putBoolean("fixedMessageViewTheme", useFixedMessageTheme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
         editor.putBoolean("confirmDelete", mConfirmDelete);
@@ -702,6 +705,7 @@ public class K9 extends Application {
 
         mShowCorrespondentNames = sprefs.getBoolean("showCorrespondentNames", true);
         mShowContactName = sprefs.getBoolean("showContactName", false);
+        sShowContactPicture = sprefs.getBoolean("showContactPicture", true);
         mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
         mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
@@ -766,18 +770,20 @@ public class K9 extends Application {
 
         K9.setK9Language(sprefs.getString("language", ""));
 
-        int theme = sprefs.getInt("theme", THEME_LIGHT);
-
+        int themeValue = sprefs.getInt("theme", Theme.LIGHT.ordinal());
         // We used to save the resource ID of the theme. So convert that to the new format if
         // necessary.
-        if (theme == THEME_DARK || theme == android.R.style.Theme) {
-            theme = THEME_DARK;
+        if (themeValue == Theme.DARK.ordinal() || themeValue == android.R.style.Theme) {
+            K9.setK9Theme(Theme.DARK);
         } else {
-            theme = THEME_LIGHT;
+            K9.setK9Theme(Theme.LIGHT);
         }
-        K9.setK9Theme(theme);
 
-        K9.setK9MessageViewTheme(sprefs.getInt("messageViewTheme", THEME_LIGHT));
+        themeValue = sprefs.getInt("messageViewTheme", Theme.USE_GLOBAL.ordinal());
+        K9.setK9MessageViewThemeSetting(Theme.values()[themeValue]);
+        themeValue = sprefs.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
+        K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
+        K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
     }
 
     private void maybeSetupStrictMode() {
@@ -836,28 +842,70 @@ public class K9 extends Application {
         language = nlanguage;
     }
 
-    public static int getK9ThemeResourceId(int theme) {
-        return (theme == THEME_LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
+    /**
+     * Possible values for the different theme settings.
+     *
+     * <p><strong>Important:</strong>
+     * Do not change the order of the items! The ordinal value (position) is used when saving the
+     * settings.</p>
+     */
+    public enum Theme {
+        LIGHT,
+        DARK,
+        USE_GLOBAL
+    }
+
+    public static int getK9ThemeResourceId(Theme themeId) {
+        return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
     }
 
     public static int getK9ThemeResourceId() {
         return getK9ThemeResourceId(theme);
     }
 
-    public static int getK9MessageViewTheme() {
+    public static Theme getK9MessageViewTheme() {
+        return messageViewTheme == Theme.USE_GLOBAL ? theme : messageViewTheme;
+    }
+
+    public static Theme getK9MessageViewThemeSetting() {
         return messageViewTheme;
     }
 
-    public static int getK9Theme() {
+    public static Theme getK9ComposerTheme() {
+        return composerTheme == Theme.USE_GLOBAL ? theme : composerTheme;
+    }
+
+    public static Theme getK9ComposerThemeSetting() {
+        return composerTheme;
+    }
+
+    public static Theme getK9Theme() {
         return theme;
     }
 
-    public static void setK9Theme(int ntheme) {
-        theme = ntheme;
+    public static void setK9Theme(Theme ntheme) {
+        if (ntheme != Theme.USE_GLOBAL) {
+            theme = ntheme;
+        }
     }
 
-    public static void setK9MessageViewTheme(int nMessageViewTheme) {
+    public static void setK9MessageViewThemeSetting(Theme nMessageViewTheme) {
         messageViewTheme = nMessageViewTheme;
+    }
+
+    public static boolean useFixedMessageViewTheme() {
+        return useFixedMessageTheme;
+    }
+
+    public static void setK9ComposerThemeSetting(Theme compTheme) {
+        composerTheme = compTheme;
+    }
+
+    public static void setUseFixedMessageViewTheme(boolean useFixed) {
+        useFixedMessageTheme = useFixed;
+        if (!useFixedMessageTheme && messageViewTheme == Theme.USE_GLOBAL) {
+            messageViewTheme = theme;
+        }
     }
 
     public static BACKGROUND_OPS getBackgroundOps() {
@@ -1289,6 +1337,14 @@ public class K9 extends Application {
 
     public static synchronized void setSplitViewMode(SplitViewMode mode) {
         sSplitViewMode = mode;
+    }
+
+    public static boolean showContactPicture() {
+        return sShowContactPicture;
+    }
+
+    public static void setShowContactPicture(boolean show) {
+        sShowContactPicture = show;
     }
 
     /**

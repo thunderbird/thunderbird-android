@@ -54,6 +54,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
+import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,7 @@ import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
@@ -428,6 +430,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      */
     private boolean mInitialized = false;
 
+    private ContactPictureLoader mContactsPictureLoader;
+
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
      *
@@ -745,6 +749,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mPreviewLines = K9.messageListPreviewLines();
         mCheckboxes = K9.messageListCheckboxes();
+
+        if (K9.showContactPicture()) {
+            mContactsPictureLoader = new ContactPictureLoader(getActivity(),
+                    R.drawable.ic_contact_picture);
+        }
 
         restoreInstanceState(savedInstanceState);
         decodeArguments();
@@ -1732,6 +1741,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.chip = view.findViewById(R.id.chip);
             holder.preview = (TextView) view.findViewById(R.id.preview);
 
+            QuickContactBadge contactBadge =
+                    (QuickContactBadge) view.findViewById(R.id.contact_badge);
+            if (mContactsPictureLoader != null) {
+                holder.contactBadge = contactBadge;
+            } else {
+                contactBadge.setVisibility(View.GONE);
+            }
+
             if (mSenderAboveSubject) {
                 holder.from = (TextView) view.findViewById(R.id.subject);
                 holder.from.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSender());
@@ -1776,6 +1793,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             boolean ccMe = mMessageHelper.toMe(account, ccAddrs);
 
             CharSequence displayName = mMessageHelper.getDisplayName(account, fromAddrs, toAddrs);
+
+            String counterpartyAddress = null;
+            if (fromMe) {
+                if (toAddrs.length > 0) {
+                    counterpartyAddress = toAddrs[0].getAddress();
+                } else if (ccAddrs.length > 0) {
+                    counterpartyAddress = ccAddrs[0].getAddress();
+                }
+            } else if (fromAddrs.length > 0) {
+                counterpartyAddress = fromAddrs[0].getAddress();
+            }
 
             Date sentDate = new Date(cursor.getLong(DATE_COLUMN));
             String displayDate = mMessageHelper.formatDate(sentDate);
@@ -1822,6 +1850,21 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 // Now save the position so MessageViewHolder.onCheckedChanged() will know what
                 // message to (de)select.
                 holder.position = cursor.getPosition();
+            }
+
+            if (holder.contactBadge != null) {
+                holder.contactBadge.assignContactFromEmail(counterpartyAddress, true);
+                if (counterpartyAddress != null) {
+                    /*
+                     * At least in Android 2.2 a different background + padding is used when no
+                     * email address is available. ListView reuses the views but QuickContactBadge
+                     * doesn't reset the padding, so we do it ourselves.
+                     */
+                    holder.contactBadge.setPadding(0, 0, 0, 0);
+                    mContactsPictureLoader.loadContactPicture(counterpartyAddress, holder.contactBadge);
+                } else {
+                    holder.contactBadge.setImageResource(R.drawable.ic_contact_picture);
+                }
             }
 
             // Background indicator
@@ -1885,7 +1928,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             //TODO: make this part of the theme
-            int color = (K9.getK9Theme() == K9.THEME_LIGHT) ?
+            int color = (K9.getK9Theme() == K9.Theme.LIGHT) ?
                     Color.rgb(105, 105, 105) :
                     Color.rgb(160, 160, 160);
 
@@ -1944,6 +1987,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public TextView threadCount;
         public CheckBox selected;
         public int position = -1;
+        public QuickContactBadge contactBadge;
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

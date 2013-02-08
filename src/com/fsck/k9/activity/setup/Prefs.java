@@ -18,6 +18,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -52,6 +53,9 @@ public class Prefs extends K9PreferenceActivity {
      */
     private static final String PREFERENCE_LANGUAGE = "language";
     private static final String PREFERENCE_THEME = "theme";
+    private static final String PREFERENCE_MESSAGE_VIEW_THEME = "messageViewTheme";
+    private static final String PREFERENCE_FIXED_MESSAGE_THEME = "fixedMessageViewTheme";
+    private static final String PREFERENCE_COMPOSER_THEME = "messageComposeTheme";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
     private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
     private static final String PREFERENCE_ANIMATIONS = "animations";
@@ -69,6 +73,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES = "messagelist_show_correspondent_names";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
     private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
+    private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE = "messagelist_show_contact_picture";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
@@ -101,6 +106,9 @@ public class Prefs extends K9PreferenceActivity {
 
     private ListPreference mLanguage;
     private ListPreference mTheme;
+    private CheckBoxPreference mFixedMessageTheme;
+    private ListPreference mMessageTheme;
+    private ListPreference mComposerTheme;
     private ListPreference mDateFormat;
     private CheckBoxPreference mAnimations;
     private CheckBoxPreference mGestures;
@@ -117,6 +125,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mShowCorrespondentNames;
     private CheckBoxPreference mShowContactName;
     private CheckBoxPreference mChangeContactNameColor;
+    private CheckBoxPreference mShowContactPicture;
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
@@ -170,8 +179,13 @@ public class Prefs extends K9PreferenceActivity {
                            entryVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY),
                            entryValueVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
 
-        final String theme = (K9.getK9Theme() == K9.THEME_DARK) ? "dark" : "light";
-        mTheme = setupListPreference(PREFERENCE_THEME, theme);
+        mTheme = setupListPreference(PREFERENCE_THEME, themeIdToName(K9.getK9Theme()));
+        mFixedMessageTheme = (CheckBoxPreference) findPreference(PREFERENCE_FIXED_MESSAGE_THEME);
+        mFixedMessageTheme.setChecked(K9.useFixedMessageViewTheme());
+        mMessageTheme = setupListPreference(PREFERENCE_MESSAGE_VIEW_THEME,
+                themeIdToName(K9.getK9MessageViewThemeSetting()));
+        mComposerTheme = setupListPreference(PREFERENCE_COMPOSER_THEME,
+                themeIdToName(K9.getK9ComposerThemeSetting()));
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
         new Preference.OnPreferenceClickListener() {
@@ -253,6 +267,9 @@ public class Prefs extends K9PreferenceActivity {
 
         mShowContactName = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME);
         mShowContactName.setChecked(K9.showContactName());
+
+        mShowContactPicture = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE);
+        mShowContactPicture.setChecked(K9.showContactPicture());
 
         mBackgroundAsUnreadIndicator = (CheckBoxPreference)findPreference(PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR);
         mBackgroundAsUnreadIndicator.setChecked(K9.useBackgroundAsUnreadIndicator());
@@ -434,17 +451,33 @@ public class Prefs extends K9PreferenceActivity {
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
     }
 
+    private static String themeIdToName(K9.Theme theme) {
+        switch (theme) {
+            case DARK: return "dark";
+            case USE_GLOBAL: return "global";
+            default: return "light";
+        }
+    }
+
+    private static K9.Theme themeNameToId(String theme) {
+        if (TextUtils.equals(theme, "dark")) {
+            return K9.Theme.DARK;
+        } else if (TextUtils.equals(theme, "global")) {
+            return K9.Theme.USE_GLOBAL;
+        } else {
+            return K9.Theme.LIGHT;
+        }
+    }
+
     private void saveSettings() {
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
 
         K9.setK9Language(mLanguage.getValue());
 
-        int newTheme = mTheme.getValue().equals("dark") ? K9.THEME_DARK : K9.THEME_LIGHT;
-        if (K9.getK9Theme() != newTheme) {
-            // Reset the message view theme when the app theme changes
-            K9.setK9MessageViewTheme(newTheme);
-        }
-        K9.setK9Theme(newTheme);
+        K9.setK9Theme(themeNameToId(mTheme.getValue()));
+        K9.setUseFixedMessageViewTheme(mFixedMessageTheme.isChecked());
+        K9.setK9MessageViewThemeSetting(themeNameToId(mMessageTheme.getValue()));
+        K9.setK9ComposerThemeSetting(themeNameToId(mComposerTheme.getValue()));
 
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
@@ -469,6 +502,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setShowCorrespondentNames(mShowCorrespondentNames.isChecked());
         K9.setMessageListSenderAboveSubject(mSenderAboveSubject.isChecked());
         K9.setShowContactName(mShowContactName.isChecked());
+        K9.setShowContactPicture(mShowContactPicture.isChecked());
         K9.setUseBackgroundAsUnreadIndicator(mBackgroundAsUnreadIndicator.isChecked());
         K9.setThreadedViewEnabled(mThreadedView.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());

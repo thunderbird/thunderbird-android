@@ -19,6 +19,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.SplitViewMode;
+import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.helper.DateFormatter;
@@ -185,10 +186,11 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("theme", Settings.versions(
-                new V(1, new ThemeSetting(K9.THEME_LIGHT))
+                new V(1, new ThemeSetting(K9.Theme.LIGHT))
             ));
         s.put("messageViewTheme", Settings.versions(
-                new V(16, new ThemeSetting(K9.THEME_LIGHT))
+                new V(16, new ThemeSetting(K9.Theme.LIGHT)),
+                new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
             ));
         s.put("useGalleryBugWorkaround", Settings.versions(
                 new V(1, new GalleryBugWorkaroundSetting())
@@ -233,11 +235,21 @@ public class GlobalSettings {
         s.put("splitViewMode", Settings.versions(
                 new V(23, new EnumSetting<SplitViewMode>(SplitViewMode.class, SplitViewMode.NEVER))
             ));
+        s.put("messageComposeTheme", Settings.versions(
+                new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
+            ));
+        s.put("fixedMessageViewTheme", Settings.versions(
+                new V(24, new BooleanSetting(true))
+            ));
+        s.put("showContactPicture", Settings.versions(
+                new V(25, new BooleanSetting(true))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
         u.put(12, new SettingsUpgraderV12());
+        u.put(24, new SettingsUpgraderV24());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -283,6 +295,28 @@ public class GlobalSettings {
                 settings.put("notificationHideSubject", NotificationHideSubject.NEVER);
             }
             return new HashSet<String>(Arrays.asList("keyguardPrivacy"));
+        }
+    }
+
+    /**
+     * Upgrades the settings from version 23 to 24.
+     *
+     * <p>
+     * Set <em>messageViewTheme</em> to {@link K9.Theme#USE_GLOBAL} if <em>messageViewTheme</em> has
+     * the same value as <em>theme</em>.
+     * </p>
+     */
+    public static class SettingsUpgraderV24 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            K9.Theme messageViewTheme = (K9.Theme) settings.get("messageViewTheme");
+            K9.Theme theme = (K9.Theme) settings.get("theme");
+            if (theme != null && messageViewTheme != null && theme == messageViewTheme) {
+                settings.put("messageViewTheme", K9.Theme.USE_GLOBAL);
+            }
+
+            return null;
         }
     }
 
@@ -355,7 +389,7 @@ public class GlobalSettings {
         private static final String THEME_LIGHT = "light";
         private static final String THEME_DARK = "dark";
 
-        public ThemeSetting(int defaultValue) {
+        public ThemeSetting(K9.Theme defaultValue) {
             super(defaultValue);
         }
 
@@ -363,14 +397,14 @@ public class GlobalSettings {
         public Object fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer theme = Integer.parseInt(value);
-                if (theme == K9.THEME_LIGHT ||
+                if (theme == K9.Theme.LIGHT.ordinal() ||
                         // We used to store the resource ID of the theme in the preference storage,
                         // but don't use the database upgrade mechanism to update the values. So
                         // we have to deal with the old format here.
                         theme == android.R.style.Theme_Light) {
-                    return K9.THEME_LIGHT;
-                } else if (theme == K9.THEME_DARK || theme == android.R.style.Theme) {
-                    return K9.THEME_DARK;
+                    return K9.Theme.LIGHT;
+                } else if (theme == K9.Theme.DARK.ordinal() || theme == android.R.style.Theme) {
+                    return K9.Theme.DARK;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }
 
@@ -380,9 +414,9 @@ public class GlobalSettings {
         @Override
         public Object fromPrettyString(String value) throws InvalidSettingValueException {
             if (THEME_LIGHT.equals(value)) {
-                return K9.THEME_LIGHT;
+                return K9.Theme.LIGHT;
             } else if (THEME_DARK.equals(value)) {
-                return K9.THEME_DARK;
+                return K9.Theme.DARK;
             }
 
             throw new InvalidSettingValueException();
@@ -390,7 +424,62 @@ public class GlobalSettings {
 
         @Override
         public String toPrettyString(Object value) {
-            return (((Integer)value).intValue() == K9.THEME_LIGHT) ? THEME_LIGHT : THEME_DARK;
+            switch ((K9.Theme) value) {
+                case DARK: {
+                    return THEME_DARK;
+                }
+                default: {
+                    return THEME_LIGHT;
+                }
+            }
+        }
+
+        @Override
+        public String toString(Object value) {
+            return Integer.toString(((K9.Theme) value).ordinal());
+        }
+    }
+
+    /**
+     * The message view theme setting.
+     */
+    public static class SubThemeSetting extends ThemeSetting {
+        private static final String THEME_USE_GLOBAL = "use_global";
+
+        public SubThemeSetting(Theme defaultValue) {
+            super(defaultValue);
+        }
+
+        @Override
+        public Object fromString(String value) throws InvalidSettingValueException {
+            try {
+                Integer theme = Integer.parseInt(value);
+                if (theme == K9.Theme.USE_GLOBAL.ordinal()) {
+                    return K9.Theme.USE_GLOBAL;
+                }
+
+                return super.fromString(value);
+            } catch (NumberFormatException e) {
+                throw new InvalidSettingValueException();
+            }
+        }
+
+        @Override
+        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+            if (THEME_USE_GLOBAL.equals(value)) {
+                return K9.Theme.USE_GLOBAL;
+            }
+
+            return super.fromPrettyString(value);
+        }
+
+        @Override
+        public String toPrettyString(Object value) {
+            if (((K9.Theme) value) == K9.Theme.USE_GLOBAL) {
+                return THEME_USE_GLOBAL;
+            }
+
+            return super.toPrettyString(value);
         }
     }
 

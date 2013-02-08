@@ -502,6 +502,18 @@
         <item>dark</item>
     </string-array>
 
+    <string-array name="settings_message_theme_entries">
+        <item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_dark</item>
+        <item>@string/setting_theme_global</item>
+    </string-array>
+
+    <string-array name="settings_message_theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>global</item>
+    </string-array>
+
     <!-- Note: If you change this make sure the code in Prefs.java is still working -->
     <string-array name="background_ops_entries">
         <item>@string/background_ops_enabled</item>

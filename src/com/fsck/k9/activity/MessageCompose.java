@@ -479,15 +479,29 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
             finish();
             return;
         }
-
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.message_compose);
+
+        if (K9.getK9ComposerThemeSetting() != K9.Theme.USE_GLOBAL) {
+            // theme the whole content according to the theme (except the action bar)
+            ContextThemeWrapper wrapper = new ContextThemeWrapper(this,
+                    K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
+            View v = ((LayoutInflater) wrapper.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+                    inflate(R.layout.message_compose, null);
+            TypedValue outValue = new TypedValue();
+            // background color needs to be forced
+            wrapper.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+            v.setBackgroundColor(outValue.data);
+            setContentView(v);
+        } else {
+            setContentView(R.layout.message_compose);
+        }
 
         final Intent intent = getIntent();
 
@@ -552,6 +566,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
+
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextShow = (Button)findViewById(R.id.quoted_text_show);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
@@ -2367,7 +2382,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             .create();
         case DIALOG_CHOOSE_IDENTITY:
             Context context = new ContextThemeWrapper(this,
-                    (K9.getK9Theme() == K9.THEME_LIGHT) ?
+                    (K9.getK9Theme() == K9.Theme.LIGHT) ?
                             R.style.Theme_K9_Dialog_Light :
                             R.style.Theme_K9_Dialog_Dark);
             Builder builder = new AlertDialog.Builder(context);

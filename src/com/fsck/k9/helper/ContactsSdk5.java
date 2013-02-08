@@ -2,6 +2,7 @@ package com.fsck.k9.helper;
 
 import java.util.ArrayList;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -257,5 +258,48 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
                              null,
                              SORT_ORDER);
         return c;
+    }
+
+    @Override
+    public Uri getPhotoUri(String address) {
+        Long contactId;
+        try {
+            final Cursor c = getContactByAddress(address);
+            if (c == null) {
+                return null;
+            }
+
+            try {
+                if (!c.moveToFirst()) {
+                    return null;
+                }
+
+                contactId = c.getLong(CONTACT_ID_INDEX);
+            } finally {
+                c.close();
+            }
+
+            Cursor cur = mContentResolver.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    null,
+                    ContactsContract.Data.CONTACT_ID + "=" + contactId + " AND "
+                            + ContactsContract.Data.MIMETYPE + "='"
+                            + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'", null,
+                    null);
+            if (cur == null) {
+                return null;
+            }
+            if (!cur.moveToFirst()) {
+                cur.close();
+                return null; // no photo
+            }
+            // Ok, they have a photo
+            cur.close();
+            Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+            return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Couldn't fetch photo for contact with email " + address, e);
+            return null;
+        }
     }
 }
