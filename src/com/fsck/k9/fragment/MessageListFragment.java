@@ -1850,6 +1850,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             if (holder.contactBadge != null) {
                 holder.contactBadge.assignContactFromEmail(counterpartyAddress, true);
                 if (counterpartyAddress != null) {
+                    /*
+                     * At least in Android 2.2 a different background + padding is used when no
+                     * email address is available. ListView reuses the views but QuickContactBadge
+                     * doesn't reset the padding, so we do it ourselves.
+                     */
+                    holder.contactBadge.setPadding(0, 0, 0, 0);
                     mContactsPictureLoader.loadContactPicture(counterpartyAddress, holder.contactBadge);
                 } else {
                     holder.contactBadge.setImageResource(R.drawable.ic_contact_picture);
