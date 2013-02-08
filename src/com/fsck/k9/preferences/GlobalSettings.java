@@ -241,6 +241,9 @@ public class GlobalSettings {
         s.put("fixedMessageViewTheme", Settings.versions(
                 new V(24, new BooleanSetting(true))
             ));
+        s.put("showContactPicture", Settings.versions(
+                new V(25, new BooleanSetting(true))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
