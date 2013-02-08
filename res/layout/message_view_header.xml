@@ -2,275 +2,178 @@
 <com.fsck.k9.view.MessageHeader
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/header_container"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Message header area -->
-        <TableLayout
-            android:id="@+id/top_container"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="1"
-            android:shrinkColumns="1"
             android:background="@color/message_view_header_background">
 
-            <TableRow>
+            <!-- Color chip -->
+            <View
+                android:id="@+id/chip"
+                android:layout_width="6dip"
+                android:layout_height="match_parent"
+                android:layout_marginRight="6dip"/>
 
-                <!-- Color chip -->
-                <View
-                    android:id="@+id/chip"
-                    android:layout_marginRight="6dip"
-                    android:layout_width="6dip"
-                    android:layout_height="fill_parent"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dip"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:paddingTop="2dip"
-                    android:layout_column="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <!-- Subject -->
                     <TextView
                         android:id="@+id/subject"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/state_container"
                         android:maxLines="3"
                         android:ellipsize="end"
-                        android:textSize="10sp"
                         android:textStyle="bold"
                         android:textColor="?android:attr/textColorSecondary"
                         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     <!-- From -->
-                    <LinearLayout
-                        android:id="@+id/from_container"
+                    <TextView
+                        android:id="@+id/from"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/from"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="6dip"
-                            android:singleLine="true"
-                            android:ellipsize="end"
-                            android:textColor="?android:attr/textColorPrimary"
-                            android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/subject"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/state_container"
+                        android:paddingRight="6dip"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     <!-- To -->
-                    <LinearLayout
-                        android:id="@+id/to_container"
+                    <TextView
+                        android:id="@+id/to"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:baselineAligned="true">
-
-                        <TextView
-                            android:id="@+id/to_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="4dip"
-                            android:text="@string/message_to_label"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:textColor="?android:attr/textColorSecondary"/>
-
-                        <TextView
-                            android:id="@+id/to"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:maxLines="2"
-                            android:ellipsize="end"
-                            android:textSize="10sp"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                    </LinearLayout>
+                        android:layout_below="@id/from"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/state_container"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     <!-- CC -->
-                    <LinearLayout
-                        android:id="@+id/cc_container"
+                    <TextView
+                        android:id="@+id/cc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:baselineAligned="true">
+                        android:layout_below="@id/to"
+                        android:layout_alignParentLeft="true"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-                        <TextView
-                            android:id="@+id/cc_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="4dip"
-                            android:text="@string/message_view_cc_label"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:textColor="?android:attr/textColorSecondary"/>
-
-                        <TextView
-                            android:id="@+id/cc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:maxLines="2"
-                            android:ellipsize="end"
-                            android:textSize="10sp"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
-                <!-- Date/Time + Icons -->
-                <LinearLayout
-                    android:id="@+id/topright_container"
-                    android:layout_marginTop="6dip"
-                    android:layout_marginRight="6dip"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:layout_gravity="right">
                     <LinearLayout
-                        android:id="@+id/date_time_container"
-                        android:orientation="vertical"
+                        android:id="@+id/state_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="6dip"
-                        android:paddingRight="5dip"
-                            android:gravity="right"
-                        >
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:orientation="vertical">
 
+                        <!-- Date -->
                         <TextView
                             android:id="@+id/date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="right"
                             android:singleLine="true"
                             android:ellipsize="none"
-                            android:textSize="10sp"
                             android:textColor="?android:attr/textColorPrimary"
                             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
+                        <!-- Time -->
                         <TextView
                             android:id="@+id/time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="10sp"
+                            android:layout_gravity="right"
                             android:singleLine="true"
                             android:ellipsize="none"
                             android:textColor="?android:attr/textColorPrimary"
                             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/icons_container"
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|right">
-
-                        <View
-                            android:id="@+id/answered"
-                            android:layout_width="22sp"
-                            android:layout_height="22sp"
-                            android:paddingRight="4dip"
-                            android:background="@drawable/ic_email_answered_small"/>
-                        <View
-                            android:id="@+id/forwarded"
-                            android:layout_width="22sp"
-                            android:layout_height="22sp"
-                            android:paddingRight="4dip"
-                            android:background="@drawable/ic_email_forwarded_small"/>
-                        <CheckBox
-                            android:id="@+id/flagged"
+                        <!-- State icons -->
+                        <LinearLayout
+                            android:id="@+id/icon_container"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:button="@drawable/star"
-                            />
+                            android:layout_marginTop="2dip"
+                            android:layout_marginBottom="2dip"
+                            android:layout_gravity="center_vertical|right"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:id="@+id/answered"
+                                android:layout_width="22sp"
+                                android:layout_height="22sp"
+                                android:paddingRight="4dip"
+                                android:background="@drawable/ic_email_answered_small"/>
+
+                            <View
+                                android:id="@+id/forwarded"
+                                android:layout_width="22sp"
+                                android:layout_height="22sp"
+                                android:paddingRight="4dip"
+                                android:background="@drawable/ic_email_forwarded_small"/>
+
+                            <CheckBox
+                                android:id="@+id/flagged"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:button="@drawable/star"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                </LinearLayout>
+                </RelativeLayout>
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/additional_headers_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:singleLine="false"
+                        android:ellipsize="none"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <TableRow
-                android:id="@+id/additional_headers_row">
 
-                <!-- Color chip 2 -->
-                <View
-                    android:id="@+id/chip2"
-                    android:layout_marginRight="6dip"
-                    android:layout_width="6dip"
-                    android:layout_height="fill_parent"/>
-
-                <!-- Additional headers -->
-                <TextView
-                    android:layout_span="2"
-                    android:id="@+id/additional_headers_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:singleLine="false"
-                    android:ellipsize="none"
-                    android:textSize="10sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            </TableRow>
-
-        </TableLayout>
-
-        <!-- Separator -->
-        <!-- This layout has an explicit height because otherwise there will be strange
-             display issues when the additional headers are shown. -->
-        <LinearLayout
-            android:id="@+id/show_additional_headers_area"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="21dp"
-            android:focusable="true"
-            android:clickable="true"
-            android:background="@drawable/message_view_header_background">
-
-            <RelativeLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="20dp">
-
-                <!-- Color chip 3 -->
-                <View
-                    android:id="@+id/chip3"
-                    android:layout_marginRight="6dip"
-                    android:layout_width="6dip"
-                    android:layout_height="fill_parent"
-                    android:layout_alignParentLeft="true"/>
-
-                <!-- Show more/less indicator -->
-                <ImageView
-                    android:id="@+id/show_additional_headers_icon"
-                    android:src="@drawable/show_more"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginRight="12dp"/>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:background="@drawable/divider_horizontal_email" />
+            </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:layout_height="1dip"
+            android:layout_width="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/additional_headers_view"
+            android:background="@drawable/divider_horizontal_email" />
 
         <!-- Button area -->
         <LinearLayout

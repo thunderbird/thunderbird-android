@@ -12,17 +12,17 @@
 
     <!-- MessageView -->
     <item
-        android:id="@+id/next_message"
-        android:title="@string/next_action"
-        android:icon="?attr/iconActionNextMessage"
+        android:id="@+id/previous_message"
+        android:title="@string/previous_action"
+        android:icon="?attr/iconActionPreviousMessage"
         android:showAsAction="always"
     />
 
     <!-- MessageView -->
     <item
-        android:id="@+id/previous_message"
-        android:title="@string/previous_action"
-        android:icon="?attr/iconActionPreviousMessage"
+        android:id="@+id/next_message"
+        android:title="@string/next_action"
+        android:icon="?attr/iconActionNextMessage"
         android:showAsAction="always"
     />
 
@@ -111,6 +111,14 @@
         android:alphabeticShortcut="u"
         android:showAsAction="never"
         android:title="@string/mark_as_unread_action"/>
+
+    <item android:id="@+id/show_headers"
+          android:showAsAction="never"
+          android:title="@string/show_headers_action"/>
+
+    <item android:id="@+id/hide_headers"
+          android:showAsAction="never"
+          android:title="@string/hide_headers_action"/>
 
     <!-- MessageList -->
     <item

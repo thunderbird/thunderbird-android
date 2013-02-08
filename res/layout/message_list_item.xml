@@ -1,43 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="6dip"
     android:paddingRight="4dip"
     android:paddingTop="5dip" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/chip_wrapper"
         android:layout_width="48dip"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_gravity="center|center_vertical"
+        android:orientation="vertical"
+        android:gravity="center"
         android:textColor="?android:attr/textColorPrimary" >
 
-    <View
-        android:id="@+id/chip"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
-        android:layout_gravity="center|center_vertical"
-        android:layout_marginLeft="8dip"
-        android:layout_marginRight="8dip"
-        android:background="@android:color/transparent" />
+        <View
+            android:id="@+id/chip"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_marginLeft="8dip"
+            android:layout_marginRight="8dip"
+            android:background="@android:color/transparent" />
+
         <CheckBox
             android:id="@+id/selected_checkbox"
             android:layout_width="36dip"
-            android:layout_below="@+id/chip"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:focusable="false"
-            android:gravity="bottom|center"
             android:visibility="gone" />
-    </RelativeLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/subject"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="1dip"
@@ -51,11 +49,11 @@
 
     <TextView
         android:id="@+id/preview"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/chip_wrapper"
         android:layout_below="@+id/subject"
-        android:layout_toLeftOf="@+id/thread_count_wrapper"
+        android:layout_toLeftOf="@+id/thread_count"
         android:layout_marginLeft="1dip"
         android:layout_marginBottom="3dip"
         android:layout_marginRight="3dip"
@@ -63,8 +61,6 @@
         android:singleLine="false"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorPrimary" />
-
-
 
     <TextView
         android:id="@+id/date"
@@ -77,27 +73,22 @@
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorSecondary" />
-    <LinearLayout
-            android:id="@+id/thread_count_wrapper"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/date"
-            android:layout_alignTop="@+id/preview"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="2dip"
-            android:background="?attr/messageListThreadCountBackground"
-            >
+
     <TextView
         android:id="@+id/thread_count"
         android:layout_gravity="center|center_vertical"
         android:textColor="?attr/messageListThreadCountForegroundColor"
+        android:background="?attr/messageListThreadCountBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/preview"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/date"
+        android:layout_marginLeft="4dip"
+        android:layout_marginRight="2dip"
         android:paddingRight="4dip"
         android:paddingBottom="1dip"
         android:paddingLeft="4dip"
         android:focusable="false" />
-    </LinearLayout>
+
 </RelativeLayout>

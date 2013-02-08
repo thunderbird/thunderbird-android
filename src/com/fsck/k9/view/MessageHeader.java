@@ -6,6 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.AttributeSet;
@@ -16,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.fsck.k9.FontSizes;
@@ -50,12 +50,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private DateFormat mTimeFormat;
 
     private View mChip;
-    private View mChip2;
-    private View mChip3;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
-    private LinearLayout mToContainerView;
-    private LinearLayout mCcContainerView;
     private TextView mAdditionalHeadersView;
     private View mAnsweredIcon;
     private View mForwardedIcon;
@@ -63,7 +59,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private Account mAccount;
     private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
-    private ImageView mShowAdditionalHeadersIcon;
     private SavedState mSavedState;
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
@@ -90,55 +85,45 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mContacts = Contacts.getInstance(mContext);
     }
 
-    private void initializeLayout() {
+    @Override
+    protected void onFinishInflate() {
         mAnsweredIcon = findViewById(R.id.answered);
-        mForwardedIcon= findViewById(R.id.forwarded);
+        mForwardedIcon = findViewById(R.id.forwarded);
         mFromView = (TextView) findViewById(R.id.from);
         mToView = (TextView) findViewById(R.id.to);
         mCcView = (TextView) findViewById(R.id.cc);
-        mToContainerView = (LinearLayout) findViewById(R.id.to_container);
-        mCcContainerView = (LinearLayout) findViewById(R.id.cc_container);
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
-        mChip2 = findViewById(R.id.chip2);
-        mChip3 = findViewById(R.id.chip3);
         mDateView = (TextView) findViewById(R.id.date);
         mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
-        mShowAdditionalHeadersIcon = (ImageView) findViewById(R.id.show_additional_headers_icon);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSubject());
         mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTime());
         mDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewDate());
         mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewAdditionalHeaders());
-        hideAdditionalHeaders();
-
-        mAnsweredIcon.setVisibility(View.GONE);
-        mForwardedIcon.setVisibility(View.GONE);
 
         mFromView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSender());
         mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
         mCcView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
-        ((TextView) findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
-        ((TextView) findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
 
-        findViewById(R.id.show_additional_headers_area).setOnClickListener(this);
-        findViewById(R.id.additional_headers_row).setOnClickListener(this);
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
+
+        resetViews();
+    }
+
+    private void resetViews() {
+        mSubjectView.setVisibility(VISIBLE);
+        hideAdditionalHeaders();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.additional_headers_row:
-            case R.id.show_additional_headers_area: {
-                onShowAdditionalHeaders();
-                break;
-            }
             case R.id.from: {
                 onAddSenderToContacts();
                 break;
@@ -181,7 +166,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private void hideAdditionalHeaders() {
         mAdditionalHeadersView.setVisibility(View.GONE);
         mAdditionalHeadersView.setText("");
-        mShowAdditionalHeadersIcon.setImageResource(R.drawable.show_more);
     }
 
 
@@ -200,7 +184,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
                 // Show the additional headers that we have got.
                 populateAdditionalHeadersView(additionalHeaders);
                 mAdditionalHeadersView.setVisibility(View.VISIBLE);
-                mShowAdditionalHeadersIcon.setImageResource(R.drawable.show_less);
             }
             if (!allHeadersDownloaded) {
                 /*
@@ -238,7 +221,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mMessage = message;
         mAccount = account;
 
-        initializeLayout();
+        resetViews();
+
         final String subject = message.getSubject();
         if (StringUtils.isNullOrEmpty(subject)) {
             mSubjectView.setText(mContext.getText(R.string.general_no_subject));
@@ -256,10 +240,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
             mDateView.setVisibility(View.GONE);
         }
         mTimeView.setText(time);
-        mToContainerView.setVisibility((to != null && to.length() > 0) ? View.VISIBLE : View.GONE);
-        mToView.setText(to);
-        mCcContainerView.setVisibility((cc != null && cc.length() > 0) ? View.VISIBLE : View.GONE);
-        mCcView.setText(cc);
+        updateAddressField(mToView, to, R.string.message_to_label);
+        updateAddressField(mCcView, cc, R.string.message_view_cc_label);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
@@ -268,10 +250,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         int chipColorAlpha = (!message.isSet(Flag.SEEN)) ? 255 : 127;
         mChip.setBackgroundColor(chipColor);
         mChip.getBackground().setAlpha(chipColorAlpha);
-        mChip2.setBackgroundColor(chipColor);
-        mChip2.getBackground().setAlpha(chipColorAlpha);
-        mChip3.setBackgroundColor(chipColor);
-        mChip3.getBackground().setAlpha(chipColorAlpha);
 
         setVisibility(View.VISIBLE);
 
@@ -297,6 +275,26 @@ public class MessageHeader extends ScrollView implements OnClickListener {
             expand(mCcView, true);
         }
         layoutChanged();
+    }
+
+    private static final StyleSpan sBoldSpan = new StyleSpan(Typeface.BOLD);
+
+    private void updateAddressField(TextView v, CharSequence address, int prefixId) {
+        if (TextUtils.isEmpty(address)) {
+            v.setVisibility(View.GONE);
+            return;
+        }
+
+        final SpannableStringBuilder text = new SpannableStringBuilder();
+        final String prefix = mContext.getString(prefixId);
+
+        text.append(prefix);
+        text.append(" ");
+        text.append(address);
+        text.setSpan(sBoldSpan, 0, prefix.length(), 0);
+
+        v.setText(text);
+        v.setVisibility(View.VISIBLE);
     }
 
     /**

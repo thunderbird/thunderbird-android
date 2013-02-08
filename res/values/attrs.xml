@@ -51,6 +51,7 @@
         <attr name="messageListActiveItemBackgroundColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
         <attr name="messageViewHeaderBackgroundColor" format="reference|color"/>
+        <attr name="messageViewAttachmentBackground" format="reference"/>
 
     </declare-styleable>
 

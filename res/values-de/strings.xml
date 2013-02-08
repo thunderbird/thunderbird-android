@@ -321,7 +321,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="global_settings_folderlist_wrap_folder_names_summary">Lange Ordnernamen auf mehreren Zeilen anzeigen</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Monotype-Schriftart</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Verwende Schriftart mit gleicher Zeichenbreite für Nur-Text-Nachrichten</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Schriftart mit gleicher Zeichenbreite für Nur-Text-Nachrichten verwenden</string>
     <string name="global_settings_messageview_return_to_list_label">Nach Löschen zurück</string>
     <string name="global_settings_messageview_return_to_list_summary">Nach Löschen zur Nachrichtenliste zurückkehren</string>
     <string name="global_settings_messageview_show_next_label">Nach Löschen nächste Nachricht</string>

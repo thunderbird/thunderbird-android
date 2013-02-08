@@ -1,6 +1,5 @@
 package com.fsck.k9.view;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -38,6 +37,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
@@ -142,7 +142,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
         mContacts = Contacts.getInstance(activity);
 
-        mInflater = activity.getLayoutInflater();
+        mInflater = ((MessageViewFragment) fragment).getFragmentLayoutInflater();
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);
         mAttachmentsContainer.setVisibility(View.GONE);
@@ -163,6 +163,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             TypedValue outValue = new TypedValue();
             getContext().getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
             mHeaderContainer.setBackgroundColor(outValue.data);
+            // also set background of the whole view (including the attachments view)
+            setBackgroundColor(outValue.data);
 
             mTitleBarHeaderContainer = new LinearLayout(activity);
             mMessageContentView.setEmbeddedTitleBarCompat(mTitleBarHeaderContainer);
@@ -629,7 +631,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             mAccessibleMessageContentView.loadDataWithBaseURL("http://", emailText, contentType, "utf-8", null);
         } else {
             mMessageContentView.setText(emailText, contentType);
-            mMessageContentView.scrollTo(0, 0);
         }
 
     }
