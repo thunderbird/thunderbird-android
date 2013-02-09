@@ -104,12 +104,10 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
         mDateView = (TextView) findViewById(R.id.date);
-        mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mFontSizes.setViewTextSize(mSubjectView, mFontSizes.getMessageViewSubject());
-        mFontSizes.setViewTextSize(mTimeView, mFontSizes.getMessageViewTime());
         mFontSizes.setViewTextSize(mDateView, mFontSizes.getMessageViewDate());
         mFontSizes.setViewTextSize(mAdditionalHeadersView, mFontSizes.getMessageViewAdditionalHeaders());
 
@@ -244,12 +242,11 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mFromView.setText(from);
 
         if (date != null) {
-            mDateView.setText(date);
-            mDateView.setVisibility(View.VISIBLE);
+            mDateView.setText(time + " - " + date);
         } else {
-            mDateView.setVisibility(View.GONE);
+            mDateView.setText(time);
         }
-        mTimeView.setText(time);
+        }
         updateAddressField(mToView, to, mToLabel);
         updateAddressField(mCcView, cc, mCcLabel);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
