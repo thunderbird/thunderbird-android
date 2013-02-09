@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.Account;
 import com.fsck.k9.helper.DateFormatter;
@@ -44,7 +45,9 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private TextView mDateView;
     private TextView mTimeView;
     private TextView mToView;
+    private TextView mToLabel;
     private TextView mCcView;
+    private TextView mCcLabel;
     private TextView mSubjectView;
     private DateFormat mDateFormat;
     private DateFormat mTimeFormat;
@@ -60,6 +63,9 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
     private SavedState mSavedState;
+
+    private ContactPictureLoader mContactsPictureLoader;
+    private QuickContactBadge mContactBadge;
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
 
@@ -91,7 +97,9 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mForwardedIcon = findViewById(R.id.forwarded);
         mFromView = (TextView) findViewById(R.id.from);
         mToView = (TextView) findViewById(R.id.to);
+        mToLabel = (TextView) findViewById(R.id.to_label);
         mCcView = (TextView) findViewById(R.id.cc);
+        mCcLabel = (TextView) findViewById(R.id.cc_label);
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
@@ -107,7 +115,9 @@ public class MessageHeader extends ScrollView implements OnClickListener {
 
         mFontSizes.setViewTextSize(mFromView, mFontSizes.getMessageViewSender());
         mFontSizes.setViewTextSize(mToView, mFontSizes.getMessageViewTo());
+        mFontSizes.setViewTextSize(mToLabel, mFontSizes.getMessageViewTo());
         mFontSizes.setViewTextSize(mCcView, mFontSizes.getMessageViewCC());
+        mFontSizes.setViewTextSize(mCcLabel, mFontSizes.getMessageViewCC());
 
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
@@ -240,8 +250,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
             mDateView.setVisibility(View.GONE);
         }
         mTimeView.setText(time);
-        updateAddressField(mToView, to, R.string.message_to_label);
-        updateAddressField(mCcView, cc, R.string.message_view_cc_label);
+        updateAddressField(mToView, to, mToLabel);
+        updateAddressField(mCcView, cc, mCcLabel);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
@@ -277,24 +287,20 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         layoutChanged();
     }
 
-    private static final StyleSpan sBoldSpan = new StyleSpan(Typeface.BOLD);
 
-    private void updateAddressField(TextView v, CharSequence address, int prefixId) {
-        if (TextUtils.isEmpty(address)) {
+    private void updateAddressField(TextView v, CharSequence text, View label) {
+        if (TextUtils.isEmpty(text)) {
             v.setVisibility(View.GONE);
+            label.setVisibility(View.GONE);
+
             return;
         }
 
-        final SpannableStringBuilder text = new SpannableStringBuilder();
-        final String prefix = mContext.getString(prefixId);
-
-        text.append(prefix);
-        text.append(" ");
-        text.append(address);
-        text.setSpan(sBoldSpan, 0, prefix.length(), 0);
 
         v.setText(text);
         v.setVisibility(View.VISIBLE);
+        label.setVisibility(View.VISIBLE);
+
     }
 
     /**
