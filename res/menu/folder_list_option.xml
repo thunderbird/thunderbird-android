@@ -24,7 +24,7 @@
         android:showAsAction="always"
         android:title="@string/compose_action"/>
     <item
-        android:icon="@drawable/ic_show_folders"
+        android:icon="?attr/iconFolder"
         android:title="@string/folder_list_display_mode_label">
         <menu>
             <item
@@ -43,12 +43,12 @@
     </item>
     <item
         android:id="@+id/send_messages"
-        android:icon="?attr/iconMenuRefresh"
+        android:icon="?attr/iconActionUpload"
         android:title="@string/send_messages_action"/>
     <item
         android:id="@+id/empty_trash"
         android:alphabeticShortcut="e"
-        android:icon="?attr/iconMenuDelete"
+        android:icon="?attr/iconActionDelete"
         android:title="@string/empty_trash_action"/>
     <item
         android:id="@+id/compact"
@@ -56,10 +56,11 @@
         android:title="@string/compact_action"/>
     <item
         android:id="@+id/list_folders"
+        android:icon="?attr/iconActionRefresh"
         android:title="@string/refresh_folders_action"/>
     <item
         android:id="@+id/settings"
-        android:icon="?attr/iconMenuPreferences"
+        android:icon="?attr/iconActionSettings"
         android:showAsAction="never"
         android:title="@string/preferences_action">
         <menu>

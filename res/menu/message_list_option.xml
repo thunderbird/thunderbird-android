@@ -164,7 +164,7 @@
     <!-- MessageList -->
     <item
         android:id="@+id/select_all"
-        android:icon="?attr/iconMenuSelectAll"
+        android:icon="?attr/iconActionSelectAll"
         android:showAsAction="never"
         android:title="@string/batch_select_all"/>
 
@@ -172,7 +172,7 @@
     <item
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
-        android:icon="?attr/iconActionRefresh"
+        android:icon="?attr/iconActionUpload"
         android:showAsAction="never"
         android:title="@string/send_messages_action"/>
 
@@ -197,7 +197,7 @@
     <!-- always -->
     <item
         android:id="@+id/settings"
-        android:icon="?attr/iconMenuPreferences"
+        android:icon="?attr/iconActionSettings"
         android:showAsAction="never"
         android:title="@string/preferences_action">
         <menu>
