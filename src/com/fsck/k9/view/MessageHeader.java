@@ -100,14 +100,14 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mFlagged = (CheckBox) findViewById(R.id.flagged);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
-        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSubject());
-        mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTime());
-        mDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewDate());
-        mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewAdditionalHeaders());
+        mFontSizes.setViewTextSize(mSubjectView, mFontSizes.getMessageViewSubject());
+        mFontSizes.setViewTextSize(mTimeView, mFontSizes.getMessageViewTime());
+        mFontSizes.setViewTextSize(mDateView, mFontSizes.getMessageViewDate());
+        mFontSizes.setViewTextSize(mAdditionalHeadersView, mFontSizes.getMessageViewAdditionalHeaders());
 
-        mFromView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSender());
-        mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
-        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
+        mFontSizes.setViewTextSize(mFromView, mFontSizes.getMessageViewSender());
+        mFontSizes.setViewTextSize(mToView, mFontSizes.getMessageViewTo());
+        mFontSizes.setViewTextSize(mCcView, mFontSizes.getMessageViewCC());
 
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);

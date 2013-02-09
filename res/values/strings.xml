@@ -941,6 +941,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_message_compose">Message composition</string>
     <string name="font_size_message_compose_input">Text input fields</string>
 
+    <string name="font_size_default">Default</string>
     <string name="font_size_tiniest">Tiniest</string>
     <string name="font_size_tiny">Tiny</string>
     <string name="font_size_smaller">Smaller</string>

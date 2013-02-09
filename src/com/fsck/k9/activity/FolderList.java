@@ -1103,7 +1103,9 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
             holder.chip.setBackgroundDrawable(mAccount.generateColorChip((folder.unreadMessageCount == 0 ? true : false ), false, false, false,false).drawable());
 
-            holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderName());
+
+            mFontSizes.setViewTextSize(holder.folderName, mFontSizes.getFolderName());
+
             if (K9.wrapFolderNames()) {
                 holder.folderName.setEllipsize(null);
                 holder.folderName.setSingleLine(false);
@@ -1112,7 +1114,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
                 holder.folderName.setEllipsize(TruncateAt.START);
                 holder.folderName.setSingleLine(true);
             }
-            holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getFolderStatus());
+            mFontSizes.setViewTextSize(holder.folderStatus, mFontSizes.getFolderStatus());
 
 
             return view;

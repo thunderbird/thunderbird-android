@@ -1748,8 +1748,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             }
 
 
-            holder.description.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountName());
-            holder.email.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountDescription());
+
+
+            mFontSizes.setViewTextSize(holder.description, mFontSizes.getAccountName());
+            mFontSizes.setViewTextSize(holder.email, mFontSizes.getAccountDescription());
 
             if (account instanceof SearchAccount) {
                 holder.folders.setVisibility(View.GONE);

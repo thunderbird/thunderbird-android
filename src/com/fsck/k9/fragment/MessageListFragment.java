@@ -1746,17 +1746,20 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             if (mSenderAboveSubject) {
                 holder.from = (TextView) view.findViewById(R.id.subject);
-                holder.from.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSender());
+                mFontSizes.setViewTextSize(holder.from, mFontSizes.getMessageListSender());
+
             } else {
                 holder.subject = (TextView) view.findViewById(R.id.subject);
-                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
+                mFontSizes.setViewTextSize(holder.subject, mFontSizes.getMessageListSubject());
+
             }
 
-            holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
+            mFontSizes.setViewTextSize(holder.date, mFontSizes.getMessageListDate());
+
 
             // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
             holder.preview.setLines(Math.max(mPreviewLines,1));
-            holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
+            mFontSizes.setViewTextSize(holder.preview, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
 
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);

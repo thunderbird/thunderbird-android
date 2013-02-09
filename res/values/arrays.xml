@@ -537,6 +537,7 @@
     </string-array>
 
     <string-array name="font_entries">
+        <item>@string/font_size_default</item>
         <item>@string/font_size_tiniest</item>
         <item>@string/font_size_tiny</item>
         <item>@string/font_size_smaller</item>
@@ -547,6 +548,7 @@
     </string-array>
 
     <string-array name="font_values">
+        <item>-1</item>
         <item>10</item>
         <item>12</item>
         <item>14</item>

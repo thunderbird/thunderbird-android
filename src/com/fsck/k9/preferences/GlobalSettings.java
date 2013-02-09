@@ -73,55 +73,55 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("fontSizeAccountDescription", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeAccountName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.MEDIUM))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeFolderName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.LARGE))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeFolderStatus", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageComposeInput", Settings.versions(
-                new V(5, new FontSizeSetting(FontSizes.MEDIUM))
+                new V(5, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListDate", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListPreview", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListSender", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_16SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewAdditionalHeaders", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewCC", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewContent", Settings.versions(
                 new V(1, new WebFontSizeSetting(3))
             ));
         s.put("fontSizeMessageViewDate", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_10SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewSender", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewTime", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_10SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewTo", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("gesturesEnabled", Settings.versions(
                 new V(1, new BooleanSetting(true)),

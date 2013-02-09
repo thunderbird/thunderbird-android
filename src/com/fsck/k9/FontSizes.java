@@ -1,7 +1,9 @@
 package com.fsck.k9;
 
 import android.content.SharedPreferences;
+import android.util.TypedValue;
 import android.webkit.WebSettings.TextSize;
+import android.widget.TextView;
 
 /**
  * Manage font size of the information displayed in the account list, folder
@@ -32,6 +34,7 @@ public class FontSizes {
     /*
      * Values for the font sizes in SP (Scale-independent Pixels)
      */
+    public static final int FONT_DEFAULT = -1;   // Don't force-reset the size of this setting
     public static final int FONT_10SP = 10;
     public static final int FONT_12SP = 12;
     public static final int SMALL = 14;         // ?android:attr/textAppearanceSmall
@@ -133,24 +136,24 @@ public class FontSizes {
      * Create a <code>FontSizes</code> object with default values.
      */
     public FontSizes() {
-        accountName = MEDIUM;
-        accountDescription = SMALL;
+        accountName = FONT_DEFAULT;
+        accountDescription = FONT_DEFAULT;
 
-        folderName = MEDIUM;
-        folderStatus = SMALL;
+        folderName = FONT_DEFAULT;
+        folderStatus = FONT_DEFAULT;
 
-        messageListSubject = FONT_16SP;
-        messageListSender = SMALL;
-        messageListDate = SMALL;
-        messageListPreview = SMALL;
+        messageListSubject = FONT_DEFAULT;
+        messageListSender = FONT_DEFAULT;
+        messageListDate = FONT_DEFAULT;
+        messageListPreview = FONT_DEFAULT;
 
-        messageViewSender = SMALL;
-        messageViewTo = FONT_12SP;
-        messageViewCC = FONT_12SP;
-        messageViewAdditionalHeaders = FONT_12SP;
-        messageViewSubject = FONT_12SP;
-        messageViewTime = FONT_10SP;
-        messageViewDate = FONT_10SP;
+        messageViewSender = FONT_DEFAULT;
+        messageViewTo = FONT_DEFAULT;
+        messageViewCC = FONT_DEFAULT;
+        messageViewAdditionalHeaders = FONT_DEFAULT;
+        messageViewSubject = FONT_DEFAULT;
+        messageViewTime = FONT_DEFAULT;
+        messageViewDate = FONT_DEFAULT;
 
         messageComposeInput = MEDIUM;
     }
@@ -379,5 +382,13 @@ public class FontSizes {
 
     public void setMessageComposeInput(int messageComposeInput) {
         this.messageComposeInput = messageComposeInput;
+    }
+
+    // This, arguably, should live somewhere in a view class, but since we call it from activities, fragments
+    // and views, where isn't exactly clear.
+    public void setViewTextSize(TextView v, int fontSize) {
+        if (fontSize != FONT_DEFAULT) {
+            v.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        }
     }
 }
