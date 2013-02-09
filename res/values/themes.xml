@@ -3,7 +3,6 @@
 
     <style name="Theme.K9.Light.Base" parent="Theme.Sherlock.Light">
         <item name="iconFolder">@drawable/folder_light</item>
-        <item name="listDivider">@drawable/divider_light</item>
         <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_light</item>
         <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
         <item name="iconActionAddAttachment">@drawable/ic_action_add_attachment_light</item>
@@ -33,12 +32,10 @@
         <item name="iconMenuCloseClearCancel">@drawable/ic_menu_close_clear_cancel</item>
         <item name="iconMenuCompact">@drawable/ic_menu_compact</item>
         <item name="iconMenuDelete">@drawable/ic_menu_delete</item>
-        <item name="iconMenuInbox">@drawable/ic_menu_inbox</item>
         <item name="iconMenuPreferences">@drawable/ic_menu_preferences</item>
         <item name="iconMenuRefresh">@drawable/ic_menu_refresh</item>
         <item name="iconMenuReplyReceipt">@drawable/ic_menu_reply_receipt</item>
         <item name="iconMenuSaveDraft">@drawable/ic_menu_save_draft</item>
-        <item name="iconMenuSearch">@drawable/ic_menu_search</item>
         <item name="iconMenuSelectAll">@drawable/ic_menu_select_all</item>
         <item name="iconMenuShowFolders">@drawable/ic_show_folders</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
@@ -57,7 +54,6 @@
     <style name="Theme.K9.Dark.Base" parent="Theme.Sherlock">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="iconFolder">@drawable/folder_dark</item>
-        <item name="listDivider">@drawable/divider_dark</item>
         <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_dark</item>
         <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
         <item name="iconActionAddAttachment">@drawable/ic_action_add_attachment_dark</item>
@@ -87,12 +83,10 @@
         <item name="iconMenuCloseClearCancel">@drawable/ic_menu_close_clear_cancel</item>
         <item name="iconMenuCompact">@drawable/ic_menu_compact</item>
         <item name="iconMenuDelete">@drawable/ic_menu_delete</item>
-        <item name="iconMenuInbox">@drawable/ic_menu_inbox</item>
         <item name="iconMenuPreferences">@drawable/ic_menu_preferences</item>
         <item name="iconMenuRefresh">@drawable/ic_menu_refresh</item>
         <item name="iconMenuReplyReceipt">@drawable/ic_menu_reply_receipt</item>
         <item name="iconMenuSaveDraft">@drawable/ic_menu_save_draft</item>
-        <item name="iconMenuSearch">@drawable/ic_menu_search</item>
         <item name="iconMenuSelectAll">@drawable/ic_menu_select_all</item>
         <item name="iconMenuShowFolders">@drawable/ic_show_folders</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>

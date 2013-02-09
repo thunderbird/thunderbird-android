@@ -3,7 +3,6 @@
 
     <declare-styleable name="K9Styles">
         <attr name="iconFolder" format="reference" />
-        <attr name="listDivider" format="reference" />
         <attr name="iconListItemMenu" format="reference" />
         <attr name="iconMenuInfoDetails" format="reference" />
         <attr name="iconActionAddAttachment" format="reference" />
@@ -33,12 +32,10 @@
         <attr name="iconMenuCloseClearCancel" format="reference" />
         <attr name="iconMenuCompact" format="reference" />
         <attr name="iconMenuDelete" format="reference" />
-        <attr name="iconMenuInbox" format="reference" />
         <attr name="iconMenuPreferences" format="reference" />
         <attr name="iconMenuRefresh" format="reference" />
         <attr name="iconMenuReplyReceipt" format="reference" />
         <attr name="iconMenuSaveDraft" format="reference" />
-        <attr name="iconMenuSearch" format="reference" />
         <attr name="iconMenuSelectAll" format="reference" />
         <attr name="iconMenuShowFolders" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
