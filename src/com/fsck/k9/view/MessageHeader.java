@@ -313,13 +313,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private List<HeaderEntry> getAdditionalHeaders(final Message message)
     throws MessagingException {
         List<HeaderEntry> additionalHeaders = new LinkedList<HeaderEntry>();
-        /*
-        * Remove "Subject" header as it is already shown in the standard
-        * message view header. But do show "From", "To", and "Cc" again.
-        * This time including the email addresses. See issue 1805.
-        */
+
         Set<String> headerNames = new LinkedHashSet<String>(message.getHeaderNames());
-        headerNames.remove("Subject");
         for (String headerName : headerNames) {
             String[] headerValues = message.getHeader(headerName);
             for (String headerValue : headerValues) {
