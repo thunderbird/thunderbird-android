@@ -836,7 +836,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_language_label">Language</string>
 
     <string name="settings_message_theme_selection_label">Fixed message theme</string>
-    <string name="settings_message_theme_selection_summary_off">Select the messsge view theme while viewing the message</string>
+    <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>
     <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>
 
     <string name="settings_messageview_mobile_layout_label">Condensed layout</string>
