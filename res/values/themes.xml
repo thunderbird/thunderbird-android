@@ -28,9 +28,7 @@
         <item name="iconActionRemoteSearch">@drawable/ic_action_remote_search_light</item>
         <item name="iconMenuAdd">@drawable/ic_menu_add</item>
         <item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
-        <item name="iconMenuClear">@drawable/ic_menu_clear</item>
         <item name="iconMenuCloseClearCancel">@drawable/ic_menu_close_clear_cancel</item>
-        <item name="iconMenuCompact">@drawable/ic_menu_compact</item>
         <item name="iconMenuDelete">@drawable/ic_menu_delete</item>
         <item name="iconMenuPreferences">@drawable/ic_menu_preferences</item>
         <item name="iconMenuRefresh">@drawable/ic_menu_refresh</item>
@@ -79,9 +77,7 @@
         <item name="iconActionRemoteSearch">@drawable/ic_action_remote_search_dark</item>
         <item name="iconMenuAdd">@drawable/ic_menu_add</item>
         <item name="iconMenuAttachment">@drawable/ic_menu_attachment</item>
-        <item name="iconMenuClear">@drawable/ic_menu_clear</item>
         <item name="iconMenuCloseClearCancel">@drawable/ic_menu_close_clear_cancel</item>
-        <item name="iconMenuCompact">@drawable/ic_menu_compact</item>
         <item name="iconMenuDelete">@drawable/ic_menu_delete</item>
         <item name="iconMenuPreferences">@drawable/ic_menu_preferences</item>
         <item name="iconMenuRefresh">@drawable/ic_menu_refresh</item>

@@ -28,9 +28,7 @@
         <attr name="iconActionRemoteSearch" format="reference" />
         <attr name="iconMenuAdd" format="reference" />
         <attr name="iconMenuAttachment" format="reference" />
-        <attr name="iconMenuClear" format="reference" />
         <attr name="iconMenuCloseClearCancel" format="reference" />
-        <attr name="iconMenuCompact" format="reference" />
         <attr name="iconMenuDelete" format="reference" />
         <attr name="iconMenuPreferences" format="reference" />
         <attr name="iconMenuRefresh" format="reference" />

@@ -52,7 +52,6 @@
         android:title="@string/empty_trash_action"/>
     <item
         android:id="@+id/compact"
-        android:icon="?attr/iconMenuCompact"
         android:showAsAction="never"
         android:title="@string/compact_action"/>
     <item
