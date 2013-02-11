@@ -9,24 +9,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
         <TextView
                 android:id="@+id/subject"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/state_container"
                 android:maxLines="3"
                 android:ellipsize="end"
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/general_no_subject" android:padding="8dp"/>
+                android:text="@string/general_no_subject"
+                android:padding="8dp" />
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-           android:orientation="horizontal">
+                android:orientation="horizontal">
 
             <!-- Color chip -->
             <View
@@ -37,14 +36,16 @@
 
             <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_height="fill_parent" android:layout_gravity="center">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                 <QuickContactBadge
+                        android:id="@+id/contact_badge"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:id="@+id/contact_badge" android:layout_gravity="center|top"
-                        android:layout_marginTop="8dp" android:layout_centerHorizontal="true"
-                        android:layout_marginLeft="8dp"/>
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp" />
+
                 <!-- State icons -->
                 <LinearLayout
                         android:id="@+id/icon_container"
@@ -52,9 +53,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dip"
                         android:layout_marginBottom="2dip"
-                        android:layout_gravity="center_vertical|right"
-                        android:orientation="vertical" android:layout_centerHorizontal="true"
-                        android:layout_below="@+id/contact_badge">
+                        android:layout_below="@+id/contact_badge"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
 
                     <View
                             android:id="@+id/answered"
@@ -71,11 +72,14 @@
                             android:background="@drawable/ic_email_forwarded_small"/>
 
                 </LinearLayout>
+
             </RelativeLayout>
 
             <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:padding="6dip" android:layout_marginLeft="4dp">
+                    android:layout_height="wrap_content"
+                    android:padding="6dip"
+                    android:layout_marginLeft="4dp">
 
                 <!-- From -->
                 <TextView
@@ -84,111 +88,109 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
+                        android:paddingTop="0dp"
                         android:paddingRight="6dip"
                         android:singleLine="true"
                         android:ellipsize="end"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:paddingTop="0dp" android:textStyle="bold" android:text="@string/general_no_sender"/>
+                        android:textStyle="bold"
+                        android:text="@string/general_no_sender" />
 
                 <!-- To -->
                 <TextView
+                        android:id="@+id/to_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/from"
+                        android:layout_alignBaseline="@+id/to"
+                        android:paddingTop="4dp"
+                        android:paddingRight="4dp"
                         android:text="@string/message_to_label"
-                        android:id="@+id/to_label"
-                        android:layout_alignParentLeft="true" android:layout_below="@+id/from"
-                        android:textStyle="bold" android:gravity="right"
-                        android:paddingRight="4dp" android:paddingTop="4dp"
                         android:textColor="?android:attr/textColorPrimary"
-                        android:layout_alignRight="@+id/date_label"
                         android:textAppearance="@android:style/TextAppearance.Medium"
-                        />
+                        android:textStyle="bold" />
 
                 <TextView
                         android:id="@+id/to"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/to_label"
+                        android:layout_below="@+id/from"
                         android:maxLines="2"
                         android:ellipsize="end"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
-
                         android:paddingBottom="4dp"
-                        android:layout_toRightOf="@+id/to_label" android:layout_alignBaseline="@+id/to_label"
-                        android:layout_alignTop="@+id/to_label"/>
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
 
                 <!-- CC -->
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/message_view_cc_label"
-                          android:id="@+id/cc_label"
-                          android:layout_below="@+id/to" android:layout_alignRight="@+id/to_label"
-                          android:layout_alignLeft="@+id/to_label"
-                          android:gravity="right" android:paddingRight="4dp" android:paddingTop="4dp"
-                          android:textColor="?android:attr/textColorPrimary"
-                          android:textStyle="bold"
-                          android:textAppearance="@android:style/TextAppearance.Medium"
-                        />
+                <TextView
+                        android:id="@+id/cc_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/to_label"
+                        android:layout_alignLeft="@+id/to_label"
+                        android:layout_alignBaseline="@+id/cc"
+                        android:paddingRight="4dp"
+                        android:paddingTop="4dp"
+                        android:text="@string/message_view_cc_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:textAppearance="@android:style/TextAppearance.Medium" /> -->
+
                 <TextView
                         android:id="@+id/cc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/cc_label"
+                        android:layout_below="@+id/to"
                         android:maxLines="2"
                         android:ellipsize="end"
-
-                        android:gravity="right" android:paddingRight="4dp" android:paddingTop="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="4dp"
                         android:textColor="?android:attr/textColorSecondary"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
-                        android:layout_toRightOf="@+id/cc_label"
-                        android:layout_alignBaseline="@+id/cc_label" android:layout_alignTop="@+id/cc_label"/>
-                <!-- Date -->
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
 
+                <!-- Date -->
                 <TextView
                         android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_below="@+id/cc_label"
-                        android:layout_alignParentLeft="false"
+                        android:layout_below="@id/cc"
+                        android:layout_alignParentRight="true"
+                        android:paddingTop="8dp"
                         android:singleLine="true"
                         android:ellipsize="none"
-                        android:textAppearance="?android:attr/textAppearanceSmall" android:paddingTop="20dp"
-                        android:gravity="bottom" android:textColor="?android:attr/textColorSecondary"
-                        android:layout_alignParentBottom="false" android:layout_alignParentRight="true"
-                        android:layout_alignWithParentIfMissing="false"/>
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorSecondary" />
+
                 <CheckBox
                         android:id="@+id/flagged"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@id/from"
                         android:focusable="false"
                         android:button="@drawable/star"
-                        android:gravity="right|top"
-                        android:checked="false"
-                        android:layout_alignParentRight="true" android:layout_alignTop="@+id/from"/>
-
+                        android:checked="false" />
 
             </RelativeLayout>
 
         </LinearLayout>
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
+
+        <TextView
+                android:id="@+id/additional_headers_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
                 android:layout_marginRight="6dip"
-                android:orientation="vertical">
+                android:singleLine="false"
+                android:ellipsize="none"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textIsSelectable="true" />
 
-
-            <TextView
-                    android:id="@+id/additional_headers_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="false"
-                    android:ellipsize="none"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textAppearance="?android:attr/textAppearanceSmall" android:layout_margin="10dp"
-                    android:textIsSelectable="true"/>
-
-
-        </LinearLayout>
         <View
                 android:layout_height="1dip"
                 android:layout_width="match_parent"
@@ -239,7 +241,6 @@
         </LinearLayout>
 
         <include layout="@layout/message_view_crypto_layout"/>
-
 
     </LinearLayout>
 
