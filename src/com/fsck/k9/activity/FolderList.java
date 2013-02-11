@@ -396,6 +396,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
     @Override public void onPause() {
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mAdapter.mListener);
+        mAdapter.mListener.onPause(this);
     }
 
     /**
@@ -424,6 +425,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         onRefresh(!REFRESH_REMOTE);
 
         MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
+        mAdapter.mListener.onResume(this);
     }
 
     @Override
@@ -729,6 +731,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             @Override
             public void informUserOfStatus() {
                 mHandler.refreshTitle();
+                mHandler.dataChanged();
             }
             @Override
             public void accountStatusChanged(BaseAccount account, AccountStats stats) {

@@ -960,6 +960,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     @Override
     public void onPause() {
         super.onPause();
+        mListener.onPause(getActivity());
         mController.removeListener(mListener);
     }
 
@@ -1000,6 +1001,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
+        mListener.onResume(getActivity());
         mController.addListener(mListener);
 
         //Cancel pending new mail notifications when we open an account

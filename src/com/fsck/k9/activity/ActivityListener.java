@@ -1,6 +1,9 @@
 package com.fsck.k9.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.text.format.DateUtils;
 
 import com.fsck.k9.Account;
@@ -20,6 +23,12 @@ public class ActivityListener extends MessagingListener {
     private String mProcessingAccountDescription = null;
     private String mProcessingCommandTitle = null;
 
+    private BroadcastReceiver mTickReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            informUserOfStatus();
+        }
+    };
 
     public String getOperation(Context context) {
         String operation;
@@ -70,6 +79,14 @@ public class ActivityListener extends MessagingListener {
         }
 
         return operation;
+    }
+
+    public void onResume(Context context) {
+        context.registerReceiver(mTickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+    }
+
+    public void onPause(Context context) {
+        context.unregisterReceiver(mTickReceiver);
     }
 
     public void informUserOfStatus() {

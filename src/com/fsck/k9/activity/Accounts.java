@@ -478,6 +478,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         refresh();
         MessagingController.getInstance(getApplication()).addListener(mListener);
         StorageManager.getInstance(getApplication()).addListener(storageListener);
+        mListener.onResume(this);
     }
 
     @Override
@@ -485,6 +486,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
         StorageManager.getInstance(getApplication()).removeListener(storageListener);
+        mListener.onPause(this);
     }
 
     /**
