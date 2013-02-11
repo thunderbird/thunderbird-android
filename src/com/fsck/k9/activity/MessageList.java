@@ -236,6 +236,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         removeMessageListFragment();
         removeMessageViewFragment();
 
+        mMessageReference = null;
+        mSearch = null;
+        mFolderName = null;
+
         decodeExtras(intent);
         initializeDisplayMode(null);
         initializeFragments();
