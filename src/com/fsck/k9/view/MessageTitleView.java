@@ -12,7 +12,11 @@ import android.widget.TextView;
  * action bar's title view.
  */
 public class MessageTitleView extends TextView {
+    private static final int MAX_LINES = 2;
+    private static final String ELLIPSIS = "\u2026";
+
     private MessageHeader mHeader;
+    private boolean mNeedEllipsizeCheck = true;
 
     public MessageTitleView(Context context) {
         this(context, null);
@@ -26,13 +30,32 @@ public class MessageTitleView extends TextView {
         super(context, attrs, defStyle);
     }
 
+    @Override
+    protected void onTextChanged(CharSequence text, int start,
+            int lengthBefore, int lengthAfter) {
+        super.onTextChanged(text, start, lengthBefore, lengthAfter);
+        mNeedEllipsizeCheck = true;
+    }
     /**
      * Check to see if we need to hide the subject line in {@link MessageHeader} or not.
      */
     @Override
     public void onDraw(Canvas canvas) {
-        if (mHeader != null && getLayout() != null && getLayout().getEllipsisCount(1) == 0) {
-            mHeader.hideSubjectLine();
+        /*
+         * Android does not support ellipsize in combination with maxlines
+         * for TextViews. To work around that, check for ourselves whether
+         * the text is longer than MAX_LINES, and ellipsize manually.
+         */
+        if (mNeedEllipsizeCheck) {
+            if (getLayout() != null && mHeader != null) {
+                if (getLayout().getLineCount() > MAX_LINES) {
+                    int lineEndIndex = getLayout().getLineEnd(MAX_LINES - 1);
+                    setText(getText().subSequence(0, lineEndIndex - 2) + ELLIPSIS);
+                } else {
+                    mHeader.hideSubjectLine();
+                }
+                mNeedEllipsizeCheck = false;
+            }
         }
         super.onDraw(canvas);
     }

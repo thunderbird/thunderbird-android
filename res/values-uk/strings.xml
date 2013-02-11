@@ -895,8 +895,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="font_size_message_view_cc">Копія</string>
     <string name="font_size_message_view_additional_headers">Додаткові заголовки</string>
     <string name="font_size_message_view_subject">Тема</string>
-    <string name="font_size_message_view_time">Час</string>
-    <string name="font_size_message_view_date">Дата</string>
+    <string name="font_size_message_view_date">Час і дата</string>
     <string name="font_size_message_view_content">Тіло повідомлення</string>
 
     <string name="font_size_message_compose">Створення повідомлень</string>

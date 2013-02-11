@@ -893,8 +893,7 @@
     <string name="font_size_message_view_cc">Κοινοποίηση</string>
     <string name="font_size_message_view_additional_headers">Επιπλέον επικεφαλίδες</string>
     <string name="font_size_message_view_subject">Θέμα</string>
-    <string name="font_size_message_view_time">Ώρα</string>
-    <string name="font_size_message_view_date">Ημερομηνία</string>
+    <string name="font_size_message_view_date">Ώρα και Ημερομηνία</string>
     <string name="font_size_message_view_content">Σώμα μηνύματος</string>
 
     <string name="font_size_message_compose">Σύνθεση μηνύματος</string>

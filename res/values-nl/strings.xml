@@ -893,8 +893,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="font_size_message_view_cc">Bericht ontvanger (CC)</string>
     <string name="font_size_message_view_additional_headers">Extra koppen</string>
     <string name="font_size_message_view_subject">Bericht onderwerp</string>
-    <string name="font_size_message_view_time">Bericht tijd</string>
-    <string name="font_size_message_view_date">Bericht datum</string>
+    <string name="font_size_message_view_date">Bericht tijd en datum</string>
     <string name="font_size_message_view_content">Bericht inhoud</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

@@ -896,8 +896,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="font_size_message_view_cc">Modtagere (Cc)</string>
     <string name="font_size_message_view_additional_headers">Yderligere headers</string>
     <string name="font_size_message_view_subject">Emne</string>
-    <string name="font_size_message_view_time">Tid</string>
-    <string name="font_size_message_view_date">Dato</string>
+    <string name="font_size_message_view_date">Tid og dato</string>
     <string name="font_size_message_view_content">Indhold</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

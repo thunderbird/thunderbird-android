@@ -128,11 +128,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
 
         mMessageHelper = MessageHelper.getInstance(mContext);
 
-
-        resetViews();
-    }
-
-    private void resetViews() {
         mSubjectView.setVisibility(VISIBLE);
         hideAdditionalHeaders();
     }
@@ -250,10 +245,20 @@ public class MessageHeader extends ScrollView implements OnClickListener {
             counterpartyAddress = fromAddrs[0].getAddress();
         }
 
+        /*
+         * Only reset visibility of the subject if populate() was called because a new
+         * message is shown. If it is the same, do not force the subject visible, because
+         * this breaks the MessageTitleView in the action bar, which may hide our subject
+         * if it fits in the action bar but is only called when a new message is shown
+         * or the device is rotated.
+         */
+        if (mMessage == null || mMessage.getId() != message.getId()) {
+            mSubjectView.setVisibility(VISIBLE);
+        }
+
         mMessage = message;
         mAccount = account;
 
-        resetViews();
         if (K9.showContactPicture()) {
             mContactBadge.setVisibility(View.VISIBLE);
             mContactsPictureLoader = new ContactPictureLoader(mContext, R.drawable.ic_contact_picture);

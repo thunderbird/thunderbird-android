@@ -897,8 +897,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_additional_headers">Altre intestazioni</string>
     <string name="font_size_message_view_subject">Oggetto</string>
-    <string name="font_size_message_view_time">Ora</string>
-    <string name="font_size_message_view_date">Data</string>
+    <string name="font_size_message_view_date">Ora e data</string>
     <string name="font_size_message_view_content">Corpo del messaggio</string>
 
     <string name="font_size_message_compose">Composizione messaggio</string>

@@ -897,8 +897,7 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="font_size_message_view_cc">A/c</string>
     <string name="font_size_message_view_additional_headers">Capçaleres addicionals</string>
     <string name="font_size_message_view_subject">Assumpte</string>
-    <string name="font_size_message_view_time">Hora</string>
-    <string name="font_size_message_view_date">Data</string>
+    <string name="font_size_message_view_date">Hora i Data</string>
     <string name="font_size_message_view_content">Cos del missatge</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

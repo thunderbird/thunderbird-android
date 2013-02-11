@@ -925,8 +925,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="font_size_message_view_cc">Kopio</string>
     <string name="font_size_message_view_additional_headers">Tarkemmat otsikkotiedot</string>
     <string name="font_size_message_view_subject">Viestin aihe</string>
-    <string name="font_size_message_view_time">Aika</string>
-    <string name="font_size_message_view_date">Päiväys</string>
+    <string name="font_size_message_view_date">Aika ja päivämäärä</string>
     <string name="font_size_message_view_content">Viestin sisältö</string>
 
     <string name="font_size_message_compose">Viestin kirjoitus</string>
