@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,7 +21,6 @@ import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.preferences.Settings.*;
 
 public class GlobalSettings {
@@ -62,9 +60,6 @@ public class GlobalSettings {
             ));
         s.put("countSearchMessages", Settings.versions(
                 new V(1, new BooleanSetting(false))
-            ));
-        s.put("dateFormat", Settings.versions(
-                new V(1, new DateFormatSetting(DateFormatter.DEFAULT_FORMAT))
             ));
         s.put("enableDebugLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -480,32 +475,6 @@ public class GlobalSettings {
             }
 
             return super.toPrettyString(value);
-        }
-    }
-
-    /**
-     * A date format setting.
-     */
-    public static class DateFormatSetting extends SettingsDescription {
-        public DateFormatSetting(String defaultValue) {
-            super(defaultValue);
-        }
-
-        @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
-            try {
-                // The placeholders "SHORT" and "MEDIUM" are fine.
-                if (DateFormatter.SHORT_FORMAT.equals(value) ||
-                        DateFormatter.MEDIUM_FORMAT.equals(value)) {
-                    return value;
-                }
-
-                // If the SimpleDateFormat constructor doesn't throw an exception, we're good.
-                new SimpleDateFormat(value);
-                return value;
-            } catch (Exception e) {
-                throw new InvalidSettingValueException();
-            }
         }
     }
 

@@ -1,8 +1,5 @@
 package com.fsck.k9.helper;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
@@ -17,7 +14,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.helper.DateFormatter;
 
 public class MessageHelper {
 
@@ -32,14 +28,8 @@ public class MessageHelper {
 
     private Context mContext;
 
-    private DateFormat mTodayDateFormat;
-
-    private DateFormat mDateFormat;
-
     private MessageHelper(final Context context) {
         mContext = context;
-        mDateFormat = DateFormatter.getDateFormat(mContext);
-        mTodayDateFormat = android.text.format.DateFormat.getTimeFormat(mContext);
     }
 
     public void populate(final MessageInfoHolder target, final Message message,
@@ -89,21 +79,6 @@ public class MessageHelper {
         } catch (MessagingException me) {
             Log.w(K9.LOG_TAG, "Unable to load message info", me);
         }
-    }
-    public String formatDate(Date date) {
-        if (date == null) {
-            return "";
-        }
-        if (Utility.isDateToday(date)) {
-            return mTodayDateFormat.format(date);
-        } else {
-            return mDateFormat.format(date);
-        }
-    }
-
-    public void refresh() {
-        mDateFormat = DateFormatter.getDateFormat(mContext);
-        mTodayDateFormat = android.text.format.DateFormat.getTimeFormat(mContext);
     }
 
     public CharSequence getDisplayName(Account account, Address[] fromAddrs, Address[] toAddrs) {

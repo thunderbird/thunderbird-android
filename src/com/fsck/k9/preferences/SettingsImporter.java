@@ -22,7 +22,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
@@ -293,7 +292,6 @@ public class SettingsImporter {
             }
 
             preferences.loadAccounts();
-            DateFormatter.clearChosenFormat();
             K9.loadPrefs(preferences);
             K9.setServicesEnabled(context);
 

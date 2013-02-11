@@ -810,13 +810,6 @@
     <string name="background_ops_auto_sync">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\' &amp; \'Αυτόματο συγχρονισμός\'</string>
     <string name="background_ops_auto_sync_only">Όταν έχει επιλεγεί \'Auto-sync\'</string>
 
-    <string name="date_format_label">Γραφή ημερομηνίας</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
     <string name="batch_select_all">Επιλογή όλων</string>
 
     <string name="account_setup_push_limit_label">Μέγιστο φακέλων για σπρώξιμο</string>
