@@ -895,8 +895,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_additional_headers">Ek başlıklar</string>
     <string name="font_size_message_view_subject">Konu</string>
-    <string name="font_size_message_view_time">Zaman</string>
-    <string name="font_size_message_view_date">Tarih</string>
+    <string name="font_size_message_view_date">Saat ve Tarih</string>
     <string name="font_size_message_view_content">Mesaj gövdesi</string>
 
     <string name="font_size_message_compose">Mesaj oluşturma</string>

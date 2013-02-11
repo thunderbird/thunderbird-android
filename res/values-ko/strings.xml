@@ -893,8 +893,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="font_size_message_view_cc">참조</string>
     <string name="font_size_message_view_additional_headers">추가 헤더정보</string>
     <string name="font_size_message_view_subject">제목</string>
-    <string name="font_size_message_view_time">시간</string>
-    <string name="font_size_message_view_date">날짜</string>
+    <string name="font_size_message_view_date">시간 및 날짜</string>
     <string name="font_size_message_view_content">내용</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

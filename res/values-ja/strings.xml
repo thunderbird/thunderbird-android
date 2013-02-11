@@ -892,8 +892,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="font_size_message_view_cc">CC</string>
     <string name="font_size_message_view_additional_headers">追加ヘッダ</string>
     <string name="font_size_message_view_subject">件名</string>
-    <string name="font_size_message_view_time">時刻</string>
-    <string name="font_size_message_view_date">日付</string>
+    <string name="font_size_message_view_date">日時</string>
     <string name="font_size_message_view_content">本文</string>
 
     <string name="font_size_message_compose">メッセージ作成</string>

@@ -893,8 +893,7 @@
     <string name="font_size_message_view_cc">עותק</string>
     <string name="font_size_message_view_additional_headers">כותרות נוספות</string>
     <string name="font_size_message_view_subject">כותרת</string>
-    <string name="font_size_message_view_time">זמן</string>
-    <string name="font_size_message_view_date">תאריך</string>
+    <string name="font_size_message_view_date">שעה ותאריך</string>
     <string name="font_size_message_view_content">גוף ההודעה</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

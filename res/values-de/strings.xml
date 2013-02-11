@@ -927,8 +927,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="font_size_message_view_cc">Empfänger (CC)</string>
     <string name="font_size_message_view_additional_headers">Zusätzliche Header</string>
     <string name="font_size_message_view_subject">Betreff</string>
-    <string name="font_size_message_view_time">Zeit</string>
-    <string name="font_size_message_view_date">Datum</string>
+    <string name="font_size_message_view_date">Uhrzeit und Datum</string>
     <string name="font_size_message_view_content">Nachrichtentext</string>
 
     <string name="font_size_message_compose">Nachricht verfassen</string>

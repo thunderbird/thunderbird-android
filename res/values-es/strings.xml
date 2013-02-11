@@ -894,8 +894,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_additional_headers">Encabezados adicionales</string>
     <string name="font_size_message_view_subject">Asunto</string>
-    <string name="font_size_message_view_time">Hora</string>
-    <string name="font_size_message_view_date">Fecha</string>
+    <string name="font_size_message_view_date">Hora y Fecha</string>
     <string name="font_size_message_view_content">Cuerpo de mensaje</string>
 
     <string name="font_size_message_compose">Composición mensaje</string>

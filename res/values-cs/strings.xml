@@ -902,8 +902,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="font_size_message_view_cc">Příjemce zprávy (Kopie)</string>
     <string name="font_size_message_view_additional_headers">Další záhlaví</string>
     <string name="font_size_message_view_subject">Předmět zprávy</string>
-    <string name="font_size_message_view_time">Čas zprávy</string>
-    <string name="font_size_message_view_date">Datum zprávy</string>
+    <string name="font_size_message_view_date">Datum a čas zprávy</string>
     <string name="font_size_message_view_content">Tělo zprávy</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

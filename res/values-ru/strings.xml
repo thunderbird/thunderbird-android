@@ -889,8 +889,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="font_size_message_view_cc">Скрытая копия</string>
     <string name="font_size_message_view_additional_headers">дополнительные заголовки</string>
     <string name="font_size_message_view_subject">Тема</string>
-    <string name="font_size_message_view_time">Время</string>
-    <string name="font_size_message_view_date">Дата</string>
+    <string name="font_size_message_view_date">Время и дата</string>
     <string name="font_size_message_view_content">Тело сообщения</string>
 
     <string name="font_size_message_compose">Поле сообщения</string>
