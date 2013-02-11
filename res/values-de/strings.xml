@@ -156,6 +156,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="unflag_action">Wichtig-Markierung entfernen</string>
     <string name="copy_action">Kopieren</string>
     <string name="select_text_action">Text auswählen</string>
+    <string name="show_headers_action">Kopfzeilen anzeigen</string>
+    <string name="hide_headers_action">Kopfzeilen verbergen</string>
 
     <string name="message_view_theme_action_dark">Dunkles Design verwenden</string>
     <string name="message_view_theme_action_light">Helles Design verwenden</string>
@@ -932,6 +934,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="font_size_message_compose">Nachricht verfassen</string>
     <string name="font_size_message_compose_input">Texteingabefelder</string>
 
+    <string name="font_size_default">Standard</string>
     <string name="font_size_tiniest">Winzig</string>
     <string name="font_size_tiny">Sehr klein</string>
     <string name="font_size_smaller">Kleiner</string>
@@ -1135,4 +1138,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="global_settings_splitview_when_in_landscape">Im Querformat</string>
 
     <string name="message_view_empty">Nachricht aus der Liste auswählen, um sie anzuzeigen</string>
+
+    <string name="global_settings_show_contact_picture_label">Kontaktbilder anzeigen</string>
+    <string name="global_settings_show_contact_picture_summary">Kontaktbilder in der Nachrichtenliste anzeigen</string>
 </resources>
