@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+
+import android.widget.QuickContactBadge;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.Account;
 import com.fsck.k9.helper.DateFormatter;
+import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -64,6 +67,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private Contacts mContacts;
     private SavedState mSavedState;
 
+    private MessageHelper mMessageHelper;
     private ContactPictureLoader mContactsPictureLoader;
     private QuickContactBadge mContactBadge;
 
@@ -100,6 +104,10 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mToLabel = (TextView) findViewById(R.id.to_label);
         mCcView = (TextView) findViewById(R.id.cc);
         mCcLabel = (TextView) findViewById(R.id.cc_label);
+
+        mContactBadge = (QuickContactBadge) findViewById(R.id.contact_badge);
+
+
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
@@ -120,6 +128,9 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
+
+        mMessageHelper = MessageHelper.getInstance(mContext);
+
 
         resetViews();
     }
@@ -226,10 +237,44 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         final CharSequence to = Address.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = Address.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
 
+
+
+
+        Address[] fromAddrs = message.getFrom();
+        Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
+        Address[] ccAddrs = message.getRecipients(Message.RecipientType.CC);
+
+        boolean fromMe = mMessageHelper.toMe(account, fromAddrs);
+        boolean toMe = mMessageHelper.toMe(account, toAddrs);
+        boolean ccMe = mMessageHelper.toMe(account, ccAddrs);
+
+        CharSequence displayName = mMessageHelper.getDisplayName(account, fromAddrs, toAddrs);
+
+        String counterpartyAddress = null;
+        if (fromMe) {
+            if (toAddrs.length > 0) {
+                counterpartyAddress = toAddrs[0].getAddress();
+            } else if (ccAddrs.length > 0) {
+                counterpartyAddress = ccAddrs[0].getAddress();
+            }
+        } else if (fromAddrs.length > 0) {
+            counterpartyAddress = fromAddrs[0].getAddress();
+        }
+
+
+
         mMessage = message;
         mAccount = account;
 
         resetViews();
+        if (K9.showContactPicture()) {
+            mContactBadge.setVisibility(View.VISIBLE);
+            mContactsPictureLoader = new ContactPictureLoader(mContext, R.drawable.ic_contact_picture);
+        }  else {
+            mContactBadge.setVisibility(View.GONE);
+        }
+
+
 
         final String subject = message.getSubject();
         if (StringUtils.isNullOrEmpty(subject)) {
@@ -239,14 +284,25 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         }
         mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
-        mFromView.setText(from);
 
         if (date != null) {
             mDateView.setText(time + " - " + date);
         } else {
             mDateView.setText(time);
         }
+        if (K9.showContactPicture()) {
+                mContactBadge.assignContactFromEmail(counterpartyAddress.toString(), true);
+                if (counterpartyAddress != null) {
+                    mContactsPictureLoader.loadContactPicture(counterpartyAddress.toString(), mContactBadge);
+                } else {
+                    mContactBadge.setImageResource(R.drawable.ic_contact_picture);
+                }
+
+
+
         }
+        mFromView.setText(from);
+
         updateAddressField(mToView, to, mToLabel);
         updateAddressField(mCcView, cc, mCcLabel);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
