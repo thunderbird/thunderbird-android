@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.text.TextUtils.TruncateAt;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;

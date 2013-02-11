@@ -27,7 +27,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 
 import com.actionbarsherlock.app.ActionBar;
