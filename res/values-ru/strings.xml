@@ -110,7 +110,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="status_processing_account">Обработка <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Следующий запрос @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Следующий запрос <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Синхронизация запрещена</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -805,13 +805,6 @@ K-9 Mail это программа электронной почты для Andr
     <string name="background_ops_enabled">Когда \'Фоновый режим\' включён</string>
     <string name="background_ops_auto_sync">Когда \'Фоновые данные\' и \'Автосинхронизация\' включены</string>
     <string name="background_ops_auto_sync_only">Когда выбрана \'Автосинхронизация\'</string>
-
-    <string name="date_format_label">Формат даты</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
 
     <string name="batch_select_all">Выбрать все</string>
 

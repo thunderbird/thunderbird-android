@@ -109,7 +109,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">다음 수신 @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">다음 수신 <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">동기화 실패</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -809,13 +809,6 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="background_ops_enabled">\'백그라운드 데이타\'가 선택된 경우</string>
     <string name="background_ops_auto_sync">\'백그라운드 데이타\'와 \'Auto-sync\'가 선택된 경우</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
-
-    <string name="date_format_label">날짜 형식</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
 
     <string name="batch_select_all">모두 선택</string>
 

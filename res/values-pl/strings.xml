@@ -124,7 +124,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="status_processing_account">Przetwarzam: <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Sprawdzę o <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Sprawdzę <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Synchronizacja wyłączona</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -821,13 +821,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="background_ops_enabled">Gdy systemowa opcja \'Dane w tle\' jest włączone</string>
     <string name="background_ops_auto_sync">Gdy systemowe opcje \'Dane w tle\' oraz \'Autosynchronizacja\' są włączone</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
-
-    <string name="date_format_label">Format daty</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
 
     <string name="batch_select_all">Zaznacz wszystko</string>
 

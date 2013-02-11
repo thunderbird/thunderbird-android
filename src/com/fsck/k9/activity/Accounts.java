@@ -154,7 +154,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 mActionBarUnread.setVisibility(View.VISIBLE);
             }
 
-            String operation = mListener.getOperation(Accounts.this, getTimeFormat());
+            String operation = mListener.getOperation(Accounts.this);
             operation.trim();
             if (operation.length() < 1) {
                 mActionBarSubTitle.setVisibility(View.GONE);
@@ -478,6 +478,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         refresh();
         MessagingController.getInstance(getApplication()).addListener(mListener);
         StorageManager.getInstance(getApplication()).addListener(storageListener);
+        mListener.onResume(this);
     }
 
     @Override
@@ -485,6 +486,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
         StorageManager.getInstance(getApplication()).removeListener(storageListener);
+        mListener.onPause(this);
     }
 
     /**
@@ -550,6 +552,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             mHandler.progress(Window.PROGRESS_START);
         }
         pendingWork.clear();
+        mHandler.refreshTitle();
 
         MessagingController controller = MessagingController.getInstance(getApplication());
 

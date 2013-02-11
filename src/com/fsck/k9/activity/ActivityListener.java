@@ -1,8 +1,10 @@
 package com.fsck.k9.activity;
 
-import java.text.DateFormat;
-
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.text.format.DateUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
@@ -21,15 +23,14 @@ public class ActivityListener extends MessagingListener {
     private String mProcessingAccountDescription = null;
     private String mProcessingCommandTitle = null;
 
+    private BroadcastReceiver mTickReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            informUserOfStatus();
+        }
+    };
 
-    public String formatHeader(Context context, String activityPrefix, int unreadMessageCount, DateFormat timeFormat) {
-    String operation = getOperation(context, timeFormat);
-        return context.getString(R.string.activity_header_format, activityPrefix,
-                                 (unreadMessageCount > 0 ? context.getString(R.string.activity_unread_count, unreadMessageCount) : ""),
-                                 operation);
-    }
-
-    public String getOperation(Context context, DateFormat timeFormat){
+    public String getOperation(Context context) {
         String operation;
         String progress = null;
         if (mLoadingAccountDescription  != null
@@ -67,7 +68,9 @@ public class ActivityListener extends MessagingListener {
         } else {
             long nextPollTime = MailService.getNextPollTime();
             if (nextPollTime != -1) {
-                operation = context.getString(R.string.status_next_poll, timeFormat.format(nextPollTime));
+                operation = context.getString(R.string.status_next_poll,
+                        DateUtils.getRelativeTimeSpanString(nextPollTime, System.currentTimeMillis(),
+                                DateUtils.MINUTE_IN_MILLIS, 0));
             } else if (MailService.isSyncDisabled()) {
                 operation = context.getString(R.string.status_syncing_off);
             } else {
@@ -76,6 +79,14 @@ public class ActivityListener extends MessagingListener {
         }
 
         return operation;
+    }
+
+    public void onResume(Context context) {
+        context.registerReceiver(mTickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+    }
+
+    public void onPause(Context context) {
+        context.unregisterReceiver(mTickReceiver);
     }
 
     public void informUserOfStatus() {
