@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.AttributeSet;
@@ -25,7 +26,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.Account;
-import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
@@ -38,7 +38,6 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.text.DateFormat;
 
 public class MessageHeader extends ScrollView implements OnClickListener {
     private Context mContext;
@@ -49,8 +48,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private TextView mCcView;
     private TextView mCcLabel;
     private TextView mSubjectView;
-    private DateFormat mDateFormat;
-    private DateFormat mTimeFormat;
 
     private View mChip;
     private CheckBox mFlagged;
@@ -87,8 +84,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     public MessageHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        mDateFormat = DateFormatter.getDateFormat(mContext);
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(mContext);   // 12/24 date format
         mContacts = Contacts.getInstance(mContext);
     }
 
@@ -103,7 +98,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mCcLabel = (TextView) findViewById(R.id.cc_label);
 
         mContactBadge = (QuickContactBadge) findViewById(R.id.contact_badge);
-
 
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
@@ -224,8 +218,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     public void populate(final Message message, final Account account) throws MessagingException {
         final Contacts contacts = K9.showContactName() ? mContacts : null;
         final CharSequence from = Address.toFriendly(message.getFrom(), contacts);
-        final String date = mDateFormat.format(message.getSentDate());
-        final String time = mTimeFormat.format(message.getSentDate());
         final CharSequence to = Address.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = Address.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
 
@@ -274,11 +266,13 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         }
         mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
-        if (date != null) {
-            mDateView.setText(time + " - " + date);
-        } else {
-            mDateView.setText(time);
-        }
+        String dateTime = DateUtils.formatDateTime(mContext,
+                message.getSentDate().getTime(),
+                DateUtils.FORMAT_SHOW_DATE
+                | DateUtils.FORMAT_ABBREV_ALL
+                | DateUtils.FORMAT_SHOW_TIME
+                | DateUtils.FORMAT_SHOW_YEAR);
+        mDateView.setText(dateTime);
 
         if (K9.showContactPicture()) {
             mContactBadge.assignContactFromEmail(counterpartyAddress, true);

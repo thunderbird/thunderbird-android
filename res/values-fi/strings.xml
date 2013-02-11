@@ -118,7 +118,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="status_processing_account">Käsitellään <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Seuraava tarkistus @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Seuraava tarkistus <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Synkronointi pois päältä</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
@@ -841,13 +841,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="background_ops_enabled">Kun Taustadata on valittu</string>
     <string name="background_ops_auto_sync">Kun \'Taustadata\' ja \'Automaattinen synkronointi\' on valittu</string>
     <string name="background_ops_auto_sync_only">Kun Automaattinen synkronointi on valittu</string>
-
-    <string name="date_format_label">Päivämäärän muoto</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
 
     <string name="batch_select_all">Valitse kaikki</string>
 

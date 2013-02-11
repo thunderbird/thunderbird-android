@@ -109,7 +109,7 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Próxima comprobación @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Próxima comprobación <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Comprobación rematada</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -809,13 +809,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="background_ops_enabled">Cando \'Sincronización en segundo plano\' esté activo</string>
     <string name="background_ops_auto_sync">Cando \'Sincronización en segundo plano\' e \'Sincronización automática\' estén activos</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
-
-    <string name="date_format_label">Formato de data</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
 
     <string name="batch_select_all">Seleccionar todos</string>
 

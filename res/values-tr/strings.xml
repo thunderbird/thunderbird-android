@@ -110,7 +110,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="status_processing_account">İşlem <xliff:g id="account">%s</xliff:g><xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Sonraki alım @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Sonraki alım <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Senk. kapalı</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -812,12 +812,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="background_ops_enabled">\'Arkaplan verisi\' işaretli olduğu zaman</string>
     <string name="background_ops_auto_sync">\'Arkaplan verisi\' &amp; \'Oto. Senk.\' işaretli olduğu zaman</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
-
-    <string name="date_format_label">Tarih Biçimi</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
 
     <string name="batch_select_all">Hepsini Seç</string>
 

@@ -2,7 +2,6 @@ package com.fsck.k9.activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.text.TextUtils.TruncateAt;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -117,7 +117,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
                         mActionBarUnread.setVisibility(View.VISIBLE);
                     }
 
-                    String operation = mAdapter.mListener.getOperation(FolderList.this, getTimeFormat()).trim();
+                    String operation = mAdapter.mListener.getOperation(FolderList.this);
                     if (operation.length() < 1) {
                         mActionBarSubTitle.setText(mAccount.getEmail());
                     } else {
@@ -366,7 +366,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             onOpenFolder(mAccount.getAutoExpandFolderName());
             finish();
         } else {
-
             initializeActivityView();
         }
     }
@@ -377,9 +376,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
 
         setListAdapter(mAdapter);
         getListView().setTextFilterEnabled(mAdapter.getFilter() != null); // should never be false but better safe then sorry
-
-        mHandler.refreshTitle();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -418,6 +414,8 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         }
         if (mAdapter == null)
             initializeActivityView();
+
+        mHandler.refreshTitle();
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
         //mAccount.refresh(Preferences.getPreferences(this));
@@ -1045,17 +1043,22 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             }
 
             holder.folderName.setText(folder.displayName);
-            String statusText = "";
+            CharSequence statusText = "";
 
             if (folder.loading) {
                 statusText = getString(R.string.status_loading);
             } else if (folder.status != null) {
                 statusText = folder.status;
             } else if (folder.lastChecked != 0) {
-                Date lastCheckedDate = new Date(folder.lastChecked);
+                long now = System.currentTimeMillis();
+                int flags = DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR;
 
-                statusText = getTimeFormat().format(lastCheckedDate) + " " +
-                             getDateFormat().format(lastCheckedDate);
+                if (Math.abs(now - folder.lastChecked) > DateUtils.WEEK_IN_MILLIS) {
+                    statusText = DateUtils.formatDateTime(context, folder.lastChecked, flags);
+                } else {
+                    statusText = DateUtils.getRelativeTimeSpanString(folder.lastChecked,
+                            now, DateUtils.SECOND_IN_MILLIS, flags);
+                }
             }
 
             if (folder.pushActive) {

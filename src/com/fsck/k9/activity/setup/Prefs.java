@@ -31,7 +31,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.preferences.CheckBoxListPreference;
@@ -57,7 +56,6 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_FIXED_MESSAGE_THEME = "fixedMessageViewTheme";
     private static final String PREFERENCE_COMPOSER_THEME = "messageComposeTheme";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
-    private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
     private static final String PREFERENCE_ANIMATIONS = "animations";
     private static final String PREFERENCE_GESTURES = "gestures";
     private static final String PREFERENCE_VOLUME_NAVIGATION = "volumeNavigation";
@@ -109,7 +107,6 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mFixedMessageTheme;
     private ListPreference mMessageTheme;
     private ListPreference mComposerTheme;
-    private ListPreference mDateFormat;
     private CheckBoxPreference mAnimations;
     private CheckBoxPreference mGestures;
     private CheckBoxListPreference mVolumeNavigation;
@@ -194,17 +191,6 @@ public class Prefs extends K9PreferenceActivity {
                 return true;
             }
         });
-
-        mDateFormat = (ListPreference) findPreference(PREFERENCE_DATE_FORMAT);
-        String[] formats = DateFormatter.getFormats(this);
-        CharSequence[] entries = new CharSequence[formats.length];
-        CharSequence[] values = new CharSequence[formats.length];
-        for (int i = 0 ; i < formats.length; i++) {
-            String format = formats[i];
-            entries[i] = DateFormatter.getSampleDate(this, format);
-            values[i] = format;
-        }
-        initListPreference(mDateFormat, DateFormatter.getFormat(this), entries, values);
 
         mAnimations = (CheckBoxPreference)findPreference(PREFERENCE_ANIMATIONS);
         mAnimations.setChecked(K9.showAnimations());
@@ -541,7 +527,6 @@ public class Prefs extends K9PreferenceActivity {
 
         Editor editor = preferences.edit();
         K9.save(editor);
-        DateFormatter.setDateFormat(editor, mDateFormat.getValue());
         editor.commit();
 
         if (needsRefresh) {

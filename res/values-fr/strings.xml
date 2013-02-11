@@ -142,7 +142,7 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="status_processing_account">Prép <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Prochaine récup. à <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Prochaine récup. <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">synchronisation désactivée</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> sélectionné(s)</string>
@@ -865,13 +865,6 @@ de plus</string>
     <string name="background_ops_enabled">Lorsque «\u00A0Données en arrière-plan\u00A0» est activé</string>
     <string name="background_ops_auto_sync">Lorsque «\u00A0Données en arrière-plan\u00A0» et «\u00A0Synchronisation auto\u00A0» sont activés</string>
     <string name="background_ops_auto_sync_only">Lorsque «\u00A0Synchronisation auto\u00A0» est activée</string>
-
-    <string name="date_format_label">Format de date</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
 
     <string name="batch_select_all">Sélectionner tout</string>
 
