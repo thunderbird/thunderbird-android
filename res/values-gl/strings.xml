@@ -893,8 +893,7 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_additional_headers">Encabezados adicionáis</string>
     <string name="font_size_message_view_subject">Asunto</string>
-    <string name="font_size_message_view_time">Hora</string>
-    <string name="font_size_message_view_date">Data</string>
+    <string name="font_size_message_view_date">Data e Hora</string>
     <string name="font_size_message_view_content">Corpo da mensaxe</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

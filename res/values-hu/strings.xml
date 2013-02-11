@@ -893,8 +893,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="font_size_message_view_cc">Másolatot kap</string>
     <string name="font_size_message_view_additional_headers">További fejlécek</string>
     <string name="font_size_message_view_subject">Tárgy</string>
-    <string name="font_size_message_view_time">Idő</string>
-    <string name="font_size_message_view_date">Dátum</string>
+    <string name="font_size_message_view_date">Idő és dátum</string>
     <string name="font_size_message_view_content">Üzenet szövege</string>
 
     <string name="font_size_message_compose">Üzenet írása</string>

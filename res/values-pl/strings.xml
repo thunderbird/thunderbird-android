@@ -905,8 +905,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="font_size_message_view_cc">Odbiorca kopii (DW:)</string>
     <string name="font_size_message_view_additional_headers">Dodatkowe nagłówki</string>
     <string name="font_size_message_view_subject">Temat</string>
-    <string name="font_size_message_view_time">Godzina</string>
-    <string name="font_size_message_view_date">Data</string>
+    <string name="font_size_message_view_date">Czas i data</string>
     <string name="font_size_message_view_content">Treść wiadomości</string>
 
     <string name="font_size_message_compose">Kompozycja wiadomości</string>

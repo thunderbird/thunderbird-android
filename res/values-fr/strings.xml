@@ -949,8 +949,7 @@ de plus</string>
     <string name="font_size_message_view_cc">Destinataire du message (CC)</string>
     <string name="font_size_message_view_additional_headers">Entêtes supplémentaires</string>
     <string name="font_size_message_view_subject">Sujet du message</string>
-    <string name="font_size_message_view_time">Heure du message</string>
-    <string name="font_size_message_view_date">Date du message</string>
+    <string name="font_size_message_view_date">Heure et date du message</string>
     <string name="font_size_message_view_content">Contenu du message</string>
 
     <string name="font_size_message_compose">Taille de police des message</string>
