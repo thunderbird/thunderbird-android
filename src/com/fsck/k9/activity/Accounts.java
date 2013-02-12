@@ -1713,8 +1713,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearch(account));
                 holder.newMessageCountWrapper.setOnClickListener(createUnreadSearch(account));
 
-                view.getBackground().setAlpha(stats.available ? 0 : 127);
-
                 holder.activeIcons.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
                         Toast toast = Toast.makeText(getApplication(), getString(R.string.tap_hint), Toast.LENGTH_SHORT);
