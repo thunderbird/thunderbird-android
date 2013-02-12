@@ -173,7 +173,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@id/from"
                         android:focusable="false"
-                        android:button="@drawable/star"
+                        style="?android:attr/starStyle"
                         android:checked="false" />
 
             </RelativeLayout>
