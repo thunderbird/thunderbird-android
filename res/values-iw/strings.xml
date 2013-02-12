@@ -287,8 +287,6 @@
     <string name="message_no_additional_headers_available">כל הכותרות הורדו, אבל אין כותרות נוספות להצגה.</string>
     <string name="message_additional_headers_retrieval_failed">שליפה של כותרות נוספות מהשרת של מסד הנתונים או מהדואר נכשל.</string>
 
-    <string name="folder_push_active_symbol">(דחיפה)</string>
-
     <string name="from_same_sender">עוד מהשולח הזה</string>
 
     <string name="message_discarded_toast">ההודעה נמחקה</string>

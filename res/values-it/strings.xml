@@ -286,8 +286,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="message_no_additional_headers_available">Tutte le intestazioni sono state scaricate, non ci sono intestazioni aggiuntive da mostrare.</string>
     <string name="message_additional_headers_retrieval_failed">Recupero di intestazioni aggiuntive dal database o dal server di posta non riuscito.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Altri da questo mittente</string>
 
     <string name="message_discarded_toast">Messaggio scartato</string>

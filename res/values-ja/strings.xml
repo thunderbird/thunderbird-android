@@ -286,8 +286,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="message_no_additional_headers_available">すべてのヘッダをダウンロードしましたが、表示すべき追加ヘッダはありませんでした。</string>
     <string name="message_additional_headers_retrieval_failed">追加ヘッダをデータベースまたはメールサーバから取得できませんでした。</string>
 
-    <string name="folder_push_active_symbol">(プッシュ)</string>
-
     <string name="from_same_sender">この送信者からのメールを検索</string>
 
     <string name="message_discarded_toast">メールを破棄しました</string>

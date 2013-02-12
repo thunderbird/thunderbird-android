@@ -285,8 +285,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="message_no_additional_headers_available">Se han descargado todas las cabeceras, y no hay cabeceras adicionales que mostrar</string>
     <string name="message_additional_headers_retrieval_failed">Se ha producido un error al descargar las cabeceras desde la base de datos o el servidor</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Más de este remitente</string>
 
     <string name="message_discarded_toast">Mensaje descartado</string>

@@ -282,8 +282,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="message_no_additional_headers_available">Todos os cabeçalhos foram baixados, mas não há descrições adicionais a serem mostradas.</string>
     <string name="message_additional_headers_retrieval_failed">A recuperação de cabeçalhos adicionais do banco de dados ou servidor de e-mail falharam.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Mais deste remetente</string>
 
     <string name="message_discarded_toast">Mensagem descartada</string>

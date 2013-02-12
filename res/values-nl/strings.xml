@@ -285,8 +285,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="message_no_additional_headers_available">Alle headers zijn gedownload, maar er zijn geen extra headers aan te tonen.</string>
     <string name="message_additional_headers_retrieval_failed">Het ophalen van extra headers uit de database of e-mailserver is mislukt.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Meer van deze afzender</string>
 
     <string name="message_discarded_toast">Bericht verwijderd</string>

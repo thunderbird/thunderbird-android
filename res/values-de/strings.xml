@@ -298,8 +298,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="message_no_additional_headers_available">Alle Kopfzeilen wurden heruntergeladen, es sind allerdings keine neuen Kopfzeilen vorhanden.</string>
     <string name="message_additional_headers_retrieval_failed">Die weiteren Kopfzeilen konnten nicht aus der Datenbank oder vom Mailserver geladen werden.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Mehr von diesem Absender</string>
 
     <string name="message_discarded_toast">Nachricht wurde verworfen</string>
@@ -1133,4 +1131,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="global_settings_show_contact_picture_label">Kontaktbilder anzeigen</string>
     <string name="global_settings_show_contact_picture_summary">Kontaktbilder in der Nachrichtenliste anzeigen</string>
+
+    <string name="last_refresh_time_format">Zuletzt <xliff:g id="formatted_time">%s</xliff:g> aktualisiert</string>
+    <string name="last_refresh_time_format_with_push">Zuletzt <xliff:g id="time_with_preposition">%s</xliff:g> aktualisiert (Push aktiv)</string>
+    <string name="preposition_for_date">am <xliff:g id="date">%s</xliff:g></string>
 </resources>

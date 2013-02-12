@@ -303,8 +303,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_no_additional_headers_available">Kaikki otsikkotiedot on ladattu, mutta näytettäviä ei ole enempää.</string>
     <string name="message_additional_headers_retrieval_failed">Lisäotsikkotietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Lisää samalta lähettäjältä</string>
 
     <string name="message_discarded_toast">Viesti peruutettu</string>

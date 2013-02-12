@@ -284,8 +284,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="message_no_additional_headers_available">Todas as cabeceiras foron descargadas, pero non hai encabezados adicionáis que amosar</string>
     <string name="message_additional_headers_retrieval_failed">Prodúxose un erro ao descargar os encabezados adicionáis dende a base de datos ou o servidor</string>
 
-    <string name="folder_push_active_symbol">(Subscripción)</string>
-
     <string name="from_same_sender">Máis deste remitente</string>
 
     <string name="message_discarded_toast">Mensaxes descartadas</string>

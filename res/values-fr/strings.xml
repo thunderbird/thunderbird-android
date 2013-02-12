@@ -327,8 +327,6 @@ de plus</string>
     <string name="message_no_additional_headers_available">Toutes les entêtes ont été téléchargées, mais il n\'y en a pas d\'autres à montrer.</string>
     <string name="message_additional_headers_retrieval_failed">La récupération d\'entêtes supplémentaires de la base de données ou du serveur a échouée.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Plus de cet expéditeur</string>
 
     <string name="message_discarded_toast">Message abandonné</string>

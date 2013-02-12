@@ -284,8 +284,6 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="message_no_additional_headers_available">모든 헤더의 다운로드 완료되었습니다. 더이상 보여줄 추가적인 헤더정보가 없습니다.</string>
     <string name="message_additional_headers_retrieval_failed">이 데이터베이스 혹은 메일서버에서 추가적인 헤더 정보를 가져오는데 실패.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">이 발신자에 대한 추가작업</string>
 
     <string name="message_discarded_toast">삭제됨</string>

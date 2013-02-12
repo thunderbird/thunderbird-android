@@ -286,8 +286,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="message_no_additional_headers_available">Minden fejléc letöltve, de nincs mind megjelenítve.</string>
     <string name="message_additional_headers_retrieval_failed">Nem sikerült betölteni az összes fejlécet adatbázishiba, vagy email szerver hiba miatt.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Összes ettől a feladótol</string>
 
     <string name="message_discarded_toast">Levél eldobva</string>

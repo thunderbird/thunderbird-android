@@ -286,8 +286,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="message_no_additional_headers_available">Всі заголовки завантажено, нема додаткових заголовків для відображення.</string>
     <string name="message_additional_headers_retrieval_failed">Не вдалося завантажити додаткові заголовки з бази даних або поштового сервера.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Більше від цього відправника</string>
 
     <string name="message_discarded_toast">Повідомлення скасовано</string>

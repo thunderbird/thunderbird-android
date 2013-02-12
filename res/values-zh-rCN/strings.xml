@@ -279,8 +279,6 @@ K-9改进的功能包括：
     <string name="message_no_additional_headers_available">全部邮件的信息都已经下载，但是当前没有额外的邮件信息可以显示。</string>
     <string name="message_additional_headers_retrieval_failed">从数据库或邮件服务器获取额外的邮件信息失败。</string>
 
-    <string name="folder_push_active_symbol">（推送）</string>
-
     <string name="from_same_sender">来自这个发件人的更多邮件</string>
 
     <string name="message_discarded_toast">邮件已忽略</string>

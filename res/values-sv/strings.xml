@@ -286,8 +286,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_no_additional_headers_available">Alla huvuden har hämtats, men det det finns inga ytterligare huvuden att visa.</string>
     <string name="message_additional_headers_retrieval_failed">Hämtningen av ytterligare huvuden från databasen eller e-postservern misslyckades.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Mer från denna avsändare</string>
 
     <string name="message_discarded_toast">Brevet kasserat</string>

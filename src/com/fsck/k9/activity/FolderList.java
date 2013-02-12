@@ -1046,54 +1046,50 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
             }
 
             holder.folderName.setText(folder.displayName);
-            CharSequence statusText = "";
 
             if (folder.loading) {
-                statusText = getString(R.string.status_loading);
+                holder.folderStatus.setText(R.string.status_loading);
             } else if (folder.status != null) {
-                statusText = folder.status;
+                holder.folderStatus.setText(folder.status);
             } else if (folder.lastChecked != 0) {
                 long now = System.currentTimeMillis();
                 int flags = DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR;
+                CharSequence formattedDate;
 
                 if (Math.abs(now - folder.lastChecked) > DateUtils.WEEK_IN_MILLIS) {
-                    statusText = DateUtils.formatDateTime(context, folder.lastChecked, flags);
+                    formattedDate = getString(R.string.preposition_for_date,
+                            DateUtils.formatDateTime(context, folder.lastChecked, flags));
                 } else {
-                    statusText = DateUtils.getRelativeTimeSpanString(folder.lastChecked,
-                            now, DateUtils.SECOND_IN_MILLIS, flags);
+                    formattedDate = DateUtils.getRelativeTimeSpanString(folder.lastChecked,
+                            now, DateUtils.MINUTE_IN_MILLIS, flags);
                 }
-            }
 
-            if (folder.pushActive) {
-                statusText = getString(R.string.folder_push_active_symbol) + " " + statusText;
-            }
-
-            if (statusText != null) {
-                holder.folderStatus.setText(statusText);
-                holder.folderStatus.setVisibility(View.VISIBLE);
+                holder.folderStatus.setText(getString(folder.pushActive
+                        ? R.string.last_refresh_time_format_with_push
+                        : R.string.last_refresh_time_format,
+                        formattedDate));
             } else {
                 holder.folderStatus.setText(null);
-                holder.folderStatus.setVisibility(View.GONE);
             }
 
             if (folder.unreadMessageCount != 0) {
-                holder.newMessageCount.setText(Integer
-                                               .toString(folder.unreadMessageCount));
+                holder.newMessageCount.setText(Integer.toString(folder.unreadMessageCount));
                 holder.newMessageCountWrapper.setOnClickListener(
                         createUnreadSearch(mAccount, folder));
                 holder.newMessageCountWrapper.setVisibility(View.VISIBLE);
-                holder.newMessageCountIcon.setBackgroundDrawable( mAccount.generateColorChip(false, false, false, false, false).drawable() );
+                holder.newMessageCountIcon.setBackgroundDrawable(
+                        mAccount.generateColorChip(false, false, false, false, false).drawable());
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
             }
 
             if (folder.flaggedMessageCount > 0) {
-                holder.flaggedMessageCount.setText(Integer
-                                                   .toString(folder.flaggedMessageCount));
+                holder.flaggedMessageCount.setText(Integer.toString(folder.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setOnClickListener(
                         createFlaggedSearch(mAccount, folder));
                 holder.flaggedMessageCountWrapper.setVisibility(View.VISIBLE);
-                holder.flaggedMessageCountIcon.setBackgroundDrawable( mAccount.generateColorChip(false, false, false, false,true).drawable() );
+                holder.flaggedMessageCountIcon.setBackgroundDrawable(
+                        mAccount.generateColorChip(false, false, false, false,true).drawable());
             } else {
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
             }
@@ -1103,11 +1099,10 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
                     Toast toast = Toast.makeText(getApplication(), getString(R.string.tap_hint), Toast.LENGTH_SHORT);
                     toast.show();
                 }
-            }
-                                                 );
+            });
 
-            holder.chip.setBackgroundDrawable(mAccount.generateColorChip((folder.unreadMessageCount == 0 ? true : false ), false, false, false,false).drawable());
-
+            holder.chip.setBackgroundDrawable(mAccount.generateColorChip(
+                    folder.unreadMessageCount == 0, false, false, false,false).drawable());
 
             mFontSizes.setViewTextSize(holder.folderName, mFontSizes.getFolderName());
 
@@ -1120,7 +1115,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
                 holder.folderName.setSingleLine(true);
             }
             mFontSizes.setViewTextSize(holder.folderStatus, mFontSizes.getFolderStatus());
-
 
             return view;
         }

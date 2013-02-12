@@ -286,8 +286,6 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="message_no_additional_headers_available">S’han descarregat totes les capçaleres, no hi ha capçaleres addicionals per mostrar.</string>
     <string name="message_additional_headers_retrieval_failed">La recuperació de capçaleres addicionals de la base de dades o del servidor de correu ha fallat.</string>
 
-    <string name="folder_push_active_symbol">(Subscripció)</string>
-
     <string name="from_same_sender">Més d’aquest remitent</string>
 
     <string name="message_discarded_toast">S’ha descartat el missatge</string>

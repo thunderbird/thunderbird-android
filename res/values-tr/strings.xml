@@ -286,8 +286,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="message_no_additional_headers_available">Bütün başlıklar indirildi, fakat gösterilecek ek başlık yok.</string>
     <string name="message_additional_headers_retrieval_failed">Veritabanından veya posta suncucundan ek başlıkların alımı başarısız.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Bu Göndericiden daha fazla mesaj</string>
 
     <string name="message_discarded_toast">Mesaj silindi</string>

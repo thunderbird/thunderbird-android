@@ -280,8 +280,6 @@ K-9 Mail это программа электронной почты для Andr
     <string name="message_no_additional_headers_available">Все заголовки загружены, дополнительных заголовков для отображения нет.</string>
     <string name="message_additional_headers_retrieval_failed">Не удалось загрузить дополнительные заголовки из базы данных или почтового сервера.</string>
 
-    <string name="folder_push_active_symbol">(Поддержка Push Mail)</string>
-
     <string name="from_same_sender">Ещё от этого отправителя</string>
 
     <string name="message_discarded_toast">Сообщение отброшено</string>

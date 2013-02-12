@@ -282,8 +282,6 @@
     <string name="message_no_additional_headers_available">Όλες οι επικεφαλίδες έχουν κατεβεί, αλλά δεν υπάρχουν πρόσθετες επικεφαλίδες για να προβληθούν.</string>
     <string name="message_additional_headers_retrieval_failed">Η ανάσυρση πρόσθετων επικεφαλίδων από τη βάση δεδομένων ή τον εξυπηρέτη ταχυδρομείου απέτυχε.</string>
 
-    <string name="folder_push_active_symbol">(Σπρώξιμο)</string>
-
     <string name="from_same_sender">Από τον ίδιο αποστολέα</string>
 
     <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε</string>

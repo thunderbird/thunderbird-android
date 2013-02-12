@@ -294,8 +294,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="message_no_additional_headers_available">Wszystkie nagłówki pobrano, niemniej nie znaleziono żadnych dodatkowych do wyświetlenia.</string>
     <string name="message_additional_headers_retrieval_failed">Pobieranie nagłówkow nie powiodło się.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Więcej od tego nadawcy</string>
 
     <string name="message_discarded_toast">Wiadomość usunięta</string>

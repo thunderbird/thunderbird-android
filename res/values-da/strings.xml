@@ -286,8 +286,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="message_no_additional_headers_available">Alle mail headers er blevet hentet, og der kan ikke vises yderligere headers.</string>
     <string name="message_additional_headers_retrieval_failed">Hentning af yderligere headers fra database eller mail server mislykkedes.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Flere fra denne afsender</string>
 
     <string name="message_discarded_toast">Mail kasseret</string>
