@@ -190,7 +190,7 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="copy_action">Copier</string>
     <string name="select_text_action">Sélection de texte</string>
     <string name="show_headers_action">Afficher entêtes</string>
-    <string name="hide_headers_action">Cacher entêtes</string
+    <string name="hide_headers_action">Cacher entêtes</string>
 
     <string name="message_view_theme_action_dark">Basculer sur le thème foncé</string>
     <string name="message_view_theme_action_light">Basculer sur le thème clair</string>
