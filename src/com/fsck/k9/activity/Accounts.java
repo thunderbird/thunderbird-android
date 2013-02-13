@@ -1724,7 +1724,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
-                view.getBackground().setAlpha(0);
             }
             if (account instanceof Account) {
                 Account realAccount = (Account)account;
