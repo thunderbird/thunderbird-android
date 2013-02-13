@@ -25,7 +25,7 @@ public class ContactPictureLoader {
     /**
      * Resize the pictures to the following value (device-independent pixels).
      */
-    private static final int PICTURE_SIZE = 48;
+    private static final int PICTURE_SIZE = 40;
 
     /**
      * Maximum number of email addresses to store in {@link #mUnknownContactsCache}.
