@@ -165,6 +165,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="unflag_action">Poista tähti</string>
     <string name="copy_action">Kopio</string>
     <string name="select_text_action">Valitse teksti</string>
+    <string name="show_headers_action">Näytä otsikot</string>
+    <string name="hide_headers_action">Piilota otsikot</string>
 
     <string name="message_view_theme_action_dark">Vaihda tummaan teemaan</string>
     <string name="message_view_theme_action_light">Vaihda vaaleaan teemaan</string>
