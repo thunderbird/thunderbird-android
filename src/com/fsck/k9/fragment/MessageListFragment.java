@@ -2873,11 +2873,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public boolean isFirst(MessageReference messageReference) {
-        return messageReference.equals(getReferenceForPosition(0));
+        return mAdapter.isEmpty() || messageReference.equals(getReferenceForPosition(0));
     }
 
     public boolean isLast(MessageReference messageReference) {
-        return messageReference.equals(getReferenceForPosition(mAdapter.getCount() - 1));
+        return mAdapter.isEmpty() || messageReference.equals(getReferenceForPosition(mAdapter.getCount() - 1));
     }
 
     private MessageReference getReferenceForPosition(int position) {
