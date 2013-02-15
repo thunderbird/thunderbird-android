@@ -970,22 +970,22 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
 
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
-    <string name="error_unable_to_connect">연결실패</string>
+    <string name="error_unable_to_connect">연결 실패</string>
 
-    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
-    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
-    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
-    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
-    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
-    <!-- NEW: <string name="settings_import">Import settings</string>-->
-    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
-    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
-    <!-- NEW: <string name="settings_exporting">Exporting settings…</string>-->
-    <!-- NEW: <string name="settings_importing">Importing settings…</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Scanning file…</string>-->
-    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
+    <string name="import_export_action">설정 가져오기 &amp; 내보내기</string>
+    <string name="settings_export_account">계정 설정 내보내기</string>
+    <string name="settings_export_all">설정 및 계정 내보내기</string>
+    <string name="settings_import_dialog_title">가져오기</string>
+    <string name="settings_export_dialog_title">내보내기</string>
+    <string name="settings_import">설정 가져오기</string>
+    <string name="settings_import_selection">선택한 것들 가져오기</string>
+    <string name="settings_import_global_settings">전역 설정</string>
+    <string name="settings_exporting">설정 내보내는 중…</string>
+    <string name="settings_importing">설정 가져오는 중…</string>
+    <string name="settings_import_scanning_file">파일 스캔 중…</string>
+    <string name="settings_export_success">설정을 파일 <xliff:g id="filename">%s</xliff:g>로 내보냄</string>
+    <string name="settings_import_global_settings_success">설정을 <xliff:g id="filename">%s</xliff:g>로부터 가져옴</string>
+    <string name="settings_import_success"><xliff:g id="filename">%s</xliff:g>에서 <xliff:g id="accounts">%s</xliff:g>를 가져옴</string>
     <!-- NEW: <plurals name="settings_import_success">
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
@@ -1017,7 +1017,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
 
     <string name="settings_attachment_default_path">첨부파일 저장위치</string>
     <string name="attachment_save_title">첨부파일 저장</string>
-    <string name="attachment_save_desc">파일 브라우져를 찾을 수 없습니다. 첨부파일을 저장할 경로를 입력하시오</string>
+    <string name="attachment_save_desc">파일 브라우저를 찾을 수 없습니다. 첨부 파일을 저장할 경로를 입력하십시오.</string>
 
     <string name="manage_accounts_move_up_action">위로</string>
     <string name="manage_accounts_move_down_action">아래로</string>
