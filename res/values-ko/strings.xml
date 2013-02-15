@@ -589,13 +589,13 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="account_settings_message_age_6_months">최근 6달</string>
     <string name="account_settings_message_age_1_year">최근 1년</string>
 
-    <string name="account_settings_folder_display_mode_label">보여질 폴더</string>
+    <string name="account_settings_folder_display_mode_label">보일 폴더</string>
     <string name="account_settings_folder_display_mode_all">모든 폴더</string>
     <string name="account_settings_folder_display_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
 
-    <string name="account_settings_folder_sync_mode_label">폴링(Poll)할 폴더Poll</string>
+    <string name="account_settings_folder_sync_mode_label">폴링(Poll)할 폴더</string>
     <string name="account_settings_folder_sync_mode_all">모든 폴더</string>
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
@@ -623,7 +623,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="folder_settings_in_top_group_label">첫번째 그룹에 보여짐</string>
     <string name="folder_settings_in_top_group_summary">폴더 목록의 가장 위에 보여짐</string>
 
-    <string name="folder_settings_folder_display_mode_label">폴더 디스플레이 클래스(Class)</string>
+    <string name="folder_settings_folder_display_mode_label">폴더 보이기 클래스(Class)</string>
     <string name="folder_settings_folder_display_mode_normal">없음</string>
     <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
@@ -632,7 +632,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="folder_settings_folder_sync_mode_normal">없음</string>
     <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
+    <string name="folder_settings_folder_sync_mode_inherited">보이기 클래스와 같음</string>
 
     <string name="folder_settings_folder_push_mode_label">폴더 푸시(Push) 클래스(Class)</string>
     <string name="folder_settings_folder_push_mode_normal">없음</string>
@@ -858,7 +858,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
 
     <string name="account_settings_searchable_label">찾을 폴더</string>
     <string name="account_settings_searchable_all">모두</string>
-    <string name="account_settings_searchable_displayable">보여지는 폴더</string>
+    <string name="account_settings_searchable_displayable">보이는 폴더</string>
     <string name="account_settings_searchable_none">없음</string>
 
     <string name="font_size_settings_title">글꼴 크기</string>
