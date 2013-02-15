@@ -88,15 +88,15 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
 
     <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">계정</string>
-    <!-- NEW: <string name="folders_title">Folders</string>-->
+    <string name="folders_title">폴더</string>
     <string name="advanced">고급</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">작성</string>
-    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
-    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
-    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+    <string name="compose_title_reply">답장</string>
+    <string name="compose_title_reply_all">전체 답장</string>
+    <string name="compose_title_forward">전달</string>
 
     <string name="choose_folder_title">폴더 선택</string>
 
@@ -128,7 +128,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="move_action">이동</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">계속</string>
-    <!-- NEW: <string name="back_action">Back</string>-->
+    <string name="back_action">뒤로</string>
     <string name="done_action">완료</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">버리기</string>
     <string name="save_draft_action">임시 보관함에 저장</string>
@@ -151,13 +151,13 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="send_alternate_action">공유</string>
     <string name="send_alternate_chooser_title">발신자 선택</string>
 
-    <string name="flag_action">즐겨찾기 등록</string>
-    <string name="unflag_action">즐겨찾기 해제</string>
+    <string name="flag_action">별표하기</string>
+    <string name="unflag_action">별표 해제하기</string>
     <string name="copy_action">복사</string>
     <string name="select_text_action">텍스트 선택</string>
 
-    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
-    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
+    <string name="message_view_theme_action_dark">어두운 테마로 바꾸기</string>
+    <string name="message_view_theme_action_light">밝은 테마로 바꾸기</string>
 
     <string name="mark_as_unread_action">읽지 않은 메일로 표시</string>
     <string name="add_cc_bcc_action">참조/숨은참조 추가</string>
@@ -168,9 +168,9 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="add_attachment_action_image">첨부 추가 (이미지)</string>
     <string name="add_attachment_action_video">첨부 추가 (비디오)</string>
     <string name="empty_trash_action">휴지통 비우기</string>
-    <string name="expunge_action">삭제(expunge)</string>
+    <string name="expunge_action">폐기</string>
     <string name="clear_local_folder_action">로컬 메시지 삭제</string>
-    <string name="about_action">About</string>
+    <string name="about_action">정보</string>
 
     <string name="prefs_title">설정</string>
     <string name="accounts_context_menu_title">계정 옵션</string>
@@ -256,12 +256,12 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="message_compose_error_no_recipients">한명 이상의 받는 사람을 입력하십시오.</string>
     <string name="error_contact_address_not_found">이메일 주소를 찾을 수 없습니다.</string>
     <string name="message_compose_attachments_skipped_toast">다운로드 완료되지않은 일부 첨부파일을 보낼수 없습니다.</string>
-    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <string name="message_compose_show_quoted_text_action">메시지 인용</string>
+    <string name="message_compose_description_add_to">받는 사람 추가 (To)</string>
+    <string name="message_compose_description_add_cc">받는 사람 추가 (CC)</string>
+    <string name="message_compose_description_add_bcc">받는 사람 추가 (BCC)</string>
+    <string name="message_compose_description_delete_quoted_text">인용된 메시지 제거</string>
+    <string name="message_compose_description_edit_quoted_text">인용된 메시지 편집</string>
 
     <string name="message_view_from_format">발신자: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">수신자:</string>
@@ -271,13 +271,13 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="message_view_status_attachment_saved">첨부파일이 SD카드에 <xliff:g id="filename">%s</xliff:g> 로 저장되었습니다.</string>
     <string name="message_view_status_attachment_not_saved">첨부파일을 SD카드에 저장할 수 없습니다.</string>
     <string name="message_view_show_pictures_action">그림 보기</string>
-    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
-    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
+    <string name="message_view_show_message_action">메시지 보기</string>
+    <string name="message_view_show_attachments_action">첨부파일 보기</string>
+    <string name="message_view_show_more_attachments_action">더 보기&#8230;</string>
     <string name="message_view_fetching_attachment_toast">첨부파일 가져오는 중.</string>
     <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>에 대한 뷰어를 찾을 수 없습니다.</string>
     <string name="message_view_download_remainder">다운로드 완료 메시지</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">다운로드 중…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">모든 헤더의 다운로드 혹은 저장이 완료 되지않았습니다. Select \"Save all headers locally\" in the account\'s incoming server settings to enable this for the future.</string>
@@ -299,7 +299,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
 
     <string name="global_settings_show_contact_name_label">주소록(Contact) 이름 보기</string>
-    <string name="global_settings_show_contact_name_summary">받는사람 이름을 주소록(Contact)에서 가져옵니다.</string>
+    <string name="global_settings_show_contact_name_summary">받는 사람 이름을 주소록(Contact)에서 가져옵니다.</string>
     <string name="global_settings_registered_name_color_label">주소록 색표시</string>
     <string name="global_settings_registered_name_color_default">주소록(Contact) 목록에 있는 이름에 색표시 하지않음</string>
     <string name="global_settings_registered_name_color_changed">주소록(Contact) 목록에 있는 이름에 색표시</string>
@@ -313,14 +313,14 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
 
     <string name="global_settings_confirm_actions_title">동작시 행동</string>
     <string name="global_settings_confirm_actions_summary">설정한 행동을 할 경우 확인창을 보여줍니다.</string>
-    <string name="global_settings_confirm_action_delete">삭제 (message view only)</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
+    <string name="global_settings_confirm_action_delete">삭제 (메시지 보기에서만)</string>
+    <string name="global_settings_confirm_action_delete_starred">별표된 메시지 삭제 (메시지 보기에서만)</string>
     <string name="global_settings_confirm_action_spam">스팸</string>
 
-    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+    <string name="global_settings_notification_hide_subject_title">알림에 제목 숨기기</string>
+    <string name="global_settings_notification_hide_subject_never">하지 않음</string>
+    <string name="global_settings_notification_hide_subject_when_locked">폰이 잠겨 있을 때</string>
+    <string name="global_settings_notification_hide_subject_always">항상</string>
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -333,7 +333,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
 
     <string name="quiet_time">무음 시간</string>
-    <string name="quiet_time_description">벨소리, 부져, 플래쉬를 밤시간에 사용하지않습니다</string>
+    <string name="quiet_time_description">벨소리, 버저, 플래시를 밤시간에 사용하지않습니다</string>
     <string name="quiet_time_starts">무음 시작 시간</string>
     <string name="quiet_time_ends">무음 끝나는 시간</string>
 
@@ -344,11 +344,11 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
 
     <string name="account_setup_check_settings_title"></string>
     <string name="account_setup_check_settings_retr_info_msg">계정 정보 복구\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">수신 서버 설정 확인중\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">발신 서버 설정 확인중\u2026</string>
-    <string name="account_setup_check_settings_authenticate">인증중\u2026</string>
-    <string name="account_setup_check_settings_fetch">계정설정 가져오기\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">취소중\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">수신 서버 설정 확인 중\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">발신 서버 설정 확인 중\u2026</string>
+    <string name="account_setup_check_settings_authenticate">인증 중\u2026</string>
+    <string name="account_setup_check_settings_fetch">계정 설정 가져 오기\u2026</string>
+    <string name="account_setup_check_settings_canceling_msg">취소 중\u2026</string>
 
     <string name="account_setup_names_title">설정이 거의 완료되었습니다!</string>
     <string name="account_setup_names_account_name_label">이 계정의 이름을 입력 (옵션):</string>
@@ -370,20 +370,20 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="account_setup_incoming_security_label">보안 연결</string>
     <string name="account_setup_incoming_auth_type_label">인증 방식</string>
     <string name="account_setup_incoming_security_none_label">없음</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (유효할경우)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL (유효할 경우)</string>
     <string name="account_setup_incoming_security_ssl_label">SSL (모든 인증서 허용)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (유효할경우)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">TLS (유효할 경우)</string>
     <string name="account_setup_incoming_security_tls_label">TLS (모든 인증서 허용)</string>
 
-    <string name="account_setup_incoming_delete_policy_label">메시지 삭제시</string>
-    <string name="account_setup_incoming_delete_policy_never_label">서버에는 메일을 삭제하지않음</string>
+    <string name="account_setup_incoming_delete_policy_label">메시지 삭제 시</string>
+    <string name="account_setup_incoming_delete_policy_never_label">서버에는 메일을 삭제하지 않음</string>
     <string name="account_setup_incoming_delete_policy_delete_label">서버에도 메일 삭제</string>
     <string name="account_setup_incoming_delete_policy_markread_label">서버에 읽은 메일로 표시</string>
 
     <string name="account_setup_incoming_compression_label">네트워크상에서 압축 사용:</string>
-    <string name="account_setup_incoming_mobile_label">Mobile</string>
+    <string name="account_setup_incoming_mobile_label">모바일 네트워크</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-    <string name="account_setup_incoming_other_label">Other</string>
+    <string name="account_setup_incoming_other_label">기타</string>
 
     <string name="local_storage_provider_external_label">외부 저장장치(SD card)</string>
     <string name="local_storage_provider_internal_label">일반적인 내부 저장장치</string>
@@ -392,13 +392,13 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
 
     <string name="account_setup_expunge_policy_label">삭제된 메시지를 없앰(Expunge)</string>
     <string name="account_setup_expunge_policy_immediately">즉시</string>
-    <string name="account_setup_expunge_policy_on_poll">수신시(poll)</string>
-    <string name="account_setup_expunge_policy_manual">항상 수동적으로</string>
+    <string name="account_setup_expunge_policy_on_poll">수신 시(poll)</string>
+    <string name="account_setup_expunge_policy_manual">항상 수동으로</string>
 
     <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
 
-    <string name="drafts_folder_label">임시보관함 폴더</string>
+    <string name="drafts_folder_label">임시 보관함 폴더</string>
     <string name="sent_folder_label">보낸 편지함 폴더</string>
     <string name="trash_folder_label">휴지통 폴더</string>
     <string name="archive_folder_label">보관 폴더</string>
@@ -412,14 +412,14 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
 
     <string name="account_setup_incoming_webdav_auth_path_label">인증 경로</string>
     <string name="account_setup_incoming_webdav_auth_path_hint">옵션</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox alias</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_label">메일함 별명</string>
     <string name="account_setup_incoming_webdav_mailbox_path_hint">옵션</string>
 
     <string name="account_setup_outgoing_title">보내기 서버 설정</string>
     <string name="account_setup_outgoing_smtp_server_label">SMTP 서버</string>
     <string name="account_setup_outgoing_port_label">포트번호</string>
     <string name="account_setup_outgoing_security_label">보안 유형</string>
-    <string name="account_setup_outgoing_require_login_label">sign-in 필요.</string>
+    <string name="account_setup_outgoing_require_login_label">로그인 필요.</string>
     <string name="account_setup_outgoing_username_label">이름</string>
     <string name="account_setup_outgoing_password_label">비밀번호</string>
     <string name="account_setup_outgoing_authentication_label">인증 유형</string>
@@ -430,36 +430,36 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
 
     <string name="compact_action">최적화</string>
     <string name="clear_action">편지 비우기 (위험!)</string>
-    <string name="recreate_action">데이터 재생성 (Last Resort!)</string>
+    <string name="recreate_action">데이터 재생성 (최후의 수단입니다!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">폴더 수신(poll) 빈도</string>
     <!-- Frequency also used in account_settings_* -->
-    <string name="account_setup_options_mail_check_frequency_never">하지않음</string>
-    <string name="account_setup_options_mail_check_frequency_1min">매 1분 마다</string>
-    <string name="account_setup_options_mail_check_frequency_5min">매 5분 마다</string>
-    <string name="account_setup_options_mail_check_frequency_10min">매 10분 마다</string>
-    <string name="account_setup_options_mail_check_frequency_15min">매 15분 마다</string>
-    <string name="account_setup_options_mail_check_frequency_30min">매 30분 마다</string>
-    <string name="account_setup_options_mail_check_frequency_1hour">매 시간 마다</string>
-    <string name="account_setup_options_mail_check_frequency_2hour">2시간 마다</string>
-    <string name="account_setup_options_mail_check_frequency_3hour">3시간 마다</string>
-    <string name="account_setup_options_mail_check_frequency_6hour">6시간 마다</string>
-    <string name="account_setup_options_mail_check_frequency_12hour">12시간 마다</string>
-    <string name="account_setup_options_mail_check_frequency_24hour">24시간 마다</string>
+    <string name="account_setup_options_mail_check_frequency_never">하지 않음</string>
+    <string name="account_setup_options_mail_check_frequency_1min">1분마다</string>
+    <string name="account_setup_options_mail_check_frequency_5min">5분마다</string>
+    <string name="account_setup_options_mail_check_frequency_10min">10분마다</string>
+    <string name="account_setup_options_mail_check_frequency_15min">15분마다</string>
+    <string name="account_setup_options_mail_check_frequency_30min">30분마다</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">1시간마다</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">2시간마다</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">3시간마다</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">6시간마다</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">12시간마다</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">24시간마다</string>
 
-    <string name="push_poll_on_connect_label">push접속시 수신</string>
-    <string name="account_setup_options_enable_push_label">이 계정의 메일에 대해 push 하도록함</string>
+    <string name="push_poll_on_connect_label">푸시(push) 받을 때 폴(poll)</string>
+    <string name="account_setup_options_enable_push_label">이 계정의 푸시 메일 사용</string>
     <string name="account_setup_options_enable_push_summary">만약 해당 계정서버가 push를 지원할경우 새로운 메시지가 있을경우 바로 보여질것입니다. 이  기능은 성능을 매우 향상시킬수 있습니다.</string>
-    <string name="idle_refresh_period_label">IDLE 연결을 재생(refresh)</string>
-    <string name="idle_refresh_period_1min">매 1분 마다</string>
-    <string name="idle_refresh_period_2min">매 2분 마다</string>
-    <string name="idle_refresh_period_3min">매 3분 마다</string>
-    <string name="idle_refresh_period_6min">매 6분 마다</string>
-    <string name="idle_refresh_period_12min">매 12분 마다</string>
-    <string name="idle_refresh_period_24min">매 24분 마다</string>
-    <string name="idle_refresh_period_36min">매 36분 마다</string>
-    <string name="idle_refresh_period_48min">매 48분 마다</string>
-    <string name="idle_refresh_period_60min">매 60분 마다</string>
+    <string name="idle_refresh_period_label">IDLE 연결 새로고침</string>
+    <string name="idle_refresh_period_1min">1분마다</string>
+    <string name="idle_refresh_period_2min">2분마다</string>
+    <string name="idle_refresh_period_3min">3분마다</string>
+    <string name="idle_refresh_period_6min">6분마다</string>
+    <string name="idle_refresh_period_12min">12분마다</string>
+    <string name="idle_refresh_period_24min">24분마다</string>
+    <string name="idle_refresh_period_36min">36분마다</string>
+    <string name="idle_refresh_period_48min">48분마다</string>
+    <string name="idle_refresh_period_60min">60분마다</string>
 
     <string name="account_setup_options_notify_label">메일 도착시 알림</string>
     <string name="account_setup_options_notify_sync_label">메일 확인시 알림</string>
@@ -491,40 +491,40 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="account_settings_notify_label">새 메일 알림</string>
     <string name="account_settings_notify_sync_label">동기화 알림</string>
     <string name="account_settings_email_label">당신의 이메일 주소</string>
-    <string name="account_settings_notify_summary">메일 도착시 상태바에 알림</string>
-    <string name="account_settings_notify_sync_summary">동기화 확인중일때 상태바에 알림</string>
-    <string name="account_settings_notify_self_label">보낸편지함 포함</string>
-    <string name="account_settings_notify_self_summary">내가 보낸 메시지에대해 알림 보기</string>
+    <string name="account_settings_notify_summary">메일 도착시 상태 바에 알림</string>
+    <string name="account_settings_notify_sync_summary">동기화 확인 중일 때 상태 바에 알림</string>
+    <string name="account_settings_notify_self_label">보낸 편지함 포함</string>
+    <string name="account_settings_notify_self_summary">내가 보낸 메시지에 대해 알림 보기</string>
     <string name="account_settings_notification_opens_unread_label">읽지 않은 메일에 대해 알림</string>
-    <string name="account_settings_notification_opens_unread_summary">알림표시 가능상태일 때 읽지 않은 메일에 대해 찾습니다</string>
+    <string name="account_settings_notification_opens_unread_summary">알림을 열 때 읽지 않은 메일을 찾습니다.</string>
     <string name="account_settings_notification_unread_count_label">읽지 않은 메일 수 세기</string>
-    <string name="account_settings_notification_unread_count_summary">읽지 않은 메시지의 수를 상태바에 보여줍니다.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
+    <string name="account_settings_notification_unread_count_summary">읽지 않은 메시지의 수를 상태바에 보여 줍니다.</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">열어서 메시지를 읽은 것으로 표시</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">메시지를 열면 읽은 것으로 표시합니다.</string>
 
     <string name="account_settings_show_pictures_label">항상 그림 보기</string>
     <string name="account_settings_show_pictures_never">아니오</string>
-    <string name="account_settings_show_pictures_only_from_contacts">주소록에 등록된 경우</string>
-    <string name="account_settings_show_pictures_always">항상</string>
+    <string name="account_settings_show_pictures_only_from_contacts">등록된 메일 주소일 때</string>
+    <string name="account_settings_show_pictures_always">누구의 메일이든</string>
 
     <string name="account_settings_composition">메일 보내기</string>
 
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+    <string name="account_settings_default_quoted_text_shown_label">답장에 원본 메시지를 인용</string>
+    <string name="account_settings_default_quoted_text_shown_summary">답장할 때 원본 메시지가 자동으로 포함됩니다.</string>
 
-    <string name="account_settings_reply_after_quote_label">Reply after quoted text</string>
-    <string name="account_settings_reply_after_quote_summary">메시지 회신시 원본 메시지를 회신메시지에 포함시킵니다.</string>
+    <string name="account_settings_reply_after_quote_label">원본 메시지 아래에 답장</string>
+    <string name="account_settings_reply_after_quote_summary">답장할 때 원본 메시지를 위에, 내용을 아래에 놓습니다.</string>
 
-    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>-->
-    <!-- NEW: <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>-->
+    <string name="account_settings_strip_signature_label">인용된 원본에서 서명을 제거</string>
+    <string name="account_settings_strip_signature_summary">답장할 때 원본에서 서명을 제외하고 내용만 인용합니다.</string>
 
     <string name="account_settings_message_format_label">메시지 형식</string>
-    <string name="account_settings_message_format_text">일반 텍스트(Plain) (이미지와 꾸밈format은 없어집니다)</string>
-    <string name="account_settings_message_format_html">HTML (이미지와 꾸밈format이 보존됩니다)</string>
-    <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+    <string name="account_settings_message_format_text">평문 (이미지와 꾸미는 형식이 사라집니다)</string>
+    <string name="account_settings_message_format_html">HTML (이미지와 꾸미는 형식이 보존됩니다)</string>
+    <string name="account_settings_message_format_auto">자동 (HTML에 답장하지 않을 경우 평문)</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <string name="account_settings_always_show_cc_bcc_label">CC/BCC 항상 보기</string>
+    <string name="account_settings_always_show_cc_bcc_summary">참조/숨은 참조 입력칸을 항상 보입니다.</string>
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -541,17 +541,17 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="account_settings_crypto_app">OpenPGP Provider</string>
     <string name="account_settings_crypto_app_none">없음</string>
     <string name="account_settings_crypto_app_not_available">이용 불가</string>
-    <string name="account_settings_crypto_auto_signature">Auto-sign</string>
-    <string name="account_settings_crypto_auto_signature_summary">계정의 이메일 주소를 서명키를 추측할 수 있도록 사용.</string>
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>-->
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
+    <string name="account_settings_crypto_auto_signature">자동 서명</string>
+    <string name="account_settings_crypto_auto_signature_summary">계정의 이메일 주소를 서명키를 추측할 수 있도록 사용합니다.</string>
+    <string name="account_settings_crypto_auto_encrypt">자동 암호화</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">공용 키가 수신자와 일치하면 자동으로 암호화합니다.</string>
 
     <string name="account_settings_mail_check_frequency_label">폴더 수신(poll) 빈도</string>
 
-    <string name="account_settings_storage_title">저장장치</string>
+    <string name="account_settings_storage_title">저장 장치</string>
 
     <string name="account_settings_color_label">계정 색깔</string>
-    <string name="account_settings_color_summary">계정 목록과 폴더내에서 사용될 계정 색깔을 선택하시오.</string>
+    <string name="account_settings_color_summary">계정 목록과 폴더 내에서 사용될 계정 색깔을 선택하시오.</string>
 
     <string name="account_settings_led_color_label">알림 LED 색깔</string>
     <string name="account_settings_led_color_summary">이 계정에 대해 깜빡일 LED 색을 선택하시오.</string>
@@ -573,10 +573,10 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
     <string name="account_settings_autodownload_message_size_5120">5Mb</string>
     <string name="account_settings_autodownload_message_size_10240">10Mb</string>
-    <string name="account_settings_autodownload_message_size_any">any size (제한없음)</string>
+    <string name="account_settings_autodownload_message_size_any">얼마든지 (제한 없음)</string>
 
     <string name="account_settings_message_age_label">메시지 동기화 기간</string>
-    <string name="account_settings_message_age_any">모두 (제한없음)</string>
+    <string name="account_settings_message_age_any">얼마든지 (제한 없음)</string>
     <string name="account_settings_message_age_0">오늘</string>
     <string name="account_settings_message_age_1">최근 2일</string>
     <string name="account_settings_message_age_2">최근 3일</string>
@@ -657,9 +657,9 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="account_settings_vibrate_pattern_4">패턴 4</string>
     <string name="account_settings_vibrate_pattern_5">패턴 5</string>
     <string name="account_settings_vibrate_times">진동 반복</string>
-    <string name="account_settings_ringtone">새로운 메일 벨울림</string>
+    <string name="account_settings_ringtone">새로운 메일 벨 울림</string>
     <string name="account_settings_led_label">LED 깜빡임</string>
-    <string name="account_settings_led_summary">메일 도착시 LED를 깜빡입니다.</string>
+    <string name="account_settings_led_summary">메일 도착 시 LED를 깜빡입니다.</string>
 
     <string name="account_settings_composition_title">메시지 작성 옵션</string>
     <string name="account_settings_composition_label">메시지 작성 기본값</string>
@@ -680,7 +680,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="manage_identities_edit_action">수정</string>
     <string name="manage_identities_move_up_action">위로 이동</string>
     <string name="manage_identities_move_down_action">아래로 이동</string>
-    <string name="manage_identities_move_top_action">맨위로 이동 / 기본값으로 함</string>
+    <string name="manage_identities_move_top_action">맨 위로 이동 / 기본값으로 함</string>
     <string name="manage_identities_remove_action">제거</string>
 
     <string name="edit_identity_description_label">이 항목(Identity) 설명</string>
@@ -689,7 +689,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="edit_identity_name_hint">(옵션)</string>
     <string name="edit_identity_email_label">이메일 주소</string>
     <string name="edit_identity_email_hint">(필수)</string>
-    <string name="edit_identity_reply_to_label">회신(reply-to) 주소</string>
+    <string name="edit_identity_reply_to_label">회신 주소</string>
     <string name="edit_identity_reply_to_hint">(옵션)</string>
     <string name="edit_identity_signature_label">서명</string>
     <string name="edit_identity_signature_hint">(옵션)</string>
@@ -708,19 +708,19 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="sort_latest_first">최근 메시지 순서</string>
     <string name="sort_subject_alpha">제목의 알파벳 순서</string>
     <string name="sort_subject_re_alpha">제목의 알파벳 순서의 역순</string>
-    <string name="sort_flagged_first">즐겨찾기(stared) 메시지를 첫번째로</string>
-    <string name="sort_flagged_last">즐겨찾기아닌(unstarted) 메시지를 첫번째로</string>
-    <string name="sort_unread_first">읽지않은 메시지를 첫번째로</string>
-    <string name="sort_unread_last">읽은 메시지를 첫번째로</string>
-    <string name="sort_attach_first">첨부파일이 있는 메시지를 첫번째로</string>
-    <string name="sort_unattached_first">첨부파일이 있는 메시지를 첫번째로</string>
+    <string name="sort_flagged_first">별표된 메시지 먼저</string>
+    <string name="sort_flagged_last">별표가 없는 메시지 먼저</string>
+    <string name="sort_unread_first">읽지 않은 메시지 먼저</string>
+    <string name="sort_unread_last">읽은 메시지 먼저</string>
+    <string name="sort_attach_first">첨부 파일이 있는 메시지 먼저</string>
+    <string name="sort_unattached_first">첨부 파일이 있는 메시지 먼저</string>
 
     <string name="sort_by">정렬</string>
     <string name="sort_by_date">날짜</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
+    <string name="sort_by_arrival">수신 일시</string>
     <string name="sort_by_subject">제목</string>
-    <string name="sort_by_flag">즐겨찾기</string>
-    <string name="sort_by_unread">읽음/읽지않음</string>
+    <string name="sort_by_flag">별표</string>
+    <string name="sort_by_unread">읽음/읽지 않음</string>
     <string name="sort_by_attach">첨부</string>
 
     <string name="account_delete_dlg_title">계정 삭제</string>
@@ -732,34 +732,33 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="provider_note_live">\"Plus\" 계정만이 이 프로그램을 POP 접근 하도록 허락합니다.
     올바른 이메일 주소와 비밀번호로 로그인 실패할 경우 \"Plus\" 계정을 위해 유료전환 해야 할 것입니다.
     웹브라우저를 통해 접근을 얻도록 하십시오</string>
-    <string name="provider_note_yahoojp">POP3를 이용하기위해서는 야휴 메일 설정페이지에서 POP3 이용을 설정하여야합니다.</string>
+    <string name="provider_note_yahoojp">POP3를 이용하기위해서는 야후 메일 설정페이지에서 POP3 이용을 설정하여야합니다.</string>
     <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
-    <string name="provider_note_naver">IMAP/POP3를 이용하기위해서는 네이버 메일 설정페이지에서 IMAP/POP3 이용을 설정하여야합니다.</string>
-    <string name="provider_note_hanmail">IMAP/POP3을 이용하기위해서는 한메일 환경설정 페이지에서 IMAP/POP3 이용을 설정하여야합니다.</string>
-    <string name="provider_note_paran">IMAP/POP3을 이용하기위해서는 파란 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정하여야합니다.</string>
-    <string name="provider_note_nate">IMAP/POP3을 이용하기위해서는 네이트 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정하여야합니다.</string>
+    <string name="provider_note_naver">IMAP/POP3를 이용하기 위해서는 네이버 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정해야 합니다.</string>
+    <string name="provider_note_hanmail">IMAP/POP3를 이용하기 위해서는 한메일 환경설정 페이지에서 IMAP/POP3 이용을 설정해야 합니다.</string>
+    <string name="provider_note_paran">IMAP/POP3을 이용하기 위해서는 파란 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정해야 합니다.</string>
+    <string name="provider_note_nate">IMAP/POP3을 이용하기 위해서는 네이트 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정해야 합니다.</string>
 
-    <string name="account_setup_failed_dlg_invalid_certificate_title">잘못된 인증정보</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_title">잘못된 인증 정보</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_accept">키 허용</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_reject">키 거부</string>
 
-    <!-- NEW: V, Z, G, O, "Previous" untranslated -->
     <string name="message_list_help_key">
-    Del (or D) - 삭제\n
+    Del (또는 D) - 삭제\n
     R - 회신\n
     A - 전체 회신\n
     C - 작성\n
     F - 전달\n
     M - 이동\n
-    V - Archive\n
+    V - 보관\n
     Y - 복사\n
-    Z - Mark (Un)read\n
-    G - Star\n
-    O - Sort type\n
+    Z - 읽(지 않)은 것으로 표시\n
+    G - 별표(즐겨찾기)\n
+    O - 정렬 방법\n
     I - 정렬 순서\n
     Q - 폴더로 돌아가기\n
     S - 선택/선택해제\n
-    J, P - Previous 메시지\n
+    J, P - 이전 메시지\n
     K, N - 다음 메시지
     </string>
 
@@ -782,35 +781,35 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="account_settings_signature__location_label">서명 위치</string>
     <string name="account_settings_signature__location_before_quoted_text">본문 앞에</string>
     <string name="account_settings_signature__location_after_quoted_text">본문 뒤에</string>
-    <string name="setting_theme_dark">어두운</string>
-    <string name="setting_theme_light">밝은</string>
+    <string name="setting_theme_dark">어두운 테마</string>
+    <string name="setting_theme_light">밝은 테마</string>
     <string name="display_preferences">화면</string>
-    <string name="global_preferences">Global</string>
+    <string name="global_preferences">전역 설정</string>
     <string name="debug_preferences">디버깅</string>
     <string name="privacy_preferences">개인정보</string>
     <string name="network_preferences">네트워크</string>
     <string name="interaction_preferences">상호 작용(Interaction)</string>
     <string name="accountlist_preferences">계정 항목</string>
-    <string name="messagelist_preferences">메시지 리스트</string>
+    <string name="messagelist_preferences">메시지 목록</string>
     <string name="messageview_preferences">메시지</string>
     <string name="settings_theme_label">테마</string>
     <string name="settings_language_label">언어</string>
 
-    <string name="settings_messageview_mobile_layout_label">Single-column layout</string>
-    <string name="settings_messageview_mobile_layout_summary">작은 스크린에서 HTML 메시지를 다시만듬(reformat)</string>
+    <string name="settings_messageview_mobile_layout_label">한 칸에 표시</string>
+    <string name="settings_messageview_mobile_layout_summary">작은 화면에서 HTML 메시지를 재구성</string>
 
     <string name="setting_language_system">시스템 기본값</string>
 
-    <string name="background_ops_label">벡그라운드 동기화</string>
-    <string name="background_ops_never">하지않음</string>
+    <string name="background_ops_label">백그라운드 동기화</string>
+    <string name="background_ops_never">하지 않음</string>
     <string name="background_ops_always">항상</string>
     <string name="background_ops_enabled">\'백그라운드 데이타\'가 선택된 경우</string>
-    <string name="background_ops_auto_sync">\'백그라운드 데이타\'와 \'Auto-sync\'가 선택된 경우</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync">\'백그라운드 데이타\'와 \'자동 동기화\'가 선택된 경우</string>
+    <string name="background_ops_auto_sync_only">\'자동 동기화\' 가 선택된 경우</string>
 
     <string name="batch_select_all">모두 선택</string>
 
-    <string name="account_setup_push_limit_label">Push 체크할 최대 폴더 수</string>
+    <string name="account_setup_push_limit_label">푸시할 때 점검할 최대 폴더 수</string>
     <string name="account_setup_push_limit_10">10개 폴더</string>
     <string name="account_setup_push_limit_25">25개 폴더</string>
     <string name="account_setup_push_limit_50">50개 폴더</string>
@@ -819,7 +818,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="account_setup_push_limit_500">500개 폴더</string>
     <string name="account_setup_push_limit_1000">1000개 폴더</string>
 
-    <string name="animations_title">Animation</string>
+    <string name="animations_title">애니메이션</string>
     <string name="animations_summary">Use gaudy visual effects</string>
     <string name="gestures_title">제스쳐</string>
     <string name="gestures_summary">제스쳐를 이용합니다</string>
@@ -842,19 +841,19 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="hide_special_accounts_summary">통합 편지함과 모든 편지함 숨기기</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - 즐겨찾기 메일수</string>
-    <string name="unread_modifier"> - 읽지않은 메일수</string>
+    <string name="flagged_modifier"> - 별표한 메일 수</string>
+    <string name="unread_modifier"> - 읽지 않은 메일 수</string>
 
     <string name="search_all_messages_title">모든 편지</string>
-    <string name="search_all_messages_detail">검색가능한 모든 편지</string>
+    <string name="search_all_messages_detail">검색 가능한 모든 편지</string>
 
     <string name="integrated_inbox_title">통합 편지함</string>
     <string name="integrated_inbox_detail">통합된 폴더의 모든 이메일</string>
 
-    <string name="tap_hint">Tap envelope or star for unread or starred messages</string>
+    <string name="tap_hint">봉투나 별을 눌러 읽지 않은 메시지나 별표된 메시지를 봅니다.</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">통합</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">모든 메시지는 통합 편지함에 보여집니다</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">통합 편지함에서 모든 메시지를 볼 수 있습니다.</string>
 
     <string name="account_settings_searchable_label">찾을 폴더</string>
     <string name="account_settings_searchable_all">모두</string>
@@ -882,7 +881,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="font_size_message_view_sender">보낸이</string>
     <string name="font_size_message_view_to">받는이</string>
     <string name="font_size_message_view_cc">참조</string>
-    <string name="font_size_message_view_additional_headers">추가 헤더정보</string>
+    <string name="font_size_message_view_additional_headers">추가 헤더 정보</string>
     <string name="font_size_message_view_subject">제목</string>
     <string name="font_size_message_view_date">시간 및 날짜</string>
     <string name="font_size_message_view_content">내용</string>
@@ -917,18 +916,18 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <!-- APG related -->
     <string name="error_activity_not_found">이 작동에 대해 적절한 어플리케이션을 찾을 수 없습니다.</string>
     <string name="error_apg_version_not_supported">설치된 APG 버전을 지원하지 않습니다.</string>
-    <string name="btn_crypto_sign">Sign</string>
+    <string name="btn_crypto_sign">서명</string>
     <string name="btn_encrypt">암호화</string>
     <string name="btn_decrypt">복호화</string>
     <string name="btn_verify">인증(Verify)</string>
     <string name="unknown_crypto_signature_user_id">&lt;알수없음&gt;</string>
     <string name="key_id">id: %s</string>
     <string name="pgp_mime_unsupported">PGP/MIME 메시지는 아직 지원하지 않습니다.</string>
-    <string name="attachment_encryption_unsupported">경고: 첨부파일이 아직 암호화 안 되었습니다</string>
+    <string name="attachment_encryption_unsupported">경고: 첨부파일이 아직 암호화되지 않았습니다</string>
     <string name="send_aborted">보내기 실패.</string>
 
-    <string name="save_or_discard_draft_message_dlg_title">임시보관함에 저장하시겠습니까?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">메시지를 저장하거나 버리하시겠습니까?</string>
+    <string name="save_or_discard_draft_message_dlg_title">임시 보관함에 저장합니까?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">이 메시지를 저장하거나 버리시겠습니까?</string>
 
     <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
     <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
@@ -949,7 +948,7 @@ K-9 메일은 다른 메일 클라이언트와 마찬가지로 대부분의 무�
     <string name="dialog_confirm_spam_title">스팸폴더로 이동 확인</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">정말 이 메시지를 스팸폴더로 옮기시겠습니까?</item>
-        <item quantity="other">정말 이 메시지를 스팸폴더로 옮기시겠습니까?</item>
+        <item quantity="other">정말 메시지 <xliff:g id="message_count">%1$d</xliff:g>를 스팸폴더로 옮기시겠습니까?</item>
 <!--
   Translators:
 
