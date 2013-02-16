@@ -143,7 +143,7 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
     <string name="status_next_poll">Prochaine récup. <xliff:g id="nexttime">%s</xliff:g></string>
-    <string name="status_syncing_off">synchronisation désactivée</string>
+    <string name="status_syncing_off">Synchronisation désactivée</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> sélectionné(s)</string>
     <!-- Actions will be used as buttons and in menu items -->
@@ -161,6 +161,8 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="forward_action">Transférer</string>
     <string name="move_action">Déplacer</string>
     <string name="single_message_options_action">Options de message</string>
+    <string name="refile_action">Déposer</string>
+
     <string name="continue_action">Continuer</string>
     <string name="back_action">Retour</string>
     <string name="done_action">Terminé</string>
@@ -955,6 +957,7 @@ de plus</string>
     <string name="font_size_message_compose">Taille de police des message</string>
     <string name="font_size_message_compose_input">Champ texte</string>
 
+    <string name="font_size_default">Défaut</string>
     <string name="font_size_tiniest">Plus minuscule</string>
     <string name="font_size_tiny">Minuscule</string>
     <string name="font_size_smaller">Plus petit</string>
@@ -1172,4 +1175,8 @@ de plus</string>
 
     <string name="global_settings_show_contact_picture_label">Afficher les images des contacts</string>
     <string name="global_settings_show_contact_picture_summary">Afficher les images des contacts dans la liste des messages</string>
+
+    <string name="last_refresh_time_format">Dernière vérification <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Dernière vérification <xliff:g id="time_with_preposition">%s</xliff:g> (Push activé)</string>
+    <string name="preposition_for_date">le <xliff:g id="date">%s</xliff:g></string>
 </resources>
