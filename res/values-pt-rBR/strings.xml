@@ -9,7 +9,7 @@
     <string name="beta_app_name">K-9 Mail BETA</string>
 
     <string name="shortcuts_title">Contas K-9</string>
-    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+    <string name="unread_widget_label">K-9 Não lidos</string>
 
     <string name="remote_control_label">Controle remoto para K-9 Mail</string>
     <string name="remote_control_desc">Permitir esta aplicação controlar atividades e configurações do K-9 Mail.</string>
@@ -18,45 +18,58 @@
     <!-- Used in the about dialog -->
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
     <!-- NEW: <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>-->
-    <!-- NEW: <string name="app_license">Licensed under the Apache License, Version 2.0.</string>-->
+    <string name="app_license">Licenciado sob a Apache License, Versão 2.0.</string>
 
 
     <!-- Welcome message -->
-    <string name="accounts_welcome">
-Bem-vindo à configuração do K-9 Mail. K-9 é um cliente de e-mail com código aberto para Android e é originalmente baseado no cliente de e-mail padrão do Android.
-\n\n
-\nK-9\'s recursos aprimorados incluídos:
-\n * Puxar e-mail usando IMAP IDLE
-\n * Melhor performance
-\n * Reclassificação de mensagens
-\n * E-mails com assinaturas
-\n * Cópia oculta pra você mesmo
-\n * Subscrição de pastas
-\n * Sincronização de todas as pastas
-\n * Configuração de um endereço de retorno
-\n * Atalhos de teclado
-\n * Melhor suporte para IMAP
-\n * Salvar anexos no cartão de memória
-\n * Esvaziar Lixeira
-\n * Ordenação de mensagens
-\n * …e mais
-\n
-\nPor favor, note que K-9 não suporta mais contas grátis do hotmail e, como muitos clientes de e-mail, tem algumas peculiaridades para utilizar Microsoft Exchange.
-\n
-\nPor favor, nos envie relatórios de bugs, contribua para novas melhorias e faça suas perguntas na página
-http://k9mail.googlecode.com/
-    </string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail é um cliente de e-mail com código aberto para Android e é originalmente baseado no cliente de e-mail padrão do Android.
+</p><p>
+K-9\'s recursos aprimorados incluídos:
+</p>
+<ul>
+  <li>Puxar e-mail usando IMAP IDLE</li>
+  <li>Melhor performance</li>
+  <li>Reclassificação de mensagens</li>
+  <li>E-mails com assinaturas</li>
+  <li>Cópia oculta pra você mesmo</li>
+  <li>Subscrição de pastas</li>
+  <li>Sincronização de todas as pastas</li>
+  <li>Configuração de um endereço de retorno</li>
+  <li>Atalhos de teclado</li>
+  <li>Melhor suporte para IMAP</li>
+  <li>Salvar anexos no cartão de memória</li>
+  <li>Esvaziar Lixeira</li>
+  <li>Ordenação de mensagens</li>
+  <li>…e mais</li>
+</ul>
+<p>
+Por favor, note que K-9 não suporta mais contas grátis do hotmail e, como muitos clientes de e-mail, tem algumas peculiaridades para utilizar Microsoft Exchange.
+</p><p>
+Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça suas perguntas na página
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->
     <string name="default_signature">-- \nE-mail enviado do meu celular Android usando K-9 Mail. Por favor, desculpe minha brevidade.</string>
 
 
+    <!-- General strings that include the app name -->
+    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do K-9 Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Todos os dados relativos à \"<xliff:g id="account">%s</xliff:g>\" serão removidos do K-9 Mail, mas as configurações da conta serão mantidas.</string>
+    <string name="account_clear_dlg_instructions_fmt">Todas as mensagens de \"<xliff:g id="account">%s</xliff:g>\" serão removidas do K-9 Mail, mas as configurações da conta serão mantidas.</string>
+    <string name="insufficient_apg_permissions">K-9 não tem permissão total de acesso ao APG , favor reinstalar o K-9 para resolver.</string>
+
+
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
-    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+    <string name="import_dialog_error_message">Não existe um aplicativo adequado para a operação de importação. Instale um gerenciador de arquivos pela Google Play Store.</string>
+    <string name="open_market">Abrir a Play Store</string>
 
 
 
@@ -65,7 +78,7 @@ http://k9mail.googlecode.com/
     <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revisões e informações: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
-    <!-- NEW: <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
+    <!-- NEW: <string name="app_emoji_icons">Emoticons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
     <string name="read_attachment_label">Ler anexos do E-mail</string>
     <string name="read_attachment_desc">Permitir que o K-9 leia os anexos de seus e-mails.</string>
@@ -76,25 +89,29 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">Sobre<xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Contas</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Avançado</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
-    <string name="compose_title">Escrever</string>
+    <string name="compose_title_compose">Escrever</string>
+    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
+    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
+    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+
     <string name="choose_folder_title">Escolher pasta</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
     <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
-    <string name="status_loading_account_folder">\u0020(Verificação <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_loading_account_folder_headers">\u0020(Buscando cabeçalhos <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_sending_account">\u0020(Enviando <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_processing_account">\u0020(Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_account_folder">Verificação <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading_account_folder_headers">Buscando cabeçalhos <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_sending_account">Enviando <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">\u0020(Nova verif. às @ <xliff:g id="nexttime">%s</xliff:g>)</string>
-    <string name="status_syncing_off">\u0020(Sincronização desabilitada)</string>
+    <string name="status_next_poll">Nova verif. <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_syncing_off">Sincronização desabilitada</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Próximo</string> <!-- Used as part of a multi-step process -->
@@ -103,59 +120,48 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
     <string name="send_again_action">Reenviar</string>
-    <string name="select_action">Selecionar</string>
-    <string name="deselect_action">Desselecionar</string>
     <string name="reply_action">Responder</string>
     <string name="reply_all_action">Responder a todos</string>
     <string name="delete_action">Excluir</string>
     <string name="archive_action">Arquivar</string>
     <string name="spam_action">Spam</string>
-    <string name="delete_all_action">Limpar pastas</string>
     <string name="forward_action">Encaminhar</string>
     <string name="move_action">Mover</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">Continuar</string>
-    <!-- NEW: <string name="back_action">Back</string>-->
+    <string name="back_action">Voltar</string>
     <string name="done_action">Pronto</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Descartar</string>
     <string name="save_draft_action">Salvar como rascunho</string>
-    <string name="retry_action">Tentar novamente</string>
-    <string name="refresh_action">Atualizar</string>
     <string name="check_mail_action">Verificar e-mail</string>
     <string name="send_messages_action">Enviar mensagens</string>
-    <string name="list_folders_action">Lista de pastas</string>
     <string name="refresh_folders_action">Atualizar pastas</string>
-    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
-    <string name="mark_all_as_read_action">Marcar todas as como lidas</string>
+    <string name="filter_folders_action">Encontrar pasta</string>
     <string name="add_account_action">Incluir conta</string>
     <string name="compose_action">Escrever</string>
     <string name="search_action">Pesquisar</string>
     <string name="search_results">Resultado da pesquisa</string>
     <string name="preferences_action">Configurações</string>
-    <string name="open_action">Abrir</string>
     <string name="account_settings_action">Configurações de conta</string>
     <string name="folder_settings_action">Configurações de pasta</string>
     <string name="global_settings_action">Configurações gerais</string>
     <string name="remove_account_action">Remover conta</string>
     <string name="clear_pending_action">Limpar ações pendentes (perigoso!)</string>
 
-    <string name="accounts_action">Contas</string>
     <string name="mark_as_read_action">Marcar como lido</string>
     <string name="send_alternate_action">Compartilhar</string>
     <string name="send_alternate_chooser_title">Escolher remetente</string>
 
-    <string name="mark_all_as_read_dlg_title">Marcar todas as mensagens como lidas</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Marcar todas as mensagens em \'<xliff:g id="folder">%s</xliff:g>\' como lidas?  (incluindo
-    mensagens em pastas não mostradas pelo K-9)</string>
-
     <string name="flag_action">Incluir favorito</string>
     <string name="unflag_action">Remover favorito</string>
     <string name="copy_action">Copiar</string>
-    <string name="show_full_header_action">Mostar cabeçalho inteiro</string>
-    <string name="hide_full_header_action">Esconder cabeçalho inteiro</string>
     <string name="select_text_action">Selecionar texto</string>
 
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
+
     <string name="mark_as_unread_action">Marcar como não lida</string>
-    <string name="add_cc_bcc_action">Incluir Cc/Bcc</string>
+    <string name="add_cc_bcc_action">Incluir CC/BCC</string>
     <string name="read_receipt">Confirmação de leitura</string>
     <string name="read_receipt_enabled">Confirmação de leitura será requisitada</string>
     <string name="read_receipt_disabled">Confirmação de leitura não será requisitada</string>
@@ -171,7 +177,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">Opções de conta</string>
 
     <string name="general_no_subject">(Sem assunto)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_date">Sem data</string>
     <string name="general_no_sender">Sem remetente</string>
     <string name="status_loading">Verificando</string>
     <string name="status_loading_more">Carregando mensagens\u2026</string>
@@ -216,7 +221,7 @@ http://k9mail.googlecode.com/
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Rascunhos)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Lixo)</string>
-    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Enviado)</string>
+    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Enviados)</string>
     <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arquivo)</string>
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
@@ -238,7 +243,7 @@ http://k9mail.googlecode.com/
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Assunto</string>
     <string name="message_compose_content_hint">Texto da mensagem</string>
-    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
+    <string name="message_compose_signature_hint">Assinatura</string>
     <string name="message_compose_quote_header_separator">........ Mensagem Original ........</string>
     <string name="message_compose_quote_header_subject">Assunto:</string>
     <string name="message_compose_quote_header_send_date">Enviado:</string>
@@ -250,29 +255,24 @@ http://k9mail.googlecode.com/
     <string name="error_contact_address_not_found">Não foi possível encontrar o endereço de e-mail.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram inclusos na mensagem.</string>
     <string name="message_compose_show_quoted_text_action">Mensagem citada</string>
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <string name="message_compose_description_add_to">Adicionar destinatário (Para)</string>
+    <string name="message_compose_description_add_cc">Adicionar destinatário (CC)</string>
+    <string name="message_compose_description_add_bcc">Adicionar destinatário (BCC)</string>
+    <string name="message_compose_description_delete_quoted_text">Remover texto citado</string>
+    <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
 
     <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Para:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_attachment_view_action">Abrir</string>
     <string name="message_view_attachment_download_action">Salvar</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Arquivar</string>
-    <string name="message_view_move_action">Mover</string>
-    <string name="message_view_spam_action">Spam</string>
     <string name="message_view_status_attachment_saved">Anexo salvo no cartão de memória como <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Impossível salvar anexo no cartão de memória.</string>
     <string name="message_view_show_pictures_action">Mostrar imagens</string>
-    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
-    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
-    <string name="message_view_fetching_attachment_toast">Buscando anexo.</string>
+    <string name="message_view_show_message_action">Exibir mensagem</string>
+    <string name="message_view_show_attachments_action">Exibir anexos</string>
+    <string name="message_view_show_more_attachments_action">Mais&#8230;</string>
+    <string name="message_view_fetching_attachment_toast">Buscando anexo</string>
     <string name="message_view_no_viewer">Não foi possível encontrar um visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Transferir mensagem completa</string>
     <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
@@ -282,22 +282,20 @@ http://k9mail.googlecode.com/
     <string name="message_no_additional_headers_available">Todos os cabeçalhos foram baixados, mas não há descrições adicionais a serem mostradas.</string>
     <string name="message_additional_headers_retrieval_failed">A recuperação de cabeçalhos adicionais do banco de dados ou servidor de e-mail falharam.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Mais deste remetente</string>
 
     <string name="message_discarded_toast">Mensagem descartada</string>
     <string name="message_saved_toast">Mensagem salva como rascunho</string>
 
-    <string name="global_settings_flag_label">Mostrar favoritos</string>
-    <string name="global_settings_flag_summary">Estrelas indicam mensagens favoritas</string>
     <string name="global_settings_checkbox_label">Caixas de multi-seleção</string>
     <string name="global_settings_checkbox_summary">Sempre mostrar caixas de multi-seleção</string>
-    <string name="global_settings_touchable_label">Visualizar mensagens</string>
-    <string name="global_settings_touchable_summary">Itens mais espaçosos da lista com vizualização</string>
     <string name="global_settings_preview_lines_label">Linhas de visualização</string>
     <string name="global_settings_show_correspondent_names_label">Mostrar nomes correspondentes</string>
     <string name="global_settings_show_correspondent_names_summary">Mostrar nomes correspondentes ao invés de seus e-mails.</string>
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">Mostar nomes dos contatos</string>
     <string name="global_settings_show_contact_name_summary">Quando disponível, utilizar nomes dos contatos para destinitário</string>
     <string name="global_settings_registered_name_color_label">Colorir contatos</string>
@@ -313,25 +311,24 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">Confirmar ações</string>
     <string name="global_settings_confirm_actions_summary">Mostrar diálogo sempre quando for disparada uma ação</string>
-    <string name="global_settings_confirm_action_archive">Arquivo</string>
     <string name="global_settings_confirm_action_delete">Excluir (apenas visualização)</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
+    <string name="global_settings_confirm_action_delete_starred">Excluir marcados com estrela (visualização apenas)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Marcar todas como lidas</string>
-    <string name="global_settings_confirm_action_send">Enviar</string>
 
-    <string name="global_settings_privacy_mode_title">Notificações de bloqueio de tela</string>
-    <string name="global_settings_privacy_mode_summary">Não mostrar assunto da mensagem na barra de status do sistema quando estiver bloqueado</string>
+    <string name="global_settings_notification_hide_subject_title">Ocultar assunto nas notificações</string>
+    <string name="global_settings_notification_hide_subject_never">Nunca</string>
+    <string name="global_settings_notification_hide_subject_when_locked">Com o telefone bloqueado</string>
+    <string name="global_settings_notification_hide_subject_always">Sempre</string>
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_batch_buttons">Botões de lote</string>
+    <string name="global_settings_batch_buttons_summary">Configurar botões de lote na tela de mensagens</string>
+    <string name="global_settings_mark_read">Marcar como lida/não lida</string>
+    <string name="global_settings_delete">Excluir</string>
+    <string name="global_settings_archive">Arquivar</string>
+    <string name="global_settings_archive_disabled_reason">Nenhuma pasta de arquivo.</string>
+    <string name="global_settings_move">Mover</string>
+    <string name="global_settings_flag">Bandeira</string>
+    <string name="global_settings_unselect">Deselecionar</string>
 
     <string name="quiet_time">Período de silêncio</string>
     <string name="quiet_time_description">Desabilitar sons, vibração e luz indicadora à noite</string>
@@ -339,10 +336,8 @@ http://k9mail.googlecode.com/
     <string name="quiet_time_ends">Fim do período de silêncio</string>
 
     <string name="account_setup_basics_title">Configurar uma nova conta</string>
-    <string name="account_setup_basics_instructions">Informe o endereço de e-mail da conta:</string>
     <string name="account_setup_basics_email_hint">Endereço de e-mail</string>
     <string name="account_setup_basics_password_hint">Senha</string>
-    <string name="account_setup_basics_default_label">Usar esta conta como padrão para envio de e-mail</string>
     <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -354,7 +349,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">Cancelando\u2026</string>
 
     <string name="account_setup_names_title">Quase terminado!</string>
-    <string name="account_setup_names_instructions">Sua conta está configurada, e seus e-mails estão sendo baixados!</string>
     <string name="account_setup_names_account_name_label">Dê um nome a esta conta (Opcional):</string>
     <string name="account_setup_names_user_name_label">Seu nome (como deseja que seja mostrado nas mensagens enviadas):</string>
 
@@ -388,9 +382,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_mobile_label">Móveis</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Outras</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Baixar cabeçalhos</string>
-    <string name="account_setup_incoming_save_all_headers_label">Salvar todos os cabeçalhos das mensagens localmente</string>
 
     <string name="local_storage_provider_external_label">Armazenamento externo (Cartão de memória)</string>
     <string name="local_storage_provider_internal_label">Armazenamento em memória interna</string>
@@ -426,21 +417,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
     <string name="account_setup_outgoing_port_label">Porta</string>
     <string name="account_setup_outgoing_security_label">Tipo de segurança</string>
-    <string name="account_setup_outgoing_security_none_label">Nenhum</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (se disponível)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (sempre)</string>
     <string name="account_setup_outgoing_require_login_label">Requer login.</string>
     <string name="account_setup_outgoing_username_label">Usuário</string>
     <string name="account_setup_outgoing_password_label">Senha</string>
     <string name="account_setup_outgoing_authentication_label">Tipo de autenticação</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Usuário &amp; senha</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Usuário</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Senha</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP antes de SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP antes de SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) antes de SMTP</string>
 
     <string name="account_setup_bad_uri">Configuração inválida: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -517,11 +497,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_notification_opens_unread_summary">Procurar por mensagens não lidas quando o aviso for aberto</string>
     <string name="account_settings_notification_unread_count_label">Mostrar contagem de não lidas</string>
     <string name="account_settings_notification_unread_count_summary">Mostrar o número de mensagens não lidas na barra de notificação.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
-
-    <string name="account_settings_enable_move_buttons_label">Habilitar botão de ações</string>
-    <string name="account_settings_enable_move_buttons_summary">Mostrar botões de Arquivar, Mover e Span.</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensagem como lida ao abrir</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida ao abrir e visualizar</string>
 
     <string name="account_settings_show_pictures_label">Sempre mostrar imagens</string>
     <string name="account_settings_show_pictures_never">Não</string>
@@ -544,6 +521,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (imagens e formatação serão preservadas)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
 
+    <string name="account_settings_always_show_cc_bcc_label">Sempre exibir CC/BCC</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Sempre exibir os campos CC/BCC</string>
+
     <string name="account_settings_message_read_receipt_label">Confirmação de leitura</string>
     <string name="account_settings_message_read_receipt_summary">Sempre solicitar confirmação de leitura</string>
 
@@ -552,11 +532,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_quote_style_header">Cabeçalho (como Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Configurações gerais</string>
-    <string name="account_settings_display_prefs_title">Exibição</string>
     <string name="account_settings_sync">Buscando e-mail</string>
     <string name="account_settings_folders">Pastas</string>
-    <string name="account_settings_message_lists">Lista de mensagens</string>
-    <string name="account_settings_message_view">Visualização de mensagens</string>
     <string name="account_settings_quote_prefix_label">Prefixo para textos</string>
     <string name="account_settings_crypto">Criptografia</string>
     <string name="account_settings_crypto_app">Provedor OpenPGP</string>
@@ -564,7 +541,7 @@ http://k9mail.googlecode.com/
     <string name="account_settings_crypto_app_not_available">não disponível</string>
     <string name="account_settings_crypto_auto_signature">Auto-login</string>
     <string name="account_settings_crypto_auto_signature_summary">Use o endereço de e-mail da conta para escolher assinatura.</string>
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>-->
+    <string name="account_settings_crypto_auto_encrypt">Auto-encriptar</string>
     <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Frequência de verificação de e-mail</string>
@@ -720,7 +697,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">Identidade inicial</string>
     <string name="choose_identity_title">Escolher identidade</string>
-    <string name="choose_account_title">Escolher conta/identidade</string>
     <string name="send_as">Enviar como</string>
 
     <string name="no_removable_identity">Você não pode remover sua única identidade</string>
@@ -728,8 +704,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">Mensagens antigas primeiro</string>
     <string name="sort_latest_first">Mensagens recentes primeiro</string>
-    <string name="sort_sender_alpha">Remetentes em ordem alfabética</string>
-    <string name="sort_sender_re_alpha">Remetentes em ordem alfabética reversa</string>
     <string name="sort_subject_alpha">Assunto em ordem alfabética</string>
     <string name="sort_subject_re_alpha">Assunto em ordem alfabética reversa</string>
     <string name="sort_flagged_first">Mensagens favoritas primeiro</string>
@@ -741,21 +715,17 @@ http://k9mail.googlecode.com/
 
     <string name="sort_by">Ordenar por…</string>
     <string name="sort_by_date">Data</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
-    <string name="sort_by_sender">Remetente</string>
+    <string name="sort_by_arrival">Recebimento</string>
     <string name="sort_by_subject">Assunto</string>
     <string name="sort_by_flag">Favorito</string>
     <string name="sort_by_unread">Lido/não lido</string>
     <string name="sort_by_attach">Com anexo</string>
 
     <string name="account_delete_dlg_title">Remover conta</string>
-    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Recriar conta</string>
-    <string name="account_recreate_dlg_instructions_fmt">Todos os dados relativos à \"<xliff:g id="account">%s</xliff:g>\" serão removidos do K-9 Mail, mas as configurações da conta serão mantidas.</string>
 
     <string name="account_clear_dlg_title">Limpar conta</string>
-    <string name="account_clear_dlg_instructions_fmt">Todas as mensagens de \"<xliff:g id="account">%s</xliff:g>\" serão removidas do K-9 Mail, mas as configurações da conta serão mantidas.</string>
 
     <string name="provider_note_live">Apenas algumas contas \"Plus\" incluem acesso POP,
         permitindo que este programa se conecte. Se não estiver conseguindo logar nela com seu
@@ -772,17 +742,28 @@ http://k9mail.googlecode.com/
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Recusar chave</string>
 
-    <string name="message_help_key">Del (or D) - Excluir\u000AR -
-    Responder\u000AA - Responder a todos\u000AF - Encaminhar\u000AJ or P - Anterior
-    Mensagem\u000AK, N - Próxima mensagem\u000AM - Mover\u000AY - Copiar\u000AZ - Menos zoom\u000AShift-Z -
-    Mais zoom\u000aG - Favoritar</string>
-    <string name="message_list_help_key">Del (or D) - Excluir\u000AR -
-    Responder\u000AA - Responder a todos\u000AC - Escrever\u000AF - Encaminhar\u000aM -
-    Mover\u000AY - Copiar\u000AG - Favoritar\u000AO - Tipo de ordenação\u000AI - Ordernar\u000AQ
-    - Retornar à pastas\u000AS - Selecionar/desselecionar</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - Excluir\n
+    R - Responder\n
+    A - Responder a todos\n
+    C - Escrever\n
+    F - Encaminhar\n
+    M - Mover\n
+    V - Archive\n
+    Y - Copiar\n
+    Z - Mark (Un)read\n
+    G - Favoritar\n
+    O - Tipo de ordenação\n
+    I - Ordernar\n
+    Q - Retornar à pastas\n
+    S - Selecionar/desselecionar\n
+    J, P - Anterior Mensagem\n
+    K, N - Próxima mensagem
+    </string>
 
     <string name="folder_list_help_key">
-    1 - Mostrar apenas pastar de Primeira Classe\u000A
+    1 - Mostrar apenas pastas de Primeira Classe\u000A
     2 - Mostrar pastas de Primeira e Segunda Classe\u000A
     3 - Mostar todas exceto as de Segunda Classe\u000A
     4 - Mostar todas as pastas\u000A
@@ -816,40 +797,17 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Layout de coluna única</string>
     <string name="settings_messageview_mobile_layout_summary">Formatar o HTML de mensagens para telas pequenas</string>
-    <string name="settings_messageview_zoom_controls_label">Controle de zoom do sistema</string>
-    <string name="settings_messageview_zoom_controls_summary">Habilitar widgets de zoom se o telefone suportar</string>
 
     <string name="setting_language_system">Padrões de sistema</string>
 
     <string name="background_ops_label">Sincronização em segundo plano</string>
     <string name="background_ops_never">Nunca</string>
     <string name="background_ops_always">Sempre</string>
-    <string name="background_ops_enabled">Quando \'Dados de segundo plado\' estiver checado</string>
-    <string name="background_ops_auto_sync">Quando \'Dados de segundo plano\' &amp; \'Auto-sinc\' estiverem checados</string>
+    <string name="background_ops_enabled">Quando \'Dados de segundo plano\' estiver checado</string>
+    <string name="background_ops_auto_sync">Quando \'Dados de segundo plano\' e \'Auto-sinc\' estiverem checados</string>
+    <string name="background_ops_auto_sync_only">Quando a \'Auto-sinc\' estiver ligada</string>
 
-    <string name="no_message_seletected_toast">Nenhuma mensagem selecionada</string>
-
-    <string name="date_format_label">Formato de data</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
-    <string name="batch_ops">Ops em lote</string>
-    <string name="batch_delete_op">Excluir selecionados</string>
-    <string name="batch_mark_read_op">Marcar selecionados como lidos</string>
-    <string name="batch_mark_unread_op">Marcar selecionados como não lidos</string>
-    <string name="batch_flag_op">Incluir estrela para selecionados</string>
-    <string name="batch_unflag_op">Remover estrela dos selecionados</string>
-    <string name="batch_archive_op">Mover selecionados para arquivo</string>
-    <string name="batch_spam_op">Mover selecionados para Spam</string>
-    <string name="batch_move_op">Mover selecionados</string>
-    <string name="batch_copy_op">Copiar selecionados</string>
-    <string name="batch_flag_mode">Modo estrela</string>
-    <string name="batch_plain_mode">Modo simples</string>
     <string name="batch_select_all">Selecione todos</string>
-    <string name="batch_deselect_all">Limpar seleção</string>
 
     <string name="account_setup_push_limit_label">Máximo de pastas para checar com push</string>
     <string name="account_setup_push_limit_10">10 pastas</string>
@@ -865,16 +823,10 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gestos</string>
     <string name="gestures_summary">Aceitar controle de gestos</string>
 
-    <string name="compact_layouts_title">Layout compacto</string>
-    <string name="compact_layouts_summary">Ajusta o layout para mostrar mais em cada página</string>
-
     <string name="volume_navigation_title">Tecla de volume para navegação</string>
     <string name="volume_navigation_summary">Percorrer itens usando controle de volume</string>
     <string name="volume_navigation_message">Visualizar mensagem</string>
     <string name="volume_navigation_list">Vários modos de exibição da lista</string>
-
-    <string name="manage_back_title">Gerenciar botão \"Voltar\"</string>
-    <string name="manage_back_summary">Tormar \"Voltar\" padrão para subir um nível</string>
 
     <string name="start_integrated_inbox_title">Iniciar com Caixas de Entrada Unificadas</string>
     <string name="start_integrated_inbox_summary">Mostra Caixas Unificadas ao abrir o K-9 Mail</string>
@@ -923,7 +875,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_list_subject">Assunto</string>
     <string name="font_size_message_list_sender">Remetente</string>
     <string name="font_size_message_list_date">Data</string>
-    <!-- NEW: <string name="font_size_message_list_preview">Preview</string>-->
+    <string name="font_size_message_list_preview">Previsualizar</string>
 
     <string name="font_size_message_view">Mensagens</string>
     <string name="font_size_message_view_sender">Remetente</string>
@@ -935,8 +887,8 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_view_date">Data</string>
     <string name="font_size_message_view_content">Corpo da mensagem</string>
 
-    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
-    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
+    <string name="font_size_message_compose">Composição de mensagem</string>
+    <string name="font_size_message_compose_input">Campos de entrada de texto</string>
 
     <string name="font_size_tiniest">Minúsculo</string>
     <string name="font_size_tiny">Pequenino</string>
@@ -953,13 +905,13 @@ http://k9mail.googlecode.com/
     <string name="font_size_webview_larger">Grande</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
-    <string name="message_compose_buggy_gallery">Checar \"Configurações\" -&gt; \"Utilize Gallery bug \" para tornar poder anexar imagens ou vídes utilizando Galeria 3D.</string>
+    <string name="message_compose_buggy_gallery">Checar \"Configurações\" -&gt; \"Utilize o Gallery bug \" para poder anexar imagens ou vídeos utilizando a Galeria 3D.</string>
 
     <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
-    <string name="message_compose_use_workaround">Usar \"Incluir anexo (Imagem)\" ou \"Incluir anexo (Video)\" para anexar images ou videos da Galeria 3D.</string>
+    <string name="message_compose_use_workaround">Usar \"Incluir anexo (Imagem)\" ou \"Incluir anexo (Video)\" para anexar imagens ou videos da Galeria 3D.</string>
 
     <string name="miscellaneous_preferences">Diversos</string>
-    <string name="misc_preferences_attachment_title">Utilizar Gallery bug</string>
+    <string name="misc_preferences_attachment_title">Solução do bug da Galeria</string>
     <string name="misc_preferences_attachment_description">Mostrar botões para incluir anexos de imagem/video (para contornar problemas utilizando Gallery 3D)</string>
 
     <!-- APG related -->
@@ -971,7 +923,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Verificar</string>
     <string name="unknown_crypto_signature_user_id">&lt;desconhecido&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 não tem permissão total de acesso ao APG , favor reinstalar o K-9 para resolver.</string>
     <string name="pgp_mime_unsupported">mensagns PGP/MIME não são suportadas ainda.</string>
     <string name="attachment_encryption_unsupported">Aviso: os anexos não são assinados ou encriptados ainda.</string>
     <string name="send_aborted">Envio abortado.</string>
@@ -979,27 +930,27 @@ http://k9mail.googlecode.com/
     <string name="save_or_discard_draft_message_dlg_title">Salvar mensagem de rascunho?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Salvar ou descartar esta mensagem?</string>
 
-    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
-    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+    <string name="confirm_discard_draft_message_title">Descartar mensagens?</string>
+    <string name="confirm_discard_draft_message">Tem certeza que deseja descartar esta mensagem?</string>
 
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>-->
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Recusar salvamento de rascunho.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Recusar salvamento de rascunho de mensagem encriptada.</string>
 
-    <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
-    <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
+    <string name="continue_without_public_key_dlg_title">Continuar sem chave pública?</string>
+    <string name="continue_without_public_key_instructions_fmt">Um ou mais destinatários não tem chave pública. Continuar?</string>
 
-    <string name="select_text_now">Selecione o testo para copiar.</string>
+    <string name="select_text_now">Selecione o texto para copiar.</string>
 
     <string name="dialog_confirm_delete_title">Confirmar exclusão</string>
     <string name="dialog_confirm_delete_message">Deseja mesmo excluir esta mensagem?</string>
     <string name="dialog_confirm_delete_confirm_button">Excluir</string>
     <string name="dialog_confirm_delete_cancel_button">Não excluir</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Do you really want to move this message to the spam folder?</item>
-        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
-
+    <string name="dialog_confirm_spam_title">Confirma mover para a pasta de spam</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Deseja mesmo mover esta mensagem para a pasta de spam?</item>
+        <item quantity="other">Deseja mesmo mover <xliff:g id="message_count">%1$d</xliff:g> mensagens para a pasta de spam?</item>
+<!--
   Translators:
 
   Please review how to handle pluralization for your language at (1) and ajust
@@ -1008,49 +959,49 @@ http://k9mail.googlecode.com/
   Possible values for 'quantity': zero, one, two, few, many, other
 
   (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+-->
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">Sim</string>
+    <string name="dialog_confirm_spam_cancel_button">Não</string>
 
-    </plurals>-->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
-
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_attachment_progress_title">Baixando anexo</string>
 
     <string name="debug_logging_enabled">O log de depuração para o sistema Android foi habilitado</string>
 
-    <!-- NEW: <string name="messagelist_sent_to_me_sigil">»</string>-->
-    <!-- NEW: <string name="messagelist_sent_cc_me_sigil">›</string>-->
+    <string name="messagelist_sent_to_me_sigil">»</string>
+    <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Não é possível conectar.</string>
 
-    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
-    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
-    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
-    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
-    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
-    <!-- NEW: <string name="settings_import">Import settings</string>-->
-    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
-    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
-    <!-- NEW: <string name="settings_exporting">Exporting settings…</string>-->
-    <!-- NEW: <string name="settings_importing">Importing settings…</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Scanning file…</string>-->
-    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_success">
-        <item quantity="one">1 account</item>
-        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
-    </plurals>-->
-    <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
-    <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
-    <!-- NEW: <string name="settings_export_failed_header">Export failed</string>-->
-    <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
-    <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s</xliff:g>.</string>-->
-    <!-- NEW: <plurals name="settings_import_server_passwords">
-        <item quantity="one">server password</item>
-        <item quantity="other">server passwords</item>
-    </plurals>-->
+    <string name="import_export_action">Importar ou exportar configurações</string>
+    <string name="settings_export_account">Exportar configurações de conta</string>
+    <string name="settings_export_all">Exportar configurações e contas</string>
+    <string name="settings_import_dialog_title">Importar</string>
+    <string name="settings_export_dialog_title">Exportar</string>
+    <string name="settings_import">Importar configurações</string>
+    <string name="settings_import_selection">Importar seleção</string>
+    <string name="settings_import_global_settings">Configurações globais</string>
+    <string name="settings_exporting">Exportando…</string>
+    <string name="settings_importing">Importando…</string>
+    <string name="settings_import_scanning_file">Buscando arquivo…</string>
+    <string name="settings_export_success">Configurações salvas para <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Configurações importadas de <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Importada <xliff:g id="accounts">%s</xliff:g> de <xliff:g id="filename">%s</xliff:g></string>
+    <plurals name="settings_import_success">
+        <item quantity="one">1 conta</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> contas</item>
+    </plurals>
+    <string name="settings_export_failure">Falha na exportação</string>
+    <string name="settings_import_failure">Falha na importação via <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success_header">Exportação concluída</string>
+    <string name="settings_export_failed_header">Falha na exportação</string>
+    <string name="settings_import_success_header">Importação realizada</string>
+    <string name="settings_import_failed_header">Falha na importação</string>
+    <string name="settings_import_activate_account_header">Ativar conta</string>
+    <string name="settings_import_activate_account_intro">Para poder usar a conta \"<xliff:g id="account">%s</xliff:g>\" você deve fornecer <xliff:g id="server_passwords">%s</xliff:g>.</string>
+    <plurals name="settings_import_server_passwords">
+        <item quantity="one">senha do servidor</item>
+        <item quantity="other">senhas do servidor</item>
+    </plurals>
     <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
     <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
     <!-- NEW: <plurals name="settings_import_setting_passwords">
@@ -1064,43 +1015,75 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
 
-    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to…</string>-->
-    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
-    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+    <string name="settings_attachment_default_path">Salvar anexos para…</string>
+    <string name="attachment_save_title">Salvar anexo</string>
+    <string name="attachment_save_desc">Nenhum explorador de arquivos encontrado. Deseja salvar este anexo?</string>
 
-    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
-    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
-    <!-- NEW: <string name="manage_accounts_moving_message">Moving account…</string>-->
+    <string name="manage_accounts_move_up_action">Mover para cima</string>
+    <string name="manage_accounts_move_down_action">Mover para baixo</string>
+    <string name="manage_accounts_moving_message">Movendo conta…</string>
 
-    <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
+    <string name="unread_widget_select_account">Exibir contagem de não lidos para…</string>
 
-    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
-    <!-- NEW: <string name="close">Close</string>-->
+    <string name="import_dialog_error_title">Explorador de Arquivos Ausente</string>
+    <string name="close">Fechar</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_empty_message">Nenhum texto</string>
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+    <string name="webview_contextmenu_link_view_action">Abrir para visualizar</string>
+    <string name="webview_contextmenu_link_share_action">Compartilhar link</string>
+    <string name="webview_contextmenu_link_copy_action">Copiar link</string>
+    <string name="webview_contextmenu_link_clipboard_label">Link</string>
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+    <string name="webview_contextmenu_image_title">Imagem</string>
+    <string name="webview_contextmenu_image_view_action">Ver imagem</string>
+    <string name="webview_contextmenu_image_save_action">Salvar imagem</string>
+    <string name="webview_contextmenu_image_download_action">Baixar imagem</string>
+    <string name="webview_contextmenu_image_copy_action">Copiar URL da imagem</string>
+    <string name="webview_contextmenu_image_clipboard_label">URL da imagem</string>
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+    <string name="webview_contextmenu_phone_call_action">Chamar número</string>
+    <string name="webview_contextmenu_phone_save_action">Salvar como contato</string>
+    <string name="webview_contextmenu_phone_copy_action">Copiar número telefônico</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Número</string>
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+    <string name="webview_contextmenu_email_send_action">Enviar email</string>
+    <string name="webview_contextmenu_email_save_action">Salvar nos contatos</string>
+    <string name="webview_contextmenu_email_copy_action">Copiar endereço de email</string>
+    <string name="webview_contextmenu_email_clipboard_label">Endereço email</string>
 
-    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+    <string name="image_saved_as">Imagem salva como \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Falha ao salvar imagem.</string>
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

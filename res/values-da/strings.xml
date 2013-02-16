@@ -22,34 +22,47 @@
 
 
     <!-- Welcome message -->
-    <string name="accounts_welcome">
-Velkommen til K-9 Mail opsætning.  K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
-\n\n
-\nK-9\'s forbedrede funktioner inkluderer:
-\n * Push mail ved hjælp af IMAP IDLE
-\n * Bedre performance
-\n * Omflytning af mails
-\n * Mailsignaturer
-\n * Bcc til dig selv
-\n * Mappe subscriptions
-\n * Synkronisering af alle mapper
-\n * Indstil afsender-adresse
-\n * Tastatur genveje
-\n * Bedre IMAP understøttelse
-\n * Gem vedhæftninger til SD kort
-\n * Tøm papirkurv
-\n * Sortering af mails
-\n * …og mere
-\n
-\nBemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
-\n
-\nVær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til
-http://k9mail.googlecode.com/
-    </string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
+</p><p>
+K-9\'s forbedrede funktioner inkluderer:
+</p>
+<ul>
+  <li>Push mail ved hjælp af IMAP IDLE</li>
+  <li>Bedre performance</li>
+  <li>Omflytning af mails</li>
+  <li>Mailsignaturer</li>
+  <li>Bcc til dig selv</li>
+  <li>Mappe subscriptions</li>
+  <li>Synkronisering af alle mapper</li>
+  <li>Indstil afsender-adresse</li>
+  <li>Tastatur genveje</li>
+  <li>Bedre IMAP understøttelse</li>
+  <li>Gem vedhæftninger til SD kort</li>
+  <li>Tøm papirkurv</li>
+  <li>Sortering af mails</li>
+  <li>…og mere</li>
+</ul>
+<p>
+Bemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
+</p><p>
+Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->
     <string name="default_signature">-- \nSendt fra min Android telefon med K-9 Mail. Undskyld hvis jeg er lidt kortfattet.</string>
+
+
+    <!-- General strings that include the app name -->
+    <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Alle mails, vedhæftede filer, mapper og mappe-indstillinger for \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail, men kontoindstillinger vil blive husket.</string>
+    <string name="account_clear_dlg_instructions_fmt">Alle mails i \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet, men kontoindstillinger vil blive husket.</string>
+    <string name="insufficient_apg_permissions">K-9 har ikke tilstrækkelig tilladelse til at benytte APG, geninstaller K-9 for at give fuld adgang.</string>
 
 
 
@@ -76,25 +89,29 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Konti</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Advanceret</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
-    <string name="compose_title">Skriv</string>
+    <string name="compose_title_compose">Skriv</string>
+    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
+    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
+    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+
     <string name="choose_folder_title">Vælg en mappe</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
     <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
-    <string name="status_loading_account_folder">\u0020(Synkroniserer <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_loading_account_folder_headers">\u0020(Henter headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_sending_account">\u0020(Sender <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_processing_account">\u0020(Behandler <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_account_folder">Synkroniserer <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading_account_folder_headers">Henter headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_sending_account">Sender <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_processing_account">Behandler <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">\u0020(Næste synkronisering @ <xliff:g id="nexttime">%s</xliff:g>)</string>
-    <string name="status_syncing_off">\u0020(synkronisering deaktiveret)</string>
+    <string name="status_next_poll">Næste synkronisering <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_syncing_off">synkronisering deaktiveret</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Næste</string> <!-- Used as part of a multi-step process -->
@@ -103,56 +120,45 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">Fortryd</string>
     <string name="send_action">Send</string>
     <string name="send_again_action">Send igen</string>
-    <string name="select_action">Vælg</string>
-    <string name="deselect_action">Fravælg</string>
     <string name="reply_action">Svar</string>
     <string name="reply_all_action">Svar alle</string>
     <string name="delete_action">Slet</string>
     <string name="archive_action">Arkiver</string>
     <string name="spam_action">Spam</string>
-    <string name="delete_all_action">Tøm mappe</string>
     <string name="forward_action">Videresend</string>
     <string name="move_action">Flyt</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">Fortsæt</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">Afslut</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Slet</string>
     <string name="save_draft_action">Gem som kladde</string>
-    <string name="retry_action">Forsøg igen</string>
-    <string name="refresh_action">Genindlæs</string>
     <string name="check_mail_action">Synkroniser mails</string>
     <string name="send_messages_action">Send mails</string>
-    <string name="list_folders_action">Mappeliste</string>
     <string name="refresh_folders_action">Genindlæs mapper</string>
     <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
-    <string name="mark_all_as_read_action">Marker alle mails som læst</string>
     <string name="add_account_action">Tilføj konto</string>
     <string name="compose_action">Skriv</string>
     <string name="search_action">Søg</string>
     <string name="search_results">Søgeresultater</string>
     <string name="preferences_action">Indstillinger</string>
-    <string name="open_action">Åbn</string>
     <string name="account_settings_action">Konto indstillinger</string>
     <string name="folder_settings_action">Mappe indstillinger</string>
     <string name="global_settings_action">Globale indstillinger</string>
     <string name="remove_account_action">Slet konto</string>
     <string name="clear_pending_action">Afbryd igangværende handlinger (farligt!)</string>
 
-    <string name="accounts_action">Konti</string>
     <string name="mark_as_read_action">Marker som læst</string>
     <string name="send_alternate_action">Del</string>
     <string name="send_alternate_chooser_title">Vælg afsender</string>
 
-    <string name="mark_all_as_read_dlg_title">Marker alle mails som læst</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Marker alle mails i \'<xliff:g id="folder">%s</xliff:g>\' som læst?  (incl.
-    mails i mappe som ikke er vist i K-9)</string>
-
     <string name="flag_action">Tilføj stjernemarkering</string>
     <string name="unflag_action">Fjern stjernemarkering</string>
     <string name="copy_action">Kopier</string>
-    <string name="show_full_header_action">Vis hele headeren</string>
-    <string name="hide_full_header_action">Skjul header</string>
     <string name="select_text_action">Vælg tekst</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">Marker som ulæst</string>
     <string name="add_cc_bcc_action">Tilføj Cc/Bcc</string>
@@ -171,7 +177,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">Kontoindstillinger</string>
 
     <string name="general_no_subject">(Intet emne)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_date">Ingen dato</string>
     <string name="general_no_sender">Ingen afsender</string>
     <string name="status_loading">Synkroniserer</string>
     <string name="status_loading_more">Henter mails\u2026</string>
@@ -265,11 +270,6 @@ http://k9mail.googlecode.com/
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_attachment_view_action">Åben</string>
     <string name="message_view_attachment_download_action">Gem</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Arkiver</string>
-    <string name="message_view_move_action">Flyt</string>
-    <string name="message_view_spam_action">Spam</string>
     <string name="message_view_status_attachment_saved">Vedhæftning gemt på SD kort som <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Kan ikke gemme vedhæftning på SD kort.</string>
     <string name="message_view_show_pictures_action">Vis billeder</string>
@@ -286,22 +286,20 @@ http://k9mail.googlecode.com/
     <string name="message_no_additional_headers_available">Alle mail headers er blevet hentet, og der kan ikke vises yderligere headers.</string>
     <string name="message_additional_headers_retrieval_failed">Hentning af yderligere headers fra database eller mail server mislykkedes.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Flere fra denne afsender</string>
 
     <string name="message_discarded_toast">Mail kasseret</string>
     <string name="message_saved_toast">Mail gemt som kladde</string>
 
-    <string name="global_settings_flag_label">Vis stjerner</string>
-    <string name="global_settings_flag_summary">Stjerne indikerer mails med flag</string>
     <string name="global_settings_checkbox_label">Checkbokse for multible valg</string>
     <string name="global_settings_checkbox_summary">Vis altid checkbokse for multible valg</string>
-    <string name="global_settings_touchable_label">Touch venlig visning</string>
-    <string name="global_settings_touchable_summary">Rummeligere listning i forhåndsvisning</string>
     <string name="global_settings_preview_lines_label">Linier i forhåndsvisning</string>
     <string name="global_settings_show_correspondent_names_label">Vis afsenders navne</string>
     <string name="global_settings_show_correspondent_names_summary">Vis afsendernavn fremfor deres mailaddresse</string>
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">Vis kontaktnavne</string>
     <string name="global_settings_show_contact_name_summary">Benyt afsendernavne fra eksisterende kontakter</string>
     <string name="global_settings_registered_name_color_label">Farvelæg kontakter</string>
@@ -317,15 +315,14 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">Bekræft handlinger</string>
     <string name="global_settings_confirm_actions_summary">Vis dialogvindue når du udfører valgte handlinger</string>
-    <string name="global_settings_confirm_action_archive">Arkiver</string>
     <string name="global_settings_confirm_action_delete">Slet mail (kun i forb. med visning af mails)</string>
     <string name="global_settings_confirm_action_delete_starred">Slet stjernemarkeringer (kun i forb. med visning af mails)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Marker alle som læst</string>
-    <string name="global_settings_confirm_action_send">Send</string>
 
-    <string name="global_settings_privacy_mode_title">Meddelelse på låst skærm</string>
-    <string name="global_settings_privacy_mode_summary">Vis ikke mailens emne i telefonens statuslinie når systemet er låst</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -343,10 +340,8 @@ http://k9mail.googlecode.com/
     <string name="quiet_time_ends">Slut tid</string>
 
     <string name="account_setup_basics_title">Opsætning af ny konto</string>
-    <string name="account_setup_basics_instructions">Indtast denne konto\'s mail-addresse:</string>
     <string name="account_setup_basics_email_hint">Mail addresse</string>
     <string name="account_setup_basics_password_hint">Password</string>
-    <string name="account_setup_basics_default_label">Send mail fra denne konto som standard</string>
     <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -358,7 +353,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">Afbryder\u2026</string>
 
     <string name="account_setup_names_title">Næsten færdig!</string>
-    <string name="account_setup_names_instructions">Din konto er nu konfigureret, og mails er på vej!</string>
     <string name="account_setup_names_account_name_label">Giv denne konto et navn (frivilligt):</string>
     <string name="account_setup_names_user_name_label">Indtast dit navn (vises på udgående mails):</string>
 
@@ -392,9 +386,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_mobile_label">Mobilt netværk</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Andet</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Hentning af mail headers</string>
-    <string name="account_setup_incoming_save_all_headers_label">Gem alle mail headers lokalt</string>
 
     <string name="local_storage_provider_external_label">Eksternt lager (SD kort)</string>
     <string name="local_storage_provider_internal_label">Almindelig internt lager</string>
@@ -430,21 +421,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">Sikkerhedstype</string>
-    <string name="account_setup_outgoing_security_none_label">Aldrig</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (hvis tilgængeligt)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (altid)</string>
     <string name="account_setup_outgoing_require_login_label">Kræv login.</string>
     <string name="account_setup_outgoing_username_label">Brugernavn</string>
     <string name="account_setup_outgoing_password_label">Password</string>
     <string name="account_setup_outgoing_authentication_label">Autentifikationstype</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Brugernavn &amp; password</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Brugernavn</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Password</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP før SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP før SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) før SMTP</string>
 
     <string name="account_setup_bad_uri">Ugyldig opsætning: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -524,9 +504,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
-    <string name="account_settings_enable_move_buttons_label">Aktiver Flyt knapper</string>
-    <string name="account_settings_enable_move_buttons_summary">Vis Arkiver, Flyt og Spam knapper.</string>
-
     <string name="account_settings_show_pictures_label">Vis altid billeder</string>
     <string name="account_settings_show_pictures_never">Aldrig</string>
     <string name="account_settings_show_pictures_only_from_contacts">Kun når afsender findes i Kontakter</string>
@@ -548,6 +525,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (billeder og formattering bevares)</string>
     <string name="account_settings_message_format_auto">Automatisk (ren tekst med mindre mail som besvares er i HTML format)</string>
 
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+
     <string name="account_settings_message_read_receipt_label">Kvittering for modtagelse</string>
     <string name="account_settings_message_read_receipt_summary">Anmod altid om kvittering for modtagelse</string>
 
@@ -556,11 +536,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_quote_style_header">Header (som Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Generelt</string>
-    <string name="account_settings_display_prefs_title">Visning</string>
     <string name="account_settings_sync">Hentning af mail</string>
     <string name="account_settings_folders">Mapper</string>
-    <string name="account_settings_message_lists">Listning af mails</string>
-    <string name="account_settings_message_view">Visning af meddelelser</string>
     <string name="account_settings_quote_prefix_label">Citeret tekst prefix</string>
     <string name="account_settings_crypto">Kryptering</string>
     <string name="account_settings_crypto_app">OpenPGP leverandør</string>
@@ -724,7 +701,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">Oprindelige identitet</string>
     <string name="choose_identity_title">Vælg identitet</string>
-    <string name="choose_account_title">Vælg konto/identitet</string>
     <string name="send_as">Send som</string>
 
     <string name="no_removable_identity">Du kan ikke slette din eneste identitet</string>
@@ -732,8 +708,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">Ældste mails ført</string>
     <string name="sort_latest_first">Nyeste mails først</string>
-    <string name="sort_sender_alpha">Sorter efter afsender</string>
-    <string name="sort_sender_re_alpha">Sorter after afsender omvendt alfabetisk</string>
     <string name="sort_subject_alpha">Sorter efter emne</string>
     <string name="sort_subject_re_alpha">Sorter efter emne omvendt alfabetisk</string>
     <string name="sort_flagged_first">Stjernemarkerede mails først</string>
@@ -746,20 +720,16 @@ http://k9mail.googlecode.com/
     <string name="sort_by">Sorter efter…</string>
     <string name="sort_by_date">Dato</string>
     <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
-    <string name="sort_by_sender">Afsender</string>
     <string name="sort_by_subject">Emne</string>
     <string name="sort_by_flag">Stjernemarkering</string>
     <string name="sort_by_unread">Læst/ulæst</string>
     <string name="sort_by_attach">Vedhæftning</string>
 
     <string name="account_delete_dlg_title">Fjern konto</string>
-    <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Nulstil konto</string>
-    <string name="account_recreate_dlg_instructions_fmt">Alle mails, vedhæftede filer, mapper og mappe-indstillinger for \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail, men kontoindstillinger vil blive husket.</string>
 
     <string name="account_clear_dlg_title">Rens konto</string>
-    <string name="account_clear_dlg_instructions_fmt">Alle mails i \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet, men kontoindstillinger vil blive husket.</string>
 
     <string name="provider_note_live">Kun visse \"Plus\" konti tillader adgang via POP
         som er nødvendig for at kunne tilgå konto. Hvis du ikke kan logge ind på trods af
@@ -776,14 +746,25 @@ http://k9mail.googlecode.com/
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter nøgle</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Afvis nøgle</string>
 
-    <string name="message_help_key">Del (or D) - Slet\u000AR -
-    Svar\u000AA - Svar alle\u000AF - Videresend\u000AJ or P - Foregående
-    mail\u000AK, N - Næste mail\u000AM - Flyt\u000AY - Kopier\u000AZ - Zoom ud\u000AShift-Z -
-    Zoom ind\u000aG - Stjerne</string>
-    <string name="message_list_help_key">Del (or D) - Slet\u000AR -
-    Svar\u000AA - Svar alle\u000AC - Skriv\u000AF - Videresend\u000aM -
-    Flyt\u000AY - Kopier\u000AG - Stjerne\u000AO - Sorteringstype\u000AI - Sorteringsorden\u000AQ
-    - Returner til Mapper\u000AS - Vælg/fravælg</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (or D) - Slet\n
+    R - Svar\n
+    A - Svar alle\n
+    C - Skriv\n
+    F - Videresend\n
+    M - Flyt\n
+    V - Archive\n
+    Y - Kopier\n
+    Z - Mark (Un)read\n
+    G - Stjerne\n
+    O - Sorteringstype\n
+    I - Sorteringsorden\n
+    Q - Returner til Mapper\n
+    S - Vælg/fravælg\n
+    J or P - Foregående mail\n
+    K or N - Næste mail
+    </string>
 
     <string name="folder_list_help_key">
     1 - Vis kun primære mapper\u000A
@@ -820,8 +801,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Enkelkolonne layout</string>
     <string name="settings_messageview_mobile_layout_summary">Reformater HTML meddelelser til visning på små skærme</string>
-    <string name="settings_messageview_zoom_controls_label">Zoom kontrol</string>
-    <string name="settings_messageview_zoom_controls_summary">Aktiver zoom widgets eller pinch-zoom hvis din enhed understøtter dette</string>
 
     <string name="setting_language_system">System standard</string>
 
@@ -830,30 +809,9 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Altid</string>
     <string name="background_ops_enabled">Når \"Baggrundsdata\" er aktiveret</string>
     <string name="background_ops_auto_sync">Når \"Baggrundsdata\" &amp; \"Auto-sync\" er aktiveret</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="no_message_seletected_toast">Ingen mail valgt</string>
-
-    <string name="date_format_label">Datoformat</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
-    <string name="batch_ops">Batch operationer</string>
-    <string name="batch_delete_op">Slet valgte</string>
-    <string name="batch_mark_read_op">Marker valgte som læst</string>
-    <string name="batch_mark_unread_op">Marker valgte som ulæst</string>
-    <string name="batch_flag_op">Tilføj stjerne til valgte</string>
-    <string name="batch_unflag_op">Fjern stjerne fra valgte</string>
-    <string name="batch_archive_op">Flyt valgte til arkiv</string>
-    <string name="batch_spam_op">Flyt valgte til mappen Spam</string>
-    <string name="batch_move_op">Flyt valgte</string>
-    <string name="batch_copy_op">Kopier valgte</string>
-    <string name="batch_flag_mode">Stjerne tilstand</string>
-    <string name="batch_plain_mode">Standard tilstand</string>
     <string name="batch_select_all">Vælg alle</string>
-    <string name="batch_deselect_all">Fravælg alle</string>
 
     <string name="account_setup_push_limit_label">Max antal mapper som skal kontrolleres ved push</string>
     <string name="account_setup_push_limit_10">10 mapper</string>
@@ -869,16 +827,10 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gestures</string>
     <string name="gestures_summary">Benyt gesture kontrol</string>
 
-    <string name="compact_layouts_title">Kompakt layout</string>
-    <string name="compact_layouts_summary">Juster layout så der vises mere på hver side</string>
-
     <string name="volume_navigation_title">Volume-knap navigation</string>
     <string name="volume_navigation_summary">Skift mellem valg vha. volume-knapper</string>
     <string name="volume_navigation_message">Mail-visning</string>
     <string name="volume_navigation_list">Diverse listevisninger</string>
-
-    <string name="manage_back_title">Håndter \"Tilbageknap\"</string>
-    <string name="manage_back_summary">\"Tilbageknap\" går altid et niveau op</string>
 
     <string name="start_integrated_inbox_title">Start i fælles indbakke</string>
     <string name="start_integrated_inbox_summary">Vis indhold af fælles indbakke ved opstart</string>
@@ -935,8 +887,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_view_cc">Modtagere (Cc)</string>
     <string name="font_size_message_view_additional_headers">Yderligere headers</string>
     <string name="font_size_message_view_subject">Emne</string>
-    <string name="font_size_message_view_time">Tid</string>
-    <string name="font_size_message_view_date">Dato</string>
+    <string name="font_size_message_view_date">Tid og dato</string>
     <string name="font_size_message_view_content">Indhold</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
@@ -975,7 +926,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Verificer</string>
     <string name="unknown_crypto_signature_user_id">&lt;ukendt&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 har ikke tilstrækkelig tilladelse til at benytte APG, geninstaller K-9 for at give fuld adgang.</string>
     <string name="pgp_mime_unsupported">PGP/MIME meddelelser er ikke understøttet endnu.</string>
     <string name="attachment_encryption_unsupported">Advarsel: vedhæftninger er IKKE signerede eller krypterede endnu.</string>
     <string name="send_aborted">Send afbrudt.</string>
@@ -1108,4 +1058,36 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
     <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

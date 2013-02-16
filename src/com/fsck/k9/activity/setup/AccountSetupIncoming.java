@@ -2,6 +2,7 @@
 package com.fsck.k9.activity.setup;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -90,10 +91,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     public static void actionEditIncomingSettings(Activity context, Account account) {
+        context.startActivity(intentActionEditIncomingSettings(context, account));
+    }
+
+    public static Intent intentActionEditIncomingSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
         i.setAction(Intent.ACTION_EDIT);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        context.startActivity(i);
+        return i;
     }
 
     @Override
@@ -159,18 +164,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 android.R.layout.simple_spinner_item, authTypeSpinnerOptions);
         authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAuthTypeView.setAdapter(authTypesAdapter);
-
-        /*
-         * Updates the port when the user changes the security type. This allows
-         * us to show a reasonable default which the user can change.
-         */
-        mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                updatePortFromSecurityType();
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
-        });
 
         /*
          * Calls validateFields() which enables or disables the Next button
@@ -294,11 +287,32 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
+            // Select currently configured security type
             for (int i = 0; i < CONNECTION_SECURITY_TYPES.length; i++) {
                 if (CONNECTION_SECURITY_TYPES[i] == settings.connectionSecurity) {
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
                 }
             }
+
+            /*
+             * Updates the port when the user changes the security type. This allows
+             * us to show a reasonable default which the user can change.
+             *
+             * Note: It's important that we set the listener *after* an initial option has been
+             *       selected by the code above. Otherwise the listener might be called after
+             *       onCreate() has been processed and the current port value set later in this
+             *       method is overridden with the default port for the selected security type.
+             */
+            mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position,
+                        long id) {
+                    updatePortFromSecurityType();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
+            });
 
             mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
             mCompressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));

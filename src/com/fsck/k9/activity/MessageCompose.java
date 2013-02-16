@@ -1,18 +1,19 @@
 package com.fsck.k9.activity;
 
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -22,13 +23,14 @@ import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AutoCompleteTextView.Validator;
@@ -88,16 +90,19 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener {
+public class MessageCompose extends K9Activity implements OnClickListener {
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
     private static final int DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY = 3;
@@ -144,10 +149,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
-    private static final int MSG_UPDATE_TITLE = 3;
-    private static final int MSG_SKIPPED_ATTACHMENTS = 4;
-    private static final int MSG_SAVED_DRAFT = 5;
-    private static final int MSG_DISCARDED_DRAFT = 6;
+    private static final int MSG_SKIPPED_ATTACHMENTS = 3;
+    private static final int MSG_SAVED_DRAFT = 4;
+    private static final int MSG_DISCARDED_DRAFT = 5;
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
     private static final int CONTACT_PICKER_TO = 4;
@@ -282,6 +286,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private String mReferences;
     private String mInReplyTo;
+    private Menu mMenu;
 
     private boolean mSourceProcessed = false;
 
@@ -322,13 +327,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
             case MSG_PROGRESS_ON:
-                setProgressBarIndeterminateVisibility(true);
+                setSupportProgressBarIndeterminateVisibility(true);
                 break;
             case MSG_PROGRESS_OFF:
-                setProgressBarIndeterminateVisibility(false);
-                break;
-            case MSG_UPDATE_TITLE:
-                updateTitle();
+                setSupportProgressBarIndeterminateVisibility(false);
                 break;
             case MSG_SKIPPED_ATTACHMENTS:
                 Toast.makeText(
@@ -388,6 +390,32 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     /**
+     * Get intent for composing a new message as a reply to the given message. If replyAll is true
+     * the function is reply all instead of simply reply.
+     * @param context
+     * @param account
+     * @param message
+     * @param replyAll
+     * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
+     */
+    public static Intent getActionReplyIntent(
+        Context context,
+        Account account,
+        Message message,
+        boolean replyAll,
+        String messageBody) {
+        Intent i = new Intent(context, MessageCompose.class);
+        i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
+        i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
+        if (replyAll) {
+            i.setAction(ACTION_REPLY_ALL);
+        } else {
+            i.setAction(ACTION_REPLY);
+        }
+        return i;
+    }
+
+    /**
      * Compose a new message as a reply to the given message. If replyAll is true the function
      * is reply all instead of simply reply.
      * @param context
@@ -402,15 +430,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         Message message,
         boolean replyAll,
         String messageBody) {
-        Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
-        i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
-        if (replyAll) {
-            i.setAction(ACTION_REPLY_ALL);
-        } else {
-            i.setAction(ACTION_REPLY);
-        }
-        context.startActivity(i);
+        context.startActivity(getActionReplyIntent(context, account, message, replyAll, messageBody));
     }
 
     /**
@@ -438,21 +458,50 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Save will attempt to replace the message in the given folder with the updated version.
      * Discard will delete the message from the given folder.
      * @param context
-     * @param account
      * @param message
      */
-    public static void actionEditDraft(Context context, Account account, Message message) {
+    public static void actionEditDraft(Context context, MessageReference messageReference) {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
+        i.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
         i.setAction(ACTION_EDIT_DRAFT);
         context.startActivity(i);
     }
 
+    /*
+     * This is a workaround for an annoying ( temporarly? ) issue:
+     * https://github.com/JakeWharton/ActionBarSherlock/issues/449
+     */
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setSupportProgressBarIndeterminateVisibility(false);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
+            finish();
+            return;
+        }
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.message_compose);
+
+        if (K9.getK9ComposerThemeSetting() != K9.Theme.USE_GLOBAL) {
+            // theme the whole content according to the theme (except the action bar)
+            ContextThemeWrapper wrapper = new ContextThemeWrapper(this,
+                    K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
+            View v = ((LayoutInflater) wrapper.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+                    inflate(R.layout.message_compose, null);
+            TypedValue outValue = new TypedValue();
+            // background color needs to be forced
+            wrapper.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+            v.setBackgroundColor(outValue.data);
+            setContentView(v);
+        } else {
+            setContentView(R.layout.message_compose);
+        }
 
         final Intent intent = getIntent();
 
@@ -508,11 +557,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mCcWrapper = (LinearLayout) findViewById(R.id.cc_wrapper);
         mBccWrapper = (LinearLayout) findViewById(R.id.bcc_wrapper);
 
+        if (mAccount.isAlwaysShowCcBcc()) {
+            onAddCcBcc();
+        }
+
         EditText upperSignature = (EditText)findViewById(R.id.upper_signature);
         EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
 
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
+
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextShow = (Button)findViewById(R.id.quoted_text_show);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
@@ -645,9 +699,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mBccView.setTokenizer(new Rfc822Tokenizer());
         mBccView.setValidator(mAddressValidator);
 
-
-        mSubjectView.setOnFocusChangeListener(this);
-
         if (savedInstanceState != null) {
             /*
              * This data gets used in onCreate, so grab it here instead of onRestoreInstanceState
@@ -719,21 +770,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             if (mAction != Action.EDIT_DRAFT) {
-                String bccAddress = mAccount.getAlwaysBcc();
-                if ((bccAddress != null) && !("".equals(bccAddress))) {
-                    String[] bccAddresses = bccAddress.split(",");
-                    for (String oneBccAddress : bccAddresses) {
-                        addAddress(mBccView, new Address(oneBccAddress, ""));
-                    }
-                }
+                addAddresses(mBccView, mAccount.getAlwaysBcc());
             }
-
-            /*
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "action = " + action + ", account = " + mMessageReference.accountUuid + ", folder = " + mMessageReference.folderName + ", sourceMessageUid = " + mMessageReference.uid);
-            */
-
-            updateTitle();
         }
 
         if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
@@ -749,6 +787,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mToView.requestFocus();
         }
 
+        if (mAction == Action.FORWARD) {
+            mMessageReference.flag = Flag.FORWARDED;
+        }
 
         mEncryptLayout = findViewById(R.id.layout_encrypt);
         mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
@@ -809,15 +850,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         // Set font size of input controls
         int fontSize = mFontSizes.getMessageComposeInput();
-        mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mBccView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mMessageContentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mQuotedText.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mSignatureView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        mFontSizes.setViewTextSize(mToView, fontSize);
+        mFontSizes.setViewTextSize(mCcView, fontSize);
+        mFontSizes.setViewTextSize(mBccView, fontSize);
+        mFontSizes.setViewTextSize(mSubjectView, fontSize);
+        mFontSizes.setViewTextSize(mMessageContentView, fontSize);
+        mFontSizes.setViewTextSize(mQuotedText, fontSize);
+        mFontSizes.setViewTextSize(mSignatureView, fontSize);
+
 
         updateMessageFormat();
+
+        setTitle();
     }
 
     /**
@@ -1072,6 +1116,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mBccWrapper.setVisibility(savedInstanceState
                                   .getBoolean(STATE_KEY_BCC_SHOWN) ? View.VISIBLE : View.GONE);
 
+        // This method is called after the action bar menu has already been created and prepared.
+        // So compute the visibility of the "Add Cc/Bcc" menu item again.
+        computeAddCcBccVisibility();
+
         showOrHideQuotedText(
                 (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
 
@@ -1100,18 +1148,34 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         updateMessageFormat();
     }
 
-    private void updateTitle() {
-        if (mSubjectView.getText().length() == 0) {
-            setTitle(R.string.compose_title);
-        } else {
-            setTitle(mSubjectView.getText().toString());
+    private void setTitle() {
+        switch (mAction) {
+            case REPLY: {
+                setTitle(R.string.compose_title_reply);
+                break;
+            }
+            case REPLY_ALL: {
+                setTitle(R.string.compose_title_reply_all);
+                break;
+            }
+            case FORWARD: {
+                setTitle(R.string.compose_title_forward);
+                break;
+            }
+            case COMPOSE:
+            default: {
+                setTitle(R.string.compose_title_compose);
+                break;
+            }
         }
     }
 
-    @Override
-    public void onFocusChange(View view, boolean focused) {
-        if (!focused) {
-            updateTitle();
+    private void addAddresses(MultiAutoCompleteTextView view, String addresses) {
+        if (StringUtils.isNullOrEmpty(addresses)) {
+            return;
+        }
+        for (String address : addresses.split(",")) {
+            addAddress(view, new Address(address, ""));
         }
     }
 
@@ -1670,6 +1734,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void sendMessage() {
         new SendMessageTask().execute();
     }
+
     private void saveMessage() {
         new SaveMessageTask().execute();
     }
@@ -1776,6 +1841,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onAddCcBcc() {
         mCcWrapper.setVisibility(View.VISIBLE);
         mBccWrapper.setVisibility(View.VISIBLE);
+        computeAddCcBccVisibility();
+    }
+
+    /**
+     * Hide the 'Add Cc/Bcc' menu item when both fields are visible.
+     */
+    private void computeAddCcBccVisibility() {
+        if (mMenu != null && mCcWrapper.getVisibility() == View.VISIBLE &&
+                mBccWrapper.getVisibility() == View.VISIBLE) {
+            mMenu.findItem(R.id.add_cc_bcc).setVisible(false);
+        }
     }
 
     private void onReadReceipt() {
@@ -1791,6 +1867,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         Toast toast = Toast.makeText(context, txt, Toast.LENGTH_SHORT);
         toast.show();
     }
+
     /**
      * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
      */
@@ -2017,6 +2094,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             } else {
                 mAccount = account;
             }
+
+            // Show CC/BCC text input field when switching to an account that always wants them
+            // displayed.
+            // Please note that we're not hiding the fields if the user switches back to an account
+            // that doesn't have this setting checked.
+            if (mAccount.isAlwaysShowCcBcc()) {
+                onAddCcBcc();
+            }
+
             // not sure how to handle mFolder, mSourceMessage?
         }
 
@@ -2028,12 +2114,21 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mIdentityChanged = true;
         mDraftNeedsSaving = true;
         updateFrom();
+        updateBcc();
         updateSignature();
         updateMessageFormat();
     }
 
     private void updateFrom() {
         mChooseIdentityButton.setText(mIdentity.getEmail());
+    }
+
+    private void updateBcc() {
+        if (mIdentityChanged) {
+            mBccWrapper.setVisibility(View.VISIBLE);
+        }
+        mBccView.setText("");
+        addAddresses(mBccView, mAccount.getAlwaysBcc());
     }
 
     private void updateSignature() {
@@ -2164,7 +2259,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.message_compose_option, menu);
+        getSupportMenuInflater().inflate(R.menu.message_compose_option, menu);
+
+        mMenu = menu;
 
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
         if (!mAccount.hasDraftsFolder()) {
@@ -2175,19 +2272,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          * Show the menu items "Add attachment (Image)" and "Add attachment (Video)"
          * if the work-around for the Gallery bug is enabled (see Issue 1186).
          */
-        int found = 0;
-        for (int i = menu.size() - 1; i >= 0; i--) {
-            MenuItem item = menu.getItem(i);
-            int id = item.getItemId();
-            if ((id == R.id.add_attachment_image) ||
-                    (id == R.id.add_attachment_video)) {
-                item.setVisible(K9.useGalleryBugWorkaround());
-                found++;
-            }
+        menu.findItem(R.id.add_attachment_image).setVisible(K9.useGalleryBugWorkaround());
+        menu.findItem(R.id.add_attachment_video).setVisible(K9.useGalleryBugWorkaround());
 
-            // We found all the menu items we were looking for. So stop here.
-            if (found == 2) break;
-        }
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        computeAddCcBccVisibility();
 
         return true;
     }
@@ -2287,11 +2382,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             })
             .create();
         case DIALOG_CHOOSE_IDENTITY:
-            Context context = new ContextWrapper(this);
-            context.setTheme(K9.getK9ThemeResourceId(K9.THEME_LIGHT));
+            Context context = new ContextThemeWrapper(this,
+                    (K9.getK9Theme() == K9.Theme.LIGHT) ?
+                            R.style.Theme_K9_Dialog_Light :
+                            R.style.Theme_K9_Dialog_Dark);
             Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.send_as);
-            final IdentityAdapter adapter = new IdentityAdapter(context, getLayoutInflater());
+            final IdentityAdapter adapter = new IdentityAdapter(context);
             builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -2509,6 +2606,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mSubjectView.setText(subject);
         }
         mQuoteStyle = QuoteStyle.HEADER;
+
+        // "Be Like Thunderbird" - on forwarded messages, set the message ID
+        // of the forwarded message in the references and the reply to.  TB
+        // only includes ID of the message being forwarded in the reference,
+        // even if there are multiple references.
+        if (!StringUtils.isNullOrEmpty(message.getMessageId())) {
+            mInReplyTo = message.getMessageId();
+            mReferences = mInReplyTo;
+        } else {
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "could not get Message-ID.");
+            }
+        }
 
         // Quote the message and setup the UI.
         populateUIWithQuotedMessage(true);
@@ -2977,6 +3087,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String FIND_INSERTION_POINT_HEAD_CONTENT = "<head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"></head>";
     // Index of the start of the beginning of a String.
     private static final int FIND_INSERTION_POINT_START_OF_STRING = 0;
+
     /**
      * <p>Find the start and end positions of the HTML in the string. This should be the very top
      * and bottom of the displayable message. It returns a {@link InsertableHtmlContent}, which
@@ -3190,7 +3301,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          * creating a new hierarchical dummy Uri object with the query
          * parameters of the original URI.
          */
-        Uri uri = Uri.parse("foo://bar?" + mailtoUri.getEncodedQuery());
+        CaseInsensitiveParamWrapper uri = new CaseInsensitiveParamWrapper(
+                Uri.parse("foo://bar?" + mailtoUri.getEncodedQuery()));
 
         // Read additional recipients from the "to" parameter.
         List<String> to = uri.getQueryParameters("to");
@@ -3221,6 +3333,45 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         List<String> body = uri.getQueryParameters("body");
         if (!body.isEmpty()) {
             mMessageContentView.setText(body.get(0));
+        }
+    }
+
+    private static class CaseInsensitiveParamWrapper {
+        private final Uri uri;
+        private Set<String> mParamNames;
+
+        public CaseInsensitiveParamWrapper(Uri uri) {
+            this.uri = uri;
+        }
+
+        public List<String> getQueryParameters(String key) {
+            final List<String> params = new ArrayList<String>();
+            for (String paramName : getQueryParameterNames()) {
+                if (paramName.equalsIgnoreCase(key)) {
+                    params.addAll(uri.getQueryParameters(paramName));
+                }
+            }
+            return params;
+        }
+
+        @TargetApi(11)
+        private Set<String> getQueryParameterNames() {
+            if (Build.VERSION.SDK_INT >= 11) {
+                return uri.getQueryParameterNames();
+            }
+
+            return getQueryParameterNamesPreSdk11();
+        }
+
+        private Set<String> getQueryParameterNamesPreSdk11() {
+            if (mParamNames == null) {
+                String query = uri.getQuery();
+                Set<String> paramNames = new HashSet<String>();
+                Collections.addAll(paramNames, query.split("(=[^&]*(&|$))|&"));
+                mParamNames = paramNames;
+            }
+
+            return mParamNames;
         }
     }
 
@@ -3382,21 +3533,31 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             StringBuilder header = new StringBuilder();
             header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\n");
-            header.append("<hr style='border:none;border-top:solid #B5C4DF 1.0pt'>\n"); // This gets converted into a horizontal line during html to text conversion.
+            header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\n"); // This gets converted into a horizontal line during html to text conversion.
             if (mSourceMessage.getFrom() != null && Address.toString(mSourceMessage.getFrom()).length() != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ").append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getFrom()))).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ")
+                    .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getFrom())))
+                    .append("<br>\n");
             }
             if (mSourceMessage.getSentDate() != null) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_send_date)).append("</b> ").append(mSourceMessage.getSentDate()).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_send_date)).append("</b> ")
+                    .append(mSourceMessage.getSentDate())
+                    .append("<br>\n");
             }
             if (mSourceMessage.getRecipients(RecipientType.TO) != null && mSourceMessage.getRecipients(RecipientType.TO).length != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_to)).append("</b> ").append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.TO)))).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_to)).append("</b> ")
+                    .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.TO))))
+                    .append("<br>\n");
             }
             if (mSourceMessage.getRecipients(RecipientType.CC) != null && mSourceMessage.getRecipients(RecipientType.CC).length != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_cc)).append("</b> ").append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.CC)))).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_cc)).append("</b> ")
+                    .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.CC))))
+                    .append("<br>\n");
             }
             if (mSourceMessage.getSubject() != null) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_subject)).append("</b> ").append(HtmlConverter.textToHtmlFragment(mSourceMessage.getSubject())).append("<br>\n");
+                header.append("<b>").append(getString(R.string.message_compose_quote_header_subject)).append("</b> ")
+                    .append(HtmlConverter.textToHtmlFragment(mSourceMessage.getSubject()))
+                    .append("<br>\n");
             }
             header.append("</div>\n");
             header.append("<br>\n");
@@ -3433,8 +3594,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         private LayoutInflater mLayoutInflater;
         private List<Object> mItems;
 
-        public IdentityAdapter(Context context, LayoutInflater layoutInflater) {
-            mLayoutInflater = layoutInflater;
+        public IdentityAdapter(Context context) {
+            mLayoutInflater = (LayoutInflater) context.getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
 
             List<Object> items = new ArrayList<Object>();
             Preferences prefs = Preferences.getPreferences(context.getApplicationContext());
@@ -3542,7 +3704,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void setMessageFormat(SimpleMessageFormat format) {
         // This method will later be used to enable/disable the rich text editing mode.
-        
+
         mMessageFormat = format;
     }
 

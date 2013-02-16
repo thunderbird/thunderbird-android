@@ -1,15 +1,16 @@
 
 package com.fsck.k9.controller;
 
+import java.util.List;
+
 import android.content.Context;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
-
-import java.util.List;
 
 /**
  * Defines the interface that {@link MessagingController} will use to callback to requesters.
@@ -153,6 +154,50 @@ public class MessagingListener {
 
 
     /**
+     * Called when a remote search is started
+     *
+     * @param acct
+     * @param folder
+     */
+    public void remoteSearchStarted(Account acct, String folder) {}
+
+
+    /**
+     * Called when server has responded to our query.  Messages have not yet been downloaded.
+     *
+     * @param numResults
+     */
+    public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults) { }
+
+
+    /**
+     * Called when a new result message is available for a remote search
+     * Can assume headers have been downloaded, but potentially not body.
+     * @param account
+     * @param folder
+     * @param message
+     */
+    public void remoteSearchAddMessage(Account account, String folder, Message message, int numDone, int numTotal) { }
+
+    /**
+     * Called when Remote Search is fully complete
+     *
+     * @param acct
+     * @param folder
+     * @param numResults
+     */
+    public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults) {}
+
+    /**
+     * Called when there was a problem with a remote search operation.
+     *
+     * @param acct
+     * @param folder
+     * @param err
+     */
+    public void remoteSearchFailed(Account acct, String folder, String err) { }
+
+    /**
      * General notification messages subclasses can override to be notified that the controller
      * has completed a command. This is useful for turning off progress indicators that may have
      * been left over from previous commands.
@@ -162,4 +207,6 @@ public class MessagingListener {
      *         {@code false} otherwise.
      */
     public void controllerCommandCompleted(boolean moreCommandsToRun) {}
+
+    public void enableProgressIndicator(boolean enable) { }
 }

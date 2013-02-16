@@ -23,7 +23,9 @@
   can be displayed after the device has been rotated.
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="main">
 
     <PreferenceScreen
         android:title="@string/account_settings_general_title"
@@ -43,51 +45,26 @@
             android:title="@string/account_settings_default_label"
             android:summary="@string/account_settings_default_summary" />
 
-    </PreferenceScreen>
-
-    <PreferenceScreen
-        android:title="@string/account_settings_display_prefs_title"
-        android:key="display">
-
-        <PreferenceCategory
-            android:title="@string/account_settings_message_lists"
-            android:key="lists">
-
-            <Preference
-                android:persistent="false"
-                android:key="chip_color"
-                android:singleLine="true"
-                android:title="@string/account_settings_color_label"
-                android:summary="@string/account_settings_color_summary" />
-
-        </PreferenceCategory>
-
-        <PreferenceCategory
-            android:title="@string/account_settings_message_view"
-            android:key="view">
-
-            <ListPreference
-                android:persistent="false"
-                android:key="show_pictures_enum"
-                android:title="@string/account_settings_show_pictures_label"
-                android:entries="@array/account_settings_show_pictures_entries"
-                android:entryValues="@array/account_settings_show_pictures_values"
-                android:dialogTitle="@string/account_settings_show_pictures_label" />
-
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="enable_move_buttons"
-                android:title="@string/account_settings_enable_move_buttons_label"
-                android:defaultValue="true"
-                android:summary="@string/account_settings_enable_move_buttons_summary" />
-
-        </PreferenceCategory>
+        <Preference
+            android:persistent="false"
+            android:key="chip_color"
+            android:singleLine="true"
+            android:title="@string/account_settings_color_label"
+            android:summary="@string/account_settings_color_summary" />
 
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:title="@string/interaction_preferences"
-        android:key="interaction">
+        android:title="@string/account_settings_reading_mail"
+        android:key="reading_mail">
+
+        <ListPreference
+            android:persistent="false"
+            android:key="show_pictures_enum"
+            android:title="@string/account_settings_show_pictures_label"
+            android:entries="@array/account_settings_show_pictures_entries"
+            android:entryValues="@array/account_settings_show_pictures_values"
+            android:dialogTitle="@string/account_settings_show_pictures_label" />
 
         <CheckBoxPreference
             android:persistent="false"
@@ -172,12 +149,6 @@
             android:entryValues="@array/account_setup_expunge_policy_values"
             android:dialogTitle="@string/account_setup_expunge_policy_label" />
 
-        <CheckBoxPreference
-            android:persistent="false"
-            android:title="@string/account_setup_incoming_save_all_headers_title"
-            android:key="account_save_all_headers"
-            android:summary="@string/account_setup_incoming_save_all_headers_label" />
-
         <PreferenceScreen
             android:key="incoming"
             android:title="@string/account_settings_incoming_label"
@@ -230,6 +201,12 @@
             android:title="@string/account_settings_message_format_label"
             android:entries="@array/account_settings_message_format_entries"
             android:entryValues="@array/account_settings_message_format_values" />
+
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="always_show_cc_bcc"
+            android:title="@string/account_settings_always_show_cc_bcc_label"
+            android:summary="@string/account_settings_always_show_cc_bcc_summary" />
 
         <CheckBoxPreference
         android:persistent="false"
@@ -382,7 +359,6 @@
           See com.fsck.k9.activity.setup.AccountSettings
         -->
         <RingtonePreference
-            android:layout="?android:attr/preferenceLayoutChild"
             android:dependency="account_notify"
             android:key="account_ringtone"
             android:title="@string/account_settings_ringtone"
@@ -391,7 +367,6 @@
 
         <CheckBoxPreference
             android:persistent="false"
-            android:layout="?android:attr/preferenceLayoutChild"
             android:dependency="account_notify"
             android:key="account_vibrate"
             android:defaultValue="false"
@@ -400,6 +375,7 @@
 
         <ListPreference
             android:persistent="false"
+            android:layout="?android:attr/preferenceLayoutChild"
             android:dependency="account_vibrate"
             android:key="account_vibrate_pattern"
             android:title="@string/account_settings_vibrate_pattern_label"
@@ -409,6 +385,7 @@
 
         <ListPreference
             android:persistent="false"
+            android:layout="?android:attr/preferenceLayoutChild"
             android:dependency="account_vibrate"
             android:key="account_vibrate_times"
             android:title="@string/account_settings_vibrate_times"
@@ -451,6 +428,30 @@
             android:title="@string/account_settings_notification_unread_count_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_notification_unread_count_summary" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen android:title="@string/account_settings_search" android:key="search">
+        <CheckBoxPreference
+            android:key="remote_search_enabled"
+            android:title="@string/account_settings_remote_search_enabled"
+            android:summary="@string/account_settings_remote_search_enabled_summary"
+            android:persistent="false"/>
+
+        <ListPreference
+            android:entries="@array/account_settings_remote_search_num_results_entries"
+            android:entryValues="@array/account_settings_remote_search_num_results_values"
+            android:key="account_remote_search_num_results"
+            android:title="@string/account_settings_remote_search_num_label"
+            android:dialogTitle="@string/account_settings_remote_search_num_label"
+            android:dependency="remote_search_enabled"/>
+
+        <CheckBoxPreference
+            android:key="account_remote_search_full_text"
+            android:title="@string/account_settings_remote_search_full_text"
+            android:summary="@string/account_settings_remote_search_full_text_summary"
+            android:persistent="false"
+            android:dependency="remote_search_enabled"/>
 
     </PreferenceScreen>
 

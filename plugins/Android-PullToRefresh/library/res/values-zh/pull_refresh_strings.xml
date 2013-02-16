@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="pull_to_refresh_pull_label">下拉刷新…</string>
+  <string name="pull_to_refresh_release_label">放开以刷新…</string>
+  <string name="pull_to_refresh_refreshing_label">正在载入…</string>
+</resources>

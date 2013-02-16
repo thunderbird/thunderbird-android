@@ -58,8 +58,6 @@ public class Pop3Store extends Store {
     private static final String USER_CAPABILITY = "USER";
     private static final String TOP_CAPABILITY = "TOP";
 
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED };
-
     /**
      * Decodes a Pop3Store URI.
      *
@@ -885,11 +883,6 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public Flag[] getPermanentFlags() {
-            return PERMANENT_FLAGS;
-        }
-
-        @Override
         public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
             return null;
         }
@@ -1159,6 +1152,8 @@ public class Pop3Store extends Store {
      * Exception that is thrown if the server returns an error response.
      */
     static class Pop3ErrorResponse extends MessagingException {
+        private static final long serialVersionUID = 3672087845857867174L;
+
         public Pop3ErrorResponse(String message) {
             super(message, true);
         }

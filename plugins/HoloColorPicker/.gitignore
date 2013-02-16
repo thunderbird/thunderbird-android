@@ -1,0 +1,24 @@
+#Android generated
+bin
+gen
+
+#Eclipse
+.project
+.classpath
+.settings
+
+#IntelliJ IDEA
+.idea
+*.iml
+classes
+
+#Command line
+build.xml
+proguard-project.txt
+
+#Mac specific
+.DS_Store
+
+#User specific
+local.properties
+sample/src/com/cyrilmottier/android/polarissample/util/LocalConfig.java

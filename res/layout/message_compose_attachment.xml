@@ -18,7 +18,7 @@
 		android:textColor="?android:attr/textColorSecondary"
 		android:layout_width="1dip"
 		android:layout_height="42dip"
-		android:background="@drawable/text_box"
+		android:background="?attr/messageViewAttachmentBackground"
 		android:paddingLeft="36dip"
 		android:singleLine="true"
 		android:ellipsize="start"

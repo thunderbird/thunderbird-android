@@ -22,34 +22,47 @@
 
 
     <!-- Welcome message -->
-    <string name="accounts_welcome">
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="accounts_welcome"><![CDATA[
+<p>
 ברוכים הבאים ל-K-9 הגדרת דואר. K-9 הוא קוד פתוח של תוכנת מייל לאנדרואיד המבוססת במקור על תוכנת המייל הסטנדרטית של האנדרואיד
-\n\n
-\nתכונות משופרות של K-9 כוללת:
-\n * דחוף דואר באמצעות IMAP IDLE
-\n * ביצועים טובים יותר
-\n * הודעה refiling
-\n * חתימות דוא"ל
-\n * עותק מוסתר אל עצמי
-\n * תיקיות מנויים
-\n * כל התיקיות מסונכרנות
-\n * חזור- כתובת תצורה
-\n * מקלדת קיצורי דרך
-\n * תמיכה טובה יותר ב-IMAP
-\n * שמירת קבצים מצורפים אל SD
-\n * רוקן אשפה
-\n * מיון הודעת
-\n * ועוד …
-\n
-\nלידיעתך, K-9 אינו תומך ברוב חשבונות Hotmail החינמיים, כמו תוכנות דואר רבות, יש כמה מוזרויות כאשר מדברים על Microsoft Exchange.
-\n
-\nנא לשלוח דיווחי באגים, לתרום תכונות חדשות ולשאול שאלות על
-http://k9mail.googlecode.com/
-    </string>
+</p><p>
+תכונות משופרות של K-9 כוללת:
+</p>
+<ul>
+  <li>דחוף דואר באמצעות IMAP IDLE</li>
+  <li>ביצועים טובים יותר</li>
+  <li>הודעה refiling</li>
+  <li>חתימות דוא"ל</li>
+  <li>עותק מוסתר אל עצמי</li>
+  <li>תיקיות מנויים</li>
+  <li>כל התיקיות מסונכרנות</li>
+  <li>חזור- כתובת תצורה</li>
+  <li>מקלדת קיצורי דרך</li>
+  <li>תמיכה טובה יותר ב-IMAP</li>
+  <li>שמירת קבצים מצורפים אל SD</li>
+  <li>רוקן אשפה</li>
+  <li>מיון הודעת</li>
+  <li>ועוד …</li>
+</ul>
+<p>
+לידיעתך, K-9 אינו תומך ברוב חשבונות Hotmail החינמיים, כמו תוכנות דואר רבות, יש כמה מוזרויות כאשר מדברים על Microsoft Exchange.
+</p><p>
+נא לשלוח דיווחי באגים, לתרום תכונות חדשות ולשאול שאלות על
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->
     <!-- NEW: --><string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
+
+
+    <!-- General strings that include the app name -->
+    <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
+    <string name="account_recreate_dlg_instructions_fmt">על הנתונים עבור \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
+    <string name="account_clear_dlg_instructions_fmt">כל ההודעות ב \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
+    <string name="insufficient_apg_permissions">"ל-K-9 אין הרשאה לגשת ל APG באופן מלא, התקן מחדש את K-9 כדי לתקן את זה."</string>
 
 
 
@@ -76,25 +89,29 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">אודות <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">חשבונות</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">מתקדם</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
-    <string name="compose_title">חבר</string>
+    <string name="compose_title_compose">חבר</string>
+    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
+    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
+    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+
     <string name="choose_folder_title">בחר תיקייה</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
     <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
-    <!-- NEW: <string name="status_loading_account_folder">\u0020(Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>-->
-    <!-- NEW: <string name="status_loading_account_folder_headers">\u0020(Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>-->
-    <string name="status_sending_account">\u0020(שולח… <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <!-- NEW: <string name="status_processing_account">\u0020(Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>-->
+    <!-- NEW: <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>-->
+    <!-- NEW: <string name="status_loading_account_folder_headers">Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>-->
+    <string name="status_sending_account">שולח… <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <!-- NEW: <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>-->
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <!-- NEW: <string name="status_next_poll">\u0020(Next poll @ <xliff:g id="nexttime">%s</xliff:g>)</string>-->
-    <string name="status_syncing_off">\u0020(הסנכרון מושבת)</string>
+    <!-- NEW: <string name="status_next_poll">Next poll <xliff:g id="nexttime">%s</xliff:g></string>-->
+    <string name="status_syncing_off">הסנכרון מושבת</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">הבא</string>
@@ -103,55 +120,45 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">ביטול</string>
     <string name="send_action">שלח</string>
     <string name="send_again_action">שלח שוב</string>
-    <string name="select_action">בחר</string>
-    <string name="deselect_action">בטל בחירה</string>
     <string name="reply_action">השב</string>
     <string name="reply_all_action">השב על הכל</string>
     <string name="delete_action">מחק</string>
     <string name="archive_action">ארכיון</string>
     <string name="spam_action">דואר זבל</string>
-    <string name="delete_all_action">נקה תיקייה</string>
     <string name="forward_action">קדימה</string>
     <string name="move_action">העבר</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">המשך</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">סיום</string>
     <string name="discard_action">השלך</string>
     <string name="save_draft_action">שמור כטיוטה</string>
-    <string name="retry_action">נסה שוב</string>
-    <string name="refresh_action">רענן</string>
     <string name="check_mail_action">בדוק דואר</string>
     <string name="send_messages_action">שלח הודעות</string>
-    <string name="list_folders_action">רשימת תיקיות</string>
     <string name="refresh_folders_action">רענן תיקיות</string>
     <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
-    <string name="mark_all_as_read_action">סמן כל ההודעות כנקראו</string>
     <string name="add_account_action">הוסף חשבון</string>
     <string name="compose_action">חבר</string>
     <string name="search_action">חפש</string>
     <string name="search_results">תוצאות חיפוש</string>
     <string name="preferences_action">הגדרות</string>
-    <string name="open_action">פתח</string>
     <string name="account_settings_action">הגדרות חשבון</string>
     <string name="folder_settings_action">הגדרות תיקייה</string>
     <string name="global_settings_action">הגדרות כלליות</string>
     <string name="remove_account_action">מחק חשבון</string>
     <string name="clear_pending_action">נקה פעולות ממתינות(סכנה!)</string>
 
-    <string name="accounts_action">חשבונות</string>
     <string name="mark_as_read_action">סמן כנקרא</string>
     <string name="send_alternate_action">שתף</string>
     <string name="send_alternate_chooser_title">בחר את השולח</string>
 
-    <string name="mark_all_as_read_dlg_title">סימון כל ההודעות כנקראו</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">סמן את כל ההודעות שב \'<xliff:g id="folder">%s</xliff:g>\' כנקראו?? (כולל את ההודעות בתיקיות שאינן מוצגות ב K-9)</string>
-
     <string name="flag_action">הוסף כוכב</string>
     <string name="unflag_action">מחק כוכב</string>
     <string name="copy_action">העתק</string>
-    <string name="show_full_header_action">הצג כותרת מלאה</string>
-    <string name="hide_full_header_action">הסתר כותרת מלאה</string>
     <string name="select_text_action">בחר טקסט</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">סמן כלא נקרא</string>
     <string name="add_cc_bcc_action">הוסף עותק / עותק מוסתר</string>
@@ -170,7 +177,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">אפשרויות חשבון</string>
 
     <string name="general_no_subject">(ללא כותרת)</string>
-    <string name="general_no_date">ללא תאריך</string>
     <string name="general_no_sender">ללא שולח</string>
     <!-- NEW: <string name="status_loading">Polling</string>-->
     <string name="status_loading_more">טוען הודעות</string>
@@ -265,11 +271,6 @@ http://k9mail.googlecode.com/
     <string name="message_view_cc_label">עותק:</string>
     <string name="message_view_attachment_view_action">פתח</string>
     <string name="message_view_attachment_download_action">שמור</string>
-    <string name="message_view_prev_action">▼</string>
-    <string name="message_view_next_action">▲</string>
-    <string name="message_view_archive_action">ארכיון</string>
-    <string name="message_view_move_action">העבר</string>
-    <string name="message_view_spam_action">דואר זבל</string>
     <string name="message_view_status_attachment_saved">הקובץ המצורף נשמר בכרטיס ה SD בתור <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">אין אפשרות לשמור את הקובץ המצורף לכרטיס ה SD.</string>
     <string name="message_view_show_pictures_action">הצג תמונות</string>
@@ -286,22 +287,20 @@ http://k9mail.googlecode.com/
     <string name="message_no_additional_headers_available">כל הכותרות הורדו, אבל אין כותרות נוספות להצגה.</string>
     <string name="message_additional_headers_retrieval_failed">שליפה של כותרות נוספות מהשרת של מסד הנתונים או מהדואר נכשל.</string>
 
-    <string name="folder_push_active_symbol">(דחיפה)</string>
-
     <string name="from_same_sender">עוד מהשולח הזה</string>
 
     <string name="message_discarded_toast">ההודעה נמחקה</string>
     <string name="message_saved_toast">ההודעה נשמרה כטיוטה</string>
 
-    <string name="global_settings_flag_label">הצג כוכבים</string>
-    <string name="global_settings_flag_summary">הכוכבים מצביעים על ההודעות המסומנות</string>
     <string name="global_settings_checkbox_label">תיבות סימון בחירה-מרובה</string>
     <string name="global_settings_checkbox_summary">תמיד הצג תיבות סימון בחירה-מרובה</string>
-    <string name="global_settings_touchable_label">תצוגה מקדימה של הודעות</string>
-    <string name="global_settings_touchable_summary">רשימת פריטים רבה יותר באמצעות תצוגה מקדימה של ההודעה</string>
     <string name="global_settings_preview_lines_label">קווי תצוגה מקדימה</string>
     <string name="global_settings_show_correspondent_names_label">הצג שמות תואמים</string>
     <string name="global_settings_show_correspondent_names_summary">הצג שמות תואמים במקום כתובות הדוא\"ל שלהם</string>
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">הצג שמות אנשי קשר</string>
     <string name="global_settings_show_contact_name_summary">השתמש בשמות נמענים מתוך אנשי הקשר שלך כאשר זמין</string>
     <string name="global_settings_registered_name_color_label">לצבוע את אנשי הקשר</string>
@@ -317,15 +316,14 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">אישור פעולות</string>
     <string name="global_settings_confirm_actions_summary">הצג דו שיח בכל פעם שאתה מבצע את פעולות הנבחרות</string>
-    <string name="global_settings_confirm_action_archive">ארכיון</string>
     <string name="global_settings_confirm_action_delete">מחק (צפה בהודעה בלבד)</string>
     <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
     <string name="global_settings_confirm_action_spam">דואר זבל</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">סמן הכל כנקרא</string>
-    <string name="global_settings_confirm_action_send">שלח</string>
 
-    <string name="global_settings_privacy_mode_title">התראות במסך נעול</string>
-    <string name="global_settings_privacy_mode_summary">אל תציג את נושא ההודעה בשורת ההתראות כאשר המערכת נעולה</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -343,10 +341,8 @@ http://k9mail.googlecode.com/
     <string name="quiet_time_ends">סוף זמן שקט</string>
 
     <string name="account_setup_basics_title">הגדר חשבון חדש</string>
-    <string name="account_setup_basics_instructions">הזן את כתובת הדוא\"ל של החשבון הזה:</string>
     <string name="account_setup_basics_email_hint">כתובת דוא\"ל</string>
     <string name="account_setup_basics_password_hint">סיסמא</string>
-    <string name="account_setup_basics_default_label">הוראות הגדרה</string>
     <string name="account_setup_basics_manual_setup_action">הוראות הגדרה</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -358,7 +354,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">מבטל…</string>
 
     <string name="account_setup_names_title">כמעט מוכן!</string>
-    <string name="account_setup_names_instructions">החשבון שלך מוגדר, והדואר נמצא בדרך!</string>
     <string name="account_setup_names_account_name_label">תן שם לחשבון זה (לא חובה):</string>
     <string name="account_setup_names_user_name_label">הקלד את שמך (מוצג בהודעות יוצאות):</string>
 
@@ -392,9 +387,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_mobile_label">סלולרי</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">אחר</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">הורד כותרות</string>
-    <string name="account_setup_incoming_save_all_headers_label">שמור את כל כותרות ההודעות באופן מקומי</string>
 
     <string name="local_storage_provider_external_label">אחסון חיצוני (כרטיס SD)</string>
     <string name="local_storage_provider_internal_label">אחסון פנימי רגיל</string>
@@ -430,21 +422,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">שרת SMTP</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">סוג אבטחה</string>
-    <string name="account_setup_outgoing_security_none_label">כלום</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (אם זמין)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (תמיד)</string>
     <string name="account_setup_outgoing_require_login_label">דרוש הרשמה.</string>
     <string name="account_setup_outgoing_username_label">שם משתמש</string>
     <string name="account_setup_outgoing_password_label">סיסמא</string>
     <string name="account_setup_outgoing_authentication_label">סו אימות</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">שם משתמש &amp; סיסמא</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">שם משתמש</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">סיסמא</string>
-    <!-- NEW: <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP before SMTP</string>-->
-    <!-- NEW: <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP before SMTP</string>-->
-    <!-- NEW: <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) before SMTP</string>-->
 
     <string name="account_setup_bad_uri">הגדרה לא חוקית: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -524,9 +505,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
-    <string name="account_settings_enable_move_buttons_label">אפשר כפתורי תיוק מחדש</string>
-    <string name="account_settings_enable_move_buttons_summary">הצג כפתורי ארכיון, העבר ודואר זבל.</string>
-
     <string name="account_settings_show_pictures_label">תמיד הצג תמונות</string>
     <string name="account_settings_show_pictures_never">לא</string>
     <string name="account_settings_show_pictures_only_from_contacts">מאנשי הקשר</string>
@@ -548,6 +526,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (תמונות ועיצוב נשמרים)</string>
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
 
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+
     <string name="account_settings_message_read_receipt_label">אישור קריאה</string>
     <string name="account_settings_message_read_receipt_summary">תמיד בקש אישור קריאה</string>
 
@@ -556,11 +537,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_quote_style_header">כותרת (כמו Yahoo! Outlook, Hotmail)</string>
 
     <string name="account_settings_general_title">הגדרות כלליות</string>
-    <string name="account_settings_display_prefs_title">תצוגה</string>
     <string name="account_settings_sync">שולף דואר</string>
     <string name="account_settings_folders">תיקיות</string>
-    <string name="account_settings_message_lists">רשימת הודעות</string>
-    <string name="account_settings_message_view">הצגת הודעות</string>
     <string name="account_settings_quote_prefix_label">קידומת טקסט מצוטט</string>
     <string name="account_settings_crypto">הצפנה</string>
     <string name="account_settings_crypto_app">OpenPGP Provider</string>
@@ -724,7 +702,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">הזהות הראשונית</string>
     <string name="choose_identity_title">בחר זהות</string>
-    <string name="choose_account_title">בחר חשבון/זהות</string>
     <string name="send_as">שלח כ</string>
 
     <string name="no_removable_identity">"לא ניתן להסיר את הזהות היחידה שלך"</string>
@@ -732,8 +709,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">הודעות קודמות ראשונות</string>
     <string name="sort_latest_first">הודעות אחרונות ראשונות</string>
-    <string name="sort_sender_alpha">סדר אלפביתי של השולח</string>
-    <string name="sort_sender_re_alpha">סדר אלפביתי הפןך של השולח</string>
     <string name="sort_subject_alpha">נושא אלפביתי</string>
     <string name="sort_subject_re_alpha">נושא אלפביתי הפוך</string>
     <string name="sort_flagged_first">הודעות שמסומנות בכוכב ראשונות</string>
@@ -746,20 +721,16 @@ http://k9mail.googlecode.com/
     <string name="sort_by">מיון לפי …</string>
     <string name="sort_by_date">תאריך</string>
     <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
-    <string name="sort_by_sender">שולח</string>
     <string name="sort_by_subject">נושא</string>
     <string name="sort_by_flag">כוכב</string>
     <string name="sort_by_unread">נקרא/לא נקרא</string>
     <string name="sort_by_attach">קבצים מצורפים</string>
 
     <string name="account_delete_dlg_title">מחק חשבון</string>
-    <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
 
     <string name="account_recreate_dlg_title">יוצר חשבון מחדש</string>
-    <string name="account_recreate_dlg_instructions_fmt">על הנתונים עבור \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
 
     <string name="account_clear_dlg_title">נקה חשבון</string>
-    <string name="account_clear_dlg_instructions_fmt">כל ההודעות ב \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
 
     <string name="provider_note_live">רק כמה חשבונות \ "פלוס \" כוללים גישת POP המאפשרת לתוכנית זו להתחבר. אם אינך יכול להיכנס עם כתובת הדוא"ל והסיסמה הנכונות שלך, ייתכן שאין לך חשבון \ "פלוס \" בתשלום. נא להפעיל את דפדפן האינטרנט כדי לקבל גישה אל חשבונות דואר האלו.</string>
     <string name="provider_note_yahoojp">אם אתה רוצה להשתמש ב POP3 עבור ספק זה, אתה צריך לאפשר להשתמש ב POP3 בדף הגדרות דואר Yahoo.</string>
@@ -773,29 +744,24 @@ http://k9mail.googlecode.com/
     <string name="account_setup_failed_dlg_invalid_certificate_accept">קבל מפתח</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">דחה מפתח</string>
 
-    <string name="message_help_key">Del (or D) - מחק
-\nR - השב
-\nA - השב לכולם
-\nF - קדימה
-\nJ, P - הודעה קודמת
-\nK, N - הודעה הבאה
-\nM - העבר
-\nY - העתק
-\nZ - זום החוצה
-\nShift-Z - זום פנימה
-\nG - כוכב</string>
+    <!-- NEW: V, Z untranslated -->
     <string name="message_list_help_key">Del (or D) - מחק
 \nR - השב
 \nA - השב לכולם
 \nC - לחבר
 \nF - קדימה
 \nM - העבר
+\nV - Archive
 \nY - העתק
+\nZ - Mark (Un)read
 \nG - כוכב
 \nO - סוג מיון
 \nI - סדר מיון
 \nQ - חזור לתיקיות
-\nS - בחר / בטל בחירה</string>
+\nS - בחר / בטל בחירה
+\nJ, P - הודעה קודמת
+\nK, N - הודעה הבאה
+    </string>
 
     <!-- NEW: Note: only partly translated -->
     <string name="folder_list_help_key">1 - Display only 1st Class folders
@@ -832,8 +798,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">פריסת עמודה יחידה</string>
     <string name="settings_messageview_mobile_layout_summary">אתחל הודעות HTML ותתאים אותם למסכים קטנים.</string>
-    <string name="settings_messageview_zoom_controls_label">בקרת זום מערכת</string>
-    <string name="settings_messageview_zoom_controls_summary">אפשר ווידג\'טי זום או זום על ידי צביטה אם המכשיר שלך תומך בזה</string>
 
     <string name="setting_language_system">ברירות מחדל מערכת</string>
 
@@ -842,30 +806,9 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">תמיד</string>
     <string name="background_ops_enabled">"מתי ש\'נתונים ברקע\' מסומן "</string>
     <string name="background_ops_auto_sync">"מתי ש\'נתונים ברקע\' ו\'סינכרון אוטומטי\' מסומנים "</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="no_message_seletected_toast">לא נבחרו הודעות</string>
-
-    <string name="date_format_label">פורמט תאריך</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
-    <string name="batch_ops">פעולות קבוצה</string>
-    <string name="batch_delete_op">מחק נבחרים</string>
-    <string name="batch_mark_read_op">סמן נבחרים כנקרא</string>
-    <string name="batch_mark_unread_op">סמן נבחרים כלא נקרא</string>
-    <string name="batch_flag_op">הוסף כוכב לנבחרים</string>
-    <string name="batch_unflag_op">הסר כוכב מהנבחרים</string>
-    <string name="batch_archive_op">העבר נבחרים לארכיון</string>
-    <string name="batch_spam_op">העבר נבחרים לדואר זבל</string>
-    <string name="batch_move_op">העבר נבחרים</string>
-    <string name="batch_copy_op">העתק נבחרים</string>
-    <string name="batch_flag_mode">מצב \'כוכב\'</string>
-    <string name="batch_plain_mode">מצב רגיל</string>
     <string name="batch_select_all">בחר הכל</string>
-    <string name="batch_deselect_all">הקב את כל הבחירות</string>
 
     <string name="account_setup_push_limit_label">מקסימום תיקיות כדי לבדוק עם דחיפה</string>
     <string name="account_setup_push_limit_10">10 תיקיות</string>
@@ -881,16 +824,10 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">מחוות</string>
     <string name="gestures_summary">קבל כפתור מחווה</string>
 
-    <string name="compact_layouts_title">פריסות קומפקטיות</string>
-    <string name="compact_layouts_summary">התאם את הפריסה כדי שיהיה ניתן להציג יותר פרטים בכל דף</string>
-
     <string name="volume_navigation_title">נייוט באמצעות מקשי הווליום</string>
     <string name="volume_navigation_summary">לדפדף בין הפריטים באמצעות מקשי הווליום</string>
     <string name="volume_navigation_message">הצגת הודעה</string>
     <string name="volume_navigation_list">רשימת תצוגות שונות</string>
-
-    <string name="manage_back_title">נהל כפתור \'חזור\'</string>
-    <string name="manage_back_summary">הגדר שכפתור \"חזור\" תמיד יחזור דף אחד</string>
 
     <string name="start_integrated_inbox_title">התחל בתיבת דואר נכנס אחידה</string>
     <string name="start_integrated_inbox_summary">הצג את תיבת הדואר הנכנס האחידה בהפעלה</string>
@@ -947,8 +884,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_view_cc">עותק</string>
     <string name="font_size_message_view_additional_headers">כותרות נוספות</string>
     <string name="font_size_message_view_subject">כותרת</string>
-    <string name="font_size_message_view_time">זמן</string>
-    <string name="font_size_message_view_date">תאריך</string>
+    <string name="font_size_message_view_date">שעה ותאריך</string>
     <string name="font_size_message_view_content">גוף ההודעה</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
@@ -987,7 +923,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">אמת</string>
     <!-- NEW: <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>-->
     <!-- NEW: <string name="key_id">id: %s</string>-->
-    <string name="insufficient_apg_permissions">"ל-K-9 אין הרשאה לגשת ל APG באופן מלא, התקן מחדש את K-9 כדי לתקן את זה."</string>
     <string name="pgp_mime_unsupported">הודעות PGP /MIME אינן נתמכות עדיין.</string>
     <string name="attachment_encryption_unsupported">אזהרה: הקבצים המצורפים אינם חתומים או מוצפנים עדיין.</string>
     <string name="send_aborted">שליחה בוטלה.</string>
@@ -1108,4 +1043,36 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
     <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

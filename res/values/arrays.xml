@@ -502,6 +502,18 @@
         <item>dark</item>
     </string-array>
 
+    <string-array name="settings_message_theme_entries">
+        <item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_dark</item>
+        <item>@string/setting_theme_global</item>
+    </string-array>
+
+    <string-array name="settings_message_theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>global</item>
+    </string-array>
+
     <!-- Note: If you change this make sure the code in Prefs.java is still working -->
     <string-array name="background_ops_entries">
         <item>@string/background_ops_enabled</item>
@@ -517,14 +529,8 @@
         <item>NEVER</item>
     </string-array>
 
-    <string-array name="date_formats">
-        <item>SHORT</item> <!-- Hardcoded in DateFormatter -->
-        <item>MEDIUM</item> <!-- Hardcoded in DateFormatter -->
-        <item>@string/date_format_common</item>
-        <item>yyyy-MM-dd</item> <!-- ISO8601 date format -->
-    </string-array>
-
     <string-array name="font_entries">
+        <item>@string/font_size_default</item>
         <item>@string/font_size_tiniest</item>
         <item>@string/font_size_tiny</item>
         <item>@string/font_size_smaller</item>
@@ -535,6 +541,7 @@
     </string-array>
 
     <string-array name="font_values">
+        <item>-1</item>
         <item>10</item>
         <item>12</item>
         <item>14</item>
@@ -630,6 +637,8 @@
     </string-array>
 
     <string-array name="settings_preview_lines_values">
+        <item>0</item>
+        <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
@@ -638,6 +647,8 @@
     </string-array>
 
     <string-array name="settings_preview_lines_entries">
+        <item>0</item>
+        <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
@@ -666,6 +677,26 @@
         <item>HTML</item>
         <item>AUTO</item>
     </string-array>
+    <string-array name="account_settings_remote_search_num_results_entries">
+        <item >@string/account_settings_remote_search_num_results_entries_10</item>
+        <item>@string/account_settings_remote_search_num_results_entries_25</item>
+        <item>@string/account_settings_remote_search_num_results_entries_50</item>
+        <item>@string/account_settings_remote_search_num_results_entries_100</item>
+        <item>@string/account_settings_remote_search_num_results_entries_250</item>
+        <item>@string/account_settings_remote_search_num_results_entries_500</item>
+        <item>@string/account_settings_remote_search_num_results_entries_1000</item>
+        <item>@string/account_settings_remote_search_num_results_entries_all</item>
+    </string-array>
+    <string-array name="account_settings_remote_search_num_results_values">
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+        <item>250</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>0</item>
+    </string-array>
 
     <string-array name="global_settings_notification_hide_subject_entries">
         <item name="1">@string/global_settings_notification_hide_subject_never</item>
@@ -679,4 +710,27 @@
         <item name="3">ALWAYS</item>
     </string-array>
 
+    <string-array name="global_settings_notification_quick_delete_entries">
+        <item name="1">@string/global_settings_notification_quick_delete_never</item>
+        <item name="2">@string/global_settings_notification_quick_delete_when_single_msg</item>
+        <item name="3">@string/global_settings_notification_quick_delete_always</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_quick_delete_values">
+        <item name="1">NEVER</item>
+        <item name="2">FOR_SINGLE_MSG</item>
+        <item name="3">ALWAYS</item>
+    </string-array>
+
+    <string-array name="global_settings_splitview_mode_entries">
+        <item>@string/global_settings_splitview_always</item>
+        <item>@string/global_settings_splitview_never</item>
+        <item>@string/global_settings_splitview_when_in_landscape</item>
+    </string-array>
+
+    <string-array name="global_settings_splitview_mode_values">
+        <item>ALWAYS</item>
+        <item>NEVER</item>
+        <item>WHEN_IN_LANDSCAPE</item>
+    </string-array>
 </resources>

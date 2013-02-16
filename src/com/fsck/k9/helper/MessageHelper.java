@@ -1,8 +1,5 @@
 package com.fsck.k9.helper;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
@@ -17,8 +14,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.helper.DateFormatter;
 
 public class MessageHelper {
 
@@ -33,21 +28,14 @@ public class MessageHelper {
 
     private Context mContext;
 
-    private DateFormat mTodayDateFormat;
-
-    private DateFormat mDateFormat;
-
     private MessageHelper(final Context context) {
         mContext = context;
-        mDateFormat = DateFormatter.getDateFormat(mContext);
-        mTodayDateFormat = android.text.format.DateFormat.getTimeFormat(mContext);
     }
 
-    public void populate(final MessageInfoHolder target, final Message m,
+    public void populate(final MessageInfoHolder target, final Message message,
                          final FolderInfoHolder folder, final Account account) {
         final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
         try {
-            LocalMessage message = (LocalMessage) m;
             target.message = message;
             target.compareArrival = message.getInternalDate();
             target.compareDate = message.getSentDate();
@@ -59,9 +47,8 @@ public class MessageHelper {
 
             target.read = message.isSet(Flag.SEEN);
             target.answered = message.isSet(Flag.ANSWERED);
+            target.forwarded = message.isSet(Flag.FORWARDED);
             target.flagged = message.isSet(Flag.FLAGGED);
-            target.downloaded = message.isSet(Flag.X_DOWNLOADED_FULL);
-            target.partially_downloaded = message.isSet(Flag.X_DOWNLOADED_PARTIAL);
 
             Address[] addrs = message.getFrom();
 
@@ -86,23 +73,35 @@ public class MessageHelper {
 
             target.uid = message.getUid();
 
-            target.account = account.getDescription();
-            target.uri = "email://messages/" + account.getAccountNumber() + "/" + m.getFolder().getName() + "/" + m.getUid();
+            target.account = account.getUuid();
+            target.uri = "email://messages/" + account.getAccountNumber() + "/" + message.getFolder().getName() + "/" + message.getUid();
 
         } catch (MessagingException me) {
             Log.w(K9.LOG_TAG, "Unable to load message info", me);
         }
     }
-    public String formatDate(Date date) {
-        if (Utility.isDateToday(date)) {
-            return mTodayDateFormat.format(date);
+
+    public CharSequence getDisplayName(Account account, Address[] fromAddrs, Address[] toAddrs) {
+        final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
+
+        CharSequence displayName;
+        if (fromAddrs.length > 0 && account.isAnIdentity(fromAddrs[0])) {
+            CharSequence to = Address.toFriendly(toAddrs, contactHelper);
+            displayName = new SpannableStringBuilder(
+                    mContext.getString(R.string.message_to_label)).append(to);
         } else {
-            return mDateFormat.format(date);
+            displayName = Address.toFriendly(fromAddrs, contactHelper);
         }
+
+        return displayName;
     }
 
-    public void refresh() {
-        mDateFormat = DateFormatter.getDateFormat(mContext);
-        mTodayDateFormat = android.text.format.DateFormat.getTimeFormat(mContext);
+    public boolean toMe(Account account, Address[] toAddrs) {
+        for (Address address : toAddrs) {
+            if (account.isAnIdentity(address)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

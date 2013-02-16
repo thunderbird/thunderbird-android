@@ -33,6 +33,9 @@ public class AccountSettings {
         s.put("alwaysBcc", Settings.versions(
                 new V(11, new StringSetting(""))
             ));
+        s.put("alwaysShowCcBcc", Settings.versions(
+                new V(13, new BooleanSetting(false))
+            ));
         s.put("archiveFolderName", Settings.versions(
                 new V(1, new StringSetting("Archive"))
             ));
@@ -68,24 +71,21 @@ public class AccountSettings {
         s.put("draftsFolderName", Settings.versions(
                 new V(1, new StringSetting("Drafts"))
             ));
-        s.put("enableMoveButtons", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("expungePolicy", Settings.versions(
                 new V(1, new StringResourceSetting(Account.EXPUNGE_IMMEDIATELY,
                         R.array.account_setup_expunge_policy_values))
             ));
         s.put("folderDisplayMode", Settings.versions(
-                new V(1, new EnumSetting(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
+                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
             ));
         s.put("folderPushMode", Settings.versions(
-                new V(1, new EnumSetting(FolderMode.class, FolderMode.FIRST_CLASS))
+                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.FIRST_CLASS))
             ));
         s.put("folderSyncMode", Settings.versions(
-                new V(1, new EnumSetting(FolderMode.class, FolderMode.FIRST_CLASS))
+                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.FIRST_CLASS))
             ));
         s.put("folderTargetMode", Settings.versions(
-                new V(1, new EnumSetting(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
+                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
             ));
         s.put("goToUnreadMessageSearch", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -120,8 +120,8 @@ public class AccountSettings {
                         R.array.account_settings_message_age_values))
             ));
         s.put("messageFormat", Settings.versions(
-                new V(1, new EnumSetting(Account.MessageFormat.class,
-                        Account.DEFAULT_MESSAGE_FORMAT))
+                new V(1, new EnumSetting<Account.MessageFormat>(
+                        Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
             ));
         s.put("messageFormatAuto", Settings.versions(
                 new V(2, new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO))
@@ -148,7 +148,8 @@ public class AccountSettings {
                 new V(1, new StringSetting(Account.DEFAULT_QUOTE_PREFIX))
             ));
         s.put("quoteStyle", Settings.versions(
-                new V(1, new EnumSetting(Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE))
+                new V(1, new EnumSetting<Account.QuoteStyle>(
+                        Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE))
             ));
         s.put("replyAfterQuote", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE))
@@ -159,23 +160,22 @@ public class AccountSettings {
         s.put("ringtone", Settings.versions(
                 new V(1, new RingtoneSetting("content://settings/system/notification_sound"))
             ));
-        s.put("saveAllHeaders", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
         s.put("searchableFolders", Settings.versions(
-                new V(1, new EnumSetting(Account.Searchable.class, Account.Searchable.ALL))
+                new V(1, new EnumSetting<Account.Searchable>(
+                        Account.Searchable.class, Account.Searchable.ALL))
             ));
         s.put("sentFolderName", Settings.versions(
                 new V(1, new StringSetting("Sent"))
             ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(9, new EnumSetting(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(9, new EnumSetting<SortType>(SortType.class, Account.DEFAULT_SORT_TYPE))
             ));
         s.put("sortAscending", Settings.versions(
                 new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
             ));
         s.put("showPicturesEnum", Settings.versions(
-                new V(1, new EnumSetting(Account.ShowPictures.class, Account.ShowPictures.NEVER))
+                new V(1, new EnumSetting<Account.ShowPictures>(
+                        Account.ShowPictures.class, Account.ShowPictures.NEVER))
             ));
         s.put("signatureBeforeQuotedText", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -214,6 +214,16 @@ public class AccountSettings {
         s.put("vibrateTimes", Settings.versions(
                 new V(1, new IntegerResourceSetting(5,
                 R.array.account_settings_vibrate_times_label))
+            ));
+        s.put("allowRemoteSearch", Settings.versions(
+                new V(18, new BooleanSetting(true))
+            ));
+        s.put("remoteSearchNumResults", Settings.versions(
+                new V(18, new IntegerResourceSetting(Account.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
+                R.array.account_settings_remote_search_num_results_values))
+            ));
+        s.put("remoteSearchFullText", Settings.versions(
+                new V(18, new BooleanSetting(false))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);

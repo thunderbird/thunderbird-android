@@ -45,13 +45,16 @@ public class BinaryTempFileBody implements Body {
 
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         InputStream in = getInputStream();
-        Base64OutputStream base64Out = new Base64OutputStream(out);
         try {
-            IOUtils.copy(in, base64Out);
+            Base64OutputStream base64Out = new Base64OutputStream(out);
+            try {
+                IOUtils.copy(in, base64Out);
+            } finally {
+                base64Out.close();
+            }
         } finally {
-            base64Out.close();
+            in.close();
         }
-        mFile.delete();
     }
 
     class BinaryTempFileBodyInputStream extends FilterInputStream {
@@ -61,8 +64,15 @@ public class BinaryTempFileBody implements Body {
 
         @Override
         public void close() throws IOException {
+            try {
+                super.close();
+            } finally {
+                mFile.delete();
+            }
+        }
+
+        public void closeWithoutDeleting() throws IOException {
             super.close();
-            mFile.delete();
         }
     }
 }

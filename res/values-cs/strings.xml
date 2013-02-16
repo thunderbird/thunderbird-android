@@ -27,33 +27,47 @@
 
 
     <!-- Welcome message -->
-    <string name="accounts_welcome">
-Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro Android původně založený na standardním klientovi E-mail v Androidu.
-\n\n
-\nVylepšené funkce K-9 zahrnují:
-\n * Podpora rozšíření Push při použití IMAP IDLE
-\n * Lepší výkon
-\n * Doplňování zpráv
-\n * Podpisy zpráv
-\n * Kopie sobě
-\n * Odebírané složky
-\n * Synchronizace všech složek
-\n * Konfigurace zpáteční adresy
-\n * Klávesové zkratky
-\n * Lepší podpora IMAP
-\n * Ukládání příloh na SD
-\n * Vysypání koše
-\n * Třídění zpráv
-\n * …a další
-\n
-\nVšimněte si prosím, že K-9 nepodporuje většinu zdarma účtů Hotmail a jako mnoho poštovních klientů vykazuje zvláštnosti při komunikaci s Microsoft Exchange.
-\n
-\nPosílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte se na
-http://k9mail.googlecode.com/
-    </string>
+    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 je open source poštovní klient pro Android původně založený na standardním klientovi E-mail v Androidu.
+</p><p>
+Vylepšené funkce K-9 zahrnují:
+</p>
+<ul>
+  <li>Podpora rozšíření Push při použití IMAP IDLE</li>
+  <li>Lepší výkon</li>
+  <li>Doplňování zpráv</li>
+  <li>Podpisy zpráv</li>
+  <li>Kopie sobě</li>
+  <li>Odebírané složky</li>
+  <li>Synchronizace všech složek</li>
+  <li>Konfigurace zpáteční adresy</li>
+  <li>Klávesové zkratky</li>
+  <li>Lepší podpora IMAP</li>
+  <li>Ukládání příloh na SD</li>
+  <li>Vysypání koše</li>
+  <li>Třídění zpráv</li>
+  <li>…a další</li>
+</ul>
+<p>
+Všimněte si prosím, že K-9 nepodporuje většinu zdarma účtů Hotmail a jako mnoho poštovních klientů vykazuje zvláštnosti při komunikaci s Microsoft Exchange.
+</p><p>
+Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte se na
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
+
 
     <!-- Default signature -->
     <string name="default_signature">-- \nOdesláno z mého telefonu s Androidem pomocí pošty K-9 Mail. Omluvte prosím mou stručnost.</string>
+
+
+    <!-- General strings that include the app name -->
+    <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z pošty K-9 Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Všechna data účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněna, ale nastavení účtu bude zachováno.</string>
+    <string name="account_clear_dlg_instructions_fmt">Všechny zprávy v účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněny, ale nastavení účtu bude zachováno.</string>
+    <string name="insufficient_apg_permissions">K-9 nemá oprávnění k plnému přístupu k APG, přeinstalujte prosím pro opravu balíček K-9.</string>
 
 
 
@@ -80,25 +94,29 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">O aplikaci <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Účty</string>
+    <!-- NEW: <string name="folders_title">Folders</string>-->
     <string name="advanced">Pokročilé</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
-    <string name="compose_title">Nová</string>
+    <string name="compose_title_compose">Nová</string>
+    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
+    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
+    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+
     <string name="choose_folder_title">Výběr složky</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
     <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
-    <string name="status_loading_account_folder">\u0020(Dotazování <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_loading_account_folder_headers">\u0020(Stahování záhlaví <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_sending_account">\u0020(Odesílání <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_processing_account">\u0020(Zpracování <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_account_folder">Dotazování <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading_account_folder_headers">Stahování záhlaví <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_sending_account">Odesílání <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_processing_account">Zpracování <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">\u0020(Příští dotaz @ <xliff:g id="nexttime">%s</xliff:g>)</string>
-    <!-- NEW: <string name="status_syncing_off">\u0020(Syncing disabled)</string>-->
+    <string name="status_next_poll">Příští dotaz <xliff:g id="nexttime">%s</xliff:g></string>
+    <!-- NEW: <string name="status_syncing_off">Syncing disabled</string>-->
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Další</string> <!-- Used as part of a multi-step process -->
@@ -107,56 +125,45 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">Zrušit</string>
     <string name="send_action">Odeslat</string>
     <string name="send_again_action">Odeslat znovu</string>
-    <string name="select_action">Vybrat</string>
-    <string name="deselect_action">Zrušit výběr</string>
     <string name="reply_action">Odpovědět</string>
     <string name="reply_all_action">Odpovědět všem</string>
     <string name="delete_action">Smazat</string>
     <string name="archive_action">Archivovat</string>
     <string name="spam_action">Nevyžádaná</string>
-    <string name="delete_all_action">Vyčistit složku</string>
     <string name="forward_action">Přeposlat</string>
     <string name="move_action">Přesunout</string>
+    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
     <string name="continue_action">Pokračovat</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">Hotovo</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Zrušit</string>
     <string name="save_draft_action">Uložit jako koncept</string>
-    <string name="retry_action">Opakovat</string>
-    <string name="refresh_action">Obnovit</string>
     <string name="check_mail_action">Zkontrolovat poštu</string>
     <string name="send_messages_action">Odeslat zprávy</string>
-    <string name="list_folders_action">Seznam složek</string>
     <string name="refresh_folders_action">Obnovit složky</string>
     <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
-    <string name="mark_all_as_read_action">Označit vše jako přečtené</string>
     <string name="add_account_action">Přidat účet</string>
     <string name="compose_action">Nová</string>
     <string name="search_action">Hledat</string>
     <string name="search_results">Výsledky hledání</string>
     <string name="preferences_action">Možnosti</string>
-    <string name="open_action">Otevřít</string>
     <string name="account_settings_action">Nastavení účtu</string>
     <string name="folder_settings_action">Nastavení složky</string>
     <string name="global_settings_action">Globální možnosti</string>
     <string name="remove_account_action">Odstranit účet</string>
     <string name="clear_pending_action">Vynulovat nevyřízené akce (nebezpečné!)</string>
 
-    <string name="accounts_action">Účty</string>
     <string name="mark_as_read_action">Označit jako přečtené</string>
     <string name="send_alternate_action">Sdílet</string>
     <string name="send_alternate_chooser_title">Vybrat odesílatele</string>
 
-    <string name="mark_all_as_read_dlg_title">Označit všechny zprávy jako přečtené</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Označit všechny zprávy ve složce \'<xliff:g id="folder">%s</xliff:g>\' jako přečtené? (včetně
-    zpráv, které v té složce nejsou zobrazeny v K-9)</string>
-
     <string name="flag_action">Přidat \u2605</string>
     <string name="unflag_action">Odebrat \u2606</string>
     <string name="copy_action">Kopírovat</string>
-    <string name="show_full_header_action">Zobrazit úplné záhlaví</string>
-    <string name="hide_full_header_action">Skrýt úplné záhlaví</string>
     <string name="select_text_action">Vybrat text</string>
+
+    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
+    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
     <string name="mark_as_unread_action">Označit jako nepřečtené</string>
     <string name="add_cc_bcc_action">Přidat kopii/skrytou</string>
@@ -175,7 +182,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">Možnosti účtů</string>
 
     <string name="general_no_subject">(Bez předmětu)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <!-- NEW: <string name="general_no_date">No date</string>-->
     <string name="general_no_sender">Bez odesílatele</string>
     <string name="status_loading">Dotazování</string>
     <string name="status_loading_more">Načítání zpráv\u2026</string>
@@ -269,11 +275,6 @@ http://k9mail.googlecode.com/
     <string name="message_view_cc_label">Kopie:</string>
     <string name="message_view_attachment_view_action">Otevřít</string>
     <string name="message_view_attachment_download_action">Uložit</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Archív</string>
-    <string name="message_view_move_action">Přesunout</string>
-    <string name="message_view_spam_action">Nevyžádaná</string>
     <string name="message_view_status_attachment_saved">Příloha byla uložena na SD kartu jako <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Nelze uložit přílohu na SD kartu.</string>
     <string name="message_view_show_pictures_action">Zobrazovat obrázky</string>
@@ -290,22 +291,20 @@ http://k9mail.googlecode.com/
     <string name="message_no_additional_headers_available">Všechna záhlaví byla stažena, ale nejsou dostupná žádná další k zobrazení.</string>
     <string name="message_additional_headers_retrieval_failed">Načtení dalších záhlaví z databáze nebo poštovního serveru selhalo.</string>
 
-    <string name="folder_push_active_symbol">(Push)</string>
-
     <string name="from_same_sender">Více od tohoto odesílatele</string>
 
     <string name="message_discarded_toast">Zpráva byla zrušena</string>
     <string name="message_saved_toast">Zpráva byla uložena jako koncept</string>
 
-    <string name="global_settings_flag_label">Zprávy s \u2605</string>
-    <string name="global_settings_flag_summary">Hvězdička indikuje označenou zprávu</string>
     <string name="global_settings_checkbox_label">Výběrová zaškrtávací pole</string>
     <string name="global_settings_checkbox_summary">Vždy zobrazovat výběrová zaškrtávací pole</string>
-    <string name="global_settings_touchable_label">Náhledy zpráv</string>
-    <string name="global_settings_touchable_summary">Prostornější seznam položek s náhledy zpráv</string>
     <string name="global_settings_preview_lines_label">Počet řádků náhledu</string>
     <!-- NEW: <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>-->
     <!-- NEW: <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>-->
+
+    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
+    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+
     <string name="global_settings_show_contact_name_label">Zobrazit jména kontaktů</string>
     <string name="global_settings_show_contact_name_summary">Použít jména příjemců ze Seznamu kontaktů, je-li to možné</string>
     <string name="global_settings_registered_name_color_label">Obarvit kontakty</string>
@@ -321,15 +320,14 @@ http://k9mail.googlecode.com/
 
     <string name="global_settings_confirm_actions_title">Potvrzování akcí</string>
     <string name="global_settings_confirm_actions_summary">Zobrazit dialog, když provádíte zvolené akce</string>
-    <string name="global_settings_confirm_action_archive">Archivace</string>
     <string name="global_settings_confirm_action_delete">Mazání (jen v zobrazení zpráv)</string>
     <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
     <string name="global_settings_confirm_action_spam">Nevyžádaná</string>
-    <!-- NEW: <string name="global_settings_confirm_action_mark_all_as_read">Mark all as read</string>-->
-    <string name="global_settings_confirm_action_send">Odesílání</string>
 
-    <string name="global_settings_privacy_mode_title">Oznámení při zamčené obrazovce</string>
-    <string name="global_settings_privacy_mode_summary">Nezobrazovat v oznámení předmět zpráv, když je systém zamčen</string>
+    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -347,10 +345,8 @@ http://k9mail.googlecode.com/
     <string name="quiet_time_ends">Doba klidu končí</string>
 
     <string name="account_setup_basics_title">Založit nový účet</string>
-    <string name="account_setup_basics_instructions">Zadejte emailovou adresu tohoto účtu:</string>
     <string name="account_setup_basics_email_hint">Emailová adresa</string>
     <string name="account_setup_basics_password_hint">Heslo</string>
-    <string name="account_setup_basics_default_label">Odesílat poštu z tohoto účtu jako výchozí</string>
     <string name="account_setup_basics_manual_setup_action">Ruční nastavení</string>
 
     <string name="account_setup_check_settings_title"></string>
@@ -362,7 +358,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">Rušení\u2026</string>
 
     <string name="account_setup_names_title">Téměř hotovo!</string>
-    <string name="account_setup_names_instructions">Váš účet je nastaven a pošta je na cestě!</string>
     <string name="account_setup_names_account_name_label">Pojmenujte tento účet (volitelné):</string>
     <string name="account_setup_names_user_name_label">Zadejte vaše jméno (zobrazuje se v odchozích zprávách):</string>
 
@@ -396,9 +391,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_mobile_label">Mobilní</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Jiná</string>
-
-    <string name="account_setup_incoming_save_all_headers_title">Stahovat záhlaví zpráv</string>
-    <string name="account_setup_incoming_save_all_headers_label">Ukládat všechna záhlaví lokálně</string>
 
     <string name="local_storage_provider_external_label">Externí úložiště (SD karta)</string>
     <string name="local_storage_provider_internal_label">Obvyklé vnitřní úložiště</string>
@@ -434,21 +426,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">Typ zabezpečení</string>
-    <string name="account_setup_outgoing_security_none_label">Žádné</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (je-li dostupné)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (vždy)</string>
     <string name="account_setup_outgoing_require_login_label">Požadovat přihlášení.</string>
     <string name="account_setup_outgoing_username_label">Uživatelské jméno</string>
     <string name="account_setup_outgoing_password_label">Heslo</string>
     <string name="account_setup_outgoing_authentication_label">Typ ověření</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Uživatelské jméno a heslo</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Uživatelské jméno</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Heslo</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP před SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP před SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) před SMTP</string>
 
     <string name="account_setup_bad_uri">Neplatné nastavení: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -528,9 +509,6 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
-    <string name="account_settings_enable_move_buttons_label">Povolit přesměrovací tlačítka</string>
-    <string name="account_settings_enable_move_buttons_summary">Zobrazit tlačítka Archív, Přesunout a Nevyžádaná.</string>
-
     <string name="account_settings_show_pictures_label">Vždy zobrazovat obrázky</string>
     <string name="account_settings_show_pictures_never">Ne</string>
     <string name="account_settings_show_pictures_only_from_contacts">Jen od kontaktů</string>
@@ -542,7 +520,7 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
 
     <string name="account_settings_reply_after_quote_label">Odpovědět za citovaným textem</string>
-    <string name="account_settings_reply_after_quote_summary">Při odpovídání na zprávu se původní zpráva objeví ned vaší odpovědí.</string>
+    <string name="account_settings_reply_after_quote_summary">Při odpovídání na zprávu se původní zpráva objeví nad vaší odpovědí.</string>
 
     <!-- NEW: <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>-->
     <!-- NEW: <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>-->
@@ -552,6 +530,9 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
 
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
 
@@ -560,11 +541,8 @@ http://k9mail.googlecode.com/
     <!-- NEW: <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>-->
 
     <string name="account_settings_general_title">Hlavní nastavení</string>
-    <string name="account_settings_display_prefs_title">Zobrazení</string>
     <string name="account_settings_sync">Stahování pošty</string>
     <string name="account_settings_folders">Složky</string>
-    <string name="account_settings_message_lists">Seznam zpráv</string>
-    <string name="account_settings_message_view">Prohlížení zpráv</string>
     <string name="account_settings_quote_prefix_label">Předpona citovaného textu</string>
     <string name="account_settings_crypto">Šifrování</string>
     <string name="account_settings_crypto_app">Poskytovatel OpenPGP</string>
@@ -728,7 +706,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">Prvotní identita</string>
     <string name="choose_identity_title">Vyberte identitu</string>
-    <string name="choose_account_title">Vyberte účet/identitu</string>
     <string name="send_as">Odeslat jako</string>
 
     <string name="no_removable_identity">Nemůžete odebrat vaši jedinou zbývající identitu</string>
@@ -736,8 +713,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">Nejstarší zprávy první</string>
     <string name="sort_latest_first">Nejnovější zprávy první</string>
-    <string name="sort_sender_alpha">Odesílatel abecedně A-&gt;Z</string>
-    <string name="sort_sender_re_alpha">Odesílatel abecedně Z-&gt;A</string>
     <string name="sort_subject_alpha">Předmět abecedně A-&gt;Z</string>
     <string name="sort_subject_re_alpha">Předmět abecedně Z-&gt;A</string>
     <string name="sort_flagged_first">S \u2605 první</string>
@@ -750,20 +725,16 @@ http://k9mail.googlecode.com/
     <string name="sort_by">Třídit podle položky…</string>
     <string name="sort_by_date">Datum</string>
     <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
-    <string name="sort_by_sender">Odesílatel</string>
     <string name="sort_by_subject">Předmět</string>
     <string name="sort_by_flag">Hvězdička</string>
     <string name="sort_by_unread">Přečtená/Nepřečtená</string>
     <string name="sort_by_attach">Příloha</string>
 
     <string name="account_delete_dlg_title">Odstranit účet</string>
-    <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z pošty K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Obnovit účet</string>
-    <string name="account_recreate_dlg_instructions_fmt">Všechna data účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněna, ale nastavení účtu bude zachováno.</string>
 
     <string name="account_clear_dlg_title">Vyčistit účet</string>
-    <string name="account_clear_dlg_instructions_fmt">Všechny zprávy v účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněny, ale nastavení účtu bude zachováno.</string>
 
     <string name="provider_note_live">Jen některé \"Plus\" účty zahrnují POP přístup,
         který umožňuje tomuto programu se připojit. Pokud nejste schopni se připojit
@@ -781,14 +752,25 @@ http://k9mail.googlecode.com/
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
 
-    <string name="message_help_key">Del (nebo D) - Smazat\u000AR -
-    Odpovědět\u000AA - Odpovědět všem\u000AF - Přeposlat\u000AJ nebo P - Předchozí
-    zpráva\u000AK, N - Další zpráva\u000AM - Přesun\u000AY - Kopie\u000AZ - Zmenšit\u000AShift-Z -
-    Zvětšit\u000aG - Star</string>
-    <string name="message_list_help_key">Del (nebo D) - Smazat\u000AR -
-    Odpovědět\u000AA - Odpovědět všem\u000AC - Nová\u000AF - Přeposlat\u000aM -
-    Přesun\u000AY - Kopie\u000AG - Hvězdička\u000AO - Typ třídění\u000AI - Pořadí třídění\u000AQ
-    - Návrat do složek\u000AS - Vybrat/zrušit výběr</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (nebo D) - Smazat\n
+    R - Odpovědět\n
+    A - Odpovědět všem\n
+    C - Nová\n
+    F - Přeposlat\n
+    M - Přesun\n
+    V - Archive\n
+    Y - Kopie\n
+    Z - Mark (Un)read\n
+    G - Hvězdička\n
+    O - Typ třídění\n
+    I - Pořadí třídění\n
+    Q - Návrat do složek\n
+    S - Vybrat/zrušit výběr\n
+    J nebo P - Předchozí zpráva\n
+    K nebo N - Další zpráva
+    </string>
 
     <string name="folder_list_help_key">
       1 - Zobrazit jen složky 1. třídy\u000A
@@ -825,8 +807,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Jednosloupcové uspořádání</string>
     <string name="settings_messageview_mobile_layout_summary">Přeformátovat HTML zprávy pro menší obrazovky</string>
-    <string name="settings_messageview_zoom_controls_label">Systémové ovládání zvětšování</string>
-    <string name="settings_messageview_zoom_controls_summary">Povolit zvětšovací doplňky nebo zvětšování štípnutím, pokud to zařízení podporuje</string>
 
     <string name="setting_language_system">Systémový výchozí</string>
 
@@ -835,30 +815,9 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Vždy</string>
     <string name="background_ops_enabled">Je-li \'Data na pozadí\' zaškrtnuto</string>
     <string name="background_ops_auto_sync">Jsou-li \'Data na pozadí\' a \'Aut. synchronizace\' zaškrtnuty</string>
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="no_message_seletected_toast">Žádná zpráva není vybrána</string>
-
-    <string name="date_format_label">Formát data</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd. MMMM yyyy</string>
-
-    <string name="batch_ops">Dávkové operace</string>
-    <string name="batch_delete_op">Smazat vybrané</string>
-    <string name="batch_mark_read_op">Označit vybrané jako přečtené</string>
-    <string name="batch_mark_unread_op">Označit vybrané jako nepřečtené</string>
-    <string name="batch_flag_op">Přidat \u2605 vybraným</string>
-    <string name="batch_unflag_op">Odebrat \u2606 vybraným</string>
-    <string name="batch_archive_op">Přesunout vybrané do Archívu</string>
-    <string name="batch_spam_op">Přesunout vybrané do Nevyžádané</string>
-    <string name="batch_move_op">Přesunout vybrané</string>
-    <string name="batch_copy_op">Kopírovat vybrané</string>
-    <string name="batch_flag_mode">Režim hvězdiček</string>
-    <string name="batch_plain_mode">Normální režim</string>
     <string name="batch_select_all">Vybrat vše</string>
-    <string name="batch_deselect_all">Zrušit všechny výběry</string>
 
     <string name="account_setup_push_limit_label">Max. počet složek řízených PUSH</string>
     <string name="account_setup_push_limit_10">10 složek</string>
@@ -874,16 +833,10 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Gesta</string>
     <string name="gestures_summary">Používat ovládání gesty</string>
 
-    <!-- NEW: <string name="compact_layouts_title">Compact layouts</string>-->
-    <!-- NEW: <string name="compact_layouts_summary">Adjust layouts to display more on each page</string>-->
-
     <string name="volume_navigation_title">Navigace tlačítky hlasitosti</string>
     <string name="volume_navigation_summary">Přeskakovat přes položky při použití ovladačů hlasitosti</string>
     <string name="volume_navigation_message">Zobrazení zpráv</string>
     <string name="volume_navigation_list">Různá zobrazení seznamů</string>
-
-    <string name="manage_back_title">Ovládání tlačítka \"Zpět\"</string>
-    <string name="manage_back_summary">Tlačítkem \"Zpět\" jít vždy o úroveň výše</string>
 
     <string name="start_integrated_inbox_title">Začít v Integrovaná doručené poště</string>
     <string name="start_integrated_inbox_summary">Po startu zobrazit Integrovanou doručenou poštu</string>
@@ -940,8 +893,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_view_cc">Příjemce zprávy (Kopie)</string>
     <string name="font_size_message_view_additional_headers">Další záhlaví</string>
     <string name="font_size_message_view_subject">Předmět zprávy</string>
-    <string name="font_size_message_view_time">Čas zprávy</string>
-    <string name="font_size_message_view_date">Datum zprávy</string>
+    <string name="font_size_message_view_date">Datum a čas zprávy</string>
     <string name="font_size_message_view_content">Tělo zprávy</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
@@ -980,7 +932,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Ověřit</string>
     <string name="unknown_crypto_signature_user_id">&lt;neznámý&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 nemá oprávnění k plnému přístupu k APG, přeinstalujte prosím pro opravu balíček K-9.</string>
     <string name="pgp_mime_unsupported">Formát zpráv PGP/MIME ještě není podporován.</string>
     <string name="attachment_encryption_unsupported">Upozornění: přílohy ještě NELZE podepsat nebo šifrovat.</string>
     <string name="send_aborted">Odeslání přerušeno.</string>
@@ -1112,4 +1063,36 @@ http://k9mail.googlecode.com/
 
     <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
     <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
+    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
+    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
+    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
+    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+
+    <!-- NEW: <string name="account_settings_search">Search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
+    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
+    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+
+    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
 </resources>

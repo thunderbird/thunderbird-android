@@ -86,6 +86,11 @@
     <property name="rclib" value="${out.dir}/K9RemoteControl.jar" />
     <property name="rcdir" value="com/fsck/k9/remotecontrol/**" />
 
+    <condition property="android.executable" value="android.bat">
+        <os family="windows" />
+    </condition>
+    <property name="android.executable" value="android" />
+
     <target name="-get-version" depends="-get-version-name">
         <echo>Building version number ${current-version-name}</echo>
     </target>
@@ -268,6 +273,71 @@
         <delete file="lint-results.html" verbose="${verbose}" />
         <delete dir="lint-results_files" verbose="${verbose}" />
         <delete dir="${javadoc-dir}" verbose="${verbose}" />
+    </target>
+
+    <target name="-update-abs">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/ActionBarSherlock/library/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/ActionBarSherlock/library/" />
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
+                    <arg line="update lib-project -p plugins/ActionBarSherlock/library/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+
+    <target name="-update-ptr">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/Android-PullToRefresh/library/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/Android-PullToRefresh/library/" />
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
+                    <arg line="update lib-project -p plugins/Android-PullToRefresh/library/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+
+	<target name="-update-cl">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/ckChangeLog/library/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/ckChangeLog/library/" />
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
+                    <arg line="update lib-project -p plugins/ckChangeLog/library/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+
+	<target name="-update-hcp">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/HoloColorPicker/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/HoloColorPicker/" />
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
+                    <arg line="update lib-project -p plugins/HoloColorPicker/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+	
+    <target name="init" depends="-update-abs, -update-ptr, -update-cl, -update-hcp"
+            description="Initialize environment for building" />
+
+    <!-- overrides default "debug" target" -->
+    <!-- Builds debug output package -->
+    <target name="debug" depends="init, -set-debug-files, -do-debug, -post-build"
+            description="Builds the application and signs it with a debug key.">
     </target>
 
     <!-- common to both build.xml and tests/build.xml -->

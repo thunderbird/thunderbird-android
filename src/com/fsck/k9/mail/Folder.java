@@ -1,6 +1,7 @@
 package com.fsck.k9.mail;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import android.util.Log;
@@ -81,20 +82,26 @@ public abstract class Folder {
 
     public abstract Message getMessage(String uid) throws MessagingException;
 
-    public abstract Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
-    throws MessagingException;
+    /**
+     * Fetch the shells of messages between a range of UIDs and after a given date.
+     * @param start UID sequence start
+     * @param end UID sequence end
+     * @param earliestDate Date to start on
+     * @param listener Listener to notify as we download messages.
+     * @return List of messages
+     * @throws MessagingException
+     */
+    public abstract Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener) throws MessagingException;
 
     /**
      * Fetches the given list of messages. The specified listener is notified as
      * each fetch completes. Messages are downloaded as (as) lightweight (as
      * possible) objects to be filled in with later requests. In most cases this
      * means that only the UID is downloaded.
-     *
-     * @param uids
-     * @param listener
+     * @param listener Listener to notify as we download messages.
+     * @return List of messages
      */
-    public abstract Message[] getMessages(MessageRetrievalListener listener)
-    throws MessagingException;
+    public abstract Message[] getMessages(MessageRetrievalListener listener) throws MessagingException;
 
     public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
         return getMessages(listener);
@@ -130,6 +137,14 @@ public abstract class Folder {
     public void expunge() throws MessagingException
         {}
 
+    /**
+     * Populate a list of messages based upon a FetchProfile.  See {@link FetchProfile} for the things that can
+     * be fetched.
+     * @param messages Messages to populate
+     * @param fp Things to download
+     * @param listener Listener to notify as we fetch messages.
+     * @throws MessagingException
+     */
     public abstract void fetch(Message[] messages, FetchProfile fp,
                                MessageRetrievalListener listener) throws MessagingException;
 
@@ -146,10 +161,15 @@ public abstract class Folder {
 
     public abstract String getName();
 
-    public abstract Flag[] getPermanentFlags();
 
     /**
-     *
+     * Indicated by the server "\*" ( * OK [PERMANENTFLAGS (\Answered .. \*)] Flags permitted). that
+     * new keywords may be created
+     */
+    protected boolean mCanCreateKeywords = false;
+
+    /**
+     * 
      * @param oldPushState
      * @param message
      * @return empty string to clear the pushState, null to leave the state as-is
@@ -220,5 +240,10 @@ public abstract class Folder {
 
     public Account getAccount() {
         return mAccount;
+    }
+
+    public List<Message> search(String queryString, final Flag[] requiredFlags, final Flag[] forbiddenFlags)
+        throws MessagingException {
+        throw new MessagingException("K-9 does not support searches on this folder type");
     }
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/plugins/ActionBarSherlock/library/target/generated-sources/r" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/plugins/ActionBarSherlock/library/target/generated-sources/aidl" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/plugins/ActionBarSherlock/library/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/plugins/ActionBarSherlock/library/res" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/plugins/ActionBarSherlock/library/assets" />
+        <option name="LIBS_FOLDER_RELATIVE_PATH" value="/plugins/ActionBarSherlock/library/ignored" />
+        <option name="USE_CUSTOM_APK_RESOURCE_FOLDER" value="false" />
+        <option name="CUSTOM_APK_RESOURCE_FOLDER" value="/plugins/ActionBarSherlock/library/target/generated-sources/combined-resources/res" />
+        <option name="USE_CUSTOM_COMPILER_MANIFEST" value="false" />
+        <option name="CUSTOM_COMPILER_MANIFEST" value="" />
+        <option name="APK_PATH" value="/plugins/ActionBarSherlock/library/target/library.apk" />
+        <option name="LIBRARY_PROJECT" value="true" />
+        <option name="RUN_PROCESS_RESOURCES_MAVEN_TASK" value="false" />
+        <option name="GENERATE_UNSIGNED_APK" value="false" />
+        <option name="CUSTOM_DEBUG_KEYSTORE_PATH" value="" />
+        <option name="PACK_TEST_CODE" value="false" />
+        <option name="RUN_PROGUARD" value="false" />
+        <option name="PROGUARD_CFG_PATH" value="/proguard-project.txt" />
+        <resOverlayFolders>
+          <path>/plugins/ActionBarSherlock/library/res-overlay</path>
+        </resOverlayFolders>
+        <includeSystemProguardFile>true</includeSystemProguardFile>
+        <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
+        <additionalNativeLibs />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/classes" />
+    <output-test url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/test-classes" />
+    <content url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library">
+      <sourceFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/r" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/gen" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/combined-assets" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/combined-resources" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/generated-sources/extracted-dependencies" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins/ActionBarSherlock/library/target/test-classes" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.android:android:4.0.1.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: commons-logging:commons-logging:1.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpclient:4.0.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpcore:4.0.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: commons-codec:commons-codec:1.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.khronos:opengl-api:gl1.1-android-2.1_r1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: xerces:xmlParserAPIs:2.6.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: xpp3:xpp3:1.1.4c" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.json:json:20080701" level="project" />
+    <orderEntry type="library" name="Maven: com.google.android:support-v4:r99" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="inheritedJdk" />
+  </component>
+</module>
+

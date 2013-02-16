@@ -2,6 +2,8 @@ package com.fsck.k9.crypto;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
 
 import com.fsck.k9.mail.Message;
 
@@ -64,12 +66,18 @@ public class None extends CryptoProvider {
     }
 
     @Override
+    public boolean onDecryptActivityResult(CryptoDecryptCallback callback, int requestCode,
+            int resultCode, Intent data, PgpData pgpData) {
+        return false;
+    }
+
+    @Override
     public boolean encrypt(Activity activity, String data, PgpData pgpData) {
         return false;
     }
 
     @Override
-    public boolean decrypt(Activity activity, String data, PgpData pgpData) {
+    public boolean decrypt(Fragment fragment, String data, PgpData pgpData) {
         return false;
     }
 

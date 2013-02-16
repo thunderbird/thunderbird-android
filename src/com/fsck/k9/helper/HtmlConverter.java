@@ -1,6 +1,7 @@
 package com.fsck.k9.helper;
 
 import android.text.*;
+import android.text.Html.TagHandler;
 import android.util.Log;
 import com.fsck.k9.K9;
 import org.xml.sax.XMLReader;
@@ -247,7 +248,11 @@ public class HtmlConverter {
                     if (isStartOfLine) {
                         quotesThisLine++;
                     } else {
-                        buff.append("&gt;");
+                        // We use a token here which can't occur in htmlified text because &gt; is valid
+                        // within links (where > is not), and linkifying links will include it if we
+                        // do it here. We'll make another pass and change this back to &gt; after
+                        // the linkification is done.
+                        buff.append("<gt>");
                     }
                     break;
                 case '\r':
@@ -262,9 +267,6 @@ public class HtmlConverter {
                     if (isStartOfLine) {
                         // Not a quote character and not a space.  Content is starting now.
                         isStartOfLine = false;
-                        if (K9.DEBUG) {
-                            Log.d(K9.LOG_TAG, "currentQuoteDepth: " + quoteDepth + " quotesThisLine: " + quotesThisLine);
-                        }
                         // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
                         if (quotesThisLine > quoteDepth) {
                             for (int i = quoteDepth; i < quotesThisLine; i++) {
@@ -323,6 +325,9 @@ public class HtmlConverter {
         }
 
         text = sb.toString();
+
+        // Above we replaced > with <gt>, now make it &gt;
+        text = text.replaceAll("<gt>", "&gt;");
 
         return text;
     }
@@ -1274,5 +1279,49 @@ public class HtmlConverter {
         // For some reason, TextUtils.htmlEncode escapes ' into &apos;, which is technically part of the XHTML 1.0
         // standard, but Gmail doesn't recognize it as an HTML entity. We unescape that here.
         return linkified.toString().replace("\n", "<br>\n").replace("&apos;", "&#39;");
+    }
+
+    /**
+     * Convert HTML to a {@link Spanned} that can be used in a {@link android.widget.TextView}.
+     *
+     * @param html
+     *         The HTML fragment to be converted.
+     *
+     * @return A {@link Spanned} containing the text in {@code html} formatted using spans.
+     */
+    public static Spanned htmlToSpanned(String html) {
+        return Html.fromHtml(html, null, new ListTagHandler());
+    }
+
+    /**
+     * {@link TagHandler} that supports unordered lists.
+     *
+     * @see HtmlConverter#htmlToSpanned(String)
+     */
+    public static class ListTagHandler implements TagHandler {
+        @Override
+        public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
+            if (tag.equals("ul")) {
+                if (opening) {
+                    char lastChar = 0;
+                    if (output.length() > 0) {
+                        lastChar = output.charAt(output.length() - 1);
+                    }
+                    if (lastChar != '\n') {
+                        output.append("\n");
+                    }
+                } else {
+                    output.append("\n");
+                }
+            }
+
+            if (tag.equals("li")) {
+                if (opening) {
+                    output.append("\t•  ");
+                } else {
+                    output.append("\n");
+                }
+            }
+        }
     }
 }

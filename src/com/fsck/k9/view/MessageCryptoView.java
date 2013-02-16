@@ -1,7 +1,7 @@
 package com.fsck.k9.view;
 
-import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +16,10 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
 
 
-
-
 public class MessageCryptoView extends LinearLayout {
 
     private Context mContext;
-    private Activity mActivity;
+    private Fragment mFragment;
     private Button mDecryptButton;
     private LinearLayout mCryptoSignatureLayout = null;
     private ImageView mCryptoSignatureStatusImage = null;
@@ -43,8 +41,8 @@ public class MessageCryptoView extends LinearLayout {
         mDecryptButton = (Button) findViewById(R.id.btn_decrypt);
     }
 
-    public void setActivity(Activity activity) {
-        mActivity = activity;
+    public void setFragment(Fragment fragment) {
+        mFragment = fragment;
 
     }
 
@@ -110,7 +108,7 @@ public class MessageCryptoView extends LinearLayout {
                     if (part != null) {
                         data = MimeUtility.getTextFromPart(part);
                     }
-                    cryptoProvider.decrypt(mActivity, data, pgpData);
+                    cryptoProvider.decrypt(mFragment, data, pgpData);
                 } catch (MessagingException me) {
                     Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);
                 }

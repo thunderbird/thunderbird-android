@@ -1,8 +1,21 @@
 
 package com.fsck.k9;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
@@ -13,23 +26,22 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+import com.fsck.k9.provider.EmailProvider;
+import com.fsck.k9.provider.EmailProvider.StatsColumns;
+import com.fsck.k9.search.ConditionsTreeNode;
+import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SqlQueryBuilder;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.ColorChip;
+import com.larswerkman.colorpicker.ColorPicker;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save
@@ -68,6 +80,7 @@ public class Account implements BaseAccount {
     public static final boolean DEFAULT_QUOTED_TEXT_SHOWN = true;
     public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
     public static final boolean DEFAULT_STRIP_SIGNATURE = true;
+    public static final int DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25;
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
     public static final String STORE_URI_KEY = "storeUri";
@@ -81,7 +94,7 @@ public class Account implements BaseAccount {
         SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
         SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
         SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true),
-        SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true),
+//        SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true),
         SORT_UNREAD(R.string.sort_unread_first, R.string.sort_unread_last, true),
         SORT_FLAGGED(R.string.sort_flagged_first, R.string.sort_flagged_last, true),
         SORT_ATTACHMENT(R.string.sort_attach_first, R.string.sort_unattached_first, true);
@@ -97,12 +110,9 @@ public class Account implements BaseAccount {
         }
 
         public int getToast(boolean ascending) {
-            if (ascending) {
-                return ascendingToast;
-            } else {
-                return descendingToast;
-            }
+            return (ascending) ? ascendingToast : descendingToast;
         }
+
         public boolean isDefaultAscending() {
             return defaultAscending;
         }
@@ -152,13 +162,11 @@ public class Account implements BaseAccount {
     private FolderMode mFolderPushMode;
     private FolderMode mFolderTargetMode;
     private int mAccountNumber;
-    private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
     private SortType mSortType;
     private HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
     private ShowPictures mShowPictures;
-    private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
@@ -186,8 +194,26 @@ public class Account implements BaseAccount {
     private boolean mCryptoAutoSignature;
     private boolean mCryptoAutoEncrypt;
     private boolean mMarkMessageAsReadOnView;
+    private boolean mAlwaysShowCcBcc;
+    private boolean mAllowRemoteSearch;
+    private boolean mRemoteSearchFullText;
+    private int mRemoteSearchNumResults;
 
     private CryptoProvider mCryptoProvider = null;
+
+    private ColorChip mUnreadColorChip;
+    private ColorChip mReadColorChip;
+
+    private ColorChip mFlaggedUnreadColorChip;
+    private ColorChip mFlaggedReadColorChip;
+    private ColorChip mToMeUnreadColorChip;
+    private ColorChip mToMeReadColorChip;
+    private ColorChip mCcMeUnreadColorChip;
+    private ColorChip mCcMeReadColorChip;
+    private ColorChip mFromMeUnreadColorChip;
+    private ColorChip mFromMeReadColorChip;
+    private ColorChip mCheckmarkChip;
+
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
@@ -236,7 +262,6 @@ public class Account implements BaseAccount {
         mLocalStorageProviderId = StorageManager.getInstance(K9.app).getDefaultProviderId();
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
-        mSaveAllHeaders = true;
         mPushPollOnConnect = true;
         mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         mAccountNumber = -1;
@@ -250,13 +275,12 @@ public class Account implements BaseAccount {
         mSortType = DEFAULT_SORT_TYPE;
         mSortAscending.put(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING);
         mShowPictures = ShowPictures.NEVER;
-        mEnableMoveButtons = false;
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = INBOX;
         mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
-        mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
+        mChipColor = ColorPicker.getRandomColor();
         goToUnreadMessageSearch = false;
         mNotificationShowsUnreadCount = true;
         subscribedFoldersOnly = false;
@@ -274,8 +298,12 @@ public class Account implements BaseAccount {
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
         mCryptoAutoEncrypt = false;
+        mAllowRemoteSearch = false;
+        mRemoteSearchFullText = false;
+        mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
+        mAlwaysShowCcBcc = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -294,6 +322,8 @@ public class Account implements BaseAccount {
         mNotificationSetting.setRing(true);
         mNotificationSetting.setRingtone("content://settings/system/notification_sound");
         mNotificationSetting.setLedColor(mChipColor);
+
+        cacheChips();
     }
 
     protected Account(Preferences preferences, String uuid) {
@@ -315,7 +345,6 @@ public class Account implements BaseAccount {
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = prefs.getInt(mUuid + ".idleRefreshMinutes", 24);
-        mSaveAllHeaders = prefs.getBoolean(mUuid + ".saveAllHeaders", true);
         mPushPollOnConnect = prefs.getBoolean(mUuid + ".pushPollOnConnect", true);
         mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         if (mDisplayCount < 0) {
@@ -363,13 +392,7 @@ public class Account implements BaseAccount {
 
         mAccountNumber = prefs.getInt(mUuid + ".accountNumber", 0);
 
-        Random random = new Random((long)mAccountNumber + 4);
-
-        mChipColor = prefs.getInt(mUuid + ".chipColor",
-                                  (random.nextInt(0x70)) +
-                                  (random.nextInt(0x70) * 0xff) +
-                                  (random.nextInt(0x70) * 0xffff) +
-                                  0xff000000);
+        mChipColor = prefs.getInt(mUuid + ".chipColor", ColorPicker.getRandomColor());
 
         try {
             mSortType = SortType.valueOf(prefs.getString(mUuid + ".sortTypeEnum",
@@ -386,8 +409,6 @@ public class Account implements BaseAccount {
         } catch (Exception e) {
             mShowPictures = ShowPictures.NEVER;
         }
-
-        mEnableMoveButtons = prefs.getBoolean(mUuid + ".enableMoveButtons", false);
 
         mNotificationSetting.setVibrate(prefs.getBoolean(mUuid + ".vibrate", false));
         mNotificationSetting.setVibratePattern(prefs.getInt(mUuid + ".vibratePattern", 0));
@@ -439,8 +460,16 @@ public class Account implements BaseAccount {
         mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
         mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
+        mAllowRemoteSearch = prefs.getBoolean(mUuid + ".allowRemoteSearch", false);
+        mRemoteSearchFullText = prefs.getBoolean(mUuid + ".remoteSearchFullText", false);
+        mRemoteSearchNumResults = prefs.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
+
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
+        mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
+
+        cacheChips();
+
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -472,7 +501,6 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".alwaysBcc");
         editor.remove(mUuid + ".automaticCheckIntervalMinutes");
         editor.remove(mUuid + ".pushPollOnConnect");
-        editor.remove(mUuid + ".saveAllHeaders");
         editor.remove(mUuid + ".idleRefreshMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
         editor.remove(mUuid + ".latestOldMessageSeenTime");
@@ -522,9 +550,9 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".cryptoAutoSignature");
         editor.remove(mUuid + ".cryptoAutoEncrypt");
         editor.remove(mUuid + ".enabled");
-        editor.remove(mUuid + ".enableMoveButtons");
         editor.remove(mUuid + ".hideMoveButtonsEnum");
         editor.remove(mUuid + ".markMessageAsReadOnView");
+        editor.remove(mUuid + ".alwaysShowCcBcc");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
@@ -631,7 +659,6 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
-        editor.putBoolean(mUuid + ".saveAllHeaders", mSaveAllHeaders);
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
@@ -651,7 +678,6 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".sortTypeEnum", mSortType.name());
         editor.putBoolean(mUuid + ".sortAscending", mSortAscending.get(mSortType));
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
-        editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
         editor.putString(mUuid + ".folderPushMode", mFolderPushMode.name());
@@ -686,8 +712,12 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
         editor.putBoolean(mUuid + ".cryptoAutoEncrypt", mCryptoAutoEncrypt);
+        editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
+        editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
+        editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
         editor.putBoolean(mUuid + ".enabled", mEnabled);
         editor.putBoolean(mUuid + ".markMessageAsReadOnView", mMarkMessageAsReadOnView);
+        editor.putBoolean(mUuid + ".alwaysShowCcBcc", mAlwaysShowCcBcc);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
@@ -728,22 +758,75 @@ public class Account implements BaseAccount {
         if (!isAvailable(context)) {
             return null;
         }
-        long startTime = System.currentTimeMillis();
+
         AccountStats stats = new AccountStats();
+
+        ContentResolver cr = context.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
+                "account/" + getUuid() + "/stats");
+
+        String[] projection = {
+                StatsColumns.UNREAD_COUNT,
+                StatsColumns.FLAGGED_COUNT
+        };
+
+        // Create LocalSearch instance to exclude special folders (Trash, Drafts, Spam, Outbox,
+        // Sent) and limit the search to displayable folders.
+        LocalSearch search = new LocalSearch();
+        excludeSpecialFolders(search);
+        limitToDisplayableFolders(search);
+
+        // Use the LocalSearch instance to create a WHERE clause to query the content provider
+        StringBuilder query = new StringBuilder();
+        List<String> queryArgs = new ArrayList<String>();
+        ConditionsTreeNode conditions = search.getConditions();
+        SqlQueryBuilder.buildWhereClause(this, conditions, query, queryArgs);
+
+        String selection = query.toString();
+        String[] selectionArgs = queryArgs.toArray(new String[0]);
+
+        Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
+        try {
+            if (cursor.moveToFirst()) {
+                stats.unreadMessageCount = cursor.getInt(0);
+                stats.flaggedMessageCount = cursor.getInt(1);
+            }
+        } finally {
+            cursor.close();
+        }
+
         LocalStore localStore = getLocalStore();
         if (K9.measureAccounts()) {
             stats.size = localStore.getSize();
         }
-        localStore.getMessageCounts(stats);
-        long endTime = System.currentTimeMillis();
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;");
+
         return stats;
     }
 
 
     public synchronized void setChipColor(int color) {
         mChipColor = color;
+        cacheChips();
+
+    }
+
+    public synchronized void cacheChips() {
+        mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
+        mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
+        mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
+        mToMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_POINTING);
+        mCcMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_NOTCH);
+        mCcMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_NOTCH);
+        mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
+        mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
+        mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
+        mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
+        mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
+    }
+
+    public ColorChip getCheckmarkChip() {
+        return mCheckmarkChip;
     }
 
     public synchronized int getChipColor() {
@@ -751,11 +834,44 @@ public class Account implements BaseAccount {
     }
 
 
-    public ColorChip generateColorChip() {
-        return new ColorChip(mChipColor);
+    public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean ccMe,
+            boolean fromMe, boolean messageFlagged) {
+        ColorChip chip;
+
+        if (messageRead) {
+            if (messageFlagged) {
+                chip = mFlaggedReadColorChip;
+            } else if (toMe) {
+                chip = mToMeReadColorChip;
+            } else if (ccMe) {
+                chip = mCcMeReadColorChip;
+            } else if (fromMe) {
+                chip = mFromMeReadColorChip;
+            } else {
+                chip = mReadColorChip;
+            }
+        } else {
+            if (messageFlagged) {
+                chip = mFlaggedUnreadColorChip;
+            } else if (toMe) {
+                chip = mToMeUnreadColorChip;
+            } else if (ccMe) {
+                chip = mCcMeUnreadColorChip;
+            } else if (fromMe) {
+                chip = mFromMeUnreadColorChip;
+            } else {
+                chip = mUnreadColorChip;
+            }
+        }
+
+        return chip;
     }
 
+    public ColorChip generateColorChip() {
+        return new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
+    }
 
+    @Override
     public String getUuid() {
         return mUuid;
     }
@@ -780,10 +896,12 @@ public class Account implements BaseAccount {
         this.mTransportUri = transportUri;
     }
 
+    @Override
     public synchronized String getDescription() {
         return mDescription;
     }
 
+    @Override
     public synchronized void setDescription(String description) {
         this.mDescription = description;
     }
@@ -812,10 +930,12 @@ public class Account implements BaseAccount {
         identities.get(0).setSignature(signature);
     }
 
+    @Override
     public synchronized String getEmail() {
         return identities.get(0).getEmail();
     }
 
+    @Override
     public synchronized void setEmail(String email) {
         identities.get(0).setEmail(email);
     }
@@ -863,11 +983,6 @@ public class Account implements BaseAccount {
         }
 
     }
-
-//    public synchronized void setLocalStoreUri(String localStoreUri)
-//    {
-//        this.mLocalStoreUri = localStoreUri;
-//    }
 
     /**
      * Returns -1 for never.
@@ -931,24 +1046,16 @@ public class Account implements BaseAccount {
         this.mDeletePolicy = deletePolicy;
     }
 
-
     public boolean isSpecialFolder(String folderName) {
-        if (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
-                                   folderName.equals(getTrashFolderName()) ||
-                                   folderName.equals(getDraftsFolderName()) ||
-                                   folderName.equals(getArchiveFolderName()) ||
-                                   folderName.equals(getSpamFolderName()) ||
-                                   folderName.equals(getOutboxFolderName()) ||
-                                   folderName.equals(getSentFolderName()) ||
-                                   folderName.equals(getErrorFolderName()))) {
-            return true;
-
-        } else {
-            return false;
-        }
-
+        return (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
+                folderName.equals(getTrashFolderName()) ||
+                folderName.equals(getDraftsFolderName()) ||
+                folderName.equals(getArchiveFolderName()) ||
+                folderName.equals(getSpamFolderName()) ||
+                folderName.equals(getOutboxFolderName()) ||
+                folderName.equals(getSentFolderName()) ||
+                folderName.equals(getErrorFolderName())));
     }
-
 
     public synchronized String getDraftsFolderName() {
         return mDraftsFolderName;
@@ -1178,11 +1285,7 @@ public class Account implements BaseAccount {
     // to get this, but that's expensive and not easily accessible
     // during initialization
     public boolean isSearchByDateCapable() {
-        if (getStoreUri().startsWith("imap")) {
-            return true;
-        } else {
-            return false;
-        }
+        return (getStoreUri().startsWith("imap"));
     }
 
 
@@ -1199,9 +1302,9 @@ public class Account implements BaseAccount {
         Boolean useCompression = compressionMap.get(networkType);
         if (useCompression == null) {
             return true;
-        } else {
-            return useCompression;
         }
+
+        return useCompression;
     }
 
     public boolean useCompression(int type) {
@@ -1373,14 +1476,6 @@ public class Account implements BaseAccount {
         mPushPollOnConnect = pushPollOnConnect;
     }
 
-    public synchronized boolean saveAllHeaders() {
-        return mSaveAllHeaders;
-    }
-
-    public synchronized void setSaveAllHeaders(boolean saveAllHeaders) {
-        mSaveAllHeaders = saveAllHeaders;
-    }
-
     /**
      * Are we storing out localStore on the SD-card instead of the local device
      * memory?<br/>
@@ -1466,9 +1561,9 @@ public class Account implements BaseAccount {
                 }
 
             return now.getTime();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public MessageFormat getMessageFormat() {
@@ -1527,14 +1622,6 @@ public class Account implements BaseAccount {
         mStripSignature = stripSignature;
     }
 
-    public boolean getEnableMoveButtons() {
-        return mEnableMoveButtons;
-    }
-
-    public void setEnableMoveButtons(boolean enableMoveButtons) {
-        mEnableMoveButtons = enableMoveButtons;
-    }
-
     public String getCryptoApp() {
         return mCryptoApp;
     }
@@ -1559,6 +1646,22 @@ public class Account implements BaseAccount {
 
     public void setCryptoAutoEncrypt(boolean cryptoAutoEncrypt) {
         mCryptoAutoEncrypt = cryptoAutoEncrypt;
+    }
+
+    public boolean allowRemoteSearch() {
+        return mAllowRemoteSearch;
+    }
+
+    public void setAllowRemoteSearch(boolean val) {
+        mAllowRemoteSearch = val;
+    }
+
+    public int getRemoteSearchNumResults() {
+        return mRemoteSearchNumResults;
+    }
+
+    public void setRemoteSearchNumResults(int val) {
+        mRemoteSearchNumResults = (val >= 0 ? val : 0);
     }
 
     public String getInboxFolderName() {
@@ -1622,5 +1725,100 @@ public class Account implements BaseAccount {
 
     public synchronized void setMarkMessageAsReadOnView(boolean value) {
         mMarkMessageAsReadOnView = value;
+    }
+
+    public synchronized boolean isAlwaysShowCcBcc() {
+        return mAlwaysShowCcBcc;
+    }
+
+    public synchronized void setAlwaysShowCcBcc(boolean show) {
+        mAlwaysShowCcBcc = show;
+    }
+    public boolean isRemoteSearchFullText() {
+        return mRemoteSearchFullText;
+    }
+
+    public void setRemoteSearchFullText(boolean val) {
+        mRemoteSearchFullText = val;
+    }
+
+    /**
+     * Modify the supplied {@link LocalSearch} instance to limit the search to displayable folders.
+     *
+     * <p>
+     * This method uses the current folder display mode to decide what folders to include/exclude.
+     * </p>
+     *
+     * @param search
+     *         The {@code LocalSearch} instance to modify.
+     *
+     * @see #getFolderDisplayMode()
+     */
+    public void limitToDisplayableFolders(LocalSearch search) {
+        final Account.FolderMode displayMode = getFolderDisplayMode();
+
+        switch (displayMode) {
+            case FIRST_CLASS: {
+                // Count messages in the INBOX and non-special first class folders
+                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                        Attribute.EQUALS);
+                break;
+            }
+            case FIRST_AND_SECOND_CLASS: {
+                // Count messages in the INBOX and non-special first and second class folders
+                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                        Attribute.EQUALS);
+
+                // TODO: Create a proper interface for creating arbitrary condition trees
+                SearchCondition searchCondition = new SearchCondition(Searchfield.DISPLAY_CLASS,
+                        Attribute.EQUALS, FolderClass.SECOND_CLASS.name());
+                ConditionsTreeNode root = search.getConditions();
+                if (root.mRight != null) {
+                    root.mRight.or(searchCondition);
+                } else {
+                    search.or(searchCondition);
+                }
+                break;
+            }
+            case NOT_SECOND_CLASS: {
+                // Count messages in the INBOX and non-special non-second-class folders
+                search.and(Searchfield.DISPLAY_CLASS, FolderClass.SECOND_CLASS.name(),
+                        Attribute.NOT_EQUALS);
+                break;
+            }
+            default:
+            case ALL: {
+                // Count messages in the INBOX and non-special folders
+                break;
+            }
+        }
+    }
+
+    /**
+     * Modify the supplied {@link LocalSearch} instance to exclude special folders.
+     *
+     * <p>
+     * Currently the following folders are excluded:
+     * <ul>
+     *   <li>Trash</li>
+     *   <li>Drafts</li>
+     *   <li>Spam</li>
+     *   <li>Outbox</li>
+     *   <li>Sent</li>
+     * </ul>
+     * The Inbox will always be included even if one of the special folders is configured to point
+     * to the Inbox.
+     * </p>
+     *
+     * @param search
+     *         The {@code LocalSearch} instance to modify.
+     */
+    public void excludeSpecialFolders(LocalSearch search) {
+        search.and(Searchfield.FOLDER, getTrashFolderName(), Attribute.NOT_EQUALS);
+        search.and(Searchfield.FOLDER, getDraftsFolderName(), Attribute.NOT_EQUALS);
+        search.and(Searchfield.FOLDER, getSpamFolderName(), Attribute.NOT_EQUALS);
+        search.and(Searchfield.FOLDER, getOutboxFolderName(), Attribute.NOT_EQUALS);
+        search.and(Searchfield.FOLDER, getSentFolderName(), Attribute.NOT_EQUALS);
+        search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
     }
 }

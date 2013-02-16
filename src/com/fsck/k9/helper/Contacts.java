@@ -3,6 +3,7 @@ package com.fsck.k9.helper;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.content.Intent;
 import com.fsck.k9.mail.Address;
@@ -156,6 +157,18 @@ public abstract class Contacts {
      *         contact doesn't have any email addresses.
      */
     public abstract ContactItem extractInfoFromContactPickerIntent(final Intent intent);
+
+    /**
+     * Get URI to the picture of the contact with the supplied email address.
+     *
+     * @param address
+     *         An email address. The contact database is searched for a contact with this email
+     *         address.
+     *
+     * @return URI to the picture of the contact with the supplied email address. {@code null} if
+     *         no such contact could be found or the contact doesn't have a picture.
+     */
+    public abstract Uri getPhotoUri(String address);
 
     /**
      * Does the device actually have a Contacts application suitable for

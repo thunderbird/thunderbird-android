@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
@@ -26,8 +25,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 
 /**
- * Prompts the user for the email address and password. Also prompts for
- * "Use this account as default" if this is the 2nd+ account being set up.
+ * Prompts the user for the email address and password.
  * Attempts to lookup default settings for the domain the user specified. If the
  * domain is known the settings are handed off to the AccountSetupCheckSettings
  * activity. If no settings are found the settings are handed off to the
@@ -40,10 +38,8 @@ public class AccountSetupBasics extends K9Activity
     private final static String STATE_KEY_PROVIDER =
         "com.fsck.k9.AccountSetupBasics.provider";
 
-    private Preferences mPrefs;
     private EditText mEmailView;
     private EditText mPasswordView;
-    private CheckBox mDefaultView;
     private Button mNextButton;
     private Button mManualSetupButton;
     private Account mAccount;
@@ -60,10 +56,8 @@ public class AccountSetupBasics extends K9Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_basics);
-        mPrefs = Preferences.getPreferences(this);
         mEmailView = (EditText)findViewById(R.id.account_email);
         mPasswordView = (EditText)findViewById(R.id.account_password);
-        mDefaultView = (CheckBox)findViewById(R.id.account_default);
         mNextButton = (Button)findViewById(R.id.next);
         mManualSetupButton = (Button)findViewById(R.id.manual_setup);
 
@@ -72,10 +66,6 @@ public class AccountSetupBasics extends K9Activity
 
         mEmailView.addTextChangedListener(this);
         mPasswordView.addTextChangedListener(this);
-
-        if (mPrefs.getAccounts().length > 0) {
-            mDefaultView.setVisibility(View.VISIBLE);
-        }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             String accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
@@ -276,9 +266,6 @@ public class AccountSetupBasics extends K9Activity
         if (resultCode == RESULT_OK) {
             mAccount.setDescription(mAccount.getEmail());
             mAccount.save(Preferences.getPreferences(this));
-            if (mDefaultView.isChecked()) {
-                Preferences.getPreferences(this).setDefaultAccount(mAccount);
-            }
             K9.setServicesEnabled(this);
             AccountSetupNames.actionSetNames(this, mAccount);
             finish();
@@ -323,7 +310,8 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
         }
 
-        AccountSetupAccountType.actionSelectAccountType(this, mAccount, mDefaultView.isChecked());
+        AccountSetupAccountType.actionSelectAccountType(this, mAccount, false);
+
         finish();
     }
 

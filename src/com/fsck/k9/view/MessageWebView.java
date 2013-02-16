@@ -2,19 +2,19 @@ package com.fsck.k9.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import java.lang.reflect.Method;
+import com.nobu_games.android.view.web.TitleBarWebView;
 
-public class MessageWebView extends WebView {
+public class MessageWebView extends TitleBarWebView {
 
 
     /**
@@ -94,7 +94,7 @@ public class MessageWebView extends WebView {
         this.setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
         this.setLongClickable(true);
 
-        if (K9.getK9Theme() == K9.THEME_DARK) {
+        if (K9.getK9MessageViewTheme() == K9.Theme.DARK) {
             // Black theme should get a black webview background
             // we'll set the background of the messages on load
             this.setBackgroundColor(0xff000000);
@@ -103,14 +103,15 @@ public class MessageWebView extends WebView {
         final WebSettings webSettings = this.getSettings();
 
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
         webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+
+        disableDisplayZoomControls();
+
         webSettings.setJavaScriptEnabled(false);
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-
-        if (K9.zoomControlsEnabled()) {
-            webSettings.setBuiltInZoomControls(true);
-        }
 
         if (isSingleColumnLayoutSupported() && K9.mobileOptimizedLayout()) {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
@@ -127,6 +128,21 @@ public class MessageWebView extends WebView {
 
     }
 
+    /**
+     * Disable on-screen zoom controls on devices that support zooming via pinch-to-zoom.
+     */
+    @TargetApi(11)
+    private void disableDisplayZoomControls() {
+        if (Build.VERSION.SDK_INT >= 11) {
+            PackageManager pm = getContext().getPackageManager();
+            boolean supportsMultiTouch =
+                    pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
+                    pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
+
+            getSettings().setDisplayZoomControls(!supportsMultiTouch);
+        }
+    }
+
     @TargetApi(9)
     private void disableOverscrolling() {
         if (Build.VERSION.SDK_INT >= 9) {
@@ -136,7 +152,7 @@ public class MessageWebView extends WebView {
 
     public void setText(String text, String contentType) {
         String content = text;
-        if (K9.getK9Theme() == K9.THEME_DARK)  {
+        if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
             // It's a little wrong to just throw in the <style> before the opening <html>
             // but it's less wrong than trying to edit the html stream
             content = "<style>* { background: black ! important; color: white !important }" +
@@ -157,16 +173,11 @@ public class MessageWebView extends WebView {
 
             KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
                                                     KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
-            shiftPressEvent.dispatch(this);
+            shiftPressEvent.dispatch(this, null, null);
             Toast.makeText(getContext() , R.string.select_text_now, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);
         }
     }
 
-    public void wrapSetTitleBar(final View title) throws Exception {
-        Class<?> webViewClass = Class.forName("android.webkit.WebView");
-        Method setEmbeddedTitleBar = webViewClass.getMethod("setEmbeddedTitleBar", View.class);
-        setEmbeddedTitleBar.invoke(this, title);
-    }
 }

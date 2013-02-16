@@ -15,10 +15,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,12 +29,14 @@ import android.util.Log;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
+import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
@@ -40,9 +44,6 @@ import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 
 public class K9 extends Application {
-    public static final int THEME_LIGHT = 0;
-    public static final int THEME_DARK = 1;
-
     /**
      * Components that are interested in knowing when the K9 instance is
      * available and ready (Android invokes Application.onCreate() after other
@@ -65,6 +66,23 @@ public class K9 extends Application {
     public static final String LOG_TAG = "k9";
 
     /**
+     * Name of the {@link SharedPreferences} file used to store the last known version of the
+     * accounts' databases.
+     *
+     * <p>
+     * See {@link UpgradeDatabases} for a detailed explanation of the database upgrade process.
+     * </p>
+     */
+    private static final String DATABASE_VERSION_CACHE = "database_version_cache";
+
+    /**
+     * Key used to store the last known database version of the accounts' databases.
+     *
+     * @see #DATABASE_VERSION_CACHE
+     */
+    private static final String KEY_LAST_ACCOUNT_DATABASE_VERSION = "last_account_database_version";
+
+    /**
      * Components that are interested in knowing when the K9 instance is
      * available and ready.
      *
@@ -77,7 +95,10 @@ public class K9 extends Application {
     }
 
     private static String language = "";
-    private static int theme = THEME_LIGHT;
+    private static Theme theme = Theme.LIGHT;
+    private static Theme messageViewTheme = Theme.USE_GLOBAL;
+    private static Theme composerTheme = Theme.USE_GLOBAL;
+    private static boolean useFixedMessageTheme = true;
 
     private static final FontSizes fontSizes = new FontSizes();
 
@@ -149,12 +170,22 @@ public class K9 extends Application {
     public static boolean ENABLE_ERROR_FOLDER = true;
     public static String ERROR_FOLDER_NAME = "K9mail-errors";
 
+    /**
+     * A reference to the {@link SharedPreferences} used for caching the last known database
+     * version.
+     *
+     * @see #checkCachedDatabaseVersion()
+     * @see #setDatabasesUpToDate(boolean)
+     */
+    private static SharedPreferences sDatabaseVersionCache;
+
+
     private static boolean mAnimations = true;
 
     private static boolean mConfirmDelete = false;
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
-    private static boolean mConfirmMarkAllAsRead = true;
+    private static boolean mConfirmDeleteFromNotification = true;
 
     private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
 
@@ -167,15 +198,35 @@ public class K9 extends Application {
         NEVER
     }
 
-    private static boolean mMessageListStars = true;
+    private static NotificationQuickDelete sNotificationQuickDelete = NotificationQuickDelete.NEVER;
+
+    /**
+     * Controls behaviour of delete button in notifications.
+     */
+    public enum NotificationQuickDelete {
+        ALWAYS,
+        FOR_SINGLE_MSG,
+        NEVER
+    }
+
+    /**
+     * Controls when to use the message list split view.
+     */
+    public enum SplitViewMode {
+        ALWAYS,
+        NEVER,
+        WHEN_IN_LANDSCAPE
+    }
+
     private static boolean mMessageListCheckboxes = false;
-    private static boolean mMessageListTouchable = false;
     private static int mMessageListPreviewLines = 2;
 
     private static boolean mShowCorrespondentNames = true;
+    private static boolean mMessageListSenderAboveSubject = false;
     private static boolean mShowContactName = false;
     private static boolean mChangeContactNameColor = false;
     private static int mContactNameColor = 0xff00008f;
+    private static boolean sShowContactPicture = true;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
     private static boolean mMessageViewShowNext = false;
@@ -183,18 +234,16 @@ public class K9 extends Application {
     private static boolean mGesturesEnabled = true;
     private static boolean mUseVolumeKeysForNavigation = false;
     private static boolean mUseVolumeKeysForListNavigation = false;
-    private static boolean mManageBack = false;
     private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
     private static boolean mHideSpecialAccounts = false;
-    private static boolean mZoomControlsEnabled = false;
     private static boolean mMobileOptimizedLayout = false;
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
-    private static boolean compactLayouts = false;
     private static String mAttachmentDefaultPath = "";
+    private static boolean mWrapFolderNames = false;
 
     private static boolean mBatchButtonsMarkRead = true;
     private static boolean mBatchButtonsDelete = true;
@@ -208,6 +257,16 @@ public class K9 extends Application {
 
     private static SortType mSortType;
     private static HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
+
+    private static boolean sUseBackgroundAsUnreadIndicator = true;
+    private static boolean sThreadedViewEnabled = true;
+    private static SplitViewMode sSplitViewMode = SplitViewMode.NEVER;
+
+    /**
+     * @see #areDatabasesUpToDate()
+     */
+    private static boolean sDatabasesUpToDate = false;
+
 
     /**
      * The MIME type(s) of attachments we're willing to view.
@@ -297,11 +356,13 @@ public class K9 extends Application {
 
 
 
-    public static final int NOTIFICATION_LED_SENDING_FAILURE_COLOR = 0xffff0000;
+    public static final int NOTIFICATION_LED_FAILURE_COLOR = 0xffff0000;
 
     // Must not conflict with an account number
     public static final int FETCHING_EMAIL_NOTIFICATION      = -5000;
     public static final int SEND_FAILED_NOTIFICATION      = -1500;
+    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING = -2000;
+    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING = -2500;
     public static final int CONNECTIVITY_ID = -3;
 
 
@@ -432,8 +493,6 @@ public class K9 extends Application {
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
-        editor.putBoolean("manageBack", mManageBack);
-        editor.putBoolean("zoomControlsEnabled", mZoomControlsEnabled);
         editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
@@ -442,19 +501,19 @@ public class K9 extends Application {
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
+        editor.putBoolean("messageListSenderAboveSubject", mMessageListSenderAboveSubject);
         editor.putBoolean("hideSpecialAccounts", mHideSpecialAccounts);
-        editor.putBoolean("messageListStars", mMessageListStars);
-        editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
-        editor.putBoolean("messageListTouchable", mMessageListTouchable);
         editor.putInt("messageListPreviewLines", mMessageListPreviewLines);
-
+        editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
         editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
         editor.putBoolean("showContactName", mShowContactName);
+        editor.putBoolean("showContactPicture", sShowContactPicture);
         editor.putBoolean("changeRegisteredNameColor", mChangeContactNameColor);
         editor.putInt("registeredNameColor", mContactNameColor);
         editor.putBoolean("messageViewFixedWidthFont", mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
         editor.putBoolean("messageViewShowNext", mMessageViewShowNext);
+        editor.putBoolean("wrapFolderNames", mWrapFolderNames);
 
         editor.putBoolean("batchButtonsMarkRead", mBatchButtonsMarkRead);
         editor.putBoolean("batchButtonsDelete", mBatchButtonsDelete);
@@ -464,21 +523,27 @@ public class K9 extends Application {
         editor.putBoolean("batchButtonsUnselect", mBatchButtonsUnselect);
 
         editor.putString("language", language);
-        editor.putInt("theme", theme);
+        editor.putInt("theme", theme.ordinal());
+        editor.putInt("messageViewTheme", messageViewTheme.ordinal());
+        editor.putInt("messageComposeTheme", composerTheme.ordinal());
+        editor.putBoolean("fixedMessageViewTheme", useFixedMessageTheme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
         editor.putBoolean("confirmDelete", mConfirmDelete);
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
-        editor.putBoolean("confirmMarkAllAsRead", mConfirmMarkAllAsRead);
+        editor.putBoolean("confirmDeleteFromNotification", mConfirmDeleteFromNotification);
 
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
         editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
+        editor.putString("notificationQuickDelete", sNotificationQuickDelete.toString());
 
-        editor.putBoolean("compactLayouts", compactLayouts);
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
+        editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
+        editor.putBoolean("threadedView", sThreadedViewEnabled);
+        editor.putString("splitViewMode", sSplitViewMode.name());
         fontSizes.save(editor);
     }
 
@@ -489,6 +554,8 @@ public class K9 extends Application {
         app = this;
 
         galleryBuggy = checkForBuggyGallery();
+
+        checkCachedDatabaseVersion();
 
         Preferences prefs = Preferences.getPreferences(this);
         loadPrefs(prefs);
@@ -568,13 +635,15 @@ public class K9 extends Application {
             @Override
             public void folderStatusChanged(Account account, String folderName,
                     int unreadMessageCount) {
-                updateUnreadWidget();
-            }
 
-            @Override
-            public void searchStats(final AccountStats stats) {
-                // let observers know a fetch occurred
-                K9.this.sendBroadcast(new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null));
+                updateUnreadWidget();
+
+                // let observers know a change occurred
+                Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folderName);
+                K9.this.sendBroadcast(intent);
+
             }
 
         });
@@ -582,26 +651,53 @@ public class K9 extends Application {
         notifyObservers();
     }
 
+    /**
+     * Loads the last known database version of the accounts' databases from a
+     * {@link SharedPreference}.
+     *
+     * <p>
+     * If the stored version matches {@link LocalStore#DB_VERSION} we know that the databases are
+     * up to date.<br>
+     * Using {@code SharedPreferences} should be a lot faster than opening all SQLite databases to
+     * get the current database version.
+     * </p><p>
+     * See {@link UpgradeDatabases} for a detailed explanation of the database upgrade process.
+     * </p>
+     *
+     * @see #areDatabasesUpToDate()
+     */
+    public void checkCachedDatabaseVersion() {
+        sDatabaseVersionCache = getSharedPreferences(DATABASE_VERSION_CACHE, MODE_PRIVATE);
+
+        int cachedVersion = sDatabaseVersionCache.getInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, 0);
+
+        if (cachedVersion >= LocalStore.DB_VERSION) {
+            K9.setDatabasesUpToDate(false);
+        }
+    }
+
     public static void loadPrefs(Preferences prefs) {
         SharedPreferences sprefs = prefs.getPreferences();
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
+        if (!DEBUG && Debug.isDebuggerConnected()) {
+            // If the debugger is attached, we're probably (surprise surprise) debugging something.
+            DEBUG = true;
+            Log.i(K9.LOG_TAG, "Debugger attached; enabling debug logging.");
+        }
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", false);
         mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
         mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
-        mManageBack = sprefs.getBoolean("manageBack", false);
         mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
-        mMessageListStars = sprefs.getBoolean("messageListStars", true);
+        mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
-        mMessageListTouchable = sprefs.getBoolean("messageListTouchable", false);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
-        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled", true);
 
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
         mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
@@ -609,11 +705,13 @@ public class K9 extends Application {
 
         mShowCorrespondentNames = sprefs.getBoolean("showCorrespondentNames", true);
         mShowContactName = sprefs.getBoolean("showContactName", false);
+        sShowContactPicture = sprefs.getBoolean("showContactPicture", true);
         mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
         mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
         mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
+        mWrapFolderNames = sprefs.getBoolean("wrapFolderNames", false);
 
         mBatchButtonsMarkRead = sprefs.getBoolean("batchButtonsMarkRead", true);
         mBatchButtonsDelete = sprefs.getBoolean("batchButtonsDelete", true);
@@ -627,7 +725,7 @@ public class K9 extends Application {
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
         mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
         mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
-        mConfirmMarkAllAsRead = sprefs.getBoolean("confirmMarkAllAsRead", true);
+        mConfirmDeleteFromNotification = sprefs.getBoolean("confirmDeleteFromNotification", true);
 
         try {
             String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
@@ -649,8 +747,19 @@ public class K9 extends Application {
             sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
         }
 
-        compactLayouts = sprefs.getBoolean("compactLayouts", false);
+        String notificationQuickDelete = sprefs.getString("notificationQuickDelete", null);
+        if (notificationQuickDelete != null) {
+            sNotificationQuickDelete = NotificationQuickDelete.valueOf(notificationQuickDelete);
+        }
+
+        String splitViewMode = sprefs.getString("splitViewMode", null);
+        if (splitViewMode != null) {
+            sSplitViewMode = SplitViewMode.valueOf(splitViewMode);
+        }
+
         mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
+        sUseBackgroundAsUnreadIndicator = sprefs.getBoolean("useBackgroundAsUnreadIndicator", true);
+        sThreadedViewEnabled = sprefs.getBoolean("threadedView", true);
         fontSizes.load(sprefs);
 
         try {
@@ -661,16 +770,20 @@ public class K9 extends Application {
 
         K9.setK9Language(sprefs.getString("language", ""));
 
-        int theme = sprefs.getInt("theme", THEME_LIGHT);
-
+        int themeValue = sprefs.getInt("theme", Theme.LIGHT.ordinal());
         // We used to save the resource ID of the theme. So convert that to the new format if
         // necessary.
-        if (theme == THEME_DARK || theme == android.R.style.Theme) {
-            theme = THEME_DARK;
+        if (themeValue == Theme.DARK.ordinal() || themeValue == android.R.style.Theme) {
+            K9.setK9Theme(Theme.DARK);
         } else {
-            theme = THEME_LIGHT;
+            K9.setK9Theme(Theme.LIGHT);
         }
-        K9.setK9Theme(theme);
+
+        themeValue = sprefs.getInt("messageViewTheme", Theme.USE_GLOBAL.ordinal());
+        K9.setK9MessageViewThemeSetting(Theme.values()[themeValue]);
+        themeValue = sprefs.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
+        K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
+        K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
     }
 
     private void maybeSetupStrictMode() {
@@ -729,20 +842,70 @@ public class K9 extends Application {
         language = nlanguage;
     }
 
-    public static int getK9ThemeResourceId(int theme) {
-        return (theme == THEME_LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
+    /**
+     * Possible values for the different theme settings.
+     *
+     * <p><strong>Important:</strong>
+     * Do not change the order of the items! The ordinal value (position) is used when saving the
+     * settings.</p>
+     */
+    public enum Theme {
+        LIGHT,
+        DARK,
+        USE_GLOBAL
+    }
+
+    public static int getK9ThemeResourceId(Theme themeId) {
+        return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
     }
 
     public static int getK9ThemeResourceId() {
         return getK9ThemeResourceId(theme);
     }
 
-    public static int getK9Theme() {
+    public static Theme getK9MessageViewTheme() {
+        return messageViewTheme == Theme.USE_GLOBAL ? theme : messageViewTheme;
+    }
+
+    public static Theme getK9MessageViewThemeSetting() {
+        return messageViewTheme;
+    }
+
+    public static Theme getK9ComposerTheme() {
+        return composerTheme == Theme.USE_GLOBAL ? theme : composerTheme;
+    }
+
+    public static Theme getK9ComposerThemeSetting() {
+        return composerTheme;
+    }
+
+    public static Theme getK9Theme() {
         return theme;
     }
 
-    public static void setK9Theme(int ntheme) {
-        theme = ntheme;
+    public static void setK9Theme(Theme ntheme) {
+        if (ntheme != Theme.USE_GLOBAL) {
+            theme = ntheme;
+        }
+    }
+
+    public static void setK9MessageViewThemeSetting(Theme nMessageViewTheme) {
+        messageViewTheme = nMessageViewTheme;
+    }
+
+    public static boolean useFixedMessageViewTheme() {
+        return useFixedMessageTheme;
+    }
+
+    public static void setK9ComposerThemeSetting(Theme compTheme) {
+        composerTheme = compTheme;
+    }
+
+    public static void setUseFixedMessageViewTheme(boolean useFixed) {
+        useFixedMessageTheme = useFixed;
+        if (!useFixedMessageTheme && messageViewTheme == Theme.USE_GLOBAL) {
+            messageViewTheme = theme;
+        }
     }
 
     public static BACKGROUND_OPS getBackgroundOps() {
@@ -782,23 +945,6 @@ public class K9 extends Application {
     public static void setUseVolumeKeysForListNavigation(boolean enabled) {
         mUseVolumeKeysForListNavigation = enabled;
     }
-
-    public static boolean manageBack() {
-        return mManageBack;
-    }
-
-    public static void setManageBack(boolean manageBack) {
-        mManageBack = manageBack;
-    }
-
-    public static boolean zoomControlsEnabled() {
-        return mZoomControlsEnabled;
-    }
-
-    public static void setZoomControlsEnabled(boolean zoomControlsEnabled) {
-        mZoomControlsEnabled = zoomControlsEnabled;
-    }
-
 
     public static boolean mobileOptimizedLayout() {
         return mMobileOptimizedLayout;
@@ -893,14 +1039,6 @@ public class K9 extends Application {
         mAnimations = animations;
     }
 
-    public static boolean messageListTouchable() {
-        return mMessageListTouchable;
-    }
-
-    public static void setMessageListTouchable(boolean touchy) {
-        mMessageListTouchable = touchy;
-    }
-
     public static int messageListPreviewLines() {
         return mMessageListPreviewLines;
     }
@@ -909,13 +1047,7 @@ public class K9 extends Application {
         mMessageListPreviewLines = lines;
     }
 
-    public static boolean messageListStars() {
-        return mMessageListStars;
-    }
 
-    public static void setMessageListStars(boolean stars) {
-        mMessageListStars = stars;
-    }
     public static boolean messageListCheckboxes() {
         return mMessageListCheckboxes;
     }
@@ -928,6 +1060,13 @@ public class K9 extends Application {
         return mShowCorrespondentNames;
     }
 
+     public static boolean messageListSenderAboveSubject() {
+         return mMessageListSenderAboveSubject;
+     }
+
+    public static void setMessageListSenderAboveSubject(boolean sender) {
+         mMessageListSenderAboveSubject = sender;
+    }
     public static void setShowCorrespondentNames(boolean showCorrespondentNames) {
         mShowCorrespondentNames = showCorrespondentNames;
     }
@@ -1057,12 +1196,12 @@ public class K9 extends Application {
         mConfirmSpam = confirm;
     }
 
-    public static boolean confirmMarkAllAsRead() {
-        return mConfirmMarkAllAsRead;
+    public static boolean confirmDeleteFromNotification() {
+        return mConfirmDeleteFromNotification;
     }
 
-    public static void setConfirmMarkAllAsRead(final boolean confirm) {
-        mConfirmMarkAllAsRead = confirm;
+    public static void setConfirmDeleteFromNotification(final boolean confirm) {
+        mConfirmDeleteFromNotification = confirm;
     }
 
     public static NotificationHideSubject getNotificationHideSubject() {
@@ -1073,12 +1212,12 @@ public class K9 extends Application {
         sNotificationHideSubject = mode;
     }
 
-    public static boolean useCompactLayouts() {
-        return compactLayouts;
+    public static NotificationQuickDelete getNotificationQuickDeleteBehaviour() {
+        return sNotificationQuickDelete;
     }
 
-    public static void setCompactLayouts(boolean compactLayouts) {
-        K9.compactLayouts = compactLayouts;
+    public static void setNotificationQuickDeleteBehaviour(final NotificationQuickDelete mode) {
+        sNotificationQuickDelete = mode;
     }
 
     public static boolean batchButtonsMarkRead() {
@@ -1142,6 +1281,13 @@ public class K9 extends Application {
         }
     }
 
+    public static boolean wrapFolderNames() {
+        return mWrapFolderNames;
+    }
+    public static void setWrapFolderNames(final boolean state) {
+        mWrapFolderNames = state;
+    }
+
     public static String getAttachmentDefaultPath() {
         return mAttachmentDefaultPath;
     }
@@ -1169,4 +1315,69 @@ public class K9 extends Application {
         mSortAscending.put(sortType, sortAscending);
     }
 
+    public static synchronized boolean useBackgroundAsUnreadIndicator() {
+        return sUseBackgroundAsUnreadIndicator;
+    }
+
+    public static synchronized void setUseBackgroundAsUnreadIndicator(boolean enabled) {
+        sUseBackgroundAsUnreadIndicator = enabled;
+    }
+
+    public static synchronized boolean isThreadedViewEnabled() {
+        return sThreadedViewEnabled;
+    }
+
+    public static synchronized void setThreadedViewEnabled(boolean enable) {
+        sThreadedViewEnabled = enable;
+    }
+
+    public static synchronized SplitViewMode getSplitViewMode() {
+        return sSplitViewMode;
+    }
+
+    public static synchronized void setSplitViewMode(SplitViewMode mode) {
+        sSplitViewMode = mode;
+    }
+
+    public static boolean showContactPicture() {
+        return sShowContactPicture;
+    }
+
+    public static void setShowContactPicture(boolean show) {
+        sShowContactPicture = show;
+    }
+
+    /**
+     * Check if we already know whether all databases are using the current database schema.
+     *
+     * <p>
+     * This method is only used for optimizations. If it returns {@code true} we can be certain that
+     * getting a {@link LocalStore} instance won't trigger a schema upgrade.
+     * </p>
+     *
+     * @return {@code true}, if we know that all databases are using the current database schema.
+     *         {@code false}, otherwise.
+     */
+    public static synchronized boolean areDatabasesUpToDate() {
+        return sDatabasesUpToDate;
+    }
+
+    /**
+     * Remember that all account databases are using the most recent database schema.
+     *
+     * @param save
+     *         Whether or not to write the current database version to the
+     *         {@code SharedPreferences} {@link #DATABASE_VERSION_CACHE}.
+     *
+     * @see #areDatabasesUpToDate()
+     */
+    public static synchronized void setDatabasesUpToDate(boolean save) {
+        sDatabasesUpToDate = true;
+
+        if (save) {
+            Editor editor = sDatabaseVersionCache.edit();
+            editor.putInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, LocalStore.DB_VERSION);
+            editor.commit();
+        }
+    }
 }

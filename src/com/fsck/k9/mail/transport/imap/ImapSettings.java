@@ -33,5 +33,4 @@ public interface ImapSettings {
     String getCombinedPrefix();
 
     void setCombinedPrefix(String prefix);
-
 }

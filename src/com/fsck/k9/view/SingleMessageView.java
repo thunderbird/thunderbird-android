@@ -11,8 +11,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -31,13 +33,14 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -107,7 +110,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private String mText;
 
 
-    public void initialize(Activity activity) {
+    public void initialize(Fragment fragment) {
+        Activity activity = fragment.getActivity();
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
         mMessageContentView.configure();
@@ -127,7 +131,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
         mCryptoView = (MessageCryptoView) findViewById(R.id.layout_decrypt);
-        mCryptoView.setActivity(activity);
+        mCryptoView.setFragment(fragment);
         mCryptoView.setupChildViews();
         mShowPicturesAction = findViewById(R.id.show_pictures);
         mShowMessageAction = findViewById(R.id.show_message);
@@ -138,7 +142,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
         mContacts = Contacts.getInstance(activity);
 
-        mInflater = activity.getLayoutInflater();
+        mInflater = ((MessageViewFragment) fragment).getFragmentLayoutInflater();
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);
         mAttachmentsContainer.setVisibility(View.GONE);
@@ -156,23 +160,15 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             mHeaderPlaceHolder.removeView(mHeaderContainer);
             // the HTC version of WebView tries to force the background of the
             // titlebar, which is really unfair.
-            mHeaderContainer.setBackgroundColor(((K9Activity)activity).getThemeBackgroundColor());
+            TypedValue outValue = new TypedValue();
+            getContext().getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+            mHeaderContainer.setBackgroundColor(outValue.data);
+            // also set background of the whole view (including the attachments view)
+            setBackgroundColor(outValue.data);
 
             mTitleBarHeaderContainer = new LinearLayout(activity);
+            mMessageContentView.setEmbeddedTitleBarCompat(mTitleBarHeaderContainer);
             mTitleBarHeaderContainer.addView(mHeaderContainer);
-            try {
-                mMessageContentView.wrapSetTitleBar(mTitleBarHeaderContainer);
-            } catch (Exception e) {
-                // If wrapSetTitleBar() fails we put the header back. This isn't a very good
-                // fall-back but better than not displaying the message header at all.
-
-                // FIXME: Get rid of the setEmbeddedTitleBar-method and come up with something that
-                //        feels just like it but doesn't use undocumented methods.
-
-                mTitleBarHeaderContainer.removeView(mHeaderContainer);
-                mHeaderPlaceHolder.addView(mHeaderContainer);
-                mTitleBarHeaderContainer = null;
-            }
         }
 
         mShowHiddenAttachments.setOnClickListener(this);
@@ -506,6 +502,15 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mShowAttachmentsAction.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    /**
+     * Fetch the message header view.  This is not the same as the message headers; this is the View shown at the top
+     * of messages.
+     * @return MessageHeader View.
+     */
+    public MessageHeader getMessageHeaderView() {
+        return mHeaderContainer;
+    }
+
     public void setHeaders(final Message message, Account account) {
         try {
             mHeaderContainer.populate(message, account);
@@ -545,11 +550,12 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         String text = null;
         if (pgpData != null) {
             text = pgpData.getDecryptedData();
+            if (text != null) {
+                text = HtmlConverter.textToHtml(text, true);
+            }
         }
-        if (text != null) {
-            text = "<html><body><pre>" + text + "</pre></body></html>";
-        } else {
-            // getTextForDisplay() always returns HTML-ified content.
+
+        if (text == null) {
             text = message.getTextForDisplay();
         }
 
@@ -625,7 +631,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             mAccessibleMessageContentView.loadDataWithBaseURL("http://", emailText, contentType, "utf-8", null);
         } else {
             mMessageContentView.setText(emailText, contentType);
-            mMessageContentView.scrollTo(0, 0);
         }
 
     }
@@ -799,7 +804,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         boolean hiddenAttachmentsVisible;
         boolean showPictures;
 
-        @SuppressWarnings("hiding")
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
             @Override

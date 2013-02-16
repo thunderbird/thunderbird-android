@@ -105,6 +105,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         finish();
                         return;
                     }
+
+                    final MessagingController ctrl = MessagingController.getInstance(getApplication());
+                    ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
+                            mAccount, mCheckIncoming, mCheckOutgoing);
+
                     if (mCheckIncoming) {
                         store = mAccount.getRemoteStore();
 

@@ -1,12 +1,16 @@
 package com.fsck.k9.activity;
 
 import android.content.Intent;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -40,7 +44,7 @@ public class ManageIdentities extends ChooseIdentity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.manage_identities_option, menu);
+        getSupportMenuInflater().inflate(R.menu.manage_identities_option, menu);
         return true;
     }
 
@@ -66,7 +70,7 @@ public class ManageIdentities extends ChooseIdentity {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
         switch (item.getItemId()) {
         case R.id.edit:

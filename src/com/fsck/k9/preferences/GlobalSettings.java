@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,9 +17,10 @@ import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
+import com.fsck.k9.K9.SplitViewMode;
+import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.preferences.Settings.*;
 
 public class GlobalSettings {
@@ -43,12 +43,10 @@ public class GlobalSettings {
                 new V(1, new DirectorySetting(Environment.getExternalStorageDirectory().toString()))
             ));
         s.put("backgroundOperations", Settings.versions(
-                new V(1, new EnumSetting(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED))
+                new V(1, new EnumSetting<K9.BACKGROUND_OPS>(
+                        K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED))
             ));
         s.put("changeRegisteredNameColor", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
-        s.put("compactLayouts", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
         s.put("confirmDelete", Settings.versions(
@@ -57,17 +55,11 @@ public class GlobalSettings {
         s.put("confirmDeleteStarred", Settings.versions(
                 new V(2, new BooleanSetting(false))
             ));
-        s.put("confirmMarkAllAsRead", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("confirmSpam", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
         s.put("countSearchMessages", Settings.versions(
                 new V(1, new BooleanSetting(false))
-            ));
-        s.put("dateFormat", Settings.versions(
-                new V(1, new DateFormatSetting(DateFormatter.DEFAULT_FORMAT))
             ));
         s.put("enableDebugLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -76,55 +68,55 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("fontSizeAccountDescription", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeAccountName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.MEDIUM))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeFolderName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.LARGE))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeFolderStatus", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageComposeInput", Settings.versions(
-                new V(5, new FontSizeSetting(FontSizes.MEDIUM))
+                new V(5, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListDate", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListPreview", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListSender", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_16SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewAdditionalHeaders", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewCC", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewContent", Settings.versions(
                 new V(1, new WebFontSizeSetting(3))
             ));
         s.put("fontSizeMessageViewDate", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_10SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewSender", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewTime", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_10SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewTo", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("gesturesEnabled", Settings.versions(
                 new V(1, new BooleanSetting(true)),
@@ -140,9 +132,6 @@ public class GlobalSettings {
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
             ));
-        s.put("manageBack", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("measureAccounts", Settings.versions(
                 new V(1, new BooleanSetting(true))
             ));
@@ -151,12 +140,6 @@ public class GlobalSettings {
             ));
         s.put("messageListPreviewLines", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 100, 2))
-            ));
-        s.put("messageListStars", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
-        s.put("messageListTouchable", Settings.versions(
-                new V(1, new BooleanSetting(false))
             ));
         s.put("messageViewFixedWidthFont", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -189,7 +172,7 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(true))
             ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(10, new EnumSetting(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(10, new EnumSetting<SortType>(SortType.class, Account.DEFAULT_SORT_TYPE))
             ));
         s.put("sortAscending", Settings.versions(
                 new V(10, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
@@ -198,7 +181,11 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("theme", Settings.versions(
-                new V(1, new ThemeSetting(K9.THEME_LIGHT))
+                new V(1, new ThemeSetting(K9.Theme.LIGHT))
+            ));
+        s.put("messageViewTheme", Settings.versions(
+                new V(16, new ThemeSetting(K9.Theme.LIGHT)),
+                new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
             ));
         s.put("useGalleryBugWorkaround", Settings.versions(
                 new V(1, new GalleryBugWorkaroundSetting())
@@ -209,9 +196,8 @@ public class GlobalSettings {
         s.put("useVolumeKeysForNavigation", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-        s.put("zoomControlsEnabled", Settings.versions(
-                new V(1, new BooleanSetting(false)),
-                new V(4, new BooleanSetting(true))
+        s.put("wrapFolderNames", Settings.versions(
+                new V(22, new BooleanSetting(false))
             ));
         s.put("batchButtonsMarkRead", Settings.versions(
                 new V(8, new BooleanSetting(true))
@@ -232,14 +218,33 @@ public class GlobalSettings {
                 new V(8, new BooleanSetting(true))
             ));
         s.put("notificationHideSubject", Settings.versions(
-                new V(12, new EnumSetting(NotificationHideSubject.class,
-                        NotificationHideSubject.NEVER))
+                new V(12, new EnumSetting<NotificationHideSubject>(
+                        NotificationHideSubject.class, NotificationHideSubject.NEVER))
+            ));
+        s.put("useBackgroundAsUnreadIndicator", Settings.versions(
+                new V(19, new BooleanSetting(true))
+            ));
+        s.put("threadedView", Settings.versions(
+                new V(20, new BooleanSetting(true))
+            ));
+        s.put("splitViewMode", Settings.versions(
+                new V(23, new EnumSetting<SplitViewMode>(SplitViewMode.class, SplitViewMode.NEVER))
+            ));
+        s.put("messageComposeTheme", Settings.versions(
+                new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
+            ));
+        s.put("fixedMessageViewTheme", Settings.versions(
+                new V(24, new BooleanSetting(true))
+            ));
+        s.put("showContactPicture", Settings.versions(
+                new V(25, new BooleanSetting(true))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
         u.put(12, new SettingsUpgraderV12());
+        u.put(24, new SettingsUpgraderV24());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -285,6 +290,28 @@ public class GlobalSettings {
                 settings.put("notificationHideSubject", NotificationHideSubject.NEVER);
             }
             return new HashSet<String>(Arrays.asList("keyguardPrivacy"));
+        }
+    }
+
+    /**
+     * Upgrades the settings from version 23 to 24.
+     *
+     * <p>
+     * Set <em>messageViewTheme</em> to {@link K9.Theme#USE_GLOBAL} if <em>messageViewTheme</em> has
+     * the same value as <em>theme</em>.
+     * </p>
+     */
+    public static class SettingsUpgraderV24 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            K9.Theme messageViewTheme = (K9.Theme) settings.get("messageViewTheme");
+            K9.Theme theme = (K9.Theme) settings.get("theme");
+            if (theme != null && messageViewTheme != null && theme == messageViewTheme) {
+                settings.put("messageViewTheme", K9.Theme.USE_GLOBAL);
+            }
+
+            return null;
         }
     }
 
@@ -357,7 +384,7 @@ public class GlobalSettings {
         private static final String THEME_LIGHT = "light";
         private static final String THEME_DARK = "dark";
 
-        public ThemeSetting(int defaultValue) {
+        public ThemeSetting(K9.Theme defaultValue) {
             super(defaultValue);
         }
 
@@ -365,14 +392,14 @@ public class GlobalSettings {
         public Object fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer theme = Integer.parseInt(value);
-                if (theme == K9.THEME_LIGHT ||
+                if (theme == K9.Theme.LIGHT.ordinal() ||
                         // We used to store the resource ID of the theme in the preference storage,
                         // but don't use the database upgrade mechanism to update the values. So
                         // we have to deal with the old format here.
                         theme == android.R.style.Theme_Light) {
-                    return K9.THEME_LIGHT;
-                } else if (theme == K9.THEME_DARK || theme == android.R.style.Theme) {
-                    return K9.THEME_DARK;
+                    return K9.Theme.LIGHT;
+                } else if (theme == K9.Theme.DARK.ordinal() || theme == android.R.style.Theme) {
+                    return K9.Theme.DARK;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }
 
@@ -382,9 +409,9 @@ public class GlobalSettings {
         @Override
         public Object fromPrettyString(String value) throws InvalidSettingValueException {
             if (THEME_LIGHT.equals(value)) {
-                return K9.THEME_LIGHT;
+                return K9.Theme.LIGHT;
             } else if (THEME_DARK.equals(value)) {
-                return K9.THEME_DARK;
+                return K9.Theme.DARK;
             }
 
             throw new InvalidSettingValueException();
@@ -392,33 +419,62 @@ public class GlobalSettings {
 
         @Override
         public String toPrettyString(Object value) {
-            return (((Integer)value).intValue() == K9.THEME_LIGHT) ? THEME_LIGHT : THEME_DARK;
+            switch ((K9.Theme) value) {
+                case DARK: {
+                    return THEME_DARK;
+                }
+                default: {
+                    return THEME_LIGHT;
+                }
+            }
+        }
+
+        @Override
+        public String toString(Object value) {
+            return Integer.toString(((K9.Theme) value).ordinal());
         }
     }
 
     /**
-     * A date format setting.
+     * The message view theme setting.
      */
-    public static class DateFormatSetting extends SettingsDescription {
-        public DateFormatSetting(String defaultValue) {
+    public static class SubThemeSetting extends ThemeSetting {
+        private static final String THEME_USE_GLOBAL = "use_global";
+
+        public SubThemeSetting(Theme defaultValue) {
             super(defaultValue);
         }
 
         @Override
         public Object fromString(String value) throws InvalidSettingValueException {
             try {
-                // The placeholders "SHORT" and "MEDIUM" are fine.
-                if (DateFormatter.SHORT_FORMAT.equals(value) ||
-                        DateFormatter.MEDIUM_FORMAT.equals(value)) {
-                    return value;
+                Integer theme = Integer.parseInt(value);
+                if (theme == K9.Theme.USE_GLOBAL.ordinal()) {
+                    return K9.Theme.USE_GLOBAL;
                 }
 
-                // If the SimpleDateFormat constructor doesn't throw an exception, we're good.
-                new SimpleDateFormat(value);
-                return value;
-            } catch (Exception e) {
+                return super.fromString(value);
+            } catch (NumberFormatException e) {
                 throw new InvalidSettingValueException();
             }
+        }
+
+        @Override
+        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+            if (THEME_USE_GLOBAL.equals(value)) {
+                return K9.Theme.USE_GLOBAL;
+            }
+
+            return super.fromPrettyString(value);
+        }
+
+        @Override
+        public String toPrettyString(Object value) {
+            if (((K9.Theme) value) == K9.Theme.USE_GLOBAL) {
+                return THEME_USE_GLOBAL;
+            }
+
+            return super.toPrettyString(value);
         }
     }
 

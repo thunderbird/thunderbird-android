@@ -8,6 +8,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.widget.EditText;
 
@@ -98,6 +99,38 @@ public class FileBrowserHelper {
         if (listIndex == PICK_DIRECTORY_INTENTS.length) {
             //No Filebrowser is installed => show a fallback textdialog
             showPathTextInput(c, startPath, callback);
+            success = false;
+        }
+
+        return success;
+    }
+
+    public boolean showFileBrowserActivity(Fragment c, File startPath, int requestcode, FileBrowserFailOverCallback callback) {
+        boolean success = false;
+
+        if (startPath == null) {
+            startPath = new File(K9.getAttachmentDefaultPath());
+        }
+
+        int listIndex = 0;
+        do {
+            String intentAction = PICK_DIRECTORY_INTENTS[listIndex][0];
+            String uriPrefix = PICK_DIRECTORY_INTENTS[listIndex][1];
+            Intent intent = new Intent(intentAction);
+            intent.setData(Uri.parse(uriPrefix + startPath.getPath()));
+
+            try {
+                c.startActivityForResult(intent, requestcode);
+                success = true;
+            } catch (ActivityNotFoundException e) {
+                // Try the next intent in the list
+                listIndex++;
+            }
+        } while (!success && (listIndex < PICK_DIRECTORY_INTENTS.length));
+
+        if (listIndex == PICK_DIRECTORY_INTENTS.length) {
+            //No Filebrowser is installed => show a fallback textdialog
+            showPathTextInput(c.getActivity(), startPath, callback);
             success = false;
         }
 

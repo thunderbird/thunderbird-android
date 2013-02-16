@@ -22,34 +22,47 @@
 
 
     <!-- Welcome message -->
-    <string name="accounts_welcome">
-Καλώς ήλθατε στο K-9 Mail. Το K-9 είναι ένας πελάτης ηλεκτρονικού ταχυδρομείου ανοικτού κώδικα  για το Android που αρχικά βασίστηκε στον βασικό email client του Android.
-\n\n
-\nΤα βελτιωμένα χαρακτηριστικά του K-9 είναι:
-\n * Ταχυδρομείο με σπρώξιμο (push mail) με χρήση IMAP IDLE
-\n * Καλύτερες επιδόσεις
-\n * Μετακίνηση μηνυμάτων σε φακέλους
-\n * Υπογραφές μηνυμάτων
-\n * Ιδιωτική κοινοποίηση (bcc) προς τον εαυτό
-\n * Συνδρομές σε φακέλους
-\n * Συγχρονισμός όλων των φακέλων
-\n * Παραμετροποίηση διεύθυνσης επιστροφής
-\n * Συντομεύσεις πληκτρολογίου
-\n * Καλύτερη υποστήριξη IMAP
-\n * Αποθήκευση συνημμένων σε κάρτα αποθήκευσης
-\n * Άδειασμα σκουπιδιών
-\n * Ταξινόμηση μηνυμάτων
-\n * … και άλλα
-\n
-\nΤο K-9 δεν υποστηρίζει τους περισσότερους δωρεάν λογαριασμούς Hotmail και, όπως οι περισσότεροι email clients έχει θεματάκια όταν μιλάει με το Microsoft Exchange.
-\n
-\nΑναφέρετε προβλήματα, προτείνετε νέα χαρακτηριστικά και υποβάλετε ερωτήματα στο
-http://k9mail.googlecode.com/
-    </string>
+    <string name="welcome_message_title">Καλώς ήλθατε στο K-9 Mail</string>
+    <string name="accounts_welcome"><![CDATA[
+<p>
+Το K-9 είναι ένας πελάτης ηλεκτρονικού ταχυδρομείου ανοικτού κώδικα  για το Android που αρχικά βασίστηκε στον βασικό email client του Android.
+</p><p>
+Τα βελτιωμένα χαρακτηριστικά του K-9 είναι:
+</p>
+<ul>
+  <li>Ταχυδρομείο με προώθηση (push mail) με χρήση IMAP IDLE</li>
+  <li>Καλύτερες επιδόσεις</li>
+  <li>Μετακίνηση μηνυμάτων σε φακέλους</li>
+  <li>Υπογραφές μηνυμάτων</li>
+  <li>Ιδιωτική κοινοποίηση (bcc) προς τον εαυτό</li>
+  <li>Συνδρομές σε φακέλους</li>
+  <li>Συγχρονισμός όλων των φακέλων</li>
+  <li>Παραμετροποίηση διεύθυνσης επιστροφής</li>
+  <li>Συντομεύσεις πληκτρολογίου</li>
+  <li>Καλύτερη υποστήριξη IMAP</li>
+  <li>Αποθήκευση συνημμένων σε κάρτα αποθήκευσης</li>
+  <li>Άδειασμα σκουπιδιών</li>
+  <li>Ταξινόμηση μηνυμάτων</li>
+  <li>… και άλλα</li>
+</ul>
+<p>
+Το K-9 δεν υποστηρίζει τους περισσότερους δωρεάν λογαριασμούς Hotmail και, όπως οι περισσότεροι email clients έχει θεματάκια όταν μιλάει με το Microsoft Exchange.
+</p><p>
+Αναφέρετε προβλήματα, προτείνετε νέα χαρακτηριστικά και υποβάλετε ερωτήματα στο
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->
     <string name="default_signature">-- \nΑποστολή με K-9 Mail από το Android κινητό μου. Συγχωρήστε τη συντομία.</string>
+
+
+    <!-- General strings that include the app name -->
+    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
+    <string name="account_clear_dlg_instructions_fmt">Όλα τα μηνύματα του λογαριασμού \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
+    <string name="insufficient_apg_permissions">Το K-9 Mail δεν έχει δικαίωμα να προσπελαύνει πλήρως το APG. Επαναλάβετε την εγκατάσταση του K-9 Mail για να το διορθώσετε.</string>
 
 
 
@@ -76,25 +89,29 @@ http://k9mail.googlecode.com/
 
     <string name="about_title_fmt">Περί του <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Λογαριασμοί</string>
+    <string name="folders_title">Φάκελοι</string>
     <string name="advanced">Προχωρημένα</string>
-    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
-    <string name="compose_title">Σύνθεση</string>
+    <string name="compose_title_compose">Σύνθεση</string>
+    <string name="compose_title_reply">Απάντηση</string>
+    <string name="compose_title_reply_all">Απάντηση σε όλους</string>
+    <string name="compose_title_forward">Προώθηση</string>
+
     <string name="choose_folder_title">Επιλογή φακέλου</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
     <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
-    <string name="status_loading_account_folder">\u0020(Έλεγχος <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_loading_account_folder_headers">\u0020(Ανάγνωση επικεφαλίδων <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_sending_account">\u0020(Αποστολή <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
-    <string name="status_processing_account">\u0020(Επεξεργασία <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_account_folder">Έλεγχος <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading_account_folder_headers">Ανάγνωση επικεφαλίδων <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_sending_account">Αποστολή <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_processing_account">Επεξεργασία <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">\u0020(Επόμενος έλεγχος στις <xliff:g id="nexttime">%s</xliff:g>)</string>
-    <string name="status_syncing_off">\u0020(Συγχρονισμός απενεργοποιημένος)</string>
+    <string name="status_next_poll">Επόμενος έλεγχος στις <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_syncing_off">Συγχρονισμός απενεργοποιημένος</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Επόμενο</string> <!-- Used as part of a multi-step process -->
@@ -103,56 +120,45 @@ http://k9mail.googlecode.com/
     <string name="cancel_action">Άκυρο</string>
     <string name="send_action">Αποστολή</string>
     <string name="send_again_action">Αποστολή πάλι</string>
-    <string name="select_action">Επιλογή</string>
-    <string name="deselect_action">Απο-επιλογή</string>
     <string name="reply_action">Απάντηση</string>
     <string name="reply_all_action">Απάντηση σε όλους</string>
     <string name="delete_action">Διαγραφή</string>
     <string name="archive_action">Αρχειοθέτηση</string>
     <string name="spam_action">Σκουπιδοταχυδρομείο</string>
-    <string name="delete_all_action">Καθαρισμός φακέλου</string>
-    <string name="forward_action">Μπροστά</string>
+    <string name="forward_action">Προώθηση</string>
     <string name="move_action">Μετακίνηση</string>
+    <string name="single_message_options_action">Επιλογές μηνύματος</string>
     <string name="continue_action">Συνέχεια</string>
     <string name="back_action">Πίσω</string>
     <string name="done_action">Συμπληρώθηκε</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Απόρριψη</string>
     <string name="save_draft_action">Αποθήκευση στα Πρόχειρα</string>
-    <string name="retry_action">Επανάληψη</string>
-    <string name="refresh_action">Ανανέωση</string>
     <string name="check_mail_action">Έλεγχος email</string>
     <string name="send_messages_action">Αποστολή μηνυμάτων</string>
-    <string name="list_folders_action">Λίστα φακέλων</string>
     <string name="refresh_folders_action">Ανανέωση φακέλων</string>
     <string name="filter_folders_action">Εύρεση φακέλου</string>
-    <string name="mark_all_as_read_action">Σήμανση όλων των μηνυμάτων ως αναγνωσμένων</string>
     <string name="add_account_action">Προσθήκη λογαριασμού</string>
     <string name="compose_action">Δημιουργία νέου</string>
     <string name="search_action">Αναζήτηση</string>
     <string name="search_results">Αποτελέσματα αναζήτησης</string>
     <string name="preferences_action">Ρυθμίσεις</string>
-    <string name="open_action">Άνοιγμα</string>
     <string name="account_settings_action">Ρυθμίσεις λογαριασμού</string>
     <string name="folder_settings_action">Ρυθμίσεις φακέλου</string>
     <string name="global_settings_action">Γενικές ρυθμίσεις</string>
     <string name="remove_account_action">Διαγραφή λογαριασμού</string>
-    <string name="clear_pending_action">Καθαρισμός εκκρεμών ενεργειών (κίνδυνος!)</string>
+    <string name="clear_pending_action">Καθαρισμός εκκρεμών ενεργειών (Προσοχή!)</string>
 
-    <string name="accounts_action">Λογαριασμοί</string>
     <string name="mark_as_read_action">Σήμανση ως αναγνωσμένου</string>
     <string name="send_alternate_action">Διανομή</string>
     <string name="send_alternate_chooser_title">Επιλογή αποστολέα</string>
 
-    <string name="mark_all_as_read_dlg_title">Σήμανση όλων των μηνυμάτων ως αναγνωσμένων</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Να σημανθούν όλα τα μηνύματα στο \'<xliff:g id="folder">%s</xliff:g>\' ως αναγνωσμένα; (θα συμπεριληφθούν
-    τα μηνύματα στο φάκελο που δεν προβάλονται στο K-9)</string>
-
     <string name="flag_action">Προσθήκη αστεριού</string>
     <string name="unflag_action">Αφαίρεση αστεριού</string>
     <string name="copy_action">Αντιγραφή</string>
-    <string name="show_full_header_action">Προβολή πλήρους επικεφαλίδας</string>
-    <string name="hide_full_header_action">Απόκρυψη πλήρους επικεφαλίδας</string>
     <string name="select_text_action">Επιλογή κειμένου</string>
+
+    <string name="message_view_theme_action_dark">Εφαρμογή σκούρας εμφάνισης</string>
+    <string name="message_view_theme_action_light">Εφαρμογή φωτεινής εμφάνισης</string>
 
     <string name="mark_as_unread_action">Σήμανση ως μη αναγνωσμένο</string>
     <string name="add_cc_bcc_action">Προσθήκη κοινοποίησης/Ιδιωτικής κοινοποίησης</string>
@@ -160,8 +166,8 @@ http://k9mail.googlecode.com/
     <string name="read_receipt_enabled">Θα ζητηθεί απόδειξη ανάγνωσης</string>
     <string name="read_receipt_disabled">Δεν θα ζητηθεί απόδειξη ανάγνωσης</string>
     <string name="add_attachment_action">Προσθήκη συνημμένου</string>
-    <string name="add_attachment_action_image">Προσθήκη συνημμένου (εικόνα)</string>
-    <string name="add_attachment_action_video">Προσθήκη συνημμένου (βίντεο)</string>
+    <string name="add_attachment_action_image">Προσθήκη συνημμένης εικόνας</string>
+    <string name="add_attachment_action_video">Προσθήκη συνημμένου βίντεο</string>
     <string name="empty_trash_action">Άδειασμα σκουπιδιών</string>
     <string name="expunge_action">Εξάλειψη</string>
     <string name="clear_local_folder_action">Καθαρισμός τοπικών μηνυμάτων</string>
@@ -171,7 +177,6 @@ http://k9mail.googlecode.com/
     <string name="accounts_context_menu_title">Επιλογές λογαριασμού</string>
 
     <string name="general_no_subject">(Χωρίς θέμα)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_date">Χωρίς ημερομηνία</string>
     <string name="general_no_sender">Χωρίς αποστολέα</string>
     <string name="status_loading">Ενημέρωση</string>
     <string name="status_loading_more">Φόρτωση μηνυμάτων\u2026</string>
@@ -238,7 +243,7 @@ http://k9mail.googlecode.com/
     <string name="message_compose_bcc_hint">Ιδ κοιν</string>
     <string name="message_compose_subject_hint">Θέμα</string>
     <string name="message_compose_content_hint">Κείμενο μηνύματος</string>
-    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
+    <string name="message_compose_signature_hint">Υπογραφή</string>
     <string name="message_compose_quote_header_separator">-------- Πρωτότυπο μήνυμα --------</string>
     <string name="message_compose_quote_header_subject">Θέμα:</string>
     <string name="message_compose_quote_header_send_date">Αποστολή:</string>
@@ -250,22 +255,17 @@ http://k9mail.googlecode.com/
     <string name="error_contact_address_not_found">Δεν βρέθηκαν διευθύνσεις ηλεκτρονικού ταχυδρομείου.</string>
     <string name="message_compose_attachments_skipped_toast">Μερικά συνημμένα δεν μπορούν να προωθηθούν γιατί δεν έχουν κατεβεί.</string>
     <string name="message_compose_show_quoted_text_action">Παράθεση μηνύματος</string>
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <string name="message_compose_description_add_to">Προσθήκη παραλήπτη (Προς)</string>
+    <string name="message_compose_description_add_cc">Προσθήκη παραλήπτη (Συν.)</string>
+    <string name="message_compose_description_add_bcc">Προσθήκη παραλήπτη (Ιδ. συν.)</string>
+    <string name="message_compose_description_delete_quoted_text">Αφαίρεση κειμένου προηγ. μηνύματος</string>
+    <string name="message_compose_description_edit_quoted_text">Αλλαγή κειμένου προηγ. μηνύματος</string>
 
     <string name="message_view_from_format">Από: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Προς:</string>
     <string name="message_view_cc_label">Κοιν:</string>
     <string name="message_view_attachment_view_action">Άνοιγμα</string>
     <string name="message_view_attachment_download_action">Αποθήκευση</string>
-    <string name="message_view_prev_action">\u25BC</string>
-    <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_archive_action">Αρχειοθέτηση</string>
-    <string name="message_view_move_action">Μετακίνηση</string>
-    <string name="message_view_spam_action">Σκουπίδια</string>
     <string name="message_view_status_attachment_saved">Συνημμένο αποθηκεύτηκε στην κάρτα αποθήκευσης ως <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Αδύνατο να αποθηκευτεί το συνημμένο στην κάρτα αποθήκευσης.</string>
     <string name="message_view_show_pictures_action">Προβολή εικόνων</string>
@@ -275,77 +275,72 @@ http://k9mail.googlecode.com/
     <string name="message_view_fetching_attachment_toast">Ανάσυρση συνημμένου</string>
     <string name="message_view_no_viewer">Δεν υπάρχει πρόγραμμα προβολής για <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Κατέβασμα πλήρους μηνύματος</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Κατεβαίνει…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Δεν έχουν κατεβεί ή αποθηκευτεί όλες οι επικεφαλίδες. Επιλέξτε \'Αποθήκευση όλων των επικεφαλίδων τοπικά\' στις ρυθμίσεις εξυπηρέτη εισερχόμενων του λογαριασμού για να το ενεργοποιήσετε στο μέλλον.</string>
     <string name="message_no_additional_headers_available">Όλες οι επικεφαλίδες έχουν κατεβεί, αλλά δεν υπάρχουν πρόσθετες επικεφαλίδες για να προβληθούν.</string>
     <string name="message_additional_headers_retrieval_failed">Η ανάσυρση πρόσθετων επικεφαλίδων από τη βάση δεδομένων ή τον εξυπηρέτη ταχυδρομείου απέτυχε.</string>
 
-    <string name="folder_push_active_symbol">(Σπρώξιμο)</string>
-
-    <string name="from_same_sender">Περισσότερα από αυτόν τον αποστολέα</string>
+    <string name="from_same_sender">Από τον ίδιο αποστολέα</string>
 
     <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε</string>
     <string name="message_saved_toast">Το μήνυμα αποθηκεύτηκε στα πρόχειρα</string>
 
-    <string name="global_settings_flag_label">Προβολή αστεριών</string>
-    <string name="global_settings_flag_summary">Τα αστέρια υποδηλώνουν σημαντικά μηνύματα</string>
     <string name="global_settings_checkbox_label">Κουτιά πολλαπλής επιλογής</string>
     <string name="global_settings_checkbox_summary">Προβολή κουτιών επιλογής πάντοτε</string>
-    <string name="global_settings_touchable_label">Προεπισκόπηση μηνυμάτων</string>
-    <string name="global_settings_touchable_summary">Ευρύχωρες λίστες με προεπισκόπηση μηνύματος</string>
-    <string name="global_settings_preview_lines_label">Προεπισκόπηση γραμμώνν</string>
+    <string name="global_settings_preview_lines_label">Προεπισκ. μηνυμάτων</string>
     <string name="global_settings_show_correspondent_names_label">Προβολή ονόματος επιστολογράφων</string>
     <string name="global_settings_show_correspondent_names_summary">Προβολή ονόματος επιστολογράφων παρά των διευθύνσεων ηλεκτρονικού ταχυδρομείου</string>
-    <string name="global_settings_show_contact_name_label">Προβολή ονόματος από επαφές</string>
+
+    <string name="global_settings_sender_above_subject_label">Αποστολέας πάνω από το θέμα</string>
+    <string name="global_settings_sender_above_subject_summary">Προβολή επιστολογράφων πάνω από τη γραμμή του θέματος και όχι από κάτω</string>
+
+    <string name="global_settings_show_contact_name_label">Προβ. ονομάτων επαφών</string>
     <string name="global_settings_show_contact_name_summary">Όνομα επιστολογράφων από Επαφές όταν είναι διαθέσιμο</string>
-    <string name="global_settings_registered_name_color_label">Χρωματισμός επαφών</string>
+    <string name="global_settings_registered_name_color_label">Χρωματισμός Επαφών</string>
     <string name="global_settings_registered_name_color_default">Να μην χρωματίζονται τα ονόματα στη λίστα επαφών</string>
     <string name="global_settings_registered_name_color_changed">Να χρωματίζονται τα ονόματα στη λίστα επαφών</string>
 
-    <string name="global_settings_messageview_fixedwidth_label">Γραμματοσειρά σταθερού πλάτους</string>
+    <string name="global_settings_messageview_fixedwidth_label">Γράμματα σταθερού πλάτους</string>
     <string name="global_settings_messageview_fixedwidth_summary">Να χρησιμοποιείται γραμματοσειρά σταθερού πλάτους όταν προβάλλονται μηνύματα απλού κειμένου</string>
-    <string name="global_settings_messageview_return_to_list_label">Επιστροφή στη λίστα μετά τη διαγραφή</string>
-    <string name="global_settings_messageview_return_to_list_summary">Επιστροφή στη λίστα μηνυμάτων μετά τη διαγραφή</string>
-    <string name="global_settings_messageview_show_next_label">Προβολή επόμενου μηνύματος μετά τη διαγραφή</string>
-    <string name="global_settings_messageview_show_next_summary">Προβολή επόμενου μηνύματος μετά τη διαγραφή</string>
+    <string name="global_settings_messageview_return_to_list_label">Επιστροφή στη λίστα</string>
+    <string name="global_settings_messageview_return_to_list_summary">Επιστροφή στη λίστα μηνυμάτων μετά τη διαγραφή ενός μηνύματος</string>
+    <string name="global_settings_messageview_show_next_label">Προβολή επόμενου μηνύματος</string>
+    <string name="global_settings_messageview_show_next_summary">Προβολή επόμενου μηνύματος μετά τη διαγραφή ενός μηνύματος</string>
 
     <string name="global_settings_confirm_actions_title">Επιβεβαίωση ενεργειών</string>
     <string name="global_settings_confirm_actions_summary">Προβολή διαλόγου όποτε εκτελούνται επιλεγμένες ενέργειες</string>
-    <string name="global_settings_confirm_action_archive">Αρχειοθέτηση</string>
     <string name="global_settings_confirm_action_delete">Διαγραφή (προβολή μηνύματος μόνον)</string>
     <string name="global_settings_confirm_action_delete_starred">Διαγραφή με αστέρι (προβολή μηνύματος μόνον)</string>
     <string name="global_settings_confirm_action_spam">Σκουπίδια</string>
-    <string name="global_settings_confirm_action_mark_all_as_read">Σήμανση ως αναγνωσμέων</string>
-    <string name="global_settings_confirm_action_send">Αποστολή</string>
 
-    <string name="global_settings_privacy_mode_title">Ειδοποιήσεων κλειδώματος οθόνης</string>
-    <string name="global_settings_privacy_mode_summary">Μην προβάλεις το θέμα του μηνύματος στη γραμμή ειδοποιήσεων όταν το σύστημα είνια κλειδωμένο</string>
+    <string name="global_settings_notification_hide_subject_title">Απόκρυψη θέματος στις ειδοποιήσεις</string>
+    <string name="global_settings_notification_hide_subject_never">Ποτέ</string>
+    <string name="global_settings_notification_hide_subject_when_locked">Όταν το τηλέφωνο είναι κλειδωμένο</string>
+    <string name="global_settings_notification_hide_subject_always">Πάντοτε</string>
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_batch_buttons">Πλήκτρα ομάδας μηνυμάτων</string>
+    <string name="global_settings_batch_buttons_summary">Προσαρμογή πλήκτρων ομάδας μηνυμάτων</string>
+    <string name="global_settings_mark_read">Αναγνωσμένο/Μη αναγν.</string>
+    <string name="global_settings_delete">Διαγραφή</string>
+    <string name="global_settings_archive">Αρχειοθέτηση</string>
+    <string name="global_settings_archive_disabled_reason">Χωρίς φάκελο αρχειοθέτησης</string>
+    <string name="global_settings_move">Μετακίνηση</string>
+    <string name="global_settings_flag">Σημαία</string>
+    <string name="global_settings_unselect">Απο-επιλογή</string>
 
     <string name="quiet_time">Ώρες ησυχίας</string>
-    <string name="quiet_time_description">Απενεργοποιεί κουδούνισμα, και αναβοσβήσιμο τη νύχτα</string>
+    <string name="quiet_time_description">Απενεργοποιεί κουδούνισμα και αναβοσβήσιμο τη νύχτα</string>
     <string name="quiet_time_starts">Έναρξη ωρών ησυχίας</string>
     <string name="quiet_time_ends">Λήξη ωρών ησυχίας</string>
 
     <string name="account_setup_basics_title">Ρύθμιση νέου λογαριασμού</string>
-    <string name="account_setup_basics_instructions">Email του λογαριασμού:</string>
     <string name="account_setup_basics_email_hint">Διεύθυνση email</string>
     <string name="account_setup_basics_password_hint">Συνθηματικό</string>
-    <string name="account_setup_basics_default_label">Αποστολή email από αυτό το λογαριασμό εξ ορισμού</string>
     <string name="account_setup_basics_manual_setup_action">Χειροκίνητη ρύθμιση</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title">Έλεγχος ρυθμίσεων</string>
     <string name="account_setup_check_settings_retr_info_msg">Ανάκτηση πληροφοριών λογαριασμού\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Έλεγχος ρυθμίσεων εισερχόμενης αλληλογραφίας\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Έλεγχος ρυθμίσεων εξερχόμενης αλληλογραφίας\u2026</string>
@@ -354,7 +349,6 @@ http://k9mail.googlecode.com/
     <string name="account_setup_check_settings_canceling_msg">Ακύρωση\u2026</string>
 
     <string name="account_setup_names_title">Σχεδόν έτοιμο!</string>
-    <string name="account_setup_names_instructions">Ο λογαριασμός ρυθμίστηκε και τα μηνύματα έρχονται!</string>
     <string name="account_setup_names_account_name_label">Ονομασία λογαριασμού (Προαιρετικό):</string>
     <string name="account_setup_names_user_name_label">Όνομα αποστολέα (προβάλλεται στα εξερχόμενα μηνύματα):</string>
 
@@ -389,12 +383,9 @@ http://k9mail.googlecode.com/
     <string name="account_setup_incoming_wifi_label">Ασύρματης Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Άλλο</string>
 
-    <string name="account_setup_incoming_save_all_headers_title">Ανάκτηση επικεφαλίδων</string>
-    <string name="account_setup_incoming_save_all_headers_label">Αποθήκευση επικεφαλίδων τοπικά</string>
-
     <string name="local_storage_provider_external_label">Εξωτερική αποθήκευση (SD card)</string>
     <string name="local_storage_provider_internal_label">Κανονική εσωτερική αποθήκευση</string>
-    <string name="local_storage_provider_samsunggalaxy_label">%1$ πρόσθετη εσωτερική αποθήκευση</string>
+    <string name="local_storage_provider_samsunggalaxy_label">%1$s πρόσθετη εσωτερική αποθήκευση</string>
     <string name="local_storage_provider_label">Θέση αποθήκευσης</string>
 
     <string name="account_setup_expunge_policy_label">Εξάλειψη διαγραμμένων μηνυμάτων</string>
@@ -426,21 +417,10 @@ http://k9mail.googlecode.com/
     <string name="account_setup_outgoing_smtp_server_label">Εξυπηρέτης SMTP</string>
     <string name="account_setup_outgoing_port_label">Θύρα</string>
     <string name="account_setup_outgoing_security_label">Ασφάλεια</string>
-    <string name="account_setup_outgoing_security_none_label">Καμιά</string>
-    <string name="account_setup_outgoing_security_ssl_label">SSL</string>
-    <string name="account_setup_outgoing_security_tls_optional_label">TLS (αν υπάρχει)</string>
-    <string name="account_setup_outgoing_security_tls_label">TLS (πάντοτε)</string>
     <string name="account_setup_outgoing_require_login_label">Απαιτείται πιστοποίηση.</string>
     <string name="account_setup_outgoing_username_label">Όνομα χρήστη</string>
     <string name="account_setup_outgoing_password_label">Συνθηματικό</string>
     <string name="account_setup_outgoing_authentication_label">Πιστοποίηση</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
-    <string name="account_setup_outgoing_authentication_basic_label">Όνομα χρήστη &amp; συνθηματικό</string>
-    <string name="account_setup_outgoing_authentication_basic_username_label">Όνομα χρήστη</string>
-    <string name="account_setup_outgoing_authentication_basic_password_label">Συνθηματικό</string>
-    <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP πριν SMTP</string>
-    <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP πριν SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) πριν SMTP</string>
 
     <string name="account_setup_bad_uri">Άκυρη ρύθμιση: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -517,11 +497,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_notification_opens_unread_summary">Αναζητά μη αναγνωσμένα μηνύματα όταν ανοίγεται η ειδοποίηση</string>
     <string name="account_settings_notification_unread_count_label">Προβολή πλήθους μη αναγνωσμένων</string>
     <string name="account_settings_notification_unread_count_summary">Προβολή πλήθους μη αναγνωσμένων μηνυμάτων στη γραμμή κατάστασης.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
-
-    <string name="account_settings_enable_move_buttons_label">Ενεργοποίηση πλήκτρων αρχειοθέτησης</string>
-    <string name="account_settings_enable_move_buttons_summary">Προβολή πλήκτρων Αρχειοθέτηση, Μετακίνηση και Σκουπίδια.</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Σημείωση ως αναγνωσμένου με την ανάγνωση</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
 
     <string name="account_settings_show_pictures_label">Προβολή εικόνων πάντα</string>
     <string name="account_settings_show_pictures_never">Όχι</string>
@@ -544,6 +521,9 @@ http://k9mail.googlecode.com/
     <string name="account_settings_message_format_html">HTML (διατηρούνται εικόνες και μορφοποίηση)</string>
     <string name="account_settings_message_format_auto">Αυτόματα (απλό κείμενο εκτός αν απαντά σε μήνυμα HTML)</string>
 
+    <string name="account_settings_always_show_cc_bcc_label">Πάντα προβολή κοινοποιήσεων/ιδ. κοιν.</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Πάντα προβολή πεδίου κειμένου κοινοποιήσεων/ιδ. κοιν.</string>
+
     <string name="account_settings_message_read_receipt_label">Απόδειξη ανάγνωσης</string>
     <string name="account_settings_message_read_receipt_summary">Πάντοτε να απαιτείται απόδειξη ανάγνωσης</string>
 
@@ -552,11 +532,8 @@ http://k9mail.googlecode.com/
     <string name="account_settings_quote_style_header">Επικεφαλίδα (όπως στο Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Γενικές ρυθμίσεις</string>
-    <string name="account_settings_display_prefs_title">Προβολή</string>
     <string name="account_settings_sync">Ανάκτηση ταχυδρομείου</string>
     <string name="account_settings_folders">Φάκελοι</string>
-    <string name="account_settings_message_lists">Λίστα μηνυμάτων</string>
-    <string name="account_settings_message_view">Προβολή μηνυμάτων</string>
     <string name="account_settings_quote_prefix_label">Πρόθεμα κειμένου παράθεσης</string>
     <string name="account_settings_crypto">Κρυπτογραφία</string>
     <string name="account_settings_crypto_app">Πάροχος OpenPGP</string>
@@ -720,7 +697,6 @@ http://k9mail.googlecode.com/
 
     <string name="default_identity_description">Αρχική ταυτότητα</string>
     <string name="choose_identity_title">Επιλογή ταυτότητας</string>
-    <string name="choose_account_title">Επιλογή λογαριασμού/ταυτότητας</string>
     <string name="send_as">Αποστολή ως</string>
 
     <string name="no_removable_identity">Δεν μπορείτε να διαγράψετε τη μοναδική ταυτότητα</string>
@@ -728,8 +704,6 @@ http://k9mail.googlecode.com/
 
     <string name="sort_earliest_first">Παλαιότερα μηνύματα πρώτα</string>
     <string name="sort_latest_first">Πρόσφατα μηνύματα πρώτα</string>
-    <string name="sort_sender_alpha">Αλφαβητικά κατά αποστολέα</string>
-    <string name="sort_sender_re_alpha">Ανάποδα αλφαβητικά κατά αποστολέα</string>
     <string name="sort_subject_alpha">Αλφαβητικά κατά θέμα</string>
     <string name="sort_subject_re_alpha">Ανάποδα αλφαβητικά κατά θέμα</string>
     <string name="sort_flagged_first">Πρώτα τα μηνύματα με αστέρι</string>
@@ -741,21 +715,17 @@ http://k9mail.googlecode.com/
 
     <string name="sort_by">Ταξινόμηση κατά…</string>
     <string name="sort_by_date">Ημερομηνία</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
-    <string name="sort_by_sender">Αποστολέα</string>
+    <string name="sort_by_arrival">Άφιξη</string>
     <string name="sort_by_subject">Θέμα</string>
     <string name="sort_by_flag">Αστέρι</string>
     <string name="sort_by_unread">Αναγνωσμένα</string>
     <string name="sort_by_attach">Συνημμένα</string>
 
     <string name="account_delete_dlg_title">Διαγραφή λογαριασμού</string>
-    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
 
     <string name="account_recreate_dlg_title">Αναδημιουργία λογαριασμού</string>
-    <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
 
     <string name="account_clear_dlg_title">Εξάλειψη λογαριασμού</string>
-    <string name="account_clear_dlg_instructions_fmt">Όλα τα μηνύματα του λογαριασμού \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
 
     <string name="provider_note_live">Μόνο μερικοί λογαριασμοί \'Plus\' περιλαμβάνουν προσπέλαση POP
         επιτρέποντας σε αυτό το πρόγραμμα να συνδεθεί. Αν δεν μπορείτε να συνδεθείτε με τη
@@ -763,7 +733,7 @@ http://k9mail.googlecode.com/
         \'Plus\' λογαριασμό. Ανοίξτε τον σελιδομετρητή ιστοσελίδων για να προσπελάσετε
         τέτοιους λογαριασμούς ταχυδρομείου.</string>
     <string name="provider_note_yahoojp">Αν θέλετε να χρησιμοποιήσετε POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση POP3 στη σελίδα ρυθμίσεων του Yahoo mail.</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
+    <string name="provider_note_auonejp">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του au one mail.</string>
     <string name="provider_note_naver">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του Naver.</string>
     <string name="provider_note_hanmail">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του Hanmail(Daum).</string>
     <string name="provider_note_paran">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του Paran.</string>
@@ -773,14 +743,25 @@ http://k9mail.googlecode.com/
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Αποδοχή κλειδιού</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Απόρριψη κλειδιού</string>
 
-    <string name="message_help_key">Del (or D) - Διαγραφή\u000AR -
-    Απάντηση\u000AA - Απάντηση σε όλους\u000AF - Προώθηση\u000AJ ή P - Προηγούμενο
-    μήνυμα\u000AK, N - Επόμενο μήνυμα\u000AM - Μετακίνηση\u000AY - Αντιγραφή\u000AZ - Σμίκρυνση\u000AShift-Z -
-    Μεγέθυνση\u000aG - Αστέρι</string>
-    <string name="message_list_help_key">Del (ή D) - Διαγραφή\u000AR -
-    Απάντηση\u000AA - Απάντηση σε όλους\u000AC - Σύνθεση\u000AF - Προώθηση\u000aM -
-    Μετακίνηση\u000AY - Αντιγραφή\u000AG - Αστέρι\u000AO - Ταξινόμηση\u000AI - Σειρά ταξινόμησης\u000AQ
-    - Επιστροφή στους φακέλους\u000AS - Επιλογή/Αποεπιλογή</string>
+    <!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
+    Del (ή D) - Διαγραφή\n
+    R - Απάντηση\n
+    A - Απάντηση σε όλους\n
+    C - Σύνθεση\n
+    F - Προώθηση\n
+    M - Μετακίνηση\n
+    V - Archive\n
+    Y - Αντιγραφή\n
+    Z - Mark (Un)read\n
+    G - Αστέρι\n
+    O - Ταξινόμηση\n
+    I - Σειρά ταξινόμησης\n
+    Q - Επιστροφή στους φακέλους\n
+    S - Επιλογή/Αποεπιλογή\n
+    J ή P - Προηγούμενο μήνυμα\n
+    K ή N - Επόμενο μήνυμα
+    </string>
 
     <string name="folder_list_help_key">
     1 - Προβολή φακλέλων πρώτου επιπέδου\u000A
@@ -817,8 +798,6 @@ http://k9mail.googlecode.com/
 
     <string name="settings_messageview_mobile_layout_label">Μονόστηλη διάταξη</string>
     <string name="settings_messageview_mobile_layout_summary">Μηνύματα HTML για μικρότερες οθόνες</string>
-    <string name="settings_messageview_zoom_controls_label">Έλεγχος μεγέθυνσης</string>
-    <string name="settings_messageview_zoom_controls_summary">Χειριστήρια μεγέθυνσης</string>
 
     <string name="setting_language_system">Εξ ορισμού του συστήματος</string>
 
@@ -827,30 +806,9 @@ http://k9mail.googlecode.com/
     <string name="background_ops_always">Πάντοτε</string>
     <string name="background_ops_enabled">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\'</string>
     <string name="background_ops_auto_sync">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\' &amp; \'Αυτόματο συγχρονισμός\'</string>
+    <string name="background_ops_auto_sync_only">Όταν έχει επιλεγεί \'Auto-sync\'</string>
 
-    <string name="no_message_seletected_toast">Δεν επιλέχθηκε μήνυμα</string>
-
-    <string name="date_format_label">Γραφή ημερομηνίας</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
-    <string name="batch_ops">Ομαδικές λειτουργίες</string>
-    <string name="batch_delete_op">Διαγραφή επιλεγμένων</string>
-    <string name="batch_mark_read_op">Σήμανση ως αναγνωσμένα</string>
-    <string name="batch_mark_unread_op">Σήμανση ως μη αναγνωσμένα</string>
-    <string name="batch_flag_op">Αστέρι στα επιλεγμένα</string>
-    <string name="batch_unflag_op">Αφαίρεση αστεριού</string>
-    <string name="batch_archive_op">Μετακίνηση στην Αρχειοθέτηση</string>
-    <string name="batch_spam_op">Μετακίνηση στα Σκουπίδια</string>
-    <string name="batch_move_op">Μετακίνηση</string>
-    <string name="batch_copy_op">Αντιγραφή επιλεγμένων</string>
-    <string name="batch_flag_mode">Αστέρι</string>
-    <string name="batch_plain_mode">Απλή επιλογή</string>
     <string name="batch_select_all">Επιλογή όλων</string>
-    <string name="batch_deselect_all">Καθαρισμός επιλεγμένων</string>
 
     <string name="account_setup_push_limit_label">Μέγιστο φακέλων για σπρώξιμο</string>
     <string name="account_setup_push_limit_10">10 φάκελοι</string>
@@ -866,16 +824,10 @@ http://k9mail.googlecode.com/
     <string name="gestures_title">Χειρονομίες</string>
     <string name="gestures_summary">Αποδοχή ελέγχου με χειρονομίες</string>
 
-    <string name="compact_layouts_title">Συνοπτική εμφάνιση</string>
-    <string name="compact_layouts_summary">Προσαρμογή της εμφάνισης για να προβάλει περισσότερα σε κάθε σελίδα</string>
-
     <string name="volume_navigation_title">Πλοήγηση με πλήκτρο έντασης</string>
     <string name="volume_navigation_summary">Μετακίνηση στις επιλογές με χρήση του πλήκτρου έντασης</string>
     <string name="volume_navigation_message">Προβολή μηνύματος</string>
     <string name="volume_navigation_list">Διάφορες προβολές λίστας</string>
-
-    <string name="manage_back_title">Λειτουργία πλήκτρου \'Πίσω\'</string>
-    <string name="manage_back_summary">Το πλήκτρο \'Πίσω\' να ανεβαίνει ένα επίπεδο πάνω</string>
 
     <string name="start_integrated_inbox_title">Εκκίνηση στα ενιαία εισερχόμενα</string>
     <string name="start_integrated_inbox_summary">Προβολή των \'Ενιαίων Εισερχόμενων\' κατά την εκκίνηση</string>
@@ -912,7 +864,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_settings_title">Μέγεθος γραμματοσειράς</string>
     <string name="font_size_settings_description">Ρύθμιση μεγέθους γραμματοσειράς</string>
 
-    <string name="font_size_account_list">Λίσα λογαριασμών</string>
+    <string name="font_size_account_list">Λίστα λογαριασμών</string>
     <string name="font_size_account_name">Όνομα λογαριασμού</string>
     <string name="font_size_account_description">Περιγραφή λογαριασμού</string>
 
@@ -932,8 +884,7 @@ http://k9mail.googlecode.com/
     <string name="font_size_message_view_cc">Κοινοποίηση</string>
     <string name="font_size_message_view_additional_headers">Επιπλέον επικεφαλίδες</string>
     <string name="font_size_message_view_subject">Θέμα</string>
-    <string name="font_size_message_view_time">Ώρα</string>
-    <string name="font_size_message_view_date">Ημερομηνία</string>
+    <string name="font_size_message_view_date">Ώρα και Ημερομηνία</string>
     <string name="font_size_message_view_content">Σώμα μηνύματος</string>
 
     <string name="font_size_message_compose">Σύνθεση μηνύματος</string>
@@ -972,7 +923,6 @@ http://k9mail.googlecode.com/
     <string name="btn_verify">Επιβεβαίωση</string>
     <string name="unknown_crypto_signature_user_id">&lt;άγνωστος&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">Το K-9 Mail δεν έχει δικαίωμα να προσπελαύνει πλήρως το APG. Επαναλάβετε την εγκατάσταση του K-9 Mail για να το διορθώσετε.</string>
     <string name="pgp_mime_unsupported">Μηνύματα PGP/MIME δεν υποστηρίζονται ακόμη.</string>
     <string name="attachment_encryption_unsupported">Προειδοποίηση: τα συνημμένα δεν είναι υπογραμμένα ούτε κρυπτογραφημένα ακόμη.</string>
     <string name="send_aborted">Αποστολή ματαιώθηκε.</string>
@@ -1079,30 +1029,62 @@ http://k9mail.googlecode.com/
     <string name="import_dialog_error_title">Λείπει εφαρμογή επόπτη αρχείων</string>
     <string name="close">Κλείσιμο</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_empty_message">Κενό μήνυμα</string>
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+    <string name="webview_contextmenu_link_view_action">Άνοιγμα για προβολή</string>
+    <string name="webview_contextmenu_link_share_action">Κοινοποίηση συνδέσμου</string>
+    <string name="webview_contextmenu_link_copy_action">Αντιγραφή συνδέσμου στο clipboard</string>
+    <string name="webview_contextmenu_link_clipboard_label">Σύνδεσμος</string>
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+    <string name="webview_contextmenu_image_title">Εικόνα</string>
+    <string name="webview_contextmenu_image_view_action">Προβολή εικόνας</string>
+    <string name="webview_contextmenu_image_save_action">Αποθήκευση εικόνας</string>
+    <string name="webview_contextmenu_image_download_action">Κατέβασμα εικόνας</string>
+    <string name="webview_contextmenu_image_copy_action">Αντιγραφή διεύθυνσης εικόνας στο clipboard</string>
+    <string name="webview_contextmenu_image_clipboard_label">Διεύθυνση εικόνας</string>
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+    <string name="webview_contextmenu_phone_call_action">Κλήση αριθμού</string>
+    <string name="webview_contextmenu_phone_save_action">Αποθήκευση στις Επαφές</string>
+    <string name="webview_contextmenu_phone_copy_action">Αντιγραφή του αριθμού στο clipboard</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Αριθμός τηλεφώνου</string>
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+    <string name="webview_contextmenu_email_send_action">Αποστολή μηνύματος</string>
+    <string name="webview_contextmenu_email_save_action">Αποθήκευση στις Επαφές</string>
+    <string name="webview_contextmenu_email_copy_action">Αντιγραφή διεύθυνσης μηνύματος στο clipboard</string>
+    <string name="webview_contextmenu_email_clipboard_label">Διεύθυνση μηνύματος</string>
 
-    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+    <string name="image_saved_as">Αποθήκευση μηνύματος ως \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Αποτυχία αποθήκευσης της εικόνας</string>
+
+    <string name="account_settings_remote_search_num_results_entries_all">Όλα</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Όριο εξυπηρέτη για αναζήτηση αποτελεσμάτων</string>
+    <string name="account_settings_remote_search_num_summary">Η αναζήτηση θα διακοπεί όταν βρεθούν <xliff:g id="num_results">%s</xliff:g> αποτελέσματα.</string>
+    <string name="account_settings_remote_search">Αναζήτηση σε απομακρυσμένο φάκελο</string>
+    <string name="account_settings_remote_search_full_text">Συμπερίληψη κειμένου μηνύματος στην αναζήτηση</string>
+    <string name="account_settings_remote_search_full_text_summary">Οι αναζητήσεις πλήρους κειμένου μπορεί να καθυστερούν.</string>
+    <string name="remote_search_sending_query">Αποστολή ερωτήματος στον εξυπηρέτη</string>
+    <string name="remote_search_downloading">Ανάκληση %d αποτελεσμάτων</string>
+    <string name="remote_search_downloading_limited">Ανάκληση %1$d από %2$d αποτελέσματα</string>
+    <string name="remote_search_error">Η απομακρυσμένη αναζήτηση απέτυχε.</string>
+
+    <string name="account_settings_search">Αναζήτηση</string>
+    <string name="account_settings_remote_search_enabled">Ενεργοποίηση αναζήτησης στον εξυπηρέτη</string>
+    <string name="account_settings_remote_search_enabled_summary">Αναζήτηση μηνυμάτων στον εξυπηρέτη επιπρόσθετα αυτών που είναι στη συσκευή σας</string>
+    <string name="action_remote_search">Αναζήτηση μηνυμάτων στον εξυπηρέτη</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Προώθηση στον εξυπηρέτη αναζήτησης</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Αποδέσμευση στον εξυπηρέτη αναζήτησης</string>
+    <string name="remote_search_unavailable_no_network">Η απομακρυσμένη αναζήτηση δεν είναι διαθέσιμη χωρίς σύνδεση δικτύου.</string>
+
+    <string name="global_settings_background_as_unread_indicator_label">Χρήση φόντου ως ένδειξη (μη) αναγνωσμένου</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Προβολή αναγνωσμένων και μη αναγνωσμένων μηνυμάτων με διαφορετικά χρώματα φόντου</string>
+
+    <string name="global_settings_threaded_view_label">Προβολή συζήτησης</string>
+    <string name="global_settings_threaded_view_summary">Σύντμηση μηνυμάτων που ανήκουν στον ίδιο νήμα</string>
 </resources>

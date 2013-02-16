@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+
+    <release version="4.325" versioncode="17026" >
+        <change>Bug fixes (threading, checkboxes)</change>
+        <change>German translation update</change>
+
+    </release>
+    <release version="4.324" versioncode="17025" >
+        <change>Bug fixes</change>
+        <change>Improved animations when showing the message list</change>
+
+    </release>
+    <release version="4.323" versioncode="17024" >
+        <change>Bug fixes</change>
+        <change>Updates to Finnish and French translations</change>
+        <change>Put back prev/next buttons in non-split message views</change>
+    </release>
+
+    <release version="4.322" versioncode="17023" >
+        <change>Added a setting to enable split-screen mode (display message list next to message content)</change>
+        <change>Show a thread as unread/starred if at least one message is unread/starred</change>
+        <change>Modified the preview lines setting to allow disabling message preview in message list</change>
+        <change>Remember the scroll position of the message list</change>
+        <change>Changed the color picker</change>
+        <change>Improved certificate failure notifications</change>
+        <change>Fixed a bug that prevented third-party apps from reading the number of unread messages</change>
+        <change>Fixed a bug that caused the app to load too many messages when you clicked "Load more messages"</change>
+        <change>Updated Finnish, French, German, Dutch translations</change>
+    </release>
+
+    <release version="4.321" versioncode="17022" >
+        <change>Fixed some bugs related to message threading</change>
+        <change>Improved search for folders in the folder list</change>
+        <change>Added support for wrapping long folder names in the folder list</change>
+        <change>Added a progress indicator for remote searches</change>
+        <change>Reworked messagelist progress indicators</change>
+        <change>Improved notifications on SSL certificate validation failures</change>
+        <change>Updated Finnish, French, Spanish translations</change>
+        <change>Fixes to the new notificiations</change>
+        <change>Improvements to database upgrade infrastructure</change>
+        <change>Added the ability to search all local messages from the folder list</change>
+        <change>Added button to show this about screen</change>
+        <change>Close thread view when last message has been moved/deleted</change>
+        <change>Performance improvements</change>
+    </release>
+
+    <release version="4.320" versioncode="17021" >
+        <change>Added 'Account settings' back to the account context menu</change>
+        <change>Added 'Refresh' and 'Settings' back to the folder context menu</change>
+        <change>Minor bug fixes</change>
+    </release>
+
+    <release version="4.319" versioncode="17020" >
+        <change>Added Jelly Bean-style notifications</change>
+    </release>
+
+</changelog>
