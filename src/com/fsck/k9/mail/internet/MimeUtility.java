@@ -905,6 +905,16 @@ public class MimeUtility {
         {"image/pjpeg", "image/jpeg"},   // see issue 1712
         {"application/x-zip-compressed", "application/zip"} // see issue 3791
     };
+    
+    /**
+     * Table for charset fallback.
+     * 
+     * Table format: not supported charset (regex), fallback
+     */
+    private static final String[][] CHARSET_FALLBACK_MAP = new String[][] {
+    	{"iso-2022-jp-[\\d]+", "iso-2022-jp"},
+    	{".*", "US-ASCII"}
+    };
 
     public static String unfold(String s) {
         if (s == null) {
@@ -2291,7 +2301,7 @@ public class MimeUtility {
 
             charset = "shift_jis";
         }
-
+        
         /*
          * See if there is conversion from the MIME charset to the Java one.
          * this function may also throw an exception if the charset name is not known
@@ -2302,10 +2312,17 @@ public class MimeUtility {
         } catch (IllegalCharsetNameException e) {
             supported = false;
         }
-        if (!supported) {
-            Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
-                  ". Falling back to US-ASCII");
-            charset = "US-ASCII";
+        for (int i = 0, len = CHARSET_FALLBACK_MAP.length; !supported && i < len; i++) {
+        	if (charset.matches(CHARSET_FALLBACK_MAP[i][0])) {
+                Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
+                        ". Falling back to " + CHARSET_FALLBACK_MAP[i][1]);
+        		charset = CHARSET_FALLBACK_MAP[i][1];
+        		try {
+        			supported = Charset.isSupported(charset);
+        		} catch (IllegalCharsetNameException e) {
+        			supported = false;
+        		}
+        	}
         }
         /*
          * Convert and return as new String
