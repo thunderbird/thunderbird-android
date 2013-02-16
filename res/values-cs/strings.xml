@@ -521,23 +521,23 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_reply_after_quote_label">Odpovědět za citovaným textem</string>
     <string name="account_settings_reply_after_quote_summary">Při odpovídání na zprávu se původní zpráva objeví nad vaší odpovědí.</string>
 
-    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>-->
-    <!-- NEW: <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>-->
+    <string name="account_settings_strip_signature_label">Odstranit podpis z citované odpovšdi</string>-->
+    <string name="account_settings_strip_signature_summary">Při odpovídání na zprávu, podpisy v citovaném texty budou odebrány</string>-->
 
-    <!-- NEW: <string name="account_settings_message_format_label">Message Format</string>-->
-    <!-- NEW: <string name="account_settings_message_format_text">Plain Text (images and formatting will be removed)</string>-->
-    <!-- NEW: <string name="account_settings_message_format_html">HTML (images and formatting are preserved)</string>-->
-    <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+    <string name="account_settings_message_format_label">Formát zprávy</string>-->
+    <string name="account_settings_message_format_text">Prostý text (obrázky a formátování bude odstraněno)</string>-->
+    NEW: <string name="account_settings_message_format_html">HTML (obrázky a formátování bude zachováno )</string>-->
+    NEW: <string name="account_settings_message_format_auto">Automaticky (prostý text dokud neodpovídáte na zprávu v HTML formátu)</string>-->
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <string name="account_settings_always_show_cc_bcc_label">Vždy zobrazit kopie/skrytá</string>-->
+    <string name="account_settings_always_show_cc_bcc_summary">Vždy zobrazit řádky kopie a skrytá kopie</string>-->
 
-    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
-    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
+    <string name="account_settings_message_read_receipt_label">Potvrzení o přečtení</string>-->
+    <string name="account_settings_message_read_receipt_summary">Vždy požadovat potvrzení o přečtení</string>-->
 
-    <!-- NEW: <string name="account_settings_quote_style_label">Reply quoting style</string>-->
-    <!-- NEW: <string name="account_settings_quote_style_prefix">Prefix (like Gmail, Pine)</string>-->
-    <!-- NEW: <string name="account_settings_quote_style_header">Header (like Outlook, Yahoo!, Hotmail)</string>-->
+    <string name="account_settings_quote_style_label">Styl citace odpovědi</string>-->
+    <string name="account_settings_quote_style_prefix">Prefix (jako Gmail, Pine)</string>-->
+    <string name="account_settings_quote_style_header">Záhlaví (jako Outlook, Yahoo!, Hotmail)</string>-->
 
     <string name="account_settings_general_title">Hlavní nastavení</string>
     <string name="account_settings_sync">Stahování pošty</string>
@@ -723,7 +723,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="sort_by">Třídit podle položky…</string>
     <string name="sort_by_date">Datum</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
+    <string name="sort_by_arrival">Příchodu</string>-->
     <string name="sort_by_subject">Předmět</string>
     <string name="sort_by_flag">Hvězdička</string>
     <string name="sort_by_unread">Přečtená/Nepřečtená</string>
@@ -740,12 +740,12 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
         s vaší správnou emailovou adresou a heslem, nemusíte mít placený \"Plus\"
         účet. Spusťte si prosím webový prohlížeč, kterým na takové účty získáte
         přístup.</string>
-    <string name="provider_note_yahoojp">Pokud chcete používat POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Yahoo.</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
+    <string name="provider_note_yahoojp">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Yahoo.</string>
+    <string name="provider_note_auonejp">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Au one.</string>-->
+    <string name="provider_note_naver">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Naver.</string>-->
+    <string name="provider_note_hanmail">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Hanmail(Daum).</string>-->
+    <string name="provider_note_paran">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Paran.</string>-->
+    <string name="provider_note_nate">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Nate.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámý certifikát</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
@@ -779,7 +779,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
       Q - Návrat k účtům\u000A
       S - Upravit nastavení účtu</string>
 
-    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
+    <string name="folder_list_filter_hint">název složky obsahuje</string>-->
 
     <string name="folder_list_display_mode_label">Složky</string>
     <string name="folder_list_display_mode_all">Zobrazit všechny složky</string>
@@ -793,7 +793,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="setting_theme_dark">Tmavé</string>
     <string name="setting_theme_light">Světlé</string>
     <string name="display_preferences">Zobrazení</string>
-    <!-- NEW: <string name="global_preferences">Global</string>-->
+    <string name="global_preferences">Globální</string>-->
     <string name="debug_preferences">Ladění</string>
     <string name="privacy_preferences">Soukromí</string>
     <string name="network_preferences">Síť</string>
@@ -814,7 +814,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="background_ops_always">Vždy</string>
     <string name="background_ops_enabled">Je-li \'Data na pozadí\' zaškrtnuto</string>
     <string name="background_ops_auto_sync">Jsou-li \'Data na pozadí\' a \'Aut. synchronizace\' zaškrtnuty</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">Jsou-li \'Aut. synchronizace\' zaškrtnuty</string>-->
 
     <string name="batch_select_all">Vybrat vše</string>
 
