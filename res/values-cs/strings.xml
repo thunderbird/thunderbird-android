@@ -981,23 +981,23 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Nelze se připojit.</string>
 
-    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
-    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
-    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
-    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
-    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
-    <!-- NEW: <string name="settings_import">Import settings</string>-->
-    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
-    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
-    <!-- NEW: <string name="settings_exporting">Exporting settings…</string>-->
-    <!-- NEW: <string name="settings_importing">Importing settings…</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Scanning file…</string>-->
-    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_success">
-        <item quantity="one">1 account</item>
-        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
+    <string name="import_export_action">Import &amp; Export nastavení</string>-->
+    <string name="settings_export_account">Exportovat nastaveni účtu</string>-->
+    <string name="settings_export_all">Exportovat nastavení a účty</string>-->
+    <string name="settings_import_dialog_title">Import</string>-->
+    <string name="settings_export_dialog_title">Export</string>-->
+    <string name="settings_import">Importovat nastavení</string>-->
+    <string name="settings_import_selection">Import výběr</string>-->
+    <string name="settings_import_global_settings">Globální nastavení</string>-->
+    <string name="settings_exporting">Exportování nastavení…</string>-->
+    <string name="settings_importing">Importování nastavení…</string>-->
+    <string name="settings_import_scanning_file">Skenuji soubor…</string>-->
+    <string name="settings_export_success">Export nastavení uložen do <xliff:g id="filename">%s</xliff:g></string>-->
+    <string name="settings_import_global_settings_success">Importovano globální nastaveni z <xliff:g id="filename">%s</xliff:g></string>-->
+    <string name="settings_import_success">Importováno <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>-->
+    <plurals name="settings_import_success">
+        <item quantity="one">1 účet</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> účtů</item>
     </plurals>-->
     <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
     <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
