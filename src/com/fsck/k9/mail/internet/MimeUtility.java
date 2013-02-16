@@ -2312,11 +2312,13 @@ public class MimeUtility {
         } catch (IllegalCharsetNameException e) {
             supported = false;
         }
-        for (int i = 0, len = CHARSET_FALLBACK_MAP.length; !supported && i < len; i++) {
-        	if (charset.matches(CHARSET_FALLBACK_MAP[i][0])) {
+        for (String[] rule: CHARSET_FALLBACK_MAP) {
+        	if (supported)
+        		break;
+        	if (charset.matches(rule[0])) {
                 Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
-                        ". Falling back to " + CHARSET_FALLBACK_MAP[i][1]);
-        		charset = CHARSET_FALLBACK_MAP[i][1];
+                        ". Falling back to " + rule[1]);
+        		charset = rule[1];
         		try {
         			supported = Charset.isSupported(charset);
         		} catch (IllegalCharsetNameException e) {
