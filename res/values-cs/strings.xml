@@ -957,6 +957,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="dialog_confirm_spam_title">Potvrzení přesunu do nevyžádané pošty</string>-->
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Opravdu chcete přesunout tuto zprávy do nevyžádané pošty?</item>
+        <item quantity="few">Opravdu chcete přesunout <xliff:g id="message_count">%1$d</xliff:g> zprávy do nevyžádané pošty?</item>
         <item quantity="other">Opravdu chcete přesunout <xliff:g id="message_count">%1$d</xliff:g> zpráv do nevyžádané pošty?</item>
 
   Translators:
@@ -969,10 +970,10 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     </plurals>-->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+    <string name="dialog_confirm_spam_confirm_button">Ano</string>-->
+    <string name="dialog_confirm_spam_cancel_button">Ne</string>-->
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <string name="dialog_attachment_progress_title">Stahuji přílohy</string>-->
 
     <string name="debug_logging_enabled">Ladící záznam do záznamového systému Androidu je povolen</string>
 
