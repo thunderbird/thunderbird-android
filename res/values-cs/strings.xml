@@ -1072,27 +1072,27 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
     <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
-    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
-    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
-    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
-    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+    <string name="account_settings_remote_search_num_label">Limit počtu výsledků prohledávání serveru</string>-->
+    <string name="account_settings_remote_search_num_summary">Vyhledávání bude zastaveno po dosažení <xliff:g id="num_results">%s</xliff:g> výsledků.</string>-->
+    <string name="account_settings_remote_search">Prohledávání vzdálenych složek</string>-->
+    <string name="account_settings_remote_search_full_text">Zahrnout tělo zprávy do prohledávání serveru</string>-->
+    <string name="account_settings_remote_search_full_text_summary">Prohledávání těl zpráv může být pomalé.</string>-->
+    <string name="remote_search_sending_query">Odeslání dotazu na server</string>-->
+    <string name="remote_search_downloading">Načátaní %d výsledků</string>-->
+    <string name="remote_search_downloading_limited">Načítaní %1$d z %2$d výsledků</string>-->
+    <string name="remote_search_error">Vzdálené vyhledávání se nezdařilo</string>-->
 
-    <!-- NEW: <string name="account_settings_search">Search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
-    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
+    <string name="account_settings_search">Hledání</string>-->
+    <string name="account_settings_remote_search_enabled">Povolit vyhledávání na serveru</string>-->
+    <string name="account_settings_remote_search_enabled_summary">Hledat zprávy na serveru navíc k těm v zařízení</string>-->
+    <string name="action_remote_search">Hledat zprávy na serveru</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <string name="remote_search_unavailable_no_network">Vzdálené vyhledávání není k dipsozici bez připojení k síti.</string>-->
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <string name="global_settings_background_as_unread_indicator_label">Použít pozadí jako ukazatel (ne)přečtený</string>-->
+    <string name="global_settings_background_as_unread_indicator_summary">Zobrazit přečtené a nepřečtené zprávy s rozdílnou barvou pozadí</string>-->
 
-    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <string name="global_settings_threaded_view_label">Zabrazení vláken</string>-->
+    <string name="global_settings_threaded_view_summary">Sjednotit zprávy patřící ke stejnému vláknu</string>-->
 </resources>
