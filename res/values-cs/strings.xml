@@ -1026,53 +1026,53 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="settings_attachment_default_path">Ukládat přílohy do…</string>-->
     <string name="attachment_save_title">Uložit přílohu</string>-->
-    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+    <string name="attachment_save_desc">Nenalezen žádný prohlížeč souborů. Kde byste chtěli uložit tuto přílohu?</string>-->
 
-    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
-    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
-    <!-- NEW: <string name="manage_accounts_moving_message">Moving account…</string>-->
+    <string name="manage_accounts_move_up_action">Posunout nahoru</string>-->
+    <string name="manage_accounts_move_down_action">Posunout dolů</string>-->
+    <string name="manage_accounts_moving_message">Přesování účtu…</string>-->
 
-    <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
+    <string name="unread_widget_select_account">Zobrazit počet nepřečtených pro…</string>-->
 
-    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
-    <!-- NEW: <string name="close">Close</string>-->
+    <string name="import_dialog_error_title">Chybějící Správce souborů</string>-->
+    <string name="close">Zavřít</string>-->
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_empty_message">Žádný text</string>-->
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+    <string name="webview_contextmenu_link_view_action">Otevřít pro prohlížení</string>-->
+    <string name="webview_contextmenu_link_share_action">Sdílet odkaz</string>-->
+    <string name="webview_contextmenu_link_copy_action">Zkopírovat odkaz do schránky</string>-->
+    <string name="webview_contextmenu_link_clipboard_label">Odkaz</string>-->
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+    <string name="webview_contextmenu_image_title">Obrázek</string>-->
+    <string name="webview_contextmenu_image_view_action">Zobrazit obrázek</string>-->
+    <string name="webview_contextmenu_image_save_action">Uložit obrázek</string>-->
+    <string name="webview_contextmenu_image_download_action">Stáhnout obrázek</string>-->
+    <string name="webview_contextmenu_image_copy_action">Zkopírovat adresu obrázku do schránky</string>-->
+    <string name="webview_contextmenu_image_clipboard_label">Adresa obrázku</string>-->
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+    <string name="webview_contextmenu_phone_call_action">Volat číslo</string>-->
+    <string name="webview_contextmenu_phone_save_action">Uložit do kontaktů</string>-->
+    <string name="webview_contextmenu_phone_copy_action">Zkopírovat číslo do schránky</string>-->
+    <string name="webview_contextmenu_phone_clipboard_label">Telefoní číslo</string>-->
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+    <string name="webview_contextmenu_email_send_action">Odeslat zprávu</string>-->
+    <string name="webview_contextmenu_email_save_action">Uložit do kontaktů</string>-->
+    <string name="webview_contextmenu_email_copy_action">Zkopírovat e-mailovou aderesu do schránky</string>-->
+    <string name="webview_contextmenu_email_clipboard_label">E-mailová adresa</string>-->
 
-    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+    <string name="image_saved_as">Obrázek uložen do \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
+    <string name="image_saving_failed">Uložení obrázku se nezdařilo.</string>-->
 
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
+    <string name="account_settings_remote_search_num_results_entries_all">Vše</string>-->
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
+    <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
     <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
