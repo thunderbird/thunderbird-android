@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.326" versioncode="17027" >
+        <change>Korean translation update</change>
+        <change>Message header area overhauled</change>
+        <change>Holo theme improvements</change>
+        <change>Fix several NPEes</change>
+        <change>Finnish translation update</change>
+        <change>Improve last folder update time formatting.</change>
+        <change>Experimental change to move most of our refile buttons into a refile submenu. Specifically to elicit feedback. I don't expect this change to stick around in its current form. But I do want to get a sense of whether it's something that makes people happy or angry</change>
+        <change>Clean up date handling</change>
+        <change>Update German translation</change>
+        <change>Add animated notification icon for "check mail"</change>
+        <change>There's no good reason to exclude the Subject from the "full headers" view, especicially since we now play games with it sometimes showing up in the header and sometimes in the titlebar</change>
+        <change>Switch our font sizes to have a "default", which is the size described in the XML.</change>
+        <change>Add optional contact pictures to message list</change>
+        <change>Remove text selection menu item for JB and higher.  Those versions have text selection support built-in (via long pressing the WebView).</change>
+        <change>Move message view theme setting from message view menu to global prefs by default.</change>
+        <change>Move "show all headers" into the menu (and out of the UI)</change>
+    </release>
     <release version="4.325" versioncode="17026" >
         <change>Bug fixes (threading, checkboxes)</change>
         <change>German translation update</change>
