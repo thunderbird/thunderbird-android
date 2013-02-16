@@ -166,9 +166,9 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="mark_as_unread_action">Označit jako nepřečtené</string>
     <string name="add_cc_bcc_action">Přidat kopii/skrytou</string>
-    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
-    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
-    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
+    <string name="read_receipt">Potvrzení o přečtení</string>-->
+    <string name="read_receipt_enabled">Potvrzení o přečtení bude vyžadováno</string>-->
+    <string name="read_receipt_disabled">Potvrzení o přečtení nebude vyžadováno</string>-->
     <string name="add_attachment_action">Přidat přílohu</string>
     <string name="add_attachment_action_image">Přidat přílohu (obrázek)</string>
     <string name="add_attachment_action_video">Přidat přílohu (video)</string>
@@ -884,7 +884,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="font_size_message_list_subject">Předmět zprávy</string>
     <string name="font_size_message_list_sender">Odesílatel zprávy</string>
     <string name="font_size_message_list_date">Datum zprávy</string>
-    <!-- NEW: <string name="font_size_message_list_preview">Preview</string>-->
+    <string name="font_size_message_list_preview">Náhled</string>-->
 
     <string name="font_size_message_view">Zobrazení zprávy</string>
     <string name="font_size_message_view_sender">Odesílatel zprávy</string>
