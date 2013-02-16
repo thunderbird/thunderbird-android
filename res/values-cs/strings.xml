@@ -1086,8 +1086,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_remote_search_enabled">Povolit vyhledávání na serveru</string>-->
     <string name="account_settings_remote_search_enabled_summary">Hledat zprávy na serveru navíc k těm v zařízení</string>-->
     <string name="action_remote_search">Hledat zprávy na serveru</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Drž k prohledávání serveru…</string>-->
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Uvolni k prohledávání serveru…</string>-->
     <string name="remote_search_unavailable_no_network">Vzdálené vyhledávání není k dipsozici bez připojení k síti.</string>-->
 
     <string name="global_settings_background_as_unread_indicator_label">Použít pozadí jako ukazatel (ne)přečtený</string>-->
