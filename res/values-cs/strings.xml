@@ -895,8 +895,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="font_size_message_view_date">Datum a čas zprávy</string>
     <string name="font_size_message_view_content">Tělo zprávy</string>
 
-    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
-    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
+    <string name="font_size_message_compose">Psaní zprávy</string>-->
+    <string name="font_size_message_compose_input">Pole zadávaní textu</string>-->
 
     <string name="font_size_tiniest">Nejdrobnější</string>
     <string name="font_size_tiny">Drobný</string>
@@ -938,14 +938,14 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="save_or_discard_draft_message_dlg_title">Uložit koncept zprávy?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Uložit nebo zahodit tuto zprávu?</string>
 
-    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
-    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+    <string name="confirm_discard_draft_message_title">Odstranit zprávu?</string>-->
+    <string name="confirm_discard_draft_message">Opravdu si přejete smazat tuto zprávu?</string>-->
 
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>-->
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Odmítnout uložení konceptu zprávy.</string>-->
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Odmítnout uložení konceptu šifrované zprávy.</string>-->
 
-    <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
-    <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
+    <string name="continue_without_public_key_dlg_title">Pokračovat bez veřejného klíče?</string>-->
+    <string name="continue_without_public_key_instructions_fmt">Jeden nebo více adresátů nemá uložen veřejný klíč. Pokračovat?</string>-->
 
     <string name="select_text_now">Vyberte text pro kopírování.</string>
 
@@ -954,10 +954,10 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="dialog_confirm_delete_confirm_button">Smazat</string>
     <string name="dialog_confirm_delete_cancel_button">Nemazat</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW: <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Do you really want to move this message to the spam folder?</item>
-        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
+    <string name="dialog_confirm_spam_title">Potvrzení přesunu do nevyžádané pošty</string>-->
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Opravdu chcete přesunout tuto zprávy do nevyžádané pošty?</item>
+        <item quantity="other">Opravdu chcete přesunout <xliff:g id="message_count">%1$d</xliff:g> zpráv do nevyžádané pošty?</item>
 
   Translators:
 
