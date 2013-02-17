@@ -110,7 +110,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="status_processing_account">Опрацювання <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Наступний запит @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Наступний запит <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Синхронізація заборонена</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -285,8 +285,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="message_additional_headers_not_downloaded">Не всі заголовки завантажені або збережені. Виберіть \"Зберегти всі заголовки локально\" у налаштуваннях сервера вхідних повідомлень для використання цієї можливості.</string>
     <string name="message_no_additional_headers_available">Всі заголовки завантажено, нема додаткових заголовків для відображення.</string>
     <string name="message_additional_headers_retrieval_failed">Не вдалося завантажити додаткові заголовки з бази даних або поштового сервера.</string>
-
-    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Більше від цього відправника</string>
 
@@ -812,13 +810,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="background_ops_auto_sync">Коли \'Фонові дані\' та \'Автосинхронізація\' включено</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="date_format_label">Формат дати</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
     <string name="batch_select_all">Вибрати усе</string>
 
     <string name="account_setup_push_limit_label">Найбільша кількість папок для перевірки з push</string>
@@ -895,8 +886,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="font_size_message_view_cc">Копія</string>
     <string name="font_size_message_view_additional_headers">Додаткові заголовки</string>
     <string name="font_size_message_view_subject">Тема</string>
-    <string name="font_size_message_view_time">Час</string>
-    <string name="font_size_message_view_date">Дата</string>
+    <string name="font_size_message_view_date">Час і дата</string>
     <string name="font_size_message_view_content">Тіло повідомлення</string>
 
     <string name="font_size_message_compose">Створення повідомлень</string>

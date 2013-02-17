@@ -110,7 +110,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Próxima sincronización a las <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Próxima sincronización <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Sincronización deshabilitada</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -284,8 +284,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="message_additional_headers_not_downloaded">No se han descargado o grabado todas las cabeceras. Seleccione \"Guardar todas las cabeceras localmente\" en la Configuración de cuenta para permitir esta acción en el futuro</string>
     <string name="message_no_additional_headers_available">Se han descargado todas las cabeceras, y no hay cabeceras adicionales que mostrar</string>
     <string name="message_additional_headers_retrieval_failed">Se ha producido un error al descargar las cabeceras desde la base de datos o el servidor</string>
-
-    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Más de este remitente</string>
 
@@ -811,13 +809,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="background_ops_auto_sync">Cuando \'Sincronización en segundo plano\' y \'Sincronización automática\' esten activos</string>
     <!-- <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string> -->
 
-    <string name="date_format_label">Formato de fecha</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MM-yyyy</string>
-
     <string name="batch_select_all">Seleccionar todos</string>
 
     <string name="account_setup_push_limit_label">Max. carpetas Push</string>
@@ -894,8 +885,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_additional_headers">Encabezados adicionales</string>
     <string name="font_size_message_view_subject">Asunto</string>
-    <string name="font_size_message_view_time">Hora</string>
-    <string name="font_size_message_view_date">Fecha</string>
+    <string name="font_size_message_view_date">Hora y Fecha</string>
     <string name="font_size_message_view_content">Cuerpo de mensaje</string>
 
     <string name="font_size_message_compose">Composición mensaje</string>

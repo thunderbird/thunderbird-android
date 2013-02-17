@@ -109,7 +109,7 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Propera comprovació @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Propera comprovació <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Comprovació acabada</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -285,8 +285,6 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="message_additional_headers_not_downloaded">No s’han descarregat o desat totes les capçaleres. Selecciona \"Desa totes les capçaleres localment\" a la configuració del servidor d’entrada del compte per habilitar-lo en el futur.</string>
     <string name="message_no_additional_headers_available">S’han descarregat totes les capçaleres, no hi ha capçaleres addicionals per mostrar.</string>
     <string name="message_additional_headers_retrieval_failed">La recuperació de capçaleres addicionals de la base de dades o del servidor de correu ha fallat.</string>
-
-    <string name="folder_push_active_symbol">(Subscripció)</string>
 
     <string name="from_same_sender">Més d’aquest remitent</string>
 
@@ -814,13 +812,6 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="background_ops_auto_sync">Quan s’està comprovant \'Dades en segon pla\' i \'Auto sincronització\'</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="date_format_label">Format de la data</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
     <string name="batch_select_all">Selecciona-ho tot</string>
 
     <string name="account_setup_push_limit_label">Carpetes màximes a comprovar</string>
@@ -897,8 +888,7 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="font_size_message_view_cc">A/c</string>
     <string name="font_size_message_view_additional_headers">Capçaleres addicionals</string>
     <string name="font_size_message_view_subject">Assumpte</string>
-    <string name="font_size_message_view_time">Hora</string>
-    <string name="font_size_message_view_date">Data</string>
+    <string name="font_size_message_view_date">Hora i Data</string>
     <string name="font_size_message_view_content">Cos del missatge</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

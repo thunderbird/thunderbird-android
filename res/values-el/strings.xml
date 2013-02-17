@@ -282,8 +282,6 @@
     <string name="message_no_additional_headers_available">Όλες οι επικεφαλίδες έχουν κατεβεί, αλλά δεν υπάρχουν πρόσθετες επικεφαλίδες για να προβληθούν.</string>
     <string name="message_additional_headers_retrieval_failed">Η ανάσυρση πρόσθετων επικεφαλίδων από τη βάση δεδομένων ή τον εξυπηρέτη ταχυδρομείου απέτυχε.</string>
 
-    <string name="folder_push_active_symbol">(Σπρώξιμο)</string>
-
     <string name="from_same_sender">Από τον ίδιο αποστολέα</string>
 
     <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε</string>
@@ -810,13 +808,6 @@
     <string name="background_ops_auto_sync">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\' &amp; \'Αυτόματο συγχρονισμός\'</string>
     <string name="background_ops_auto_sync_only">Όταν έχει επιλεγεί \'Auto-sync\'</string>
 
-    <string name="date_format_label">Γραφή ημερομηνίας</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
     <string name="batch_select_all">Επιλογή όλων</string>
 
     <string name="account_setup_push_limit_label">Μέγιστο φακέλων για σπρώξιμο</string>
@@ -893,8 +884,7 @@
     <string name="font_size_message_view_cc">Κοινοποίηση</string>
     <string name="font_size_message_view_additional_headers">Επιπλέον επικεφαλίδες</string>
     <string name="font_size_message_view_subject">Θέμα</string>
-    <string name="font_size_message_view_time">Ώρα</string>
-    <string name="font_size_message_view_date">Ημερομηνία</string>
+    <string name="font_size_message_view_date">Ώρα και Ημερομηνία</string>
     <string name="font_size_message_view_content">Σώμα μηνύματος</string>
 
     <string name="font_size_message_compose">Σύνθεση μηνύματος</string>

@@ -118,7 +118,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Next poll @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Next poll <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Syncing disabled</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
@@ -136,7 +136,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="spam_action">Spam</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
-    <string name="single_message_options_action">Message Options</string>
+    <string name="single_message_options_action">Send</string>
+    <string name="refile_action">Refile</string>
+
     <string name="continue_action">Continue</string>
     <string name="back_action">Back</string>
     <string name="done_action">Done</string> <!--  Used to complete a multi-step process -->
@@ -304,8 +306,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_additional_headers_not_downloaded">Not all headers have been downloaded or saved. Select \"Save all headers locally\" in the account\'s incoming server settings to enable this for the future.</string>
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
     <string name="message_additional_headers_retrieval_failed">The retrieval of additional headers from the database or mail server failed.</string>
-
-    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">More from this sender</string>
 
@@ -836,7 +836,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_language_label">Language</string>
 
     <string name="settings_message_theme_selection_label">Fixed message theme</string>
-    <string name="settings_message_theme_selection_summary_off">Select the messsge view theme while viewing the message</string>
+    <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>
     <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>
 
     <string name="settings_messageview_mobile_layout_label">Condensed layout</string>
@@ -850,13 +850,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="background_ops_enabled">When \'Background data\' is checked</string>
     <string name="background_ops_auto_sync">When \'Background data\' &amp; \'Auto-sync\' are checked</string>
     <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
-
-    <string name="date_format_label">Date format</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
 
     <string name="batch_select_all">Select all</string>
 
@@ -934,13 +927,13 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_additional_headers">Additional headers</string>
     <string name="font_size_message_view_subject">Subject</string>
-    <string name="font_size_message_view_time">Time</string>
-    <string name="font_size_message_view_date">Date</string>
+    <string name="font_size_message_view_date">Time and date</string>
     <string name="font_size_message_view_content">Message body</string>
 
     <string name="font_size_message_compose">Message composition</string>
     <string name="font_size_message_compose_input">Text input fields</string>
 
+    <string name="font_size_default">Default</string>
     <string name="font_size_tiniest">Tiniest</string>
     <string name="font_size_tiny">Tiny</string>
     <string name="font_size_smaller">Smaller</string>
@@ -1158,4 +1151,8 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="global_settings_show_contact_picture_label">Show contact pictures</string>
     <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>
+
+    <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>
+    <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>
 </resources>

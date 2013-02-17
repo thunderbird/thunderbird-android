@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,7 +21,6 @@ import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.helper.DateFormatter;
 import com.fsck.k9.preferences.Settings.*;
 
 public class GlobalSettings {
@@ -63,9 +61,6 @@ public class GlobalSettings {
         s.put("countSearchMessages", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-        s.put("dateFormat", Settings.versions(
-                new V(1, new DateFormatSetting(DateFormatter.DEFAULT_FORMAT))
-            ));
         s.put("enableDebugLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
@@ -73,55 +68,55 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("fontSizeAccountDescription", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeAccountName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.MEDIUM))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeFolderName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.LARGE))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeFolderStatus", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageComposeInput", Settings.versions(
-                new V(5, new FontSizeSetting(FontSizes.MEDIUM))
+                new V(5, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListDate", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListPreview", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListSender", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageListSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_16SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewAdditionalHeaders", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewCC", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewContent", Settings.versions(
                 new V(1, new WebFontSizeSetting(3))
             ));
         s.put("fontSizeMessageViewDate", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_10SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewSender", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.SMALL))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewTime", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_10SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewTo", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_12SP))
+                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("gesturesEnabled", Settings.versions(
                 new V(1, new BooleanSetting(true)),
@@ -480,32 +475,6 @@ public class GlobalSettings {
             }
 
             return super.toPrettyString(value);
-        }
-    }
-
-    /**
-     * A date format setting.
-     */
-    public static class DateFormatSetting extends SettingsDescription {
-        public DateFormatSetting(String defaultValue) {
-            super(defaultValue);
-        }
-
-        @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
-            try {
-                // The placeholders "SHORT" and "MEDIUM" are fine.
-                if (DateFormatter.SHORT_FORMAT.equals(value) ||
-                        DateFormatter.MEDIUM_FORMAT.equals(value)) {
-                    return value;
-                }
-
-                // If the SimpleDateFormat constructor doesn't throw an exception, we're good.
-                new SimpleDateFormat(value);
-                return value;
-            } catch (Exception e) {
-                throw new InvalidSettingValueException();
-            }
         }
     }
 

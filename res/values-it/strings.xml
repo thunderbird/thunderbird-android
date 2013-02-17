@@ -110,7 +110,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="status_processing_account">Elab <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Prossima verifica alle <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Prossima verifica <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Sincronizzazione disabilitata</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -285,8 +285,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="message_additional_headers_not_downloaded">Non tutte le intestazioni sono state scaricate o salvate. Seleziona \"Salva tutte le intestazioni localmente\" nelle impostazioni del server della posta in arrivo per abilitare questa funzionalità.</string>
     <string name="message_no_additional_headers_available">Tutte le intestazioni sono state scaricate, non ci sono intestazioni aggiuntive da mostrare.</string>
     <string name="message_additional_headers_retrieval_failed">Recupero di intestazioni aggiuntive dal database o dal server di posta non riuscito.</string>
-
-    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Altri da questo mittente</string>
 
@@ -814,13 +812,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="background_ops_auto_sync">Quando \'Dati in background\' e \'Sincronizzazione automatica\' sono selezionati</string>
     <string name="background_ops_auto_sync_only">Quando \'Sincronizzazione automatica\' è selezionato</string>
 
-    <string name="date_format_label">Formato data</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
     <string name="batch_select_all">Seleziona tutti</string>
 
     <string name="account_setup_push_limit_label">Max cartelle Push</string>
@@ -897,8 +888,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_additional_headers">Altre intestazioni</string>
     <string name="font_size_message_view_subject">Oggetto</string>
-    <string name="font_size_message_view_time">Ora</string>
-    <string name="font_size_message_view_date">Data</string>
+    <string name="font_size_message_view_date">Ora e data</string>
     <string name="font_size_message_view_content">Corpo del messaggio</string>
 
     <string name="font_size_message_compose">Composizione messaggio</string>

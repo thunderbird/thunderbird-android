@@ -3328,7 +3328,7 @@ public class MessagingController implements Runnable {
             (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
-        builder.setSmallIcon(R.drawable.ic_menu_refresh);
+        builder.setSmallIcon(R.drawable.ic_notify_check_mail);
         builder.setWhen(System.currentTimeMillis());
         builder.setOngoing(true);
         builder.setTicker(mApplication.getString(R.string.notification_bg_send_ticker,
@@ -3413,7 +3413,7 @@ public class MessagingController implements Runnable {
                 (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
-        builder.setSmallIcon(R.drawable.ic_menu_refresh);
+        builder.setSmallIcon(R.drawable.ic_notify_check_mail);
         builder.setWhen(System.currentTimeMillis());
         builder.setOngoing(true);
         builder.setTicker(mApplication.getString(

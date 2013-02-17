@@ -2,44 +2,29 @@
 <LinearLayout
     android:id="@+id/accounts_item_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:paddingRight="6dip"
-    android:paddingBottom="2dip"
     android:descendantFocusability="blocksDescendants"
-    android:gravity="center_vertical"
-    android:background="#ccc" >
+    android:gravity="center_vertical">
 
     <View
         android:id="@+id/chip"
         android:layout_width="32dip"
         android:layout_height="32dip"
         android:layout_marginLeft="8dip"
-        android:layout_marginRight="6dip"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:background="@android:color/transparent" />
+        android:layout_marginRight="6dip" />
 
-        
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal"
+    <ImageButton
+        android:id="@+id/folders"
         android:gravity="center_vertical"
-        android:paddingLeft="6dip" >
+        android:focusable="false"
+        android:layout_marginRight="3dip"
+        android:background="?attr/iconFolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <ImageButton
-            android:id="@+id/folders"
-            android:gravity="center_vertical"
-            android:focusable="false"
-            android:layout_marginRight="3dip"
-            android:background="?attr/iconFolder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,7 +35,7 @@
 
         <TextView
             android:id="@+id/description"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:ellipsize="end"
@@ -59,7 +44,7 @@
 
         <TextView
             android:id="@+id/email"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:ellipsize="end"
@@ -67,6 +52,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
-    </LinearLayout>
+
     <include layout="@layout/accounts_folders_icons" />
+
 </LinearLayout>

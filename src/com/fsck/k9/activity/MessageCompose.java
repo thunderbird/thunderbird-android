@@ -850,13 +850,14 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         // Set font size of input controls
         int fontSize = mFontSizes.getMessageComposeInput();
-        mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mBccView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mMessageContentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mQuotedText.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-        mSignatureView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        mFontSizes.setViewTextSize(mToView, fontSize);
+        mFontSizes.setViewTextSize(mCcView, fontSize);
+        mFontSizes.setViewTextSize(mBccView, fontSize);
+        mFontSizes.setViewTextSize(mSubjectView, fontSize);
+        mFontSizes.setViewTextSize(mMessageContentView, fontSize);
+        mFontSizes.setViewTextSize(mQuotedText, fontSize);
+        mFontSizes.setViewTextSize(mSignatureView, fontSize);
+
 
         updateMessageFormat();
 

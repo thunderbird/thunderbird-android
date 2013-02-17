@@ -27,7 +27,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -155,7 +154,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 mActionBarUnread.setVisibility(View.VISIBLE);
             }
 
-            String operation = mListener.getOperation(Accounts.this, getTimeFormat());
+            String operation = mListener.getOperation(Accounts.this);
             operation.trim();
             if (operation.length() < 1) {
                 mActionBarSubTitle.setVisibility(View.GONE);
@@ -479,6 +478,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         refresh();
         MessagingController.getInstance(getApplication()).addListener(mListener);
         StorageManager.getInstance(getApplication()).addListener(storageListener);
+        mListener.onResume(this);
     }
 
     @Override
@@ -486,6 +486,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
         StorageManager.getInstance(getApplication()).removeListener(storageListener);
+        mListener.onPause(this);
     }
 
     /**
@@ -551,6 +552,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             mHandler.progress(Window.PROGRESS_START);
         }
         pendingWork.clear();
+        mHandler.refreshTitle();
 
         MessagingController controller = MessagingController.getInstance(getApplication());
 
@@ -1720,8 +1722,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.unseenMessageCountWrapper.setOnClickListener(createUnreadSearch(account));
                 holder.newMessageCountWrapper.setOnClickListener(createUnreadSearch(account));
 
-                view.getBackground().setAlpha(stats.available ? 0 : 127);
-
                 holder.activeIcons.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
                         Toast toast = Toast.makeText(getApplication(), getString(R.string.tap_hint), Toast.LENGTH_SHORT);
@@ -1734,7 +1734,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
                 holder.unseenMessageCountWrapper.setVisibility(View.GONE);
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
-                view.getBackground().setAlpha(0);
             }
             if (account instanceof Account) {
                 Account realAccount = (Account)account;
@@ -1760,8 +1759,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             }
 
 
-            holder.description.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountName());
-            holder.email.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getAccountDescription());
+
+
+            mFontSizes.setViewTextSize(holder.description, mFontSizes.getAccountName());
+            mFontSizes.setViewTextSize(holder.email, mFontSizes.getAccountDescription());
 
             if (account instanceof SearchAccount) {
                 holder.folders.setVisibility(View.GONE);

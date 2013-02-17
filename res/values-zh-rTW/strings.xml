@@ -109,7 +109,7 @@ K-9改良的功能包括：
     <string name="status_processing_account">正在處理<xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">下次接收時間 @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">下次接收時間 <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">同步已停用</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
@@ -279,8 +279,6 @@ K-9改良的功能包括：
     <string name="message_additional_headers_not_downloaded">目前只下載了部分郵件的訊息。如果需要下載全部郵件的訊息，請在帳戶的內送伺服器設定中選擇「在手機上儲存全部郵件的訊息」。</string>
     <string name="message_no_additional_headers_available">全部郵件的訊息都已經下載，沒有其他的郵件訊息可以顯示。</string>
     <string name="message_additional_headers_retrieval_failed">從資料庫或郵件伺服器存取其他的郵件訊息失敗。</string>
-
-    <string name="folder_push_active_symbol">（推送）</string>
 
     <string name="from_same_sender">來自這個寄件人的更多郵件</string>
 
@@ -803,13 +801,6 @@ K-9改良的功能包括：
     <string name="background_ops_enabled">當「背景資料」被勾選</string>
     <string name="background_ops_auto_sync">當「背景資料」&amp;「自動同步」被勾選</string>
     <string name="background_ops_auto_sync_only">"當「自動同步」被勾選"</string>
-
-    <string name="date_format_label">日期格式</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
 
     <string name="batch_select_all">選擇全部</string>
 

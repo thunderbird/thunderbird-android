@@ -109,7 +109,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="status_processing_account">Verarbeite <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Nächster Abruf @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Nächster Abruf <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Synchronisation abgeschaltet</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -156,6 +156,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="unflag_action">Wichtig-Markierung entfernen</string>
     <string name="copy_action">Kopieren</string>
     <string name="select_text_action">Text auswählen</string>
+    <string name="show_headers_action">Kopfzeilen anzeigen</string>
+    <string name="hide_headers_action">Kopfzeilen verbergen</string>
 
     <string name="message_view_theme_action_dark">Dunkles Design verwenden</string>
     <string name="message_view_theme_action_light">Helles Design verwenden</string>
@@ -295,8 +297,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="message_additional_headers_not_downloaded">Es wurden nicht alle Kopfzeilen heruntergeladen oder gespeichert. Wählen Sie \'Alle Kopfzeilen lokal speichern\' in den Einstellungen für den Posteingangsserver, um dies zukünftig zu ermöglichen.</string>
     <string name="message_no_additional_headers_available">Alle Kopfzeilen wurden heruntergeladen, es sind allerdings keine neuen Kopfzeilen vorhanden.</string>
     <string name="message_additional_headers_retrieval_failed">Die weiteren Kopfzeilen konnten nicht aus der Datenbank oder vom Mailserver geladen werden.</string>
-
-    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Mehr von diesem Absender</string>
 
@@ -842,13 +842,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="background_ops_auto_sync">Wenn \'Hintergrunddaten\' &amp; \'Automatische Synchronisation\' aktiviert sind</string>
     <string name="background_ops_auto_sync_only">Wenn \'Automatische Synchronisation\' aktiviert ist</string>
 
-    <string name="date_format_label">Datumsformat</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd.MMM yyyy</string>
-
     <string name="batch_select_all">Alle auswählen</string>
 
     <string name="account_setup_push_limit_label">Maximale Push-Ordner-Anzahl</string>
@@ -925,13 +918,13 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="font_size_message_view_cc">Empfänger (CC)</string>
     <string name="font_size_message_view_additional_headers">Zusätzliche Header</string>
     <string name="font_size_message_view_subject">Betreff</string>
-    <string name="font_size_message_view_time">Zeit</string>
-    <string name="font_size_message_view_date">Datum</string>
+    <string name="font_size_message_view_date">Uhrzeit und Datum</string>
     <string name="font_size_message_view_content">Nachrichtentext</string>
 
     <string name="font_size_message_compose">Nachricht verfassen</string>
     <string name="font_size_message_compose_input">Texteingabefelder</string>
 
+    <string name="font_size_default">Standard</string>
     <string name="font_size_tiniest">Winzig</string>
     <string name="font_size_tiny">Sehr klein</string>
     <string name="font_size_smaller">Kleiner</string>
@@ -1135,4 +1128,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="global_settings_splitview_when_in_landscape">Im Querformat</string>
 
     <string name="message_view_empty">Nachricht aus der Liste auswählen, um sie anzuzeigen</string>
+
+    <string name="global_settings_show_contact_picture_label">Kontaktbilder anzeigen</string>
+    <string name="global_settings_show_contact_picture_summary">Kontaktbilder in der Nachrichtenliste anzeigen</string>
+
+    <string name="last_refresh_time_format">Zuletzt <xliff:g id="formatted_time">%s</xliff:g> aktualisiert</string>
+    <string name="last_refresh_time_format_with_push">Zuletzt <xliff:g id="time_with_preposition">%s</xliff:g> aktualisiert (Push aktiv)</string>
+    <string name="preposition_for_date">am <xliff:g id="date">%s</xliff:g></string>
 </resources>

@@ -529,14 +529,8 @@
         <item>NEVER</item>
     </string-array>
 
-    <string-array name="date_formats">
-        <item>SHORT</item> <!-- Hardcoded in DateFormatter -->
-        <item>MEDIUM</item> <!-- Hardcoded in DateFormatter -->
-        <item>@string/date_format_common</item>
-        <item>yyyy-MM-dd</item> <!-- ISO8601 date format -->
-    </string-array>
-
     <string-array name="font_entries">
+        <item>@string/font_size_default</item>
         <item>@string/font_size_tiniest</item>
         <item>@string/font_size_tiny</item>
         <item>@string/font_size_smaller</item>
@@ -547,6 +541,7 @@
     </string-array>
 
     <string-array name="font_values">
+        <item>-1</item>
         <item>10</item>
         <item>12</item>
         <item>14</item>

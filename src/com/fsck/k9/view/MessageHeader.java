@@ -7,24 +7,26 @@ import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.ImageView;
+
+import android.widget.QuickContactBadge;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.Account;
-import com.fsck.k9.helper.DateFormatter;
+import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -36,18 +38,16 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.text.DateFormat;
 
 public class MessageHeader extends ScrollView implements OnClickListener {
     private Context mContext;
     private TextView mFromView;
     private TextView mDateView;
-    private TextView mTimeView;
     private TextView mToView;
+    private TextView mToLabel;
     private TextView mCcView;
+    private TextView mCcLabel;
     private TextView mSubjectView;
-    private DateFormat mDateFormat;
-    private DateFormat mTimeFormat;
 
     private View mChip;
     private CheckBox mFlagged;
@@ -60,6 +60,10 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
     private SavedState mSavedState;
+
+    private MessageHelper mMessageHelper;
+    private ContactPictureLoader mContactsPictureLoader;
+    private QuickContactBadge mContactBadge;
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
 
@@ -80,8 +84,6 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     public MessageHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        mDateFormat = DateFormatter.getDateFormat(mContext);
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(mContext);   // 12/24 date format
         mContacts = Contacts.getInstance(mContext);
     }
 
@@ -91,32 +93,35 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mForwardedIcon = findViewById(R.id.forwarded);
         mFromView = (TextView) findViewById(R.id.from);
         mToView = (TextView) findViewById(R.id.to);
+        mToLabel = (TextView) findViewById(R.id.to_label);
         mCcView = (TextView) findViewById(R.id.cc);
+        mCcLabel = (TextView) findViewById(R.id.cc_label);
+
+        mContactBadge = (QuickContactBadge) findViewById(R.id.contact_badge);
+
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
         mDateView = (TextView) findViewById(R.id.date);
-        mTimeView = (TextView) findViewById(R.id.time);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
-        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSubject());
-        mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTime());
-        mDateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewDate());
-        mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewAdditionalHeaders());
+        mFontSizes.setViewTextSize(mSubjectView, mFontSizes.getMessageViewSubject());
+        mFontSizes.setViewTextSize(mDateView, mFontSizes.getMessageViewDate());
+        mFontSizes.setViewTextSize(mAdditionalHeadersView, mFontSizes.getMessageViewAdditionalHeaders());
 
-        mFromView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewSender());
-        mToView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewTo());
-        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageViewCC());
+        mFontSizes.setViewTextSize(mFromView, mFontSizes.getMessageViewSender());
+        mFontSizes.setViewTextSize(mToView, mFontSizes.getMessageViewTo());
+        mFontSizes.setViewTextSize(mToLabel, mFontSizes.getMessageViewTo());
+        mFontSizes.setViewTextSize(mCcView, mFontSizes.getMessageViewCC());
+        mFontSizes.setViewTextSize(mCcLabel, mFontSizes.getMessageViewCC());
 
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
 
-        resetViews();
-    }
+        mMessageHelper = MessageHelper.getInstance(mContext);
 
-    private void resetViews() {
         mSubjectView.setVisibility(VISIBLE);
         hideAdditionalHeaders();
     }
@@ -213,15 +218,45 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     public void populate(final Message message, final Account account) throws MessagingException {
         final Contacts contacts = K9.showContactName() ? mContacts : null;
         final CharSequence from = Address.toFriendly(message.getFrom(), contacts);
-        final String date = mDateFormat.format(message.getSentDate());
-        final String time = mTimeFormat.format(message.getSentDate());
         final CharSequence to = Address.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = Address.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
+
+        Address[] fromAddrs = message.getFrom();
+        Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
+        Address[] ccAddrs = message.getRecipients(Message.RecipientType.CC);
+        boolean fromMe = mMessageHelper.toMe(account, fromAddrs);
+
+        String counterpartyAddress = null;
+        if (fromMe) {
+            if (toAddrs.length > 0) {
+                counterpartyAddress = toAddrs[0].getAddress();
+            } else if (ccAddrs.length > 0) {
+                counterpartyAddress = ccAddrs[0].getAddress();
+            }
+        } else if (fromAddrs.length > 0) {
+            counterpartyAddress = fromAddrs[0].getAddress();
+        }
+
+        /*
+         * Only reset visibility of the subject if populate() was called because a new
+         * message is shown. If it is the same, do not force the subject visible, because
+         * this breaks the MessageTitleView in the action bar, which may hide our subject
+         * if it fits in the action bar but is only called when a new message is shown
+         * or the device is rotated.
+         */
+        if (mMessage == null || mMessage.getId() != message.getId()) {
+            mSubjectView.setVisibility(VISIBLE);
+        }
 
         mMessage = message;
         mAccount = account;
 
-        resetViews();
+        if (K9.showContactPicture()) {
+            mContactBadge.setVisibility(View.VISIBLE);
+            mContactsPictureLoader = new ContactPictureLoader(mContext, R.drawable.ic_contact_picture);
+        }  else {
+            mContactBadge.setVisibility(View.GONE);
+        }
 
         final String subject = message.getSubject();
         if (StringUtils.isNullOrEmpty(subject)) {
@@ -231,17 +266,27 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         }
         mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
+        String dateTime = DateUtils.formatDateTime(mContext,
+                message.getSentDate().getTime(),
+                DateUtils.FORMAT_SHOW_DATE
+                | DateUtils.FORMAT_ABBREV_ALL
+                | DateUtils.FORMAT_SHOW_TIME
+                | DateUtils.FORMAT_SHOW_YEAR);
+        mDateView.setText(dateTime);
+
+        if (K9.showContactPicture()) {
+            mContactBadge.assignContactFromEmail(counterpartyAddress, true);
+            if (counterpartyAddress != null) {
+                mContactsPictureLoader.loadContactPicture(counterpartyAddress, mContactBadge);
+            } else {
+                mContactBadge.setImageResource(R.drawable.ic_contact_picture);
+            }
+        }
+
         mFromView.setText(from);
 
-        if (date != null) {
-            mDateView.setText(date);
-            mDateView.setVisibility(View.VISIBLE);
-        } else {
-            mDateView.setVisibility(View.GONE);
-        }
-        mTimeView.setText(time);
-        updateAddressField(mToView, to, R.string.message_to_label);
-        updateAddressField(mCcView, cc, R.string.message_view_cc_label);
+        updateAddressField(mToView, to, mToLabel);
+        updateAddressField(mCcView, cc, mCcLabel);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
@@ -277,24 +322,13 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         layoutChanged();
     }
 
-    private static final StyleSpan sBoldSpan = new StyleSpan(Typeface.BOLD);
 
-    private void updateAddressField(TextView v, CharSequence address, int prefixId) {
-        if (TextUtils.isEmpty(address)) {
-            v.setVisibility(View.GONE);
-            return;
-        }
-
-        final SpannableStringBuilder text = new SpannableStringBuilder();
-        final String prefix = mContext.getString(prefixId);
-
-        text.append(prefix);
-        text.append(" ");
-        text.append(address);
-        text.setSpan(sBoldSpan, 0, prefix.length(), 0);
+    private void updateAddressField(TextView v, CharSequence text, View label) {
+        boolean hasText = !TextUtils.isEmpty(text);
 
         v.setText(text);
-        v.setVisibility(View.VISIBLE);
+        v.setVisibility(hasText ? View.VISIBLE : View.GONE);
+        label.setVisibility(hasText ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -313,13 +347,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     private List<HeaderEntry> getAdditionalHeaders(final Message message)
     throws MessagingException {
         List<HeaderEntry> additionalHeaders = new LinkedList<HeaderEntry>();
-        /*
-        * Remove "Subject" header as it is already shown in the standard
-        * message view header. But do show "From", "To", and "Cc" again.
-        * This time including the email addresses. See issue 1805.
-        */
+
         Set<String> headerNames = new LinkedHashSet<String>(message.getHeaderNames());
-        headerNames.remove("Subject");
         for (String headerName : headerNames) {
             String[] headerValues = message.getHeader(headerName);
             for (String headerValue : headerValues) {

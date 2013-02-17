@@ -32,7 +32,6 @@ public class FontSizeSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGE_VIEW_CC_FONT = "message_view_cc_font";
     private static final String PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT = "message_view_additional_headers_font";
     private static final String PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT = "message_view_subject_font";
-    private static final String PREFERENCE_MESSAGE_VIEW_TIME_FONT = "message_view_time_font";
     private static final String PREFERENCE_MESSAGE_VIEW_DATE_FONT = "message_view_date_font";
     private static final String PREFERENCE_MESSAGE_VIEW_CONTENT_FONT = "message_view_content_font";
     private static final String PREFERENCE_MESSAGE_COMPOSE_INPUT_FONT = "message_compose_input_font";
@@ -50,7 +49,6 @@ public class FontSizeSettings extends K9PreferenceActivity {
     private ListPreference mMessageViewCC;
     private ListPreference mMessageViewAdditionalHeaders;
     private ListPreference mMessageViewSubject;
-    private ListPreference mMessageViewTime;
     private ListPreference mMessageViewDate;
     private ListPreference mMessageViewContent;
     private ListPreference mMessageComposeInput;
@@ -115,9 +113,6 @@ public class FontSizeSettings extends K9PreferenceActivity {
         mMessageViewSubject = setupListPreference(
                                   PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT,
                                   Integer.toString(fontSizes.getMessageViewSubject()));
-        mMessageViewTime = setupListPreference(
-                               PREFERENCE_MESSAGE_VIEW_TIME_FONT,
-                               Integer.toString(fontSizes.getMessageViewTime()));
         mMessageViewDate = setupListPreference(
                                PREFERENCE_MESSAGE_VIEW_DATE_FONT,
                                Integer.toString(fontSizes.getMessageViewDate()));
@@ -153,7 +148,6 @@ public class FontSizeSettings extends K9PreferenceActivity {
         fontSizes.setMessageViewCC(Integer.parseInt(mMessageViewCC.getValue()));
         fontSizes.setMessageViewAdditionalHeaders(Integer.parseInt(mMessageViewAdditionalHeaders.getValue()));
         fontSizes.setMessageViewSubject(Integer.parseInt(mMessageViewSubject.getValue()));
-        fontSizes.setMessageViewTime(Integer.parseInt(mMessageViewTime.getValue()));
         fontSizes.setMessageViewDate(Integer.parseInt(mMessageViewDate.getValue()));
         fontSizes.setMessageViewContent(Integer.parseInt(mMessageViewContent.getValue()));
 

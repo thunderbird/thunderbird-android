@@ -102,7 +102,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
 
-    <string name="compose_title">Kirjoita</string>
+    <string name="compose_title_compose">Kirjoita</string>
     <string name="compose_title_reply">Vastaa</string>
     <string name="compose_title_reply_all">Vastaa kaikille</string>
     <string name="compose_title_forward">Välitä</string>
@@ -118,7 +118,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="status_processing_account">Käsitellään <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Seuraava tarkistus @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Seuraava tarkistus <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Synkronointi pois päältä</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
@@ -165,6 +165,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="unflag_action">Poista tähti</string>
     <string name="copy_action">Kopio</string>
     <string name="select_text_action">Valitse teksti</string>
+    <string name="show_headers_action">Näytä otsikot</string>
+    <string name="hide_headers_action">Piilota otsikot</string>
 
     <string name="message_view_theme_action_dark">Vaihda tummaan teemaan</string>
     <string name="message_view_theme_action_light">Vaihda vaaleaan teemaan</string>
@@ -302,8 +304,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_additional_headers_not_downloaded">Kaikkia otsikkotietoja ei ole ladattu tai tallennettu. Valitse \"Tallenna kaikki otsikkotiedot\" tilin saapuvan postin palvelimen asetuksissa.</string>
     <string name="message_no_additional_headers_available">Kaikki otsikkotiedot on ladattu, mutta näytettäviä ei ole enempää.</string>
     <string name="message_additional_headers_retrieval_failed">Lisäotsikkotietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
-
-    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Lisää samalta lähettäjältä</string>
 
@@ -842,13 +842,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="background_ops_auto_sync">Kun \'Taustadata\' ja \'Automaattinen synkronointi\' on valittu</string>
     <string name="background_ops_auto_sync_only">Kun Automaattinen synkronointi on valittu</string>
 
-    <string name="date_format_label">Päivämäärän muoto</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
     <string name="batch_select_all">Valitse kaikki</string>
 
     <string name="account_setup_push_limit_label">Push-tilassa tarkistettavien kansioiden enimmäismäärä</string>
@@ -925,8 +918,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="font_size_message_view_cc">Kopio</string>
     <string name="font_size_message_view_additional_headers">Tarkemmat otsikkotiedot</string>
     <string name="font_size_message_view_subject">Viestin aihe</string>
-    <string name="font_size_message_view_time">Aika</string>
-    <string name="font_size_message_view_date">Päiväys</string>
+    <string name="font_size_message_view_date">Aika ja päivämäärä</string>
     <string name="font_size_message_view_content">Viestin sisältö</string>
 
     <string name="font_size_message_compose">Viestin kirjoitus</string>

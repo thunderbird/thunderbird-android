@@ -142,8 +142,8 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="status_processing_account">Prép <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Prochaine récup. à <xliff:g id="nexttime">%s</xliff:g></string>
-    <string name="status_syncing_off">synchronisation désactivée</string>
+    <string name="status_next_poll">Prochaine récup. <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_syncing_off">Synchronisation désactivée</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> sélectionné(s)</string>
     <!-- Actions will be used as buttons and in menu items -->
@@ -161,6 +161,8 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="forward_action">Transférer</string>
     <string name="move_action">Déplacer</string>
     <string name="single_message_options_action">Options de message</string>
+    <string name="refile_action">Déposer</string>
+
     <string name="continue_action">Continuer</string>
     <string name="back_action">Retour</string>
     <string name="done_action">Terminé</string>
@@ -189,6 +191,8 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="unflag_action">Enlever l\'étoile</string>
     <string name="copy_action">Copier</string>
     <string name="select_text_action">Sélection de texte</string>
+    <string name="show_headers_action">Afficher entêtes</string>
+    <string name="hide_headers_action">Cacher entêtes</string>
 
     <string name="message_view_theme_action_dark">Basculer sur le thème foncé</string>
     <string name="message_view_theme_action_light">Basculer sur le thème clair</string>
@@ -326,8 +330,6 @@ de plus</string>
     <string name="message_additional_headers_not_downloaded">Les entêtes n\'ont pas toutes été téléchargées ou enregistrées. Sélectionnez «\u00A0Enregistrer toutes les entêtes localement\u00A0» dans les paramètres du serveur entrant pour activer cette fonction.</string>
     <string name="message_no_additional_headers_available">Toutes les entêtes ont été téléchargées, mais il n\'y en a pas d\'autres à montrer.</string>
     <string name="message_additional_headers_retrieval_failed">La récupération d\'entêtes supplémentaires de la base de données ou du serveur a échouée.</string>
-
-    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Plus de cet expéditeur</string>
 
@@ -839,6 +841,7 @@ de plus</string>
     <string name="account_settings_signature__location_label">Emplacement de la signature</string>
     <string name="account_settings_signature__location_before_quoted_text">Avant la citation</string>
     <string name="account_settings_signature__location_after_quoted_text">Après la citation</string>
+    <string name="setting_theme_global">Thème de l\'application</string>
     <string name="setting_theme_dark">Foncé</string>
     <string name="setting_theme_light">Clair</string>
     <string name="display_preferences">Affichage</string>
@@ -852,7 +855,13 @@ de plus</string>
     <string name="messageview_preferences">Messages</string>
     <string name="folderlist_preferences">Liste des dossiers</string>
     <string name="settings_theme_label">Thème</string>
+    <string name="settings_message_theme_label">Thème vue des messages</string>
+    <string name="settings_compose_theme_label">Thème composition</string>
     <string name="settings_language_label">Langue</string>
+
+    <string name="settings_message_theme_selection_label">Thème message fixe</string>
+    <string name="settings_message_theme_selection_summary_off">Sélectionner le thème vue tout en regardant le message</string>
+    <string name="settings_message_theme_selection_summary_on">Utiliser un thème message fixe</string>
 
     <string name="settings_messageview_mobile_layout_label">Disposition colonne unique</string>
     <string name="settings_messageview_mobile_layout_summary">Réarranger les messages HTML pour les petits écrans</string>
@@ -865,13 +874,6 @@ de plus</string>
     <string name="background_ops_enabled">Lorsque «\u00A0Données en arrière-plan\u00A0» est activé</string>
     <string name="background_ops_auto_sync">Lorsque «\u00A0Données en arrière-plan\u00A0» et «\u00A0Synchronisation auto\u00A0» sont activés</string>
     <string name="background_ops_auto_sync_only">Lorsque «\u00A0Synchronisation auto\u00A0» est activée</string>
-
-    <string name="date_format_label">Format de date</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
 
     <string name="batch_select_all">Sélectionner tout</string>
 
@@ -949,13 +951,13 @@ de plus</string>
     <string name="font_size_message_view_cc">Destinataire du message (CC)</string>
     <string name="font_size_message_view_additional_headers">Entêtes supplémentaires</string>
     <string name="font_size_message_view_subject">Sujet du message</string>
-    <string name="font_size_message_view_time">Heure du message</string>
-    <string name="font_size_message_view_date">Date du message</string>
+    <string name="font_size_message_view_date">Heure et date du message</string>
     <string name="font_size_message_view_content">Contenu du message</string>
 
     <string name="font_size_message_compose">Taille de police des message</string>
     <string name="font_size_message_compose_input">Champ texte</string>
 
+    <string name="font_size_default">Défaut</string>
     <string name="font_size_tiniest">Plus minuscule</string>
     <string name="font_size_tiny">Minuscule</string>
     <string name="font_size_smaller">Plus petit</string>
@@ -1170,4 +1172,11 @@ de plus</string>
     <string name="global_settings_splitview_when_in_landscape">En mode paysage</string>
 
     <string name="message_view_empty">Sélectionner un message sur la gauche</string>
+
+    <string name="global_settings_show_contact_picture_label">Afficher les images des contacts</string>
+    <string name="global_settings_show_contact_picture_summary">Afficher les images des contacts dans la liste des messages</string>
+
+    <string name="last_refresh_time_format">Dernière vérification <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Dernière vérification <xliff:g id="time_with_preposition">%s</xliff:g> (Push activé)</string>
+    <string name="preposition_for_date">le <xliff:g id="date">%s</xliff:g></string>
 </resources>

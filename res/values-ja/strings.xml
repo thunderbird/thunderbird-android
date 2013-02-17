@@ -110,7 +110,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="status_processing_account">処理 <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">次回受信 @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">次回受信 <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">同期停止</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g>件選択しました</string>
@@ -285,8 +285,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="message_additional_headers_not_downloaded">一部のヘッダしか保存されていません。ヘッダをすべて保存するためには、アカウント設定の受信メールサーバ設定で「ヘッダのダウンロード」をチェックしてください。</string>
     <string name="message_no_additional_headers_available">すべてのヘッダをダウンロードしましたが、表示すべき追加ヘッダはありませんでした。</string>
     <string name="message_additional_headers_retrieval_failed">追加ヘッダをデータベースまたはメールサーバから取得できませんでした。</string>
-
-    <string name="folder_push_active_symbol">(プッシュ)</string>
 
     <string name="from_same_sender">この送信者からのメールを検索</string>
 
@@ -809,13 +807,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="background_ops_auto_sync">バックグランドデータと自動同期がチェックされた時</string>
     <string name="background_ops_auto_sync_only">自動同期がチェックされた時</string>
 
-    <string name="date_format_label">日付書式</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
     <string name="batch_select_all">全選択</string>
 
     <string name="account_setup_push_limit_label">プッシュ受信の最大フォルダ数</string>
@@ -892,8 +883,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="font_size_message_view_cc">CC</string>
     <string name="font_size_message_view_additional_headers">追加ヘッダ</string>
     <string name="font_size_message_view_subject">件名</string>
-    <string name="font_size_message_view_time">時刻</string>
-    <string name="font_size_message_view_date">日付</string>
+    <string name="font_size_message_view_date">日時</string>
     <string name="font_size_message_view_content">本文</string>
 
     <string name="font_size_message_compose">メッセージ作成</string>

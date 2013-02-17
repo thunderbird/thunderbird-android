@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -154,10 +153,9 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
 
             holder.chip.getBackground().setAlpha(255);
 
-            holder.description.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                    mFontSizes.getAccountName());
-            holder.email.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                    mFontSizes.getAccountDescription());
+            mFontSizes.setViewTextSize(holder.description, mFontSizes.getAccountName());
+            mFontSizes.setViewTextSize(holder.email, mFontSizes.getAccountDescription());
+
 
             return view;
         }

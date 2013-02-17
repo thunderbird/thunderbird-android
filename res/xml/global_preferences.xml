@@ -80,14 +80,6 @@
                 android:title="@string/font_size_settings_title"
                 android:summary="@string/font_size_settings_description" />
 
-            <ListPreference
-                android:persistent="false"
-                android:key="dateFormat"
-                android:title="@string/date_format_label"
-                android:entries="@array/date_formats"
-                android:entryValues="@array/date_formats"
-                android:dialogTitle="@string/date_format_label" />
-
             <CheckBoxPreference
                 android:persistent="false"
                 android:key="animations"

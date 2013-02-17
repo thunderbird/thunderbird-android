@@ -110,7 +110,7 @@
     <!-- NEW: <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>-->
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <!-- NEW: <string name="status_next_poll">Next poll @ <xliff:g id="nexttime">%s</xliff:g></string>-->
+    <!-- NEW: <string name="status_next_poll">Next poll <xliff:g id="nexttime">%s</xliff:g></string>-->
     <string name="status_syncing_off">הסנכרון מושבת</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -286,8 +286,6 @@
     <string name="message_additional_headers_not_downloaded">לא כל הכותרות הורדו או נשמרו. בחר \" שמור את כל הכותרות המקומיות \ "בהגדרות של שרת חשבון הודעות נכנסות כדי לאפשר את זה בעתיד.</string>
     <string name="message_no_additional_headers_available">כל הכותרות הורדו, אבל אין כותרות נוספות להצגה.</string>
     <string name="message_additional_headers_retrieval_failed">שליפה של כותרות נוספות מהשרת של מסד הנתונים או מהדואר נכשל.</string>
-
-    <string name="folder_push_active_symbol">(דחיפה)</string>
 
     <string name="from_same_sender">עוד מהשולח הזה</string>
 
@@ -810,13 +808,6 @@
     <string name="background_ops_auto_sync">"מתי ש\'נתונים ברקע\' ו\'סינכרון אוטומטי\' מסומנים "</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="date_format_label">פורמט תאריך</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
     <string name="batch_select_all">בחר הכל</string>
 
     <string name="account_setup_push_limit_label">מקסימום תיקיות כדי לבדוק עם דחיפה</string>
@@ -893,8 +884,7 @@
     <string name="font_size_message_view_cc">עותק</string>
     <string name="font_size_message_view_additional_headers">כותרות נוספות</string>
     <string name="font_size_message_view_subject">כותרת</string>
-    <string name="font_size_message_view_time">זמן</string>
-    <string name="font_size_message_view_date">תאריך</string>
+    <string name="font_size_message_view_date">שעה ותאריך</string>
     <string name="font_size_message_view_content">גוף ההודעה</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

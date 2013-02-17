@@ -1,10 +1,8 @@
 package com.fsck.k9.fragment;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,6 +35,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.format.DateUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -408,9 +407,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private MessageListFragmentListener mFragmentListener;
 
-
-    private DateFormat mTimeFormat;
-
     private boolean mThreadedList;
 
     private boolean mIsThreadDisplay;
@@ -625,7 +621,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             mFragmentListener.setMessageListTitle(displayName);
 
-            String operation = mListener.getOperation(activity, getTimeFormat()).trim();
+            String operation = mListener.getOperation(activity);
             if (operation.length() < 1) {
                 mFragmentListener.setMessageListSubTitle(mAccount.getEmail());
             } else {
@@ -656,18 +652,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 mFragmentListener.setUnreadCount(mUnreadMessageCount);
             }
         }
-    }
-
-    private void setupFormats() {
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(mContext);
-    }
-
-    private DateFormat getTimeFormat() {
-        if (mTimeFormat == null) {
-            setupFormats();
-        }
-
-        return mTimeFormat;
     }
 
     private void progress(final boolean progress) {
@@ -976,6 +960,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     @Override
     public void onPause() {
         super.onPause();
+        mListener.onPause(getActivity());
         mController.removeListener(mListener);
     }
 
@@ -987,8 +972,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     @Override
     public void onResume() {
         super.onResume();
-
-        setupFormats();
 
         Context appContext = getActivity().getApplicationContext();
 
@@ -1018,6 +1001,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
+        mListener.onResume(getActivity());
         mController.addListener(mListener);
 
         //Cancel pending new mail notifications when we open an account
@@ -1751,17 +1735,20 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             if (mSenderAboveSubject) {
                 holder.from = (TextView) view.findViewById(R.id.subject);
-                holder.from.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSender());
+                mFontSizes.setViewTextSize(holder.from, mFontSizes.getMessageListSender());
+
             } else {
                 holder.subject = (TextView) view.findViewById(R.id.subject);
-                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListSubject());
+                mFontSizes.setViewTextSize(holder.subject, mFontSizes.getMessageListSubject());
+
             }
 
-            holder.date.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListDate());
+            mFontSizes.setViewTextSize(holder.date, mFontSizes.getMessageListDate());
+
 
             // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
             holder.preview.setLines(Math.max(mPreviewLines,1));
-            holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSizes.getMessageListPreview());
+            mFontSizes.setViewTextSize(holder.preview, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
 
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
@@ -1793,6 +1780,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             boolean ccMe = mMessageHelper.toMe(account, ccAddrs);
 
             CharSequence displayName = mMessageHelper.getDisplayName(account, fromAddrs, toAddrs);
+            CharSequence displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN));
 
             String counterpartyAddress = null;
             if (fromMe) {
@@ -1804,9 +1792,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             } else if (fromAddrs.length > 0) {
                 counterpartyAddress = fromAddrs[0].getAddress();
             }
-
-            Date sentDate = new Date(cursor.getLong(DATE_COLUMN));
-            String displayDate = mMessageHelper.formatDate(sentDate);
 
             int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
 

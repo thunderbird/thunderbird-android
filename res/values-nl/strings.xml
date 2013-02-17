@@ -110,7 +110,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Volgende poll @ <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Volgende poll <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Synchroniseren uitgeschakeld</string>
 
     <!-- Actions will be used as buttons and in menu items -->
@@ -284,8 +284,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="message_additional_headers_not_downloaded">Niet alle headers zijn gedownload of opgeslagen. Selecteer \"Sla alle headers lokaal op\" in de account\'s inkomende server instellingen om dit in te schakelen voor de toekomst.</string>
     <string name="message_no_additional_headers_available">Alle headers zijn gedownload, maar er zijn geen extra headers aan te tonen.</string>
     <string name="message_additional_headers_retrieval_failed">Het ophalen van extra headers uit de database of e-mailserver is mislukt.</string>
-
-    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="from_same_sender">Meer van deze afzender</string>
 
@@ -810,13 +808,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="background_ops_auto_sync">Wanneer \'Achtergrond data\' &amp; \'Auto-sync\' zijn aangevinkt</string>
     <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
-    <string name="date_format_label">Datum formaat</string>
-    <!--
-      The values of the date_format_* strings MUST be valid date format strings.
-      See Android SDK documentation for the class SimpleDateFormat.
-    -->
-    <string name="date_format_common">dd-MMM-yyyy</string>
-
     <string name="batch_select_all">Selecteer alle</string>
 
     <string name="account_setup_push_limit_label">Max mappen om te controleren met push</string>
@@ -893,8 +884,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="font_size_message_view_cc">Bericht ontvanger (CC)</string>
     <string name="font_size_message_view_additional_headers">Extra koppen</string>
     <string name="font_size_message_view_subject">Bericht onderwerp</string>
-    <string name="font_size_message_view_time">Bericht tijd</string>
-    <string name="font_size_message_view_date">Bericht datum</string>
+    <string name="font_size_message_view_date">Bericht tijd en datum</string>
     <string name="font_size_message_view_content">Bericht inhoud</string>
 
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->

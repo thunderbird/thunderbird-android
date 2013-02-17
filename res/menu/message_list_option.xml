@@ -81,30 +81,37 @@
 
     <!-- MessageView -->
     <item
-        android:id="@+id/archive"
-        android:icon="?attr/iconActionArchive"
-        android:showAsAction="ifRoom"
-        android:title="@string/archive_action"/>
+        android:id="@+id/refile"
+        android:icon="?attr/iconActionSingleMessageOptions"
+        android:showAsAction="never"
+        android:title="@string/refile_action">
+        <menu>
+            <item
+                android:id="@+id/archive"
+                android:icon="?attr/iconActionArchive"
+                android:showAsAction="ifRoom"
+                android:title="@string/archive_action"/>
 
-    <!-- MessageView -->
-    <item
-        android:id="@+id/spam"
-        android:icon="?attr/iconActionSpam"
-        android:showAsAction="ifRoom"
-        android:title="@string/spam_action"/>
+            <!-- MessageView -->
+            <item
+                android:id="@+id/spam"
+                android:icon="?attr/iconActionSpam"
+                android:showAsAction="ifRoom"
+                android:title="@string/spam_action"/>
 
-    <!-- MessageView -->
-    <item
-        android:id="@+id/move"
-        android:icon="?attr/iconActionMoveOrCopy"
-        android:showAsAction="ifRoom"
-        android:title="@string/move_action"/>
+            <!-- MessageView -->
+            <item
+                android:id="@+id/move"
+                android:icon="?attr/iconActionMoveOrCopy"
+                android:showAsAction="ifRoom"
+                android:title="@string/move_action"/>
 
-    <!-- MessageView -->
-    <item
-        android:id="@+id/copy"
-        android:title="@string/copy_action"/>
-
+            <!-- MessageView -->
+            <item
+                android:id="@+id/copy"
+                android:title="@string/copy_action"/>
+        </menu>
+    </item>
     <!-- MessageView -->
     <item
         android:id="@+id/toggle_unread"
@@ -164,7 +171,7 @@
     <!-- MessageList -->
     <item
         android:id="@+id/select_all"
-        android:icon="?attr/iconMenuSelectAll"
+        android:icon="?attr/iconActionSelectAll"
         android:showAsAction="never"
         android:title="@string/batch_select_all"/>
 
@@ -172,7 +179,7 @@
     <item
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
-        android:icon="?attr/iconActionRefresh"
+        android:icon="?attr/iconActionUpload"
         android:showAsAction="never"
         android:title="@string/send_messages_action"/>
 
@@ -197,7 +204,7 @@
     <!-- always -->
     <item
         android:id="@+id/settings"
-        android:icon="?attr/iconMenuPreferences"
+        android:icon="?attr/iconActionSettings"
         android:showAsAction="never"
         android:title="@string/preferences_action">
         <menu>
