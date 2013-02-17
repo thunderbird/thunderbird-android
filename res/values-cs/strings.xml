@@ -526,8 +526,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="account_settings_message_format_label">Formát zprávy</string>
     <string name="account_settings_message_format_text">Prostý text (obrázky a formátování bude odstraněno)</string>
-    NEW: <string name="account_settings_message_format_html">HTML (obrázky a formátování bude zachováno )</string>
-    NEW: <string name="account_settings_message_format_auto">Automaticky (prostý text dokud neodpovídáte na zprávu v HTML formátu)</string>
+    <string name="account_settings_message_format_html">HTML (obrázky a formátování bude zachováno )</string>
+    <string name="account_settings_message_format_auto">Automaticky (prostý text dokud neodpovídáte na zprávu v HTML formátu)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Vždy zobrazit kopie/skrytá</string>
     <string name="account_settings_always_show_cc_bcc_summary">Vždy zobrazit řádky kopie a skrytá kopie</string>
@@ -998,7 +998,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <plurals name="settings_import_success">
         <item quantity="one">1 účet</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> účtů</item>
-    </plurals>-->
+    </plurals>
     <string name="settings_export_failure">Nepodařilo se exportovat nastavení</string>
     <string name="settings_import_failure">Nepodařilo se importovat jakékoli nastavení z <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_export_success_header">Export byl uspěšný</string>
@@ -1010,13 +1010,13 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <plurals name="settings_import_server_passwords">
         <item quantity="one">heslo serveru</item>
         <item quantity="other">hesla serverů</item>
-    </plurals>-->
+    </plurals>
     <string name="settings_import_incoming_server">Příchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Odchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
         <item quantity="one">Nastavit heslo…</item>
         <item quantity="other">Nastaveit hesla…</item>
-    </plurals>-->
+    </plurals>
     <string name="settings_import_use_incoming_server_password">Heslo pro příchozi server</string>
     <string name="activate_account_action">Aktivovat</string>
 
