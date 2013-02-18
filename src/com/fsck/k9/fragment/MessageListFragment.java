@@ -2854,22 +2854,24 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
     }
 
-    public void openPrevious(MessageReference messageReference) {
+    public boolean openPrevious(MessageReference messageReference) {
         int position = getPosition(messageReference);
         if (position <= 0) {
-            return;
+            return false;
         }
 
         openMessageAtPosition(position - 1);
+        return true;
     }
 
-    public void openNext(MessageReference messageReference) {
+    public boolean openNext(MessageReference messageReference) {
         int position = getPosition(messageReference);
         if (position < 0 || position == mAdapter.getCount() - 1) {
-            return;
+            return false;
         }
 
         openMessageAtPosition(position + 1);
+        return true;
     }
 
     public boolean isFirst(MessageReference messageReference) {
