@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.cache.EmailProviderCacheCursor;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.MessagingException;
@@ -271,6 +272,7 @@ public class EmailProvider extends ContentProvider {
                 cursor = new SpecialColumnsCursor(new IdTrickeryCursor(cursor), projection,
                         specialColumns);
 
+                cursor = new EmailProviderCacheCursor(accountUuid, cursor, getContext());
                 break;
             }
             case STATS: {

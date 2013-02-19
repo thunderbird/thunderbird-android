@@ -13,8 +13,10 @@ import java.util.Set;
 import java.util.concurrent.Future;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -32,6 +34,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -75,19 +78,19 @@ import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
+import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
-import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.MergeCursorWithUniqueId;
+import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.provider.EmailProvider;
@@ -428,6 +431,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private ContactPictureLoader mContactsPictureLoader;
 
+    private LocalBroadcastManager mLocalBroadcastManager;
+    private BroadcastReceiver mCacheBroadcastReceiver;
+    private IntentFilter mCacheIntentFilter;
+
+
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
      *
@@ -728,7 +736,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPreferences = Preferences.getPreferences(getActivity().getApplicationContext());
+        Context appContext = getActivity().getApplicationContext();
+
+        mPreferences = Preferences.getPreferences(appContext);
         mController = MessagingController.getInstance(getActivity().getApplication());
 
         mPreviewLines = K9.messageListPreviewLines();
@@ -741,6 +751,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         restoreInstanceState(savedInstanceState);
         decodeArguments();
+
+        createCacheBroadcastReceiver(appContext);
 
         mInitialized = true;
     }
@@ -916,6 +928,19 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mListView.setAdapter(mAdapter);
     }
 
+    private void createCacheBroadcastReceiver(Context appContext) {
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(appContext);
+
+        mCacheBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                mAdapter.notifyDataSetChanged();
+            }
+        };
+
+        mCacheIntentFilter = new IntentFilter(EmailProviderCache.ACTION_CACHE_UPDATED);
+    }
+
     private FolderInfoHolder getFolder(String folder, Account account) {
         LocalFolder local_folder = null;
         try {
@@ -960,6 +985,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     @Override
     public void onPause() {
         super.onPause();
+
+        mLocalBroadcastManager.unregisterReceiver(mCacheBroadcastReceiver);
         mListener.onPause(getActivity());
         mController.removeListener(mListener);
     }
@@ -1001,6 +1028,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
+        mLocalBroadcastManager.registerReceiver(mCacheBroadcastReceiver, mCacheIntentFilter);
         mListener.onResume(getActivity());
         mController.addListener(mListener);
 

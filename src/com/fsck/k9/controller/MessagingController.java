@@ -53,6 +53,7 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.NotificationDeleteConfirmation;
 import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.AccountSetupOutgoing;
+import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -199,9 +200,6 @@ public class MessagingController implements Runnable {
      */
     private Application mApplication;
 
-    // Key is accountUuid:folderName:messageUid   ,   value is unimportant
-    private ConcurrentHashMap<String, String> deletedUids = new ConcurrentHashMap<String, String>();
-
     /**
      * A holder class for pending notification data
      *
@@ -320,44 +318,68 @@ public class MessagingController implements Runnable {
 
     private static final Flag[] SYNC_FLAGS = new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED };
 
-    private String createMessageKey(Account account, String folder, Message message) {
-        return createMessageKey(account, folder, message.getUid());
+
+    private void suppressMessages(Account account, List<Message> messages) {
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(),
+                mApplication.getApplicationContext());
+        cache.hideMessages(messages);
     }
 
-    private String createMessageKey(Account account, String folder, String uid) {
-        return account.getUuid() + ":" + folder + ":" + uid;
+    private void unsuppressMessages(Account account, Message[] messages) {
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(),
+                mApplication.getApplicationContext());
+        cache.unhideMessages(messages);
     }
 
-    private void suppressMessage(Account account, String folder, Message message) {
+    private boolean isMessageSuppressed(Account account, Message message) {
+        LocalMessage localMessage = (LocalMessage) message;
+        String accountUuid = account.getUuid();
+        long messageId = localMessage.getId();
+        long folderId = ((LocalFolder) localMessage.getFolder()).getId();
 
-        if (account == null || folder == null || message == null) {
-            return;
-        }
-        String messKey = createMessageKey(account, folder, message);
-        deletedUids.put(messKey, "true");
+        EmailProviderCache cache = EmailProviderCache.getCache(accountUuid,
+                mApplication.getApplicationContext());
+        return cache.isMessageHidden(messageId, folderId);
     }
 
-    private void unsuppressMessage(Account account, String folder, String uid) {
-        if (account == null || folder == null || uid == null) {
-            return;
-        }
-        String messKey = createMessageKey(account, folder, uid);
-        deletedUids.remove(messKey);
+    private void setFlagInCache(final Account account, final List<Long> messageIds,
+            final Flag flag, final boolean newState) {
+
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(),
+                mApplication.getApplicationContext());
+        String columnName = LocalStore.getColumnNameForFlag(flag);
+        String value = Integer.toString((newState) ? 1 : 0);
+        cache.setValueForMessages(messageIds, columnName, value);
     }
 
+    private void removeFlagFromCache(final Account account, final List<Long> messageIds,
+            final Flag flag) {
 
-    private boolean isMessageSuppressed(Account account, String folder, Message message) {
-        if (account == null || folder == null || message == null) {
-            return false;
-        }
-        String messKey = createMessageKey(account, folder, message);
-
-        if (deletedUids.containsKey(messKey)) {
-            return true;
-        }
-
-        return false;
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(),
+                mApplication.getApplicationContext());
+        String columnName = LocalStore.getColumnNameForFlag(flag);
+        cache.removeValueForMessages(messageIds, columnName);
     }
+
+    private void setFlagForThreadsInCache(final Account account, final List<Long> threadRootIds,
+            final Flag flag, final boolean newState) {
+
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(),
+                mApplication.getApplicationContext());
+        String columnName = LocalStore.getColumnNameForFlag(flag);
+        String value = Integer.toString((newState) ? 1 : 0);
+        cache.setValueForThreads(threadRootIds, columnName, value);
+    }
+
+    private void removeFlagForThreadsFromCache(final Account account, final List<Long> messageIds,
+            final Flag flag) {
+
+        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(),
+                mApplication.getApplicationContext());
+        String columnName = LocalStore.getColumnNameForFlag(flag);
+        cache.removeValueForThreads(messageIds, columnName);
+    }
+
 
     /**
      * @param application  {@link K9}
@@ -677,7 +699,7 @@ public class MessagingController implements Runnable {
                 public void messagesFinished(int number) {}
                 @Override
                 public void messageFinished(Message message, int number, int ofTotal) {
-                    if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message)) {
+                    if (!isMessageSuppressed(message.getFolder().getAccount(), message)) {
                         List<Message> messages = new ArrayList<Message>();
 
                         messages.add(message);
@@ -1386,8 +1408,6 @@ public class MessagingController implements Runnable {
         if (message.isSet(Flag.DELETED)) {
             syncFlagMessages.add(message);
             return;
-        } else if (isMessageSuppressed(account, folder, message)) {
-            return;
         }
 
         Message localMessage = localFolder.getMessage(message.getUid());
@@ -1498,14 +1518,13 @@ public class MessagingController implements Runnable {
                          * (POP) may not be able to give us headers for
                          * ENVELOPE, only size.
                          */
-                        if (!isMessageSuppressed(account, folder, message)) {
-                            // keep message for delayed storing
-                            chunk.add(message);
 
-                            if (chunk.size() >= UNSYNC_CHUNK_SIZE) {
-                                writeUnsyncedMessages(chunk, localFolder, account, folder);
-                                chunk.clear();
-                            }
+                        // keep message for delayed storing
+                        chunk.add(message);
+
+                        if (chunk.size() >= UNSYNC_CHUNK_SIZE) {
+                            writeUnsyncedMessages(chunk, localFolder, account, folder);
+                            chunk.clear();
                         }
                     }
                 } catch (Exception e) {
@@ -1567,15 +1586,6 @@ public class MessagingController implements Runnable {
 
     private boolean shouldImportMessage(final Account account, final String folder, final Message message, final AtomicInteger progress, final Date earliestDate) {
 
-        if (isMessageSuppressed(account, folder, message)) {
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Message " + message.getUid() + " was suppressed " +
-                      "but just downloaded. " +
-                      "The race condition means we wasted some bandwidth. Oh well.");
-            }
-            return false;
-
-        }
         if (account.isSearchByDateCapable() && message.olderThan(earliestDate)) {
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
@@ -1819,7 +1829,7 @@ public class MessagingController implements Runnable {
                 boolean messageChanged = syncFlags(localMessage, remoteMessage);
                 if (messageChanged) {
                     boolean shouldBeNotifiedOf = false;
-                    if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(account, folder, localMessage)) {
+                    if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(account, localMessage)) {
                         for (MessagingListener l : getListeners()) {
                             l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
                         }
@@ -2748,6 +2758,8 @@ public class MessagingController implements Runnable {
     public void setFlag(final Account account, final List<Long> messageIds, final Flag flag,
             final boolean newState) {
 
+        setFlagInCache(account, messageIds, flag, newState);
+
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -2758,6 +2770,8 @@ public class MessagingController implements Runnable {
 
     public void setFlagForThreads(final Account account, final List<Long> threadRootIds,
             final Flag flag, final boolean newState) {
+
+        setFlagForThreadsInCache(account, threadRootIds, flag, newState);
 
         threadPool.execute(new Runnable() {
             @Override
@@ -2783,8 +2797,10 @@ public class MessagingController implements Runnable {
         try {
             if (threadedList) {
                 localStore.setFlagForThreads(ids, flag, newState);
+                removeFlagFromCache(account, ids, flag);
             } else {
                 localStore.setFlag(ids, flag, newState);
+                removeFlagForThreadsFromCache(account, ids, flag);
             }
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Couldn't set flags in local database", e);
@@ -3763,9 +3779,7 @@ public class MessagingController implements Runnable {
             final List<Message> messages, final String destFolder,
             final MessagingListener listener) {
 
-        for (Message message : messages) {
-            suppressMessage(account, srcFolder, message);
-        }
+        suppressMessages(account, messages);
 
         putBackground("moveMessages", null, new Runnable() {
             @Override
@@ -3779,9 +3793,7 @@ public class MessagingController implements Runnable {
     public void moveMessagesInThread(final Account account, final String srcFolder,
             final List<Message> messages, final String destFolder) {
 
-        for (Message message : messages) {
-            suppressMessage(account, srcFolder, message);
-        }
+        suppressMessages(account, messages);
 
         putBackground("moveMessagesInThread", null, new Runnable() {
             @Override
@@ -3905,8 +3917,8 @@ public class MessagingController implements Runnable {
                         for (MessagingListener l : getListeners()) {
                             l.messageUidChanged(account, srcFolder, origUid, message.getUid());
                         }
-                        unsuppressMessage(account, srcFolder, origUid);
                     }
+                    unsuppressMessages(account, messages);
 
                     if (unreadCountAffected) {
                         // If this move operation changes the unread count, notify the listeners
@@ -3970,9 +3982,7 @@ public class MessagingController implements Runnable {
             public void act(final Account account, final Folder folder,
                     final List<Message> accountMessages) {
 
-                for (Message message : accountMessages) {
-                    suppressMessage(account, folder.getName(), message);
-                }
+                suppressMessages(account, messages);
 
                 putBackground("deleteThreads", null, new Runnable() {
                     @Override
@@ -4021,9 +4031,7 @@ public class MessagingController implements Runnable {
             @Override
             public void act(final Account account, final Folder folder,
             final List<Message> accountMessages) {
-                for (Message message : accountMessages) {
-                    suppressMessage(account, folder.getName(), message);
-                }
+                suppressMessages(account, messages);
 
                 putBackground("deleteMessages", null, new Runnable() {
                     @Override
@@ -4111,9 +4119,8 @@ public class MessagingController implements Runnable {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Delete policy " + account.getDeletePolicy() + " prevents delete from server");
             }
-            for (String uid : uids) {
-                unsuppressMessage(account, folder, uid);
-            }
+
+            unsuppressMessages(account, messages);
         } catch (UnavailableStorageException e) {
             Log.i(K9.LOG_TAG, "Failed to delete message because storage is not available - trying again later.");
             throw new UnavailableAccountException(e);
