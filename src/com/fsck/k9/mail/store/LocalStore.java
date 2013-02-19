@@ -72,6 +72,7 @@ import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.provider.EmailProvider;
+import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
@@ -129,6 +130,28 @@ public class LocalStore extends Store implements Serializable {
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 400;
 
     public static final int DB_VERSION = 48;
+
+
+    public static String getColumnNameForFlag(Flag flag) {
+        switch (flag) {
+            case SEEN: {
+                return MessageColumns.READ;
+            }
+            case FLAGGED: {
+                return MessageColumns.FLAGGED;
+            }
+            case ANSWERED: {
+                return MessageColumns.ANSWERED;
+            }
+            case FORWARDED: {
+                return MessageColumns.FORWARDED;
+            }
+            default: {
+                throw new IllegalArgumentException("Flag must be a special column flag");
+            }
+        }
+    }
+
 
     protected String uUid = null;
 
@@ -4193,28 +4216,7 @@ public class LocalStore extends Store implements Serializable {
             throws MessagingException {
 
         final ContentValues cv = new ContentValues();
-
-        switch (flag) {
-            case SEEN: {
-                cv.put("read", newState);
-                break;
-            }
-            case FLAGGED: {
-                cv.put("flagged", newState);
-                break;
-            }
-            case ANSWERED: {
-                cv.put("answered", newState);
-                break;
-            }
-            case FORWARDED: {
-                cv.put("forwarded", newState);
-                break;
-            }
-            default: {
-                throw new IllegalArgumentException("Flag must be a special column flag");
-            }
-        }
+        cv.put(getColumnNameForFlag(flag), newState);
 
         doBatchSetSelection(new BatchSetSelection() {
 
@@ -4262,28 +4264,7 @@ public class LocalStore extends Store implements Serializable {
     public void setFlagForThreads(final List<Long> threadRootIds, Flag flag, final boolean newState)
             throws MessagingException {
 
-        final String flagColumn;
-        switch (flag) {
-            case SEEN: {
-                flagColumn = "read";
-                break;
-            }
-            case FLAGGED: {
-                flagColumn = "flagged";
-                break;
-            }
-            case ANSWERED: {
-                flagColumn = "answered";
-                break;
-            }
-            case FORWARDED: {
-                flagColumn = "forwarded";
-                break;
-            }
-            default: {
-                throw new IllegalArgumentException("Flag must be a special column flag");
-            }
-        }
+        final String flagColumn = getColumnNameForFlag(flag);
 
         doBatchSetSelection(new BatchSetSelection() {
 

@@ -1356,14 +1356,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void showNextMessageOrReturn() {
-        if (K9.messageViewReturnToList()) {
+        if (K9.messageViewReturnToList() || !showNextMessage()) {
             if (mDisplayMode == DisplayMode.SPLIT_VIEW) {
                 showMessageViewPlaceHolder();
             } else {
                 showMessageList();
             }
-        } else {
-            showNextMessage();
         }
     }
 
@@ -1377,18 +1375,24 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mActionBarSubject.setMessageHeader(header);
     }
 
-    private void showNextMessage() {
+    private boolean showNextMessage() {
         MessageReference ref = mMessageViewFragment.getMessageReference();
         if (ref != null) {
-            mMessageListFragment.openNext(ref);
+            if (mMessageListFragment.openNext(ref)) {
+                return true;
+            }
         }
+        return false;
     }
 
-    private void showPreviousMessage() {
+    private boolean showPreviousMessage() {
         MessageReference ref = mMessageViewFragment.getMessageReference();
         if (ref != null) {
-            mMessageListFragment.openPrevious(ref);
+            if (mMessageListFragment.openPrevious(ref)) {
+                return true;
+            }
         }
+        return false;
     }
 
     private void showMessageList() {
