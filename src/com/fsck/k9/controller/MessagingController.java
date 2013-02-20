@@ -55,6 +55,7 @@ import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.AccountSetupOutgoing;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.NotificationBuilder;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
@@ -2640,7 +2641,7 @@ public class MessagingController implements Runnable {
         final String title = context.getString(
                 R.string.notification_certificate_error_text, account.getName());
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        final NotificationCompat.Builder builder = new NotificationBuilder(context);
         builder.setSmallIcon(R.drawable.stat_notify_email_generic);
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
@@ -3332,7 +3333,7 @@ public class MessagingController implements Runnable {
         NotificationManager notifMgr =
             (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
+        NotificationCompat.Builder builder = new NotificationBuilder(mApplication);
         builder.setSmallIcon(R.drawable.ic_notify_check_mail);
         builder.setWhen(System.currentTimeMillis());
         builder.setOngoing(true);
@@ -3382,7 +3383,7 @@ public class MessagingController implements Runnable {
         NotificationManager notifMgr =
                 (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
+        NotificationCompat.Builder builder = new NotificationBuilder(mApplication);
         builder.setSmallIcon(R.drawable.stat_notify_email_generic);
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
@@ -3417,7 +3418,7 @@ public class MessagingController implements Runnable {
         final NotificationManager notifMgr =
                 (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
+        NotificationCompat.Builder builder = new NotificationBuilder(mApplication);
         builder.setSmallIcon(R.drawable.ic_notify_check_mail);
         builder.setWhen(System.currentTimeMillis());
         builder.setOngoing(true);
@@ -4802,7 +4803,7 @@ public class MessagingController implements Runnable {
         NotificationManager notifMgr =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        NotificationCompat.Builder builder = new NotificationBuilder(context);
         builder.setSmallIcon(R.drawable.stat_notify_email_generic);
         builder.setWhen(System.currentTimeMillis());
         if (!updateSilently) {
