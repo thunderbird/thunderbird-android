@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="4.327" versioncode="17027" >
+    <release version="4.327" versioncode="17028" >
         <change>Fix dialog message when deleting multiple messages from a notification</change>
         <change>Message view / list: fix NPE when list is empty</change>
         <change>If there is no message when resuming, K-9 should return to a MessageList.</change>
