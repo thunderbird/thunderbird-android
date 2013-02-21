@@ -877,7 +877,6 @@ K-9改进的功能包括：
     <string name="font_size_message_view_cc">抄送</string>
     <string name="font_size_message_view_additional_headers">额外的邮件信息</string>
     <string name="font_size_message_view_subject">主题</string>
-    <string name="font_size_message_view_time">时间</string>
     <string name="font_size_message_view_date">日期</string>
     <string name="font_size_message_view_content">邮件内容</string>
 

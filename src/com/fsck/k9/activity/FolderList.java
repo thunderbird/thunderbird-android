@@ -34,7 +34,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
@@ -46,7 +45,6 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.misc.ActionBarNavigationSpinner;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
@@ -71,7 +69,7 @@ import de.cketti.library.changelog.ChangeLog;
  * Activity shows list of the Account's folders
  */
 
-public class FolderList extends K9ListActivity implements OnNavigationListener {
+public class FolderList extends K9ListActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
@@ -321,19 +319,6 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_INBOX) {
-            onOpenFolder(mAccount.getInboxFolderName());
-            return true;
-        } else if (itemId == ActionBarNavigationSpinner.AB_NAVIGATION_ACCOUNTS) {
-            onAccounts();
-            return true;
-        }
-
-        return false;
     }
 
     @Override
@@ -657,7 +642,7 @@ public class FolderList extends K9ListActivity implements OnNavigationListener {
         });
 
         folderSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            
+
             @Override
             public boolean onClose() {
                 mActionBarTitle.setText(getString(R.string.folders_title));

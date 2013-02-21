@@ -883,7 +883,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_additional_headers">Cabeçalho adicional</string>
     <string name="font_size_message_view_subject">Assunto</string>
-    <string name="font_size_message_view_time">Hora</string>
     <string name="font_size_message_view_date">Data</string>
     <string name="font_size_message_view_content">Corpo da mensagem</string>
 

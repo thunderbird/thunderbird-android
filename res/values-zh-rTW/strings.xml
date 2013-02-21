@@ -878,7 +878,6 @@ K-9改良的功能包括：
     <string name="font_size_message_view_cc">副本</string>
     <string name="font_size_message_view_additional_headers">額外的郵件訊息</string>
     <string name="font_size_message_view_subject">主題</string>
-    <string name="font_size_message_view_time">時間</string>
     <string name="font_size_message_view_date">日期</string>
     <string name="font_size_message_view_content">郵件本文內容</string>
 
