@@ -100,9 +100,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
     <string name="choose_folder_title">폴더 선택</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">수신 <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">헤더정보를 가져오는 중 <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">보내는 중 <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -112,6 +109,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="status_next_poll">다음 수신 <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">동기화 실패</string>
 
+    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">다음</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">이전</string> <!-- Used as part of a multi-step process -->
@@ -127,6 +125,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="forward_action">전달</string>
     <string name="move_action">이동</string>
     <string name="single_message_options_action">메시지 옵션</string>
+    <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">계속</string>
     <string name="back_action">뒤로</string>
     <string name="done_action">완료</string> <!--  Used to complete a multi-step process -->
@@ -155,6 +154,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="unflag_action">별표 해제하기</string>
     <string name="copy_action">복사</string>
     <string name="select_text_action">텍스트 선택</string>
+    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
+    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
 
     <string name="message_view_theme_action_dark">어두운 테마로 바꾸기</string>
     <string name="message_view_theme_action_light">밝은 테마로 바꾸기</string>
@@ -203,7 +204,15 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="recreating_account">계정 재생성 \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">새 이메일</string>
+    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 통의 읽지 않은 메일 (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
+    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
+    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
+    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
 
     <string name="notification_bg_sync_ticker">메일 체크 중: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">메일 체크 중</string>
@@ -228,8 +237,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (스팸함)</string>
 
     <string name="send_failure_subject">일부 메시지를 보내는 데 실패하였습니다</string>
-
-    <string name="end_of_folder">더 이상 없음</string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">버그 정보 기록</string>
@@ -303,6 +310,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="global_settings_registered_name_color_label">주소록 색 표시</string>
     <string name="global_settings_registered_name_color_default">주소록 목록에 있는 이름에 색 표시를 하지 않음</string>
     <string name="global_settings_registered_name_color_changed">주소록 목록에 있는 이름에 색 표시</string>
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
 
     <string name="global_settings_messageview_fixedwidth_label">고정 넓이 폰트</string>
     <string name="global_settings_messageview_fixedwidth_summary">평문 메시지를 보여줄때 고정 넓이 폰트사용</string>
@@ -316,11 +325,18 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="global_settings_confirm_action_delete">삭제 (메시지 보기에서만)</string>
     <string name="global_settings_confirm_action_delete_starred">별표된 메시지 삭제 (메시지 보기에서만)</string>
     <string name="global_settings_confirm_action_spam">스팸</string>
+    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
 
     <string name="global_settings_notification_hide_subject_title">알림에 제목 숨기기</string>
     <string name="global_settings_notification_hide_subject_never">하지 않음</string>
     <string name="global_settings_notification_hide_subject_when_locked">폰이 잠겨 있을 때</string>
     <string name="global_settings_notification_hide_subject_always">항상</string>
+
+    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -534,17 +550,18 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="account_settings_quote_style_header">Header (Outlook, Yahoo!, Hotmail 처럼)</string>
 
     <string name="account_settings_general_title">일반 설정</string>
+    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
     <string name="account_settings_sync">메일 가져오기</string>
     <string name="account_settings_folders">폴더</string>
     <string name="account_settings_quote_prefix_label">본문 앞에</string>
     <string name="account_settings_crypto">암호화 방법</string>
     <string name="account_settings_crypto_app">OpenPGP Provider</string>
     <string name="account_settings_crypto_app_none">없음</string>
-    <string name="account_settings_crypto_app_not_available">이용 불가</string>
     <string name="account_settings_crypto_auto_signature">자동 서명</string>
     <string name="account_settings_crypto_auto_signature_summary">계정의 이메일 주소를 서명키를 추측할 수 있도록 사용합니다.</string>
     <string name="account_settings_crypto_auto_encrypt">자동 암호화</string>
     <string name="account_settings_crypto_auto_encrypt_summary">공용 키가 수신자와 일치하면 자동으로 암호화합니다.</string>
+    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
 
     <string name="account_settings_mail_check_frequency_label">폴더 수신(poll) 빈도</string>
 
@@ -781,6 +798,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="account_settings_signature__location_label">서명 위치</string>
     <string name="account_settings_signature__location_before_quoted_text">본문 앞에</string>
     <string name="account_settings_signature__location_after_quoted_text">본문 뒤에</string>
+    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
     <string name="setting_theme_dark">어두운 테마</string>
     <string name="setting_theme_light">밝은 테마</string>
     <string name="display_preferences">화면</string>
@@ -792,8 +810,15 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="accountlist_preferences">계정 항목</string>
     <string name="messagelist_preferences">메시지 목록</string>
     <string name="messageview_preferences">메시지</string>
+    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
     <string name="settings_theme_label">테마</string>
+    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
+    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
     <string name="settings_language_label">언어</string>
+
+    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
 
     <string name="settings_messageview_mobile_layout_label">한 칸에 표시</string>
     <string name="settings_messageview_mobile_layout_summary">작은 화면에서 HTML 메시지를 재구성</string>
@@ -889,6 +914,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
     <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
 
+    <!-- NEW: <string name="font_size_default">Default</string>-->
     <string name="font_size_tiniest">가장 작음</string>
     <string name="font_size_tiny">매우 작음</string>
     <string name="font_size_smaller">더 작게</string>
@@ -942,6 +968,10 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
     <string name="dialog_confirm_delete_title">삭제 확인</string>
     <string name="dialog_confirm_delete_message">이 메시지를 삭제하시겠습니까?</string>
+    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Do you really want to delete this message?</item>
+        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    </plurals>-->
     <string name="dialog_confirm_delete_confirm_button">삭제함</string>
     <string name="dialog_confirm_delete_cancel_button">삭제하지 않음</string>
 
@@ -1011,8 +1041,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
     <!-- NEW: <string name="activate_account_action">Activate</string>-->
 
-    <!-- NEW: <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>-->
-
     <string name="account_unavailable">\"<xliff:g id="account">%s</xliff:g>\" 계정을 이용할 수 없습니다.; 저장장치를 확인하십시오.</string>
 
     <string name="settings_attachment_default_path">첨부파일 저장위치</string>
@@ -1065,7 +1093,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
     <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
@@ -1086,4 +1113,24 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
     <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+
+    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
+    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
+    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+
+    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+
+    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
+    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+
+    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+
+    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+
+    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 </resources>

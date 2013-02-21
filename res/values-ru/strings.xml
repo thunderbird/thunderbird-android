@@ -101,9 +101,6 @@ K-9 Mail это программа электронной почты для Andr
 
     <string name="choose_folder_title">Выберите папку</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">Запрос <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Чтение заголовков <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Отправка <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -113,6 +110,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="status_next_poll">Следующий запрос <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Синхронизация запрещена</string>
 
+    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Следующий</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Предыдущий</string> <!-- Used as part of a multi-step process -->
@@ -128,6 +126,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="forward_action">Переслать</string>
     <string name="move_action">Переместить</string>
     <string name="single_message_options_action">Опции сообщения</string>
+    <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Продолжить</string>
     <string name="back_action">Назад</string>
     <string name="done_action">Завершено</string> <!--  Used to complete a multi-step process -->
@@ -156,6 +155,8 @@ K-9 Mail это программа электронной почты для Andr
     <string name="unflag_action">Удалить звезду</string>
     <string name="copy_action">Копировать</string>
     <string name="select_text_action">Выбрать текст</string>
+    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
+    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
 
     <string name="message_view_theme_action_dark">Переключиться на тёмную тему</string>
     <string name="message_view_theme_action_light">Переключиться на светлую тему</string>
@@ -199,7 +200,15 @@ K-9 Mail это программа электронной почты для Andr
     <string name="recreating_account">Пересоздание учётной записи\"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Новые сообщения</string>
+    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Непрочитанное (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
+    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
+    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
+    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
 
     <string name="notification_bg_sync_ticker">Проверка почты: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
@@ -224,8 +233,6 @@ K-9 Mail это программа электронной почты для Andr
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g></string>
 
     <string name="send_failure_subject">Не удалось отправить несколько сообщений</string>
-
-    <string name="end_of_folder">Сообщений больше нет</string>
 
     <string name="debug_version_fmt">Версия: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Включить запись в журнал отладок</string>
@@ -299,6 +306,8 @@ K-9 Mail это программа электронной почты для Andr
     <string name="global_settings_registered_name_color_label">Раскраска контактов</string>
     <string name="global_settings_registered_name_color_default">Не раскрашивать имена в списке контактов</string>
     <string name="global_settings_registered_name_color_changed">Раскрасить имена в списке контактов</string>
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
 
     <string name="global_settings_messageview_fixedwidth_label">Шрифты фиксированной ширины</string>
     <string name="global_settings_messageview_fixedwidth_summary">Использовать шрифт фиксированной ширины при показе плоского текста</string>
@@ -312,11 +321,18 @@ K-9 Mail это программа электронной почты для Andr
     <string name="global_settings_confirm_action_delete">Удалить (только представление сообщения)</string>
     <string name="global_settings_confirm_action_delete_starred">Удалить отмеченные (message view only)</string>
     <string name="global_settings_confirm_action_spam">Спам</string>
+    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
 
     <string name="global_settings_notification_hide_subject_title">Скрыть тему в оповещениях</string>
     <string name="global_settings_notification_hide_subject_never">Никогда</string>
     <string name="global_settings_notification_hide_subject_when_locked">Когда устройство заблокировано</string>
     <string name="global_settings_notification_hide_subject_always">Всегда</string>
+
+    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
 
     <string name="global_settings_batch_buttons">Кнопки групповой обработки</string>
     <string name="global_settings_batch_buttons_summary">Настройка списка кнопок групповой обработки</string>
@@ -530,17 +546,18 @@ K-9 Mail это программа электронной почты для Andr
     <string name="account_settings_quote_style_header">Заголовок (например Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Общие</string>
+    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
     <string name="account_settings_sync">Синхронизация папок</string>
     <string name="account_settings_folders">Папки</string>
     <string name="account_settings_quote_prefix_label">Префикс цитирования</string>
     <string name="account_settings_crypto">Криптография</string>
     <string name="account_settings_crypto_app">OpenPGP</string>
     <string name="account_settings_crypto_app_none">Нет</string>
-    <string name="account_settings_crypto_app_not_available">Не доступна</string>
     <string name="account_settings_crypto_auto_signature">Автоподпись</string>
     <string name="account_settings_crypto_auto_signature_summary">Использовать e-mail учётной записи для формирования ключа подписи.</string>
     <string name="account_settings_crypto_auto_encrypt">Автоматическое шифрование</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Автоматическая настройка шифрования, если открытый ключ соответствует получателю</string>
+    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Частота опроса папок</string>
 
@@ -778,6 +795,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="account_settings_signature__location_label">Размещение подписи</string>
     <string name="account_settings_signature__location_before_quoted_text">перед цитатой</string>
     <string name="account_settings_signature__location_after_quoted_text">после цитаты</string>
+    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
     <string name="setting_theme_dark">Тёмное</string>
     <string name="setting_theme_light">Светлое</string>
     <string name="display_preferences">Экран</string>
@@ -789,8 +807,15 @@ K-9 Mail это программа электронной почты для Andr
     <string name="accountlist_preferences">Список учётных записей</string>
     <string name="messagelist_preferences">Списки сообщений</string>
     <string name="messageview_preferences">Сообщения</string>
+    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
     <string name="settings_theme_label">Изображение</string>
+    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
+    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
     <string name="settings_language_label">Язык</string>
+
+    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
 
     <string name="settings_messageview_mobile_layout_label">Режим одной колонки</string>
     <string name="settings_messageview_mobile_layout_summary">Форматировать HTML сообщения для маленького экрана</string>
@@ -886,6 +911,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="font_size_message_compose">Поле сообщения</string>
     <string name="font_size_message_compose_input">Поля ввода текста</string>
 
+    <!-- NEW: <string name="font_size_default">Default</string>-->
     <string name="font_size_tiniest">Самый крочшечный</string>
     <string name="font_size_tiny">Крошечный</string>
     <string name="font_size_smaller">Еще меньше</string>
@@ -939,6 +965,10 @@ K-9 Mail это программа электронной почты для Andr
 
     <string name="dialog_confirm_delete_title">Подтвердите удаление</string>
     <string name="dialog_confirm_delete_message">Вы хотите удалить это сообщение?</string>
+    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Do you really want to delete this message?</item>
+        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    </plurals>-->
     <string name="dialog_confirm_delete_confirm_button">Удалить</string>
     <string name="dialog_confirm_delete_cancel_button">Не удалять</string>
 
@@ -1010,8 +1040,6 @@ K-9 Mail это программа электронной почты для Andr
     <string name="settings_import_use_incoming_server_password">Использовать пароль от сервера для входящей почты</string>
     <string name="activate_account_action">Активировать</string>
 
-    <string name="settings_unknown_version">Невозможно определить версию файла <xliff:g id="version">%s</xliff:g></string>
-
     <string name="account_unavailable">Учётная запись\"<xliff:g id="account">%s</xliff:g>\" недоступна; проверьте хранилище</string>
 
     <string name="settings_attachment_default_path">Сохранять вложения в…</string>
@@ -1064,7 +1092,6 @@ K-9 Mail это программа электронной почты для Andr
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Ограничение результатов поиска на сервере</string>
     <string name="account_settings_remote_search_num_summary">Поиск остановить после нахождения <xliff:g id="num_results">%s</xliff:g> результатов.</string>
-    <string name="account_settings_remote_search">Удалённый поиск папки</string>
     <string name="account_settings_remote_search_full_text">Включать текст сообщения в удалённом поиске</string>
     <string name="account_settings_remote_search_full_text_summary">Поиск по всему тексту может быть медленным.</string>
     <string name="remote_search_sending_query">Отправка запроса на сервер</string>
@@ -1085,4 +1112,24 @@ K-9 Mail это программа электронной почты для Andr
 
     <string name="global_settings_threaded_view_label">Режим отображения</string>
     <string name="global_settings_threaded_view_summary">Совместить сообщения принадлежащие одной теме</string>
+
+    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
+    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
+    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+
+    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+
+    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
+    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+
+    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+
+    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+
+    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 </resources>

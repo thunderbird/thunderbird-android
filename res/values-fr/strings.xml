@@ -133,9 +133,6 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
 
     <string name="choose_folder_title">Choisir un dossier</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">Récup. <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Récup. entêtes <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Envoi <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -162,7 +159,6 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="move_action">Déplacer</string>
     <string name="single_message_options_action">Options de message</string>
     <string name="refile_action">Déposer</string>
-
     <string name="continue_action">Continuer</string>
     <string name="back_action">Retour</string>
     <string name="done_action">Terminé</string>
@@ -276,8 +272,6 @@ de plus</string>
 
     <string name="send_failure_subject">Échec d\'envoi de certains messages</string>
 
-    <string name="end_of_folder">Aucun message</string>
-
     <string name="debug_version_fmt">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Activer le journal de déboguage</string>
     <string name="debug_enable_debug_logging_summary">Journaliser les informations de diagnostic supplémentaires</string>
@@ -372,7 +366,7 @@ de plus</string>
     <string name="global_settings_notification_hide_subject_when_locked">Lorsque le téléphone est verouillé</string>
     <string name="global_settings_notification_hide_subject_always">Toujours</string>
 
-   <string name="global_settings_notification_quick_delete_title">Afficher le bouton \'Supprimer\'</string>
+    <string name="global_settings_notification_quick_delete_title">Afficher le bouton \'Supprimer\'</string>
     <string name="global_settings_notification_quick_delete_never">Jamais</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Pour la notification de message unique</string>
     <string name="global_settings_notification_quick_delete_always">Toujours</string>
@@ -597,7 +591,6 @@ de plus</string>
     <string name="account_settings_crypto">Cryptographie</string>
     <string name="account_settings_crypto_app">Fournisseur OpenPGP</string>
     <string name="account_settings_crypto_app_none">Aucun</string>
-    <string name="account_settings_crypto_app_not_available">Non disponible</string>
     <string name="account_settings_crypto_auto_signature">Signature automatique</string>
     <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse e-mail du compte pour déduire la clé de signature</string>
     <string name="account_settings_crypto_auto_encrypt">Cryptation automatique</string>
@@ -1032,8 +1025,8 @@ de plus</string>
 
   (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
---> 
-   </plurals>
+-->
+    </plurals>
     <string name="dialog_confirm_spam_confirm_button">Déplacer</string>
     <string name="dialog_confirm_spam_cancel_button">Ne pas déplacer</string>
 
@@ -1083,8 +1076,6 @@ de plus</string>
     </plurals>
     <string name="settings_import_use_incoming_server_password">Utilisez le mot de passe du serveur entrant</string>
     <string name="activate_account_action">Activer</string>
-
-    <string name="settings_unknown_version">Impossible de gérer le fichier de la version <xliff:g id="version">%s</xliff:g></string>
 
     <string name="account_unavailable">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» n\'est pas disponible\u00A0; veuillez vérifier le stockage</string>
 
@@ -1138,7 +1129,6 @@ de plus</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Limite les résultats de la recherche distante</string>
     <string name="account_settings_remote_search_num_summary">La recherche s\'arrêtera après que <xliff:g id="num_results">%s</xliff:g> résultats ont été trouvés.</string>
-    <string name="account_settings_remote_search">Recherche dossier distant</string>
     <string name="account_settings_remote_search_full_text">Inclure le corps du texte dans la recherche distante</string>
     <string name="account_settings_remote_search_full_text_summary">La recherche dans le corps du texte peut être lente.</string>
     <string name="remote_search_sending_query">Envoi de la requête au serveur</string>

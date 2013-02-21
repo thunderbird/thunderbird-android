@@ -100,9 +100,6 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
 
     <string name="choose_folder_title">Tria carpeta</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Recollint capçaleres <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Enviant <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -112,6 +109,7 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="status_next_poll">Propera comprovació <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Comprovació acabada</string>
 
+    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Següent</string>
     <string name="previous_action">Anterior</string>
@@ -127,6 +125,7 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="forward_action">Reenvia</string>
     <string name="move_action">Mou</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Continua</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">Fet</string>
@@ -155,6 +154,8 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="unflag_action">Treu l’estel</string>
     <string name="copy_action">Copia</string>
     <string name="select_text_action">Selecciona text</string>
+    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
+    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
 
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
     <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
@@ -204,7 +205,15 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="recreating_account">S’està creant un compte \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Nou correu</string>
+    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g>No llegit (<xliff:g id="account">%s</xliff:g>)</string>
+    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
+    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
+    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
+    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
 
     <string name="notification_bg_sync_ticker">S’està comprovant el correu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">S’està comprovant el correu</string>
@@ -229,8 +238,6 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Paperera)</string>
 
     <string name="send_failure_subject">La tramesa d’alguns missatges ha fallat</string>
-
-    <string name="end_of_folder">No hi ha més missatges</string>
 
     <string name="debug_version_fmt">Versió: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Habilita depuració registre</string>
@@ -280,7 +287,6 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="message_view_download_remainder">Descarrega el missatge complet</string>
     <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
 
-
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">No s’han descarregat o desat totes les capçaleres. Selecciona \"Desa totes les capçaleres localment\" a la configuració del servidor d’entrada del compte per habilitar-lo en el futur.</string>
     <string name="message_no_additional_headers_available">S’han descarregat totes les capçaleres, no hi ha capçaleres addicionals per mostrar.</string>
@@ -305,6 +311,8 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="global_settings_registered_name_color_label">Acoloreix els contactes</string>
     <string name="global_settings_registered_name_color_default">No acoloreixis els noms de la llista de contactes</string>
     <string name="global_settings_registered_name_color_changed">Acoloreix els noms de la llista de contactes</string>
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
 
     <string name="global_settings_messageview_fixedwidth_label">Amplada fixa tipus lletra</string>
     <string name="global_settings_messageview_fixedwidth_summary">Utilitza una amplada fixa de lletra quan es mostri missatges de text net</string>
@@ -318,11 +326,18 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="global_settings_confirm_action_delete">Esborra (només la vista del missatge)</string>
     <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
     <string name="global_settings_confirm_action_spam">Brossa</string>
+    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+
+    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
     <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
@@ -536,17 +551,18 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="account_settings_quote_style_header">Capçalera (com a l’Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Configuració general</string>
+    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
     <string name="account_settings_sync">Recuperació correu</string>
     <string name="account_settings_folders">Carpetes</string>
     <string name="account_settings_quote_prefix_label">Prefix de cita del text</string>
     <string name="account_settings_crypto">Criptografia</string>
     <string name="account_settings_crypto_app">Proveïdor d’OpenPGP</string>
     <string name="account_settings_crypto_app_none">Cap</string>
-    <string name="account_settings_crypto_app_not_available">no disponible</string>
     <string name="account_settings_crypto_auto_signature">Autoconnexió</string>
     <string name="account_settings_crypto_auto_signature_summary">Utilitza l’adreça del compte per endevinar la clau de la signatura.</string>
     <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>-->
     <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
+    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Freqüència de comprovació de les carpetes</string>
 
@@ -786,6 +802,7 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="account_settings_signature__location_label">Posició de la signatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Abans del text citat</string>
     <string name="account_settings_signature__location_after_quoted_text">Després del text citat</string>
+    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
     <string name="setting_theme_dark">Fosc</string>
     <string name="setting_theme_light">Clar</string>
     <string name="display_preferences">Pantalla</string>
@@ -797,8 +814,15 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="accountlist_preferences">Llista de comptes</string>
     <string name="messagelist_preferences">Llista de missatges</string>
     <string name="messageview_preferences">Missatges</string>
+    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
     <string name="settings_theme_label">Tema</string>
+    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
+    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
     <string name="settings_language_label">Llengua</string>
+
+    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
 
     <string name="settings_messageview_mobile_layout_label">Disposició sola columna</string>
     <string name="settings_messageview_mobile_layout_summary">Reformata missatges HTML missatges per a pantalles petites</string>
@@ -894,6 +918,7 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
     <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
 
+    <!-- NEW: <string name="font_size_default">Default</string>-->
     <string name="font_size_tiniest">El més petit</string>
     <string name="font_size_tiny">Petitó</string>
     <string name="font_size_smaller">Més petit</string>
@@ -947,6 +972,10 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
 
     <string name="dialog_confirm_delete_title">Confirma esborrar</string>
     <string name="dialog_confirm_delete_message">Vols esborrar aquest missatge?</string>
+    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Do you really want to delete this message?</item>
+        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    </plurals>-->
     <string name="dialog_confirm_delete_confirm_button">Esborra</string>
     <string name="dialog_confirm_delete_cancel_button">No esborris</string>
 
@@ -1016,8 +1045,6 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
     <!-- NEW: <string name="activate_account_action">Activate</string>-->
 
-    <!-- NEW: <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>-->
-
     <string name="account_unavailable">Compte \"<xliff:g id="account">%s</xliff:g>\" no és disponible; comprova emmagatzematge</string>
 
     <string name="settings_attachment_default_path">Desa adjunts a…</string>
@@ -1070,7 +1097,6 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
     <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
@@ -1091,4 +1117,24 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
     <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+
+    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
+    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
+    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+
+    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+
+    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
+    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+
+    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+
+    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+
+    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 </resources>

@@ -101,9 +101,6 @@
 
     <string name="choose_folder_title">Επιλογή φακέλου</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">Έλεγχος <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Ανάγνωση επικεφαλίδων <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Αποστολή <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -113,6 +110,7 @@
     <string name="status_next_poll">Επόμενος έλεγχος στις <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Συγχρονισμός απενεργοποιημένος</string>
 
+    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Επόμενο</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Προηγούμενο</string> <!-- Used as part of a multi-step process -->
@@ -128,6 +126,7 @@
     <string name="forward_action">Προώθηση</string>
     <string name="move_action">Μετακίνηση</string>
     <string name="single_message_options_action">Επιλογές μηνύματος</string>
+    <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Συνέχεια</string>
     <string name="back_action">Πίσω</string>
     <string name="done_action">Συμπληρώθηκε</string> <!--  Used to complete a multi-step process -->
@@ -156,6 +155,8 @@
     <string name="unflag_action">Αφαίρεση αστεριού</string>
     <string name="copy_action">Αντιγραφή</string>
     <string name="select_text_action">Επιλογή κειμένου</string>
+    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
+    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
 
     <string name="message_view_theme_action_dark">Εφαρμογή σκούρας εμφάνισης</string>
     <string name="message_view_theme_action_light">Εφαρμογή φωτεινής εμφάνισης</string>
@@ -201,7 +202,15 @@
     <string name="recreating_account">Αναδημιουργία λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
 
     <string name="notification_new_title">Νέο μήνυμα</string>
+    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> μη αναγνωσμένα (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
+    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
+    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
+    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
 
     <string name="notification_bg_sync_ticker">Έλεγχος μηνύματος: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Έλεγχος μηνύματος</string>
@@ -226,8 +235,6 @@
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Σκουπίδια)</string>
 
     <string name="send_failure_subject">Αποτυχία αποστολής μερικών μηνυμάτων</string>
-
-    <string name="end_of_folder">Όχι άλλα μηνύματα</string>
 
     <string name="debug_version_fmt">Έκδοση: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Ενεργοποίηση καταγραφών αποσφαλμάτωσης</string>
@@ -301,6 +308,8 @@
     <string name="global_settings_registered_name_color_label">Χρωματισμός Επαφών</string>
     <string name="global_settings_registered_name_color_default">Να μην χρωματίζονται τα ονόματα στη λίστα επαφών</string>
     <string name="global_settings_registered_name_color_changed">Να χρωματίζονται τα ονόματα στη λίστα επαφών</string>
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
 
     <string name="global_settings_messageview_fixedwidth_label">Γράμματα σταθερού πλάτους</string>
     <string name="global_settings_messageview_fixedwidth_summary">Να χρησιμοποιείται γραμματοσειρά σταθερού πλάτους όταν προβάλλονται μηνύματα απλού κειμένου</string>
@@ -314,11 +323,18 @@
     <string name="global_settings_confirm_action_delete">Διαγραφή (προβολή μηνύματος μόνον)</string>
     <string name="global_settings_confirm_action_delete_starred">Διαγραφή με αστέρι (προβολή μηνύματος μόνον)</string>
     <string name="global_settings_confirm_action_spam">Σκουπίδια</string>
+    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
 
     <string name="global_settings_notification_hide_subject_title">Απόκρυψη θέματος στις ειδοποιήσεις</string>
     <string name="global_settings_notification_hide_subject_never">Ποτέ</string>
     <string name="global_settings_notification_hide_subject_when_locked">Όταν το τηλέφωνο είναι κλειδωμένο</string>
     <string name="global_settings_notification_hide_subject_always">Πάντοτε</string>
+
+    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
 
     <string name="global_settings_batch_buttons">Πλήκτρα ομάδας μηνυμάτων</string>
     <string name="global_settings_batch_buttons_summary">Προσαρμογή πλήκτρων ομάδας μηνυμάτων</string>
@@ -532,17 +548,18 @@
     <string name="account_settings_quote_style_header">Επικεφαλίδα (όπως στο Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Γενικές ρυθμίσεις</string>
+    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
     <string name="account_settings_sync">Ανάκτηση ταχυδρομείου</string>
     <string name="account_settings_folders">Φάκελοι</string>
     <string name="account_settings_quote_prefix_label">Πρόθεμα κειμένου παράθεσης</string>
     <string name="account_settings_crypto">Κρυπτογραφία</string>
     <string name="account_settings_crypto_app">Πάροχος OpenPGP</string>
     <string name="account_settings_crypto_app_none">Κανένας</string>
-    <string name="account_settings_crypto_app_not_available">Μη διαθέσιμος</string>
     <string name="account_settings_crypto_auto_signature">Αυτόματη πιστοποίηση</string>
     <string name="account_settings_crypto_auto_signature_summary">Χρήση της διεύθυνσης του λογαριασμού για να βρεις το κλειδί της υπογραφής.</string>
     <string name="account_settings_crypto_auto_encrypt">Αυτόματη κρυπτογράφηση</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Αυτόματη κρυπτογράφηση αν ένα δημόσιο κλειδί ταιριάζει σε παραλήπτη.</string>
+    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
 
@@ -782,6 +799,7 @@
     <string name="account_settings_signature__location_label">Τοποθέτηση υπογραφής</string>
     <string name="account_settings_signature__location_before_quoted_text">Πριν το κείμενο παράθεσης</string>
     <string name="account_settings_signature__location_after_quoted_text">Μετά το κείμενο παράθεσης</string>
+    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
     <string name="setting_theme_dark">Σκοτεινό</string>
     <string name="setting_theme_light">Ανοιχτόχρωμο</string>
     <string name="display_preferences">Προβολή</string>
@@ -793,8 +811,15 @@
     <string name="accountlist_preferences">Λίστα λογαριασμών</string>
     <string name="messagelist_preferences">Λίστες μηνυμάτων</string>
     <string name="messageview_preferences">Μηνύματα</string>
+    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
     <string name="settings_theme_label">Θέμα</string>
+    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
+    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
     <string name="settings_language_label">Γλώσσα</string>
+
+    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
 
     <string name="settings_messageview_mobile_layout_label">Μονόστηλη διάταξη</string>
     <string name="settings_messageview_mobile_layout_summary">Μηνύματα HTML για μικρότερες οθόνες</string>
@@ -890,6 +915,7 @@
     <string name="font_size_message_compose">Σύνθεση μηνύματος</string>
     <string name="font_size_message_compose_input">Κείμενο πεδίων εισόδου</string>
 
+    <!-- NEW: <string name="font_size_default">Default</string>-->
     <string name="font_size_tiniest">Ελάχιστο</string>
     <string name="font_size_tiny">Ακόμα μικρότερο</string>
     <string name="font_size_smaller">Μικρότερο</string>
@@ -943,6 +969,10 @@
 
     <string name="dialog_confirm_delete_title">Επιβεβαίωση διαγραφής</string>
     <string name="dialog_confirm_delete_message">Θέλετε να διαγράψετε αυτό το μήνυμα;</string>
+    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Do you really want to delete this message?</item>
+        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    </plurals>-->
     <string name="dialog_confirm_delete_confirm_button">Διαγραφή</string>
     <string name="dialog_confirm_delete_cancel_button">Άκυρο</string>
 
@@ -1012,8 +1042,6 @@
     <string name="settings_import_use_incoming_server_password">Χρήση του συνθηματικού του εξυπηρέτη εισερχόμενων</string>
     <string name="activate_account_action">Ενεργοποίηση</string>
 
-    <string name="settings_unknown_version">Αδύνατος ο χειρισμός αρχείου έκδοσης <xliff:g id="version">%s</xliff:g></string>
-
     <string name="account_unavailable">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' δεν είναι διαθέσιμος. Ελέγξτε αποθήκευση.</string>
 
     <string name="settings_attachment_default_path">Αποθήκευση συνημμένων στο…</string>
@@ -1066,7 +1094,6 @@
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Όριο εξυπηρέτη για αναζήτηση αποτελεσμάτων</string>
     <string name="account_settings_remote_search_num_summary">Η αναζήτηση θα διακοπεί όταν βρεθούν <xliff:g id="num_results">%s</xliff:g> αποτελέσματα.</string>
-    <string name="account_settings_remote_search">Αναζήτηση σε απομακρυσμένο φάκελο</string>
     <string name="account_settings_remote_search_full_text">Συμπερίληψη κειμένου μηνύματος στην αναζήτηση</string>
     <string name="account_settings_remote_search_full_text_summary">Οι αναζητήσεις πλήρους κειμένου μπορεί να καθυστερούν.</string>
     <string name="remote_search_sending_query">Αποστολή ερωτήματος στον εξυπηρέτη</string>
@@ -1087,4 +1114,24 @@
 
     <string name="global_settings_threaded_view_label">Προβολή συζήτησης</string>
     <string name="global_settings_threaded_view_summary">Σύντμηση μηνυμάτων που ανήκουν στον ίδιο νήμα</string>
+
+    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
+    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
+    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+
+    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+
+    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
+    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+
+    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+
+    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+
+    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 </resources>
