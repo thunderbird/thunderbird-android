@@ -22,7 +22,7 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Wilkommen bei K-9 Mail</string>
+    <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
 K-9 Mail ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
