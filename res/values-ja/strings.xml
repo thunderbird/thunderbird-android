@@ -101,9 +101,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="choose_folder_title">フォルダ選択</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">受信 <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">ヘッダ取込 <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">送信 <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -130,7 +127,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="move_action">移動</string>
     <string name="single_message_options_action">メッセージ操作</string>
     <string name="refile_action">整理</string>
-
     <string name="continue_action">継続</string>
     <string name="back_action">戻る</string>
     <string name="done_action">完了</string>
@@ -242,8 +238,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (迷惑メール)</string>
 
     <string name="send_failure_subject">メール送信に失敗しました</string>
-
-    <string name="end_of_folder">これ以上メールはありません</string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">拡張デバッグログ</string>
@@ -564,7 +558,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="account_settings_crypto">暗号化</string>
     <string name="account_settings_crypto_app">OpenPGPの利用</string>
     <string name="account_settings_crypto_app_none">なし</string>
-    <string name="account_settings_crypto_app_not_available">利用不可</string>
     <string name="account_settings_crypto_auto_signature">自動署名</string>
     <string name="account_settings_crypto_auto_signature_summary">このアカウントのE-Mailアドレスから署名の鍵を自動的に決定する</string>
     <string name="account_settings_crypto_auto_encrypt">自動暗号化</string>
@@ -794,7 +787,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="folder_list_filter_hint">フォルダ名に含まれる文字</string>
 
-    <string name="folder_list_display_mode_label">フォルダ表示...</string>
+    <string name="folder_list_display_mode_label">フォルダ表示…</string>
     <string name="folder_list_display_mode_all">全フォルダ</string>
     <string name="folder_list_display_mode_first_class">1st クラスフォルダ</string>
     <string name="folder_list_display_mode_first_and_second_class">1st と 2nd クラスフォルダ</string>
@@ -977,7 +970,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
         <item quantity="one">本当にこのメッセージを削除しますか？</item>
         <item quantity="other">本当に<xliff:g id="message_count">%1$d</xliff:g>件のメッセージを削除しますか？</item>
     </plurals>
-
     <string name="dialog_confirm_delete_confirm_button">はい</string>
     <string name="dialog_confirm_delete_cancel_button">いいえ</string>
 
@@ -1042,8 +1034,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="settings_import_use_incoming_server_password">受信メールサーバパスワードを利用</string>
     <string name="activate_account_action">有効</string>
 
-    <string name="settings_unknown_version">バージョン <xliff:g id="version">%s</xliff:g>のファイルは利用できません</string>
-
     <string name="account_unavailable">アカウント \"<xliff:g id="account">%s</xliff:g>\" は利用できません。ストレージを確認してください。</string>
 
     <string name="settings_attachment_default_path">添付ファイルの保存先</string>
@@ -1096,7 +1086,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">サーバ検索結果の上限</string>
     <string name="account_settings_remote_search_num_summary"><xliff:g id="num_results">%s</xliff:g>件見つけた後に停止する</string>
-    <string name="account_settings_remote_search">リモートフォルダの検索</string>
     <string name="account_settings_remote_search_full_text">メッセージの内容もサーバ検索の対象に含める</string>
     <string name="account_settings_remote_search_full_text_summary">メッセージの内容も検索すると遅くなる可能性がある</string>
     <string name="remote_search_sending_query">サーバにて検索中</string>

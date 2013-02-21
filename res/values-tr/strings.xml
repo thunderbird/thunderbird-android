@@ -101,9 +101,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 
     <string name="choose_folder_title">Klasör Seç</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">Alınan <xliff:g id="account">%s</xliff:g><xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Başlıklar alınıyor <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Gönderiyor <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -113,6 +110,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="status_next_poll">Sonraki alım <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Senk. kapalı</string>
 
+    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">İleri</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Geri</string> <!-- Used as part of a multi-step process -->
@@ -128,6 +126,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="forward_action">İlet</string>
     <string name="move_action">Taşı</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Devam</string>
     <string name="back_action">Geri</string>
     <string name="done_action">Tamam</string> <!--  Used to complete a multi-step process -->
@@ -156,6 +155,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="unflag_action">Yıldızı Kaldır</string>
     <string name="copy_action">Kopyala</string>
     <string name="select_text_action">Metin Seç</string>
+    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
+    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
 
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
     <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
@@ -205,7 +206,15 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="recreating_account">Hesap yenileme \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Yeni posta</string>
+    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Okunmadı (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
+    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
+    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
+    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
 
     <string name="notification_bg_sync_ticker">Posta kontrol ediliyor: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Posta kontrol ediliyor</string>
@@ -230,8 +239,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Bazı mesajların gönderilmesi başarısız</string>
-
-    <string name="end_of_folder">Daha fazla mesaj yok</string>
 
     <string name="debug_version_fmt">Sürüm: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Onarma günlüğünü Etkinleştir</string>
@@ -305,6 +312,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="global_settings_registered_name_color_label">Bağlantıları reklendir</string>
     <string name="global_settings_registered_name_color_default">Rehberdeki kişilerin isimlerini renklendirme.</string>
     <string name="global_settings_registered_name_color_changed">Rehberdeki kişilerin isimlerini renklendir.</string>
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
 
     <string name="global_settings_messageview_fixedwidth_label">Sabit genişlikli yazı tipleri</string>
     <string name="global_settings_messageview_fixedwidth_summary">Düz metin mesajları gösterdiğinde sabit genişlikli yazı tipi kullan.</string>
@@ -318,11 +327,18 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="global_settings_confirm_action_delete">Sil (sadece mesaj görünümü)</string>
     <string name="global_settings_confirm_action_delete_starred">Yıldızlıları Sil (sadece mesaj görünümü)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+
+    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
 
     <string name="global_settings_batch_buttons">Toplu işlem düğmeleri</string>
     <string name="global_settings_batch_buttons_summary">Mesaj listesi toplu mesaj düğmelerini yapılandır</string>
@@ -536,17 +552,18 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_settings_quote_style_header">Başlık (Outlook, Yahoo!, Hotmail gibi)</string>
 
     <string name="account_settings_general_title">Genel Ayarlar</string>
+    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
     <string name="account_settings_sync">Posta alma</string>
     <string name="account_settings_folders">Klasörler</string>
     <string name="account_settings_quote_prefix_label">Alınan metinden önek</string>
     <string name="account_settings_crypto">Şifreleme</string>
     <string name="account_settings_crypto_app">OpenPGP Sağlayıcı</string>
     <string name="account_settings_crypto_app_none">Hiç</string>
-    <string name="account_settings_crypto_app_not_available">mevcut değil</string>
     <string name="account_settings_crypto_auto_signature">Otomatik oturum açma</string>
     <string name="account_settings_crypto_auto_signature_summary">İmza anahtarını tahmin etmek için hesapların e-posta adreslerini kullan.</string>
     <string name="account_settings_crypto_auto_encrypt">Otomatik şifrele</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Eğer paylaşılan anahtar alıcınınkine eşleşiyorsa otomatik şifrele.</string>
+    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Klasör veri toplama sıklığı</string>
 
@@ -785,6 +802,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_settings_signature__location_label">İmza Konumu</string>
     <string name="account_settings_signature__location_before_quoted_text">Saklanan metinden önce</string>
     <string name="account_settings_signature__location_after_quoted_text">Saklanan metinden sonra</string>
+    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
     <string name="setting_theme_dark">Karanlık</string>
     <string name="setting_theme_light">Aydınlık</string>
     <string name="display_preferences">Görüntü</string>
@@ -796,8 +814,15 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="accountlist_preferences">Hesap Listesi</string>
     <string name="messagelist_preferences">Mesaj Listeleri</string>
     <string name="messageview_preferences">Mesajlar</string>
+    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
     <string name="settings_theme_label">Tema</string>
+    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
+    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
     <string name="settings_language_label">Dil</string>
+
+    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
 
     <string name="settings_messageview_mobile_layout_label">Tek sütun düzeni</string>
     <string name="settings_messageview_mobile_layout_summary">Daha küçük ekranlar için HTML mesajları yeniden biçimlendir</string>
@@ -893,6 +918,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="font_size_message_compose">Mesaj oluşturma</string>
     <string name="font_size_message_compose_input">Metin girdi alanları</string>
 
+    <!-- NEW: <string name="font_size_default">Default</string>-->
     <string name="font_size_tiniest">Çok küçük</string>
     <string name="font_size_tiny">Küçücük</string>
     <string name="font_size_smaller">Daha küçük</string>
@@ -946,6 +972,10 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 
     <string name="dialog_confirm_delete_title">Silmeyi onayla</string>
     <string name="dialog_confirm_delete_message">Bu mesajı silmek istiyor musunuz?</string>
+    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Do you really want to delete this message?</item>
+        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    </plurals>-->
     <string name="dialog_confirm_delete_confirm_button">Sil</string>
     <string name="dialog_confirm_delete_cancel_button">Silme</string>
 
@@ -1015,8 +1045,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="settings_import_use_incoming_server_password">Gelen sunucu şifresini kullan</string>
     <string name="activate_account_action">Etkinleştir</string>
 
-    <string name="settings_unknown_version"><xliff:g id="version">%s</xliff:g> sürümündeki dosyada işlem yapılamadı.</string>
-
     <string name="account_unavailable">Hesap \"<xliff:g id="account">%s</xliff:g>\" mevcut değil; depolamayı kontrol et</string>
 
     <string name="settings_attachment_default_path">Ekleri kaydet…</string>
@@ -1069,7 +1097,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
     <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
@@ -1090,4 +1117,24 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
     <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+
+    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
+    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
+    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+
+    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+
+    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
+    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+
+    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+
+    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+
+    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 </resources>

@@ -100,9 +100,6 @@ K-9改良的功能包括：
 
     <string name="choose_folder_title">選擇信件匣</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020〔<xliff:g id="unread_count">%d</xliff:g>〕</string>
     <string name="status_loading_account_folder">正在接收<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">正在接收郵件訊息<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">正在寄送<xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -128,6 +125,7 @@ K-9改良的功能包括：
     <string name="forward_action">轉寄</string>
     <string name="move_action">移動</string>
     <string name="single_message_options_action">訊息選項</string>
+    <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">繼續</string>
     <string name="back_action">返回</string>
     <string name="done_action">完成</string>
@@ -156,6 +154,8 @@ K-9改良的功能包括：
     <string name="unflag_action">移除星號</string>
     <string name="copy_action">複製</string>
     <string name="select_text_action">選擇本文</string>
+    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
+    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
 
     <string name="message_view_theme_action_dark">切換為黑色主題</string>
     <string name="message_view_theme_action_light">切換為白色主題</string>
@@ -199,7 +199,15 @@ K-9改良的功能包括：
     <string name="recreating_account">正在重建帳戶「<xliff:g id="account">%s</xliff:g>」</string>
 
     <string name="notification_new_title">您有新郵件</string>
+    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
     <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未讀郵件（<xliff:g id="account">%s</xliff:g>）</string>
+    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
+    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
+    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
+    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
 
     <string name="notification_bg_sync_ticker">正在檢查郵件：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">正在檢查郵件</string>
@@ -224,8 +232,6 @@ K-9改良的功能包括：
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g>（垃圾郵件）</string>
 
     <string name="send_failure_subject">有些郵件沒有成功寄送</string>
-
-    <string name="end_of_folder">沒有其他郵件了</string>
 
     <string name="debug_version_fmt">版本：<xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">啟用除錯日誌</string>
@@ -299,6 +305,8 @@ K-9改良的功能包括：
     <string name="global_settings_registered_name_color_label">使用顏色標記特定聯絡人</string>
     <string name="global_settings_registered_name_color_default">不使用顏色標記特定聯絡人列表</string>
     <string name="global_settings_registered_name_color_changed">使用顏色標記聯絡人列表</string>
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
 
     <string name="global_settings_messageview_fixedwidth_label">定寬字體</string>
     <string name="global_settings_messageview_fixedwidth_summary">使用定寬字體顯示純文字郵件</string>
@@ -312,11 +320,18 @@ K-9改良的功能包括：
     <string name="global_settings_confirm_action_delete">刪除（僅檢視郵件時）</string>
     <string name="global_settings_confirm_action_delete_starred">移除星號 (僅檢視郵件時)</string>
     <string name="global_settings_confirm_action_spam">標記為垃圾</string>
+    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
 
     <string name="global_settings_notification_hide_subject_title">進行通知時隱藏主題</string>
     <string name="global_settings_notification_hide_subject_never">絕不</string>
     <string name="global_settings_notification_hide_subject_when_locked">當手持設備上鎖時</string>
     <string name="global_settings_notification_hide_subject_always">總是</string>
+
+    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
 
     <string name="global_settings_batch_buttons">批次按鈕</string>
     <string name="global_settings_batch_buttons_summary">批次配置訊息列表按鈕</string>
@@ -530,17 +545,18 @@ K-9改良的功能包括：
     <string name="account_settings_quote_style_header">段落 (如同 Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">一般設定</string>
+    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
     <string name="account_settings_sync">正在接收郵件</string>
     <string name="account_settings_folders">信件匣</string>
     <string name="account_settings_quote_prefix_label">引用本文前綴</string>
     <string name="account_settings_crypto">加密</string>
     <string name="account_settings_crypto_app">OpenPGP提供者</string>
     <string name="account_settings_crypto_app_none">無</string>
-    <string name="account_settings_crypto_app_not_available">無法使用</string>
     <string name="account_settings_crypto_auto_signature">自動簽名</string>
     <string name="account_settings_crypto_auto_signature_summary">使用帳戶電子郵件回覆，則自動檢查比對簽名金鑰。</string>
     <string name="account_settings_crypto_auto_encrypt">自動加密</string>
     <string name="account_settings_crypto_auto_encrypt_summary">當檢查比對收件人公鑰符合時，自動進行加密。</string>
+    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
 
     <string name="account_settings_mail_check_frequency_label">上層信件匣檢查頻率</string>
 
@@ -776,6 +792,7 @@ K-9改良的功能包括：
     <string name="account_settings_signature__location_label">簽名位置</string>
     <string name="account_settings_signature__location_before_quoted_text">在引用的本文之前</string>
     <string name="account_settings_signature__location_after_quoted_text">在引用的本文之後</string>
+    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
     <string name="setting_theme_dark">灰暗</string>
     <string name="setting_theme_light">明亮</string>
     <string name="display_preferences">顯示</string>
@@ -787,8 +804,15 @@ K-9改良的功能包括：
     <string name="accountlist_preferences">帳戶列表</string>
     <string name="messagelist_preferences">郵件列表</string>
     <string name="messageview_preferences">郵件</string>
+    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
     <string name="settings_theme_label">主題</string>
+    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
+    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
     <string name="settings_language_label">語系</string>
+
+    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
 
     <string name="settings_messageview_mobile_layout_label">單列佈局</string>
     <string name="settings_messageview_mobile_layout_summary">針對小尺寸螢幕重新排列HTML郵件格式</string>
@@ -878,13 +902,13 @@ K-9改良的功能包括：
     <string name="font_size_message_view_cc">副本</string>
     <string name="font_size_message_view_additional_headers">額外的郵件訊息</string>
     <string name="font_size_message_view_subject">主題</string>
-    <string name="font_size_message_view_time">時間</string>
     <string name="font_size_message_view_date">日期</string>
     <string name="font_size_message_view_content">郵件本文內容</string>
 
     <string name="font_size_message_compose">訊息組成結構</string>
     <string name="font_size_message_compose_input">文字輸入欄位</string>
 
+    <!-- NEW: <string name="font_size_default">Default</string>-->
     <string name="font_size_tiniest">最小</string>
     <string name="font_size_tiny">更小</string>
     <string name="font_size_smaller">小</string>
@@ -938,6 +962,10 @@ K-9改良的功能包括：
 
     <string name="dialog_confirm_delete_title">刪除確認</string>
     <string name="dialog_confirm_delete_message">你確定要刪除這封郵件？</string>
+    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Do you really want to delete this message?</item>
+        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    </plurals>-->
     <string name="dialog_confirm_delete_confirm_button">刪除</string>
     <string name="dialog_confirm_delete_cancel_button">不要刪除</string>
 
@@ -996,8 +1024,6 @@ K-9改良的功能包括：
     <string name="settings_import_use_incoming_server_password">使用內送伺服器密碼</string>
     <string name="activate_account_action">啟動</string>
 
-    <string name="settings_unknown_version">無法處理版本 <xliff:g id="version">%s</xliff:g> 的檔案</string>
-
     <string name="account_unavailable">帳戶 \"<xliff:g id="account">%s</xliff:g>\" 目前無法使用; 請檢查儲存空間</string>
 
     <string name="settings_attachment_default_path">另存附件…</string>
@@ -1050,7 +1076,6 @@ K-9改良的功能包括：
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">伺服器搜尋結果項目上限</string>
     <string name="account_settings_remote_search_num_summary">找到 <xliff:g id="num_results">%s</xliff:g> 個符合項目後，搜尋將自動停止。</string>
-    <string name="account_settings_remote_search">搜尋遠端資料夾</string>
     <string name="account_settings_remote_search_full_text">搜尋伺服器時，包括搜尋文字內容</string>
     <string name="account_settings_remote_search_full_text_summary">搜尋所有文字內容，需要更多時間</string>
     <string name="remote_search_sending_query">向伺服器發送查詢</string>
@@ -1071,4 +1096,24 @@ K-9改良的功能包括：
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
     <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+
+    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
+    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
+    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+
+    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+
+    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
+    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+
+    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+
+    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+
+    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 </resources>

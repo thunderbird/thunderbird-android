@@ -101,9 +101,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
 
     <string name="choose_folder_title">Вибрати папку</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">Запит <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Отримання заголовків <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Надсилання <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -113,6 +110,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="status_next_poll">Наступний запит <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Синхронізація заборонена</string>
 
+    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Наступний</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Попередній</string> <!-- Used as part of a multi-step process -->
@@ -128,6 +126,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="forward_action">Переслати</string>
     <string name="move_action">Перемістити</string>
     <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Продовжити</string>
     <string name="back_action">Назад</string>
     <string name="done_action">Готово</string> <!--  Used to complete a multi-step process -->
@@ -156,6 +155,8 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="unflag_action">Видалити зірочку</string>
     <string name="copy_action">Копіювати</string>
     <string name="select_text_action">Вибрати текст</string>
+    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
+    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
 
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
     <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
@@ -205,7 +206,15 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="recreating_account">Відновлення облікового запису\"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Нова пошта</string>
+    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Непрочитане (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
+    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
+    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
+    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
 
     <string name="notification_bg_sync_ticker">Перевірка пошти: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Перевірка пошти</string>
@@ -230,8 +239,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Не вдалося надіслати повідомлення</string>
-
-    <string name="end_of_folder">Повідомлень більше немає</string>
 
     <string name="debug_version_fmt">Версія: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Увімкнути ведення журналу налагодження</string>
@@ -305,6 +312,8 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="global_settings_registered_name_color_label">Колір контактів</string>
     <string name="global_settings_registered_name_color_default">Не розфарбовувати імена у списку контактів</string>
     <string name="global_settings_registered_name_color_changed">Розфарбовувати імена у списку контактів</string>
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
+    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
 
     <string name="global_settings_messageview_fixedwidth_label">Шрифти фіксованої щирини</string>
     <string name="global_settings_messageview_fixedwidth_summary">Використовувати шрифт фіксованої ширини для відображення звичайних текстових повідомлень</string>
@@ -318,11 +327,18 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="global_settings_confirm_action_delete">Вилучити (лише перегляд повідомлення)</string>
     <string name="global_settings_confirm_action_delete_starred">Вилучити позначені зірочкою (лише перегляд повідомлень)</string>
     <string name="global_settings_confirm_action_spam">Спам</string>
+    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+
+    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
 
     <string name="global_settings_batch_buttons">Групові кнопки</string>
     <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>
@@ -536,17 +552,18 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="account_settings_quote_style_header">Заголовок (наприклад Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Загальні налаштування</string>
+    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
     <string name="account_settings_sync">Синхронізація пошти</string>
     <string name="account_settings_folders">Папки</string>
     <string name="account_settings_quote_prefix_label">Префікс цитованого тексту</string>
     <string name="account_settings_crypto">Шифрування</string>
     <string name="account_settings_crypto_app">OpenPGP</string>
     <string name="account_settings_crypto_app_none">Ні</string>
-    <string name="account_settings_crypto_app_not_available">недоступно</string>
     <string name="account_settings_crypto_auto_signature">Автопідпис</string>
     <string name="account_settings_crypto_auto_signature_summary">Використовувати електронну адресу для формування ключа підпису.</string>
     <string name="account_settings_crypto_auto_encrypt">Автошифрування</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Автоматична установка шифрування, якщо співпадає відкритий ключ одержувача.</string>
+    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
 
     <string name="account_settings_mail_check_frequency_label">Частота опитування папок</string>
 
@@ -784,6 +801,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="account_settings_signature__location_label">Розташування підпису</string>
     <string name="account_settings_signature__location_before_quoted_text">перед цитатою</string>
     <string name="account_settings_signature__location_after_quoted_text">після цитати</string>
+    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
     <string name="setting_theme_dark">Темно</string>
     <string name="setting_theme_light">Світло</string>
     <string name="display_preferences">Екран</string>
@@ -795,8 +813,15 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="accountlist_preferences">Список облікових записів</string>
     <string name="messagelist_preferences">Список повідомлень</string>
     <string name="messageview_preferences">Повідомлення</string>
+    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
     <string name="settings_theme_label">Тема</string>
+    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
+    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
     <string name="settings_language_label">Мова</string>
+
+    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
 
     <string name="settings_messageview_mobile_layout_label">режим одного стовпця</string>
     <string name="settings_messageview_mobile_layout_summary">Форматування HTML повідомлення для маленького екрану</string>
@@ -892,6 +917,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="font_size_message_compose">Створення повідомлень</string>
     <string name="font_size_message_compose_input">Поля для вводу тексту</string>
 
+    <!-- NEW: <string name="font_size_default">Default</string>-->
     <string name="font_size_tiniest">Найдрібніший</string>
     <string name="font_size_tiny">Дрібний</string>
     <string name="font_size_smaller">Менший</string>
@@ -945,6 +971,10 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
 
     <string name="dialog_confirm_delete_title">Підтвердіть вилучення</string>
     <string name="dialog_confirm_delete_message">Ви хочете вилучити це повідомлення?</string>
+    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Do you really want to delete this message?</item>
+        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    </plurals>-->
     <string name="dialog_confirm_delete_confirm_button">Вилучати</string>
     <string name="dialog_confirm_delete_cancel_button">Не вилучати</string>
 
@@ -1016,8 +1046,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="settings_import_use_incoming_server_password">Використовувати пароль сервера вхідної пошти</string>
     <string name="activate_account_action">Активувати</string>
 
-    <string name="settings_unknown_version">Неможливо визначити версію файла <xliff:g id="version">%s</xliff:g></string>
-
     <string name="account_unavailable">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" недоступний; перевірте пам’ять</string>
 
     <string name="settings_attachment_default_path">Зберегти вкладення до…</string>
@@ -1070,7 +1098,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search">Remote folder searching</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
     <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
@@ -1091,4 +1118,24 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
     <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+
+    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
+    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
+    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+
+    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+
+    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
+    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
+    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
+    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+
+    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+
+    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+
+    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 </resources>

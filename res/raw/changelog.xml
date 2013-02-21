@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.328" versioncode="17029" >
+        <change>Fixed the changelog :)</change>
+    </release>
+
+    <release version="4.327" versioncode="17028" >
+        <change>Fix dialog message when deleting multiple messages from a notification</change>
+        <change>Message view / list: fix NPE when list is empty</change>
+        <change>If there is no message when resuming, K-9 should return to a MessageList.</change>
+        <change>Add a caching layer to EmailProvider.  Database updates can be surprisingly slow. This lead to slow updates of the user interface which in turn made working with K-9 Mail not as fun as it should be. This commit hopefully changes that.</change>
+        <change>Updated Japanese translation</change>
+        <change>Updated French translation</change>
+        <change>Updated Czech localization</change>
+    </release>
     <release version="4.326" versioncode="17027" >
         <change>Korean translation update</change>
         <change>Message header area overhauled</change>

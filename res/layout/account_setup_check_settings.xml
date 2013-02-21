@@ -11,7 +11,7 @@
     android:padding="6dip"
     android:fadingEdge="none"
     android:scrollbarStyle="outsideInset">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
     android:layout_gravity="center_horizontal|center_vertical"
     android:layout_height="fill_parent"

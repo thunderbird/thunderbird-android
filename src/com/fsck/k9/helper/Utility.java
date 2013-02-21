@@ -227,24 +227,6 @@ public class Utility {
         }
     }
 
-    private static final long MILISECONDS_IN_18_HOURS = 18 * 60 * 60 * 1000;
-    /**
-     * Check a date to see if it was from "today."
-     * @param date Date of item to check.
-     * @return true if the specified date is within 18 hours of now.
-     */
-    public static boolean isDateToday(final Date date) {
-        if (date == null) {
-            return false;
-        }
-        final Date now = new Date();
-        if (now.getTime() - MILISECONDS_IN_18_HOURS > date.getTime() || now.getTime() + MILISECONDS_IN_18_HOURS < date.getTime()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     /*
      * TODO disabled this method globally. It is used in all the settings screens but I just
      * noticed that an unrelated icon was dimmed. Android must share drawables internally.

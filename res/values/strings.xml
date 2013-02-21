@@ -109,9 +109,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="choose_folder_title">Choose Folder</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Sending <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -138,7 +135,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="move_action">Move</string>
     <string name="single_message_options_action">Send</string>
     <string name="refile_action">Refile</string>
-
     <string name="continue_action">Continue</string>
     <string name="back_action">Back</string>
     <string name="done_action">Done</string> <!--  Used to complete a multi-step process -->
@@ -251,8 +247,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Failed to send some messages</string>
-
-    <string name="end_of_folder">No more messages</string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
@@ -573,7 +567,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto">Cryptography</string>
     <string name="account_settings_crypto_app">OpenPGP Provider</string>
     <string name="account_settings_crypto_app_none">None</string>
-    <string name="account_settings_crypto_app_not_available">not available</string>
     <string name="account_settings_crypto_auto_signature">Auto-sign</string>
     <string name="account_settings_crypto_auto_signature_summary">Use the account\'s email address to guess the signature key.</string>
     <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>
@@ -808,7 +801,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="folder_list_filter_hint">folder name contains</string>
 
-    <string name="folder_list_display_mode_label">Show folders...</string>
+    <string name="folder_list_display_mode_label">Show folders…</string>
     <string name="folder_list_display_mode_all">All folders</string>
     <string name="folder_list_display_mode_first_class">1st Class folders</string>
     <string name="folder_list_display_mode_first_and_second_class">1st &amp; 2nd Class folders</string>
@@ -1060,8 +1053,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>
     <string name="activate_account_action">Activate</string>
 
-    <string name="settings_unknown_version">Unable to handle file of version <xliff:g id="version">%s</xliff:g></string>
-
     <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>
 
     <string name="settings_attachment_default_path">Save attachments to…</string>
@@ -1114,7 +1105,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Server search limit</string>
     <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>
-    <string name="account_settings_remote_search">Remote folder searching</string>
     <string name="account_settings_remote_search_full_text">Include messages text in server search</string>
     <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>
     <string name="remote_search_sending_query">Sending query to server</string>

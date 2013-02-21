@@ -22,7 +22,7 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Wilkommen bei K-9 Mail</string>
+    <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
 K-9 Mail ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
@@ -100,9 +100,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="choose_folder_title">Ordner wählen</string>
 
-    <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
-
-    <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">Lade <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Lade Kopfzeilen in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Sende <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -112,8 +109,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="status_next_poll">Nächster Abruf <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Synchronisation abgeschaltet</string>
 
-    <!-- Actions will be used as buttons and in menu items -->
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ausgewählt</string>
+    <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Weiter</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Zurück</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
@@ -128,6 +125,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="forward_action">Weiterleiten</string>
     <string name="move_action">Verschieben</string>
     <string name="single_message_options_action">Aktionen</string>
+    <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Fortfahren</string>
     <string name="back_action">Zurück</string>
     <string name="done_action">Fertig</string> <!--  Used to complete a multi-step process -->
@@ -215,7 +213,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="notification_action_reply">Antworten</string>
     <string name="notification_action_read">Gelesen</string>
     <string name="notification_action_delete">Löschen</string>
-
     <string name="notification_certificate_error_title">Zertifikatsproblem (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_certificate_error_text">Servereinstellungen überprüfen</string>
 
@@ -242,8 +239,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Nachrichten konnten nicht gesendet werden</string>
-
-    <string name="end_of_folder">Keine weiteren Nachrichten</string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Debug-Aufzeichnungen</string>
@@ -564,7 +559,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_settings_crypto">Kryptographie</string>
     <string name="account_settings_crypto_app">OpenPGP-Provider</string>
     <string name="account_settings_crypto_app_none">Keiner</string>
-    <string name="account_settings_crypto_app_not_available">Nicht verfügbar</string>
     <string name="account_settings_crypto_auto_signature">Automatisches Signieren</string>
     <string name="account_settings_crypto_auto_signature_summary">E-Mail-Adresse des Kontos verwenden, um den Signaturschlüssel zu finden</string>
     <string name="account_settings_crypto_auto_encrypt">Automatische Verschlüsselung</string>
@@ -1040,8 +1034,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="settings_import_use_incoming_server_password">Passwort des Posteingangsservers verwenden</string>
     <string name="activate_account_action">Aktivieren</string>
 
-    <string name="settings_unknown_version">Kann die Datei-Version <xliff:g id="version">%s</xliff:g> nicht verwenden</string>
-
     <string name="account_unavailable">Konto \'<xliff:g id="account">%s</xliff:g>\' ist nicht verfügbar, bitte SD-Karte prüfen.</string>
 
     <string name="settings_attachment_default_path">Speicherort für Anhänge</string>
@@ -1096,7 +1088,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_settings_remote_search_num_summary">Suche wird nach <xliff:g id="num_results">%s</xliff:g> Resultaten beendet</string>
     <string name="account_settings_remote_search_full_text">Nachrichtentext durchsuchen</string>
     <string name="account_settings_remote_search_full_text_summary">Kann den Suchprozess verlangsamen</string>
-    <string name="account_settings_remote_search">Serverseitige Suche</string>
     <string name="remote_search_sending_query">Sende Anfrage an den Server</string>
     <string name="remote_search_downloading">Lade %d Resultate</string>
     <string name="remote_search_downloading_limited">Lade %1$d von %2$d Resultaten</string>
