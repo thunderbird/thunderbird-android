@@ -2639,7 +2639,7 @@ public class MessagingController implements Runnable {
         final PendingIntent pi = PendingIntent.getActivity(context,
                 account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
         final String title = context.getString(
-                R.string.notification_certificate_error_text, account.getName());
+                R.string.notification_certificate_error_title, account.getName());
 
         final NotificationCompat.Builder builder = new NotificationBuilder(context);
         builder.setSmallIcon(R.drawable.stat_notify_email_generic);
