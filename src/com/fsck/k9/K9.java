@@ -245,13 +245,6 @@ public class K9 extends Application {
     private static String mAttachmentDefaultPath = "";
     private static boolean mWrapFolderNames = false;
 
-    private static boolean mBatchButtonsMarkRead = true;
-    private static boolean mBatchButtonsDelete = true;
-    private static boolean mBatchButtonsArchive = false;
-    private static boolean mBatchButtonsMove = false;
-    private static boolean mBatchButtonsFlag = true;
-    private static boolean mBatchButtonsUnselect = true;
-
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
 
@@ -515,13 +508,6 @@ public class K9 extends Application {
         editor.putBoolean("messageViewShowNext", mMessageViewShowNext);
         editor.putBoolean("wrapFolderNames", mWrapFolderNames);
 
-        editor.putBoolean("batchButtonsMarkRead", mBatchButtonsMarkRead);
-        editor.putBoolean("batchButtonsDelete", mBatchButtonsDelete);
-        editor.putBoolean("batchButtonsArchive", mBatchButtonsArchive);
-        editor.putBoolean("batchButtonsMove", mBatchButtonsMove);
-        editor.putBoolean("batchButtonsFlag", mBatchButtonsFlag);
-        editor.putBoolean("batchButtonsUnselect", mBatchButtonsUnselect);
-
         editor.putString("language", language);
         editor.putInt("theme", theme.ordinal());
         editor.putInt("messageViewTheme", messageViewTheme.ordinal());
@@ -712,13 +698,6 @@ public class K9 extends Application {
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
         mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
         mWrapFolderNames = sprefs.getBoolean("wrapFolderNames", false);
-
-        mBatchButtonsMarkRead = sprefs.getBoolean("batchButtonsMarkRead", true);
-        mBatchButtonsDelete = sprefs.getBoolean("batchButtonsDelete", true);
-        mBatchButtonsArchive = sprefs.getBoolean("batchButtonsArchive", true);
-        mBatchButtonsMove = sprefs.getBoolean("batchButtonsMove", true);
-        mBatchButtonsFlag = sprefs.getBoolean("batchButtonsFlag", true);
-        mBatchButtonsUnselect = sprefs.getBoolean("batchButtonsUnselect", true);
 
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
@@ -1218,48 +1197,6 @@ public class K9 extends Application {
 
     public static void setNotificationQuickDeleteBehaviour(final NotificationQuickDelete mode) {
         sNotificationQuickDelete = mode;
-    }
-
-    public static boolean batchButtonsMarkRead() {
-        return mBatchButtonsMarkRead;
-    }
-    public static void setBatchButtonsMarkRead(final boolean state) {
-        mBatchButtonsMarkRead = state;
-    }
-
-    public static boolean batchButtonsDelete() {
-        return mBatchButtonsDelete;
-    }
-    public static void setBatchButtonsDelete(final boolean state) {
-        mBatchButtonsDelete = state;
-    }
-
-    public static boolean batchButtonsArchive() {
-        return mBatchButtonsArchive;
-    }
-    public static void setBatchButtonsArchive(final boolean state) {
-        mBatchButtonsArchive = state;
-    }
-
-    public static boolean batchButtonsMove() {
-        return mBatchButtonsMove;
-    }
-    public static void setBatchButtonsMove(final boolean state) {
-        mBatchButtonsMove = state;
-    }
-
-    public static boolean batchButtonsFlag() {
-        return mBatchButtonsFlag;
-    }
-    public static void setBatchButtonsFlag(final boolean state) {
-        mBatchButtonsFlag = state;
-    }
-
-    public static boolean batchButtonsUnselect() {
-        return mBatchButtonsUnselect;
-    }
-    public static void setBatchButtonsUnselect(final boolean state) {
-        mBatchButtonsUnselect = state;
     }
 
     /**

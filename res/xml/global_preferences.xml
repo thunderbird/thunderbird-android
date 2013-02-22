@@ -268,49 +268,6 @@
             android:positiveButtonText="@android:string/ok"
             android:negativeButtonText="@android:string/cancel" />
 
-        <PreferenceScreen
-            android:title="@string/global_settings_batch_buttons"
-            android:summary="@string/global_settings_batch_buttons_summary"
-            android:key="batch_buttons_settings">
-
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="batch_buttons_mark_read"
-                android:title="@string/global_settings_mark_read"
-            />
-
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="batch_buttons_delete"
-                android:title="@string/global_settings_delete"
-            />
-
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="batch_buttons_archive"
-                android:title="@string/global_settings_archive"
-            />
-
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="batch_buttons_move"
-                android:title="@string/global_settings_move"
-            />
-
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="batch_buttons_flag"
-                android:title="@string/global_settings_flag"
-            />
-
-            <CheckBoxPreference
-                android:persistent="false"
-                android:key="batch_buttons_unselect"
-                android:title="@string/global_settings_unselect"
-            />
-
-        </PreferenceScreen>
-
     </PreferenceScreen>
 
     <PreferenceScreen
