@@ -210,15 +210,15 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="recreating_account">Obnovuji účet \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Nová zpráva</string>
-    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nepřečteno (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) --> <!-- PLURALS: wrong!!! -->
-    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> více v <xliff:g id="account">%s</xliff:g></string>
 
-    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
-    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
-    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
-    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
+    <string name="notification_action_reply">Odpovědět</string>
+    <string name="notification_action_read">Číst</string>
+    <string name="notification_action_delete">Smazat</string>
+    <string name="notification_certificate_error_title">Chyba certifikátu pro <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
 
     <string name="notification_bg_sync_ticker">Zjišťování pošty: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Zjišťování pošty</string>
