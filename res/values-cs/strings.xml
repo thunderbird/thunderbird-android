@@ -977,9 +977,10 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="dialog_confirm_delete_title">Potvrzení mazání</string>
     <string name="dialog_confirm_delete_message">Chcete smazat tuto zprávu?</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
-        <item quantity="one">Do you really want to delete this message?</item>
-        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Opravdu si přejete smazat tuto zprávu?</item>
+        <item quantity="few">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zprávy?</item>
+        <item quantity="other">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zpráv?</item>
     </plurals>-->
     <string name="dialog_confirm_delete_confirm_button">Smazat</string>
     <string name="dialog_confirm_delete_cancel_button">Nemazat</string>
@@ -1143,6 +1144,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="global_settings_show_contact_picture_summary">Zobraz obrázky u kontaktů v seznamu zpráv</string>
 
     <string name="last_refresh_time_format">Poslední obnova <xliff:g id="formatted_time">%s</xliff:g></string>
-    <string name="last_refresh_time_format_with_push">Poslední obnova <xliff:g id="time_with_preposition">%s</xliff:g> (Push)</string>-->
+    <string name="last_refresh_time_format_with_push">Poslední obnova <xliff:g id="time_with_preposition">%s</xliff:g> (Push)</string>
     <string name="preposition_for_date">v <xliff:g id="date">%s</xliff:g></string>-->
 </resources>
