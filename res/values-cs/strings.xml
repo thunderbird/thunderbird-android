@@ -807,7 +807,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_signature__location_label">Umístění podpisu</string>
     <string name="account_settings_signature__location_before_quoted_text">Před citovanými zprávami</string>
     <string name="account_settings_signature__location_after_quoted_text">Za citovanými zprávami</string>
-    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
+    <string name="setting_theme_global">Použíj téma aplikace</string>
     <string name="setting_theme_dark">Tmavé</string>
     <string name="setting_theme_light">Světlé</string>
     <string name="display_preferences">Zobrazení</string>
@@ -819,15 +819,15 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="accountlist_preferences">Seznam účtů</string>
     <string name="messagelist_preferences">Zprávy</string>
     <string name="messageview_preferences">Zprávy</string>
-    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
+    <string name="folderlist_preferences">Seznam složek</string>
     <string name="settings_theme_label">Téma</string>
     <string name="settings_message_theme_label">Téma náhledu zprávy</string>
     <string name="settings_compose_theme_label">Téma psaní zprávy</string>
     <string name="settings_language_label">Jazyk</string>
 
-    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
+    <string name="settings_message_theme_selection_label">Neměnné téma zpráv</string>
+    <string name="settings_message_theme_selection_summary_off">Lze vybrat téma při prohlížení zprávy</string>
+    <string name="settings_message_theme_selection_summary_on">Použíj neměnné téma při prohlížení zprávy</string>
 
     <string name="settings_messageview_mobile_layout_label">Jednosloupcové uspořádání</string>
     <string name="settings_messageview_mobile_layout_summary">Přeformátovat HTML zprávy pro menší obrazovky</string>
