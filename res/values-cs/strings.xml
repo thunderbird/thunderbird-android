@@ -160,7 +160,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="copy_action">Kopírovat</string>
     <string name="select_text_action">Vybrat text</string>
     <string name="show_headers_action">Zobraz hlavičku</string>
-    <string name="hide_headers_action">Skryj hlavičku</string>-->
+    <string name="hide_headers_action">Skryj hlavičku</string>
 
     <string name="message_view_theme_action_dark">Přepnout na tmavý motiv</string>
     <string name="message_view_theme_action_light">Přepnout na světlý motiv</string>
@@ -331,7 +331,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="global_settings_confirm_action_delete">Mazání (jen v zobrazení zpráv)</string>
     <string name="global_settings_confirm_action_delete_starred">Smaž zprávy s hvězdickou (message view only)</string>
     <string name="global_settings_confirm_action_spam">Nevyžádaná</string>
-    <string name="global_settings_confirm_action_delete_notif">Smazat (z oznámení)</string>-->
+    <string name="global_settings_confirm_action_delete_notif">Smazat (z oznámení)</string>
 
     <string name="global_settings_notification_hide_subject_title">Schovej předmet v upozorněních</string>
     <string name="global_settings_notification_hide_subject_never">Nikdy</string>
@@ -556,7 +556,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_quote_style_header">Záhlaví (jako Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Hlavní nastavení</string>
-    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
+    <string name="account_settings_reading_mail">Čtení zprávy</string>
     <string name="account_settings_sync">Stahování pošty</string>
     <string name="account_settings_folders">Složky</string>
     <string name="account_settings_quote_prefix_label">Předpona citovaného textu</string>
