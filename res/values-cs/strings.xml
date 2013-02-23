@@ -567,7 +567,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_crypto_auto_signature_summary">Použít emailovou adresu účtu pro odhadnutí podpisového klíče.</string>
     <string name="account_settings_crypto_auto_encrypt">Automaticky zašifrovat</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Automaticky zašifrovat jestliže veřejný klíč odpovídá adresátovy.</string>
-    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
+    <string name="account_settings_crypto_apg_not_installed">APG není nainstalován</string>
 
     <string name="account_settings_mail_check_frequency_label">Frekvence dotazování složky</string>
 
@@ -821,8 +821,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="messageview_preferences">Zprávy</string>
     <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
     <string name="settings_theme_label">Téma</string>
-    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
-    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
+    <string name="settings_message_theme_label">Téma náhledu zprávy</string>
+    <string name="settings_compose_theme_label">Téma psaní zprávy</string>
     <string name="settings_language_label">Jazyk</string>
 
     <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
@@ -923,7 +923,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="font_size_message_compose">Psaní zprávy</string>
     <string name="font_size_message_compose_input">Pole zadávaní textu</string>
 
-    <!-- NEW: <string name="font_size_default">Default</string>-->
+    <string name="font_size_default">Standardní</string>
     <string name="font_size_tiniest">Nejdrobnější</string>
     <string name="font_size_tiny">Drobný</string>
     <string name="font_size_smaller">Menší</string>
@@ -1126,8 +1126,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="global_settings_threaded_view_label">Zabrazení vláken</string>
     <string name="global_settings_threaded_view_summary">Sjednotit zprávy patřící ke stejnému vláknu</string>
 
-    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
-    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
+    <string name="upgrade_databases_title">Aktualizace databází</string>
+    <string name="upgrade_databases_unspecified">Aktualizuji databáze…</string>
     <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
 
     <!-- NEW: <string name="message_list_loading">Loading…</string>-->
