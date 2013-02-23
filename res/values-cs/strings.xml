@@ -114,7 +114,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="status_next_poll">Příští dotaz <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Synchronizace vypnuta</string>
 
-    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Další</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Předchozí</string> <!-- Used as part of a multi-step process -->
@@ -130,7 +130,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="forward_action">Přeposlat</string>
     <string name="move_action">Přesunout</string>
     <string name="single_message_options_action">Vlastnosti zprávy</string>
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <string name="refile_action">Přesměrovat</string>
     <string name="continue_action">Pokračovat</string>
     <string name="back_action">Zpět</string>
     <string name="done_action">Hotovo</string> <!--  Used to complete a multi-step process -->
@@ -159,8 +159,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="unflag_action">Odebrat \u2606</string>
     <string name="copy_action">Kopírovat</string>
     <string name="select_text_action">Vybrat text</string>
-    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
-    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
+    <string name="show_headers_action">Zobraz hlavičku</string>
+    <string name="hide_headers_action">Skryj hlavičku</string>-->
 
     <string name="message_view_theme_action_dark">Přepnout na tmavý motiv</string>
     <string name="message_view_theme_action_light">Přepnout na světlý motiv</string>
@@ -871,8 +871,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="count_search_title">Počet výsledků hledání</string>
     <string name="count_search_summary">Vypněte pro rychlejší zobrazování</string>
 
-    <string name="hide_special_accounts_title">Zkryj speciální učty</string>
-    <string name="hide_special_accounts_summary">Zkryj integrovanou doručenou složku a složku všech zpráv</string>
+    <string name="hide_special_accounts_title">Skryj speciální učty</string>
+    <string name="hide_special_accounts_summary">Skryj integrovanou doručenou složku a složku všech zpráv</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - S \u2605</string>
