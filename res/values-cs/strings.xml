@@ -1128,9 +1128,9 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="upgrade_databases_title">Aktualizace databází</string>
     <string name="upgrade_databases_unspecified">Aktualizuji databáze…</string>
-    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+    <string name="upgrade_database_format">Aktualizuji databázi pro učet \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+    <string name="message_list_loading">Nahrávám…</string>
 
     <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
     <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
