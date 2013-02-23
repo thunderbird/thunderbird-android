@@ -1132,17 +1132,17 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="message_list_loading">Nahrávám…</string>
 
-    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
-    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+    <string name="global_settings_splitview_mode_label">Zobraz rozdělení obrazovky</string>
+    <string name="global_settings_splitview_always">Vždy</string>
+    <string name="global_settings_splitview_never">Nikdy</string>
+    <string name="global_settings_splitview_when_in_landscape">Pouze na ležato</string>
 
-    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+    <string name="message_view_empty">Prosím zvolte zprávu v levo</string>
 
-    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+    <string name="global_settings_show_contact_picture_label">Zobraz obrázky u kontaktů</string>
+    <string name="global_settings_show_contact_picture_summary">Zobraz obrázky u kontaktů v seznamu zpráv</string>
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
-    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+    <string name="last_refresh_time_format">Poslední obnova <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Poslední obnova <xliff:g id="time_with_preposition">%s</xliff:g> (Push)</string>-->
+    <string name="preposition_for_date">v <xliff:g id="date">%s</xliff:g></string>-->
 </resources>
