@@ -8,14 +8,18 @@ import com.fsck.k9.K9;
 import com.fsck.k9.helper.DomainNameChecker;
 import org.apache.commons.io.IOUtils;
 
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.Socket;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
@@ -214,5 +218,24 @@ public final class TrustManagerFactory {
         } catch (KeyStoreException e) {
             Log.e(LOG_TAG, "Key Store exception while initializing TrustManagerFactory ", e);
         }
+    }
+    
+    private static SSLContext createSslContext(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException {
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, new TrustManager[] {
+                TrustManagerFactory.get(host, secure)
+            }, new SecureRandom());
+    	return sslContext;
+    }
+    
+    public static Socket createSslSocket(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException, IOException {
+    	SSLContext sslContext = createSslContext(host, secure);
+        return sslContext.getSocketFactory().createSocket();
+    }
+    
+    public static Socket performStartTls(Socket socket, String host, int port, boolean secure) throws NoSuchAlgorithmException, KeyManagementException, IOException {
+    	SSLContext sslContext = createSslContext(host, secure);
+        boolean autoClose = true;
+        return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
     }
 }

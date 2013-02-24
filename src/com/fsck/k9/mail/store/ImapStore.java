@@ -2435,12 +2435,8 @@ public class ImapStore extends Store {
 
                         if (connectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
                                 connectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
-                            SSLContext sslContext = SSLContext.getInstance("TLS");
                             boolean secure = connectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                            sslContext.init(null, new TrustManager[] {
-                                                TrustManagerFactory.get(mSettings.getHost(), secure)
-                                            }, new SecureRandom());
-                            mSocket = sslContext.getSocketFactory().createSocket();
+                            mSocket = TrustManagerFactory.createSslSocket(mSettings.getHost(), secure);
                         } else {
                             mSocket = new Socket();
                         }
@@ -2490,13 +2486,8 @@ public class ImapStore extends Store {
                         // STARTTLS
                         executeSimpleCommand("STARTTLS");
 
-                        SSLContext sslContext = SSLContext.getInstance("TLS");
                         boolean secure = mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED;
-                        sslContext.init(null, new TrustManager[] {
-                                            TrustManagerFactory.get(mSettings.getHost(), secure)
-                                        }, new SecureRandom());
-                        mSocket = sslContext.getSocketFactory().createSocket(mSocket, mSettings.getHost(), mSettings.getPort(),
-                                  true);
+                        mSocket = TrustManagerFactory.performStartTls(mSocket, mSettings.getHost(), mSettings.getPort(), secure);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new PeekableInputStream(new BufferedInputStream(mSocket
                                                       .getInputStream(), 1024));
