@@ -981,7 +981,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
         <item quantity="one">Opravdu si přejete smazat tuto zprávu?</item>
         <item quantity="few">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zprávy?</item>
         <item quantity="other">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zpráv?</item>
-    </plurals>-->
+    </plurals>
     <string name="dialog_confirm_delete_confirm_button">Smazat</string>
     <string name="dialog_confirm_delete_cancel_button">Nemazat</string>
 
