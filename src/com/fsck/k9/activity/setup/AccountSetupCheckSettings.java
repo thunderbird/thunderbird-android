@@ -98,6 +98,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 Store store = null;
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 try {
+                	// FIXME: how should this be done?  this needs to be set during the SSL setup so
+                	// user can select the key alias.  the popup for the user to choose with
+                	// requires the currently executing activity.  this is reset in "finally" block
+                    TrustManagerFactory.setCurrentActivity(AccountSetupCheckSettings.this);
+
                     if (mDestroyed) {
                         return;
                     }
@@ -175,6 +180,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         R.string.account_setup_failed_dlg_server_message_fmt,
                         (t.getMessage() == null ? "" : t.getMessage()));
 
+                } finally {
+                    TrustManagerFactory.setCurrentActivity(null);
                 }
             }
 

@@ -1,15 +1,22 @@
 
 package com.fsck.k9.mail.store;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.security.KeyChain;
+import android.security.KeyChainAliasCallback;
+import android.security.KeyChainException;
 import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DomainNameChecker;
 import org.apache.commons.io.IOUtils;
 
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509ExtendedKeyManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +26,8 @@ import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
+import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -37,7 +46,15 @@ public final class TrustManagerFactory {
     private static File keyStoreFile;
     private static KeyStore keyStore;
 
-
+    // FIXME: how to do this properly?
+    private static Activity mCurrentActivity;
+    public static void setCurrentActivity(Activity activity) {
+    	mCurrentActivity = activity;
+    }
+    
+    private static final Object mAliasLock = new Object();
+    private static String mAlias;
+    
     private static class SimpleX509TrustManager implements X509TrustManager {
         public void checkClientTrusted(X509Certificate[] chain, String authType)
         throws CertificateException {
@@ -220,9 +237,116 @@ public final class TrustManagerFactory {
         }
     }
     
+    @TargetApi(14)
+    private static class KeyChainKeyManager extends X509ExtendedKeyManager {
+    	@Override 
+    	public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
+    		synchronized (mAliasLock) {
+    			if (mAlias != null) {
+    	    		Log.d(LOG_TAG, "KeyChainKeyManager.chooseClientAlias returning preselected alias "+mAlias);
+    				return mAlias;
+    				
+    			}
+    		}
+    		
+    		if (mCurrentActivity == null) {
+    			Log.w(LOG_TAG, "unable to initialize the chooseClientAlias intent in the KeyChain because current activity is not set");
+    			return null;
+    		}
+    		
+    		Log.d(LOG_TAG, "KeyChainKeyManager.chooseClientAlias using activity "+mCurrentActivity);
+    		
+    		KeyChain.choosePrivateKeyAlias(mCurrentActivity, new AliasResponse(), 
+    				keyTypes, issuers, 
+    				socket.getInetAddress().getHostName(), socket.getPort(), 
+    				null);
+
+    		String alias;
+    		
+    		synchronized (mAliasLock) {
+    			while (mAlias == null) {
+    				try {
+    					mAliasLock.wait();
+    				} catch (InterruptedException ignored) {
+    					
+    				}
+    			}
+    			alias = mAlias;
+			}
+    		Log.d(LOG_TAG, "KeyChainKeyManager.chooseClientAlias alias was chosen: "+alias);
+    		return alias;
+    	}
+
+		@Override
+		public String chooseServerAlias(String keyType, Principal[] issuers,
+				Socket socket) {
+			// not valid for client side
+			throw new UnsupportedOperationException();		
+		}
+
+		@Override
+		public X509Certificate[] getCertificateChain(String alias) {
+			try {
+	    		Log.d(LOG_TAG, "KeyChainKeyManager.getCertificateChain for "+alias+" using activity "+mCurrentActivity);
+
+				return KeyChain.getCertificateChain(K9.app, alias);
+			} catch (KeyChainException e) {
+				throw new RuntimeException(e);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				return null;
+			}
+		}
+
+		@Override
+		public String[] getClientAliases(String keyType, Principal[] issuers) {
+			// not valid for client side
+			throw new UnsupportedOperationException();		
+		}
+
+		@Override
+		public PrivateKey getPrivateKey(String alias) {
+			PrivateKey privateKey;
+			try {
+	    		Log.d(LOG_TAG, "KeyChainKeyManager.getPrivateKey for "+alias+" using activity "+mCurrentActivity);
+				privateKey = KeyChain.getPrivateKey(K9.app, alias);
+				return privateKey;
+			} catch (KeyChainException e) {
+				throw new RuntimeException(e);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				return null;
+			}
+		}
+
+		@Override
+		public String[] getServerAliases(String keyType, Principal[] issuers) {
+			// not valid for client side
+			throw new UnsupportedOperationException();		
+		}
+    }
+    
+    private static class AliasResponse implements KeyChainAliasCallback {
+		@Override
+		public void alias(String alias) {
+			synchronized (mAliasLock) {
+				mAlias = alias;
+				mAliasLock.notifyAll();
+			}
+		}
+    	
+    }
+    
     private static SSLContext createSslContext(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, new TrustManager[] {
+        KeyManager[] keyManagers = null;
+        if (mCurrentActivity != null || mAlias != null) {
+        	keyManagers = new KeyManager[] { new KeyChainKeyManager() };
+        } else {
+        	Log.d(LOG_TAG, 
+        			"unable to create keyManager due to no current activity");
+        }
+        sslContext.init(keyManagers, new TrustManager[] {
                 TrustManagerFactory.get(host, secure)
             }, new SecureRandom());
     	return sslContext;

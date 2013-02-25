@@ -2514,7 +2514,8 @@ public class ImapStore extends Store {
                         }
 
                     } else if (mSettings.getAuthType() == AuthType.PLAIN) {
-                        receiveCapabilities(executeSimpleCommand(String.format("LOGIN %s %s", ImapStore.encodeString(mSettings.getUsername()), ImapStore.encodeString(mSettings.getPassword())), true));
+                        //receiveCapabilities(executeSimpleCommand(String.format("LOGIN %s %s", ImapStore.encodeString(mSettings.getUsername()), ImapStore.encodeString(mSettings.getPassword())), true));
+                    	executeSimpleCommand(String.format("AUTHENTICATE EXTERNAL %s", Utility.base64Encode(mSettings.getUsername())), false);
                     }
                     authSuccess = true;
                 } catch (ImapException ie) {
