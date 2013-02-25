@@ -21,6 +21,7 @@ import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.preferences.Settings.*;
 
 public class GlobalSettings {
@@ -221,6 +222,9 @@ public class GlobalSettings {
         s.put("showContactPicture", Settings.versions(
                 new V(25, new BooleanSetting(true))
             ));
+        s.put("availableColors", Settings.versions(
+                new V(26, new StringSetting(Utility.combine(Account.PREDEFINED_COLORS, ',')))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
