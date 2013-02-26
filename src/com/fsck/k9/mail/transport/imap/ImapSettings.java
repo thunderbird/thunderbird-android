@@ -13,6 +13,8 @@ public interface ImapSettings {
     int getPort();
 
     int getConnectionSecurity();
+    
+    String getClientCertificateAlias();
 
     AuthType getAuthType();
 
