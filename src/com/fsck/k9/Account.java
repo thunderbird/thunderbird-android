@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +25,9 @@ import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
@@ -34,14 +35,12 @@ import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.StatsColumns;
 import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
-
-import java.util.HashMap;
 
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save
@@ -84,7 +83,9 @@ public class Account implements BaseAccount {
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
     public static final String STORE_URI_KEY = "storeUri";
+    public static final String STORE_CCERT_KEY = "storeClientCertificateAlias";
     public static final String TRANSPORT_URI_KEY = "transportUri";
+    public static final String TRANSPORT_CCERT_KEY = "transportClientCertificateAlias";
 
     public static final String IDENTITY_NAME_KEY = "name";
     public static final String IDENTITY_EMAIL_KEY = "email";
@@ -134,6 +135,7 @@ public class Account implements BaseAccount {
 
     private final String mUuid;
     private String mStoreUri;
+    private String mStoreClientCertificateAlias;
 
     /**
      * Storage provider ID, used to locate and manage the underlying DB/file
@@ -141,6 +143,7 @@ public class Account implements BaseAccount {
      */
     private String mLocalStorageProviderId;
     private String mTransportUri;
+    private String mTransportClientCertificateAlias;
     private String mDescription;
     private String mAlwaysBcc;
     private int mAutomaticCheckIntervalMinutes;
@@ -339,8 +342,10 @@ public class Account implements BaseAccount {
         SharedPreferences prefs = preferences.getPreferences();
 
         mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
+        mStoreClientCertificateAlias = prefs.getString(mUuid + ".storeClientCertificateAlias", null);
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
         mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
+        mTransportClientCertificateAlias = prefs.getString(mUuid + ".transportClientCertificateAlias", null);
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
@@ -493,8 +498,10 @@ public class Account implements BaseAccount {
         }
 
         editor.remove(mUuid + ".storeUri");
+        editor.remove(mUuid + ".storeClientCertificateAlias");
         editor.remove(mUuid + ".localStoreUri");
         editor.remove(mUuid + ".transportUri");
+        editor.remove(mUuid + ".transportClientCertificateAlias");
         editor.remove(mUuid + ".description");
         editor.remove(mUuid + ".name");
         editor.remove(mUuid + ".email");
@@ -653,8 +660,10 @@ public class Account implements BaseAccount {
         }
 
         editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
+        editor.putString(mUuid + ".storeClientCertificateAlias", mStoreClientCertificateAlias);
         editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
         editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
+        editor.putString(mUuid + ".transportClientCertificateAlias", mTransportClientCertificateAlias);
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
@@ -888,6 +897,14 @@ public class Account implements BaseAccount {
         this.mStoreUri = storeUri;
     }
 
+    public synchronized String getStoreClientCertificateAlias() {
+    	return mStoreClientCertificateAlias;
+    }
+
+    public synchronized void setStoreClientCertificateAlias(String storeClientCertificateAlias) {
+    	this.mStoreClientCertificateAlias = storeClientCertificateAlias;
+    }
+    
     public synchronized String getTransportUri() {
         return mTransportUri;
     }
@@ -896,6 +913,14 @@ public class Account implements BaseAccount {
         this.mTransportUri = transportUri;
     }
 
+    public synchronized String getTransportClientCertificateAlias() {
+    	return mTransportClientCertificateAlias;
+    }
+
+    public synchronized void setTransportClientCertificateAlias(String transportClientCertificateAlias) {
+    	this.mTransportClientCertificateAlias = transportClientCertificateAlias;
+    }
+    
     @Override
     public synchronized String getDescription() {
         return mDescription;
@@ -1821,4 +1846,5 @@ public class Account implements BaseAccount {
         search.and(Searchfield.FOLDER, getSentFolderName(), Attribute.NOT_EQUALS);
         search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
     }
+
 }
