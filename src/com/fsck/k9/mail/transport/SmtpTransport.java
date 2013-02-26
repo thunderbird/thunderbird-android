@@ -241,7 +241,7 @@ public class SmtpTransport extends Transport {
                             mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
                         
                         boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                        mSocket = TrustManagerFactory.createSslSocket(mHost, secure);
+                        mSocket = TrustManagerFactory.createSslSocket(mHost, secure, mAccount.getTransportClientCertificateAlias());
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                     } else {
                         mSocket = new Socket();
@@ -296,7 +296,7 @@ public class SmtpTransport extends Transport {
                     executeSimpleCommand("STARTTLS");
 
                     boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
-                    mSocket = TrustManagerFactory.performStartTls(mSocket, mHost, mPort, secure);
+                    mSocket = TrustManagerFactory.performStartTls(mSocket, mHost, mPort, secure, mAccount.getTransportClientCertificateAlias());
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                                   1024));
                     mOut = mSocket.getOutputStream();
