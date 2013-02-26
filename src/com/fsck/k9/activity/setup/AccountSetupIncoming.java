@@ -58,7 +58,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     };
 
     private static final String[] AUTH_TYPES = {
-        "PLAIN", "CRAM_MD5"
+        "PLAIN", "CRAM_MD5", "EXTERNAL"
     };
 
 
@@ -152,7 +152,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         // that makes me somewhat unhappy
         SpinnerOption authTypeSpinnerOptions[] = {
             new SpinnerOption(0, AUTH_TYPES[0]),
-            new SpinnerOption(1, AUTH_TYPES[1])
+            new SpinnerOption(1, AUTH_TYPES[1]),
+            new SpinnerOption(2, AUTH_TYPES[2])
         };
 
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
@@ -307,6 +308,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position,
                         long id) {
+                	// this indirectly triggers validateFields because the port text is watched
                     updatePortFromSecurityType();
                 }
 
@@ -314,6 +316,16 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
             });
 
+            mAuthTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int position, long id) {
+					validateFields();
+				}
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) { /* unused */ }
+			});
+            
             mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
             mCompressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
             mCompressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
@@ -343,11 +355,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void validateFields() {
+    	String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+    	boolean isAuthTypeExternal = authType.equals("EXTERNAL") ;
+    	
+    	int secLevel = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
+    	boolean hasConnectionSecurity =  secLevel > 0;
+    	
         mNextButton
         .setEnabled(Utility.requiredFieldValid(mUsernameView)
-                    && Utility.requiredFieldValid(mPasswordView)
+                    && (isAuthTypeExternal || Utility.requiredFieldValid(mPasswordView))
                     && Utility.domainFieldValid(mServerView)
-                    && Utility.requiredFieldValid(mPortView));
+                    && Utility.requiredFieldValid(mPortView)
+                    && (!isAuthTypeExternal || hasConnectionSecurity));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -436,8 +455,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount.setCompression(Account.TYPE_WIFI, mCompressionWifi.isChecked());
             mAccount.setCompression(Account.TYPE_OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
+            
+            boolean promptForClientCertificate = (authType == "EXTERNAL");
 
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false, promptForClientCertificate);
         } catch (Exception e) {
             failure(e);
         }
