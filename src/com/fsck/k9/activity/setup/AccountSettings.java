@@ -884,7 +884,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 dialog = new ColorPickerDialog(this,
                         new ColorPickerDialog.OnColorChangedListener() {
                             public void colorChanged(int color) {
-                                mAccount.setChipColor(color);
+                                mAccount.setChipColor(AccountSettings.this, color);
                             }
                         },
                         mAccount.getChipColor());
