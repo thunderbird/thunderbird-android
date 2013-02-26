@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.ContentResolver;
@@ -91,18 +90,16 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
-    private static final String EMPTY = "empty";
-
     /*
-        http://developer.android.com/design/style/color.html
-        Note: Order does matter, it's the order in which they will be picked.
-    */
+     * http://developer.android.com/design/style/color.html
+     * Note: Order does matter, it's the order in which they will be picked.
+     */
     public static final Integer[] PREDEFINED_COLORS = new Integer[] {
             Color.parseColor("#0099CC"),    // blue
             Color.parseColor("#669900"),    // green
             Color.parseColor("#FF8800"),    // orange
-            Color.parseColor("#CC0000"),     // red
-            Color.parseColor("#9933CC")    // purple
+            Color.parseColor("#CC0000"),    // red
+            Color.parseColor("#9933CC")     // purple
     };
 
     public enum SortType {
@@ -345,59 +342,22 @@ public class Account implements BaseAccount {
      * Pick a nice Android guidelines color if we haven't used them all yet.
      */
     private int pickColor(Context context) {
-        SharedPreferences prefs = Preferences.getPreferences(context).getPreferences();
-        String availableColors = prefs.getString("availableColors","");
+        Account[] accounts = Preferences.getPreferences(context).getAccounts();
 
-        if (!availableColors.equals(EMPTY)) {
+        List<Integer> availableColors = new ArrayList<Integer>(PREDEFINED_COLORS.length);
+        Collections.addAll(availableColors, PREDEFINED_COLORS);
 
-            // first run
-            if (availableColors.isEmpty()) {
-                availableColors = Utility.combine(Account.PREDEFINED_COLORS, ',');
-            }
-
-            String[] colors = availableColors.split(",");
-
-            // determine remaining colors
-            String remainingColors = "";
-            if (colors.length > 1) {
-                remainingColors = Utility.combine(Arrays.copyOfRange(colors, 1, colors.length), ',');
-            } else {
-                remainingColors = EMPTY;
-            }
-
-            // save remaining colors
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("availableColors", remainingColors);
-            editor.commit();
-
-            return Integer.parseInt(colors[0]);
-        } else {
-            return ColorPicker.getRandomColor();
-        }
-    }
-
-    /*
-        Put the account color back in circulation if it's a predefined one,
-        we also want to maintain the order of preference.
-    */
-    private String calculateAvailableColors(Preferences preferences, int currentColor) {
-        ArrayList<Integer> newAvailableColors = new ArrayList<Integer>();
-        HashSet<Integer> oldAvailableColors = new HashSet<Integer>();
-        String oldColors = preferences.getPreferences().getString("availableColors", "");
-
-        if (!oldColors.equals(EMPTY)) {
-            for (String color : oldColors.split(",")) {
-                oldAvailableColors.add(Integer.parseInt(color));
+        for (Account account : accounts) {
+            Integer color = account.getChipColor();
+            if (availableColors.contains(color)) {
+                availableColors.remove(color);
+                if (availableColors.isEmpty()) {
+                    break;
+                }
             }
         }
 
-        for (Integer color : PREDEFINED_COLORS) {
-            if (color == currentColor || oldAvailableColors.contains(color)) {
-                newAvailableColors.add(color);
-            }
-        }
-
-        return Utility.combine(newAvailableColors.toArray(), ',');
+        return (availableColors.isEmpty()) ? ColorPicker.getRandomColor() : availableColors.get(0);
     }
 
     protected Account(Preferences preferences, String uuid) {
@@ -564,11 +524,6 @@ public class Account implements BaseAccount {
         if (newUuids.size() < uuids.length) {
             String accountUuids = Utility.combine(newUuids.toArray(), ',');
             editor.putString("accountUuids", accountUuids);
-        }
-
-        // Put color back in circulation if necesarry
-        if (Arrays.asList(PREDEFINED_COLORS).contains(mChipColor)) {
-            editor.putString("availableColors", calculateAvailableColors(preferences, mChipColor));
         }
 
         editor.remove(mUuid + ".storeUri");
@@ -884,15 +839,7 @@ public class Account implements BaseAccount {
     }
 
 
-    public synchronized void setChipColor(Context context, int color) {
-        // release current color if predefined one
-        if (Arrays.asList(PREDEFINED_COLORS).contains(mChipColor)) {
-            String availableColors = calculateAvailableColors(Preferences.getPreferences(context), color);
-            SharedPreferences.Editor editor = Preferences.getPreferences(context).getPreferences().edit();
-            editor.putString("availableColors", availableColors);
-            editor.commit();
-        }
-
+    public synchronized void setChipColor(int color) {
         mChipColor = color;
         cacheChips();
     }
