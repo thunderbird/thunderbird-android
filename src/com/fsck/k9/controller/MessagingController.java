@@ -2642,7 +2642,7 @@ public class MessagingController implements Runnable {
                 R.string.notification_certificate_error_title, account.getName());
 
         final NotificationCompat.Builder builder = new NotificationBuilder(context);
-        builder.setSmallIcon(R.drawable.stat_notify_email_generic);
+        builder.setSmallIcon(R.drawable.ic_notify_new_mail);
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
         builder.setTicker(title);
@@ -3384,7 +3384,7 @@ public class MessagingController implements Runnable {
                 (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationBuilder(mApplication);
-        builder.setSmallIcon(R.drawable.stat_notify_email_generic);
+        builder.setSmallIcon(R.drawable.ic_notify_new_mail);
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
         builder.setTicker(mApplication.getString(R.string.send_failure_subject));
@@ -4804,7 +4804,7 @@ public class MessagingController implements Runnable {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationBuilder(context);
-        builder.setSmallIcon(R.drawable.stat_notify_email_generic);
+        builder.setSmallIcon(R.drawable.ic_notify_new_mail);
         builder.setWhen(System.currentTimeMillis());
         if (!updateSilently) {
             builder.setTicker(summary);
