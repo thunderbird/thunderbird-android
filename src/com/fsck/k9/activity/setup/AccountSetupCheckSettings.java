@@ -50,6 +50,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     private static final String EXTRA_CHECK_INCOMING = "checkIncoming";
 
     private static final String EXTRA_CHECK_OUTGOING = "checkOutgoing";
+    
+    private static final String EXTRA_PROMPT_CCERT = "promptCcert";
 
     private Handler mHandler = new Handler();
 
@@ -63,16 +65,20 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     private boolean mCheckOutgoing;
 
+    private boolean mPromptForClientCertificate;
+    
     private boolean mCanceled;
 
     private boolean mDestroyed;
 
     public static void actionCheckSettings(Activity context, Account account,
-                                           boolean checkIncoming, boolean checkOutgoing) {
+                                           boolean checkIncoming, boolean checkOutgoing,
+                                           boolean promptForClientCertificate) {
         Intent i = new Intent(context, AccountSetupCheckSettings.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_CHECK_INCOMING, checkIncoming);
         i.putExtra(EXTRA_CHECK_OUTGOING, checkOutgoing);
+        i.putExtra(EXTRA_PROMPT_CCERT, promptForClientCertificate);
         context.startActivityForResult(i, ACTIVITY_REQUEST_CODE);
     }
 
@@ -91,6 +97,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mCheckIncoming = getIntent().getBooleanExtra(EXTRA_CHECK_INCOMING, false);
         mCheckOutgoing = getIntent().getBooleanExtra(EXTRA_CHECK_OUTGOING, false);
+        mPromptForClientCertificate = getIntent().getBooleanExtra(EXTRA_PROMPT_CCERT, false);
 
         new Thread() {
             @Override
@@ -101,7 +108,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 	// FIXME: how should this be done?  this needs to be set during the SSL setup so
                 	// user can select the key alias.  the popup for the user to choose with
                 	// requires the currently executing activity.  this is reset in "finally" block
-                    TrustManagerFactory.setCurrentActivity(AccountSetupCheckSettings.this);
+                	if (mPromptForClientCertificate) {
+                		Log.d(K9.LOG_TAG, "AccountSetupCheckSettings will prompt for client cert");
+                		TrustManagerFactory.setCurrentActivity(AccountSetupCheckSettings.this);
+                	} else {
+                		Log.d(K9.LOG_TAG, "AccountSetupCheckSettings will NOT prompt for client cert");
+                	}
 
                     if (mDestroyed) {
                         return;
@@ -130,6 +142,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         }
                         MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
                         MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null);
+                        
+                        if (mPromptForClientCertificate) {
+                        	mAccount.setStoreClientCertificateAlias(TrustManagerFactory.getSelectedClientCertificateAlias());
+                        }
                     }
                     if (mDestroyed) {
                         return;
@@ -146,6 +162,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         transport.close();
                         transport.open();
                         transport.close();
+                        
+                        if (mPromptForClientCertificate) {
+                        	mAccount.setTransportClientCertificateAlias(TrustManagerFactory.getSelectedClientCertificateAlias());
+                        }
+
                     }
                     if (mDestroyed) {
                         return;
@@ -154,6 +175,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         finish();
                         return;
                     }
+                    
                     setResult(RESULT_OK);
                     finish();
                 } catch (final AuthenticationFailedException afe) {
@@ -182,6 +204,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
                 } finally {
                     TrustManagerFactory.setCurrentActivity(null);
+                    TrustManagerFactory.resetSelectedClientCertificateAlias();
                 }
             }
 
@@ -383,7 +406,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                 e.getMessage() == null ? "" : e.getMessage());
                         }
                         AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
-                                mCheckIncoming, mCheckOutgoing);
+                                mCheckIncoming, mCheckOutgoing, mPromptForClientCertificate);
                     }
                 })
                 .setNegativeButton(
