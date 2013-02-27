@@ -106,6 +106,7 @@ public class MessageWebView extends TitleBarWebView {
 
         webSettings.setSupportZoom(true);
         webSettings.setBuiltInZoomControls(true);
+        webSettings.setUseWideViewPort(true);
 
         disableDisplayZoomControls();
 
