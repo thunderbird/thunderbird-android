@@ -608,29 +608,29 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
     <string name="account_settings_folder_display_mode_label">보일 폴더</string>
     <string name="account_settings_folder_display_mode_all">모든 폴더</string>
-    <string name="account_settings_folder_display_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
+    <string name="account_settings_folder_display_mode_first_class">제 1종 폴더만</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">제 1종 및 2종</string>
+    <string name="account_settings_folder_display_mode_not_second_class">제 2종 폴더 외 모두</string>
 
     <string name="account_settings_folder_sync_mode_label">동기화할 폴더</string>
     <string name="account_settings_folder_sync_mode_all">모든 폴더</string>
-    <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
+    <string name="account_settings_folder_sync_mode_first_class">제 1종 폴더만</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">제 1종 및 2종</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">제 2종 폴더 외 모두</string>
     <string name="account_settings_folder_sync_mode_none">없음</string>
 
     <string name="account_settings_folder_push_mode_label">푸시(Push)할 폴더</string>
     <string name="account_settings_folder_push_mode_all">모든 폴더</string>
-    <string name="account_settings_folder_push_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_push_mode_not_second_class">All except 2nd Class folders</string>
+    <string name="account_settings_folder_push_mode_first_class">제 1종 폴더만</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">제 1종 및 2종</string>
+    <string name="account_settings_folder_push_mode_not_second_class">제 2종 폴더 외 모두</string>
     <string name="account_settings_folder_push_mode_none">없음</string>
 
     <string name="account_settings_folder_target_mode_label">이동/복사 메시지가 저장될 폴더</string>
     <string name="account_settings_folder_target_mode_all">모든 폴더</string>
-    <string name="account_settings_folder_target_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_target_mode_not_second_class">All except 2nd Class folders</string>
+    <string name="account_settings_folder_target_mode_first_class">제 1종 폴더만</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">제 1종 및 2종</string>
+    <string name="account_settings_folder_target_mode_not_second_class">제 2종 폴더 외 모두</string>
 
     <string name="account_settings_sync_remote_deletetions_label">서버에서의 삭제 동기화</string>
     <string name="account_settings_sync_remote_deletetions_summary">서버에서 메시지가 삭제되있을 경우 메시지를 삭제합니다</string>
@@ -640,21 +640,21 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="folder_settings_in_top_group_label">첫번째 그룹에 보여짐</string>
     <string name="folder_settings_in_top_group_summary">폴더 목록의 가장 위에 보여짐</string>
 
-    <string name="folder_settings_folder_display_mode_label">폴더의 보이기 클래스(Class)</string>
+    <string name="folder_settings_folder_display_mode_label">폴더의 보이기 클래스</string>
     <string name="folder_settings_folder_display_mode_normal">없음</string>
-    <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
+    <string name="folder_settings_folder_display_mode_first_class">제 1종</string>
+    <string name="folder_settings_folder_display_mode_second_class">제 2종</string>
 
-    <string name="folder_settings_folder_sync_mode_label">폴더의 동기화 클래스(Class)</string>
+    <string name="folder_settings_folder_sync_mode_label">폴더의 동기화 클래스</string>
     <string name="folder_settings_folder_sync_mode_normal">없음</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
+    <string name="folder_settings_folder_sync_mode_first_class">제 1종</string>
+    <string name="folder_settings_folder_sync_mode_second_class">제 2종</string>
     <string name="folder_settings_folder_sync_mode_inherited">보이기 클래스와 같음</string>
 
-    <string name="folder_settings_folder_push_mode_label">폴더의 푸시 클래스(Class)</string>
+    <string name="folder_settings_folder_push_mode_label">폴더의 푸시 클래스</string>
     <string name="folder_settings_folder_push_mode_normal">없음</string>
-    <string name="folder_settings_folder_push_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
+    <string name="folder_settings_folder_push_mode_first_class">제 1종</string>
+    <string name="folder_settings_folder_push_mode_second_class">제 2종</string>
     <string name="folder_settings_folder_push_mode_inherited">동기화 클래스와 같음</string>
 
     <string name="account_settings_incoming_label">받기 서버</string>
@@ -780,9 +780,9 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     </string>
 
     <string name="folder_list_help_key">
-    1 - 첫 번째 클래스 폴더만 보기\u000A
-    2 - 첫 번째, 두 번째 클레스(Class)를 제외하고 모두 보기\u000A
-    3 - 두 번째 클레스(Class)를 제외하고 모두 보기\u000A
+    1 - 제 1종 폴더만 보기\u000A
+    2 - 제 1종 및 2종 폴더 보기\u000A
+    3 - 제 2종 외 폴더 모두 보기\u000A
     4 - 모든 폴더 보기\u000A
     Q - 계정 변경\u000A
     S - 계정 설정 변경</string>
@@ -791,9 +791,9 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
     <string name="folder_list_display_mode_label">폴더</string>
     <string name="folder_list_display_mode_all">모든 폴더 표시</string>
-    <string name="folder_list_display_mode_first_class">Display only 1st Class folders</string>
-    <string name="folder_list_display_mode_first_and_second_class">Display 1st and 2nd Class folders</string>
-    <string name="folder_list_display_mode_not_second_class">Display all except 2nd Class folders</string>
+    <string name="folder_list_display_mode_first_class">제 1종 폴더만 표시</string>
+    <string name="folder_list_display_mode_first_and_second_class">제 1종 및 2종 폴더 표시</string>
+    <string name="folder_list_display_mode_not_second_class">제 2종 폴더 외 모두 표시</string>
 
     <string name="account_settings_signature__location_label">서명 위치</string>
     <string name="account_settings_signature__location_before_quoted_text">본문 앞에</string>
@@ -1104,8 +1104,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="account_settings_remote_search_enabled">서버 검색 사용</string>
     <string name="account_settings_remote_search_enabled_summary">장치에 있는 메일과 서버에 있는 메일을 모두 검색함</string>
     <string name="action_remote_search">서버에서 메시지 검색</string>
-    <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>
-    <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">서버 검색을 가져오는 중…</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">서버 검색을 해제하는 중…</string>
     <string name="remote_search_unavailable_no_network">네트워크 연결이 없어 서버 검색을 할 수 없습니다.</string>
 
     <string name="global_settings_background_as_unread_indicator_label">배경으로 읽(지 않)은 메시지를 구분</string>
