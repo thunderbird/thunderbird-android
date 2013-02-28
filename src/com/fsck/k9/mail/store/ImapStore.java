@@ -2501,6 +2501,14 @@ public class ImapStore extends Store {
                                                       .getInputStream(), 1024));
                         mParser = new ImapResponseParser(mIn);
                         mOut = mSocket.getOutputStream();
+                        
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Updating capabilities after STARTTLS");
+                        List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
+                        if (responses.size() != 2) {
+                            throw new MessagingException("Invalid CAPABILITY response received");
+                        }
+
                     } else if (mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED) {
                         throw new MessagingException("TLS not supported but required");
                     }
