@@ -1,22 +1,6 @@
 
 package com.fsck.k9.mail.store;
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
-import android.os.Build;
-import android.security.KeyChainAliasCallback;
-import android.util.Log;
-import com.fsck.k9.K9;
-import com.fsck.k9.helper.DomainNameChecker;
-import com.fsck.k9.mail.MessagingException;
-
-import org.apache.commons.io.IOUtils;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,6 +15,22 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.apache.commons.io.IOUtils;
+
+import android.app.Application;
+import android.content.Context;
+import android.os.Build;
+import android.util.Log;
+
+import com.fsck.k9.K9;
+import com.fsck.k9.helper.DomainNameChecker;
+import com.fsck.k9.mail.MessagingException;
+
 public final class TrustManagerFactory {
     private static final String LOG_TAG = "TrustManagerFactory";
 
@@ -43,13 +43,18 @@ public final class TrustManagerFactory {
     private static File keyStoreFile;
     private static KeyStore keyStore;
 
-    // FIXME: how to do this properly?
-    private static Activity mCurrentActivity;
-    public static void setCurrentActivity(Activity activity) {
-    	mCurrentActivity = activity;
+    // this indicates we should "harvest" some connection information from inside
+    // the SSL handshake, then abort the handshake with a custom exception
+    private static ThreadLocal<Boolean> interactiveClientCertificateAliasSelectionRequired = new ThreadLocal<Boolean>() {
+		@Override
+		protected Boolean initialValue() {
+			return Boolean.FALSE;
+		}
+    	
+    };
+    public static void setInteractiveClientCertificateAliasSelectionRequired(boolean die) {
+    	interactiveClientCertificateAliasSelectionRequired.set(die);
     }
-    
-    private static String mSelectedClientCertificateAlias;
     
     private static class SimpleX509TrustManager implements X509TrustManager {
         public void checkClientTrusted(X509Certificate[] chain, String authType)
@@ -233,33 +238,15 @@ public final class TrustManagerFactory {
         }
     }
     
-    public static String getSelectedClientCertificateAlias() {
-    	Log.d(LOG_TAG,"returning selected client certificate alias:" +mSelectedClientCertificateAlias);
-    	return mSelectedClientCertificateAlias;
-    }
-    
-    public static void resetSelectedClientCertificateAlias() {
-    	mSelectedClientCertificateAlias = null;
-    }
-    
     private static SSLContext createSslContext(String host, boolean secure, String clientCertificateAlias) throws NoSuchAlgorithmException, KeyManagementException, MessagingException {
     	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-    			(mCurrentActivity != null || clientCertificateAlias != null)) {
+    			(interactiveClientCertificateAliasSelectionRequired.get() || clientCertificateAlias != null)) {
     		throw new MessagingException("Client Certificate support is only availble in Android 4.0 (ICS)", true);
     	}
     	
-        // non-null mCurrentActivity means we should prompt user 
-        // to select key/cert (even when a valid alias is known)
         KeyManager[] keyManagers = null;
-        if (mCurrentActivity != null) {
-        	KeyChainAliasCallback callback = new KeyChainAliasCallback() {
-				@Override
-				public void alias(String alias) {
-					TrustManagerFactory.mSelectedClientCertificateAlias = alias;
-				}
-			};
-        	KeyManager km = new KeyChainKeyManager(mCurrentActivity, clientCertificateAlias, callback);
-        	keyManagers = new KeyManager[] {km};
+        if (interactiveClientCertificateAliasSelectionRequired.get()) {
+        	keyManagers = new KeyManager[] {new KeyChainKeyManager()};
         } else if (clientCertificateAlias != null){
         	keyManagers = new KeyManager[] {new KeyChainKeyManager(clientCertificateAlias)};
         }

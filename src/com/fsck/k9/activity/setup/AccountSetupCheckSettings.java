@@ -20,8 +20,10 @@ import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ClientCertificateAliasRequiredException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.store.KeyChainKeyManager;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
@@ -105,12 +107,9 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 Store store = null;
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 try {
-                	// FIXME: how should this be done?  this needs to be set during the SSL setup so
-                	// user can select the key alias.  the popup for the user to choose with
-                	// requires the currently executing activity.  this is reset in "finally" block
                 	if (mPromptForClientCertificate) {
                 		Log.d(K9.LOG_TAG, "AccountSetupCheckSettings will prompt for client cert");
-                		TrustManagerFactory.setCurrentActivity(AccountSetupCheckSettings.this);
+                        TrustManagerFactory.setInteractiveClientCertificateAliasSelectionRequired(true);
                 	} else {
                 		Log.d(K9.LOG_TAG, "AccountSetupCheckSettings will NOT prompt for client cert");
                 	}
@@ -142,10 +141,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         }
                         MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
                         MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null);
-                        
-                        if (mPromptForClientCertificate) {
-                        	mAccount.setStoreClientCertificateAlias(TrustManagerFactory.getSelectedClientCertificateAlias());
-                        }
                     }
                     if (mDestroyed) {
                         return;
@@ -162,11 +157,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         transport.close();
                         transport.open();
                         transport.close();
-                        
-                        if (mPromptForClientCertificate) {
-                        	mAccount.setTransportClientCertificateAlias(TrustManagerFactory.getSelectedClientCertificateAlias());
-                        }
-
                     }
                     if (mDestroyed) {
                         return;
@@ -196,15 +186,40 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                 R.string.account_setup_failed_dlg_server_message_fmt,
                                 (cve.getMessage() == null ? "" : cve.getMessage()));
                     }
+                } catch (ClientCertificateAliasRequiredException ccr) {
+                	String alias = mCheckIncoming ? mAccount.getStoreClientCertificateAlias() : mAccount.getTransportClientCertificateAlias();
+                	
+                	alias = KeyChainKeyManager.interactivelyChooseClientCertificateAlias(AccountSetupCheckSettings.this, 
+                			ccr.getKeyTypes(),
+                			ccr.getIssuers(),
+                			ccr.getHostName(),
+                			ccr.getPort(),
+                			alias);
+                	
+                	if (alias != null) {
+                    	if (mCheckIncoming) {
+                    		Log.d(K9.LOG_TAG, "setting store client cert. alias to:"+alias);
+                    		mAccount.setStoreClientCertificateAlias(alias);
+                    	} else if (mCheckOutgoing) {
+                    		Log.d(K9.LOG_TAG, "setting transport client cert. alias to:"+alias);
+                    		mAccount.setTransportClientCertificateAlias(alias);
+                    	}
+                    	
+                    	AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
+                                mCheckIncoming, mCheckOutgoing, false);
+                	} else {
+                		showErrorDialog(R.string.account_setup_failed_dlg_ccert_required);
+                	}
+                	
                 } catch (final Throwable t) {
+                
                     Log.e(K9.LOG_TAG, "Error while testing settings", t);
                     showErrorDialog(
                         R.string.account_setup_failed_dlg_server_message_fmt,
                         (t.getMessage() == null ? "" : t.getMessage()));
 
                 } finally {
-                    TrustManagerFactory.setCurrentActivity(null);
-                    TrustManagerFactory.resetSelectedClientCertificateAlias();
+                    TrustManagerFactory.setInteractiveClientCertificateAliasSelectionRequired(false);
                 }
             }
 
