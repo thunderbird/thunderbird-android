@@ -9,7 +9,7 @@
     <string name="beta_app_name">K-9 메일 베타</string>
 
     <string name="shortcuts_title">K-9 계정</string>
-    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
+    <string name="unread_widget_label">K-9 읽지 않은 메일</string>
 
     <string name="remote_control_label">K-9 메일 리모콘</string>
     <string name="remote_control_desc">이 어플리케이션이 K-9 메일을 제어하고 설정하도록 함.</string>
@@ -22,7 +22,7 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="welcome_message_title">K-9 메일을 사용하시게 된 것을 환영합니다</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
 K-9 메일은 강력한 안드로이드용 무료 메일 클라이언트 입니다.
@@ -67,8 +67,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
-    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+    <string name="import_dialog_error_message">가져오기에 적합한 애플리케이션이 없습니다. 구글 플레이 스토어에서 파일 매니저를 설치하십시오.</string>
+    <string name="open_market">플레이 스토어 열기</string>
 
 
 
@@ -109,7 +109,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="status_next_poll">다음 수신 <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">동기화 실패</string>
 
-    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">다음</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">이전</string> <!-- Used as part of a multi-step process -->
@@ -125,7 +125,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="forward_action">전달</string>
     <string name="move_action">이동</string>
     <string name="single_message_options_action">메시지 옵션</string>
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <string name="refile_action">관리</string>
     <string name="continue_action">계속</string>
     <string name="back_action">뒤로</string>
     <string name="done_action">완료</string> <!--  Used to complete a multi-step process -->
@@ -154,17 +154,17 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="unflag_action">별표 해제하기</string>
     <string name="copy_action">복사</string>
     <string name="select_text_action">텍스트 선택</string>
-    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
-    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
+    <string name="show_headers_action">헤더 보이기</string>
+    <string name="hide_headers_action">헤더 숨기기</string>
 
     <string name="message_view_theme_action_dark">어두운 테마로 바꾸기</string>
     <string name="message_view_theme_action_light">밝은 테마로 바꾸기</string>
 
     <string name="mark_as_unread_action">읽지 않은 메일로 표시</string>
     <string name="add_cc_bcc_action">참조/숨은 참조 추가</string>
-    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
-    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
-    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
+    <string name="read_receipt">읽음 확인</string>
+    <string name="read_receipt_enabled">읽음 확인을 요청함</string>
+    <string name="read_receipt_disabled">읽음 확인을 요청하지 않음</string>
     <string name="add_attachment_action">첨부 추가</string>
     <string name="add_attachment_action_image">첨부 추가 (이미지)</string>
     <string name="add_attachment_action_video">첨부 추가 (비디오)</string>
@@ -302,16 +302,16 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="global_settings_show_correspondent_names_label">발신자 이름을 보여 줌</string>
     <string name="global_settings_show_correspondent_names_summary">이메일 주소를 보여 주지 않고 발신자 이름을 보여 줌</string>
 
-    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
-    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+    <string name="global_settings_sender_above_subject_label">발신자 다음 제목</string>
+    <string name="global_settings_sender_above_subject_summary">제목 아래쪽 대신 위쪽 줄에 발신자를 표시함</string>
 
     <string name="global_settings_show_contact_name_label">주소록 이름 보기</string>
     <string name="global_settings_show_contact_name_summary">받는 사람 이름을 주소록에서 가져옵니다.</string>
     <string name="global_settings_registered_name_color_label">주소록 색 표시</string>
     <string name="global_settings_registered_name_color_default">주소록 목록에 있는 이름에 색 표시를 하지 않음</string>
     <string name="global_settings_registered_name_color_changed">주소록 목록에 있는 이름에 색 표시</string>
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
+    <string name="global_settings_folderlist_wrap_folder_names_label">폴더 이름 자동 줄 바꿈</string>
+    <string name="global_settings_folderlist_wrap_folder_names_summary">폴더 이름이 길 때 여러 줄에 모두 표시</string>
 
     <string name="global_settings_messageview_fixedwidth_label">고정 넓이 폰트</string>
     <string name="global_settings_messageview_fixedwidth_summary">평문 메시지를 보여줄때 고정 넓이 폰트사용</string>
@@ -338,15 +338,15 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="global_settings_notification_quick_delete_always">항상</string>
     <string name="global_settings_notification_quick_delete_description">알림에 빠른 메시지 삭제를 위한 버튼을 제공</string>
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_batch_buttons">일괄 작업 버튼</string>
+    <string name="global_settings_batch_buttons_summary">메시지 목록 </string>
+    <string name="global_settings_mark_read">읽(지 않)은 것으로 표시</string>
+    <string name="global_settings_delete">삭제</string>
+    <string name="global_settings_archive">보관함으로 이동</string>
+    <string name="global_settings_archive_disabled_reason">보관함이 없습니다.</string>
+    <string name="global_settings_move">이동</string>
+    <string name="global_settings_flag">별표</string>
+    <string name="global_settings_unselect">선택 해제</string>
 
     <string name="quiet_time">무음 시간</string>
     <string name="quiet_time_description">벨소리, 버저, 플래시를 밤시간에 사용하지 않습니다</string>
@@ -411,8 +411,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="account_setup_expunge_policy_on_poll">수신 시(poll)</string>
     <string name="account_setup_expunge_policy_manual">항상 수동으로</string>
 
-    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
+    <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP 이름공간 자동 탐지</string>
+    <string name="account_setup_incoming_imap_path_prefix_label">IMAP 경로 접두어</string>
 
     <string name="drafts_folder_label">임시 보관함 폴더</string>
     <string name="sent_folder_label">보낸 편지함 폴더</string>
@@ -542,8 +542,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="account_settings_always_show_cc_bcc_label">CC/BCC 항상 보기</string>
     <string name="account_settings_always_show_cc_bcc_summary">참조/숨은 참조 입력칸을 항상 보입니다.</string>
 
-    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
-    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
+    <string name="account_settings_message_read_receipt_label">읽음 확인</string>
+    <string name="account_settings_message_read_receipt_summary">항상 읽음 확인을 요청</string>
 
     <string name="account_settings_quote_style_label">회신시 인용문 위치</string>
     <string name="account_settings_quote_style_prefix">Prefix (Gmail, Pine 처럼)</string>
@@ -749,7 +749,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="provider_note_live">\"Plus\" 계정만이 이 프로그램을 POP 접근 하도록 허락합니다.
     올바른 이메일 주소와 비밀번호로 로그인 실패할 경우 \"Plus\" 계정을 위해 유료전환 해야 할 것입니다.
     웹브라우저를 통해 접근을 얻도록 하십시오</string>
-    <string name="provider_note_yahoojp">POP3를 이용하기위해서는 야후 메일 설정페이지에서 POP3 이용을 설정해야 합니다.</string>
+    <string name="provider_note_yahoojp">야후 메일 설정페이지에서 POP3 이용을 설정해야 합니다.</string>
     <string name="provider_note_auonejp">au one 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정해야 합니다.</string>
     <string name="provider_note_naver">네이버 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정해야 합니다.</string>
     <string name="provider_note_hanmail">한메일 환경설정 페이지에서 IMAP/POP3 이용을 설정해야 합니다.</string>
@@ -911,10 +911,10 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="font_size_message_view_date">시간 및 날짜</string>
     <string name="font_size_message_view_content">내용</string>
 
-    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
-    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
+    <string name="font_size_message_compose">메시지 작성</string>
+    <string name="font_size_message_compose_input">입력 상자</string>
 
-    <!-- NEW: <string name="font_size_default">Default</string>-->
+    <string name="font_size_default">기본</string>
     <string name="font_size_tiniest">가장 작음</string>
     <string name="font_size_tiny">매우 작음</string>
     <string name="font_size_smaller">더 작게</string>
