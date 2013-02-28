@@ -234,6 +234,7 @@ public final class TrustManagerFactory {
     }
     
     public static String getSelectedClientCertificateAlias() {
+    	Log.d(LOG_TAG,"returning selected client certificate alias:" +mSelectedClientCertificateAlias);
     	return mSelectedClientCertificateAlias;
     }
     
