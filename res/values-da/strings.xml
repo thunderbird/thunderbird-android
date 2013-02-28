@@ -90,7 +90,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Konti</string>
     <!-- NEW: <string name="folders_title">Folders</string>-->
-    <string name="advanced">Advanceret</string>
+    <string name="advanced">Avanceret</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
