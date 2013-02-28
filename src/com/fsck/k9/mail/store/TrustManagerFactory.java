@@ -4,6 +4,7 @@ package com.fsck.k9.mail.store;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.security.KeyChainAliasCallback;
 import android.util.Log;
 import com.fsck.k9.K9;
@@ -239,6 +240,11 @@ public final class TrustManagerFactory {
     }
     
     private static SSLContext createSslContext(String host, boolean secure, String clientCertificateAlias) throws NoSuchAlgorithmException, KeyManagementException {
+    	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
+    			(mCurrentActivity != null || clientCertificateAlias != null)) {
+    		throw new UnsupportedOperationException("Client Certificate support is only availble in Android 4.0 (ICS)");
+    	}
+    	
         // non-null mCurrentActivity means we should prompt user 
         // to select key/cert (even when a valid alias is known)
         KeyManager[] keyManagers = null;
