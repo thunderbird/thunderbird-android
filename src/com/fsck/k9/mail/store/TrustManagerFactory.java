@@ -9,6 +9,8 @@ import android.security.KeyChainAliasCallback;
 import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.DomainNameChecker;
+import com.fsck.k9.mail.MessagingException;
+
 import org.apache.commons.io.IOUtils;
 
 import javax.net.ssl.KeyManager;
@@ -239,10 +241,10 @@ public final class TrustManagerFactory {
     	mSelectedClientCertificateAlias = null;
     }
     
-    private static SSLContext createSslContext(String host, boolean secure, String clientCertificateAlias) throws NoSuchAlgorithmException, KeyManagementException {
+    private static SSLContext createSslContext(String host, boolean secure, String clientCertificateAlias) throws NoSuchAlgorithmException, KeyManagementException, MessagingException {
     	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
     			(mCurrentActivity != null || clientCertificateAlias != null)) {
-    		throw new UnsupportedOperationException("Client Certificate support is only availble in Android 4.0 (ICS)");
+    		throw new MessagingException("Client Certificate support is only availble in Android 4.0 (ICS)", true);
     	}
     	
         // non-null mCurrentActivity means we should prompt user 
@@ -269,12 +271,12 @@ public final class TrustManagerFactory {
         return sslContext;
     }
     
-    public static Socket createSslSocket(String host, boolean secure, String clientCertificateAlias) throws NoSuchAlgorithmException, KeyManagementException, IOException {
+    public static Socket createSslSocket(String host, boolean secure, String clientCertificateAlias) throws NoSuchAlgorithmException, KeyManagementException, IOException, MessagingException {
     	SSLContext sslContext = createSslContext(host, secure, clientCertificateAlias);
         return sslContext.getSocketFactory().createSocket();
     }
     
-    public static Socket performStartTls(Socket socket, String host, int port, boolean secure, String clientCertificateAlias) throws NoSuchAlgorithmException, KeyManagementException, IOException {
+    public static Socket performStartTls(Socket socket, String host, int port, boolean secure, String clientCertificateAlias) throws NoSuchAlgorithmException, KeyManagementException, IOException, MessagingException {
     	SSLContext sslContext = createSslContext(host, secure, clientCertificateAlias);
         boolean autoClose = true;
         return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
