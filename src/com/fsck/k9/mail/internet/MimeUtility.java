@@ -1376,7 +1376,6 @@ public class MimeUtility {
 
             StringBuilder text = new StringBuilder();
             StringBuilder html = new StringBuilder();
-            html.append(HtmlConverter.getHtmlHeader());
 
             for (Viewable viewable : viewables) {
                 if (viewable instanceof Textual) {
@@ -1427,8 +1426,6 @@ public class MimeUtility {
                     hideDivider = false;
                 }
             }
-
-            html.append(HtmlConverter.getHtmlFooter());
 
             return new ViewableContainer(text.toString(), html.toString(), attachments);
         } catch (Exception e) {
