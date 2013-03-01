@@ -238,8 +238,12 @@ public final class TrustManagerFactory {
         }
     }
     
+    public static boolean isPlatformSupportsClientCertificates() {
+    	return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH);
+    }
+    
     private static SSLContext createSslContext(String host, boolean secure, String clientCertificateAlias) throws NoSuchAlgorithmException, KeyManagementException, MessagingException {
-    	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
+    	if (!isPlatformSupportsClientCertificates() &&
     			(interactiveClientCertificateAliasSelectionRequired.get() || clientCertificateAlias != null)) {
     		throw new MessagingException("Client Certificate support is only availble in Android 4.0 (ICS)", true);
     	}
