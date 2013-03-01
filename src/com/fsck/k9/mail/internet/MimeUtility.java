@@ -1920,7 +1920,7 @@ public class MimeUtility {
      * Use the contents of a {@link Viewable} to create the HTML to be displayed.
      *
      * <p>
-     * This will use {@link HtmlConverter#textToHtml(String, boolean)} to convert plain text parts
+     * This will use {@link HtmlConverter#textToHtml(String)} to convert plain text parts
      * to HTML if necessary.
      * </p>
      *
@@ -1943,7 +1943,7 @@ public class MimeUtility {
             if (t == null) {
                 t = "";
             } else if (viewable instanceof Text) {
-                t = HtmlConverter.textToHtml(t, false);
+                t = HtmlConverter.textToHtml(t);
             }
             html.append(t);
         } else if (viewable instanceof Alternative) {
@@ -3352,7 +3352,7 @@ public class MimeUtility {
             String bodyText = getTextFromPart(part);
             if (bodyText != null) {
                 text = fixDraftTextBody(bodyText);
-                html = HtmlConverter.textToHtml(text, false);
+                html = HtmlConverter.textToHtml(text);
             }
         } else if (part.isMimeType("multipart/alternative") &&
                 firstBody instanceof MimeMultipart) {

@@ -551,7 +551,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (pgpData != null) {
             text = pgpData.getDecryptedData();
             if (text != null) {
-                text = HtmlConverter.textToHtml(text, false);
+                text = HtmlConverter.textToHtml(text);
             }
         }
 
