@@ -317,6 +317,7 @@ public class HtmlConverter {
     protected static final String QUOTE_COLOR_LEVEL_3 = "#8ae234";
     protected static final String QUOTE_COLOR_LEVEL_4 = "#fcaf3e";
     protected static final String QUOTE_COLOR_LEVEL_5 = "#e9b96e";
+    private static final String K9MAIL_CSS_CLASS = "k9mail";
 
     /**
      * Return an HTML hex color string for a given quote level.
@@ -1230,14 +1231,32 @@ public class HtmlConverter {
     }
 
     private static String htmlifyMessageHeader() {
-        final String font = K9.messageViewFixedWidthFont()
-                            ? "monospace"
-                            : "sans-serif";
-        return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: " + font + "; margin-top: 0px\">";
+        return "<pre class=\"" + K9MAIL_CSS_CLASS + "\">";
     }
 
     private static String htmlifyMessageFooter() {
         return "</pre>";
+    }
+
+    /**
+     * Dynamically generate a CSS style for {@code <pre>} elements.
+     *
+     *  <p>
+     *  The style incorporates the user's current preference
+     *  setting for the font family used for plain text messages.
+     *  </p>
+     *
+     * @return
+     *      A {@code <style>} element that can be dynamically included in the HTML
+     *      {@code <head>} element when messages are displayed.
+     */
+    public static String cssStylePre() {
+        final String font = K9.messageViewFixedWidthFont()
+                ? "monospace"
+                : "sans-serif";
+        return "<style type=\"text/css\"> pre." + K9MAIL_CSS_CLASS +
+                " {white-space: pre-wrap; word-wrap:break-word; " +
+                "font-family: " + font + "; margin-top: 0px}</style>";
     }
 
     /**

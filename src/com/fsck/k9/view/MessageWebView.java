@@ -11,6 +11,8 @@ import android.webkit.WebSettings;
 import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.HtmlConverter;
+
 import java.lang.reflect.Method;
 import com.nobu_games.android.view.web.TitleBarWebView;
 
@@ -171,6 +173,7 @@ public class MessageWebView extends TitleBarWebView {
                    ":link, :link * { color: #CCFF33 !important }" +
                    ":visited, :visited * { color: #551A8B !important }</style> ";
         }
+        content += HtmlConverter.cssStylePre();
         content += "</head><body>" + text + "</body></html>";
         loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
     }

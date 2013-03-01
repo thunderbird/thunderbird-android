@@ -29,8 +29,7 @@ public class ViewablesTest extends AndroidTestCase {
 
         String expectedText = bodyText;
         String expectedHtml =
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 "K-9 Mail rocks :&gt;" +
                 "</pre>";
 
@@ -87,14 +86,12 @@ public class ViewablesTest extends AndroidTestCase {
                 "------------------------------------------------------------------------\n\n" +
                 bodyText2;
         String expectedHtml =
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 bodyText1 +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; " +
                         "border-bottom: 1px solid #000\"></p>" +
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 bodyText2 +
                 "</pre>";
 
@@ -152,8 +149,7 @@ public class ViewablesTest extends AndroidTestCase {
                 "\n" +
                 innerBodyText;
         String expectedHtml =
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 bodyText +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: " +
@@ -173,8 +169,7 @@ public class ViewablesTest extends AndroidTestCase {
                 "<td>Subject</td>" +
                 "</tr>" +
                 "</table>" +
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 innerBodyText +
                 "</pre>";
 
