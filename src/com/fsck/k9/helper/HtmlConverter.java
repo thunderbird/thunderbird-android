@@ -127,7 +127,8 @@ public class HtmlConverter {
     private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
 
     public static final String getHtmlHeader() {
-        return "<html><head/><body>";
+        // Include a meta tag so the MessageWebView will not use a fixed viewport width of 980 px
+        return "<html><head><meta name=\"viewport\" content=\"width=device-width\"/></head><body>";
     }
 
     public static final String getHtmlFooter() {
