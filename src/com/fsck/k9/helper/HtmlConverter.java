@@ -133,7 +133,9 @@ public class HtmlConverter {
      * This method avoids using regular expressions on the entire message body to save memory.
      * </p>
      * <p>
-     * No HTML headers or footers are added to the result.
+     * No HTML headers or footers are added to the result.  Headers and footers
+     * are added at display time in
+     * {@link com.fsck.k9.view#MessageWebView.setText(String) MessageWebView.setText()}
      * </p>
      *
      * @param text
@@ -187,7 +189,9 @@ public class HtmlConverter {
      * Attempts to do smart replacement for large documents to prevent OOM
      * errors.
      * <p>
-     * No HTML headers or footers are added to the result.
+     * No HTML headers or footers are added to the result.  Headers and footers
+     * are added at display time in
+     * {@link com.fsck.k9.view#MessageWebView.setText(String) MessageWebView.setText()}
      * </p>
      * <p>
      * To convert to a fragment, use {@link #textToHtmlFragment(String)} .

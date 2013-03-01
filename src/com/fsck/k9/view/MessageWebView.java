@@ -151,7 +151,19 @@ public class MessageWebView extends TitleBarWebView {
         }
     }
 
-    public void setText(String text, String contentType) {
+    /**
+     * Load a message body into a {@code MessageWebView}
+     *
+     * <p>
+     * Before loading, the text is wrapped in an HTML header and footer
+     * so that it displays properly.
+     * </p>
+     *
+     * @param text
+     *      The message body to display.  Assumed to be MIME type text/html.
+     */
+    public void setText(String text) {
+     // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
         String content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
         if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
             content += "<style type=\"text/css\">" +
@@ -160,7 +172,7 @@ public class MessageWebView extends TitleBarWebView {
                    ":visited, :visited * { color: #551A8B !important }</style> ";
         }
         content += "</head><body>" + text + "</body></html>";
-        loadDataWithBaseURL("http://", content, contentType, "utf-8", null);
+        loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
     }
 
     /*
