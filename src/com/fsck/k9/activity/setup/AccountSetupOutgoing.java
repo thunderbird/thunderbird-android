@@ -16,6 +16,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.transport.SmtpTransport;
 
 import java.io.UnsupportedEncodingException;
@@ -226,8 +227,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 }
             }
 
-            if (mAccount.getTransportClientCertificateAlias() != null && selectedSecurityType > 0) {
-            	mUseClientCertificates.setChecked(true);
+            if (TrustManagerFactory.isPlatformSupportsClientCertificates()) {
+            	if (mAccount.getTransportClientCertificateAlias() != null && selectedSecurityType > 0) {
+            		mUseClientCertificates.setChecked(true);
+            	}
+            } else {
+            	mUseClientCertificates.setVisibility(View.GONE);
             }
 
             /*
