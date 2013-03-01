@@ -22,6 +22,7 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.Pop3Store;
+import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.store.ImapStore.ImapStoreSettings;
 import com.fsck.k9.mail.store.WebDavStore.WebDavStoreSettings;
@@ -56,11 +57,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         ConnectionSecurity.STARTTLS_OPTIONAL,
         ConnectionSecurity.STARTTLS_REQUIRED
     };
-
-    private static final String[] AUTH_TYPES = {
-        "PLAIN", "CRAM_MD5", "EXTERNAL"
-    };
-
 
     private int[] mAccountPorts;
     private String mStoreType;
@@ -148,13 +144,20 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
-        // This needs to be kept in sync with the list at the top of the file.
-        // that makes me somewhat unhappy
-        SpinnerOption authTypeSpinnerOptions[] = {
-            new SpinnerOption(0, AUTH_TYPES[0]),
-            new SpinnerOption(1, AUTH_TYPES[1]),
-            new SpinnerOption(2, AUTH_TYPES[2])
-        };
+        int numAuthTypes = ImapStore.AuthType.values().length;
+        boolean includeExternal = TrustManagerFactory.isPlatformSupportsClientCertificates();
+        
+        if (!includeExternal) {
+        	numAuthTypes--;
+        }
+        
+        SpinnerOption authTypeSpinnerOptions[] = new SpinnerOption[numAuthTypes];
+        int authTypeIndex = 0;
+        for (ImapStore.AuthType authType : ImapStore.AuthType.values()) {
+        	if (!ImapStore.AuthType.EXTERNAL.equals(authType) || includeExternal) {
+        		authTypeSpinnerOptions[authTypeIndex++] = new SpinnerOption(authType, authType.name());
+        	}
+        }
 
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, securityTypes);
@@ -218,11 +221,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             if (settings.authenticationType != null) {
-                for (int i = 0; i < AUTH_TYPES.length; i++) {
-                    if (AUTH_TYPES[i].equals(settings.authenticationType)) {
-                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
-                    }
-                }
+            	for (ImapStore.AuthType authType : ImapStore.AuthType.values()) {
+            		if (authType.name().equals(settings.authenticationType)) {
+            			SpinnerOption.setSpinnerOptionValue(mAuthTypeView, authType);
+            		}
+            	}
             }
 
             mStoreType = settings.type;
