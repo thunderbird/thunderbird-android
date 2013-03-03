@@ -37,6 +37,7 @@
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />
+        <attr name="messageListSelectedBackgroundColor" format="reference|color"/>
         <attr name="messageListReadItemBackgroundColor" format="reference|color"/>
         <attr name="messageListUnreadItemBackgroundColor" format="reference|color"/>
         <attr name="messageListThreadCountForegroundColor" format="reference|color"/>

@@ -1876,9 +1876,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
 
             // Background indicator
-            if (K9.useBackgroundAsUnreadIndicator()) {
-                int res = (read) ? R.attr.messageListReadItemBackgroundColor :
-                        R.attr.messageListUnreadItemBackgroundColor;
+            if (selected || K9.useBackgroundAsUnreadIndicator()) {
+                int res;
+                if (selected) {
+                    res = R.attr.messageListSelectedBackgroundColor;
+                } else if (read) {
+                    res = R.attr.messageListReadItemBackgroundColor;
+                } else {
+                    res = R.attr.messageListUnreadItemBackgroundColor;
+                }
 
                 TypedValue outValue = new TypedValue();
                 getActivity().getTheme().resolveAttribute(res, outValue, true);
