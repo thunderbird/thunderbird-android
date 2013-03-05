@@ -2309,7 +2309,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             folder = null;
         }
 
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, mAccount, folder, messages);
+        Account account = messages.get(0).getFolder().getAccount();
+
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, account, folder, messages);
     }
 
     private void onCopy(Message message) {
