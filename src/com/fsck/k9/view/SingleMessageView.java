@@ -185,6 +185,11 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
         WebView webview = (WebView) v;
         WebView.HitTestResult result = webview.getHitTestResult();
+
+        if (result == null) {
+            return;
+        }
+
         int type = result.getType();
         Context context = getContext();
 
