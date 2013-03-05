@@ -3379,7 +3379,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mSelected = null;
+        mSelected.clear();
         mAdapter.swapCursor(null);
     }
 
