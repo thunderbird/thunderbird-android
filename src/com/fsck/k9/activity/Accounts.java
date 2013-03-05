@@ -326,6 +326,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
 
     public static final String EXTRA_STARTUP = "startup";
+    public static final String EXTRA_IMPORTFIRST = "importfirst";
 
 
     public static void listAccounts(Context context) {
@@ -365,7 +366,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         //onNewIntent(intent);
 
         // see if we should show the welcome message
-        if (accounts.length < 1) {
+        if (intent.getBooleanExtra(EXTRA_IMPORTFIRST, false)) {
+        	onImport();
+        } else if (accounts.length < 1) {
             WelcomeMessage.showWelcomeMessage(this);
             finish();
             return;
@@ -525,10 +528,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         accounts = Preferences.getPreferences(this).getAccounts();
 
         // see if we should show the welcome message
-        if (accounts.length < 1) {
-            WelcomeMessage.showWelcomeMessage(this);
-            finish();
-        }
+//        if (accounts.length < 1) {
+//            WelcomeMessage.showWelcomeMessage(this);
+//            finish();
+//        }
 
         List<BaseAccount> newAccounts;
         if (!K9.isHideSpecialAccounts() && accounts.length > 0) {

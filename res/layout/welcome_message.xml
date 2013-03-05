@@ -23,6 +23,14 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="14sp" />
 
+            <Button
+                android:id="@+id/import_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:minWidth="@dimen/button_minWidth"
+                android:text="@string/settings_import" />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0dip"
