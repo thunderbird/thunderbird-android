@@ -132,16 +132,32 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         }
 
         public void networkError() {
-            showToast(getString(R.string.status_network_error), Toast.LENGTH_LONG);
+            // FIXME: This is a hack. Fix the Handler madness!
+            Context context = getActivity();
+            if (context == null) {
+                return;
+            }
+
+            showToast(context.getString(R.string.status_network_error), Toast.LENGTH_LONG);
         }
 
         public void invalidIdError() {
-            showToast(getString(R.string.status_invalid_id_error), Toast.LENGTH_LONG);
+            Context context = getActivity();
+            if (context == null) {
+                return;
+            }
+
+            showToast(context.getString(R.string.status_invalid_id_error), Toast.LENGTH_LONG);
         }
 
 
         public void fetchingAttachment() {
-            showToast(getString(R.string.message_view_fetching_attachment_toast), Toast.LENGTH_SHORT);
+            Context context = getActivity();
+            if (context == null) {
+                return;
+            }
+
+            showToast(context.getString(R.string.message_view_fetching_attachment_toast), Toast.LENGTH_SHORT);
         }
     }
 
