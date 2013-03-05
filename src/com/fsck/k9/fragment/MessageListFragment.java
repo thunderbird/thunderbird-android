@@ -3304,6 +3304,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public boolean isLoadFinished() {
+        if (mCursorValid == null) {
+            return false;
+        }
+
         boolean loadFinished = true;
         for (int i = 0; i < mCursorValid.length; i++) {
             loadFinished &= mCursorValid[i];
