@@ -1707,7 +1707,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         private boolean updateForMe(Account account, String folder) {
-            //FIXME
+            if (account == null || folder == null) {
+                return false;
+            }
+
+            // FIXME: There could be more than one account and one folder
+
             return ((account.equals(mAccount) && folder.equals(mFolderName)));
         }
     }
