@@ -31,200 +31,200 @@ public class AccountSettings {
          */
 
         s.put("alwaysBcc", Settings.versions(
-                new V(11, new StringSetting(""))
-            ));
+                  new V(11, new StringSetting(""))
+              ));
         s.put("alwaysShowCcBcc", Settings.versions(
-                new V(13, new BooleanSetting(false))
-            ));
+                  new V(13, new BooleanSetting(false))
+              ));
         s.put("archiveFolderName", Settings.versions(
-                new V(1, new StringSetting("Archive"))
-            ));
+                  new V(1, new StringSetting("Archive"))
+              ));
         s.put("autoExpandFolderName", Settings.versions(
-                new V(1, new StringSetting("INBOX"))
-            ));
+                  new V(1, new StringSetting("INBOX"))
+              ));
         s.put("automaticCheckIntervalMinutes", Settings.versions(
-                new V(1, new IntegerResourceSetting(-1,
-                        R.array.account_settings_check_frequency_values))
-            ));
+                  new V(1, new IntegerResourceSetting(-1,
+                          R.array.account_settings_check_frequency_values))
+              ));
         s.put("chipColor", Settings.versions(
-                new V(1, new ColorSetting(0xFF0000FF))
-            ));
+                  new V(1, new ColorSetting(0xFF0000FF))
+              ));
         s.put("cryptoApp", Settings.versions(
-                new V(1, new StringSetting(Apg.NAME))
-            ));
+                  new V(1, new StringSetting(Apg.NAME))
+              ));
         s.put("cryptoAutoEncrypt", Settings.versions(
-                new V(3, new BooleanSetting(false))
-            ));
+                  new V(3, new BooleanSetting(false))
+              ));
         s.put("cryptoAutoSignature", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("defaultQuotedTextShown", Settings.versions(
-                new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
-            ));
+                  new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
+              ));
         s.put("deletePolicy", Settings.versions(
-                new V(1, new DeletePolicySetting(Account.DELETE_POLICY_NEVER))
-            ));
+                  new V(1, new DeletePolicySetting(Account.DELETE_POLICY_NEVER))
+              ));
         s.put("displayCount", Settings.versions(
-                new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
-                        R.array.account_settings_display_count_values))
-            ));
+                  new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
+                          R.array.account_settings_display_count_values))
+              ));
         s.put("draftsFolderName", Settings.versions(
-                new V(1, new StringSetting("Drafts"))
-            ));
+                  new V(1, new StringSetting("Drafts"))
+              ));
         s.put("expungePolicy", Settings.versions(
-                new V(1, new StringResourceSetting(Account.EXPUNGE_IMMEDIATELY,
-                        R.array.account_setup_expunge_policy_values))
-            ));
+                  new V(1, new StringResourceSetting(Account.EXPUNGE_IMMEDIATELY,
+                          R.array.account_setup_expunge_policy_values))
+              ));
         s.put("folderDisplayMode", Settings.versions(
-                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
-            ));
+                  new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
+              ));
         s.put("folderPushMode", Settings.versions(
-                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.FIRST_CLASS))
-            ));
+                  new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.FIRST_CLASS))
+              ));
         s.put("folderSyncMode", Settings.versions(
-                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.FIRST_CLASS))
-            ));
+                  new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.FIRST_CLASS))
+              ));
         s.put("folderTargetMode", Settings.versions(
-                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
-            ));
+                  new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
+              ));
         s.put("goToUnreadMessageSearch", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("idleRefreshMinutes", Settings.versions(
-                new V(1, new IntegerResourceSetting(24, R.array.idle_refresh_period_values))
-            ));
+                  new V(1, new IntegerResourceSetting(24, R.array.idle_refresh_period_values))
+              ));
         s.put("inboxFolderName", Settings.versions(
-                new V(1, new StringSetting("INBOX"))
-            ));
+                  new V(1, new StringSetting("INBOX"))
+              ));
         s.put("led", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("ledColor", Settings.versions(
-                new V(1, new ColorSetting(0xFF0000FF))
-            ));
+                  new V(1, new ColorSetting(0xFF0000FF))
+              ));
         s.put("localStorageProvider", Settings.versions(
-                new V(1, new StorageProviderSetting())
-            ));
+                  new V(1, new StorageProviderSetting())
+              ));
         s.put("markMessageAsReadOnView", Settings.versions(
-                new V(7, new BooleanSetting(true))
-            ));
+                  new V(7, new BooleanSetting(true))
+              ));
         s.put("maxPushFolders", Settings.versions(
-                new V(1, new IntegerRangeSetting(0, 100, 10))
-            ));
+                  new V(1, new IntegerRangeSetting(0, 100, 10))
+              ));
         s.put("maximumAutoDownloadMessageSize", Settings.versions(
-                new V(1, new IntegerResourceSetting(32768,
-                        R.array.account_settings_autodownload_message_size_values))
-            ));
+                  new V(1, new IntegerResourceSetting(32768,
+                          R.array.account_settings_autodownload_message_size_values))
+              ));
         s.put("maximumPolledMessageAge", Settings.versions(
-                new V(1, new IntegerResourceSetting(-1,
-                        R.array.account_settings_message_age_values))
-            ));
+                  new V(1, new IntegerResourceSetting(-1,
+                          R.array.account_settings_message_age_values))
+              ));
         s.put("messageFormat", Settings.versions(
-                new V(1, new EnumSetting<Account.MessageFormat>(
-                        Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
-            ));
+                  new V(1, new EnumSetting<Account.MessageFormat>(
+                            Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
+              ));
         s.put("messageFormatAuto", Settings.versions(
-                new V(2, new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO))
-            ));
+                  new V(2, new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO))
+              ));
         s.put("messageReadReceipt", Settings.versions(
-                new V(1, new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT))
-            ));
+                  new V(1, new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT))
+              ));
         s.put("notificationUnreadCount", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("notifyMailCheck", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("notifyNewMail", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("notifySelfNewMail", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("pushPollOnConnect", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("quotePrefix", Settings.versions(
-                new V(1, new StringSetting(Account.DEFAULT_QUOTE_PREFIX))
-            ));
+                  new V(1, new StringSetting(Account.DEFAULT_QUOTE_PREFIX))
+              ));
         s.put("quoteStyle", Settings.versions(
-                new V(1, new EnumSetting<Account.QuoteStyle>(
-                        Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE))
-            ));
+                  new V(1, new EnumSetting<Account.QuoteStyle>(
+                            Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE))
+              ));
         s.put("replyAfterQuote", Settings.versions(
-                new V(1, new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE))
-            ));
+                  new V(1, new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE))
+              ));
         s.put("ring", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("ringtone", Settings.versions(
-                new V(1, new RingtoneSetting("content://settings/system/notification_sound"))
-            ));
+                  new V(1, new RingtoneSetting("content://settings/system/notification_sound"))
+              ));
         s.put("searchableFolders", Settings.versions(
-                new V(1, new EnumSetting<Account.Searchable>(
-                        Account.Searchable.class, Account.Searchable.ALL))
-            ));
+                  new V(1, new EnumSetting<Account.Searchable>(
+                            Account.Searchable.class, Account.Searchable.ALL))
+              ));
         s.put("sentFolderName", Settings.versions(
-                new V(1, new StringSetting("Sent"))
-            ));
+                  new V(1, new StringSetting("Sent"))
+              ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(9, new EnumSetting<SortType>(SortType.class, Account.DEFAULT_SORT_TYPE))
-            ));
+                  new V(9, new EnumSetting<SortType>(SortType.class, Account.DEFAULT_SORT_TYPE))
+              ));
         s.put("sortAscending", Settings.versions(
-                new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
-            ));
+                  new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+              ));
         s.put("showPicturesEnum", Settings.versions(
-                new V(1, new EnumSetting<Account.ShowPictures>(
-                        Account.ShowPictures.class, Account.ShowPictures.NEVER))
-            ));
+                  new V(1, new EnumSetting<Account.ShowPictures>(
+                            Account.ShowPictures.class, Account.ShowPictures.NEVER))
+              ));
         s.put("signatureBeforeQuotedText", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("spamFolderName", Settings.versions(
-                new V(1, new StringSetting("Spam"))
-            ));
+                  new V(1, new StringSetting("Spam"))
+              ));
         s.put("stripSignature", Settings.versions(
-                new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE))
-            ));
+                  new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE))
+              ));
         s.put("subscribedFoldersOnly", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("syncRemoteDeletions", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("trashFolderName", Settings.versions(
-                new V(1, new StringSetting("Trash"))
-            ));
+                  new V(1, new StringSetting("Trash"))
+              ));
         s.put("useCompression.MOBILE", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("useCompression.OTHER", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("useCompression.WIFI", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("vibrate", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("vibratePattern", Settings.versions(
-                new V(1, new IntegerResourceSetting(0,
-                R.array.account_settings_vibrate_pattern_values))
-            ));
+                  new V(1, new IntegerResourceSetting(0,
+                          R.array.account_settings_vibrate_pattern_values))
+              ));
         s.put("vibrateTimes", Settings.versions(
-                new V(1, new IntegerResourceSetting(5,
-                R.array.account_settings_vibrate_times_label))
-            ));
+                  new V(1, new IntegerResourceSetting(5,
+                          R.array.account_settings_vibrate_times_label))
+              ));
         s.put("allowRemoteSearch", Settings.versions(
-                new V(18, new BooleanSetting(true))
-            ));
+                  new V(18, new BooleanSetting(true))
+              ));
         s.put("remoteSearchNumResults", Settings.versions(
-                new V(18, new IntegerResourceSetting(Account.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
-                R.array.account_settings_remote_search_num_results_values))
-            ));
+                  new V(18, new IntegerResourceSetting(Account.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
+                          R.array.account_settings_remote_search_num_results_values))
+              ));
         s.put("remoteSearchFullText", Settings.versions(
-                new V(18, new BooleanSetting(false))
-            ));
+                  new V(18, new BooleanSetting(false))
+              ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
@@ -396,7 +396,9 @@ public class AccountSettings {
                 if (mMapping.containsKey(deletePolicy)) {
                     return deletePolicy;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }

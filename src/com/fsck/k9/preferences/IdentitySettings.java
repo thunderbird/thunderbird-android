@@ -28,14 +28,14 @@ public class IdentitySettings {
          */
 
         s.put("signature", Settings.versions(
-                new V(1, new SignatureSetting())
-            ));
+                  new V(1, new SignatureSetting())
+              ));
         s.put("signatureUse", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("replyTo", Settings.versions(
-                new V(1, new OptionalEmailAddressSetting())
-            ));
+                  new V(1, new OptionalEmailAddressSetting())
+              ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

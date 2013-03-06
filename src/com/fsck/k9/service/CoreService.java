@@ -118,7 +118,7 @@ public abstract class CoreService extends Service {
      *         lock is created, registered, and added to {@code intent}.
      */
     protected static void addWakeLockId(Context context, Intent intent, Integer wakeLockId,
-            boolean createIfNotExists) {
+                                        boolean createIfNotExists) {
 
         if (wakeLockId != null) {
             intent.putExtra(BootReceiver.WAKE_LOCK_ID, wakeLockId);
@@ -126,7 +126,7 @@ public abstract class CoreService extends Service {
         }
 
         if (createIfNotExists) {
-          addWakeLock(context,intent);
+            addWakeLock(context, intent);
         }
     }
 
@@ -144,7 +144,7 @@ public abstract class CoreService extends Service {
      */
     protected static void addWakeLock(Context context, Intent intent) {
         TracingWakeLock wakeLock = acquireWakeLock(context, "CoreService addWakeLock",
-                K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
+                                   K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
         Integer tmpWakeLockId = registerWakeLock(wakeLock);
         intent.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
     }
@@ -216,7 +216,7 @@ public abstract class CoreService extends Service {
 
         // Acquire new wake lock
         TracingWakeLock wakeLock = acquireWakeLock(this, "CoreService onStart",
-                K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
+                                   K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
 
         if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "CoreService: " + className + ".onStart(" + intent + ", " + startId + ")");
@@ -243,7 +243,7 @@ public abstract class CoreService extends Service {
             if (coreWakeLock != null) {
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "Found core wake lock with id " + coreWakeLockId +
-                            ", releasing");
+                          ", releasing");
                 }
                 coreWakeLock.release();
             }
@@ -258,7 +258,9 @@ public abstract class CoreService extends Service {
             try {
                 // Release the wake lock acquired at the start of this method
                 wakeLock.release();
-            } catch (Exception e) { /* ignore */ }
+            } catch (Exception e) {
+                /* ignore */
+            }
 
             try {
                 // If there is no outstanding work to be done in a background thread we can stop
@@ -267,7 +269,9 @@ public abstract class CoreService extends Service {
                     stopSelf(startId);
                     startFlag = START_NOT_STICKY;
                 }
-            } catch (Exception e) { /* ignore */ }
+            } catch (Exception e) {
+                /* ignore */
+            }
         }
 
         return startFlag;
@@ -290,14 +294,14 @@ public abstract class CoreService extends Service {
      *         otherwise the auto shutdown code will stop the service.
      */
     public void execute(Context context, final Runnable runner, int wakeLockTime,
-            final Integer startId) {
+                        final Integer startId) {
 
         boolean serviceShutdownScheduled = false;
         final boolean autoShutdown = mAutoShutdown;
 
         // Acquire a new wakelock
         final TracingWakeLock wakeLock = acquireWakeLock(context, "CoreService execute",
-                wakeLockTime);
+                                         wakeLockTime);
 
         // Wrap the supplied runner with code to release the wake lock and stop the service if
         // appropriate.
@@ -309,7 +313,7 @@ public abstract class CoreService extends Service {
 
                     if (K9.DEBUG) {
                         Log.d(K9.LOG_TAG, "CoreService (" + className + ") running Runnable " +
-                                runner.hashCode() + " with startId " + startId);
+                              runner.hashCode() + " with startId " + startId);
                     }
 
                     // Run the supplied code
@@ -325,7 +329,7 @@ public abstract class CoreService extends Service {
                     try {
                         if (K9.DEBUG) {
                             Log.d(K9.LOG_TAG, "CoreService (" + className + ") completed " +
-                                    "Runnable " + runner.hashCode() + " with startId " + startId);
+                                  "Runnable " + runner.hashCode() + " with startId " + startId);
                         }
                         wakeLock.release();
                     } finally {
@@ -340,8 +344,8 @@ public abstract class CoreService extends Service {
         // TODO: remove this. we never set mThreadPool to null
         if (mThreadPool == null) {
             Log.e(K9.LOG_TAG, "CoreService.execute (" + className + ") called with no thread " +
-                    "pool available; running Runnable " + runner.hashCode() +
-                    " in calling thread");
+                  "pool available; running Runnable " + runner.hashCode() +
+                  " in calling thread");
 
             synchronized (this) {
                 myRunner.run();
@@ -350,7 +354,7 @@ public abstract class CoreService extends Service {
         } else {
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "CoreService (" + className + ") queueing Runnable " +
-                        runner.hashCode() + " with startId " + startId);
+                      runner.hashCode() + " with startId " + startId);
             }
 
             try {
@@ -364,7 +368,7 @@ public abstract class CoreService extends Service {
                 }
 
                 Log.i(K9.LOG_TAG, "CoreService: " + className + " is shutting down, ignoring " +
-                        "rejected execution exception: " + e.getMessage());
+                      "rejected execution exception: " + e.getMessage());
             }
         }
 

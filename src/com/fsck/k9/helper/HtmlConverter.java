@@ -345,19 +345,19 @@ public class HtmlConverter {
      * @return Hex color string with prepended #.
      */
     protected static String getQuoteColor(final int level) {
-        switch(level) {
-            case 1:
-                return QUOTE_COLOR_LEVEL_1;
-            case 2:
-                return QUOTE_COLOR_LEVEL_2;
-            case 3:
-                return QUOTE_COLOR_LEVEL_3;
-            case 4:
-                return QUOTE_COLOR_LEVEL_4;
-            case 5:
-                return QUOTE_COLOR_LEVEL_5;
-            default:
-                return QUOTE_COLOR_DEFAULT;
+        switch (level) {
+        case 1:
+            return QUOTE_COLOR_LEVEL_1;
+        case 2:
+            return QUOTE_COLOR_LEVEL_2;
+        case 3:
+            return QUOTE_COLOR_LEVEL_3;
+        case 4:
+            return QUOTE_COLOR_LEVEL_4;
+        case 5:
+            return QUOTE_COLOR_LEVEL_5;
+        default:
+            return QUOTE_COLOR_DEFAULT;
         }
     }
 

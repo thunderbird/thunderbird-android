@@ -91,8 +91,8 @@ public class ServerSettings {
      *         see {@link ServerSettings#password}
      */
     public ServerSettings(String type, String host, int port,
-            ConnectionSecurity connectionSecurity, String authenticationType, String username,
-            String password) {
+                          ConnectionSecurity connectionSecurity, String authenticationType, String username,
+                          String password) {
         this.type = type;
         this.host = host;
         this.port = port;
@@ -124,8 +124,8 @@ public class ServerSettings {
      *         see {@link ServerSettings#extra}
      */
     public ServerSettings(String type, String host, int port,
-            ConnectionSecurity connectionSecurity, String authenticationType, String username,
-            String password, Map<String, String> extra) {
+                          ConnectionSecurity connectionSecurity, String authenticationType, String username,
+                          String password, Map<String, String> extra) {
         this.type = type;
         this.host = host;
         this.port = port;
@@ -134,7 +134,7 @@ public class ServerSettings {
         this.username = username;
         this.password = password;
         this.extra = (extra != null) ?
-                Collections.unmodifiableMap(new HashMap<String, String>(extra)) : null;
+                     Collections.unmodifiableMap(new HashMap<String, String>(extra)) : null;
     }
 
     /**
@@ -173,6 +173,6 @@ public class ServerSettings {
 
     public ServerSettings newPassword(String newPassword) {
         return new ServerSettings(type, host, port, connectionSecurity, authenticationType,
-                username, newPassword);
+                                  username, newPassword);
     }
 }

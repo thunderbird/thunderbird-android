@@ -24,7 +24,7 @@ public class SearchAccount implements BaseAccount {
         tmpSearch.and(Searchfield.SEARCHABLE, "1", Attribute.EQUALS);
 
         return new SearchAccount(ALL_MESSAGES, tmpSearch, name,
-                context.getString(R.string.search_all_messages_detail));
+                                 context.getString(R.string.search_all_messages_detail));
     }
 
 
@@ -34,7 +34,7 @@ public class SearchAccount implements BaseAccount {
         LocalSearch tmpSearch = new LocalSearch(name);
         tmpSearch.and(Searchfield.INTEGRATE, "1", Attribute.EQUALS);
         return new SearchAccount(UNIFIED_INBOX, tmpSearch, name,
-                context.getString(R.string.integrated_inbox_detail));
+                                 context.getString(R.string.integrated_inbox_detail));
     }
 
     private String mId;
@@ -43,7 +43,7 @@ public class SearchAccount implements BaseAccount {
     private LocalSearch mSearch;
 
     public SearchAccount(String id, LocalSearch search, String description, String email)
-            throws IllegalArgumentException {
+    throws IllegalArgumentException {
 
         if (search == null) {
             throw new IllegalArgumentException("Provided LocalSearch was null");

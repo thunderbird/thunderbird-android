@@ -306,12 +306,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position,
-                        long id) {
+                long id) {
                     updatePortFromSecurityType();
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
+                public void onNothingSelected(AdapterView<?> parent) {
+                    /* unused */
+                }
             });
 
             mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
@@ -414,17 +416,17 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             if (ImapStore.STORE_TYPE.equals(mStoreType)) {
                 extra = new HashMap<String, String>();
                 extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
-                        Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
+                          Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
                 extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
-                        mImapPathPrefixView.getText().toString());
+                          mImapPathPrefixView.getText().toString());
             } else if (WebDavStore.STORE_TYPE.equals(mStoreType)) {
                 extra = new HashMap<String, String>();
                 extra.put(WebDavStoreSettings.PATH_KEY,
-                        mWebdavPathPrefixView.getText().toString());
+                          mWebdavPathPrefixView.getText().toString());
                 extra.put(WebDavStoreSettings.AUTH_PATH_KEY,
-                        mWebdavAuthPathView.getText().toString());
+                          mWebdavAuthPathView.getText().toString());
                 extra.put(WebDavStoreSettings.MAILBOX_PATH_KEY,
-                        mWebdavMailboxPathView.getText().toString());
+                          mWebdavMailboxPathView.getText().toString());
             }
 
             ServerSettings settings = new ServerSettings(mStoreType, host, port,

@@ -41,7 +41,7 @@ public class NotificationActionService extends CoreService {
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
         i.setAction(READ_ALL_ACTION);
-        
+
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -78,7 +78,7 @@ public class NotificationActionService extends CoreService {
                     Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
 
                 ArrayList<MessageReference> refs = (ArrayList<MessageReference>)
-                        intent.getSerializableExtra(EXTRA_MESSAGE_LIST);
+                                                   intent.getSerializableExtra(EXTRA_MESSAGE_LIST);
                 for (MessageReference ref : refs) {
                     controller.setFlag(account, ref.folderName, ref.uid, Flag.SEEN, true);
                 }
@@ -87,7 +87,7 @@ public class NotificationActionService extends CoreService {
                     Log.i(K9.LOG_TAG, "NotificationActionService deleting messages");
 
                 ArrayList<MessageReference> refs = (ArrayList<MessageReference>)
-                        intent.getSerializableExtra(EXTRA_MESSAGE_LIST);
+                                                   intent.getSerializableExtra(EXTRA_MESSAGE_LIST);
                 ArrayList<Message> messages = new ArrayList<Message>();
 
                 for (MessageReference ref : refs) {
@@ -121,7 +121,7 @@ public class NotificationActionService extends CoreService {
         } else {
             Log.w(K9.LOG_TAG, "Could not find account for notification action.");
         }
-        
+
         return START_NOT_STICKY;
     }
 }

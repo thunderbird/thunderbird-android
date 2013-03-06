@@ -53,7 +53,7 @@ public class ConditionsTreeNode implements Parcelable {
      * should point to rows representing the nodes of the tree.
      *
      * @param cursor Cursor pointing to the first of a bunch or rows. Each rows
-     * 	should contains 1 tree node.
+     *  should contains 1 tree node.
      * @return A condition tree.
      */
     public static ConditionsTreeNode buildTreeFromDB(Cursor cursor) {
@@ -96,7 +96,7 @@ public class ConditionsTreeNode implements Parcelable {
 
         if (tmpValue == Operator.CONDITION) {
             condition = new SearchCondition(Searchfield.valueOf(cursor.getString(0)),
-                    Attribute.valueOf(cursor.getString(2)), cursor.getString(1));
+                                            Attribute.valueOf(cursor.getString(2)), cursor.getString(1));
         }
 
         result = new ConditionsTreeNode(condition);
@@ -164,7 +164,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @return New top AND node.
      * @throws Exception
      */
-    public ConditionsTreeNode and(ConditionsTreeNode expr) throws Exception {
+    public ConditionsTreeNode and (ConditionsTreeNode expr) throws Exception {
         return add(expr, Operator.AND);
     }
 
@@ -176,10 +176,10 @@ public class ConditionsTreeNode implements Parcelable {
      * @param condition Condition to 'AND' with.
      * @return New top AND node, new root.
      */
-    public ConditionsTreeNode and(SearchCondition condition) {
+    public ConditionsTreeNode and (SearchCondition condition) {
         try {
             ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-            return and(tmp);
+            return and (tmp);
         } catch (Exception e) {
             // impossible
             return null;
@@ -194,7 +194,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @return New top OR node.
      * @throws Exception
      */
-    public ConditionsTreeNode or(ConditionsTreeNode expr) throws Exception {
+    public ConditionsTreeNode or (ConditionsTreeNode expr) throws Exception {
         return add(expr, Operator.OR);
     }
 
@@ -206,10 +206,10 @@ public class ConditionsTreeNode implements Parcelable {
      * @param condition Condition to 'OR' with.
      * @return New top OR node, new root.
      */
-    public ConditionsTreeNode or(SearchCondition condition) {
+    public ConditionsTreeNode or (SearchCondition condition) {
         try {
             ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-            return or(tmp);
+            return or (tmp);
         } catch (Exception e) {
             // impossible
             return null;
@@ -400,7 +400,7 @@ public class ConditionsTreeNode implements Parcelable {
     }
 
     public static final Parcelable.Creator<ConditionsTreeNode> CREATOR =
-            new Parcelable.Creator<ConditionsTreeNode>() {
+    new Parcelable.Creator<ConditionsTreeNode>() {
 
         @Override
         public ConditionsTreeNode createFromParcel(Parcel in) {

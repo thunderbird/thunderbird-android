@@ -84,7 +84,7 @@ public abstract class Store {
      *          if not {@link StorageProvider#isReady(Context)}
      */
     public static LocalStore getLocalInstance(Account account, Application application)
-            throws MessagingException {
+    throws MessagingException {
 
         String accountUuid = account.getUuid();
 

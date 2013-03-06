@@ -60,7 +60,7 @@ public class LocalSearch implements SearchSpecification {
      * @param predefined Is this a predefined search or a user created one?
      */
     protected LocalSearch(String name, ConditionsTreeNode searchConditions,
-            String accounts, boolean predefined) {
+                          String accounts, boolean predefined) {
         this(name);
         mConditions = searchConditions;
         mPredefined = predefined;
@@ -149,8 +149,8 @@ public class LocalSearch implements SearchSpecification {
      *
      * @throws IllegalConditionException
      */
-    public void and(Searchfield field, String value, Attribute attribute) {
-        and(new SearchCondition(field, attribute, value));
+    public void and (Searchfield field, String value, Attribute attribute) {
+        and (new SearchCondition(field, attribute, value));
     }
 
     /**
@@ -160,10 +160,10 @@ public class LocalSearch implements SearchSpecification {
      * @param condition Condition to 'AND' with.
      * @return New top AND node, new root.
      */
-    public ConditionsTreeNode and(SearchCondition condition) {
+    public ConditionsTreeNode and (SearchCondition condition) {
         try {
             ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-            return and(tmp);
+            return and (tmp);
         } catch (Exception e) {
             // impossible
             return null;
@@ -178,7 +178,7 @@ public class LocalSearch implements SearchSpecification {
      * @return New top AND node, new root.
      * @throws Exception
      */
-    public ConditionsTreeNode and(ConditionsTreeNode node) throws Exception {
+    public ConditionsTreeNode and (ConditionsTreeNode node) throws Exception {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
@@ -197,10 +197,10 @@ public class LocalSearch implements SearchSpecification {
      * @param condition Condition to 'OR' with.
      * @return New top OR node, new root.
      */
-    public ConditionsTreeNode or(SearchCondition condition) {
+    public ConditionsTreeNode or (SearchCondition condition) {
         try {
             ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-            return or(tmp);
+            return or (tmp);
         } catch (Exception e) {
             // impossible
             return null;
@@ -215,7 +215,7 @@ public class LocalSearch implements SearchSpecification {
      * @return New top OR node, new root.
      * @throws Exception
      */
-    public ConditionsTreeNode or(ConditionsTreeNode node) throws Exception {
+    public ConditionsTreeNode or (ConditionsTreeNode node) throws Exception {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
@@ -240,10 +240,10 @@ public class LocalSearch implements SearchSpecification {
     public void addAllowedFolder(String name) {
         /*
          *  TODO find folder sub-tree
-         *  		- do and on root of it & rest of search
-         *  		- do or between folder nodes
+         *          - do and on root of it & rest of search
+         *          - do or between folder nodes
          */
-        mConditions = and(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, name));
+        mConditions = and (new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, name));
     }
 
     /*
@@ -286,7 +286,7 @@ public class LocalSearch implements SearchSpecification {
 
         for (ConditionsTreeNode node : leafSet) {
             if (node.getCondition().field == Searchfield.SUBJECT ||
-                    node.getCondition().field == Searchfield.SENDER ) {
+                    node.getCondition().field == Searchfield.SENDER) {
                 return node.getCondition().value;
             }
         }
@@ -367,14 +367,14 @@ public class LocalSearch implements SearchSpecification {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);
-        dest.writeByte((byte) (mPredefined ? 1 : 0));
-        dest.writeByte((byte) (mManualSearch ? 1 : 0));
+        dest.writeByte((byte)(mPredefined ? 1 : 0));
+        dest.writeByte((byte)(mManualSearch ? 1 : 0));
         dest.writeStringList(new ArrayList<String>(mAccountUuids));
         dest.writeParcelable(mConditions, flags);
     }
 
     public static final Parcelable.Creator<LocalSearch> CREATOR =
-            new Parcelable.Creator<LocalSearch>() {
+    new Parcelable.Creator<LocalSearch>() {
 
         @Override
         public LocalSearch createFromParcel(Parcel in) {

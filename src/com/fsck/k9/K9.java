@@ -620,7 +620,7 @@ public class K9 extends Application {
 
             @Override
             public void folderStatusChanged(Account account, String folderName,
-                    int unreadMessageCount) {
+            int unreadMessageCount) {
 
                 updateUnreadWidget();
 
@@ -721,7 +721,7 @@ public class K9 extends Application {
             // If the "notificationHideSubject" setting couldn't be found, the app was probably
             // updated. Look for the old "keyguardPrivacy" setting and map it to the new enum.
             sNotificationHideSubject = (sprefs.getBoolean("keyguardPrivacy", false)) ?
-                    NotificationHideSubject.WHEN_LOCKED : NotificationHideSubject.NEVER;
+                                       NotificationHideSubject.WHEN_LOCKED : NotificationHideSubject.NEVER;
         } else {
             sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
         }
@@ -1039,12 +1039,12 @@ public class K9 extends Application {
         return mShowCorrespondentNames;
     }
 
-     public static boolean messageListSenderAboveSubject() {
-         return mMessageListSenderAboveSubject;
-     }
+    public static boolean messageListSenderAboveSubject() {
+        return mMessageListSenderAboveSubject;
+    }
 
     public static void setMessageListSenderAboveSubject(boolean sender) {
-         mMessageListSenderAboveSubject = sender;
+        mMessageListSenderAboveSubject = sender;
     }
     public static void setShowCorrespondentNames(boolean showCorrespondentNames) {
         mShowCorrespondentNames = showCorrespondentNames;

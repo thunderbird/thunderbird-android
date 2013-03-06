@@ -71,10 +71,10 @@ public class ContactPictureLoader {
         mDefaultPicture = BitmapFactory.decodeResource(mResources, defaultPictureResource);
 
         float scale = mResources.getDisplayMetrics().density;
-        mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
+        mPictureSizeInPx = (int)(PICTURE_SIZE * scale);
 
         ActivityManager activityManager =
-                (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
+            (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
         int memClass = activityManager.getMemoryClass();
 
         // Use 1/16th of the available memory for this memory cache.
@@ -192,11 +192,11 @@ public class ContactPictureLoader {
 
     private ContactPictureRetrievalTask getContactPictureRetrievalTask(QuickContactBadge badge) {
         if (badge != null) {
-           Drawable drawable = badge.getDrawable();
-           if (drawable instanceof AsyncDrawable) {
-               AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-               return asyncDrawable.getContactPictureRetrievalTask();
-           }
+            Drawable drawable = badge.getDrawable();
+            if (drawable instanceof AsyncDrawable) {
+                AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+                return asyncDrawable.getContactPictureRetrievalTask();
+            }
         }
 
         return null;
@@ -239,12 +239,16 @@ public class ContactPictureLoader {
                         try {
                             Bitmap tempBitmap = BitmapFactory.decodeStream(stream);
                             bitmap = Bitmap.createScaledBitmap(tempBitmap, mPictureSizeInPx,
-                                    mPictureSizeInPx, true);
+                                                               mPictureSizeInPx, true);
                             if (tempBitmap != bitmap) {
                                 tempBitmap.recycle();
                             }
                         } finally {
-                            try { stream.close(); } catch (IOException e) { /* ignore */ }
+                            try {
+                                stream.close();
+                            } catch (IOException e) {
+                                /* ignore */
+                            }
                         }
                     }
                 } catch (FileNotFoundException e) {

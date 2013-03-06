@@ -87,7 +87,9 @@ public class AttachmentProvider extends ContentProvider {
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "Deleting file " + file.getCanonicalPath());
                 }
-            } catch (IOException ioe) { /* No need to log failure to log */ }
+            } catch (IOException ioe) {
+                /* No need to log failure to log */
+            }
             file.delete();
         }
     }
@@ -110,7 +112,7 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     private static File getThumbnailFile(Context context, String accountUuid,
-            String attachmentId) {
+                                         String attachmentId) {
         String filename = "thmb_" + accountUuid + "_" + attachmentId + ".tmp";
         File dir = context.getCacheDir();
         return new File(dir, filename);
@@ -180,7 +182,11 @@ public class AttachmentProvider extends ContentProvider {
                             }
                         }
                     } finally {
-                        try { in.close(); } catch (Throwable ignore) { /* ignore */ }
+                        try {
+                            in.close();
+                        } catch (Throwable ignore) {
+                            /* ignore */
+                        }
                     }
                 } catch (IOException ioe) {
                     return null;
@@ -281,7 +287,7 @@ public class AttachmentProvider extends ContentProvider {
         Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
 
         File attachmentsDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(dbName,
-                account.getLocalStorageProviderId());
+                              account.getLocalStorageProviderId());
 
         File file = new File(attachmentsDir, id);
         if (!file.exists()) {

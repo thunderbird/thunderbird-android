@@ -67,7 +67,7 @@ public class MessagingListener {
             int totalMessagesInMailbox, int numNewMessages) {}
 
     public void synchronizeMailboxProgress(Account account, String folder, int completed,
-            int total) {}
+                                           int total) {}
 
     public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {}
 
@@ -78,7 +78,7 @@ public class MessagingListener {
             Message message) {}
 
     public void synchronizeMailboxFinished(Account account, String folder,
-            int totalMessagesInMailbox, int numNewMessages) {}
+                                           int totalMessagesInMailbox, int numNewMessages) {}
 
     public void synchronizeMailboxFailed(Account account, String folder, String message) {}
 
@@ -92,10 +92,10 @@ public class MessagingListener {
             Message message) {}
 
     public void loadMessageForViewFinished(Account account, String folder, String uid,
-            Message message) {}
+                                           Message message) {}
 
     public void loadMessageForViewFailed(Account account, String folder, String uid,
-            Throwable t) {}
+                                         Throwable t) {}
 
     /**
      * Called when a message for view has been fully displayed on the screen.
@@ -135,12 +135,12 @@ public class MessagingListener {
 
 
     public void loadAttachmentStarted(Account account, Message message, Part part, Object tag,
-            boolean requiresDownload) {}
+                                      boolean requiresDownload) {}
 
     public void loadAttachmentFinished(Account account, Message message, Part part, Object tag) {}
 
     public void loadAttachmentFailed(Account account, Message message, Part part, Object tag,
-            String reason) {}
+                                     String reason) {}
 
 
 

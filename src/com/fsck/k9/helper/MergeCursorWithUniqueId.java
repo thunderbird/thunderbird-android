@@ -19,7 +19,7 @@ public class MergeCursorWithUniqueId extends MergeCursor {
 
         if (cursors.length > MAX_CURSORS) {
             throw new IllegalArgumentException("This class only supports up to " +
-                    MAX_CURSORS + " cursors");
+                                               MAX_CURSORS + " cursors");
         }
     }
 
@@ -56,7 +56,7 @@ public class MergeCursorWithUniqueId extends MergeCursor {
             long id = getPerCursorId();
             if (id > MAX_ID) {
                 throw new RuntimeException("Sorry, " + this.getClass().getName() +
-                        " can only handle '_id' values up to " + SHIFT + " bits.");
+                                           " can only handle '_id' values up to " + SHIFT + " bits.");
             }
 
             return (((long) mActiveCursorIndex) << SHIFT) + id;

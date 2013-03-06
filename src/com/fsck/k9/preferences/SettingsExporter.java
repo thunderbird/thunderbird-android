@@ -76,13 +76,12 @@ public class SettingsExporter {
 
 
     public static String exportToFile(Context context, boolean includeGlobals,
-            Set<String> accountUuids)
-            throws SettingsImportExportException {
+                                      Set<String> accountUuids)
+    throws SettingsImportExportException {
 
         OutputStream os = null;
         String filename = null;
-        try
-        {
+        try {
             File dir = new File(Environment.getExternalStorageDirectory() + File.separator
                                 + context.getPackageName());
             dir.mkdirs();
@@ -108,7 +107,7 @@ public class SettingsExporter {
     }
 
     public static void exportPreferences(Context context, OutputStream os, boolean includeGlobals,
-            Set<String> accountUuids) throws SettingsImportExportException  {
+                                         Set<String> accountUuids) throws SettingsImportExportException  {
 
         try {
             XmlSerializer serializer = Xml.newSerializer();
@@ -122,7 +121,7 @@ public class SettingsExporter {
             serializer.startTag(null, ROOT_ELEMENT);
             serializer.attribute(null, VERSION_ATTRIBUTE, Integer.toString(Settings.VERSION));
             serializer.attribute(null, FILE_FORMAT_ATTRIBUTE,
-                    Integer.toString(FILE_FORMAT_VERSION));
+                                 Integer.toString(FILE_FORMAT_VERSION));
 
             Log.i(K9.LOG_TAG, "Exporting preferences");
 
@@ -165,7 +164,7 @@ public class SettingsExporter {
     }
 
     private static void writeSettings(XmlSerializer serializer,
-            Map<String, Object> prefs) throws IOException {
+                                      Map<String, Object> prefs) throws IOException {
 
         for (Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
                 GlobalSettings.SETTINGS.entrySet()) {
@@ -187,12 +186,12 @@ public class SettingsExporter {
                     writeKeyValue(serializer, key, outputValue);
                 } catch (InvalidSettingValueException e) {
                     Log.w(K9.LOG_TAG, "Global setting \"" + key  + "\" has invalid value \"" +
-                            valueString + "\" in preference storage. This shouldn't happen!");
+                          valueString + "\" in preference storage. This shouldn't happen!");
                 }
             } else {
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "Couldn't find key \"" + key + "\" in preference storage." +
-                            "Using default value.");
+                          "Using default value.");
                 }
 
                 Object value = setting.getDefaultValue();
@@ -203,7 +202,7 @@ public class SettingsExporter {
     }
 
     private static void writeAccount(XmlSerializer serializer, Account account,
-            Map<String, Object> prefs) throws IOException {
+                                     Map<String, Object> prefs) throws IOException {
 
         Set<Integer> identities = new HashSet<Integer>();
         Set<String> folders = new HashSet<String>();
@@ -302,7 +301,9 @@ public class SettingsExporter {
                     // This is an identity key. Save identity index for later...
                     try {
                         identities.add(Integer.parseInt(thirdPart));
-                    } catch (NumberFormatException e) { /* ignore */ }
+                    } catch (NumberFormatException e) {
+                        /* ignore */
+                    }
                     // ... but don't write it now.
                     continue;
                 }
@@ -335,8 +336,8 @@ public class SettingsExporter {
                         writeKeyValue(serializer, keyPart, pretty);
                     } catch (InvalidSettingValueException e) {
                         Log.w(K9.LOG_TAG, "Account setting \"" + keyPart  + "\" (" +
-                                account.getDescription() + ") has invalid value \"" + valueString +
-                                "\" in preference storage. This shouldn't happen!");
+                              account.getDescription() + ") has invalid value \"" + valueString +
+                              "\" in preference storage. This shouldn't happen!");
                     }
                 }
             }
@@ -368,7 +369,7 @@ public class SettingsExporter {
     }
 
     private static void writeIdentity(XmlSerializer serializer, String accountUuid,
-            String identity, Map<String, Object> prefs) throws IOException {
+                                      String identity, Map<String, Object> prefs) throws IOException {
 
         serializer.startTag(null, IDENTITY_ELEMENT);
 
@@ -430,8 +431,8 @@ public class SettingsExporter {
                         writeKeyValue(serializer, identityKey, outputValue);
                     } catch (InvalidSettingValueException e) {
                         Log.w(K9.LOG_TAG, "Identity setting \"" + identityKey +
-                                "\" has invalid value \"" + valueString +
-                                "\" in preference storage. This shouldn't happen!");
+                              "\" has invalid value \"" + valueString +
+                              "\" in preference storage. This shouldn't happen!");
                     }
                 }
             }
@@ -442,7 +443,7 @@ public class SettingsExporter {
     }
 
     private static void writeFolder(XmlSerializer serializer, String accountUuid,
-            String folder, Map<String, Object> prefs) throws IOException {
+                                    String folder, Map<String, Object> prefs) throws IOException {
 
         serializer.startTag(null, FOLDER_ELEMENT);
         serializer.attribute(null, NAME_ATTRIBUTE, folder);
@@ -482,8 +483,8 @@ public class SettingsExporter {
                         writeKeyValue(serializer, folderKey, outputValue);
                     } catch (InvalidSettingValueException e) {
                         Log.w(K9.LOG_TAG, "Folder setting \"" + folderKey +
-                                "\" has invalid value \"" + valueString +
-                                "\" in preference storage. This shouldn't happen!");
+                              "\" has invalid value \"" + valueString +
+                              "\" in preference storage. This shouldn't happen!");
                     }
                 }
             }
@@ -493,7 +494,7 @@ public class SettingsExporter {
     }
 
     private static void writeElement(XmlSerializer serializer, String elementName, String value)
-            throws IllegalArgumentException, IllegalStateException, IOException {
+    throws IllegalArgumentException, IllegalStateException, IOException {
         if (value != null) {
             serializer.startTag(null, elementName);
             serializer.text(value);
@@ -502,7 +503,7 @@ public class SettingsExporter {
     }
 
     private static void writeKeyValue(XmlSerializer serializer, String key, String value)
-            throws IllegalArgumentException, IllegalStateException, IOException {
+    throws IllegalArgumentException, IllegalStateException, IOException {
         serializer.startTag(null, VALUE_ELEMENT);
         serializer.attribute(null, KEY_ATTRIBUTE, key);
         if (value != null) {

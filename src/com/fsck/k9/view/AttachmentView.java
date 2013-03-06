@@ -107,7 +107,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      *          In case of an error
      */
     public boolean populateFromPart(Part inputPart, Message message, Account account,
-            MessagingController controller, MessagingListener listener) throws MessagingException {
+                                    MessagingController controller, MessagingListener listener) throws MessagingException {
         boolean firstClassAttachment = true;
         part = (LocalAttachmentBodyPart) inputPart;
 
@@ -143,7 +143,9 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         if (sizeParam != null) {
             try {
                 size = Integer.parseInt(sizeParam);
-            } catch (NumberFormatException e) { /* ignore */ }
+            } catch (NumberFormatException e) {
+                /* ignore */
+            }
         }
 
         contentType = MimeUtility.getMimeTypeForViewing(part.getMimeType(), name);
@@ -184,14 +186,14 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.view: {
-                onViewButtonClicked();
-                break;
-            }
-            case R.id.download: {
-                onSaveButtonClicked();
-                break;
-            }
+        case R.id.view: {
+            onViewButtonClicked();
+            break;
+        }
+        case R.id.download: {
+            onSaveButtonClicked();
+            break;
+        }
         }
     }
 

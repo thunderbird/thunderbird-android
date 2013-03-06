@@ -92,7 +92,7 @@ public class K9ActivityCommon {
      */
     public int getThemeBackgroundColor() {
         TypedArray array = mActivity.getTheme().obtainStyledAttributes(
-                new int[] { android.R.attr.colorBackground });
+                               new int[] { android.R.attr.colorBackground });
 
         int backgroundColor = array.getColor(0, 0xFF00FF);
 
@@ -110,6 +110,6 @@ public class K9ActivityCommon {
      */
     public void setupGestureDetector(OnSwipeGestureListener listener) {
         mGestureDetector = new GestureDetector(mActivity,
-                new SwipeGestureDetector(mActivity, listener));
+                                               new SwipeGestureDetector(mActivity, listener));
     }
 }

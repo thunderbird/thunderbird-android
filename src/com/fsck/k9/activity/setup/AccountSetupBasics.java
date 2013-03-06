@@ -208,7 +208,7 @@ public class AccountSetupBasics extends K9Activity
 
             }
             if (mAccount == null)
-            	mAccount = Preferences.getPreferences(this).newAccount();
+                mAccount = Preferences.getPreferences(this).newAccount();
             mAccount.setName(getOwnerName());
             mAccount.setEmail(email);
             mAccount.setStoreUri(incomingUri.toString());
@@ -281,7 +281,7 @@ public class AccountSetupBasics extends K9Activity
         String domain = emailParts[1];
 
         if (mAccount == null)
-        	mAccount = Preferences.getPreferences(this).newAccount();
+            mAccount = Preferences.getPreferences(this).newAccount();
         mAccount.setName(getOwnerName());
         mAccount.setEmail(email);
         try {

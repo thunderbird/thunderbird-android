@@ -140,14 +140,14 @@ public class ChooseFolder extends K9ListActivity {
         @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
-                case MSG_PROGRESS: {
-                    setSupportProgressBarIndeterminateVisibility(msg.arg1 != 0);
-                    break;
-                }
-                case MSG_SET_SELECTED_FOLDER: {
-                    getListView().setSelection(msg.arg1);
-                    break;
-                }
+            case MSG_PROGRESS: {
+                setSupportProgressBarIndeterminateVisibility(msg.arg1 != 0);
+                break;
+            }
+            case MSG_SET_SELECTED_FOLDER: {
+                getListView().setSelection(msg.arg1);
+                break;
+            }
             }
         }
 
@@ -197,29 +197,29 @@ public class ChooseFolder extends K9ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.display_1st_class: {
-                setDisplayMode(FolderMode.FIRST_CLASS);
-                return true;
-            }
-            case R.id.display_1st_and_2nd_class: {
-                setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS);
-                return true;
-            }
-            case R.id.display_not_second_class: {
-                setDisplayMode(FolderMode.NOT_SECOND_CLASS);
-                return true;
-            }
-            case R.id.display_all: {
-                setDisplayMode(FolderMode.ALL);
-                return true;
-            }
-            case R.id.list_folders: {
-                onRefresh();
-                return true;
-            }
-            default: {
-                return super.onOptionsItemSelected(item);
-            }
+        case R.id.display_1st_class: {
+            setDisplayMode(FolderMode.FIRST_CLASS);
+            return true;
+        }
+        case R.id.display_1st_and_2nd_class: {
+            setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS);
+            return true;
+        }
+        case R.id.display_not_second_class: {
+            setDisplayMode(FolderMode.NOT_SECOND_CLASS);
+            return true;
+        }
+        case R.id.display_all: {
+            setDisplayMode(FolderMode.ALL);
+            return true;
+        }
+        case R.id.list_folders: {
+            onRefresh();
+            return true;
+        }
+        default: {
+            return super.onOptionsItemSelected(item);
+        }
         }
     }
 
@@ -277,8 +277,8 @@ public class ChooseFolder extends K9ListActivity {
 
                 // Inbox needs to be compared case-insensitively
                 if (mHideCurrentFolder && (name.equals(mFolder) || (
-                        mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) &&
-                        mAccount.getInboxFolderName().equalsIgnoreCase(name)))) {
+                                               mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) &&
+                mAccount.getInboxFolderName().equalsIgnoreCase(name)))) {
                     continue;
                 }
                 try {
@@ -291,12 +291,12 @@ public class ChooseFolder extends K9ListActivity {
                                 fMode != Folder.FolderClass.FIRST_CLASS &&
                                 fMode != Folder.FolderClass.SECOND_CLASS) || (
                                 aMode == Account.FolderMode.NOT_SECOND_CLASS &&
-                                fMode == Folder.FolderClass.SECOND_CLASS)) {
+                    fMode == Folder.FolderClass.SECOND_CLASS)) {
                         continue;
                     }
                 } catch (MessagingException me) {
                     Log.e(K9.LOG_TAG, "Couldn't get prefs to check for displayability of folder " +
-                            folder.getName(), me);
+                          folder.getName(), me);
                 }
 
                 if (folder.isInTopGroup()) {
@@ -341,7 +341,7 @@ public class ChooseFolder extends K9ListActivity {
                         folderList.add(getString(R.string.special_mailbox_name_inbox));
                         mHeldInbox = name;
                     } else if (!K9.ERROR_FOLDER_NAME.equals(name) &&
-                            !account.getOutboxFolderName().equals(name)) {
+                    !account.getOutboxFolderName().equals(name)) {
                         folderList.add(name);
                     }
 
@@ -355,8 +355,8 @@ public class ChooseFolder extends K9ListActivity {
                             selectedFolder = position;
                         }
                     } else if (name.equals(mFolder) || (
-                            mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) &&
-                            mAccount.getInboxFolderName().equalsIgnoreCase(name))) {
+                                   mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) &&
+                    mAccount.getInboxFolderName().equalsIgnoreCase(name))) {
                         selectedFolder = position;
                     }
                     position++;

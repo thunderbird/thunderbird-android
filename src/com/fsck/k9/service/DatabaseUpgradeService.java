@@ -68,7 +68,7 @@ public class DatabaseUpgradeService extends Service {
      * Action used to start this service.
      */
     private static final String ACTION_START_SERVICE =
-            "com.fsck.k9.service.DatabaseUpgradeService.startService";
+        "com.fsck.k9.service.DatabaseUpgradeService.startService";
 
     private static final String WAKELOCK_TAG = "DatabaseUpgradeService";
     private static final long WAKELOCK_TIMEOUT = 10 * 60 * 1000;    // 10 minutes
@@ -179,7 +179,7 @@ public class DatabaseUpgradeService extends Service {
                 upgradeDatabases();
                 stopService();
             }
-        }.start();
+        } .start();
     }
 
     /**

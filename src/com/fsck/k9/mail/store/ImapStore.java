@@ -238,7 +238,7 @@ public class ImapStore extends Store {
         }
 
         return new ImapStoreSettings(host, port, connectionSecurity, authenticationType, username,
-                password, autoDetectNamespace, pathPrefix);
+                                     password, autoDetectNamespace, pathPrefix);
     }
 
     /**
@@ -258,30 +258,29 @@ public class ImapStore extends Store {
         try {
             userEnc = URLEncoder.encode(server.username, "UTF-8");
             passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
+                          URLEncoder.encode(server.password, "UTF-8") : "";
+        } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);
         }
 
         String scheme;
         switch (server.connectionSecurity) {
-            case SSL_TLS_OPTIONAL:
-                scheme = "imap+ssl";
-                break;
-            case SSL_TLS_REQUIRED:
-                scheme = "imap+ssl+";
-                break;
-            case STARTTLS_OPTIONAL:
-                scheme = "imap+tls";
-                break;
-            case STARTTLS_REQUIRED:
-                scheme = "imap+tls+";
-                break;
-            default:
-            case NONE:
-                scheme = "imap";
-                break;
+        case SSL_TLS_OPTIONAL:
+            scheme = "imap+ssl";
+            break;
+        case SSL_TLS_REQUIRED:
+            scheme = "imap+ssl+";
+            break;
+        case STARTTLS_OPTIONAL:
+            scheme = "imap+tls";
+            break;
+        case STARTTLS_REQUIRED:
+            scheme = "imap+tls+";
+            break;
+        default:
+        case NONE:
+            scheme = "imap";
+            break;
         }
 
         AuthType authType;
@@ -289,7 +288,7 @@ public class ImapStore extends Store {
             authType = AuthType.valueOf(server.authenticationType);
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid authentication type: " +
-                    server.authenticationType);
+                                               server.authenticationType);
         }
 
         String userInfo = authType.toString() + ":" + userEnc + ":" + passwordEnc;
@@ -298,17 +297,17 @@ public class ImapStore extends Store {
             String path = null;
             if (extra != null) {
                 boolean autoDetectNamespace = Boolean.TRUE.toString().equals(
-                        extra.get(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY));
+                                                  extra.get(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY));
                 String pathPrefix = (autoDetectNamespace) ?
-                        null : extra.get(ImapStoreSettings.PATH_PREFIX_KEY);
+                                    null : extra.get(ImapStoreSettings.PATH_PREFIX_KEY);
                 path = "/" + (autoDetectNamespace ? "1" : "0") + "|" +
-                    ((pathPrefix == null) ? "" : pathPrefix);
+                       ((pathPrefix == null) ? "" : pathPrefix);
             } else {
                 path = "/1|";
             }
             return new URI(scheme, userInfo, server.host, server.port,
-                path,
-                null, null).toString();
+                           path,
+                           null, null).toString();
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create ImapStore URI", e);
         }
@@ -327,10 +326,10 @@ public class ImapStore extends Store {
         public final String pathPrefix;
 
         protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-                String authenticationType, String username, String password,
-                boolean autodetectNamespace, String pathPrefix) {
+                                    String authenticationType, String username, String password,
+                                    boolean autodetectNamespace, String pathPrefix) {
             super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
-                    password);
+                  password);
             this.autoDetectNamespace = autodetectNamespace;
             this.pathPrefix = pathPrefix;
         }
@@ -346,7 +345,7 @@ public class ImapStore extends Store {
         @Override
         public ServerSettings newPassword(String newPassword) {
             return new ImapStoreSettings(host, port, connectionSecurity, authenticationType,
-                    username, newPassword, autoDetectNamespace, pathPrefix);
+                                         username, newPassword, autoDetectNamespace, pathPrefix);
         }
     }
 
@@ -643,7 +642,7 @@ public class ImapStore extends Store {
         if (connection.capabilities.contains("XLIST")) {
             if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration: Using XLIST.");
             commandResponse = "XLIST";
-        } else if(connection.capabilities.contains("SPECIAL-USE")) {
+        } else if (connection.capabilities.contains("SPECIAL-USE")) {
             if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
             commandResponse = "LIST";
             commandOptions = " (SPECIAL-USE)";
@@ -654,7 +653,7 @@ public class ImapStore extends Store {
 
         final List<ImapResponse> responses =
             connection.executeSimpleCommand(String.format("%s%s \"\" %s", commandResponse, commandOptions,
-                encodeString(getCombinedPrefix() + "*")));
+                                            encodeString(getCombinedPrefix() + "*")));
 
         for (ImapResponse response : responses) {
             if (ImapResponseParser.equalsIgnoreCase(response.get(0), commandResponse)) {
@@ -664,7 +663,7 @@ public class ImapStore extends Store {
                     decodedFolderName = decodeFolderName(response.getString(3));
                 } catch (CharacterCodingException e) {
                     Log.w(K9.LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
-                        "as defined by RFC 3501: " + response.getString(3), e);
+                          "as defined by RFC 3501: " + response.getString(3), e);
                     // We currently just skip folders with malformed names.
                     continue;
                 }
@@ -899,7 +898,7 @@ public class ImapStore extends Store {
             try {
                 msgSeqUidMap.clear();
                 String command = String.format("%s %s", mode == OpenMode.READ_WRITE ? "SELECT"
-                        : "EXAMINE", encodeString(encodeFolderName(getPrefixedName())));
+                                               : "EXAMINE", encodeString(encodeFolderName(getPrefixedName())));
 
                 List<ImapResponse> responses = executeSimpleCommand(command);
 
@@ -1123,7 +1122,7 @@ public class ImapStore extends Store {
          */
         @Override
         public Map<String, String> copyMessages(Message[] messages, Folder folder)
-                throws MessagingException {
+        throws MessagingException {
             if (!(folder instanceof ImapFolder)) {
                 throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
             }
@@ -1151,7 +1150,7 @@ public class ImapStore extends Store {
                      */
                     if (K9.DEBUG) {
                         Log.i(K9.LOG_TAG, "ImapFolder.copyMessages: attempting to create remote " +
-                                "folder '" + remoteDestName + "' for " + getLogId());
+                              "folder '" + remoteDestName + "' for " + getLogId());
                     }
 
                     iFolder.create(FolderType.HOLDS_MESSAGES);
@@ -1159,8 +1158,8 @@ public class ImapStore extends Store {
 
                 //TODO: Split this into multiple commands if the command exceeds a certain length.
                 List<ImapResponse> responses = executeSimpleCommand(String.format("UID COPY %s %s",
-                                                      Utility.combine(uids, ','),
-                                                      remoteDestName));
+                                               Utility.combine(uids, ','),
+                                               remoteDestName));
 
                 // Get the tagged response for the UID COPY command
                 ImapResponse response = responses.get(responses.size() - 1);
@@ -1185,9 +1184,9 @@ public class ImapStore extends Store {
                         final ImapList copyList = (ImapList) responseList;
                         if (copyList.size() >= 4 && copyList.getString(0).equals("COPYUID")) {
                             List<String> srcUids = ImapUtility.getImapSequenceValues(
-                                    copyList.getString(2));
+                                                       copyList.getString(2));
                             List<String> destUids = ImapUtility.getImapSequenceValues(
-                                    copyList.getString(3));
+                                                        copyList.getString(3));
 
                             if (srcUids != null && destUids != null) {
                                 if (srcUids.size() == destUids.size()) {
@@ -1203,8 +1202,8 @@ public class ImapStore extends Store {
                                 } else {
                                     if (K9.DEBUG) {
                                         Log.v(K9.LOG_TAG, "Parse error: size of source UIDs " +
-                                                "list is not the same as size of destination " +
-                                                "UIDs list.");
+                                              "list is not the same as size of destination " +
+                                              "UIDs list.");
                                     }
                                 }
                             } else {
@@ -1490,7 +1489,7 @@ public class ImapStore extends Store {
                 fetchFields.add("INTERNALDATE");
                 fetchFields.add("RFC822.SIZE");
                 fetchFields.add("BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc " +
-                        "reply-to message-id references in-reply-to " + K9.IDENTITY_HEADER + ")]");
+                                "reply-to message-id references in-reply-to " + K9.IDENTITY_HEADER + ")]");
             }
             if (fp.contains(FetchProfile.Item.STRUCTURE)) {
                 fetchFields.add("BODYSTRUCTURE");
@@ -1601,7 +1600,7 @@ public class ImapStore extends Store {
             String partId = parts[0];
             if ("TEXT".equalsIgnoreCase(partId)) {
                 fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>",
-                        mAccount.getMaximumAutoDownloadMessageSize());
+                                      mAccount.getMaximumAutoDownloadMessageSize());
             } else {
                 fetch = String.format("BODY.PEEK[%s]", partId);
             }
@@ -1909,8 +1908,8 @@ public class ImapStore extends Store {
                      */
                     for (int i = 0, count = bodyParams.size(); i < count; i += 2) {
                         contentType.append(String.format(";\n %s=\"%s\"",
-                                           bodyParams.getString(i),
-                                           bodyParams.getString(i + 1)));
+                                                         bodyParams.getString(i),
+                                                         bodyParams.getString(i + 1)));
                     }
                 }
 
@@ -1944,8 +1943,8 @@ public class ImapStore extends Store {
                          */
                         for (int i = 0, count = bodyDispositionParams.size(); i < count; i += 2) {
                             contentDisposition.append(String.format(";\n %s=\"%s\"",
-                                                      bodyDispositionParams.getString(i).toLowerCase(Locale.US),
-                                                      bodyDispositionParams.getString(i + 1)));
+                                                                    bodyDispositionParams.getString(i).toLowerCase(Locale.US),
+                                                                    bodyDispositionParams.getString(i + 1)));
                         }
                     }
                 }
@@ -2128,7 +2127,7 @@ public class ImapStore extends Store {
                 } else if (flag == Flag.FLAGGED) {
                     flagNames.add("\\Flagged");
                 } else if (flag == Flag.FORWARDED
-                        && (mCanCreateKeywords || mPermanentFlagsIndex.contains(Flag.FORWARDED))) {
+                           && (mCanCreateKeywords || mPermanentFlagsIndex.contains(Flag.FORWARDED))) {
                     flagNames.add("$Forwarded");
                 }
 
@@ -2241,7 +2240,7 @@ public class ImapStore extends Store {
          */
         @Override
         public List<Message> search(final String queryString, final Flag[] requiredFlags, final Flag[] forbiddenFlags)
-            throws MessagingException {
+        throws MessagingException {
 
             if (!mAccount.allowRemoteSearch()) {
                 throw new MessagingException("Your settings do not allow remote searching of this account");
@@ -2254,64 +2253,64 @@ public class ImapStore extends Store {
                     if (requiredFlags != null) {
                         for (Flag f : requiredFlags) {
                             switch (f) {
-                                case DELETED:
-                                    imapQuery += "DELETED ";
-                                    break;
+                            case DELETED:
+                                imapQuery += "DELETED ";
+                                break;
 
-                                case SEEN:
-                                    imapQuery += "SEEN ";
-                                    break;
+                            case SEEN:
+                                imapQuery += "SEEN ";
+                                break;
 
-                                case ANSWERED:
-                                    imapQuery += "ANSWERED ";
-                                    break;
+                            case ANSWERED:
+                                imapQuery += "ANSWERED ";
+                                break;
 
-                                case FLAGGED:
-                                    imapQuery += "FLAGGED ";
-                                    break;
+                            case FLAGGED:
+                                imapQuery += "FLAGGED ";
+                                break;
 
-                                case DRAFT:
-                                    imapQuery += "DRAFT ";
-                                    break;
+                            case DRAFT:
+                                imapQuery += "DRAFT ";
+                                break;
 
-                                case RECENT:
-                                    imapQuery += "RECENT ";
-                                    break;
+                            case RECENT:
+                                imapQuery += "RECENT ";
+                                break;
 
-                                default:
-                                    break;
+                            default:
+                                break;
                             }
                         }
                     }
                     if (forbiddenFlags != null) {
                         for (Flag f : forbiddenFlags) {
                             switch (f) {
-                                case DELETED:
-                                    imapQuery += "UNDELETED ";
-                                    break;
+                            case DELETED:
+                                imapQuery += "UNDELETED ";
+                                break;
 
-                                case SEEN:
-                                    imapQuery += "UNSEEN ";
-                                    break;
+                            case SEEN:
+                                imapQuery += "UNSEEN ";
+                                break;
 
-                                case ANSWERED:
-                                    imapQuery += "UNANSWERED ";
-                                    break;
+                            case ANSWERED:
+                                imapQuery += "UNANSWERED ";
+                                break;
 
-                                case FLAGGED:
-                                    imapQuery += "UNFLAGGED ";
-                                    break;
+                            case FLAGGED:
+                                imapQuery += "UNFLAGGED ";
+                                break;
 
-                                case DRAFT:
-                                    imapQuery += "UNDRAFT ";
-                                    break;
+                            case DRAFT:
+                                imapQuery += "UNDRAFT ";
+                                break;
 
-                                case RECENT:
-                                    imapQuery += "UNRECENT ";
-                                    break;
+                            case RECENT:
+                                imapQuery += "UNRECENT ";
+                                break;
 
-                                default:
-                                    break;
+                            default:
+                                break;
                             }
                         }
                     }
@@ -2427,7 +2426,7 @@ public class ImapStore extends Store {
                     try {
                         if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP) {
                             Log.d(K9.LOG_TAG, "Connecting to " + mSettings.getHost() + " as " +
-                                    addresses[i]);
+                                  addresses[i]);
                         }
 
                         SocketAddress socketAddress = new InetSocketAddress(addresses[i],

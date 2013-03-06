@@ -67,7 +67,7 @@ public class None extends CryptoProvider {
 
     @Override
     public boolean onDecryptActivityResult(CryptoDecryptCallback callback, int requestCode,
-            int resultCode, Intent data, PgpData pgpData) {
+                                           int resultCode, Intent data, PgpData pgpData) {
         return false;
     }
 

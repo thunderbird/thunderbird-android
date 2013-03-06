@@ -31,8 +31,8 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
         // Calculate the minimum distance required for this to count as a swipe.
         // Convert the constant dips to pixels.
         float gestureScale = context.getResources().getDisplayMetrics().density;
-        mMinVelocity = (int) (SWIPE_THRESHOLD_VELOCITY_DIP * gestureScale + 0.5f);
-        mMaxOffPath = (int) (SWIPE_MAX_OFF_PATH_DIP * gestureScale + 0.5f);
+        mMinVelocity = (int)(SWIPE_THRESHOLD_VELOCITY_DIP * gestureScale + 0.5f);
+        mMaxOffPath = (int)(SWIPE_MAX_OFF_PATH_DIP * gestureScale + 0.5f);
     }
 
     @Override

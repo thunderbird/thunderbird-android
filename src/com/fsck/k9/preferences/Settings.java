@@ -37,8 +37,8 @@ public class Settings {
      */
     public static final int VERSION = 26;
 
-    public static Map<String, Object> validate(int version, Map<String,
-            TreeMap<Integer, SettingsDescription>> settings,
+    public static Map<String, Object> validate(int version, Map < String,
+            TreeMap<Integer, SettingsDescription >> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
 
         Map<String, Object> validatedSettings = new HashMap<String, Object>();
@@ -68,7 +68,7 @@ public class Settings {
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
                 Log.v(K9.LOG_TAG, "Key \"" + key + "\" wasn't found in the imported file." +
-                        ((useDefaultValues) ? " Using default value." : ""));
+                      ((useDefaultValues) ? " Using default value." : ""));
                 useDefaultValue = useDefaultValues;
             } else {
                 String prettyValue = importedSettings.get(key);
@@ -78,8 +78,8 @@ public class Settings {
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
                     Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + prettyValue +
-                            "\" in imported file. " +
-                            ((useDefaultValues) ? "Using default value." : "Skipping."));
+                          "\" in imported file. " +
+                          ((useDefaultValues) ? "Using default value." : "Skipping."));
                     useDefaultValue = useDefaultValues;
                 }
             }
@@ -111,8 +111,8 @@ public class Settings {
      *         if none were removed.
      */
     public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
-            Map<String, TreeMap<Integer, SettingsDescription>> settings,
-            Map<String, Object> validatedSettings) {
+                                      Map<String, TreeMap<Integer, SettingsDescription>> settings,
+                                      Map<String, Object> validatedSettings) {
 
         Map<String, Object> upgradedSettings = validatedSettings;
         Set<String> deletedSettings = null;
@@ -127,7 +127,7 @@ public class Settings {
 
             // Deal with settings that don't need special upgrade code
             for (Entry<String, TreeMap<Integer, SettingsDescription>> versions :
-                settings.entrySet()) {
+                    settings.entrySet()) {
 
                 String settingName = versions.getKey();
                 TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
@@ -145,7 +145,7 @@ public class Settings {
                         if (K9.DEBUG) {
                             String prettyValue = setting.toPrettyString(defaultValue);
                             Log.v(K9.LOG_TAG, "Added new setting \"" + settingName +
-                                    "\" with default value \"" + prettyValue + "\"");
+                                  "\" with default value \"" + prettyValue + "\"");
                         }
                     }
                 }
@@ -203,7 +203,7 @@ public class Settings {
             } else {
                 if (K9.DEBUG) {
                     Log.w(K9.LOG_TAG, "Settings.serialize() called with a setting that should " +
-                            "have been removed: " + settingName);
+                          "have been removed: " + settingName);
                 }
             }
         }
@@ -228,7 +228,7 @@ public class Settings {
      *         as value.
      */
     public static TreeMap<Integer, SettingsDescription> versions(
-            V... versionDescriptions) {
+        V... versionDescriptions) {
         TreeMap<Integer, SettingsDescription> map = new TreeMap<Integer, SettingsDescription>();
         for (V v : versionDescriptions) {
             map.put(v.version, v.description);
@@ -444,7 +444,9 @@ public class Settings {
                 if (value.length() == 7) {
                     return Integer.parseInt(value.substring(1), 16) | 0xFF000000;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }
@@ -537,7 +539,9 @@ public class Settings {
                 if (mMapping.containsKey(fontSize)) {
                     return fontSize;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }
@@ -573,7 +577,9 @@ public class Settings {
                 if (mMapping.containsKey(fontSize)) {
                     return fontSize;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }
@@ -599,7 +605,9 @@ public class Settings {
                 if (mStart <= intValue && intValue <= mEnd) {
                     return intValue;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }

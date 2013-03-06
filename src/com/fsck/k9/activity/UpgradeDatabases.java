@@ -198,7 +198,7 @@ public class UpgradeDatabases extends K9Activity {
                  */
 
                 String accountUuid = intent.getStringExtra(
-                        DatabaseUpgradeService.EXTRA_ACCOUNT_UUID);
+                                         DatabaseUpgradeService.EXTRA_ACCOUNT_UUID);
 
                 Account account = mPreferences.getAccount(accountUuid);
 

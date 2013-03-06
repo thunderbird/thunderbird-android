@@ -43,7 +43,7 @@ public class ColorPickerDialog extends AlertDialog {
         setView(view);
 
         setButton(BUTTON_POSITIVE, context.getString(R.string.okay_action),
-                new DialogInterface.OnClickListener() {
+        new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (mColorChangedListener != null) {
@@ -53,7 +53,7 @@ public class ColorPickerDialog extends AlertDialog {
         });
 
         setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel_action),
-                (OnClickListener) null);
+                  (OnClickListener) null);
     }
 
     /**

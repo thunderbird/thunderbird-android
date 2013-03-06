@@ -131,21 +131,21 @@ public class LocalStore extends Store implements Serializable {
 
     public static String getColumnNameForFlag(Flag flag) {
         switch (flag) {
-            case SEEN: {
-                return MessageColumns.READ;
-            }
-            case FLAGGED: {
-                return MessageColumns.FLAGGED;
-            }
-            case ANSWERED: {
-                return MessageColumns.ANSWERED;
-            }
-            case FORWARDED: {
-                return MessageColumns.FORWARDED;
-            }
-            default: {
-                throw new IllegalArgumentException("Flag must be a special column flag");
-            }
+        case SEEN: {
+            return MessageColumns.READ;
+        }
+        case FLAGGED: {
+            return MessageColumns.FLAGGED;
+        }
+        case ANSWERED: {
+            return MessageColumns.ANSWERED;
+        }
+        case FORWARDED: {
+            return MessageColumns.FORWARDED;
+        }
+        default: {
+            throw new IllegalArgumentException("Flag must be a special column flag");
+        }
         }
     }
 
@@ -216,32 +216,32 @@ public class LocalStore extends Store implements Serializable {
                         db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
                         db.execSQL("DROP TABLE IF EXISTS messages");
                         db.execSQL("CREATE TABLE messages (" +
-                                "id INTEGER PRIMARY KEY, " +
-                                "deleted INTEGER default 0, " +
-                                "folder_id INTEGER, " +
-                                "uid TEXT, " +
-                                "subject TEXT, " +
-                                "date INTEGER, " +
-                                "flags TEXT, " +
-                                "sender_list TEXT, " +
-                                "to_list TEXT, " +
-                                "cc_list TEXT, " +
-                                "bcc_list TEXT, " +
-                                "reply_to_list TEXT, " +
-                                "html_content TEXT, " +
-                                "text_content TEXT, " +
-                                "attachment_count INTEGER, " +
-                                "internal_date INTEGER, " +
-                                "message_id TEXT, " +
-                                "preview TEXT, " +
-                                "mime_type TEXT, "+
-                                "normalized_subject_hash INTEGER, " +
-                                "empty INTEGER, " +
-                                "read INTEGER default 0, " +
-                                "flagged INTEGER default 0, " +
-                                "answered INTEGER default 0, " +
-                                "forwarded INTEGER default 0" +
-                                ")");
+                                   "id INTEGER PRIMARY KEY, " +
+                                   "deleted INTEGER default 0, " +
+                                   "folder_id INTEGER, " +
+                                   "uid TEXT, " +
+                                   "subject TEXT, " +
+                                   "date INTEGER, " +
+                                   "flags TEXT, " +
+                                   "sender_list TEXT, " +
+                                   "to_list TEXT, " +
+                                   "cc_list TEXT, " +
+                                   "bcc_list TEXT, " +
+                                   "reply_to_list TEXT, " +
+                                   "html_content TEXT, " +
+                                   "text_content TEXT, " +
+                                   "attachment_count INTEGER, " +
+                                   "internal_date INTEGER, " +
+                                   "message_id TEXT, " +
+                                   "preview TEXT, " +
+                                   "mime_type TEXT, " +
+                                   "normalized_subject_hash INTEGER, " +
+                                   "empty INTEGER, " +
+                                   "read INTEGER default 0, " +
+                                   "flagged INTEGER default 0, " +
+                                   "answered INTEGER default 0, " +
+                                   "forwarded INTEGER default 0" +
+                                   ")");
 
                         db.execSQL("DROP TABLE IF EXISTS headers");
                         db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
@@ -263,11 +263,11 @@ public class LocalStore extends Store implements Serializable {
 
                         db.execSQL("DROP TABLE IF EXISTS threads");
                         db.execSQL("CREATE TABLE threads (" +
-                                "id INTEGER PRIMARY KEY, " +
-                                "message_id INTEGER, " +
-                                "root INTEGER, " +
-                                "parent INTEGER" +
-                                ")");
+                                   "id INTEGER PRIMARY KEY, " +
+                                   "message_id INTEGER, " +
+                                   "root INTEGER, " +
+                                   "parent INTEGER" +
+                                   ")");
 
                         db.execSQL("DROP INDEX IF EXISTS threads_message_id");
                         db.execSQL("CREATE INDEX IF NOT EXISTS threads_message_id ON threads (message_id)");
@@ -522,38 +522,38 @@ public class LocalStore extends Store implements Serializable {
                                                 Flag flag = Flag.valueOf(flagStr);
 
                                                 switch (flag) {
-                                                    case ANSWERED: {
-                                                        answered = true;
-                                                        break;
-                                                    }
-                                                    case DELETED: {
-                                                        // Don't store this in column 'flags'
-                                                        break;
-                                                    }
-                                                    case FLAGGED: {
-                                                        flagged = true;
-                                                        break;
-                                                    }
-                                                    case FORWARDED: {
-                                                        forwarded = true;
-                                                        break;
-                                                    }
-                                                    case SEEN: {
-                                                        read = true;
-                                                        break;
-                                                    }
-                                                    case DRAFT:
-                                                    case RECENT:
-                                                    case X_DESTROYED:
-                                                    case X_DOWNLOADED_FULL:
-                                                    case X_DOWNLOADED_PARTIAL:
-                                                    case X_GOT_ALL_HEADERS:
-                                                    case X_REMOTE_COPY_STARTED:
-                                                    case X_SEND_FAILED:
-                                                    case X_SEND_IN_PROGRESS: {
-                                                        extraFlags.add(flag);
-                                                        break;
-                                                    }
+                                                case ANSWERED: {
+                                                    answered = true;
+                                                    break;
+                                                }
+                                                case DELETED: {
+                                                    // Don't store this in column 'flags'
+                                                    break;
+                                                }
+                                                case FLAGGED: {
+                                                    flagged = true;
+                                                    break;
+                                                }
+                                                case FORWARDED: {
+                                                    forwarded = true;
+                                                    break;
+                                                }
+                                                case SEEN: {
+                                                    read = true;
+                                                    break;
+                                                }
+                                                case DRAFT:
+                                                case RECENT:
+                                                case X_DESTROYED:
+                                                case X_DOWNLOADED_FULL:
+                                                case X_DOWNLOADED_PARTIAL:
+                                                case X_GOT_ALL_HEADERS:
+                                                case X_REMOTE_COPY_STARTED:
+                                                case X_SEND_FAILED:
+                                                case X_SEND_IN_PROGRESS: {
+                                                    extraFlags.add(flag);
+                                                    break;
+                                                }
                                                 }
                                             } catch (Exception e) {
                                                 // Ignore bad flags
@@ -585,11 +585,11 @@ public class LocalStore extends Store implements Serializable {
                             // Create new 'threads' table
                             db.execSQL("DROP TABLE IF EXISTS threads");
                             db.execSQL("CREATE TABLE threads (" +
-                                    "id INTEGER PRIMARY KEY, " +
-                                    "message_id INTEGER, " +
-                                    "root INTEGER, " +
-                                    "parent INTEGER" +
-                                    ")");
+                                       "id INTEGER PRIMARY KEY, " +
+                                       "message_id INTEGER, " +
+                                       "root INTEGER, " +
+                                       "parent INTEGER" +
+                                       ")");
 
                             // Create indices for new table
                             db.execSQL("DROP INDEX IF EXISTS threads_message_id");
@@ -606,8 +606,8 @@ public class LocalStore extends Store implements Serializable {
 
                             // Copy thread structure from 'messages' table to 'threads'
                             Cursor cursor = db.query("messages",
-                                    new String[] { "id", "thread_root", "thread_parent" },
-                                    null, null, null, null, null);
+                                                     new String[] { "id", "thread_root", "thread_parent" },
+                                                     null, null, null, null, null);
                             try {
                                 ContentValues cv = new ContentValues();
                                 while (cursor.moveToNext()) {
@@ -617,23 +617,23 @@ public class LocalStore extends Store implements Serializable {
                                     if (!cursor.isNull(1)) {
                                         long threadRootMessageId = cursor.getLong(1);
                                         db.execSQL("UPDATE threads SET root = (SELECT t.id FROM " +
-                                                "threads t WHERE t.message_id = ?) " +
-                                                "WHERE message_id = ?",
-                                                new String[] {
-                                                    Long.toString(threadRootMessageId),
-                                                    Long.toString(messageId)
-                                                });
+                                                   "threads t WHERE t.message_id = ?) " +
+                                                   "WHERE message_id = ?",
+                                                   new String[] {
+                                                       Long.toString(threadRootMessageId),
+                                                       Long.toString(messageId)
+                                                   });
                                     }
 
                                     if (!cursor.isNull(2)) {
                                         long threadParentMessageId = cursor.getLong(2);
                                         db.execSQL("UPDATE threads SET parent = (SELECT t.id FROM " +
-                                                "threads t WHERE t.message_id = ?) " +
-                                                "WHERE message_id = ?",
-                                                new String[] {
-                                                    Long.toString(threadParentMessageId),
-                                                    Long.toString(messageId)
-                                                });
+                                                   "threads t WHERE t.message_id = ?) " +
+                                                   "WHERE message_id = ?",
+                                                   new String[] {
+                                                       Long.toString(threadParentMessageId),
+                                                       Long.toString(messageId)
+                                                   });
                                     }
                                 }
                             } finally {
@@ -784,7 +784,7 @@ public class LocalStore extends Store implements Serializable {
             public Void doDbWork(final SQLiteDatabase db) {
                 // Delete entries from 'threads' table
                 db.execSQL("DELETE FROM threads WHERE message_id IN " +
-                        "(SELECT id FROM messages WHERE deleted = 0 AND uid NOT LIKE 'Local%')");
+                           "(SELECT id FROM messages WHERE deleted = 0 AND uid NOT LIKE 'Local%')");
 
                 // Set 'root' and 'parent' of remaining entries in 'thread' table to 'NULL' to make
                 // sure the thread structure is in a valid state (this may destroy existing valid
@@ -863,9 +863,9 @@ public class LocalStore extends Store implements Serializable {
 
                     try {
                         cursor = db.rawQuery("SELECT " + GET_FOLDER_COLS + " FROM folders " +
-                                "LEFT JOIN messages ON (folder_id = folders.id AND" +
-                                " (empty IS NULL OR empty != 1) AND deleted = 0) " +
-                                "GROUP BY folders.id ORDER BY name ASC", null);
+                                             "LEFT JOIN messages ON (folder_id = folders.id AND" +
+                                             " (empty IS NULL OR empty != 1) AND deleted = 0) " +
+                                             "GROUP BY folders.id ORDER BY name ASC", null);
                         while (cursor.moveToNext()) {
                             if (cursor.isNull(0)) {
                                 continue;
@@ -1090,7 +1090,7 @@ public class LocalStore extends Store implements Serializable {
     }
 
     public Message[] searchForMessages(MessageRetrievalListener retrievalListener,
-                                        LocalSearch search) throws MessagingException {
+                                       LocalSearch search) throws MessagingException {
 
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<String>();
@@ -1098,16 +1098,16 @@ public class LocalStore extends Store implements Serializable {
 
         // Avoid "ambiguous column name" error by prefixing "id" with the message table name
         String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
-                "messages.", query.toString());
+                       "messages.", query.toString());
 
         String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
 
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
-                "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                "LEFT JOIN folders ON (folders.id = messages.folder_id) WHERE " +
-                "((empty IS NULL OR empty != 1) AND deleted = 0)" +
-                ((!StringUtils.isNullOrEmpty(where)) ? " AND (" + where + ")" : "") +
-                " ORDER BY date DESC";
+                          "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                          "LEFT JOIN folders ON (folders.id = messages.folder_id) WHERE " +
+                          "((empty IS NULL OR empty != 1) AND deleted = 0)" +
+                          ((!StringUtils.isNullOrEmpty(where)) ? " AND (" + where + ")" : "") +
+                          " ORDER BY date DESC";
 
         if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "Query = " + sqlQuery);
@@ -1275,16 +1275,16 @@ public class LocalStore extends Store implements Serializable {
 
         for (Flag flag : flags) {
             switch (flag) {
-                case DELETED:
-                case SEEN:
-                case FLAGGED:
-                case ANSWERED:
-                case FORWARDED: {
-                    break;
-                }
-                default: {
-                    extraFlags.add(flag);
-                }
+            case DELETED:
+            case SEEN:
+            case FLAGGED:
+            case ANSWERED:
+            case FORWARDED: {
+                break;
+            }
+            default: {
+                extraFlags.add(flag);
+            }
             }
         }
 
@@ -1353,8 +1353,8 @@ public class LocalStore extends Store implements Serializable {
                         Cursor cursor = null;
                         try {
                             String baseQuery = "SELECT " + GET_FOLDER_COLS + " FROM folders " +
-                                    "LEFT JOIN messages ON (folder_id = folders.id AND" +
-                                    " (empty IS NULL OR empty != 1) AND deleted = 0) ";
+                                               "LEFT JOIN messages ON (folder_id = folders.id AND" +
+                                               " (empty IS NULL OR empty != 1) AND deleted = 0) ";
 
                             if (mName != null) {
                                 cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });
@@ -1519,8 +1519,8 @@ public class LocalStore extends Store implements Serializable {
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                         int unreadMessageCount = 0;
                         Cursor cursor = db.query("messages", new String[] { "SUM(read=0)" },
-                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
-                                new String[] { Long.toString(mFolderId) }, null, null, null);
+                                                 "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                                                 new String[] { Long.toString(mFolderId) }, null, null, null);
 
                         try {
                             if (cursor.moveToFirst()) {
@@ -1915,9 +1915,9 @@ public class LocalStore extends Store implements Serializable {
                                             } else {
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                        String.format("%s;\n size=%d",
-                                                                      contentDisposition,
-                                                                      size));
+                                                             String.format("%s;\n size=%d",
+                                                                           contentDisposition,
+                                                                           size));
                                             }
 
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
@@ -2037,7 +2037,7 @@ public class LocalStore extends Store implements Serializable {
                             try {
                                 cursor = db.rawQuery(
                                              "SELECT uid FROM messages " +
-                                              "WHERE id = ? AND folder_id = ?",
+                                             "WHERE id = ? AND folder_id = ?",
                                              new String[] {
                                                  Long.toString(id), Long.toString(mFolderId)
                                              });
@@ -2218,7 +2218,7 @@ public class LocalStore extends Store implements Serializable {
                                     db.insert("threads", null, cv);
                                 } else {
                                     db.update("threads", cv, "id = ?",
-                                            new String[] { Long.toString(threadInfo.threadId) });
+                                              new String[] { Long.toString(threadInfo.threadId) });
                                 }
 
                                 /*
@@ -2251,7 +2251,7 @@ public class LocalStore extends Store implements Serializable {
                                     newId = threadInfo.msgId;
 
                                     db.update("messages", cv, "id = ?",
-                                            new String[] { Long.toString(newId) });
+                                              new String[] { Long.toString(newId) });
                                 } else {
                                     newId = db.insert("messages", null, cv);
                                 }
@@ -2264,7 +2264,7 @@ public class LocalStore extends Store implements Serializable {
                                 cv.clear();
                                 cv.put("message_id", newId);
                                 db.update("threads", cv, "id = ?",
-                                        new String[] { Long.toString(lMessage.getThreadId()) });
+                                          new String[] { Long.toString(lMessage.getThreadId()) });
                             }
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
@@ -2347,9 +2347,9 @@ public class LocalStore extends Store implements Serializable {
 
         private ThreadInfo getThreadInfo(SQLiteDatabase db, String messageId) {
             String sql = "SELECT t.id, t.message_id, t.root, t.parent " +
-                    "FROM messages m " +
-                    "LEFT JOIN threads t ON (t.message_id = m.id) " +
-                    "WHERE m.folder_id = ? AND m.message_id = ?";
+                         "FROM messages m " +
+                         "LEFT JOIN threads t ON (t.message_id = m.id) " +
+                         "WHERE m.folder_id = ? AND m.message_id = ?";
             String[] selectionArgs = { Long.toString(mFolderId), messageId };
             Cursor cursor = db.rawQuery(sql, selectionArgs);
 
@@ -2406,7 +2406,7 @@ public class LocalStore extends Store implements Serializable {
                                      * Create a new message in the database
                                      */
                                     String randomLocalUid = K9.LOCAL_UID_PREFIX +
-                                            UUID.randomUUID().toString();
+                                                            UUID.randomUUID().toString();
 
                                     if (copy) {
                                         // Save mapping: source UID -> target UID
@@ -2452,14 +2452,14 @@ public class LocalStore extends Store implements Serializable {
                                     // draft messages because this will cause the values stored in
                                     // the identity header to be wrong.
                                     ViewableContainer container =
-                                            MimeUtility.extractPartsFromDraft(message);
+                                        MimeUtility.extractPartsFromDraft(message);
 
                                     text = container.text;
                                     html = container.html;
                                     attachments = container.attachments;
                                 } else {
                                     ViewableContainer container =
-                                            MimeUtility.extractTextAndAttachments(mApplication, message);
+                                        MimeUtility.extractTextAndAttachments(mApplication, message);
 
                                     attachments = container.attachments;
                                     text = container.text;
@@ -2565,7 +2565,7 @@ public class LocalStore extends Store implements Serializable {
                             message.buildMimeRepresentation();
 
                             ViewableContainer container =
-                                    MimeUtility.extractTextAndAttachments(mApplication, message);
+                                MimeUtility.extractTextAndAttachments(mApplication, message);
 
                             List<Part> attachments = container.attachments;
                             String text = container.text;
@@ -2642,14 +2642,14 @@ public class LocalStore extends Store implements Serializable {
 
                     deleteHeaders(id);
                     for (String name : message.getHeaderNames()) {
-                            String[] values = message.getHeader(name);
-                            for (String value : values) {
-                                ContentValues cv = new ContentValues();
-                                cv.put("message_id", id);
-                                cv.put("name", name);
-                                cv.put("value", value);
-                                db.insert("headers", "name", cv);
-                            }
+                        String[] values = message.getHeader(name);
+                        for (String value : values) {
+                            ContentValues cv = new ContentValues();
+                            cv.put("message_id", id);
+                            cv.put("name", name);
+                            cv.put("value", value);
+                            db.insert("headers", "name", cv);
+                        }
                     }
 
                     // Remember that all headers for this message have been saved, so it is
@@ -2717,7 +2717,7 @@ public class LocalStore extends Store implements Serializable {
                                     } finally {
                                         out.close();
                                     }
-                                    size = (int) (tempAttachmentFile.length() & 0x7FFFFFFFL);
+                                    size = (int)(tempAttachmentFile.length() & 0x7FFFFFFFL);
                                 } else {
                                     /*
                                      * If the attachment has a body we're expected to save it into the local store
@@ -2733,7 +2733,9 @@ public class LocalStore extends Store implements Serializable {
                                             out.close();
                                         }
                                     } finally {
-                                        try { in.close(); } catch (Throwable ignore) {}
+                                        try {
+                                            in.close();
+                                        } catch (Throwable ignore) {}
                                     }
                                 }
                             }
@@ -2749,7 +2751,9 @@ public class LocalStore extends Store implements Serializable {
                                     if (s != null) {
                                         try {
                                             size = Integer.parseInt(s);
-                                        } catch (NumberFormatException e) { /* Ignore */ }
+                                        } catch (NumberFormatException e) {
+                                            /* Ignore */
+                                        }
                                     }
                                 }
                             }
@@ -2850,10 +2854,10 @@ public class LocalStore extends Store implements Serializable {
             } catch (WrappedException e) {
                 final Throwable cause = e.getCause();
                 if (cause instanceof IOException) {
-                    throw (IOException) cause;
+                    throw(IOException) cause;
                 }
 
-                throw (MessagingException) cause;
+                throw(MessagingException) cause;
             }
         }
 
@@ -2890,7 +2894,7 @@ public class LocalStore extends Store implements Serializable {
                 database.execute(true, new DbCallback<Void>() {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                            UnavailableStorageException {
+                        UnavailableStorageException {
 
                         for (Message message : messages) {
                             try {
@@ -2934,7 +2938,7 @@ public class LocalStore extends Store implements Serializable {
                                       "WHERE (empty IS NULL OR empty != 1) AND " +
                                       "(folder_id = ? and date < ?)",
                                       new String[] {
-                                              Long.toString(mFolderId), Long.toString(cutoff)
+                                          Long.toString(mFolderId), Long.toString(cutoff)
                                       });
 
             for (Message message : messages) {
@@ -2956,8 +2960,8 @@ public class LocalStore extends Store implements Serializable {
                         try {
                             // Get UIDs for all messages to delete
                             Cursor cursor = db.query("messages", new String[] { "uid" },
-                                    "folder_id = ? AND (empty IS NULL OR empty != 1)",
-                                    folderIdArg, null, null, null);
+                                                     "folder_id = ? AND (empty IS NULL OR empty != 1)",
+                                                     folderIdArg, null, null, null);
 
                             try {
                                 // Delete attachments of these messages
@@ -2970,7 +2974,7 @@ public class LocalStore extends Store implements Serializable {
 
                             // Delete entries in 'threads' and 'messages'
                             db.execSQL("DELETE FROM threads WHERE message_id IN " +
-                                    "(SELECT id FROM messages WHERE folder_id = ?)", folderIdArg);
+                                       "(SELECT id FROM messages WHERE folder_id = ?)", folderIdArg);
                             db.execSQL("DELETE FROM messages WHERE folder_id = ?", folderIdArg);
 
                             return null;
@@ -3043,10 +3047,10 @@ public class LocalStore extends Store implements Serializable {
                         // Get attachment IDs
                         String[] whereArgs = new String[] { Long.toString(messageId) };
                         attachmentsCursor = db.query("attachments", new String[] { "id" },
-                                "message_id = ?", whereArgs, null, null, null);
+                                                     "message_id = ?", whereArgs, null, null, null);
 
                         final File attachmentDirectory = StorageManager.getInstance(mApplication)
-                                .getAttachmentDirectory(uUid, database.getStorageProviderId());
+                                                         .getAttachmentDirectory(uUid, database.getStorageProviderId());
 
                         while (attachmentsCursor.moveToNext()) {
                             String attachmentId = Long.toString(attachmentsCursor.getLong(0));
@@ -3059,8 +3063,10 @@ public class LocalStore extends Store implements Serializable {
 
                                 // Delete thumbnail file
                                 AttachmentProvider.deleteThumbnail(context, accountUuid,
-                                        attachmentId);
-                            } catch (Exception e) { /* ignore */ }
+                                                                   attachmentId);
+                            } catch (Exception e) {
+                                /* ignore */
+                            }
                         }
 
                         // Delete attachment metadata from the database
@@ -3180,7 +3186,7 @@ public class LocalStore extends Store implements Serializable {
         }
 
         private ThreadInfo doMessageThreading(SQLiteDatabase db, Message message)
-                throws MessagingException {
+        throws MessagingException {
             long rootId = -1;
             long parentId = -1;
 
@@ -3214,7 +3220,7 @@ public class LocalStore extends Store implements Serializable {
             if (messageIds == null) {
                 // This is not a reply, nothing to do for us.
                 return (msgThreadInfo != null) ?
-                        msgThreadInfo : new ThreadInfo(-1, -1, messageId, -1, -1);
+                       msgThreadInfo : new ThreadInfo(-1, -1, messageId, -1, -1);
             }
 
             for (String reference : messageIds) {
@@ -3253,15 +3259,15 @@ public class LocalStore extends Store implements Serializable {
                         ContentValues cv = new ContentValues();
                         cv.put("root", rootId);
                         db.update("threads", cv, "root = ?",
-                                new String[] { Long.toString(threadInfo.threadId) });
+                                  new String[] { Long.toString(threadInfo.threadId) });
 
                         // Connect the message to the current parent
                         cv.put("parent", parentId);
                         db.update("threads", cv, "id = ?",
-                                new String[] { Long.toString(threadInfo.threadId) });
+                                  new String[] { Long.toString(threadInfo.threadId) });
                     } else {
                         rootId = (threadInfo.rootId == -1) ?
-                                threadInfo.threadId : threadInfo.rootId;
+                                 threadInfo.threadId : threadInfo.rootId;
                     }
                     parentId = threadInfo.threadId;
                 }
@@ -3283,7 +3289,7 @@ public class LocalStore extends Store implements Serializable {
         }
 
         public List<Message> extractNewMessages(final List<Message> messages)
-                throws MessagingException {
+        throws MessagingException {
 
             try {
                 return database.execute(false, new DbCallback<List<Message>>() {
@@ -3322,8 +3328,8 @@ public class LocalStore extends Store implements Serializable {
                             selection.append(")");
 
                             Cursor cursor = db.query("messages", UID_CHECK_PROJECTION,
-                                    selection.toString(), selectionArgs.toArray(EMPTY_STRING_ARRAY),
-                                    null, null, null);
+                                                     selection.toString(), selectionArgs.toArray(EMPTY_STRING_ARRAY),
+                                                     null, null, null);
 
                             try {
                                 while (cursor.moveToNext()) {
@@ -3659,7 +3665,7 @@ public class LocalStore extends Store implements Serializable {
                 database.execute(true, new DbCallback<Void>() {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                            UnavailableStorageException {
+                        UnavailableStorageException {
                         String[] idArg = new String[] { Long.toString(mId) };
 
                         ContentValues cv = new ContentValues();
@@ -3785,12 +3791,12 @@ public class LocalStore extends Store implements Serializable {
          */
         private long getEmptyThreadParent(SQLiteDatabase db, long messageId) {
             Cursor cursor = db.rawQuery(
-                    "SELECT m.id " +
-                    "FROM threads t1 " +
-                    "JOIN threads t2 ON (t1.parent = t2.id) " +
-                    "LEFT JOIN messages m ON (t2.message_id = m.id) " +
-                    "WHERE t1.message_id = ? AND m.empty = 1",
-                    new String[] { Long.toString(messageId) });
+                                "SELECT m.id " +
+                                "FROM threads t1 " +
+                                "JOIN threads t2 ON (t1.parent = t2.id) " +
+                                "LEFT JOIN messages m ON (t2.message_id = m.id) " +
+                                "WHERE t1.message_id = ? AND m.empty = 1",
+                                new String[] { Long.toString(messageId) });
 
             try {
                 return (cursor.moveToFirst() && !cursor.isNull(0)) ? cursor.getLong(0) : -1;
@@ -3811,11 +3817,11 @@ public class LocalStore extends Store implements Serializable {
          */
         private boolean hasThreadChildren(SQLiteDatabase db, long messageId) {
             Cursor cursor = db.rawQuery(
-                    "SELECT COUNT(t2.id) " +
-                    "FROM threads t1 " +
-                    "JOIN threads t2 ON (t2.parent = t1.id) " +
-                    "WHERE t1.message_id = ?",
-                    new String[] { Long.toString(messageId) });
+                                "SELECT COUNT(t2.id) " +
+                                "FROM threads t1 " +
+                                "JOIN threads t2 ON (t2.parent = t1.id) " +
+                                "WHERE t1.message_id = ?",
+                                new String[] { Long.toString(messageId) });
 
             try {
                 return (cursor.moveToFirst() && !cursor.isNull(0) && cursor.getLong(0) > 0L);
@@ -4017,7 +4023,7 @@ public class LocalStore extends Store implements Serializable {
      * @throws MessagingException
      */
     public void doBatchSetSelection(final BatchSetSelection selectionCallback, final int batchSize)
-            throws MessagingException {
+    throws MessagingException {
 
         final List<String> selectionArgs = new ArrayList<String>();
         int start = 0;
@@ -4045,10 +4051,10 @@ public class LocalStore extends Store implements Serializable {
                 database.execute(true, new DbCallback<Void>() {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                            UnavailableStorageException {
+                        UnavailableStorageException {
 
                         selectionCallback.doDbWork(db, selection.toString(),
-                                selectionArgs.toArray(EMPTY_STRING_ARRAY));
+                                                   selectionArgs.toArray(EMPTY_STRING_ARRAY));
 
                         return null;
                     }
@@ -4097,7 +4103,7 @@ public class LocalStore extends Store implements Serializable {
          * @throws UnavailableStorageException
          */
         void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
-                throws UnavailableStorageException;
+        throws UnavailableStorageException;
 
         /**
          * This will be executed after each invocation of
@@ -4124,7 +4130,7 @@ public class LocalStore extends Store implements Serializable {
      * @throws MessagingException
      */
     public void setFlag(final List<Long> messageIds, final Flag flag, final boolean newState)
-            throws MessagingException {
+    throws MessagingException {
 
         final ContentValues cv = new ContentValues();
         cv.put(getColumnNameForFlag(flag), newState);
@@ -4143,10 +4149,10 @@ public class LocalStore extends Store implements Serializable {
 
             @Override
             public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
-                    throws UnavailableStorageException {
+            throws UnavailableStorageException {
 
                 db.update("messages", cv, "(empty IS NULL OR empty != 1) AND id" + selectionSet,
-                        selectionArgs);
+                          selectionArgs);
             }
 
             @Override
@@ -4173,7 +4179,7 @@ public class LocalStore extends Store implements Serializable {
      * @throws MessagingException
      */
     public void setFlagForThreads(final List<Long> threadRootIds, Flag flag, final boolean newState)
-            throws MessagingException {
+    throws MessagingException {
 
         final String flagColumn = getColumnNameForFlag(flag);
 
@@ -4191,7 +4197,7 @@ public class LocalStore extends Store implements Serializable {
 
             @Override
             public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
-                    throws UnavailableStorageException {
+            throws UnavailableStorageException {
 
                 int len = selectionArgs.length;
                 String[] args = new String[len * 2];
@@ -4199,12 +4205,12 @@ public class LocalStore extends Store implements Serializable {
                 System.arraycopy(selectionArgs, 0, args, len, len);
 
                 db.execSQL("UPDATE messages SET " + flagColumn + " = " + ((newState) ? "1" : "0") +
-                        " WHERE id IN (" +
-                        "SELECT m.id FROM threads t " +
-                        "LEFT JOIN messages m ON (t.message_id = m.id) " +
-                        "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
-                        "AND (t.id" + selectionSet + " OR t.root" + selectionSet + "))",
-                        args);
+                           " WHERE id IN (" +
+                           "SELECT m.id FROM threads t " +
+                           "LEFT JOIN messages m ON (t.message_id = m.id) " +
+                           "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
+                           "AND (t.id" + selectionSet + " OR t.root" + selectionSet + "))",
+                           args);
             }
 
             @Override
@@ -4248,15 +4254,15 @@ public class LocalStore extends Store implements Serializable {
 
             @Override
             public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
-                    throws UnavailableStorageException {
+            throws UnavailableStorageException {
 
                 if (threadedList) {
                     String sql = "SELECT m.uid, f.name " +
-                            "FROM threads t " +
-                            "LEFT JOIN messages m ON (t.message_id = m.id) " +
-                            "LEFT JOIN folders f ON (m.folder_id = f.id) " +
-                            "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
-                            "AND (t.id" + selectionSet + " OR t.root" + selectionSet + ")";
+                                 "FROM threads t " +
+                                 "LEFT JOIN messages m ON (t.message_id = m.id) " +
+                                 "LEFT JOIN folders f ON (m.folder_id = f.id) " +
+                                 "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
+                                 "AND (t.id" + selectionSet + " OR t.root" + selectionSet + ")";
 
                     int len = selectionArgs.length;
                     String[] args = new String[len * 2];
@@ -4267,10 +4273,10 @@ public class LocalStore extends Store implements Serializable {
 
                 } else {
                     String sql =
-                            "SELECT m.uid, f.name " +
-                            "FROM messages m " +
-                            "LEFT JOIN folders f ON (m.folder_id = f.id) " +
-                            "WHERE (m.empty IS NULL OR m.empty != 1) AND m.id" + selectionSet;
+                        "SELECT m.uid, f.name " +
+                        "FROM messages m " +
+                        "LEFT JOIN folders f ON (m.folder_id = f.id) " +
+                        "WHERE (m.empty IS NULL OR m.empty != 1) AND m.id" + selectionSet;
 
                     getDataFromCursor(db.rawQuery(sql, selectionArgs));
                 }

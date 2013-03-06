@@ -139,7 +139,7 @@ public class Utility {
         if (view.getText() != null) {
             String s = view.getText().toString();
             if (s.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)*[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$") &&
-                s.length() <= 253) {
+                    s.length() <= 253) {
                 return true;
             }
             if (s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")) {
@@ -539,7 +539,9 @@ public class Utility {
                     out.close();
                 }
             } finally {
-                try { in.close(); } catch (Throwable ignore) {}
+                try {
+                    in.close();
+                } catch (Throwable ignore) {}
             }
             from.delete();
             return true;
@@ -665,17 +667,17 @@ public class Utility {
 
     private static final Pattern MESSAGE_ID = Pattern.compile("<" +
             "(?:" +
-                "[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]+" +
-                "(?:\\.[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]+)*" +
-                "|" +
-                "\"(?:[^\\\\\"]|\\\\.)*\"" +
+            "[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]+" +
+            "(?:\\.[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]+)*" +
+            "|" +
+            "\"(?:[^\\\\\"]|\\\\.)*\"" +
             ")" +
             "@" +
             "(?:" +
-                "[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]+" +
-                "(?:\\.[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]+)*" +
-                "|" +
-                "\\[(?:[^\\\\\\]]|\\\\.)*\\]" +
+            "[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]+" +
+            "(?:\\.[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]+)*" +
+            "|" +
+            "\\[(?:[^\\\\\\]]|\\\\.)*\\]" +
             ")" +
             ">");
 

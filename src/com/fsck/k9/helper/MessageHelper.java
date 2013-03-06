@@ -88,7 +88,7 @@ public class MessageHelper {
         if (fromAddrs.length > 0 && account.isAnIdentity(fromAddrs[0])) {
             CharSequence to = Address.toFriendly(toAddrs, contactHelper);
             displayName = new SpannableStringBuilder(
-                    mContext.getString(R.string.message_to_label)).append(to);
+                mContext.getString(R.string.message_to_label)).append(to);
         } else {
             displayName = Address.toFriendly(fromAddrs, contactHelper);
         }

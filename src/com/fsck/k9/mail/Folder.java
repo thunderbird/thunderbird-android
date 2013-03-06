@@ -135,7 +135,7 @@ public abstract class Folder {
     public abstract String getUidFromMessageId(Message message) throws MessagingException;
 
     public void expunge() throws MessagingException
-        {}
+    {}
 
     /**
      * Populate a list of messages based upon a FetchProfile.  See {@link FetchProfile} for the things that can
@@ -169,7 +169,7 @@ public abstract class Folder {
     protected boolean mCanCreateKeywords = false;
 
     /**
-     * 
+     *
      * @param oldPushState
      * @param message
      * @return empty string to clear the pushState, null to leave the state as-is
@@ -243,7 +243,7 @@ public abstract class Folder {
     }
 
     public List<Message> search(String queryString, final Flag[] requiredFlags, final Flag[] forbiddenFlags)
-        throws MessagingException {
+    throws MessagingException {
         throw new MessagingException("K-9 does not support searches on this folder type");
     }
 }

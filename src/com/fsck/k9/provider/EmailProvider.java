@@ -204,8 +204,8 @@ public class EmailProvider extends ContentProvider {
     }
 
     private static final String[] STATS_DEFAULT_PROJECTION = {
-            StatsColumns.UNREAD_COUNT,
-            StatsColumns.FLAGGED_COUNT
+        StatsColumns.UNREAD_COUNT,
+        StatsColumns.FLAGGED_COUNT
     };
 
 
@@ -224,7 +224,7 @@ public class EmailProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-            String sortOrder) {
+                        String sortOrder) {
 
         int match = sUriMatcher.match(uri);
         if (match < 0) {
@@ -234,59 +234,59 @@ public class EmailProvider extends ContentProvider {
         ContentResolver contentResolver = getContext().getContentResolver();
         Cursor cursor = null;
         switch (match) {
-            case MESSAGES:
-            case MESSAGES_THREADED:
-            case MESSAGES_THREAD: {
-                List<String> segments = uri.getPathSegments();
-                String accountUuid = segments.get(1);
+        case MESSAGES:
+        case MESSAGES_THREADED:
+        case MESSAGES_THREAD: {
+            List<String> segments = uri.getPathSegments();
+            String accountUuid = segments.get(1);
 
-                List<String> dbColumnNames = new ArrayList<String>(projection.length);
-                Map<String, String> specialColumns = new HashMap<String, String>();
-                for (String columnName : projection) {
-                    if (SpecialColumns.ACCOUNT_UUID.equals(columnName)) {
-                        specialColumns.put(SpecialColumns.ACCOUNT_UUID, accountUuid);
-                    } else {
-                        dbColumnNames.add(columnName);
-                    }
-                }
-
-                String[] dbProjection = dbColumnNames.toArray(new String[0]);
-
-                if (match == MESSAGES) {
-                    cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs,
-                            sortOrder);
-                } else if (match == MESSAGES_THREADED) {
-                    cursor = getThreadedMessages(accountUuid, dbProjection, selection,
-                            selectionArgs, sortOrder);
-                } else if (match == MESSAGES_THREAD) {
-                    String threadId = segments.get(3);
-                    cursor = getThread(accountUuid, dbProjection, threadId, sortOrder);
+            List<String> dbColumnNames = new ArrayList<String>(projection.length);
+            Map<String, String> specialColumns = new HashMap<String, String>();
+            for (String columnName : projection) {
+                if (SpecialColumns.ACCOUNT_UUID.equals(columnName)) {
+                    specialColumns.put(SpecialColumns.ACCOUNT_UUID, accountUuid);
                 } else {
-                    throw new RuntimeException("Not implemented");
+                    dbColumnNames.add(columnName);
                 }
-
-                Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid +
-                        "/messages");
-                cursor.setNotificationUri(contentResolver, notificationUri);
-
-                cursor = new SpecialColumnsCursor(new IdTrickeryCursor(cursor), projection,
-                        specialColumns);
-
-                cursor = new EmailProviderCacheCursor(accountUuid, cursor, getContext());
-                break;
             }
-            case STATS: {
-                List<String> segments = uri.getPathSegments();
-                String accountUuid = segments.get(1);
 
-                cursor = getAccountStats(accountUuid, projection, selection, selectionArgs);
+            String[] dbProjection = dbColumnNames.toArray(new String[0]);
 
-                Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid +
-                        "/messages");
-
-                cursor.setNotificationUri(contentResolver, notificationUri);
-                break;
+            if (match == MESSAGES) {
+                cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs,
+                                     sortOrder);
+            } else if (match == MESSAGES_THREADED) {
+                cursor = getThreadedMessages(accountUuid, dbProjection, selection,
+                                             selectionArgs, sortOrder);
+            } else if (match == MESSAGES_THREAD) {
+                String threadId = segments.get(3);
+                cursor = getThread(accountUuid, dbProjection, threadId, sortOrder);
+            } else {
+                throw new RuntimeException("Not implemented");
             }
+
+            Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid +
+                                  "/messages");
+            cursor.setNotificationUri(contentResolver, notificationUri);
+
+            cursor = new SpecialColumnsCursor(new IdTrickeryCursor(cursor), projection,
+                                              specialColumns);
+
+            cursor = new EmailProviderCacheCursor(accountUuid, cursor, getContext());
+            break;
+        }
+        case STATS: {
+            List<String> segments = uri.getPathSegments();
+            String accountUuid = segments.get(1);
+
+            cursor = getAccountStats(accountUuid, projection, selection, selectionArgs);
+
+            Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid +
+                                  "/messages");
+
+            cursor.setNotificationUri(contentResolver, notificationUri);
+            break;
+        }
         }
 
         return cursor;
@@ -308,7 +308,7 @@ public class EmailProvider extends ContentProvider {
     }
 
     protected Cursor getMessages(String accountUuid, final String[] projection,
-            final String selection, final String[] selectionArgs, final String sortOrder) {
+                                 final String selection, final String[] selectionArgs, final String sortOrder) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);
@@ -317,7 +317,7 @@ public class EmailProvider extends ContentProvider {
             return database.execute(false, new DbCallback<Cursor>() {
                 @Override
                 public Cursor doDbWork(SQLiteDatabase db) throws WrappedException,
-                        UnavailableStorageException {
+                    UnavailableStorageException {
 
                     String where;
                     if (StringUtils.isNullOrEmpty(selection)) {
@@ -354,19 +354,19 @@ public class EmailProvider extends ContentProvider {
                         }
 
                         query.append(" FROM messages m " +
-                                "JOIN threads t ON (t.message_id = m.id) " +
-                                "LEFT JOIN folders f ON (m.folder_id = f.id) " +
-                                "WHERE ");
+                                     "JOIN threads t ON (t.message_id = m.id) " +
+                                     "LEFT JOIN folders f ON (m.folder_id = f.id) " +
+                                     "WHERE ");
                         query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
-                                "m.", where));
+                                     "m.", where));
                         query.append(" ORDER BY ");
                         query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
-                                "m.", sortOrder));
+                                     "m.", sortOrder));
 
                         cursor = db.rawQuery(query.toString(), selectionArgs);
                     } else {
                         cursor = db.query(MESSAGES_TABLE, projection, where, selectionArgs, null,
-                                null, sortOrder);
+                                          null, sortOrder);
                     }
 
                     return cursor;
@@ -378,7 +378,7 @@ public class EmailProvider extends ContentProvider {
     }
 
     protected Cursor getThreadedMessages(String accountUuid, final String[] projection,
-            final String selection, final String[] selectionArgs, final String sortOrder) {
+                                         final String selection, final String[] selectionArgs, final String sortOrder) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);
@@ -387,7 +387,7 @@ public class EmailProvider extends ContentProvider {
             return database.execute(false, new DbCallback<Cursor>() {
                 @Override
                 public Cursor doDbWork(SQLiteDatabase db) throws WrappedException,
-                        UnavailableStorageException {
+                    UnavailableStorageException {
 
                     StringBuilder query = new StringBuilder();
 
@@ -440,21 +440,21 @@ public class EmailProvider extends ContentProvider {
     }
 
     private void createThreadedSubQuery(String[] projection, String selection,
-            String[] selectionArgs, String join, StringBuilder query) {
+                                        String[] selectionArgs, String join, StringBuilder query) {
 
         query.append("SELECT h." + MessageColumns.ID + " AS g");
         for (String columnName : projection) {
             if (SpecialColumns.THREAD_COUNT.equals(columnName)) {
                 // Skip
             } else if (SpecialColumns.FOLDER_NAME.equals(columnName) ||
-                    SpecialColumns.INTEGRATE.equals(columnName)) {
+                       SpecialColumns.INTEGRATE.equals(columnName)) {
                 query.append("," + columnName);
             } else if (ThreadColumns.ROOT.equals(columnName)) {
                 // Always return the thread ID of the root message (even for the root
                 // message itself)
                 query.append(",CASE WHEN t2." + ThreadColumns.ROOT + " IS NULL THEN " +
-                        "t2." + ThreadColumns.ID + " ELSE t2." + ThreadColumns.ROOT +
-                        " END AS " + ThreadColumns.ROOT);
+                             "t2." + ThreadColumns.ID + " ELSE t2." + ThreadColumns.ROOT +
+                             " END AS " + ThreadColumns.ROOT);
             } else {
                 query.append(",m.");
                 query.append(columnName);
@@ -464,33 +464,33 @@ public class EmailProvider extends ContentProvider {
         }
 
         query.append(
-                " FROM messages h " +
-                "LEFT JOIN threads t1 ON (t1.message_id = h.id) " +
-                "JOIN threads t2 ON (");
+            " FROM messages h " +
+            "LEFT JOIN threads t1 ON (t1.message_id = h.id) " +
+            "JOIN threads t2 ON (");
         query.append(join);
         query.append(") " +
-                "LEFT JOIN messages m ON (m.id = t2.message_id) ");
+                     "LEFT JOIN messages m ON (m.id = t2.message_id) ");
 
         if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
             query.append("LEFT JOIN folders f ON (m.folder_id = f.id) ");
         }
 
         query.append(
-                "WHERE " +
-                "(t1.root IS NULL AND " +
-                "m.deleted = 0 AND " +
-                "(m.empty IS NULL OR m.empty != 1))");
+            "WHERE " +
+            "(t1.root IS NULL AND " +
+            "m.deleted = 0 AND " +
+            "(m.empty IS NULL OR m.empty != 1))");
 
         if (!StringUtils.isNullOrEmpty(selection)) {
             query.append(" AND (");
             query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
-                    "h.", selection));
+                         "h.", selection));
             query.append(")");
         }
     }
 
     protected Cursor getThread(String accountUuid, final String[] projection, final String threadId,
-            final String sortOrder) {
+                               final String sortOrder) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);
@@ -499,7 +499,7 @@ public class EmailProvider extends ContentProvider {
             return database.execute(false, new DbCallback<Cursor>() {
                 @Override
                 public Cursor doDbWork(SQLiteDatabase db) throws WrappedException,
-                        UnavailableStorageException {
+                    UnavailableStorageException {
 
                     StringBuilder query = new StringBuilder();
                     query.append("SELECT ");
@@ -519,24 +519,24 @@ public class EmailProvider extends ContentProvider {
                     }
 
                     query.append(" FROM " + THREADS_TABLE + " t JOIN " + MESSAGES_TABLE + " m " +
-                            "ON (m." + MessageColumns.ID + " = t." + ThreadColumns.MESSAGE_ID +
-                            ") ");
+                                 "ON (m." + MessageColumns.ID + " = t." + ThreadColumns.MESSAGE_ID +
+                                 ") ");
 
                     if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
                         query.append("LEFT JOIN " + FOLDERS_TABLE + " f " +
-                                "ON (m." + MessageColumns.FOLDER_ID +  " = f." + FolderColumns.ID +
-                                ") ");
+                                     "ON (m." + MessageColumns.FOLDER_ID +  " = f." + FolderColumns.ID +
+                                     ") ");
                     }
 
                     query.append("WHERE (t." + ThreadColumns.ID + " = ? OR " +
-                            ThreadColumns.ROOT + " = ?) AND " +
-                            InternalMessageColumns.DELETED + " = 0 AND (" +
-                            InternalMessageColumns.EMPTY + " IS NULL OR " +
-                            InternalMessageColumns.EMPTY + " != 1)");
+                                 ThreadColumns.ROOT + " = ?) AND " +
+                                 InternalMessageColumns.DELETED + " = 0 AND (" +
+                                 InternalMessageColumns.EMPTY + " IS NULL OR " +
+                                 InternalMessageColumns.EMPTY + " != 1)");
 
                     query.append(" ORDER BY ");
                     query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
-                            "m.", sortOrder));
+                                 "m.", sortOrder));
 
                     return db.rawQuery(query.toString(), new String[] { threadId, threadId });
                 }
@@ -547,7 +547,7 @@ public class EmailProvider extends ContentProvider {
     }
 
     private Cursor getAccountStats(String accountUuid, String[] columns,
-            final String selection, final String[] selectionArgs) {
+                                   final String selection, final String[] selectionArgs) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);
@@ -598,7 +598,7 @@ public class EmailProvider extends ContentProvider {
             return database.execute(false, new DbCallback<Cursor>() {
                 @Override
                 public Cursor doDbWork(SQLiteDatabase db) throws WrappedException,
-                        UnavailableStorageException {
+                    UnavailableStorageException {
 
                     return db.rawQuery(sql.toString(), selectionArgs);
                 }
@@ -676,7 +676,7 @@ public class EmailProvider extends ContentProvider {
         private String[] mColumnNames;
 
         public SpecialColumnsCursor(Cursor cursor, String[] allColumnNames,
-                Map<String, String> specialColumns) {
+                                    Map<String, String> specialColumns) {
             super(cursor);
 
             mColumnNames = allColumnNames;

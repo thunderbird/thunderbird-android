@@ -23,7 +23,7 @@ public class EmailProviderCache {
 
     private static Context sContext;
     private static Map<String, EmailProviderCache> sInstances =
-            new HashMap<String, EmailProviderCache>();
+        new HashMap<String, EmailProviderCache>();
 
     public static synchronized EmailProviderCache getCache(String accountUuid, Context context) {
 
@@ -173,7 +173,7 @@ public class EmailProviderCache {
         LocalBroadcastManager.getInstance(sContext).sendBroadcast(new Intent(ACTION_CACHE_UPDATED));
 
         Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + mAccountUuid +
-                "/messages");
+                                       "/messages");
         sContext.getContentResolver().notifyChange(uri, null);
     }
 }

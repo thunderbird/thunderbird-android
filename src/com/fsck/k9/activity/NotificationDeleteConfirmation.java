@@ -39,7 +39,7 @@ public class NotificationDeleteConfirmation extends Activity {
         super.onCreate(icicle);
 
         setTheme(K9.getK9Theme() == K9.Theme.LIGHT ?
-                R.style.Theme_K9_Dialog_Translucent_Light : R.style.Theme_K9_Dialog_Translucent_Dark);
+                 R.style.Theme_K9_Dialog_Translucent_Light : R.style.Theme_K9_Dialog_Translucent_Dark);
 
         final Preferences preferences = Preferences.getPreferences(this);
         final Intent intent = getIntent();
@@ -62,22 +62,22 @@ public class NotificationDeleteConfirmation extends Activity {
         switch (id) {
         case DIALOG_CONFIRM:
             return ConfirmationDialog.create(this, id,
-                    R.string.dialog_confirm_delete_title, "",
-                    R.string.dialog_confirm_delete_confirm_button,
-                    R.string.dialog_confirm_delete_cancel_button,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            triggerDelete();
-                            finish();
-                        }
-                    },
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    });
+                                             R.string.dialog_confirm_delete_title, "",
+                                             R.string.dialog_confirm_delete_confirm_button,
+                                             R.string.dialog_confirm_delete_cancel_button,
+            new Runnable() {
+                @Override
+                public void run() {
+                    triggerDelete();
+                    finish();
+                }
+            },
+            new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            });
         }
 
         return super.onCreateDialog(id);
@@ -90,7 +90,7 @@ public class NotificationDeleteConfirmation extends Activity {
         case DIALOG_CONFIRM:
             int messageCount = mMessageRefs.size();
             alert.setMessage(getResources().getQuantityString(
-                    R.plurals.dialog_confirm_delete_message, messageCount, messageCount));
+                                 R.plurals.dialog_confirm_delete_message, messageCount, messageCount));
             break;
         }
 

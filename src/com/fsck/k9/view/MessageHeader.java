@@ -129,15 +129,15 @@ public class MessageHeader extends ScrollView implements OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.from: {
-                onAddSenderToContacts();
-                break;
-            }
-            case R.id.to:
-            case R.id.cc: {
-                expand((TextView)view, ((TextView)view).getEllipsize() != null);
-                layoutChanged();
-            }
+        case R.id.from: {
+            onAddSenderToContacts();
+            break;
+        }
+        case R.id.to:
+        case R.id.cc: {
+            expand((TextView)view, ((TextView)view).getEllipsize() != null);
+            layoutChanged();
+        }
         }
     }
 
@@ -267,11 +267,11 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
         String dateTime = DateUtils.formatDateTime(mContext,
-                message.getSentDate().getTime(),
-                DateUtils.FORMAT_SHOW_DATE
-                | DateUtils.FORMAT_ABBREV_ALL
-                | DateUtils.FORMAT_SHOW_TIME
-                | DateUtils.FORMAT_SHOW_YEAR);
+                          message.getSentDate().getTime(),
+                          DateUtils.FORMAT_SHOW_DATE
+                          | DateUtils.FORMAT_ABBREV_ALL
+                          | DateUtils.FORMAT_SHOW_TIME
+                          | DateUtils.FORMAT_SHOW_YEAR);
         mDateView.setText(dateTime);
 
         if (K9.showContactPicture()) {
@@ -335,13 +335,13 @@ public class MessageHeader extends ScrollView implements OnClickListener {
      * Expand or collapse a TextView by removing or adding the 2 lines limitation
      */
     private void expand(TextView v, boolean expand) {
-       if (expand) {
-           v.setMaxLines(Integer.MAX_VALUE);
-           v.setEllipsize(null);
-       } else {
-           v.setMaxLines(2);
-           v.setEllipsize(android.text.TextUtils.TruncateAt.END);
-       }
+        if (expand) {
+            v.setMaxLines(Integer.MAX_VALUE);
+            v.setEllipsize(null);
+        } else {
+            v.setMaxLines(2);
+            v.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        }
     }
 
     private List<HeaderEntry> getAdditionalHeaders(final Message message)
@@ -399,7 +399,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
-        if(!(state instanceof SavedState)) {
+        if (!(state instanceof SavedState)) {
             super.onRestoreInstanceState(state);
             return;
         }
@@ -414,7 +414,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         boolean additionalHeadersVisible;
 
         public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
+        new Parcelable.Creator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);

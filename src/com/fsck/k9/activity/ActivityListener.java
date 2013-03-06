@@ -69,8 +69,8 @@ public class ActivityListener extends MessagingListener {
             long nextPollTime = MailService.getNextPollTime();
             if (nextPollTime != -1) {
                 operation = context.getString(R.string.status_next_poll,
-                        DateUtils.getRelativeTimeSpanString(nextPollTime, System.currentTimeMillis(),
-                                DateUtils.MINUTE_IN_MILLIS, 0));
+                                              DateUtils.getRelativeTimeSpanString(nextPollTime, System.currentTimeMillis(),
+                                                      DateUtils.MINUTE_IN_MILLIS, 0));
             } else if (MailService.isSyncDisabled()) {
                 operation = context.getString(R.string.status_syncing_off);
             } else {
