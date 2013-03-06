@@ -1881,11 +1881,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
 
             // Background indicator
-            if (selected || K9.useBackgroundAsUnreadIndicator()) {
+            {
                 int res;
                 if (selected) {
                     res = R.attr.messageListSelectedBackgroundColor;
-                } else if (read) {
+                } else if (read && K9.useBackgroundAsUnreadIndicator()) {
                     res = R.attr.messageListReadItemBackgroundColor;
                 } else {
                     res = R.attr.messageListUnreadItemBackgroundColor;
