@@ -46,8 +46,7 @@ public class WelcomeMessage extends K9Activity implements OnClickListener{
                 break;
             }
             case R.id.import_settings: {
-                startActivity(new Intent(getApplicationContext(), Accounts.class)
-                    .putExtra(Accounts.EXTRA_IMPORTFIRST, true));
+                Accounts.importSettings(this);
                 finish();
                 break;
             }

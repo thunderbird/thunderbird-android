@@ -326,7 +326,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
 
     public static final String EXTRA_STARTUP = "startup";
-    public static final String EXTRA_IMPORTFIRST = "importfirst";
+
+    public static final String ACTION_IMPORT_SETTINGS = "importSettings";
 
 
     public static void listAccounts(Context context) {
@@ -334,6 +335,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(EXTRA_STARTUP, false);
+        context.startActivity(intent);
+    }
+
+    public static void importSettings(Context context) {
+        Intent intent = new Intent(context, Accounts.class);
+        intent.setAction(ACTION_IMPORT_SETTINGS);
         context.startActivity(intent);
     }
 
@@ -366,7 +373,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         //onNewIntent(intent);
 
         // see if we should show the welcome message
-        if (intent.getBooleanExtra(EXTRA_IMPORTFIRST, false)) {
+        if (ACTION_IMPORT_SETTINGS.equals(intent.getAction())) {
             onImport();
         } else if (accounts.length < 1) {
             WelcomeMessage.showWelcomeMessage(this);
