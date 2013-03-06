@@ -596,6 +596,10 @@ public class SettingsImporter {
 
     private static boolean isAccountNameUsed(String name, Account[] accounts) {
         for (Account account : accounts) {
+            if (account == null) {
+                continue;
+            }
+
             if (account.getDescription().equals(name)) {
                 return true;
             }
