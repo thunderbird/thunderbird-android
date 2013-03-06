@@ -33,8 +33,8 @@ public class EmailProviderCacheCursor extends CursorWrapper {
 
         if (mMessageIdColumn == -1 || mFolderIdColumn == -1 || mThreadRootColumn == -1) {
             throw new IllegalArgumentException("The supplied cursor needs to contain the " +
-                    "following columns: " + MessageColumns.ID + ", " + MessageColumns.FOLDER_ID +
-                    ", " + ThreadColumns.ROOT);
+                                               "following columns: " + MessageColumns.ID + ", " + MessageColumns.FOLDER_ID +
+                                               ", " + ThreadColumns.ROOT);
         }
 
         while (cursor.moveToNext()) {

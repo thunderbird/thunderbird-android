@@ -16,7 +16,7 @@ import com.fsck.k9.helper.HtmlConverter;
 /**
  * Displays a welcome message when no accounts have been created yet.
  */
-public class WelcomeMessage extends K9Activity implements OnClickListener{
+public class WelcomeMessage extends K9Activity implements OnClickListener {
 
     public static void showWelcomeMessage(Context context) {
         Intent intent = new Intent(context, WelcomeMessage.class);

@@ -233,12 +233,14 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position,
-                        long id) {
+                long id) {
                     updatePortFromSecurityType();
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
+                public void onNothingSelected(AdapterView<?> parent) {
+                    /* unused */
+                }
             });
 
             if (uri.getHost() != null) {

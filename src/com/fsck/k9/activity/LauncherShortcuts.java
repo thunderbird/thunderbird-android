@@ -35,7 +35,7 @@ public class LauncherShortcuts extends AccountList {
             shortcutIntent = MessageList.shortcutIntent(this, searchAccount.getId());
         } else {
             shortcutIntent = FolderList.actionHandleAccountIntent(this, (Account) account, null,
-                    true);
+                             true);
         }
 
         Intent intent = new Intent();

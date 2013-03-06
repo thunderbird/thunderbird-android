@@ -136,8 +136,8 @@ public class MessageWebView extends TitleBarWebView {
         if (Build.VERSION.SDK_INT >= 11) {
             PackageManager pm = getContext().getPackageManager();
             boolean supportsMultiTouch =
-                    pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
-                    pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
+                pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
+                pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
 
             getSettings().setDisplayZoomControls(!supportsMultiTouch);
         }
@@ -156,9 +156,9 @@ public class MessageWebView extends TitleBarWebView {
             // It's a little wrong to just throw in the <style> before the opening <html>
             // but it's less wrong than trying to edit the html stream
             content = "<style>* { background: black ! important; color: white !important }" +
-                   ":link, :link * { color: #CCFF33 !important }" +
-                   ":visited, :visited * { color: #551A8B !important }</style> "
-                   + content;
+                      ":link, :link * { color: #CCFF33 !important }" +
+                      ":visited, :visited * { color: #551A8B !important }</style> "
+                      + content;
         }
         loadDataWithBaseURL("http://", content, contentType, "utf-8", null);
     }

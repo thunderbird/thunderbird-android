@@ -47,7 +47,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
     }
 
     public static void updateWidget(Context context, AppWidgetManager appWidgetManager,
-            int appWidgetId, String accountUuid) {
+                                    int appWidgetId, String accountUuid) {
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                 R.layout.unread_widget_layout);
@@ -71,7 +71,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
                 MessagingController controller = MessagingController.getInstance(K9.app);
                 stats = controller.getSearchAccountStatsSynchronous(searchAccount, null);
                 clickIntent = MessageList.intentDisplaySearch(context,
-                        searchAccount.getRelatedSearch(), false, true, true);
+                              searchAccount.getRelatedSearch(), false, true, true);
             } else {
                 Account realAccount = Preferences.getPreferences(context).getAccount(accountUuid);
                 if (realAccount != null) {
@@ -80,13 +80,13 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
 
                     if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName())) {
                         clickIntent = FolderList.actionHandleAccountIntent(context, realAccount,
-                                null, false);
+                                      null, false);
                     } else {
                         LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
                         search.addAllowedFolder(realAccount.getAutoExpandFolderName());
                         search.addAccountUuid(account.getUuid());
                         clickIntent = MessageList.intentDisplaySearch(context, search, false, true,
-                                true);
+                                      true);
                     }
                     clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 }
@@ -112,7 +112,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
             remoteViews.setViewVisibility(R.id.unread_count, View.VISIBLE);
 
             String displayCount = (unreadCount <= MAX_COUNT) ?
-                    String.valueOf(unreadCount) : String.valueOf(MAX_COUNT) + "+";
+                                  String.valueOf(unreadCount) : String.valueOf(MAX_COUNT) + "+";
             remoteViews.setTextViewText(R.id.unread_count, displayCount);
         }
 
@@ -128,7 +128,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
 
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId,
-                clickIntent, 0);
+                                      clickIntent, 0);
 
         remoteViews.setOnClickPendingIntent(R.id.unread_widget_layout, pendingIntent);
 

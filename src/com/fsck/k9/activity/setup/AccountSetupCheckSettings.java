@@ -108,7 +108,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
                     final MessagingController ctrl = MessagingController.getInstance(getApplication());
                     ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
-                            mAccount, mCheckIncoming, mCheckOutgoing);
+                                                            mAccount, mCheckIncoming, mCheckOutgoing);
 
                     if (mCheckIncoming) {
                         store = mAccount.getRemoteStore();
@@ -166,8 +166,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             cve);
                     } else {
                         showErrorDialog(
-                                R.string.account_setup_failed_dlg_server_message_fmt,
-                                (cve.getMessage() == null ? "" : cve.getMessage()));
+                            R.string.account_setup_failed_dlg_server_message_fmt,
+                            (cve.getMessage() == null ? "" : cve.getMessage()));
                     }
                 } catch (final Throwable t) {
                     Log.e(K9.LOG_TAG, "Error while testing settings", t);
@@ -325,8 +325,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                     //TODO: localize this string
                                     altNamesText.append("Subject(alt): ").append(name).append(",...\n");
                                 } else if (name.startsWith("*.") && (
-                                            storeURIHost.endsWith(name.substring(2)) ||
-                                            transportURIHost.endsWith(name.substring(2)))) {
+                                               storeURIHost.endsWith(name.substring(2)) ||
+                                transportURIHost.endsWith(name.substring(2)))) {
                                     //TODO: localize this string
                                     altNamesText.append("Subject(alt): ").append(name).append(",...\n");
                                 }

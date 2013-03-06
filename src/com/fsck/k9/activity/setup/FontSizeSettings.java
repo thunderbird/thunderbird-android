@@ -121,8 +121,8 @@ public class FontSizeSettings extends K9PreferenceActivity {
                                   Integer.toString(fontSizes.getMessageViewContentAsInt()));
 
         mMessageComposeInput = setupListPreference(
-                PREFERENCE_MESSAGE_COMPOSE_INPUT_FONT,
-                Integer.toString(fontSizes.getMessageComposeInput()));
+                                   PREFERENCE_MESSAGE_COMPOSE_INPUT_FONT,
+                                   Integer.toString(fontSizes.getMessageComposeInput()));
     }
 
     /**

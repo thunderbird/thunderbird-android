@@ -35,7 +35,7 @@ public class MimeUtility {
     public static final String K9_SETTINGS_MIME_TYPE = "application/x-k9settings";
 
     private static final String TEXT_DIVIDER =
-            "------------------------------------------------------------------------";
+        "------------------------------------------------------------------------";
 
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
@@ -1066,7 +1066,9 @@ public class MimeUtility {
                                 } else {
                                     in.close();
                                 }
-                            } catch (Exception e) { /* ignore */ }
+                            } catch (Exception e) {
+                                /* ignore */
+                            }
                         }
                     }
                     charset = fixupCharset(charset, getMessageFromPart(part));
@@ -1091,7 +1093,9 @@ public class MimeUtility {
                              * file anymore.
                              */
                             in.close();
-                        } catch (IOException e) { /* Ignore */ }
+                        } catch (IOException e) {
+                            /* Ignore */
+                        }
                     }
                 }
             }
@@ -1178,7 +1182,9 @@ public class MimeUtility {
      * @see MessageHeader
      * @see Alternative
      */
-    static abstract class Viewable { /* empty */ }
+    static abstract class Viewable {
+        /* empty */
+    }
 
     /**
      * Class representing textual parts of a message that aren't marked as attachments.
@@ -1308,7 +1314,7 @@ public class MimeUtility {
      *          In case of an error.
      */
     public static List<Part> collectAttachments(Message message)
-            throws MessagingException {
+    throws MessagingException {
         try {
             List<Part> attachments = new ArrayList<Part>();
             getViewables(message, attachments);
@@ -1331,7 +1337,7 @@ public class MimeUtility {
      *          In case of an error.
      */
     public static Set<Part> collectTextParts(Message message)
-            throws MessagingException {
+    throws MessagingException {
         try {
             List<Part> attachments = new ArrayList<Part>();
 
@@ -1360,7 +1366,7 @@ public class MimeUtility {
      *          In case of an error.
      */
     public static ViewableContainer extractTextAndAttachments(Context context, Message message)
-            throws MessagingException {
+    throws MessagingException {
         try {
             List<Part> attachments = new ArrayList<Part>();
 
@@ -1407,9 +1413,9 @@ public class MimeUtility {
                      * other one to make sure 'text' and 'html' always contain the same text.
                      */
                     List<Viewable> textAlternative = alternative.getText().isEmpty() ?
-                            alternative.getHtml() : alternative.getText();
+                                                     alternative.getHtml() : alternative.getText();
                     List<Viewable> htmlAlternative = alternative.getHtml().isEmpty() ?
-                            alternative.getText() : alternative.getHtml();
+                                                     alternative.getText() : alternative.getHtml();
 
                     // Fill the 'text' variable
                     boolean divider = !hideDivider;
@@ -1478,7 +1484,7 @@ public class MimeUtility {
                 }
             }
         } else if (body instanceof Message &&
-                !("attachment".equalsIgnoreCase(getContentDisposition(part)))) {
+                   !("attachment".equalsIgnoreCase(getContentDisposition(part)))) {
             /*
              * We only care about message/rfc822 parts whose Content-Disposition header has a value
              * other than "attachment".
@@ -1525,7 +1531,7 @@ public class MimeUtility {
      *          In case of an error.
      */
     private static List<Viewable> findTextPart(Multipart multipart, boolean directChild)
-            throws MessagingException {
+    throws MessagingException {
         List<Viewable> viewables = new ArrayList<Viewable>();
 
         int childCount = multipart.getCount();
@@ -1617,7 +1623,7 @@ public class MimeUtility {
                      * 1.3. image/jpeg
                      */
                     List<Viewable> htmlViewables = findHtmlPart(innerMultipart, knownTextParts,
-                            attachments, false);
+                                                   attachments, false);
 
                     if (!htmlViewables.isEmpty()) {
                         partFound = true;
@@ -1625,7 +1631,7 @@ public class MimeUtility {
                     }
                 }
             } else if (!(directChild && partFound) && isPartTextualBody(part) &&
-                    part.getMimeType().equalsIgnoreCase("text/html")) {
+                       part.getMimeType().equalsIgnoreCase("text/html")) {
                 Html html = new Html(part);
                 viewables.add(html);
                 partFound = true;
@@ -1678,7 +1684,7 @@ public class MimeUtility {
      *         A list that will receive the parts that are considered attachments.
      */
     private static void findAttachments(Multipart multipart, Set<Part> knownTextParts,
-            List<Part> attachments) {
+                                        List<Part> attachments) {
         int childCount = multipart.getCount();
         for (int i = 0; i < childCount; i++) {
             Part part = multipart.getBodyPart(i);
@@ -1706,7 +1712,7 @@ public class MimeUtility {
      *          In case of an error.
      */
     private static void addMessageHeaderText(Context context, StringBuilder text, Message message)
-            throws MessagingException {
+    throws MessagingException {
         // From: <sender>
         Address[] from = message.getFrom();
         if (from != null && from.length > 0) {
@@ -1769,7 +1775,7 @@ public class MimeUtility {
      *          In case of an error.
      */
     private static void addMessageHeaderHtml(Context context, StringBuilder html, Message message)
-            throws MessagingException {
+    throws MessagingException {
 
         html.append("<table style=\"border: 0\">");
 
@@ -1777,34 +1783,34 @@ public class MimeUtility {
         Address[] from = message.getFrom();
         if (from != null && from.length > 0) {
             addTableRow(html, context.getString(R.string.message_compose_quote_header_from),
-                    Address.toString(from));
+                        Address.toString(from));
         }
 
         // To: <recipients>
         Address[] to = message.getRecipients(RecipientType.TO);
         if (to != null && to.length > 0) {
             addTableRow(html, context.getString(R.string.message_compose_quote_header_to),
-                    Address.toString(to));
+                        Address.toString(to));
         }
 
         // Cc: <recipients>
         Address[] cc = message.getRecipients(RecipientType.CC);
         if (cc != null && cc.length > 0) {
             addTableRow(html, context.getString(R.string.message_compose_quote_header_cc),
-                    Address.toString(cc));
+                        Address.toString(cc));
         }
 
         // Date: <date>
         Date date = message.getSentDate();
         if (date != null) {
             addTableRow(html, context.getString(R.string.message_compose_quote_header_send_date),
-                    date.toString());
+                        date.toString());
         }
 
         // Subject: <subject>
         String subject = message.getSubject();
         addTableRow(html, context.getString(R.string.message_compose_quote_header_subject),
-                (subject == null) ? context.getString(R.string.general_no_subject) : subject);
+                    (subject == null) ? context.getString(R.string.general_no_subject) : subject);
 
         html.append("</table>");
     }
@@ -1844,8 +1850,7 @@ public class MimeUtility {
      *
      * @return The contents of the supplied viewable instance as plain text.
      */
-    private static StringBuilder buildText(Viewable viewable, boolean prependDivider)
-    {
+    private static StringBuilder buildText(Viewable viewable, boolean prependDivider) {
         StringBuilder text = new StringBuilder();
         if (viewable instanceof Textual) {
             Part part = ((Textual)viewable).getPart();
@@ -1864,7 +1869,7 @@ public class MimeUtility {
             Alternative alternative = (Alternative) viewable;
 
             List<Viewable> textAlternative = alternative.getText().isEmpty() ?
-                    alternative.getHtml() : alternative.getText();
+                                             alternative.getHtml() : alternative.getText();
 
             boolean divider = prependDivider;
             for (Viewable textViewable : textAlternative) {
@@ -1905,13 +1910,13 @@ public class MimeUtility {
             if (len > 0) {
                 if (len > TEXT_DIVIDER_LENGTH - FILENAME_PREFIX_LENGTH - FILENAME_SUFFIX_LENGTH) {
                     filename = filename.substring(0, TEXT_DIVIDER_LENGTH - FILENAME_PREFIX_LENGTH -
-                            FILENAME_SUFFIX_LENGTH - 3) + "...";
+                                                  FILENAME_SUFFIX_LENGTH - 3) + "...";
                 }
                 text.append(FILENAME_PREFIX);
                 text.append(filename);
                 text.append(FILENAME_SUFFIX);
                 text.append(TEXT_DIVIDER.substring(0, TEXT_DIVIDER_LENGTH -
-                        FILENAME_PREFIX_LENGTH - filename.length() - FILENAME_SUFFIX_LENGTH));
+                                                   FILENAME_PREFIX_LENGTH - filename.length() - FILENAME_SUFFIX_LENGTH));
             } else {
                 text.append(TEXT_DIVIDER);
             }
@@ -1935,8 +1940,7 @@ public class MimeUtility {
      *
      * @return The contents of the supplied viewable instance as HTML.
      */
-    private static StringBuilder buildHtml(Viewable viewable, boolean prependDivider)
-    {
+    private static StringBuilder buildHtml(Viewable viewable, boolean prependDivider) {
         StringBuilder html = new StringBuilder();
         if (viewable instanceof Textual) {
             Part part = ((Textual)viewable).getPart();
@@ -1955,7 +1959,7 @@ public class MimeUtility {
             Alternative alternative = (Alternative) viewable;
 
             List<Viewable> htmlAlternative = alternative.getHtml().isEmpty() ?
-                    alternative.getText() : alternative.getHtml();
+                                             alternative.getText() : alternative.getHtml();
 
             boolean divider = prependDivider;
             for (Viewable htmlViewable : htmlAlternative) {
@@ -2003,8 +2007,9 @@ public class MimeUtility {
                 String name = MimeUtility.getHeaderParameter(disposition, "filename");
                 return (name == null) ? "" : name;
             }
+        } catch (MessagingException e) {
+            /* ignore */
         }
-        catch (MessagingException e) { /* ignore */ }
 
         return "";
     }
@@ -2024,8 +2029,9 @@ public class MimeUtility {
             if (disposition != null) {
                 return MimeUtility.getHeaderParameter(disposition, null);
             }
+        } catch (MessagingException e) {
+            /* ignore */
         }
-        catch (MessagingException e) { /* ignore */ }
 
         return null;
     }
@@ -2237,8 +2243,8 @@ public class MimeUtility {
         if (address == null)
             return null;
         if (isInDomain(address, "docomo.ne.jp") || isInDomain(address, "dwmail.jp") ||
-            isInDomain(address, "pdx.ne.jp") || isInDomain(address, "willcom.com") ||
-            isInDomain(address, "emnet.ne.jp") || isInDomain(address, "emobile.ne.jp"))
+                isInDomain(address, "pdx.ne.jp") || isInDomain(address, "willcom.com") ||
+                isInDomain(address, "emnet.ne.jp") || isInDomain(address, "emobile.ne.jp"))
             return "docomo";
         else if (isInDomain(address, "softbank.ne.jp") || isInDomain(address, "vodafone.ne.jp") ||
                  isInDomain(address, "disney.ne.jp") || isInDomain(address, "vertuclub.ne.jp"))
@@ -3317,7 +3323,7 @@ public class MimeUtility {
     }
 
     public static ViewableContainer extractPartsFromDraft(Message message)
-            throws MessagingException {
+    throws MessagingException {
 
         Body body = message.getBody();
         if (message.isMimeType("multipart/mixed") && body instanceof MimeMultipart) {
@@ -3358,7 +3364,7 @@ public class MimeUtility {
                 html = HtmlConverter.textToHtml(text, false);
             }
         } else if (part.isMimeType("multipart/alternative") &&
-                firstBody instanceof MimeMultipart) {
+                   firstBody instanceof MimeMultipart) {
             MimeMultipart multipart = (MimeMultipart) firstBody;
             for (int i = 0, count = multipart.getCount(); i < count; i++) {
                 BodyPart bodyPart = multipart.getBodyPart(i);

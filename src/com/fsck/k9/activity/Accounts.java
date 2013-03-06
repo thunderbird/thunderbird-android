@@ -331,7 +331,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     public static void listAccounts(Context context) {
         Intent intent = new Intent(context, Accounts.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(EXTRA_STARTUP, false);
         context.startActivity(intent);
     }
@@ -635,7 +635,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
                 search.addAllowedFolder(realAccount.getAutoExpandFolderName());
                 search.addAccountUuid(realAccount.getUuid());
-                MessageList.actionDisplaySearch(this, search, false, true);}
+                MessageList.actionDisplaySearch(this, search, false, true);
+            }
         }
         return true;
     }
@@ -1308,21 +1309,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         if (account instanceof SearchAccount) {
             for (int i = 0; i < menu.size(); i++) {
                 android.view.MenuItem item = menu.getItem(i);
-                    item.setVisible(false);
+                item.setVisible(false);
             }
-        }
-        else {
+        } else {
             EnumSet<ACCOUNT_LOCATION> accountLocation = accountLocation(account);
             if (accountLocation.contains(ACCOUNT_LOCATION.TOP)) {
                 menu.findItem(R.id.move_up).setEnabled(false);
-            }
-            else {
+            } else {
                 menu.findItem(R.id.move_up).setEnabled(true);
             }
             if (accountLocation.contains(ACCOUNT_LOCATION.BOTTOM)) {
                 menu.findItem(R.id.move_down).setEnabled(false);
-            }
-            else {
+            } else {
                 menu.findItem(R.id.move_down).setEnabled(true);
             }
         }
@@ -1737,12 +1735,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     holder.chip.setBackgroundDrawable(realAccount.generateColorChip(false, false, false, false, false).drawable());
                 }
 
-                holder.flaggedMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false,true).drawable() );
-                holder.newMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false, false).drawable() );
+                holder.flaggedMessageCountIcon.setBackgroundDrawable(realAccount.generateColorChip(false, false, false, false, true).drawable());
+                holder.newMessageCountIcon.setBackgroundDrawable(realAccount.generateColorChip(false, false, false, false, false).drawable());
 
             } else {
                 holder.chip.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable());
-                holder.newMessageCountIcon.setBackgroundDrawable( new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable() );
+                holder.newMessageCountIcon.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable());
                 holder.flaggedMessageCountIcon.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.STAR).drawable());
             }
 
@@ -1770,7 +1768,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         private OnClickListener createFlaggedSearch(BaseAccount account) {
             String searchTitle = getString(R.string.search_title, account.getDescription(),
-                    getString(R.string.flagged_modifier));
+                                           getString(R.string.flagged_modifier));
 
             LocalSearch search;
             if (account instanceof SearchAccount) {
@@ -1792,7 +1790,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         private OnClickListener createUnreadSearch(BaseAccount account) {
             String searchTitle = getString(R.string.search_title, account.getDescription(),
-                    getString(R.string.unread_modifier));
+                                           getString(R.string.unread_modifier));
 
             LocalSearch search;
             if (account instanceof SearchAccount) {

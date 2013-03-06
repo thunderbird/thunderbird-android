@@ -46,7 +46,7 @@ import com.fsck.k9.view.SingleMessageView;
 
 
 public class MessageViewFragment extends SherlockFragment implements OnClickListener,
-        CryptoDecryptCallback, ConfirmationDialogFragmentListener {
+    CryptoDecryptCallback, ConfirmationDialogFragmentListener {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -169,7 +169,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
             mFragmentListener = (MessageViewFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.getClass() +
-                    " must implement MessageViewFragmentListener");
+                                         " must implement MessageViewFragmentListener");
         }
     }
 
@@ -186,7 +186,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         Context context = new ContextThemeWrapper(inflater.getContext(),
                 K9.getK9ThemeResourceId(K9.getK9MessageViewTheme()));
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -362,7 +362,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         if (mMessage != null) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new Message[] { mMessage }, Flag.FLAGGED, newState);
+                                new Message[] { mMessage }, Flag.FLAGGED, newState);
             mMessageView.setHeaders(mMessage, mAccount);
         }
     }
@@ -429,43 +429,43 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         }
 
         switch (requestCode) {
-            case ACTIVITY_CHOOSE_DIRECTORY: {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    // obtain the filename
-                    Uri fileUri = data.getData();
-                    if (fileUri != null) {
-                        String filePath = fileUri.getPath();
-                        if (filePath != null) {
-                            attachmentTmpStore.writeFile(new File(filePath));
-                        }
+        case ACTIVITY_CHOOSE_DIRECTORY: {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                // obtain the filename
+                Uri fileUri = data.getData();
+                if (fileUri != null) {
+                    String filePath = fileUri.getPath();
+                    if (filePath != null) {
+                        attachmentTmpStore.writeFile(new File(filePath));
                     }
                 }
-                break;
             }
-            case ACTIVITY_CHOOSE_FOLDER_MOVE:
-            case ACTIVITY_CHOOSE_FOLDER_COPY: {
-                if (data == null) {
-                    return;
-                }
+            break;
+        }
+        case ACTIVITY_CHOOSE_FOLDER_MOVE:
+        case ACTIVITY_CHOOSE_FOLDER_COPY: {
+            if (data == null) {
+                return;
+            }
 
-                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-                MessageReference ref = data.getParcelableExtra(ChooseFolder.EXTRA_MESSAGE);
-                if (mMessageReference.equals(ref)) {
-                    mAccount.setLastSelectedFolderName(destFolderName);
-                    switch (requestCode) {
-                        case ACTIVITY_CHOOSE_FOLDER_MOVE: {
-                            mFragmentListener.showNextMessageOrReturn();
-                            moveMessage(ref, destFolderName);
-                            break;
-                        }
-                        case ACTIVITY_CHOOSE_FOLDER_COPY: {
-                            copyMessage(ref, destFolderName);
-                            break;
-                        }
-                    }
+            String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+            MessageReference ref = data.getParcelableExtra(ChooseFolder.EXTRA_MESSAGE);
+            if (mMessageReference.equals(ref)) {
+                mAccount.setLastSelectedFolderName(destFolderName);
+                switch (requestCode) {
+                case ACTIVITY_CHOOSE_FOLDER_MOVE: {
+                    mFragmentListener.showNextMessageOrReturn();
+                    moveMessage(ref, destFolderName);
+                    break;
                 }
-                break;
+                case ACTIVITY_CHOOSE_FOLDER_COPY: {
+                    copyMessage(ref, destFolderName);
+                    break;
+                }
+                }
             }
+            break;
+        }
         }
     }
 
@@ -478,7 +478,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     public void onToggleRead() {
         if (mMessage != null) {
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new Message[] { mMessage }, Flag.SEEN, !mMessage.isSet(Flag.SEEN));
+                                new Message[] { mMessage }, Flag.SEEN, !mMessage.isSet(Flag.SEEN));
             mMessageView.setHeaders(mMessage, mAccount);
             String subject = mMessage.getSubject();
             displayMessageSubject(subject);
@@ -497,14 +497,14 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.download: {
-                ((AttachmentView)view).saveFile();
-                break;
-            }
-            case R.id.download_remainder: {
-                onDownloadRemainder();
-                break;
-            }
+        case R.id.download: {
+            ((AttachmentView)view).saveFile();
+            break;
+        }
+        case R.id.download_remainder: {
+            onDownloadRemainder();
+            break;
+        }
         }
     }
 
@@ -522,12 +522,12 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
     public void moveMessage(MessageReference reference, String destFolderName) {
         mController.moveMessage(mAccount, mMessageReference.folderName, mMessage,
-                destFolderName, null);
+                                destFolderName, null);
     }
 
     public void copyMessage(MessageReference reference, String destFolderName) {
         mController.copyMessage(mAccount, mMessageReference.folderName, mMessage,
-                destFolderName, null);
+                                destFolderName, null);
     }
 
     class Listener extends MessagingListener {
@@ -557,7 +557,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 @Override
                 public void run() {
                     if (!clonedMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
-                            !clonedMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+                    !clonedMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
                         String text = getString(R.string.message_view_downloading);
                         mMessageView.showStatusMessage(text);
                     }
@@ -593,7 +593,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                     try {
                         mMessage = message;
                         mMessageView.setMessage(account, (LocalMessage) message, mPgpData,
-                                mController, mListener);
+                                                mController, mListener);
                         mFragmentListener.updateMenu();
 
                     } catch (MessagingException e) {
@@ -726,34 +726,34 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     private void showDialog(int dialogId) {
         DialogFragment fragment;
         switch (dialogId) {
-            case R.id.dialog_confirm_delete: {
-                String title = getString(R.string.dialog_confirm_delete_title);
-                String message = getString(R.string.dialog_confirm_delete_message);
-                String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
-                String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
+        case R.id.dialog_confirm_delete: {
+            String title = getString(R.string.dialog_confirm_delete_title);
+            String message = getString(R.string.dialog_confirm_delete_message);
+            String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
 
-                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                        confirmText, cancelText);
-                break;
-            }
-            case R.id.dialog_confirm_spam: {
-                String title = getString(R.string.dialog_confirm_spam_title);
-                String message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, 1);
-                String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
-                String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                       confirmText, cancelText);
+            break;
+        }
+        case R.id.dialog_confirm_spam: {
+            String title = getString(R.string.dialog_confirm_spam_title);
+            String message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, 1);
+            String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
 
-                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                        confirmText, cancelText);
-                break;
-            }
-            case R.id.dialog_attachment_progress: {
-                String title = getString(R.string.dialog_attachment_progress_title);
-                fragment = ProgressDialogFragment.newInstance(title);
-                break;
-            }
-            default: {
-                throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
-            }
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                       confirmText, cancelText);
+            break;
+        }
+        case R.id.dialog_attachment_progress: {
+            String title = getString(R.string.dialog_attachment_progress_title);
+            fragment = ProgressDialogFragment.newInstance(title);
+            break;
+        }
+        default: {
+            throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
+        }
         }
 
         fragment.setTargetFragment(this, dialogId);
@@ -786,15 +786,15 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     @Override
     public void doPositiveClick(int dialogId) {
         switch (dialogId) {
-            case R.id.dialog_confirm_delete: {
-                delete();
-                break;
-            }
-            case R.id.dialog_confirm_spam: {
-                refileMessage(mDstFolder);
-                mDstFolder = null;
-                break;
-            }
+        case R.id.dialog_confirm_delete: {
+            delete();
+            break;
+        }
+        case R.id.dialog_confirm_spam: {
+            refileMessage(mDstFolder);
+            mDstFolder = null;
+            break;
+        }
         }
     }
 

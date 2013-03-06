@@ -37,190 +37,190 @@ public class GlobalSettings {
          */
 
         s.put("animations", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("attachmentdefaultpath", Settings.versions(
-                new V(1, new DirectorySetting(Environment.getExternalStorageDirectory().toString()))
-            ));
+                  new V(1, new DirectorySetting(Environment.getExternalStorageDirectory().toString()))
+              ));
         s.put("backgroundOperations", Settings.versions(
-                new V(1, new EnumSetting<K9.BACKGROUND_OPS>(
-                        K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED))
-            ));
+                  new V(1, new EnumSetting<K9.BACKGROUND_OPS>(
+                            K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED))
+              ));
         s.put("changeRegisteredNameColor", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("confirmDelete", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("confirmDeleteStarred", Settings.versions(
-                new V(2, new BooleanSetting(false))
-            ));
+                  new V(2, new BooleanSetting(false))
+              ));
         s.put("confirmSpam", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("countSearchMessages", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("enableDebugLogging", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("enableSensitiveLogging", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("fontSizeAccountDescription", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeAccountName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeFolderName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeFolderStatus", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageComposeInput", Settings.versions(
-                new V(5, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(5, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageListDate", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageListPreview", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageListSender", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageListSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageViewAdditionalHeaders", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageViewCC", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageViewContent", Settings.versions(
-                new V(1, new WebFontSizeSetting(3))
-            ));
+                  new V(1, new WebFontSizeSetting(3))
+              ));
         s.put("fontSizeMessageViewDate", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageViewSender", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageViewSubject", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageViewTime", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("fontSizeMessageViewTo", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-            ));
+                  new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+              ));
         s.put("gesturesEnabled", Settings.versions(
-                new V(1, new BooleanSetting(true)),
-                new V(4, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(true)),
+                  new V(4, new BooleanSetting(false))
+              ));
         s.put("hideSpecialAccounts", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("keyguardPrivacy", Settings.versions(
-                new V(1, new BooleanSetting(false)),
-                new V(12, null)
-            ));
+                  new V(1, new BooleanSetting(false)),
+                  new V(12, null)
+              ));
         s.put("language", Settings.versions(
-                new V(1, new LanguageSetting())
-            ));
+                  new V(1, new LanguageSetting())
+              ));
         s.put("measureAccounts", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("messageListCheckboxes", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("messageListPreviewLines", Settings.versions(
-                new V(1, new IntegerRangeSetting(1, 100, 2))
-            ));
+                  new V(1, new IntegerRangeSetting(1, 100, 2))
+              ));
         s.put("messageViewFixedWidthFont", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("messageViewReturnToList", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("messageViewShowNext", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("mobileOptimizedLayout", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("quietTimeEnabled", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("quietTimeEnds", Settings.versions(
-                new V(1, new TimeSetting("7:00"))
-            ));
+                  new V(1, new TimeSetting("7:00"))
+              ));
         s.put("quietTimeStarts", Settings.versions(
-                new V(1, new TimeSetting("21:00"))
-            ));
+                  new V(1, new TimeSetting("21:00"))
+              ));
         s.put("registeredNameColor", Settings.versions(
-                new V(1, new ColorSetting(0xFF00008F))
-            ));
+                  new V(1, new ColorSetting(0xFF00008F))
+              ));
         s.put("showContactName", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("showCorrespondentNames", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
+                  new V(1, new BooleanSetting(true))
+              ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(10, new EnumSetting<SortType>(SortType.class, Account.DEFAULT_SORT_TYPE))
-            ));
+                  new V(10, new EnumSetting<SortType>(SortType.class, Account.DEFAULT_SORT_TYPE))
+              ));
         s.put("sortAscending", Settings.versions(
-                new V(10, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
-            ));
+                  new V(10, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+              ));
         s.put("startIntegratedInbox", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("theme", Settings.versions(
-                new V(1, new ThemeSetting(K9.Theme.LIGHT))
-            ));
+                  new V(1, new ThemeSetting(K9.Theme.LIGHT))
+              ));
         s.put("messageViewTheme", Settings.versions(
-                new V(16, new ThemeSetting(K9.Theme.LIGHT)),
-                new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
-            ));
+                  new V(16, new ThemeSetting(K9.Theme.LIGHT)),
+                  new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
+              ));
         s.put("useGalleryBugWorkaround", Settings.versions(
-                new V(1, new GalleryBugWorkaroundSetting())
-            ));
+                  new V(1, new GalleryBugWorkaroundSetting())
+              ));
         s.put("useVolumeKeysForListNavigation", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("useVolumeKeysForNavigation", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
+                  new V(1, new BooleanSetting(false))
+              ));
         s.put("wrapFolderNames", Settings.versions(
-                new V(22, new BooleanSetting(false))
-            ));
+                  new V(22, new BooleanSetting(false))
+              ));
         s.put("notificationHideSubject", Settings.versions(
-                new V(12, new EnumSetting<NotificationHideSubject>(
-                        NotificationHideSubject.class, NotificationHideSubject.NEVER))
-            ));
+                  new V(12, new EnumSetting<NotificationHideSubject>(
+                            NotificationHideSubject.class, NotificationHideSubject.NEVER))
+              ));
         s.put("useBackgroundAsUnreadIndicator", Settings.versions(
-                new V(19, new BooleanSetting(true))
-            ));
+                  new V(19, new BooleanSetting(true))
+              ));
         s.put("threadedView", Settings.versions(
-                new V(20, new BooleanSetting(true))
-            ));
+                  new V(20, new BooleanSetting(true))
+              ));
         s.put("splitViewMode", Settings.versions(
-                new V(23, new EnumSetting<SplitViewMode>(SplitViewMode.class, SplitViewMode.NEVER))
-            ));
+                  new V(23, new EnumSetting<SplitViewMode>(SplitViewMode.class, SplitViewMode.NEVER))
+              ));
         s.put("messageComposeTheme", Settings.versions(
-                new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
-            ));
+                  new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
+              ));
         s.put("fixedMessageViewTheme", Settings.versions(
-                new V(24, new BooleanSetting(true))
-            ));
+                  new V(24, new BooleanSetting(true))
+              ));
         s.put("showContactPicture", Settings.versions(
-                new V(25, new BooleanSetting(true))
-            ));
+                  new V(25, new BooleanSetting(true))
+              ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
@@ -383,7 +383,9 @@ public class GlobalSettings {
                 } else if (theme == K9.Theme.DARK.ordinal() || theme == android.R.style.Theme) {
                     return K9.Theme.DARK;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (NumberFormatException e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }
@@ -402,12 +404,12 @@ public class GlobalSettings {
         @Override
         public String toPrettyString(Object value) {
             switch ((K9.Theme) value) {
-                case DARK: {
-                    return THEME_DARK;
-                }
-                default: {
-                    return THEME_LIGHT;
-                }
+            case DARK: {
+                return THEME_DARK;
+            }
+            default: {
+                return THEME_LIGHT;
+            }
             }
         }
 
@@ -491,7 +493,9 @@ public class GlobalSettings {
                 if (new File(value).isDirectory()) {
                     return value;
                 }
-            } catch (Exception e) { /* do nothing */ }
+            } catch (Exception e) {
+                /* do nothing */
+            }
 
             throw new InvalidSettingValueException();
         }

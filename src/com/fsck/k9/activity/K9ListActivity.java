@@ -43,7 +43,7 @@ public class K9ListActivity extends SherlockListActivity implements K9ActivityMa
         // Shortcuts that work no matter what is selected
         if (K9.useVolumeKeysForListNavigationEnabled() &&
                 (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
-                keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+                 keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
 
             final ListView listView = getListView();
 
@@ -55,7 +55,7 @@ public class K9ListActivity extends SherlockListActivity implements K9ActivityMa
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP && currentPosition > 0) {
                 listView.setSelection(currentPosition - 1);
             } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN &&
-                    currentPosition < listView.getCount()) {
+                       currentPosition < listView.getCount()) {
                 listView.setSelection(currentPosition + 1);
             }
 
@@ -70,7 +70,7 @@ public class K9ListActivity extends SherlockListActivity implements K9ActivityMa
         // Swallow these events too to avoid the audible notification of a volume change
         if (K9.useVolumeKeysForListNavigationEnabled() &&
                 (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
-                keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+                 keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
             return true;
         }
 

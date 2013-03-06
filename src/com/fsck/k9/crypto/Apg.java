@@ -278,7 +278,7 @@ public class Apg extends CryptoProvider {
         try {
             Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_SECRET_KEY_RING_BY_EMAILS, email);
             Cursor c = context.getContentResolver().query(contentUri,
-                    new String[] { "master_key_id" }, null, null, null);
+                       new String[] { "master_key_id" }, null, null, null);
             if (c != null && c.getCount() > 0) {
                 c.close();
                 return true;
@@ -288,8 +288,8 @@ public class Apg extends CryptoProvider {
             }
         } catch (SecurityException e) {
             Toast.makeText(context,
-                    context.getResources().getString(R.string.insufficient_apg_permissions),
-                    Toast.LENGTH_LONG).show();
+                           context.getResources().getString(R.string.insufficient_apg_permissions),
+                           Toast.LENGTH_LONG).show();
         }
         return false;
     }
@@ -306,7 +306,7 @@ public class Apg extends CryptoProvider {
         try {
             Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS, email);
             Cursor c = context.getContentResolver().query(contentUri,
-                    new String[] { "master_key_id" }, null, null, null);
+                       new String[] { "master_key_id" }, null, null, null);
             if (c != null && c.getCount() > 0) {
                 c.close();
                 return true;
@@ -316,8 +316,8 @@ public class Apg extends CryptoProvider {
             }
         } catch (SecurityException e) {
             Toast.makeText(context,
-                    context.getResources().getString(R.string.insufficient_apg_permissions),
-                    Toast.LENGTH_LONG).show();
+                           context.getResources().getString(R.string.insufficient_apg_permissions),
+                           Toast.LENGTH_LONG).show();
         }
         return false;
     }
@@ -416,27 +416,27 @@ public class Apg extends CryptoProvider {
 
     @Override
     public boolean onDecryptActivityResult(CryptoDecryptCallback callback, int requestCode,
-            int resultCode, android.content.Intent data, PgpData pgpData) {
+                                           int resultCode, android.content.Intent data, PgpData pgpData) {
 
         switch (requestCode) {
-            case Apg.DECRYPT_MESSAGE: {
-                if (resultCode != Activity.RESULT_OK || data == null) {
-                    break;
-                }
-
-                pgpData.setSignatureUserId(data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID));
-                pgpData.setSignatureKeyId(data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0));
-                pgpData.setSignatureSuccess(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false));
-                pgpData.setSignatureUnknown(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false));
-
-                pgpData.setDecryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
-                callback.onDecryptDone(pgpData);
-
+        case Apg.DECRYPT_MESSAGE: {
+            if (resultCode != Activity.RESULT_OK || data == null) {
                 break;
             }
-            default: {
-                return false;
-            }
+
+            pgpData.setSignatureUserId(data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID));
+            pgpData.setSignatureKeyId(data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0));
+            pgpData.setSignatureSuccess(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false));
+            pgpData.setSignatureUnknown(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false));
+
+            pgpData.setDecryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
+            callback.onDecryptDone(pgpData);
+
+            break;
+        }
+        default: {
+            return false;
+        }
         }
 
         return true;

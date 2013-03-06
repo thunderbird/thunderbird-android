@@ -42,7 +42,7 @@ public class UnreadWidgetConfiguration extends AccountList {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
+                                         AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
         // If they gave us an intent without the widget ID, just bail.
@@ -79,7 +79,7 @@ public class UnreadWidgetConfiguration extends AccountList {
 
     private static void saveAccountUuid(Context context, int appWidgetId, String accountUuid) {
         SharedPreferences.Editor editor =
-                context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
         editor.putString(PREF_PREFIX_KEY + appWidgetId, accountUuid);
         editor.commit();
     }

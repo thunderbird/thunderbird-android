@@ -206,7 +206,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
             String id = result.getLastPathSegment();
 
             cursor = mContentResolver.query(Email.CONTENT_URI, PROJECTION,
-                    Email.CONTACT_ID + "=?", new String[] { id }, null);
+                                            Email.CONTACT_ID + "=?", new String[] { id }, null);
 
             if (cursor != null) {
                 while (cursor.moveToNext()) {
@@ -280,12 +280,12 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts {
             }
 
             Cursor cur = mContentResolver.query(
-                    ContactsContract.Data.CONTENT_URI,
-                    null,
-                    ContactsContract.Data.CONTACT_ID + "=" + contactId + " AND "
-                            + ContactsContract.Data.MIMETYPE + "='"
-                            + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'", null,
-                    null);
+                             ContactsContract.Data.CONTENT_URI,
+                             null,
+                             ContactsContract.Data.CONTACT_ID + "=" + contactId + " AND "
+                             + ContactsContract.Data.MIMETYPE + "='"
+                             + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'", null,
+                             null);
             if (cur == null) {
                 return null;
             }

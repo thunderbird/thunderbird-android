@@ -17,41 +17,41 @@ public class ColorChip {
 
     static {
 
-        CIRCULAR.addCircle(160,160,70f,Path.Direction.CW);
+        CIRCULAR.addCircle(160, 160, 70f, Path.Direction.CW);
         CIRCULAR.close();
 
-        RIGHT_POINTING.addArc(new RectF(80f,80f,240f,240f) , 90, 180);
-        RIGHT_POINTING.arcTo(new RectF(160f,0f,320f,160f), 180,   -90);
-        RIGHT_POINTING.arcTo(new RectF(160f,160f,320f,320f), 270,-90);
+        RIGHT_POINTING.addArc(new RectF(80f, 80f, 240f, 240f) , 90, 180);
+        RIGHT_POINTING.arcTo(new RectF(160f, 0f, 320f, 160f), 180,   -90);
+        RIGHT_POINTING.arcTo(new RectF(160f, 160f, 320f, 320f), 270, -90);
         RIGHT_POINTING.close();
 
-        RIGHT_NOTCH.addArc(new RectF(80f,80f,240f,240f) , 90, 180);
-        RIGHT_NOTCH.arcTo(new RectF(160f,0f,320f,160f), 180,   -90);
-        RIGHT_NOTCH.arcTo(new RectF(160f,160f,320f,320f), 270,-90);
+        RIGHT_NOTCH.addArc(new RectF(80f, 80f, 240f, 240f) , 90, 180);
+        RIGHT_NOTCH.arcTo(new RectF(160f, 0f, 320f, 160f), 180,   -90);
+        RIGHT_NOTCH.arcTo(new RectF(160f, 160f, 320f, 320f), 270, -90);
         RIGHT_NOTCH.close();
 
-        LEFT_POINTING.addArc(new RectF(80f,80f,240f,240f) , 90, -180);
-        LEFT_POINTING.arcTo(new RectF(00f,00f,160f,160f), 0,  90);
-        LEFT_POINTING.arcTo(new RectF(00f,160f,160f,320f), 270,90);
+        LEFT_POINTING.addArc(new RectF(80f, 80f, 240f, 240f) , 90, -180);
+        LEFT_POINTING.arcTo(new RectF(00f, 00f, 160f, 160f), 0,  90);
+        LEFT_POINTING.arcTo(new RectF(00f, 160f, 160f, 320f), 270, 90);
         LEFT_POINTING.close();
 
-        STAR.moveTo(140f,60f);
-        STAR.lineTo(170f,110f);
-        STAR.lineTo(220f,120f);
-        STAR.lineTo(180f,160f);
-        STAR.lineTo(200f,220f);
-        STAR.lineTo(140f,190f);
-        STAR.lineTo(80f,220f);
-        STAR.lineTo(100f,160f);
-        STAR.lineTo(60f,120f);
-        STAR.lineTo(110f,110f);
-        STAR.lineTo(140f,60f);
+        STAR.moveTo(140f, 60f);
+        STAR.lineTo(170f, 110f);
+        STAR.lineTo(220f, 120f);
+        STAR.lineTo(180f, 160f);
+        STAR.lineTo(200f, 220f);
+        STAR.lineTo(140f, 190f);
+        STAR.lineTo(80f, 220f);
+        STAR.lineTo(100f, 160f);
+        STAR.lineTo(60f, 120f);
+        STAR.lineTo(110f, 110f);
+        STAR.lineTo(140f, 60f);
         STAR.close();
 
 
-        CHECKMARK.moveTo(10f,160f);
-        CHECKMARK.lineTo(120f,280f);
-        CHECKMARK.lineTo(300f,40f);
+        CHECKMARK.moveTo(10f, 160f);
+        CHECKMARK.lineTo(120f, 280f);
+        CHECKMARK.lineTo(300f, 40f);
 
     }
 

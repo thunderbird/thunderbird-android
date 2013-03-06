@@ -64,8 +64,8 @@ import de.cketti.library.changelog.ChangeLog;
  * From this Activity the user can perform all standard message operations.
  */
 public class MessageList extends K9FragmentActivity implements MessageListFragmentListener,
-        MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
-        OnSwitchCompleteListener {
+    MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
+    OnSwitchCompleteListener {
 
     // for this activity
     private static final String EXTRA_SEARCH = "search";
@@ -88,14 +88,14 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private static final int NEXT = 2;
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
-            boolean noThreading, boolean newTask) {
+                                           boolean noThreading, boolean newTask) {
         actionDisplaySearch(context, search, noThreading, newTask, true);
     }
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
-            boolean noThreading, boolean newTask, boolean clearTop) {
+                                           boolean noThreading, boolean newTask, boolean clearTop) {
         context.startActivity(
-                intentDisplaySearch(context, search, noThreading, newTask, clearTop));
+            intentDisplaySearch(context, search, noThreading, newTask, clearTop));
     }
 
     public static Intent intentDisplaySearch(Context context, SearchSpecification search,
@@ -257,9 +257,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private void findFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         mMessageListFragment = (MessageListFragment) fragmentManager.findFragmentById(
-                R.id.message_list_container);
+                                   R.id.message_list_container);
         mMessageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(
-                R.id.message_view_container);
+                                   R.id.message_view_container);
     }
 
     /**
@@ -276,7 +276,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         if (!hasMessageListFragment) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
             mMessageListFragment = MessageListFragment.newInstance(mSearch, false,
-                    (K9.isThreadedViewEnabled() && !mNoThreading));
+                                   (K9.isThreadedViewEnabled() && !mNoThreading));
             ft.add(R.id.message_list_container, mMessageListFragment);
             ft.commit();
         }
@@ -309,7 +309,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         if (savedInstanceState != null) {
             DisplayMode savedDisplayMode =
-                    (DisplayMode) savedInstanceState.getSerializable(STATE_DISPLAY_MODE);
+                (DisplayMode) savedInstanceState.getSerializable(STATE_DISPLAY_MODE);
             if (savedDisplayMode != DisplayMode.SPLIT_VIEW) {
                 mDisplayMode = savedDisplayMode;
                 return;
@@ -329,7 +329,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         return (splitViewMode == SplitViewMode.ALWAYS ||
                 (splitViewMode == SplitViewMode.WHEN_IN_LANDSCAPE &&
-                orientation == Configuration.ORIENTATION_LANDSCAPE));
+                 orientation == Configuration.ORIENTATION_LANDSCAPE));
     }
 
     private void initializeLayout() {
@@ -339,26 +339,26 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     private void displayViews() {
         switch (mDisplayMode) {
-            case MESSAGE_LIST: {
-                showMessageList();
-                break;
-            }
-            case MESSAGE_VIEW: {
-                showMessageView();
-                break;
-            }
-            case SPLIT_VIEW: {
-                mMessageListWasDisplayed = true;
-                if (mMessageViewFragment == null) {
-                    showMessageViewPlaceHolder();
-                } else {
-                    MessageReference activeMessage = mMessageViewFragment.getMessageReference();
-                    if (activeMessage != null) {
-                        mMessageListFragment.setActiveMessage(activeMessage);
-                    }
+        case MESSAGE_LIST: {
+            showMessageList();
+            break;
+        }
+        case MESSAGE_VIEW: {
+            showMessageView();
+            break;
+        }
+        case SPLIT_VIEW: {
+            mMessageListWasDisplayed = true;
+            if (mMessageViewFragment == null) {
+                showMessageViewPlaceHolder();
+            } else {
+                MessageReference activeMessage = mMessageViewFragment.getMessageReference();
+                if (activeMessage != null) {
+                    mMessageListFragment.setActiveMessage(activeMessage);
                 }
-                break;
             }
+            break;
+        }
         }
     }
 
@@ -503,7 +503,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
         mActionBarProgress = (ProgressBar) customView.findViewById(R.id.actionbar_progress);
         mActionButtonIndeterminateProgress =
-                getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
+            getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -546,143 +546,143 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
      */
     public boolean onCustomKeyDown(final int keyCode, final KeyEvent event) {
         switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_UP: {
-                if (mMessageViewFragment != null && mDisplayMode != DisplayMode.MESSAGE_LIST &&
-                        K9.useVolumeKeysForNavigationEnabled()) {
-                    showPreviousMessage();
-                    return true;
-                } else if (mDisplayMode != DisplayMode.MESSAGE_VIEW &&
-                        K9.useVolumeKeysForListNavigationEnabled()) {
-                    mMessageListFragment.onMoveUp();
-                    return true;
-                }
+        case KeyEvent.KEYCODE_VOLUME_UP: {
+            if (mMessageViewFragment != null && mDisplayMode != DisplayMode.MESSAGE_LIST &&
+                    K9.useVolumeKeysForNavigationEnabled()) {
+                showPreviousMessage();
+                return true;
+            } else if (mDisplayMode != DisplayMode.MESSAGE_VIEW &&
+                       K9.useVolumeKeysForListNavigationEnabled()) {
+                mMessageListFragment.onMoveUp();
+                return true;
+            }
 
-                break;
+            break;
+        }
+        case KeyEvent.KEYCODE_VOLUME_DOWN: {
+            if (mMessageViewFragment != null && mDisplayMode != DisplayMode.MESSAGE_LIST &&
+                    K9.useVolumeKeysForNavigationEnabled()) {
+                showNextMessage();
+                return true;
+            } else if (mDisplayMode != DisplayMode.MESSAGE_VIEW &&
+                       K9.useVolumeKeysForListNavigationEnabled()) {
+                mMessageListFragment.onMoveDown();
+                return true;
             }
-            case KeyEvent.KEYCODE_VOLUME_DOWN: {
-                if (mMessageViewFragment != null && mDisplayMode != DisplayMode.MESSAGE_LIST &&
-                        K9.useVolumeKeysForNavigationEnabled()) {
-                    showNextMessage();
-                    return true;
-                } else if (mDisplayMode != DisplayMode.MESSAGE_VIEW &&
-                        K9.useVolumeKeysForListNavigationEnabled()) {
-                    mMessageListFragment.onMoveDown();
-                    return true;
-                }
 
-                break;
+            break;
+        }
+        case KeyEvent.KEYCODE_C: {
+            mMessageListFragment.onCompose();
+            return true;
+        }
+        case KeyEvent.KEYCODE_Q: {
+            onShowFolderList();
+            return true;
+        }
+        case KeyEvent.KEYCODE_O: {
+            mMessageListFragment.onCycleSort();
+            return true;
+        }
+        case KeyEvent.KEYCODE_I: {
+            mMessageListFragment.onReverseSort();
+            return true;
+        }
+        case KeyEvent.KEYCODE_DEL:
+        case KeyEvent.KEYCODE_D: {
+            if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                mMessageListFragment.onDelete();
+            } else if (mMessageViewFragment != null) {
+                mMessageViewFragment.onDelete();
             }
-            case KeyEvent.KEYCODE_C: {
-                mMessageListFragment.onCompose();
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_S: {
+            mMessageListFragment.toggleMessageSelect();
+            return true;
+        }
+        case KeyEvent.KEYCODE_G: {
+            if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                mMessageListFragment.onToggleFlagged();
+            } else if (mMessageViewFragment != null) {
+                mMessageViewFragment.onToggleFlagged();
             }
-            case KeyEvent.KEYCODE_Q: {
-                onShowFolderList();
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_M: {
+            if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                mMessageListFragment.onMove();
+            } else if (mMessageViewFragment != null) {
+                mMessageViewFragment.onMove();
             }
-            case KeyEvent.KEYCODE_O: {
-                mMessageListFragment.onCycleSort();
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_V: {
+            if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                mMessageListFragment.onArchive();
+            } else if (mMessageViewFragment != null) {
+                mMessageViewFragment.onArchive();
             }
-            case KeyEvent.KEYCODE_I: {
-                mMessageListFragment.onReverseSort();
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_Y: {
+            if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                mMessageListFragment.onCopy();
+            } else if (mMessageViewFragment != null) {
+                mMessageViewFragment.onCopy();
             }
-            case KeyEvent.KEYCODE_DEL:
-            case KeyEvent.KEYCODE_D: {
-                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
-                    mMessageListFragment.onDelete();
-                } else if (mMessageViewFragment != null) {
-                    mMessageViewFragment.onDelete();
-                }
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_Z: {
+            if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                mMessageListFragment.onToggleRead();
+            } else if (mMessageViewFragment != null) {
+                mMessageViewFragment.onToggleRead();
             }
-            case KeyEvent.KEYCODE_S: {
-                mMessageListFragment.toggleMessageSelect();
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_F: {
+            if (mMessageViewFragment != null) {
+                mMessageViewFragment.onForward();
             }
-            case KeyEvent.KEYCODE_G: {
-                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
-                    mMessageListFragment.onToggleFlagged();
-                } else if (mMessageViewFragment != null) {
-                    mMessageViewFragment.onToggleFlagged();
-                }
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_A: {
+            if (mMessageViewFragment != null) {
+                mMessageViewFragment.onReplyAll();
             }
-            case KeyEvent.KEYCODE_M: {
-                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
-                    mMessageListFragment.onMove();
-                } else if (mMessageViewFragment != null) {
-                    mMessageViewFragment.onMove();
-                }
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_R: {
+            if (mMessageViewFragment != null) {
+                mMessageViewFragment.onReply();
             }
-            case KeyEvent.KEYCODE_V: {
-                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
-                    mMessageListFragment.onArchive();
-                } else if (mMessageViewFragment != null) {
-                    mMessageViewFragment.onArchive();
-                }
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_J:
+        case KeyEvent.KEYCODE_P: {
+            if (mMessageViewFragment != null) {
+                showPreviousMessage();
             }
-            case KeyEvent.KEYCODE_Y: {
-                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
-                    mMessageListFragment.onCopy();
-                } else if (mMessageViewFragment != null) {
-                    mMessageViewFragment.onCopy();
-                }
-                return true;
+            return true;
+        }
+        case KeyEvent.KEYCODE_N:
+        case KeyEvent.KEYCODE_K: {
+            if (mMessageViewFragment != null) {
+                showNextMessage();
             }
-            case KeyEvent.KEYCODE_Z: {
-                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
-                    mMessageListFragment.onToggleRead();
-                } else if (mMessageViewFragment != null) {
-                    mMessageViewFragment.onToggleRead();
-                }
-                return true;
-            }
-            case KeyEvent.KEYCODE_F: {
-                if (mMessageViewFragment != null) {
-                    mMessageViewFragment.onForward();
-                }
-                return true;
-            }
-            case KeyEvent.KEYCODE_A: {
-                if (mMessageViewFragment != null) {
-                    mMessageViewFragment.onReplyAll();
-                }
-                return true;
-            }
-            case KeyEvent.KEYCODE_R: {
-                if (mMessageViewFragment != null) {
-                    mMessageViewFragment.onReply();
-                }
-                return true;
-            }
-            case KeyEvent.KEYCODE_J:
-            case KeyEvent.KEYCODE_P: {
-                if (mMessageViewFragment != null) {
-                    showPreviousMessage();
-                }
-                return true;
-            }
-            case KeyEvent.KEYCODE_N:
-            case KeyEvent.KEYCODE_K: {
-                if (mMessageViewFragment != null) {
-                    showNextMessage();
-                }
-                return true;
-            }
-            /* FIXME
-            case KeyEvent.KEYCODE_Z: {
-                mMessageViewFragment.zoom(event);
-                return true;
-            }*/
-            case KeyEvent.KEYCODE_H: {
-                Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
-                toast.show();
-                return true;
-            }
+            return true;
+        }
+        /* FIXME
+        case KeyEvent.KEYCODE_Z: {
+            mMessageViewFragment.zoom(event);
+            return true;
+        }*/
+        case KeyEvent.KEYCODE_H: {
+            Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
+            toast.show();
+            return true;
+        }
 
         }
 
@@ -729,130 +729,130 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
-            case android.R.id.home: {
-                goBack();
-                return true;
-            }
-            case R.id.compose: {
-                mMessageListFragment.onCompose();
-                return true;
-            }
-            case R.id.toggle_message_view_theme: {
-                onToggleTheme();
-                return true;
-            }
-            // MessageList
-            case R.id.check_mail: {
-                mMessageListFragment.checkMail();
-                return true;
-            }
-            case R.id.set_sort_date: {
-                mMessageListFragment.changeSort(SortType.SORT_DATE);
-                return true;
-            }
-            case R.id.set_sort_arrival: {
-                mMessageListFragment.changeSort(SortType.SORT_ARRIVAL);
-                return true;
-            }
-            case R.id.set_sort_subject: {
-                mMessageListFragment.changeSort(SortType.SORT_SUBJECT);
-                return true;
-            }
+        case android.R.id.home: {
+            goBack();
+            return true;
+        }
+        case R.id.compose: {
+            mMessageListFragment.onCompose();
+            return true;
+        }
+        case R.id.toggle_message_view_theme: {
+            onToggleTheme();
+            return true;
+        }
+        // MessageList
+        case R.id.check_mail: {
+            mMessageListFragment.checkMail();
+            return true;
+        }
+        case R.id.set_sort_date: {
+            mMessageListFragment.changeSort(SortType.SORT_DATE);
+            return true;
+        }
+        case R.id.set_sort_arrival: {
+            mMessageListFragment.changeSort(SortType.SORT_ARRIVAL);
+            return true;
+        }
+        case R.id.set_sort_subject: {
+            mMessageListFragment.changeSort(SortType.SORT_SUBJECT);
+            return true;
+        }
 //            case R.id.set_sort_sender: {
 //                mMessageListFragment.changeSort(SortType.SORT_SENDER);
 //                return true;
 //            }
-            case R.id.set_sort_flag: {
-                mMessageListFragment.changeSort(SortType.SORT_FLAGGED);
-                return true;
-            }
-            case R.id.set_sort_unread: {
-                mMessageListFragment.changeSort(SortType.SORT_UNREAD);
-                return true;
-            }
-            case R.id.set_sort_attach: {
-                mMessageListFragment.changeSort(SortType.SORT_ATTACHMENT);
-                return true;
-            }
-            case R.id.select_all: {
-                mMessageListFragment.selectAll();
-                return true;
-            }
-            case R.id.app_settings: {
-                onEditPrefs();
-                return true;
-            }
-            case R.id.account_settings: {
-                onEditAccount();
-                return true;
-            }
-            case R.id.search: {
-                mMessageListFragment.onSearchRequested();
-                return true;
-            }
-            case R.id.search_remote: {
-                mMessageListFragment.onRemoteSearch();
-                return true;
-            }
-            // MessageView
-            case R.id.next_message: {
-                showNextMessage();
-                return true;
-            }
-            case R.id.previous_message: {
-                showPreviousMessage();
-                return true;
-            }
-            case R.id.delete: {
-                mMessageViewFragment.onDelete();
-                return true;
-            }
-            case R.id.reply: {
-                mMessageViewFragment.onReply();
-                return true;
-            }
-            case R.id.reply_all: {
-                mMessageViewFragment.onReplyAll();
-                return true;
-            }
-            case R.id.forward: {
-                mMessageViewFragment.onForward();
-                return true;
-            }
-            case R.id.share: {
-                mMessageViewFragment.onSendAlternate();
-                return true;
-            }
-            case R.id.toggle_unread: {
-                mMessageViewFragment.onToggleRead();
-                return true;
-            }
-            case R.id.archive: {
-                mMessageViewFragment.onArchive();
-                return true;
-            }
-            case R.id.spam: {
-                mMessageViewFragment.onSpam();
-                return true;
-            }
-            case R.id.move: {
-                mMessageViewFragment.onMove();
-                return true;
-            }
-            case R.id.copy: {
-                mMessageViewFragment.onCopy();
-                return true;
-            }
-            case R.id.select_text: {
-                mMessageViewFragment.onSelectText();
-                return true;
-            }
-            case R.id.show_headers:
-            case R.id.hide_headers: {
-                mMessageViewFragment.onToggleAllHeadersView();
-                updateMenu();
-                return true;
-            }
+        case R.id.set_sort_flag: {
+            mMessageListFragment.changeSort(SortType.SORT_FLAGGED);
+            return true;
+        }
+        case R.id.set_sort_unread: {
+            mMessageListFragment.changeSort(SortType.SORT_UNREAD);
+            return true;
+        }
+        case R.id.set_sort_attach: {
+            mMessageListFragment.changeSort(SortType.SORT_ATTACHMENT);
+            return true;
+        }
+        case R.id.select_all: {
+            mMessageListFragment.selectAll();
+            return true;
+        }
+        case R.id.app_settings: {
+            onEditPrefs();
+            return true;
+        }
+        case R.id.account_settings: {
+            onEditAccount();
+            return true;
+        }
+        case R.id.search: {
+            mMessageListFragment.onSearchRequested();
+            return true;
+        }
+        case R.id.search_remote: {
+            mMessageListFragment.onRemoteSearch();
+            return true;
+        }
+        // MessageView
+        case R.id.next_message: {
+            showNextMessage();
+            return true;
+        }
+        case R.id.previous_message: {
+            showPreviousMessage();
+            return true;
+        }
+        case R.id.delete: {
+            mMessageViewFragment.onDelete();
+            return true;
+        }
+        case R.id.reply: {
+            mMessageViewFragment.onReply();
+            return true;
+        }
+        case R.id.reply_all: {
+            mMessageViewFragment.onReplyAll();
+            return true;
+        }
+        case R.id.forward: {
+            mMessageViewFragment.onForward();
+            return true;
+        }
+        case R.id.share: {
+            mMessageViewFragment.onSendAlternate();
+            return true;
+        }
+        case R.id.toggle_unread: {
+            mMessageViewFragment.onToggleRead();
+            return true;
+        }
+        case R.id.archive: {
+            mMessageViewFragment.onArchive();
+            return true;
+        }
+        case R.id.spam: {
+            mMessageViewFragment.onSpam();
+            return true;
+        }
+        case R.id.move: {
+            mMessageViewFragment.onMove();
+            return true;
+        }
+        case R.id.copy: {
+            mMessageViewFragment.onCopy();
+            return true;
+        }
+        case R.id.select_text: {
+            mMessageViewFragment.onSelectText();
+            return true;
+        }
+        case R.id.show_headers:
+        case R.id.hide_headers: {
+            mMessageViewFragment.onToggleAllHeadersView();
+            updateMenu();
+            return true;
+        }
         }
 
         if (!mSingleFolderMode) {
@@ -862,23 +862,23 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         }
 
         switch (itemId) {
-            case R.id.send_messages: {
-                mMessageListFragment.onSendPendingMessages();
-                return true;
+        case R.id.send_messages: {
+            mMessageListFragment.onSendPendingMessages();
+            return true;
+        }
+        case R.id.folder_settings: {
+            if (mFolderName != null) {
+                FolderSettings.actionSettings(this, mAccount, mFolderName);
             }
-            case R.id.folder_settings: {
-                if (mFolderName != null) {
-                    FolderSettings.actionSettings(this, mAccount, mFolderName);
-                }
-                return true;
-            }
-            case R.id.expunge: {
-                mMessageListFragment.onExpunge();
-                return true;
-            }
-            default: {
-                return super.onOptionsItemSelected(item);
-            }
+            return true;
+        }
+        case R.id.expunge: {
+            mMessageListFragment.onExpunge();
+            return true;
+        }
+        default: {
+            return super.onOptionsItemSelected(item);
+        }
         }
     }
 
@@ -886,7 +886,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.message_list_option, menu);
         mMenu = menu;
-        mMenuButtonCheckMail= menu.findItem(R.id.check_mail);
+        mMenuButtonCheckMail = menu.findItem(R.id.check_mail);
         return true;
     }
 
@@ -919,9 +919,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             menu.findItem(R.id.folder_settings).setVisible(false);
         } else {
             menu.findItem(R.id.account_settings).setVisible(
-                    mMessageListFragment.isSingleAccountMode());
+                mMessageListFragment.isSingleAccountMode());
             menu.findItem(R.id.folder_settings).setVisible(
-                    mMessageListFragment.isSingleFolderMode());
+                mMessageListFragment.isSingleFolderMode());
         }
 
         /*
@@ -949,7 +949,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             } else {
                 MessageReference ref = mMessageViewFragment.getMessageReference();
                 boolean initialized = (mMessageListFragment != null &&
-                        mMessageListFragment.isLoadFinished());
+                                       mMessageListFragment.isLoadFinished());
                 boolean canDoPrev = (initialized && !mMessageListFragment.isFirst(ref));
                 boolean canDoNext = (initialized && !mMessageListFragment.isLast(ref));
 
@@ -1035,7 +1035,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 if (mMessageListFragment.isRemoteFolder()) {
                     menu.findItem(R.id.check_mail).setVisible(true);
                     menu.findItem(R.id.expunge).setVisible(
-                            mMessageListFragment.isAccountExpungeCapable());
+                        mMessageListFragment.isAccountExpungeCapable());
                 } else {
                     menu.findItem(R.id.check_mail).setVisible(false);
                     menu.findItem(R.id.expunge).setVisible(false);
@@ -1161,9 +1161,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     public void onBackStackChanged() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         mMessageListFragment = (MessageListFragment) fragmentManager.findFragmentById(
-                R.id.message_list_container);
+                                   R.id.message_list_container);
         mMessageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(
-                R.id.message_view_container);
+                                   R.id.message_view_container);
 
         if (mDisplayMode == DisplayMode.SPLIT_VIEW) {
             showMessageViewPlaceHolder();
@@ -1305,7 +1305,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             mActionBarProgress.setVisibility(ProgressBar.GONE);
             if (enable) {
                 mMenuButtonCheckMail
-                        .setActionView(mActionButtonIndeterminateProgress);
+                .setActionView(mActionButtonIndeterminateProgress);
             } else {
                 mMenuButtonCheckMail.setActionView(null);
             }

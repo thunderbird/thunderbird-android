@@ -167,9 +167,9 @@ public class Prefs extends K9PreferenceActivity {
         mFixedMessageTheme = (CheckBoxPreference) findPreference(PREFERENCE_FIXED_MESSAGE_THEME);
         mFixedMessageTheme.setChecked(K9.useFixedMessageViewTheme());
         mMessageTheme = setupListPreference(PREFERENCE_MESSAGE_VIEW_THEME,
-                themeIdToName(K9.getK9MessageViewThemeSetting()));
+                                            themeIdToName(K9.getK9MessageViewThemeSetting()));
         mComposerTheme = setupListPreference(PREFERENCE_COMPOSER_THEME,
-                themeIdToName(K9.getK9ComposerThemeSetting()));
+                                             themeIdToName(K9.getK9ComposerThemeSetting()));
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
         new Preference.OnPreferenceClickListener() {
@@ -214,7 +214,7 @@ public class Prefs extends K9PreferenceActivity {
         mConfirmActions.setCheckedItems(confirmActionValues);
 
         mNotificationHideSubject = setupListPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT,
-                K9.getNotificationHideSubject().toString());
+                                   K9.getNotificationHideSubject().toString());
 
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());
@@ -315,7 +315,7 @@ public class Prefs extends K9PreferenceActivity {
         });
 
         mNotificationQuickDelete = setupListPreference(PREFERENCE_NOTIF_QUICK_DELETE,
-                K9.getNotificationQuickDeleteBehaviour().toString());
+                                   K9.getNotificationQuickDeleteBehaviour().toString());
         if (!MessagingController.platformSupportsExtendedNotifications()) {
             PreferenceScreen prefs = (PreferenceScreen) findPreference("notification_preferences");
             prefs.removePreference(mNotificationQuickDelete);
@@ -395,14 +395,17 @@ public class Prefs extends K9PreferenceActivity {
 
         mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
-                mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
+                           mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
     }
 
     private static String themeIdToName(K9.Theme theme) {
         switch (theme) {
-            case DARK: return "dark";
-            case USE_GLOBAL: return "global";
-            default: return "light";
+        case DARK:
+            return "dark";
+        case USE_GLOBAL:
+            return "global";
+        default:
+            return "light";
         }
     }
 
@@ -465,7 +468,7 @@ public class Prefs extends K9PreferenceActivity {
 
         if (mNotificationQuickDelete != null) {
             K9.setNotificationQuickDeleteBehaviour(
-                    NotificationQuickDelete.valueOf(mNotificationQuickDelete.getValue()));
+                NotificationQuickDelete.valueOf(mNotificationQuickDelete.getValue()));
         }
 
         K9.setSplitViewMode(SplitViewMode.valueOf(mSplitViewMode.getValue()));

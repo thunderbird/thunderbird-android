@@ -147,7 +147,7 @@ public class Address {
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
                 } else {
                     Log.e(K9.LOG_TAG, "Unknown address type from Mime4J: "
-                            + address.getClass().toString());
+                          + address.getClass().toString());
                 }
             }
         } catch (MimeException pe) {

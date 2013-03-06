@@ -32,7 +32,7 @@ public class MessageTitleView extends TextView {
 
     @Override
     protected void onTextChanged(CharSequence text, int start,
-            int lengthBefore, int lengthAfter) {
+                                 int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
         mNeedEllipsizeCheck = true;
     }

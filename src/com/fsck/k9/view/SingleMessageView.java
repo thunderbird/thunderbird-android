@@ -60,7 +60,7 @@ import java.util.List;
 
 
 public class SingleMessageView extends LinearLayout implements OnClickListener,
-        MessageHeader.OnLayoutChangedListener, OnCreateContextMenuListener {
+    MessageHeader.OnLayoutChangedListener, OnCreateContextMenuListener {
     private static final int MENU_ITEM_LINK_VIEW = Menu.FIRST;
     private static final int MENU_ITEM_LINK_SHARE = Menu.FIRST + 1;
     private static final int MENU_ITEM_LINK_COPY = Menu.FIRST + 2;
@@ -194,220 +194,220 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         Context context = getContext();
 
         switch (type) {
-            case HitTestResult.SRC_ANCHOR_TYPE: {
-                final String url = result.getExtra();
-                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case MENU_ITEM_LINK_VIEW: {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                getContext().startActivity(intent);
-                                break;
-                            }
-                            case MENU_ITEM_LINK_SHARE: {
-                                Intent intent = new Intent(Intent.ACTION_SEND);
-                                intent.setType("text/plain");
-                                intent.putExtra(Intent.EXTRA_TEXT, url);
-                                getContext().startActivity(intent);
-                                break;
-                            }
-                            case MENU_ITEM_LINK_COPY: {
-                                String label = getContext().getString(
-                                        R.string.webview_contextmenu_link_clipboard_label);
-                                mClipboardManager.setText(label, url);
-                                break;
-                            }
-                        }
-                        return true;
+        case HitTestResult.SRC_ANCHOR_TYPE: {
+            final String url = result.getExtra();
+            OnMenuItemClickListener listener = new OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                    case MENU_ITEM_LINK_VIEW: {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        getContext().startActivity(intent);
+                        break;
                     }
-                };
-
-                menu.setHeaderTitle(url);
-
-                menu.add(Menu.NONE, MENU_ITEM_LINK_VIEW, 0,
-                        context.getString(R.string.webview_contextmenu_link_view_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_LINK_SHARE, 1,
-                        context.getString(R.string.webview_contextmenu_link_share_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_LINK_COPY, 2,
-                        context.getString(R.string.webview_contextmenu_link_copy_action))
-                        .setOnMenuItemClickListener(listener);
-
-                break;
-            }
-            case HitTestResult.IMAGE_TYPE:
-            case HitTestResult.SRC_IMAGE_ANCHOR_TYPE: {
-                final String url = result.getExtra();
-                final boolean externalImage = url.startsWith("http");
-                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case MENU_ITEM_IMAGE_VIEW: {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                if (!externalImage) {
-                                    // Grant read permission if this points to our
-                                    // AttachmentProvider
-                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                }
-                                getContext().startActivity(intent);
-                                break;
-                            }
-                            case MENU_ITEM_IMAGE_SAVE: {
-                                new DownloadImageTask().execute(url);
-                                break;
-                            }
-                            case MENU_ITEM_IMAGE_COPY: {
-                                String label = getContext().getString(
-                                        R.string.webview_contextmenu_image_clipboard_label);
-                                mClipboardManager.setText(label, url);
-                                break;
-                            }
-                        }
-                        return true;
+                    case MENU_ITEM_LINK_SHARE: {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_TEXT, url);
+                        getContext().startActivity(intent);
+                        break;
                     }
-                };
-
-                menu.setHeaderTitle((externalImage) ?
-                        url : context.getString(R.string.webview_contextmenu_image_title));
-
-                menu.add(Menu.NONE, MENU_ITEM_IMAGE_VIEW, 0,
-                        context.getString(R.string.webview_contextmenu_image_view_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_IMAGE_SAVE, 1,
-                        (externalImage) ?
-                            context.getString(R.string.webview_contextmenu_image_download_action) :
-                            context.getString(R.string.webview_contextmenu_image_save_action))
-                        .setOnMenuItemClickListener(listener);
-
-                if (externalImage) {
-                    menu.add(Menu.NONE, MENU_ITEM_IMAGE_COPY, 2,
-                            context.getString(R.string.webview_contextmenu_image_copy_action))
-                            .setOnMenuItemClickListener(listener);
+                    case MENU_ITEM_LINK_COPY: {
+                        String label = getContext().getString(
+                                           R.string.webview_contextmenu_link_clipboard_label);
+                        mClipboardManager.setText(label, url);
+                        break;
+                    }
+                    }
+                    return true;
                 }
+            };
 
-                break;
-            }
-            case HitTestResult.PHONE_TYPE: {
-                final String phoneNumber = result.getExtra();
-                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case MENU_ITEM_PHONE_CALL: {
-                                Uri uri = Uri.parse(WebView.SCHEME_TEL + phoneNumber);
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                getContext().startActivity(intent);
-                                break;
-                            }
-                            case MENU_ITEM_PHONE_SAVE: {
-                                Contacts contacts = Contacts.getInstance(getContext());
-                                contacts.addPhoneContact(phoneNumber);
-                                break;
-                            }
-                            case MENU_ITEM_PHONE_COPY: {
-                                String label = getContext().getString(
-                                        R.string.webview_contextmenu_phone_clipboard_label);
-                                mClipboardManager.setText(label, phoneNumber);
-                                break;
-                            }
+            menu.setHeaderTitle(url);
+
+            menu.add(Menu.NONE, MENU_ITEM_LINK_VIEW, 0,
+                     context.getString(R.string.webview_contextmenu_link_view_action))
+            .setOnMenuItemClickListener(listener);
+
+            menu.add(Menu.NONE, MENU_ITEM_LINK_SHARE, 1,
+                     context.getString(R.string.webview_contextmenu_link_share_action))
+            .setOnMenuItemClickListener(listener);
+
+            menu.add(Menu.NONE, MENU_ITEM_LINK_COPY, 2,
+                     context.getString(R.string.webview_contextmenu_link_copy_action))
+            .setOnMenuItemClickListener(listener);
+
+            break;
+        }
+        case HitTestResult.IMAGE_TYPE:
+        case HitTestResult.SRC_IMAGE_ANCHOR_TYPE: {
+            final String url = result.getExtra();
+            final boolean externalImage = url.startsWith("http");
+            OnMenuItemClickListener listener = new OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                    case MENU_ITEM_IMAGE_VIEW: {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        if (!externalImage) {
+                            // Grant read permission if this points to our
+                            // AttachmentProvider
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         }
-
-                        return true;
+                        getContext().startActivity(intent);
+                        break;
                     }
-                };
-
-                menu.setHeaderTitle(phoneNumber);
-
-                menu.add(Menu.NONE, MENU_ITEM_PHONE_CALL, 0,
-                        context.getString(R.string.webview_contextmenu_phone_call_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_PHONE_SAVE, 1,
-                        context.getString(R.string.webview_contextmenu_phone_save_action))
-                        .setOnMenuItemClickListener(listener);
-
-                menu.add(Menu.NONE, MENU_ITEM_PHONE_COPY, 2,
-                        context.getString(R.string.webview_contextmenu_phone_copy_action))
-                        .setOnMenuItemClickListener(listener);
-
-                break;
-            }
-            case WebView.HitTestResult.EMAIL_TYPE: {
-                final String email = result.getExtra();
-                OnMenuItemClickListener listener = new OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case MENU_ITEM_EMAIL_SEND: {
-                                Uri uri = Uri.parse(WebView.SCHEME_MAILTO + email);
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                getContext().startActivity(intent);
-                                break;
-                            }
-                            case MENU_ITEM_EMAIL_SAVE: {
-                                Contacts contacts = Contacts.getInstance(getContext());
-                                contacts.createContact(new Address(email));
-                                break;
-                            }
-                            case MENU_ITEM_EMAIL_COPY: {
-                                String label = getContext().getString(
-                                        R.string.webview_contextmenu_email_clipboard_label);
-                                mClipboardManager.setText(label, email);
-                                break;
-                            }
-                        }
-
-                        return true;
+                    case MENU_ITEM_IMAGE_SAVE: {
+                        new DownloadImageTask().execute(url);
+                        break;
                     }
-                };
+                    case MENU_ITEM_IMAGE_COPY: {
+                        String label = getContext().getString(
+                                           R.string.webview_contextmenu_image_clipboard_label);
+                        mClipboardManager.setText(label, url);
+                        break;
+                    }
+                    }
+                    return true;
+                }
+            };
 
-                menu.setHeaderTitle(email);
+            menu.setHeaderTitle((externalImage) ?
+                                url : context.getString(R.string.webview_contextmenu_image_title));
 
-                menu.add(Menu.NONE, MENU_ITEM_EMAIL_SEND, 0,
-                        context.getString(R.string.webview_contextmenu_email_send_action))
-                        .setOnMenuItemClickListener(listener);
+            menu.add(Menu.NONE, MENU_ITEM_IMAGE_VIEW, 0,
+                     context.getString(R.string.webview_contextmenu_image_view_action))
+            .setOnMenuItemClickListener(listener);
 
-                menu.add(Menu.NONE, MENU_ITEM_EMAIL_SAVE, 1,
-                        context.getString(R.string.webview_contextmenu_email_save_action))
-                        .setOnMenuItemClickListener(listener);
+            menu.add(Menu.NONE, MENU_ITEM_IMAGE_SAVE, 1,
+                     (externalImage) ?
+                     context.getString(R.string.webview_contextmenu_image_download_action) :
+                     context.getString(R.string.webview_contextmenu_image_save_action))
+            .setOnMenuItemClickListener(listener);
 
-                menu.add(Menu.NONE, MENU_ITEM_EMAIL_COPY, 2,
-                        context.getString(R.string.webview_contextmenu_email_copy_action))
-                        .setOnMenuItemClickListener(listener);
-
-                break;
+            if (externalImage) {
+                menu.add(Menu.NONE, MENU_ITEM_IMAGE_COPY, 2,
+                         context.getString(R.string.webview_contextmenu_image_copy_action))
+                .setOnMenuItemClickListener(listener);
             }
+
+            break;
+        }
+        case HitTestResult.PHONE_TYPE: {
+            final String phoneNumber = result.getExtra();
+            OnMenuItemClickListener listener = new OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                    case MENU_ITEM_PHONE_CALL: {
+                        Uri uri = Uri.parse(WebView.SCHEME_TEL + phoneNumber);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        getContext().startActivity(intent);
+                        break;
+                    }
+                    case MENU_ITEM_PHONE_SAVE: {
+                        Contacts contacts = Contacts.getInstance(getContext());
+                        contacts.addPhoneContact(phoneNumber);
+                        break;
+                    }
+                    case MENU_ITEM_PHONE_COPY: {
+                        String label = getContext().getString(
+                                           R.string.webview_contextmenu_phone_clipboard_label);
+                        mClipboardManager.setText(label, phoneNumber);
+                        break;
+                    }
+                    }
+
+                    return true;
+                }
+            };
+
+            menu.setHeaderTitle(phoneNumber);
+
+            menu.add(Menu.NONE, MENU_ITEM_PHONE_CALL, 0,
+                     context.getString(R.string.webview_contextmenu_phone_call_action))
+            .setOnMenuItemClickListener(listener);
+
+            menu.add(Menu.NONE, MENU_ITEM_PHONE_SAVE, 1,
+                     context.getString(R.string.webview_contextmenu_phone_save_action))
+            .setOnMenuItemClickListener(listener);
+
+            menu.add(Menu.NONE, MENU_ITEM_PHONE_COPY, 2,
+                     context.getString(R.string.webview_contextmenu_phone_copy_action))
+            .setOnMenuItemClickListener(listener);
+
+            break;
+        }
+        case WebView.HitTestResult.EMAIL_TYPE: {
+            final String email = result.getExtra();
+            OnMenuItemClickListener listener = new OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                    case MENU_ITEM_EMAIL_SEND: {
+                        Uri uri = Uri.parse(WebView.SCHEME_MAILTO + email);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        getContext().startActivity(intent);
+                        break;
+                    }
+                    case MENU_ITEM_EMAIL_SAVE: {
+                        Contacts contacts = Contacts.getInstance(getContext());
+                        contacts.createContact(new Address(email));
+                        break;
+                    }
+                    case MENU_ITEM_EMAIL_COPY: {
+                        String label = getContext().getString(
+                                           R.string.webview_contextmenu_email_clipboard_label);
+                        mClipboardManager.setText(label, email);
+                        break;
+                    }
+                    }
+
+                    return true;
+                }
+            };
+
+            menu.setHeaderTitle(email);
+
+            menu.add(Menu.NONE, MENU_ITEM_EMAIL_SEND, 0,
+                     context.getString(R.string.webview_contextmenu_email_send_action))
+            .setOnMenuItemClickListener(listener);
+
+            menu.add(Menu.NONE, MENU_ITEM_EMAIL_SAVE, 1,
+                     context.getString(R.string.webview_contextmenu_email_save_action))
+            .setOnMenuItemClickListener(listener);
+
+            menu.add(Menu.NONE, MENU_ITEM_EMAIL_COPY, 2,
+                     context.getString(R.string.webview_contextmenu_email_copy_action))
+            .setOnMenuItemClickListener(listener);
+
+            break;
+        }
         }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.show_hidden_attachments: {
-                onShowHiddenAttachments();
-                break;
-            }
-            case R.id.show_message: {
-                onShowMessage();
-                break;
-            }
-            case R.id.show_attachments: {
-                onShowAttachments();
-                break;
-            }
-            case R.id.show_pictures: {
-                // Allow network access first...
-                setLoadPictures(true);
-                // ...then re-populate the WebView with the message text
-                loadBodyFromText(mText, "text/html");
-                break;
-            }
+        case R.id.show_hidden_attachments: {
+            onShowHiddenAttachments();
+            break;
+        }
+        case R.id.show_message: {
+            onShowMessage();
+            break;
+        }
+        case R.id.show_attachments: {
+            onShowAttachments();
+            break;
+        }
+        case R.id.show_pictures: {
+            // Allow network access first...
+            setLoadPictures(true);
+            // ...then re-populate the WebView with the message text
+            loadBodyFromText(mText, "text/html");
+            break;
+        }
         }
     }
 
@@ -549,7 +549,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     }
 
     public void setMessage(Account account, LocalMessage message, PgpData pgpData,
-            MessagingController controller, MessagingListener listener) throws MessagingException {
+                           MessagingController controller, MessagingListener listener) throws MessagingException {
         resetView();
 
         String text = null;
@@ -625,8 +625,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
     public void showStatusMessage(String status) {
         String text = "<html><body><div style=\"text-align:center; color: grey;\">" +
-                status +
-                "</div></body></html>";
+                      status +
+                      "</div></body></html>";
         loadBodyFromText(text, "text/html");
         mCryptoView.hide();
     }
@@ -647,7 +647,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     public void showAttachments(boolean show) {
         mAttachmentsContainer.setVisibility(show ? View.VISIBLE : View.GONE);
         boolean showHidden = (show && mHiddenAttachments.getVisibility() == View.GONE &&
-                mHiddenAttachments.getChildCount() > 0);
+                              mHiddenAttachments.getChildCount() > 0);
         mShowHiddenAttachments.setVisibility(showHidden ? View.VISIBLE : View.GONE);
 
         if (show) {
@@ -776,9 +776,9 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         SavedState savedState = new SavedState(superState);
 
         savedState.attachmentViewVisible = (mAttachmentsContainer != null &&
-                mAttachmentsContainer.getVisibility() == View.VISIBLE);
+                                            mAttachmentsContainer.getVisibility() == View.VISIBLE);
         savedState.hiddenAttachmentsVisible = (mHiddenAttachments != null &&
-                mHiddenAttachments.getVisibility() == View.VISIBLE);
+                                               mHiddenAttachments.getVisibility() == View.VISIBLE);
         savedState.showPictures = mShowPictures;
 
         return savedState;
@@ -786,7 +786,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
-        if(!(state instanceof SavedState)) {
+        if (!(state instanceof SavedState)) {
             super.onRestoreInstanceState(state);
             return;
         }
@@ -810,7 +810,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         boolean showPictures;
 
         public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
+        new Parcelable.Creator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);

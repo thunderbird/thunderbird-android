@@ -109,7 +109,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 
 public class MessageListFragment extends SherlockFragment implements OnItemClickListener,
-        ConfirmationDialogFragmentListener, LoaderCallbacks<Cursor> {
+    ConfirmationDialogFragmentListener, LoaderCallbacks<Cursor> {
 
     private static final String[] THREADED_PROJECTION = {
         MessageColumns.ID,
@@ -329,7 +329,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         // fill the mapping at class time loading
 
         final Map<SortType, Comparator<Cursor>> map =
-                new EnumMap<SortType, Comparator<Cursor>>(SortType.class);
+            new EnumMap<SortType, Comparator<Cursor>>(SortType.class);
         map.put(SortType.SORT_ATTACHMENT, new AttachmentComparator());
         map.put(SortType.SORT_DATE, new DateComparator());
         map.put(SortType.SORT_ARRIVAL, new ArrivalComparator());
@@ -457,7 +457,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         public void folderLoading(String folder, boolean loading) {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_FOLDER_LOADING,
-                    (loading) ? 1 : 0, 0, folder);
+                                     (loading) ? 1 : 0, 0, folder);
             sendMessage(msg);
         }
 
@@ -468,7 +468,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         public void progress(final boolean progress) {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_PROGRESS,
-                    (progress) ? 1 : 0, 0);
+                                     (progress) ? 1 : 0, 0);
             sendMessage(msg);
         }
 
@@ -493,14 +493,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         public void restoreListPosition() {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION,
-                    mSavedListState);
+                                     mSavedListState);
             mSavedListState = null;
             sendMessage(msg);
         }
 
         public void openMessage(MessageReference messageReference) {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_OPEN_MESSAGE,
-                    messageReference);
+                                     messageReference);
             sendMessage(msg);
         }
 
@@ -508,10 +508,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public void handleMessage(android.os.Message msg) {
             // The following messages don't need an attached activity.
             switch (msg.what) {
-                case ACTION_REMOTE_SEARCH_FINISHED: {
-                    MessageListFragment.this.remoteSearchFinished();
-                    return;
-                }
+            case ACTION_REMOTE_SEARCH_FINISHED: {
+                MessageListFragment.this.remoteSearchFinished();
+                return;
+            }
             }
 
             // Discard messages if the fragment isn't attached to an activity anymore.
@@ -521,34 +521,34 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
 
             switch (msg.what) {
-                case ACTION_FOLDER_LOADING: {
-                    String folder = (String) msg.obj;
-                    boolean loading = (msg.arg1 == 1);
-                    MessageListFragment.this.folderLoading(folder, loading);
-                    break;
-                }
-                case ACTION_REFRESH_TITLE: {
-                    updateTitle();
-                    break;
-                }
-                case ACTION_PROGRESS: {
-                    boolean progress = (msg.arg1 == 1);
-                    MessageListFragment.this.progress(progress);
-                    break;
-                }
-                case ACTION_GO_BACK: {
-                    mFragmentListener.goBack();
-                    break;
-                }
-                case ACTION_RESTORE_LIST_POSITION: {
-                    mListView.onRestoreInstanceState((Parcelable) msg.obj);
-                    break;
-                }
-                case ACTION_OPEN_MESSAGE: {
-                    MessageReference messageReference = (MessageReference) msg.obj;
-                    mFragmentListener.openMessage(messageReference);
-                    break;
-                }
+            case ACTION_FOLDER_LOADING: {
+                String folder = (String) msg.obj;
+                boolean loading = (msg.arg1 == 1);
+                MessageListFragment.this.folderLoading(folder, loading);
+                break;
+            }
+            case ACTION_REFRESH_TITLE: {
+                updateTitle();
+                break;
+            }
+            case ACTION_PROGRESS: {
+                boolean progress = (msg.arg1 == 1);
+                MessageListFragment.this.progress(progress);
+                break;
+            }
+            case ACTION_GO_BACK: {
+                mFragmentListener.goBack();
+                break;
+            }
+            case ACTION_RESTORE_LIST_POSITION: {
+                mListView.onRestoreInstanceState((Parcelable) msg.obj);
+                break;
+            }
+            case ACTION_OPEN_MESSAGE: {
+                MessageReference messageReference = (MessageReference) msg.obj;
+                mFragmentListener.openMessage(messageReference);
+                break;
+            }
             }
         }
     }
@@ -559,7 +559,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      */
     protected Comparator<Cursor> getComparator() {
         final List<Comparator<Cursor>> chain =
-                new ArrayList<Comparator<Cursor>>(3 /* we add 3 comparators at most */);
+            new ArrayList<Comparator<Cursor>>(3 /* we add 3 comparators at most */);
 
         // Add the specified comparator
         final Comparator<Cursor> comparator = SORT_COMPARATORS.get(mSortType);
@@ -625,7 +625,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (!isManualSearch() && mSingleFolderMode) {
             Activity activity = getActivity();
             String displayName = FolderInfoHolder.getDisplayName(activity, mAccount,
-                mFolderName);
+                                 mFolderName);
 
             mFragmentListener.setMessageListTitle(displayName);
 
@@ -677,7 +677,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 mController.loadMoreMessages(mAccount, mFolderName, null);
 
             } else if (mCurrentFolder != null && isRemoteSearch() &&
-                    mExtraSearchResults != null && mExtraSearchResults.size() > 0) {
+                       mExtraSearchResults != null && mExtraSearchResults.size() > 0) {
 
                 int numResults = mExtraSearchResults.size();
                 int limit = mAccount.getRemoteSearchNumResults();
@@ -687,7 +687,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 if (limit > 0 && numResults > limit) {
                     toProcess = toProcess.subList(0, limit);
                     mExtraSearchResults = mExtraSearchResults.subList(limit,
-                            mExtraSearchResults.size());
+                                          mExtraSearchResults.size());
                 } else {
                     mExtraSearchResults = null;
                     updateFooter("");
@@ -728,7 +728,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mFragmentListener = (MessageListFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.getClass() +
-                    " must implement MessageListFragmentListener");
+                                         " must implement MessageListFragmentListener");
         }
     }
 
@@ -759,7 +759,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         mInflater = inflater;
 
@@ -1019,7 +1019,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (mHasConnectivity == null) {
             final ConnectivityManager connectivityManager =
                 (ConnectivityManager) getActivity().getApplication().getSystemService(
-                        Context.CONNECTIVITY_SERVICE);
+                    Context.CONNECTIVITY_SERVICE);
             final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
             if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
                 mHasConnectivity = true;
@@ -1064,7 +1064,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             if (mSearch.isManualSearch() && mAccount.allowRemoteSearch()) {
                 // "Pull to search server"
                 mPullToRefreshView.setOnRefreshListener(
-                        new PullToRefreshBase.OnRefreshListener<ListView>() {
+                new PullToRefreshBase.OnRefreshListener<ListView>() {
                     @Override
                     public void onRefresh(PullToRefreshBase<ListView> refreshView) {
                         mPullToRefreshView.onRefreshComplete();
@@ -1073,13 +1073,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 });
                 ILoadingLayout proxy = mPullToRefreshView.getLoadingLayoutProxy();
                 proxy.setPullLabel(getString(
-                        R.string.pull_to_refresh_remote_search_from_local_search_pull));
+                                       R.string.pull_to_refresh_remote_search_from_local_search_pull));
                 proxy.setReleaseLabel(getString(
-                        R.string.pull_to_refresh_remote_search_from_local_search_release));
+                                          R.string.pull_to_refresh_remote_search_from_local_search_release));
             } else {
                 // "Pull to refresh"
                 mPullToRefreshView.setOnRefreshListener(
-                        new PullToRefreshBase.OnRefreshListener<ListView>() {
+                new PullToRefreshBase.OnRefreshListener<ListView>() {
                     @Override
                     public void onRefresh(PullToRefreshBase<ListView> refreshView) {
                         checkMail();
@@ -1107,7 +1107,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      */
     private void setPullToRefreshEnabled(boolean enable) {
         mPullToRefreshView.setMode((enable) ?
-                PullToRefreshBase.Mode.PULL_FROM_START : PullToRefreshBase.Mode.DISABLED);
+                                   PullToRefreshBase.Mode.PULL_FROM_START : PullToRefreshBase.Mode.DISABLED);
     }
 
     private void initializeLayout() {
@@ -1168,7 +1168,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mRemoteSearchPerformed = true;
         mRemoteSearchFuture = mController.searchRemoteMessages(searchAccount, searchFolder,
-                queryString, null, null, mListener);
+                              queryString, null, null, mListener);
 
         mFragmentListener.remoteSearchStarted();
     }
@@ -1315,24 +1315,24 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private void showDialog(int dialogId) {
         DialogFragment fragment;
         switch (dialogId) {
-            case R.id.dialog_confirm_spam: {
-                String title = getString(R.string.dialog_confirm_spam_title);
+        case R.id.dialog_confirm_spam: {
+            String title = getString(R.string.dialog_confirm_spam_title);
 
-                int selectionSize = mActiveMessages.size();
-                String message = getResources().getQuantityString(
-                        R.plurals.dialog_confirm_spam_message, selectionSize,
-                        Integer.valueOf(selectionSize));
+            int selectionSize = mActiveMessages.size();
+            String message = getResources().getQuantityString(
+                                 R.plurals.dialog_confirm_spam_message, selectionSize,
+                                 Integer.valueOf(selectionSize));
 
-                String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
-                String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
+            String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
 
-                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                        confirmText, cancelText);
-                break;
-            }
-            default: {
-                throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
-            }
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                       confirmText, cancelText);
+            break;
+        }
+        default: {
+            throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
+        }
         }
 
         fragment.setTargetFragment(this, dialogId);
@@ -1414,78 +1414,78 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         int adapterPosition = listViewToAdapterPosition(info.position);
 
         switch (item.getItemId()) {
-            case R.id.reply: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onReply(message);
-                break;
+        case R.id.reply: {
+            Message message = getMessageAtPosition(adapterPosition);
+            onReply(message);
+            break;
+        }
+        case R.id.reply_all: {
+            Message message = getMessageAtPosition(adapterPosition);
+            onReplyAll(message);
+            break;
+        }
+        case R.id.forward: {
+            Message message = getMessageAtPosition(adapterPosition);
+            onForward(message);
+            break;
+        }
+        case R.id.send_again: {
+            Message message = getMessageAtPosition(adapterPosition);
+            onResendMessage(message);
+            mSelectedCount = 0;
+            break;
+        }
+        case R.id.same_sender: {
+            Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+            String senderAddress = getSenderAddressFromCursor(cursor);
+            if (senderAddress != null) {
+                mFragmentListener.showMoreFromSameSender(senderAddress);
             }
-            case R.id.reply_all: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onReplyAll(message);
-                break;
-            }
-            case R.id.forward: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onForward(message);
-                break;
-            }
-            case R.id.send_again: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onResendMessage(message);
-                mSelectedCount = 0;
-                break;
-            }
-            case R.id.same_sender: {
-                Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
-                String senderAddress = getSenderAddressFromCursor(cursor);
-                if (senderAddress != null) {
-                    mFragmentListener.showMoreFromSameSender(senderAddress);
-                }
-                break;
-            }
-            case R.id.delete: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onDelete(message);
-                break;
-            }
-            case R.id.mark_as_read: {
-                setFlag(adapterPosition, Flag.SEEN, true);
-                break;
-            }
-            case R.id.mark_as_unread: {
-                setFlag(adapterPosition, Flag.SEEN, false);
-                break;
-            }
-            case R.id.flag: {
-                setFlag(adapterPosition, Flag.FLAGGED, true);
-                break;
-            }
-            case R.id.unflag: {
-                setFlag(adapterPosition, Flag.FLAGGED, false);
-                break;
-            }
+            break;
+        }
+        case R.id.delete: {
+            Message message = getMessageAtPosition(adapterPosition);
+            onDelete(message);
+            break;
+        }
+        case R.id.mark_as_read: {
+            setFlag(adapterPosition, Flag.SEEN, true);
+            break;
+        }
+        case R.id.mark_as_unread: {
+            setFlag(adapterPosition, Flag.SEEN, false);
+            break;
+        }
+        case R.id.flag: {
+            setFlag(adapterPosition, Flag.FLAGGED, true);
+            break;
+        }
+        case R.id.unflag: {
+            setFlag(adapterPosition, Flag.FLAGGED, false);
+            break;
+        }
 
-            // only if the account supports this
-            case R.id.archive: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onArchive(message);
-                break;
-            }
-            case R.id.spam: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onSpam(message);
-                break;
-            }
-            case R.id.move: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onMove(message);
-                break;
-            }
-            case R.id.copy: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onCopy(message);
-                break;
-            }
+        // only if the account supports this
+        case R.id.archive: {
+            Message message = getMessageAtPosition(adapterPosition);
+            onArchive(message);
+            break;
+        }
+        case R.id.spam: {
+            Message message = getMessageAtPosition(adapterPosition);
+            onSpam(message);
+            break;
+        }
+        case R.id.move: {
+            Message message = getMessageAtPosition(adapterPosition);
+            onMove(message);
+            break;
+        }
+        case R.id.copy: {
+            Message message = getMessageAtPosition(adapterPosition);
+            onCopy(message);
+            break;
+        }
         }
 
         return true;
@@ -1615,7 +1615,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     Activity activity = getActivity();
                     if (activity != null) {
                         Toast.makeText(activity, R.string.remote_search_error,
-                                Toast.LENGTH_LONG).show();
+                                       Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -1673,7 +1673,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         @Override
         public void synchronizeMailboxFinished(Account account, String folder,
-        int totalMessagesInMailbox, int numNewMessages) {
+                                               int totalMessagesInMailbox, int numNewMessages) {
 
             if (updateForMe(account, folder)) {
                 mHandler.progress(false);
@@ -1754,7 +1754,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.preview = (TextView) view.findViewById(R.id.preview);
 
             QuickContactBadge contactBadge =
-                    (QuickContactBadge) view.findViewById(R.id.contact_badge);
+                (QuickContactBadge) view.findViewById(R.id.contact_badge);
             if (mContactsPictureLoader != null) {
                 holder.contactBadge = contactBadge;
             } else {
@@ -1775,7 +1775,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
 
             // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
-            holder.preview.setLines(Math.max(mPreviewLines,1));
+            holder.preview.setLines(Math.max(mPreviewLines, 1));
             mFontSizes.setViewTextSize(holder.preview, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
 
@@ -1849,7 +1849,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 holder.chip.setBackgroundDrawable(account.getCheckmarkChip().drawable());
             } else {
                 holder.chip.setBackgroundDrawable(account.generateColorChip(read, toMe, ccMe,
-                        fromMe, flagged).drawable());
+                                                  fromMe, flagged).drawable());
             }
 
             if (mCheckboxes) {
@@ -1924,7 +1924,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             String sigil = recipientSigil(toMe, ccMe);
 
             SpannableStringBuilder messageStringBuilder = new SpannableStringBuilder(sigil)
-                    .append(beforePreviewText);
+            .append(beforePreviewText);
 
             if (mPreviewLines > 0) {
                 String preview = cursor.getString(PREVIEW_COLUMN);
@@ -1939,21 +1939,21 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             // Create a span section for the sender, and assign the correct font size and weight
             int fontSize = (mSenderAboveSubject) ?
-                    mFontSizes.getMessageListSubject():
-                    mFontSizes.getMessageListSender();
+                           mFontSizes.getMessageListSubject() :
+                           mFontSizes.getMessageListSender();
 
             AbsoluteSizeSpan span = new AbsoluteSizeSpan(fontSize, true);
             str.setSpan(span, 0, beforePreviewText.length() + sigil.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             //TODO: make this part of the theme
             int color = (K9.getK9Theme() == K9.Theme.LIGHT) ?
-                    Color.rgb(105, 105, 105) :
-                    Color.rgb(160, 160, 160);
+                        Color.rgb(105, 105, 105) :
+                        Color.rgb(160, 160, 160);
 
             // Set span (color) for preview message
             str.setSpan(new ForegroundColorSpan(color), beforePreviewText.length() + sigil.length(),
-                    str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             Drawable statusHolder = null;
             if (forwarded && answered) {
@@ -1964,14 +1964,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 statusHolder = mForwardedIcon;
             }
 
-            if (holder.from != null ) {
+            if (holder.from != null) {
                 holder.from.setTypeface(null, maybeBoldTypeface);
                 if (mSenderAboveSubject) {
                     holder.from.setCompoundDrawablesWithIntrinsicBounds(
-                            statusHolder, // left
-                            null, // top
-                            hasAttachments ? mAttachmentIcon : null, // right
-                            null); // bottom
+                        statusHolder, // left
+                        null, // top
+                        hasAttachments ? mAttachmentIcon : null, // right
+                        null); // bottom
 
                     holder.from.setText(displayName);
                 } else {
@@ -1979,13 +1979,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
             }
 
-            if (holder.subject != null ) {
+            if (holder.subject != null) {
                 if (!mSenderAboveSubject) {
                     holder.subject.setCompoundDrawablesWithIntrinsicBounds(
-                            statusHolder, // left
-                            null, // top
-                            hasAttachments ? mAttachmentIcon : null, // right
-                            null); // bottom
+                        statusHolder, // left
+                        null, // top
+                        hasAttachments ? mAttachmentIcon : null, // right
+                        null); // bottom
                 }
 
                 holder.subject.setTypeface(null, maybeBoldTypeface);
@@ -2221,11 +2221,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (mThreadedList && cursor.getInt(THREAD_COUNT_COLUMN) > 1) {
             long threadRootId = cursor.getLong(THREAD_ROOT_COLUMN);
             mController.setFlagForThreads(account,
-                    Collections.singletonList(Long.valueOf(threadRootId)), flag, newState);
+                                          Collections.singletonList(Long.valueOf(threadRootId)), flag, newState);
         } else {
             long id = cursor.getLong(ID_COLUMN);
             mController.setFlag(account, Collections.singletonList(Long.valueOf(id)), flag,
-                    newState);
+                                newState);
         }
 
         computeBatchDirection();
@@ -2356,7 +2356,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @see #startActivityForResult(Intent, int)
      */
     private void displayFolderChoice(int requestCode, Account account, Folder folder,
-            List<Message> messages) {
+                                     List<Message> messages) {
 
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, account.getUuid());
@@ -2454,7 +2454,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @return {@code true}, if operation is possible.
      */
     private boolean checkCopyOrMovePossible(final List<Message> messages,
-            final FolderOperation operation) {
+                                            final FolderOperation operation) {
 
         if (messages.size() == 0) {
             return false;
@@ -2520,7 +2520,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      *         Specifies what operation to perform. Never {@code null}.
      */
     private void copyOrMove(List<Message> messages, final String destination,
-            final FolderOperation operation) {
+                            final FolderOperation operation) {
 
         if (K9.FOLDER_NONE.equalsIgnoreCase(destination) || !mSingleAccountMode) {
             return;
@@ -2534,7 +2534,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
 
                 Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
-                        Toast.LENGTH_LONG).show();
+                               Toast.LENGTH_LONG).show();
 
                 // XXX return meaningful error value?
 
@@ -2794,23 +2794,23 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     @Override
     public void doPositiveClick(int dialogId) {
         switch (dialogId) {
-            case R.id.dialog_confirm_spam: {
-                onSpamConfirmed(mActiveMessages);
-                // No further need for this reference
-                mActiveMessages = null;
-                break;
-            }
+        case R.id.dialog_confirm_spam: {
+            onSpamConfirmed(mActiveMessages);
+            // No further need for this reference
+            mActiveMessages = null;
+            break;
+        }
         }
     }
 
     @Override
     public void doNegativeClick(int dialogId) {
         switch (dialogId) {
-            case R.id.dialog_confirm_spam: {
-                // No further need for this reference
-                mActiveMessages = null;
-                break;
-            }
+        case R.id.dialog_confirm_spam: {
+            // No further need for this reference
+            mActiveMessages = null;
+            break;
+        }
         }
     }
 
@@ -2938,7 +2938,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         int listViewPosition = adapterToListViewPosition(position);
         if (listViewPosition != AdapterView.INVALID_POSITION &&
                 (listViewPosition < mListView.getFirstVisiblePosition() ||
-                listViewPosition > mListView.getLastVisiblePosition())) {
+                 listViewPosition > mListView.getLastVisiblePosition())) {
             mListView.setSelection(listViewPosition);
         }
 
@@ -3129,7 +3129,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             onRemoteSearchRequested();
         } else {
             Toast.makeText(getActivity(), getText(R.string.remote_search_unavailable_no_network),
-                    Toast.LENGTH_SHORT).show();
+                           Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -3154,7 +3154,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public boolean onSearchRequested() {
         String folderName = (mCurrentFolder != null) ? mCurrentFolder.name : null;
         return mFragmentListener.startSearch(mAccount, folderName);
-   }
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -3192,7 +3192,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         String sortOrder = buildSortOrder();
 
         return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs,
-                sortOrder);
+                                sortOrder);
     }
 
     private String getThreadId(LocalSearch search) {
@@ -3209,35 +3209,35 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private String buildSortOrder() {
         String sortColumn = MessageColumns.ID;
         switch (mSortType) {
-            case SORT_ARRIVAL: {
-                sortColumn = MessageColumns.INTERNAL_DATE;
-                break;
-            }
-            case SORT_ATTACHMENT: {
-                sortColumn = "(" + MessageColumns.ATTACHMENT_COUNT + " < 1)";
-                break;
-            }
-            case SORT_FLAGGED: {
-                sortColumn = "(" + MessageColumns.FLAGGED + " != 1)";
-                break;
-            }
+        case SORT_ARRIVAL: {
+            sortColumn = MessageColumns.INTERNAL_DATE;
+            break;
+        }
+        case SORT_ATTACHMENT: {
+            sortColumn = "(" + MessageColumns.ATTACHMENT_COUNT + " < 1)";
+            break;
+        }
+        case SORT_FLAGGED: {
+            sortColumn = "(" + MessageColumns.FLAGGED + " != 1)";
+            break;
+        }
 //            case SORT_SENDER: {
 //                //FIXME
 //                sortColumn = MessageColumns.SENDER_LIST;
 //                break;
 //            }
-            case SORT_SUBJECT: {
-                sortColumn = MessageColumns.SUBJECT + " COLLATE NOCASE";
-                break;
-            }
-            case SORT_UNREAD: {
-                sortColumn = MessageColumns.READ;
-                break;
-            }
-            case SORT_DATE:
-            default: {
-                sortColumn = MessageColumns.DATE;
-            }
+        case SORT_SUBJECT: {
+            sortColumn = MessageColumns.SUBJECT + " COLLATE NOCASE";
+            break;
+        }
+        case SORT_UNREAD: {
+            sortColumn = MessageColumns.READ;
+            break;
+        }
+        case SORT_DATE:
+        default: {
+            sortColumn = MessageColumns.DATE;
+        }
         }
 
         String sortDirection = (mSortAscending) ? " ASC" : " DESC";
@@ -3249,7 +3249,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         String sortOrder = sortColumn + sortDirection + ", " + secondarySort +
-                MessageColumns.ID + " DESC";
+                           MessageColumns.ID + " DESC";
         return sortOrder;
     }
 
@@ -3286,7 +3286,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 mTitle = cursor.getString(SUBJECT_COLUMN);
                 mTitle = Utility.stripSubject(mTitle);
                 if (StringUtils.isNullOrEmpty(mTitle)) {
-                   mTitle = getString(R.string.general_no_subject);
+                    mTitle = getString(R.string.general_no_subject);
                 }
                 updateTitle();
             } else {

@@ -494,12 +494,12 @@ public class AccountSettings extends K9PreferenceActivity {
         mCloudSearchEnabled = (CheckBoxPreference) findPreference(PREFERENCE_CLOUD_SEARCH_ENABLED);
         mRemoteSearchNumResults = (ListPreference) findPreference(PREFERENCE_REMOTE_SEARCH_NUM_RESULTS);
         mRemoteSearchNumResults.setOnPreferenceChangeListener(
-            new OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference pref, Object newVal) {
-                    updateRemoteSearchLimit((String)newVal);
-                    return true;
-                }
+        new OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference pref, Object newVal) {
+                updateRemoteSearchLimit((String)newVal);
+                return true;
             }
+        }
         );
         updateRemoteSearchLimit(mRemoteSearchNumResults.getValue());
         mRemoteSearchFullText = (CheckBoxPreference) findPreference(PREFERENCE_REMOTE_SEARCH_FULL_TEXT);
@@ -611,7 +611,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
 
         CheckBoxPreference notificationUnreadCount =
-                (CheckBoxPreference) findPreference(PREFERENCE_NOTIFICATION_UNREAD_COUNT);
+            (CheckBoxPreference) findPreference(PREFERENCE_NOTIFICATION_UNREAD_COUNT);
 
         /*
          * Honeycomb and newer don't show the notification number as overlay on the notification
@@ -621,7 +621,7 @@ public class AccountSettings extends K9PreferenceActivity {
          */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             PreferenceScreen notificationsPrefs =
-                    (PreferenceScreen) findPreference(PREFERENCE_SCREEN_NOTIFICATIONS);
+                (PreferenceScreen) findPreference(PREFERENCE_SCREEN_NOTIFICATIONS);
             notificationsPrefs.removePreference(notificationUnreadCount);
         } else {
             notificationUnreadCount.setChecked(mAccount.isNotificationShowsUnreadCount());
@@ -880,28 +880,28 @@ public class AccountSettings extends K9PreferenceActivity {
         Dialog dialog = null;
 
         switch (id) {
-            case DIALOG_COLOR_PICKER_ACCOUNT: {
-                dialog = new ColorPickerDialog(this,
-                        new ColorPickerDialog.OnColorChangedListener() {
-                            public void colorChanged(int color) {
-                                mAccount.setChipColor(color);
-                            }
-                        },
-                        mAccount.getChipColor());
+        case DIALOG_COLOR_PICKER_ACCOUNT: {
+            dialog = new ColorPickerDialog(this,
+            new ColorPickerDialog.OnColorChangedListener() {
+                public void colorChanged(int color) {
+                    mAccount.setChipColor(color);
+                }
+            },
+            mAccount.getChipColor());
 
-                break;
-            }
-            case DIALOG_COLOR_PICKER_LED: {
-                dialog = new ColorPickerDialog(this,
-                        new ColorPickerDialog.OnColorChangedListener() {
-                            public void colorChanged(int color) {
-                                mAccount.getNotificationSetting().setLedColor(color);
-                            }
-                        },
-                        mAccount.getNotificationSetting().getLedColor());
+            break;
+        }
+        case DIALOG_COLOR_PICKER_LED: {
+            dialog = new ColorPickerDialog(this,
+            new ColorPickerDialog.OnColorChangedListener() {
+                public void colorChanged(int color) {
+                    mAccount.getNotificationSetting().setLedColor(color);
+                }
+            },
+            mAccount.getNotificationSetting().getLedColor());
 
-                break;
-            }
+            break;
+        }
         }
 
         return dialog;
@@ -910,16 +910,16 @@ public class AccountSettings extends K9PreferenceActivity {
     @Override
     public void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
-            case DIALOG_COLOR_PICKER_ACCOUNT: {
-                ColorPickerDialog colorPicker = (ColorPickerDialog) dialog;
-                colorPicker.setColor(mAccount.getChipColor());
-                break;
-            }
-            case DIALOG_COLOR_PICKER_LED: {
-                ColorPickerDialog colorPicker = (ColorPickerDialog) dialog;
-                colorPicker.setColor(mAccount.getNotificationSetting().getLedColor());
-                break;
-            }
+        case DIALOG_COLOR_PICKER_ACCOUNT: {
+            ColorPickerDialog colorPicker = (ColorPickerDialog) dialog;
+            colorPicker.setColor(mAccount.getChipColor());
+            break;
+        }
+        case DIALOG_COLOR_PICKER_LED: {
+            ColorPickerDialog colorPicker = (ColorPickerDialog) dialog;
+            colorPicker.setColor(mAccount.getNotificationSetting().getLedColor());
+            break;
+        }
         }
     }
 
@@ -1027,7 +1027,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
             if (!mIsMoveCapable) {
                 PreferenceScreen foldersCategory =
-                        (PreferenceScreen) findPreference(PREFERENCE_CATEGORY_FOLDERS);
+                    (PreferenceScreen) findPreference(PREFERENCE_CATEGORY_FOLDERS);
                 foldersCategory.removePreference(mArchiveFolder);
                 foldersCategory.removePreference(mSpamFolder);
                 foldersCategory.removePreference(mDraftsFolder);

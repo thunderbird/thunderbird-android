@@ -95,11 +95,11 @@ public class Account implements BaseAccount {
      * Note: Order does matter, it's the order in which they will be picked.
      */
     public static final Integer[] PREDEFINED_COLORS = new Integer[] {
-            Color.parseColor("#0099CC"),    // blue
-            Color.parseColor("#669900"),    // green
-            Color.parseColor("#FF8800"),    // orange
-            Color.parseColor("#CC0000"),    // red
-            Color.parseColor("#9933CC")     // purple
+        Color.parseColor("#0099CC"),    // blue
+        Color.parseColor("#669900"),    // green
+        Color.parseColor("#FF8800"),    // orange
+        Color.parseColor("#CC0000"),    // red
+        Color.parseColor("#9933CC")     // purple
     };
 
     public enum SortType {
@@ -430,7 +430,7 @@ public class Account implements BaseAccount {
 
         try {
             mSortType = SortType.valueOf(prefs.getString(mUuid + ".sortTypeEnum",
-                                                 SortType.SORT_DATE.name()));
+                                         SortType.SORT_DATE.name()));
         } catch (Exception e) {
             mSortType = SortType.SORT_DATE;
         }
@@ -627,21 +627,18 @@ public class Account implements BaseAccount {
         if (moveUp) {
             for (int i = 0; i < uuids.length; i++) {
                 if (i > 0 && uuids[i].equals(mUuid)) {
-                    newUuids[i] = newUuids[i-1];
-                    newUuids[i-1] = mUuid;
-                }
-                else {
+                    newUuids[i] = newUuids[i - 1];
+                    newUuids[i - 1] = mUuid;
+                } else {
                     newUuids[i] = uuids[i];
                 }
             }
-        }
-        else {
+        } else {
             for (int i = uuids.length - 1; i >= 0; i--) {
                 if (i < uuids.length - 1 && uuids[i].equals(mUuid)) {
-                    newUuids[i] = newUuids[i+1];
-                    newUuids[i+1] = mUuid;
-                }
-                else {
+                    newUuids[i] = newUuids[i + 1];
+                    newUuids[i + 1] = mUuid;
+                } else {
                     newUuids[i] = uuids[i];
                 }
             }
@@ -798,11 +795,11 @@ public class Account implements BaseAccount {
         ContentResolver cr = context.getContentResolver();
 
         Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
-                "account/" + getUuid() + "/stats");
+                                       "account/" + getUuid() + "/stats");
 
         String[] projection = {
-                StatsColumns.UNREAD_COUNT,
-                StatsColumns.FLAGGED_COUNT
+            StatsColumns.UNREAD_COUNT,
+            StatsColumns.FLAGGED_COUNT
         };
 
         // Create LocalSearch instance to exclude special folders (Trash, Drafts, Spam, Outbox,
@@ -848,11 +845,11 @@ public class Account implements BaseAccount {
         mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
         mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
         mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
-        mToMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_POINTING);
+        mToMeUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.RIGHT_POINTING);
         mCcMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_NOTCH);
-        mCcMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_NOTCH);
+        mCcMeUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.RIGHT_NOTCH);
         mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
-        mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
+        mFromMeUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.LEFT_POINTING);
         mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
         mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
         mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
@@ -868,7 +865,7 @@ public class Account implements BaseAccount {
 
 
     public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean ccMe,
-            boolean fromMe, boolean messageFlagged) {
+                                       boolean fromMe, boolean messageFlagged) {
         ColorChip chip;
 
         if (messageRead) {
@@ -1081,13 +1078,13 @@ public class Account implements BaseAccount {
 
     public boolean isSpecialFolder(String folderName) {
         return (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
-                folderName.equals(getTrashFolderName()) ||
-                folderName.equals(getDraftsFolderName()) ||
-                folderName.equals(getArchiveFolderName()) ||
-                folderName.equals(getSpamFolderName()) ||
-                folderName.equals(getOutboxFolderName()) ||
-                folderName.equals(getSentFolderName()) ||
-                folderName.equals(getErrorFolderName())));
+                                       folderName.equals(getTrashFolderName()) ||
+                                       folderName.equals(getDraftsFolderName()) ||
+                                       folderName.equals(getArchiveFolderName()) ||
+                                       folderName.equals(getSpamFolderName()) ||
+                                       folderName.equals(getOutboxFolderName()) ||
+                                       folderName.equals(getSentFolderName()) ||
+                                       folderName.equals(getErrorFolderName())));
     }
 
     public synchronized String getDraftsFolderName() {
@@ -1791,39 +1788,39 @@ public class Account implements BaseAccount {
         final Account.FolderMode displayMode = getFolderDisplayMode();
 
         switch (displayMode) {
-            case FIRST_CLASS: {
-                // Count messages in the INBOX and non-special first class folders
-                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
-                        Attribute.EQUALS);
-                break;
-            }
-            case FIRST_AND_SECOND_CLASS: {
-                // Count messages in the INBOX and non-special first and second class folders
-                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
-                        Attribute.EQUALS);
+        case FIRST_CLASS: {
+            // Count messages in the INBOX and non-special first class folders
+            search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                       Attribute.EQUALS);
+            break;
+        }
+        case FIRST_AND_SECOND_CLASS: {
+            // Count messages in the INBOX and non-special first and second class folders
+            search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                       Attribute.EQUALS);
 
-                // TODO: Create a proper interface for creating arbitrary condition trees
-                SearchCondition searchCondition = new SearchCondition(Searchfield.DISPLAY_CLASS,
-                        Attribute.EQUALS, FolderClass.SECOND_CLASS.name());
-                ConditionsTreeNode root = search.getConditions();
-                if (root.mRight != null) {
-                    root.mRight.or(searchCondition);
-                } else {
-                    search.or(searchCondition);
-                }
-                break;
+            // TODO: Create a proper interface for creating arbitrary condition trees
+            SearchCondition searchCondition = new SearchCondition(Searchfield.DISPLAY_CLASS,
+                    Attribute.EQUALS, FolderClass.SECOND_CLASS.name());
+            ConditionsTreeNode root = search.getConditions();
+            if (root.mRight != null) {
+                root.mRight.or(searchCondition);
+            } else {
+                search.or(searchCondition);
             }
-            case NOT_SECOND_CLASS: {
-                // Count messages in the INBOX and non-special non-second-class folders
-                search.and(Searchfield.DISPLAY_CLASS, FolderClass.SECOND_CLASS.name(),
-                        Attribute.NOT_EQUALS);
-                break;
-            }
-            default:
-            case ALL: {
-                // Count messages in the INBOX and non-special folders
-                break;
-            }
+            break;
+        }
+        case NOT_SECOND_CLASS: {
+            // Count messages in the INBOX and non-special non-second-class folders
+            search.and(Searchfield.DISPLAY_CLASS, FolderClass.SECOND_CLASS.name(),
+                       Attribute.NOT_EQUALS);
+            break;
+        }
+        default:
+        case ALL: {
+            // Count messages in the INBOX and non-special folders
+            break;
+        }
         }
     }
 

@@ -11,7 +11,7 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 
 
 public class ConfirmationDialogFragment extends SherlockDialogFragment implements OnClickListener,
-        OnCancelListener {
+    OnCancelListener {
 
     private static final String ARG_DIALOG_ID = "dialog_id";
     private static final String ARG_TITLE = "title";
@@ -63,14 +63,14 @@ public class ConfirmationDialogFragment extends SherlockDialogFragment implement
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
-            case DialogInterface.BUTTON_POSITIVE: {
-                getListener().doPositiveClick(getDialogId());
-                break;
-            }
-            case DialogInterface.BUTTON_NEGATIVE: {
-                getListener().doNegativeClick(getDialogId());
-                break;
-            }
+        case DialogInterface.BUTTON_POSITIVE: {
+            getListener().doPositiveClick(getDialogId());
+            break;
+        }
+        case DialogInterface.BUTTON_NEGATIVE: {
+            getListener().doNegativeClick(getDialogId());
+            break;
+        }
         }
     }
 
@@ -89,7 +89,7 @@ public class ConfirmationDialogFragment extends SherlockDialogFragment implement
             return (ConfirmationDialogFragmentListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException(getTargetFragment().getClass() +
-                    " must implement ConfirmationDialogFragmentListener");
+                                         " must implement ConfirmationDialogFragmentListener");
         }
     }
 }

@@ -595,11 +595,11 @@ public class FolderList extends K9ListActivity {
 
     @Override
     public boolean onSearchRequested() {
-         Bundle appData = new Bundle();
-         appData.putString(MessageList.EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
-         startSearch(null, false, appData, false);
-         return true;
-     }
+        Bundle appData = new Bundle();
+        appData.putString(MessageList.EXTRA_SEARCH_ACCOUNT, mAccount.getUuid());
+        startSearch(null, false, appData, false);
+        return true;
+    }
 
     private void onOpenFolder(String folder) {
         LocalSearch search = new LocalSearch(folder);
@@ -1043,16 +1043,16 @@ public class FolderList extends K9ListActivity {
 
                 if (Math.abs(now - folder.lastChecked) > DateUtils.WEEK_IN_MILLIS) {
                     formattedDate = getString(R.string.preposition_for_date,
-                            DateUtils.formatDateTime(context, folder.lastChecked, flags));
+                                              DateUtils.formatDateTime(context, folder.lastChecked, flags));
                 } else {
                     formattedDate = DateUtils.getRelativeTimeSpanString(folder.lastChecked,
-                            now, DateUtils.MINUTE_IN_MILLIS, flags);
+                                    now, DateUtils.MINUTE_IN_MILLIS, flags);
                 }
 
                 holder.folderStatus.setText(getString(folder.pushActive
-                        ? R.string.last_refresh_time_format_with_push
-                        : R.string.last_refresh_time_format,
-                        formattedDate));
+                                                      ? R.string.last_refresh_time_format_with_push
+                                                      : R.string.last_refresh_time_format,
+                                                      formattedDate));
             } else {
                 holder.folderStatus.setText(null);
             }
@@ -1060,10 +1060,10 @@ public class FolderList extends K9ListActivity {
             if (folder.unreadMessageCount != 0) {
                 holder.newMessageCount.setText(Integer.toString(folder.unreadMessageCount));
                 holder.newMessageCountWrapper.setOnClickListener(
-                        createUnreadSearch(mAccount, folder));
+                    createUnreadSearch(mAccount, folder));
                 holder.newMessageCountWrapper.setVisibility(View.VISIBLE);
                 holder.newMessageCountIcon.setBackgroundDrawable(
-                        mAccount.generateColorChip(false, false, false, false, false).drawable());
+                    mAccount.generateColorChip(false, false, false, false, false).drawable());
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
             }
@@ -1071,10 +1071,10 @@ public class FolderList extends K9ListActivity {
             if (folder.flaggedMessageCount > 0) {
                 holder.flaggedMessageCount.setText(Integer.toString(folder.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setOnClickListener(
-                        createFlaggedSearch(mAccount, folder));
+                    createFlaggedSearch(mAccount, folder));
                 holder.flaggedMessageCountWrapper.setVisibility(View.VISIBLE);
                 holder.flaggedMessageCountIcon.setBackgroundDrawable(
-                        mAccount.generateColorChip(false, false, false, false,true).drawable());
+                    mAccount.generateColorChip(false, false, false, false, true).drawable());
             } else {
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
             }
@@ -1087,15 +1087,14 @@ public class FolderList extends K9ListActivity {
             });
 
             holder.chip.setBackgroundDrawable(mAccount.generateColorChip(
-                    folder.unreadMessageCount == 0, false, false, false,false).drawable());
+                                                  folder.unreadMessageCount == 0, false, false, false, false).drawable());
 
             mFontSizes.setViewTextSize(holder.folderName, mFontSizes.getFolderName());
 
             if (K9.wrapFolderNames()) {
                 holder.folderName.setEllipsize(null);
                 holder.folderName.setSingleLine(false);
-            }
-            else {
+            } else {
                 holder.folderName.setEllipsize(TruncateAt.START);
                 holder.folderName.setSingleLine(true);
             }
@@ -1106,9 +1105,9 @@ public class FolderList extends K9ListActivity {
 
         private OnClickListener createFlaggedSearch(Account account, FolderInfoHolder folder) {
             String searchTitle = getString(R.string.search_title,
-                    getString(R.string.message_list_title, account.getDescription(),
-                            folder.displayName),
-                    getString(R.string.flagged_modifier));
+                                           getString(R.string.message_list_title, account.getDescription(),
+                                                   folder.displayName),
+                                           getString(R.string.flagged_modifier));
 
             LocalSearch search = new LocalSearch(searchTitle);
             search.and(Searchfield.FLAGGED, "1", Attribute.EQUALS);
@@ -1121,9 +1120,9 @@ public class FolderList extends K9ListActivity {
 
         private OnClickListener createUnreadSearch(Account account, FolderInfoHolder folder) {
             String searchTitle = getString(R.string.search_title,
-                    getString(R.string.message_list_title, account.getDescription(),
-                            folder.displayName),
-                    getString(R.string.unread_modifier));
+                                           getString(R.string.message_list_title, account.getDescription(),
+                                                   folder.displayName),
+                                           getString(R.string.unread_modifier));
 
             LocalSearch search = new LocalSearch(searchTitle);
             search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
