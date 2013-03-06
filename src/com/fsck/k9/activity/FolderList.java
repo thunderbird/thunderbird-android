@@ -1030,12 +1030,12 @@ public class FolderList extends K9ListActivity {
                 return view;
             }
 
-            holder.folderName.setText(folder.displayName);
+            final String folderStatus;
 
             if (folder.loading) {
-                holder.folderStatus.setText(R.string.status_loading);
+                folderStatus = getString(R.string.status_loading);
             } else if (folder.status != null) {
-                holder.folderStatus.setText(folder.status);
+                folderStatus = folder.status;
             } else if (folder.lastChecked != 0) {
                 long now = System.currentTimeMillis();
                 int flags = DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR;
@@ -1049,12 +1049,20 @@ public class FolderList extends K9ListActivity {
                             now, DateUtils.MINUTE_IN_MILLIS, flags);
                 }
 
-                holder.folderStatus.setText(getString(folder.pushActive
+                folderStatus = getString(folder.pushActive
                         ? R.string.last_refresh_time_format_with_push
                         : R.string.last_refresh_time_format,
-                        formattedDate));
+                        formattedDate);
             } else {
-                holder.folderStatus.setText(null);
+                folderStatus = null;
+            }
+
+            holder.folderName.setText(folder.displayName);
+            if (folderStatus != null) {
+                holder.folderStatus.setText(folderStatus);
+                holder.folderStatus.setVisibility(View.VISIBLE);
+            } else {
+                holder.folderStatus.setVisibility(View.GONE);
             }
 
             if (folder.unreadMessageCount != 0) {
