@@ -367,7 +367,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         // see if we should show the welcome message
         if (intent.getBooleanExtra(EXTRA_IMPORTFIRST, false)) {
-        	onImport();
+            onImport();
         } else if (accounts.length < 1) {
             WelcomeMessage.showWelcomeMessage(this);
             finish();

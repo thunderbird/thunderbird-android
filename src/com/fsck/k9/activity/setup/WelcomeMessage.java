@@ -40,14 +40,17 @@ public class WelcomeMessage extends K9Activity implements OnClickListener{
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-        case R.id.next:
-            AccountSetupBasics.actionNewAccount(this);
-            finish();
-            break;
-        case R.id.import_settings:
-            startActivity(new Intent(getApplicationContext(), Accounts.class)
-            	.putExtra(Accounts.EXTRA_IMPORTFIRST, true));
-            finish();
+            case R.id.next: {
+                AccountSetupBasics.actionNewAccount(this);
+                finish();
+                break;
+            }
+            case R.id.import_settings: {
+                startActivity(new Intent(getApplicationContext(), Accounts.class)
+                    .putExtra(Accounts.EXTRA_IMPORTFIRST, true));
+                finish();
+                break;
+            }
         }
     }
 }
