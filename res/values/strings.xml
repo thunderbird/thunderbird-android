@@ -124,6 +124,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="previous_action">Previous</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Cancel</string>
+    <string name="retry_action">Retry</string>
     <string name="send_action">Send</string>
     <string name="send_again_action">Send Again</string>
     <string name="reply_action">Reply</string>

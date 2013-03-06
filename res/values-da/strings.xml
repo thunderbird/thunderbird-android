@@ -116,6 +116,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="previous_action">Forrige</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Fortryd</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Send</string>
     <string name="send_again_action">Send igen</string>
     <string name="reply_action">Svar</string>

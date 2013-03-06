@@ -116,6 +116,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="previous_action">Попередній</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">Гаразд</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Відмінити</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Надіслати</string>
     <string name="send_again_action">Надіслати знову</string>
     <string name="reply_action">Відповісти</string>

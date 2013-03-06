@@ -148,6 +148,7 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="previous_action">Précédent</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string>
     <string name="cancel_action">Annuler</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Envoyer</string>
     <string name="send_again_action">Envoyer à nouveau</string>
     <string name="reply_action">Répondre</string>

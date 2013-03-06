@@ -115,6 +115,7 @@ Si us plau, envia’ns els errors, contribueix a millorar-lo a
     <string name="previous_action">Anterior</string>
     <string name="okay_action">D’acord</string>
     <string name="cancel_action">Cancel·la</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Envia</string>
     <string name="send_again_action">Torna a enviar</string>
     <string name="reply_action">Respon</string>

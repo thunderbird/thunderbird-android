@@ -92,94 +92,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         mCheckIncoming = getIntent().getBooleanExtra(EXTRA_CHECK_INCOMING, false);
         mCheckOutgoing = getIntent().getBooleanExtra(EXTRA_CHECK_OUTGOING, false);
 
-        new Thread() {
-            @Override
-            public void run() {
-                Store store = null;
-                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                try {
-                    if (mDestroyed) {
-                        return;
-                    }
-                    if (mCanceled) {
-                        finish();
-                        return;
-                    }
-
-                    final MessagingController ctrl = MessagingController.getInstance(getApplication());
-                    ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
-                            mAccount, mCheckIncoming, mCheckOutgoing);
-
-                    if (mCheckIncoming) {
-                        store = mAccount.getRemoteStore();
-
-                        if (store instanceof WebDavStore) {
-                            setMessage(R.string.account_setup_check_settings_authenticate);
-                        } else {
-                            setMessage(R.string.account_setup_check_settings_check_incoming_msg);
-                        }
-                        store.checkSettings();
-
-                        if (store instanceof WebDavStore) {
-                            setMessage(R.string.account_setup_check_settings_fetch);
-                        }
-                        MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
-                        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null);
-                    }
-                    if (mDestroyed) {
-                        return;
-                    }
-                    if (mCanceled) {
-                        finish();
-                        return;
-                    }
-                    if (mCheckOutgoing) {
-                        if (!(mAccount.getRemoteStore() instanceof WebDavStore)) {
-                            setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
-                        }
-                        Transport transport = Transport.getInstance(mAccount);
-                        transport.close();
-                        transport.open();
-                        transport.close();
-                    }
-                    if (mDestroyed) {
-                        return;
-                    }
-                    if (mCanceled) {
-                        finish();
-                        return;
-                    }
-                    setResult(RESULT_OK);
-                    finish();
-                } catch (final AuthenticationFailedException afe) {
-                    Log.e(K9.LOG_TAG, "Error while testing settings", afe);
-                    showErrorDialog(
-                        R.string.account_setup_failed_dlg_auth_message_fmt,
-                        afe.getMessage() == null ? "" : afe.getMessage());
-                } catch (final CertificateValidationException cve) {
-                    Log.e(K9.LOG_TAG, "Error while testing settings", cve);
-
-                    // Avoid NullPointerException in acceptKeyDialog()
-                    if (TrustManagerFactory.getLastCertChain() != null) {
-                        acceptKeyDialog(
-                            R.string.account_setup_failed_dlg_certificate_message_fmt,
-                            cve);
-                    } else {
-                        showErrorDialog(
-                                R.string.account_setup_failed_dlg_server_message_fmt,
-                                (cve.getMessage() == null ? "" : cve.getMessage()));
-                    }
-                } catch (final Throwable t) {
-                    Log.e(K9.LOG_TAG, "Error while testing settings", t);
-                    showErrorDialog(
-                        R.string.account_setup_failed_dlg_server_message_fmt,
-                        (t.getMessage() == null ? "" : t.getMessage()));
-
-                }
-            }
-
-        }
-        .start();
+        new CheckThread().start();
     }
 
     @Override
@@ -200,38 +113,49 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         });
     }
 
-    private void showErrorDialog(final int msgResId, final Object... args) {
-        mHandler.post(new Runnable() {
-            public void run() {
-                if (mDestroyed) {
-                    return;
-                }
-                mProgressBar.setIndeterminate(false);
-                new AlertDialog.Builder(AccountSetupCheckSettings.this)
-                .setTitle(getString(R.string.account_setup_failed_dlg_title))
-                .setMessage(getString(msgResId, args))
-                .setCancelable(true)
-                .setNegativeButton(
-                    getString(R.string.account_setup_failed_dlg_continue_action),
-
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        mCanceled = false;
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-                })
-                .setPositiveButton(
-                    getString(R.string.account_setup_failed_dlg_edit_details_action),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .show();
-            }
-        });
-    }
+	private void showErrorDialog(final int msgResId, final Object... args) {
+		mHandler.post(new Runnable() {
+			public void run() {
+				if (mDestroyed) {
+					return;
+				}
+				mProgressBar.setIndeterminate(false);
+				new AlertDialog.Builder(AccountSetupCheckSettings.this)
+					.setTitle(
+						getString(R.string.account_setup_failed_dlg_title))
+					.setMessage(getString(msgResId, args))
+					.setCancelable(true)
+					.setNegativeButton(
+						getString(R.string.account_setup_failed_dlg_continue_action),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								mCanceled = false;
+								setResult(RESULT_OK);
+								finish();
+							}
+						})
+					.setNeutralButton(
+						getString(R.string.retry_action),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+						        new CheckThread().start();
+								return;
+							}
+						})
+					.setPositiveButton(
+						getString(R.string.account_setup_failed_dlg_edit_details_action),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();
+							}
+						})
+					.show();
+			}
+		});
+	}
     private void acceptKeyDialog(final int msgResId, final Object... args) {
         mHandler.post(new Runnable() {
             public void run() {
@@ -410,4 +334,91 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             break;
         }
     }
+
+	private class CheckThread extends Thread {
+		@Override
+		public void run() {
+			Store store = null;
+			Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+			try {
+				if (mCanceled)
+					finish();
+				if (mCanceled || mDestroyed)
+					return;
+
+				final MessagingController ctrl = MessagingController
+						.getInstance(getApplication());
+				ctrl.clearCertificateErrorNotifications(
+						AccountSetupCheckSettings.this, mAccount,
+						mCheckIncoming, mCheckOutgoing);
+
+				if (mCheckIncoming) {
+					store = mAccount.getRemoteStore();
+
+					if (store instanceof WebDavStore) {
+						setMessage(R.string.account_setup_check_settings_authenticate);
+					} else {
+						setMessage(R.string.account_setup_check_settings_check_incoming_msg);
+					}
+					store.checkSettings();
+
+					if (store instanceof WebDavStore) {
+						setMessage(R.string.account_setup_check_settings_fetch);
+					}
+					MessagingController.getInstance(getApplication())
+							.listFoldersSynchronous(mAccount, true, null);
+					MessagingController.getInstance(getApplication())
+							.synchronizeMailbox(mAccount,
+									mAccount.getInboxFolderName(), null, null);
+				}
+
+				if (mCanceled)
+					finish();
+				if (mCanceled || mDestroyed)
+					return;
+				
+				if (mCheckOutgoing) {
+					if (!(mAccount.getRemoteStore() instanceof WebDavStore)) {
+						setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
+					}
+					Transport transport = Transport.getInstance(mAccount);
+					transport.close();
+					transport.open();
+					transport.close();
+				}
+
+				if (mCanceled)
+					finish();
+				if (mCanceled || mDestroyed)
+					return;
+				
+				setResult(RESULT_OK);
+				finish();
+			} catch (final AuthenticationFailedException afe) {
+				Log.e(K9.LOG_TAG, "Error while testing settings", afe);
+				showErrorDialog(
+						R.string.account_setup_failed_dlg_auth_message_fmt,
+						afe.getMessage() == null ? "" : afe.getMessage());
+			} catch (final CertificateValidationException cve) {
+				Log.e(K9.LOG_TAG, "Error while testing settings", cve);
+
+				// Avoid NullPointerException in acceptKeyDialog()
+				if (TrustManagerFactory.getLastCertChain() != null) {
+					acceptKeyDialog(
+							R.string.account_setup_failed_dlg_certificate_message_fmt,
+							cve);
+				} else {
+					showErrorDialog(
+							R.string.account_setup_failed_dlg_server_message_fmt,
+							(cve.getMessage() == null ? "" : cve.getMessage()));
+				}
+			} catch (final Throwable t) {
+				Log.e(K9.LOG_TAG, "Error while testing settings", t);
+				showErrorDialog(
+						R.string.account_setup_failed_dlg_server_message_fmt,
+						(t.getMessage() == null ? "" : t.getMessage()));
+
+			}
+		}
+	}
 }

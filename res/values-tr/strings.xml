@@ -116,6 +116,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="previous_action">Geri</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">Tamam</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">İptal</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Gönder</string>
     <string name="send_again_action">Tekrar Gönder</string>
     <string name="reply_action">Cevap</string>

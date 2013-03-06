@@ -116,6 +116,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="previous_action">前へ</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string>
     <string name="cancel_action">キャンセル</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">送信</string>
     <string name="send_again_action">再編集</string>
     <string name="reply_action">返信</string>

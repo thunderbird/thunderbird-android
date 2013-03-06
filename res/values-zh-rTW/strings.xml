@@ -115,6 +115,7 @@ K-9改良的功能包括：
     <string name="previous_action">上一步</string>
     <string name="okay_action">確定</string>
     <string name="cancel_action">取消</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">寄送</string>
     <string name="send_again_action">再次寄送</string>
     <string name="reply_action">回覆</string>

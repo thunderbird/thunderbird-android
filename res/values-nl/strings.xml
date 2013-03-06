@@ -116,6 +116,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="previous_action">Vorige</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Annuleren</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Verzenden</string>
     <string name="send_again_action">Opnieuw Verzenden</string>
     <string name="reply_action">Antwoorden</string>

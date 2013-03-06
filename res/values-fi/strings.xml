@@ -124,6 +124,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="previous_action">Edellinen</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Peruuta</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Lähetä</string>
     <string name="send_again_action">Lähetä uudelleen</string>
     <string name="reply_action">Vastaa</string>

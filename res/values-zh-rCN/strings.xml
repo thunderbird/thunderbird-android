@@ -115,6 +115,7 @@ K-9改进的功能包括：
     <string name="previous_action">上一步</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">确定</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">取消</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">发送</string>
     <string name="send_again_action">重新发送</string>
     <string name="reply_action">回复</string>

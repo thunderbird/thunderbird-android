@@ -115,6 +115,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="previous_action">이전</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">취소</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">전송</string>
     <string name="send_again_action">재전송</string>
     <string name="reply_action">회신</string>

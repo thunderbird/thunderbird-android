@@ -115,6 +115,7 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="previous_action">Anterior</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">Aceptar</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Cancelar</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Enviar</string>
     <string name="send_again_action">Volver a enviar</string>
     <string name="reply_action">Responder</string>

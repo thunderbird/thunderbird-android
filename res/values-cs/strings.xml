@@ -120,6 +120,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="previous_action">Předchozí</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Zrušit</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Odeslat</string>
     <string name="send_again_action">Odeslat znovu</string>
     <string name="reply_action">Odpovědět</string>

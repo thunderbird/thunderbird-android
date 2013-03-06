@@ -130,6 +130,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="previous_action">Cofnij</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Anuluj</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Wyślij</string>
     <string name="send_again_action">Prześlij ponownie</string>
     <string name="reply_action">Odpowiedz</string>

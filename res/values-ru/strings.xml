@@ -116,6 +116,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="previous_action">Предыдущий</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">ОК</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Отменить</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Отослать</string>
     <string name="send_again_action">Послать снова</string>
     <string name="reply_action">Ответить</string>

@@ -116,6 +116,7 @@
     <string name="previous_action">הקודם</string>
     <string name="okay_action">אישור</string>
     <string name="cancel_action">ביטול</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">שלח</string>
     <string name="send_again_action">שלח שוב</string>
     <string name="reply_action">השב</string>

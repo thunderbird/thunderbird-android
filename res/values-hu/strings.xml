@@ -117,6 +117,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="previous_action">Vissza</string>
     <string name="okay_action">OK</string>
     <string name="cancel_action">Mégse</string>
+<!-- NEW: <string name="retry_action">Retry</string> -->
     <string name="send_action">Küldés</string>
     <string name="send_again_action">Újraküldés</string>
     <string name="reply_action">Válasz</string>
