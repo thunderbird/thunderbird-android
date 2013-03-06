@@ -1880,7 +1880,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 }
             }
 
-            // Background indicator
+            // Background color
             if (selected || K9.useBackgroundAsUnreadIndicator()) {
                 int res;
                 if (selected) {
@@ -1894,6 +1894,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 TypedValue outValue = new TypedValue();
                 getActivity().getTheme().resolveAttribute(res, outValue, true);
                 view.setBackgroundColor(outValue.data);
+            } else {
+                view.setBackgroundColor(Color.TRANSPARENT);
             }
 
             if (mActiveMessage != null) {
