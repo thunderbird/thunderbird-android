@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Translator: (c) 2013, Jan Urbánek de50mc(a-t)gmail.com -->
+<!-- Translator: (c) 2013, Jan Urbánek urbanek.jan.locus(a-t)gmail.com -->
 <!-- This file is distributed under the same license as the k9mail project. -->
 <!-- Available Plural-Forms: 3 -->
-<!-- Version: strings up to 4.326 -->
+<!-- Version: strings up to 4.328 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -114,7 +114,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="status_next_poll">Příští dotaz <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Synchronizace vypnuta</string>
 
-    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Další</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Předchozí</string> <!-- Used as part of a multi-step process -->
@@ -130,7 +130,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="forward_action">Přeposlat</string>
     <string name="move_action">Přesunout</string>
     <string name="single_message_options_action">Vlastnosti zprávy</string>
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <string name="refile_action">Přesměrovat</string>
     <string name="continue_action">Pokračovat</string>
     <string name="back_action">Zpět</string>
     <string name="done_action">Hotovo</string> <!--  Used to complete a multi-step process -->
@@ -159,8 +159,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="unflag_action">Odebrat \u2606</string>
     <string name="copy_action">Kopírovat</string>
     <string name="select_text_action">Vybrat text</string>
-    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
-    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
+    <string name="show_headers_action">Zobraz hlavičku</string>
+    <string name="hide_headers_action">Skryj hlavičku</string>
 
     <string name="message_view_theme_action_dark">Přepnout na tmavý motiv</string>
     <string name="message_view_theme_action_light">Přepnout na světlý motiv</string>
@@ -210,15 +210,15 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="recreating_account">Obnovuji účet \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Nová zpráva</string>
-    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nepřečteno (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) --> <!-- PLURALS: wrong!!! -->
-    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> více v <xliff:g id="account">%s</xliff:g></string>
 
-    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
-    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
-    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
-    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
+    <string name="notification_action_reply">Odpovědět</string>
+    <string name="notification_action_read">Číst</string>
+    <string name="notification_action_delete">Smazat</string>
+    <string name="notification_certificate_error_title">Chyba certifikátu pro <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
 
     <string name="notification_bg_sync_ticker">Zjišťování pošty: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Zjišťování pošty</string>
@@ -316,8 +316,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="global_settings_registered_name_color_label">Obarvit kontakty</string>
     <string name="global_settings_registered_name_color_default">Neobarvovat jména ve vašem seznamu kontaktů</string>
     <string name="global_settings_registered_name_color_changed">Obarvit jména ve vašem seznamu kontaktů</string>
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
+    <string name="global_settings_folderlist_wrap_folder_names_label">Zalomit dlouhé názvy složek</string>
+    <string name="global_settings_folderlist_wrap_folder_names_summary">Použít více řádků pro názvy složek</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Písma s pevnou šířkou</string>
     <string name="global_settings_messageview_fixedwidth_summary">Použít písmo s pevnou šířkou při zobrazování textových zpráv</string>
@@ -331,18 +331,18 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="global_settings_confirm_action_delete">Mazání (jen v zobrazení zpráv)</string>
     <string name="global_settings_confirm_action_delete_starred">Smaž zprávy s hvězdickou (message view only)</string>
     <string name="global_settings_confirm_action_spam">Nevyžádaná</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
+    <string name="global_settings_confirm_action_delete_notif">Smazat (z oznámení)</string>
 
     <string name="global_settings_notification_hide_subject_title">Schovej předmet v upozorněních</string>
     <string name="global_settings_notification_hide_subject_never">Nikdy</string>
     <string name="global_settings_notification_hide_subject_when_locked">Když je telefon uzamčený</string>
     <string name="global_settings_notification_hide_subject_always">Vždy</string>
 
-    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
+    <string name="global_settings_notification_quick_delete_title">Zobrazit tlačítko \'Smazat\'</string>
+    <string name="global_settings_notification_quick_delete_never">Nikdy</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Pro mazaní jedné zprávy</string>
+    <string name="global_settings_notification_quick_delete_always">Vždy</string>
+    <string name="global_settings_notification_quick_delete_description">Zobrazit tlačítko pro rychlé mazání zpráv</string>
 
     <string name="global_settings_batch_buttons">Skupina tlačítek</string>
     <string name="global_settings_batch_buttons_summary">Konfigurace skupiny tlačítek v seznamu zpráv</string>
@@ -556,7 +556,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_quote_style_header">Záhlaví (jako Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Hlavní nastavení</string>
-    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
+    <string name="account_settings_reading_mail">Čtení zprávy</string>
     <string name="account_settings_sync">Stahování pošty</string>
     <string name="account_settings_folders">Složky</string>
     <string name="account_settings_quote_prefix_label">Předpona citovaného textu</string>
@@ -567,7 +567,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_crypto_auto_signature_summary">Použít emailovou adresu účtu pro odhadnutí podpisového klíče.</string>
     <string name="account_settings_crypto_auto_encrypt">Automaticky zašifrovat</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Automaticky zašifrovat jestliže veřejný klíč odpovídá adresátovy.</string>
-    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
+    <string name="account_settings_crypto_apg_not_installed">APG není nainstalován</string>
 
     <string name="account_settings_mail_check_frequency_label">Frekvence dotazování složky</string>
 
@@ -807,7 +807,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_signature__location_label">Umístění podpisu</string>
     <string name="account_settings_signature__location_before_quoted_text">Před citovanými zprávami</string>
     <string name="account_settings_signature__location_after_quoted_text">Za citovanými zprávami</string>
-    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
+    <string name="setting_theme_global">Použíj téma aplikace</string>
     <string name="setting_theme_dark">Tmavé</string>
     <string name="setting_theme_light">Světlé</string>
     <string name="display_preferences">Zobrazení</string>
@@ -819,15 +819,15 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="accountlist_preferences">Seznam účtů</string>
     <string name="messagelist_preferences">Zprávy</string>
     <string name="messageview_preferences">Zprávy</string>
-    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
+    <string name="folderlist_preferences">Seznam složek</string>
     <string name="settings_theme_label">Téma</string>
-    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
-    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
+    <string name="settings_message_theme_label">Téma náhledu zprávy</string>
+    <string name="settings_compose_theme_label">Téma psaní zprávy</string>
     <string name="settings_language_label">Jazyk</string>
 
-    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
+    <string name="settings_message_theme_selection_label">Neměnné téma zpráv</string>
+    <string name="settings_message_theme_selection_summary_off">Lze vybrat téma při prohlížení zprávy</string>
+    <string name="settings_message_theme_selection_summary_on">Použíj neměnné téma při prohlížení zprávy</string>
 
     <string name="settings_messageview_mobile_layout_label">Jednosloupcové uspořádání</string>
     <string name="settings_messageview_mobile_layout_summary">Přeformátovat HTML zprávy pro menší obrazovky</string>
@@ -871,8 +871,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="count_search_title">Počet výsledků hledání</string>
     <string name="count_search_summary">Vypněte pro rychlejší zobrazování</string>
 
-    <string name="hide_special_accounts_title">Zkryj speciální učty</string>
-    <string name="hide_special_accounts_summary">Zkryj integrovanou doručenou složku a složku všech zpráv</string>
+    <string name="hide_special_accounts_title">Skryj speciální učty</string>
+    <string name="hide_special_accounts_summary">Skryj integrovanou doručenou složku a složku všech zpráv</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - S \u2605</string>
@@ -923,7 +923,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="font_size_message_compose">Psaní zprávy</string>
     <string name="font_size_message_compose_input">Pole zadávaní textu</string>
 
-    <!-- NEW: <string name="font_size_default">Default</string>-->
+    <string name="font_size_default">Standardní</string>
     <string name="font_size_tiniest">Nejdrobnější</string>
     <string name="font_size_tiny">Drobný</string>
     <string name="font_size_smaller">Menší</string>
@@ -977,10 +977,11 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="dialog_confirm_delete_title">Potvrzení mazání</string>
     <string name="dialog_confirm_delete_message">Chcete smazat tuto zprávu?</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
-        <item quantity="one">Do you really want to delete this message?</item>
-        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-    </plurals>-->
+    <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Opravdu si přejete smazat tuto zprávu?</item>
+        <item quantity="few">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zprávy?</item>
+        <item quantity="other">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zpráv?</item>
+    </plurals>
     <string name="dialog_confirm_delete_confirm_button">Smazat</string>
     <string name="dialog_confirm_delete_cancel_button">Nemazat</string>
 
@@ -1027,7 +1028,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="settings_import_global_settings_success">Importovano globální nastaveni z <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importováno <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
     <plurals name="settings_import_success">
-        <item quantity="one">1 účet</item>
+        <item quantity="one"><xliff:g id="numAccounts">%s</xliff:g> účet</item><!-- added var in place of 1 účet -->
+        <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> účty</item><!-- 2-4 need to be this and 5- other -->
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> účtů</item>
     </plurals>
     <string name="settings_export_failure">Nepodařilo se exportovat nastavení</string>
@@ -1039,14 +1041,15 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="settings_import_activate_account_header">Aktivovat účet</string>
     <string name="settings_import_activate_account_intro">Pro používání účtu \"<xliff:g id="account">%s</xliff:g>\" potřebujete zadat <xliff:g id="server_passwords">%s</xliff:g>.</string>
     <plurals name="settings_import_server_passwords">
-        <item quantity="one">heslo serveru</item>
-        <item quantity="other">hesla serverů</item>
+        <item quantity="one">heslo</item>
+        <item quantity="few">hesla</item><!-- 2-4 need to be this few and 5- other -->
+         <item quantity="other">hesel</item>
     </plurals>
     <string name="settings_import_incoming_server">Příchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Odchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
         <item quantity="one">Nastavit heslo…</item>
-        <item quantity="other">Nastaveit hesla…</item>
+        <item quantity="other">Nastavit hesla…</item>
     </plurals>
     <string name="settings_import_use_incoming_server_password">Heslo pro příchozi server</string>
     <string name="activate_account_action">Aktivovat</string>
@@ -1124,23 +1127,23 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="global_settings_threaded_view_label">Zabrazení vláken</string>
     <string name="global_settings_threaded_view_summary">Sjednotit zprávy patřící ke stejnému vláknu</string>
 
-    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
-    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
-    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+    <string name="upgrade_databases_title">Aktualizace databází</string>
+    <string name="upgrade_databases_unspecified">Aktualizuji databáze…</string>
+    <string name="upgrade_database_format">Aktualizuji databázi pro učet \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+    <string name="message_list_loading">Nahrávám…</string>
 
-    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
-    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+    <string name="global_settings_splitview_mode_label">Zobraz rozdělení obrazovky</string>
+    <string name="global_settings_splitview_always">Vždy</string>
+    <string name="global_settings_splitview_never">Nikdy</string>
+    <string name="global_settings_splitview_when_in_landscape">Pouze na ležato</string>
 
-    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+    <string name="message_view_empty">Prosím zvolte zprávu v levo</string>
 
-    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+    <string name="global_settings_show_contact_picture_label">Zobraz obrázky u kontaktů</string>
+    <string name="global_settings_show_contact_picture_summary">Zobraz obrázky u kontaktů v seznamu zpráv</string>
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
-    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+    <string name="last_refresh_time_format">Poslední obnova <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Poslední obnova <xliff:g id="time_with_preposition">%s</xliff:g> (Push)</string>
+    <string name="preposition_for_date">v <xliff:g id="date">%s</xliff:g></string>
 </resources>

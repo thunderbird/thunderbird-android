@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fsck.k9.R;
+import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.HtmlConverter;
 
@@ -33,13 +34,22 @@ public class WelcomeMessage extends K9Activity implements OnClickListener{
         welcome.setMovementMethod(LinkMovementMethod.getInstance());
 
         ((Button) findViewById(R.id.next)).setOnClickListener(this);
+        ((Button) findViewById(R.id.import_settings)).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.next) {
-            AccountSetupBasics.actionNewAccount(this);
-            finish();
+        switch (view.getId()) {
+            case R.id.next: {
+                AccountSetupBasics.actionNewAccount(this);
+                finish();
+                break;
+            }
+            case R.id.import_settings: {
+                Accounts.importSettings(this);
+                finish();
+                break;
+            }
         }
     }
 }

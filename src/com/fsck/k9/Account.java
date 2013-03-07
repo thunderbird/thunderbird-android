@@ -10,12 +10,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
@@ -40,8 +42,6 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
-
-import java.util.HashMap;
 
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save
@@ -89,6 +89,18 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_NAME_KEY = "name";
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
+
+    /*
+     * http://developer.android.com/design/style/color.html
+     * Note: Order does matter, it's the order in which they will be picked.
+     */
+    public static final Integer[] PREDEFINED_COLORS = new Integer[] {
+            Color.parseColor("#0099CC"),    // blue
+            Color.parseColor("#669900"),    // green
+            Color.parseColor("#FF8800"),    // orange
+            Color.parseColor("#CC0000"),    // red
+            Color.parseColor("#9933CC")     // purple
+    };
 
     public enum SortType {
         SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
@@ -281,7 +293,7 @@ public class Account implements BaseAccount {
         mAutoExpandFolderName = INBOX;
         mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
-        mChipColor = ColorPicker.getRandomColor();
+        mChipColor = pickColor(context);
         goToUnreadMessageSearch = false;
         mNotificationShowsUnreadCount = true;
         subscribedFoldersOnly = false;
@@ -325,6 +337,28 @@ public class Account implements BaseAccount {
         mNotificationSetting.setLedColor(mChipColor);
 
         cacheChips();
+    }
+
+    /*
+     * Pick a nice Android guidelines color if we haven't used them all yet.
+     */
+    private int pickColor(Context context) {
+        Account[] accounts = Preferences.getPreferences(context).getAccounts();
+
+        List<Integer> availableColors = new ArrayList<Integer>(PREDEFINED_COLORS.length);
+        Collections.addAll(availableColors, PREDEFINED_COLORS);
+
+        for (Account account : accounts) {
+            Integer color = account.getChipColor();
+            if (availableColors.contains(color)) {
+                availableColors.remove(color);
+                if (availableColors.isEmpty()) {
+                    break;
+                }
+            }
+        }
+
+        return (availableColors.isEmpty()) ? ColorPicker.getRandomColor() : availableColors.get(0);
     }
 
     protected Account(Preferences preferences, String uuid) {
@@ -811,7 +845,6 @@ public class Account implements BaseAccount {
     public synchronized void setChipColor(int color) {
         mChipColor = color;
         cacheChips();
-
     }
 
     public synchronized void cacheChips() {

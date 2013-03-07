@@ -83,6 +83,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private static final String STATE_DISPLAY_MODE = "displayMode";
     private static final String STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed";
 
+    // Used for navigating to next/previous message
+    private static final int PREVIOUS = 1;
+    private static final int NEXT = 2;
+
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
         actionDisplaySearch(context, search, noThreading, newTask, true);
@@ -168,6 +172,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private ProgressBar mActionBarProgress;
     private MenuItem mMenuButtonCheckMail;
     private View mActionButtonIndeterminateProgress;
+    private int mLastDirection = (K9.messageViewShowNext()) ? NEXT : PREVIOUS;
 
     /**
      * {@code true} if the message list should be displayed as flat list (i.e. no threading)
@@ -1339,30 +1344,47 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     @Override
     public void onReply(Message message, PgpData pgpData) {
         MessageCompose.actionReply(this, mAccount, message, false, pgpData.getDecryptedData());
-        finish();
     }
 
     @Override
     public void onReplyAll(Message message, PgpData pgpData) {
         MessageCompose.actionReply(this, mAccount, message, true, pgpData.getDecryptedData());
-        finish();
     }
 
     @Override
     public void onForward(Message mMessage, PgpData mPgpData) {
         MessageCompose.actionForward(this, mAccount, mMessage, mPgpData.getDecryptedData());
-        finish();
     }
 
     @Override
     public void showNextMessageOrReturn() {
-        if (K9.messageViewReturnToList() || !showNextMessage()) {
+        if (K9.messageViewReturnToList() || !showLogicalNextMessage()) {
             if (mDisplayMode == DisplayMode.SPLIT_VIEW) {
                 showMessageViewPlaceHolder();
             } else {
                 showMessageList();
             }
         }
+    }
+
+    /**
+     * Shows the next message in the direction the user was displaying messages.
+     *
+     * @return {@code true}
+     */
+    private boolean showLogicalNextMessage() {
+        boolean result = false;
+        if (mLastDirection == NEXT) {
+            result = showNextMessage();
+        } else if (mLastDirection == PREVIOUS) {
+            result = showPreviousMessage();
+        }
+
+        if (!result) {
+            result = showNextMessage() || showPreviousMessage();
+        }
+
+        return result;
     }
 
     @Override
@@ -1379,6 +1401,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         MessageReference ref = mMessageViewFragment.getMessageReference();
         if (ref != null) {
             if (mMessageListFragment.openNext(ref)) {
+                mLastDirection = NEXT;
                 return true;
             }
         }
@@ -1389,6 +1412,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         MessageReference ref = mMessageViewFragment.getMessageReference();
         if (ref != null) {
             if (mMessageListFragment.openPrevious(ref)) {
+                mLastDirection = PREVIOUS;
                 return true;
             }
         }

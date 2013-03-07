@@ -134,7 +134,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="forward_action">Välitä</string>
     <string name="move_action">Siirrä</string>
     <string name="single_message_options_action">Viestin asetukset</string>
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <string name="refile_action">Arkistoi</string>
     <string name="continue_action">Jatka</string>
     <string name="back_action">Takaisin</string>
     <string name="done_action">Valmis</string> <!--  Used to complete a multi-step process -->
@@ -810,13 +810,13 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_settings_signature__location_label">Allekirjoituksen sijainti</string>
     <string name="account_settings_signature__location_before_quoted_text">Ennen lainattua viestiä</string>
     <string name="account_settings_signature__location_after_quoted_text">Lainatun viestin jälkeen</string>
-    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
+    <string name="setting_theme_global">Käytä sovellusteemaa</string>
     <string name="setting_theme_dark">Tumma</string>
     <string name="setting_theme_light">Vaalea</string>
-    <string name="display_preferences">Näytä</string>
+    <string name="display_preferences">Näyttö</string>
     <string name="global_preferences">Yleiset</string>
     <string name="debug_preferences">Virheenkorjaus</string>
-    <string name="privacy_preferences">Yksityisyys</string>
+    <string name="privacy_preferences">Tietosuoja</string>
     <string name="network_preferences">Verkko</string>
     <string name="interaction_preferences">Toimintoasetukset</string>
     <string name="accountlist_preferences">Tililista</string>
@@ -824,13 +824,13 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="messageview_preferences">Viestit</string>
     <string name="folderlist_preferences">Kansiolistat</string>
     <string name="settings_theme_label">Teema</string>
-    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
-    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
+    <string name="settings_message_theme_label">Viestinäkymän teema</string>
+    <string name="settings_compose_theme_label">Viestimuokkaimen teema</string>
     <string name="settings_language_label">Kieli</string>
 
-    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
+    <string name="settings_message_theme_selection_label">Kiinteä viestiteema</string>
+    <string name="settings_message_theme_selection_summary_off">Valitse viestinäkymän teema viestiä luettaessa</string>
+    <string name="settings_message_theme_selection_summary_on">Käytä kiinteää viestinäkymän teemaa</string>
 
     <string name="settings_messageview_mobile_layout_label">Yhden sarakkeen asettelu</string>
     <string name="settings_messageview_mobile_layout_summary">Uudelleenmuotoile HTML-viestit pienemälle näytölle</string>
@@ -926,7 +926,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="font_size_message_compose">Viestin kirjoitus</string>
     <string name="font_size_message_compose_input">Tekstinsyöttökentät</string>
 
-    <!-- NEW: <string name="font_size_default">Default</string>-->
+    <string name="font_size_default">Oletus</string>
     <string name="font_size_tiniest">Pienin</string>
     <string name="font_size_tiny">Erittäin pieni</string>
     <string name="font_size_smaller">Pienempi</string>
@@ -1139,10 +1139,10 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="message_view_empty">Valitse viesti vasemmalta</string>
 
-    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+    <string name="global_settings_show_contact_picture_label">Näytä yhteystietojen kuvat</string>
+    <string name="global_settings_show_contact_picture_summary">Näytä yhteystietojen kuvat viestilistassa</string>
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
-    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+    <string name="last_refresh_time_format">Päivitetty viimeksi <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Päivitetty viimeksi <xliff:g id="time_with_preposition">%s</xliff:g> (push-tilassa)</string>
+    <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
 </resources>

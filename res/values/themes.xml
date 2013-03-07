@@ -36,6 +36,7 @@
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
+        <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
         <item name="messageListReadItemBackgroundColor">#80cdcdcd</item>
         <item name="messageListUnreadItemBackgroundColor">#00ffffff</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
@@ -81,6 +82,7 @@
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_dark</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
+        <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
         <item name="messageListReadItemBackgroundColor">#00000000</item>
         <item name="messageListUnreadItemBackgroundColor">#805a5a5a</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
