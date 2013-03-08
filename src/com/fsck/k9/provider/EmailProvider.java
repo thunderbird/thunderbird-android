@@ -63,33 +63,6 @@ public class EmailProvider extends ContentProvider {
 
     private static final String MESSAGES_TABLE = "messages";
 
-    private static final String[] MESSAGES_COLUMNS = {
-        MessageColumns.ID,
-        MessageColumns.UID,
-        MessageColumns.INTERNAL_DATE,
-        MessageColumns.SUBJECT,
-        MessageColumns.DATE,
-        MessageColumns.MESSAGE_ID,
-        MessageColumns.SENDER_LIST,
-        MessageColumns.TO_LIST,
-        MessageColumns.CC_LIST,
-        MessageColumns.BCC_LIST,
-        MessageColumns.REPLY_TO_LIST,
-        MessageColumns.FLAGS,
-        MessageColumns.ATTACHMENT_COUNT,
-        MessageColumns.FOLDER_ID,
-        MessageColumns.PREVIEW,
-        MessageColumns.READ,
-        MessageColumns.FLAGGED,
-        MessageColumns.ANSWERED,
-        MessageColumns.FORWARDED,
-        InternalMessageColumns.DELETED,
-        InternalMessageColumns.EMPTY,
-        InternalMessageColumns.TEXT_CONTENT,
-        InternalMessageColumns.HTML_CONTENT,
-        InternalMessageColumns.MIME_TYPE
-    };
-
     private static final Map<String, String> THREAD_AGGREGATION_FUNCS = new HashMap<String, String>();
     static {
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.DATE, "MAX");
@@ -403,11 +376,12 @@ public class EmailProvider extends ContentProvider {
                         final String aggregationFunc = THREAD_AGGREGATION_FUNCS.get(columnName);
 
                         if (MessageColumns.ID.equals(columnName)) {
-                            query.append("u." + MessageColumns.ID + " AS " + MessageColumns.ID);
+                            query.append("m." + MessageColumns.ID + " AS " + MessageColumns.ID);
                         } else if (aggregationFunc != null) {
-                            query.append(aggregationFunc + "(" + columnName + ") AS " + columnName);
-                        } else if (SpecialColumns.THREAD_COUNT.equals(columnName)) {
-                            query.append("COUNT(g) AS " + SpecialColumns.THREAD_COUNT);
+                            query.append("a.");
+                            query.append(columnName);
+                            query.append(" AS ");
+                            query.append(columnName);
                         } else {
                             query.append(columnName);
                         }
@@ -415,23 +389,29 @@ public class EmailProvider extends ContentProvider {
 
                     query.append(" FROM (");
 
-                    createThreadedSubQuery(projection, selection, selectionArgs, "t1.id = t2.id", query);
-                    query.append(" UNION ALL ");
-                    createThreadedSubQuery(projection, selection, selectionArgs, "t1.id = t2.root", query);
+                    createThreadedSubQuery(projection, selection, selectionArgs, query);
 
-                    query.append(") u GROUP BY g");
+                    query.append(") a ");
 
+                    query.append("LEFT JOIN " + THREADS_TABLE + " t " +
+                            "ON (t." + ThreadColumns.ROOT + " = a.thread_root) " +
+                            "LEFT JOIN " + MESSAGES_TABLE + " m " +
+                            "ON (m." + MessageColumns.ID + " = t." + ThreadColumns.MESSAGE_ID +
+                            ") ");
+
+                    if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
+                        query.append("LEFT JOIN " + FOLDERS_TABLE + " f " +
+                                "ON (m." + MessageColumns.FOLDER_ID + " = f." + FolderColumns.ID +
+                                ") ");
+                    }
+
+                    query.append("WHERE m." + MessageColumns.DATE + " = a." + MessageColumns.DATE);
                     if (!StringUtils.isNullOrEmpty(sortOrder)) {
                         query.append(" ORDER BY ");
                         query.append(sortOrder);
                     }
 
-                    // We need the selection arguments twice. Once for each sub query.
-                    String[] args = new String[selectionArgs.length * 2];
-                    System.arraycopy(selectionArgs, 0, args, 0, selectionArgs.length);
-                    System.arraycopy(selectionArgs, 0, args, selectionArgs.length, selectionArgs.length);
-
-                    return db.rawQuery(query.toString(), args);
+                    return db.rawQuery(query.toString(), selectionArgs);
                 }
             });
         } catch (UnavailableStorageException e) {
@@ -440,53 +420,51 @@ public class EmailProvider extends ContentProvider {
     }
 
     private void createThreadedSubQuery(String[] projection, String selection,
-            String[] selectionArgs, String join, StringBuilder query) {
+            String[] selectionArgs, StringBuilder query) {
 
-        query.append("SELECT h." + MessageColumns.ID + " AS g");
+        query.append("SELECT t." + ThreadColumns.ROOT + " AS thread_root");
         for (String columnName : projection) {
+            String aggregationFunc = THREAD_AGGREGATION_FUNCS.get(columnName);
+
             if (SpecialColumns.THREAD_COUNT.equals(columnName)) {
-                // Skip
-            } else if (SpecialColumns.FOLDER_NAME.equals(columnName) ||
-                    SpecialColumns.INTEGRATE.equals(columnName)) {
-                query.append("," + columnName);
-            } else if (ThreadColumns.ROOT.equals(columnName)) {
-                // Always return the thread ID of the root message (even for the root
-                // message itself)
-                query.append(",CASE WHEN t2." + ThreadColumns.ROOT + " IS NULL THEN " +
-                        "t2." + ThreadColumns.ID + " ELSE t2." + ThreadColumns.ROOT +
-                        " END AS " + ThreadColumns.ROOT);
+                query.append(",COUNT(t." + ThreadColumns.ROOT + ") AS " +
+                        SpecialColumns.THREAD_COUNT);
+            } else if (aggregationFunc != null) {
+                query.append(",");
+                query.append(aggregationFunc);
+                query.append("(");
+                query.append(columnName);
+                query.append(") AS ");
+                query.append(columnName);
             } else {
-                query.append(",m.");
-                query.append(columnName);
-                query.append(" AS ");
-                query.append(columnName);
+                // Skip
             }
         }
 
         query.append(
-                " FROM messages h " +
-                "LEFT JOIN threads t1 ON (t1.message_id = h.id) " +
-                "JOIN threads t2 ON (");
-        query.append(join);
-        query.append(") " +
-                "LEFT JOIN messages m ON (m.id = t2.message_id) ");
+                " FROM " + MESSAGES_TABLE + " m " +
+                "LEFT JOIN " + THREADS_TABLE + " t " +
+                "ON (t." + ThreadColumns.MESSAGE_ID + " = m." + MessageColumns.ID + ")");
 
         if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
-            query.append("LEFT JOIN folders f ON (m.folder_id = f.id) ");
+            query.append("LEFT JOIN " + FOLDERS_TABLE + " f " +
+                    "ON (m." + MessageColumns.FOLDER_ID + " = f." + FolderColumns.ID +
+                    ")");
         }
 
-        query.append(
-                "WHERE " +
-                "(t1.root IS NULL AND " +
-                "m.deleted = 0 AND " +
-                "(m.empty IS NULL OR m.empty != 1))");
+        query.append(" WHERE " +
+                "(" + InternalMessageColumns.DELETED + " = 0 AND " +
+                "(" + InternalMessageColumns.EMPTY + " IS NULL OR " +
+                InternalMessageColumns.EMPTY + " != 1))");
+
 
         if (!StringUtils.isNullOrEmpty(selection)) {
             query.append(" AND (");
-            query.append(SqlQueryBuilder.addPrefixToSelection(MESSAGES_COLUMNS,
-                    "h.", selection));
+            query.append(selection);
             query.append(")");
         }
+
+        query.append(" GROUP BY t." + ThreadColumns.ROOT);
     }
 
     protected Cursor getThread(String accountUuid, final String[] projection, final String threadId,
@@ -528,8 +506,8 @@ public class EmailProvider extends ContentProvider {
                                 ") ");
                     }
 
-                    query.append("WHERE (t." + ThreadColumns.ID + " = ? OR " +
-                            ThreadColumns.ROOT + " = ?) AND " +
+                    query.append("WHERE " +
+                            ThreadColumns.ROOT + " = ? AND " +
                             InternalMessageColumns.DELETED + " = 0 AND (" +
                             InternalMessageColumns.EMPTY + " IS NULL OR " +
                             InternalMessageColumns.EMPTY + " != 1)");
@@ -538,7 +516,7 @@ public class EmailProvider extends ContentProvider {
                     query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
                             "m.", sortOrder));
 
-                    return db.rawQuery(query.toString(), new String[] { threadId, threadId });
+                    return db.rawQuery(query.toString(), new String[] { threadId });
                 }
             });
         } catch (UnavailableStorageException e) {

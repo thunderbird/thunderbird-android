@@ -106,27 +106,27 @@ public class LocalStore extends Store implements Serializable {
     private static final String[] UID_CHECK_PROJECTION = { "uid" };
 
     /**
-     * Number of UIDs to check for existence at once.
+     * Maximum number of UIDs to check for existence at once.
      *
      * @see LocalFolder#extractNewMessages(List)
      */
     private static final int UID_CHECK_BATCH_SIZE = 500;
 
     /**
-     * Number of messages to perform flag updates at once.
+     * Maximum number of messages to perform flag updates on at once.
      *
      * @see #setFlag(List, Flag, boolean, boolean)
      */
     private static final int FLAG_UPDATE_BATCH_SIZE = 500;
 
     /**
-     * Number of threads to perform flag updates on at once.
+     * Maximum number of threads to perform flag updates on at once.
      *
      * @see #setFlagForThreads(List, Flag, boolean)
      */
-    private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 400;
+    private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 47;
+    public static final int DB_VERSION = 48;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -278,6 +278,12 @@ public class LocalStore extends Store implements Serializable {
                         db.execSQL("DROP INDEX IF EXISTS threads_parent");
                         db.execSQL("CREATE INDEX IF NOT EXISTS threads_parent ON threads (parent)");
 
+                        db.execSQL("DROP TRIGGER IF EXISTS set_thread_root");
+                        db.execSQL("CREATE TRIGGER set_thread_root " +
+                                "AFTER INSERT ON threads " +
+                                "BEGIN " +
+                                "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
+                                "END");
 
                         db.execSQL("DROP TABLE IF EXISTS attachments");
                         db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
@@ -650,6 +656,16 @@ public class LocalStore extends Store implements Serializable {
                             cv.putNull("thread_parent");
                             db.update("messages", cv, null, null);
                         }
+
+                        if (db.getVersion() < 48) {
+                            db.execSQL("UPDATE threads SET root=id WHERE root IS NULL");
+
+                            db.execSQL("CREATE TRIGGER set_thread_root " +
+                                    "AFTER INSERT ON threads " +
+                                    "BEGIN " +
+                                    "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
+                                    "END");
+                        }
                     }
                 } catch (SQLiteException e) {
                     Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
@@ -790,10 +806,7 @@ public class LocalStore extends Store implements Serializable {
                 // sure the thread structure is in a valid state (this may destroy existing valid
                 // thread trees, but is much faster than adjusting the tree by removing messages
                 // one by one).
-                ContentValues cv = new ContentValues();
-                cv.putNull("root");
-                cv.putNull("parent");
-                db.update("threads", cv, null, null);
+                db.execSQL("UPDATE threads SET root=id, parent=NULL");
 
                 // Delete entries from 'messages' table
                 db.execSQL("DELETE FROM messages WHERE deleted = 0 AND uid NOT LIKE 'Local%'");
@@ -4193,18 +4206,13 @@ public class LocalStore extends Store implements Serializable {
             public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
                     throws UnavailableStorageException {
 
-                int len = selectionArgs.length;
-                String[] args = new String[len * 2];
-                System.arraycopy(selectionArgs, 0, args, 0, len);
-                System.arraycopy(selectionArgs, 0, args, len, len);
-
                 db.execSQL("UPDATE messages SET " + flagColumn + " = " + ((newState) ? "1" : "0") +
                         " WHERE id IN (" +
                         "SELECT m.id FROM threads t " +
                         "LEFT JOIN messages m ON (t.message_id = m.id) " +
                         "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
-                        "AND (t.id" + selectionSet + " OR t.root" + selectionSet + "))",
-                        args);
+                        "AND t.root" + selectionSet + ")",
+                        selectionArgs);
             }
 
             @Override
@@ -4256,14 +4264,9 @@ public class LocalStore extends Store implements Serializable {
                             "LEFT JOIN messages m ON (t.message_id = m.id) " +
                             "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                             "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
-                            "AND (t.id" + selectionSet + " OR t.root" + selectionSet + ")";
+                            "AND t.root" + selectionSet;
 
-                    int len = selectionArgs.length;
-                    String[] args = new String[len * 2];
-                    System.arraycopy(selectionArgs, 0, args, 0, len);
-                    System.arraycopy(selectionArgs, 0, args, len, len);
-
-                    getDataFromCursor(db.rawQuery(sql, args));
+                    getDataFromCursor(db.rawQuery(sql, selectionArgs));
 
                 } else {
                     String sql =
