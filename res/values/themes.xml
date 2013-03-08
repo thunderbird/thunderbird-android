@@ -45,6 +45,7 @@
         <item name="messageListDividerColor">#ffcccccc</item>
         <item name="messageViewHeaderBackgroundColor">#ffffffff</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_light</item>
+        <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_light</item>
     </style>
 
     <style name="Theme.K9.Dark.Base" parent="Theme.Sherlock">
@@ -91,6 +92,7 @@
         <item name="messageListDividerColor">#ff333333</item>
         <item name="messageViewHeaderBackgroundColor">#000000</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_dark</item>
+        <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_dark</item>
     </style>
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Base">

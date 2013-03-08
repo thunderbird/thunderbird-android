@@ -55,7 +55,7 @@
                     <ImageButton
                         android:id="@+id/add_to"
                         android:contentDescription="@string/message_compose_description_add_to"
-                        android:src="@drawable/ic_button_add_contact"
+                        android:src="?attr/messageComposeAddContactImage"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:padding="8dip"
@@ -87,7 +87,7 @@
                     <ImageButton
                         android:id="@+id/add_cc"
                         android:contentDescription="@string/message_compose_description_add_cc"
-                        android:src="@drawable/ic_button_add_contact"
+                        android:src="?attr/messageComposeAddContactImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dip"
@@ -123,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:padding="8dip"
-                        android:src="@drawable/ic_button_add_contact"/>
+                        android:src="?attr/messageComposeAddContactImage"/>
 
                 </LinearLayout>
 
