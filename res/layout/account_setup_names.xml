@@ -12,31 +12,63 @@
     android:padding="6dip"
     android:fadingEdge="none"
     android:scrollbarStyle="outsideInset">
+
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
-        android:orientation="vertical">
-    <EditText
-        android:id="@+id/account_description"
-        android:singleLine="true"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:hint="@string/account_setup_names_account_name_label"
-        android:contentDescription="@string/account_setup_names_account_name_label" />
-    <EditText
-        android:id="@+id/account_name"
-        android:singleLine="true"
-        android:inputType="textPersonName"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:hint="@string/account_setup_names_user_name_label"
-        android:contentDescription="@string/account_setup_names_user_name_label" />
-    <View
-        android:layout_height="0dip"
-        android:layout_width="fill_parent"
-        android:layout_weight="1" />
-</LinearLayout>
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/account_description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/account_setup_names_account_name_label"
+            android:hint="@string/account_setup_names_account_name_label"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/account_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/account_setup_names_user_name_label"
+            android:hint="@string/account_setup_names_user_name_label"
+            android:inputType="textPersonName"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account_setup_options_mail_display_count_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <Spinner
+            android:id="@+id/account_display_count"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/account_setup_options_mail_display_count_label" />
+
+        <CheckBox
+            android:id="@+id/account_notify"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account_setup_options_notify_label"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <CheckBox
+            android:id="@+id/account_notify_sync"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account_setup_options_notify_sync_label"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+
 </ScrollView>
     <RelativeLayout
         android:layout_marginTop="-45dip" 
