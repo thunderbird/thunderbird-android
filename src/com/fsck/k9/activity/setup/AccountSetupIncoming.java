@@ -461,7 +461,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             
             boolean promptForClientCertificate = (authType == "EXTERNAL");
 
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false, promptForClientCertificate);
+            // if client certs are not enabled, reset the setting (if enabled the value will be 
+            // obtained and set during the SSL handshake)
+            if (!promptForClientCertificate) {
+            	mAccount.setStoreClientCertificateAlias(null);
+            }
+
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false, 
+            		promptForClientCertificate);
         } catch (Exception e) {
             failure(e);
         }

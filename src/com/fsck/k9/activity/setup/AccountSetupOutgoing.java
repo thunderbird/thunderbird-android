@@ -336,7 +336,15 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
                           Integer.parseInt(mPortView.getText().toString()), null, null, null);
             mAccount.setTransportUri(uri.toString());
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true, mUseClientCertificates.isChecked());
+            
+            // if client certs are not enabled, reset the setting (if enabled the value will be 
+            // obtained and set during the SSL handshake)
+            if (!mUseClientCertificates.isChecked()) { 
+            	mAccount.setTransportClientCertificateAlias(null);
+            }
+            
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true, 
+            		mUseClientCertificates.isChecked());
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
