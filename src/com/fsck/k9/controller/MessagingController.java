@@ -80,6 +80,7 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.PendingCommand;
+import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.UnavailableAccountException;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.provider.EmailProvider;
@@ -4176,17 +4177,26 @@ public class MessagingController implements Runnable {
                     Store localStore = account.getLocalStore();
                     localFolder = (LocalFolder) localStore.getFolder(account.getTrashFolderName());
                     localFolder.open(OpenMode.READ_WRITE);
-                    localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
+
+                    boolean isTrashLocalOnly = isTrashLocalOnly(account);
+                    if (isTrashLocalOnly) {
+                        localFolder.clearAllMessages();
+                    } else {
+                        localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
+                    }
 
                     for (MessagingListener l : getListeners()) {
                         l.emptyTrashCompleted(account);
                     }
-                    List<String> args = new ArrayList<String>();
-                    PendingCommand command = new PendingCommand();
-                    command.command = PENDING_COMMAND_EMPTY_TRASH;
-                    command.arguments = args.toArray(EMPTY_STRING_ARRAY);
-                    queuePendingCommand(account, command);
-                    processPendingCommands(account);
+
+                    if (!isTrashLocalOnly) {
+                        List<String> args = new ArrayList<String>();
+                        PendingCommand command = new PendingCommand();
+                        command.command = PENDING_COMMAND_EMPTY_TRASH;
+                        command.arguments = args.toArray(EMPTY_STRING_ARRAY);
+                        queuePendingCommand(account, command);
+                        processPendingCommands(account);
+                    }
                 } catch (UnavailableStorageException e) {
                     Log.i(K9.LOG_TAG, "Failed to empty trash because storage is not available - trying again later.");
                     throw new UnavailableAccountException(e);
@@ -4198,6 +4208,25 @@ public class MessagingController implements Runnable {
                 }
             }
         });
+    }
+
+    /**
+     * Find out whether the account type only supports a local Trash folder.
+     *
+     * <p>Note: Currently this is only the case for POP3 accounts.</p>
+     *
+     * @param account
+     *         The account to check.
+     *
+     * @return {@code true} if the account only has a local Trash folder that is not synchronized
+     *         with a folder on the server. {@code false} otherwise.
+     *
+     * @throws MessagingException
+     *         In case of an error.
+     */
+    private boolean isTrashLocalOnly(Account account) throws MessagingException {
+        // TODO: Get rid of the tight coupling once we properly support local folders
+        return (account.getRemoteStore() instanceof Pop3Store);
     }
 
     public void sendAlternate(final Context context, Account account, Message message) {
