@@ -33,6 +33,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
@@ -47,6 +48,7 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
@@ -89,6 +91,8 @@ import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.service.NotificationActionService;
 
@@ -3344,13 +3348,9 @@ public class MessagingController implements Runnable {
         builder.setContentTitle(mApplication.getString(R.string.notification_bg_send_title));
         builder.setContentText(account.getDescription());
 
-        LocalSearch search = new LocalSearch(account.getInboxFolderName());
-        search.addAllowedFolder(account.getInboxFolderName());
-        search.addAccountUuid(account.getUuid());
-        Intent intent = MessageList.intentDisplaySearch(mApplication, search, false, true, true);
-
-        PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
-        builder.setContentIntent(pi);
+        TaskStackBuilder stack = buildMessageListBackStack(mApplication, account,
+                account.getInboxFolderName());
+        builder.setContentIntent(stack.getPendingIntent(0, 0));
 
         if (K9.NOTIFICATION_LED_WHILE_SYNCING) {
             configureNotification(builder, null, null,
@@ -3392,9 +3392,8 @@ public class MessagingController implements Runnable {
         builder.setContentTitle(mApplication.getString(R.string.send_failure_subject));
         builder.setContentText(getRootCauseMessage(lastFailure));
 
-        Intent i = FolderList.actionHandleNotification(mApplication, account, openFolder);
-        PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
-        builder.setContentIntent(pi);
+        TaskStackBuilder stack = buildFolderListBackStack(mApplication, account);
+        builder.setContentIntent(stack.getPendingIntent(0, 0));
 
         configureNotification(builder,  null, null, K9.NOTIFICATION_LED_FAILURE_COLOR,
                 K9.NOTIFICATION_LED_BLINK_FAST, true);
@@ -3430,13 +3429,9 @@ public class MessagingController implements Runnable {
                 mApplication.getString(R.string.notification_bg_title_separator) +
                 folder.getName());
 
-        LocalSearch search = new LocalSearch(account.getInboxFolderName());
-        search.addAllowedFolder(account.getInboxFolderName());
-        search.addAccountUuid(account.getUuid());
-        Intent intent = MessageList.intentDisplaySearch(mApplication, search, false, true, true);
-
-        PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
-        builder.setContentIntent(pi);
+        TaskStackBuilder stack = buildMessageListBackStack(mApplication, account,
+                account.getInboxFolderName());
+        builder.setContentIntent(stack.getPendingIntent(0, 0));
 
         if (K9.NOTIFICATION_LED_WHILE_SYNCING) {
             configureNotification(builder,  null, null,
@@ -4914,7 +4909,7 @@ public class MessagingController implements Runnable {
             }
         }
 
-        Intent targetIntent;
+        TaskStackBuilder stack;
         boolean treatAsSingleMessageNotification;
 
         if (platformSupportsExtendedNotifications()) {
@@ -4927,8 +4922,9 @@ public class MessagingController implements Runnable {
         }
 
         if (treatAsSingleMessageNotification) {
-            targetIntent = MessageList.actionHandleNotificationIntent(
-                    context, message.makeMessageReference());
+            stack = buildMessageViewBackStack(context, message.makeMessageReference());
+        } else if (account.goToUnreadMessageSearch()) {
+            stack = buildUnreadBackStack(context, account);
         } else {
             String initialFolder = message.getFolder().getName();
             /* only go to folder if all messages are in the same folder, else go to folder list */
@@ -4939,11 +4935,11 @@ public class MessagingController implements Runnable {
                 }
             }
 
-            targetIntent = FolderList.actionHandleNotification(context, account, initialFolder);
+            stack = buildMessageListBackStack(context, account, initialFolder);
         }
 
-        builder.setContentIntent(PendingIntent.getActivity(context,
-                account.getAccountNumber(), targetIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        builder.setContentIntent(stack.getPendingIntent(
+                account.getAccountNumber(), PendingIntent.FLAG_UPDATE_CURRENT));
         builder.setDeleteIntent(NotificationActionService.getAcknowledgeIntent(context, account));
 
         // Only ring or vibrate if we have not done so already on this account and fetch
@@ -4964,6 +4960,42 @@ public class MessagingController implements Runnable {
                 ringAndVibrate);
 
         notifMgr.notify(account.getAccountNumber(), builder.build());
+    }
+
+    private TaskStackBuilder buildFolderListBackStack(Context context, Account account) {
+        TaskStackBuilder stack = TaskStackBuilder.create(context);
+        stack.addNextIntent(new Intent(context, Accounts.class).putExtra(Accounts.EXTRA_STARTUP, false));
+        stack.addNextIntent(FolderList.actionHandleAccountIntent(context, account, false));
+        return stack;
+    }
+
+    private TaskStackBuilder buildUnreadBackStack(Context context, final Account account) {
+        TaskStackBuilder stack = buildFolderListBackStack(context, account);
+        String description = context.getString(R.string.search_title,
+                account.getDescription(), context.getString(R.string.unread_modifier));
+        LocalSearch search = new LocalSearch(description);
+        search.addAccountUuid(account.getUuid());
+        search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
+        stack.addNextIntent(MessageList.intentDisplaySearch(context, search, true, false, false));
+        return stack;
+    }
+
+    private TaskStackBuilder buildMessageListBackStack(Context context, Account account, String folder) {
+        TaskStackBuilder stack = buildFolderListBackStack(context, account);
+        if (folder != null) {
+            LocalSearch search = new LocalSearch(folder);
+            search.addAllowedFolder(folder);
+            search.addAccountUuid(account.getUuid());
+            stack.addNextIntent(MessageList.intentDisplaySearch(context, search, false, true, true));
+        }
+        return stack;
+    }
+
+    private TaskStackBuilder buildMessageViewBackStack(Context context, MessageReference message) {
+        Account account = Preferences.getPreferences(context).getAccount(message.accountUuid);
+        TaskStackBuilder stack = buildMessageListBackStack(context, account, message.folderName);
+        stack.addNextIntent(MessageList.actionDisplayMessageIntent(context, message));
+        return stack;
     }
 
     /**

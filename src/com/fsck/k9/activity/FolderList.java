@@ -7,7 +7,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -72,8 +71,6 @@ import de.cketti.library.changelog.ChangeLog;
 public class FolderList extends K9ListActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
-    private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
-    private static final String EXTRA_FROM_NOTIFICATION = "fromNotification";
     private static final String EXTRA_FROM_SHORTCUT = "fromShortcut";
 
     private static final boolean REFRESH_REMOTE = true;
@@ -233,14 +230,10 @@ public class FolderList extends K9ListActivity {
         sendMail(mAccount);
     }
 
-    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder, boolean fromShortcut) {
+    public static Intent actionHandleAccountIntent(Context context, Account account, boolean fromShortcut) {
         Intent intent = new Intent(context, FolderList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
-
-        if (initialFolder != null) {
-            intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
-        }
 
         if (fromShortcut) {
             intent.putExtra(EXTRA_FROM_SHORTCUT, true);
@@ -250,24 +243,8 @@ public class FolderList extends K9ListActivity {
     }
 
     public static void actionHandleAccount(Context context, Account account) {
-        Intent intent = actionHandleAccountIntent(context, account, null, false);
+        Intent intent = actionHandleAccountIntent(context, account, false);
         context.startActivity(intent);
-    }
-
-    public static Intent actionHandleNotification(Context context, Account account, String initialFolder) {
-        Intent intent = new Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse("email://accounts/" + account.getAccountNumber()),
-            context,
-            FolderList.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        intent.putExtra(EXTRA_FROM_NOTIFICATION, true);
-
-        if (initialFolder != null) {
-            intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
-        }
-        return intent;
     }
 
     @Override
@@ -325,8 +302,6 @@ public class FolderList extends K9ListActivity {
     public void onNewIntent(Intent intent) {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
 
-        String initialFolder;
-
         mUnreadMessageCount = 0;
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -337,16 +312,7 @@ public class FolderList extends K9ListActivity {
             return;
         }
 
-        initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
-        boolean fromNotification = intent.getBooleanExtra(EXTRA_FROM_NOTIFICATION, false);
-        if (fromNotification && mAccount.goToUnreadMessageSearch()) {
-            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
-            openUnreadSearch(this, mAccount);
-            finish();
-        } else if (initialFolder != null && !K9.FOLDER_NONE.equals(initialFolder)) {
-            onOpenFolder(initialFolder);
-            finish();
-        } else if (intent.getBooleanExtra(EXTRA_FROM_SHORTCUT, false) &&
+        if (intent.getBooleanExtra(EXTRA_FROM_SHORTCUT, false) &&
                    !K9.FOLDER_NONE.equals(mAccount.getAutoExpandFolderName())) {
             onOpenFolder(mAccount.getAutoExpandFolderName());
             finish();
@@ -1261,14 +1227,4 @@ public class FolderList extends K9ListActivity {
             MessageList.actionDisplaySearch(FolderList.this, search, true, false);
         }
     }
-
-    private void openUnreadSearch(Context context, final Account account) {
-        String description = getString(R.string.search_title, mAccount.getDescription(), getString(R.string.unread_modifier));
-        LocalSearch search = new LocalSearch(description);
-        search.addAccountUuid(account.getUuid());
-        search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
-
-        MessageList.actionDisplaySearch(context, search, true, false);
-    }
-
 }

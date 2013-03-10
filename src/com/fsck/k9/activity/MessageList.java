@@ -132,13 +132,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         return intent;
     }
 
-    public static Intent actionHandleNotificationIntent(Context context,
-            MessageReference messageReference) {
-        Intent intent = actionDisplayMessageIntent(context, messageReference);
-        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intent;
-    }
-
 
     private enum DisplayMode {
         MESSAGE_LIST,
