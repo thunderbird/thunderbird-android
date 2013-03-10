@@ -1768,7 +1768,8 @@ public class Account implements BaseAccount {
         mAlwaysShowCcBcc = show;
     }
     public boolean isRemoteSearchFullText() {
-        return mRemoteSearchFullText;
+        return false;   // Temporarily disabled
+        //return mRemoteSearchFullText;
     }
 
     public void setRemoteSearchFullText(boolean val) {
