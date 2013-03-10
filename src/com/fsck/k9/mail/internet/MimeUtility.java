@@ -905,15 +905,16 @@ public class MimeUtility {
         {"image/pjpeg", "image/jpeg"},   // see issue 1712
         {"application/x-zip-compressed", "application/zip"} // see issue 3791
     };
-    
+
     /**
-     * Table for charset fallback.
-     * 
-     * Table format: not supported charset (regex), fallback
+     * Table for character set fall-back.
+     *
+     * Table format: unsupported charset (regular expression), fall-back charset
      */
     private static final String[][] CHARSET_FALLBACK_MAP = new String[][] {
-    	{"iso-2022-jp-[\\d]+", "iso-2022-jp"},
-    	{".*", "US-ASCII"}
+        {"iso-2022-jp-[\\d]+", "iso-2022-jp"},
+        // Default fall-back is US-ASCII
+        {".*", "US-ASCII"}
     };
 
     public static String unfold(String s) {
@@ -2301,7 +2302,7 @@ public class MimeUtility {
 
             charset = "shift_jis";
         }
-        
+
         /*
          * See if there is conversion from the MIME charset to the Java one.
          * this function may also throw an exception if the charset name is not known
@@ -2312,20 +2313,24 @@ public class MimeUtility {
         } catch (IllegalCharsetNameException e) {
             supported = false;
         }
+
         for (String[] rule: CHARSET_FALLBACK_MAP) {
-        	if (supported)
-        		break;
-        	if (charset.matches(rule[0])) {
+            if (supported) {
+                break;
+            }
+
+            if (charset.matches(rule[0])) {
                 Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
                         ". Falling back to " + rule[1]);
-        		charset = rule[1];
-        		try {
-        			supported = Charset.isSupported(charset);
-        		} catch (IllegalCharsetNameException e) {
-        			supported = false;
-        		}
-        	}
+                charset = rule[1];
+                try {
+                    supported = Charset.isSupported(charset);
+                } catch (IllegalCharsetNameException e) {
+                    supported = false;
+                }
+            }
         }
+
         /*
          * Convert and return as new String
          */
