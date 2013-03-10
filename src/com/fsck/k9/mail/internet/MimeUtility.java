@@ -912,6 +912,8 @@ public class MimeUtility {
      * Table format: unsupported charset (regular expression), fall-back charset
      */
     private static final String[][] CHARSET_FALLBACK_MAP = new String[][] {
+        // Some Android versions don't support KOI8-U
+        {"koi8-u", "koi8-r"},
         {"iso-2022-jp-[\\d]+", "iso-2022-jp"},
         // Default fall-back is US-ASCII
         {".*", "US-ASCII"}
@@ -2185,8 +2187,6 @@ public class MimeUtility {
         charset = charset.toLowerCase(Locale.US);
         if (charset.equals("cp932"))
             charset = "shift_jis";
-        else if (charset.equals("koi8-u"))
-            charset = "koi8-r";
 
         if (charset.equals("shift_jis") || charset.equals("iso-2022-jp")) {
             String variant = getJisVariantFromMessage(message);
