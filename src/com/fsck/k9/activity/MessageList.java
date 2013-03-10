@@ -163,6 +163,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     private MessageListFragment mMessageListFragment;
     private MessageViewFragment mMessageViewFragment;
+    private int mFirstBackStackId = -1;
 
     private Account mAccount;
     private String mFolderName;
@@ -238,6 +239,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         setIntent(intent);
 
+        if (mFirstBackStackId >= 0) {
+            getSupportFragmentManager().popBackStackImmediate(mFirstBackStackId,
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            mFirstBackStackId = -1;
+        }
         removeMessageListFragment();
         removeMessageViewFragment();
 
@@ -1159,11 +1165,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void onBackStackChanged() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        mMessageListFragment = (MessageListFragment) fragmentManager.findFragmentById(
-                R.id.message_list_container);
-        mMessageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(
-                R.id.message_view_container);
+        findFragments();
 
         if (mDisplayMode == DisplayMode.SPLIT_VIEW) {
             showMessageViewPlaceHolder();
@@ -1213,7 +1215,11 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             ft.addToBackStack(null);
 
         mMessageListFragment = fragment;
-        ft.commit();
+
+        int transactionId = ft.commit();
+        if (transactionId >= 0 && mFirstBackStackId < 0) {
+            mFirstBackStackId = transactionId;
+        }
     }
 
     @Override
