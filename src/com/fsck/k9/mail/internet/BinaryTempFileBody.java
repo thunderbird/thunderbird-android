@@ -36,9 +36,15 @@ public class BinaryTempFileBody implements Body {
     }
 
     public InputStream getInputStream() throws MessagingException {
+        InputStream is = null;
+        FileInputStream fis = null;
         try {
-            return new BinaryTempFileBodyInputStream(new FileInputStream(mFile));
+            fis = new FileInputStream(mFile);
+            is = new BinaryTempFileBodyInputStream(fis);
+            return is;
         } catch (IOException ioe) {
+            try { if (fis != null) { fis.close(); } } catch (IOException e) { }
+            try { if (is != null) { is.close(); } } catch (IOException e) { }
             throw new MessagingException("Unable to open body", ioe);
         }
     }
