@@ -1172,6 +1172,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         case R.id.import_settings:
             onImport();
             break;
+        case R.id.forget_session_pwds:
+            onForgetSessionPwds();
+            break;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -1326,6 +1329,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         } else {
             showDialog(DIALOG_NO_FILE_MANAGER);
         }
+    }
+    
+    private void onForgetSessionPwds() {
+    	Account[] accounts = Preferences.getPreferences(this).getAccounts();
+    	for(int i=0; i<accounts.length; i++) {
+    		accounts[i].forgetSessionPasswords();
+    	}
+    	mHandler.dataChanged();
     }
 
     @Override
@@ -2052,4 +2063,28 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             removeProgressDialog();
         }
     }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        configureMenu(menu);
+        return true;
+    }
+
+    private void configureMenu(Menu menu) {
+        if (menu == null) {
+            return;
+        }
+        
+        boolean needsMenuToForgetSessionPwds = false;
+        Account[] accounts = Preferences.getPreferences(this).getAccounts();
+    	for(int i=0; i<accounts.length; i++) {
+    		Account account = accounts[i];
+    		if (account.canForgetPasswords())
+    			needsMenuToForgetSessionPwds = true;
+    	}
+    	menu.findItem(R.id.forget_session_pwds).setVisible(needsMenuToForgetSessionPwds);
+        
+    }
+
 }

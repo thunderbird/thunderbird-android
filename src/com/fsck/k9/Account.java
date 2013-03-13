@@ -91,6 +91,8 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_NAME_KEY = "name";
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
+    
+    public static final String DONT_STORE_MY_PASSWORD = "DONT_STORE_MY_PASSWORD";
 
     public enum SortType {
         SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
@@ -911,6 +913,15 @@ public class Account implements BaseAccount {
         	this.mEnabled = false; // Setting changed => disabling account until password is entered
         }
     }
+    
+    public synchronized void forgetSessionPasswords() {
+    	if (mStoreUri_DontStorePassword) {
+    		setStoreUri_DontStorePassword(true); // Will reset the session password
+    	}
+    	if (mTransportUri_DontStorePassword) {
+    		setTransportUri_DontStorePassword(true); // Will reset the session password
+    	}
+    }
 
     public synchronized String getUndecoratedDescription() {
     	return mDescription;
@@ -918,13 +929,13 @@ public class Account implements BaseAccount {
 
     protected boolean decodeIfDontStoreIncomingPassword(String storeUri) {
 		ServerSettings incoming = Store.decodeStoreUri(storeUri);
-		return ((incoming.password != null) && incoming.password.equals("DONT_STORE_MY_PASSWORD"));    	
+		return ((incoming.password != null) && incoming.password.equals(DONT_STORE_MY_PASSWORD));    	
     }
 
     protected String encodeIfDontStoreIncomingPassword(String storeUri, boolean DontStorePassword) {
     	if (DontStorePassword) {
     		ServerSettings incoming = Store.decodeStoreUri(storeUri);
-    		ServerSettings newIncoming = incoming.newPassword("DONT_STORE_MY_PASSWORD");
+    		ServerSettings newIncoming = incoming.newPassword(DONT_STORE_MY_PASSWORD);
     		return Store.createStoreUri(newIncoming);    		
     	}
     	else
@@ -933,13 +944,13 @@ public class Account implements BaseAccount {
     
     protected boolean decodeIfDontStoreOutgoingPassword(String transportUri) {
 		ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
-		return ((outgoing.password != null) && outgoing.password.equals("DONT_STORE_MY_PASSWORD"));    	
+		return ((outgoing.password != null) && outgoing.password.equals(DONT_STORE_MY_PASSWORD));    	
     }
     
     protected String encodeIfDontStoreOutgoingPassword(String transportUri, boolean DontStorePassword) {
     	if (DontStorePassword) {
     		ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
-    		ServerSettings newOutgoing = outgoing.newPassword("DONT_STORE_MY_PASSWORD");
+    		ServerSettings newOutgoing = outgoing.newPassword(DONT_STORE_MY_PASSWORD);
     		return Transport.createTransportUri(newOutgoing);
     	}
     	else
@@ -948,6 +959,10 @@ public class Account implements BaseAccount {
     
     public synchronized boolean needsToAskForSessionPasswords() {
     	return (!mEnabled) && (mStoreUri_DontStorePassword || mTransportUri_DontStorePassword);
+    }
+
+    public synchronized boolean canForgetPasswords() {
+    	return (mEnabled) && (mStoreUri_DontStorePassword || mTransportUri_DontStorePassword);
     }
     
     public synchronized String getDescription() {

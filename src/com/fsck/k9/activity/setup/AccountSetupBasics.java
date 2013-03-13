@@ -193,7 +193,7 @@ public class AccountSetupBasics extends K9Activity
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         if (mPasswordNotStored.isChecked())
-        	password = "DONT_STORE_MY_PASSWORD";
+        	password = Account.DONT_STORE_MY_PASSWORD;
         String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
@@ -304,7 +304,7 @@ public class AccountSetupBasics extends K9Activity
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         if (mPasswordNotStored.isChecked())
-        	password = "DONT_STORE_MY_PASSWORD";
+        	password = Account.DONT_STORE_MY_PASSWORD;
         String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
