@@ -287,6 +287,11 @@ public class Pop3Store extends Store {
         folder.close();
     }
 
+    @Override
+    public boolean isSeenFlagSupported() {
+        return false;
+    }
+
     class Pop3Folder extends Folder {
         private Socket mSocket;
         private InputStream mIn;

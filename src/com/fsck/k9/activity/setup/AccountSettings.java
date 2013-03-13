@@ -125,6 +125,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private boolean mIsMoveCapable = false;
     private boolean mIsPushCapable = false;
     private boolean mIsExpungeCapable = false;
+    private boolean mIsSeenFlagSupported = false;
 
     private PreferenceScreen mMainScreen;
     private PreferenceScreen mComposingScreen;
@@ -210,6 +211,7 @@ public class AccountSettings extends K9PreferenceActivity {
             mIsMoveCapable = store.isMoveCapable();
             mIsPushCapable = store.isPushCapable();
             mIsExpungeCapable = store.isExpungeCapable();
+            mIsSeenFlagSupported = store.isSeenFlagSupported();
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Could not get remote store", e);
         }
@@ -354,7 +356,10 @@ public class AccountSettings extends K9PreferenceActivity {
         });
 
         mDeletePolicy = (ListPreference) findPreference(PREFERENCE_DELETE_POLICY);
-        mDeletePolicy.setValue("" + mAccount.getDeletePolicy());
+        if (!mIsSeenFlagSupported) {
+            removeListEntry(mDeletePolicy, Integer.toString(Account.DELETE_POLICY_MARK_AS_READ));
+        }
+        mDeletePolicy.setValue(Integer.toString(mAccount.getDeletePolicy()));
         mDeletePolicy.setSummary(mDeletePolicy.getEntry());
         mDeletePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -714,6 +719,26 @@ public class AccountSettings extends K9PreferenceActivity {
             mCryptoMenu.setEnabled(false);
             mCryptoMenu.setSummary(R.string.account_settings_crypto_apg_not_installed);
         }
+    }
+
+    private void removeListEntry(ListPreference listPreference, String remove) {
+        CharSequence[] entryValues = listPreference.getEntryValues();
+        CharSequence[] entries = listPreference.getEntries();
+
+        CharSequence[] newEntryValues = new String[entryValues.length - 1];
+        CharSequence[] newEntries = new String[entryValues.length - 1];
+
+        for (int i = 0, out = 0; i < entryValues.length; i++) {
+            CharSequence value = entryValues[i];
+            if (!value.equals(remove)) {
+                newEntryValues[out] = value;
+                newEntries[out] = entries[i];
+                out++;
+            }
+        }
+
+        listPreference.setEntryValues(newEntryValues);
+        listPreference.setEntries(newEntries);
     }
 
     private void handleCryptoAppDependencies() {
