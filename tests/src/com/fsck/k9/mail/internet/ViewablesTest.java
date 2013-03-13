@@ -29,12 +29,9 @@ public class ViewablesTest extends AndroidTestCase {
 
         String expectedText = bodyText;
         String expectedHtml =
-                "<html><head/><body>" +
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 "K-9 Mail rocks :&gt;" +
-                "</pre>" +
-                "</body></html>";
+                "</pre>";
 
         assertEquals(expectedText, container.text);
         assertEquals(expectedHtml, container.html);
@@ -56,9 +53,7 @@ public class ViewablesTest extends AndroidTestCase {
 
         String expectedText = "K-9 Mail rocks :>";
         String expectedHtml =
-                "<html><head/><body>" +
-                bodyText +
-                "</body></html>";
+                bodyText;
 
         assertEquals(expectedText, container.text);
         assertEquals(expectedHtml, container.html);
@@ -91,18 +86,14 @@ public class ViewablesTest extends AndroidTestCase {
                 "------------------------------------------------------------------------\n\n" +
                 bodyText2;
         String expectedHtml =
-                "<html><head/><body>" +
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 bodyText1 +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; " +
                         "border-bottom: 1px solid #000\"></p>" +
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 bodyText2 +
-                "</pre>" +
-                "</body></html>";
+                "</pre>";
 
 
         assertEquals(expectedText, container.text);
@@ -158,9 +149,7 @@ public class ViewablesTest extends AndroidTestCase {
                 "\n" +
                 innerBodyText;
         String expectedHtml =
-                "<html><head/><body>" +
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 bodyText +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: " +
@@ -180,11 +169,9 @@ public class ViewablesTest extends AndroidTestCase {
                 "<td>Subject</td>" +
                 "</tr>" +
                 "</table>" +
-                "<pre style=\"white-space: pre-wrap; word-wrap:break-word; " +
-                        "font-family: sans-serif; margin-top: 0px\">" +
+                "<pre class=\"k9mail\">" +
                 innerBodyText +
-                "</pre>" +
-                "</body></html>";
+                "</pre>";
 
         assertEquals(expectedText, container.text);
         assertEquals(expectedHtml, container.html);
