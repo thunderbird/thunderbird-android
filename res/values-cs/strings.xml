@@ -215,7 +215,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> více v <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Odpovědět</string>
-    <string name="notification_action_read">Číst</string>
+    <string name="notification_action_read">Přečteno</string>
     <string name="notification_action_delete">Smazat</string>
     <string name="notification_certificate_error_title">Chyba certifikátu pro <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
