@@ -186,12 +186,11 @@ public class MessageWebView extends TitleBarWebView {
 
     @Override
     public void scrollTo(int x, int y) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-                mOverrideScrollCounter < 3) {
+        if (Build.VERSION.SDK_INT >= 16 && mOverrideScrollCounter < 3) {
             /*
              * 2013-03-12 - cketti
              *
-             * WebView on Android 4+ automatically scrolls past the title view using this method.
+             * WebView on Android 4.1+ automatically scrolls past the title view using this method.
              * It looks like user-triggered scroll operations don't call this method. So we use
              * it to override the initial scrolling past the title view.
              *
