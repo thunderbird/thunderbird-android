@@ -1142,7 +1142,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_show_contact_picture_label">Show contact pictures</string>
     <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>
 
-    <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>
-    <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>
+    <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>
     <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>
 </resources>
