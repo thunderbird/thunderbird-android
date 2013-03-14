@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.329" versioncode="17030" >
+        <change>Changed the notification icon (Android 2.3+ only)</change>
+        <change>Restored showing the unread count on top of notification icons (Android 2.x only)</change>
+        <change>Show preview text of the latest message in a thread</change>
+        <change>Fixed 'empty trash' functionality for POP3 accounts</change>
+        <change>Added work-around for the auto-scroll issue of the message view on Jelly Bean</change>
+        <change>Changed navigation when coming from a notification</change>
+        <change>Don't return to home screen after forwarding/replying to a message</change>
+        <change>Changed button bar style in account setup screens (Android 3+)</change>
+        <change>Highlight selected message in the message list</change>
+        <change>Added a series of predefined account colors that will be used before resorting to random colors</change>
+        <change>Hide delete policy option not applicable to POP3 accounts</change>
+        <change>Fall back to character set ISO-2022-JP when ISO-2022-JP-2 is not available</change>
+        <change>Updated Koran, Danish, Finnish translations</change>
+        <change>More bug fixes</change>
+    </release>
+
     <release version="4.328" versioncode="17029" >
         <change>Fixed the changelog :)</change>
     </release>
