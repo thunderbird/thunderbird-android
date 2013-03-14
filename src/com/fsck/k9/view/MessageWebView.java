@@ -46,6 +46,9 @@ public class MessageWebView extends TitleBarWebView {
     }
 
 
+    private int mOverrideScrollCounter;
+
+
     public MessageWebView(Context context) {
         super(context);
     }
@@ -161,6 +164,7 @@ public class MessageWebView extends TitleBarWebView {
                    + content;
         }
         loadDataWithBaseURL("http://", content, contentType, "utf-8", null);
+        mOverrideScrollCounter = 0;
     }
 
     /*
@@ -180,4 +184,25 @@ public class MessageWebView extends TitleBarWebView {
         }
     }
 
+    @Override
+    public void scrollTo(int x, int y) {
+        if (Build.VERSION.SDK_INT >= 16 && mOverrideScrollCounter < 3) {
+            /*
+             * 2013-03-12 - cketti
+             *
+             * WebView on Android 4.1+ automatically scrolls past the title view using this method.
+             * It looks like user-triggered scroll operations don't call this method. So we use
+             * it to override the initial scrolling past the title view.
+             *
+             * It's a dirty hack and we should find a better way to display the message header. When
+             * testing this I saw up to two calls to this method during initialization. To make
+             * sure we don't totally cripple the WebView when the implementation changes we only
+             * override the first three scrollTo() invocations.
+             */
+            y = 0;
+            mOverrideScrollCounter++;
+        }
+
+        super.scrollTo(x, y);
+    }
 }
