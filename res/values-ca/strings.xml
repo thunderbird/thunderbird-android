@@ -235,7 +235,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Paperera)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Enviat)</string>
     <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arxiu)</string>
-    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Paperera)</string>
+    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Brossa)</string>
 
     <string name="send_failure_subject">La tramesa d\'alguns missatges ha fallat</string>
 
