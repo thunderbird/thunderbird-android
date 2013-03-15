@@ -94,7 +94,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
 
     <string name="compose_title_compose">Redacta</string>
-    <string name="compose_title_reply">Respon</string>-->
+    <string name="compose_title_reply">Respon</string>
     <string name="compose_title_reply_all">Respon a tothom all</string>
     <string name="compose_title_forward">Reenvia</string>
 
@@ -157,7 +157,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="show_headers_action">Mostra les capçaleres</string>
     <string name="hide_headers_action">Amaga les capçaleres</string>
 
-    <string name="message_view_theme_action_dark">Canvia a la vista fosca</string>-->
+    <string name="message_view_theme_action_dark">Canvia a la vista fosca</string>
     <string name="message_view_theme_action_light">Canvia a la vista clara</string>
 
     <string name="mark_as_unread_action">Marca com a no llegit</string>
@@ -1017,7 +1017,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="settings_exporting">Exporta els paràmetres</string>
     <string name="settings_importing">S\'està important els paràmetres.</string>
     <string name="settings_import_scanning_file">S\'està examinant el fitxer.</string>
-    <string name="settings_export_success">S\'han exportat els paràmetres globals a <xliff:g id="filename">%s</xliff:g></string>-->
+    <string name="settings_export_success">S\'han exportat els paràmetres globals a <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">S\'han importat els paràmetres globals de <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">S\'ha importat <xliff:g id="accounts">%s</xliff:g> des de <xliff:g id="filename">%s</xliff:g></string>
     <plurals name="settings_import_success">
@@ -1031,11 +1031,11 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="settings_import_success_header">Importació correcte</string>
     <string name="settings_import_failed_header">Error en la importació</string>
     <string name="settings_import_activate_account_header">Activa el compte</string>
-    <string name="settings_import_activate_account_intro">Per tal de poder utilitzar el compte \"<xliff:g id="account">%s</xliff:g>\", heu d\'associar-la amb les contrasenyes del servidor <xliff:g id="server_passwords">%s</xliff:g>.</string>-->
+    <string name="settings_import_activate_account_intro">Per tal de poder utilitzar el compte \"<xliff:g id="account">%s</xliff:g>\", heu d\'associar-la amb les contrasenyes del servidor <xliff:g id="server_passwords">%s</xliff:g>.</string>
     <plurals name="settings_import_server_passwords">
         <item quantity="one">contrasenya del servidor</item>
         <item quantity="other">contrasenyes del servidor</item>
-    </plurals>-->
+    </plurals>
     <string name="settings_import_incoming_server">Servidor d\'entrada (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Servidor de sortida (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
