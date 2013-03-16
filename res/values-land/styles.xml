@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="UnreadWidgetContainer">
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@drawable/unread_widget_background</item>
+        <item name="android:gravity">bottom|center_horizontal</item>
+    </style>
+
+    <style name="UnreadWidgetTextView">
+        <item name="android:textSize">13dp</item>
+        <item name="android:background">@drawable/rounded_corners</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowRadius">2.0</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+</resources>
+
