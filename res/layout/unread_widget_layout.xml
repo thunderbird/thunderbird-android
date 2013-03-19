@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/UnreadWidgetContainer"
     android:id="@+id/unread_widget_layout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:clickable="true"
-    android:focusable="true"
-    android:background="@drawable/unread_widget_background"
-    android:gravity="bottom|center_horizontal">
+    android:focusable="true">
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="@android:dimen/app_icon_size"
-            android:layout_height="@android:dimen/app_icon_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:scaleType="fitCenter"
-            android:src="@drawable/icon" />
+            android:src="@drawable/unread_widget_icon" />
 
         <TextView
             android:id="@+id/unread_count"
             android:visibility="gone"
-            android:textSize="10dp"
+            android:textSize="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
@@ -38,10 +36,10 @@
     </FrameLayout>
 
     <TextView
+        style="@style/UnreadWidgetTextView"
         android:id="@+id/account_name"
         android:text="@string/app_name"
         android:ellipsize="marquee"
-        android:textSize="12dp"
         android:singleLine="true"
         android:paddingTop="1dp"
         android:paddingBottom="1dp"
@@ -50,10 +48,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="3dp"
-        android:background="@drawable/rounded_corners"
-        android:textColor="#ffffff"
-        android:shadowColor="#000000"
-        android:shadowRadius="2.0"/>
+        android:layout_marginTop="3dp" />
 
 </LinearLayout>
