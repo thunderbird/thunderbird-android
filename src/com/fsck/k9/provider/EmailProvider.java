@@ -73,8 +73,19 @@ public class EmailProvider extends ContentProvider {
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.ANSWERED, "MIN");
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.FORWARDED, "MIN");
     }
+
     private static final String[] FIXUP_MESSAGES_COLUMNS = {
         MessageColumns.ID
+    };
+
+    private static final String[] FIXUP_AGGREGATED_MESSAGES_COLUMNS = {
+        MessageColumns.DATE,
+        MessageColumns.INTERNAL_DATE,
+        MessageColumns.ATTACHMENT_COUNT,
+        MessageColumns.READ,
+        MessageColumns.FLAGGED,
+        MessageColumns.ANSWERED,
+        MessageColumns.FORWARDED
     };
 
     private static final String FOLDERS_TABLE = "folders";
@@ -408,7 +419,8 @@ public class EmailProvider extends ContentProvider {
                     query.append("WHERE m." + MessageColumns.DATE + " = a." + MessageColumns.DATE);
                     if (!StringUtils.isNullOrEmpty(sortOrder)) {
                         query.append(" ORDER BY ");
-                        query.append(sortOrder);
+                        query.append(SqlQueryBuilder.addPrefixToSelection(
+                                FIXUP_AGGREGATED_MESSAGES_COLUMNS, "a.", sortOrder));
                     }
 
                     return db.rawQuery(query.toString(), selectionArgs);
