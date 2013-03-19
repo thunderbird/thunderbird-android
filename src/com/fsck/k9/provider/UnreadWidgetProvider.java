@@ -79,8 +79,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
                     stats = realAccount.getStats(context);
 
                     if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName())) {
-                        clickIntent = FolderList.actionHandleAccountIntent(context, realAccount,
-                                null, false);
+                        clickIntent = FolderList.actionHandleAccountIntent(context, realAccount, false);
                     } else {
                         LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
                         search.addAllowedFolder(realAccount.getAutoExpandFolderName());

@@ -238,10 +238,12 @@ public class ContactPictureLoader {
                     if (stream != null) {
                         try {
                             Bitmap tempBitmap = BitmapFactory.decodeStream(stream);
-                            bitmap = Bitmap.createScaledBitmap(tempBitmap, mPictureSizeInPx,
-                                    mPictureSizeInPx, true);
-                            if (tempBitmap != bitmap) {
-                                tempBitmap.recycle();
+                            if (tempBitmap != null) {
+                                bitmap = Bitmap.createScaledBitmap(tempBitmap, mPictureSizeInPx,
+                                        mPictureSizeInPx, true);
+                                if (tempBitmap != bitmap) {
+                                    tempBitmap.recycle();
+                                }
                             }
                         } finally {
                             try { stream.close(); } catch (IOException e) { /* ignore */ }

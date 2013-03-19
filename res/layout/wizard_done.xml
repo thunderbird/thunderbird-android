@@ -5,14 +5,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/bottom_bar"
-        android:gravity="bottom|left" >
+        android:gravity="bottom|right" >
 
         <Button
-            android:id="@+id/cancel"
+            android:id="@+id/done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableRight="@drawable/button_indicator_next"
             android:minWidth="@dimen/button_minWidth"
-            android:text="@string/cancel_action" />
+            android:text="@string/done_action" />
     </LinearLayout>
 
 </merge>

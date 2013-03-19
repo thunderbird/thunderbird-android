@@ -194,6 +194,10 @@ public abstract class Store {
         return false;
     }
 
+    public boolean isSeenFlagSupported() {
+        return true;
+    }
+
     public void sendMessages(Message[] messages) throws MessagingException {
     }
 

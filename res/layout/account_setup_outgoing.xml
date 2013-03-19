@@ -2,14 +2,14 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-	android:layout_height="fill_parent"
+    android:layout_height="fill_parent"
     android:layout_width="fill_parent">
- 
+
 <ScrollView
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
     android:padding="6dip"
-    android:layout_marginBottom="54dip" 
     android:fadingEdge="none"
     android:scrollbarStyle="outsideInset">
     <LinearLayout
@@ -108,6 +108,6 @@
             android:layout_height="0dip"
             android:layout_weight="1" />
     </LinearLayout>
-	</ScrollView>
+    </ScrollView>
     <include layout="@layout/wizard_next" />
 </LinearLayout>

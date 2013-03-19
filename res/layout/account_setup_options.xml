@@ -7,9 +7,10 @@
 
 <ScrollView
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_marginBottom="54dip" 
-	android:fadingEdge="none"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:layout_marginBottom="54dip"
+    android:fadingEdge="none"
     android:padding="6dip"
     android:scrollbarStyle="outsideInset">
     <LinearLayout

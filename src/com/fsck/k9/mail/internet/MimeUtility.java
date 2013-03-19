@@ -906,6 +906,19 @@ public class MimeUtility {
         {"application/x-zip-compressed", "application/zip"} // see issue 3791
     };
 
+    /**
+     * Table for character set fall-back.
+     *
+     * Table format: unsupported charset (regular expression), fall-back charset
+     */
+    private static final String[][] CHARSET_FALLBACK_MAP = new String[][] {
+        // Some Android versions don't support KOI8-U
+        {"koi8-u", "koi8-r"},
+        {"iso-2022-jp-[\\d]+", "iso-2022-jp"},
+        // Default fall-back is US-ASCII
+        {".*", "US-ASCII"}
+    };
+
     public static String unfold(String s) {
         if (s == null) {
             return null;
@@ -2174,8 +2187,6 @@ public class MimeUtility {
         charset = charset.toLowerCase(Locale.US);
         if (charset.equals("cp932"))
             charset = "shift_jis";
-        else if (charset.equals("koi8-u"))
-            charset = "koi8-r";
 
         if (charset.equals("shift_jis") || charset.equals("iso-2022-jp")) {
             String variant = getJisVariantFromMessage(message);
@@ -2302,11 +2313,24 @@ public class MimeUtility {
         } catch (IllegalCharsetNameException e) {
             supported = false;
         }
-        if (!supported) {
-            Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
-                  ". Falling back to US-ASCII");
-            charset = "US-ASCII";
+
+        for (String[] rule: CHARSET_FALLBACK_MAP) {
+            if (supported) {
+                break;
+            }
+
+            if (charset.matches(rule[0])) {
+                Log.e(K9.LOG_TAG, "I don't know how to deal with the charset " + charset +
+                        ". Falling back to " + rule[1]);
+                charset = rule[1];
+                try {
+                    supported = Charset.isSupported(charset);
+                } catch (IllegalCharsetNameException e) {
+                    supported = false;
+                }
+            }
         }
+
         /*
          * Convert and return as new String
          */

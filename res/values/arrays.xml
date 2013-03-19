@@ -31,7 +31,7 @@
         <item>@string/account_setup_options_mail_check_frequency_24hour</item>
     </string-array>
 
-    <string-array name="account_settings_check_frequency_values">
+    <string-array name="account_settings_check_frequency_values" translatable="false">
         <item>-1</item>
         <item>1</item>
         <item>5</item>
@@ -57,7 +57,7 @@
         <item>@string/account_setup_options_mail_display_count_all</item>
     </string-array>
 
-    <string-array name="account_settings_display_count_values">
+    <string-array name="account_settings_display_count_values" translatable="false">
         <item>10</item>
         <item>25</item>
         <item>50</item>
@@ -83,7 +83,7 @@
         <item>@string/account_settings_message_age_1_year</item>
     </string-array>
 
-    <string-array name="account_settings_message_age_values">
+    <string-array name="account_settings_message_age_values" translatable="false">
         <item>-1</item>
         <item>0</item>
         <item>1</item>
@@ -117,7 +117,7 @@
         <item>@string/account_settings_autodownload_message_size_any</item>
     </string-array>
 
-    <string-array name="account_settings_autodownload_message_size_values">
+    <string-array name="account_settings_autodownload_message_size_values" translatable="false">
         <item>1024</item>
         <item>2048</item>
         <item>4096</item>
@@ -142,7 +142,7 @@
         <item>@string/account_settings_folder_display_mode_not_second_class</item>
     </string-array>
 
-    <string-array name="account_settings_folder_display_mode_values">
+    <string-array name="account_settings_folder_display_mode_values" translatable="false">
         <item>ALL</item>
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
@@ -155,7 +155,7 @@
         <item>@string/account_settings_show_pictures_always</item>
     </string-array>
 
-    <string-array name="account_settings_show_pictures_values">
+    <string-array name="account_settings_show_pictures_values" translatable="false">
         <item>NEVER</item>
         <item>ONLY_FROM_CONTACTS</item>
         <item>ALWAYS</item>
@@ -167,7 +167,7 @@
         <item>@string/account_settings_searchable_none</item>
     </string-array>
 
-    <string-array name="account_settings_searchable_values">
+    <string-array name="account_settings_searchable_values" translatable="false">
         <item>ALL</item>
         <item>DISPLAYABLE</item>
         <item>NONE</item>
@@ -181,7 +181,7 @@
         <item>@string/account_settings_folder_sync_mode_none</item>
     </string-array>
 
-    <string-array name="account_settings_folder_sync_mode_values">
+    <string-array name="account_settings_folder_sync_mode_values" translatable="false">
         <item>ALL</item>
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
@@ -197,7 +197,7 @@
         <item>@string/account_settings_folder_push_mode_none</item>
     </string-array>
 
-    <string-array name="account_settings_folder_push_mode_values">
+    <string-array name="account_settings_folder_push_mode_values" translatable="false">
         <item>ALL</item>
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
@@ -215,7 +215,7 @@
         <item>@string/account_setup_push_limit_1000</item>
     </string-array>
 
-    <string-array name="account_settings_push_limit_values">
+    <string-array name="account_settings_push_limit_values" translatable="false">
         <item>10</item>
         <item>25</item>
         <item>50</item>
@@ -232,7 +232,7 @@
         <item>@string/account_settings_folder_target_mode_not_second_class</item>
     </string-array>
 
-    <string-array name="account_settings_folder_target_mode_values">
+    <string-array name="account_settings_folder_target_mode_values" translatable="false">
         <item>ALL</item>
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
@@ -245,7 +245,7 @@
         <item>@string/folder_settings_folder_display_mode_second_class</item>
     </string-array>
 
-    <string-array name="folder_settings_folder_display_mode_values">
+    <string-array name="folder_settings_folder_display_mode_values" translatable="false">
         <item>NO_CLASS</item>
         <item>FIRST_CLASS</item>
         <item>SECOND_CLASS</item>
@@ -258,7 +258,7 @@
         <item>@string/folder_settings_folder_sync_mode_inherited</item>
     </string-array>
 
-    <string-array name="folder_settings_folder_sync_mode_values">
+    <string-array name="folder_settings_folder_sync_mode_values" translatable="false">
         <item>NO_CLASS</item>
         <item>FIRST_CLASS</item>
         <item>SECOND_CLASS</item>
@@ -272,7 +272,7 @@
         <item>@string/folder_settings_folder_push_mode_inherited</item>
     </string-array>
 
-    <string-array name="folder_settings_folder_push_mode_values">
+    <string-array name="folder_settings_folder_push_mode_values" translatable="false">
         <item>NO_CLASS</item>
         <item>FIRST_CLASS</item>
         <item>SECOND_CLASS</item>
@@ -285,7 +285,7 @@
         <item>@string/account_setup_incoming_delete_policy_markread_label</item>
     </string-array>
 
-    <string-array name="account_setup_delete_policy_values">
+    <string-array name="account_setup_delete_policy_values" translatable="false">
         <item>0</item>
         <item>2</item>
         <item>3</item>
@@ -297,7 +297,7 @@
         <item>@string/account_setup_expunge_policy_manual</item>
     </string-array>
 
-    <string-array name="account_setup_expunge_policy_values">
+    <string-array name="account_setup_expunge_policy_values" translatable="false">
         <item>EXPUNGE_IMMEDIATELY</item>
         <item>EXPUNGE_ON_POLL</item>
         <item>EXPUNGE_MANUALLY</item>
@@ -383,7 +383,7 @@
         <item>한국어</item>
     </string-array>
 
-    <string-array name="settings_language_values">
+    <string-array name="settings_language_values" translatable="false">
         <item></item>
         <item>af</item>
         <item>id</item>
@@ -463,7 +463,7 @@
         <item>ko</item>
     </string-array>
 
-    <string-array name="supported_languages">
+    <string-array name="supported_languages" translatable="false">
         <item></item>
         <item>ca</item>
         <item>da</item>
@@ -497,7 +497,7 @@
         <item>@string/setting_theme_dark</item>
     </string-array>
 
-    <string-array name="settings_theme_values">
+    <string-array name="settings_theme_values" translatable="false">
         <item>light</item>
         <item>dark</item>
     </string-array>
@@ -508,7 +508,7 @@
         <item>@string/setting_theme_global</item>
     </string-array>
 
-    <string-array name="settings_message_theme_values">
+    <string-array name="settings_message_theme_values" translatable="false">
         <item>light</item>
         <item>dark</item>
         <item>global</item>
@@ -522,7 +522,7 @@
         <item>@string/background_ops_never</item>
     </string-array>
 
-    <string-array name="background_ops_values">
+    <string-array name="background_ops_values" translatable="false">
         <item>WHEN_CHECKED</item>
         <item>WHEN_CHECKED_AUTO_SYNC</item>
         <item>ALWAYS</item>
@@ -540,7 +540,7 @@
         <item>@string/font_size_larger</item>
     </string-array>
 
-    <string-array name="font_values">
+    <string-array name="font_values" translatable="false">
         <item>-1</item>
         <item>10</item>
         <item>12</item>
@@ -563,7 +563,7 @@
         Be sure to also change FontSizes.getMessageViewContentAsInt() and
         FontSizes.setMessageViewContent() if you change this.
     -->
-    <string-array name="font_values_webview">
+    <string-array name="font_values_webview" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -583,7 +583,7 @@
         <item>@string/idle_refresh_period_60min</item>
     </string-array>
 
-    <string-array name="idle_refresh_period_values">
+    <string-array name="idle_refresh_period_values" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -604,7 +604,7 @@
         <item>@string/account_settings_vibrate_pattern_5</item>
     </string-array>
 
-    <string-array name="account_settings_vibrate_pattern_values">
+    <string-array name="account_settings_vibrate_pattern_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -613,7 +613,7 @@
         <item>5</item>
     </string-array>
 
-    <string-array name="account_settings_vibrate_times_label">
+    <string-array name="account_settings_vibrate_times_label" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -631,12 +631,12 @@
         <item>APG</item>
     </string-array>
 
-    <string-array name="account_settings_crypto_app_values">
+    <string-array name="account_settings_crypto_app_values" translatable="false">
         <item></item>
         <item>apg</item>
     </string-array>
 
-    <string-array name="settings_preview_lines_values">
+    <string-array name="settings_preview_lines_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -661,7 +661,7 @@
         <item>@string/account_settings_quote_style_header</item>
     </string-array>
 
-    <string-array name="account_settings_quote_style_values">
+    <string-array name="account_settings_quote_style_values" translatable="false">
         <item>PREFIX</item>
         <item>HEADER</item>
     </string-array>
@@ -672,7 +672,7 @@
         <item>@string/account_settings_message_format_auto</item>
     </string-array>
 
-    <string-array name="account_settings_message_format_values">
+    <string-array name="account_settings_message_format_values" translatable="false">
         <item>TEXT</item>
         <item>HTML</item>
         <item>AUTO</item>
@@ -687,7 +687,7 @@
         <item>@string/account_settings_remote_search_num_results_entries_1000</item>
         <item>@string/account_settings_remote_search_num_results_entries_all</item>
     </string-array>
-    <string-array name="account_settings_remote_search_num_results_values">
+    <string-array name="account_settings_remote_search_num_results_values" translatable="false">
         <item>10</item>
         <item>25</item>
         <item>50</item>
@@ -704,7 +704,7 @@
         <item name="3">@string/global_settings_notification_hide_subject_always</item>
     </string-array>
 
-    <string-array name="global_settings_notification_hide_subject_values">
+    <string-array name="global_settings_notification_hide_subject_values" translatable="false">
         <item name="1">NEVER</item>
         <item name="2">WHEN_LOCKED</item>
         <item name="3">ALWAYS</item>
@@ -716,7 +716,7 @@
         <item name="3">@string/global_settings_notification_quick_delete_always</item>
     </string-array>
 
-    <string-array name="global_settings_notification_quick_delete_values">
+    <string-array name="global_settings_notification_quick_delete_values" translatable="false">
         <item name="1">NEVER</item>
         <item name="2">FOR_SINGLE_MSG</item>
         <item name="3">ALWAYS</item>
@@ -728,7 +728,7 @@
         <item>@string/global_settings_splitview_when_in_landscape</item>
     </string-array>
 
-    <string-array name="global_settings_splitview_mode_values">
+    <string-array name="global_settings_splitview_mode_values" translatable="false">
         <item>ALWAYS</item>
         <item>NEVER</item>
         <item>WHEN_IN_LANDSCAPE</item>

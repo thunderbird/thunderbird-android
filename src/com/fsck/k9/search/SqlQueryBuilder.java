@@ -66,12 +66,6 @@ public class SqlQueryBuilder {
                     }
                     break;
                 }
-                case THREAD_ID: {
-                    query.append("threads.id = ? OR threads.root = ?");
-                    selectionArgs.add(condition.value);
-                    selectionArgs.add(condition.value);
-                    break;
-                }
                 default: {
                     appendCondition(condition, query, selectionArgs);
                 }
@@ -179,7 +173,10 @@ public class SqlQueryBuilder {
                 columnName = "display_class";
                 break;
             }
-            case THREAD_ID:
+            case THREAD_ID: {
+                columnName = "threads.root";
+                break;
+            }
             case FOLDER:
             case SEARCHABLE: {
                 // Special cases handled in buildWhereClauseInternal()
