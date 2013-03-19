@@ -663,7 +663,7 @@ public class LocalStore extends Store implements Serializable {
                             db.update("messages", cv, null, null);
                         }
 
-                        if (true) { // (db.getVersion() < 48) {
+                        if (db.getVersion() < 48) {
                             db.execSQL("UPDATE threads SET root=id WHERE root IS NULL");
 
                             db.execSQL("CREATE TRIGGER set_thread_root " +
