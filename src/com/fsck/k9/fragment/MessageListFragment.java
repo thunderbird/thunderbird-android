@@ -3286,7 +3286,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (mIsThreadDisplay) {
             if (cursor.moveToFirst()) {
                 mTitle = cursor.getString(SUBJECT_COLUMN);
-                mTitle = Utility.stripSubject(mTitle);
+                if (!StringUtils.isNullOrEmpty(mTitle)) {
+                    mTitle = Utility.stripSubject(mTitle);
+                }
                 if (StringUtils.isNullOrEmpty(mTitle)) {
                    mTitle = getString(R.string.general_no_subject);
                 }
