@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.330" versioncode="17031" >
+        <change>Changed appearance of the unread widget</change>
+        <change>Fixed crash when opening the app from notifications</change>
+        <change>Updated Finnish, Catalan translations</change>
+        <change>Multiple bug fixes</change>
+    </release>
+
     <release version="4.329" versioncode="17030" >
         <change>Changed the notification icon (Android 2.3+ only)</change>
         <change>Restored showing the unread count on top of notification icons (Android 2.x only)</change>
