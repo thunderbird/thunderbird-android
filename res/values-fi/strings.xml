@@ -1142,7 +1142,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="global_settings_show_contact_picture_label">Näytä yhteystietojen kuvat</string>
     <string name="global_settings_show_contact_picture_summary">Näytä yhteystietojen kuvat viestilistassa</string>
 
-    <string name="last_refresh_time_format">Päivitetty viimeksi <xliff:g id="formatted_time">%s</xliff:g></string>
-    <string name="last_refresh_time_format_with_push">Päivitetty viimeksi <xliff:g id="time_with_preposition">%s</xliff:g> (push-tilassa)</string>
+    <string name="last_refresh_time_format">Päivitetty <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Päivitetty <xliff:g id="time_with_preposition">%s</xliff:g> (push-tilassa)</string>
     <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
 </resources>
