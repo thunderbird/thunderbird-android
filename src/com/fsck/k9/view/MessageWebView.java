@@ -11,6 +11,8 @@ import android.webkit.WebSettings;
 import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.HtmlConverter;
+
 import java.lang.reflect.Method;
 import com.nobu_games.android.view.web.TitleBarWebView;
 
@@ -109,6 +111,7 @@ public class MessageWebView extends TitleBarWebView {
 
         webSettings.setSupportZoom(true);
         webSettings.setBuiltInZoomControls(true);
+        webSettings.setUseWideViewPort(true);
 
         disableDisplayZoomControls();
 
@@ -153,17 +156,29 @@ public class MessageWebView extends TitleBarWebView {
         }
     }
 
-    public void setText(String text, String contentType) {
-        String content = text;
+    /**
+     * Load a message body into a {@code MessageWebView}
+     *
+     * <p>
+     * Before loading, the text is wrapped in an HTML header and footer
+     * so that it displays properly.
+     * </p>
+     *
+     * @param text
+     *      The message body to display.  Assumed to be MIME type text/html.
+     */
+    public void setText(String text) {
+     // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
+        String content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
         if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
-            // It's a little wrong to just throw in the <style> before the opening <html>
-            // but it's less wrong than trying to edit the html stream
-            content = "<style>* { background: black ! important; color: white !important }" +
+            content += "<style type=\"text/css\">" +
+                   "* { background: black ! important; color: white !important }" +
                    ":link, :link * { color: #CCFF33 !important }" +
-                   ":visited, :visited * { color: #551A8B !important }</style> "
-                   + content;
+                   ":visited, :visited * { color: #551A8B !important }</style> ";
         }
-        loadDataWithBaseURL("http://", content, contentType, "utf-8", null);
+        content += HtmlConverter.cssStylePre();
+        content += "</head><body>" + text + "</body></html>";
+        loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
         mOverrideScrollCounter = 0;
     }
 

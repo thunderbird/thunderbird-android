@@ -405,7 +405,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                 // Allow network access first...
                 setLoadPictures(true);
                 // ...then re-populate the WebView with the message text
-                loadBodyFromText(mText, "text/html");
+                loadBodyFromText(mText);
                 break;
             }
         }
@@ -556,7 +556,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (pgpData != null) {
             text = pgpData.getDecryptedData();
             if (text != null) {
-                text = HtmlConverter.textToHtml(text, true);
+                text = HtmlConverter.textToHtml(text);
             }
         }
 
@@ -616,7 +616,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
 
         if (text != null) {
-            loadBodyFromText(text, "text/html");
+            loadBodyFromText(text);
             updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
         } else {
             showStatusMessage(getContext().getString(R.string.webview_empty_message));
@@ -627,15 +627,15 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         String text = "<html><body><div style=\"text-align:center; color: grey;\">" +
                 status +
                 "</div></body></html>";
-        loadBodyFromText(text, "text/html");
+        loadBodyFromText(text);
         mCryptoView.hide();
     }
 
-    private void loadBodyFromText(String emailText, String contentType) {
+    private void loadBodyFromText(String emailText) {
         if (mScreenReaderEnabled) {
-            mAccessibleMessageContentView.loadDataWithBaseURL("http://", emailText, contentType, "utf-8", null);
+            mAccessibleMessageContentView.setText(emailText);
         } else {
-            mMessageContentView.setText(emailText, contentType);
+            mMessageContentView.setText(emailText);
         }
 
     }
@@ -739,7 +739,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
          * its size because the button to download the complete message was previously shown and
          * is now hidden.
          */
-        loadBodyFromText("", "text/plain");
+        loadBodyFromText("");
     }
 
     public void resetHeaderView() {

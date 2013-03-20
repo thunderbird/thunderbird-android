@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="TextAppearance.StatusBar.EventContent.Emphasized" parent="@android:style/TextAppearance.StatusBar.EventContent">
-        <item name="android:textColor">#cccccc</item>
-    </style>
-
     <style name="UnreadWidgetContainer">
+        <item name="android:background">@null</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="android:paddingBottom">0dp</item>
-        <item name="android:background">@null</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">bottom|center_horizontal</item>
     </style>
 
     <style name="UnreadWidgetTextView">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:shadowColor">#000000</item>
         <item name="android:shadowDy">1</item>

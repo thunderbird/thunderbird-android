@@ -21,5 +21,23 @@
     <style name="TextAppearance.StatusBar.EventContent.Emphasized" parent="@android:style/TextAppearance.StatusBar.EventContent">
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="UnreadWidgetContainer">
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">8.5dp</item>
+        <item name="android:background">@drawable/unread_widget_background</item>
+        <item name="android:gravity">bottom|center_horizontal</item>
+    </style>
+
+    <style name="UnreadWidgetTextView">
+        <item name="android:textSize">13dp</item>
+        <item name="android:background">@drawable/rounded_corners</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
+
 </resources>
 
