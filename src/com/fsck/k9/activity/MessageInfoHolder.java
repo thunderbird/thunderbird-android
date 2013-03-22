@@ -10,7 +10,6 @@ public class MessageInfoHolder {
     public String compareSubject;
     public CharSequence sender;
     public String senderAddress;
-    public String compareCounterparty;
     public String[] recipients;
     public String uid;
     public boolean read;

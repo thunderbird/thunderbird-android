@@ -26,19 +26,6 @@ import com.fsck.k9.helper.Utility;
 
 public class Address {
     /**
-     * If the number of addresses exceeds this value the addresses aren't
-     * resolved to the names of Android contacts.
-     *
-     * <p>
-     * TODO: This number was chosen arbitrarily and should be determined by
-     * performance tests.
-     * </p>
-     *
-     * @see Address#toFriendly(Address[], Contacts)
-     */
-    private static final int TOO_MANY_ADDRESSES = 50;
-
-    /**
      * Immutable empty {@link Address} array
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
@@ -217,15 +204,6 @@ public class Address {
     }
 
     /**
-     * Returns either the personal portion of the Address or the address portion if the personal
-     * is not available.
-     * @return
-     */
-    public CharSequence toFriendly() {
-        return toFriendly((Contacts)null);
-    }
-
-    /**
      * Returns the name of the contact this email address belongs to if
      * the {@link Contacts contacts} parameter is not {@code null} and a
      * contact is found. Otherwise the personal portion of the {@link Address}
@@ -262,30 +240,6 @@ public class Address {
         }
 
         return (!StringUtils.isNullOrEmpty(mPersonal)) ? mPersonal : mAddress;
-    }
-
-    public static CharSequence toFriendly(Address[] addresses) {
-        return toFriendly(addresses, null);
-    }
-
-    public static CharSequence toFriendly(Address[] addresses, Contacts contacts) {
-        if (addresses == null) {
-            return null;
-        }
-
-        if (addresses.length >= TOO_MANY_ADDRESSES) {
-            // Don't look up contacts if the number of addresses is very high.
-            contacts = null;
-        }
-
-        SpannableStringBuilder sb = new SpannableStringBuilder();
-        for (int i = 0; i < addresses.length; i++) {
-            sb.append(addresses[i].toFriendly(contacts));
-            if (i < addresses.length - 1) {
-                sb.append(',');
-            }
-        }
-        return sb;
     }
 
     /**
