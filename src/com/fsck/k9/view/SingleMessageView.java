@@ -624,9 +624,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     }
 
     public void showStatusMessage(String status) {
-        String text = "<html><body><div style=\"text-align:center; color: grey;\">" +
-                status +
-                "</div></body></html>";
+        String text = "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
         loadBodyFromText(text);
         mCryptoView.hide();
     }
