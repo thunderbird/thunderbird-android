@@ -8,15 +8,16 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Toast;
+
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 
 import java.lang.reflect.Method;
-import com.nobu_games.android.view.web.TitleBarWebView;
 
-public class MessageWebView extends TitleBarWebView {
+public class MessageWebView extends WebView {
 
 
     /**

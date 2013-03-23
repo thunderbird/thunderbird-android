@@ -15,7 +15,7 @@
  */
 
 
-package com.android.email.view;
+package com.fsck.k9.view;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.WebView;
 import android.widget.ScrollView;
 
@@ -59,6 +60,8 @@ public class NonLockingScrollView extends ScrollView {
      * The list of children who should always receive touch events, and not have them intercepted.
      */
     private final ArrayList<View> mChildrenNeedingAllTouches = new ArrayList<View>();
+
+    private boolean mSkipWebViewScroll = true;
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -135,5 +138,27 @@ public class NonLockingScrollView extends ScrollView {
 
     private static boolean canViewReceivePointerEvents(View child) {
         return child.getVisibility() == VISIBLE || (child.getAnimation() != null);
+    }
+
+    @Override
+    public void requestChildFocus(View child, View focused) {
+        /*
+         * Normally a ScrollView will scroll the child into view.
+         * Prevent this when a MessageWebView is first touched,
+         * assuming it already is at least partially in view.
+         * 
+         */
+        if (mSkipWebViewScroll  &&
+                focused instanceof MessageWebView &&
+                focused.getGlobalVisibleRect(new Rect())) {
+            mSkipWebViewScroll = false;
+            super.requestChildFocus(child, child);
+            ViewParent parent = getParent();
+            if (parent != null) {
+                parent.requestChildFocus(this, focused);
+            }
+        } else {
+            super.requestChildFocus(child, focused);
+        }
     }
 }

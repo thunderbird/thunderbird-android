@@ -7,64 +7,62 @@
     android:layout_height="fill_parent"
     android:layout_weight="1">
 
-    <!-- Header area -->
-    <LinearLayout
-        android:id="@+id/message_view_header_container"
-        android:layout_width="wrap_content"
+    <com.fsck.k9.view.NonLockingScrollView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/message_view_header"/>
-
-    </LinearLayout>
-
-    <!-- Content area -->
-    <com.fsck.k9.view.MessageWebView
-        android:id="@+id/message_content"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:layout_width="fill_parent"/>
-
-    <com.fsck.k9.view.AccessibleWebView
-        android:id="@+id/accessible_message_content"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"/>
-
-    <!-- Attachments area -->
-    <ScrollView
-        android:id="@+id/attachments_container"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
         <LinearLayout
-            android:id="@+id/inside_attachments_container"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+	        android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/attachments"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dip" />
-
-            <Button
-                android:id="@+id/show_hidden_attachments"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/message_view_show_more_attachments_action"/>
-
-            <LinearLayout
-                android:id="@+id/hidden_attachments"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dip"/>
-
-        </LinearLayout>
-
-    </ScrollView>
+	        <!-- Header area -->
+	        <include layout="@layout/message_view_header"/>
+	
+	        <!-- Content area -->
+	        <com.fsck.k9.view.MessageWebView
+	            android:id="@+id/message_content"
+	            android:layout_height="wrap_content"
+	            android:layout_width="fill_parent"/>
+	
+	        <com.fsck.k9.view.AccessibleWebView
+	            android:id="@+id/accessible_message_content"
+	            android:layout_height="wrap_content"
+	            android:layout_width="fill_parent"/>
+	
+	        <!-- Attachments area -->
+	
+	        <LinearLayout
+	            android:id="@+id/attachments_container"
+	            android:orientation="vertical"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content">
+	
+	            <LinearLayout
+	                android:id="@+id/attachments"
+	                android:orientation="vertical"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:padding="4dip" />
+	
+	            <Button
+	                android:id="@+id/show_hidden_attachments"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:text="@string/message_view_show_more_attachments_action"/>
+	
+	            <LinearLayout
+	                android:id="@+id/hidden_attachments"
+	                android:orientation="vertical"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:padding="4dip"/>
+	
+	        </LinearLayout>
+	        
+	    </LinearLayout>
+	
+    </com.fsck.k9.view.NonLockingScrollView>
 
     <Button android:id="@+id/download_remainder"
         android:text="@string/message_view_download_remainder"
