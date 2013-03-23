@@ -217,9 +217,9 @@ public class MessageHeader extends ScrollView implements OnClickListener {
 
     public void populate(final Message message, final Account account) throws MessagingException {
         final Contacts contacts = K9.showContactName() ? mContacts : null;
-        final CharSequence from = Address.toFriendly(message.getFrom(), contacts);
-        final CharSequence to = Address.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
-        final CharSequence cc = Address.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
+        final CharSequence from = mMessageHelper.buildFriendlyAddresses(message.getFrom(), contacts);
+        final CharSequence to = mMessageHelper.buildFriendlyAddresses(message.getRecipients(Message.RecipientType.TO), contacts);
+        final CharSequence cc = mMessageHelper.buildFriendlyAddresses(message.getRecipients(Message.RecipientType.CC), contacts);
 
         Address[] fromAddrs = message.getFrom();
         Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
