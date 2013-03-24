@@ -745,7 +745,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             // Create the dialog
             final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle(activity.getString(R.string.settings_import_activate_account_header));
+            int titleID = (mAccount.needsToAskForSessionPasswords())?R.string.settings_import_activate_account_header_session_pwd:R.string.settings_import_activate_account_header;
+            builder.setTitle(activity.getString(titleID));
             builder.setView(scrollView);
             builder.setPositiveButton(activity.getString(R.string.okay_action),
             new DialogInterface.OnClickListener() {
@@ -773,6 +774,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     activity.setNonConfigurationInstance(null);
+
+                    if (mAccount.needsToAskForSessionPasswords())
+                    	FolderList.actionHandleAccount(activity, mAccount);
                 }
             });
             mDialog = builder.create();
@@ -786,8 +790,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             String serverPasswords = activity.getResources().getQuantityString(
                                          R.plurals.settings_import_server_passwords,
                                          (configureOutgoingServer) ? 2 : 1);
-            intro.setText(activity.getString(R.string.settings_import_activate_account_intro,
-                                             mAccount.getDescription(), serverPasswords));
+            int introID = (mAccount.needsToAskForSessionPasswords())?R.string.settings_import_activate_account_intro_session_pwd:R.string.settings_import_activate_account_intro;
+            intro.setText(activity.getString(introID, mAccount.getDescription(), serverPasswords));
 
             // Display the hostname of the incoming server
             TextView incomingText = (TextView) layout.findViewById(
@@ -1192,6 +1196,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         case R.id.import_settings:
             onImport();
             break;
+        case R.id.forget_session_pwds:
+            onForgetSessionPwds();
+            break;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -1353,6 +1360,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         } else {
             showDialog(DIALOG_NO_FILE_MANAGER);
         }
+    }
+    
+    private void onForgetSessionPwds() {
+    	Account[] accounts = Preferences.getPreferences(this).getAccounts();
+    	for(int i=0; i<accounts.length; i++) {
+    		accounts[i].forgetSessionPasswords();
+    	}
+    	mHandler.dataChanged();
     }
 
     @Override
@@ -2098,4 +2113,28 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             removeProgressDialog();
         }
     }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        configureMenu(menu);
+        return true;
+    }
+
+    private void configureMenu(Menu menu) {
+        if (menu == null) {
+            return;
+        }
+        
+        boolean needsMenuToForgetSessionPwds = false;
+        Account[] accounts = Preferences.getPreferences(this).getAccounts();
+    	for(int i=0; i<accounts.length; i++) {
+    		Account account = accounts[i];
+    		if (account.canForgetPasswords())
+    			needsMenuToForgetSessionPwds = true;
+    	}
+    	menu.findItem(R.id.forget_session_pwds).setVisible(needsMenuToForgetSessionPwds);
+        
+    }
+
 }

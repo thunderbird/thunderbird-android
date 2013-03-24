@@ -102,6 +102,11 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:contentDescription="@string/account_setup_outgoing_password_label" />
+        	<CheckBox
+            	android:id="@+id/account_password_not_stored"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:text="@string/account_setup_password_not_stored" />            
         </LinearLayout>
         <View
             android:layout_width="fill_parent"
