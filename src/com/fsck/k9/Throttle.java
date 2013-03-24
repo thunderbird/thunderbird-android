@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.email;
-
-import com.android.emailcommon.Logging;
+package com.fsck.k9;
 
 import android.os.Handler;
 import android.util.Log;
@@ -96,7 +94,7 @@ public class Throttle {
     }
 
     private void debugLog(String message) {
-        Log.d(Logging.LOG_TAG, "Throttle: [" + mName + "] " + message);
+        Log.d(K9.LOG_TAG, "Throttle: [" + mName + "] " + message);
     }
 
     private boolean isCallbackScheduled() {

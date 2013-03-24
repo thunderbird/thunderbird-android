@@ -15,18 +15,17 @@
  */
 
 
-package com.android.email.view;
+package com.fsck.k9.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.WebView;
 
-import com.android.email.Clock;
-import com.android.email.Email;
-import com.android.email.Throttle;
-import com.android.emailcommon.Logging;
-import com.android.emailcommon.utility.Utility;
+import com.fsck.k9.Clock;
+import com.fsck.k9.K9;
+import com.fsck.k9.Throttle;
+import com.fsck.k9.helper.Utility;
 
 /**
  * A custom WebView that is robust to rapid resize events in sequence.
@@ -75,8 +74,8 @@ public class RigidWebView extends WebView {
         if (mIgnoreNext) {
             mIgnoreNext = false;
             if (recentlySized) {
-                if (Email.DEBUG) {
-                    Log.w(Logging.LOG_TAG, "Supressing size change in RigidWebView");
+                if (K9.DEBUG) {
+                    Log.w(K9.LOG_TAG, "Supressing size change in RigidWebView");
                 }
                 return;
             }

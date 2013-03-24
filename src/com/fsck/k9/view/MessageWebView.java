@@ -17,7 +17,7 @@ import com.fsck.k9.helper.HtmlConverter;
 
 import java.lang.reflect.Method;
 
-public class MessageWebView extends WebView {
+public class MessageWebView extends RigidWebView {
 
 
     /**

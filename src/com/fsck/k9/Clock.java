@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.email;
+package com.fsck.k9;
 
 /**
  * A class provide the current time (like {@link System#currentTimeMillis()}).
