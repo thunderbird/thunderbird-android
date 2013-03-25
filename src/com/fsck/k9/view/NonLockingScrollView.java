@@ -65,7 +65,7 @@ public class NonLockingScrollView extends ScrollView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        final int action = ev.getActionMasked();
+        final int action = getActionMasked(ev);
         final boolean isUp = action == MotionEvent.ACTION_UP;
 
         if (isUp && mInCustomDrag) {
@@ -89,6 +89,11 @@ public class NonLockingScrollView extends ScrollView {
 
         // Don't intercept events - pass them on to children as normal.
         return false;
+    }
+
+    private int getActionMasked(MotionEvent ev) {
+        // Equivalent to MotionEvent.getActionMasked() which is in API 8+
+        return ev.getAction() & MotionEvent.ACTION_MASK;
     }
 
     @Override
@@ -116,11 +121,11 @@ public class NonLockingScrollView extends ScrollView {
         }
     }
 
-    private static final Rect sHitFrame = new Rect();
-    private static boolean isEventOverChild(MotionEvent ev, ArrayList<View> children) {
-        final int actionIndex = ev.getActionIndex();
-        final float x = ev.getX(actionIndex);
-        final float y = ev.getY(actionIndex);
+    private final Rect sHitFrame = new Rect();
+    private boolean isEventOverChild(MotionEvent ev, ArrayList<View> children) {
+        final int actionIndex = getActionIndex(ev);
+        final float x = ev.getX(actionIndex) + getScrollX();
+        final float y = ev.getY(actionIndex) + getScrollY();
 
         for (View child : children) {
             if (!canViewReceivePointerEvents(child)) {
@@ -134,6 +139,13 @@ public class NonLockingScrollView extends ScrollView {
             }
         }
         return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static int getActionIndex(MotionEvent ev) {
+        // Equivalent to MotionEvent.getActionIndex() which is in API 8+
+        return ((ev.getAction() & MotionEvent.ACTION_POINTER_ID_MASK)
+                >> MotionEvent.ACTION_POINTER_ID_SHIFT);
     }
 
     private static boolean canViewReceivePointerEvents(View child) {
