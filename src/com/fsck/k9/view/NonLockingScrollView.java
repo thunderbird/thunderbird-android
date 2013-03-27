@@ -17,6 +17,7 @@
 
 package com.fsck.k9.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -141,11 +142,11 @@ public class NonLockingScrollView extends ScrollView {
         return false;
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressLint("InlinedApi")
     private static int getActionIndex(MotionEvent ev) {
         // Equivalent to MotionEvent.getActionIndex() which is in API 8+
-        return ((ev.getAction() & MotionEvent.ACTION_POINTER_ID_MASK)
-                >> MotionEvent.ACTION_POINTER_ID_SHIFT);
+        return ((ev.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
+                >> MotionEvent.ACTION_POINTER_INDEX_SHIFT);
     }
 
     private static boolean canViewReceivePointerEvents(View child) {
