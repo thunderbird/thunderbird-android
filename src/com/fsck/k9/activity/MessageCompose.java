@@ -236,7 +236,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         NONE,
         SHOW,
         HIDE
-    };
+    }
 
     private boolean mReadReceipt = false;
 
@@ -362,6 +362,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     private Validator mAddressValidator;
 
     private FontSizes mFontSizes = K9.getFontSizes();
+    private ContextThemeWrapper mThemeContext;
 
 
     static class Attachment implements Serializable {
@@ -490,13 +491,13 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         if (K9.getK9ComposerThemeSetting() != K9.Theme.USE_GLOBAL) {
             // theme the whole content according to the theme (except the action bar)
-            ContextThemeWrapper wrapper = new ContextThemeWrapper(this,
+            mThemeContext = new ContextThemeWrapper(this,
                     K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
-            View v = ((LayoutInflater) wrapper.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+            View v = ((LayoutInflater) mThemeContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
                     inflate(R.layout.message_compose, null);
             TypedValue outValue = new TypedValue();
             // background color needs to be forced
-            wrapper.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+            mThemeContext.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
             v.setBackgroundColor(outValue.data);
             setContentView(v);
         } else {
@@ -534,7 +535,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         mContacts = Contacts.getInstance(MessageCompose.this);
 
-        mAddressAdapter = new EmailAddressAdapter(this);
+        mAddressAdapter = new EmailAddressAdapter(mThemeContext);
         mAddressValidator = new EmailAddressValidator();
 
         mChooseIdentityButton = (Button) findViewById(R.id.identity);
