@@ -20,8 +20,10 @@ import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ClientCertificateAliasRequiredException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.store.KeyChainKeyManager;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
@@ -50,6 +52,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     private static final String EXTRA_CHECK_INCOMING = "checkIncoming";
 
     private static final String EXTRA_CHECK_OUTGOING = "checkOutgoing";
+    
+    private static final String EXTRA_PROMPT_CCERT = "promptCcert";
 
     private Handler mHandler = new Handler();
 
@@ -63,16 +67,20 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     private boolean mCheckOutgoing;
 
+    private boolean mPromptForClientCertificate;
+    
     private boolean mCanceled;
 
     private boolean mDestroyed;
 
     public static void actionCheckSettings(Activity context, Account account,
-                                           boolean checkIncoming, boolean checkOutgoing) {
+                                           boolean checkIncoming, boolean checkOutgoing,
+                                           boolean promptForClientCertificate) {
         Intent i = new Intent(context, AccountSetupCheckSettings.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_CHECK_INCOMING, checkIncoming);
         i.putExtra(EXTRA_CHECK_OUTGOING, checkOutgoing);
+        i.putExtra(EXTRA_PROMPT_CCERT, promptForClientCertificate);
         context.startActivityForResult(i, ACTIVITY_REQUEST_CODE);
     }
 
@@ -91,6 +99,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mCheckIncoming = getIntent().getBooleanExtra(EXTRA_CHECK_INCOMING, false);
         mCheckOutgoing = getIntent().getBooleanExtra(EXTRA_CHECK_OUTGOING, false);
+        mPromptForClientCertificate = getIntent().getBooleanExtra(EXTRA_PROMPT_CCERT, false);
 
         new Thread() {
             @Override
@@ -98,6 +107,13 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 Store store = null;
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 try {
+                	if (mPromptForClientCertificate) {
+                		Log.d(K9.LOG_TAG, "AccountSetupCheckSettings will prompt for client cert");
+                        TrustManagerFactory.setInteractiveClientCertificateAliasSelectionRequired(true);
+                	} else {
+                		Log.d(K9.LOG_TAG, "AccountSetupCheckSettings will NOT prompt for client cert");
+                	}
+
                     if (mDestroyed) {
                         return;
                     }
@@ -149,6 +165,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         finish();
                         return;
                     }
+                    
                     setResult(RESULT_OK);
                     finish();
                 } catch (final AuthenticationFailedException afe) {
@@ -169,12 +186,40 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                 R.string.account_setup_failed_dlg_server_message_fmt,
                                 (cve.getMessage() == null ? "" : cve.getMessage()));
                     }
+                } catch (ClientCertificateAliasRequiredException ccr) {
+                	String alias = mCheckIncoming ? mAccount.getStoreClientCertificateAlias() : mAccount.getTransportClientCertificateAlias();
+                	
+                	alias = KeyChainKeyManager.interactivelyChooseClientCertificateAlias(AccountSetupCheckSettings.this, 
+                			ccr.getKeyTypes(),
+                			ccr.getIssuers(),
+                			ccr.getHostName(),
+                			ccr.getPort(),
+                			alias);
+                	
+                	if (alias != null) {
+                    	if (mCheckIncoming) {
+                    		Log.d(K9.LOG_TAG, "setting store client cert. alias to:"+alias);
+                    		mAccount.setStoreClientCertificateAlias(alias);
+                    	} else if (mCheckOutgoing) {
+                    		Log.d(K9.LOG_TAG, "setting transport client cert. alias to:"+alias);
+                    		mAccount.setTransportClientCertificateAlias(alias);
+                    	}
+                    	
+                    	AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
+                                mCheckIncoming, mCheckOutgoing, false);
+                	} else {
+                		showErrorDialog(R.string.account_setup_failed_dlg_ccert_required);
+                	}
+                	
                 } catch (final Throwable t) {
+                
                     Log.e(K9.LOG_TAG, "Error while testing settings", t);
                     showErrorDialog(
                         R.string.account_setup_failed_dlg_server_message_fmt,
                         (t.getMessage() == null ? "" : t.getMessage()));
 
+                } finally {
+                    TrustManagerFactory.setInteractiveClientCertificateAliasSelectionRequired(false);
                 }
             }
 
@@ -376,7 +421,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                 e.getMessage() == null ? "" : e.getMessage());
                         }
                         AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
-                                mCheckIncoming, mCheckOutgoing);
+                                mCheckIncoming, mCheckOutgoing, mPromptForClientCertificate);
                     }
                 })
                 .setNegativeButton(
