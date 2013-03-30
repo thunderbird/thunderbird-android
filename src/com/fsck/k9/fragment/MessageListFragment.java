@@ -3108,7 +3108,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         if (!mController.isMoveCapable(mAccount)) {
             // For POP3 accounts only the Inbox is a remote folder.
-            return (mFolderName != null && !mFolderName.equals(mAccount.getInboxFolderName()));
+            return (mFolderName != null && mFolderName.equals(mAccount.getInboxFolderName()));
         }
 
         return true;
