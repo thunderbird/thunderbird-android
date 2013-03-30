@@ -303,6 +303,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             String subject1 = cursor1.getString(SUBJECT_COLUMN);
             String subject2 = cursor2.getString(SUBJECT_COLUMN);
 
+            if (subject1 == null) {
+                return (subject2 == null) ? 0 : -1;
+            } else if (subject2 == null) {
+                return 1;
+            }
+
             return subject1.compareToIgnoreCase(subject2);
         }
     }
