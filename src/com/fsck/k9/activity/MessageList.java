@@ -427,6 +427,18 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             mSearch.addAllowedFolder(mMessageReference.folderName);
         }
 
+        if (mSearch == null) {
+            // We've most likely been started by an old unread widget
+            String accountUuid = intent.getStringExtra("account");
+            String folderName = intent.getStringExtra("folder");
+
+            mSearch = new LocalSearch(folderName);
+            mSearch.addAccountUuid(accountUuid);
+            if (folderName != null) {
+                mSearch.addAllowedFolder(folderName);
+            }
+        }
+
         String[] accountUuids = mSearch.getAccountUuids();
         mSingleAccountMode = (accountUuids.length == 1 && !mSearch.searchAllAccounts());
         mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
