@@ -502,6 +502,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             setContentView(v);
         } else {
             setContentView(R.layout.message_compose);
+            mThemeContext = this;
         }
 
         final Intent intent = getIntent();
