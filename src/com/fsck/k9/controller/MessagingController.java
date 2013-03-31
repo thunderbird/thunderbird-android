@@ -641,7 +641,15 @@ public class MessagingController implements Runnable {
                      */
                     for (Folder localFolder : localFolders) {
                         String localFolderName = localFolder.getName();
-                        if (!account.isSpecialFolder(localFolderName) && !remoteFolderNames.contains(localFolderName)) {
+
+                        // FIXME: This is a hack used to clean up when we accidentally created the
+                        //        special placeholder folder "-NONE-".
+                        if (K9.FOLDER_NONE.equals(localFolderName)) {
+                            localFolder.delete(false);
+                        }
+
+                        if (!account.isSpecialFolder(localFolderName) &&
+                                !remoteFolderNames.contains(localFolderName)) {
                             localFolder.delete(false);
                         }
                     }
