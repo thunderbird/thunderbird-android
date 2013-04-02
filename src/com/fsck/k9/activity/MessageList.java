@@ -1045,20 +1045,14 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
             if (!mMessageListFragment.isSingleAccountMode()) {
                 menu.findItem(R.id.expunge).setVisible(false);
-                menu.findItem(R.id.check_mail).setVisible(false);
                 menu.findItem(R.id.send_messages).setVisible(false);
             } else {
                 menu.findItem(R.id.send_messages).setVisible(mMessageListFragment.isOutbox());
-
-                if (mMessageListFragment.isRemoteFolder()) {
-                    menu.findItem(R.id.check_mail).setVisible(true);
-                    menu.findItem(R.id.expunge).setVisible(
-                            mMessageListFragment.isAccountExpungeCapable());
-                } else {
-                    menu.findItem(R.id.check_mail).setVisible(false);
-                    menu.findItem(R.id.expunge).setVisible(false);
-                }
+                menu.findItem(R.id.expunge).setVisible(mMessageListFragment.isRemoteFolder() &&
+                        mMessageListFragment.isAccountExpungeCapable());
             }
+
+            menu.findItem(R.id.check_mail).setVisible(mMessageListFragment.isCheckMailSupported());
 
             // If this is an explicit local search, show the option to search on the server
             if (!mMessageListFragment.isRemoteSearch() &&

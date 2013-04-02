@@ -384,6 +384,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private LocalSearch mSearch = null;
     private boolean mSingleAccountMode;
     private boolean mSingleFolderMode;
+    private boolean mAllAccounts;
 
     private MessageListHandler mHandler = new MessageListHandler();
 
@@ -901,11 +902,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mCurrentFolder = getFolder(mFolderName, mAccount);
         }
 
+        mAllAccounts = false;
         if (mSingleAccountMode) {
             mAccountUuids = new String[] { mAccount.getUuid() };
         } else {
             if (accountUuids.length == 1 &&
                     accountUuids[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
+                mAllAccounts = true;
 
                 Account[] accounts = mPreferences.getAccounts();
 
@@ -2829,8 +2832,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public void checkMail() {
-        mController.synchronizeMailbox(mAccount, mFolderName, mListener, null);
-        mController.sendPendingMessages(mAccount, mListener);
+        if (isSingleAccountMode() && isSingleFolderMode()) {
+            mController.synchronizeMailbox(mAccount, mFolderName, mListener, null);
+            mController.sendPendingMessages(mAccount, mListener);
+        } else if (mAllAccounts) {
+            mController.checkMail(mContext, null, true, true, mListener);
+        } else {
+            for (String accountUuid : mAccountUuids) {
+                Account account = mPreferences.getAccount(accountUuid);
+                mController.checkMail(mContext, account, true, true, mListener);
+            }
+        }
     }
 
     /**
@@ -3451,5 +3463,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (isMarkAllAsReadSupported()) {
             mController.markAllMessagesRead(mAccount, mFolderName);
         }
+    }
+
+    public boolean isCheckMailSupported() {
+        return (mAllAccounts || !isSingleAccountMode() || !isSingleFolderMode() ||
+                isRemoteFolder());
     }
 }
