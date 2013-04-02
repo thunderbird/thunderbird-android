@@ -768,6 +768,10 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     private void removeDialog(int dialogId) {
         FragmentManager fm = getFragmentManager();
 
+        if (isRemoving() || isDetached()) {
+            return;
+        }
+
         // Make sure the "show dialog" transaction has been processed when we call
         // findFragmentByTag() below. Otherwise the fragment won't be found and the dialog will
         // never be dismissed.
