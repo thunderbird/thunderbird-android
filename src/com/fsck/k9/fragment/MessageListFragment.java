@@ -3442,4 +3442,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public boolean isInitialized() {
         return mInitialized;
     }
+
+    public boolean isMarkAllAsReadSupported() {
+        return (isSingleAccountMode() && isSingleFolderMode());
+    }
+
+    public void markAllAsRead() {
+        if (isMarkAllAsReadSupported()) {
+            mController.markAllMessagesRead(mAccount, mFolderName);
+        }
+    }
 }
