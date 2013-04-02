@@ -3041,7 +3041,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             long uniqueId = cursor.getLong(mUniqueIdColumn);
 
             if (mSelected.contains(uniqueId)) {
-                messages.add(getMessageAtPosition(position));
+                Message message = getMessageAtPosition(position);
+                if (message != null) {
+                    messages.add(message);
+                }
             }
         }
 
