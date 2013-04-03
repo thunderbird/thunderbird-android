@@ -1703,14 +1703,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         @Override
-        public void searchStats(AccountStats stats) {
-            mUnreadMessageCount = stats.unreadMessageCount;
-            super.searchStats(stats);
-        }
-
-        @Override
         public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
-            if (updateForMe(account, folder)) {
+            if (isSingleAccountMode() && isSingleFolderMode() && mAccount.equals(account) &&
+                    mFolderName.equals(folder)) {
                 mUnreadMessageCount = unreadMessageCount;
             }
             super.folderStatusChanged(account, folder, unreadMessageCount);
@@ -1721,9 +1716,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 return false;
             }
 
-            // FIXME: There could be more than one account and one folder
+            if (!Utility.arrayContains(mAccountUuids, account.getUuid())) {
+                return false;
+            }
 
-            return ((account.equals(mAccount) && folder.equals(mFolderName)));
+            List<String> folderNames = mSearch.getFolderNames();
+            return (folderNames.size() == 0 || folderNames.contains(folder));
         }
     }
 
