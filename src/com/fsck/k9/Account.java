@@ -874,24 +874,24 @@ public class Account implements BaseAccount {
         if (messageRead) {
             if (messageFlagged) {
                 chip = mFlaggedReadColorChip;
-            } else if (toMe) {
-                chip = mToMeReadColorChip;
-            } else if (ccMe) {
-                chip = mCcMeReadColorChip;
-            } else if (fromMe) {
-                chip = mFromMeReadColorChip;
+          //  } else if (toMe) {
+          //      chip = mToMeReadColorChip;
+          //  } else if (ccMe) {
+          //      chip = mCcMeReadColorChip;
+          //  } else if (fromMe) {
+          //      chip = mFromMeReadColorChip;
             } else {
                 chip = mReadColorChip;
             }
         } else {
             if (messageFlagged) {
                 chip = mFlaggedUnreadColorChip;
-            } else if (toMe) {
-                chip = mToMeUnreadColorChip;
-            } else if (ccMe) {
-                chip = mCcMeUnreadColorChip;
-            } else if (fromMe) {
-                chip = mFromMeUnreadColorChip;
+          //  } else if (toMe) {
+          //      chip = mToMeUnreadColorChip;
+          //  } else if (ccMe) {
+          //      chip = mCcMeUnreadColorChip;
+          //  } else if (fromMe) {
+          //      chip = mFromMeUnreadColorChip;
             } else {
                 chip = mUnreadColorChip;
             }
