@@ -17,6 +17,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -94,6 +95,7 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
+    private static final String PREFERENCE_CATEGORY_MESSAGEVIEW_PREFERENCES = "messageview_preferences";
 
     private ListPreference mLanguage;
     private ListPreference mTheme;
@@ -282,11 +284,10 @@ public class Prefs extends K9PreferenceActivity {
         mShowNext.setChecked(K9.messageViewShowNext());
 
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
+        mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
         if (!MessageWebView.isSingleColumnLayoutSupported()) {
-            mMobileOptimizedLayout.setEnabled(false);
-            mMobileOptimizedLayout.setChecked(false);
-        } else {
-            mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
+            PreferenceCategory category = (PreferenceCategory) findPreference(PREFERENCE_CATEGORY_MESSAGEVIEW_PREFERENCES);
+            category.removePreference(mMobileOptimizedLayout);
         }
 
         mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
