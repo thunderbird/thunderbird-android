@@ -177,6 +177,12 @@
 
     <!-- MessageList -->
     <item
+        android:id="@+id/mark_all_as_read"
+        android:showAsAction="never"
+        android:title="@string/mark_all_as_read"/>
+
+    <!-- MessageList -->
+    <item
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionUpload"

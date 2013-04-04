@@ -218,7 +218,7 @@ public class K9 extends Application {
         WHEN_IN_LANDSCAPE
     }
 
-    private static boolean mMessageListCheckboxes = false;
+    private static boolean mMessageListCheckboxes = true;
     private static int mMessageListPreviewLines = 2;
 
     private static boolean mShowCorrespondentNames = true;
@@ -680,7 +680,7 @@ public class K9 extends Application {
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
         mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
+        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", true);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);

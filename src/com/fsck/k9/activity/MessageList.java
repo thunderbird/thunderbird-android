@@ -427,6 +427,18 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             mSearch.addAllowedFolder(mMessageReference.folderName);
         }
 
+        if (mSearch == null) {
+            // We've most likely been started by an old unread widget
+            String accountUuid = intent.getStringExtra("account");
+            String folderName = intent.getStringExtra("folder");
+
+            mSearch = new LocalSearch(folderName);
+            mSearch.addAccountUuid(accountUuid);
+            if (folderName != null) {
+                mSearch.addAllowedFolder(folderName);
+            }
+        }
+
         String[] accountUuids = mSearch.getAccountUuids();
         mSingleAccountMode = (accountUuids.length == 1 && !mSearch.searchAllAccounts());
         mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
@@ -793,6 +805,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 mMessageListFragment.onRemoteSearch();
                 return true;
             }
+            case R.id.mark_all_as_read: {
+                mMessageListFragment.markAllAsRead();
+                return true;
+            }
             // MessageView
             case R.id.next_message: {
                 showNextMessage();
@@ -1020,26 +1036,23 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             menu.findItem(R.id.select_all).setVisible(false);
             menu.findItem(R.id.send_messages).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
+            menu.findItem(R.id.mark_all_as_read).setVisible(false);
         } else {
             menu.findItem(R.id.set_sort).setVisible(true);
             menu.findItem(R.id.select_all).setVisible(true);
+            menu.findItem(R.id.mark_all_as_read).setVisible(
+                    mMessageListFragment.isMarkAllAsReadSupported());
 
             if (!mMessageListFragment.isSingleAccountMode()) {
                 menu.findItem(R.id.expunge).setVisible(false);
-                menu.findItem(R.id.check_mail).setVisible(false);
                 menu.findItem(R.id.send_messages).setVisible(false);
             } else {
                 menu.findItem(R.id.send_messages).setVisible(mMessageListFragment.isOutbox());
-
-                if (mMessageListFragment.isRemoteFolder()) {
-                    menu.findItem(R.id.check_mail).setVisible(true);
-                    menu.findItem(R.id.expunge).setVisible(
-                            mMessageListFragment.isAccountExpungeCapable());
-                } else {
-                    menu.findItem(R.id.check_mail).setVisible(false);
-                    menu.findItem(R.id.expunge).setVisible(false);
-                }
+                menu.findItem(R.id.expunge).setVisible(mMessageListFragment.isRemoteFolder() &&
+                        mMessageListFragment.isAccountExpungeCapable());
             }
+
+            menu.findItem(R.id.check_mail).setVisible(mMessageListFragment.isCheckMailSupported());
 
             // If this is an explicit local search, show the option to search on the server
             if (!mMessageListFragment.isRemoteSearch() &&

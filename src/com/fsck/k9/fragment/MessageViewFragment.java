@@ -100,6 +100,8 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
      */
     private boolean mInitialized = false;
 
+    private Context mContext;
+
 
     class MessageViewHandler extends Handler {
 
@@ -164,6 +166,8 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
+        mContext = activity.getApplicationContext();
 
         try {
             mFragmentListener = (MessageViewFragmentListener) activity;
@@ -558,13 +562,13 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 public void run() {
                     if (!clonedMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
                             !clonedMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        String text = getString(R.string.message_view_downloading);
+                        String text = mContext.getString(R.string.message_view_downloading);
                         mMessageView.showStatusMessage(text);
                     }
                     mMessageView.setHeaders(clonedMessage, account);
                     final String subject = clonedMessage.getSubject();
                     if (subject == null || subject.equals("")) {
-                        displayMessageSubject(getString(R.string.general_no_subject));
+                        displayMessageSubject(mContext.getString(R.string.general_no_subject));
                     } else {
                         displayMessageSubject(clonedMessage.getSubject());
                     }
@@ -619,7 +623,8 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                         mHandler.networkError();
                     }
                     if (mMessage == null || mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.showStatusMessage(getString(R.string.webview_empty_message));
+                        mMessageView.showStatusMessage(
+                                mContext.getString(R.string.webview_empty_message));
                     }
                 }
             });
@@ -762,6 +767,10 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
     private void removeDialog(int dialogId) {
         FragmentManager fm = getFragmentManager();
+
+        if (isRemoving() || isDetached()) {
+            return;
+        }
 
         // Make sure the "show dialog" transaction has been processed when we call
         // findFragmentByTag() below. Otherwise the fragment won't be found and the dialog will

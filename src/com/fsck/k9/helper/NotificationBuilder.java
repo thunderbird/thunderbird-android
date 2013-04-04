@@ -20,6 +20,7 @@ public class NotificationBuilder extends NotificationCompat.Builder {
 
     @Override
     public NotificationCompat.Builder setNumber(int number) {
+        super.setNumber(number);
         mNumber = number;
         return this;
     }

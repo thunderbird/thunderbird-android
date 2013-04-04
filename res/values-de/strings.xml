@@ -1126,4 +1126,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="last_refresh_time_format">Zuletzt <xliff:g id="formatted_time">%s</xliff:g> aktualisiert</string>
     <string name="last_refresh_time_format_with_push">Zuletzt <xliff:g id="time_with_preposition">%s</xliff:g> aktualisiert (Push aktiv)</string>
     <string name="preposition_for_date">am <xliff:g id="date">%s</xliff:g></string>
+
+    <string name="mark_all_as_read">Alle als gelesen markieren</string>
 </resources>

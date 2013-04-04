@@ -303,6 +303,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             String subject1 = cursor1.getString(SUBJECT_COLUMN);
             String subject2 = cursor2.getString(SUBJECT_COLUMN);
 
+            if (subject1 == null) {
+                return (subject2 == null) ? 0 : -1;
+            } else if (subject2 == null) {
+                return 1;
+            }
+
             return subject1.compareToIgnoreCase(subject2);
         }
     }
@@ -378,6 +384,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private LocalSearch mSearch = null;
     private boolean mSingleAccountMode;
     private boolean mSingleFolderMode;
+    private boolean mAllAccounts;
 
     private MessageListHandler mHandler = new MessageListHandler();
 
@@ -895,11 +902,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mCurrentFolder = getFolder(mFolderName, mAccount);
         }
 
+        mAllAccounts = false;
         if (mSingleAccountMode) {
             mAccountUuids = new String[] { mAccount.getUuid() };
         } else {
             if (accountUuids.length == 1 &&
                     accountUuids[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
+                mAllAccounts = true;
 
                 Account[] accounts = mPreferences.getAccounts();
 
@@ -1699,14 +1708,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         @Override
-        public void searchStats(AccountStats stats) {
-            mUnreadMessageCount = stats.unreadMessageCount;
-            super.searchStats(stats);
-        }
-
-        @Override
         public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
-            if (updateForMe(account, folder)) {
+            if (isSingleAccountMode() && isSingleFolderMode() && mAccount.equals(account) &&
+                    mFolderName.equals(folder)) {
                 mUnreadMessageCount = unreadMessageCount;
             }
             super.folderStatusChanged(account, folder, unreadMessageCount);
@@ -1717,9 +1721,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 return false;
             }
 
-            // FIXME: There could be more than one account and one folder
+            if (!Utility.arrayContains(mAccountUuids, account.getUuid())) {
+                return false;
+            }
 
-            return ((account.equals(mAccount) && folder.equals(mFolderName)));
+            List<String> folderNames = mSearch.getFolderNames();
+            return (folderNames.size() == 0 || folderNames.contains(folder));
         }
     }
 
@@ -2828,8 +2835,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public void checkMail() {
-        mController.synchronizeMailbox(mAccount, mFolderName, mListener, null);
-        mController.sendPendingMessages(mAccount, mListener);
+        if (isSingleAccountMode() && isSingleFolderMode()) {
+            mController.synchronizeMailbox(mAccount, mFolderName, mListener, null);
+            mController.sendPendingMessages(mAccount, mListener);
+        } else if (mAllAccounts) {
+            mController.checkMail(mContext, null, true, true, mListener);
+        } else {
+            for (String accountUuid : mAccountUuids) {
+                Account account = mPreferences.getAccount(accountUuid);
+                mController.checkMail(mContext, account, true, true, mListener);
+            }
+        }
     }
 
     /**
@@ -3040,7 +3056,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             long uniqueId = cursor.getLong(mUniqueIdColumn);
 
             if (mSelected.contains(uniqueId)) {
-                messages.add(getMessageAtPosition(position));
+                Message message = getMessageAtPosition(position);
+                if (message != null) {
+                    messages.add(message);
+                }
             }
         }
 
@@ -3113,7 +3132,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         if (!mController.isMoveCapable(mAccount)) {
             // For POP3 accounts only the Inbox is a remote folder.
-            return (mFolderName != null && !mFolderName.equals(mAccount.getInboxFolderName()));
+            return (mFolderName != null && mFolderName.equals(mAccount.getInboxFolderName()));
         }
 
         return true;
@@ -3437,5 +3456,20 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     public boolean isInitialized() {
         return mInitialized;
+    }
+
+    public boolean isMarkAllAsReadSupported() {
+        return (isSingleAccountMode() && isSingleFolderMode());
+    }
+
+    public void markAllAsRead() {
+        if (isMarkAllAsReadSupported()) {
+            mController.markAllMessagesRead(mAccount, mFolderName);
+        }
+    }
+
+    public boolean isCheckMailSupported() {
+        return (mAllAccounts || !isSingleAccountMode() || !isSingleFolderMode() ||
+                isRemoteFolder());
     }
 }
