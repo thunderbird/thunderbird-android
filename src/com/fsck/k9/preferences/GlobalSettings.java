@@ -221,6 +221,9 @@ public class GlobalSettings {
         s.put("showContactPicture", Settings.versions(
                 new V(25, new BooleanSetting(true))
             ));
+        s.put("autofitWidth", Settings.versions(
+                new V(26, new BooleanSetting(true))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
