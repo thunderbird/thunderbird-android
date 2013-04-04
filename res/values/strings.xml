@@ -1147,4 +1147,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Mark all as read</string>
+    <string name="account_notify_on_toast">Notifications for «&lt;xliff:g id=&quot;account&quot;&gt;%s&lt;/xliff:g&gt;» enabled</string>
+    <string name="account_notify_off_toast">Notifications for «&lt;xliff:g id=&quot;account&quot;&gt;%s&lt;/xliff:g&gt;» disabled</string>
 </resources>
