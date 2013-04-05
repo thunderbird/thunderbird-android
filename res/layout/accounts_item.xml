@@ -53,11 +53,11 @@
 
     </LinearLayout>
 
-    <include layout="@layout/accounts_folders_icons" />
-
     <CheckBox
         android:id="@+id/account_notify_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <include layout="@layout/accounts_folders_icons" />
 
 </LinearLayout>

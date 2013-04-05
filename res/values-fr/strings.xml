@@ -1170,7 +1170,7 @@ de plus</string>
     <string name="last_refresh_time_format_with_push">Dernière vérification <xliff:g id="time_with_preposition">%s</xliff:g> (Push activé)</string>
     
     <string name="preposition_for_date">le <xliff:g id="date">%s</xliff:g></string>
-    <string name="account_notify_on_toast">Notifications du compte «&lt;xliff:g id=&quot;account&quot;&gt;%s&lt;/xliff:g&gt;» activées</string>
-    <string name="account_notify_off_toast">Notifications du compte «&lt;xliff:g id=&quot;account&quot;&gt;%s&lt;/xliff:g&gt;» désactivées</string>
+    <string name="account_notify_on_toast">Notifications du compte \"<xliff:g id="account">%s</xliff:g>\" activées</string>
+    <string name="account_notify_off_toast">Notifications du compte \"<xliff:g id="account">%s</xliff:g>\" désactivées</string>
     
 </resources>

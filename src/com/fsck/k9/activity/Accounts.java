@@ -1845,9 +1845,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 				holder.accountsItemLayout = (LinearLayout) view
 						.findViewById(R.id.accounts_item_layout);
 				holder.syncCheckBox = (CheckBox) view
-						.findViewById(R.id.account_notify_sync);
-				view.setTag(holder);
-
+						.findViewById(R.id.account_notify_item);
 				view.setTag(holder);
 			}
 			AccountStats stats = accountStats.get(account.getUuid());
@@ -1930,6 +1928,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 				holder.newMessageCountIcon.setBackgroundDrawable(realAccount
 						.generateColorChip(false, false, false, false, false)
 						.drawable());
+				
 
 			} else {
 				holder.chip.setBackgroundDrawable(new ColorChip(0xff999999,
@@ -1977,12 +1976,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 									CompoundButton buttonView, boolean isChecked) {
 								((Account) account).setNotifyNewMail(isChecked);
 								((Account) account).setShowOngoing(isChecked);
-								((Account) account)
-										.setNotifySelfNewMail(isChecked);
-								// Save new state of account's preferences -
-								// works pretty well !
-								((Account) account).save(Preferences
-										.getPreferences(getContext()));
+								((Account) account).setNotifySelfNewMail(isChecked);
+								//Save new state of account's preferences - works pretty well !
+								((Account) account).save(Preferences.getPreferences(getContext()));
 								if (((Account) account).isNotifyNewMail()) {
 									Toast.makeText(
 											getApplication(),
@@ -2000,8 +1996,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 								}
 							}
 						});
+				
 			}
-
+			
 			return view;
 
 		}
