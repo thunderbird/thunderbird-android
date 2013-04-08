@@ -1169,4 +1169,6 @@ de plus</string>
     <string name="last_refresh_time_format">Dernière vérification <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">Dernière vérification <xliff:g id="time_with_preposition">%s</xliff:g> (Push activé)</string>
     <string name="preposition_for_date">le <xliff:g id="date">%s</xliff:g></string>
+
+    <string name="mark_all_as_read">Marquer tous comme lus</string>
 </resources>
