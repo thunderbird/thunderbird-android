@@ -218,7 +218,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="notification_bg_sync_ticker">Neue Nachrichten in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> werden abgerufen</string>
     <string name="notification_bg_sync_title">Neue Nachrichten werden abgerufen</string>
-    <string name="notification_bg_send_ticker">Nachricht in <xliff:g id="account">%s</xliff:g>wird gesendet</string>
+    <string name="notification_bg_send_ticker">Nachricht in <xliff:g id="account">%s</xliff:g> wird gesendet</string>
     <string name="notification_bg_send_title">Nachricht wird gesendet</string>
     <string name="notification_bg_title_separator">:</string>
 
