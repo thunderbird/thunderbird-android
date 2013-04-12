@@ -489,15 +489,15 @@
     <string name="account_setup_options_notify_sync_label">הודע לי בזמן שהדואר נבדק</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">מספר הודעות להצגה</string>
-    <string name="account_setup_options_mail_display_count_10">10 הודעות</string>
-    <string name="account_setup_options_mail_display_count_25">25 הודעות</string>
-    <string name="account_setup_options_mail_display_count_50">50 הודעות</string>
-    <string name="account_setup_options_mail_display_count_100">100 הודעות</string>
-    <string name="account_setup_options_mail_display_count_250">250 הודעות</string>
-    <string name="account_setup_options_mail_display_count_500">500 הודעות</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 הדועות</string>
-    <string name="account_setup_options_mail_display_count_all">כל ההודעות</string>
+    <string name="account_setup_options_mail_fetch_amount_label">מספר הודעות להצגה</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 הודעות</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 הודעות</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 הודעות</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 הודעות</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 הודעות</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 הודעות</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 הדועות</string>
+    <string name="account_setup_options_mail_fetch_amount_all">כל ההודעות</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">לא ניתן להעתיק או להעביר הודעה שלא מסונכרנת עם השרת</string>
 
@@ -580,7 +580,7 @@
     <string name="account_settings_led_color_label">צבע התראות LED</string>
     <string name="account_settings_led_color_summary">בחר את צבע ה LED שיהבהב לחשבון זה</string>
 
-    <string name="account_settings_mail_display_count_label">גודל תיקיה מקומית</string>
+    <string name="account_settings_mail_fetch_amount_label">גודל תיקיה מקומית</string>
 
     <string name="account_settings_autodownload_message_size_label">להביא הודעות בנפח של עד</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

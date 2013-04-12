@@ -3028,8 +3028,8 @@ public class ImapStore extends Store {
                                 }
                             }
 
-                            if (startUid < newUidNext - mAccount.getDisplayCount()) {
-                                startUid = newUidNext - mAccount.getDisplayCount();
+                            if (startUid < newUidNext - mAccount.getFetchAmount()) {
+                                startUid = newUidNext - mAccount.getFetchAmount();
                             }
                             if (startUid < 1) {
                                 startUid = 1;

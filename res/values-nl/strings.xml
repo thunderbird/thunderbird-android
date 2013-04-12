@@ -488,15 +488,15 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_setup_options_notify_sync_label">Waarschuw me wanneer er op nieuwe mail wordt gecontroleerd</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Aantal berichten om te laten zien</string>
-    <string name="account_setup_options_mail_display_count_10">10 berichten</string>
-    <string name="account_setup_options_mail_display_count_25">25 berichten</string>
-    <string name="account_setup_options_mail_display_count_50">50 berichten</string>
-    <string name="account_setup_options_mail_display_count_100">100 berichten</string>
-    <string name="account_setup_options_mail_display_count_250">250 berichten</string>
-    <string name="account_setup_options_mail_display_count_500">500 berichten</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 berichten</string>
-    <string name="account_setup_options_mail_display_count_all">alle berichten</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Aantal berichten om te laten zien</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 berichten</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 berichten</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 berichten</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 berichten</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 berichten</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 berichten</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 berichten</string>
+    <string name="account_setup_options_mail_fetch_amount_all">alle berichten</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen omdat deze niet gesynchroniseerd is met de server</string>
 
@@ -579,7 +579,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_settings_led_color_label">Notificatie LED kleur</string>
     <string name="account_settings_led_color_summary">Kies de LED kleur van de telefoon, welke moet knipperen voor deze account</string>
 
-    <string name="account_settings_mail_display_count_label">Aantal berichten om te laten zien</string>
+    <string name="account_settings_mail_fetch_amount_label">Aantal berichten om te laten zien</string>
 
     <string name="account_settings_autodownload_message_size_label">Automatisch berichten downloaden tot</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

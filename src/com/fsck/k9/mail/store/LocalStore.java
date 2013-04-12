@@ -1005,7 +1005,7 @@ public class LocalStore extends Store implements Serializable {
     }
 
     public void resetVisibleLimits() throws UnavailableStorageException {
-        resetVisibleLimits(mAccount.getDisplayCount());
+        resetVisibleLimits(mAccount.getFetchAmount());
     }
 
     public void resetVisibleLimits(int visibleLimit) throws UnavailableStorageException {
@@ -1476,7 +1476,7 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public boolean create(FolderType type) throws MessagingException {
-            return create(type, mAccount.getDisplayCount());
+            return create(type, mAccount.getFetchAmount());
         }
 
         @Override
@@ -3056,7 +3056,7 @@ public class LocalStore extends Store implements Serializable {
             setPushState(null);
             setLastPush(0);
             setLastChecked(0);
-            setVisibleLimit(mAccount.getDisplayCount());
+            setVisibleLimit(mAccount.getFetchAmount());
         }
 
         @Override

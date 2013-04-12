@@ -38,16 +38,16 @@
             android:summary="@string/account_setup_options_enable_push_summary"
            />
         <TextView
-            android:text="@string/account_setup_options_mail_display_count_label"
+            android:text="@string/account_setup_options_mail_fetch_amount_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorPrimary" />
         <Spinner
-            android:id="@+id/account_display_count"
+            android:id="@+id/account_fetch_amount"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:contentDescription="@string/account_setup_options_mail_display_count_label" />
+            android:contentDescription="@string/account_setup_options_mail_fetch_amount_label" />
         <CheckBox
             android:id="@+id/account_notify"
             android:layout_height="wrap_content"

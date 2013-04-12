@@ -318,7 +318,7 @@ public class K9 extends Application {
      * on each new folder and can be incremented with "Load more messages..." by the
      * VISIBLE_LIMIT_INCREMENT
      */
-    public static int DEFAULT_VISIBLE_LIMIT = 25;
+    public static int DEFAULT_FETCH_AMOUNT = 25;
 
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)

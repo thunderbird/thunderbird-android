@@ -630,7 +630,7 @@ public class MessagingController implements Runnable {
                         }
                         remoteFolderNames.add(remoteFolder.getName());
                     }
-                    localStore.createFolders(foldersToCreate, account.getDisplayCount());
+                    localStore.createFolders(foldersToCreate, account.getFetchAmount());
 
                     localFolders = localStore.getPersonalNamespaces(false);
 
@@ -903,7 +903,7 @@ public class MessagingController implements Runnable {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(folder);
             if (localFolder.getVisibleLimit() > 0) {
-                localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
+                localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getFetchAmount());
             }
             synchronizeMailbox(account, folder, listener, null);
         } catch (MessagingException me) {
@@ -1019,8 +1019,8 @@ public class MessagingController implements Runnable {
                 Open the folder
                 Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
                 Get the message count
-                Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
-                getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
+                Get the list of the newest K9.DEFAULT_FETCH_AMOUNT messages
+                getMessages(messageCount - K9.DEFAULT_FETCH_AMOUNT, messageCount)
                 See if we have each message locally, if not fetch it's flags and envelope
                 Get and update the unread count for the folder
                 Update the remote flags of any messages we have locally with an internal date newer than the remote message.
@@ -1051,10 +1051,10 @@ public class MessagingController implements Runnable {
              */
             int remoteMessageCount = remoteFolder.getMessageCount();
 
-            int visibleLimit = localFolder.getVisibleLimit();
+            int amountToFetch = localFolder.getVisibleLimit();
 
-            if (visibleLimit < 0) {
-                visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
+            if (amountToFetch < 0) {
+                amountToFetch = K9.DEFAULT_FETCH_AMOUNT;
             }
 
             Message[] remoteMessageArray = EMPTY_MESSAGE_ARRAY;
@@ -1069,8 +1069,8 @@ public class MessagingController implements Runnable {
             if (remoteMessageCount > 0) {
                 /* Message numbers start at 1.  */
                 int remoteStart;
-                if (visibleLimit > 0) {
-                    remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
+                if (amountToFetch > 0) {
+                    remoteStart = Math.max(0, remoteMessageCount - amountToFetch) + 1;
                 } else {
                     remoteStart = 1;
                 }
@@ -4551,7 +4551,7 @@ public class MessagingController implements Runnable {
                     LocalStore localStore = account.getLocalStore();
                     long oldSize = localStore.getSize();
                     localStore.clear();
-                    localStore.resetVisibleLimits(account.getDisplayCount());
+                    localStore.resetVisibleLimits(account.getFetchAmount());
                     long newSize = localStore.getSize();
                     AccountStats stats = new AccountStats();
                     stats.size = newSize;
@@ -4579,7 +4579,7 @@ public class MessagingController implements Runnable {
                     LocalStore localStore = account.getLocalStore();
                     long oldSize = localStore.getSize();
                     localStore.recreate();
-                    localStore.resetVisibleLimits(account.getDisplayCount());
+                    localStore.resetVisibleLimits(account.getFetchAmount());
                     long newSize = localStore.getSize();
                     AccountStats stats = new AccountStats();
                     stats.size = newSize;

@@ -2144,10 +2144,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             } else {
                 String message;
                 if (!mCurrentFolder.lastCheckFailed) {
-                    if (mAccount.getDisplayCount() == 0) {
+                    if (mAccount.getFetchAmount() == 0) {
                         message = mContext.getString(R.string.message_list_load_more_messages_action);
                     } else {
-                        message = String.format(mContext.getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount());
+                        message = String.format(mContext.getString(R.string.load_more_messages_fmt), mAccount.getFetchAmount());
                     }
                 } else {
                     message = mContext.getString(R.string.status_loading_more_failed);

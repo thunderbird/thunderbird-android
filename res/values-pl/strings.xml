@@ -494,15 +494,15 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_options_notify_sync_label">Powiadamiaj o sprawdzaniu konta</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Wyświetlaj</string>
-    <string name="account_setup_options_mail_display_count_10">10 wiadomości</string>
-    <string name="account_setup_options_mail_display_count_25">25 wiadomości</string>
-    <string name="account_setup_options_mail_display_count_50">50 wiadomości</string>
-    <string name="account_setup_options_mail_display_count_100">100 wiadomości</string>
-    <string name="account_setup_options_mail_display_count_250">250 wiadomości</string>
-    <string name="account_setup_options_mail_display_count_500">500 wiadomości</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 wiadomości</string>
-    <string name="account_setup_options_mail_display_count_all">Wszystkie wiadomości</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Wyświetlaj</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 wiadomości</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 wiadomości</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 wiadomości</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 wiadomości</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 wiadomości</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 wiadomości</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 wiadomości</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Wszystkie wiadomości</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Nie mogę skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
 
@@ -585,7 +585,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_settings_led_color_label">Kolor powiadomienia LED</string>
     <string name="account_settings_led_color_summary">Wybierz kolor jakim migać ma dioda LED przy powiadomieniach</string>
 
-    <string name="account_settings_mail_display_count_label">Liczba wiadomości</string>
+    <string name="account_settings_mail_fetch_amount_label">Liczba wiadomości</string>
 
     <string name="account_settings_autodownload_message_size_label">Rozmiar pobieranych wiadomości</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

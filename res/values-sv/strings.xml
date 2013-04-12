@@ -489,15 +489,15 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_setup_options_notify_sync_label">Meddela mig vid kontroll efter ny e-post</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Antal brev att visa</string>
-    <string name="account_setup_options_mail_display_count_10">10 brev</string>
-    <string name="account_setup_options_mail_display_count_25">25 brev</string>
-    <string name="account_setup_options_mail_display_count_50">50 brev</string>
-    <string name="account_setup_options_mail_display_count_100">100 brev</string>
-    <string name="account_setup_options_mail_display_count_250">250 brev</string>
-    <string name="account_setup_options_mail_display_count_500">500 brev</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 brev</string>
-    <string name="account_setup_options_mail_display_count_all">alla brev</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Antal brev att visa</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 brev</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 brev</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 brev</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 brev</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 brev</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 brev</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 brev</string>
+    <string name="account_setup_options_mail_fetch_amount_all">alla brev</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Kan inte kopiera eller flytta ett brev som inte är synkroniserat med servern</string>
 
@@ -580,7 +580,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_settings_led_color_label">Färg på notifierings-LED</string>
     <string name="account_settings_led_color_summary">Välj den färg med vilken telefonens LED ska blinka för detta konto</string>
 
-    <string name="account_settings_mail_display_count_label">Antal brev att visa</string>
+    <string name="account_settings_mail_fetch_amount_label">Antal brev att visa</string>
 
     <string name="account_settings_autodownload_message_size_label">Hämta automatiskt brev upp till</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

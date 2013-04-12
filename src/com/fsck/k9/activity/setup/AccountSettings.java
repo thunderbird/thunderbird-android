@@ -65,7 +65,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_MANAGE_IDENTITIES = "manage_identities";
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
-    private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
+    private static final String PREFERENCE_FETCH_AMOUNT = "account_fetch_amount";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
     private static final String PREFERENCE_NOTIFY = "account_notify";
@@ -133,7 +133,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private EditTextPreference mAccountDescription;
     private CheckBoxPreference mMarkMessageAsReadOnView;
     private ListPreference mCheckFrequency;
-    private ListPreference mDisplayCount;
+    private ListPreference mFetchAmount;
     private ListPreference mMessageAge;
     private ListPreference mMessageSize;
     private CheckBoxPreference mAccountDefault;
@@ -406,15 +406,15 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        mDisplayCount = (ListPreference) findPreference(PREFERENCE_DISPLAY_COUNT);
-        mDisplayCount.setValue(String.valueOf(mAccount.getDisplayCount()));
-        mDisplayCount.setSummary(mDisplayCount.getEntry());
-        mDisplayCount.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        mFetchAmount = (ListPreference) findPreference(PREFERENCE_FETCH_AMOUNT);
+        mFetchAmount.setValue(String.valueOf(mAccount.getFetchAmount()));
+        mFetchAmount.setSummary(mFetchAmount.getEntry());
+        mFetchAmount.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String summary = newValue.toString();
-                int index = mDisplayCount.findIndexOfValue(summary);
-                mDisplayCount.setSummary(mDisplayCount.getEntries()[index]);
-                mDisplayCount.setValue(summary);
+                int index = mFetchAmount.findIndexOfValue(summary);
+                mFetchAmount.setSummary(mFetchAmount.getEntries()[index]);
+                mFetchAmount.setValue(summary);
                 return false;
             }
         });
@@ -761,7 +761,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
-        mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
+        mAccount.setFetchAmount(Integer.parseInt(mFetchAmount.getValue()));
         mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));
         if (mAccount.isSearchByDateCapable()) {
             mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));

@@ -488,15 +488,15 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="account_setup_options_notify_sync_label">メール同期中を通知</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">受信メールを表示する件数</string>
-    <string name="account_setup_options_mail_display_count_10">１０件</string>
-    <string name="account_setup_options_mail_display_count_25">２５件</string>
-    <string name="account_setup_options_mail_display_count_50">５０件</string>
-    <string name="account_setup_options_mail_display_count_100">１００件</string>
-    <string name="account_setup_options_mail_display_count_250">２５０件</string>
-    <string name="account_setup_options_mail_display_count_500">５００件</string>
-    <string name="account_setup_options_mail_display_count_1000">１０００件</string>
-    <string name="account_setup_options_mail_display_count_all">すべて</string>
+    <string name="account_setup_options_mail_fetch_amount_label">受信メールを表示する件数</string>
+    <string name="account_setup_options_mail_fetch_amount_10">１０件</string>
+    <string name="account_setup_options_mail_fetch_amount_25">２５件</string>
+    <string name="account_setup_options_mail_fetch_amount_50">５０件</string>
+    <string name="account_setup_options_mail_fetch_amount_100">１００件</string>
+    <string name="account_setup_options_mail_fetch_amount_250">２５０件</string>
+    <string name="account_setup_options_mail_fetch_amount_500">５００件</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">１０００件</string>
+    <string name="account_setup_options_mail_fetch_amount_all">すべて</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">サーバーと同期されていないメールをコピーまたは移動できません</string>
 
@@ -579,7 +579,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="account_settings_led_color_label">LEDの色</string>
     <string name="account_settings_led_color_summary">このアカウントへの通知時に点滅するLEDの色</string>
 
-    <string name="account_settings_mail_display_count_label">一度に表示するメール数</string>
+    <string name="account_settings_mail_fetch_amount_label">一度に表示するメール数</string>
 
     <string name="account_settings_autodownload_message_size_label">ダウンロードするメッセージサイズの上限</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

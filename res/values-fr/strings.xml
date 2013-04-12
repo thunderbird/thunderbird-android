@@ -514,15 +514,15 @@ de plus</string>
     <string name="account_setup_options_notify_sync_label">M\'avertir pendant la vérification des messages</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Nombre de messages à afficher</string>
-    <string name="account_setup_options_mail_display_count_10">10 messages</string>
-    <string name="account_setup_options_mail_display_count_25">25 messages</string>
-    <string name="account_setup_options_mail_display_count_50">50 messages</string>
-    <string name="account_setup_options_mail_display_count_100">100 messages</string>
-    <string name="account_setup_options_mail_display_count_250">250 messages</string>
-    <string name="account_setup_options_mail_display_count_500">500 messages</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 messages</string>
-    <string name="account_setup_options_mail_display_count_all">Tous</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Nombre de messages à afficher</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Tous</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Impossibilité de copier ou déplacer un message qui n\'est pas synchronisé aver le serveur</string>
 
@@ -605,7 +605,7 @@ de plus</string>
     <string name="account_settings_led_color_label">Couleur de la DEL de notification</string>
     <string name="account_settings_led_color_summary">Choisissez la couleur de clignotement de la DEL de votre téléphone</string>
 
-    <string name="account_settings_mail_display_count_label">Nombre de messages à afficher</string>
+    <string name="account_settings_mail_fetch_amount_label">Nombre de messages à afficher</string>
 
     <string name="account_settings_autodownload_message_size_label">Télécharger automatiquement le contenu des messages jusqu\'à</string>
     <string name="account_settings_autodownload_message_size_1">1\u00A0ko</string>

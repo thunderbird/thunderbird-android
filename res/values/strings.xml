@@ -494,15 +494,15 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_options_notify_sync_label">Notify me while mail is being checked</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Number of messages to display</string>
-    <string name="account_setup_options_mail_display_count_10">10 messages</string>
-    <string name="account_setup_options_mail_display_count_25">25 messages</string>
-    <string name="account_setup_options_mail_display_count_50">50 messages</string>
-    <string name="account_setup_options_mail_display_count_100">100 messages</string>
-    <string name="account_setup_options_mail_display_count_250">250 messages</string>
-    <string name="account_setup_options_mail_display_count_500">500 messages</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 messages</string>
-    <string name="account_setup_options_mail_display_count_all">all messages</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Number of messages to display</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 messages</string>
+    <string name="account_setup_options_mail_fetch_amount_all">all messages</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronized with the server</string>
 
@@ -585,7 +585,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_led_color_label">Notification LED color</string>
     <string name="account_settings_led_color_summary">The color your device LED should blink for this account</string>
 
-    <string name="account_settings_mail_display_count_label">Local folder size</string>
+    <string name="account_settings_mail_fetch_amount_label">Local folder size</string>
 
     <string name="account_settings_autodownload_message_size_label">Fetch messages up to</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

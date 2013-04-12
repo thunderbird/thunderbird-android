@@ -485,15 +485,15 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_setup_options_notify_sync_label">Avisar quando estiver fazendo verificação de novos e-mails</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Quantidade de mensagens a serem mostradas</string>
-    <string name="account_setup_options_mail_display_count_10">10 mensagens</string>
-    <string name="account_setup_options_mail_display_count_25">25 mensagens</string>
-    <string name="account_setup_options_mail_display_count_50">50 mensagens</string>
-    <string name="account_setup_options_mail_display_count_100">100 mensagens</string>
-    <string name="account_setup_options_mail_display_count_250">250 mensagens</string>
-    <string name="account_setup_options_mail_display_count_500">500 mensagens</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 mensagens</string>
-    <string name="account_setup_options_mail_display_count_all">Todas as Mensagens</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Quantidade de mensagens a serem mostradas</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 mensagens</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 mensagens</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 mensagens</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 mensagens</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 mensagens</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 mensagens</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 mensagens</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Todas as mensagens</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Não é possível copiar ou mover uma mensagem que não foi sincronizada com o servidor</string>
 
@@ -576,7 +576,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_led_color_label">Cor do LED para aviso de chegada</string>
     <string name="account_settings_led_color_summary">Escolha a cor do LED utilizada para esta conta</string>
 
-    <string name="account_settings_mail_display_count_label">Tamanho da pasta local</string>
+    <string name="account_settings_mail_fetch_amount_label">Tamanho da pasta local</string>
 
     <string name="account_settings_autodownload_message_size_label">Buscar mensagens com tamanho até</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

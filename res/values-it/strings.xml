@@ -489,15 +489,15 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="account_setup_options_notify_sync_label">Notifica mentre controlli la posta</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Numero di messaggi da visualizzare</string>
-    <string name="account_setup_options_mail_display_count_10">10 messaggi</string>
-    <string name="account_setup_options_mail_display_count_25">25 messaggi</string>
-    <string name="account_setup_options_mail_display_count_50">50 messaggi</string>
-    <string name="account_setup_options_mail_display_count_100">100 messaggi</string>
-    <string name="account_setup_options_mail_display_count_250">250 messaggi</string>
-    <string name="account_setup_options_mail_display_count_500">500 messaggi</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 messaggi</string>
-    <string name="account_setup_options_mail_display_count_all">tutti i messaggi</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Numero di messaggi da visualizzare</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 messaggi</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 messaggi</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 messaggi</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 messaggi</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 messaggi</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 messaggi</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 messaggi</string>
+    <string name="account_setup_options_mail_fetch_amount_all">tutti i messaggi</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Non è possibile copiare o spostare un messaggio che non sia sincronizzato con il server</string>
 
@@ -580,7 +580,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="account_settings_led_color_label">Colore del LED di notifica</string>
     <string name="account_settings_led_color_summary">Scegli il colore del LED del telefono che dovrà lampeggiare per questo account</string>
 
-    <string name="account_settings_mail_display_count_label">Dimensione cartelle locali</string>
+    <string name="account_settings_mail_fetch_amount_label">Dimensione cartelle locali</string>
 
     <string name="account_settings_autodownload_message_size_label">Scarica messaggi di dimensione fino a</string>
     <string name="account_settings_autodownload_message_size_1">1KB</string>

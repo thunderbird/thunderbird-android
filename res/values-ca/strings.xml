@@ -489,15 +489,15 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="account_setup_options_notify_sync_label">Avisa\'m mentre s\'està comprovant el correu</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Nombre de missatges a mostrar</string>
-    <string name="account_setup_options_mail_display_count_10">10 missatges</string>
-    <string name="account_setup_options_mail_display_count_25">25 missatges</string>
-    <string name="account_setup_options_mail_display_count_50">50 missatges</string>
-    <string name="account_setup_options_mail_display_count_100">100 missatges</string>
-    <string name="account_setup_options_mail_display_count_250">250 missatges</string>
-    <string name="account_setup_options_mail_display_count_500">500 missatges</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 missatges</string>
-    <string name="account_setup_options_mail_display_count_all">Tots els missatges</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Nombre de missatges a mostrar</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 missatges</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 missatges</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 missatges</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 missatges</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 missatges</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 missatges</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 missatges</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Tots els missatges</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">No es pot copiar o moure un missatge que no està sincronitzat amb el servidor</string>
 
@@ -580,7 +580,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="account_settings_led_color_label">Color del LED de notificació</string>
     <string name="account_settings_led_color_summary">Tria el color que vols que faci pampallugues el LED del teu telèfon per aquest compte</string>
 
-    <string name="account_settings_mail_display_count_label">Mida de la carpeta local</string>
+    <string name="account_settings_mail_fetch_amount_label">Mida de la carpeta local</string>
 
     <string name="account_settings_autodownload_message_size_label">Recupera fins a</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>
