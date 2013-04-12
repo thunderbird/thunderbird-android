@@ -119,7 +119,7 @@ public class MessageWebView extends TitleBarWebView {
             //     webSettings.setLoadWithOverviewMode(true);
             //     setInitialScale(0);
             setInitialScale(1);
-     }
+        }
 
         disableDisplayZoomControls();
 
