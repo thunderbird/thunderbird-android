@@ -1063,6 +1063,13 @@ public class MessagingController implements Runnable {
                 int remoteStart = Math.max(0, remoteMessageCount - (localMessageCount + extraMessageCount)) + 1;
                 int remoteEnd = remoteMessageCount;
 
+                /*
+                    case there are no local messages yet and we don't fetch extra
+                 */
+                if (remoteStart > remoteEnd) {
+                    remoteStart = remoteEnd;
+                }
+
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: About to get messages " + remoteStart + " through " + remoteEnd + " for folder " + folder);
 
