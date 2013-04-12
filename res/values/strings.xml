@@ -71,7 +71,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_recreate_dlg_instructions_fmt">All local data for \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
     <string name="account_clear_dlg_instructions_fmt">Local copies of messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
     <string name="insufficient_apg_permissions">K-9 doesn\'t have permission to access APG fully, please reinstall K-9 to fix that.</string>
-
+    <string name="insufficient_pgpkeyring_permissions">K-9 doesn\'t have permission to access PGP KeyRing fully, please reinstall K-9 to fix that.</string>
 
 
     <!-- === App Store-specific strings ======================================================= -->
@@ -571,7 +571,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_auto_signature_summary">Use the account\'s email address to guess the signature key.</string>
     <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>
-    <string name="account_settings_crypto_apg_not_installed">APG not installed</string>
+    <string name="account_settings_crypto_not_installed">No crypto provider is installed</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -951,6 +951,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="misc_preferences_attachment_title">Use Gallery bug work-around</string>
     <string name="misc_preferences_attachment_description">Show buttons to add image/video attachments (to work around a Gallery 3D bug)</string>
 
+    <!--  PGP KeyRing related -->
+    <string name="error_pgpkeyring_version_not_supported">The installed version of PGP KeyRing is not supported.</string>
+    
     <!-- APG related -->
     <string name="error_activity_not_found">No suitable application for this action found.</string>
     <string name="error_apg_version_not_supported">The installed APG version is not supported.</string>
