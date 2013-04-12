@@ -630,7 +630,7 @@ public class MessagingController implements Runnable {
                         }
                         remoteFolderNames.add(remoteFolder.getName());
                     }
-                    localStore.createFolders(foldersToCreate, account.getFetchAmount());
+                    localStore.createFolders(foldersToCreate);
 
                     localFolders = localStore.getPersonalNamespaces(false);
 
@@ -902,20 +902,11 @@ public class MessagingController implements Runnable {
         try {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(folder);
-            if (localFolder.getVisibleLimit() > 0) {
-                localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getFetchAmount());
-            }
             synchronizeMailbox(account, folder, listener, null, true);
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
 
             throw new RuntimeException("Unable to set visible limit on folder", me);
-        }
-    }
-
-    public void resetVisibleLimits(Collection<Account> accounts) {
-        for (Account account : accounts) {
-            account.resetVisibleLimits();
         }
     }
 
@@ -4533,7 +4524,6 @@ public class MessagingController implements Runnable {
                     LocalStore localStore = account.getLocalStore();
                     long oldSize = localStore.getSize();
                     localStore.clear();
-                    localStore.resetVisibleLimits(account.getFetchAmount());
                     long newSize = localStore.getSize();
                     AccountStats stats = new AccountStats();
                     stats.size = newSize;
@@ -4561,7 +4551,6 @@ public class MessagingController implements Runnable {
                     LocalStore localStore = account.getLocalStore();
                     long oldSize = localStore.getSize();
                     localStore.recreate();
-                    localStore.resetVisibleLimits(account.getFetchAmount());
                     long newSize = localStore.getSize();
                     AccountStats stats = new AccountStats();
                     stats.size = newSize;

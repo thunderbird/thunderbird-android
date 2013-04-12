@@ -771,15 +771,6 @@ public class Account implements BaseAccount {
 
     }
 
-    public void resetVisibleLimits() {
-        try {
-            getLocalStore().resetVisibleLimits(getFetchAmount());
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
-        }
-
-    }
-
     /**
      * @param context
      * @return <code>null</code> if not available
@@ -1024,7 +1015,6 @@ public class Account implements BaseAccount {
         } else {
             this.mFetchAmount = K9.DEFAULT_FETCH_AMOUNT;
         }
-        resetVisibleLimits();
     }
 
     public synchronized long getLastAutomaticCheckTime() {

@@ -1345,7 +1345,7 @@ public class ImapStore extends Store {
         throws MessagingException {
             if (start < 1 || end < 1 || end < start) {
                 throw new MessagingException(
-                    String.format("Invalid message set %d %d",
+                    String.format("Invalid message set start: %d  end: %d",
                                   start, end));
             }
             final StringBuilder dateSearchString = new StringBuilder();
