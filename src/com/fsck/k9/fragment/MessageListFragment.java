@@ -2932,7 +2932,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     public void checkMail() {
         if (isSingleAccountMode() && isSingleFolderMode()) {
-            mController.synchronizeMailbox(mAccount, mFolderName, mListener, null);
+            mController.synchronizeMailbox(mAccount, mFolderName, mListener, null, false);
             mController.sendPendingMessages(mAccount, mListener);
         } else if (mAllAccounts) {
             mController.checkMail(mContext, null, true, true, mListener);

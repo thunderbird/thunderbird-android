@@ -56,7 +56,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             String message) {
                 latch.countDown();
             }
-        }, folder);
+        }, folder, false);
 
         if (K9.DEBUG)
             Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") about to await latch release");
