@@ -488,7 +488,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_setup_options_notify_sync_label">Waarschuw me wanneer er op nieuwe mail wordt gecontroleerd</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_fetch_amount_label">Aantal berichten om te laten zien</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Hoeveelheid op te halen berichten</string>
     <string name="account_setup_options_mail_fetch_amount_10">10 berichten</string>
     <string name="account_setup_options_mail_fetch_amount_25">25 berichten</string>
     <string name="account_setup_options_mail_fetch_amount_50">50 berichten</string>
@@ -579,7 +579,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_settings_led_color_label">Notificatie LED kleur</string>
     <string name="account_settings_led_color_summary">Kies de LED kleur van de telefoon, welke moet knipperen voor deze account</string>
 
-    <string name="account_settings_mail_fetch_amount_label">Aantal berichten om te laten zien</string>
+    <string name="account_settings_mail_fetch_amount_label">Hoeveelheid op te halen berichten</string>
 
     <string name="account_settings_autodownload_message_size_label">Automatisch berichten downloaden tot</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

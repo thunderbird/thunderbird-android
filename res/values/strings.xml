@@ -494,7 +494,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_options_notify_sync_label">Notify me while mail is being checked</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_fetch_amount_label">Number of messages to display</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Number of messages to fetch</string>
     <string name="account_setup_options_mail_fetch_amount_10">10 messages</string>
     <string name="account_setup_options_mail_fetch_amount_25">25 messages</string>
     <string name="account_setup_options_mail_fetch_amount_50">50 messages</string>
