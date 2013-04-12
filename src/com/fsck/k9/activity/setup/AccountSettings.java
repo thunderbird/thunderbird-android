@@ -1,4 +1,3 @@
-
 package com.fsck.k9.activity.setup;
 
 import android.app.Dialog;
@@ -36,6 +35,7 @@ import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.Apg;
+import com.fsck.k9.crypto.PGPKeyRing;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
@@ -688,7 +688,7 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        mHasCrypto = new Apg().isAvailable(this);
+        mHasCrypto = new Apg().isAvailable(this) || new PGPKeyRing().isAvailable(this);
         if (mHasCrypto) {
             mCryptoApp = (ListPreference) findPreference(PREFERENCE_CRYPTO_APP);
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
@@ -702,6 +702,8 @@ public class AccountSettings extends K9PreferenceActivity {
                     handleCryptoAppDependencies();
                     if (Apg.NAME.equals(value)) {
                         Apg.createInstance(null).test(AccountSettings.this);
+                    } else if(PGPKeyRing.NAME.equals(value)) {
+                        PGPKeyRing.createInstance(null).test(AccountSettings.this);
                     }
                     return false;
                 }
@@ -717,7 +719,7 @@ public class AccountSettings extends K9PreferenceActivity {
         } else {
             final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
             mCryptoMenu.setEnabled(false);
-            mCryptoMenu.setSummary(R.string.account_settings_crypto_apg_not_installed);
+            mCryptoMenu.setSummary(R.string.account_settings_crypto_not_installed);
         }
     }
 
