@@ -1903,7 +1903,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 getActivity().getTheme().resolveAttribute(res, outValue, true);
                 view.setBackgroundColor(outValue.data);
             } else {
-                view.setBackgroundColor(Color.TRANSPARENT);
+                TypedValue outValue = new TypedValue();
+                getActivity().getTheme().resolveAttribute(R.attr.messageListUnreadItemBackgroundColor, outValue, true);
+                view.setBackgroundColor(outValue.data);           
             }
 
             if (mActiveMessage != null) {
