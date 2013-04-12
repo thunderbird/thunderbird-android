@@ -37,6 +37,8 @@ abstract public class CryptoProvider {
     public static CryptoProvider createInstance(String name) {
         if (Apg.NAME.equals(name)) {
             return Apg.createInstance();
+        } else if( PGPKeyRing.NAME.equals(name)) {
+            return PGPKeyRing.createInstance();
         }
 
         return None.createInstance();
