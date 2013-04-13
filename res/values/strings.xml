@@ -219,7 +219,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>
-    <string name="notification_action_read">Read</string>
+    <string name="notification_action_read">Mark Read</string>
     <string name="notification_action_delete">Delete</string>
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
