@@ -916,6 +916,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 for (int i = 0, len = accounts.length; i < len; i++) {
                     mAccountUuids[i] = accounts[i].getUuid();
                 }
+
+                if (mAccountUuids.length == 1) {
+                    mSingleAccountMode = true;
+                    mAccount = accounts[0];
+                }
             } else {
                 mAccountUuids = accountUuids;
             }
