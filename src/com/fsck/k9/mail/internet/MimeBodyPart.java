@@ -71,7 +71,11 @@ public class MimeBodyPart extends BodyPart {
                 contentType += String.format(";\n name=\"%s\"", name);
             }
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
-            setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "quoted-printable");
+            if ("8bit".equals(body.getEncoding())) {
+                setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "8bit");
+            } else {
+                setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "quoted-printable");
+            }
         }
     }
 

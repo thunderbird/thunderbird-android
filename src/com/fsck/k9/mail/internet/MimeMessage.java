@@ -359,7 +359,11 @@ public class MimeMessage extends Message {
         } else if (body instanceof TextBody) {
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n charset=utf-8",
                       getMimeType()));
-            setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "quoted-printable");
+            if ("8bit".equals(body.getEncoding())) {
+                setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "8bit");
+            } else {
+                setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "quoted-printable");
+            }
         }
     }
 

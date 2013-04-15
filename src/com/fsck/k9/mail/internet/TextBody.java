@@ -67,6 +67,10 @@ public class TextBody implements Body {
         }
     }
 
+    public String getEncoding() {
+        return encoding;
+    }
+
     public void setEncoding(String encoding) {
         mEncoding = encoding;
     }
