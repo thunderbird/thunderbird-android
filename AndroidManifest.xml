@@ -59,7 +59,7 @@
         android:label="@string/app_name"
         android:name="K9"
         android:allowTaskReparenting="false"
-        android:theme="@style/Theme.K9.Light"
+        android:theme="@style/Theme.K9.Startup"
         >
         <meta-data android:name="android.app.default_searchable"
                    android:value=".activity.Search" />
