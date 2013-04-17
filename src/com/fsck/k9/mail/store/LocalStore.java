@@ -2358,17 +2358,19 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        private ThreadInfo getThreadInfo(SQLiteDatabase db, String messageId) {
+        private ThreadInfo getThreadInfo(SQLiteDatabase db, String messageId, boolean onlyEmpty) {
             String sql = "SELECT t.id, t.message_id, t.root, t.parent " +
                     "FROM messages m " +
                     "LEFT JOIN threads t ON (t.message_id = m.id) " +
-                    "WHERE m.folder_id = ? AND m.message_id = ?";
+                    "WHERE m.folder_id = ? AND m.message_id = ? " +
+                    ((onlyEmpty) ? "AND m.empty = 1 " : "") +
+                    "ORDER BY m.id LIMIT 1";
             String[] selectionArgs = { Long.toString(mFolderId), messageId };
             Cursor cursor = db.rawQuery(sql, selectionArgs);
 
             if (cursor != null) {
                 try {
-                    if (cursor.getCount() == 1) {
+                    if (cursor.getCount() > 0) {
                         cursor.moveToFirst();
                         long threadId = cursor.getLong(0);
                         long msgId = cursor.getLong(1);
@@ -3200,7 +3202,7 @@ public class LocalStore extends Store implements Serializable {
             String messageId = message.getMessageId();
 
             // If there's already an empty message in the database, update that
-            ThreadInfo msgThreadInfo = getThreadInfo(db, messageId);
+            ThreadInfo msgThreadInfo = getThreadInfo(db, messageId, true);
 
             // Get the message IDs from the "References" header line
             String[] referencesArray = message.getHeader("References");
@@ -3231,7 +3233,7 @@ public class LocalStore extends Store implements Serializable {
             }
 
             for (String reference : messageIds) {
-                ThreadInfo threadInfo = getThreadInfo(db, reference);
+                ThreadInfo threadInfo = getThreadInfo(db, reference, false);
 
                 if (threadInfo == null) {
                     // Create placeholder message in 'messages' table
