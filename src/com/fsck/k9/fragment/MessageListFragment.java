@@ -68,7 +68,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -707,6 +706,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+        if (cursor == null) {
+            return;
+        }
+
         if (mSelectedCount > 0) {
             toggleMessageSelect(position);
         } else {
