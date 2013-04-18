@@ -4989,11 +4989,7 @@ public class MessagingController implements Runnable {
 
     private TaskStackBuilder buildUnreadBackStack(Context context, final Account account) {
         TaskStackBuilder stack = buildAccountsBackStack(context);
-        String description = context.getString(R.string.search_title,
-                account.getDescription(), context.getString(R.string.unread_modifier));
-        LocalSearch search = new LocalSearch(description);
-        search.addAccountUuid(account.getUuid());
-        search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
+        LocalSearch search = Accounts.createUnreadSearch(context, account);
         stack.addNextIntent(MessageList.intentDisplaySearch(context, search, true, false, false));
         return stack;
     }
