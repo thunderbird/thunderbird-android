@@ -80,10 +80,10 @@ public class SmtpTransport extends Transport {
             port = 25;
         } else if (scheme.equals("smtp+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
-            port = 25;
+            port = 587;
         } else if (scheme.equals("smtp+tls+")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = 25;
+            port = 587;
         } else if (scheme.equals("smtp+ssl+")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
             port = 465;
