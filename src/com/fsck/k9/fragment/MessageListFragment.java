@@ -1072,7 +1072,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         View loadingView = inflater.inflate(R.layout.message_list_loading, null);
         mPullToRefreshView.setEmptyView(loadingView);
 
-        if (isPullToRefreshAllowed()) {
+        if (isCheckMailSupported()) {
             if (mSearch.isManualSearch() && mAccount.allowRemoteSearch()) {
                 // "Pull to search server"
                 mPullToRefreshView.setOnRefreshListener(
@@ -1102,13 +1102,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         // Disable pull-to-refresh until the message list has been loaded
         setPullToRefreshEnabled(false);
-    }
-
-    /**
-     * Returns whether or not pull-to-refresh is allowed in this message list.
-     */
-    private boolean isPullToRefreshAllowed() {
-        return mSingleFolderMode;
     }
 
     /**
@@ -3289,7 +3282,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mPullToRefreshView.setEmptyView(null);
 
         // Enable pull-to-refresh if allowed
-        if (isPullToRefreshAllowed()) {
+        if (isCheckMailSupported()) {
             setPullToRefreshEnabled(true);
         }
 
