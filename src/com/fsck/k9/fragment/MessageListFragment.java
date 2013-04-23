@@ -2521,18 +2521,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param messages
      *         The list of messages to copy or move. Never {@code null}.
      * @param destination
-     *         The name of the destination folder. Never {@code null}.
+     *         The name of the destination folder. Never {@code null} or {@link K9#FOLDER_NONE}.
      * @param operation
      *         Specifies what operation to perform. Never {@code null}.
      */
     private void copyOrMove(List<Message> messages, final String destination,
             final FolderOperation operation) {
 
-        if (K9.FOLDER_NONE.equalsIgnoreCase(destination) || !mSingleAccountMode) {
-            return;
-        }
-
-        Account account = mAccount;
         Map<String, List<Message>> folderMap = new HashMap<String, List<Message>>();
 
         for (Message message : messages) {
@@ -2565,6 +2560,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         for (String folderName : folderMap.keySet()) {
             List<Message> outMessages = folderMap.get(folderName);
+            Account account = outMessages.get(0).getFolder().getAccount();
 
             if (operation == FolderOperation.MOVE) {
                 if (mThreadedList) {
