@@ -125,7 +125,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="forward_action">Weiterleiten</string>
     <string name="move_action">Verschieben</string>
     <string name="single_message_options_action">Aktionen</string>
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <string name="refile_action">Umsortieren</string>
     <string name="continue_action">Fortfahren</string>
     <string name="back_action">Zurück</string>
     <string name="done_action">Fertig</string> <!--  Used to complete a multi-step process -->
@@ -218,7 +218,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="notification_bg_sync_ticker">Neue Nachrichten in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> werden abgerufen</string>
     <string name="notification_bg_sync_title">Neue Nachrichten werden abgerufen</string>
-    <string name="notification_bg_send_ticker">Nachricht in <xliff:g id="account">%s</xliff:g>wird gesendet</string>
+    <string name="notification_bg_send_ticker">Nachricht in <xliff:g id="account">%s</xliff:g> wird gesendet</string>
     <string name="notification_bg_send_title">Nachricht wird gesendet</string>
     <string name="notification_bg_title_separator">:</string>
 

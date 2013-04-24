@@ -68,7 +68,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -707,6 +706,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+        if (cursor == null) {
+            return;
+        }
+
         if (mSelectedCount > 0) {
             toggleMessageSelect(position);
         } else {
@@ -1074,7 +1077,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         View loadingView = inflater.inflate(R.layout.message_list_loading, null);
         mPullToRefreshView.setEmptyView(loadingView);
 
-        if (isPullToRefreshAllowed()) {
+        if (isCheckMailSupported()) {
             if (mSearch.isManualSearch() && mAccount.allowRemoteSearch()) {
                 // "Pull to search server"
                 mPullToRefreshView.setOnRefreshListener(
@@ -1104,13 +1107,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         // Disable pull-to-refresh until the message list has been loaded
         setPullToRefreshEnabled(false);
-    }
-
-    /**
-     * Returns whether or not pull-to-refresh is allowed in this message list.
-     */
-    private boolean isPullToRefreshAllowed() {
-        return mSingleFolderMode;
     }
 
     /**
@@ -2530,18 +2526,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param messages
      *         The list of messages to copy or move. Never {@code null}.
      * @param destination
-     *         The name of the destination folder. Never {@code null}.
+     *         The name of the destination folder. Never {@code null} or {@link K9#FOLDER_NONE}.
      * @param operation
      *         Specifies what operation to perform. Never {@code null}.
      */
     private void copyOrMove(List<Message> messages, final String destination,
             final FolderOperation operation) {
 
-        if (K9.FOLDER_NONE.equalsIgnoreCase(destination) || !mSingleAccountMode) {
-            return;
-        }
-
-        Account account = mAccount;
         Map<String, List<Message>> folderMap = new HashMap<String, List<Message>>();
 
         for (Message message : messages) {
@@ -2574,6 +2565,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         for (String folderName : folderMap.keySet()) {
             List<Message> outMessages = folderMap.get(folderName);
+            Account account = outMessages.get(0).getFolder().getAccount();
 
             if (operation == FolderOperation.MOVE) {
                 if (mThreadedList) {
@@ -3291,7 +3283,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mPullToRefreshView.setEmptyView(null);
 
         // Enable pull-to-refresh if allowed
-        if (isPullToRefreshAllowed()) {
+        if (isCheckMailSupported()) {
             setPullToRefreshEnabled(true);
         }
 

@@ -17,6 +17,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -283,8 +284,8 @@ public class Prefs extends K9PreferenceActivity {
 
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
         if (!MessageWebView.isSingleColumnLayoutSupported()) {
-            mMobileOptimizedLayout.setEnabled(false);
-            mMobileOptimizedLayout.setChecked(false);
+            PreferenceCategory prefs = (PreferenceCategory) findPreference("messageview_preferences");
+            prefs.removePreference(mMobileOptimizedLayout);
         } else {
             mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
         }

@@ -1864,6 +1864,30 @@ public class Account implements BaseAccount {
         search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
     }
 
+    /**
+     * Modify the supplied {@link LocalSearch} instance to exclude "unwanted" folders.
+     *
+     * <p>
+     * Currently the following folders are excluded:
+     * <ul>
+     *   <li>Trash</li>
+     *   <li>Spam</li>
+     *   <li>Outbox</li>
+     * </ul>
+     * The Inbox will always be included even if one of the special folders is configured to point
+     * to the Inbox.
+     * </p>
+     *
+     * @param search
+     *         The {@code LocalSearch} instance to modify.
+     */
+    public void excludeUnwantedFolders(LocalSearch search) {
+        excludeSpecialFolder(search, getTrashFolderName());
+        excludeSpecialFolder(search, getSpamFolderName());
+        excludeSpecialFolder(search, getOutboxFolderName());
+        search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+    }
+
     private void excludeSpecialFolder(LocalSearch search, String folderName) {
         if (!K9.FOLDER_NONE.equals(folderName)) {
             search.and(Searchfield.FOLDER, folderName, Attribute.NOT_EQUALS);
