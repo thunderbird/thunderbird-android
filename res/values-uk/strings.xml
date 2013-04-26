@@ -261,7 +261,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="message_compose_quote_header_from">Від:</string>
     <string name="message_compose_quote_header_to">Кому:</string>
     <string name="message_compose_quote_header_cc">Копія:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> написав(ла):\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> написав(ла):\n</string>
     <string name="message_compose_error_no_recipients">Вам необхідно додати хоча б одного одержувача.</string>
     <string name="error_contact_address_not_found">Не знайденої адреси електронної пошти.</string>
     <string name="message_compose_attachments_skipped_toast">Деякі вкладення не можуть бути переслані бо вони не завантажилися.</string>
