@@ -254,7 +254,7 @@ K-9改良的功能包括：
     <string name="message_compose_quote_header_from">寄件人：</string>
     <string name="message_compose_quote_header_to">收件人：</string>
     <string name="message_compose_quote_header_cc">副本：</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>寫到:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>寫到:\n</string>
     <string name="message_compose_error_no_recipients">必須至少加入一位收件人。</string>
     <string name="error_contact_address_not_found">沒有發現電子郵件地址</string>
     <string name="message_compose_attachments_skipped_toast">由於一些附件還沒有被下載，因此無法轉寄這些附件。</string>
