@@ -77,13 +77,13 @@ public class SmtpTransport extends Transport {
         String scheme = smtpUri.getScheme();
         if (scheme.equals("smtp")) {
             connectionSecurity = ConnectionSecurity.NONE;
-            port = 25;
+            port = 587;
         } else if (scheme.equals("smtp+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
-            port = 25;
+            port = 587;
         } else if (scheme.equals("smtp+tls+")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = 25;
+            port = 587;
         } else if (scheme.equals("smtp+ssl+")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
             port = 465;
