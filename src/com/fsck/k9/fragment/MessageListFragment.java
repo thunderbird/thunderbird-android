@@ -1098,7 +1098,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mPullToRefreshView.setEmptyView(loadingView);
 
         if (isCheckMailSupported()) {
-            if (mSearch.isManualSearch() && mAccount.allowRemoteSearch()) {
+            if (mSearch.isManualSearch() && mSingleAccountMode && mAccount.allowRemoteSearch()) {
                 // "Pull to search server"
                 mPullToRefreshView.setOnRefreshListener(
                         new PullToRefreshBase.OnRefreshListener<ListView>() {
