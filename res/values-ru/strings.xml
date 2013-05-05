@@ -267,7 +267,7 @@ K-9 Mail — почтовый клиент для Android
     <string name="message_compose_quote_header_from">От:</string>
     <string name="message_compose_quote_header_to">Кому:</string>
     <string name="message_compose_quote_header_cc">Копия:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:\n</string>
     <string name="message_compose_error_no_recipients">Укажите адресата</string>
     <string name="error_contact_address_not_found">Контакт не содержит сведений о email</string>
     <string name="message_compose_attachments_skipped_toast">Некоторые вложения не были загружены и не могут быть отправлены</string>
@@ -314,7 +314,7 @@ K-9 Mail — почтовый клиент для Android
     <string name="global_settings_sender_above_subject_summary">Показать имя отправителя над темой сообщения</string>
 
     <string name="global_settings_show_contact_name_label">Имя из контактов</string>
-    <string name="global_settings_show_contact_name_summary">Подбор имён получателей из контактов</string>
+    <string name="global_settings_show_contact_name_summary">Подбор имён отправителей из контактов</string>
     <string name="global_settings_registered_name_color_label">Цвет</string>
     <string name="global_settings_registered_name_color_default">Не выделять цветом имена из контактов</string>
     <string name="global_settings_registered_name_color_changed">Выделять цветом имена из контактов</string>
@@ -1114,7 +1114,7 @@ K-9 Mail — почтовый клиент для Android
     <string name="pull_to_refresh_remote_search_from_local_search_release">отпустите</string>
     <string name="remote_search_unavailable_no_network">Для поиска на сервере необходимо подключение к сети</string>
 
-    <string name="global_settings_background_as_unread_indicator_label">Тусклые прочитанные</string>
+    <string name="global_settings_background_as_unread_indicator_label">Затемнить прочитанные</string>
     <string name="global_settings_background_as_unread_indicator_summary">Выделять прочитанные сообщения менее ярким фоном</string>
 
     <string name="global_settings_threaded_view_label">Беседы</string>
