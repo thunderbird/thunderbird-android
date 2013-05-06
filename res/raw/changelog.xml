@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.331" versioncode="17032" >
+        <change>Checking mail from the Unified Inbox is now supported</change>
+        <change>Added "mark all as read" to the menu of the message list</change>
+        <change>Added sort by sender</change>
+        <change>Simplified status icons in the message list</change>
+        <change>Fixed inability to zoom out</change>
+        <change>Composing messages in right to left languages should now work better</change>
+        <change>Exclude folders Trash, Spam, and Outbox from "All messages"</change>
+        <change>Fixed white "flicker" when using the dark theme</change>
+        <change>Updated German translation</change>
+        <change>Many bug fixes</change>
+    </release>
+
     <release version="4.330" versioncode="17031" >
         <change>Changed appearance of the unread widget</change>
         <change>Fixed crash when opening the app from notifications</change>
