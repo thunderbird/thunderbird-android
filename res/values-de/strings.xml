@@ -727,6 +727,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="sort_latest_first">Neueste Nachrichten zuerst</string>
     <string name="sort_subject_alpha">Alphabetisch nach Betreff (A-Z)</string>
     <string name="sort_subject_re_alpha">Alphabetisch nach Betreff (Z-A)</string>
+    <string name="sort_sender_alpha">Alphabetisch nach Absender (A-Z)</string>
+    <string name="sort_sender_re_alpha">Alphabetisch nach Absender (Z-A)</string>
     <string name="sort_flagged_first">Markierte Nachrichten zuerst</string>
     <string name="sort_flagged_last">Nicht markierte Nachrichten zuerst</string>
     <string name="sort_unread_first">Ungelesene Nachrichten zuerst</string>
@@ -738,6 +740,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="sort_by_date">Datum</string>
     <string name="sort_by_arrival">Ankunftsdatum</string>
     <string name="sort_by_subject">Betreff</string>
+    <string name="sort_by_sender">Absender</string>
     <string name="sort_by_flag">Wichtigkeit</string>
     <string name="sort_by_unread">Gelesen/Ungelesen</string>
     <string name="sort_by_attach">Anhang</string>
