@@ -89,15 +89,15 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="about_title_fmt">Sobre<xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Contas</string>
-    <!-- NEW: <string name="folders_title">Folders</string>-->
+    <!-- NEW: <string name="folders_title">Pastas</string>-->
     <string name="advanced">Avançado</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Escrever</string>
-    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
-    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
-    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+    <!-- NEW: <string name="compose_title_reply">Responder</string>-->
+    <!-- NEW: <string name="compose_title_reply_all">Responder todos</string>-->
+    <!-- NEW: <string name="compose_title_forward">Encaminhar</string>-->
 
     <string name="choose_folder_title">Escolher pasta</string>
 
