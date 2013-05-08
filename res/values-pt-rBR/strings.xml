@@ -22,7 +22,7 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="welcome_message_title">Bem-vindo ao K-9 Mail</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
 K-9 Mail é um cliente de e-mail com código aberto para Android e é originalmente baseado no cliente de e-mail padrão do Android.
@@ -89,15 +89,15 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="about_title_fmt">Sobre<xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Contas</string>
-    <!-- NEW: <string name="folders_title">Folders</string>-->
+    <string name="folders_title">Pastas</string>
     <string name="advanced">Avançado</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Escrever</string>
-    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
-    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
-    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+    <string name="compose_title_reply">Responder</string>
+    <string name="compose_title_reply_all">Responder todos</string>
+    <string name="compose_title_forward">Encaminhar</string>
 
     <string name="choose_folder_title">Escolher pasta</string>
 
@@ -110,7 +110,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="status_next_poll">Nova verif. <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Sincronização desabilitada</string>
 
-    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Próximo</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Anterior</string> <!-- Used as part of a multi-step process -->
@@ -125,8 +125,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="spam_action">Spam</string>
     <string name="forward_action">Encaminhar</string>
     <string name="move_action">Mover</string>
-    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <string name="single_message_options_action">Opções de Mensagens</string>
+    <string name="refile_action">Rearquivar</string>-->
     <string name="continue_action">Continuar</string>
     <string name="back_action">Voltar</string>
     <string name="done_action">Pronto</string> <!--  Used to complete a multi-step process -->
@@ -155,11 +155,11 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="unflag_action">Remover favorito</string>
     <string name="copy_action">Copiar</string>
     <string name="select_text_action">Selecionar texto</string>
-    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
-    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
+    <string name="show_headers_action">Exibir cabeçalhos</string>
+    <string name="hide_headers_action">Ocultar cabeçalhos</string>
 
-    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
-    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
+    <string name="message_view_theme_action_dark">Mudar para o tema escuro</string>
+    <string name="message_view_theme_action_light">Mudar para o tema claro</string>
 
     <string name="mark_as_unread_action">Marcar como não lida</string>
     <string name="add_cc_bcc_action">Incluir CC/BCC</string>
@@ -202,15 +202,15 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="recreating_account">Recriando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Novo e-mail</string>
-    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Não lido (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string>279 Unread (someone@google.com)
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> mais em <xliff:g id="account">%s</xliff:g></string>
 
-    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
-    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
-    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
-    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
+    <string name="notification_action_reply">Responder</string>
+    <string name="notification_action_read">Ler</string>
+    <string name="notification_action_delete">Excluir</string>
+    <string name="notification_certificate_error_title">Erro no certificado de <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">Verifique suas configurações de servidor</string>
 
     <string name="notification_bg_sync_ticker">Verificando e-mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Verificando e-mail</string>
@@ -282,7 +282,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="message_view_fetching_attachment_toast">Buscando anexo</string>
     <string name="message_view_no_viewer">Não foi possível encontrar um visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Transferir mensagem completa</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Baixando…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Nem todos os cabeçalhos foram baixados ou salvos. Selecione \"Salvar todos os cabeçalhos localmente\" nas configurações de servidor de entrada da conta pra que fique isso ocorra na próxima vez.</string>
@@ -300,16 +300,16 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="global_settings_show_correspondent_names_label">Mostrar nomes correspondentes</string>
     <string name="global_settings_show_correspondent_names_summary">Mostrar nomes correspondentes ao invés de seus e-mails.</string>
 
-    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
-    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+    <string name="global_settings_sender_above_subject_label">Correspondente acima do assunto</string>
+    <string name="global_settings_sender_above_subject_summary">Exibir nomes de correspondentes acima da linha de assunto ao invés de embaixo</string>
 
     <string name="global_settings_show_contact_name_label">Mostar nomes dos contatos</string>
     <string name="global_settings_show_contact_name_summary">Quando disponível, utilizar nomes dos contatos para destinitário</string>
     <string name="global_settings_registered_name_color_label">Colorir contatos</string>
     <string name="global_settings_registered_name_color_default">Não colorir nomes em sua lista de contatos</string>
     <string name="global_settings_registered_name_color_changed">Colorir nomes em sua lista de contatos</string>
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
+    <string name="global_settings_folderlist_wrap_folder_names_label">Quebrar nomes longos de pasta</string>
+    <string name="global_settings_folderlist_wrap_folder_names_summary">Usar múltiplas linhas para exibir nomes longos de pastas</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Fontes de tamanho fixo</string>
     <string name="global_settings_messageview_fixedwidth_summary">Use um tamanho fixo de fonte quando mostrar mensagens com texto simples</string>
@@ -323,18 +323,18 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="global_settings_confirm_action_delete">Excluir (apenas visualização)</string>
     <string name="global_settings_confirm_action_delete_starred">Excluir marcados com estrela (visualização apenas)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
+    <string name="global_settings_confirm_action_delete_notif">Excluir (pela notificação)</string>
 
     <string name="global_settings_notification_hide_subject_title">Ocultar assunto nas notificações</string>
     <string name="global_settings_notification_hide_subject_never">Nunca</string>
     <string name="global_settings_notification_hide_subject_when_locked">Com o telefone bloqueado</string>
     <string name="global_settings_notification_hide_subject_always">Sempre</string>
 
-    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
+    <string name="global_settings_notification_quick_delete_title">Exibir o botão \'Excluir\'</string>
+    <string name="global_settings_notification_quick_delete_never">Nunca</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Notificações únicas</string>
+    <string name="global_settings_notification_quick_delete_always">Sempre</string>
+    <string name="global_settings_notification_quick_delete_description">Exibir um botão nas notificações para exclusão rápida de mensagens</string>
 
     <string name="global_settings_batch_buttons">Botões de lote</string>
     <string name="global_settings_batch_buttons_summary">Configurar botões de lote na tela de mensagens</string>
@@ -548,7 +548,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_quote_style_header">Cabeçalho (como Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Configurações gerais</string>
-    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
+    <string name="account_settings_reading_mail">Lendo e-mail</string>
     <string name="account_settings_sync">Buscando e-mail</string>
     <string name="account_settings_folders">Pastas</string>
     <string name="account_settings_quote_prefix_label">Prefixo para textos</string>
@@ -798,7 +798,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_signature__location_label">Local da Assinatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes de escrever o texto</string>
     <string name="account_settings_signature__location_after_quoted_text">Depois do texto escrito</string>
-    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
+    <string name="setting_theme_global">Usar tema do app</string>
     <string name="setting_theme_dark">Escuro</string>
     <string name="setting_theme_light">Claro</string>
     <string name="display_preferences">Visualização</string>
@@ -810,13 +810,13 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="accountlist_preferences">Lista de contas</string>
     <string name="messagelist_preferences">Lista de mensagens</string>
     <string name="messageview_preferences">Mensagens</string>
-    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
+    <string name="folderlist_preferences">Listas de pastas</string>
     <string name="settings_theme_label">Tema</string>
-    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
-    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
+    <string name="settings_message_theme_label">Tema da visualização de mensagens</string>
+    <string name="settings_compose_theme_label">Tema do editor</string>
     <string name="settings_language_label">Idioma</string>
 
-    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
+    <!-- NEW: <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>-->
     <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
     <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
 
