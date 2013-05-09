@@ -25,10 +25,8 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
@@ -42,6 +40,8 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.service.MailService;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 /**
  * Modified by Adam Wasserman to include PGPKeyRing crypto provider. (9 May 2013)

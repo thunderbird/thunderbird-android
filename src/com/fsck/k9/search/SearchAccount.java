@@ -3,9 +3,10 @@ package com.fsck.k9.search;
 import android.content.Context;
 
 import com.fsck.k9.BaseAccount;
-import com.fsck.k9.R;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
+
+import com.imaeses.squeaky.R;
 
 /**
  * This class is basically a wrapper around a LocalSearch. It allows to expose it as

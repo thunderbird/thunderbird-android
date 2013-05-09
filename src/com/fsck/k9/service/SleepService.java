@@ -3,8 +3,8 @@ package com.fsck.k9.service;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
+import com.imaeses.squeaky.K9;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;

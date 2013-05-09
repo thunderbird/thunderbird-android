@@ -18,10 +18,10 @@ import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
+import com.imaeses.squeaky.K9;
 
 
 public class Address {

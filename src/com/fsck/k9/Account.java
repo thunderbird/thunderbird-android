@@ -22,7 +22,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
-import com.fsck.k9.crypto.Apg;
+import com.fsck.k9.crypto.PGPKeyRing;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -43,9 +43,14 @@ import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
+ * 
+ * Modified by Adam Wasserman for integration with PGP KeyRing (9 May 2013)
  */
 public class Account implements BaseAccount {
     /**
@@ -307,7 +312,7 @@ public class Account implements BaseAccount {
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
-        mCryptoApp = Apg.NAME;
+        mCryptoApp = PGPKeyRing.NAME;
         mCryptoAutoSignature = false;
         mCryptoAutoEncrypt = false;
         mAllowRemoteSearch = false;
@@ -491,7 +496,7 @@ public class Account implements BaseAccount {
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
 
-        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
+        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", PGPKeyRing.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
         mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
         mAllowRemoteSearch = prefs.getBoolean(mUuid + ".allowRemoteSearch", false);

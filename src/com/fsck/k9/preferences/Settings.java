@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 import android.util.Log;
 
 import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9;
+import com.imaeses.squeaky.K9;
 
 /*
  * TODO:

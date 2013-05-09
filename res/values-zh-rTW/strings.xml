@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail測試版</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail測試版</string>
 
-    <string name="shortcuts_title">K-9帳戶</string>
-    <string name="unread_widget_label">K-9 未讀</string>
+    <string name="shortcuts_title">Squeaky帳戶</string>
+    <string name="unread_widget_label">Squeaky 未讀</string>
 
-    <string name="remote_control_label">遠端控制K-9 Mail</string>
-    <string name="remote_control_desc">在遠端透過此程式可控制K-9 Mail的執行或變更設定。</string>
+    <string name="remote_control_label">遠端控制Squeaky Mail</string>
+    <string name="remote_control_desc">在遠端透過此程式可控制Squeaky Mail的執行或變更設定。</string>
 
 
     <!-- Used in the about dialog -->
@@ -22,46 +22,20 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">歡迎使用K-9 Mail</string>
+    <string name="welcome_message_title">歡迎使用Squeaky Mail</string>
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail是Android系統的開放原始碼的電子郵件客戶端，原始程式碼來自Android內建的電子郵件程式。
-</p><p>
-K-9改良的功能包括：
-</p>
-<ul>
-  <li>利用IMAP IDEL進行Push mail</li>
-  <li>更好的執行效率</li>
-  <li>重新發送郵件</li>
-  <li>郵件簽名</li>
-  <li>密件副本給自己</li>
-  <li>信件匣訂閱</li>
-  <li>同步全部信件匣</li>
-  <li>可以編輯回信收件人地址</li>
-  <li>鍵盤捷徑鍵</li>
-  <li>更完整支援IMAP</li>
-  <li>儲存附件到記憶卡</li>
-  <li>清空垃圾桶</li>
-  <li>郵件排序</li>
-  <li>以及其他很多功能～</li>
-</ul>
-<p>
-請注意：K-9不支援絕大多數免費Hotmail帳戶。跟其他的電子郵件客戶端一樣，在和Microsoft Exchange伺服器溝通的時候存在一些詭異的問題。
-</p><p>
-請到<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>提交錯誤報告、建議新功能或提出您的問題。
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \n抱歉暫時無法詳細說明。這份郵件是由安裝有K-9 Mail的Android手持設備寄送的。</string>
+    <string name="default_signature">-- \n抱歉暫時無法詳細說明。這份郵件是由安裝有Squeaky Mail的Android手持設備寄送的。</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」將從K-9 Mail中刪除。</string>
-    <string name="account_recreate_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有相關資料將從K-9 Mail中刪除，僅保留帳戶設定。</string>
-    <string name="account_clear_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有郵件將從K-9 Mail中刪除，僅保留帳戶設定。</string>
-    <string name="insufficient_apg_permissions">K-9沒有被允許存取APG，請重新安裝K-9嘗試修復問題。</string>
+    <string name="account_delete_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」將從Squeaky Mail中刪除。</string>
+    <string name="account_recreate_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有相關資料將從Squeaky Mail中刪除，僅保留帳戶設定。</string>
+    <string name="account_clear_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有郵件將從Squeaky Mail中刪除，僅保留帳戶設定。</string>
+    <string name="insufficient_apg_permissions">Squeaky沒有被允許存取APG，請重新安裝Squeaky嘗試修復問題。</string>
 
 
 

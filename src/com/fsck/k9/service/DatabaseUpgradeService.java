@@ -11,12 +11,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.UnavailableStorageException;
+import com.imaeses.squeaky.K9;
 
 /**
  * Service used to upgrade the accounts' databases and/or track the progress of the upgrade.

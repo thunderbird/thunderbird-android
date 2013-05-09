@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 Accounts</string>
+    <string name="shortcuts_title">Squeaky Mail Accounts</string>
     <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
 
-    <string name="remote_control_label">K-9 Mail bediening op afstand</string>
-    <string name="remote_control_desc">Sta deze applicatie toe om activiteiten en instellingen van K-9 Mail aan te passen.</string>
+    <string name="remote_control_label">Squeaky Mail bediening op afstand</string>
+    <string name="remote_control_desc">Sta deze applicatie toe om activiteiten en instellingen van Squeaky Mail aan te passen.</string>
 
 
     <!-- Used in the about dialog -->
@@ -24,45 +24,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail is een open source mail cliënt voor Android, gebaseerd op de standaard Android Mail cliënt.
-</p><p>
-Toevoegingen en verbeteringen omvatten:
-</p>
-<ul>
-  <li>Push mail die IMAP IDLE gebruikt</li>
-  <li>Betere prestaties</li>
-  <li>Bericht heropenen</li>
-  <li>E-mail handtekeningen</li>
-  <li>Bcc naar jezelf</li>
-  <li>Map abonnementen</li>
-  <li>Alle mappen synchronisatie</li>
-  <li>Return-adres configuratie</li>
-  <li>Toetsenbord snelkoppelingen</li>
-  <li>Betere IMAP ondersteuning</li>
-  <li>Bijlage opslaan naar SD</li>
-  <li>Prullenbak legen</li>
-  <li>Berichten sorteren</li>
-  <li>…en meer</li>
-</ul>
-<p>
-Houd er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange.
-</p><p>
-Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nVerzonden van mijn Android telefoon met K-9 Mail.</string>
+    <string name="default_signature">-- \nVerzonden van mijn Android telefoon met Squeaky Mail.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Alle data voor \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail, maar account instellingen blijven behouden.</string>
-    <string name="account_clear_dlg_instructions_fmt">Alle berichten in \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van  K-9 Mail, maar account instellingen blijven behouden.</string>
-    <string name="insufficient_apg_permissions">K-9 heeft geen volledige toegang tot APG, installeer K-9 opnieuw om dit te verhelpen.</string>
+    <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van Squeaky Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Alle data voor \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van Squeaky Mail, maar account instellingen blijven behouden.</string>
+    <string name="account_clear_dlg_instructions_fmt">Alle berichten in \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van  Squeaky Mail, maar account instellingen blijven behouden.</string>
+    <string name="insufficient_apg_permissions">Squeaky Mail heeft geen volledige toegang tot APG, installeer Squeaky Mail opnieuw om dit te verhelpen.</string>
 
 
 

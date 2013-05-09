@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import com.fsck.k9.preferences.Editor;
 import com.fsck.k9.preferences.Storage;
+import com.imaeses.squeaky.K9;
 
 public class Preferences {
 

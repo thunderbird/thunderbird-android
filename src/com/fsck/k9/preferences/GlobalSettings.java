@@ -15,13 +15,14 @@ import android.os.Environment;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.SplitViewMode;
-import com.fsck.k9.K9.Theme;
-import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.preferences.Settings.*;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+import com.imaeses.squeaky.K9.NotificationHideSubject;
+import com.imaeses.squeaky.K9.SplitViewMode;
+import com.imaeses.squeaky.K9.Theme;
 
 public class GlobalSettings {
     public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;

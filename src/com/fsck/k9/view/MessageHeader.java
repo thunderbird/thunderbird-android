@@ -21,8 +21,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.Account;
@@ -38,6 +36,9 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class MessageHeader extends ScrollView implements OnClickListener {
     private Context mContext;

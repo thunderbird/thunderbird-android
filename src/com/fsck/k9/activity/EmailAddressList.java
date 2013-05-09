@@ -9,8 +9,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.fsck.k9.R;
 import com.fsck.k9.helper.ContactItem;
+
+import com.imaeses.squeaky.R;
 
 public class EmailAddressList extends K9ListActivity implements OnItemClickListener {
     public static final String EXTRA_CONTACT_ITEM = "contact";

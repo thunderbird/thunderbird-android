@@ -38,9 +38,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.activity.Search;
 import com.fsck.k9.controller.MessageRemovalListener;
@@ -77,6 +75,9 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 /**
  * <pre>

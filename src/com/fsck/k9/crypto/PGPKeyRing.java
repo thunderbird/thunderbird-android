@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.widget.Toast;
 //import android.util.Log;
 
-import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -24,6 +23,8 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.imaeses.squeaky.R;
 
 /**
  * PGP KeyRing integration. (9 May 2013).

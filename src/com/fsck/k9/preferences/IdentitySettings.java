@@ -10,9 +10,10 @@ import java.util.TreeMap;
 import android.content.SharedPreferences;
 
 import com.fsck.k9.EmailAddressValidator;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.preferences.Settings.*;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class IdentitySettings {
     public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;

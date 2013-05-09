@@ -31,8 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
@@ -58,6 +56,8 @@ import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.List;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class SingleMessageView extends LinearLayout implements OnClickListener,
         MessageHeader.OnLayoutChangedListener, OnCreateContextMenuListener {

@@ -1,7 +1,8 @@
 package com.fsck.k9.helper;
 
 import android.content.Context;
-import com.fsck.k9.R;
+
+import com.imaeses.squeaky.R;
 
 public class SizeFormatter {
     /*

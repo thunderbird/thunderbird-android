@@ -1,9 +1,7 @@
 package com.fsck.k9.activity;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.DatabaseUpgradeService;
 
@@ -17,6 +15,8 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.widget.TextView;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 /**
  * This activity triggers a database upgrade if necessary and displays the current upgrade progress.

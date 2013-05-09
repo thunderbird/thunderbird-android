@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 메일</string>
-    <string name="beta_app_name">K-9 메일 베타</string>
+    <string name="app_name">Squeaky 메일</string>
+    <string name="beta_app_name">Squeaky 메일 베타</string>
 
-    <string name="shortcuts_title">K-9 계정</string>
-    <string name="unread_widget_label">K-9 읽지 않은 메일</string>
+    <string name="shortcuts_title">Squeaky 계정</string>
+    <string name="unread_widget_label">Squeaky 읽지 않은 메일</string>
 
-    <string name="remote_control_label">K-9 메일 리모콘</string>
-    <string name="remote_control_desc">이 애플리케이션이 K-9 메일을 제어하고 설정하도록 함.</string>
+    <string name="remote_control_label">Squeaky 메일 리모콘</string>
+    <string name="remote_control_desc">이 애플리케이션이 Squeaky 메일을 제어하고 설정하도록 함.</string>
 
 
     <!-- Used in the about dialog -->
@@ -22,46 +22,20 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">K-9 메일을 사용하시게 된 것을 환영합니다</string>
+    <string name="welcome_message_title">Squeaky 메일을 사용하시게 된 것을 환영합니다</string>
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 메일은 강력한 안드로이드용 무료 메일 클라이언트 입니다.
-</p><p>
-K-9의 향상된 기능:
-</p>
-<ul>
-  <li>IMAP IDLE를 이용한 메일 푸시(PUSH)기능</li>
-  <li>더 나은 성능</li>
-  <li>메시지 재정리</li>
-  <li>이메일 서명</li>
-  <li>Bcc-to-self</li>
-  <li>폴더 구독</li>
-  <li>모든 폴더 동기화</li>
-  <li>회신주소 수정</li>
-  <li>키보드 단축키</li>
-  <li>향상된 IMAP 지원</li>
-  <li>SD 카드에 첨부 파일 저장</li>
-  <li>휴지통 비우기</li>
-  <li>메시지 정렬</li>
-  <li>… 등등</li>
-</ul>
-<p>
-K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다른 메일 클라이언트와 마찬가지로 Microsoft Exchange와 연결할 때 다소 문제가 발생할 수 있습니다.
-</p><p>
-버그 리포트, 새로운 기능 그리고 질문에 대한 문의는 <a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a> 로 남겨주시기바랍니다.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
+    <string name="default_signature">-- \nSent from my Android phone with Squeaky Mail. Please excuse my brevity.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
-    <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 데이터가 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
-    <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 메일이 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
-    <string name="insufficient_apg_permissions">K-9이 APG에 완벽하게 접근할 권한이 없습니다. 이를 고치려면 K-9를 재설치하십시오.</string>
+    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 Squeaky에서 삭제됩니다.</string>
+    <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 데이터가 Squeaky에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
+    <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 메일이 Squeaky에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
+    <string name="insufficient_apg_permissions">Squeaky이 APG에 완벽하게 접근할 권한이 없습니다. 이를 고치려면 Squeaky를 재설치하십시오.</string>
 
 
 
@@ -80,11 +54,11 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="app_emoji_icons">Emoji 아이콘: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">첨부 읽기</string>
-    <string name="read_attachment_desc">K-9이 이메일의 첨부를 읽도록 합니다</string>
+    <string name="read_attachment_desc">Squeaky이 이메일의 첨부를 읽도록 합니다</string>
     <string name="read_messages_label">이메일 읽기</string>
-    <string name="read_messages_desc">K-9이 이메일을 읽도록 합니다.</string>
+    <string name="read_messages_desc">Squeaky이 이메일을 읽도록 합니다.</string>
     <string name="delete_messages_label">이메일 삭제</string>
-    <string name="delete_messages_desc">K-9이 이메일을 삭제하도록 합니다</string>
+    <string name="delete_messages_desc">Squeaky이 이메일을 삭제하도록 합니다</string>
 
     <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">계정</string>

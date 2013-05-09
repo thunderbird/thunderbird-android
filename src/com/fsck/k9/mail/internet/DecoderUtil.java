@@ -2,9 +2,10 @@
 package com.fsck.k9.mail.internet;
 
 import android.util.Log;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.imaeses.squeaky.K9;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

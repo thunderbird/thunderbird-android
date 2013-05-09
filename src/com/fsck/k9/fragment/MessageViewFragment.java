@@ -22,9 +22,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
@@ -44,6 +42,8 @@ import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.SingleMessageView;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class MessageViewFragment extends SherlockFragment implements OnClickListener,
         CryptoDecryptCallback, ConfirmationDialogFragmentListener {

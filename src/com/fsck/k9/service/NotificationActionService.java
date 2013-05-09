@@ -3,13 +3,13 @@ package com.fsck.k9.service;
 import java.util.ArrayList;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
+import com.imaeses.squeaky.K9;
 
 import android.app.PendingIntent;
 import android.content.Context;

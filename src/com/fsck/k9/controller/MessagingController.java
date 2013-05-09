@@ -41,13 +41,8 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.Intents;
-import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
@@ -96,6 +91,11 @@ import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.service.NotificationActionService;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+import com.imaeses.squeaky.K9.Intents;
+import com.imaeses.squeaky.K9.NotificationHideSubject;
+import com.imaeses.squeaky.K9.NotificationQuickDelete;
 
 /**
  * Starts a long running (application) Thread that will run through commands

@@ -15,7 +15,7 @@ import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.Intents.Insert;
 
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.K9;
+import com.imaeses.squeaky.K9;
 
 /**
  * Access the contacts on the device using the API introduced with SDK 5.

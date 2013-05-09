@@ -3,7 +3,9 @@ package com.fsck.k9.helper;
 import android.text.*;
 import android.text.Html.TagHandler;
 import android.util.Log;
-import com.fsck.k9.K9;
+
+import com.imaeses.squeaky.K9;
+
 import org.xml.sax.XMLReader;
 
 import java.io.IOException;

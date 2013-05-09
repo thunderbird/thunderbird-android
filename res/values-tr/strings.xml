@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Posta</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Posta</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 Hesaplar</string>
-    <string name="unread_widget_label">K-9 Okunmamış</string>
+    <string name="shortcuts_title">Squeaky Hesaplar</string>
+    <string name="unread_widget_label">Squeaky Okunmamış</string>
 
-    <string name="remote_control_label">K-9 Posta\'ya uzaktan erişim</string>
-    <string name="remote_control_desc">Bu programın K-9 Mail aktiviteleri ve ayarlarını kontrol edebilmesine izin ver.</string>
+    <string name="remote_control_label">Squeaky Posta\'ya uzaktan erişim</string>
+    <string name="remote_control_desc">Bu programın Squeaky Mail aktiviteleri ve ayarlarını kontrol edebilmesine izin ver.</string>
 
 
     <!-- Used in the about dialog -->
@@ -24,45 +24,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail standart Android E-posta istemcisi üzerinde yazılmış açık kaynak kodlu bir e-posta istemcisidir.
-</p><p>
-K-9\'un iyileştirilmiş özellikleri:
-</p>
-<ul>
-  <li>IMAP IDLE kullanarak PUSH mail</li>
-  <li>Daha iyi performans</li>
-  <li>Mesaj bekletimi</li>
-  <li>E-posta imzaları</li>
-  <li>Kendine BCC (gizli karbon kopya)</li>
-  <li>Klasör abonelikleri</li>
-  <li>Tüm klasör senkronizasyonları</li>
-  <li>Yanıtlama adres yapılandırması</li>
-  <li>Klavye kısayolları</li>
-  <li>İyileştirilmiş IMAP desteği</li>
-  <li>Ekleri SD karta kaydetme</li>
-  <li>Çöp kutusu boşaltma</li>
-  <li>Mesaj sıralama</li>
-  <li>…ve daha fazlası</li>
-</ul>
-<p>
-Lütfen K-9\'un diğer çoğu e-posta istemcisi gibi Microsoft Exchange haberleşme problemi nedeniyle ücretsiz Hotmail hesaplarını desteklemediğini bilin.
-</p><p>
-Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a> adresine gönderin.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \n Android için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
+    <string name="default_signature">-- \n Android için Squeaky Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi \"<xliff:g id="account">%s</xliff:g>\" için K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
-    <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar \"<xliff:g id="account">%s</xliff:g>\" içinden ve K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
-    <string name="insufficient_apg_permissions">K-9 tamamiyle APG erişimine izin vermez, lütfen bunu düzeltmek için K-9\'i yeniden kurun.</string>
+    <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" Squeaky Mail\'den kaldırılacak.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi \"<xliff:g id="account">%s</xliff:g>\" için Squeaky Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
+    <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar \"<xliff:g id="account">%s</xliff:g>\" içinden ve Squeaky Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
+    <string name="insufficient_apg_permissions">Squeaky tamamiyle APG erişimine izin vermez, lütfen bunu düzeltmek için Squeaky\'i yeniden kurun.</string>
 
 
 
@@ -77,7 +50,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 
     <string name="app_authors_fmt">Yazarlar: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revizyon Bilgileri: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_libraries">K-9 posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_libraries">Squeaky posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">İfadeler: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">E-posta eklerini oku</string>

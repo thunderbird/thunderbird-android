@@ -1,6 +1,5 @@
 package com.fsck.k9.activity;
 
-import com.fsck.k9.R;
 import android.app.AlertDialog;
 import android.content.*;
 import android.view.LayoutInflater;
@@ -8,6 +7,7 @@ import android.view.View;
 
 import com.larswerkman.colorpicker.ColorPicker;
 
+import com.imaeses.squeaky.R;
 
 /**
  * Dialog displaying a color picker.

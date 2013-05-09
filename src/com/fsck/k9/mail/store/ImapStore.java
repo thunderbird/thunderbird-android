@@ -62,8 +62,6 @@ import android.util.Log;
 
 import com.beetstra.jutf7.CharsetProvider;
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
@@ -98,6 +96,9 @@ import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 /**
  * <pre>

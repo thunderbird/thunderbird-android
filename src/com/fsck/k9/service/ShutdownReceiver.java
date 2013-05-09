@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.fsck.k9.K9;
+import com.imaeses.squeaky.K9;
 
 /**
  * Capture the system shutdown event in order to properly free resources.

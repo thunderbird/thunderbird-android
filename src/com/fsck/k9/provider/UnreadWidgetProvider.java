@@ -3,9 +3,7 @@ package com.fsck.k9.provider;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.UnreadWidgetConfiguration;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
@@ -22,6 +20,9 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class UnreadWidgetProvider extends AppWidgetProvider {
     private static final int MAX_COUNT = 9999;

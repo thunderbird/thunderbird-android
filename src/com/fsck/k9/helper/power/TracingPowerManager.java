@@ -4,7 +4,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.fsck.k9.K9;
+import com.imaeses.squeaky.K9;
+
 import android.content.Context;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;

@@ -6,13 +6,13 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 fiókok</string>
-    <string name="unread_widget_label">K-9 olvasatlan</string>
+    <string name="shortcuts_title">Squeaky fiókok</string>
+    <string name="unread_widget_label">Squeaky olvasatlan</string>
 
-    <string name="remote_control_label">K-9 Mail távoli vezérlés</string>
+    <string name="remote_control_label">Squeaky Mail távoli vezérlés</string>
     <string name="remote_control_desc">Lehetővé teszi, hogy az alkalmazás módosítsa a K9 mail beállításait.</string>
 
 
@@ -25,45 +25,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-A K-9 egy nyílt forráskódú levelezőprogram Androidra, a sima mail kliens alapjaira helyezve.
-</p><p>
-K-9 továbbfejlesztett funkciói:
-</p>
-<ul>
-  <li>Push mail using IMAP IDLE</li>
-  <li>Jobb teljesítmény</li>
-  <li>Message refiling</li>
-  <li>E-mail aláírások</li>
-  <li>Titkos másolat</li>
-  <li>Mappa-előfizetések</li>
-  <li>Minden mappa szinkronizálása</li>
-  <li>Válasz cím beállítása</li>
-  <li>Gyorsbillentyűk</li>
-  <li>Jobb IMAP támogatás</li>
-  <li>Mellékletek mentése a memóriakártyára</li>
-  <li>Kuka ürítése</li>
-  <li>Üzenetek válogatás</li>
-  <li>…és még sok más</li>
-</ul>
-<p>
-Vegye figyelembe, hogy a K-9 nem támogatja a legtöbb ingyenes hotmail fiókot és még sok más klienst. Történnek furcsaságok, ha Microsoft Exchange-el kommunikál.
-</p><p>
-Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérdéseit itt teheti fel
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nEzt a levelet mobiltelefonról küldtem, K-9 Mail-el. Elnézést a levél rövidségéért és az esetleges hibákért.</string>
+    <string name="default_signature">-- \nEzt a levelet mobiltelefonról küldtem, Squeaky Mail-el. Elnézést a levél rövidségéért és az esetleges hibákért.</string>
 
 
     <!-- General strings that include the app name -->
     <string name="account_delete_dlg_instructions_fmt">A \"<xliff:g id="account">%s</xliff:g>\" fiók törölve a K9 Mail-ból.</string>
     <string name="account_recreate_dlg_instructions_fmt">Az összes üzenet, melléklet, mappa és beállításai törlődni fognak a \"<xliff:g id="account">%s</xliff:g>\" fiókból. A fiók beállításai megmaradnak.</string>
     <string name="account_clear_dlg_instructions_fmt">Minden levél törlődni fog a \"<xliff:g id="account">%s</xliff:g>\" fiókból, de a beállítások megmaradnak.</string>
-    <string name="insufficient_apg_permissions">A K-9-nek nincs hozzáférési joga az APG-hez. Kérem telepítse újra a K-9 Mail.</string>
+    <string name="insufficient_apg_permissions">A Squeaky Mail-nek nincs hozzáférési joga az APG-hez. Kérem telepítse újra a Squeaky Mail.</string>
 
 
 

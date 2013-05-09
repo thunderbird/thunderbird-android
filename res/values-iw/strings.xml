@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">חשבונות K-9</string>
+    <string name="shortcuts_title">חשבונות Squeaky Mail</string>
     <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
 
-    <string name="remote_control_label">K-9 Mail שליטה מרחוק</string>
-    <string name="remote_control_desc">אפשר לK-9 לשלוט בהגדרות פעילות הדואר.</string>
+    <string name="remote_control_label">Squeaky Mail שליטה מרחוק</string>
+    <string name="remote_control_desc">אפשר לSqueaky לשלוט בהגדרות פעילות הדואר.</string>
 
 
     <!-- Used in the about dialog -->
@@ -24,45 +24,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-ברוכים הבאים ל-K-9 הגדרת דואר. K-9 הוא קוד פתוח של תוכנת מייל לאנדרואיד המבוססת במקור על תוכנת המייל הסטנדרטית של האנדרואיד
-</p><p>
-תכונות משופרות של K-9 כוללת:
-</p>
-<ul>
-  <li>דחוף דואר באמצעות IMAP IDLE</li>
-  <li>ביצועים טובים יותר</li>
-  <li>הודעה refiling</li>
-  <li>חתימות דוא"ל</li>
-  <li>עותק מוסתר אל עצמי</li>
-  <li>תיקיות מנויים</li>
-  <li>כל התיקיות מסונכרנות</li>
-  <li>חזור- כתובת תצורה</li>
-  <li>מקלדת קיצורי דרך</li>
-  <li>תמיכה טובה יותר ב-IMAP</li>
-  <li>שמירת קבצים מצורפים אל SD</li>
-  <li>רוקן אשפה</li>
-  <li>מיון הודעת</li>
-  <li>ועוד …</li>
-</ul>
-<p>
-לידיעתך, K-9 אינו תומך ברוב חשבונות Hotmail החינמיים, כמו תוכנות דואר רבות, יש כמה מוזרויות כאשר מדברים על Microsoft Exchange.
-</p><p>
-נא לשלוח דיווחי באגים, לתרום תכונות חדשות ולשאול שאלות על
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <!-- NEW: --><string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
+    <!-- NEW: --><string name="default_signature">-- \nSent from my Android phone with Squeaky Mail. Please excuse my brevity.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
-    <string name="account_recreate_dlg_instructions_fmt">על הנתונים עבור \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
-    <string name="account_clear_dlg_instructions_fmt">כל ההודעות ב \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
-    <string name="insufficient_apg_permissions">"ל-K-9 אין הרשאה לגשת ל APG באופן מלא, התקן מחדש את K-9 כדי לתקן את זה."</string>
+    <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ Squeaky Mail .</string>
+    <string name="account_recreate_dlg_instructions_fmt">על הנתונים עבור \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ Squeaky Mail, אך הגדרות החשבון יישמרו.</string>
+    <string name="account_clear_dlg_instructions_fmt">כל ההודעות ב \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ Squeaky Mail, אך הגדרות החשבון יישמרו.</string>
+    <string name="insufficient_apg_permissions">"ל-Squeaky אין הרשאה לגשת ל APG באופן מלא, התקן מחדש את Squeaky כדי לתקן את זה."</string>
 
 
 

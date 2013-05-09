@@ -13,8 +13,8 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.filter.Base64;
+import com.imaeses.squeaky.K9;
 
 import java.io.File;
 import java.io.FileInputStream;

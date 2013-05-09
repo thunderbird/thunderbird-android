@@ -16,12 +16,13 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
+
+import com.imaeses.squeaky.R;
 
 /**
  * APG integration.

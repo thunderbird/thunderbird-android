@@ -8,11 +8,11 @@ import java.util.Set;
 
 import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.store.UnavailableStorageException;
+import com.imaeses.squeaky.K9;
 
 
 public abstract class Message implements Part, Body {

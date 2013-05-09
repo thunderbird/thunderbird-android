@@ -24,13 +24,14 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseFolder_account";

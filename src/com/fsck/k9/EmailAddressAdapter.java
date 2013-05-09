@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
+import com.imaeses.squeaky.R;
+
 public class EmailAddressAdapter extends ResourceCursorAdapter {
     private final Contacts mContacts;
 

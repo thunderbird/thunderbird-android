@@ -8,9 +8,10 @@ import android.text.format.DateUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.service.MailService;
+
+import com.imaeses.squeaky.R;
 
 public class ActivityListener extends MessagingListener {
     private Account mAccount = null;

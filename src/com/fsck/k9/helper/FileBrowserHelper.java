@@ -12,8 +12,9 @@ import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.widget.EditText;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class FileBrowserHelper {
     /**

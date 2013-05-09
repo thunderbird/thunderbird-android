@@ -5,8 +5,6 @@ import android.text.SpannableStringBuilder;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.mail.Address;
@@ -14,6 +12,9 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class MessageHelper {
 

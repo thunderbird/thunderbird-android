@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail测试版</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail测试版</string>
 
-    <string name="shortcuts_title">K-9账户</string>
-    <string name="unread_widget_label">K-9 Mail 未读</string>
+    <string name="shortcuts_title">Squeaky账户</string>
+    <string name="unread_widget_label">Squeaky Mail 未读</string>
 
-    <string name="remote_control_label">远程控制K-9 Mail</string>
-    <string name="remote_control_desc">运行这个程序控制K-9 Mail的行为和设置。</string>
+    <string name="remote_control_label">远程控制Squeaky Mail</string>
+    <string name="remote_control_desc">运行这个程序控制Squeaky Mail的行为和设置。</string>
 
 
     <!-- Used in the about dialog -->
@@ -24,44 +24,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail是Android下的开源电子邮件客户端，其最初的代码来自Android默认的电子邮件程序。
-</p><p>
-K-9改进的功能包括：
-</p>
-<ul>
-  <li>利用IMAP IDEL进行Push mail</li>
-  <li>更好的性能</li>
-  <li>重新装入邮件</li>
-  <li>邮件签名</li>
-  <li>暗送给自己</li>
-  <li>文件夹订阅</li>
-  <li>同步全部文件夹</li>
-  <li>可以编辑回件地址</li>
-  <li>键盘快捷键</li>
-  <li>更好的IMAP支持</li>
-  <li>保存附件到SD卡</li>
-  <li>清空垃圾箱</li>
-  <li>邮件排序</li>
-  <li>以及其他很多哦～</li>
-</ul>
-<p>
-请注意K-9不支持绝大多数免费Hotmail账户，以及，和很多邮件客户端一样，在和Microsoft Exchange沟通的时候存在一些奇妙的问题。
-</p><p>
-请到<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>提交错误报告、贡献新功能或提出您的问题。
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \n抱歉暂时无法详细说明。这份邮件是使用安装有K-9 Mail的Android移动设备发送的。</string>
+    <string name="default_signature">-- \n抱歉暂时无法详细说明。这份邮件是使用安装有Squeaky Mail的Android移动设备发送的。</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”将从K-9 Mail中删除。</string>
-    <string name="account_recreate_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”的全部数据将从K-9 Mail中删除，但是账户设置将保留。</string>
-    <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”中的全部邮件将从K-9 Mail中删除，但是账户设置将保留。</string>
-    <string name="insufficient_apg_permissions">K-9没有被允许完全访问APG，请重新安装K-9以便修复这一问题。</string>
+    <string name="account_delete_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”将从Squeaky Mail中删除。</string>
+    <string name="account_recreate_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”的全部数据将从Squeaky Mail中删除，但是账户设置将保留。</string>
+    <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”中的全部邮件将从Squeaky Mail中删除，但是账户设置将保留。</string>
+    <string name="insufficient_apg_permissions">Squeaky没有被允许完全访问APG，请重新安装Squeaky以便修复这一问题。</string>
 
 
 
@@ -76,7 +50,7 @@ K-9改进的功能包括：
 
     <string name="app_authors_fmt">作者: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">更新日志: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_libraries">K-9 Mail包含如下来源的源代码： <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_libraries">Squeaky Mail包含如下来源的源代码： <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Emoji图标： <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">显示附件</string>

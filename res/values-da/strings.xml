@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 Konti</string>
+    <string name="shortcuts_title">Squeaky Konti</string>
     <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
 
-    <string name="remote_control_label">K-9 Mail fjernkontrol</string>
-    <string name="remote_control_desc">Tillad dette program at kontrollere K-9 Mail aktiviteter og indstillinger.</string>
+    <string name="remote_control_label">Squeaky Mail fjernkontrol</string>
+    <string name="remote_control_desc">Tillad dette program at kontrollere Squeaky Mail aktiviteter og indstillinger.</string>
 
 
     <!-- Used in the about dialog -->
@@ -24,45 +24,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
-</p><p>
-K-9\'s forbedrede funktioner inkluderer:
-</p>
-<ul>
-  <li>Push mail ved hjælp af IMAP IDLE</li>
-  <li>Bedre performance</li>
-  <li>Omflytning af mails</li>
-  <li>Mailsignaturer</li>
-  <li>Bcc til dig selv</li>
-  <li>Mappe subscriptions</li>
-  <li>Synkronisering af alle mapper</li>
-  <li>Indstil afsender-adresse</li>
-  <li>Tastatur genveje</li>
-  <li>Bedre IMAP understøttelse</li>
-  <li>Gem vedhæftninger til SD kort</li>
-  <li>Tøm papirkurv</li>
-  <li>Sortering af mails</li>
-  <li>…og mere</li>
-</ul>
-<p>
-Bemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
-</p><p>
-Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nSendt fra min Android telefon med K-9 Mail. Undskyld hvis jeg er lidt kortfattet.</string>
+    <string name="default_signature">-- \nSendt fra min Android telefon med Squeaky Mail. Undskyld hvis jeg er lidt kortfattet.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Alle mails, vedhæftede filer, mapper og mappe-indstillinger for \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail, men kontoindstillinger vil blive husket.</string>
+    <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra Squeaky Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Alle mails, vedhæftede filer, mapper og mappe-indstillinger for \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra Squeaky Mail, men kontoindstillinger vil blive husket.</string>
     <string name="account_clear_dlg_instructions_fmt">Alle mails i \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet, men kontoindstillinger vil blive husket.</string>
-    <string name="insufficient_apg_permissions">K-9 har ikke tilstrækkelig tilladelse til at benytte APG, geninstaller K-9 for at give fuld adgang.</string>
+    <string name="insufficient_apg_permissions">Squeaky Mail har ikke tilstrækkelig tilladelse til at benytte APG, geninstaller Squeaky Mail for at give fuld adgang.</string>
 
 
 
