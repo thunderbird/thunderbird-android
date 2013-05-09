@@ -212,6 +212,7 @@ public class HtmlConverter {
         StringReader reader = new StringReader(text);
         StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
         boolean isStartOfLine = false;  // Are we currently at the start of a line?
+        int spaces = 0;
         int quoteDepth = 0; // Number of DIVs deep we are.
         int quotesThisLine = 0; // How deep we should be quoting for this line.
         try {
@@ -224,14 +225,18 @@ public class HtmlConverter {
                     buff.append(HTML_NEWLINE);
                     isStartOfLine = true;
                     quotesThisLine = 0;
+                    spaces = 0;
                     break;
                 case '&':
+                    spaces = 0;
                     buff.append("&amp;");
                     break;
                 case '<':
+                    spaces = 0;
                     buff.append("&lt;");
                     break;
                 case '>':
+                    spaces = 0;
                     if (isStartOfLine) {
                         quotesThisLine++;
                     } else {
@@ -243,13 +248,18 @@ public class HtmlConverter {
                     }
                     break;
                 case '\r':
+                    spaces = 0;
                     break;
                 case ' ':
                     if (isStartOfLine) {
                         // If we're still in the start of the line and we have spaces, don't output them, since they
                         // may be collapsed by our div-converting magic.
-                        break;
+                        spaces++;
                     }
+                    else {
+                        buff.append((char)c);
+                    }
+                    break;
                 default:
                     if (isStartOfLine) {
                         // Not a quote character and not a space.  Content is starting now.
@@ -265,6 +275,10 @@ public class HtmlConverter {
                             }
                         }
                         quoteDepth = quotesThisLine;
+
+                        while (spaces-- > 0) {
+                            buff.append(' ');
+                        }
                     }
                     buff.append((char)c);
                 }//switch
