@@ -220,19 +220,32 @@ public class HtmlConverter {
             while ((c = reader.read()) != -1) {
                 switch (c) {
                 case '\n':
+                case '&':
+                case '<':
+                case '\r':
+                    if (isStartOfLine) {
+                        while (spaces-- > 0) {
+                            buff.append(' ');
+                        }
+                    }
+                    else {
+                        spaces = 0;
+                    }
+                    break;
+                }
+
+                switch (c) {
+                case '\n':
                     // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
                     // doublespaced.
                     buff.append(HTML_NEWLINE);
                     isStartOfLine = true;
                     quotesThisLine = 0;
-                    spaces = 0;
                     break;
                 case '&':
-                    spaces = 0;
                     buff.append("&amp;");
                     break;
                 case '<':
-                    spaces = 0;
                     buff.append("&lt;");
                     break;
                 case '>':
@@ -248,12 +261,9 @@ public class HtmlConverter {
                     }
                     break;
                 case '\r':
-                    spaces = 0;
                     break;
                 case ' ':
                     if (isStartOfLine) {
-                        // If we're still in the start of the line and we have spaces, don't output them, since they
-                        // may be collapsed by our div-converting magic.
                         spaces++;
                     }
                     else {
