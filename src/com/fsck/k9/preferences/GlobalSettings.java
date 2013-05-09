@@ -223,7 +223,7 @@ public class GlobalSettings {
                 new V(25, new BooleanSetting(true))
             ));
         s.put("autofitWidth", Settings.versions(
-                new V(27, new BooleanSetting(true))
+                new V(28, new BooleanSetting(true))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);
