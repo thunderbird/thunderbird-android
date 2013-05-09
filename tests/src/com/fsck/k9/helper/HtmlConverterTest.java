@@ -138,14 +138,22 @@ public class HtmlConverterTest extends TestCase {
         String message = "foo\n"
                 + " bar\n"
                 + "  baz\n"
-                + "\n";
+                + " \n"
+                + "  &\n"
+                + "    \r\n"
+                + "   <\n"
+                + "  >\n";
         String result = HtmlConverter.textToHtml(message);
         writeToFile(result);
         assertEquals("<pre class=\"k9mail\">"
                 + "foo<br />"
                 + " bar<br />"
                 + "  baz<br />"
-                + "<br />"
+                + " <br />"
+                + "  &amp;<br />"
+                + "    <br />"
+                + "   &lt;<br />"
+                + "  &gt;<br />"
                 + "</pre>", result);
     }
 }
