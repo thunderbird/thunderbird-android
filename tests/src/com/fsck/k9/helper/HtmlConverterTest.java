@@ -30,18 +30,18 @@ public class HtmlConverterTest extends TestCase {
             + "<br />"
             + "Bob Barker &lt;bob@aol.com&gt; wrote:<br />"
             + "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
-            +   "a canal<br />"
+            +   " a canal<br />"
             +   "<br />"
-            +   "Dorothy Jo Gideon &lt;dorothy@aol.com&gt; espoused:<br />"
+            +   " Dorothy Jo Gideon &lt;dorothy@aol.com&gt; espoused:<br />"
             +   "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;\">"
             +     "A man, a plan...<br />"
             +   "</blockquote>"
-            +   "Too easy!</blockquote>"
+            +   " Too easy!</blockquote>"
             +   "<br />"
             +   "Nice job :)<br />"
             +   "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
             +     "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;\">"
-            +     "Guess!"
+            +     " Guess!"
             +   "</blockquote>"
             + "</blockquote>"
             + "</pre>", result);
@@ -63,11 +63,11 @@ public class HtmlConverterTest extends TestCase {
                 + "<br />"
                 + "Bob Barker &lt;bob@aol.com&gt; wrote:<br />"
                 + "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
-                +   "A wise man once said...<br />"
+                +   " A wise man once said...<br />"
                 +   "<br />"
-                +   "LOL F1RST!!!!!<br />"
+                +   "     LOL F1RST!!!!!<br />"
                 +   "<br />"
-                +   ":)"
+                +   " :)"
                 + "</blockquote></pre>", result);
 
     }
@@ -95,17 +95,17 @@ public class HtmlConverterTest extends TestCase {
         assertEquals("<pre class=\"k9mail\">"
                 + "zero<br />"
                 + "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
-                +   "one<br />"
+                +   " one<br />"
                 +   "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;\">"
-                +     "two<br />"
+                +     " two<br />"
                 +     "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #8ae234; padding-left: 1ex;\">"
-                +       "three<br />"
+                +       " three<br />"
                 +       "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #fcaf3e; padding-left: 1ex;\">"
-                +         "four<br />"
+                +         " four<br />"
                 +         "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #e9b96e; padding-left: 1ex;\">"
-                +           "five<br />"
+                +           " five<br />"
                 +           "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ccc; padding-left: 1ex;\">"
-                +             "six"
+                +             " six"
                 +           "</blockquote>"
                 +         "</blockquote>"
                 +       "</blockquote>"
@@ -132,5 +132,20 @@ public class HtmlConverterTest extends TestCase {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void testPreserveSpacesAtFirst() {
+        String message = "foo\n"
+                + " bar\n"
+                + "  baz\n"
+                + "\n";
+        String result = HtmlConverter.textToHtml(message);
+        writeToFile(result);
+        assertEquals("<pre class=\"k9mail\">"
+                + "foo<br />"
+                + " bar<br />"
+                + "  baz<br />"
+                + "<br />"
+                + "</pre>", result);
     }
 }
