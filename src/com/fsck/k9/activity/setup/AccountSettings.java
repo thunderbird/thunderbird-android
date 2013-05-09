@@ -43,6 +43,9 @@ import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.service.MailService;
 
 
+/**
+ * Modified by Adam Wasserman to include PGPKeyRing crypto provider. (9 May 2013)
+ */
 public class AccountSettings extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
 

@@ -26,7 +26,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * PGP KeyRing integration
+ * PGP KeyRing integration. (9 May 2013).
+ * Also modified: crypto/CryptoProvider.java, activity/setup/AccountSettings.java, res/values/strings.xml, and res/values/arrays.xml
+ *
  * @author Adam Wasserman
  *
  */
