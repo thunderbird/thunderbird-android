@@ -36,7 +36,8 @@ public class HtmlConverterTest extends TestCase {
             +   "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;\">"
             +     "A man, a plan...<br />"
             +   "</blockquote>"
-            +   " Too easy!</blockquote>"
+            +     " Too easy!<br />"
+            +   "</blockquote>"
             +   "<br />"
             +   "Nice job :)<br />"
             +   "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
@@ -137,23 +138,33 @@ public class HtmlConverterTest extends TestCase {
     public void testPreserveSpacesAtFirst() {
         String message = "foo\n"
                 + " bar\n"
-                + "  baz\n"
-                + " \n"
-                + "  &\n"
-                + "    \r\n"
-                + "   <\n"
-                + "  >\n";
+                + "  baz\n";
         String result = HtmlConverter.textToHtml(message);
         writeToFile(result);
         assertEquals("<pre class=\"k9mail\">"
                 + "foo<br />"
                 + " bar<br />"
                 + "  baz<br />"
+                + "</pre>", result);
+    }
+
+    public void testPreserveSpacesAtFirstForSpecialCharacters() {
+        String message =
+                  " \n"
+                + "  &\n"
+                + "    \r\n"
+                + "   <\n"
+                + "  > \n";
+        String result = HtmlConverter.textToHtml(message);
+        writeToFile(result);
+        assertEquals("<pre class=\"k9mail\">"
                 + " <br />"
                 + "  &amp;<br />"
                 + "    <br />"
                 + "   &lt;<br />"
-                + "  &gt;<br />"
+                + "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
+                + " <br />"
+                + "</blockquote>"
                 + "</pre>", result);
     }
 }
