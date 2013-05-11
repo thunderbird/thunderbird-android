@@ -316,6 +316,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="global_settings_messageview_fixedwidth_label">固定幅フォント</string>
     <string name="global_settings_messageview_fixedwidth_summary">プレーンテキストメッセージの表示に固定幅フォントを利用</string>
+    <string name="global_settings_messageview_autofit_width_label">メッセージサイズ自動調整</string>
+    <string name="global_settings_messageview_autofit_width_summary">画面サイズに合うようにメッセージを縮小する</string>
     <string name="global_settings_messageview_return_to_list_label">削除後メッセージ一覧に戻る</string>
     <string name="global_settings_messageview_return_to_list_summary">メッセージの削除後、メッセージ一覧に戻る</string>
     <string name="global_settings_messageview_show_next_label">削除後次のメッセージを表示</string>
@@ -726,6 +728,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="sort_latest_first">日付昇順</string>
     <string name="sort_subject_alpha">件名アルファベット順</string>
     <string name="sort_subject_re_alpha">件名逆アルファベット順</string>
+    <string name="sort_sender_alpha">送信者アルファベット順</string>
+    <string name="sort_sender_re_alpha">送信者逆アルファベット順</string>
     <string name="sort_flagged_first">フラグメール順</string>
     <string name="sort_flagged_last">フラグメール逆順</string>
     <string name="sort_unread_first">未読メール順</string>
@@ -737,6 +741,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="sort_by_date">日付</string>
     <string name="sort_by_arrival">受信順</string>
     <string name="sort_by_subject">件名</string>
+    <string name="sort_by_sender">送信者</string>
     <string name="sort_by_flag">フラグ</string>
     <string name="sort_by_unread">既読/未読</string>
     <string name="sort_by_attach">添付</string>
@@ -1126,4 +1131,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="last_refresh_time_format">最終更新 <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">最終更新 <xliff:g id="time_with_preposition">%s</xliff:g> (Push)</string>
     <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
+
+    <string name="mark_all_as_read">すべて既読にする</string>
 </resources>
