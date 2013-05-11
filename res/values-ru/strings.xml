@@ -255,7 +255,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="message_compose_quote_header_from">От:</string>
     <string name="message_compose_quote_header_to">Для:</string>
     <string name="message_compose_quote_header_cc">Копия:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> написал(а):\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> написал(а):\n</string>
     <string name="message_compose_error_no_recipients">Необходимо добавить хотя бы одного адресата.</string>
     <string name="error_contact_address_not_found">Не найден адрес почты.</string>
     <string name="message_compose_attachments_skipped_toast">Некоторые вложения не могут быть пересланы, поскольку они не загрузились.</string>

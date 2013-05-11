@@ -312,6 +312,25 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
     }
 
+    public static class SenderComparator implements Comparator<Cursor> {
+
+        @Override
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            String sender1 = getSenderAddressFromCursor(cursor1);
+            String sender2 = getSenderAddressFromCursor(cursor2);
+
+            if (sender1 == null && sender2 == null) {
+                return 0;
+            } else if (sender1 == null) {
+                return 1;
+            } else if (sender2 == null) {
+                return -1;
+            } else {
+                return sender1.compareToIgnoreCase(sender2);
+            }
+        }
+    }
+
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
@@ -340,6 +359,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         map.put(SortType.SORT_ARRIVAL, new ArrivalComparator());
         map.put(SortType.SORT_FLAGGED, new FlaggedComparator());
         map.put(SortType.SORT_SUBJECT, new SubjectComparator());
+        map.put(SortType.SORT_SENDER, new SenderComparator());
         map.put(SortType.SORT_UNREAD, new UnreadComparator());
 
         // make it immutable to prevent accidental alteration (content is immutable already)
@@ -919,6 +939,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 for (int i = 0, len = accounts.length; i < len; i++) {
                     mAccountUuids[i] = accounts[i].getUuid();
                 }
+
+                if (mAccountUuids.length == 1) {
+                    mSingleAccountMode = true;
+                    mAccount = accounts[0];
+                }
             } else {
                 mAccountUuids = accountUuids;
             }
@@ -1078,7 +1103,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mPullToRefreshView.setEmptyView(loadingView);
 
         if (isCheckMailSupported()) {
-            if (mSearch.isManualSearch() && mAccount.allowRemoteSearch()) {
+            if (mSearch.isManualSearch() && mSingleAccountMode && mAccount.allowRemoteSearch()) {
                 // "Pull to search server"
                 mPullToRefreshView.setOnRefreshListener(
                         new PullToRefreshBase.OnRefreshListener<ListView>() {
@@ -1370,10 +1395,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             changeSort(SortType.SORT_SUBJECT);
             return true;
         }
-//        case R.id.set_sort_sender: {
-//            changeSort(SortType.SORT_SENDER);
-//            return true;
-//        }
+        case R.id.set_sort_sender: {
+            changeSort(SortType.SORT_SENDER);
+            return true;
+        }
         case R.id.set_sort_flag: {
             changeSort(SortType.SORT_FLAGGED);
             return true;
@@ -1503,7 +1528,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
 
-    private String getSenderAddressFromCursor(Cursor cursor) {
+    private static String getSenderAddressFromCursor(Cursor cursor) {
         String fromList = cursor.getString(SENDER_LIST_COLUMN);
         Address[] fromAddrs = Address.unpack(fromList);
         return (fromAddrs.length > 0) ? fromAddrs[0].getAddress() : null;
@@ -3240,11 +3265,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 sortColumn = "(" + MessageColumns.FLAGGED + " != 1)";
                 break;
             }
-//            case SORT_SENDER: {
-//                //FIXME
-//                sortColumn = MessageColumns.SENDER_LIST;
-//                break;
-//            }
+            case SORT_SENDER: {
+                //FIXME
+                sortColumn = MessageColumns.SENDER_LIST;
+                break;
+            }
             case SORT_SUBJECT: {
                 sortColumn = MessageColumns.SUBJECT + " COLLATE NOCASE";
                 break;

@@ -82,6 +82,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_NOTIF_QUICK_DELETE = "notification_quick_delete";
 
     private static final String PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT = "messageview_mobile_layout";
+    private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
@@ -121,6 +122,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
     private CheckBoxPreference mMobileOptimizedLayout;
+    private CheckBoxPreference mAutofitWidth;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mUseGalleryBugWorkaround;
     private CheckBoxPreference mDebugLogging;
@@ -290,6 +292,9 @@ public class Prefs extends K9PreferenceActivity {
             mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
         }
 
+        mAutofitWidth = (CheckBoxPreference) findPreference(PREFERENCE_AUTOFIT_WIDTH);
+        mAutofitWidth.setChecked(K9.autofitWidth());
+
         mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
         mQuietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
 
@@ -458,6 +463,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
         K9.setMessageViewShowNext(mShowNext.isChecked());
         K9.setMobileOptimizedLayout(mMobileOptimizedLayout.isChecked());
+        K9.setAutofitWidth(mAutofitWidth.isChecked());
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
 
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
