@@ -816,7 +816,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="settings_compose_theme_label">Tema do editor</string>
     <string name="settings_language_label">Idioma</string>
 
-    <!-- NEW: <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>-->
+    <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>
     <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
     <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
 
