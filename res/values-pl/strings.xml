@@ -242,7 +242,7 @@
     <string name="message_compose_quote_header_from">Od:</string>
     <string name="message_compose_quote_header_to">Do:</string>
     <string name="message_compose_quote_header_cc">DW:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napisał:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napisał:\n</string>
     <string name="message_compose_error_no_recipients">Musisz dodać co najmniej jednego odbiorcę.</string>
     <string name="error_contact_address_not_found">Żaden adres email nie został znaleziony.</string>
     <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą być przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>

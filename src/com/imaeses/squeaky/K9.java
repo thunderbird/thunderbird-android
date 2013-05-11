@@ -244,6 +244,7 @@ public class K9 extends Application {
     private static boolean mCountSearchMessages = true;
     private static boolean mHideSpecialAccounts = false;
     private static boolean mMobileOptimizedLayout = false;
+    private static boolean mAutofitWidth;
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
@@ -492,6 +493,7 @@ public class K9 extends Application {
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
+        editor.putBoolean("autofitWidth", mAutofitWidth);
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
         editor.putString("quietTimeEnds", mQuietTimeEnds);
@@ -689,6 +691,7 @@ public class K9 extends Application {
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
+        mAutofitWidth = sprefs.getBoolean("autofitWidth", true);
 
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
         mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
@@ -936,6 +939,14 @@ public class K9 extends Application {
 
     public static void setMobileOptimizedLayout(boolean mobileOptimizedLayout) {
         mMobileOptimizedLayout = mobileOptimizedLayout;
+    }
+
+    public static boolean autofitWidth() {
+        return mAutofitWidth;
+    }
+
+    public static void setAutofitWidth(boolean autofitWidth) {
+        mAutofitWidth = autofitWidth;
     }
 
     public static boolean getQuietTimeEnabled() {

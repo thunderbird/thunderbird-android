@@ -344,6 +344,29 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         context.startActivity(intent);
     }
 
+    public static LocalSearch createUnreadSearch(Context context, BaseAccount account) {
+        String searchTitle = context.getString(R.string.search_title, account.getDescription(),
+                context.getString(R.string.unread_modifier));
+
+        LocalSearch search;
+        if (account instanceof SearchAccount) {
+            search = ((SearchAccount) account).getRelatedSearch().clone();
+            search.setName(searchTitle);
+        } else {
+            search = new LocalSearch(searchTitle);
+            search.addAccountUuid(account.getUuid());
+
+            Account realAccount = (Account) account;
+            realAccount.excludeSpecialFolders(search);
+            realAccount.limitToDisplayableFolders(search);
+        }
+
+        search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
+
+        return search;
+    }
+
+
     @Override
     public void onNewIntent(Intent intent) {
         Uri uri = intent.getData();
@@ -1720,8 +1743,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setVisibility(stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
 
-                holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearch(account));
-                holder.newMessageCountWrapper.setOnClickListener(createUnreadSearch(account));
+                holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearchListener(account));
+                holder.newMessageCountWrapper.setOnClickListener(createUnreadSearchListener(account));
 
                 holder.activeIcons.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
@@ -1778,7 +1801,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
 
-        private OnClickListener createFlaggedSearch(BaseAccount account) {
+        private OnClickListener createFlaggedSearchListener(BaseAccount account) {
             String searchTitle = getString(R.string.search_title, account.getDescription(),
                     getString(R.string.flagged_modifier));
 
@@ -1800,25 +1823,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             return new AccountClickListener(search);
         }
 
-        private OnClickListener createUnreadSearch(BaseAccount account) {
-            String searchTitle = getString(R.string.search_title, account.getDescription(),
-                    getString(R.string.unread_modifier));
-
-            LocalSearch search;
-            if (account instanceof SearchAccount) {
-                search = ((SearchAccount) account).getRelatedSearch().clone();
-                search.setName(searchTitle);
-            } else {
-                search = new LocalSearch(searchTitle);
-                search.addAccountUuid(account.getUuid());
-
-                Account realAccount = (Account) account;
-                realAccount.excludeSpecialFolders(search);
-                realAccount.limitToDisplayableFolders(search);
-            }
-
-            search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
-
+        private OnClickListener createUnreadSearchListener(BaseAccount account) {
+            LocalSearch search = createUnreadSearch(Accounts.this, account);
             return new AccountClickListener(search);
         }
 

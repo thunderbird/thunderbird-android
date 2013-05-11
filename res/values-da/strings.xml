@@ -234,7 +234,7 @@
     <string name="message_compose_quote_header_from">Fra:</string>
     <string name="message_compose_quote_header_to">Til:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:\n</string>
     <string name="message_compose_error_no_recipients">Du skal angive mindst én modtager.</string>
     <string name="error_contact_address_not_found">Mail addresse ikke fundet.</string>
     <string name="message_compose_attachments_skipped_toast">Nogle vedhæftninger kunne ikke videresendes fordi de ikke er blevet hentet fra server.</string>

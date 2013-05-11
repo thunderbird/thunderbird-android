@@ -137,7 +137,8 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(true))
             ));
         s.put("messageListCheckboxes", Settings.versions(
-                new V(1, new BooleanSetting(true))
+                new V(1, new BooleanSetting(false)),
+                new V(27, new BooleanSetting(true))
             ));
         s.put("messageListPreviewLines", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 100, 2))
@@ -221,6 +222,9 @@ public class GlobalSettings {
             ));
         s.put("showContactPicture", Settings.versions(
                 new V(25, new BooleanSetting(true))
+            ));
+        s.put("autofitWidth", Settings.versions(
+                new V(28, new BooleanSetting(true))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);

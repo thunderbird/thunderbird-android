@@ -233,7 +233,7 @@
     <string name="message_compose_quote_header_from">Van:</string>
     <string name="message_compose_quote_header_to">Aan:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schreef:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schreef:\n</string>
     <string name="message_compose_error_no_recipients">Minimaal 1 ontvanger kiezen.</string>
     <string name="error_contact_address_not_found">Geen e-mailadres gevonden.</string>
     <string name="message_compose_attachments_skipped_toast">Sommige bijlagen kunnen niet worden doorgestuurd omdat ze niet zijn gedownload.</string>

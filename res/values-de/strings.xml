@@ -235,7 +235,7 @@
     <string name="message_compose_quote_header_from">Von:</string>
     <string name="message_compose_quote_header_to">An:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> schrieb:\n\n</string>
+    <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> schrieb:\n</string>
     <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger wählen.</string>
     <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
     <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
@@ -701,6 +701,8 @@
     <string name="sort_latest_first">Neueste Nachrichten zuerst</string>
     <string name="sort_subject_alpha">Alphabetisch nach Betreff (A-Z)</string>
     <string name="sort_subject_re_alpha">Alphabetisch nach Betreff (Z-A)</string>
+    <string name="sort_sender_alpha">Alphabetisch nach Absender (A-Z)</string>
+    <string name="sort_sender_re_alpha">Alphabetisch nach Absender (Z-A)</string>
     <string name="sort_flagged_first">Markierte Nachrichten zuerst</string>
     <string name="sort_flagged_last">Nicht markierte Nachrichten zuerst</string>
     <string name="sort_unread_first">Ungelesene Nachrichten zuerst</string>
@@ -712,6 +714,7 @@
     <string name="sort_by_date">Datum</string>
     <string name="sort_by_arrival">Ankunftsdatum</string>
     <string name="sort_by_subject">Betreff</string>
+    <string name="sort_by_sender">Absender</string>
     <string name="sort_by_flag">Wichtigkeit</string>
     <string name="sort_by_unread">Gelesen/Ungelesen</string>
     <string name="sort_by_attach">Anhang</string>

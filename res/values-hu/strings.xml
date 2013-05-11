@@ -234,7 +234,7 @@
     <string name="message_compose_quote_header_from">Feladó:</string>
     <string name="message_compose_quote_header_to">Címzett:</string>
     <string name="message_compose_quote_header_cc">Másolat:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> írta:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> írta:\n</string>
     <string name="message_compose_error_no_recipients">Legalább egy címzetted adjon meg.</string>
     <string name="error_contact_address_not_found">E-mail cím nem található.</string>
     <string name="message_compose_attachments_skipped_toast">Néhány mellékletet nem lehet továbbítani, mert nem lettek letöltve.</string>

@@ -113,6 +113,14 @@ public class MessageWebView extends TitleBarWebView {
         webSettings.setSupportZoom(true);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setUseWideViewPort(true);
+        if (K9.autofitWidth()) {
+            // 1% will be smaller than overview, so it effectively
+            // goes into overview mode.
+            // Tried the following, neither of which worked:
+            //     webSettings.setLoadWithOverviewMode(true);
+            //     setInitialScale(0);
+            setInitialScale(1);
+        }
 
         disableDisplayZoomControls();
 
@@ -173,7 +181,7 @@ public class MessageWebView extends TitleBarWebView {
         String content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
         if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
             content += "<style type=\"text/css\">" +
-                   "* { background: black ! important; color: white !important }" +
+                   "* { background: black ! important; color: #F3F3F3 !important }" +
                    ":link, :link * { color: #CCFF33 !important }" +
                    ":visited, :visited * { color: #551A8B !important }</style> ";
         }

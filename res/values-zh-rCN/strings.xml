@@ -228,7 +228,7 @@
     <string name="message_compose_quote_header_from">发件人：</string>
     <string name="message_compose_quote_header_to">收件人：</string>
     <string name="message_compose_quote_header_cc">抄送：</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>写到：\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>写到：\n</string>
     <string name="message_compose_error_no_recipients">您必须添加至少一个收件人。</string>
     <string name="error_contact_address_not_found">没有找到收件地址。</string>
     <string name="message_compose_attachments_skipped_toast">由于一些附件还没有被下载，因此无法转发这些附件。</string>

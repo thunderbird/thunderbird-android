@@ -768,7 +768,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     private void removeDialog(int dialogId) {
         FragmentManager fm = getFragmentManager();
 
-        if (isRemoving() || isDetached()) {
+        if (fm == null || isRemoving() || isDetached()) {
             return;
         }
 

@@ -68,7 +68,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.ActivityListener;
@@ -314,6 +313,25 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
     }
 
+    public static class SenderComparator implements Comparator<Cursor> {
+
+        @Override
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            String sender1 = getSenderAddressFromCursor(cursor1);
+            String sender2 = getSenderAddressFromCursor(cursor2);
+
+            if (sender1 == null && sender2 == null) {
+                return 0;
+            } else if (sender1 == null) {
+                return 1;
+            } else if (sender2 == null) {
+                return -1;
+            } else {
+                return sender1.compareToIgnoreCase(sender2);
+            }
+        }
+    }
+
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
@@ -342,6 +360,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         map.put(SortType.SORT_ARRIVAL, new ArrivalComparator());
         map.put(SortType.SORT_FLAGGED, new FlaggedComparator());
         map.put(SortType.SORT_SUBJECT, new SubjectComparator());
+        map.put(SortType.SORT_SENDER, new SenderComparator());
         map.put(SortType.SORT_UNREAD, new UnreadComparator());
 
         // make it immutable to prevent accidental alteration (content is immutable already)
@@ -708,6 +727,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+        if (cursor == null) {
+            return;
+        }
+
         if (mSelectedCount > 0) {
             toggleMessageSelect(position);
         } else {
@@ -917,6 +940,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 for (int i = 0, len = accounts.length; i < len; i++) {
                     mAccountUuids[i] = accounts[i].getUuid();
                 }
+
+                if (mAccountUuids.length == 1) {
+                    mSingleAccountMode = true;
+                    mAccount = accounts[0];
+                }
             } else {
                 mAccountUuids = accountUuids;
             }
@@ -1070,8 +1098,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         View loadingView = inflater.inflate(R.layout.message_list_loading, null);
         mPullToRefreshView.setEmptyView(loadingView);
 
-        if (isPullToRefreshAllowed()) {
-            if (mSearch.isManualSearch() && mAccount.allowRemoteSearch()) {
+        if (isCheckMailSupported()) {
+            if (mSearch.isManualSearch() && mSingleAccountMode && mAccount.allowRemoteSearch()) {
                 // "Pull to search server"
                 mPullToRefreshView.setOnRefreshListener(
                         new PullToRefreshBase.OnRefreshListener<ListView>() {
@@ -1100,13 +1128,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         // Disable pull-to-refresh until the message list has been loaded
         setPullToRefreshEnabled(false);
-    }
-
-    /**
-     * Returns whether or not pull-to-refresh is allowed in this message list.
-     */
-    private boolean isPullToRefreshAllowed() {
-        return mSingleFolderMode;
     }
 
     /**
@@ -1370,10 +1391,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             changeSort(SortType.SORT_SUBJECT);
             return true;
         }
-//        case R.id.set_sort_sender: {
-//            changeSort(SortType.SORT_SENDER);
-//            return true;
-//        }
+        case R.id.set_sort_sender: {
+            changeSort(SortType.SORT_SENDER);
+            return true;
+        }
         case R.id.set_sort_flag: {
             changeSort(SortType.SORT_FLAGGED);
             return true;
@@ -1503,7 +1524,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
 
-    private String getSenderAddressFromCursor(Cursor cursor) {
+    private static String getSenderAddressFromCursor(Cursor cursor) {
         String fromList = cursor.getString(SENDER_LIST_COLUMN);
         Address[] fromAddrs = Address.unpack(fromList);
         return (fromAddrs.length > 0) ? fromAddrs[0].getAddress() : null;
@@ -2526,18 +2547,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param messages
      *         The list of messages to copy or move. Never {@code null}.
      * @param destination
-     *         The name of the destination folder. Never {@code null}.
+     *         The name of the destination folder. Never {@code null} or {@link K9#FOLDER_NONE}.
      * @param operation
      *         Specifies what operation to perform. Never {@code null}.
      */
     private void copyOrMove(List<Message> messages, final String destination,
             final FolderOperation operation) {
 
-        if (K9.FOLDER_NONE.equalsIgnoreCase(destination) || !mSingleAccountMode) {
-            return;
-        }
-
-        Account account = mAccount;
         Map<String, List<Message>> folderMap = new HashMap<String, List<Message>>();
 
         for (Message message : messages) {
@@ -2570,6 +2586,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         for (String folderName : folderMap.keySet()) {
             List<Message> outMessages = folderMap.get(folderName);
+            Account account = outMessages.get(0).getFolder().getAccount();
 
             if (operation == FolderOperation.MOVE) {
                 if (mThreadedList) {
@@ -3244,11 +3261,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 sortColumn = "(" + MessageColumns.FLAGGED + " != 1)";
                 break;
             }
-//            case SORT_SENDER: {
-//                //FIXME
-//                sortColumn = MessageColumns.SENDER_LIST;
-//                break;
-//            }
+            case SORT_SENDER: {
+                //FIXME
+                sortColumn = MessageColumns.SENDER_LIST;
+                break;
+            }
             case SORT_SUBJECT: {
                 sortColumn = MessageColumns.SUBJECT + " COLLATE NOCASE";
                 break;
@@ -3287,7 +3304,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mPullToRefreshView.setEmptyView(null);
 
         // Enable pull-to-refresh if allowed
-        if (isPullToRefreshAllowed()) {
+        if (isCheckMailSupported()) {
             setPullToRefreshEnabled(true);
         }
 

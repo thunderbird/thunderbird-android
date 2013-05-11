@@ -233,7 +233,7 @@
     <string name="message_compose_quote_header_from">보낸 사람:</string>
     <string name="message_compose_quote_header_to">받는 사람:</string>
     <string name="message_compose_quote_header_cc">참조:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>이 씀:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>이 씀:\n</string>
     <string name="message_compose_error_no_recipients">한 명 이상의 받는 사람을 입력하십시오.</string>
     <string name="error_contact_address_not_found">이메일 주소를 찾을 수 없습니다.</string>
     <string name="message_compose_attachments_skipped_toast">일부 첨부 파일이 다운로드되지 않아 전달될 수 없습니다.</string>

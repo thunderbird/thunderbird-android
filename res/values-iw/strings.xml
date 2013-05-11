@@ -235,7 +235,7 @@
     <string name="message_compose_quote_header_from">מ:</string>
     <string name="message_compose_quote_header_to">ל:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> כותב:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> כותב:\n</string>
     <string name="message_compose_error_no_recipients">עליך להוסיף לפחות נמען אחד.</string>
     <string name="error_contact_address_not_found">לא ניתן למצוא כתובת דוא\"ל.</string>
     <string name="message_compose_attachments_skipped_toast">קבצים מסוימים אינם ניתנים להעברה בגלל שהם לא הורדו.</string>

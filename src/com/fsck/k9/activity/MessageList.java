@@ -770,10 +770,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 mMessageListFragment.changeSort(SortType.SORT_SUBJECT);
                 return true;
             }
-//            case R.id.set_sort_sender: {
-//                mMessageListFragment.changeSort(SortType.SORT_SENDER);
-//                return true;
-//            }
+            case R.id.set_sort_sender: {
+                mMessageListFragment.changeSort(SortType.SORT_SENDER);
+                return true;
+            }
             case R.id.set_sort_flag: {
                 mMessageListFragment.changeSort(SortType.SORT_FLAGGED);
                 return true;
