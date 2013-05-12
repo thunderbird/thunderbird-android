@@ -126,7 +126,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="forward_action">Encaminhar</string>
     <string name="move_action">Mover</string>
     <string name="single_message_options_action">Opções de Mensagens</string>
-    <string name="refile_action">Rearquivar</string>-->
+    <string name="refile_action">Rearquivar</string>
     <string name="continue_action">Continuar</string>
     <string name="back_action">Voltar</string>
     <string name="done_action">Pronto</string> <!--  Used to complete a multi-step process -->
@@ -203,7 +203,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="notification_new_title">Novo e-mail</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string>279 Unread (someone@google.com)
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> mais em <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Responder</string>
