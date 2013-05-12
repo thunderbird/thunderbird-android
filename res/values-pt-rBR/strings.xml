@@ -77,8 +77,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revisões e informações: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <!-- NEW: <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>-->
-    <!-- NEW: <string name="app_emoji_icons">Emoticons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
+    <string name="app_libraries">Estamos usando as seguintes bibliotecas de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_emoji_icons">Emoticons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">Ler anexos do E-mail</string>
     <string name="read_attachment_desc">Permitir que o K-9 leia os anexos de seus e-mails.</string>
@@ -246,8 +246,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
 
     <string name="message_compose_to_hint">Para</string>
-    <string name="message_compose_cc_hint">Cc</string>
-    <string name="message_compose_bcc_hint">Bcc</string>
+    <string name="message_compose_cc_hint">CC</string>
+    <string name="message_compose_bcc_hint">CCO</string>
     <string name="message_compose_subject_hint">Assunto</string>
     <string name="message_compose_content_hint">Texto da mensagem</string>
     <string name="message_compose_signature_hint">Assinatura</string>
@@ -256,7 +256,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="message_compose_quote_header_send_date">Enviado:</string>
     <string name="message_compose_quote_header_from">De:</string>
     <string name="message_compose_quote_header_to">Para:</string>
-    <string name="message_compose_quote_header_cc">Cc:</string>
+    <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escreveu:\n</string>
     <string name="message_compose_error_no_recipients">Você deve incluir ao menos um destinatário.</string>
     <string name="error_contact_address_not_found">Não foi possível encontrar o endereço de e-mail.</string>
@@ -264,13 +264,13 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="message_compose_show_quoted_text_action">Mensagem citada</string>
     <string name="message_compose_description_add_to">Adicionar destinatário (Para)</string>
     <string name="message_compose_description_add_cc">Adicionar destinatário (CC)</string>
-    <string name="message_compose_description_add_bcc">Adicionar destinatário (BCC)</string>
+    <string name="message_compose_description_add_bcc">Adicionar destinatário (CCO)</string>
     <string name="message_compose_description_delete_quoted_text">Remover texto citado</string>
     <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
 
     <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Para:</string>
-    <string name="message_view_cc_label">Cc:</string>
+    <string name="message_view_cc_label">CC:</string>
     <string name="message_view_attachment_view_action">Abrir</string>
     <string name="message_view_attachment_download_action">Salvar</string>
     <string name="message_view_status_attachment_saved">Anexo salvo no cartão de memória como <xliff:g id="filename">%s</xliff:g>.</string>
@@ -394,7 +394,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_setup_incoming_delete_policy_delete_label">Excluí-la do servidor</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Marcá-la como lida no servidor</string>
 
-    <string name="account_setup_incoming_compression_label">Use compactação em redes:</string>
+    <string name="account_setup_incoming_compression_label">Usar compactação em redes:</string>
     <string name="account_setup_incoming_mobile_label">Móveis</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Outras</string>
@@ -535,7 +535,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_message_format_label">Formato da Mensagem</string>
     <string name="account_settings_message_format_text">Texto (imagens e formatação serão removidas)</string>
     <string name="account_settings_message_format_html">HTML (imagens e formatação serão preservadas)</string>
-    <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+    <string name="account_settings_message_format_auto">Automático (texto plano exceto ao responder uma mensagem em HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Sempre exibir CC/BCC</string>
     <string name="account_settings_always_show_cc_bcc_summary">Sempre exibir os campos CC/BCC</string>
@@ -678,7 +678,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="account_settings_composition_title">Opções para composição de uma mensagem</string>
     <string name="account_settings_composition_label">Composição padrão</string>
-    <string name="account_settings_composition_summary">Definir padrões para Remetente, Bcc e assinatura</string>
+    <string name="account_settings_composition_summary">Definir padrões para Remetente, CCO e assinatura</string>
 
     <string name="account_settings_identities_label">Gerenciar identidades</string>
     <string name="account_settings_identities_summary">Definir alternativas de endereços e assinaturas para \'Remetente\'</string>
@@ -690,7 +690,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="edit_identity_title">Edita identidade</string>
     <string name="new_identity_action">Nova identidade</string>
 
-    <string name="account_settings_always_bcc_label">Efetuar Bcc de todas as mensagens para</string>
+    <string name="account_settings_always_bcc_label">Criar CCO de todas as mensagens para</string>
 
     <string name="manage_identities_edit_action">Editar</string>
     <string name="manage_identities_move_up_action">Mover para</string>
@@ -703,7 +703,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="edit_identity_name_label">Seu nome</string>
     <string name="edit_identity_name_hint">(Opcional)</string>
     <string name="edit_identity_email_label">Endereço de e-mail</string>
-    <string name="edit_identity_email_hint">(Exigido)</string>
+    <string name="edit_identity_email_hint">(Obrigatório)</string>
     <string name="edit_identity_reply_to_label">Responder pra o endereço</string>
     <string name="edit_identity_reply_to_hint">(Opcional)</string>
     <string name="edit_identity_signature_label">Assinatura</string>
@@ -769,13 +769,13 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     M - Mover\n
     V - Archive\n
     Y - Copiar\n
-    Z - Mark (Un)read\n
+    Z - Marcar como não-lida\n
     G - Favoritar\n
     O - Tipo de ordenação\n
     I - Ordernar\n
     Q - Retornar à pastas\n
-    S - Selecionar/desselecionar\n
-    J, P - Anterior Mensagem\n
+    S - Selecionar/deselecionar\n
+    J, P - Mensagem anterior\n
     K, N - Próxima mensagem
     </string>
 
@@ -787,7 +787,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     Q - Retornar para contas\u000A
     S - Editar Configurações de Conta</string>
 
-    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
+    <string name="folder_list_filter_hint">o nome da pasta contém</string>
 
     <string name="folder_list_display_mode_label">Pastas</string>
     <string name="folder_list_display_mode_all">Mostar todas as pastas</string>
@@ -817,8 +817,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="settings_language_label">Idioma</string>
 
     <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>
-    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
+    <string name="settings_message_theme_selection_summary_off">Selecionar o tema de visualização ao visualizar a mensagem</string>
+    <string name="settings_message_theme_selection_summary_on">Usar um tema fixo para visualizar mensagens</string>
 
     <string name="settings_messageview_mobile_layout_label">Layout de coluna única</string>
     <string name="settings_messageview_mobile_layout_summary">Formatar o HTML de mensagens para telas pequenas</string>
@@ -828,13 +828,13 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="background_ops_label">Sincronização em segundo plano</string>
     <string name="background_ops_never">Nunca</string>
     <string name="background_ops_always">Sempre</string>
-    <string name="background_ops_enabled">Quando \'Dados de segundo plano\' estiver checado</string>
-    <string name="background_ops_auto_sync">Quando \'Dados de segundo plano\' e \'Auto-sinc\' estiverem checados</string>
-    <string name="background_ops_auto_sync_only">Quando a \'Auto-sinc\' estiver ligada</string>
+    <string name="background_ops_enabled">Quando \'Dados em segundo plano\' estiverem ativados</string>
+    <string name="background_ops_auto_sync">Quando \'Dados de segundo plano\' e \'Auto-sinc\' estiverem ativados</string>
+    <string name="background_ops_auto_sync_only">Quando \'Auto-sinc\' estiver ativada</string>
 
-    <string name="batch_select_all">Selecione todos</string>
+    <string name="batch_select_all">Selecionar todos</string>
 
-    <string name="account_setup_push_limit_label">Máximo de pastas para checar com push</string>
+    <string name="account_setup_push_limit_label">Máximo de pastas para verificar com push</string>
     <string name="account_setup_push_limit_10">10 pastas</string>
     <string name="account_setup_push_limit_25">25 pastas</string>
     <string name="account_setup_push_limit_50">50 pastas</string>
@@ -853,7 +853,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="volume_navigation_message">Visualizar mensagem</string>
     <string name="volume_navigation_list">Vários modos de exibição da lista</string>
 
-    <string name="start_integrated_inbox_title">Iniciar com Caixas de Entrada Unificadas</string>
+    <string name="start_integrated_inbox_title">Iniciar na Caixa de Entrada Unificada</string>
     <string name="start_integrated_inbox_summary">Mostra Caixas Unificadas ao abrir o K-9 Mail</string>
 
     <string name="measure_accounts_title">Mostrar tamanho da conta</string>
@@ -905,7 +905,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="font_size_message_view">Mensagens</string>
     <string name="font_size_message_view_sender">Remetente</string>
     <string name="font_size_message_view_to">Para</string>
-    <string name="font_size_message_view_cc">Cc</string>
+    <string name="font_size_message_view_cc">CC</string>
     <string name="font_size_message_view_additional_headers">Cabeçalho adicional</string>
     <string name="font_size_message_view_subject">Assunto</string>
     <string name="font_size_message_view_date">Data</string>
@@ -914,7 +914,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="font_size_message_compose">Composição de mensagem</string>
     <string name="font_size_message_compose_input">Campos de entrada de texto</string>
 
-    <!-- NEW: <string name="font_size_default">Default</string>-->
+    <string name="font_size_default">Padrão</string>
     <string name="font_size_tiniest">Minúsculo</string>
     <string name="font_size_tiny">Pequenino</string>
     <string name="font_size_smaller">Pequeno</string>
@@ -930,7 +930,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="font_size_webview_larger">Grande</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
-    <string name="message_compose_buggy_gallery">Checar \"Configurações\" -&gt; \"Utilize o Gallery bug \" para poder anexar imagens ou vídeos utilizando a Galeria 3D.</string>
+    <string name="message_compose_buggy_gallery">Ativar em \"Configurações\" a opção \"Solução do bug da Galeria\" para poder anexar imagens ou vídeos utilizando a Galeria 3D.</string>
 
     <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
     <string name="message_compose_use_workaround">Usar \"Incluir anexo (Imagem)\" ou \"Incluir anexo (Video)\" para anexar imagens ou videos da Galeria 3D.</string>
@@ -949,7 +949,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="unknown_crypto_signature_user_id">&lt;desconhecido&gt;</string>
     <string name="key_id">id: %s</string>
     <string name="pgp_mime_unsupported">mensagns PGP/MIME não são suportadas ainda.</string>
-    <string name="attachment_encryption_unsupported">Aviso: os anexos não são assinados ou encriptados ainda.</string>
+    <string name="attachment_encryption_unsupported">Aviso: os anexos não estão assinados ou encriptados ainda.</string>
     <string name="send_aborted">Envio abortado.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Salvar mensagem de rascunho?</string>
@@ -968,14 +968,14 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="dialog_confirm_delete_title">Confirmar exclusão</string>
     <string name="dialog_confirm_delete_message">Deseja mesmo excluir esta mensagem?</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
-        <item quantity="one">Do you really want to delete this message?</item>
-        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-    </plurals>-->
+    <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Deseja mesmo excluir esta mensagem?</item>
+        <item quantity="other">Deseja mesmo excluir estas <xliff:g id="message_count">%1$d</xliff:g> mensagens?</item>
+    </plurals>
     <string name="dialog_confirm_delete_confirm_button">Excluir</string>
     <string name="dialog_confirm_delete_cancel_button">Não excluir</string>
 
-    <string name="dialog_confirm_spam_title">Confirma mover para a pasta de spam</string>
+    <string name="dialog_confirm_spam_title">Mover para a pasta de spam</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Deseja mesmo mover esta mensagem para a pasta de spam?</item>
         <item quantity="other">Deseja mesmo mover <xliff:g id="message_count">%1$d</xliff:g> mensagens para a pasta de spam?</item>
@@ -1014,7 +1014,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="settings_import_scanning_file">Buscando arquivo…</string>
     <string name="settings_export_success">Configurações salvas para <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Configurações importadas de <xliff:g id="filename">%s</xliff:g></string>
-    <string name="settings_import_success">Importada <xliff:g id="accounts">%s</xliff:g> de <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Importação concluída para <xliff:g id="accounts">%s</xliff:g> de <xliff:g id="filename">%s</xliff:g></string>
     <plurals name="settings_import_success">
         <item quantity="one">1 conta</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> contas</item>
@@ -1107,29 +1107,29 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
     <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <string name="global_settings_background_as_unread_indicator_label">Usar fundo como indicador de não-lidas</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Exibir mensagens lidas e não-lidas com cores de fundo diferentes</string>
 
-    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <string name="global_settings_threaded_view_label">Vista de conversação</string>
+    <string name="global_settings_threaded_view_summary">Recolher mensagens pertencentes à uma mesma conversa</string>
 
-    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
-    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
-    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+    <string name="upgrade_databases_title">Atualizando banco de dados</string>
+    <string name="upgrade_databases_unspecified">Atualizando base de dados…</string>
+    <string name="upgrade_database_format">Atualizando base de dados da conta \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+    <string name="message_list_loading">Carregando…</string>
 
-    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
-    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+    <string name="global_settings_splitview_mode_label">Exibir tela de entrada</string>
+    <string name="global_settings_splitview_always">Sempre</string>
+    <string name="global_settings_splitview_never">Nunca</string>
+    <string name="global_settings_splitview_when_in_landscape">Quando em modo paisagem</string>
 
-    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+    <string name="message_view_empty">Por favor selecione uma mensagem à esquerda</string>
 
-    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+    <string name="global_settings_show_contact_picture_label">Exibir fotos dos contatos</string>
+    <string name="global_settings_show_contact_picture_summary">Exibir fotos dos contatos na lista de mensagens</string>
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
-    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+    <string name="last_refresh_time_format">Última atualização <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Última atualização <xliff:g id="time_with_preposition">%s</xliff:g> (Push ativado)</string>
+    <string name="preposition_for_date">em <xliff:g id="date">%s</xliff:g></string>
 </resources>
