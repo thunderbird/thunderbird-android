@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+
+    <release version="4.331" versioncode="17032" >
+        <change>統合フォルダからのメール受信に対応しました</change>
+        <change>メッセージ一覧のメニューに"すべて既読にする"を追加しました</change>
+        <change>送信者順の並び替えを追加しました</change>
+        <change>メッセージ一覧のステータスアイコンをシンプルにしました</change>
+        <change>無効になっていたズームアウトを修正しました</change>
+        <change>右から左に読む言語でもメッセージ作成がより正しく動作するようにしました</change>
+        <change>"すべてのメッセージ"フォルダからゴミ箱,迷惑メール,送信フォルダのメッセージを除外しました</change>
+        <change>ダークテーマ利用時の白いちらつきを修正しました</change>
+        <change>ドイツ語の翻訳を更新しました</change>
+        <change>その他多くのバグを修正しました</change>
+    </release>
+
+    <release version="4.330" versioncode="17031" >
+        <change>未読ウィジェットの外観を変更しました</change>
+        <change>通知領域からのアプリ起動時にクラッシュする事象を修正しました</change>
+        <change>フィンランド語、カタロニア語の翻訳を更新しました</change>
+        <change>その他多くのバグを修正しました</change>
+    </release>
+
+    <release version="4.329" versioncode="17030" >
+        <change>通知アイコンを変更しました(Android 2.3以降のみ)</change>
+        <change>通知アイコンの未読カウンタの表示を復活させました(Android 2.xのみ)</change>
+        <change>スレッドの中で最新のメッセージのテキストをメッセージ一覧のプレビューに表示するようにしました</change>
+        <change>POP3での'ゴミ箱を空にする'機能を修正しました</change>
+        <change>Jelly Beanでのメッセージ表示の自動スクロールの問題に応急対応しました</change>
+        <change>通知領域からの案内を変更しました</change>
+        <change>メッセージを転送/返信した後にホーム画面に戻らないようにしました</change>
+        <change>アカウントセットアップ画面でのボタンバースタイルを変更しました(Android 3+)</change>
+        <change>メッセージ一覧で選択したメッセージをハイライトするようにしました</change>
+        <change>ランダムな色だけでなく事前定義したアカウントカラーを追加しました</change>
+        <change>POP3アカウントに適用できない削除関連のオプションを隠すようにしました</change>
+        <change>ISO-2022-JP-2が利用できないときにISO-2022-JPを使うようにしました</change>
+        <change>韓国語,デンマーク語,フィンランド語の翻訳を更新しました</change>
+        <change>その他多くのバグを修正しました</change>
+    </release>
+
+    <release version="4.328" versioncode="17029" >
+        <change>この更新履歴を修正しました(^^;</change>
+    </release>
+
+    <release version="4.327" versioncode="17028" >
+        <change>通知領域から複数のメッセージを削除したときのダイアログメッセージを修正しました</change>
+        <change>一覧が空のときのNPEを修正しました</change>
+        <change>メッセージを削除した時などで次のメッセージが存在しないときにメッセージ一覧に戻るようにしました</change>
+        <change>EmailProviderのキャッシュレイヤを追加しました。データベース更新がとんでもなく遅くなることがありました。次々にユーザインタフェースの更新を遅くするこの鉛が、K-9 Mailでの作業を楽しくしませんでした。この修正がそれを変えることを期待します。</change> <!-- FIXME -->
+        <change>日本語の翻訳を更新しました</change>
+        <change>フランス語の翻訳を更新しました</change>
+        <change>チェコ語の翻訳を更新しました</change>
+    </release>
+    <release version="4.326" versioncode="17027" >
+        <change>韓国語の翻訳を更新しました</change>
+        <change>メッセージヘッダ領域を見直しました</change>
+        <change>Holo themeを改善しました</change>
+        <change>いくつかのNPEを修正しました</change>
+        <change>フィンランド語の翻訳を更新しました</change>
+        <change>フォルダ最終更新時刻のフォーマットを改善しました</change>
+        <change>ほとんどのメッセージ整理ボタンを一つの整理用のサブメニューに移す変更を実験的に行いました。特に意見を引き出すためです。この変更が今の状態のまま待つつもりではありません。しかし、これがみなさんを幸せにするかあるいは怒らせるかの感触がほしい</change> <!-- FIXME -->
+        <change>日付操作をきれいにしました</change>
+        <change>ドイツ語の翻訳を更新しました</change>
+        <change>"メール受信"のためのアニメーション通知アイコンを追加しました</change>
+        <change>"フルヘッダ"表示からSubjectを除く良い理由はありません。特に、ときにはヘッダで、ときにはタイトルバーでそれを目立たせるゲームを今プレイしているので</change> <!-- FIXME -->
+        <change>フォントサイズに"デフォルト"を追加しました。デフォルトのサイズはXMLで指定します</change>
+        <change>メッセージ一覧に連絡先の写真を追加しました</change>
+        <change>Jelly Bean 以降のためにテキスト選択メニューを削除しました。これらのバージョンは(WebViewでロングタップすることで)内蔵のテキスト選択をサポートします</change>
+        <change>メッセージ表示のテーマをメッセージ表示メニューからグローバル設定に移しました</change>
+        <change>"すべてのヘッダを表示"をメニューに移しました(そして、UIから外しました)</change>
+    </release>
+    <release version="4.325" versioncode="17026" >
+        <change>バグ修正(スレッド,チェックボックス)</change>
+        <change>ドイツ語の翻訳を更新しました</change>
+
+    </release>
+    <release version="4.324" versioncode="17025" >
+        <change>バグ修正</change>
+        <change>メッセージ一覧を表示するときのアニメーションを改善しました</change>
+
+    </release>
+    <release version="4.323" versioncode="17024" >
+        <change>バグ修正</change>
+        <change>フィンランド語とフランス語の翻訳を更新しました</change>
+        <change>分割なしのメッセージ表示画面での次/前ボタンを復活させました</change>
+    </release>
+
+    <release version="4.322" versioncode="17023" >
+        <change>画面分割モードを有効にする設定を追加しました(メッセージ一覧とメッセージ内容を表示します)</change>
+        <change>少なくともひとつのメッセージが未読/スター付きであれば、そのスレッドを未読/スター付きとして見せるようにしました</change>
+        <change>メッセージ一覧でメッセージプレビューを無効にすることを許可するためにプレビュー行数の設定を変更しました</change>
+        <change>メッセージ一覧のスクロール位置を覚えるようにしました</change>
+        <change>色選択画面を変更しました</change>
+        <change>証明書失効通知を改善しました</change>
+        <change>未読メッセージの数を読むサードパーティ製のアプリを妨げるバグを修正しました</change>
+        <change>"??件 読込"をクリックしたときに多くのメッセージを読み込み過ぎるバグを修正しました</change>
+        <change>フィンランド語,ドイツ語,オランダ語の翻訳を更新しました</change>
+    </release>
+
+    <release version="4.321" versioncode="17022" >
+        <change>メッセージスレッドに関連するいくつかのバグを修正しました</change>
+        <change>フォルダ一覧でのフォルダ検索を改善しました</change>
+        <change>フォルダ一覧での長いフォルダ名の折り返し対応を追加しました</change>
+        <change>リモート検索の進捗表示を追加しました</change>
+        <change>メッセージ一覧の進捗表示を再度動くようにしました</change> <!-- FIXME -->
+        <change>SSL証明書確認失敗時の通知を改善しました</change>
+        <change>フィンランド語の,フランス語,スペイン語の翻訳を更新しました</change>
+        <change>新しい通知のための修正を行いました</change>
+        <change>データベースを更新するための機構を改善しました</change>
+        <change>フォルダ一覧からローカルメッセージをすべて検索可能にしました</change>
+        <change>このAbout画面(更新履歴)を表示するボタンを追加しました</change>
+        <change>最後のメッセージが移動/削除されたときにスレッドビューをクローズするようにしました</change>
+        <change>性能向上しました</change>
+    </release>
+
+    <release version="4.320" versioncode="17021" >
+        <change>'アカウント設定'をアカウント一覧のコンテキストメニューに戻しました</change> <!-- FIXME -->
+        <change>'フォルダ一覧を再読込'と'設定'フォルダ一覧のメニューに戻しました</change> <!-- FIXME -->
+        <change>マイナーバグを修正しました</change>
+    </release>
+
+    <release version="4.319" versioncode="17020" >
+        <change>Jelly Beanスタイルの通知を追加しました</change>
+    </release>
+
+</changelog>
