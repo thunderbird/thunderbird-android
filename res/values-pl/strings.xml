@@ -19,14 +19,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">Konta K-9</string>
-    <string name="unread_widget_label">K-9 Mail nieprzeczytane</string>
+    <string name="shortcuts_title">Konta Squeaky Mail</string>
+    <string name="unread_widget_label">Squeaky Mail nieprzeczytane</string>
 
-    <string name="remote_control_label">K-9 Mail zdalne sterowanie</string>
-    <string name="remote_control_desc">Zezwalaj tej aplikacji na sterowanie K-9 i jego ustawieniami.</string>
+    <string name="remote_control_label">Squeaky Mail zdalne sterowanie</string>
+    <string name="remote_control_desc">Zezwalaj tej aplikacji na sterowanie Squeaky Mail i jego ustawieniami.</string>
 
 
     <!-- Used in the about dialog -->
@@ -38,45 +38,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android.
-</p><p>
-Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
-</p>
-<ul>
-  <li>Obsługa Push Mail z użyciem IMAP IDLE</li>
-  <li>Lepsza wydajność</li>
-  <li>Message refiling</li>
-  <li>Obsługa sygnaturek</li>
-  <li>Kopia UDW-do-siebie</li>
-  <li>Subscrypcja wybranych folderów</li>
-  <li>Synchronizacja wszystkich folderów</li>
-  <li>Konfiguracja adresu zwrotnego</li>
-  <li>Skróty klawiszowe</li>
-  <li>Lepsza obsługa protokołu IMAP</li>
-  <li>Zapisywanie załączników na kartę SD</li>
-  <li>Opróźnianie folderu \"Trash\"</li>
-  <li>Sortowanie wiadomości</li>
-  <li>… i wiele innych</li>
-</ul>
-<p>
-K-9 nie obsługuje darmowych kont Hotmail oraz, jak wiele innych programów pocztowych może być kapryśny przy połączeniach z serwerem Microsoft Exchange.
-</p><p>
-Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać za pośrednictwem strony projektu:
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nWysłane za pomocą K-9 Mail.</string>
+    <string name="default_signature">-- \nWysłane za pomocą Squeaky Mail.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9.</string>
+    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z Squeaky Mail.</string>
     <string name="account_recreate_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie dane zostaną usunięte z bazy programu.</string>
     <string name="account_clear_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie wiadomości zostaną usunięte z bazy programu.</string>
-    <string name="insufficient_apg_permissions">K-9 nie ma pełnego dostępu do APG, aby naprawić przeinstaluj K-9.</string>
+    <string name="insufficient_apg_permissions">Squeaky Mail nie ma pełnego dostępu do APG, aby naprawić przeinstaluj Squeaky Mail.</string>
 
 
 
@@ -91,7 +64,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="app_authors_fmt">Autorzy: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Historia zmian: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_libraries">K-9 mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_libraries">Squeaky mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Ikony Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">Odczyt załączników</string>
@@ -757,7 +730,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_clear_dlg_title">Wyczyść konto</string>
 
     <string name="provider_note_live">Tylko niektóre konta Yahoo! \"Plus\" obsługują protokół POP3,
-        umożliwiający K-9 odbiór poczty. Jeśli nie możesz zalogować się
+        umożliwiający Squeaky Mail odbiór poczty. Jeśli nie możesz zalogować się
         do swojego konta z użyciem poprawnego hasła i adresu email, najprawdopodobniej
         nie masz płatnego konta typu \"Plus\". W takim przypadku musisz z poczty
         korzystać w dotychczasowy sposób, za pośrednictwem przeglądarki.</string>

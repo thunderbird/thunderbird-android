@@ -4,12 +4,12 @@ package com.fsck.k9.mail.transport;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.WebDavStore;
+import com.imaeses.squeaky.K9;
 
 public class WebDavTransport extends Transport {
     public static final String TRANSPORT_TYPE = WebDavStore.STORE_TYPE;

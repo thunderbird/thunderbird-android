@@ -1,6 +1,6 @@
 package com.fsck.k9.view;
 
-import com.fsck.k9.K9;
+import com.imaeses.squeaky.K9;
 
 import android.content.Context;
 import android.util.AttributeSet;

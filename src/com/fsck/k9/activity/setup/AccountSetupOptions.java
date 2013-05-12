@@ -14,6 +14,9 @@ import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.mail.Store;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+
 public class AccountSetupOptions extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
 

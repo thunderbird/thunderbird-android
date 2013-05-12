@@ -1,7 +1,7 @@
 package com.fsck.k9.activity;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.fsck.k9.K9;
+import com.imaeses.squeaky.K9;
 
 import android.os.Build;
 import android.os.Bundle;

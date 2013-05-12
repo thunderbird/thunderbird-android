@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">Contas K-9</string>
-    <string name="unread_widget_label">K-9 Não lidos</string>
+    <string name="shortcuts_title">Contas Squeaky Mail</string>
+    <string name="unread_widget_label">Squeaky Mail Não lidos</string>
 
-    <string name="remote_control_label">Controle remoto para K-9 Mail</string>
-    <string name="remote_control_desc">Permitir esta aplicação controlar atividades e configurações do K-9 Mail.</string>
+    <string name="remote_control_label">Controle remoto para Squeaky Mail</string>
+    <string name="remote_control_desc">Permitir esta aplicação controlar atividades e configurações do Squeaky Mail.</string>
 
 
     <!-- Used in the about dialog -->
@@ -24,45 +24,18 @@
     <!-- Welcome message -->
     <string name="welcome_message_title">Bem-vindo ao K-9 Mail</string>
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail é um cliente de e-mail com código aberto para Android e é originalmente baseado no cliente de e-mail padrão do Android.
-</p><p>
-K-9\'s recursos aprimorados incluídos:
-</p>
-<ul>
-  <li>Puxar e-mail usando IMAP IDLE</li>
-  <li>Melhor performance</li>
-  <li>Reclassificação de mensagens</li>
-  <li>E-mails com assinaturas</li>
-  <li>Cópia oculta pra você mesmo</li>
-  <li>Subscrição de pastas</li>
-  <li>Sincronização de todas as pastas</li>
-  <li>Configuração de um endereço de retorno</li>
-  <li>Atalhos de teclado</li>
-  <li>Melhor suporte para IMAP</li>
-  <li>Salvar anexos no cartão de memória</li>
-  <li>Esvaziar Lixeira</li>
-  <li>Ordenação de mensagens</li>
-  <li>…e mais</li>
-</ul>
-<p>
-Por favor, note que K-9 não suporta mais contas grátis do hotmail e, como muitos clientes de e-mail, tem algumas peculiaridades para utilizar Microsoft Exchange.
-</p><p>
-Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça suas perguntas na página
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nE-mail enviado do meu celular Android usando K-9 Mail. Por favor, desculpe minha brevidade.</string>
+    <string name="default_signature">-- \nE-mail enviado do meu celular Android usando Squeaky Mail. Por favor, desculpe minha brevidade.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do K-9 Mail.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Todos os dados relativos à \"<xliff:g id="account">%s</xliff:g>\" serão removidos do K-9 Mail, mas as configurações da conta serão mantidas.</string>
-    <string name="account_clear_dlg_instructions_fmt">Todas as mensagens de \"<xliff:g id="account">%s</xliff:g>\" serão removidas do K-9 Mail, mas as configurações da conta serão mantidas.</string>
-    <string name="insufficient_apg_permissions">K-9 não tem permissão total de acesso ao APG , favor reinstalar o K-9 para resolver.</string>
+    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do Squeaky Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Todos os dados relativos à \"<xliff:g id="account">%s</xliff:g>\" serão removidos do Squeaky Mail, mas as configurações da conta serão mantidas.</string>
+    <string name="account_clear_dlg_instructions_fmt">Todas as mensagens de \"<xliff:g id="account">%s</xliff:g>\" serão removidas do Squeaky Mail, mas as configurações da conta serão mantidas.</string>
+    <string name="insufficient_apg_permissions">Squeaky Mail não tem permissão total de acesso ao APG , favor reinstalar o Squeaky Mail para resolver.</string>
 
 
 
@@ -81,11 +54,11 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <!-- NEW: <string name="app_emoji_icons">Emoticons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>-->
 
     <string name="read_attachment_label">Ler anexos do E-mail</string>
-    <string name="read_attachment_desc">Permitir que o K-9 leia os anexos de seus e-mails.</string>
+    <string name="read_attachment_desc">Permitir que o Squeaky leia os anexos de seus e-mails.</string>
     <string name="read_messages_label">ler e-mails</string>
-    <string name="read_messages_desc">Permitir que o K-9 leia seus e-mails.</string>
+    <string name="read_messages_desc">Permitir que o Squeaky leia seus e-mails.</string>
     <string name="delete_messages_label">Excluir e-mails</string>
-    <string name="delete_messages_desc">Permitir que o K-9 exclua seus e-mails.</string>
+    <string name="delete_messages_desc">Permitir que o Squeaky exclua seus e-mails.</string>
 
     <string name="about_title_fmt">Sobre<xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Contas</string>
@@ -854,7 +827,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="volume_navigation_list">Vários modos de exibição da lista</string>
 
     <string name="start_integrated_inbox_title">Iniciar com Caixas de Entrada Unificadas</string>
-    <string name="start_integrated_inbox_summary">Mostra Caixas Unificadas ao abrir o K-9 Mail</string>
+    <string name="start_integrated_inbox_summary">Mostra Caixas Unificadas ao abrir o Squeaky Mail</string>
 
     <string name="measure_accounts_title">Mostrar tamanho da conta</string>
     <string name="measure_accounts_summary">Desligar visualização rápida</string>

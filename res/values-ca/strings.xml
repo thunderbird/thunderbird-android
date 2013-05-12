@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">Comptes K-9</string>
-    <string name="unread_widget_label">K-9 no llegits</string>
+    <string name="shortcuts_title">Comptes Squeaky Mail</string>
+    <string name="unread_widget_label">Squeaky Mail no llegits</string>
 
-    <string name="remote_control_label">Control remot del Correu K-9 Mail</string>
-    <string name="remote_control_desc">Permet a aquesta aplicació controlar les activitats i la configuració de K-9 Mail.</string>
+    <string name="remote_control_label">Control remot del Correu Squeaky Mail</string>
+    <string name="remote_control_desc">Permet a aquesta aplicació controlar les activitats i la configuració de Squeaky Mail.</string>
 
 
     <!-- Used in the about dialog -->
@@ -21,49 +21,21 @@
     <string name="app_license">Llicenciat sota Llicència Apache, Versió 2.0.</string>
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Us donem la benvinguda a K-9 Mail</string>
+    <string name="welcome_message_title">Us donem la benvinguda a Squeaky Mail</string>
     <string name="accounts_welcome"><![CDATA[
-<p>
-El K-9 és un client de codi obert per Android, originalment basat en l\'estàndard de client de Correu d\'Android.
-</p><p>
-El K-9 inclou les característiques millorades de:
-</p>
-<ul>
-  <li>Push mail utilitzant IMAP IDLE</li>
-  <li>Millor rendiment</li>
-  <li>Reclassificació de missatges</li>
-  <li>Signatura de correu</li>
-  <li>C/o a un mateix</li>
-  <li>Subscripció a carpetes</li>
-  <li>Sincronització a totes les carpetes</li>
-  <li>Configuració de l\'adreça de retorn</li>
-  <li>Dreceres de teclat</li>
-  <li>Millor suport IMAP</li>
-  <li>Desat dels adjunts a la SD</li>
-  <li>Buidat de la paperera</li>
-  <li>Ordenació de missatges</li>
-  <li>…i més</li>
-</ul>
-<p>
-Si us plau, tingueu en compte que el K-9 no funciona amb la majoria de comptes Hotmail gratuïts i, com molts clients de correu, fa coses estranyes quan es comunica amb Microsoft Exchange.
-</p><p>
-Si us plau, envia\'ns els errors, contribueix a millorar-lo a
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nS\'ha enviat des del meu telèfon Android amb K-9 Mail. Si us plau, excusa la meva brevetat.</string>
+    <string name="default_signature">-- \nS\'ha enviat des del meu telèfon Android amb Squeaky Mail. Si us plau, excusa la meva brevetat.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" serà esborrat de K-9 Mail.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Totes les dades de \"<xliff:g id="account">%s</xliff:g>\" seran esborrades de K-9 Mail, però la configuració del compte romandrà.</string>
-    <string name="account_clear_dlg_instructions_fmt">Tots els missatges a \"<xliff:g id="account">%s</xliff:g>\" seran esborrats de K-9 Mail, però la configuració del compte romandrà.</string>
-    <string name="insufficient_apg_permissions">K-9 no té permís per accedir plenament a l\'APG, si us plau, reinstal la el K-9 per esmenar-ho.</string>
-
-
+    <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" serà esborrat de Squeaky Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Totes les dades de \"<xliff:g id="account">%s</xliff:g>\" seran esborrades de Squeaky Mail, però la configuració del compte romandrà.</string>
+    <string name="account_clear_dlg_instructions_fmt">Tots els missatges a \"<xliff:g id="account">%s</xliff:g>\" seran esborrats de Squeaky Mail, però la configuració del compte romandrà.</string>
+    <string name="insufficient_apg_permissions">Squeaky no té permís per accedir plenament a l\'APG, si us plau, reinstal la el Squeaky per esmenar-ho.</string>
+	
 
     <!-- === App Store-specific strings ======================================================= -->
 

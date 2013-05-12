@@ -1,12 +1,9 @@
 package com.fsck.k9.service;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.K9.BACKGROUND_OPS;
 
 import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 
@@ -16,6 +13,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+import com.imaeses.squeaky.K9.BACKGROUND_OPS;
 
 public class RemoteControlService extends CoreService {
     private final static String RESCHEDULE_ACTION = "com.fsck.k9.service.RemoteControlService.RESCHEDULE_ACTION";

@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.store.StorageManager;
+import com.imaeses.squeaky.K9;
 
 /**
  * That BroadcastReceiver is only interested in MOUNT events.

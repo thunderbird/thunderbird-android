@@ -22,12 +22,7 @@ import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.controller.MessagingController;
@@ -39,6 +34,11 @@ import com.fsck.k9.preferences.TimePickerPreference;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.view.MessageWebView;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+import com.imaeses.squeaky.K9.NotificationHideSubject;
+import com.imaeses.squeaky.K9.NotificationQuickDelete;
+import com.imaeses.squeaky.K9.SplitViewMode;
 
 public class Prefs extends K9PreferenceActivity {
 

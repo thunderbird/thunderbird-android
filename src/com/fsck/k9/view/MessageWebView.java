@@ -9,12 +9,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.widget.Toast;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 
 import java.lang.reflect.Method;
 import com.nobu_games.android.view.web.TitleBarWebView;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class MessageWebView extends TitleBarWebView {
 

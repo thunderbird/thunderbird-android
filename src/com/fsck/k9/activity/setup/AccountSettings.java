@@ -1,4 +1,3 @@
-
 package com.fsck.k9.activity.setup;
 
 import android.app.Dialog;
@@ -26,23 +25,27 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.Apg;
+import com.fsck.k9.crypto.PGPKeyRing;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.service.MailService;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
+/**
+ * Modified by Adam Wasserman to include PGPKeyRing crypto provider. (9 May 2013)
+ */
 public class AccountSettings extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
@@ -688,7 +691,7 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        mHasCrypto = new Apg().isAvailable(this);
+        mHasCrypto = new Apg().isAvailable(this) || new PGPKeyRing().isAvailable(this);
         if (mHasCrypto) {
             mCryptoApp = (ListPreference) findPreference(PREFERENCE_CRYPTO_APP);
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
@@ -702,6 +705,8 @@ public class AccountSettings extends K9PreferenceActivity {
                     handleCryptoAppDependencies();
                     if (Apg.NAME.equals(value)) {
                         Apg.createInstance(null).test(AccountSettings.this);
+                    } else if(PGPKeyRing.NAME.equals(value)) {
+                        PGPKeyRing.createInstance(null).test(AccountSettings.this);
                     }
                     return false;
                 }
@@ -717,7 +722,7 @@ public class AccountSettings extends K9PreferenceActivity {
         } else {
             final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
             mCryptoMenu.setEnabled(false);
-            mCryptoMenu.setSummary(R.string.account_settings_crypto_apg_not_installed);
+            mCryptoMenu.setSummary(R.string.account_settings_crypto_not_installed);
         }
     }
 

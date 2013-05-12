@@ -7,9 +7,9 @@ import android.widget.ListView;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockListActivity;
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
+import com.imaeses.squeaky.K9;
 
 
 public class K9ListActivity extends SherlockListActivity implements K9ActivityMagic {

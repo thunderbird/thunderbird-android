@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">Λογαριασμοί K-9</string>
-    <string name="unread_widget_label">Μη αναγνωσμένα K-9</string>
+    <string name="shortcuts_title">Λογαριασμοί Squeaky Mail</string>
+    <string name="unread_widget_label">Μη αναγνωσμένα Squeaky Mail</string>
 
-    <string name="remote_control_label">Τηλεχειριστήριο K-9 Mail</string>
-    <string name="remote_control_desc">Επιτρέπει σε αυτή την εφαρμογή να ελέγχει τη δραστηριότητα και τις ρυθμίσεις του K-9 Mail.</string>
+    <string name="remote_control_label">Τηλεχειριστήριο Squeaky Mail</string>
+    <string name="remote_control_desc">Επιτρέπει σε αυτή την εφαρμογή να ελέγχει τη δραστηριότητα και τις ρυθμίσεις του Squeaky Mail.</string>
 
 
     <!-- Used in the about dialog -->
@@ -22,47 +22,20 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Καλώς ήλθατε στο K-9 Mail</string>
+    <string name="welcome_message_title">Καλώς ήλθατε στο Squeaky Mail</string>
     <string name="accounts_welcome"><![CDATA[
-<p>
-Το K-9 είναι ένας πελάτης ηλεκτρονικού ταχυδρομείου ανοικτού κώδικα  για το Android που αρχικά βασίστηκε στον βασικό email client του Android.
-</p><p>
-Τα βελτιωμένα χαρακτηριστικά του K-9 είναι:
-</p>
-<ul>
-  <li>Ταχυδρομείο με σπρώξιμο (push mail) με χρήση IMAP IDLE</li>
-  <li>Καλύτερες επιδόσεις</li>
-  <li>Μετακίνηση μηνυμάτων σε φακέλους</li>
-  <li>Υπογραφές μηνυμάτων</li>
-  <li>Ιδιωτική κοινοποίηση (bcc) προς τον εαυτό</li>
-  <li>Συνδρομές σε φακέλους</li>
-  <li>Συγχρονισμός όλων των φακέλων</li>
-  <li>Παραμετροποίηση διεύθυνσης επιστροφής</li>
-  <li>Συντομεύσεις πληκτρολογίου</li>
-  <li>Καλύτερη υποστήριξη IMAP</li>
-  <li>Αποθήκευση συνημμένων σε κάρτα αποθήκευσης</li>
-  <li>Άδειασμα σκουπιδιών</li>
-  <li>Ταξινόμηση μηνυμάτων</li>
-  <li>… και άλλα</li>
-</ul>
-<p>
-Το K-9 δεν υποστηρίζει τους περισσότερους δωρεάν λογαριασμούς Hotmail και, όπως οι περισσότεροι email clients έχει θεματάκια όταν μιλάει με το Microsoft Exchange.
-</p><p>
-Αναφέρετε προβλήματα, προτείνετε νέα χαρακτηριστικά και υποβάλετε ερωτήματα στο
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nΑποστολή με K-9 Mail από το Android κινητό μου. Συγχωρήστε τη συντομία.</string>
+    <string name="default_signature">-- \nΑποστολή με Squeaky Mail από το Android κινητό μου. Συγχωρήστε τη συντομία.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
-    <string name="account_clear_dlg_instructions_fmt">Όλα τα μηνύματα του λογαριασμού \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
-    <string name="insufficient_apg_permissions">Το K-9 Mail δεν έχει δικαίωμα να προσπελαύνει πλήρως το APG. Επαναλάβετε την εγκατάσταση του K-9 Mail για να το διορθώσετε.</string>
+    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το Squeaky Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το Squeaky Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
+    <string name="account_clear_dlg_instructions_fmt">Όλα τα μηνύματα του λογαριασμού \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το Squeaky Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
+    <string name="insufficient_apg_permissions">Το Squeaky Mail δεν έχει δικαίωμα να προσπελαύνει πλήρως το APG. Επαναλάβετε την εγκατάσταση του Squeaky Mail για να το διορθώσετε.</string>
 
 
 

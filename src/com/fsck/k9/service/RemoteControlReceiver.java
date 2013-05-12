@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
+import com.imaeses.squeaky.K9;
 
 import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 

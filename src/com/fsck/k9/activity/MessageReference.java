@@ -6,13 +6,13 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.imaeses.squeaky.K9;
 
 import java.util.StringTokenizer;
 

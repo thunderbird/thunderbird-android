@@ -1,5 +1,5 @@
 
-package com.fsck.k9;
+package com.imaeses.squeaky;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -27,6 +27,9 @@ import android.os.Looper;
 import android.text.format.Time;
 import android.util.Log;
 
+import com.fsck.k9.Account;
+import com.fsck.k9.FontSizes;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.UpgradeDatabases;
@@ -42,6 +45,8 @@ import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
+
+import com.imaeses.squeaky.R;
 
 public class K9 extends Application {
     /**

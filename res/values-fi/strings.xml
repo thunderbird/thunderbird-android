@@ -12,14 +12,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9-tilit</string>
-    <string name="unread_widget_label">K-9-lukematon</string>
+    <string name="shortcuts_title">Squeaky-tilit</string>
+    <string name="unread_widget_label">Squeaky-lukematon</string>
 
-    <string name="remote_control_label">K-9 Mailin etäkäyttö</string>
-    <string name="remote_control_desc">Antaa sovellukselle luvan käyttää K-9 Mailin toimintoja ja asetuksia.</string>
+    <string name="remote_control_label">Squeaky Mailin etäkäyttö</string>
+    <string name="remote_control_desc">Antaa sovellukselle luvan käyttää Squeaky Mailin toimintoja ja asetuksia.</string>
 
 
     <!-- Used in the about dialog -->
@@ -29,48 +29,20 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
+    <string name="welcome_message_title">Tervetuloa Squeaky Mailiin</string>
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail on tehokas avoimen lähdekoodin sähköpostiasiakasohjelma Android-käyttöjärjestelmälle.
-</p><p>
-K-9:n parannettuja ominaisuuksia ovat mm.:
-</p>
-<ul>
-  <li>Ilmoitus uusista viesteistä IMAP IDLE -ominaisuuden avulla</li>
-  <li>Parempi suorituskyky</li>
-  <li>Viestien arkistointi</li>
-  <li>Viestien allekirjoitukset</li>
-  <li>Piilokopion lähetys itselle</li>
-  <li>Kansioiden tilaukset</li>
-  <li>Kansioiden synkronointi</li>
-  <li>Vastaus-osoitteen määrittely</li>
-  <li>Pikanäppäimet</li>
-  <li>Parempi IMAP-tuki</li>
-  <li>Liitetiedostojen tallennus SD-kortille</li>
-  <li>Roskakorin tyhjennys</li>
-  <li>Viestien lajittelu</li>
-  <li>…ja paljon muuta</li>
-</ul>
-<p>
-K-9 ei valitettavasti sisällä tukea yleisimmille ilmaisille web-sähköposteille (esim. hotmail). Lisäksi Microsoft Exchange -toimivuudessa on
-ongelmia, kuten monissa muissakin sähköpostiasiakasohjelmissa.
-</p><p>
-Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nLähetetty Android-laitteesta K-9 Mail -ohjelmalla</string>
+    <string name="default_signature">-- \nLähetetty Android-laitteesta Squeaky Mail -ohjelmalla</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta.</string>
+    <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan Squeaky Mail -ohjelmasta.</string>
     <string name="account_recreate_dlg_instructions_fmt">Kaikki tilin \"<xliff:g id="account">%s</xliff:g>\" paikalliset tiedot poistetaan, mutta tilin asetukset säilyvät.</string>
     <string name="account_clear_dlg_instructions_fmt">Kaikki tilin \"<xliff:g id="account">%s</xliff:g>\" paikalliset viestit poistetaan, mutta tilin asetukset säilyvät.</string>
-    <string name="insufficient_apg_permissions">K-9:llä ei ole oikeuksia kaikkien APG:n ominaisuuksien käyttämiseen. Ole hyvä ja asenna K-9 uudelleen.</string>
+    <string name="insufficient_apg_permissions">Squeaky Mail:llä ei ole oikeuksia kaikkien APG:n ominaisuuksien käyttämiseen. Ole hyvä ja asenna Squeaky Mail uudelleen.</string>
 
 
 

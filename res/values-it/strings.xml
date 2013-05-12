@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">Account di K-9</string>
-    <string name="unread_widget_label">K-9 nuovi messaggi</string>
+    <string name="shortcuts_title">Account di Squeaky Mail</string>
+    <string name="unread_widget_label">Squeaky Mail nuovi messaggi</string>
 
-    <string name="remote_control_label">Controllo remoto di K-9 Mail</string>
-    <string name="remote_control_desc">Consenti a questa applicazione di controllare le attività e le impostazioni di K-9 Mail.</string>
+    <string name="remote_control_label">Controllo remoto di Squeaky Mail</string>
+    <string name="remote_control_desc">Consenti a questa applicazione di controllare le attività e le impostazioni di Squeaky Mail.</string>
 
 
     <!-- Used in the about dialog -->
@@ -24,45 +24,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail è un client di posta open source per Android originariamente basato sul client di posta standard di Android.
-</p><p>
-Le funzionalità migliorate di K-9 includono:
-</p>
-<ul>
-  <li>Push mail utilizzando IMAP IDLE</li>
-  <li>Migliori prestazioni</li>
-  <li>Archiviazione dei messaggi</li>
-  <li>Firme nei messaggi</li>
-  <li>Ccn a se stessi</li>
-  <li>Sottoscrizioni delle cartelle</li>
-  <li>Sincronizzazione di tutte le cartelle</li>
-  <li>Configurazione dell\'indirizzo per le risposte</li>
-  <li>Tasti di scelta rapida</li>
-  <li>Miglior supporto IMAP</li>
-  <li>Salvataggio degli allegati nella SD</li>
-  <li>Possibilità di svuotare il cestino</li>
-  <li>Ordinamento dei messaggi</li>
-  <li>…ed altro</li>
-</ul>
-<p>
-Si noti che K-9 non supporta gli account free di Hotmail e, come molti client di posta, ha alcune bizzarrie quando si parla di Microsoft Exchange.
-</p><p>
-Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni su
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- Inviato dal mio cellulare Android con K-9 Mail.</string>
+    <string name="default_signature">-- Inviato dal mio cellulare Android con Squeaky Mail.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da K-9 Mail.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Tutti i dati per \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
-    <string name="account_clear_dlg_instructions_fmt">Tutti i messaggi in \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
-    <string name="insufficient_apg_permissions">K-9 non ha i permessi per accedere pienamente ad APG, reinstalla K-9 per risolvere il problema.</string>
+    <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da Squeaky Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Tutti i dati per \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da Squeaky Mail, ma le impostazioni dell\'account saranno conservate.</string>
+    <string name="account_clear_dlg_instructions_fmt">Tutti i messaggi in \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da Squeaky Mail, ma le impostazioni dell\'account saranno conservate.</string>
+    <string name="insufficient_apg_permissions">Squeaky Mail non ha i permessi per accedere pienamente ad APG, reinstalla Squeaky Mail per risolvere il problema.</string>
 
 
 

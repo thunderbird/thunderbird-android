@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 Konten</string>
-    <string name="unread_widget_label">K-9 Ungelesen</string>
+    <string name="shortcuts_title">Squeaky Mail Konten</string>
+    <string name="unread_widget_label">Squeaky Mail Ungelesen</string>
 
-    <string name="remote_control_label">K-9 Mail Fernsteuerung</string>
-    <string name="remote_control_desc">Erlaubt dieser Anwendung den Ablauf und die Einstellungen von K-9 Mail zu kontrollieren.</string>
+    <string name="remote_control_label">Squeaky Mail Mail Fernsteuerung</string>
+    <string name="remote_control_desc">Erlaubt dieser Anwendung den Ablauf und die Einstellungen von Squeaky Mail zu kontrollieren.</string>
 
 
     <!-- Used in the about dialog -->
@@ -22,46 +22,20 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
+    <string name="welcome_message_title">Willkommen bei Squeaky Mail</string>
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
-</p><p>
-Verbesserte Funktionen in K-9:
-</p>
-<ul>
-  <li>Benachrichtigung über neue Nachrichten per IMAP IDLE</li>
-  <li>Höhere Performance</li>
-  <li>E-Mail-Signaturen</li>
-  <li>Automatische Blindkopie an sich selbst</li>
-  <li>Ordner-Abonnements</li>
-  <li>Synchronisation aller Ordner</li>
-  <li>Konfiguration einer Antwort-Adresse</li>
-  <li>Tastatur-Shortcuts</li>
-  <li>Verbesserte IMAP-Unterstützung</li>
-  <li>Speichern von Anhängen auf SD-Karte</li>
-  <li>Papierkorb leeren</li>
-  <li>Sortieren der Nachrichten</li>
-  <li>…und viele mehr</li>
-</ul>
-<p>
-Bitte beachten Sie, dass K-9, wie viele andere E-Mail-Anwendungen auch, die meisten kostenlosen Hotmail-Accounts nicht unterstützt. Zudem gibt es einige Probleme mit Microsoft Exchange-Servern.
-</p><p>
-Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuchen Sie die Homepage unter
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nDiese Nachricht wurde von meinem Android-Mobiltelefon mit K-9 Mail gesendet.</string>
+    <string name="default_signature">-- \nDiese Nachricht wurde von meinem Android-Mobiltelefon mit Squeaky Mail gesendet.</string>
 
 
     <!-- General strings that include the app name -->
     <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird gelöscht.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Alle Daten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von K-9 Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
-    <string name="account_clear_dlg_instructions_fmt">Alle Nachrichten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von K-9 Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
-    <string name="insufficient_apg_permissions">K-9 hat keinen Vollzugriff auf APG, bitte dafür K-9 neu installieren.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Alle Daten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von Squeaky Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
+    <string name="account_clear_dlg_instructions_fmt">Alle Nachrichten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von Squeaky Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
+    <string name="insufficient_apg_permissions">Squeaky Mail hat keinen Vollzugriff auf APG, bitte dafür Squeaky Mail neu installieren.</string>
 
 
 

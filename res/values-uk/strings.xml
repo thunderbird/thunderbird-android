@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 Облікові записи</string>
-    <string name="unread_widget_label">K-9 Непрочитані</string>
+    <string name="shortcuts_title">Squeaky Облікові записи</string>
+    <string name="unread_widget_label">Squeaky Непрочитані</string>
 
-    <string name="remote_control_label">Дситанційне управління K-9 Mail</string>
-    <string name="remote_control_desc">Дозволяє цій програмі управляти діяльністю та налаштуваннями K-9 Mail.</string>
+    <string name="remote_control_label">Дситанційне управління Squeaky Mail</string>
+    <string name="remote_control_desc">Дозволяє цій програмі управляти діяльністю та налаштуваннями Squeaky Mail.</string>
 
 
     <!-- Used in the about dialog -->
@@ -24,45 +24,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail це поштовий клієнт з відкритим вихідним кодом для Android, який базується на основі стадартної програми Android Mail client.
-</p><p>
-Покращені можливості K-9 включають:
-</p>
-<ul>
-  <li>Push mail при використання IMAP IDLE</li>
-  <li>Краща швидкодія</li>
-  <li>Систематизація повідомлень</li>
-  <li>Електронні підписи у пошті</li>
-  <li>Прихована копія собі</li>
-  <li>Підписки до папок</li>
-  <li>Синхронізація всіх папок</li>
-  <li>Налаштування зворотньої адреси</li>
-  <li>Клавіатурні скорочення</li>
-  <li>Краща підтримка IMAP</li>
-  <li>Збереження вкладень на карту пам’яті</li>
-  <li>Очищення кошика</li>
-  <li>Упорядкування повідомлень</li>
-  <li>…і більше</li>
-</ul>
-<p>
-Зауважимо, що K-9 не підтримує більшіть безкоштовних облікових записів hotmail та, як і інші поштові програми, має деякі дивацтва при роботі з Microsoft Exchange.
-</p><p>
-Будь ласка, надсилайте звіти про помилки, запити про розробку нових функцій та задавайте питання на
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nНадіслано з мого Android телефону програмою K-9 Mail. Будь ласка, вибачте за стислість.</string>
+    <string name="default_signature">-- \nНадіслано з мого Android телефону програмою Squeaky Mail. Будь ласка, вибачте за стислість.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Усі дані \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
-    <string name="account_clear_dlg_instructions_fmt">Усі повідомлення у \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
-    <string name="insufficient_apg_permissions">K-9 не має дозволу для повного доступу до APG, перевстановіть K-9 для виправлення.</string>
+    <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з Squeaky Mail.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Усі дані \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з Squeaky Mail, але налаштування облікового запису будуть збережені.</string>
+    <string name="account_clear_dlg_instructions_fmt">Усі повідомлення у \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з Squeaky Mail, але налаштування облікового запису будуть збережені.</string>
+    <string name="insufficient_apg_permissions">Squeaky не має дозволу для повного доступу до APG, перевстановіть Squeaky для виправлення.</string>
 
 
 

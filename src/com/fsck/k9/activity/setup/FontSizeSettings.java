@@ -9,6 +9,9 @@ import android.preference.*;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9PreferenceActivity;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+
 /**
  * Activity to configure the font size of the information displayed in the
  * account list, folder list, message list and in the message view.

@@ -24,6 +24,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+
 /**
  * Prompts the user for the email address and password.
  * Attempts to lookup default settings for the domain the user specified. If the

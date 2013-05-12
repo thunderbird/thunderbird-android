@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-import com.fsck.k9.K9;
+
+import com.imaeses.squeaky.K9;
 
 public class PushService extends CoreService {
     private static String START_SERVICE = "com.fsck.k9.service.PushService.startService";

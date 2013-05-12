@@ -6,9 +6,9 @@ import java.util.Map;
 
 import android.util.Log;
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
+import com.imaeses.squeaky.K9;
 
 
 public abstract class Folder {

@@ -3,7 +3,6 @@ package com.fsck.k9.mail.transport;
 
 import android.util.Log;
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.filter.Base64;
@@ -14,6 +13,7 @@ import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.imaeses.squeaky.K9;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;

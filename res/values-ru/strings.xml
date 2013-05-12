@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 Mail Учётные записи</string>
-    <string name="unread_widget_label">K-9 Непрочитанное</string>
+    <string name="shortcuts_title">Squeaky Mail Учётные записи</string>
+    <string name="unread_widget_label">Squeaky Mail Непрочитанное</string>
 
-    <string name="remote_control_label">Дистанционное управление K-9 Mail</string>
-    <string name="remote_control_desc">Позволяет этому приложению управлеть деятельностью и настройками K-9 Mail.</string>
+    <string name="remote_control_label">Дистанционное управление Squeaky Mail</string>
+    <string name="remote_control_desc">Позволяет этому приложению управлеть деятельностью и настройками Squeaky Mail.</string>
 
 
     <!-- Used in the about dialog -->
@@ -22,35 +22,8 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Добро пожаловавть в K-9 Mail</string>
+    <string name="welcome_message_title">Добро пожаловавть в Squeaky Mail</string>
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail это программа электронной почты для Android операционных систем с открытым исходным кодом, первоначально основанная на стандартной программе Android Mail.
-</p><p>
-Улучшенные возможности программы K-9 Mail включают:
-</p>
-<ul>
-  <li>push mail при использовании IMAP IDLE;</li>
-  <li>более высокая скорость;</li>
-  <li>систематизация сообщений;</li>
-  <li>электронные подписи в почте;</li>
-  <li>СК Себе;</li>
-  <li>подписки к папкам;</li>
-  <li>синхронизация всех папок;</li>
-  <li>конфигурация возвратного адреса;</li>
-  <li>сочетания клавиш на аппаратной клавиатуре;</li>
-  <li>лучшая поддержка для IMAP;</li>
-  <li>сохранение вложений на SD карту;</li>
-  <li>очистка Корзины;</li>
-  <li>сортировка сообщений;</li>
-  <li>… и более.</li>
-</ul>
-<p>
-Обратите внимание, что К-9 не поддерживает большинство бесплатных адресов Hotmail и, как большинство других почтовых программ, имеет некоторые причуды при общении с Microsoft Exchange.
-</p><p>
-Просьба представлять отчёты об ошибках, запросы про разработке новых функций, и задавать вопросы на
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
@@ -62,7 +35,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="account_delete_dlg_instructions_fmt">Учётная запись \"<xliff:g id="account">%s</xliff:g>\" будет удалена.</string>
     <string name="account_recreate_dlg_instructions_fmt">Все данные учётной записи \"<xliff:g id="account">%s</xliff:g>\" будут уничтожены, но настройки сохранятся.</string>
     <string name="account_clear_dlg_instructions_fmt">Все сообщения учётной записи \"<xliff:g id="account">%s</xliff:g>\" будут уничтожены, но настройки сохранятся.</string>
-    <string name="insufficient_apg_permissions">K-9 Mail не имеет разрешения для полного доступа к APG, пожалуйста переустановите приложение.</string>
+    <string name="insufficient_apg_permissions">Squeaky Mail не имеет разрешения для полного доступа к APG, пожалуйста переустановите приложение.</string>
 
 
 

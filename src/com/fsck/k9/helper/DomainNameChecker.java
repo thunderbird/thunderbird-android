@@ -18,7 +18,9 @@ package com.fsck.k9.helper;
 
 import android.net.http.SslCertificate;
 import android.util.Log;
-import com.fsck.k9.K9;
+
+import com.imaeses.squeaky.K9;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.cert.X509Certificate;

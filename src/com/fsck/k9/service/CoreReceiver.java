@@ -10,9 +10,9 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
+import com.imaeses.squeaky.K9;
 
 public class CoreReceiver extends BroadcastReceiver {
 

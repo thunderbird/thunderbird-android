@@ -12,14 +12,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 Accounts</string>
-    <string name="unread_widget_label">K-9 Unread</string>
+    <string name="shortcuts_title">Squeaky Mail Accounts</string>
+    <string name="unread_widget_label">Squeaky Mail Unread</string>
 
-    <string name="remote_control_label">K-9 Mail remote control</string>
-    <string name="remote_control_desc">Allows this application to control K-9 Mail activities and settings.</string>
+    <string name="remote_control_label">Squeaky Mail remote control</string>
+    <string name="remote_control_desc">Allows this application to control Squeaky Mail activities and settings.</string>
 
 
     <!-- Used in the about dialog -->
@@ -29,14 +29,15 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Welcome to K-9 Mail</string>
+    <string name="welcome_message_title">Welcome to Squeaky Mail</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail is a powerful free email client for Android.
+Squeaky Mail is based entirely on the popular, open source K-9 Mail application. The only difference is that Squeaky Mail integrates with PGP KeyRing, a crypto provider.
 </p><p>
 Its improved features include:
 </p>
 <ul>
+  <li>Integration with PGP KeyRing</li>
   <li>Push mail using IMAP IDLE</li>
   <li>Better performance</li>
   <li>Message refiling</li>
@@ -53,7 +54,7 @@ Its improved features include:
   <li>…and more</li>
 </ul>
 <p>
-Please note that K-9 does not support most free Hotmail accounts and, like many mail clients, has
+Please note that Squeaky does not support most free Hotmail accounts and, like many mail clients, has
 some quirks when talking to Microsoft Exchange.
 </p><p>
 Please submit bug reports, contribute new features and ask questions at
@@ -63,15 +64,15 @@ Please submit bug reports, contribute new features and ask questions at
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>
+    <string name="default_signature">-- \nSent from my Android device with Squeaky Mail. Please excuse my brevity.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
+    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from Squeaky Mail.</string>
     <string name="account_recreate_dlg_instructions_fmt">All local data for \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
     <string name="account_clear_dlg_instructions_fmt">Local copies of messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
-    <string name="insufficient_apg_permissions">K-9 doesn\'t have permission to access APG fully, please reinstall K-9 to fix that.</string>
-
+    <string name="insufficient_apg_permissions">Squeaky Mail doesn\'t have permission to access APG fully, please reinstall to fix that.</string>
+    <string name="insufficient_pgpkeyring_permissions">Squeaky Mail doesn\'t have permission to access PGP KeyRing fully, please reinstall to fix that.</string>
 
 
     <!-- === App Store-specific strings ======================================================= -->
@@ -573,7 +574,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_auto_signature_summary">Use the account\'s email address to guess the signature key.</string>
     <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>
-    <string name="account_settings_crypto_apg_not_installed">APG not installed</string>
+    <string name="account_settings_crypto_not_installed">No crypto provider is installed</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -956,6 +957,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="misc_preferences_attachment_title">Use Gallery bug work-around</string>
     <string name="misc_preferences_attachment_description">Show buttons to add image/video attachments (to work around a Gallery 3D bug)</string>
 
+    <!--  PGP KeyRing related -->
+    <string name="error_pgpkeyring_version_not_supported">The installed version of PGP KeyRing is not supported.</string>
+    
     <!-- APG related -->
     <string name="error_activity_not_found">No suitable application for this action found.</string>
     <string name="error_apg_version_not_supported">The installed APG version is not supported.</string>

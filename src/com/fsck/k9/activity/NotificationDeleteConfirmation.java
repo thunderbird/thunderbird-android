@@ -11,10 +11,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.service.NotificationActionService;
+
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class NotificationDeleteConfirmation extends Activity {
     private final static String EXTRA_ACCOUNT = "account";

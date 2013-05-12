@@ -6,8 +6,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.mail.Message;
@@ -15,6 +13,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class MessageCryptoView extends LinearLayout {
 

@@ -34,6 +34,9 @@ import java.security.MessageDigest;
 import java.util.Collection;
 import java.util.List;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+
 /**
  * Checks the given settings to make sure that they can be used to send and
  * receive mail.

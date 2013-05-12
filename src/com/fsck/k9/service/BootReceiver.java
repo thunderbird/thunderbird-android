@@ -11,7 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
-import com.fsck.k9.K9;
+import com.imaeses.squeaky.K9;
 
 public class BootReceiver extends CoreReceiver {
 

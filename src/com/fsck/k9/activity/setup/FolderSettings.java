@@ -19,6 +19,9 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.service.MailService;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
+
 public class FolderSettings extends K9PreferenceActivity {
 
     private static final String EXTRA_FOLDER_NAME = "com.fsck.k9.folderName";

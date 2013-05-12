@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">Squeaky Mail</string>
+    <string name="beta_app_name">Squeaky Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 アカウント</string>
+    <string name="shortcuts_title">Squeaky Mail アカウント</string>
     <string name="unread_widget_label">未読件数</string>
 
-    <string name="remote_control_label">K-9 Mail リモート制御</string>
-    <string name="remote_control_desc">K-9 Mail のアクティビティ・設定の制御を許可</string>
+    <string name="remote_control_label">Squeaky Mail リモート制御</string>
+    <string name="remote_control_desc">Squeaky Mail のアクティビティ・設定の制御を許可</string>
 
 
     <!-- Used in the about dialog -->
@@ -22,47 +22,20 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">K-9 Mailへようこそ</string>
+    <string name="welcome_message_title">Squeaky Mailへようこそ</string>
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 はAndroidにおける強力なフリーのメールクライアントです。
-</p><p>
-K-9で改良された機能:
-</p>
-<ul>
-  <li>IMAP IDLEを利用したプッシュメール</li>
-  <li>パフォーマンス改善</li>
-  <li>メッセージ整理</li>
-  <li>電子メール署名</li>
-  <li>Bcc-to-self</li>
-  <li>フォルダ購読</li>
-  <li>全フォルダ同期</li>
-  <li>返信先の設定</li>
-  <li>キーボードショートカット</li>
-  <li>より良いIMAPサポート</li>
-  <li>添付ファイルのSDカードへの保存</li>
-  <li>ゴミ箱を空にする機能</li>
-  <li>メッセージのソート</li>
-  <li>…他にもたくさんあります</li>
-</ul>
-<p>
-K-9 は大多数のメールクライアントと同様に、ほとんどのフリーHotmailアカウントをサポートしていません。また、 Microsoft Exchange との通信において少し癖を持っていることに注意してください。
-</p><p>
-バグレポートや新機能の貢献、質問は http://k9mail.googlecode.com/ にお願いします。<br>
-日本語で質問などがある場合は <a href="http://groups.google.co.jp/group/k9mail_ja/">http://groups.google.co.jp/group/k9mail_ja/</a> を参照してください。
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>
+    <string name="default_signature">-- \nSent from my Android device with Squeaky Mail. Please excuse my brevity.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
-    <string name="account_recreate_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" のローカルのデータはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
-    <string name="account_clear_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" のローカルにコピーしたメッセージはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
-    <string name="insufficient_apg_permissions">K-9 にAPGを利用するための権限がありません。これを解決するためには、K-9 を再インストールしてください。</string>
+    <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はSqueaky Mailから削除されます。</string>
+    <string name="account_recreate_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" のローカルのデータはSqueaky Mailから削除されますが、アカウントの設定は残ります。</string>
+    <string name="account_clear_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" のローカルにコピーしたメッセージはSqueaky Mailから削除されますが、アカウントの設定は残ります。</string>
+    <string name="insufficient_apg_permissions">Squeaky にAPGを利用するための権限がありません。これを解決するためには、Squeaky を再インストールしてください。</string>
 
 
 

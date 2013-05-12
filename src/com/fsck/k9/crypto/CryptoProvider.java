@@ -11,6 +11,8 @@ import com.fsck.k9.mail.Message;
  * A CryptoProvider provides functionalities such as encryption, decryption, digital signatures.
  * It currently also stores the results of such encryption or decryption.
  * TODO: separate the storage from the provider
+ *
+ * Modified by Adam Wasserman to include PGPKeyRing provider. (9 May 2013)
  */
 abstract public class CryptoProvider {
     static final long serialVersionUID = 0x21071234;
@@ -37,6 +39,8 @@ abstract public class CryptoProvider {
     public static CryptoProvider createInstance(String name) {
         if (Apg.NAME.equals(name)) {
             return Apg.createInstance();
+        } else if( PGPKeyRing.NAME.equals(name)) {
+            return PGPKeyRing.createInstance();
         }
 
         return None.createInstance();

@@ -629,11 +629,13 @@
     <string-array name="account_settings_crypto_app_entries">
         <item>@string/account_settings_crypto_app_none</item>
         <item>APG</item>
+        <item>PGP KeyRing</item>
     </string-array>
 
     <string-array name="account_settings_crypto_app_values" translatable="false">
         <item></item>
         <item>apg</item>
+        <item>pgpkeyring</item>
     </string-array>
 
     <string-array name="settings_preview_lines_values" translatable="false">

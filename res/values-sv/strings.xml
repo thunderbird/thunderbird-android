@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 E-post</string>
-    <string name="beta_app_name">K-9 E-post BETA</string>
+    <string name="app_name">Squeaky E-post</string>
+    <string name="beta_app_name">Squeaky E-post BETA</string>
 
-    <string name="shortcuts_title">K-9-konton</string>
-    <string name="unread_widget_label">K-9 Unread</string>
+    <string name="shortcuts_title">Squeaky-konton</string>
+    <string name="unread_widget_label">Squeaky Unread</string>
 
-    <string name="remote_control_label">K-9 E-post fjärrkontroll</string>
-    <string name="remote_control_desc">Tillåter denna applikation att kontrollera aktiviteter och inställningar i K-9 E-post.</string>
+    <string name="remote_control_label">Squeaky E-post fjärrkontroll</string>
+    <string name="remote_control_desc">Tillåter denna applikation att kontrollera aktiviteter och inställningar i Squeaky E-post.</string>
 
 
     <!-- Used in the about dialog -->
@@ -24,45 +24,18 @@
     <!-- Welcome message -->
     <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail är en e-postklient med öppen källkod för Android, ursprungligen baserad på standard-e-postklienten i Android.
-</p><p>
-K-9\'s förbättrade funktioner inkluderar:
-</p>
-<ul>
-  <li>Push-mail med hjälp av IMAP IDLE</li>
-  <li>Bättre prestanda</li>
-  <li>Omarkivering av e-post</li>
-  <li>E-post-signaturer</li>
-  <li>Bcc till dig själv</li>
-  <li>Mapp-prenumerationer</li>
-  <li>Synkronisera alla mappar</li>
-  <li>Inställning av avsändaradress</li>
-  <li>Tangentbordsgenvägar</li>
-  <li>Bättre support för IMAP</li>
-  <li>Spara bilagor till SD-kort</li>
-  <li>Töm papperskorgen</li>
-  <li>Meddelandesortering</li>
-  <li>…och mer</li>
-</ul>
-<p>
-Vänligen notera att K-9 inte har någon support för gratis Hotmail-konton och liksom många andra e-postklienter har vissa problem vid kommunikation med Microsoft Exchange.
-</p><p>
-Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor på
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
-</p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nSkickat från min Android-telefon med K-9 E-post. Ursäkta min fåordighet.</string>
+    <string name="default_signature">-- \nSkickat från min Android-telefon med Squeaky E-post. Ursäkta min fåordighet.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas från K-9 E-post.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Alla meddelanden, bifogade filer, mappar och inställningar mapp för \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas ifrån K-9 E-post, men kontoinställningar behålls.</string>
-    <string name="account_clear_dlg_instructions_fmt">All e-post i \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas ifrån K-9 E-post, men kontoinställningar behålls.</string>
-    <string name="insufficient_apg_permissions">K-9 har inte nödvändig behörighet att komma åt APG, vänligen ominstallera K-9 för att åtgärda detta.</string>
+    <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas från Squeaky E-post.</string>
+    <string name="account_recreate_dlg_instructions_fmt">Alla meddelanden, bifogade filer, mappar och inställningar mapp för \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas ifrån Squeaky E-post, men kontoinställningar behålls.</string>
+    <string name="account_clear_dlg_instructions_fmt">All e-post i \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas ifrån Squeaky E-post, men kontoinställningar behålls.</string>
+    <string name="insufficient_apg_permissions">Squeaky har inte nödvändig behörighet att komma åt APG, vänligen ominstallera Squeaky för att åtgärda detta.</string>
 
 
 

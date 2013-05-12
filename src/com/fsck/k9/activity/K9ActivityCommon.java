@@ -2,10 +2,10 @@ package com.fsck.k9.activity;
 
 import java.util.Locale;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.SwipeGestureDetector;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.helper.StringUtils;
+import com.imaeses.squeaky.K9;
 
 import android.app.Activity;
 import android.content.Context;

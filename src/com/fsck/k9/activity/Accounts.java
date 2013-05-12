@@ -58,9 +58,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSettings;
@@ -90,6 +88,8 @@ import com.fsck.k9.preferences.SettingsImporter.ImportResults;
 
 import de.cketti.library.changelog.ChangeLog;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class Accounts extends K9ListActivity implements OnItemClickListener {
 

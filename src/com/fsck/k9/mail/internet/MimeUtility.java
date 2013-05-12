@@ -3,8 +3,6 @@ package com.fsck.k9.mail.internet;
 
 import android.content.Context;
 import android.util.Log;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -28,6 +26,8 @@ import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 
+import com.imaeses.squeaky.K9;
+import com.imaeses.squeaky.R;
 
 public class MimeUtility {
     public static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";
