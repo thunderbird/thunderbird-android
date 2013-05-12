@@ -34,7 +34,7 @@
         <change>Added a series of predefined account colors that will be used before resorting to random colors</change>
         <change>Hide delete policy option not applicable to POP3 accounts</change>
         <change>Fall back to character set ISO-2022-JP when ISO-2022-JP-2 is not available</change>
-        <change>Updated Koran, Danish, Finnish translations</change>
+        <change>Updated Korean, Danish, Finnish translations</change>
         <change>More bug fixes</change>
     </release>
 
