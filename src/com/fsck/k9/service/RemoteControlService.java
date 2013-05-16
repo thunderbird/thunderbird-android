@@ -79,6 +79,7 @@ public class RemoteControlService extends CoreService {
                                 String pushClasses = intent.getStringExtra(K9_PUSH_CLASSES);
                                 String pollClasses = intent.getStringExtra(K9_POLL_CLASSES);
                                 String pollFrequency = intent.getStringExtra(K9_POLL_FREQUENCY);
+                                String speechEnabled = intent.getStringExtra(K9_SPEECH_ENABLED);
 
                                 if (notificationEnabled != null) {
                                     account.setNotifyNewMail(Boolean.parseBoolean(notificationEnabled));
@@ -88,6 +89,9 @@ public class RemoteControlService extends CoreService {
                                 }
                                 if (vibrateEnabled != null) {
                                     account.getNotificationSetting().setVibrate(Boolean.parseBoolean(vibrateEnabled));
+                                }
+                                if (speechEnabled != null) {
+                                	account.getNotificationSetting().setSpeechAnnounce(Boolean.parseBoolean(speechEnabled));
                                 }
                                 if (pushClasses != null) {
                                     needsPushRestart |= account.setFolderPushMode(FolderMode.valueOf(pushClasses));

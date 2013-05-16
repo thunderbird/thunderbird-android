@@ -22,6 +22,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
 import android.util.Log;
+import android.widget.SeekBar;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
@@ -71,6 +72,11 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
+    private static final String PREFERENCE_SPEECH = "account_speech";
+    private static final String PREFERENCE_SPEECH_TYPE = "account_speech_type";
+    private static final String PREFERENCE_SPEECH_QUEUE = "account_speech_queue";
+    private static final String PREFERENCE_SPEECH_REGEX_MATCH = "account_speech_regex_match";
+    private static final String PREFERENCE_SPEECH_REGEX_REPLACE = "account_speech_regex_replace";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
     private static final String PREFERENCE_VIBRATE_PATTERN = "account_vibrate_pattern";
     private static final String PREFERENCE_VIBRATE_TIMES = "account_vibrate_times";
@@ -142,6 +148,11 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
+    private CheckBoxPreference mAccountSpeech;
+    private ListPreference mAccountSpeechType;
+    private ListPreference mAccountSpeechQueue;
+    private EditTextPreference mAccountSpeechRegexMatch;
+    private EditTextPreference mAccountSpeechRegexReplace;
     private CheckBoxPreference mAccountLed;
     private ListPreference mAccountVibratePattern;
     private ListPreference mAccountVibrateTimes;
@@ -575,7 +586,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountNotifySync.setChecked(mAccount.isShowOngoing());
 
         mAccountRingtone = (RingtonePreference) findPreference(PREFERENCE_RINGTONE);
-
+        
         // XXX: The following two lines act as a workaround for the RingtonePreference
         //      which does not let us set/get the value programmatically
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
@@ -584,6 +595,69 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.getNotificationSetting().shouldVibrate());
+        
+        mAccountSpeech = (CheckBoxPreference) findPreference(PREFERENCE_SPEECH);
+        mAccountSpeech.setChecked(mAccount.getNotificationSetting().shouldSpeechAnnounce());
+        
+        mAccountSpeechType = (ListPreference) findPreference(PREFERENCE_SPEECH_TYPE);
+        mAccountSpeechType.setValue(String.valueOf(mAccount.getNotificationSetting().getSpeechType()));
+        mAccountSpeechType.setSummary(mAccountSpeechType.getEntry());
+        mAccountSpeechType.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mAccountSpeechType.findIndexOfValue(summary);
+                mAccountSpeechType.setSummary(mAccountSpeechType.getEntries()[index]);
+                mAccountSpeechType.setValue(summary);
+                if (index != 3) {
+                	// For not regex
+                	mAccountSpeechRegexMatch.setEnabled(false);
+                	mAccountSpeechRegexReplace.setEnabled(false);
+                } else if (index == 3) {
+                	// For not regex
+                	mAccountSpeechRegexMatch.setEnabled(true);                	
+                	mAccountSpeechRegexReplace.setEnabled(true);
+                }
+                return false;
+			}
+		});
+
+        mAccountSpeechQueue = (ListPreference) findPreference(PREFERENCE_SPEECH_QUEUE);
+        mAccountSpeechQueue.setValue(String.valueOf(mAccount.getNotificationSetting().getSpeechQueue()));
+        mAccountSpeechQueue.setSummary(mAccountSpeechQueue.getEntry());
+        mAccountSpeechQueue.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mAccountSpeechQueue.findIndexOfValue(summary);
+                mAccountSpeechQueue.setSummary(mAccountSpeechQueue.getEntries()[index]);
+                mAccountSpeechQueue.setValue(summary);
+                return false;
+			}
+		});
+
+        mAccountSpeechRegexMatch = (EditTextPreference) findPreference(PREFERENCE_SPEECH_REGEX_MATCH);
+        mAccountSpeechRegexMatch.setSummary(mAccount.getNotificationSetting().getSpeechRegexMatch());
+        mAccountSpeechRegexMatch.setText(mAccount.getNotificationSetting().getSpeechRegexMatch());
+        mAccountSpeechRegexMatch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                mAccountSpeechRegexMatch.setSummary(summary);
+                mAccountSpeechRegexMatch.setText(summary);
+                return false;
+            }
+        });
+
+        mAccountSpeechRegexReplace = (EditTextPreference) findPreference(PREFERENCE_SPEECH_REGEX_REPLACE);
+        mAccountSpeechRegexReplace.setSummary(mAccount.getNotificationSetting().getSpeechRegexReplace());
+        mAccountSpeechRegexReplace.setText(mAccount.getNotificationSetting().getSpeechRegexReplace());
+        mAccountSpeechRegexReplace.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                mAccountSpeechRegexReplace.setSummary(summary);
+                mAccountSpeechRegexReplace.setText(summary);
+                return false;
+            }
+        });
+
 
         mAccountVibratePattern = (ListPreference) findPreference(PREFERENCE_VIBRATE_PATTERN);
         mAccountVibratePattern.setValue(String.valueOf(mAccount.getNotificationSetting().getVibratePattern()));
@@ -756,6 +830,11 @@ public class AccountSettings extends K9PreferenceActivity {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);
         }
 
+        mAccount.getNotificationSetting().setSpeechAnnounce(mAccountSpeech.isChecked());
+        mAccount.getNotificationSetting().setSpeechType(Integer.parseInt(mAccountSpeechType.getValue()));
+        mAccount.getNotificationSetting().setSpeechQueue(Integer.parseInt(mAccountSpeechQueue.getValue()));
+        mAccount.getNotificationSetting().setSpeechRegexMatch(mAccountSpeechRegexMatch.getText());
+        mAccount.getNotificationSetting().setSpeechRegexReplace(mAccountSpeechRegexReplace.getText());
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setMarkMessageAsReadOnView(mMarkMessageAsReadOnView.isChecked());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());

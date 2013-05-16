@@ -331,6 +331,8 @@ public class Account implements BaseAccount {
         mNotificationSetting.setVibrate(false);
         mNotificationSetting.setVibratePattern(0);
         mNotificationSetting.setVibrateTimes(5);
+        mNotificationSetting.setSpeechAnnounce(false);
+        mNotificationSetting.setSpeechType(0);
         mNotificationSetting.setRing(true);
         mNotificationSetting.setRingtone("content://settings/system/notification_sound");
         mNotificationSetting.setLedColor(mChipColor);
@@ -444,6 +446,11 @@ public class Account implements BaseAccount {
             mShowPictures = ShowPictures.NEVER;
         }
 
+        mNotificationSetting.setSpeechAnnounce(prefs.getBoolean(mUuid + ".speechAnnounce", false));
+        mNotificationSetting.setSpeechType(prefs.getInt(mUuid + ".speechType", 0));
+        mNotificationSetting.setSpeechQueue(prefs.getInt(mUuid + ".speechQueue", 5));
+        mNotificationSetting.setSpeechRegexMatch(prefs.getString(mUuid + ".speechRegexMatch", "/(.*)/(.*)/"));
+        mNotificationSetting.setSpeechRegexReplace(prefs.getString(mUuid + ".speechRegexReplace", "New email from $1 with subject $2"));        
         mNotificationSetting.setVibrate(prefs.getBoolean(mUuid + ".vibrate", false));
         mNotificationSetting.setVibratePattern(prefs.getInt(mUuid + ".vibratePattern", 0));
         mNotificationSetting.setVibrateTimes(prefs.getInt(mUuid + ".vibrateTimes", 5));
@@ -757,6 +764,11 @@ public class Account implements BaseAccount {
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
         editor.putInt(mUuid + ".vibrateTimes", mNotificationSetting.getVibrateTimes());
         editor.putBoolean(mUuid + ".ring", mNotificationSetting.shouldRing());
+        editor.putBoolean(mUuid + ".speechAnnounce", mNotificationSetting.shouldSpeechAnnounce());
+        editor.putInt(mUuid + ".speechType", mNotificationSetting.getSpeechType());
+        editor.putInt(mUuid + ".speechQueue", mNotificationSetting.getSpeechQueue());
+        editor.putString(mUuid + ".speechRegexMatch", mNotificationSetting.getSpeechRegexMatch());
+        editor.putString(mUuid + ".speechRegexReplace", mNotificationSetting.getSpeechRegexReplace());
         editor.putString(mUuid + ".ringtone", mNotificationSetting.getRingtone());
         editor.putBoolean(mUuid + ".led", mNotificationSetting.isLed());
         editor.putInt(mUuid + ".ledColor", mNotificationSetting.getLedColor());

@@ -72,6 +72,8 @@ public class K9RemoteControl {
      */
     public final static String K9_VIBRATE_ENABLED = "com.fsck.k9.K9RemoteControl.vibrateEnabled";
 
+    public final static String K9_SPEECH_ENABLED = "com.fsck.k9.K9RemoteControl.speechEnabled";
+
     public final static String K9_FOLDERS_NONE = "NONE";
     public final static String K9_FOLDERS_ALL = "ALL";
     public final static String K9_FOLDERS_FIRST_CLASS = "FIRST_CLASS";
