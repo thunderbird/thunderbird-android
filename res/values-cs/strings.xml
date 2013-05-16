@@ -321,6 +321,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="global_settings_messageview_fixedwidth_label">Písma s pevnou šířkou</string>
     <string name="global_settings_messageview_fixedwidth_summary">Použít písmo s pevnou šířkou při zobrazování textových zpráv</string>
+    <string name="global_settings_messageview_autofit_width_label">Automatické přizpůsobení zpráv</string>
+    <string name="global_settings_messageview_autofit_width_summary">Zmenšit zprávy aby se vešly na obrazovku</string>
     <string name="global_settings_messageview_return_to_list_label">Návrat do seznamu po smazání</string>
     <string name="global_settings_messageview_return_to_list_summary">Vrátit se do seznamu zpráv po smazání zprávy</string>
     <string name="global_settings_messageview_show_next_label">Zobraz další zprávu po smazání</string>
