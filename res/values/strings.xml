@@ -507,7 +507,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_setup_failed_dlg_title">Setup could not finish</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Cannot safely connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">The security certificate of the server you are connecting to is invalid.  This may mean that your connection to your server is insecure.  You can accept the key and continue insecurely or reject the key and abort the connection to your mail server.  If you don\'t know you should reject the key and contact your mail administrator. \n\nThe server\'s certificate is presented below for you to review:\n\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
     <string name="account_setup_failed_dlg_server_message_fmt">Cannot connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">Edit details</string>
     <string name="account_setup_failed_dlg_continue_action">Continue</string>
