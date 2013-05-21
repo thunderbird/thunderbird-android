@@ -365,6 +365,14 @@
             android:ringtoneType="notification"
             android:defaultValue="content://settings/system/notification_sound" />
 
+        <VolumePreference
+            android:persistent="false"
+            android:dependency="account_notify"
+            android:key="account_volume"
+            android:ringtoneType="notification"
+            android:title="@string/account_settings_volume"
+            android:summary="@string/account_settings_volume_summary" />
+
         <CheckBoxPreference
             android:persistent="false"
             android:dependency="account_notify"
@@ -373,6 +381,51 @@
             android:title="@string/account_settings_vibrate_enable"
             android:summary="@string/account_settings_vibrate_summary" />
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:dependency="account_notify"
+            android:key="account_speech"
+            android:defaultValue="false"
+            android:title="@string/account_settings_speech_enable"
+            android:summary="@string/account_settings_speech_summary" />
+        
+        <ListPreference
+            android:persistent="false"
+            android:dependency="account_speech"
+            android:key="account_speech_type"
+            android:title="@string/account_settings_speech_type_label"
+            android:entries="@array/account_settings_speech_type_entries"
+            android:entryValues="@array/account_settings_speech_type_values"
+            android:dialogTitle="@string/account_settings_speech_type_label" />
+
+        <ListPreference
+            android:persistent="false"
+            android:dependency="account_speech"
+            android:key="account_speech_queue"
+            android:title="@string/account_settings_speech_queue_label"
+            android:entries="@array/account_settings_speech_queue_entries"
+            android:entryValues="@array/account_settings_speech_queue_values"
+            android:dialogTitle="@string/account_settings_speech_queue_label" />
+            
+        <EditTextPreference
+            android:persistent="false"
+            android:dependency="account_speech"
+            android:key="account_speech_regex_match"
+            android:singleLine="true"
+            android:title="@string/account_speech_regex_match_description_label"
+            android:summary=""
+            android:dialogTitle="@string/account_speech_regex_match_description_label" />
+        
+        <EditTextPreference
+            android:persistent="false"
+            android:dependency="account_speech"
+            android:key="account_speech_regex_replace"
+            android:singleLine="true"
+            android:title="@string/account_speech_regex_replace_description_label"
+            android:summary=""
+            android:dialogTitle="@string/account_speech_regex_replace_description_label" />
+        
         <ListPreference
             android:persistent="false"
             android:layout="?android:attr/preferenceLayoutChild"

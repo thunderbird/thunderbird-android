@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
@@ -26,6 +27,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.format.Time;
 import android.util.Log;
+import android.speech.tts.TextToSpeech;
+import android.media.MediaPlayer;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
@@ -43,7 +46,7 @@ import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 
-public class K9 extends Application {
+public class K9 extends Application implements TextToSpeech.OnInitListener {
     /**
      * Components that are interested in knowing when the K9 instance is
      * available and ready (Android invokes Application.onCreate() after other
@@ -60,6 +63,8 @@ public class K9 extends Application {
          */
         void initializeComponent(K9 application);
     }
+
+	private TextToSpeech mTts;
 
     public static Application app = null;
     public static File tempDirectory;
@@ -535,11 +540,36 @@ public class K9 extends Application {
         fontSizes.save(editor);
     }
 
+    // Implements TextToSpeech.OnInitListener.
+    public void onInit(int status) {
+    	// status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
+    	if (status == TextToSpeech.SUCCESS) {
+    		// Set preferred language to US english.
+    		// Note that a language may not be available, and the result will indicate this.
+    		int result = mTts.setLanguage(Locale.US);
+    		// Try this someday for some interesting results.
+    		// int result mTts.setLanguage(Locale.FRANCE);
+    		if (result == TextToSpeech.LANG_MISSING_DATA ||
+    				result == TextToSpeech.LANG_NOT_SUPPORTED) {
+    			// Lanuage data is missing or the language is not supported.
+    			Log.e(K9.LOG_TAG, "Language is not available.");
+    		}
+    		if (TextToSpeech.ERROR == mTts.setOnUtteranceCompletedListener(MessagingController.getInstance(this))) {
+    			Log.e(K9.LOG_TAG, "Could not set TTS complete handler. Speech will hang.");
+    		}
+    	} else {
+    		// Initialization failed.
+    		Log.e(K9.LOG_TAG, "Could not initialize TextToSpeech.");
+    	}
+    }
+
     @Override
     public void onCreate() {
         maybeSetupStrictMode();
         super.onCreate();
         app = this;
+        
+        mTts = new TextToSpeech(this, this);
 
         galleryBuggy = checkForBuggyGallery();
 
@@ -560,6 +590,9 @@ public class K9 extends Application {
 
         setServicesEnabled(this);
         registerReceivers();
+        
+        MessagingController.getInstance(this).setTTSEngine(mTts);
+        MessagingController.getInstance(this).setMediaPlayer(new MediaPlayer());
 
         MessagingController.getInstance(this).addListener(new MessagingListener() {
             private void broadcastIntent(String action, Account account, String folder, Message message) {

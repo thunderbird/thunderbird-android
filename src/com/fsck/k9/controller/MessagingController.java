@@ -1,6 +1,7 @@
 package com.fsck.k9.controller;
 
 import java.io.CharArrayWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -38,6 +40,9 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
+import android.speech.tts.TextToSpeech;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
@@ -45,9 +50,12 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.NotificationQueueList;
+import com.fsck.k9.NotificationQueue;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.NotificationQueue.State;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
@@ -96,7 +104,6 @@ import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.service.NotificationActionService;
 
-
 /**
  * Starts a long running (application) Thread that will run through commands
  * that require remote mailbox access. This class is used to serialize and
@@ -109,7 +116,7 @@ import com.fsck.k9.service.NotificationActionService;
  * it removes itself. Thus, any commands that that activity submitted are
  * removed from the queue once the activity is no longer active.
  */
-public class MessagingController implements Runnable {
+public class MessagingController implements Runnable, MediaPlayer.OnCompletionListener, TextToSpeech.OnUtteranceCompletedListener, AudioManager.OnAudioFocusChangeListener {
     public static final long INVALID_MESSAGE_ID = -1;
 
     /**
@@ -182,7 +189,7 @@ public class MessagingController implements Runnable {
      * Maximum number of unsynced messages to store at once
      */
     private static final int UNSYNC_CHUNK_SIZE = 5;
-
+    
     private static MessagingController inst = null;
     private BlockingQueue<Command> mCommands = new PriorityBlockingQueue<Command>();
 
@@ -196,7 +203,13 @@ public class MessagingController implements Runnable {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
     private MessagingListener checkMailListener = null;
-
+    
+	private TextToSpeech mTts;
+	
+	private MediaPlayer mMediaPlayer;
+	
+	private NotificationQueueList mNotificationQueue = new NotificationQueueList();
+	
     private MemorizingListener memorizingListener = new MemorizingListener();
 
     private boolean mBusy;
@@ -412,14 +425,25 @@ public class MessagingController implements Runnable {
         }
         return inst;
     }
+    
+	public void setTTSEngine(TextToSpeech tts) {
+		mTts = tts;
+	}
+	
+	public void setMediaPlayer(MediaPlayer inMediaPlayer) {
+		mMediaPlayer = inMediaPlayer;
+    	mMediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+    	mMediaPlayer.setOnCompletionListener(this);		
+	}
 
     public boolean isBusy() {
         return mBusy;
     }
-
+    
     @Override
     public void run() {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+        
         while (true) {
             String commandDescription = null;
             try {
@@ -507,6 +531,7 @@ public class MessagingController implements Runnable {
         if (memorizingListener != null && listener != null) {
             memorizingListener.refreshOther(listener);
         }
+        
     }
 
     public void removeListener(MessagingListener listener) {
@@ -4961,17 +4986,311 @@ public class MessagingController implements Runnable {
         }
 
         NotificationSetting n = account.getNotificationSetting();
+        
+        StringBuilder speechMessageNotice = new StringBuilder();
+        
+        if (message.getFrom() != null) {
+        	Address[] fromAddrs = message.getFrom();
+        	String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly().toString() : null;
+        	if (from != null) {
+        		// Show From: address by default
+        		if (!account.isAnIdentity(fromAddrs)) {
+        			if (n.getSpeechType() == 3) {
+        				// Regex mode
+        				String before = "/" + from + "/" + subject + "/";
+        				String after = before.replaceAll(n.getSpeechRegexMatch(), n.getSpeechRegexReplace());
+        				if (after == before) {
+        					speechMessageNotice.append("");
+        				} else {
+        					speechMessageNotice.append(after);
+        				}
+        			} else if (n.getSpeechType() == 0 || n.getSpeechType() == 2) {
+        				speechMessageNotice.append("New email from ").append(from);
+        			}
+        			if (n.getSpeechType() == 1) {
+        				speechMessageNotice.append("New email with subject: ").append(subject);
+        			}
+        			if (n.getSpeechType() == 0) {
+        				speechMessageNotice.append(" with subject: ").append(subject);
+        			}
+        		}
+        		// show To: if the message was sent from me
+        		else {
+        			Address[] rcpts;
+        			String to = null;
+					try {
+						rcpts = message.getRecipients(Message.RecipientType.TO);
+	        			to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
+					} catch (MessagingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        			String FormattedTo;
+        			if (to != null) {
+        				FormattedTo = String.format(context.getString(R.string.message_to_fmt), to);
+        			} else {
+        				FormattedTo = context.getString(R.string.general_no_sender);
+        			}
+        			if (n.getSpeechType() == 3) {
+        				// Regex mode
+        				String before = "/" + FormattedTo + "/" + subject + "/";
+        				String after = before.replaceAll(n.getSpeechRegexMatch(), n.getSpeechRegexReplace());
+        				if (after == before) {
+        					speechMessageNotice.append("");
+        				} else {
+        					speechMessageNotice.append(after);
+        				}
+        			} else {
+	        			if (n.getSpeechType() == 0 || n.getSpeechType() == 2) {
+	        				speechMessageNotice.append("New email ").append(FormattedTo);
+	        			}
+	        			if (n.getSpeechType() == 1) {
+	        				speechMessageNotice.append("New email with subject: ").append(subject);
+	        			}
+	        			if (n.getSpeechType() == 0) {
+	        				speechMessageNotice.append(" with subject: ").append(subject);
+	        			}
+        			}
+        		}
+        	}
+        }
 
         configureNotification(
+        		builder,
+        		null,
+        		(n.shouldVibrate() ? n.getVibration() : null),
+        		(n.isLed()) ? Integer.valueOf(n.getLedColor()) : null,
+        		K9.NOTIFICATION_LED_BLINK_SLOW,
+        		ringAndVibrate);     
+        
+        
+        String speechText;
+        if (n.shouldSpeechAnnounce()) {
+        	speechText = speechMessageNotice.toString();
+        } else {
+        	speechText = null;
+        }
+        synchronized (mNotificationQueue) {
+	        mNotificationQueue.SetMaxListSize(n.getSpeechQueue());
+	        Log.v(K9.LOG_TAG, "There are " + mNotificationQueue.size() + " notifications in the queue.");
+	        if (mNotificationQueue.isEmpty()) {
+	        	if (!n.shouldRing()) {
+	        		if (speechText != null) {
+	        			HashMap<String, String> params = new HashMap<String, String>();
+	        			params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "theUtId");
+	        			params.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_NOTIFICATION));
+	        			if (mNotificationQueue.add(new NotificationQueue(null, speechText, State.eSpeech, account.getAccountNumber()))) {
+	        				AudioManager lAudioManager = (AudioManager) mApplication.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+	        				lAudioManager.requestAudioFocus(this, AudioManager.STREAM_NOTIFICATION, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+	        				mTts.speak(speechMessageNotice.toString(), TextToSpeech.QUEUE_FLUSH, params);
+	        			}
+	        		}
+	        	} else {
+	        		try {
+	        			mMediaPlayer.reset();
+	        			mMediaPlayer.setDataSource(n.getRingtone());
+	        			mMediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+	        			mMediaPlayer.setOnCompletionListener(this);
+	        			mMediaPlayer.prepare();
+	        		} catch (IOException e) {
+	        		}
+	        		if (mNotificationQueue.add(new NotificationQueue(null, speechText, State.eMedia, account.getAccountNumber()))) {
+	        			AudioManager lAudioManager = (AudioManager) mApplication.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+	        			lAudioManager.requestAudioFocus(this, AudioManager.STREAM_NOTIFICATION, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+	        			mMediaPlayer.start();
+	        			Log.v(K9.LOG_TAG, "Starting playing sound and added speech to queue.");
+	        		}
+	        	}
+	        } else {
+	        	if (mNotificationQueue.add(new NotificationQueue((n.shouldRing() ? n.getRingtone() : null), speechText, State.eNone, account.getAccountNumber()))) {
+	        		Log.v(K9.LOG_TAG, "Added sound and speech to queue.");
+	        	}
+	        }
+        }
+
+        
+        /*configureNotification(
                 builder,
                 (n.shouldRing()) ?  n.getRingtone() : null,
                 (n.shouldVibrate()) ? n.getVibration() : null,
                 (n.isLed()) ? Integer.valueOf(n.getLedColor()) : null,
                 K9.NOTIFICATION_LED_BLINK_SLOW,
-                ringAndVibrate);
+                ringAndVibrate);*/
 
         notifMgr.notify(account.getAccountNumber(), builder.build());
     }
+    
+    public void removePendingAlerts(int nAccountNumber) {
+        synchronized (mNotificationQueue) {
+	    	if (mNotificationQueue.size() == 0) {
+	    		return;
+	    	}
+	    	Boolean fNeedToStartNextItem = false;
+	    	Log.v(K9.LOG_TAG, "Removing pending alerts for account " + nAccountNumber);
+			AudioManager lAudioManager = (AudioManager) mApplication.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+	    	ListIterator<NotificationQueue> lIterator = mNotificationQueue.listIterator();
+	    	NotificationQueueList lRemoveItems = new NotificationQueueList();
+	    	while (lIterator.hasNext()) {
+	    		NotificationQueue lItem = lIterator.next();
+	    		if (lItem.GetAccountNumber() == nAccountNumber) {
+	    			switch (lItem.GetState()) {
+	    			case eMedia:
+	    				mMediaPlayer.reset();
+	    				lAudioManager.abandonAudioFocus(this);
+	    				// We don't get a callback for this case.
+	    				lRemoveItems.add(lItem);
+	    				fNeedToStartNextItem = true;
+	    				break;
+	    			case eSpeech:
+	    				mTts.stop();
+	    				lAudioManager.abandonAudioFocus(this);
+	    				break;
+	    			case eNone:
+	    				lRemoveItems.add(lItem);
+	    				break;
+	    			}
+	    		}
+	    	}
+	    	mNotificationQueue.removeAll(lRemoveItems);	    	
+	    	Log.v(K9.LOG_TAG, "Done removing pending alerts for account " + nAccountNumber);
+	    	if (fNeedToStartNextItem) {
+	        	Log.v(K9.LOG_TAG, "Checking queue for next entry to be started.");
+	    	   	while (!mNotificationQueue.isEmpty()) {
+	        		if (mNotificationQueue.getFirst().GetMediaToPlay() == null) {
+	        			if (mNotificationQueue.getFirst().GetPhraseToSay() != null) {
+	        				HashMap<String, String> params = new HashMap<String, String>();
+	        				params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "theUtId");
+	        				params.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_NOTIFICATION));
+	        				Log.v(K9.LOG_TAG, "Started speech for this media finished.");
+	        				mNotificationQueue.getFirst().SetState(State.eSpeech);
+	        				lAudioManager.requestAudioFocus(this, AudioManager.STREAM_NOTIFICATION, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+	        				mTts.speak(mNotificationQueue.getFirst().GetPhraseToSay(), TextToSpeech.QUEUE_FLUSH, params);
+	        				Log.v(K9.LOG_TAG, "Started next speech");
+	        				break;
+	        			} else {
+	        				mNotificationQueue.removeFirst();
+	        			}
+	        		} else {
+	        			mNotificationQueue.getFirst().SetState(State.eMedia);
+	        			try {
+	        				mMediaPlayer.setDataSource(mNotificationQueue.getFirst().GetMediaToPlay());
+	        				mMediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+	        				mMediaPlayer.setOnCompletionListener(this);
+	        				mMediaPlayer.prepare();
+	        			} catch (IOException e) {
+	        				mNotificationQueue.removeFirst();
+	        				continue;
+	        			}
+	        			lAudioManager.requestAudioFocus(this, AudioManager.STREAM_NOTIFICATION, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+	        			mMediaPlayer.start();
+	        			Log.v(K9.LOG_TAG, "Media started");
+	        			break;
+	        		}
+	        	}
+	    	}
+        }
+	}
+
+    public void onUtteranceCompleted(String StringCompleted) {
+    	Log.v(K9.LOG_TAG, "Speech finished");
+    	AudioManager lAudioManager = (AudioManager) mApplication.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+    	lAudioManager.abandonAudioFocus(this);
+        synchronized (mNotificationQueue) {
+	    	if (mNotificationQueue.size() == 0) {
+	    		// Not a normal case, but don't crash
+	    		return;
+	    	}
+	    	mNotificationQueue.removeFirst();
+	    	while (!mNotificationQueue.isEmpty()) {
+	    		if (mNotificationQueue.getFirst().GetMediaToPlay() == null) {
+	    			if (mNotificationQueue.getFirst().GetPhraseToSay() == null) {
+	    				// no media and no speech?? Well, get rid of this item
+	    				Log.v(K9.LOG_TAG, "Got queue item with no speech and no media. Going to next queue item");
+						mNotificationQueue.removeFirst();
+						continue;    				
+	    			}
+	    			HashMap<String, String> params = new HashMap<String, String>();
+	    			params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "theUtId");
+	    			params.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_NOTIFICATION));
+	    			mNotificationQueue.getFirst().SetState(State.eSpeech);
+	    			lAudioManager.requestAudioFocus(this, AudioManager.STREAM_NOTIFICATION, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+	    			mTts.speak(mNotificationQueue.getFirst().GetPhraseToSay(), TextToSpeech.QUEUE_FLUSH, params);
+	    	    	Log.v(K9.LOG_TAG, "Started next speech");
+	    			break;
+	    		} else {
+	    			if (mNotificationQueue.getFirst().GetMediaToPlay() != null) {
+	    				Log.v(K9.LOG_TAG, "Starting media for next notification.");
+	    				mNotificationQueue.getFirst().SetState(State.eMedia);
+	    				mMediaPlayer.reset();
+	    				try {
+	    					mMediaPlayer.setDataSource(mNotificationQueue.getFirst().GetMediaToPlay());
+	    					mMediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+	    					mMediaPlayer.setOnCompletionListener(this);
+	    					mMediaPlayer.prepare();
+	    				} catch (IOException e) {
+	    					mNotificationQueue.removeFirst();
+	    					continue;
+	    				}
+	    				lAudioManager.requestAudioFocus(this, AudioManager.STREAM_NOTIFICATION, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+	    				mMediaPlayer.start();
+		    	    	Log.v(K9.LOG_TAG, "Media started");
+	    				break;
+	    			} else {
+	    			}
+	    		}
+	    	}
+        }
+    }
+    
+    public void onCompletion(MediaPlayer mp) {
+    	Log.v(K9.LOG_TAG, "Media player finished.");
+    	AudioManager lAudioManager = (AudioManager) mApplication.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+    	lAudioManager.abandonAudioFocus(this);
+    	mMediaPlayer.reset();
+        synchronized (mNotificationQueue) {
+	    	if (mNotificationQueue.size() == 0) {
+	    		// Not a normal case, but don't crash
+	    		return;
+	    	}
+	    	mNotificationQueue.getFirst().SetMediaToPlay(null);
+	    	if (mNotificationQueue.getFirst().GetPhraseToSay() == null) {
+	    		mNotificationQueue.removeFirst();
+	    	}
+	    	while (!mNotificationQueue.isEmpty()) {
+	    		if (mNotificationQueue.getFirst().GetMediaToPlay() == null) {
+	    			if (mNotificationQueue.getFirst().GetPhraseToSay() != null) {
+	    				HashMap<String, String> params = new HashMap<String, String>();
+	    				params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "theUtId");
+	    				params.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_NOTIFICATION));
+	    				Log.v(K9.LOG_TAG, "Started speech for this media finished.");
+	    				mNotificationQueue.getFirst().SetState(State.eSpeech);
+	    				lAudioManager.requestAudioFocus(this, AudioManager.STREAM_NOTIFICATION, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+	    				mTts.speak(mNotificationQueue.getFirst().GetPhraseToSay(), TextToSpeech.QUEUE_FLUSH, params);
+	    				Log.v(K9.LOG_TAG, "Started next speech");
+	    				break;
+	    			} else {
+	    				mNotificationQueue.removeFirst();
+	    			}
+	    		} else {
+	    			mNotificationQueue.getFirst().SetState(State.eMedia);
+	    			try {
+	    				mMediaPlayer.setDataSource(mNotificationQueue.getFirst().GetMediaToPlay());
+	    				mMediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+	    				mMediaPlayer.setOnCompletionListener(this);
+	    				mMediaPlayer.prepare();
+	    			} catch (IOException e) {
+	    				mNotificationQueue.removeFirst();
+	    				continue;
+	    			}
+	    			lAudioManager.requestAudioFocus(this, AudioManager.STREAM_NOTIFICATION, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+	    			mMediaPlayer.start();
+	    			Log.v(K9.LOG_TAG, "Media started");
+	    			break;
+	    		}
+	    	}
+        }
+    }
+
 
     private TaskStackBuilder buildAccountsBackStack(Context context) {
         TaskStackBuilder stack = TaskStackBuilder.create(context);
@@ -5081,6 +5400,7 @@ public class MessagingController implements Runnable {
         notifMgr.cancel(account.getAccountNumber());
         notifMgr.cancel(-1000 - account.getAccountNumber());
         notificationData.remove(account.getAccountNumber());
+        removePendingAlerts(account.getAccountNumber());
     }
 
     /**
@@ -5634,4 +5954,9 @@ public class MessagingController implements Runnable {
     interface MessageActor {
         public void act(final Account account, final Folder folder, final List<Message> messages);
     }
+
+	@Override
+	public void onAudioFocusChange(int focusChange) {
+    	Log.v(K9.LOG_TAG, "Audio focus changed to " + focusChange);
+	}
 }

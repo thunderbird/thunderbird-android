@@ -5,7 +5,7 @@
     android:versionName="4.501" package="com.fsck.k9"
     >
     <uses-sdk
-       android:minSdkVersion="7"
+       android:minSdkVersion="8"
        android:targetSdkVersion="15"
        />
     <supports-screens

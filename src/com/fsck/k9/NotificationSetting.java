@@ -19,7 +19,16 @@ public class NotificationSetting {
     private boolean mLed;
 
     private int mLedColor;
+    
+    private boolean mSpeechAnnounce;
+    
+    private int mSpeechType;
+    
+    private int mSpeechQueue;
 
+    private String mSpeechRegexMatch;
+    
+    private String mSpeechRegexReplace;
     /**
      * Vibration kill switch.
      */
@@ -49,6 +58,51 @@ public class NotificationSetting {
         return mRing;
     }
 
+    public synchronized void setSpeechAnnounce(boolean speechAnnounce) {
+        mSpeechAnnounce = speechAnnounce;
+    }
+    
+    public synchronized boolean shouldSpeechAnnounce() {
+        return mSpeechAnnounce;
+    }
+
+    public synchronized void setSpeechType(int inSpeechType) {
+    	mSpeechType = inSpeechType;
+    }
+    
+    public synchronized int getSpeechType() {
+    	return mSpeechType;
+    }
+
+    public synchronized void setSpeechQueue(int inSpeechQueue) {
+    	mSpeechQueue = inSpeechQueue;
+    }
+    
+    public synchronized int getSpeechQueue() {
+    	return mSpeechQueue;
+    }
+
+    public synchronized void setSpeechRegexMatch(String inSpeechRegexMatch) {
+    	mSpeechRegexMatch = inSpeechRegexMatch;
+    }
+    
+    public synchronized String getSpeechRegexMatch() {
+    	return mSpeechRegexMatch;
+    }
+    
+    public synchronized void setSpeechRegexReplace(String inSpeechRegexReplace) {
+    	mSpeechRegexReplace = inSpeechRegexReplace;
+    }
+    
+    public synchronized String getSpeechRegexReplace() {
+    	return mSpeechRegexReplace;
+    }
+    
+
+    /**
+     * @return <code>true</code> if ringtone is allowed to play,
+     *         <code>false</code> otherwise.
+     */
     public synchronized String getRingtone() {
         return mRingtoneUri;
     }
