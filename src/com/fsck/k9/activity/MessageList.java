@@ -1118,15 +1118,17 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         } else {
             mMessageViewContainer.removeView(mMessageViewPlaceHolder);
 
+            if (mMessageListFragment != null) {
+                mMessageListFragment.setActiveMessage(messageReference);
+            }
+
             MessageViewFragment fragment = MessageViewFragment.newInstance(messageReference);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.message_view_container, fragment);
             mMessageViewFragment = fragment;
             ft.commit();
 
-            if (mDisplayMode == DisplayMode.SPLIT_VIEW) {
-                mMessageListFragment.setActiveMessage(messageReference);
-            } else {
+            if (mDisplayMode != DisplayMode.SPLIT_VIEW) {
                 showMessageView();
             }
         }

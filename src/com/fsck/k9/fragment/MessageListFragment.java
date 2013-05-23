@@ -1042,12 +1042,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mSenderAboveSubject = K9.messageListSenderAboveSubject();
 
         if (!mLoaderJustInitialized) {
-            // Refresh the message list
-            LoaderManager loaderManager = getLoaderManager();
-            for (int i = 0; i < mAccountUuids.length; i++) {
-                loaderManager.restartLoader(i, null, this);
-                mCursorValid[i] = false;
-            }
+            restartLoader();
         } else {
             mLoaderJustInitialized = false;
         }
@@ -1088,6 +1083,19 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         updateTitle();
+    }
+
+    private void restartLoader() {
+        if (mCursorValid == null) {
+            return;
+        }
+
+        // Refresh the message list
+        LoaderManager loaderManager = getLoaderManager();
+        for (int i = 0; i < mAccountUuids.length; i++) {
+            loaderManager.restartLoader(i, null, this);
+            mCursorValid[i] = false;
+        }
     }
 
     private void initializePullToRefresh(LayoutInflater inflater, View layout) {
@@ -3222,7 +3230,19 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<String>();
         if (needConditions) {
+            boolean selectActive = mActiveMessage != null && mActiveMessage.accountUuid.equals(accountUuid);
+
+            if (selectActive) {
+                query.append("(" + MessageColumns.UID + " = ? AND " + SpecialColumns.FOLDER_NAME + " = ?) OR (");
+                queryArgs.add(mActiveMessage.uid);
+                queryArgs.add(mActiveMessage.folderName);
+            }
+
             SqlQueryBuilder.buildWhereClause(account, mSearch.getConditions(), query, queryArgs);
+
+            if (selectActive) {
+                query.append(')');
+            }
         }
 
         String selection = query.toString();
@@ -3453,6 +3473,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      */
     public void setActiveMessage(MessageReference messageReference) {
         mActiveMessage = messageReference;
+
+        // Reload message list with modified query that always includes the active message
+        if (isAdded()) {
+            restartLoader();
+        }
+
+        // Redraw list immediately
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }
