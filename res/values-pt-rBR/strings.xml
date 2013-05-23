@@ -82,7 +82,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="read_attachment_label">Ler anexos do E-mail</string>
     <string name="read_attachment_desc">Permitir que o K-9 leia os anexos de seus e-mails.</string>
-    <string name="read_messages_label">ler e-mails</string>
+    <string name="read_messages_label">Ler e-mails</string>
     <string name="read_messages_desc">Permitir que o K-9 leia seus e-mails.</string>
     <string name="delete_messages_label">Excluir e-mails</string>
     <string name="delete_messages_desc">Permitir que o K-9 exclua seus e-mails.</string>
@@ -147,7 +147,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="remove_account_action">Remover conta</string>
     <string name="clear_pending_action">Limpar ações pendentes (perigoso!)</string>
 
-    <string name="mark_as_read_action">Marcar como lido</string>
+    <string name="mark_as_read_action">Marcar como lida</string>
     <string name="send_alternate_action">Compartilhar</string>
     <string name="send_alternate_chooser_title">Escolher remetente</string>
 
@@ -162,7 +162,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="message_view_theme_action_light">Mudar para o tema claro</string>
 
     <string name="mark_as_unread_action">Marcar como não lida</string>
-    <string name="add_cc_bcc_action">Incluir CC/BCC</string>
+    <string name="add_cc_bcc_action">Incluir CC/CCO</string>
     <string name="read_receipt">Confirmação de leitura</string>
     <string name="read_receipt_enabled">Confirmação de leitura será requisitada</string>
     <string name="read_receipt_disabled">Confirmação de leitura não será requisitada</string>
@@ -303,7 +303,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="global_settings_sender_above_subject_label">Correspondente acima do assunto</string>
     <string name="global_settings_sender_above_subject_summary">Exibir nomes de correspondentes acima da linha de assunto ao invés de embaixo</string>
 
-    <string name="global_settings_show_contact_name_label">Mostar nomes dos contatos</string>
+    <string name="global_settings_show_contact_name_label">Mostrar nomes dos contatos</string>
     <string name="global_settings_show_contact_name_summary">Quando disponível, utilizar nomes dos contatos para destinitário</string>
     <string name="global_settings_registered_name_color_label">Colorir contatos</string>
     <string name="global_settings_registered_name_color_default">Não colorir nomes em sua lista de contatos</string>
@@ -508,7 +508,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_notify_summary">Mostrar na barra de status quando um e-mail chegar</string>
     <string name="account_settings_notify_sync_summary">Mostrar na barra de status quanto verificar se há novos e-mails</string>
     <string name="account_settings_notify_self_label">Incluir e-mail de saída</string>
-    <string name="account_settings_notify_self_summary">Mostar avisos para mensagens que eu envio</string>
+    <string name="account_settings_notify_self_summary">Mostrar avisos para mensagens que eu envio</string>
     <string name="account_settings_notification_opens_unread_label">Avisos abrem mensagens não lidas</string>
     <string name="account_settings_notification_opens_unread_summary">Procurar por mensagens não lidas quando o aviso for aberto</string>
     <string name="account_settings_notification_unread_count_label">Mostrar contagem de não lidas</string>
@@ -537,8 +537,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_message_format_html">HTML (imagens e formatação serão preservadas)</string>
     <string name="account_settings_message_format_auto">Automático (texto plano exceto ao responder uma mensagem em HTML)</string>
 
-    <string name="account_settings_always_show_cc_bcc_label">Sempre exibir CC/BCC</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Sempre exibir os campos CC/BCC</string>
+    <string name="account_settings_always_show_cc_bcc_label">Sempre exibir CC/CCO</string>
+    <string name="account_settings_always_show_cc_bcc_summary">Sempre exibir os campos CC/CCO</string>
 
     <string name="account_settings_message_read_receipt_label">Confirmação de leitura</string>
     <string name="account_settings_message_read_receipt_summary">Sempre solicitar confirmação de leitura</string>
@@ -759,7 +759,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Recusar chave</string>
 
-    <!-- NEW: V, Z untranslated -->
     <string name="message_list_help_key">
     Del (or D) - Excluir\n
     R - Responder\n
@@ -767,7 +766,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     C - Escrever\n
     F - Encaminhar\n
     M - Mover\n
-    V - Archive\n
+    V - Arquivar\n
     Y - Copiar\n
     Z - Marcar como não-lida\n
     G - Favoritar\n
@@ -782,18 +781,18 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="folder_list_help_key">
     1 - Mostrar apenas pastas de Primeira Classe\u000A
     2 - Mostrar pastas de Primeira e Segunda Classe\u000A
-    3 - Mostar todas exceto as de Segunda Classe\u000A
-    4 - Mostar todas as pastas\u000A
+    3 - Mostrar todas exceto as de Segunda Classe\u000A
+    4 - Mostrar todas as pastas\u000A
     Q - Retornar para contas\u000A
     S - Editar Configurações de Conta</string>
 
     <string name="folder_list_filter_hint">o nome da pasta contém</string>
 
     <string name="folder_list_display_mode_label">Pastas</string>
-    <string name="folder_list_display_mode_all">Mostar todas as pastas</string>
-    <string name="folder_list_display_mode_first_class">Mostar apenas pastas de Primeira Classe</string>
+    <string name="folder_list_display_mode_all">Mostrar todas as pastas</string>
+    <string name="folder_list_display_mode_first_class">Mostrar apenas pastas de Primeira Classe</string>
     <string name="folder_list_display_mode_first_and_second_class">Mostrar pastas de Primeira e Segunda Classe</string>
-    <string name="folder_list_display_mode_not_second_class">Mostar todas exceto as de Segunda Classe</string>
+    <string name="folder_list_display_mode_not_second_class">Mostrar todas exceto as de Segunda Classe</string>
 
     <string name="account_settings_signature__location_label">Local da Assinatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes de escrever o texto</string>
@@ -1082,22 +1081,22 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="image_saved_as">Imagem salva como \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Falha ao salvar imagem.</string>
 
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
-    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
-    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
-    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
-    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+    <string name="account_settings_remote_search_num_results_entries_all">Todas</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Limite de resultados ao pesquisar servidor</string>
+    <string name="account_settings_remote_search_num_summary">A busca irá parar após <xliff:g id="num_results">%s</xliff:g> resultados serem encontrados.</string>
+    <string name="account_settings_remote_search_full_text">Incluir o texto do corpo da mensagem na pesquisa</string>
+    <string name="account_settings_remote_search_full_text_summary">Pesquisas amplas podem ser mais lentas.</string>
+    <string name="remote_search_sending_query">Consultando o servidor</string>
+    <string name="remote_search_downloading">Obtidos %d resultados</string>
+    <string name="remote_search_downloading_limited">Obtidos %1$d de %2$d resultados</string>
+    <string name="remote_search_error">Falha na busca remota</string>
 
     <!-- NEW: <string name="account_settings_search">Search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
