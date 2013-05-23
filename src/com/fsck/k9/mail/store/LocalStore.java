@@ -126,7 +126,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 48;
+    public static final int DB_VERSION = 49;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -665,6 +665,27 @@ public class LocalStore extends Store implements Serializable {
                                     "BEGIN " +
                                     "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
                                     "END");
+                        }
+
+                        if (db.getVersion() < 49) {
+                            final String startTags = "<html><head/><body>";
+                            final String endTags = "</body></html>";
+                            final int startLength = startTags.length();
+                            final int endLength = endTags.length();
+                            try {
+                                db.execSQL(
+                                        "UPDATE messages "
+                                                + "SET html_content = substr(html_content, ?, length(html_content) - ?) "
+                                                + "WHERE html_content LIKE ?",
+                                        new Object[] { startLength + 1,
+                                                startLength + endLength,
+                                                startTags + "%" + endTags });
+
+                            } catch (SQLiteException e) {
+                                Log.e(K9.LOG_TAG,
+                                        "Error trying to remove HTML tags from messages",
+                                        e);
+                            }
                         }
                     }
                 } catch (SQLiteException e) {
