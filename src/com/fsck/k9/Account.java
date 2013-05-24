@@ -102,7 +102,10 @@ public class Account implements BaseAccount {
             Color.parseColor("#9933CC")     // purple
     };
 
-    public enum SortType {
+	final int starColor = Color.parseColor("#FFBB33");
+
+
+	public enum SortType {
         SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
         SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
         SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true),
@@ -845,6 +848,8 @@ public class Account implements BaseAccount {
     }
 
     public synchronized void cacheChips() {
+
+
         mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
         mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
         mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
@@ -853,8 +858,8 @@ public class Account implements BaseAccount {
         mCcMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_NOTCH);
         mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
         mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
-        mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
-        mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
+        mFlaggedReadColorChip = new ColorChip(starColor, true, ColorChip.STAR);
+        mFlaggedUnreadColorChip = new ColorChip(starColor, false, ColorChip.STAR);
         mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
     }
 
