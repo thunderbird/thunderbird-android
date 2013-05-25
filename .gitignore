@@ -18,3 +18,5 @@ monkey.txt
 *~
 *.iws
 target
+build
+.gradle

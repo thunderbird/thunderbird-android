@@ -1,0 +1,20 @@
+apply plugin: 'android-library'
+
+dependencies {
+  compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+android {
+  compileSdkVersion 17
+  buildToolsVersion '17'
+
+  sourceSets {
+    main {
+      manifest.srcFile 'AndroidManifest.xml'
+      java.srcDirs = ['src']
+      res.srcDirs = ['res']
+    }
+  }
+}
+
+archivesBaseName = 'ActionBarSherlock'

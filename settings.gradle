@@ -1,0 +1,4 @@
+include ':plugins:ActionBarSherlock:library'
+include ':plugins:Android-PullToRefresh:library'
+include ':plugins:ckChangeLog:library'
+include ':plugins:HoloColorPicker'
