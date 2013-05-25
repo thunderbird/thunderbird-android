@@ -28,5 +28,10 @@ android {
       java.srcDirs = ['src']
       res.srcDirs = ['res']
     }
+
+    instrumentTest {
+      manifest.srcFile 'tests/AndroidManifest.xml'
+      java.srcDirs = ['tests/src']
+    }
   }
 }
