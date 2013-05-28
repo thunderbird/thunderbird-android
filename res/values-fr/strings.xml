@@ -350,7 +350,7 @@ de plus</string>
     <string name="global_settings_messageview_fixedwidth_label">Polices à taille fixe</string>
     <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à taille fixe pour les messages en texte brut</string>
     <string name="global_settings_messageview_autofit_width_label">Ajustement auto des messages</string>
-    <string name="global_settings_messageview_autofit_width_summary">Réduit les messages pour s'adapter à l'écran</string>
+    <string name="global_settings_messageview_autofit_width_summary">Réduit les messages pour s\'adapter à l\'écran</string>
     <string name="global_settings_messageview_return_to_list_label">Retour à la liste après suppression</string>
     <string name="global_settings_messageview_return_to_list_summary">Retourner à la liste de messages après la suppression d\'un message</string>
     <string name="global_settings_messageview_show_next_label">Voir le message suivant après suppression</string>
