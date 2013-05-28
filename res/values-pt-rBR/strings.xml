@@ -110,7 +110,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="status_next_poll">Nova verif. <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Sincronização desabilitada</string>
 
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionadas</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Próximo</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Anterior</string> <!-- Used as part of a multi-step process -->
@@ -734,9 +734,10 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="sort_by_date">Data</string>
     <string name="sort_by_arrival">Recebimento</string>
     <string name="sort_by_subject">Assunto</string>
-    <string name="sort_by_flag">Favorito</string>
-    <string name="sort_by_unread">Lido/não lido</string>
-    <string name="sort_by_attach">Com anexo</string>
+    <string name="sort_by_sender">Remetente</string>
+    <string name="sort_by_flag">Favoritas</string>
+    <string name="sort_by_unread">Lidas/Não-Lidas</string>
+    <string name="sort_by_attach">Com Anexo</string>
 
     <string name="account_delete_dlg_title">Remover conta</string>
 
@@ -1132,4 +1133,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="last_refresh_time_format">Última atualização <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">Última atualização <xliff:g id="time_with_preposition">%s</xliff:g> (Push ativado)</string>
     <string name="preposition_for_date">em <xliff:g id="date">%s</xliff:g></string>
+    <string name="mark_all_as_read">Marcar todas como lidas</string>
+    <string name="global_settings_messageview_autofit_width_label">Auto-ajustar mensagens</string>
+    <string name="global_settings_messageview_autofit_width_summary">Ajustar texto para caber na tela</string>
 </resources>
