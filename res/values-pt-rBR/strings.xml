@@ -129,7 +129,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="refile_action">Rearquivar</string>
     <string name="continue_action">Continuar</string>
     <string name="back_action">Voltar</string>
-    <string name="done_action">Pronto</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Concluído</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Descartar</string>
     <string name="save_draft_action">Salvar como rascunho</string>
     <string name="check_mail_action">Verificar e-mail</string>
@@ -207,7 +207,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> mais em <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Responder</string>
-    <string name="notification_action_read">Ler</string>
+    <string name="notification_action_read">Lido</string>
     <string name="notification_action_delete">Excluir</string>
     <string name="notification_certificate_error_title">Erro no certificado de <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Verifique suas configurações de servidor</string>
@@ -558,8 +558,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_crypto_auto_signature">Auto-login</string>
     <string name="account_settings_crypto_auto_signature_summary">Use o endereço de e-mail da conta para escolher assinatura.</string>
     <string name="account_settings_crypto_auto_encrypt">Auto-encriptar</string>
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
-    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
+    <string name="account_settings_crypto_auto_encrypt_summary">Definir encriptação automaticamente se uma chave pública corresponder à um destinatário.</string>
+    <string name="account_settings_crypto_apg_not_installed">APG não instalado</string>
 
     <string name="account_settings_mail_check_frequency_label">Frequência de verificação de e-mail</string>
 
@@ -1099,13 +1099,13 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="remote_search_downloading_limited">Obtidos %1$d de %2$d resultados</string>
     <string name="remote_search_error">Falha na busca remota</string>
 
-    <!-- NEW: <string name="account_settings_search">Search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
-    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <string name="account_settings_search">Buscar</string>
+    <string name="account_settings_remote_search_enabled">Ativar busca no servidor</string>
+    <string name="account_settings_remote_search_enabled_summary">Efetuar buscas no servidor além de no seu aparelho</string>
+    <string name="action_remote_search">Buscar mensagens no servidor</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Puxe para buscar servidor…</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Solte para buscar servidor…</string>
+    <string name="remote_search_unavailable_no_network">Busca remota indisponível sem conexão com a internet.</string>
 
     <string name="global_settings_background_as_unread_indicator_label">Usar fundo como indicador de não-lidas</string>
     <string name="global_settings_background_as_unread_indicator_summary">Exibir mensagens lidas e não-lidas com cores de fundo diferentes</string>
