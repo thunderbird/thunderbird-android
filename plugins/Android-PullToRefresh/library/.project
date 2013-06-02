@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>k9mail</name>
+	<name>k9mail-Android-PullToRefresh</name>
 	<comment></comment>
 	<projects>
-		<project>k9mail-ActionBarSherlock</project>
-		<project>k9mail-Android-PullToRefresh</project>
-		<project>k9mail-ckChangeLog</project>
-		<project>k9mail-HoloColorPicker</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
