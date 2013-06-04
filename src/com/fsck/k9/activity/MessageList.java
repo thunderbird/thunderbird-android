@@ -439,19 +439,27 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             }
         }
 
+        Preferences prefs = Preferences.getPreferences(getApplicationContext());
+
         String[] accountUuids = mSearch.getAccountUuids();
-        mSingleAccountMode = (accountUuids.length == 1 && !mSearch.searchAllAccounts());
+        if (mSearch.searchAllAccounts()) {
+            Account[] accounts = prefs.getAccounts();
+            mSingleAccountMode = (accounts.length == 1);
+            if (mSingleAccountMode) {
+                mAccount = accounts[0];
+            }
+        } else {
+            mSingleAccountMode = (accountUuids.length == 1);
+            if (mSingleAccountMode) {
+                mAccount = prefs.getAccount(accountUuids[0]);
+            }
+        }
         mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
 
-        if (mSingleAccountMode) {
-            Preferences prefs = Preferences.getPreferences(getApplicationContext());
-            mAccount = prefs.getAccount(accountUuids[0]);
-
-            if (mAccount != null && !mAccount.isAvailable(this)) {
-                Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
-                onAccountUnavailable();
-                return;
-            }
+        if (mSingleAccountMode && (mAccount == null || !mAccount.isAvailable(this))) {
+            Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
+            onAccountUnavailable();
+            return;
         }
 
         if (mSingleFolderMode) {
@@ -1118,15 +1126,17 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         } else {
             mMessageViewContainer.removeView(mMessageViewPlaceHolder);
 
+            if (mMessageListFragment != null) {
+                mMessageListFragment.setActiveMessage(messageReference);
+            }
+
             MessageViewFragment fragment = MessageViewFragment.newInstance(messageReference);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.message_view_container, fragment);
             mMessageViewFragment = fragment;
             ft.commit();
 
-            if (mDisplayMode == DisplayMode.SPLIT_VIEW) {
-                mMessageListFragment.setActiveMessage(messageReference);
-            } else {
+            if (mDisplayMode != DisplayMode.SPLIT_VIEW) {
                 showMessageView();
             }
         }

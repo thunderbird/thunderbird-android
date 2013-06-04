@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="18001"
-    android:versionName="4.501" package="com.fsck.k9"
+    android:versionCode="18002"
+    android:versionName="4.502" package="com.fsck.k9"
     >
     <uses-sdk
-       android:minSdkVersion="7"
-       android:targetSdkVersion="15"
+       android:minSdkVersion="8"
+           android:targetSdkVersion="17"
        />
     <supports-screens
         android:largeScreens="true"
@@ -425,9 +425,6 @@ otherwise it would make K-9 start at the wrong time
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.AccountList">
         </activity>
         <activity
             android:name=".activity.UpgradeDatabases"

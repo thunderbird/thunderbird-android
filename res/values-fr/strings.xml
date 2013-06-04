@@ -183,8 +183,8 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="send_alternate_action">Transférer avec une autre application</string>
     <string name="send_alternate_chooser_title">Choisir l\'expéditeur</string>
 
-    <string name="flag_action">Ajouter une étoile</string>
-    <string name="unflag_action">Enlever l\'étoile</string>
+    <string name="flag_action">Ajouter aux favoris</string>
+    <string name="unflag_action">Enlever des favoris</string>
     <string name="copy_action">Copier</string>
     <string name="select_text_action">Sélection de texte</string>
     <string name="show_headers_action">Afficher entêtes</string>
@@ -349,6 +349,8 @@ de plus</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Polices à taille fixe</string>
     <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à taille fixe pour les messages en texte brut</string>
+    <string name="global_settings_messageview_autofit_width_label">Ajustement auto des messages</string>
+    <string name="global_settings_messageview_autofit_width_summary">Réduit les messages pour s\'adapter à l\'écran</string>
     <string name="global_settings_messageview_return_to_list_label">Retour à la liste après suppression</string>
     <string name="global_settings_messageview_return_to_list_summary">Retourner à la liste de messages après la suppression d\'un message</string>
     <string name="global_settings_messageview_show_next_label">Voir le message suivant après suppression</string>
@@ -697,7 +699,7 @@ de plus</string>
     <string name="account_settings_outgoing_summary">Configurer le serveur de messagerie sortant</string>
     <string name="account_settings_description_label">Nom du compte</string>
     <string name="account_settings_name_label">Votre nom</string>
-    <string name="notifications_title">Paramètres de notification</string>
+    <string name="notifications_title">Notifications</string>
     <string name="account_settings_vibrate_enable">Vibreur</string>
     <string name="account_settings_vibrate_summary">Vibrer à la réception d\'un e-mail</string>
     <string name="account_settings_vibrate_pattern_label">Type de vibration</string>
@@ -759,7 +761,9 @@ de plus</string>
     <string name="sort_latest_first">Plus récents en premier</string>
     <string name="sort_subject_alpha">A-Z par sujet</string>
     <string name="sort_subject_re_alpha">Z-A par sujet</string>
-    <string name="sort_flagged_first">Messages avec étoiles en premier</string>
+    <string name="sort_sender_alpha">A-Z par expéditeur</string>
+    <string name="sort_sender_re_alpha">Z-A par expéditeur</string>
+    <string name="sort_flagged_first">Messages favoris en premier</string>
     <string name="sort_flagged_last">Messages sans étoiles en premier</string>
     <string name="sort_unread_first">Messages non lus en premier</string>
     <string name="sort_unread_last">Messages lus en premier</string>
@@ -770,7 +774,8 @@ de plus</string>
     <string name="sort_by_date">Date</string>
     <string name="sort_by_arrival">Date de réception</string>
     <string name="sort_by_subject">Sujet</string>
-    <string name="sort_by_flag">Étoile</string>
+    <string name="sort_by_sender">Expéditeur</string>
+    <string name="sort_by_flag">Favoris</string>
     <string name="sort_by_unread">Lu/Non lu</string>
     <string name="sort_by_attach">Pièces jointes</string>
 
@@ -806,7 +811,7 @@ de plus</string>
     V - Archive\n
     Y - Copier\n
     Z - Marquer (Non)lu\n
-    G - Étoile\n
+    G - Favoris\n
     O - Trier\n
     I - Ordre de tri\n
     Q - Retourner aux dossiers\n
@@ -902,7 +907,7 @@ de plus</string>
     <string name="hide_special_accounts_summary">Cacher «\u00A0Boîte de messagerie unifiée\u00A0» et «\u00A0Tous les messages\u00A0»</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - Avec étoile</string>
+    <string name="flagged_modifier"> - Favoris</string>
     <string name="unread_modifier"> - Non lu</string>
 
     <string name="search_all_messages_title">Tous les messages</string>

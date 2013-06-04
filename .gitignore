@@ -3,6 +3,7 @@
 # with others. This method can be used for locally-generated files that you
 # don’t expect other users to generate, like files created by your editor.
 .settings
+.classpath
 bin
 coverage
 coverage.ec

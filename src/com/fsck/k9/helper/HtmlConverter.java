@@ -211,63 +211,54 @@ public class HtmlConverter {
         }
         StringReader reader = new StringReader(text);
         StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-        boolean isStartOfLine = false;  // Are we currently at the start of a line?
+        boolean isStartOfLine = true;  // Are we currently at the start of a line?
+        int spaces = 0;
         int quoteDepth = 0; // Number of DIVs deep we are.
         int quotesThisLine = 0; // How deep we should be quoting for this line.
         try {
             int c;
             while ((c = reader.read()) != -1) {
-                switch (c) {
-                case '\n':
-                    // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
-                    // doublespaced.
-                    buff.append(HTML_NEWLINE);
-                    isStartOfLine = true;
-                    quotesThisLine = 0;
-                    break;
-                case '&':
-                    buff.append("&amp;");
-                    break;
-                case '<':
-                    buff.append("&lt;");
-                    break;
-                case '>':
-                    if (isStartOfLine) {
+                if (isStartOfLine) {
+                    switch (c) {
+                    case ' ':
+                        spaces++;
+                        break;
+                    case '>':
                         quotesThisLine++;
-                    } else {
-                        // We use a token here which can't occur in htmlified text because &gt; is valid
-                        // within links (where > is not), and linkifying links will include it if we
-                        // do it here. We'll make another pass and change this back to &gt; after
-                        // the linkification is done.
-                        buff.append("<gt>");
-                    }
-                    break;
-                case '\r':
-                    break;
-                case ' ':
-                    if (isStartOfLine) {
-                        // If we're still in the start of the line and we have spaces, don't output them, since they
-                        // may be collapsed by our div-converting magic.
+                        spaces = 0;
+                        break;
+                    case '\n':
+                        appendbq(buff, quotesThisLine, quoteDepth);
+                        quoteDepth = quotesThisLine;
+
+                        appendsp(buff, spaces);
+                        spaces = 0;
+
+                        appendchar(buff, c);
+                        isStartOfLine = true;
+                        quotesThisLine = 0;
+                        break;
+                    default:
+                        isStartOfLine = false;
+
+                        appendbq(buff, quotesThisLine, quoteDepth);
+                        quoteDepth = quotesThisLine;
+
+                        appendsp(buff, spaces);
+                        spaces = 0;
+
+                        appendchar(buff, c);
+                        isStartOfLine = false;
                         break;
                     }
-                default:
-                    if (isStartOfLine) {
-                        // Not a quote character and not a space.  Content is starting now.
-                        isStartOfLine = false;
-                        // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
-                        if (quotesThisLine > quoteDepth) {
-                            for (int i = quoteDepth; i < quotesThisLine; i++) {
-                                buff.append(HTML_BLOCKQUOTE_START.replace(HTML_BLOCKQUOTE_COLOR_TOKEN, getQuoteColor(i + 1)));
-                            }
-                        } else if (quotesThisLine < quoteDepth) {
-                            for (int i = quoteDepth; i > quotesThisLine; i--) {
-                                buff.append(HTML_BLOCKQUOTE_END);
-                            }
-                        }
-                        quoteDepth = quotesThisLine;
+                }
+                else {
+                    appendchar(buff, c);
+                    if (c == '\n') {
+                        isStartOfLine = true;
+                        quotesThisLine = 0;
                     }
-                    buff.append((char)c);
-                }//switch
+                }
             }
         } catch (IOException e) {
             //Should never happen
@@ -309,6 +300,54 @@ public class HtmlConverter {
         text = text.replaceAll("<gt>", "&gt;");
 
         return text;
+    }
+
+    private static void appendchar(StringBuilder buff, int c) {
+        switch (c) {
+        case '&':
+            buff.append("&amp;");
+            break;
+        case '<':
+            buff.append("&lt;");
+            break;
+        case '>':
+            // We use a token here which can't occur in htmlified text because &gt; is valid
+            // within links (where > is not), and linkifying links will include it if we
+            // do it here. We'll make another pass and change this back to &gt; after
+            // the linkification is done.
+            buff.append("<gt>");
+            break;
+        case '\r':
+            break;
+        case '\n':
+            // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
+            // doublespaced.
+            buff.append(HTML_NEWLINE);
+            break;
+        default:
+            buff.append((char)c);
+            break;
+        }
+    }
+
+    private static void appendsp(StringBuilder buff, int spaces) {
+        while (spaces > 0) {
+            buff.append(' ');
+            spaces--;
+        }
+    }
+
+    private static void appendbq(StringBuilder buff, int quotesThisLine, int quoteDepth) {
+        // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
+        if (quotesThisLine > quoteDepth) {
+            for (int i = quoteDepth; i < quotesThisLine; i++) {
+                buff.append(HTML_BLOCKQUOTE_START.replace(HTML_BLOCKQUOTE_COLOR_TOKEN, getQuoteColor(i + 1)));
+            }
+        } else if (quotesThisLine < quoteDepth) {
+            for (int i = quoteDepth; i > quotesThisLine; i--) {
+                buff.append(HTML_BLOCKQUOTE_END);
+            }
+        }
     }
 
     protected static final String QUOTE_COLOR_DEFAULT = "#ccc";
