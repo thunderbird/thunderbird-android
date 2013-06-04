@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.392" versioncode="17035" >
+        <change>Updated Czech, French, Greek, Japanese and Brazilian Portuguese translation</change>
+            
+    </release>
     <release version="4.391" versioncode="17034" >
         <change>Fixed bug that prevented moving to previous and next message in some situations</change>
         <change>Updated Japanese and Brazilian Portuguese translation</change>
