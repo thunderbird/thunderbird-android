@@ -26,9 +26,11 @@
 
         <CheckBox
             android:id="@+id/selected_checkbox"
-            android:layout_width="36dip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:button="?attr/messageListCheckbox"
             android:focusable="false"
+            android:clickable="false"
             android:visibility="gone" />
 
     </LinearLayout>
