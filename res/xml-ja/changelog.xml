@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.392" versioncode="17035" >
+        <change>チェコ語、フランス語、ドイツ語、日本語、ブラジルポルトガル語の翻訳を更新しました</change>
+    </release>
     <release version="4.391" versioncode="17034" >
         <change>いくつかの条件で前と次のメッセージに移動できないバグを修正しました</change>
         <change>日本語とブラジルポルトガル語の翻訳を更新しました</change>
