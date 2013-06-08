@@ -1078,6 +1078,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         if (mAccount != null && mFolderName != null && !mSearch.isManualSearch()) {
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mListener);
+            try {
+                ((LocalFolder)mCurrentFolder.folder).clearUnseenMessages();
+            } catch (MessagingException e) {
+                // ignore
+            }
         }
 
         updateTitle();

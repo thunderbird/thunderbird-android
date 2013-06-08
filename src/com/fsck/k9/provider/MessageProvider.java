@@ -84,6 +84,11 @@ public class MessageProvider extends ContentProvider {
         String UNREAD = "unread";
 
         /**
+         * <P>Type: BOOLEAN</P>
+         */
+        String UNSEEN = "unseen";
+
+        /**
          * <P>Type: TEXT</P>
          */
         String ACCOUNT = "account";

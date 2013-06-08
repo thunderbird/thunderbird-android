@@ -1296,6 +1296,11 @@ public class ImapStore extends Store {
         }
 
         @Override
+        public int getUnseenMessageCount() throws MessagingException {
+            return -1;
+        }
+
+        @Override
         public int getFlaggedMessageCount() throws MessagingException {
             return getRemoteMessageCount("FLAGGED NOT DELETED");
         }

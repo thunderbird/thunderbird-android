@@ -225,6 +225,7 @@ public class Account implements BaseAccount {
     private ColorChip mFromMeUnreadColorChip;
     private ColorChip mFromMeReadColorChip;
     private ColorChip mCheckmarkChip;
+    private ColorChip mUnseenChip;
 
 
     /**
@@ -802,6 +803,7 @@ public class Account implements BaseAccount {
 
         String[] projection = {
                 StatsColumns.UNREAD_COUNT,
+                StatsColumns.UNSEEN_COUNT,
                 StatsColumns.FLAGGED_COUNT
         };
 
@@ -824,7 +826,8 @@ public class Account implements BaseAccount {
         try {
             if (cursor.moveToFirst()) {
                 stats.unreadMessageCount = cursor.getInt(0);
-                stats.flaggedMessageCount = cursor.getInt(1);
+                stats.unseenMessageCount = cursor.getInt(1);
+                stats.flaggedMessageCount = cursor.getInt(2);
             }
         } finally {
             cursor.close();
@@ -856,6 +859,7 @@ public class Account implements BaseAccount {
         mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
         mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
         mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
+        mUnseenChip = new ColorChip(mChipColor, false, ColorChip.EYE);
     }
 
     public ColorChip getCheckmarkChip() {
@@ -898,6 +902,10 @@ public class Account implements BaseAccount {
         }
 
         return chip;
+    }
+
+    public ColorChip generateUnseenColorChip() {
+        return mUnseenChip;
     }
 
     public ColorChip generateColorChip() {

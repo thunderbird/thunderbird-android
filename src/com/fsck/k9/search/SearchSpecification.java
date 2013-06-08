@@ -80,6 +80,7 @@ public interface SearchSpecification extends Parcelable {
         ID,
         INTEGRATE,
         READ,
+        UNSEEN,
         FLAGGED,
         DISPLAY_CLASS,
         SEARCHABLE

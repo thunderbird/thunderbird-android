@@ -765,11 +765,18 @@ public class FolderList extends K9ListActivity {
                             Log.e(K9.LOG_TAG, "Unable to get unreadMessageCount for " + mAccount.getDescription() + ":"
                                   + folder.getName());
                         }
+                        int unseenMessageCount = 0;
+                        try {
+                            unseenMessageCount  = folder.getUnseenMessageCount();
+                        } catch (Exception e) {
+                            Log.e(K9.LOG_TAG, "Unable to get unseenMessageCount for " + mAccount.getDescription() + ":"
+                                  + folder.getName());
+                        }
 
                         if (holder == null) {
-                            holder = new FolderInfoHolder(context, folder, mAccount, unreadMessageCount);
+                            holder = new FolderInfoHolder(context, folder, mAccount, unreadMessageCount, unseenMessageCount);
                         } else {
-                            holder.populate(context, folder, mAccount, unreadMessageCount);
+                            holder.populate(context, folder, mAccount, unreadMessageCount, unseenMessageCount);
 
                         }
                         if (folder.isInTopGroup()) {
@@ -821,11 +828,12 @@ public class FolderList extends K9ListActivity {
                         }
                         localFolder = account.getLocalStore().getFolder(folderName);
                         int unreadMessageCount = localFolder.getUnreadMessageCount();
+                        int unseenMessageCount = localFolder.getUnseenMessageCount();
                         FolderInfoHolder folderHolder = getFolder(folderName);
                         if (folderHolder != null) {
                             int oldUnreadMessageCount = folderHolder.unreadMessageCount;
                             mUnreadMessageCount += unreadMessageCount - oldUnreadMessageCount;
-                            folderHolder.populate(context, localFolder, mAccount, unreadMessageCount);
+                            folderHolder.populate(context, localFolder, mAccount, unreadMessageCount, unseenMessageCount);
                             mHandler.dataChanged();
                         }
                     }
@@ -977,10 +985,13 @@ public class FolderList extends K9ListActivity {
                 holder = new FolderViewHolder();
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
+                holder.unseenMessageCount = (TextView) view.findViewById(R.id.unseen_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
                 holder.newMessageCountWrapper = (View) view.findViewById(R.id.new_message_count_wrapper);
+                holder.unseenMessageCountWrapper = (View) view.findViewById(R.id.unseen_message_count_wrapper);
                 holder.flaggedMessageCountWrapper = (View) view.findViewById(R.id.flagged_message_count_wrapper);
                 holder.newMessageCountIcon = (View) view.findViewById(R.id.new_message_count_icon);
+                holder.unseenMessageCountIcon = (View) view.findViewById(R.id.unseen_message_count_icon);
                 holder.flaggedMessageCountIcon = (View) view.findViewById(R.id.flagged_message_count_icon);
 
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
@@ -1040,6 +1051,17 @@ public class FolderList extends K9ListActivity {
                         mAccount.generateColorChip(false, false, false, false, false).drawable());
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
+            }
+
+            if (folder.unseenMessageCount != 0) {
+                holder.unseenMessageCount.setText(Integer
+                                                  .toString(folder.unseenMessageCount));
+                holder.unseenMessageCountWrapper.setOnClickListener(
+                        createUnreadSearch(mAccount, folder));
+                holder.unseenMessageCountWrapper.setVisibility(View.VISIBLE);
+                holder.unseenMessageCountIcon.setBackgroundDrawable( mAccount.generateUnseenColorChip().drawable() );
+            } else {
+                holder.unseenMessageCountWrapper.setVisibility(View.GONE);
             }
 
             if (folder.flaggedMessageCount > 0) {
@@ -1202,10 +1224,13 @@ public class FolderList extends K9ListActivity {
         public TextView folderStatus;
 
         public TextView newMessageCount;
+        public TextView unseenMessageCount;
         public TextView flaggedMessageCount;
         public View newMessageCountIcon;
+        public View unseenMessageCountIcon;
         public View flaggedMessageCountIcon;
         public View newMessageCountWrapper;
+        public View unseenMessageCountWrapper;
         public View flaggedMessageCountWrapper;
 
         public RelativeLayout activeIcons;

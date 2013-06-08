@@ -266,6 +266,7 @@ public class SqlQueryBuilder {
             case INTEGRATE:
             case THREAD_ID:
             case READ:
+            case UNSEEN:
             case FLAGGED: {
                 return true;
             }

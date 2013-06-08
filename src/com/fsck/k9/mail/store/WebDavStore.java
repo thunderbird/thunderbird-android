@@ -1281,6 +1281,7 @@ public class WebDavStore extends Store {
         private boolean mIsOpen = false;
         private int mMessageCount = 0;
         private int mUnreadMessageCount = 0;
+        private int mUnseenMessageCount = 0;
         private WebDavStore store;
 
         protected WebDavStore getStore() {
@@ -1416,6 +1417,11 @@ public class WebDavStore extends Store {
             open(OpenMode.READ_WRITE);
             this.mUnreadMessageCount = getMessageCount(false);
             return this.mUnreadMessageCount;
+        }
+
+        @Override
+        public int getUnseenMessageCount() throws MessagingException {
+            return -1;
         }
 
         @Override

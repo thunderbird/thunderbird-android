@@ -78,6 +78,7 @@ public abstract class Folder {
     public abstract int getMessageCount() throws MessagingException;
 
     public abstract int getUnreadMessageCount() throws MessagingException;
+    public abstract int getUnseenMessageCount() throws MessagingException;
     public abstract int getFlaggedMessageCount() throws MessagingException;
 
     public abstract Message getMessage(String uid) throws MessagingException;
