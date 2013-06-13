@@ -146,7 +146,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="remove_account_action">Esborra el compte</string>
     <string name="clear_pending_action">Suprimeix totes les accions pendents (Compte!)</string>
 
-    <string name="mark_all_as_read">Marca'ls tots com a llegits</string>
+    <string name="mark_all_as_read">Marca\'ls tots com a llegits</string>
     <string name="mark_as_read_action">Marca com a llegit</string>
     <string name="send_alternate_action">Comparteix</string>
     <string name="send_alternate_chooser_title">Selecciona remitent</string>
