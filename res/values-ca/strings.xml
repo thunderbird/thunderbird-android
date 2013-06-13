@@ -146,6 +146,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="remove_account_action">Esborra el compte</string>
     <string name="clear_pending_action">Suprimeix totes les accions pendents (Compte!)</string>
 
+    <string name="mark_all_as_read">Marca'ls tots com a llegits</string>
     <string name="mark_as_read_action">Marca com a llegit</string>
     <string name="send_alternate_action">Comparteix</string>
     <string name="send_alternate_chooser_title">Selecciona remitent</string>
@@ -297,6 +298,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="message_discarded_toast">S\'ha descartat el missatge</string>
     <string name="message_saved_toast">S\'ha desat el missatge com a esborrany</string>
 
+    <string name="global_settings_messageview_autofit_width_label">Ajusta l\'amplada dels missatges automàticament</string>
+    <string name="global_settings_messageview_autofit_width_summary">Retalla els missatges per adaptar la seva amplada a la pantalla.</string>
     <string name="global_settings_checkbox_label">Selecció múltiple</string>
     <string name="global_settings_checkbox_summary">Ensenya sempre la selecció múltiple</string>
     <string name="global_settings_preview_lines_label">Previsualització de línies</string>
@@ -740,6 +743,9 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="sort_by_flag">Estel</string>
     <string name="sort_by_unread">Llegit/no llegit</string>
     <string name="sort_by_attach">Adjunts</string>
+
+    <string name="sort_sender_alpha">Remitent A-Z</string>
+    <string name="sort_sender_re_alpha">Remitent Z-A</string>
 
     <string name="account_delete_dlg_title">Esborra el compte</string>
 
