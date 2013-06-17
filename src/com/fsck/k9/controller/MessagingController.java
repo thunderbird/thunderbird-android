@@ -4822,15 +4822,12 @@ public class MessagingController implements Runnable {
         final CharSequence subject = getMessageSubject(context, message);
         CharSequence summary = buildMessageSummary(context, sender, subject);
 
-        // If privacy mode active and keyguard active
-        // OR
-        // GlobalPreference is ALWAYS hide subject
-        // OR
-        // If we could not set a per-message notification, revert to a default message
-        if ((K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED &&
-                    keyguardService.inKeyguardRestrictedInputMode()) ||
+        boolean privacyModeEnabled =
                 (K9.getNotificationHideSubject() == NotificationHideSubject.ALWAYS) ||
-                summary.length() == 0) {
+                (K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED &&
+                keyguardService.inKeyguardRestrictedInputMode());
+
+        if (privacyModeEnabled || summary.length() == 0) {
             summary = context.getString(R.string.notification_new_title);
         }
 
@@ -4855,7 +4852,7 @@ public class MessagingController implements Runnable {
                 account.getDescription() : account.getEmail();
         final ArrayList<MessageReference> allRefs = data.getAllMessageRefs();
 
-        if (platformSupportsExtendedNotifications()) {
+        if (platformSupportsExtendedNotifications() && !privacyModeEnabled) {
             if (newMessages > 1) {
                 // multiple messages pending, show inbox style
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
