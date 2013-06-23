@@ -6,8 +6,8 @@
     >
     <uses-sdk
        android:minSdkVersion="8"
-           android:targetSdkVersion="17"
-       />
+       android:targetSdkVersion="17"
+    />
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
@@ -395,6 +395,7 @@ otherwise it would make K-9 start at the wrong time
             android:multiprocess="true"
             android:grantUriPermissions="true"
             android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"
+            android:exported="true"
             />
         <provider
             android:name=".provider.MessageProvider"
@@ -403,6 +404,7 @@ otherwise it would make K-9 start at the wrong time
             android:grantUriPermissions="true"
             android:readPermission="com.fsck.k9.permission.READ_MESSAGES"
             android:writePermission="com.fsck.k9.permission.DELETE_MESSAGES"
+            android:exported="true"
             />
         <provider
             android:name=".provider.EmailProvider"
