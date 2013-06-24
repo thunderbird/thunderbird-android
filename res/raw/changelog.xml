@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.393" versioncode="17036" >
+        <change>Only enable debug logging on debugging builds</change>
+        <change>Bump the minSdkVersion to 8 since we use features from SDK 8</change>
+    </release>
     <release version="4.392" versioncode="17035" >
         <change>Updated Czech, French, Greek, Japanese and Brazilian Portuguese translation</change>
             
