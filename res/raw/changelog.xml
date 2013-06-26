@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.400" versioncode="17037" >
+        <change>First production release of K-9 4.4!</change>
+    </release>
     <release version="4.393" versioncode="17036" >
         <change>Only enable debug logging on debugging builds</change>
         <change>Bump the minSdkVersion to 8 since we use features from SDK 8</change>
