@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.400" versioncode="17037" >
+        <change>K-9 4.4 の正式リリース</change>
+    </release>
     <release version="4.393" versioncode="17036" >
         <change>デバッグ用にビルドしたときだけデバッグ用ログを有効にできるようにしました</change>
         <change>SDK 8からの機能を利用していたので、minSdkVersionを8に上げました</change>
