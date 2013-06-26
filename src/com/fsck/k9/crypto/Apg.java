@@ -505,6 +505,11 @@ public class Apg extends CryptoProvider {
             }
             if (part != null) {
                 data = MimeUtility.getTextFromPart(part);
+            } else if (MimeUtility.mimeTypeMatches(message.getMimeType(), "multipart/encrypted")) {
+                part = MimeUtility.findFirstPartByMimeType(message, "application/octet-stream");
+                if (part != null) {
+                    data = MimeUtility.getTextFromPart(part);
+                }
             }
         } catch (MessagingException e) {
             // guess not...
