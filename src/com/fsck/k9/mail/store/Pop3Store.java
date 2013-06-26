@@ -642,7 +642,7 @@ public class Pop3Store extends Store {
                 if (response.equals(".")) {
                     break;
                 }
-                String[] uidParts = response.split(" ");
+                String[] uidParts = response.split(" +");
 
                 // Ignore messages without a unique-id
                 if (uidParts.length >= 2) {
