@@ -369,7 +369,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     private boolean decodeExtras(Intent intent) {
         String action = intent.getAction();
-        if (Intent.ACTION_VIEW.equals(action)) {
+        if (Intent.ACTION_VIEW.equals(action) && intent.getData() != null) {
             Uri uri = intent.getData();
             List<String> segmentList = uri.getPathSegments();
 
