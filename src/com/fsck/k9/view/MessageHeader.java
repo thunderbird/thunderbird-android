@@ -203,7 +203,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
                 // All headers have been downloaded, but there are no additional headers.
                 messageToShow = R.string.message_no_additional_headers_available;
             }
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             messageToShow = R.string.message_additional_headers_retrieval_failed;
         }
         // Show a message to the user, if any
