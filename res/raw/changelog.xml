@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.401" versioncode="17038" >
+        <change>Never use extended notifications when privacy mode is enabled</change>
+        <change>Remove submenu from the account context menu to work a bug in some Galaxy devices</change>
+        <change>Fixes for several errors reported by Play Store users</change>
+    </release>
     <release version="4.400" versioncode="17037" >
         <change>First production release of K-9 4.4!</change>
     </release>
