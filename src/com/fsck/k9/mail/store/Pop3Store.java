@@ -567,8 +567,13 @@ public class Pop3Store extends Store {
                     Pop3Message message = mMsgNumToMsgMap.get(msgNum);
                     if (message == null) {
                         String response = executeSimpleCommand(UIDL_COMMAND + " " + msgNum);
-                        int uidIndex = response.lastIndexOf(' ');
-                        String msgUid = response.substring(uidIndex + 1);
+                        // response = "+OK msgNum msgUid"
+                        String[] uidParts = response.split(" +");
+                        if (uidParts.length < 3 || !"+OK".equals(uidParts[0])) {
+                            Log.e(K9.LOG_TAG, "ERR response: " + response);
+                            return;
+                        }
+                        String msgUid = uidParts[2];
                         message = new Pop3Message(msgUid, this);
                         indexMessage(msgNum, message);
                     }
