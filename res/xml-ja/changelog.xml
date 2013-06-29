@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.401" versioncode="17038" >
+        <change>プライバシーモードが有効な場合に(JellyBeanの)拡張通知領域を使わないようにしました</change>
+        <change>Galaxyデバイスのバグのため、アカウントのコンテキストメニューからサブメニューを削除しました</change>
+        <change>Google Playで報告されたいくつかのバグを修正しました</change>
+    </release>
     <release version="4.400" versioncode="17037" >
         <change>K-9 4.4 の正式リリース</change>
     </release>
