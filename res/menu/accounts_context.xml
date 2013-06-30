@@ -4,6 +4,8 @@
         android:title="@string/manage_accounts_move_up_action" />
     <item android:id="@+id/move_down"
         android:title="@string/manage_accounts_move_down_action" />
+    <item android:id="@+id/empty_trash"
+        android:title="@string/empty_trash_action" />
     <item android:id="@+id/account_settings"
         android:title="@string/account_settings_action" />
     <item android:id="@+id/delete_account"
