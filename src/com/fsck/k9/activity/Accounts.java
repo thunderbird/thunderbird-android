@@ -630,6 +630,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         MessagingController.getInstance(getApplication()).clearAllPending(account);
     }
 
+    private void onEmptyTrash(Account account) {
+        MessagingController.getInstance(getApplication()).emptyTrash(account, null);
+    }
+
+
     private void onCompose() {
         Account defaultAccount = Preferences.getPreferences(this).getDefaultAccount();
         if (defaultAccount != null) {
@@ -1148,6 +1153,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             break;
         case R.id.clear_pending:
             onClearCommands(realAccount);
+            break;
+        case R.id.empty_trash:
+            onEmptyTrash(realAccount);
             break;
         case R.id.clear:
             onClear(realAccount);
