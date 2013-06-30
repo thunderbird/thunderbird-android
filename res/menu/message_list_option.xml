@@ -204,7 +204,10 @@
         android:id="@+id/toggle_message_view_theme"
         android:showAsAction="never"
         android:title="@string/message_view_theme_action_dark"/>
-
+    <item 
+        android:id="@+id/show_folder_list"
+        android:showAsAction="never"
+        android:title="@string/folders_title" />
     <!-- always -->
     <item
         android:id="@+id/settings"

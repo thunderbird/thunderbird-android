@@ -825,6 +825,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 mMessageListFragment.markAllAsRead();
                 return true;
             }
+            case R.id.show_folder_list: {
+                onShowFolderList();
+                return true;
+            }
             // MessageView
             case R.id.next_message: {
                 showNextMessage();
