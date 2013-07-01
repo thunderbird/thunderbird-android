@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.403" versioncode="17040" >
+        <change>Fixed a bug that caused K-9 to crash on the Accounts page if you're using the dark theme. Sorry!</change>
+    </release>
     <release version="4.402" versioncode="17039" >
         <change>Add additional shortcuts to the Folder list.<change>
         <change>Add an "empty trash" option to the Account context menu</change>
