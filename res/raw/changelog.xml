@@ -4,9 +4,10 @@
         <change>Fixed a bug that caused K-9 to crash on the Accounts page if you're using the dark theme. Sorry!</change>
     </release>
     <release version="4.402" versioncode="17039" >
-        <change>Add additional shortcuts to the Folder list.<change>
+        <change>Add additional shortcuts to the Folder list.</change>
         <change>Add an "empty trash" option to the Account context menu</change>
         <change>Fixes for several crashing bugs reported by Play Store users</change>
+    </release>
     <release version="4.401" versioncode="17038" >
         <change>Never use extended notifications when privacy mode is enabled</change>
         <change>Remove submenu from the account context menu to work a bug in some Galaxy devices</change>
@@ -21,7 +22,7 @@
     </release>
     <release version="4.392" versioncode="17035" >
         <change>Updated Czech, French, Greek, Japanese and Brazilian Portuguese translation</change>
-            
+
     </release>
     <release version="4.391" versioncode="17034" >
         <change>Fixed bug that prevented moving to previous and next message in some situations</change>
