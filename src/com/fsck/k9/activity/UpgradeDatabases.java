@@ -180,7 +180,9 @@ public class UpgradeDatabases extends K9Activity {
      */
     private void launchOriginalActivity() {
         finish();
-        startActivity(mStartIntent);
+        if (mStartIntent != null) {
+            startActivity(mStartIntent);
+        }
     }
 
     /**
