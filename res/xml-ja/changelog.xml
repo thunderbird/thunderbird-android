@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.403" versioncode="17040" >
+        <change>ダークテーマを使っているときにアカウント一覧がクラッシュするバグを修正しました</change>
+    </release>
+    <release version="4.402" versioncode="17039" >
+        <change>フォルダ一覧へのショートカットを追加しました</change>
+        <change>アカウントコンテキストメニューにゴミ箱を空にするを追加しました</change>
+        <change>Google Playで報告されたいくつかのクラッシュバグを修正しました</change>
+    </release>
     <release version="4.401" versioncode="17038" >
         <change>プライバシーモードが有効な場合に(JellyBeanの)拡張通知領域を使わないようにしました</change>
         <change>Galaxyデバイスのバグのため、アカウントのコンテキストメニューからサブメニューを削除しました</change>
