@@ -59,161 +59,161 @@ K-9 Mail — почтовый клиент для Android.
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">Учётная запись \"<xliff:g id="account">%s</xliff:g>\" будет удалена.</string>
-    <string name="account_recreate_dlg_instructions_fmt">Все данные учётной записи \"<xliff:g id="account">%s</xliff:g>\" будут уничтожены, но настройки сохранятся.</string>
-    <string name="account_clear_dlg_instructions_fmt">Все сообщения учётной записи \"<xliff:g id="account">%s</xliff:g>\" будут уничтожены, но настройки сохранятся.</string>
-    <string name="insufficient_apg_permissions">K-9 Mail не имеет разрешения для полного доступа к APG, пожалуйста переустановите приложение.</string>
+    <string name="account_delete_dlg_instructions_fmt">Ящик \"%s\" будет удалён из приложения</string>
+    <string name="account_recreate_dlg_instructions_fmt">Все данные ящика \"%s\" будут удалены, настройки сохранятся</string>
+    <string name="account_clear_dlg_instructions_fmt">Локальные сообщения \"%s\" будут удалены, настройки сохранятся</string>
+    <string name="insufficient_apg_permissions">Отсутствует полный доступ к APG, для восстановления переустановите K-9 Mail</string>
 
 
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <string name="import_dialog_error_message">Нет подходящего приложения для импортирования. Пожалуйста, установите файловый менеджер из Google Play.</string>
-    <string name="open_market">Открыть Play Store</string>
+    <string name="import_dialog_error_message">Для импорта необходим менеджер файлов</string>
+    <string name="open_market">Google Play</string>
 
 
 
     <!-- === General strings ================================================================== -->
 
     <string name="app_authors_fmt">Авторы: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_fmt">Информация об изменениях: <xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_libraries">Мы используем следующие библиотеки третьих сторон: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-    <string name="app_emoji_icons">Иконки настроения: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
+    <string name="app_revision_fmt">Новое в версии: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_libraries">Сторонние компоненты: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_emoji_icons">Значки: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
-    <string name="read_attachment_label">читать вложения электронной почты</string>
-    <string name="read_attachment_desc">Разрешать этой программе читать вложения электронной почты.</string>
-    <string name="read_messages_label">Читать письма</string>
-    <string name="read_messages_desc">Разрешать этой программе читать ваши письма.</string>
-    <string name="delete_messages_label">Унитожать письма</string>
-    <string name="delete_messages_desc">Разрешать этой программе уничтожать ваши письма.</string>
+    <string name="read_attachment_label">Чтение вложений</string>
+    <string name="read_attachment_desc">Разрешить программе чтение вложений почты</string>
+    <string name="read_messages_label">Чтение писем</string>
+    <string name="read_messages_desc">Разрешить программе чтение писем</string>
+    <string name="delete_messages_label">Удаление писем</string>
+    <string name="delete_messages_desc">Разрешить программе удаление писем</string>
 
-    <string name="about_title_fmt">О программе <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="accounts_title">Адреса</string>
+    <string name="about_title_fmt">K-9 Mail <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="accounts_title">Ящики</string>
     <string name="folders_title">Папки</string>
-    <string name="advanced">Дополнительные параметры</string>
+    <string name="advanced">Дополнительно</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
-    <string name="compose_title_compose">Написать новое письмо</string>
-    <string name="compose_title_reply">Ответить</string>
-    <string name="compose_title_reply_all">Ответить всем</string>
-    <string name="compose_title_forward">Переслать</string>
+    <string name="compose_title_compose">Новое</string>
+    <string name="compose_title_reply">Ответ</string>
+    <string name="compose_title_reply_all">Ответ всем</string>
+    <string name="compose_title_forward">Пересылка</string>
 
-    <string name="choose_folder_title">Выберите папку</string>
+    <string name="choose_folder_title">Выбор папки</string>
 
-    <string name="status_loading_account_folder">Запрос <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_loading_account_folder_headers">Чтение заголовков <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_sending_account">Отправка <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_processing_account">Обработка <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading_account_folder">проверка <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading_account_folder_headers">просмотр <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_sending_account">отправка <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_processing_account">обработка <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">Следующий запрос <xliff:g id="nexttime">%s</xliff:g></string>
-    <string name="status_syncing_off">Синхронизация запрещена</string>
+    <string name="status_next_poll">проверка <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_syncing_off">ожидание</string>
 
-    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> выбрано</string>
     <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Следующий</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Предыдущий</string> <!-- Used as part of a multi-step process -->
+    <string name="next_action">Далее</string> <!-- Used as part of a multi-step process -->
+    <string name="previous_action">Назад</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">ОК</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
-    <string name="cancel_action">Отменить</string>
-    <string name="send_action">Отослать</string>
-    <string name="send_again_action">Послать снова</string>
+    <string name="cancel_action">Отмена</string>
+    <string name="send_action">Отправить</string>
+    <string name="send_again_action">Редактировать</string>
     <string name="reply_action">Ответить</string>
     <string name="reply_all_action">Ответить всем</string>
     <string name="delete_action">Удалить</string>
-    <string name="archive_action">Архивировать</string>
+    <string name="archive_action">Архив</string>
     <string name="spam_action">Спам</string>
     <string name="forward_action">Переслать</string>
     <string name="move_action">Переместить</string>
-    <string name="single_message_options_action">Опции сообщения</string>
-    <!-- NEW: <string name="refile_action">Refile</string>-->
-    <string name="continue_action">Продолжить</string>
+    <string name="single_message_options_action">Отправить</string>
+    <string name="refile_action">Смена папки</string>
+    <string name="continue_action">Далее</string>
     <string name="back_action">Назад</string>
-    <string name="done_action">Завершено</string> <!--  Used to complete a multi-step process -->
-    <string name="discard_action">Отбросить</string>
-    <string name="save_draft_action">Сохранить как черновик</string>
-    <string name="check_mail_action">Проверить почту</string>
-    <string name="send_messages_action">Отправить сообщения</string>
-    <string name="refresh_folders_action">Обновить список папок</string>
-    <string name="filter_folders_action">Найти дирректорию</string>
-    <string name="add_account_action">Добавить адрес</string>
-    <string name="compose_action">Написать новое письмо</string>
-    <string name="search_action">Поиск</string>
-    <string name="search_results">Искать в результатах</string>
+    <string name="done_action">Готово</string> <!--  Used to complete a multi-step process -->
+    <string name="discard_action">Отменить</string>
+    <string name="save_draft_action">Черновик</string>
+    <string name="check_mail_action">Обновить</string>
+    <string name="send_messages_action">Отправить почту</string>
+    <string name="refresh_folders_action">Обновить список</string>
+    <string name="filter_folders_action">Поиск папки</string>
+    <string name="add_account_action">Добавить</string>
+    <string name="compose_action">Создать</string>
+    <string name="search_action">Поиск сообщения</string>
+    <string name="search_results">Результаты поиска</string>
     <string name="preferences_action">Настройки</string>
-    <string name="account_settings_action">Почтовые настройки</string>
+    <string name="account_settings_action">Настройки ящика</string>
     <string name="folder_settings_action">Настройки папки</string>
-    <string name="global_settings_action">Глобальные настройки</string>
-    <string name="remove_account_action">Удалить адрес</string>
-    <string name="clear_pending_action">Остановить незаконченные действия (опасно!)</string>
+    <string name="global_settings_action">Настройки приложения</string>
+    <string name="remove_account_action">Удалить (!!!)</string>
+    <string name="clear_pending_action">Прервать обработку (!)</string>
 
-    <string name="mark_as_read_action">Отметить как прочитанное</string>
-    <string name="send_alternate_action">Переслать (альтернат.)</string>
-    <string name="send_alternate_chooser_title">Выберать отправителя</string>
+    <string name="mark_as_read_action">Прочитано</string>
+    <string name="send_alternate_action">Передать</string>
+    <string name="send_alternate_chooser_title">Способ передачи</string>
 
-    <string name="flag_action">Добавить звезду</string>
-    <string name="unflag_action">Удалить звезду</string>
+    <string name="flag_action">Важное</string>
+    <string name="unflag_action">Обычное</string>
     <string name="copy_action">Копировать</string>
     <string name="select_text_action">Выбрать текст</string>
-    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
-    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
+    <string name="show_headers_action">Все заголовки</string>
+    <string name="hide_headers_action">Без заголовков</string>
 
     <string name="message_view_theme_action_dark">Переключиться на тёмную тему</string>
     <string name="message_view_theme_action_light">Переключиться на светлую тему</string>
 
-    <string name="mark_as_unread_action">Отметить как непрочитанное</string>
-    <string name="add_cc_bcc_action">Добавить Копию/СК</string>
-    <string name="read_receipt">Уведомление о прочтении</string>
-    <string name="read_receipt_enabled">Уведомление о прочтении будет запрошено</string>
-    <string name="read_receipt_disabled">Уведомление о прочтении не будет запрошено</string>
-    <string name="add_attachment_action">Добавить вложение</string>
-    <string name="add_attachment_action_image">Добавить вложение (Изображение)</string>
-    <string name="add_attachment_action_video">Добавить вложение (Видео)</string>
+    <string name="mark_as_unread_action">Не прочитано</string>
+    <string name="add_cc_bcc_action">Копия/Скрытая</string>
+    <string name="read_receipt">Уведомление</string>
+    <string name="read_receipt_enabled">Запросить уведомление о прочтении</string>
+    <string name="read_receipt_disabled">Без уведомления о прочтении</string>
+    <string name="add_attachment_action">Вложение</string>
+    <string name="add_attachment_action_image">Изображение</string>
+    <string name="add_attachment_action_video">Видео</string>
     <string name="empty_trash_action">Очистить Корзину</string>
     <string name="expunge_action">Стереть</string>
-    <string name="clear_local_folder_action">Удалить локальные сообщения</string>
-    <string name="about_action">О Программе</string>
+    <string name="clear_local_folder_action">Стереть локальные</string>
+    <string name="about_action">Сведения</string>
 
     <string name="prefs_title">Настройки</string>
-    <string name="accounts_context_menu_title">Параметры адресов</string>
+    <string name="accounts_context_menu_title">Действия с ящиком</string>
 
-    <string name="general_no_subject">(Без темы)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
-    <string name="general_no_sender">Отправитель отсуствует</string>
-    <string name="status_loading">Загрузка</string>
-    <string name="status_loading_more">Загрузка сообщений\u2026</string>
-    <string name="status_network_error">Ошибка при соединении</string>
+    <string name="general_no_subject">(без темы)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_sender">нет отправителя</string>
+    <string name="status_loading">проверка</string>
+    <string name="status_loading_more">Проверка новых сообщений</string>
+    <string name="status_network_error">Сбой подключения</string>
     <string name="status_invalid_id_error">Сообщение не найдено</string>
 
-    <string name="status_loading_more_failed">Повторите загрузку сообщений</string>
+    <string name="status_loading_more_failed">Повторите загрузку</string>
 
-    <string name="load_more_messages_fmt">Загрузить ещё <xliff:g id="messages_to_load">%d</xliff:g></string>
+    <string name="load_more_messages_fmt">Получить до <xliff:g id="messages_to_load">%d</xliff:g> следующих</string>
 
     <string name="abbrev_gigabytes">ГБ</string>
     <string name="abbrev_megabytes">МБ</string>
     <string name="abbrev_kilobytes">КБ</string>
     <string name="abbrev_bytes">Б</string>
 
-    <string name="account_size_changed">Размер \"<xliff:g id="account">%s</xliff:g>\" сократился с <xliff:g id="oldSize">%s</xliff:g> до <xliff:g id="newSize">%s</xliff:g></string>
+    <string name="account_size_changed">Ящик \"<xliff:g id="account">%s</xliff:g>\" изменился с <xliff:g id="oldSize">%s</xliff:g> до <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Сжатие ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Очистка ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="recreating_account">Пересоздание учётной записи\"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="recreating_account">Пересоздание ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <string name="notification_new_title">Новые сообщения</string>
-    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Непрочитанное (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+    <string name="notification_new_title">Новая почта</string>
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> новых</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> новых (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_additional_messages">+ ещё<xliff:g id="additional_messages">%d</xliff:g> в <xliff:g id="account">%s</xliff:g></string>
 
-    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
-    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
-    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
-    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
+    <string name="notification_action_reply">Ответить</string>
+    <string name="notification_action_read">Открыть</string>
+    <string name="notification_action_delete">Удалить</string>
+    <string name="notification_certificate_error_title">Ошибка сертификата <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
 
-    <string name="notification_bg_sync_ticker">Проверка почты: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Проверка: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
-    <string name="notification_bg_send_ticker">Отправка почты: <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_bg_send_title">Отправка почты</string>
+    <string name="notification_bg_send_ticker">Отправка: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Отправка</string>
     <string name="notification_bg_title_separator">:</string>
 
     <string name="special_mailbox_name_inbox">Входящие</string>
@@ -232,7 +232,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g></string>
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g></string>
 
-    <string name="send_failure_subject">Не удалось отправить несколько сообщений</string>
+    <string name="send_failure_subject">Сбой отправки сообщений</string>
 
     <string name="debug_version_fmt">Версия: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Включить запись в журнал отладок</string>
@@ -241,45 +241,45 @@ K-9 Mail — почтовый клиент для Android.
     <string name="debug_enable_sensitive_logging_summary">Разрешает запись паролей в журнал</string>
 
     <string name="message_list_load_more_messages_action">Загрузить больше сообщений</string>
-    <string name="message_to_fmt">Для:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_to_fmt">кому: <xliff:g id="counterParty">%s</xliff:g></string>
 
-    <string name="message_compose_to_hint">Кому</string>
-    <string name="message_compose_cc_hint">Копия</string>
-    <string name="message_compose_bcc_hint">СК</string>
-    <string name="message_compose_subject_hint">Тема</string>
-    <string name="message_compose_content_hint">Текст сообщения</string>
-    <string name="message_compose_signature_hint">Подпись</string>
+    <string name="message_compose_to_hint">кому</string>
+    <string name="message_compose_cc_hint">копия</string>
+    <string name="message_compose_bcc_hint">скрытая</string>
+    <string name="message_compose_subject_hint">тема</string>
+    <string name="message_compose_content_hint">сообщение</string>
+    <string name="message_compose_signature_hint">подпись</string>
     <string name="message_compose_quote_header_separator">-------- Исходное сообщение --------</string>
     <string name="message_compose_quote_header_subject">Тема:</string>
-    <string name="message_compose_quote_header_send_date">Послано:</string>
+    <string name="message_compose_quote_header_send_date">Отправлено:</string>
     <string name="message_compose_quote_header_from">От:</string>
-    <string name="message_compose_quote_header_to">Для:</string>
+    <string name="message_compose_quote_header_to">Кому:</string>
     <string name="message_compose_quote_header_cc">Копия:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> написал(а):\n</string>
-    <string name="message_compose_error_no_recipients">Необходимо добавить хотя бы одного адресата.</string>
-    <string name="error_contact_address_not_found">Не найден адрес почты.</string>
-    <string name="message_compose_attachments_skipped_toast">Некоторые вложения не могут быть пересланы, поскольку они не загрузились.</string>
-    <string name="message_compose_show_quoted_text_action">Цитировать сообщение</string>
-    <string name="message_compose_description_add_to">Добавить получателя (To)</string>
-    <string name="message_compose_description_add_cc">Добавить получателя (CC)</string>
-    <string name="message_compose_description_add_bcc">Добавить получателя (BCC)</string>
-    <string name="message_compose_description_delete_quoted_text">Удалить цитируемый текст</string>
-    <string name="message_compose_description_edit_quoted_text">Исправить цитируемый текст</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:\n</string>
+    <string name="message_compose_error_no_recipients">Укажите адресата</string>
+    <string name="error_contact_address_not_found">Контакт не содержит сведений о email</string>
+    <string name="message_compose_attachments_skipped_toast">Некоторые вложения не были загружены и не могут быть отправлены</string>
+    <string name="message_compose_show_quoted_text_action">Цитировать</string>
+    <string name="message_compose_description_add_to">Ещё адресат (кому)</string>
+    <string name="message_compose_description_add_cc">Ещё адресат (копия)</string>
+    <string name="message_compose_description_add_bcc">Ещё адресат (скрытая)</string>
+    <string name="message_compose_description_delete_quoted_text">Удалить цитату</string>
+    <string name="message_compose_description_edit_quoted_text">Изменить цитату</string>
 
-    <string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
-    <string name="message_to_label">Для:</string>
-    <string name="message_view_cc_label">Копия:</string>
+    <string name="message_view_from_format">от: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+    <string name="message_to_label">кому:</string>
+    <string name="message_view_cc_label">копия:</string>
     <string name="message_view_attachment_view_action">Открыть</string>
     <string name="message_view_attachment_download_action">Сохранить</string>
-    <string name="message_view_status_attachment_saved">Вложение сохранено на карту SD под именем <xliff:g id="filename">%s</xliff:g>.</string>
-    <string name="message_view_status_attachment_not_saved">Не удалось сохранить вложение на карту SD.</string>
-    <string name="message_view_show_pictures_action">Показать картинки</string>
-    <string name="message_view_show_message_action">Показать мообщение</string>
-    <string name="message_view_show_attachments_action">Показать вложение</string>
-    <string name="message_view_show_more_attachments_action">Далее&#8230;</string>
-    <string name="message_view_fetching_attachment_toast">Загрузка вложения.</string>
-    <string name="message_view_no_viewer">Приложение просмотра не найдено для <xliff:g id="mimetype">%s</xliff:g>.</string>
-    <string name="message_view_download_remainder">Загрузить сообщение целиком</string>
+    <string name="message_view_status_attachment_saved">Сохранено в  <xliff:g id="filename">%s</xliff:g>.</string>
+    <string name="message_view_status_attachment_not_saved">Сбой сохранения вложений</string>
+    <string name="message_view_show_pictures_action">Изображения</string>
+    <string name="message_view_show_message_action">Сообщение</string>
+    <string name="message_view_show_attachments_action">Вложения</string>
+    <string name="message_view_show_more_attachments_action">Показать вложения</string>
+    <string name="message_view_fetching_attachment_toast">Проверка вложений</string>
+    <string name="message_view_no_viewer">Отсутствует просмотрщик <xliff:g id="mimetype">%s</xliff:g>.</string>
+    <string name="message_view_download_remainder">Загрузить полностью</string>
     <string name="message_view_downloading">Загрузка…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
@@ -287,10 +287,10 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_no_additional_headers_available">Все заголовки загружены, дополнительных заголовков для отображения нет.</string>
     <string name="message_additional_headers_retrieval_failed">Не удалось загрузить дополнительные заголовки из базы данных или почтового сервера.</string>
 
-    <string name="from_same_sender">Ещё от этого отправителя</string>
+    <string name="from_same_sender">Переписка</string>
 
-    <string name="message_discarded_toast">Сообщение отброшено</string>
-    <string name="message_saved_toast">Сообщение сохранено в черновиках</string>
+    <string name="message_discarded_toast">Сообщение отменено</string>
+    <string name="message_saved_toast">Черновик сохранён</string>
 
     <string name="global_settings_checkbox_label">Флажки множественного выбора</string>
     <string name="global_settings_checkbox_summary">Всегда показывать Флажки множественного выбора</string>
@@ -349,42 +349,42 @@ K-9 Mail — почтовый клиент для Android.
     <string name="quiet_time_starts">Начало времени тишины</string>
     <string name="quiet_time_ends">Конец времени тишины</string>
 
-    <string name="account_setup_basics_title">Установить новый адрес</string>
-    <string name="account_setup_basics_email_hint">Адрес электронной почты</string>
-    <string name="account_setup_basics_password_hint">Пароль</string>
-    <string name="account_setup_basics_manual_setup_action">Ручная настройка</string>
+    <string name="account_setup_basics_title">Новый ящик</string>
+    <string name="account_setup_basics_email_hint">адрес email</string>
+    <string name="account_setup_basics_password_hint">пароль</string>
+    <string name="account_setup_basics_manual_setup_action">Вручную</string>
 
     <string name="account_setup_check_settings_title"></string>
-    <string name="account_setup_check_settings_retr_info_msg">Получение информации об адресе\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Проверка настроек входящего сервера\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Проверка настроек исходящего сервера\u2026</string>
+    <string name="account_setup_check_settings_retr_info_msg">Получение информации\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Проверка настроек сервера входящих сообщений\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Проверка настроек сервера исходящих сообщений\u2026</string>
     <string name="account_setup_check_settings_authenticate">Аутентификация\u2026</string>
-    <string name="account_setup_check_settings_fetch">Чтение настроек учётной записи\u2026</string>
+    <string name="account_setup_check_settings_fetch">Получение настроек\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Отмена\u2026</string>
 
-    <string name="account_setup_names_title">Почти готово!</string>
-    <string name="account_setup_names_account_name_label">Дать этому ящику имя (необязательно):</string>
-    <string name="account_setup_names_user_name_label">Ваше имя (отображается в исходящих сообщениях):</string>
+    <string name="account_setup_names_title">Всё почти готово!</string>
+    <string name="account_setup_names_account_name_label">имя ящика (опция)</string>
+    <string name="account_setup_names_user_name_label">Ваше имя (видно адресату)</string>
 
-    <string name="account_setup_account_type_title">Тип почтового ящика</string>
-    <string name="account_setup_account_type_instructions">Выберите тип ящика</string>
+    <string name="account_setup_account_type_title">Тип ящика</string>
+    <string name="account_setup_account_type_instructions">Доступные протоколы</string>
     <string name="account_setup_account_type_pop_action">POP3</string>
     <string name="account_setup_account_type_imap_action">IMAP</string>
-    <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
+    <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
 
-    <string name="account_setup_incoming_title">Настройки сервера входящей почты</string>
-    <string name="account_setup_incoming_username_label">Имя пользователя</string>
+    <string name="account_setup_incoming_title">Сервер входящих сообщений</string>
+    <string name="account_setup_incoming_username_label">Логин</string>
     <string name="account_setup_incoming_password_label">Пароль</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 сервер</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP сервер</string>
-    <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange) сервер</string>
+    <string name="account_setup_incoming_pop_server_label">Сервер POP3</string>
+    <string name="account_setup_incoming_imap_server_label">Сервер IMAP</string>
+    <string name="account_setup_incoming_webdav_server_label">Сервер Exchange</string>
     <string name="account_setup_incoming_port_label">Порт</string>
-    <string name="account_setup_incoming_security_label">Тип системы защиты</string>
-    <string name="account_setup_incoming_auth_type_label">Тип удостоверение подлинности</string>
-    <string name="account_setup_incoming_security_none_label">Никакой</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (если поддерживается)</string>
+    <string name="account_setup_incoming_security_label">Безопасность</string>
+    <string name="account_setup_incoming_auth_type_label">Аутентификация</string>
+    <string name="account_setup_incoming_security_none_label">Нет</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL (если доступно)</string>
     <string name="account_setup_incoming_security_ssl_label">SSL (всегда)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (если поддерживается)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">TLS (если доступно)</string>
     <string name="account_setup_incoming_security_tls_label">TLS (всегда)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Когда сообщение удалено</string>
@@ -392,10 +392,10 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_setup_incoming_delete_policy_delete_label">Удалить с сервера</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Отметить как прочитанное на сервере</string>
 
-    <string name="account_setup_incoming_compression_label">Использовать сжатие данных в сети:</string>
-    <string name="account_setup_incoming_mobile_label">Мобильная</string>
+    <string name="account_setup_incoming_compression_label">Сжатие в сетях</string>
+    <string name="account_setup_incoming_mobile_label">Мобильные</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-    <string name="account_setup_incoming_other_label">Другие</string>
+    <string name="account_setup_incoming_other_label">Прочие</string>
 
     <string name="local_storage_provider_external_label">Внешнее хранилище (SD-карта)</string>
     <string name="local_storage_provider_internal_label">Стандартное внутреннее хранилище</string>
@@ -407,7 +407,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_setup_expunge_policy_on_poll">В ходе каждого запроса</string>
     <string name="account_setup_expunge_policy_manual">Только вручную</string>
 
-    <string name="account_setup_incoming_autodetect_namespace_label">Автоопределение области имён IMAP</string>
+    <string name="account_setup_incoming_autodetect_namespace_label">Авто-область имён IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_label">Префикс пути IMAP</string>
 
     <string name="drafts_folder_label">Имя папки Черновиков</string>
@@ -419,47 +419,47 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_setup_incoming_subscribed_folders_only_label">Показывать только папки из подписки</string>
     <string name="account_setup_auto_expand_folder">Автоматически открывать папку</string>
 
-    <string name="account_setup_incoming_webdav_path_prefix_label">Путь для WebDAV (Exchange)</string>
-    <string name="account_setup_incoming_webdav_path_prefix_hint">Необязательное</string>
+    <string name="account_setup_incoming_webdav_path_prefix_label">Путь OWA</string>
+    <string name="account_setup_incoming_webdav_path_prefix_hint">опция</string>
 
-    <string name="account_setup_incoming_webdav_auth_path_label">Путь для удостоверение подлинности</string>
-    <string name="account_setup_incoming_webdav_auth_path_hint">Необязательное</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_label">Пути почтового ящика</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_hint">Необязательное</string>
+    <string name="account_setup_incoming_webdav_auth_path_label">Путь аутентификации</string>
+    <string name="account_setup_incoming_webdav_auth_path_hint">опция</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_label">Псевдоним ящика</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_hint">опция</string>
 
-    <string name="account_setup_outgoing_title">Настройки сервера исходящей почты</string>
+    <string name="account_setup_outgoing_title">Сервер исходящих сообщений</string>
     <string name="account_setup_outgoing_smtp_server_label">Сервер SMTP</string>
     <string name="account_setup_outgoing_port_label">Порт</string>
-    <string name="account_setup_outgoing_security_label">Тип защиты</string>
-    <string name="account_setup_outgoing_require_login_label">Требовать входа в систему.</string>
-    <string name="account_setup_outgoing_username_label">Имя пользователя</string>
+    <string name="account_setup_outgoing_security_label">Безопасность</string>
+    <string name="account_setup_outgoing_require_login_label">Авторизация</string>
+    <string name="account_setup_outgoing_username_label">Логин</string>
     <string name="account_setup_outgoing_password_label">Пароль</string>
-    <string name="account_setup_outgoing_authentication_label">Тип защиты</string>
+    <string name="account_setup_outgoing_authentication_label">Аутентификация</string>
 
-    <string name="account_setup_bad_uri">Неверная установка: <xliff:g id="err_mess">%s</xliff:g></string>
+    <string name="account_setup_bad_uri">Неверная настройка: <xliff:g id="err_mess">%s</xliff:g></string>
 
     <string name="account_setup_options_title">Настройки почты</string>
 
-    <string name="compact_action">Сжать данные</string>
-    <string name="clear_action">Очистить все данные (опасно!)</string>
-    <string name="recreate_action">Пересоздать данные (крайний случай!)</string>
+    <string name="compact_action">Сжать ящик</string>
+    <string name="clear_action">Стереть сообщения (!)</string>
+    <string name="recreate_action">Пересоздать (!)</string>
 
-    <string name="account_setup_options_mail_check_frequency_label">Частота опроса папок</string>
+    <string name="account_setup_options_mail_check_frequency_label">Интервал проверки</string>
     <!-- Frequency also used in account_settings_* -->
-    <string name="account_setup_options_mail_check_frequency_never">Никогда</string>
-    <string name="account_setup_options_mail_check_frequency_1min">Раз в минуту</string>
-    <string name="account_setup_options_mail_check_frequency_5min">Раз в 5 минут</string>
-    <string name="account_setup_options_mail_check_frequency_10min">Раз в 10 минут</string>
-    <string name="account_setup_options_mail_check_frequency_15min">Раз в 15 минут</string>
-    <string name="account_setup_options_mail_check_frequency_30min">Раз в 30 минут</string>
-    <string name="account_setup_options_mail_check_frequency_1hour">Раз в час</string>
-    <string name="account_setup_options_mail_check_frequency_2hour">Раз в 2 часа</string>
-    <string name="account_setup_options_mail_check_frequency_3hour">Раз в 3 часа</string>
-    <string name="account_setup_options_mail_check_frequency_6hour">Раз в 6 часов</string>
-    <string name="account_setup_options_mail_check_frequency_12hour">Раз в 12 часов</string>
-    <string name="account_setup_options_mail_check_frequency_24hour">Раз в сутки</string>
+    <string name="account_setup_options_mail_check_frequency_never">Вручную</string>
+    <string name="account_setup_options_mail_check_frequency_1min">1 минута</string>
+    <string name="account_setup_options_mail_check_frequency_5min">5 минут</string>
+    <string name="account_setup_options_mail_check_frequency_10min">10 минут</string>
+    <string name="account_setup_options_mail_check_frequency_15min">15 минут</string>
+    <string name="account_setup_options_mail_check_frequency_30min">30 минут</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">1 час</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">2 часа</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">3 часа</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">6 часов</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">12 часов</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">1 сутки</string>
 
-    <string name="push_poll_on_connect_label">Запрашивать при соединении с Push Mail</string>
+    <string name="push_poll_on_connect_label">Проверка при push</string>
     <string name="account_setup_options_enable_push_label">Использовать Push Mail</string>
     <string name="account_setup_options_enable_push_summary">Если ваш сервер поддерживает такую возможность, новые сообщения появляются мгновенно. Эта опция может существенно улучшить или ухудшить скорость и эффективность всей системы.</string>
     <string name="idle_refresh_period_label">Обновлять неактивное соединение</string>
@@ -749,7 +749,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="provider_note_auonejp">Если вы хотите использовать POP3 для данного поставщика, вы должны разрешить использовать IMAP или POP3 на странице настроек вашей почты.</string>
     <string name="provider_note_naver">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Naver.</string>
     <string name="provider_note_hanmail">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Hanmail(Daum).</string>
-    <string name="provider_note_paran">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны	разрешить использование IMAP или POP3 на странице настроек почты Paran.</string>
+    <string name="provider_note_paran">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны    разрешить использование IMAP или POP3 на странице настроек почты Paran.</string>
     <string name="provider_note_nate">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Nate.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Сертификат не признан</string>
@@ -895,7 +895,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="font_size_message_list">Список сообщений</string>
     <string name="font_size_message_list_subject">Тема</string>
-    <string name="font_size_message_list_sender">Отпрвитель</string>
+    <string name="font_size_message_list_sender">Отправитель</string>
     <string name="font_size_message_list_date">Дата</string>
     <string name="font_size_message_list_preview">Предпросмотр</string>
 
@@ -949,22 +949,22 @@ K-9 Mail — почтовый клиент для Android.
     <string name="attachment_encryption_unsupported">Предупреждение: вложения ещё не подписаны и не зашифрованы.</string>
     <string name="send_aborted">Отправка отменена.</string>
 
-    <string name="save_or_discard_draft_message_dlg_title">Сохранить черновик сообщения?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Сохранить или уничтожить сообщение?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Выберите действие</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Сохранить черновик или отменить сообщение?</string>
 
-    <string name="confirm_discard_draft_message_title">Отбросить сообщение?</string>
-    <string name="confirm_discard_draft_message">Вы уверены, что хотите отбросить это сообщение?</string>
+    <string name="confirm_discard_draft_message_title">Удаление</string>
+    <string name="confirm_discard_draft_message">Сообщение будет удалено. Продолжить?</string>
 
-    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Не сохранять черновик сообщения.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Сбой сохранения</string>
     <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Не сохранять черновик сообщения помеченного как зашифрованное.</string>
 
     <string name="continue_without_public_key_dlg_title">Продолжить без открытого ключа?</string>
     <string name="continue_without_public_key_instructions_fmt">Один или несколько получателей не имеют открытого ключа. Продолжить?</string>
 
-    <string name="select_text_now">Выберите текс для копирования.</string>
+    <string name="select_text_now">Выберите текст для копирования.</string>
 
-    <string name="dialog_confirm_delete_title">Подтвердите удаление</string>
-    <string name="dialog_confirm_delete_message">Вы хотите удалить это сообщение?</string>
+    <string name="dialog_confirm_delete_title">Удаление</string>
+    <string name="dialog_confirm_delete_message">Сообщение будет удалено. Продолжить?</string>
     <!-- NEW: <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
@@ -997,22 +997,22 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
-    <string name="error_unable_to_connect">Не получается соединиться.</string>
+    <string name="error_unable_to_connect">Сбой подключения</string>
 
-    <string name="import_export_action">Импорт и экспорт настроек</string>
-    <string name="settings_export_account">Экспортировать настройки учётной записи</string>
-    <string name="settings_export_all">Экспортировать настройки и учётные записи</string>
+    <string name="import_export_action">Параметры</string>
+    <string name="settings_export_account">Экспорт</string>
+    <string name="settings_export_all">Экспорт</string>
     <string name="settings_import_dialog_title">Импорт</string>
     <string name="settings_export_dialog_title">Экспорт</string>
-    <string name="settings_import">Импортировать настройки</string>
-    <string name="settings_import_selection">Импортировать выбранное</string>
-    <string name="settings_import_global_settings">Глобальные настройки</string>
+    <string name="settings_import">Импорт</string>
+    <string name="settings_import_selection">Импорт</string>
+    <string name="settings_import_global_settings">Настройки K-9 Mail</string>
     <string name="settings_exporting">Экспорт настроек…</string>
     <string name="settings_importing">Импорт настроек…</string>
-    <string name="settings_import_scanning_file">Сканирование файла…</string>
-    <string name="settings_export_success">Настройки были экспортированы в <xliff:g id="filename">%s</xliff:g></string>
-    <string name="settings_import_global_settings_success">Глобальные настройки были импортированы из <xliff:g id="filename">%s</xliff:g></string>
-    <string name="settings_import_success">Импортирован <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_scanning_file">Проверка файла…</string>
+    <string name="settings_export_success">Настройки сохранены в <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Настройки K-9 импортированы из <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Импортировано: <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
     <plurals name="settings_import_success">
         <item quantity="one">1 учётная запись</item>
         <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> учётных записи</item>
@@ -1046,20 +1046,20 @@ K-9 Mail — почтовый клиент для Android.
     <string name="attachment_save_title">Сохранить вложение</string>
     <string name="attachment_save_desc">Не найден браузер файлов. Где бы вы хотели сохранить вложение?</string>
 
-    <string name="manage_accounts_move_up_action">Переместить вверх</string>
-    <string name="manage_accounts_move_down_action">Переместить вниз</string>
-    <string name="manage_accounts_moving_message">Перемещение учётной записи…</string>
+    <string name="manage_accounts_move_up_action">Выше</string>
+    <string name="manage_accounts_move_down_action">Ниже</string>
+    <string name="manage_accounts_moving_message">Перемещение ящика…</string>
 
-    <string name="unread_widget_select_account">Показать количество непрочитанных для…</string>
+    <string name="unread_widget_select_account">Счётчик непрочитанных</string>
 
-    <string name="import_dialog_error_title">Требуется файловый менеджер</string>
+    <string name="import_dialog_error_title">Необходим менеджер файлов</string>
     <string name="close">Закрыть</string>
 
-    <string name="webview_empty_message">К следующему</string>
+    <string name="webview_empty_message">Текст отсутствует</string>
 
-    <string name="webview_contextmenu_link_view_action">Открыть для просмотра</string>
-    <string name="webview_contextmenu_link_share_action">Поделиться ссылкой</string>
-    <string name="webview_contextmenu_link_copy_action">Скопировать ссылку в буфер обмена</string>
+    <string name="webview_contextmenu_link_view_action">Открыть</string>
+    <string name="webview_contextmenu_link_share_action">Отправить</string>
+    <string name="webview_contextmenu_link_copy_action">В буфер</string>
     <string name="webview_contextmenu_link_clipboard_label">Ссылка</string>
 
     <string name="webview_contextmenu_image_title">Изображение</string>
@@ -1113,23 +1113,23 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_threaded_view_label">Режим отображения</string>
     <string name="global_settings_threaded_view_summary">Совместить сообщения принадлежащие одной теме</string>
 
-    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
-    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
-    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+    <string name="upgrade_databases_title">Обновление данных</string>
+    <string name="upgrade_databases_unspecified">Обновление данных…</string>
+    <string name="upgrade_database_format">Обновление данных ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+    <string name="message_list_loading">Загрузка…</string>
 
     <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
     <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
     <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
     <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
 
-    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+    <string name="message_view_empty">Выберите сообщение</string>
 
     <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
     <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
-    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+    <string name="last_refresh_time_format">обновлено %s</string>
+    <string name="last_refresh_time_format_with_push">обновлено <xliff:g id="time_with_preposition">%s</xliff:g>, push вкл.</string>
+    <string name="preposition_for_date">в <xliff:g id="date">%s</xliff:g></string>
 </resources>
