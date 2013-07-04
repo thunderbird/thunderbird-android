@@ -249,7 +249,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_compose_subject_hint">тема</string>
     <string name="message_compose_content_hint">сообщение</string>
     <string name="message_compose_signature_hint">подпись</string>
-    <string name="message_compose_quote_header_separator">-------- Исходное сообщение --------</string>
+    <string name="message_compose_quote_header_separator">------ Исходное сообщение ------</string>
     <string name="message_compose_quote_header_subject">Тема:</string>
     <string name="message_compose_quote_header_send_date">Отправлено:</string>
     <string name="message_compose_quote_header_from">От:</string>
