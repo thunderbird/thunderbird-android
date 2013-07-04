@@ -1110,8 +1110,8 @@ K-9 Mail — почтовый клиент для Android.
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
     <string name="remote_search_unavailable_no_network">Удалённый поиск не доступен без сетевого соединения.</string>
 
-    <string name="global_settings_background_as_unread_indicator_label">Использовать фоновый цвет как индикатор прочтения</string>
-    <string name="global_settings_background_as_unread_indicator_summary">Отображение прочитанных и непрочитанных сообщений с различным цветом фона</string>
+    <string name="global_settings_background_as_unread_indicator_label">Затемнить прочитанные</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Выделять прочитанные сообщения менее ярким фоном</string>
 
     <string name="global_settings_threaded_view_label">Беседы</string>
     <string name="global_settings_threaded_view_summary">Группировать сообщения в беседы</string>
