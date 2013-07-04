@@ -1111,23 +1111,23 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_threaded_view_label">Режим отображения</string>
     <string name="global_settings_threaded_view_summary">Совместить сообщения принадлежащие одной теме</string>
 
-    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
-    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
-    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+    <string name="upgrade_databases_title">Обновление данных</string>
+    <string name="upgrade_databases_unspecified">Обновление данных…</string>
+    <string name="upgrade_database_format">Обновление ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+    <string name="message_list_loading">Загрузка…</string>
 
-    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
-    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+    <string name="global_settings_splitview_mode_label">Разделить экран</string>
+    <string name="global_settings_splitview_always">Всегда</string>
+    <string name="global_settings_splitview_never">Нет</string>
+    <string name="global_settings_splitview_when_in_landscape">Ландшафт</string>
 
-    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+    <string name="message_view_empty">Выберите сообщение</string>
 
-    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+    <string name="global_settings_show_contact_picture_label">Изображения контактов</string>
+    <string name="global_settings_show_contact_picture_summary">Показать изображения контактов в списке сообщений</string>
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
-    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+    <string name="last_refresh_time_format">обновлено <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">обновлено <xliff:g id="time_with_preposition">%s</xliff:g>, push вкл.</string>
+    <string name="preposition_for_date">в <xliff:g id="date">%s</xliff:g></string>
 </resources>
