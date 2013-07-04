@@ -407,7 +407,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_setup_expunge_policy_on_poll">При проверке</string>
     <string name="account_setup_expunge_policy_manual">Вручную</string>
 
-    <string name="account_setup_incoming_autodetect_namespace_label">Авто-область имён IMAP</string>
+    <string name="account_setup_incoming_autodetect_namespace_label">Автообласть имён IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_label">Префикс пути IMAP</string>
 
     <string name="drafts_folder_label">Папка черновиков</string>
@@ -430,317 +430,317 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_setup_outgoing_title">Сервер исходящей почты</string>
     <string name="account_setup_outgoing_smtp_server_label">Сервер SMTP</string>
     <string name="account_setup_outgoing_port_label">Порт</string>
-    <string name="account_setup_outgoing_security_label">Тип защиты</string>
-    <string name="account_setup_outgoing_require_login_label">Требовать входа в систему.</string>
-    <string name="account_setup_outgoing_username_label">Имя пользователя</string>
+    <string name="account_setup_outgoing_security_label">Безопасность</string>
+    <string name="account_setup_outgoing_require_login_label">Авторизация</string>
+    <string name="account_setup_outgoing_username_label">Логин</string>
     <string name="account_setup_outgoing_password_label">Пароль</string>
-    <string name="account_setup_outgoing_authentication_label">Тип защиты</string>
+    <string name="account_setup_outgoing_authentication_label">Аутентификация</string>
 
-    <string name="account_setup_bad_uri">Неверная установка: <xliff:g id="err_mess">%s</xliff:g></string>
+    <string name="account_setup_bad_uri">Неверная настройка: <xliff:g id="err_mess">%s</xliff:g></string>
 
-    <string name="account_setup_options_title">Настройки почты</string>
+    <string name="account_setup_options_title">Настройки ящика</string>
 
-    <string name="compact_action">Сжать данные</string>
-    <string name="clear_action">Очистить все данные (опасно!)</string>
-    <string name="recreate_action">Пересоздать данные (крайний случай!)</string>
+    <string name="compact_action">Сжать ящик</string>
+    <string name="clear_action">Стереть сообщения (!)</string>
+    <string name="recreate_action">Пересоздать (!)</string>
 
-    <string name="account_setup_options_mail_check_frequency_label">Частота опроса папок</string>
+    <string name="account_setup_options_mail_check_frequency_label">Интервал проверки</string>
     <!-- Frequency also used in account_settings_* -->
-    <string name="account_setup_options_mail_check_frequency_never">Никогда</string>
-    <string name="account_setup_options_mail_check_frequency_1min">Раз в минуту</string>
-    <string name="account_setup_options_mail_check_frequency_5min">Раз в 5 минут</string>
-    <string name="account_setup_options_mail_check_frequency_10min">Раз в 10 минут</string>
-    <string name="account_setup_options_mail_check_frequency_15min">Раз в 15 минут</string>
-    <string name="account_setup_options_mail_check_frequency_30min">Раз в 30 минут</string>
-    <string name="account_setup_options_mail_check_frequency_1hour">Раз в час</string>
-    <string name="account_setup_options_mail_check_frequency_2hour">Раз в 2 часа</string>
-    <string name="account_setup_options_mail_check_frequency_3hour">Раз в 3 часа</string>
-    <string name="account_setup_options_mail_check_frequency_6hour">Раз в 6 часов</string>
-    <string name="account_setup_options_mail_check_frequency_12hour">Раз в 12 часов</string>
-    <string name="account_setup_options_mail_check_frequency_24hour">Раз в сутки</string>
+    <string name="account_setup_options_mail_check_frequency_never">Вручную</string>
+    <string name="account_setup_options_mail_check_frequency_1min">1 минута</string>
+    <string name="account_setup_options_mail_check_frequency_5min">5 минут</string>
+    <string name="account_setup_options_mail_check_frequency_10min">10 минут</string>
+    <string name="account_setup_options_mail_check_frequency_15min">15 минут</string>
+    <string name="account_setup_options_mail_check_frequency_30min">30 минут</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">1 час</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">2 часа</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">3 часа</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">6 часов</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">12 часов</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">1 сутки</string>
 
-    <string name="push_poll_on_connect_label">Запрашивать при соединении с Push Mail</string>
-    <string name="account_setup_options_enable_push_label">Использовать Push Mail</string>
-    <string name="account_setup_options_enable_push_summary">Если ваш сервер поддерживает такую возможность, новые сообщения появляются мгновенно. Эта опция может существенно улучшить или ухудшить скорость и эффективность всей системы.</string>
-    <string name="idle_refresh_period_label">Обновлять неактивное соединение</string>
-    <string name="idle_refresh_period_1min">Раз в минуту</string>
-    <string name="idle_refresh_period_2min">Раз в 2 минуты</string>
-    <string name="idle_refresh_period_3min">Раз в 3 минуты</string>
-    <string name="idle_refresh_period_6min">Раз в 6 минут</string>
-    <string name="idle_refresh_period_12min">Раз в 12 минут</string>
-    <string name="idle_refresh_period_24min">Раз в 24 минуты</string>
-    <string name="idle_refresh_period_36min">Раз в 36 минут</string>
-    <string name="idle_refresh_period_48min">Раз в 48 минут</string>
-    <string name="idle_refresh_period_60min">Раз в час</string>
+    <string name="push_poll_on_connect_label">Проверка при push</string>
+    <string name="account_setup_options_enable_push_label">Push-уведомления</string>
+    <string name="account_setup_options_enable_push_summary">Мгновенное извещение о новых сообщениях, при поддержке сервером</string>
+    <string name="idle_refresh_period_label">Интервал обновления IDLE</string>
+    <string name="idle_refresh_period_1min">1 минута</string>
+    <string name="idle_refresh_period_2min">2 минуты</string>
+    <string name="idle_refresh_period_3min">3 минуты</string>
+    <string name="idle_refresh_period_6min">6 минут</string>
+    <string name="idle_refresh_period_12min">12 минут</string>
+    <string name="idle_refresh_period_24min">24 минуты</string>
+    <string name="idle_refresh_period_36min">36 минут</string>
+    <string name="idle_refresh_period_48min">48 минут</string>
+    <string name="idle_refresh_period_60min">1 час</string>
 
-    <string name="account_setup_options_notify_label">Оповещать о получении новой почты</string>
-    <string name="account_setup_options_notify_sync_label">Оповещать при проверке почты</string>
+    <string name="account_setup_options_notify_label">Уведомлять о новой почте</string>
+    <string name="account_setup_options_notify_sync_label">Уведомлять о проверке почты</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Количество показанных сообщений</string>
-    <string name="account_setup_options_mail_display_count_10">10 сообщений</string>
-    <string name="account_setup_options_mail_display_count_25">25 сообщений</string>
-    <string name="account_setup_options_mail_display_count_50">50 сообщений</string>
-    <string name="account_setup_options_mail_display_count_100">100 сообщений</string>
-    <string name="account_setup_options_mail_display_count_250">250 сообщений</string>
-    <string name="account_setup_options_mail_display_count_500">500 сообщений</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 сообщений</string>
-    <string name="account_setup_options_mail_display_count_all">все сообщения</string>
+    <string name="account_setup_options_mail_display_count_label">Загружать сообщений</string>
+    <string name="account_setup_options_mail_display_count_10">10</string>
+    <string name="account_setup_options_mail_display_count_25">25</string>
+    <string name="account_setup_options_mail_display_count_50">50</string>
+    <string name="account_setup_options_mail_display_count_100">100</string>
+    <string name="account_setup_options_mail_display_count_250">250</string>
+    <string name="account_setup_options_mail_display_count_500">500</string>
+    <string name="account_setup_options_mail_display_count_1000">1000</string>
+    <string name="account_setup_options_mail_display_count_all">Все</string>
 
-    <string name="move_copy_cannot_copy_unsynced_message">Не удалось скопировать или переместить сообщение, которое не было синхронизированно с сервером</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Нельзя скопировать или переместить сообщение, не синхронизированное с сервером</string>
 
-    <string name="account_setup_failed_dlg_title">Установка не завершена</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Неправильное имя пользователя или пароль.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Подключение к серверу не удалось.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Подключение к серверу не удалось.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
-    <string name="account_setup_failed_dlg_edit_details_action">Изменить данные</string>
+    <string name="account_setup_failed_dlg_title">Настройка не завершена</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Неверные логин или пароль.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Сбой безопасного подключения к серверу.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_server_message_fmt">Сбой подключения к серверу.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_edit_details_action">Правка</string>
     <string name="account_setup_failed_dlg_continue_action">Продолжить</string>
 
-    <string name="account_settings_push_advanced_title">Расширенные</string>
-    <string name="account_settings_title_fmt">Общие настройки</string>
+    <string name="account_settings_push_advanced_title">Дополнительно</string>
+    <string name="account_settings_title_fmt">Настройки ящика</string>
     <string name="account_settings_default_label">Ящик по умолчанию</string>
-    <string name="account_settings_default_summary">Отправлять сообщения с этого ящика по умолчанию</string>
-    <string name="account_settings_notify_label">Уведомления о новой почте</string>
-    <string name="account_settings_notify_sync_label">Уведомления о синхронизации</string>
-    <string name="account_settings_email_label">Адрес электронной почты</string>
-    <string name="account_settings_notify_summary">Уведомлять в строке состояния о прибытии новых сообщений</string>
-    <string name="account_settings_notify_sync_summary">Уведомлять в строке состояния о проверке почты</string>
-    <string name="account_settings_notify_self_label">Уведомлять о посланных мною сообщениях</string>
-    <string name="account_settings_notify_self_summary">Уведомлять даже о сообщениях, отправленных из личной почты</string>
-    <string name="account_settings_notification_opens_unread_label">Открыть непрочитанные сообщения</string>
-    <string name="account_settings_notification_opens_unread_summary">Искать непрочитанные сообщения, когда уведомление открыто</string>
-    <string name="account_settings_notification_unread_count_label">Показать количество непрочитанных</string>
-    <string name="account_settings_notification_unread_count_summary">Показать количество непрочитанных в строке уведомлений.</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Отметить сообщение как прочитанное при открытии</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение как прочитанное при открытии для просмотра</string>
+    <string name="account_settings_default_summary">По умолчанию отправлять почту с этого ящика</string>
+    <string name="account_settings_notify_label">Уведомить о почте</string>
+    <string name="account_settings_notify_sync_label">Уведомить о проверке</string>
+    <string name="account_settings_email_label">Ваш адрес email</string>
+    <string name="account_settings_notify_summary">Показать уведомление о новой почте</string>
+    <string name="account_settings_notify_sync_summary">Показать уведомление о проверке почты</string>
+    <string name="account_settings_notify_self_label">Также об исходящей</string>
+    <string name="account_settings_notify_self_summary">Показать уведомление при отправке почты</string>
+    <string name="account_settings_notification_opens_unread_label">Перейти в непрочитанные</string>
+    <string name="account_settings_notification_opens_unread_summary">Перейти к непрочитанным сообщениям при нажатии на уведомление</string>
+    <string name="account_settings_notification_unread_count_label">Счётчик непрочитанных</string>
+    <string name="account_settings_notification_unread_count_summary">Показать количество непрочитанных в панели уведомлений</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Открытое прочитано</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после открытия для просмотра</string>
 
     <string name="account_settings_show_pictures_label">Показывать изображения</string>
     <string name="account_settings_show_pictures_never">Никогда</string>
     <string name="account_settings_show_pictures_only_from_contacts">От контактов</string>
-    <string name="account_settings_show_pictures_always">От всех</string>
+    <string name="account_settings_show_pictures_always">Всегда</string>
 
-    <string name="account_settings_composition">Написание сообщений</string>
+    <string name="account_settings_composition">Отправка</string>
 
-    <string name="account_settings_default_quoted_text_shown_label">Цитировать оригинальное сообщение при ответе</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Оригинальное сообщение вставляется в ответное сообщение.</string>
+    <string name="account_settings_default_quoted_text_shown_label">Цитировать при ответе</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Включать исходное сообщение в ответ</string>
 
-    <string name="account_settings_reply_after_quote_label">Отвечать после цитаты</string>
-    <string name="account_settings_reply_after_quote_summary">Располагать цитату выше ответа.</string>
+    <string name="account_settings_reply_after_quote_label">Цитата над ответом</string>
+    <string name="account_settings_reply_after_quote_summary">Разместить исходное сообщение над текстом ответа</string>
 
-    <string name="account_settings_strip_signature_label">Отбросить подпись в цитируемом сообщении</string>
-    <string name="account_settings_strip_signature_summary">При ответет на сообщение подпись в цитируемом сообщении будет отброшена</string>
+    <string name="account_settings_strip_signature_label">Без подписей в цитате</string>
+    <string name="account_settings_strip_signature_summary">Удалять подписи из цитируемого текста</string>
 
-    <string name="account_settings_message_format_label">Формат сообщения</string>
-    <string name="account_settings_message_format_text">Обычный текст (изображения и форматирование не сохраняется)</string>
-    <string name="account_settings_message_format_html">HTML (сохранять изображения и форматирование)</string>
-    <string name="account_settings_message_format_auto">Автоматически (простой текст, если ответа не на сообщение в формате HTML)</string>
+    <string name="account_settings_message_format_label">Формат сообщений</string>
+    <string name="account_settings_message_format_text">Только текст</string>
+    <string name="account_settings_message_format_html">HTML</string>
+    <string name="account_settings_message_format_auto">Автоматически</string>
 
-    <string name="account_settings_always_show_cc_bcc_label">AВсегда отображать CC/BCC</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Всегда отображать поле ввода CC/BCC</string>
+    <string name="account_settings_always_show_cc_bcc_label">Включать Копия/Скрытая</string>
 
     <string name="account_settings_message_read_receipt_label">Уведомление о прочтении</string>
     <string name="account_settings_message_read_receipt_summary">Всегда запрашивать уведомление о прочтении</string>
 
     <string name="account_settings_quote_style_label">Стиль цитирования</string>
-    <string name="account_settings_quote_style_prefix">Префикс (например Gmail, Pine)</string>
-    <string name="account_settings_quote_style_header">Заголовок (например Outlook, Yahoo!, Hotmail)</string>
+    <string name="account_settings_quote_style_prefix">Префикс (Gmail)</string>
+    <string name="account_settings_quote_style_header">Заголовок (Outlook)</string>
 
-    <string name="account_settings_general_title">Общие</string>
-    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
-    <string name="account_settings_sync">Синхронизация папок</string>
+    <string name="account_settings_general_title">Основные</string>
+    <string name="account_settings_reading_mail">Чтение</string>
+    <string name="account_settings_sync">Получение</string>
     <string name="account_settings_folders">Папки</string>
-    <string name="account_settings_quote_prefix_label">Префикс цитирования</string>
+    <string name="account_settings_quote_prefix_label">Префикс цитаты</string>
     <string name="account_settings_crypto">Криптография</string>
-    <string name="account_settings_crypto_app">OpenPGP</string>
+    <string name="account_settings_crypto_app">Провайдер OpenPGP</string>
     <string name="account_settings_crypto_app_none">Нет</string>
     <string name="account_settings_crypto_auto_signature">Автоподпись</string>
-    <string name="account_settings_crypto_auto_signature_summary">Использовать e-mail учётной записи для формирования ключа подписи.</string>
-    <string name="account_settings_crypto_auto_encrypt">Автоматическое шифрование</string>
-    <string name="account_settings_crypto_auto_encrypt_summary">Автоматическая настройка шифрования, если открытый ключ соответствует получателю</string>
-    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
+    <string name="account_settings_crypto_auto_signature_summary">Выбирать закрытый ключ в зависимости от адреса ящика</string>
+    <string name="account_settings_crypto_auto_encrypt">Автошифрование</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Автоматически зашифровать сообщение при совпадении публичного ключа получателя</string>
+    <string name="account_settings_crypto_apg_not_installed">APG не установлен</string>
 
-    <string name="account_settings_mail_check_frequency_label">Частота опроса папок</string>
+    <string name="account_settings_mail_check_frequency_label">Интервал проверки</string>
 
-    <string name="account_settings_storage_title">Хранилище</string>
+    <string name="account_settings_storage_title">Хранение</string>
 
-    <string name="account_settings_color_label">Цвет учётной записи</string>
-    <string name="account_settings_color_summary">Выберите цвет учётной записи, используемый в папке и списке учётных записей</string>
+    <string name="account_settings_color_label">Цвет</string>
+    <string name="account_settings_color_summary">Метка в списке ящиков и папок</string>
 
-    <string name="account_settings_led_color_label">Цвет светодиода для уведомления</string>
-    <string name="account_settings_led_color_summary">Выбрать цвет мигания для учётной записи</string>
+    <string name="account_settings_led_color_label">Цвет LED-индикатора</string>
+    <string name="account_settings_led_color_summary">Цвет LED-индикатора устройства для оповещений этого ящика</string>
 
-    <string name="account_settings_mail_display_count_label">Количество показываемых сообщений</string>
+    <string name="account_settings_mail_display_count_label">Отображать сообщений</string>
 
-    <string name="account_settings_autodownload_message_size_label">Загружать сообщения до</string>
-    <string name="account_settings_autodownload_message_size_1">1Kb</string>
-    <string name="account_settings_autodownload_message_size_2">2Kb</string>
-    <string name="account_settings_autodownload_message_size_4">4Kb</string>
-    <string name="account_settings_autodownload_message_size_8">8Kb</string>
-    <string name="account_settings_autodownload_message_size_16">16Kb</string>
-    <string name="account_settings_autodownload_message_size_32">32Kb</string>
-    <string name="account_settings_autodownload_message_size_64">64Kb</string>
-    <string name="account_settings_autodownload_message_size_128">128Kb</string>
-    <string name="account_settings_autodownload_message_size_256">256Kb</string>
-    <string name="account_settings_autodownload_message_size_512">512Kb</string>
-    <string name="account_settings_autodownload_message_size_1024">1Mb</string>
-    <string name="account_settings_autodownload_message_size_2048">2Mb</string>
-    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
-    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
-    <string name="account_settings_autodownload_message_size_any">любого размера без ограничений</string>
+    <string name="account_settings_autodownload_message_size_label">Загружать фрагмент</string>
+    <string name="account_settings_autodownload_message_size_1">1 Кб</string>
+    <string name="account_settings_autodownload_message_size_2">2 Кб</string>
+    <string name="account_settings_autodownload_message_size_4">4 Кб</string>
+    <string name="account_settings_autodownload_message_size_8">8 Кб</string>
+    <string name="account_settings_autodownload_message_size_16">16 Кб</string>
+    <string name="account_settings_autodownload_message_size_32">32 Кб</string>
+    <string name="account_settings_autodownload_message_size_64">64 Кб</string>
+    <string name="account_settings_autodownload_message_size_128">128 Кб</string>
+    <string name="account_settings_autodownload_message_size_256">256 Кб</string>
+    <string name="account_settings_autodownload_message_size_512">512 Кб</string>
+    <string name="account_settings_autodownload_message_size_1024">1 Мб</string>
+    <string name="account_settings_autodownload_message_size_2048">2 Мб</string>
+    <string name="account_settings_autodownload_message_size_5120">5 Мб</string>
+    <string name="account_settings_autodownload_message_size_10240">10 Мб</string>
+    <string name="account_settings_autodownload_message_size_any">Полностью</string>
 
-    <string name="account_settings_message_age_label">Синхронизировать сообщения</string>
-    <string name="account_settings_message_age_any">без ограничения по давности</string>
-    <string name="account_settings_message_age_0">за сегодня</string>
-    <string name="account_settings_message_age_1">за 2 последних дня</string>
-    <string name="account_settings_message_age_2">за 3 последних дня</string>
-    <string name="account_settings_message_age_7">за последнюю неделю</string>
-    <string name="account_settings_message_age_14">за 2 последние недели</string>
-    <string name="account_settings_message_age_21">за 3 последние недели</string>
-    <string name="account_settings_message_age_1_month">за последний месяц</string>
-    <string name="account_settings_message_age_2_months">за 2 последних месяца</string>
-    <string name="account_settings_message_age_3_months">за 3 последних месяца</string>
-    <string name="account_settings_message_age_6_months">за 6 последних месяцев</string>
-    <string name="account_settings_message_age_1_year">за последний год</string>
+    <string name="account_settings_message_age_label">Глубина синхронизации</string>
+    <string name="account_settings_message_age_any">Всё время</string>
+    <string name="account_settings_message_age_0">Сегодня</string>
+    <string name="account_settings_message_age_1">2 дня</string>
+    <string name="account_settings_message_age_2">3 дня</string>
+    <string name="account_settings_message_age_7">1 неделя</string>
+    <string name="account_settings_message_age_14">2 недели</string>
+    <string name="account_settings_message_age_21">3 недели</string>
+    <string name="account_settings_message_age_1_month">1 месяц</string>
+    <string name="account_settings_message_age_2_months">2 месяца</string>
+    <string name="account_settings_message_age_3_months">3 месяца</string>
+    <string name="account_settings_message_age_6_months">6 месяцев</string>
+    <string name="account_settings_message_age_1_year">1 год</string>
 
-    <string name="account_settings_folder_display_mode_label">Выбор показываемых папок</string>
+    <string name="account_settings_folder_display_mode_label">Видимость</string>
     <string name="account_settings_folder_display_mode_all">Все</string>
-    <string name="account_settings_folder_display_mode_first_class">Только папки 1-го класса</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Папки 1-го и 2-го класса</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Все, кроме папок 2-го класса</string>
+    <string name="account_settings_folder_display_mode_first_class">1 класс</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">1 и 2 классы</string>
+    <string name="account_settings_folder_display_mode_not_second_class">Кроме 2 класса</string>
 
-    <string name="account_settings_folder_sync_mode_label">Выбор папок для проверки методом Poll</string>
+    <string name="account_settings_folder_sync_mode_label">Проверка папок</string>
     <string name="account_settings_folder_sync_mode_all">Все</string>
-    <string name="account_settings_folder_sync_mode_first_class">Только папки 1-го класса</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Папки 1-го и 2-го класса</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Все, кроме папок 2-го класса</string>
-    <string name="account_settings_folder_sync_mode_none">Никаких</string>
+    <string name="account_settings_folder_sync_mode_first_class">1 класс</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">1 и 2 классы</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">Кроме 2 класса</string>
+    <string name="account_settings_folder_sync_mode_none">Нет</string>
 
-    <string name="account_settings_folder_push_mode_label">Выбор папок для проверки методом Push</string>
+    <string name="account_settings_folder_push_mode_label">Push папок</string>
     <string name="account_settings_folder_push_mode_all">Все</string>
-    <string name="account_settings_folder_push_mode_first_class">Только папки 1-го класса</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Папки 1-го и 2-го класса</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Все, кроме папок 2-го класса</string>
-    <string name="account_settings_folder_push_mode_none">Никаких</string>
+    <string name="account_settings_folder_push_mode_first_class">1 класс</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">1 и 2 классы</string>
+    <string name="account_settings_folder_push_mode_not_second_class">Кроме 2 класса</string>
+    <string name="account_settings_folder_push_mode_none">Нет</string>
 
-    <string name="account_settings_folder_target_mode_label">Перемещать/Копировать папки назначения</string>
+    <string name="account_settings_folder_target_mode_label">Приёмник копирования</string>
     <string name="account_settings_folder_target_mode_all">Все</string>
-    <string name="account_settings_folder_target_mode_first_class">Только папки 1-го класса</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Папки 1-го и 2-го класса</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Все, кроме папок 2-го класса</string>
+    <string name="account_settings_folder_target_mode_first_class">1 класс</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">1 и 2 классы</string>
+    <string name="account_settings_folder_target_mode_not_second_class">Кроме 2 класса</string>
 
-    <string name="account_settings_sync_remote_deletetions_label">Синхронизировать удаление на сервере</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Удаляет удалённые на сервере сообщения</string>
+    <string name="account_settings_sync_remote_deletetions_label">Синхронное удаление</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Удалять сообщения при удалении на сервере</string>
 
-    <string name="folder_settings_title">Настройки папок</string>
+    <string name="folder_settings_title">Настройки папки</string>
 
-    <string name="folder_settings_in_top_group_label">Показывать в верхней группе</string>
-    <string name="folder_settings_in_top_group_summary">Показывать в верхней части списка папок</string>
+    <string name="folder_settings_in_top_group_label">Начало списка</string>
+    <string name="folder_settings_in_top_group_summary">Отображать ближе к началу списка папок</string>
 
-    <string name="folder_settings_folder_display_mode_label">Класс отображения папки</string>
-    <string name="folder_settings_folder_display_mode_normal">Никакой</string>
-    <string name="folder_settings_folder_display_mode_first_class">1-й класс</string>
-    <string name="folder_settings_folder_display_mode_second_class">2-й класс</string>
+    <string name="folder_settings_folder_display_mode_label">Видимость</string>
+    <string name="folder_settings_folder_display_mode_normal">Нет</string>
+    <string name="folder_settings_folder_display_mode_first_class">1 класс</string>
+    <string name="folder_settings_folder_display_mode_second_class">2 класс</string>
 
-    <string name="folder_settings_folder_sync_mode_label">Класс синхронизации папки</string>
-    <string name="folder_settings_folder_sync_mode_normal">Никакой</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1-й класс</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2-й класс</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Такой-же как и класс отображения</string>
+    <string name="folder_settings_folder_sync_mode_label">Синхронизация</string>
+    <string name="folder_settings_folder_sync_mode_normal">Нет</string>
+    <string name="folder_settings_folder_sync_mode_first_class">1 класс</string>
+    <string name="folder_settings_folder_sync_mode_second_class">2 класс</string>
+    <string name="folder_settings_folder_sync_mode_inherited">Как видимости</string>
 
-    <string name="folder_settings_folder_push_mode_label">Класс папки для Push метода</string>
-    <string name="folder_settings_folder_push_mode_normal">Никакой</string>
-    <string name="folder_settings_folder_push_mode_first_class">1-й класс</string>
-    <string name="folder_settings_folder_push_mode_second_class">2-й класс</string>
-    <string name="folder_settings_folder_push_mode_inherited">Такой-же, как и класс синхронизации</string>
+    <string name="folder_settings_folder_push_mode_label">Push</string>
+    <string name="folder_settings_folder_push_mode_normal">Нет</string>
+    <string name="folder_settings_folder_push_mode_first_class">1 класс</string>
+    <string name="folder_settings_folder_push_mode_second_class">2 класс</string>
+    <string name="folder_settings_folder_push_mode_inherited">Как синхронизации</string>
 
-    <string name="account_settings_incoming_label">Сервер входящей почты</string>
+    <string name="account_settings_incoming_label">Сервер входящих</string>
     <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>
-    <string name="account_settings_outgoing_label">Сервер исходящей почты</string>
-    <string name="account_settings_outgoing_summary">Настройки сервера исходящей почты (SMTP)</string>
-    <string name="account_settings_description_label">Название ящика</string>
+    <string name="account_settings_outgoing_label">Сервер исходящих</string>
+    <string name="account_settings_outgoing_summary">Настройки сервера исходящей почты</string>
+    <string name="account_settings_description_label">Имя ящика</string>
     <string name="account_settings_name_label">Ваше имя</string>
     <string name="notifications_title">Уведомления</string>
     <string name="account_settings_vibrate_enable">Вибрация</string>
-    <string name="account_settings_vibrate_summary">Вибрация при новых сообщениях</string>
-    <string name="account_settings_vibrate_pattern_label">Тип вибрации</string>
-    <string name="account_settings_vibrate_pattern_default">По умолчанию</string>
-    <string name="account_settings_vibrate_pattern_1">Вибрация 1</string>
-    <string name="account_settings_vibrate_pattern_2">Вибрация 2</string>
-    <string name="account_settings_vibrate_pattern_3">Вибрация 3</string>
-    <string name="account_settings_vibrate_pattern_4">Вибрация 4</string>
-    <string name="account_settings_vibrate_pattern_5">Вибрация 5</string>
-    <string name="account_settings_vibrate_times">Повторять вибрацию</string>
-    <string name="account_settings_ringtone">Выбор мелодии</string>
-    <string name="account_settings_led_label">Мигать</string>
-    <string name="account_settings_led_summary">Мигать при получении сообщения</string>
+    <string name="account_settings_vibrate_summary">Вибрация при новой почте</string>
+    <string name="account_settings_vibrate_pattern_label">Ритм</string>
+    <string name="account_settings_vibrate_pattern_default">Обычный</string>
+    <string name="account_settings_vibrate_pattern_1">Ритм 1</string>
+    <string name="account_settings_vibrate_pattern_2">Ритм 2</string>
+    <string name="account_settings_vibrate_pattern_3">Ритм 3</string>
+    <string name="account_settings_vibrate_pattern_4">Ритм 4</string>
+    <string name="account_settings_vibrate_pattern_5">Ритм 5</string>
+    <string name="account_settings_vibrate_times">Повтор</string>
+    <string name="account_settings_ringtone">Мелодия</string>
+    <string name="account_settings_led_label">Мигать LED-индикатором</string>
+    <string name="account_settings_led_summary">Мигать LED-индикатором при новой почте</string>
 
-    <string name="account_settings_composition_title">Настройки составления сообщений</string>
-    <string name="account_settings_composition_label">По умолчанию</string>
-    <string name="account_settings_composition_summary">Установить по умолчанию \"От\", СК и подпись</string>
+    <string name="account_settings_composition_title">Новое сообщение</string>
+    <string name="account_settings_composition_label">Новое сообщение</string>
+    <string name="account_settings_composition_summary">Отправитель, скрытая копия и подпись по умолчанию</string>
 
-    <string name="account_settings_identities_label">Управление личностями</string>
-    <string name="account_settings_identities_summary">Настройка альтернативных \"От\" адреса и подписи</string>
+    <string name="account_settings_identities_label">Управление ролями</string>
+    <string name="account_settings_identities_summary">Альтернативные значения отправителя и подписи</string>
 
-    <string name="manage_identities_title">Управление личностями</string>
+    <string name="manage_identities_title">Управление ролями</string>
 
-    <string name="manage_identities_context_menu_title">Управление личностью</string>
+    <string name="manage_identities_context_menu_title">Управление</string>
 
-    <string name="edit_identity_title">Редактировать личность</string>
-    <string name="new_identity_action">Новая личность</string>
+    <string name="edit_identity_title">Правка роли</string>
+    <string name="new_identity_action">Новая роль</string>
 
-    <string name="account_settings_always_bcc_label">СК все сообщения</string>
+    <string name="account_settings_always_bcc_label">Скрытая копия всех сообщений</string>
 
-    <string name="manage_identities_edit_action">Редактировать</string>
-    <string name="manage_identities_move_up_action">Передвинуть выше</string>
-    <string name="manage_identities_move_down_action">Передвинуть ниже</string>
-    <string name="manage_identities_move_top_action">Передвинуть к началу / пометить как по умолчанию</string>
+    <string name="manage_identities_edit_action">Правка</string>
+    <string name="manage_identities_move_up_action">Выше</string>
+    <string name="manage_identities_move_down_action">Ниже</string>
+    <string name="manage_identities_move_top_action">Вверх</string>
     <string name="manage_identities_remove_action">Удалить</string>
 
-    <string name="edit_identity_description_label">Описание личности</string>
-    <string name="edit_identity_description_hint">(Необязательныо)</string>
+    <string name="edit_identity_description_label">Название роли</string>
+    <string name="edit_identity_description_hint">опция</string>
     <string name="edit_identity_name_label">Ваше имя</string>
-    <string name="edit_identity_name_hint">(Необязательныо)</string>
-    <string name="edit_identity_email_label">Адрес электронной почты</string>
-    <string name="edit_identity_email_hint">(Обязательный)</string>
-    <string name="edit_identity_reply_to_label">Отвечать на адрес</string>
-    <string name="edit_identity_reply_to_hint">(Необязательно)</string>
+    <string name="edit_identity_name_hint">опция</string>
+    <string name="edit_identity_email_label">Адрес email</string>
+    <string name="edit_identity_email_hint">обязательно</string>
+    <string name="edit_identity_reply_to_label">Адрес для ответа</string>
+    <string name="edit_identity_reply_to_hint">опция</string>
     <string name="edit_identity_signature_label">Подпись</string>
-    <string name="edit_identity_signature_hint">(Необязательно)</string>
+    <string name="edit_identity_signature_hint">опция</string>
 
-    <string name="account_settings_signature_use_label">Включить подпись</string>
+    <string name="account_settings_signature_use_label">Использовать подпись</string>
     <string name="account_settings_signature_label">Подпись</string>
 
-    <string name="default_identity_description">Первоначальная личность</string>
-    <string name="choose_identity_title">Выбрать личность</string>
-    <string name="send_as">Послать как</string>
+    <string name="default_identity_description">Основная роль</string>
+    <string name="choose_identity_title">Выберите роль</string>
+    <string name="send_as">Отправитель</string>
 
-    <string name="no_removable_identity">Нельзя удалить единственную личность.</string>
-    <string name="identity_has_no_email">Личность без адреса электронной почты не позволяется.</string>
+    <string name="no_removable_identity">Нельзя удалить основную роль</string>
+    <string name="identity_has_no_email">Нельзя создать роль без адреса email</string>
 
-    <string name="sort_earliest_first">Сначала старые сообщения</string>
-    <string name="sort_latest_first">Сначала новые сообщения</string>
-    <string name="sort_subject_alpha">Тема по алфавиту</string>
-    <string name="sort_subject_re_alpha">Тема по алфавиту в обратном порядке</string>
-    <string name="sort_flagged_first">Сначала сообщения со звёздами</string>
-    <string name="sort_flagged_last">Сначала сообщения без звёзд</string>
-    <string name="sort_unread_first">Сначала непрочитанные сообщения</string>
-    <string name="sort_unread_last">Сначала прочитанные сообщения</string>
-    <string name="sort_attach_first">Сначала сообщения с вложениями</string>
-    <string name="sort_unattached_first">Сначала сообщения без вложений</string>
+    <string name="sort_earliest_first">Старые — новые</string>
+    <string name="sort_latest_first">Новые — старые</string>
+    <string name="sort_subject_alpha">Тема А — Я</string>
+    <string name="sort_subject_re_alpha">Тема Я — А</string>
+    <string name="sort_flagged_first">Важные — обычные</string>
+    <string name="sort_flagged_last">Обычные — важные</string>
+    <string name="sort_unread_first">Не прочитано — прочитано</string>
+    <string name="sort_unread_last">Прочитано — не прочитано</string>
+    <string name="sort_attach_first">С вложениями — без вложений</string>
+    <string name="sort_unattached_first">Без вложений — с вложениями</string>
 
-    <string name="sort_by">Сортировка по…</string>
-    <string name="sort_by_date">Дате</string>
-    <string name="sort_by_arrival">Получению</string>
-    <string name="sort_by_subject">Теме</string>
-    <string name="sort_by_flag">Звёздам</string>
-    <string name="sort_by_unread">Прочитанном/не прочитанном</string>
-    <string name="sort_by_attach">Вложениям</string>
+    <string name="sort_by">Сортировка</string>
+    <string name="sort_by_date">Дата</string>
+    <string name="sort_by_arrival">Получено</string>
+    <string name="sort_by_subject">Тема</string>
+    <string name="sort_by_sender">Отправитель</string>
+    <string name="sort_by_flag">Важность</string>
+    <string name="sort_by_unread">Прочитано</string>
+    <string name="sort_by_attach">Вложение</string>
 
-    <string name="account_delete_dlg_title">Удалить учётную запись</string>
+    <string name="account_delete_dlg_title">Удаление ящика</string>
 
-    <string name="account_recreate_dlg_title">Пересоздать учётную запись</string>
+    <string name="account_recreate_dlg_title">Пересоздание ящика</string>
 
-    <string name="account_clear_dlg_title">Очистить учётную запись</string>
+    <string name="account_clear_dlg_title">Очистка ящика</string>
 
     <string name="provider_note_live">Только некоторые \"Plus\" ящики поддерживают получение почты через \"POP\". Если вы не можете подключится
         с верными данными подключения, то ваш почтовый ящик не имеет такого доступа.
