@@ -459,6 +459,18 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private BroadcastReceiver mCacheBroadcastReceiver;
     private IntentFilter mCacheIntentFilter;
 
+    /**
+     * Stores the unique ID of the message the context menu was opened for.
+     *
+     * We have to save this because the message list might change between the time the menu was
+     * opened and when the user clicks on a menu item. When this happens the 'adapter position' that
+     * is accessible via the {@code ContextMenu} object might correspond to another list item and we
+     * would end up using/modifying the wrong message.
+     *
+     * The value of this field is {@code 0} when no context menu is currently open.
+     */
+    private long mContextMenuUniqueId = 0;
+
 
     /**
      * This class is used to run operations that modify UI elements in the UI thread.
@@ -1447,8 +1459,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        int adapterPosition = listViewToAdapterPosition(info.position);
+        if (mContextMenuUniqueId == 0) {
+            return false;
+        }
+
+        int adapterPosition = getPositionForUniqueId(mContextMenuUniqueId);
+        if (adapterPosition == AdapterView.INVALID_POSITION) {
+            return false;
+        }
 
         switch (item.getItemId()) {
             case R.id.reply: {
@@ -1525,6 +1543,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
+        mContextMenuUniqueId = 0;
         return true;
     }
 
@@ -1548,6 +1567,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
 
+        mContextMenuUniqueId = cursor.getLong(mUniqueIdColumn);
         Account account = getAccountFromCursor(cursor);
 
         String subject = cursor.getString(SUBJECT_COLUMN);
@@ -3035,6 +3055,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         return listViewToAdapterPosition(listViewPosition);
     }
 
+    private int getPositionForUniqueId(long uniqueId) {
+        for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
+            Cursor cursor = (Cursor) mAdapter.getItem(position);
+            if (cursor.getLong(mUniqueIdColumn) == uniqueId) {
+                return position;
+            }
+        }
+
+        return AdapterView.INVALID_POSITION;
+    }
+
     private Message getMessageAtPosition(int adapterPosition) {
         if (adapterPosition == AdapterView.INVALID_POSITION) {
             return null;
@@ -3343,6 +3374,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         cleanupSelected(cursor);
+        updateContextMenu(cursor);
 
         mAdapter.swapCursor(cursor);
 
@@ -3369,6 +3401,28 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         return loadFinished;
+    }
+
+    /**
+     * Close the context menu when the message it was opened for is no longer in the message list.
+     */
+    private void updateContextMenu(Cursor cursor) {
+        if (mContextMenuUniqueId == 0) {
+            return;
+        }
+
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            long uniqueId = cursor.getLong(mUniqueIdColumn);
+            if (uniqueId == mContextMenuUniqueId) {
+                return;
+            }
+        }
+
+        mContextMenuUniqueId = 0;
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.closeContextMenu();
+        }
     }
 
     private void cleanupSelected(Cursor cursor) {
