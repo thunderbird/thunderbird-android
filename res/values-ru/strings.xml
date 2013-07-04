@@ -339,7 +339,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="global_settings_batch_buttons">Пакетные кнопки</string>
     <string name="global_settings_batch_buttons_summary">Настройка кнопок пакетных операций</string>
-    <string name="global_settings_mark_read">Прочитано/не прочитано</string>
+    <string name="global_settings_mark_read">(Не)прочитано</string>
     <string name="global_settings_delete">Удалить</string>
     <string name="global_settings_archive">Архив</string>
     <string name="global_settings_archive_disabled_reason">Нет архивной папки</string>
