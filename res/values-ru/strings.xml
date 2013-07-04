@@ -311,6 +311,9 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="global_settings_messageview_fixedwidth_label">Моноширинный шрифт</string>
     <string name="global_settings_messageview_fixedwidth_summary">Показать сообщения в формате \"Только текст\" моноширинным шрифтом</string>
+    <string name="global_settings_messageview_autofit_width_label">Вписать по ширине</string>
+    <string name="global_settings_messageview_autofit_width_summary">Подогнать текст сообщения по ширине экрана</string>
+    
     <string name="global_settings_messageview_return_to_list_label">В список после удаления</string>
     <string name="global_settings_messageview_return_to_list_summary">Перейти в список сообщений после удаления сообщения</string>
     <string name="global_settings_messageview_show_next_label">В следующее после удаления</string>
