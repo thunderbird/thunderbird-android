@@ -1096,11 +1096,11 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_settings_remote_search_num_label">Ограничение результатов поиска на сервере</string>
     <string name="account_settings_remote_search_num_summary">Поиск остановить после нахождения <xliff:g id="num_results">%s</xliff:g> результатов.</string>
     <string name="account_settings_remote_search_full_text">Включать текст сообщения в удалённом поиске</string>
-    <string name="account_settings_remote_search_full_text_summary">Поиск по всему тексту может быть медленным.</string>
+    <string name="account_settings_remote_search_full_text_summary">Полнотекстовый поиск может быть медленным</string>
     <string name="remote_search_sending_query">Отправка запроса на сервер</string>
     <string name="remote_search_downloading">Извлечение %d результатов</string>
     <string name="remote_search_downloading_limited">Извлечено %1$d из %2$d результатов</string>
-    <string name="remote_search_error">Удалённый поиск прошёл неуспешно</string>
+    <string name="remote_search_error">Сбой поиска на сервере</string>
 
     <string name="account_settings_search">Поиск</string>
     <string name="account_settings_remote_search_enabled">Поиск на сервере</string>
