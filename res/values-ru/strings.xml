@@ -752,86 +752,86 @@ K-9 Mail — почтовый клиент для Android.
     <string name="provider_note_paran">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны	разрешить использование IMAP или POP3 на странице настроек почты Paran.</string>
     <string name="provider_note_nate">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Nate.</string>
 
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Сертификат не признан</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Принять сертификат</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Отклонить сертификат</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_title">Неверный сертификат сервера</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_accept">Принять</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_reject">Отклонить</string>
 
     <!-- NEW: V, Z untranslated -->
     <string name="message_list_help_key">
     Del (or D) - Удалить\n
     R - Ответить\n
     A - Ответить Всем\n
-    C - Составить\n
+    C - Новое\n
     F - Переслать\n
     M - Переместить\n
-    V - Archive\n
-    Y - Скопировать\n
-    Z - Mark (Un)read\n
-    G - Звезда\n
-    O - Тип сортировки\n
+    V - Архив\n
+    Y - Копия\n
+    Z - (Не)прочитано\n
+    G - Важное\n
+    O - Признак сортировки\n
     I - Порядок сортировки\n
-    Q - Вернуться к папкам\n
-    S - Отметить/Отказаться\n
-    J, P - Предыдущее Сообщение\n
-    K, N - Следующее сообщение
+    Q - Папки\n
+    S - Выделение\n
+    J, P - Назад\n
+    K, N - Далее
     </string>
 
     <string name="folder_list_help_key">
     1 - Показывать только папки 1-го класса\u000A
     2 - Показывать папки 1-го и 2-го классов\u000A
     3 - Показывать все папки, за исключением 2-го класса\u000A
-    4 - Показывать все папки\u000A
-    Q - Вернуться к списку ящиков\u000A
-    S - Редактировать настройки ящика</string>
+    4 - Все папки\u000A
+    Q - К списку ящиков\u000A
+    S - Настройки ящика</string>
 
-    <string name="folder_list_filter_hint">имя папки содержит</string>
+    <string name="folder_list_filter_hint">Поиск папки</string>
 
-    <string name="folder_list_display_mode_label">Папки</string>
-    <string name="folder_list_display_mode_all">Показывать все папки</string>
-    <string name="folder_list_display_mode_first_class">Показывать только папки 1-го класса</string>
-    <string name="folder_list_display_mode_first_and_second_class">Показывать папки 1-го и 2-го классов</string>
-    <string name="folder_list_display_mode_not_second_class">Показывать все папки, за исключением 2-го класса</string>
+    <string name="folder_list_display_mode_label">Видимость</string>
+    <string name="folder_list_display_mode_all">Все папки</string>
+    <string name="folder_list_display_mode_first_class">1 класс</string>
+    <string name="folder_list_display_mode_first_and_second_class">1 и 2 класс</string>
+    <string name="folder_list_display_mode_not_second_class">Кроме 2 класса</string>
 
     <string name="account_settings_signature__location_label">Размещение подписи</string>
     <string name="account_settings_signature__location_before_quoted_text">перед цитатой</string>
     <string name="account_settings_signature__location_after_quoted_text">после цитаты</string>
-    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
-    <string name="setting_theme_dark">Тёмное</string>
-    <string name="setting_theme_light">Светлое</string>
-    <string name="display_preferences">Экран</string>
-    <string name="global_preferences">Глобальные</string>
+    <string name="setting_theme_global">Как в приложении</string>
+    <string name="setting_theme_dark">Тёмная</string>
+    <string name="setting_theme_light">Светлая</string>
+    <string name="display_preferences">Вид</string>
+    <string name="global_preferences">Общие</string>
     <string name="debug_preferences">Отладка</string>
-    <string name="privacy_preferences">Конфиденциальность</string>
+    <string name="privacy_preferences">Личное</string>
     <string name="network_preferences">Сеть</string>
-    <string name="interaction_preferences">Взаимодействие</string>
-    <string name="accountlist_preferences">Список учётных записей</string>
-    <string name="messagelist_preferences">Списки сообщений</string>
+    <string name="interaction_preferences">Интерфейс</string>
+    <string name="accountlist_preferences">Список ящиков</string>
+    <string name="messagelist_preferences">Список сообщений</string>
     <string name="messageview_preferences">Сообщения</string>
-    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
-    <string name="settings_theme_label">Изображение</string>
-    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
-    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
+    <string name="folderlist_preferences">Список папок</string>
+    <string name="settings_theme_label">Тема приложения</string>
+    <string name="settings_message_theme_label">Тема просмотра</string>
+    <string name="settings_compose_theme_label">Тема редактора</string>
     <string name="settings_language_label">Язык</string>
 
-    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
+    <string name="settings_message_theme_selection_label">Фиксированный просмотр</string>
+    <string name="settings_message_theme_selection_summary_off">Разрешить выбор темы при чтении сообщения</string>
+    <string name="settings_message_theme_selection_summary_on">Отключить выбор темы при чтении сообщения</string>
 
-    <string name="settings_messageview_mobile_layout_label">Режим одной колонки</string>
-    <string name="settings_messageview_mobile_layout_summary">Форматировать HTML сообщения для маленького экрана</string>
+    <string name="settings_messageview_mobile_layout_label">Компактный вид</string>
+    <string name="settings_messageview_mobile_layout_summary">Перекомпоновка HTML-сообщений на небольших экранах</string>
 
     <string name="setting_language_system">По умолчанию</string>
 
-    <string name="background_ops_label">Синхронизация в фоновом режиме</string>
+    <string name="background_ops_label">Фоновая синхронизация</string>
     <string name="background_ops_never">Никогда</string>
     <string name="background_ops_always">Всегда</string>
-    <string name="background_ops_enabled">Когда \'Фоновый режим\' включён</string>
-    <string name="background_ops_auto_sync">Когда \'Фоновые данные\' и \'Автосинхронизация\' включены</string>
-    <string name="background_ops_auto_sync_only">Когда выбрана \'Автосинхронизация\'</string>
+    <string name="background_ops_enabled">Фоновые данные вкл.</string>
+    <string name="background_ops_auto_sync">Фоновые данные и Автосинхронизация вкл.</string>
+    <string name="background_ops_auto_sync_only">Автосинхронизация вкл.</string>
 
     <string name="batch_select_all">Выбрать все</string>
 
-    <string name="account_setup_push_limit_label">Максимальное число папок для проверки с \"Push\"</string>
+    <string name="account_setup_push_limit_label">Лимит push-проверки</string>
     <string name="account_setup_push_limit_10">10 папок</string>
     <string name="account_setup_push_limit_25">25 папок</string>
     <string name="account_setup_push_limit_50">50 папок</string>
@@ -841,141 +841,139 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_setup_push_limit_1000">1000 папок</string>
 
     <string name="animations_title">Анимация</string>
-    <string name="animations_summary">Использовать яркие визуальные эффекты</string>
+    <string name="animations_summary">Видеоэффекты в интерфейсе</string>
     <string name="gestures_title">Жесты</string>
-    <string name="gestures_summary">Принимать контроль жестами</string>
+    <string name="gestures_summary">Управление жестами</string>
 
-    <string name="volume_navigation_title">Использовать управление громкостью для навигации</string>
-    <string name="volume_navigation_summary">Перемещаться по элементам, используя управление громкостью</string>
-    <string name="volume_navigation_message">Сообщение</string>
-    <string name="volume_navigation_list">Различные списки элементов</string>
+    <string name="volume_navigation_title">Прокрутка кнопками Vol+/-</string>
+    <string name="volume_navigation_message">В сообщении</string>
+    <string name="volume_navigation_list">В списке</string>
 
-    <string name="start_integrated_inbox_title">Входить в общий ящик при запуске</string>
-    <string name="start_integrated_inbox_summary">Показать общий ящик сообщений после запуска</string>
+    <string name="start_integrated_inbox_title">Во \"Входящие\" при запуске</string>
 
-    <string name="measure_accounts_title">Показать размер учётной записи</string>
-    <string name="measure_accounts_summary">Выключите для быстрого отображения</string>
+    <string name="measure_accounts_title">Размер ящика</string>
+    <string name="measure_accounts_summary">Отключите для ускорения работы</string>
 
-    <string name="count_search_title">Считать результаты поиска</string>
-    <string name="count_search_summary">Выключите для быстрого отображения</string>
+    <string name="count_search_title">Счётчик найденных</string>
+    <string name="count_search_summary">Отключите для ускорения работы</string>
 
-    <string name="hide_special_accounts_title">Спрятать специальные учётные записи</string>
-    <string name="hide_special_accounts_summary">Спрятать объединённый ящик со входящими письмами и все учётные записи сообщений</string>
+    <string name="hide_special_accounts_title">Скрыть виртуальные</string>
+    <string name="hide_special_accounts_summary">Скрыть общие \"Входящие\" и \"Вся почта\"</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - Помеченные</string>
-    <string name="unread_modifier"> - Непрочитанные</string>
+    <string name="flagged_modifier">- важные</string>
+    <string name="unread_modifier">- не прочитано</string>
 
-    <string name="search_all_messages_title">Все сообщения</string>
-    <string name="search_all_messages_detail">Все сообщения в папках для поиска</string>
+    <string name="search_all_messages_title">Вся почта</string>
+    <string name="search_all_messages_detail">в видимых папках</string>
 
-    <string name="integrated_inbox_title">Объединённая папка входящей почты (непрочитанное)</string>
-    <string name="integrated_inbox_detail">Все непрочитанные сообщения в объединённых папках</string>
+    <string name="integrated_inbox_title">Входящие</string>
+    <string name="integrated_inbox_detail">из всех ящиков</string>
 
-    <string name="tap_hint">Нажмите конверт или звёздочку для непрочитанных или помеченных звездой сообщений</string>
+    <string name="tap_hint">Нажмите звёздочку или кружок для отображения только важных или непрочитанных</string>
 
-    <string name="folder_settings_include_in_integrated_inbox_label">Объединить</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Показывать непрочитанные сообщения в объединённой папке</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">Общие Входящие</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Показать почту в общих Входящих</string>
 
-    <string name="account_settings_searchable_label">Искать в папках</string>
-    <string name="account_settings_searchable_all">Во всех</string>
-    <string name="account_settings_searchable_displayable">В видимых только</string>
-    <string name="account_settings_searchable_none">Нигде</string>
+    <string name="account_settings_searchable_label">Папки для поиска</string>
+    <string name="account_settings_searchable_all">Все</string>
+    <string name="account_settings_searchable_displayable">Видимые</string>
+    <string name="account_settings_searchable_none">Нет</string>
 
-    <string name="font_size_settings_title">Размер шрифта</string>
-    <string name="font_size_settings_description">Настройте размер шрифта</string>
+    <string name="font_size_settings_title">Шрифт</string>
+    <string name="font_size_settings_description">Настройка размера шрифтов</string>
 
-    <string name="font_size_account_list">Список учётных записей</string>
-    <string name="font_size_account_name">Название учётной записи</string>
-    <string name="font_size_account_description">Описание учётной записи</string>
+    <string name="font_size_account_list">Список ящиков</string>
+    <string name="font_size_account_name">Имя ящика</string>
+    <string name="font_size_account_description">Описание ящика</string>
 
     <string name="font_size_folder_list">Список папок</string>
     <string name="font_size_folder_name">Имя папки</string>
-    <string name="font_size_folder_status">Статус папки</string>
+    <string name="font_size_folder_status">Состояние папки</string>
 
     <string name="font_size_message_list">Список сообщений</string>
     <string name="font_size_message_list_subject">Тема</string>
     <string name="font_size_message_list_sender">Отпрвитель</string>
     <string name="font_size_message_list_date">Дата</string>
-    <string name="font_size_message_list_preview">Предпросмотр</string>
+    <string name="font_size_message_list_preview">Просмотр</string>
 
-    <string name="font_size_message_view">Сообщения</string>
-    <string name="font_size_message_view_sender">отправитель</string>
+    <string name="font_size_message_view">Сообщение</string>
+    <string name="font_size_message_view_sender">Отправитель</string>
     <string name="font_size_message_view_to">Кому</string>
-    <string name="font_size_message_view_cc">Скрытая копия</string>
-    <string name="font_size_message_view_additional_headers">дополнительные заголовки</string>
+    <string name="font_size_message_view_cc">Копия</string>
+    <string name="font_size_message_view_additional_headers">Дополнительные заголовки</string>
     <string name="font_size_message_view_subject">Тема</string>
-    <string name="font_size_message_view_date">Время и дата</string>
+    <string name="font_size_message_view_date">Дата и время</string>
     <string name="font_size_message_view_content">Тело сообщения</string>
 
-    <string name="font_size_message_compose">Поле сообщения</string>
-    <string name="font_size_message_compose_input">Поля ввода текста</string>
+    <string name="font_size_message_compose">Редактор сообщения</string>
+    <string name="font_size_message_compose_input">Формы ввода</string>
 
-    <!-- NEW: <string name="font_size_default">Default</string>-->
-    <string name="font_size_tiniest">Самый крочшечный</string>
-    <string name="font_size_tiny">Крошечный</string>
-    <string name="font_size_smaller">Еще меньше</string>
-    <string name="font_size_small">Маленький</string>
+    <string name="font_size_default">По умолчанию</string>
+    <string name="font_size_tiniest">Крохотный</string>
+    <string name="font_size_tiny">Мельче</string>
+    <string name="font_size_smaller">Мелкий</string>
+    <string name="font_size_small">Меньше</string>
     <string name="font_size_medium">Средний</string>
-    <string name="font_size_large">Большой</string>
-    <string name="font_size_larger">Наибольший</string>
+    <string name="font_size_large">Крупнее</string>
+    <string name="font_size_larger">Крупный</string>
 
-    <string name="font_size_webview_smaller">Крошечный</string>
-    <string name="font_size_webview_small">Маленький</string>
-    <string name="font_size_webview_normal">Нормальный</string>
-    <string name="font_size_webview_large">Большой</string>
-    <string name="font_size_webview_larger">Наибольший</string>
+    <string name="font_size_webview_smaller">Мелкий</string>
+    <string name="font_size_webview_small">Меньше</string>
+    <string name="font_size_webview_normal">Обычный</string>
+    <string name="font_size_webview_large">Крупнее</string>
+    <string name="font_size_webview_larger">Крупный</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
-    <string name="message_compose_buggy_gallery">Выберите \"Настройка\" -&gt; \"Использовать обход проблемы…\", чтобы вкладывать картинки и изображения используя Gallery 3D.</string>
+    <string name="message_compose_buggy_gallery">Включите в настройках \"Обход ошибки Галереи 3D\" для её использования</string>
 
     <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
-    <string name="message_compose_use_workaround">Выберите \"Добавить вложение (Картинка)\" или "Добвить вложение (Видео)\", чтобы вкладывать картинки и изображения используя Gallery 3D.</string>
+    <string name="message_compose_use_workaround">Используйте дествия \"Изображение\" или \"Видео\" для вложения с помощью Галереи 3D</string>
 
     <string name="miscellaneous_preferences">Разное</string>
-    <string name="misc_preferences_attachment_title">Использовать обход проблемы с \"Использовать галерею\"</string>
-    <string name="misc_preferences_attachment_description">Показывать кнопки для добавления картинок и видео вложений (чтобы обойти проблемы с 3D в Gallery)</string>
+    <string name="misc_preferences_attachment_title">Обход ошибки Галереи 3D</string>
+    <string name="misc_preferences_attachment_description">Показать действия вложения изображений и видео</string>
 
     <!-- APG related -->
-    <string name="error_activity_not_found">Нет подходящего приложения для действия.</string>
-    <string name="error_apg_version_not_supported">Установленная версия APG не поддерживается.</string>
-    <string name="btn_crypto_sign">подписать</string>
-    <string name="btn_encrypt">Зашифровать</string>
-    <string name="btn_decrypt">Расшифровать</string>
-    <string name="btn_verify">проверить</string>
-    <string name="unknown_crypto_signature_user_id">&lt;неизвестный&gt;</string>
+    <string name="error_activity_not_found">Подходящее приложение не найдено</string>
+    <string name="error_apg_version_not_supported">Установленная версия APG не поддерживается</string>
+    <string name="btn_crypto_sign">Подписать</string>
+    <string name="btn_encrypt">Шифровать</string>
+    <string name="btn_decrypt">Дешифр.</string>
+    <string name="btn_verify">Проверка</string>
+    <string name="unknown_crypto_signature_user_id">&lt;н/д&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="pgp_mime_unsupported">PGP/MIME сообщения пока не поддерживаются.</string>
-    <string name="attachment_encryption_unsupported">Предупреждение: вложения ещё не подписаны и не зашифрованы.</string>
-    <string name="send_aborted">Отправка отменена.</string>
+    <string name="pgp_mime_unsupported">Сообщения PGP/MIME не поддерживаются</string>
+    <string name="attachment_encryption_unsupported">Внимание: вложения НЕ подписываются и НЕ шифруются</string>
+    <string name="send_aborted">Отправка отменена</string>
 
-    <string name="save_or_discard_draft_message_dlg_title">Сохранить черновик сообщения?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Сохранить или уничтожить сообщение?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Выберите действие</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Сохранить черновик или отменить сообщение?</string>
 
-    <string name="confirm_discard_draft_message_title">Отбросить сообщение?</string>
-    <string name="confirm_discard_draft_message">Вы уверены, что хотите отбросить это сообщение?</string>
+    <string name="confirm_discard_draft_message_title">Удаление</string>
+    <string name="confirm_discard_draft_message">Сообщение будет удалено. Продолжить?</string>
 
-    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Не сохранять черновик сообщения.</string>
-    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Не сохранять черновик сообщения помеченного как зашифрованное.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Сбой сохранения</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Нельзя сохранить черновик зашифрованного сообщения</string>
 
-    <string name="continue_without_public_key_dlg_title">Продолжить без открытого ключа?</string>
-    <string name="continue_without_public_key_instructions_fmt">Один или несколько получателей не имеют открытого ключа. Продолжить?</string>
+    <string name="continue_without_public_key_dlg_title">Нет открытого ключа</string>
+    <string name="continue_without_public_key_instructions_fmt">Один или несколько адресатов не предоставили открытый ключ. Продолжить?</string>
 
-    <string name="select_text_now">Выберите текс для копирования.</string>
+    <string name="select_text_now">Выберите текст длительным нажатием</string>
 
-    <string name="dialog_confirm_delete_title">Подтвердите удаление</string>
-    <string name="dialog_confirm_delete_message">Вы хотите удалить это сообщение?</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
-        <item quantity="one">Do you really want to delete this message?</item>
-        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-    </plurals>-->
-    <string name="dialog_confirm_delete_confirm_button">Удалить</string>
-    <string name="dialog_confirm_delete_cancel_button">Не удалять</string>
+    <string name="dialog_confirm_delete_title">Удаление</string>
+    <string name="dialog_confirm_delete_message">Сообщение будет удалено. Продолжить?</string>
+    <plurals name="dialog_confirm_delete_message">
+        <item quantity="one">Сообщение будет удалено. Продолжить?</item>
+        <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>
+    </plurals>
+    <string name="dialog_confirm_delete_confirm_button">ОК</string>
+    <string name="dialog_confirm_delete_cancel_button">Отмена</string>
 
-    <string name="dialog_confirm_spam_title">Подтвердите перенос в папку Спам</string>
+    <string name="dialog_confirm_spam_title">Перемещение в спам</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Вы действительно хотите переместить сообщение в папку Спам?</item>
-        <item quantity="other">Вы действительно хотите переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в папку Спам?</item>
+        <item quantity="one">Сообщение будет перемещено в Спам. Продолжить?</item>
+        <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут перемещены в Спам. Продолжить?</item>
 <!--
   Translators:
 
@@ -988,31 +986,31 @@ K-9 Mail — почтовый клиент для Android.
 
 -->
     </plurals>
-    <string name="dialog_confirm_spam_confirm_button">Да</string>
-    <string name="dialog_confirm_spam_cancel_button">Нет</string>
+    <string name="dialog_confirm_spam_confirm_button">ОК</string>
+    <string name="dialog_confirm_spam_cancel_button">Отмена</string>
 
-    <string name="dialog_attachment_progress_title">Скачивание вложения</string>
+    <string name="dialog_attachment_progress_title">Загрузка вложения</string>
 
-    <string name="debug_logging_enabled">Разрешить журналирование отладочной информации</string>
+    <string name="debug_logging_enabled">Журнал отладки включён</string>
 
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
-    <string name="error_unable_to_connect">Не получается соединиться.</string>
+    <string name="error_unable_to_connect">Сбой подключения</string>
 
-    <string name="import_export_action">Импорт и экспорт настроек</string>
-    <string name="settings_export_account">Экспортировать настройки учётной записи</string>
-    <string name="settings_export_all">Экспортировать настройки и учётные записи</string>
+    <string name="import_export_action">Параметры</string>
+    <string name="settings_export_account">Экспорт</string>
+    <string name="settings_export_all">Экспорт</string>
     <string name="settings_import_dialog_title">Импорт</string>
     <string name="settings_export_dialog_title">Экспорт</string>
-    <string name="settings_import">Импортировать настройки</string>
-    <string name="settings_import_selection">Импортировать выбранное</string>
-    <string name="settings_import_global_settings">Глобальные настройки</string>
+    <string name="settings_import">Импорт</string>
+    <string name="settings_import_selection">Импорт</string>
+    <string name="settings_import_global_settings">Настройки K-9</string>
     <string name="settings_exporting">Экспорт настроек…</string>
     <string name="settings_importing">Импорт настроек…</string>
-    <string name="settings_import_scanning_file">Сканирование файла…</string>
-    <string name="settings_export_success">Настройки были экспортированы в <xliff:g id="filename">%s</xliff:g></string>
-    <string name="settings_import_global_settings_success">Глобальные настройки были импортированы из <xliff:g id="filename">%s</xliff:g></string>
-    <string name="settings_import_success">Импортирован <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_scanning_file">Проверка файла…</string>
+    <string name="settings_export_success">Настройки сохранены в <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Настройки K-9 импортированы из <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Импортировано: <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
     <plurals name="settings_import_success">
         <item quantity="one">1 учётная запись</item>
         <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> учётных записи</item>
