@@ -1135,4 +1135,5 @@ K-9 Mail — почтовый клиент для Android.
     <string name="last_refresh_time_format">обновлено <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">обновлено <xliff:g id="time_with_preposition">%s</xliff:g>, push вкл.</string>
     <string name="preposition_for_date">в <xliff:g id="date">%s</xliff:g></string>
+    <string name="mark_all_as_read">Прочитаны все</string>
 </resources>
