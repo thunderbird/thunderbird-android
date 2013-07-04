@@ -723,6 +723,8 @@ K-9 Mail — почтовый клиент для Android.
     <string name="sort_latest_first">Новые — старые</string>
     <string name="sort_subject_alpha">Тема А — Я</string>
     <string name="sort_subject_re_alpha">Тема Я — А</string>
+    <string name="sort_sender_alpha">Отправитель А — Я</string>
+    <string name="sort_sender_re_alpha">Отправитель Я — А</string>
     <string name="sort_flagged_first">Важные — обычные</string>
     <string name="sort_flagged_last">Обычные — важные</string>
     <string name="sort_unread_first">Не прочитано — прочитано</string>
