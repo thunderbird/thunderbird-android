@@ -232,54 +232,54 @@ K-9 Mail — почтовый клиент для Android.
     <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g></string>
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g></string>
 
-    <string name="send_failure_subject">Сбой отправки сообщений</string>
+    <string name="send_failure_subject">Сбой отправки почты</string>
 
     <string name="debug_version_fmt">Версия: <xliff:g id="version">%s</xliff:g></string>
-    <string name="debug_enable_debug_logging_title">Включить запись в журнал отладок</string>
-    <string name="debug_enable_debug_logging_summary">Запись дополнительной диагностической информации</string>
-    <string name="debug_enable_sensitive_logging_title">Запись конфиденциальной информации</string>
-    <string name="debug_enable_sensitive_logging_summary">Разрешает запись паролей в журнал</string>
+    <string name="debug_enable_debug_logging_title">Журнал отладки</string>
+    <string name="debug_enable_debug_logging_summary">Запись диагностических сообщений</string>
+    <string name="debug_enable_sensitive_logging_title">Личные данные</string>
+    <string name="debug_enable_sensitive_logging_summary">Разрешить запись паролей в журнал</string>
 
-    <string name="message_list_load_more_messages_action">Загрузить больше сообщений</string>
-    <string name="message_to_fmt">Для:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_load_more_messages_action">Получить новые сообщения</string>
+    <string name="message_to_fmt">кому:<xliff:g id="counterParty">%s</xliff:g></string>
 
-    <string name="message_compose_to_hint">Кому</string>
-    <string name="message_compose_cc_hint">Копия</string>
-    <string name="message_compose_bcc_hint">СК</string>
-    <string name="message_compose_subject_hint">Тема</string>
-    <string name="message_compose_content_hint">Текст сообщения</string>
-    <string name="message_compose_signature_hint">Подпись</string>
+    <string name="message_compose_to_hint">кому</string>
+    <string name="message_compose_cc_hint">копия</string>
+    <string name="message_compose_bcc_hint">скрытая</string>
+    <string name="message_compose_subject_hint">тема</string>
+    <string name="message_compose_content_hint">сообщение</string>
+    <string name="message_compose_signature_hint">подпись</string>
     <string name="message_compose_quote_header_separator">-------- Исходное сообщение --------</string>
     <string name="message_compose_quote_header_subject">Тема:</string>
-    <string name="message_compose_quote_header_send_date">Послано:</string>
+    <string name="message_compose_quote_header_send_date">Отправлено:</string>
     <string name="message_compose_quote_header_from">От:</string>
-    <string name="message_compose_quote_header_to">Для:</string>
+    <string name="message_compose_quote_header_to">Кому:</string>
     <string name="message_compose_quote_header_cc">Копия:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> написал(а):\n</string>
-    <string name="message_compose_error_no_recipients">Необходимо добавить хотя бы одного адресата.</string>
-    <string name="error_contact_address_not_found">Не найден адрес почты.</string>
-    <string name="message_compose_attachments_skipped_toast">Некоторые вложения не могут быть пересланы, поскольку они не загрузились.</string>
-    <string name="message_compose_show_quoted_text_action">Цитировать сообщение</string>
-    <string name="message_compose_description_add_to">Добавить получателя (To)</string>
-    <string name="message_compose_description_add_cc">Добавить получателя (CC)</string>
-    <string name="message_compose_description_add_bcc">Добавить получателя (BCC)</string>
-    <string name="message_compose_description_delete_quoted_text">Удалить цитируемый текст</string>
-    <string name="message_compose_description_edit_quoted_text">Исправить цитируемый текст</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:\n</string>
+    <string name="message_compose_error_no_recipients">Укажите адресата</string>
+    <string name="error_contact_address_not_found">Контакт не содержит сведений о email</string>
+    <string name="message_compose_attachments_skipped_toast">Некоторые вложения не были загружены и не могут быть отправлены</string>
+    <string name="message_compose_show_quoted_text_action">Цитировать</string>
+    <string name="message_compose_description_add_to">Ещё адресат (кому)</string>
+    <string name="message_compose_description_add_cc">Ещё адресат (копия)</string>
+    <string name="message_compose_description_add_bcc">Ещё адресат (скрытая)</string>
+    <string name="message_compose_description_delete_quoted_text">Удалить цитату</string>
+    <string name="message_compose_description_edit_quoted_text">Правка цитаты</string>
 
-    <string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
-    <string name="message_to_label">Для:</string>
-    <string name="message_view_cc_label">Копия:</string>
+    <string name="message_view_from_format">от: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+    <string name="message_to_label">кому:</string>
+    <string name="message_view_cc_label">копия:</string>
     <string name="message_view_attachment_view_action">Открыть</string>
     <string name="message_view_attachment_download_action">Сохранить</string>
-    <string name="message_view_status_attachment_saved">Вложение сохранено на карту SD под именем <xliff:g id="filename">%s</xliff:g>.</string>
-    <string name="message_view_status_attachment_not_saved">Не удалось сохранить вложение на карту SD.</string>
-    <string name="message_view_show_pictures_action">Показать картинки</string>
-    <string name="message_view_show_message_action">Показать мообщение</string>
-    <string name="message_view_show_attachments_action">Показать вложение</string>
-    <string name="message_view_show_more_attachments_action">Далее&#8230;</string>
-    <string name="message_view_fetching_attachment_toast">Загрузка вложения.</string>
-    <string name="message_view_no_viewer">Приложение просмотра не найдено для <xliff:g id="mimetype">%s</xliff:g>.</string>
-    <string name="message_view_download_remainder">Загрузить сообщение целиком</string>
+    <string name="message_view_status_attachment_saved">Сохранено в <xliff:g id="filename">%s</xliff:g>.</string>
+    <string name="message_view_status_attachment_not_saved">Сбой сохранения вложений</string>
+    <string name="message_view_show_pictures_action">Изображения</string>
+    <string name="message_view_show_message_action">Сообщение</string>
+    <string name="message_view_show_attachments_action">Вложения</string>
+    <string name="message_view_show_more_attachments_action">Показать вложения</string>
+    <string name="message_view_fetching_attachment_toast">Извлечение вложений</string>
+    <string name="message_view_no_viewer">Отсутствует просмотрщик %s <xliff:g id="mimetype">%s</xliff:g></string>
+    <string name="message_view_download_remainder">Загрузить полностью</string>
     <string name="message_view_downloading">Загрузка…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
@@ -287,147 +287,147 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_no_additional_headers_available">Все заголовки загружены, дополнительных заголовков для отображения нет.</string>
     <string name="message_additional_headers_retrieval_failed">Не удалось загрузить дополнительные заголовки из базы данных или почтового сервера.</string>
 
-    <string name="from_same_sender">Ещё от этого отправителя</string>
+    <string name="from_same_sender">Переписка</string>
 
-    <string name="message_discarded_toast">Сообщение отброшено</string>
-    <string name="message_saved_toast">Сообщение сохранено в черновиках</string>
+    <string name="message_discarded_toast">Сообщение отменено</string>
+    <string name="message_saved_toast">Черновик сохранён</string>
 
-    <string name="global_settings_checkbox_label">Флажки множественного выбора</string>
-    <string name="global_settings_checkbox_summary">Всегда показывать Флажки множественного выбора</string>
-    <string name="global_settings_preview_lines_label">Строки предпросмотра</string>
-    <string name="global_settings_show_correspondent_names_label">Показывать имя отправителя</string>
-    <string name="global_settings_show_correspondent_names_summary">Показывать имя отправителя вместо e-mail, если это возмомжно</string>
+    <string name="global_settings_checkbox_label">Выбор элементов</string>
+    <string name="global_settings_checkbox_summary">Показать поля выбора элементов</string>
+    <string name="global_settings_preview_lines_label">Строки текста письма</string>
+    <string name="global_settings_show_correspondent_names_label">Имя вместо адреса</string>
+    <string name="global_settings_show_correspondent_names_summary">Показать имя отправителя вместо его адреса</string>
 
-    <string name="global_settings_sender_above_subject_label">Отобразить имена адресатов ниже поля темы</string>
-    <string name="global_settings_sender_above_subject_summary">Отобразить имена адресатов над полем темы</string>
+    <string name="global_settings_sender_above_subject_label">Отправитель над темой</string>
+    <string name="global_settings_sender_above_subject_summary">Показать имя отправителя над темой сообщения</string>
 
-    <string name="global_settings_show_contact_name_label">Показывать имя получателя</string>
-    <string name="global_settings_show_contact_name_summary">Использовать имя получателя из списка контактов</string>
-    <string name="global_settings_registered_name_color_label">Раскраска контактов</string>
-    <string name="global_settings_registered_name_color_default">Не раскрашивать имена в списке контактов</string>
-    <string name="global_settings_registered_name_color_changed">Раскрасить имена в списке контактов</string>
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
+    <string name="global_settings_show_contact_name_label">Имя из контактов</string>
+    <string name="global_settings_show_contact_name_summary">Подбор имён отправителей из контактов</string>
+    <string name="global_settings_registered_name_color_label">Цвет</string>
+    <string name="global_settings_registered_name_color_default">Не выделять цветом имена из контактов</string>
+    <string name="global_settings_registered_name_color_changed">Выделять цветом имена из контактов</string>
+    <string name="global_settings_folderlist_wrap_folder_names_label">Перенос имён папок</string>
+    <string name="global_settings_folderlist_wrap_folder_names_summary">Длинные имена папок в несколько строк</string>
 
-    <string name="global_settings_messageview_fixedwidth_label">Шрифты фиксированной ширины</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Использовать шрифт фиксированной ширины при показе плоского текста</string>
-    <string name="global_settings_messageview_return_to_list_label">Вернуться к списку после удаления</string>
-    <string name="global_settings_messageview_return_to_list_summary">Вернуться к списку сообщений после удаления сообщения</string>
-    <string name="global_settings_messageview_show_next_label">Показать след. сообщение после удаления</string>
-    <string name="global_settings_messageview_show_next_summary">По умолчанию показывать след. сообщение после удаления</string>
+    <string name="global_settings_messageview_fixedwidth_label">Моноширинный шрифт</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Показать сообщения в формате \"Только текст\" моноширинным шрифтом</string>
+    <string name="global_settings_messageview_return_to_list_label">В список после удаления</string>
+    <string name="global_settings_messageview_return_to_list_summary">Перейти в список сообщений после удаления сообщения</string>
+    <string name="global_settings_messageview_show_next_label">В следующее после удаления</string>
+    <string name="global_settings_messageview_show_next_summary">Открыть следующее сообщение после удаления сообщения</string>
 
-    <string name="global_settings_confirm_actions_title">Подтверждение действий</string>
-    <string name="global_settings_confirm_actions_summary">Показывать диалог при совершении действий</string>
-    <string name="global_settings_confirm_action_delete">Удалить (только представление сообщения)</string>
-    <string name="global_settings_confirm_action_delete_starred">Удалить отмеченные (message view only)</string>
+    <string name="global_settings_confirm_actions_title">Подтверждать действия</string>
+    <string name="global_settings_confirm_actions_summary">Запросить подтверждение указанных действий</string>
+    <string name="global_settings_confirm_action_delete">Удаление (в просмотре)</string>
+    <string name="global_settings_confirm_action_delete_starred">Удаление важного (в просмотре)</string>
     <string name="global_settings_confirm_action_spam">Спам</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
+    <string name="global_settings_confirm_action_delete_notif">Удаление (в уведомлении)</string>
 
-    <string name="global_settings_notification_hide_subject_title">Скрыть тему в оповещениях</string>
+    <string name="global_settings_notification_hide_subject_title">Скрыть тему в уведомлении</string>
     <string name="global_settings_notification_hide_subject_never">Никогда</string>
-    <string name="global_settings_notification_hide_subject_when_locked">Когда устройство заблокировано</string>
+    <string name="global_settings_notification_hide_subject_when_locked">При блокировке</string>
     <string name="global_settings_notification_hide_subject_always">Всегда</string>
 
-    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
+    <string name="global_settings_notification_quick_delete_title">Кнопка \"Удалить\"</string>
+    <string name="global_settings_notification_quick_delete_never">Никогда</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Для одиночного</string>
+    <string name="global_settings_notification_quick_delete_always">Всегда</string>
+    <string name="global_settings_notification_quick_delete_description">Кнопка в уведомлении для быстрого удаления сообщения</string>
 
-    <string name="global_settings_batch_buttons">Кнопки групповой обработки</string>
-    <string name="global_settings_batch_buttons_summary">Настройка списка кнопок групповой обработки</string>
-    <string name="global_settings_mark_read">Пометить как прочитанное/непрочитанное</string>
+    <string name="global_settings_batch_buttons">Пакетные кнопки</string>
+    <string name="global_settings_batch_buttons_summary">Настройка кнопок пакетных операций</string>
+    <string name="global_settings_mark_read">Прочитано/не прочитано</string>
     <string name="global_settings_delete">Удалить</string>
-    <string name="global_settings_archive">Переместить в архив</string>
-    <string name="global_settings_archive_disabled_reason">Отсутствует папка архива.</string>
-    <string name="global_settings_move">Переместить</string>
-    <string name="global_settings_flag">Флаг</string>
-    <string name="global_settings_unselect">Снять выделение</string>
+    <string name="global_settings_archive">Архив</string>
+    <string name="global_settings_archive_disabled_reason">Нет архивной папки</string>
+    <string name="global_settings_move">Перенести</string>
+    <string name="global_settings_flag">Метка</string>
+    <string name="global_settings_unselect">Убрать</string>
 
-    <string name="quiet_time">Время тишины</string>
-    <string name="quiet_time_description">Запретить сигнал, вибрацию и мигание в ночное время</string>
-    <string name="quiet_time_starts">Начало времени тишины</string>
-    <string name="quiet_time_ends">Конец времени тишины</string>
+    <string name="quiet_time">Период тишины</string>
+    <string name="quiet_time_description">Отключить мелодию, вибрацию и индикатор на ночь</string>
+    <string name="quiet_time_starts">Начало</string>
+    <string name="quiet_time_ends">Конец</string>
 
-    <string name="account_setup_basics_title">Установить новый адрес</string>
-    <string name="account_setup_basics_email_hint">Адрес электронной почты</string>
-    <string name="account_setup_basics_password_hint">Пароль</string>
-    <string name="account_setup_basics_manual_setup_action">Ручная настройка</string>
+    <string name="account_setup_basics_title">Новый ящик</string>
+    <string name="account_setup_basics_email_hint">адрес email</string>
+    <string name="account_setup_basics_password_hint">пароль</string>
+    <string name="account_setup_basics_manual_setup_action">Вручную</string>
 
     <string name="account_setup_check_settings_title"></string>
-    <string name="account_setup_check_settings_retr_info_msg">Получение информации об адресе\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Проверка настроек входящего сервера\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Проверка настроек исходящего сервера\u2026</string>
+    <string name="account_setup_check_settings_retr_info_msg">Получение сведений\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Проверка настроек сервера входящей почты\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Проверка настроек сервера исходящей почты\u2026</string>
     <string name="account_setup_check_settings_authenticate">Аутентификация\u2026</string>
-    <string name="account_setup_check_settings_fetch">Чтение настроек учётной записи\u2026</string>
+    <string name="account_setup_check_settings_fetch">Получение настроек\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Отмена\u2026</string>
 
-    <string name="account_setup_names_title">Почти готово!</string>
-    <string name="account_setup_names_account_name_label">Дать этому ящику имя (необязательно):</string>
-    <string name="account_setup_names_user_name_label">Ваше имя (отображается в исходящих сообщениях):</string>
+    <string name="account_setup_names_title">Всё почти готово!</string>
+    <string name="account_setup_names_account_name_label">имя ящика (опция)</string>
+    <string name="account_setup_names_user_name_label">Ваше имя (видно адресату)</string>
 
-    <string name="account_setup_account_type_title">Тип почтового ящика</string>
-    <string name="account_setup_account_type_instructions">Выберите тип ящика</string>
+    <string name="account_setup_account_type_title">Тип ящика</string>
+    <string name="account_setup_account_type_instructions">Доступные протоколы</string>
     <string name="account_setup_account_type_pop_action">POP3</string>
     <string name="account_setup_account_type_imap_action">IMAP</string>
-    <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
+    <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
 
-    <string name="account_setup_incoming_title">Настройки сервера входящей почты</string>
-    <string name="account_setup_incoming_username_label">Имя пользователя</string>
+    <string name="account_setup_incoming_title">Сервер входящей почты</string>
+    <string name="account_setup_incoming_username_label">Логин</string>
     <string name="account_setup_incoming_password_label">Пароль</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 сервер</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP сервер</string>
-    <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange) сервер</string>
+    <string name="account_setup_incoming_pop_server_label">Сервер POP3</string>
+    <string name="account_setup_incoming_imap_server_label">Сервер IMAP</string>
+    <string name="account_setup_incoming_webdav_server_label">Сервер Exchange</string>
     <string name="account_setup_incoming_port_label">Порт</string>
-    <string name="account_setup_incoming_security_label">Тип системы защиты</string>
-    <string name="account_setup_incoming_auth_type_label">Тип удостоверение подлинности</string>
-    <string name="account_setup_incoming_security_none_label">Никакой</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (если поддерживается)</string>
+    <string name="account_setup_incoming_security_label">Безопасность</string>
+    <string name="account_setup_incoming_auth_type_label">Аутентификация</string>
+    <string name="account_setup_incoming_security_none_label">Нет</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL (если доступно)</string>
     <string name="account_setup_incoming_security_ssl_label">SSL (всегда)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (если поддерживается)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">TLS (если доступно)</string>
     <string name="account_setup_incoming_security_tls_label">TLS (всегда)</string>
 
-    <string name="account_setup_incoming_delete_policy_label">Когда сообщение удалено</string>
-    <string name="account_setup_incoming_delete_policy_never_label">Не удалять с сервера</string>
-    <string name="account_setup_incoming_delete_policy_delete_label">Удалить с сервера</string>
-    <string name="account_setup_incoming_delete_policy_markread_label">Отметить как прочитанное на сервере</string>
+    <string name="account_setup_incoming_delete_policy_label">Удалённое, на сервере</string>
+    <string name="account_setup_incoming_delete_policy_never_label">Оставить</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Удалить</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Прочитано</string>
 
-    <string name="account_setup_incoming_compression_label">Использовать сжатие данных в сети:</string>
-    <string name="account_setup_incoming_mobile_label">Мобильная</string>
+    <string name="account_setup_incoming_compression_label">Сжатие в сетях:</string>
+    <string name="account_setup_incoming_mobile_label">Мобильные</string>
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-    <string name="account_setup_incoming_other_label">Другие</string>
+    <string name="account_setup_incoming_other_label">Прочие</string>
 
-    <string name="local_storage_provider_external_label">Внешнее хранилище (SD-карта)</string>
-    <string name="local_storage_provider_internal_label">Стандартное внутреннее хранилище</string>
-    <string name="local_storage_provider_samsunggalaxy_label">%1$s дополнительное внутреннее хранилище</string>
-    <string name="local_storage_provider_label">Расположение хранилища</string>
+    <string name="local_storage_provider_external_label">Карта памяти</string>
+    <string name="local_storage_provider_internal_label">Внутренняя память</string>
+    <string name="local_storage_provider_samsunggalaxy_label">%1$s доп. внутренняя память</string>
+    <string name="local_storage_provider_label">Расположение данных</string>
 
-    <string name="account_setup_expunge_policy_label">Стирать сообщения</string>
-    <string name="account_setup_expunge_policy_immediately">Сразу же после удаления или перемещения</string>
-    <string name="account_setup_expunge_policy_on_poll">В ходе каждого запроса</string>
-    <string name="account_setup_expunge_policy_manual">Только вручную</string>
+    <string name="account_setup_expunge_policy_label">Стирать удалённые с сервера</string>
+    <string name="account_setup_expunge_policy_immediately">Немедленно</string>
+    <string name="account_setup_expunge_policy_on_poll">При проверке</string>
+    <string name="account_setup_expunge_policy_manual">Вручную</string>
 
-    <string name="account_setup_incoming_autodetect_namespace_label">Автоопределение области имён IMAP</string>
+    <string name="account_setup_incoming_autodetect_namespace_label">Авто-область имён IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_label">Префикс пути IMAP</string>
 
-    <string name="drafts_folder_label">Имя папки Черновиков</string>
-    <string name="sent_folder_label">Имя папки Отправленныx</string>
-    <string name="trash_folder_label">Имя папки Корзины</string>
-    <string name="archive_folder_label">Имя папки Архива</string>
-    <string name="spam_folder_label">Имя папки Спам</string>
+    <string name="drafts_folder_label">Папка черновиков</string>
+    <string name="sent_folder_label">Папка отправленных</string>
+    <string name="trash_folder_label">Папка удалённых</string>
+    <string name="archive_folder_label">Папка архивных</string>
+    <string name="spam_folder_label">Папка спама</string>
 
-    <string name="account_setup_incoming_subscribed_folders_only_label">Показывать только папки из подписки</string>
-    <string name="account_setup_auto_expand_folder">Автоматически открывать папку</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">Только подписанные папки</string>
+    <string name="account_setup_auto_expand_folder">Автопереход в папку</string>
 
-    <string name="account_setup_incoming_webdav_path_prefix_label">Путь для WebDAV (Exchange)</string>
-    <string name="account_setup_incoming_webdav_path_prefix_hint">Необязательное</string>
+    <string name="account_setup_incoming_webdav_path_prefix_label">Путь OWA</string>
+    <string name="account_setup_incoming_webdav_path_prefix_hint">опция</string>
 
-    <string name="account_setup_incoming_webdav_auth_path_label">Путь для удостоверение подлинности</string>
-    <string name="account_setup_incoming_webdav_auth_path_hint">Необязательное</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_label">Пути почтового ящика</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_hint">Необязательное</string>
+    <string name="account_setup_incoming_webdav_auth_path_label">Путь аутентификации</string>
+    <string name="account_setup_incoming_webdav_auth_path_hint">опция</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_label">Псевдоним ящика</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_hint">опция</string>
 
-    <string name="account_setup_outgoing_title">Настройки сервера исходящей почты</string>
+    <string name="account_setup_outgoing_title">Сервер исходящей почты</string>
     <string name="account_setup_outgoing_smtp_server_label">Сервер SMTP</string>
     <string name="account_setup_outgoing_port_label">Порт</string>
     <string name="account_setup_outgoing_security_label">Тип защиты</string>
