@@ -898,7 +898,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="font_size_message_list">Список сообщений</string>
     <string name="font_size_message_list_subject">Тема</string>
-    <string name="font_size_message_list_sender">Отпрвитель</string>
+    <string name="font_size_message_list_sender">Отправитель</string>
     <string name="font_size_message_list_date">Дата</string>
     <string name="font_size_message_list_preview">Просмотр</string>
 
