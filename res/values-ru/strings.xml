@@ -62,7 +62,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_delete_dlg_instructions_fmt">Ящик \"<xliff:g id="account">%s</xliff:g>\" будет удалён из приложения</string>
     <string name="account_recreate_dlg_instructions_fmt">Все данные ящика \"<xliff:g id="account">%s</xliff:g>\" будут удалены, настройки сохранятся</string>
     <string name="account_clear_dlg_instructions_fmt">Локальные сообщения \"<xliff:g id="account">%s</xliff:g>\" будут удалены, настройки сохранятся</string>
-    <string name="insufficient_apg_permissions">Отсутствует полный доступ к APG, для восстановления переустановите K-9 Mail</string>
+    <string name="insufficient_apg_permissions">Отсутствует полный доступ к APG. Переустановите K-9 Mail</string>
 
 
 
