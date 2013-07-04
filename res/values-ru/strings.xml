@@ -1040,12 +1040,12 @@ K-9 Mail — почтовый клиент для Android.
         <item quantity="one">Установка пароля…</item>
         <item quantity="other">Установка паролей…</item>
     </plurals>
-    <string name="settings_import_use_incoming_server_password">Использовать пароль от сервера для входящей почты</string>
-    <string name="activate_account_action">Активировать</string>
+    <string name="settings_import_use_incoming_server_password">Как для входящей почты</string>
+    <string name="activate_account_action">Включить</string>
 
-    <string name="account_unavailable">Учётная запись\"<xliff:g id="account">%s</xliff:g>\" недоступна; проверьте хранилище</string>
+    <string name="account_unavailable">Ящик \"<xliff:g id="account">%s</xliff:g>\" недоступен, проверьте накопитель</string>
 
-    <string name="settings_attachment_default_path">Сохранять вложения в…</string>
+    <string name="settings_attachment_default_path">Сохранение вложений</string>
     <string name="attachment_save_title">Сохранить вложение</string>
     <string name="attachment_save_desc">Не найден браузер файлов. Где бы вы хотели сохранить вложение?</string>
 
