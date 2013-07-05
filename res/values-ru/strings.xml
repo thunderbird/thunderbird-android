@@ -271,7 +271,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_view_cc_label">копия:</string>
     <string name="message_view_attachment_view_action">Открыть</string>
     <string name="message_view_attachment_download_action">Сохранить</string>
-    <string name="message_view_status_attachment_saved">Сохранено в <xliff:g id="filename">%s</xliff:g>.</string>
+    <string name="message_view_status_attachment_saved">Сохранено в <xliff:g id="filename">%s</xliff:g></string>
     <string name="message_view_status_attachment_not_saved">Сбой сохранения вложений</string>
     <string name="message_view_show_pictures_action">Изображения</string>
     <string name="message_view_show_message_action">Сообщение</string>
@@ -283,9 +283,9 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_view_downloading">Загрузка…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
-    <string name="message_additional_headers_not_downloaded">Не все заголовки были загружены или сохранены. Выберите \"Сохранять заголовки локально\" в настройках входящего сервера, чтобы использовать эту возможность.</string>
-    <string name="message_no_additional_headers_available">Все заголовки загружены, дополнительных заголовков для отображения нет.</string>
-    <string name="message_additional_headers_retrieval_failed">Не удалось загрузить дополнительные заголовки из базы данных или почтового сервера.</string>
+    <string name="message_additional_headers_not_downloaded">Не все заголовки были загружены или сохранены. Выберите \"Сохранять заголовки локально\" в настройках сервера входящей почты</string>
+    <string name="message_no_additional_headers_available">Все дополнительные заголовки уже загружены</string>
+    <string name="message_additional_headers_retrieval_failed">Сбой загрузки дополнительных заголовков</string>
 
     <string name="from_same_sender">Переписка</string>
 
@@ -339,7 +339,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="global_settings_batch_buttons">Пакетные кнопки</string>
     <string name="global_settings_batch_buttons_summary">Настройка кнопок пакетных операций</string>
-    <string name="global_settings_mark_read">(Не)прочитано</string>
+    <string name="global_settings_mark_read">Прочитано</string>
     <string name="global_settings_delete">Удалить</string>
     <string name="global_settings_archive">Архив</string>
     <string name="global_settings_archive_disabled_reason">Нет архивной папки</string>
@@ -764,7 +764,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <!-- NEW: V, Z untranslated -->
     <string name="message_list_help_key">
-    Del (or D) - Удалить\n
+    Del, D - Удалить\n
     R - Ответить\n
     A - Ответить Всем\n
     C - Новое\n
@@ -772,7 +772,7 @@ K-9 Mail — почтовый клиент для Android.
     M - Переместить\n
     V - Архив\n
     Y - Копия\n
-    Z - (Не)прочитано\n
+    Z - Прочитано\n
     G - Важное\n
     O - Признак сортировки\n
     I - Порядок сортировки\n
@@ -783,9 +783,9 @@ K-9 Mail — почтовый клиент для Android.
     </string>
 
     <string name="folder_list_help_key">
-    1 - Показывать только папки 1-го класса\u000A
-    2 - Показывать папки 1-го и 2-го классов\u000A
-    3 - Показывать все папки, за исключением 2-го класса\u000A
+    1 - Папки 1 класса\u000A
+    2 - Папки 1 и 2 классов\u000A
+    3 - Все папки, кроме 2 класса\u000A
     4 - Все папки\u000A
     Q - К списку ящиков\u000A
     S - Настройки ящика</string>
