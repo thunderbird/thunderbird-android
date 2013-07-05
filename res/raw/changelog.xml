@@ -1,36 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-    <release version="4.403" versioncode="17040" >
-        <change>Fixed a bug that caused K-9 to crash on the Accounts page if you're using the dark theme. Sorry!</change>
-    </release>
-    <release version="4.402" versioncode="17039" >
-        <change>Add additional shortcuts to the Folder list.</change>
-        <change>Add an "empty trash" option to the Account context menu</change>
-        <change>Fixes for several crashing bugs reported by Play Store users</change>
-    </release>
-    <release version="4.401" versioncode="17038" >
+    <release version="4.503" versioncode="18003" >
+        <change>Added additional shortcuts to the Folder list</change>
+        <change>Tweaks to checkboxes and color chip display</change>
+        <change>Added an "empty trash" option to the Account context menu</change>
         <change>Never use extended notifications when privacy mode is enabled</change>
-        <change>Remove submenu from the account context menu to work a bug in some Galaxy devices</change>
-        <change>Fixes for several errors reported by Play Store users</change>
-    </release>
-    <release version="4.400" versioncode="17037" >
-        <change>First production release of K-9 4.4!</change>
-    </release>
-    <release version="4.393" versioncode="17036" >
+        <change>Removed submenu from the account context menu to work a bug in some Galaxy devices</change>
         <change>Only enable debug logging on debugging builds</change>
-        <change>Bump the minSdkVersion to 8 since we use features from SDK 8</change>
+        <change>Bumped the minSdkVersion to 8 since we use features from SDK 8</change>
+        <change>Updated Russian, French, Greek, and Brazilian Portuguese translation</change>
+        <change>More bug fixes</change>
     </release>
-    <release version="4.392" versioncode="17035" >
-        <change>Updated Czech, French, Greek, Japanese and Brazilian Portuguese translation</change>
 
-    </release>
-    <release version="4.391" versioncode="17034" >
+    <release version="4.502" versioncode="18002" >
         <change>Fixed bug that prevented moving to previous and next message in some situations</change>
-        <change>Updated Japanese and Brazilian Portuguese translation</change>
+        <change>Updated Japanese, Czech, and Brazilian Portuguese translation</change>
+        <change>Fixed a couple of bugs</change>
     </release>
 
-    <release version="4.390" versioncode="17033" >
+    <release version="4.501" versioncode="18001" >
         <change>Added setting to automatically shrink messages to fit the screen width</change>
+        <change>Updated Greek translation</change>
     </release>
 
     <release version="4.331" versioncode="17032" >
