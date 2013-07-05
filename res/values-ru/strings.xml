@@ -359,8 +359,8 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="account_setup_check_settings_title"></string>
     <string name="account_setup_check_settings_retr_info_msg">Получение сведений\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Проверка настроек сервера входящей почты\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Проверка настроек сервера исходящей почты\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Проверка сервера входящей почты\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Проверка сервера исходящей почты\u2026</string>
     <string name="account_setup_check_settings_authenticate">Аутентификация\u2026</string>
     <string name="account_setup_check_settings_fetch">Получение настроек\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Отмена\u2026</string>
@@ -517,7 +517,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_settings_mark_message_as_read_on_view_label">Открытое прочитано</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
 
-    <string name="account_settings_show_pictures_label">Показывать изображения</string>
+    <string name="account_settings_show_pictures_label">Показать изображения</string>
     <string name="account_settings_show_pictures_never">Никогда</string>
     <string name="account_settings_show_pictures_only_from_contacts">От контактов</string>
     <string name="account_settings_show_pictures_always">Всегда</string>
@@ -747,15 +747,16 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="account_clear_dlg_title">Очистка ящика</string>
 
-    <string name="provider_note_live">Только некоторые \"Plus\" ящики поддерживают получение почты через \"POP\". Если вы не можете подключится
-        с верными данными подключения, то ваш почтовый ящик не имеет такого доступа.
-        Воспользуйтесь мобильной версией Yahoo! Mail для получения сообщений.</string>
-    <string name="provider_note_yahoojp">Если вы хотите использовать POP3 для данного поставщика, вы должны разрешить использование POP3 на странице настроек почты Yahoo.</string>
-    <string name="provider_note_auonejp">Если вы хотите использовать POP3 для данного поставщика, вы должны разрешить использовать IMAP или POP3 на странице настроек вашей почты.</string>
-    <string name="provider_note_naver">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Naver.</string>
-    <string name="provider_note_hanmail">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Hanmail(Daum).</string>
-    <string name="provider_note_paran">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны	разрешить использование IMAP или POP3 на странице настроек почты Paran.</string>
-    <string name="provider_note_nate">Если вы хотите использовать IMAP или POP3 для данного поставщика, вы должны разрешить использование IMAP или POP3 на странице настроек почты Nate.</string>
+    <string name="provider_note_live">Доступ по POP-протоколу доступен только для \"Plus\"-аккаунтов.
+        Если подключение с правильными настройками не удаётся, требуется
+        переход на версию \"Plus\". Воспользуйтесь мобильной версией
+        Yahoo! Mail или зайдите в аккаунт через браузер</string>
+    <string name="provider_note_yahoojp">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта Yahoo</string>
+    <string name="provider_note_auonejp">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта au one</string>
+    <string name="provider_note_naver">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта Naver</string>
+    <string name="provider_note_hanmail">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта  Hanmail (Daum)</string>
+    <string name="provider_note_paran">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта Paran</string>
+    <string name="provider_note_nate">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта Nate</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Неверный сертификат сервера</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Принять</string>
@@ -906,7 +907,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="font_size_message_view_sender">Отправитель</string>
     <string name="font_size_message_view_to">Кому</string>
     <string name="font_size_message_view_cc">Копия</string>
-    <string name="font_size_message_view_additional_headers">Дополнительные заголовки</string>
+    <string name="font_size_message_view_additional_headers">Все заголовки</string>
     <string name="font_size_message_view_subject">Тема</string>
     <string name="font_size_message_view_date">Дата и время</string>
     <string name="font_size_message_view_content">Тело сообщения</string>
@@ -916,18 +917,18 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="font_size_default">По умолчанию</string>
     <string name="font_size_tiniest">Крохотный</string>
-    <string name="font_size_tiny">Мельче</string>
-    <string name="font_size_smaller">Мелкий</string>
-    <string name="font_size_small">Меньше</string>
-    <string name="font_size_medium">Средний</string>
-    <string name="font_size_large">Крупнее</string>
-    <string name="font_size_larger">Крупный</string>
+    <string name="font_size_tiny">Маленький</string>
+    <string name="font_size_smaller">Небольшой</string>
+    <string name="font_size_small">Средний</string>
+    <string name="font_size_medium">Большой</string>
+    <string name="font_size_large">Огромный</string>
+    <string name="font_size_larger">Гигантский</string>
 
-    <string name="font_size_webview_smaller">Мелкий</string>
-    <string name="font_size_webview_small">Меньше</string>
+    <string name="font_size_webview_smaller">Крохотный</string>
+    <string name="font_size_webview_small">Мелкий</string>
     <string name="font_size_webview_normal">Обычный</string>
-    <string name="font_size_webview_large">Крупнее</string>
-    <string name="font_size_webview_larger">Крупный</string>
+    <string name="font_size_webview_large">Крупный</string>
+    <string name="font_size_webview_larger">Огромный</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Включите в настройках \"Обход ошибки Галереи 3D\" для её использования</string>
@@ -1017,22 +1018,22 @@ K-9 Mail — почтовый клиент для Android.
     <string name="settings_import_global_settings_success">Настройки K-9 импортированы из <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Импортировано: <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
     <plurals name="settings_import_success">
-        <item quantity="one">1 учётная запись</item>
-        <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> учётных записи</item>
-        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> учётных записей</item>
+        <item quantity="one">1 ящик</item>
+        <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> ящика</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> ящиков</item>
     </plurals>
-    <string name="settings_export_failure">Не удалось экспортировать настройки</string>
-    <string name="settings_import_failure">Не удалось экспортировать настройки из <xliff:g id="filename">%s</xliff:g></string>
-    <string name="settings_export_success_header">Экспорт удался</string>
-    <string name="settings_export_failed_header">Экспорт не удался</string>
-    <string name="settings_import_success_header">Импорт удался</string>
-    <string name="settings_import_failed_header">Импорт не удался</string>
-    <string name="settings_import_activate_account_header">Активировать учётную запись</string>
-    <string name="settings_import_activate_account_intro">Чтобы использовать учётную запись \"<xliff:g id="account">%s</xliff:g>\", Вам необходимо указать <xliff:g id="server_passwords">%s</xliff:g>.</string>
+    <string name="settings_export_failure">Сбой экспорта настроек</string>
+    <string name="settings_import_failure">Сбой импорта настроек из <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success_header">Экспорт выполнен</string>
+    <string name="settings_export_failed_header">Сбой экспорта</string>
+    <string name="settings_import_success_header">Импорт выполнен</string>
+    <string name="settings_import_failed_header">Сбой импорта</string>
+    <string name="settings_import_activate_account_header">Включение ящика</string>
+    <string name="settings_import_activate_account_intro">Для включения ящика \"<xliff:g id="account">%s</xliff:g>\" необходимо ввести <xliff:g id="server_passwords">%s</xliff:g></string>
     <plurals name="settings_import_server_passwords">
         <item quantity="one">пароль</item>
-        <item quantity="few">пароля</item>
-        <item quantity="other">паролей</item>
+        <item quantity="few">пароли</item>
+        <item quantity="other">пароли</item>
     </plurals>
     <string name="settings_import_incoming_server">Сервер входящей почты (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Сервер исходящей почты (<xliff:g id="hostname">%s</xliff:g>):</string>
@@ -1046,7 +1047,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_unavailable">Ящик \"<xliff:g id="account">%s</xliff:g>\" недоступен, проверьте накопитель</string>
 
     <string name="settings_attachment_default_path">Сохранение вложений</string>
-    <string name="attachment_save_title">Сохранить вложение</string>
+    <string name="attachment_save_title">Сохранение вложений</string>
     <string name="attachment_save_desc">Менеджер файлов не найден. Введите путь для сохранения</string>
 
     <string name="manage_accounts_move_up_action">Выше</string>
@@ -1108,7 +1109,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="action_remote_search">Поиск на сервере</string>
     <string name="pull_to_refresh_remote_search_from_local_search_pull">потяните</string>
     <string name="pull_to_refresh_remote_search_from_local_search_release">отпустите</string>
-    <string name="remote_search_unavailable_no_network">Удалённый поиск не доступен без сетевого соединения.</string>
+    <string name="remote_search_unavailable_no_network">Для поиска на сервере необходимо подключение к сети</string>
 
     <string name="global_settings_background_as_unread_indicator_label">Затемнить прочитанные</string>
     <string name="global_settings_background_as_unread_indicator_summary">Выделять прочитанные сообщения менее ярким фоном</string>
