@@ -1034,56 +1034,56 @@ K-9 Mail — почтовый клиент для Android.
         <item quantity="few">пароля</item>
         <item quantity="other">паролей</item>
     </plurals>
-    <string name="settings_import_incoming_server">Сервер для входящей почты (<xliff:g id="hostname">%s</xliff:g>):</string>
-    <string name="settings_import_outgoing_server">Сервер для исходящей почты (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_incoming_server">Сервер входящей почты (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">Сервер исходящей почты (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Установка пароля…</item>
-        <item quantity="other">Установка паролей…</item>
+        <item quantity="one">Проверка пароля…</item>
+        <item quantity="other">Проверка паролей…</item>
     </plurals>
-    <string name="settings_import_use_incoming_server_password">Как для входящей почты</string>
+    <string name="settings_import_use_incoming_server_password">Как для входящей</string>
     <string name="activate_account_action">Включить</string>
 
     <string name="account_unavailable">Ящик \"<xliff:g id="account">%s</xliff:g>\" недоступен, проверьте накопитель</string>
 
     <string name="settings_attachment_default_path">Сохранение вложений</string>
     <string name="attachment_save_title">Сохранить вложение</string>
-    <string name="attachment_save_desc">Не найден браузер файлов. Где бы вы хотели сохранить вложение?</string>
+    <string name="attachment_save_desc">Менеджер файлов не найден. Введите путь для сохранения</string>
 
-    <string name="manage_accounts_move_up_action">Переместить вверх</string>
-    <string name="manage_accounts_move_down_action">Переместить вниз</string>
-    <string name="manage_accounts_moving_message">Перемещение учётной записи…</string>
+    <string name="manage_accounts_move_up_action">Выше</string>
+    <string name="manage_accounts_move_down_action">Ниже</string>
+    <string name="manage_accounts_moving_message">Перемещение ящика…</string>
 
-    <string name="unread_widget_select_account">Показать количество непрочитанных для…</string>
+    <string name="unread_widget_select_account">Счётчик непрочитанных</string>
 
-    <string name="import_dialog_error_title">Требуется файловый менеджер</string>
+    <string name="import_dialog_error_title">Необходим менеджер файлов</string>
     <string name="close">Закрыть</string>
 
-    <string name="webview_empty_message">К следующему</string>
+    <string name="webview_empty_message">Текст отсутствует</string>
 
-    <string name="webview_contextmenu_link_view_action">Открыть для просмотра</string>
-    <string name="webview_contextmenu_link_share_action">Поделиться ссылкой</string>
-    <string name="webview_contextmenu_link_copy_action">Скопировать ссылку в буфер обмена</string>
+    <string name="webview_contextmenu_link_view_action">Открыть</string>
+    <string name="webview_contextmenu_link_share_action">Отправить</string>
+    <string name="webview_contextmenu_link_copy_action">В буфер</string>
     <string name="webview_contextmenu_link_clipboard_label">Ссылка</string>
 
     <string name="webview_contextmenu_image_title">Изображение</string>
-    <string name="webview_contextmenu_image_view_action">Просмотреть изображение</string>
-    <string name="webview_contextmenu_image_save_action">Сохранить изображение</string>
-    <string name="webview_contextmenu_image_download_action">Скачать изображение</string>
-    <string name="webview_contextmenu_image_copy_action">Скопировать URL изображения в буфер обмена</string>
+    <string name="webview_contextmenu_image_view_action">Открыть</string>
+    <string name="webview_contextmenu_image_save_action">Сохранить</string>
+    <string name="webview_contextmenu_image_download_action">Загрузить</string>
+    <string name="webview_contextmenu_image_copy_action">URL в буфер</string>
     <string name="webview_contextmenu_image_clipboard_label">URL изображения</string>
 
-    <string name="webview_contextmenu_phone_call_action">Телефонный номер</string>
-    <string name="webview_contextmenu_phone_save_action">Сохранить в контакты</string>
-    <string name="webview_contextmenu_phone_copy_action">Скопировать телефонный номер в буфер обмена</string>
-    <string name="webview_contextmenu_phone_clipboard_label">Телефонный номер</string>
+    <string name="webview_contextmenu_phone_call_action">Вызвать</string>
+    <string name="webview_contextmenu_phone_save_action">В контакты</string>
+    <string name="webview_contextmenu_phone_copy_action">В буфер</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Номер</string>
 
-    <string name="webview_contextmenu_email_send_action">Отправить письмо</string>
-    <string name="webview_contextmenu_email_save_action">Сохранить в контакты</string>
-    <string name="webview_contextmenu_email_copy_action">Скопировать email адрес в буфер обмена</string>
-    <string name="webview_contextmenu_email_clipboard_label">Email адрес</string>
+    <string name="webview_contextmenu_email_send_action">Написать</string>
+    <string name="webview_contextmenu_email_save_action">В контакты</string>
+    <string name="webview_contextmenu_email_copy_action">В буфер</string>
+    <string name="webview_contextmenu_email_clipboard_label">Адрес email</string>
 
-    <string name="image_saved_as">Сохранить изображение как \"<xliff:g id="filename">%s</xliff:g>\"</string>
-    <string name="image_saving_failed">Не удалось сохранить изображение.</string>
+    <string name="image_saved_as">Изображение сохранено в \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Сбой сохранения изображения</string>
 
     <string name="account_settings_remote_search_num_results_entries_all">Все</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
@@ -1093,13 +1093,13 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Ограничение результатов поиска на сервере</string>
-    <string name="account_settings_remote_search_num_summary">Поиск остановить после нахождения <xliff:g id="num_results">%s</xliff:g> результатов.</string>
-    <string name="account_settings_remote_search_full_text">Включать текст сообщения в удалённом поиске</string>
+    <string name="account_settings_remote_search_num_label">Лимит поиска на сервере</string>
+    <string name="account_settings_remote_search_num_summary">Остановить поиск после <xliff:g id="num_results">%s</xliff:g> совпадений</string>
+    <string name="account_settings_remote_search_full_text">Поиск в сообщениях</string>
     <string name="account_settings_remote_search_full_text_summary">Полнотекстовый поиск может быть медленным</string>
     <string name="remote_search_sending_query">Отправка запроса на сервер</string>
-    <string name="remote_search_downloading">Извлечение %d результатов</string>
-    <string name="remote_search_downloading_limited">Извлечено %1$d из %2$d результатов</string>
+    <string name="remote_search_downloading">Получение результатов: %d</string>
+    <string name="remote_search_downloading_limited">Получение результатов: %1$d из %2$d</string>
     <string name="remote_search_error">Сбой поиска на сервере</string>
 
     <string name="account_settings_search">Поиск</string>
