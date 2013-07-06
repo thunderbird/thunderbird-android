@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-
+    <release version="4.404" versioncode="17041" >
+        <change>ある限定された状況でK-9がクラッシュするバグを修正しました</change>
+        <change>新しいフォルダメニューの項目のバグを修正しました</change>
+        <change>Google Playで報告されたいくつかのクラッシュ報告に対応しました</change>
+        <change>チェックボックスとカラーチップの表示を微調整しました</change>
+    </release>
     <release version="4.403" versioncode="17040" >
         <change>ダークテーマを使っているときにアカウント一覧がクラッシュするバグを修正しました</change>
     </release>
