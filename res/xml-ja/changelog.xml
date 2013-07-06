@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="4.503" versioncode="18003" >
+        <change>フォルダ一覧へのショートカットを追加しました</change>
+        <change>Tweaks to checkboxes and color chip display</change>
+        <change>アカウントコンテキストメニューにゴミ箱を空にするを追加しました</change>
+        <change>プライバシーモードが有効な場合に(JellyBeanの)拡張通知領域を使わないようにしました</change>
+        <change>Galaxyデバイスのバグのため、アカウントのコンテキストメニューからサブメニューを削除しました</change>
+        <change>デバッグ用にビルドしたときだけデバッグ用ログを有効にできるようにしました</change>
+        <change>SDK 8からの機能を利用していたので、minSdkVersionを8に上げました</change>
+        <change>ロシア語、フランス語、ドイツ語、ブラジルポルトガル語の翻訳を更新しました</change>
+        <change>多くのバグを修正しました</change>
+    </release>
+
+    <release version="4.502" versioncode="18002" >
+        <change>いくつかの条件で前と次のメッセージに移動できないバグを修正しました</change>
+        <change>日本語、チェコ語、ブラジルポルトガル語の翻訳を更新しました</change>
+        <change>ふたつのバグを修正しました</change>
+    </release>
+
+    <release version="4.501" versioncode="18001" >
+        <change>自動的にメッセージ表示を画面幅に縮小する設定を追加しました</change>
+        <change>ドイツ語の翻訳を更新しました</change>
+    </release>
+
     <release version="4.331" versioncode="17032" >
         <change>統合フォルダからのメール受信に対応しました</change>
         <change>メッセージ一覧のメニューに"すべて既読にする"を追加しました</change>
