@@ -4,7 +4,7 @@
 
     <!-- This should make it easier for forks to change the branding -->
     
-    <!--Translation of RU version (06.07.2013): Igor Nedoboy (k9russian<AT>gmail<DOT>com)-->
+    <!-- Translation of RU version (06.07.2013): Igor Nedoboy (k9russian<AT>gmail<DOT>com) -->
 
     <!-- Used in AndroidManifest.xml -->
     <string name="app_name">Почта</string>
