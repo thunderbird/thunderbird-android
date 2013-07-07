@@ -84,10 +84,10 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="read_attachment_label">Чтение вложений</string>
     <string name="read_attachment_desc">Разрешить программе чтение вложений почты</string>
-    <string name="read_messages_label">Чтение писем</string>
-    <string name="read_messages_desc">Разрешить программе чтение писем</string>
-    <string name="delete_messages_label">Удаление писем</string>
-    <string name="delete_messages_desc">Разрешить программе удаление писем</string>
+    <string name="read_messages_label">Чтение почты</string>
+    <string name="read_messages_desc">Разрешить программе чтение почты</string>
+    <string name="delete_messages_label">Удаление почты</string>
+    <string name="delete_messages_desc">Разрешить программе удаление почты</string>
 
     <string name="about_title_fmt">K-9 Mail <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Ящики</string>
@@ -289,14 +289,14 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_no_additional_headers_available">Все дополнительные заголовки уже загружены</string>
     <string name="message_additional_headers_retrieval_failed">Сбой загрузки дополнительных заголовков</string>
 
-    <string name="from_same_sender">Переписка</string>
+    <string name="from_same_sender">Вся переписка</string>
 
     <string name="message_discarded_toast">Сообщение отменено</string>
     <string name="message_saved_toast">Черновик сохранён</string>
 
     <string name="global_settings_checkbox_label">Выбор элементов</string>
     <string name="global_settings_checkbox_summary">Показать поля выбора элементов</string>
-    <string name="global_settings_preview_lines_label">Строки текста письма</string>
+    <string name="global_settings_preview_lines_label">Строки предпросмотра</string>
     <string name="global_settings_show_correspondent_names_label">Имя вместо адреса</string>
     <string name="global_settings_show_correspondent_names_summary">Показать имя отправителя вместо его адреса</string>
 
@@ -325,7 +325,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_confirm_actions_summary">Запросить подтверждение указанных действий</string>
     <string name="global_settings_confirm_action_delete">Удаление (в просмотре)</string>
     <string name="global_settings_confirm_action_delete_starred">Удаление важного (в просмотре)</string>
-    <string name="global_settings_confirm_action_spam">Спам</string>
+    <string name="global_settings_confirm_action_spam">Перемещение в Спам</string>
     <string name="global_settings_confirm_action_delete_notif">Удаление (в уведомлении)</string>
 
     <string name="global_settings_notification_hide_subject_title">Скрыть тему в уведомлении</string>
