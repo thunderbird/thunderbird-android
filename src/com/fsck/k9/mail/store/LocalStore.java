@@ -102,23 +102,21 @@ public class LocalStore extends Store implements Serializable {
         "forwarded ";
 
     private static final String GET_FOLDER_COLS =
-        "folders.id, name, SUM(read=0), visible_limit, last_updated, status, push_state, " +
-        "last_pushed, SUM(flagged), integrate, top_group, poll_class, push_class, display_class";
+        "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
+        "integrate, top_group, poll_class, push_class, display_class";
 
     private static final int FOLDER_ID_INDEX = 0;
     private static final int FOLDER_NAME_INDEX = 1;
-    private static final int FOLDER_UNREAD_COUNT_INDEX = 2;
-    private static final int FOLDER_VISIBLE_LIMIT_INDEX = 3;
-    private static final int FOLDER_LAST_CHECKED_INDEX = 4;
-    private static final int FOLDER_STATUS_INDEX = 5;
-    private static final int FOLDER_PUSH_STATE_INDEX = 6;
-    private static final int FOLDER_LAST_PUSHED_INDEX = 7;
-    private static final int FOLDER_FLAGGED_COUNT_INDEX = 8;
-    private static final int FOLDER_INTEGRATE_INDEX = 9;
-    private static final int FOLDER_TOP_GROUP_INDEX = 10;
-    private static final int FOLDER_SYNC_CLASS_INDEX = 11;
-    private static final int FOLDER_PUSH_CLASS_INDEX = 12;
-    private static final int FOLDER_DISPLAY_CLASS_INDEX = 13;
+    private static final int FOLDER_VISIBLE_LIMIT_INDEX = 2;
+    private static final int FOLDER_LAST_CHECKED_INDEX = 3;
+    private static final int FOLDER_STATUS_INDEX = 4;
+    private static final int FOLDER_PUSH_STATE_INDEX = 5;
+    private static final int FOLDER_LAST_PUSHED_INDEX = 6;
+    private static final int FOLDER_INTEGRATE_INDEX = 7;
+    private static final int FOLDER_TOP_GROUP_INDEX = 8;
+    private static final int FOLDER_SYNC_CLASS_INDEX = 9;
+    private static final int FOLDER_PUSH_CLASS_INDEX = 10;
+    private static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
 
     private static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -885,9 +883,7 @@ public class LocalStore extends Store implements Serializable {
 
                     try {
                         cursor = db.rawQuery("SELECT " + GET_FOLDER_COLS + " FROM folders " +
-                                "LEFT JOIN messages ON (folder_id = folders.id AND" +
-                                " (empty IS NULL OR empty != 1) AND deleted = 0) " +
-                                "GROUP BY folders.id ORDER BY name ASC", null);
+                                "ORDER BY name ASC", null);
                         while (cursor.moveToNext()) {
                             if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;
@@ -1321,8 +1317,6 @@ public class LocalStore extends Store implements Serializable {
         private static final long serialVersionUID = -1973296520918624767L;
         private String mName = null;
         private long mFolderId = -1;
-        private int mUnreadMessageCount = -1;
-        private int mFlaggedMessageCount = -1;
         private int mVisibleLimit = -1;
         private String prefId = null;
         private FolderClass mDisplayClass = FolderClass.NO_CLASS;
@@ -1375,9 +1369,7 @@ public class LocalStore extends Store implements Serializable {
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                         Cursor cursor = null;
                         try {
-                            String baseQuery = "SELECT " + GET_FOLDER_COLS + " FROM folders " +
-                                    "LEFT JOIN messages ON (folder_id = folders.id AND" +
-                                    " (empty IS NULL OR empty != 1) AND deleted = 0) ";
+                            String baseQuery = "SELECT " + GET_FOLDER_COLS + " FROM folders ";
 
                             if (mName != null) {
                                 cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });
@@ -1411,10 +1403,8 @@ public class LocalStore extends Store implements Serializable {
         private void open(Cursor cursor) throws MessagingException {
             mFolderId = cursor.getInt(FOLDER_ID_INDEX);
             mName = cursor.getString(FOLDER_NAME_INDEX);
-            mUnreadMessageCount = cursor.getInt(FOLDER_UNREAD_COUNT_INDEX);
             mVisibleLimit = cursor.getInt(FOLDER_VISIBLE_LIMIT_INDEX);
             mPushState = cursor.getString(FOLDER_PUSH_STATE_INDEX);
-            mFlaggedMessageCount = cursor.getInt(FOLDER_FLAGGED_COUNT_INDEX);
             super.setStatus(cursor.getString(FOLDER_STATUS_INDEX));
             // Only want to set the local variable stored in the super class.  This class
             // does a DB update on setLastChecked
@@ -1429,7 +1419,6 @@ public class LocalStore extends Store implements Serializable {
             mPushClass = Folder.FolderClass.valueOf((pushClass == null) ? noClass : pushClass);
             String syncClass = cursor.getString(FOLDER_SYNC_CLASS_INDEX);
             mSyncClass = Folder.FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
-
         }
 
         @Override
@@ -1533,12 +1522,9 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public int getUnreadMessageCount() throws MessagingException {
             if (!isOpen()) {
-                // open() sums up the number of unread messages in the database
                 open(OpenMode.READ_WRITE);
-                return mUnreadMessageCount;
             }
 
-            // Folder was already opened. Unread count might be outdated so query the database now.
             try {
                 return database.execute(false, new DbCallback<Integer>() {
                     @Override
@@ -1566,8 +1552,33 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public int getFlaggedMessageCount() throws MessagingException {
-            open(OpenMode.READ_WRITE);
-            return mFlaggedMessageCount;
+            if (!isOpen()) {
+                open(OpenMode.READ_WRITE);
+            }
+
+            try {
+                return database.execute(false, new DbCallback<Integer>() {
+                    @Override
+                    public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
+                        int flaggedMessageCount = 0;
+                        Cursor cursor = db.query("messages", new String[] { "SUM(flagged)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                                new String[] { Long.toString(mFolderId) }, null, null, null);
+
+                        try {
+                            if (cursor.moveToFirst()) {
+                                flaggedMessageCount = cursor.getInt(0);
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
+                        return flaggedMessageCount;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
         }
 
         @Override
