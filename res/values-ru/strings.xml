@@ -1116,8 +1116,8 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_background_as_unread_indicator_label">Затемнить прочитанные</string>
     <string name="global_settings_background_as_unread_indicator_summary">Выделять прочитанные сообщения менее ярким фоном</string>
 
-    <string name="global_settings_threaded_view_label">Беседы</string>
-    <string name="global_settings_threaded_view_summary">Группировать сообщения в беседы</string>
+    <string name="global_settings_threaded_view_label">Группировка сообщений</string>
+    <string name="global_settings_threaded_view_summary">Объединить сообщения адресата</string>
 
     <string name="upgrade_databases_title">Обновление данных</string>
     <string name="upgrade_databases_unspecified">Обновление данных…</string>
