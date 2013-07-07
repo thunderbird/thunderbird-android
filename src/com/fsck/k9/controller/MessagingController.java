@@ -2899,8 +2899,9 @@ public class MessagingController implements Runnable {
             // Update the messages in the local store
             localFolder.setFlags(messages, new Flag[] {flag}, newState);
 
+            int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folderName, localFolder.getUnreadMessageCount());
+                l.folderStatusChanged(account, folderName, unreadMessageCount);
             }
 
 
