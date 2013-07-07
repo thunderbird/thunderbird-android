@@ -139,6 +139,9 @@
         </if.contrib>
 
         <echo>Setting version to ${version-name}</echo>
+        <exec executable="perl" failonerror="true">
+            <arg line="-0 -ne '/\x3Crelease version=\x22${version-name}\x22/ or die qq/No changelog for ${version-name}\n/' res/raw/changelog.xml" />
+        </exec>
         <replace file="AndroidManifest.xml"
             token="android:versionName=&quot;${current-version-name}&quot;"
             value="android:versionName=&quot;${version-name}&quot;" summary="true"
