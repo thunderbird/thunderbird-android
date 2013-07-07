@@ -101,7 +101,24 @@ public class LocalStore extends Store implements Serializable {
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +
         "forwarded ";
 
-    static private String GET_FOLDER_COLS = "folders.id, name, SUM(read=0), visible_limit, last_updated, status, push_state, last_pushed, SUM(flagged), integrate, top_group, poll_class, push_class, display_class";
+    private static final String GET_FOLDER_COLS =
+        "folders.id, name, SUM(read=0), visible_limit, last_updated, status, push_state, " +
+        "last_pushed, SUM(flagged), integrate, top_group, poll_class, push_class, display_class";
+
+    private static final int FOLDER_ID_INDEX = 0;
+    private static final int FOLDER_NAME_INDEX = 1;
+    private static final int FOLDER_UNREAD_COUNT_INDEX = 2;
+    private static final int FOLDER_VISIBLE_LIMIT_INDEX = 3;
+    private static final int FOLDER_LAST_CHECKED_INDEX = 4;
+    private static final int FOLDER_STATUS_INDEX = 5;
+    private static final int FOLDER_PUSH_STATE_INDEX = 6;
+    private static final int FOLDER_LAST_PUSHED_INDEX = 7;
+    private static final int FOLDER_FLAGGED_COUNT_INDEX = 8;
+    private static final int FOLDER_INTEGRATE_INDEX = 9;
+    private static final int FOLDER_TOP_GROUP_INDEX = 10;
+    private static final int FOLDER_SYNC_CLASS_INDEX = 11;
+    private static final int FOLDER_PUSH_CLASS_INDEX = 12;
+    private static final int FOLDER_DISPLAY_CLASS_INDEX = 13;
 
     private static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -872,11 +889,12 @@ public class LocalStore extends Store implements Serializable {
                                 " (empty IS NULL OR empty != 1) AND deleted = 0) " +
                                 "GROUP BY folders.id ORDER BY name ASC", null);
                         while (cursor.moveToNext()) {
-                            if (cursor.isNull(0)) {
+                            if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;
                             }
-                            LocalFolder folder = new LocalFolder(cursor.getString(1));
-                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
+                            String folderName = cursor.getString(FOLDER_NAME_INDEX);
+                            LocalFolder folder = new LocalFolder(folderName);
+                            folder.open(cursor);
 
                             folders.add(folder);
                         }
@@ -1367,10 +1385,10 @@ public class LocalStore extends Store implements Serializable {
                                 cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(mFolderId) });
                             }
 
-                            if (cursor.moveToFirst() && !cursor.isNull(0)) {
-                                int folderId = cursor.getInt(0);
+                            if (cursor.moveToFirst() && !cursor.isNull(FOLDER_ID_INDEX)) {
+                                int folderId = cursor.getInt(FOLDER_ID_INDEX);
                                 if (folderId > 0) {
-                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
+                                    open(cursor);
                                 }
                             } else {
                                 Log.w(K9.LOG_TAG, "Creating folder " + getName() + " with existing id " + getId());
@@ -1390,23 +1408,26 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass, String pushClass, String displayClass) throws MessagingException {
-            mFolderId = id;
-            mName = name;
-            mUnreadMessageCount = unreadCount;
-            mVisibleLimit = visibleLimit;
-            mPushState = pushState;
-            mFlaggedMessageCount = flaggedCount;
-            super.setStatus(status);
+        private void open(Cursor cursor) throws MessagingException {
+            mFolderId = cursor.getInt(FOLDER_ID_INDEX);
+            mName = cursor.getString(FOLDER_NAME_INDEX);
+            mUnreadMessageCount = cursor.getInt(FOLDER_UNREAD_COUNT_INDEX);
+            mVisibleLimit = cursor.getInt(FOLDER_VISIBLE_LIMIT_INDEX);
+            mPushState = cursor.getString(FOLDER_PUSH_STATE_INDEX);
+            mFlaggedMessageCount = cursor.getInt(FOLDER_FLAGGED_COUNT_INDEX);
+            super.setStatus(cursor.getString(FOLDER_STATUS_INDEX));
             // Only want to set the local variable stored in the super class.  This class
             // does a DB update on setLastChecked
-            super.setLastChecked(lastChecked);
-            super.setLastPush(lastPushed);
-            mInTopGroup = topGroup == 1  ? true : false;
-            mIntegrate = integrate == 1 ? true : false;
+            super.setLastChecked(cursor.getLong(FOLDER_LAST_CHECKED_INDEX));
+            super.setLastPush(cursor.getLong(FOLDER_LAST_PUSHED_INDEX));
+            mInTopGroup = (cursor.getInt(FOLDER_TOP_GROUP_INDEX)) == 1  ? true : false;
+            mIntegrate = (cursor.getInt(FOLDER_INTEGRATE_INDEX) == 1) ? true : false;
             String noClass = FolderClass.NO_CLASS.toString();
+            String displayClass = cursor.getString(FOLDER_DISPLAY_CLASS_INDEX);
             mDisplayClass = Folder.FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
+            String pushClass = cursor.getString(FOLDER_PUSH_CLASS_INDEX);
             mPushClass = Folder.FolderClass.valueOf((pushClass == null) ? noClass : pushClass);
+            String syncClass = cursor.getString(FOLDER_SYNC_CLASS_INDEX);
             mSyncClass = Folder.FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
 
         }
