@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.505" versioncode="18005" >
+        <change>Major performance improvements in folder lists</change>
+        <change>Catalan, Chinese and Russian translation updates</change>
+        <change>Several bugfixes</change>
+    </release>
     <release version="4.503" versioncode="18003" >
         <change>Added additional shortcuts to the Folder list</change>
         <change>Tweaks to checkboxes and color chip display</change>
