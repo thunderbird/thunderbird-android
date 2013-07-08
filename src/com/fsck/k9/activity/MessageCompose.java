@@ -1602,7 +1602,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         uri.appendQueryParameter(IdentityField.MESSAGE_FORMAT.value(), mMessageFormat.name());
 
         // If we're not using the standard identity of signature, append it on to the identity blob.
-        if (mSignatureChanged) {
+        if (mIdentity.getSignatureUse() && mSignatureChanged) {
             uri.appendQueryParameter(IdentityField.SIGNATURE.value(), mSignatureView.getText().toString());
         }
 
