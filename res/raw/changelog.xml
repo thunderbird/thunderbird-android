@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.405" versioncode="17042" >
+        <change>Updates to Catalan, Chinese and Russian translations</change>
+        <change>Workarounds for some broken POP3 servers</change>
+        <change>Performance improvements</change>
+    </release>
     <release version="4.404" versioncode="17041" >
         <change>Fixed a bug that caused K-9 to crash on upgrade in certain limited circumstance</change>
         <change>Bugfixes for the new Folders menu item</change>
