@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="dialog_confirm_delete_message">
+        <item quantity="other">確定要刪除 %1$d 則訊息?</item>
+        <item quantity="one">確定要刪除此訊息?</item>
+    </plurals>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="other">確定要將選取的 %1$d 封郵件移至垃圾桶嗎？</item>
+        <item quantity="one">確定要將郵件移至垃圾桶嗎？</item>
+    </plurals>
+    <plurals name="settings_import_success">
+        <item quantity="other">%s 帳號</item>
+        <item quantity="one">1 帳號</item>
+    </plurals>
+    <plurals name="settings_import_server_passwords">
+        <item quantity="other">伺服器密碼</item>
+        <item quantity="one">伺服器密碼</item>
+    </plurals>
+    <plurals name="settings_import_setting_passwords">
+        <item quantity="other">正在設定密碼…</item>
+        <item quantity="one">正在設定密碼…</item>
+    </plurals>
+</resources> 
