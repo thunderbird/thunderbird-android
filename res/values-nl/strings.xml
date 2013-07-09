@@ -760,8 +760,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
     Del (or D) - Verwijder\n
     R - Antwoord\n
     A - Antwoord Alle\n

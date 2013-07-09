@@ -762,8 +762,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Прийняти сертифікат</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Відхилити сертифікат</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
     Del (або D) - Видалити\n
     R - Відповісти\n
     A - Відповісти усім\n

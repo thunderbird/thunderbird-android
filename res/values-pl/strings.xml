@@ -772,8 +772,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
 
-    <!-- NEW: V untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V untranslated -->
         Del lub D - Usuń\n
         R - Odpowiedz\n
         A - Odp. wszystkim\n

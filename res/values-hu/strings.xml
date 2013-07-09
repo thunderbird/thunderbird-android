@@ -760,8 +760,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Kulcs elfogadva</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs elutasítva</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
     Del (or D) - Törlés\n
     R - Válasz\n
     A - Válasz mindenkinek\n

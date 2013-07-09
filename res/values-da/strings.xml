@@ -763,8 +763,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter nøgle</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Afvis nøgle</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
     Del (or D) - Slet\n
     R - Svar\n
     A - Svar alle\n

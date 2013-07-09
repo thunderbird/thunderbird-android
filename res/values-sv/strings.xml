@@ -763,8 +763,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Neka nyckel</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
     Del (eller D) - Radera\n
     R - Svara\n
     A - Svara alla\n

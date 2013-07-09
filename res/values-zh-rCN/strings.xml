@@ -753,8 +753,7 @@ K-9改进的功能包括：
     <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
     Del (or D) - 删除\n
     R - 回复\n
     A - 全部回复\n

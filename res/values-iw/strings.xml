@@ -194,8 +194,7 @@
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <!-- NEW: Note: part of 'account_size_changed' is untranslated  -->
-    <string name="account_size_changed">
+    <string name="account_size_changed"><!-- NEW: Note: part of 'account_size_changed' is untranslated -->
     חשבון \"<xliff:g id="account">%s</xliff:g>\" נדחס ל
     <xliff:g id="oldSize">%s</xliff:g>
     to
@@ -761,8 +760,7 @@
     <string name="account_setup_failed_dlg_invalid_certificate_accept">קבל מפתח</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">דחה מפתח</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">Del (or D) - מחק
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->Del (or D) - מחק
 \nR - השב
 \nA - השב לכולם
 \nC - לחבר
@@ -780,8 +778,7 @@
 \nK, N - הודעה הבאה
     </string>
 
-    <!-- NEW: Note: only partly translated -->
-    <string name="folder_list_help_key">1 - Display only 1st Class folders
+    <string name="folder_list_help_key"><!-- NEW: Note: only partly translated -->1 - Display only 1st Class folders
  \n2 - Display 1st and 2nd Class folders
  \n3 - Display all except 2nd Class folders
  \n4 - הצג את כל התיקיות

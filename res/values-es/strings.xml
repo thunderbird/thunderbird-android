@@ -761,8 +761,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar certificado</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rechazar certificado</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
     Del (or D) - Borrar\n
     R - Responder\n
     A - Responder todos\n

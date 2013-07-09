@@ -770,8 +770,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V untranslated -->
     Del (nebo D) - Smazat\n
     R - Odpovědět\n
     A - Odpovědět všem\n
