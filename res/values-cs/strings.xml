@@ -992,17 +992,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
         <item quantity="one">Opravdu chcete přesunout tuto zprávy do nevyžádané pošty?</item>
         <item quantity="few">Opravdu chcete přesunout <xliff:g id="message_count">%1$d</xliff:g> zprávy do nevyžádané pošty?</item>
         <item quantity="other">Opravdu chcete přesunout <xliff:g id="message_count">%1$d</xliff:g> zpráv do nevyžádané pošty?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ano</string>
     <string name="dialog_confirm_spam_cancel_button">Ne</string>

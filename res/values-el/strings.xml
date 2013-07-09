@@ -978,17 +978,6 @@
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Θέλετε πράγματι να μετακινήσετε αυτό το μήνυμα στο φάκελο σκουπιδιών;</item>
         <item quantity="other">Θέλετε πράγματι να μετακινήσετε <xliff:g id="message_count">%1$d</xliff:g> μηνύματα στο φάκελο σκουπιδιών;</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ναι</string>
     <string name="dialog_confirm_spam_cancel_button">Όχι</string>

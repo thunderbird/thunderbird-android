@@ -3,7 +3,7 @@
     <!-- === App-specific strings ============================================================= -->
 
     <!-- This should make it easier for forks to change the branding -->
-    
+
     <!-- Translation of RU version (06.07.2013): Igor Nedoboy (k9russian<AT>gmail<DOT>com) -->
 
     <!-- Used in AndroidManifest.xml -->
@@ -315,7 +315,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_messageview_fixedwidth_summary">Показать сообщения в формате \"Только текст\" моноширинным шрифтом</string>
     <string name="global_settings_messageview_autofit_width_label">Вписать по ширине</string>
     <string name="global_settings_messageview_autofit_width_summary">Подогнать текст сообщения по ширине экрана</string>
-    
+
     <string name="global_settings_messageview_return_to_list_label">В список после удаления</string>
     <string name="global_settings_messageview_return_to_list_summary">Перейти в список сообщений после удаления сообщения</string>
     <string name="global_settings_messageview_show_next_label">В следующее после удаления</string>
@@ -982,17 +982,6 @@ K-9 Mail — почтовый клиент для Android.
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Сообщение будет перемещено в Спам. Продолжить?</item>
         <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут перемещены в Спам. Продолжить?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">ОК</string>
     <string name="dialog_confirm_spam_cancel_button">Отмена</string>

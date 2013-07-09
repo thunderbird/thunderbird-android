@@ -982,17 +982,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Ви дійсно хочете перемістити це повідомлення у папку „Спам“?</item>
         <item quantity="other">Ви дійсно хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень у папку „Спам“?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Так</string>
     <string name="dialog_confirm_spam_cancel_button">Ні</string>

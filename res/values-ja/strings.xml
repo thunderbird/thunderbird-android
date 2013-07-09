@@ -982,12 +982,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">本当にこのメッセージを迷惑メールフォルダに移動しますか？</item>
         <item quantity="other">本当にこれら<xliff:g id="message_count">%1$d</xliff:g>件のメッセージを迷惑メールフォルダに移動しますか？</item>
-<!--
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">はい</string>
     <string name="dialog_confirm_spam_cancel_button">いいえ</string>

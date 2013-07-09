@@ -980,17 +980,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Wil je dit bericht echt verplaatsen naar de spam map?</item>
         <item quantity="other">Wil je dit bericht echt verplaatsen naar de spam map?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ja</string>
     <string name="dialog_confirm_spam_cancel_button">Nee</string>

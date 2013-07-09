@@ -979,17 +979,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">정말 이 메시지를 스팸폴더로 옮기시겠습니까?</item>
         <item quantity="other">정말 메시지 <xliff:g id="message_count">%1$d</xliff:g>를 스팸폴더로 옮기시겠습니까?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">예</string>
     <string name="dialog_confirm_spam_cancel_button">아니오</string>

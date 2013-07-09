@@ -979,16 +979,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Deseja mesmo mover esta mensagem para a pasta de spam?</item>
         <item quantity="other">Deseja mesmo mover <xliff:g id="message_count">%1$d</xliff:g> mensagens para a pasta de spam?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Sim</string>
     <string name="dialog_confirm_spam_cancel_button">Não</string>
