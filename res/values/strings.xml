@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     When removing strings from the main file, please cleanup the translations.
+     The script tools/sync_translation.py will get rid of any surplus strings.
+-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
-
-    <!--
-         When removing strings from the main file, please cleanup the translations.
-
-         This doesn't work on multiline strings, nor strings with the NEW tag.
-         find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
-     -->
 
     <!-- This should make it easier for forks to change the branding -->
 
