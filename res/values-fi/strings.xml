@@ -307,7 +307,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
 
     <string name="global_settings_checkbox_label">Usean valinnan valintaruudut</string>
-    <string name="global_settings_checkbox_summary">>Näytä aina usean valinnan valintaruudut</string>
+    <string name="global_settings_checkbox_summary">Näytä aina usean valinnan valintaruudut</string>
     <string name="global_settings_preview_lines_label">Rivien esikatselu</string>
     <string name="global_settings_show_correspondent_names_label">Näytä yhteyshenkilöiden nimet</string>
     <string name="global_settings_show_correspondent_names_summary">Näytä yhteyshenkilöiden nimet sähköpostiosoitteen sijaan</string>

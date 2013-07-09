@@ -508,7 +508,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="account_settings_default_summary">Надсилати пошту з цього запису за замовчуванням</string>
     <string name="account_settings_notify_label">Сповіщення про нову пошту</string>
     <string name="account_settings_notify_sync_label">Сповіщення про синхронізацію</string>
-    <string name="account_settings_email_label">Адреса вашої електронної пошти/string>
+    <string name="account_settings_email_label">Адреса вашої електронної пошти</string>
     <string name="account_settings_notify_summary">Сповіщати у рядку стану про нові повідомлення</string>
     <string name="account_settings_notify_sync_summary">Сповіщати у рядку стану про перевірку пошти</string>
     <string name="account_settings_notify_self_label">Включаючи надіслані повідомлення</string>
@@ -1013,7 +1013,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> облікових записів</item>
     </plurals>
     <string name="settings_export_failure">Не вдалося експортувати налаштування</string>
-    <string name="settings_import_failure">Не вдалося імпортувати налаштування з </string> <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_failure">Не вдалося імпортувати налаштування з <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_export_success_header">Експорт успішний</string>
     <string name="settings_export_failed_header">Експорт не вдався</string>
     <string name="settings_import_success_header">Імпорт успішний</string>
