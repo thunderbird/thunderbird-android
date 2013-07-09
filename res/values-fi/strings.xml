@@ -1,13 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
-
-    <!--
-         When removing strings from the main file, please cleanup the translations.
-
-         This doesn't work on multiline strings, nor strings with the NEW tag.
-         find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
-     -->
 
     <!-- This should make it easier for forks to change the branding -->
 
@@ -290,7 +283,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_view_show_pictures_action">Näytä kuvat</string>
     <string name="message_view_show_message_action">Näytä viesti</string>
     <string name="message_view_show_attachments_action">Näytä liitteet</string>
-    <string name="message_view_show_more_attachments_action">Lisää&#8230;</string>
+    <string name="message_view_show_more_attachments_action">Lisää…</string>
     <string name="message_view_fetching_attachment_toast">Haetaan liitettä.</string>
     <string name="message_view_no_viewer">Tiedostotyypille <xliff:g id="mimetype">%s</xliff:g> ei löydy katseluohjelmaa.</string>
     <string name="message_view_download_remainder">Lataa koko viesti</string>
@@ -325,6 +318,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="global_settings_messageview_fixedwidth_label">Kiinteä kirjasinleveys</string>
     <string name="global_settings_messageview_fixedwidth_summary">Käytä kiinteää kirjasinleveyttä muotoilemattomille viesteille</string>
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
     <string name="global_settings_messageview_return_to_list_label">Palaa poiston jälkeen listanäkymään</string>
     <string name="global_settings_messageview_return_to_list_summary">Palaa viestilistaan viestin poiston jälkeen</string>
     <string name="global_settings_messageview_show_next_label">Näytä poiston jälkeen seuraava viesti</string>
@@ -368,7 +363,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_setup_basics_password_hint">Salasana</string>
     <string name="account_setup_basics_manual_setup_action">Määritä asetukset käsin</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Haetaan tilin tietoja\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Tarkistetaan saapuvan postin palvelimen asetuksia\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Tarkistetaan lähtevän postin palvelimen asetuksia\u2026</string>
@@ -735,6 +730,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="sort_latest_first">Uusimmat viestit ensin</string>
     <string name="sort_subject_alpha">Aiheen mukaan aakkosjärjestyksessä</string>
     <string name="sort_subject_re_alpha">Aiheen mukaan käänteisessä aakkosjärjestyksessä</string>
+    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
+    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
     <string name="sort_flagged_first">Tähdellä merkityt ensin</string>
     <string name="sort_flagged_last">Merkitsemättömät ensin</string>
     <string name="sort_unread_first">Lukemattomat ensin</string>
@@ -746,6 +743,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="sort_by_date">Päivämäärän mukaan</string>
     <string name="sort_by_arrival">Saapumisajan mukaan</string>
     <string name="sort_by_subject">Aiheen mukaan</string>
+    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
     <string name="sort_by_flag">Tähden mukaan</string>
     <string name="sort_by_unread">Luettujen/lukemattomien mukaan</string>
     <string name="sort_by_attach">Liitteiden mukaan</string>
@@ -942,7 +940,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="font_size_webview_larger">Suurin</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
-    <string name="message_compose_buggy_gallery">Tarkista Asetukset -> Ota käyttöön Gallery-ohjelmavirheen kierto mahdollistaaksesi kuvien tai videoiden liittämisen Gallery 3D -ohjelmalla.</string>
+    <string name="message_compose_buggy_gallery">Tarkista Asetukset -&gt; Ota käyttöön Gallery-ohjelmavirheen kierto mahdollistaaksesi kuvien tai videoiden liittämisen Gallery 3D -ohjelmalla.</string>
 
     <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
     <string name="message_compose_use_workaround">Käytä Lisää liite (kuva)- tai Lisää liite (video) -toimintoa Gallery 3D:n kuvan tai videon liittämiseksi.</string>
@@ -980,6 +978,18 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="dialog_confirm_delete_title">Vahvista poisto</string>
     <string name="dialog_confirm_delete_message">Haluatko poistaa tämän viestin?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Haluatko varmasti poistaa tämän viestin?</item>
         <item quantity="other">Haluatko varmasti poistaa <xliff:g id="message_count">%1$d</xliff:g> viestiä?</item>
@@ -1134,4 +1144,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="last_refresh_time_format">Päivitetty <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">Päivitetty <xliff:g id="time_with_preposition">%s</xliff:g> (push-tilassa)</string>
     <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
+
+    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 </resources>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
 Copyright (C) 2009 The Android Open Source Project
 
@@ -27,13 +27,6 @@ Android Localizer (aiLocalizer)
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
-
-    <!--
-         When removing strings from the main file, please cleanup the translations.
-
-         This doesn't work on multiline strings, nor strings with the NEW tag.
-         find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
-     -->
 
     <!-- This should make it easier for forks to change the branding -->
 
@@ -146,7 +139,7 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Suivant</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Précédent</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string>
+    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Annuler</string>
     <string name="send_action">Envoyer</string>
     <string name="send_again_action">Envoyer à nouveau</string>
@@ -161,7 +154,7 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="refile_action">Déposer</string>
     <string name="continue_action">Continuer</string>
     <string name="back_action">Retour</string>
-    <string name="done_action">Terminé</string>
+    <string name="done_action">Terminé</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Abandonner</string>
     <string name="save_draft_action">Enregistrer dans les brouillons</string>
     <string name="check_mail_action">Vérif. messages</string>
@@ -239,7 +232,7 @@ de plus</string>
 
     <string name="notification_new_title">Nouvel e-mail</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nouveaux messages</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> sur <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Répondre</string>
@@ -394,7 +387,7 @@ de plus</string>
     <string name="account_setup_basics_password_hint">Mot de passe</string>
     <string name="account_setup_basics_manual_setup_action">Configuration manuelle</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Récupération des informations de compte\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Vérification des paramètres de serveur entrant\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Vérification des paramètres de serveur sortant\u2026</string>
@@ -530,9 +523,9 @@ de plus</string>
     <string name="move_copy_cannot_copy_unsynced_message">Impossibilité de copier ou déplacer un message qui n\'est pas synchronisé aver le serveur</string>
 
     <string name="account_setup_failed_dlg_title">La configuration n\'a pu terminer</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'utilisateur ou mot de passe incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Impossible de se connecter de manière sûre au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Impossible de se connecter au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'utilisateur ou mot de passe incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Impossible de se connecter de manière sûre au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_server_message_fmt">Impossible de se connecter au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">Modifier les détails</string>
     <string name="account_setup_failed_dlg_continue_action">Continuer</string>
 
@@ -541,10 +534,10 @@ de plus</string>
     <string name="account_settings_default_label">Compte par défaut</string>
     <string name="account_settings_default_summary">Envoyer les messages de ce compte par défaut</string>
     <string name="account_settings_notify_label">Nouveaux e-mails</string>
-    <string name="account_settings_notify_summary">Afficher une notification dans la barre d\'état à la réception d\'un e-mail</string>
     <string name="account_settings_notify_sync_label">Synchronisation</string>
-    <string name="account_settings_notify_sync_summary">Afficher une notification dans la barre d\'état à la vérification de nouveaux messages</string>
     <string name="account_settings_email_label">Votre adresse e-mail</string>
+    <string name="account_settings_notify_summary">Afficher une notification dans la barre d\'état à la réception d\'un e-mail</string>
+    <string name="account_settings_notify_sync_summary">Afficher une notification dans la barre d\'état à la vérification de nouveaux messages</string>
     <string name="account_settings_notify_self_label">Messages dont je suis l\'expéditeur</string>
     <string name="account_settings_notify_self_summary">Afficher une notification dans la barre d\'état même lors d\'un envoi à partir d\'une identité reliée à un compte</string>
     <string name="account_settings_notification_opens_unread_label">Ouvrir message non lu via notification</string>
@@ -571,8 +564,8 @@ de plus</string>
     <string name="account_settings_strip_signature_summary">Lorsque vous répondez à des messages, la signature du texte cité sera éffacée</string>
 
     <string name="account_settings_message_format_label">Format du message</string>
-    <string name="account_settings_message_format_html">HTML (formattage et images conservés)</string>
     <string name="account_settings_message_format_text">Text brut (formattage et images omis)</string>
+    <string name="account_settings_message_format_html">HTML (formattage et images conservés)</string>
     <string name="account_settings_message_format_auto">Automatique (Text brut à moins de répondre à un message HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Toujours afficher Cc/Cci</string>
@@ -1009,6 +1002,18 @@ de plus</string>
 
     <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Voulez-vous vraiment supprimer ce message?</item>
         <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> messages?</item>

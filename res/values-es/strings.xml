@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -114,7 +114,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Siguiente</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Anterior</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">Aceptar</string> <!-- User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">Aceptar</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
     <string name="send_again_action">Reenviar</string>
@@ -129,7 +129,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Continuar</string>
     <string name="back_action">Atrás</string>
-    <string name="done_action">Terminado</string> <!-- Used to complete a multi-step process -->
+    <string name="done_action">Terminado</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Descartar</string>
     <string name="save_draft_action">Guardar como borrador</string>
     <string name="check_mail_action">Sincronizar</string>
@@ -210,7 +210,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_read">Mark Read</string>-->
     <!-- NEW: <string name="notification_action_delete">Delete</string>-->
     <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
     <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
@@ -316,6 +316,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
 
     <string name="global_settings_messageview_fixedwidth_label">Fuentes de ancho fijo</string>
     <string name="global_settings_messageview_fixedwidth_summary">Utilizar fuentes de ancho fijo al mostrar mensajes en formato texto</string>
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
     <string name="global_settings_messageview_return_to_list_label">Volver a la lista después de borrar</string>
     <string name="global_settings_messageview_return_to_list_summary">Volver a la lista después de borrar un mensaje</string>
     <string name="global_settings_messageview_show_next_label">Mostrar siguiente mensaje después de borrar</string>
@@ -359,7 +361,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="account_setup_basics_password_hint">Contraseña</string>
     <string name="account_setup_basics_manual_setup_action">Configuración manual</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Recuperando información de cuenta\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Comprobando configuración del servidor de entrada\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Comprobando configuración del servidor de salida\u2026</string>
@@ -540,8 +542,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="account_settings_message_format_html">HTML (se mantienen las imágenes y el formato)</string>
     <string name="account_settings_message_format_auto">Automática (texto simple excepto si se responde a un mensaje HTML)</string>
 
-    <!-- <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string> -->
-    <!-- <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string> -->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">Confirmación de lectura</string>
     <string name="account_settings_message_read_receipt_summary">Solicitar siempre confirmación de lectura</string>
@@ -726,6 +728,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="sort_latest_first">Ultimos mensajes primero</string>
     <string name="sort_subject_alpha">Asunto (alfabético)</string>
     <string name="sort_subject_re_alpha">Asunto (alfabético inverso)</string>
+    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
+    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
     <string name="sort_flagged_first">Marcados primero</string>
     <string name="sort_flagged_last">Sin marcar primero</string>
     <string name="sort_unread_first">Sin leer primero</string>
@@ -737,6 +741,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="sort_by_date">Fecha</string>
     <string name="sort_by_arrival">Llegada</string>
     <string name="sort_by_subject">Asunto</string>
+    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
     <string name="sort_by_flag">Estrellas</string>
     <string name="sort_by_unread">Leído/No leído</string>
     <string name="sort_by_attach">Adjuntos</string>
@@ -831,7 +836,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="background_ops_always">Siempre</string>
     <string name="background_ops_enabled">Cuando \'Sincronización en segundo plano\' esté activo</string>
     <string name="background_ops_auto_sync">Cuando \'Sincronización en segundo plano\' y \'Sincronización automática\' esten activos</string>
-    <!-- <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string> -->
+    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
 
     <string name="batch_select_all">Seleccionar todos</string>
 
@@ -969,10 +974,24 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
 
     <string name="dialog_confirm_delete_title">Confirmar borrado</string>
     <string name="dialog_confirm_delete_message">¿Quiere borrar este mensaje?</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
+    <!-- NEW:
+    <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-    </plurals>-->
+    </plurals>
+    -->
     <string name="dialog_confirm_delete_confirm_button">Borrar</string>
     <string name="dialog_confirm_delete_cancel_button">No borrar</string>
 
@@ -1120,7 +1139,9 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
     <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 </resources>

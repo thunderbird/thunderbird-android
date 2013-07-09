@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -19,6 +19,7 @@
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Porcions de Copyright 2006-<xliff:g>%s</xliff:g> Projecte de codi obert d\'Android.</string>
     <string name="app_license">Llicenciat sota Llicència Apache, Versió 2.0.</string>
+
 
     <!-- Welcome message -->
     <string name="welcome_message_title">Us donem la benvinguda a K-9 Mail</string>
@@ -111,9 +112,9 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionats</string>
     <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Següent</string>
-    <string name="previous_action">Anterior</string>
-    <string name="okay_action">D\'acord</string>
+    <string name="next_action">Següent</string> <!-- Used as part of a multi-step process -->
+    <string name="previous_action">Anterior</string> <!-- Used as part of a multi-step process -->
+    <string name="okay_action">D\'acord</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Cancel·la</string>
     <string name="send_action">Envia</string>
     <string name="send_again_action">Torna a enviar</string>
@@ -128,7 +129,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="refile_action">Rearxiva</string>
     <string name="continue_action">Continua</string>
     <string name="back_action">Enrere</string>
-    <string name="done_action">Fet</string>
+    <string name="done_action">Fet</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Descarta</string>
     <string name="save_draft_action">Desa com a esborrany</string>
     <string name="check_mail_action">Comprova el correu</string>
@@ -146,7 +147,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="remove_account_action">Esborra el compte</string>
     <string name="clear_pending_action">Suprimeix totes les accions pendents (Compte!)</string>
 
-    <string name="mark_all_as_read">Marca\'ls tots com a llegits</string>
     <string name="mark_as_read_action">Marca com a llegit</string>
     <string name="send_alternate_action">Comparteix</string>
     <string name="send_alternate_chooser_title">Selecciona remitent</string>
@@ -177,7 +177,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="prefs_title">Configuració</string>
     <string name="accounts_context_menu_title">Opcions del compte</string>
 
-    <string name="general_no_subject">(Sense assumpte)</string>
+    <string name="general_no_subject">(Sense assumpte)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_sender">Sense remitent</string>
     <string name="status_loading">Comprovant</string>
     <string name="status_loading_more">S\'estan carregant els missatges\u2026</string>
@@ -207,7 +207,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="notification_new_title">Nou correu</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> missatges nous</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> no llegit(s) (<xliff:g id="account">%s</xliff:g>)</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> no llegit(s) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <string name="notification_additional_messages">i <xliff:g id="additional_messages">%d</xliff:g> més a <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Respon</string>
@@ -282,13 +282,13 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="message_view_show_pictures_action">Mostra fotos</string>
     <string name="message_view_show_message_action">Mostra el missatge</string>
     <string name="message_view_show_attachments_action">Mostra els adjunts</string>
-    <string name="message_view_show_more_attachments_action">Més&#8230;</string>
+    <string name="message_view_show_more_attachments_action">Més…</string>
     <string name="message_view_fetching_attachment_toast">Recollint l\'adjunt.</string>
     <string name="message_view_no_viewer">No ha estat capaç de trobar un visualitzador per <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Descarrega el missatge complet</string>
     <string name="message_view_downloading">S\'està descarregant</string>
 
-    <!-- NOTE: The following message refers to strings with id \'account_setup_incoming_save_all_headers_label\' and \'account_setup_incoming_title\' -->
+    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">No s\'han descarregat o desat totes les capçaleres. Seleccioneu \"Desa totes les capçaleres localment\" a la configuració del servidor d\'entrada del compte per habilitar-lo en el futur.</string>
     <string name="message_no_additional_headers_available">S\'han descarregat totes les capçaleres, no hi ha capçaleres addicionals per mostrar.</string>
     <string name="message_additional_headers_retrieval_failed">La recuperació de capçaleres addicionals de la base de dades o del servidor de correu ha fallat.</string>
@@ -298,8 +298,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="message_discarded_toast">S\'ha descartat el missatge</string>
     <string name="message_saved_toast">S\'ha desat el missatge com a esborrany</string>
 
-    <string name="global_settings_messageview_autofit_width_label">Ajusta l\'amplada dels missatges automàticament</string>
-    <string name="global_settings_messageview_autofit_width_summary">Retalla els missatges per adaptar la seva amplada a la pantalla.</string>
     <string name="global_settings_checkbox_label">Selecció múltiple</string>
     <string name="global_settings_checkbox_summary">Ensenya sempre la selecció múltiple</string>
     <string name="global_settings_preview_lines_label">Previsualització de línies</string>
@@ -319,6 +317,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="global_settings_messageview_fixedwidth_label">Amplada fixa tipus lletra</string>
     <string name="global_settings_messageview_fixedwidth_summary">Utilitza una amplada fixa de lletra quan es mostri missatges de text net</string>
+    <string name="global_settings_messageview_autofit_width_label">Ajusta l\'amplada dels missatges automàticament</string>
+    <string name="global_settings_messageview_autofit_width_summary">Retalla els missatges per adaptar la seva amplada a la pantalla.</string>
     <string name="global_settings_messageview_return_to_list_label">Torna a la llista després esborrar</string>
     <string name="global_settings_messageview_return_to_list_summary">Torna a la llista de missatges després esborrar missatges</string>
     <string name="global_settings_messageview_show_next_label">Mostra el proper missatge després d\'eliminar</string>
@@ -362,7 +362,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="account_setup_basics_password_hint">Contrasenya</string>
     <string name="account_setup_basics_manual_setup_action">Configuració manual</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Recuperant la informació del compte\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">S\'està comprovant la configuració del servidor d\'entrada\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">S\'està comprovant la configuració del servidor de sortida\u2026</string>
@@ -498,9 +498,9 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="move_copy_cannot_copy_unsynced_message">No es pot copiar o moure un missatge que no està sincronitzat amb el servidor</string>
 
     <string name="account_setup_failed_dlg_title">No s\'ha pogut acabar la configuració</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'usuari o contrasenya incorrectes.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">No es pot connectar al servidor de forma segura.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">No es pot connectar al servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'usuari o contrasenya incorrectes.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">No es pot connectar al servidor de forma segura.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_server_message_fmt">No es pot connectar al servidor.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">Edita els detalls</string>
     <string name="account_setup_failed_dlg_continue_action">Continua</string>
 
@@ -729,6 +729,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="sort_latest_first">Darrers missatges primer</string>
     <string name="sort_subject_alpha">Assumpte alfabètic</string>
     <string name="sort_subject_re_alpha">Assumpte en ordre alfabètic invers</string>
+    <string name="sort_sender_alpha">Remitent A-Z</string>
+    <string name="sort_sender_re_alpha">Remitent Z-A</string>
     <string name="sort_flagged_first">Missatges senyalats primer</string>
     <string name="sort_flagged_last">Missatges no senyalats primer</string>
     <string name="sort_unread_first">Missatges no llegits primer</string>
@@ -740,12 +742,10 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="sort_by_date">Data</string>
     <string name="sort_by_arrival">Arrivada</string>
     <string name="sort_by_subject">Assumpte</string>
+    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
     <string name="sort_by_flag">Estel</string>
     <string name="sort_by_unread">Llegit/no llegit</string>
     <string name="sort_by_attach">Adjunts</string>
-
-    <string name="sort_sender_alpha">Remitent A-Z</string>
-    <string name="sort_sender_re_alpha">Remitent Z-A</string>
 
     <string name="account_delete_dlg_title">Esborra el compte</string>
 
@@ -978,6 +978,18 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="dialog_confirm_delete_title">Confirma esborrar</string>
     <string name="dialog_confirm_delete_message">Voleu esborrar aquest missatge?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Voleu eliminar aquest missatge?</item>
         <item quantity="other">Voleu eliminar <xliff:g id="message_count">%1$d</xliff:g> missatges?</item>
@@ -1132,4 +1144,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="last_refresh_time_format">Última actualització: <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">Última actualització <xliff:g id="time_with_preposition">%s</xliff:g> (Push actiu)</string>
     <string name="preposition_for_date">el <xliff:g id="date">%s</xliff:g></string>
+
+    <string name="mark_all_as_read">Marca\'ls tots com a llegits</string>
 </resources>

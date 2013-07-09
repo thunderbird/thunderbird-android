@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -55,7 +55,7 @@
 
 
     <!-- Default signature -->
-    <!-- NEW: --><string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
+    <string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
 
 
     <!-- General strings that include the app name -->
@@ -68,7 +68,7 @@
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
+    <!-- NEW: <string name="import_dialog_error_message">Please install a file manager to continue with this import.</string>-->
     <!-- NEW: <string name="open_market">Open Play Store</string>-->
 
 
@@ -112,9 +112,9 @@
 
     <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
     <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">הבא</string>
-    <string name="previous_action">הקודם</string>
-    <string name="okay_action">אישור</string>
+    <string name="next_action">הבא</string> <!-- Used as part of a multi-step process -->
+    <string name="previous_action">הקודם</string> <!-- Used as part of a multi-step process -->
+    <string name="okay_action">אישור</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">ביטול</string>
     <string name="send_action">שלח</string>
     <string name="send_again_action">שלח שוב</string>
@@ -125,11 +125,11 @@
     <string name="spam_action">דואר זבל</string>
     <string name="forward_action">קדימה</string>
     <string name="move_action">העבר</string>
-    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send</string>-->
     <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">המשך</string>
     <!-- NEW: <string name="back_action">Back</string>-->
-    <string name="done_action">סיום</string>
+    <string name="done_action">סיום</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">השלך</string>
     <string name="save_draft_action">שמור כטיוטה</string>
     <string name="check_mail_action">בדוק דואר</string>
@@ -177,7 +177,7 @@
     <string name="prefs_title">הגדרות</string>
     <string name="accounts_context_menu_title">אפשרויות חשבון</string>
 
-    <string name="general_no_subject">(ללא כותרת)</string>
+    <string name="general_no_subject">(ללא כותרת)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_sender">ללא שולח</string>
     <!-- NEW: <string name="status_loading">Polling</string>-->
     <string name="status_loading_more">טוען הודעות</string>
@@ -207,11 +207,11 @@
 
     <string name="notification_new_title">מייל חדש</string>
     <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> לא נקראו (<xliff:g id="account">%s</xliff:g>)</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> לא נקראו (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_read">Mark Read</string>-->
     <!-- NEW: <string name="notification_action_delete">Delete</string>-->
     <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
     <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
@@ -282,7 +282,7 @@
     <string name="message_view_show_pictures_action">הצג תמונות</string>
     <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
     <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
+    <!-- NEW: <string name="message_view_show_more_attachments_action">More…</string>-->
     <string name="message_view_fetching_attachment_toast">מוריד קובץ מצורף.</string>
     <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
@@ -317,6 +317,8 @@
 
     <string name="global_settings_messageview_fixedwidth_label">גופנים ברוחב קבוע</string>
     <string name="global_settings_messageview_fixedwidth_summary">השתמש בגופן ברוחב קבוע בעת הצגת הודעות טקסט רגילות</string>
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
     <string name="global_settings_messageview_return_to_list_label">חזור לרשימה לאחר המחיקה</string>
     <string name="global_settings_messageview_return_to_list_summary">חזור אל רשימת ההודעות לאחר מחיקת הודעה</string>
     <string name="global_settings_messageview_show_next_label">הצג את ההודעה הבאה אחרי מחיקה</string>
@@ -325,13 +327,13 @@
     <string name="global_settings_confirm_actions_title">אישור פעולות</string>
     <string name="global_settings_confirm_actions_summary">הצג דו שיח בכל פעם שאתה מבצע את פעולות הנבחרות</string>
     <string name="global_settings_confirm_action_delete">מחק (צפה בהודעה בלבד)</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
+    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>-->
     <string name="global_settings_confirm_action_spam">דואר זבל</string>
     <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
@@ -360,7 +362,7 @@
     <string name="account_setup_basics_password_hint">סיסמא</string>
     <string name="account_setup_basics_manual_setup_action">הוראות הגדרה</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">מאחזר מידע חשבון …</string>
     <string name="account_setup_check_settings_check_incoming_msg">בדיקת הגדרות שרת הדואר הנכנס …</string>
     <string name="account_setup_check_settings_check_outgoing_msg">בדיקת הגדרות שרת הדואר היוצא …</string>
@@ -496,9 +498,9 @@
     <string name="move_copy_cannot_copy_unsynced_message">לא ניתן להעתיק או להעביר הודעה שלא מסונכרנת עם השרת</string>
 
     <string name="account_setup_failed_dlg_title">ההגדרה לא הסתיימה</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">שם משתמש או סיסמה שגויה.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">לא ניתן להתחבר לשרת באופן בטוח.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">לא יכול להתחבר לשרת.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">שם משתמש או סיסמה שגויה.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">לא ניתן להתחבר לשרת באופן בטוח.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_server_message_fmt">לא יכול להתחבר לשרת.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">ערוך פרטים</string>
     <string name="account_setup_failed_dlg_continue_action">המשך</string>
 
@@ -517,7 +519,7 @@
     <string name="account_settings_notification_opens_unread_summary">חיפוש אחר הודעות שלא נקראו כאשר ההתראה נפתחת</string>
     <string name="account_settings_notification_unread_count_label">הצג מספר שלא נקראו</string>
     <string name="account_settings_notification_unread_count_summary">הצג את מספר ההודעות שלא נקראו בשורת ההתראות.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>-->
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
     <string name="account_settings_show_pictures_label">תמיד הצג תמונות</string>
@@ -533,16 +535,16 @@
     <string name="account_settings_reply_after_quote_label">השב לאחר הטקסט המצוטט</string>
     <string name="account_settings_reply_after_quote_summary">במענה להודעות, ההודעה המקורית תופיע מעל התגובה שלך.</string>
 
-    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>-->
-    <!-- NEW: <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>-->
+    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signatures on reply</string>-->
+    <!-- NEW: <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>-->
 
     <string name="account_settings_message_format_label">עיצוב הודעה</string>
     <string name="account_settings_message_format_text">טקסט רגיל (תמונות ועיצובים יוסרו)</string>
     <string name="account_settings_message_format_html">HTML (תמונות ועיצוב נשמרים)</string>
-    <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+    <!-- NEW: <string name="account_settings_message_format_auto">Automatic</string>-->
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">אישור קריאה</string>
     <string name="account_settings_message_read_receipt_summary">תמיד בקש אישור קריאה</string>
@@ -727,6 +729,8 @@
     <string name="sort_latest_first">הודעות אחרונות ראשונות</string>
     <string name="sort_subject_alpha">נושא אלפביתי</string>
     <string name="sort_subject_re_alpha">נושא אלפביתי הפוך</string>
+    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
+    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
     <string name="sort_flagged_first">הודעות שמסומנות בכוכב ראשונות</string>
     <string name="sort_flagged_last">הודעות שלא מסומנות בכוכב ראשונות</string>
     <string name="sort_unread_first">הודעות שלא נקראו ראשונות</string>
@@ -738,6 +742,7 @@
     <string name="sort_by_date">תאריך</string>
     <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
     <string name="sort_by_subject">נושא</string>
+    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
     <string name="sort_by_flag">כוכב</string>
     <string name="sort_by_unread">נקרא/לא נקרא</string>
     <string name="sort_by_attach">קבצים מצורפים</string>
@@ -750,7 +755,7 @@
 
     <string name="provider_note_live">רק כמה חשבונות \ "פלוס \" כוללים גישת POP המאפשרת לתוכנית זו להתחבר. אם אינך יכול להיכנס עם כתובת הדוא"ל והסיסמה הנכונות שלך, ייתכן שאין לך חשבון \ "פלוס \" בתשלום. נא להפעיל את דפדפן האינטרנט כדי לקבל גישה אל חשבונות דואר האלו.</string>
     <string name="provider_note_yahoojp">אם אתה רוצה להשתמש ב POP3 עבור ספק זה, אתה צריך לאפשר להשתמש ב POP3 בדף הגדרות דואר Yahoo.</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
     <string name="provider_note_naver">אם אתה רוצה להשתמש ב ב-IMAP או POP3 עבור ספק זה, אתה צריך לאפשר להשתמש ב ב-IMAP או POP3 בדף הגדרות הדואר Naver.</string>
     <string name="provider_note_hanmail">אם אתה רוצה להשתמש ב ב-IMAP או POP3 עבור ספק זה, אתה צריך לאפשר להשתמש ב ב-IMAP או POP3 בדף Hanmail (Daum) הגדרות דואר.</string>
     <string name="provider_note_paran">אם אתה רוצה להשתמש ב ב-IMAP או POP3 עבור ספק זה, אתה צריך לאפשר להשתמש ב ב-IMAP או POP3 בדף הגדרות הדואר Paran.</string>
@@ -789,9 +794,9 @@
 
     <string name="folder_list_display_mode_label">תיקיות</string>
     <string name="folder_list_display_mode_all">הצג את כל התיקיות</string>
-    <!-- NEW: <string name="folder_list_display_mode_first_class">Display only 1st Class folders</string>-->
-    <!-- NEW: <string name="folder_list_display_mode_first_and_second_class">Display 1st and 2nd Class folders</string>-->
-    <!-- NEW: <string name="folder_list_display_mode_not_second_class">Display all except 2nd Class folders</string>-->
+    <!-- NEW: <string name="folder_list_display_mode_first_class">1st Class folders</string>-->
+    <!-- NEW: <string name="folder_list_display_mode_first_and_second_class">1st &amp; 2nd Class folders</string>-->
+    <!-- NEW: <string name="folder_list_display_mode_not_second_class">Hide 2nd Class folders</string>-->
 
     <string name="account_settings_signature__location_label">מיקום חתימה</string>
     <string name="account_settings_signature__location_before_quoted_text">לפני טקסט מצוטט</string>
@@ -966,10 +971,24 @@
 
     <string name="dialog_confirm_delete_title">אשר מחיקה</string>
     <string name="dialog_confirm_delete_message">אתה בטוח שאתה רוצה למחוק את ההודעה הזאת?</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
+    <!-- NEW:
+    <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-    </plurals>-->
+    </plurals>
+    -->
     <string name="dialog_confirm_delete_confirm_button">מחק</string>
     <string name="dialog_confirm_delete_cancel_button">אל תמחק!</string>
 
@@ -1044,7 +1063,7 @@
 
     <!-- NEW: <string name="webview_empty_message">No text</string>-->
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open link</string>-->
     <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
     <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
     <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
@@ -1058,12 +1077,12 @@
 
     <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
     <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy number to clipboard</string>-->
     <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
 
     <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
     <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy address to clipboard</string>-->
     <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
 
     <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
@@ -1077,9 +1096,9 @@
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include messages text in server search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
     <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
     <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
@@ -1092,13 +1111,13 @@
     <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>-->
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>-->
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Group messages by conversation</string>-->
 
     <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
     <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
@@ -1116,7 +1135,9 @@
     <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
     <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 </resources>

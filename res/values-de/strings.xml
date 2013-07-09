@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -282,7 +282,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="message_view_show_pictures_action">Bilder anzeigen</string>
     <string name="message_view_show_message_action">Nachricht anzeigen</string>
     <string name="message_view_show_attachments_action">Anhänge anzeigen</string>
-    <string name="message_view_show_more_attachments_action">Mehr&#8230;</string>
+    <string name="message_view_show_more_attachments_action">Mehr…</string>
     <string name="message_view_fetching_attachment_toast">Anhang wird geladen</string>
     <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
     <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
@@ -317,6 +317,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="global_settings_messageview_fixedwidth_label">Monotype-Schriftart</string>
     <string name="global_settings_messageview_fixedwidth_summary">Schriftart mit gleicher Zeichenbreite für Nur-Text-Nachrichten verwenden</string>
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
     <string name="global_settings_messageview_return_to_list_label">Nach Löschen zurück</string>
     <string name="global_settings_messageview_return_to_list_summary">Nach Löschen zur Nachrichtenliste zurückkehren</string>
     <string name="global_settings_messageview_show_next_label">Nach Löschen nächste Nachricht</string>
@@ -360,7 +362,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_setup_basics_password_hint">Passwort</string>
     <string name="account_setup_basics_manual_setup_action">Manuelle Einrichtung</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Konto-Informationen werden abgerufen\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Einstellungen des Empfangsservers werden überprüft\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Einstellungen des Ausgangsservers werden überprüft\u2026</string>
@@ -975,6 +977,18 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="dialog_confirm_delete_title">Löschen bestätigen</string>
     <string name="dialog_confirm_delete_message">Möchten Sie diese Nachricht löschen?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Möchten Sie diese Nachricht wirklich löschen?</item>
         <item quantity="other">Möchten Sie wirklich <xliff:g id="message_count">%1$d</xliff:g> Nachrichten löschen?</item>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -112,9 +112,9 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g>件選択しました</string>
     <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">次へ</string>
+    <string name="next_action">次へ</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">前へ</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string>
+    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">キャンセル</string>
     <string name="send_action">送信</string>
     <string name="send_again_action">再編集</string>
@@ -129,7 +129,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="refile_action">整理</string>
     <string name="continue_action">継続</string>
     <string name="back_action">戻る</string>
-    <string name="done_action">完了</string>
+    <string name="done_action">完了</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">破棄</string>
     <string name="save_draft_action">下書きへ保存</string>
     <string name="check_mail_action">メール受信</string>
@@ -177,7 +177,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="prefs_title">グローバル設定</string>
     <string name="accounts_context_menu_title">アカウントオプション</string>
 
-    <string name="general_no_subject">(件名なし)</string>
+    <string name="general_no_subject">(件名なし)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_sender">送信者なし</string>
     <string name="status_loading">取込中</string>
     <string name="status_loading_more">メール取込中\u2026</string>
@@ -281,7 +281,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="message_view_show_pictures_action">画像表示</string>
     <string name="message_view_show_message_action">メッセージ表示</string>
     <string name="message_view_show_attachments_action">添付ファイル表示</string>
-    <string name="message_view_show_more_attachments_action">他&#8230;</string>
+    <string name="message_view_show_more_attachments_action">他…</string>
     <string name="message_view_fetching_attachment_toast">添付ファイル取得中</string>
     <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>のビューワーが見つかりません</string>
     <string name="message_view_download_remainder">すべてダウンロード</string>
@@ -361,7 +361,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="account_setup_basics_password_hint">パスワード</string>
     <string name="account_setup_basics_manual_setup_action">手動設定</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">アカウント情報を取得中\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">受信メールサーバを確認中\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">送信メールサーバを確認中\u2026</string>
@@ -543,7 +543,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="account_settings_message_format_auto">自動</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Cc/Bccを常に表示</string>
-    <string name="account_settings_always_show_cc_bcc_summary"></string>
+    <string name="account_settings_always_show_cc_bcc_summary"/>
 
     <string name="account_settings_message_read_receipt_label">開封確認</string>
     <string name="account_settings_message_read_receipt_summary">常に開封確認を要求する</string>
@@ -852,12 +852,12 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="gestures_summary">ジェスチャー制御を有効にする</string>
 
     <string name="volume_navigation_title">ボリュームキー操作</string>
-    <string name="volume_navigation_summary"></string>
+    <string name="volume_navigation_summary"/>
     <string name="volume_navigation_message">メッセージ表示</string>
     <string name="volume_navigation_list">一覧表示</string>
 
     <string name="start_integrated_inbox_title">統合フォルダで始める</string>
-    <string name="start_integrated_inbox_summary"></string>
+    <string name="start_integrated_inbox_summary"/>
 
     <string name="measure_accounts_title">アカウントのサイズ表示</string>
     <string name="measure_accounts_summary">表示を速くしたい場合はチェックしない</string>
@@ -971,6 +971,18 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="dialog_confirm_delete_title">削除の確認</string>
     <string name="dialog_confirm_delete_message">このメッセージを削除しますか？</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">本当にこのメッセージを削除しますか？</item>
         <item quantity="other">本当に<xliff:g id="message_count">%1$d</xliff:g>件のメッセージを削除しますか？</item>

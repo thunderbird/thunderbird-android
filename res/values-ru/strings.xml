@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Translation of RU version (06.07.2013): Igor Nedoboy (k9russian<AT>gmail<DOT>com) -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
@@ -314,7 +314,6 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_messageview_fixedwidth_summary">Показать сообщения в формате \"Только текст\" моноширинным шрифтом</string>
     <string name="global_settings_messageview_autofit_width_label">Вписать по ширине</string>
     <string name="global_settings_messageview_autofit_width_summary">Подогнать текст сообщения по ширине экрана</string>
-
     <string name="global_settings_messageview_return_to_list_label">В список после удаления</string>
     <string name="global_settings_messageview_return_to_list_summary">Перейти в список сообщений после удаления сообщения</string>
     <string name="global_settings_messageview_show_next_label">В следующее после удаления</string>
@@ -358,7 +357,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_setup_basics_password_hint">пароль</string>
     <string name="account_setup_basics_manual_setup_action">Вручную</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Получение сведений\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Проверка сервера входящей почты\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Проверка сервера исходящей почты\u2026</string>
@@ -540,6 +539,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_settings_message_format_auto">Автоматически</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Включать Копия/Скрытая</string>
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">Уведомление о прочтении</string>
     <string name="account_settings_message_read_receipt_summary">Всегда запрашивать уведомление о прочтении</string>
@@ -852,10 +852,12 @@ K-9 Mail — почтовый клиент для Android.
     <string name="gestures_summary">Управление жестами</string>
 
     <string name="volume_navigation_title">Прокрутка кнопками Vol+/-</string>
+    <!-- NEW: <string name="volume_navigation_summary"/>-->
     <string name="volume_navigation_message">В сообщении</string>
     <string name="volume_navigation_list">В списке</string>
 
     <string name="start_integrated_inbox_title">Во \"Входящие\" при запуске</string>
+    <!-- NEW: <string name="start_integrated_inbox_summary"/>-->
 
     <string name="measure_accounts_title">Размер ящика</string>
     <string name="measure_accounts_summary">Отключите для ускорения работы</string>
@@ -969,6 +971,18 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="dialog_confirm_delete_title">Удаление</string>
     <string name="dialog_confirm_delete_message">Сообщение будет удалено. Продолжить?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Сообщение будет удалено. Продолжить?</item>
         <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>
@@ -1125,5 +1139,6 @@ K-9 Mail — почтовый клиент для Android.
     <string name="last_refresh_time_format">обновлено <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">обновлено <xliff:g id="time_with_preposition">%s</xliff:g>, push вкл.</string>
     <string name="preposition_for_date">в <xliff:g id="date">%s</xliff:g></string>
+
     <string name="mark_all_as_read">Прочитаны все</string>
 </resources>
