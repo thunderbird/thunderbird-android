@@ -569,7 +569,6 @@ de plus</string>
     <string name="account_settings_message_format_auto">Automatique (Text brut à moins de répondre à un message HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Toujours afficher Cc/Cci</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Toujours afficher les champs Copie et Copie cachée</string>
 
     <string name="account_settings_message_read_receipt_label">Accusé de réception</string>
     <string name="account_settings_message_read_receipt_summary">Toujours demander un accusé de réception</string>
@@ -883,12 +882,10 @@ de plus</string>
     <string name="gestures_summary">Accepter le contrôle par gestuelle</string>
 
     <string name="volume_navigation_title">Navigation à l\'aide du volume</string>
-    <string name="volume_navigation_summary">Passer d\'un élément à l\'autre grâce aux touches de volume</string>
     <string name="volume_navigation_message">Visualisation d\'un message</string>
     <string name="volume_navigation_list">Différents écrans à liste</string>
 
     <string name="start_integrated_inbox_title">Boîte de messagerie unifiée au démarrage</string>
-    <string name="start_integrated_inbox_summary">Afficher la boîte de messagerie unifiée au démarrage</string>
 
     <string name="measure_accounts_title">Afficher la taille du compte</string>
     <string name="measure_accounts_summary">Désactiver pour un affichage plus rapide</string>

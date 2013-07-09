@@ -544,7 +544,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_settings_message_format_auto">Automatisk (ren tekst med mindre mail som besvares er i HTML format)</string>
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">Kvittering for modtagelse</string>
     <string name="account_settings_message_read_receipt_summary">Anmod altid om kvittering for modtagelse</string>
@@ -857,12 +856,10 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="gestures_summary">Benyt gesture kontrol</string>
 
     <string name="volume_navigation_title">Volume-knap navigation</string>
-    <string name="volume_navigation_summary">Skift mellem valg vha. volume-knapper</string>
     <string name="volume_navigation_message">Mail-visning</string>
     <string name="volume_navigation_list">Diverse listevisninger</string>
 
     <string name="start_integrated_inbox_title">Start i fælles indbakke</string>
-    <string name="start_integrated_inbox_summary">Vis indhold af fælles indbakke ved opstart</string>
 
     <string name="measure_accounts_title">Vis størrelse på konto</string>
     <string name="measure_accounts_summary">Deaktiver for hurtigere visning</string>

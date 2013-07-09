@@ -545,7 +545,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_settings_message_format_auto">Automaattinen (pelkkä teksti, ellei vastata HTML-viestiin)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Näytä aina Kopio/Piilokopio</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Näytä aina Kopio/Piilokopio-tekstinsyöttökentät</string>
 
     <string name="account_settings_message_read_receipt_label">Vastaanottokuittaus</string>
     <string name="account_settings_message_read_receipt_summary">Pyydä aina vastaanottokuittaus</string>
@@ -859,12 +858,10 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="gestures_summary">Hyväksy eleohjaus</string>
 
     <string name="volume_navigation_title">Navigointi äänenvoimakkuusnäppäimillä</string>
-    <string name="volume_navigation_summary">Selaa käyttämällä äänenvoimakkuusnäppäimiä</string>
     <string name="volume_navigation_message">Viestinäkymä</string>
     <string name="volume_navigation_list">Erilaisia listanäkymiä</string>
 
     <string name="start_integrated_inbox_title">Aloita yhdistetystä Saapuneet-kansiosta</string>
-    <string name="start_integrated_inbox_summary">Näytä Yhdistetty Saapuneet-kansio ohjelman käynnistyksen jälkeen</string>
 
     <string name="measure_accounts_title">Näytä tilin koko</string>
     <string name="measure_accounts_summary">Poista käytöstä suorituskyvyn parantamiseksi</string>

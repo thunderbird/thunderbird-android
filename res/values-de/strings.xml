@@ -544,7 +544,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_settings_message_format_auto">Automatisch</string>
 
     <string name="account_settings_always_show_cc_bcc_label">CC/BCC immer anzeigen</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Texteingabefelder für CC und BCC immer anzeigen</string>
 
     <string name="account_settings_message_read_receipt_label">Empfangsbestätigung</string>
     <string name="account_settings_message_read_receipt_summary">Immer eine Empfangsbestätigung anfordern</string>
@@ -858,12 +857,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="gestures_summary">Gesten für vorherige/nächste Nachricht aktivieren</string>
 
     <string name="volume_navigation_title">Lauter/Leiser-Navigation</string>
-    <string name="volume_navigation_summary">Mittels Lauter/Leiser-Tasten durch Listen navigieren</string>
     <string name="volume_navigation_message">Nachrichtenansicht</string>
     <string name="volume_navigation_list">Diverse Listenansichten</string>
 
     <string name="start_integrated_inbox_title">Gemeins. Posteingang bei Start</string>
-    <string name="start_integrated_inbox_summary">Beim Programmstart gemeinsamen Posteingang anzeigen</string>
 
     <string name="measure_accounts_title">Konto-Größe anzeigen</string>
     <string name="measure_accounts_summary">Für schnellere Anzeige deaktivieren</string>

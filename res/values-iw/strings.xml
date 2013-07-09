@@ -544,7 +544,6 @@
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic</string>-->
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">אישור קריאה</string>
     <string name="account_settings_message_read_receipt_summary">תמיד בקש אישור קריאה</string>
@@ -852,12 +851,10 @@
     <string name="gestures_summary">קבל כפתור מחווה</string>
 
     <string name="volume_navigation_title">נייוט באמצעות מקשי הווליום</string>
-    <string name="volume_navigation_summary">לדפדף בין הפריטים באמצעות מקשי הווליום</string>
     <string name="volume_navigation_message">הצגת הודעה</string>
     <string name="volume_navigation_list">רשימת תצוגות שונות</string>
 
     <string name="start_integrated_inbox_title">התחל בתיבת דואר נכנס אחידה</string>
-    <string name="start_integrated_inbox_summary">הצג את תיבת הדואר הנכנס האחידה בהפעלה</string>
 
     <string name="measure_accounts_title">הראה גודל חשבון</string>
     <string name="measure_accounts_summary">כבה בשביל תצוגה מהירה יותר</string>

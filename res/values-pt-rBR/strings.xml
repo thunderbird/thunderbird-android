@@ -540,7 +540,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_message_format_auto">Automático (texto plano exceto ao responder uma mensagem em HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Sempre exibir CC/CCO</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Sempre exibir os campos CC/CCO</string>
 
     <string name="account_settings_message_read_receipt_label">Confirmação de leitura</string>
     <string name="account_settings_message_read_receipt_summary">Sempre solicitar confirmação de leitura</string>
@@ -853,12 +852,10 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="gestures_summary">Aceitar controle de gestos</string>
 
     <string name="volume_navigation_title">Tecla de volume para navegação</string>
-    <string name="volume_navigation_summary">Percorrer itens usando controle de volume</string>
     <string name="volume_navigation_message">Visualizar mensagem</string>
     <string name="volume_navigation_list">Vários modos de exibição da lista</string>
 
     <string name="start_integrated_inbox_title">Iniciar na Caixa de Entrada Unificada</string>
-    <string name="start_integrated_inbox_summary">Mostra Caixas Unificadas ao abrir o K-9 Mail</string>
 
     <string name="measure_accounts_title">Mostrar tamanho da conta</string>
     <string name="measure_accounts_summary">Desligar visualização rápida</string>

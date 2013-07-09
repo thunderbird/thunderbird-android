@@ -543,7 +543,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="account_settings_message_format_auto">Automática (texto simple excepto si se responde a un mensaje HTML)</string>
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">Confirmación de lectura</string>
     <string name="account_settings_message_read_receipt_summary">Solicitar siempre confirmación de lectura</string>
@@ -855,12 +854,10 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="gestures_summary">Aceptar controles gestuales</string>
 
     <string name="volume_navigation_title">Navegación con teclas de volumen</string>
-    <string name="volume_navigation_summary">Permite moverse por las opciones utilizando los botones de volumen</string>
     <string name="volume_navigation_message">Vista de mensaje</string>
     <string name="volume_navigation_list">Listas de mensajes</string>
 
     <string name="start_integrated_inbox_title">Usar Bandeja inificada</string>
-    <string name="start_integrated_inbox_summary">Mostrar una Bandeja de entrada unificada al inicio</string>
 
     <string name="measure_accounts_title">Tamaño cuenta</string>
     <string name="measure_accounts_summary">Desactivar para mejorar rendimiento</string>

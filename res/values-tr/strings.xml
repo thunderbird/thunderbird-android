@@ -544,7 +544,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_settings_message_format_auto">Otomatik (HTML mesajına yanıt verilmiyorsa düz metin)</string>
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">Okundu raporu</string>
     <string name="account_settings_message_read_receipt_summary">Daima bir okuma raporu iste</string>
@@ -857,12 +856,10 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="gestures_summary">Hareket kontrolünü kabul et</string>
 
     <string name="volume_navigation_title">Ses Düğmesi ile dolaşma</string>
-    <string name="volume_navigation_summary">Ses kontrollerini kullanarak ürün sayfalarını çevir</string>
     <string name="volume_navigation_message">Mesaj görünümü</string>
     <string name="volume_navigation_list">Çeşitli liste görünümleri</string>
 
     <string name="start_integrated_inbox_title">Birleşik Gelen Kutusu ile başla</string>
-    <string name="start_integrated_inbox_summary">Başlangıçta Birleşik Gelen Kutusunu göster</string>
 
     <string name="measure_accounts_title">Hesap boyutunu göster</string>
     <string name="measure_accounts_summary">Daha hızlı görüntüleme için kapatın</string>

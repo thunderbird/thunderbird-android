@@ -551,7 +551,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_settings_message_format_auto">Automatycznie (czysty tekst, chyba że odpoiwadasz na wiadomość HTML)</string>
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">Potwierdzenie przeczytania</string>
     <string name="account_settings_message_read_receipt_summary">Zawsze wymagaj potwierdzenia o przeczytaniu</string>
@@ -865,12 +864,10 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="gestures_summary">Pozwól na sterowanie gestami</string>
 
     <string name="volume_navigation_title">Nawigacja przyciskiem głośności</string>
-    <string name="volume_navigation_summary">Przeskakuj między rzeczami używając przycisków głośności</string>
     <string name="volume_navigation_message">Wygląd wiadomości</string>
     <string name="volume_navigation_list">Różne widoki list</string>
 
     <string name="start_integrated_inbox_title">Pokaż zintegrowaną</string>
-    <string name="start_integrated_inbox_summary">Wyświetl \"Zintegrowana odbiorcza\" po uruchomieniu programu</string>
 
     <string name="measure_accounts_title">Pokazuj rozmiary kont</string>
     <string name="measure_accounts_summary">Wyłącz, aby przyspieszyć wyświetlanie</string>

@@ -544,7 +544,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="account_settings_message_format_auto">Automàtic (text net excepte per missatges HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Mostra sempre C/a i C/a ocults</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Mostra sempre els camps C/a i C/a ocult</string>
 
     <string name="account_settings_message_read_receipt_label">Confirmació de lectura</string>
     <string name="account_settings_message_read_receipt_summary">Sempre es realitzen peticions de confirmació de lectura.</string>
@@ -859,12 +858,10 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="gestures_summary">Accepta el control de gestos</string>
 
     <string name="volume_navigation_title">Navegació botons de volum</string>
-    <string name="volume_navigation_summary">Canvia a través dels elements utilitzant els botons de volum</string>
     <string name="volume_navigation_message">Vista del missatge</string>
     <string name="volume_navigation_list">Vista de diverses de llistes</string>
 
     <string name="start_integrated_inbox_title">Comença bústia unificada</string>
-    <string name="start_integrated_inbox_summary">Mostra la bústia unificada després de començar</string>
 
     <string name="measure_accounts_title">Mostra mida compte</string>
     <string name="measure_accounts_summary">Apaga-ho perquè es mostri més ràpid</string>

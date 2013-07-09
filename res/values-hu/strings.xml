@@ -544,7 +544,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic</string>-->
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -854,12 +853,10 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="gestures_summary">Engedélyezi a kézmozdulakkal való vezérlést.</string>
 
     <string name="volume_navigation_title">Hangerő gomb vezérlés</string>
-    <string name="volume_navigation_summary">Léptetés az hangerő gombokkal</string>
     <string name="volume_navigation_message">Leveleknél</string>
     <string name="volume_navigation_list">Lista nézetek váltása</string>
 
     <string name="start_integrated_inbox_title">Kezdőlap az Összevont mappa</string>
-    <string name="start_integrated_inbox_summary">Összes beérkezett levél mappa jelenjen meg indításkor</string>
 
     <string name="measure_accounts_title">Mutassa a fiókok méretét</string>
     <string name="measure_accounts_summary">Kikapcsolva gyorsabb működés</string>

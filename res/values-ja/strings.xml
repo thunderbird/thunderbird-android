@@ -543,7 +543,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="account_settings_message_format_auto">自動</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Cc/Bccを常に表示</string>
-    <string name="account_settings_always_show_cc_bcc_summary"/>
 
     <string name="account_settings_message_read_receipt_label">開封確認</string>
     <string name="account_settings_message_read_receipt_summary">常に開封確認を要求する</string>
@@ -852,12 +851,10 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="gestures_summary">ジェスチャー制御を有効にする</string>
 
     <string name="volume_navigation_title">ボリュームキー操作</string>
-    <string name="volume_navigation_summary"/>
     <string name="volume_navigation_message">メッセージ表示</string>
     <string name="volume_navigation_list">一覧表示</string>
 
     <string name="start_integrated_inbox_title">統合フォルダで始める</string>
-    <string name="start_integrated_inbox_summary"/>
 
     <string name="measure_accounts_title">アカウントのサイズ表示</string>
     <string name="measure_accounts_summary">表示を速くしたい場合はチェックしない</string>

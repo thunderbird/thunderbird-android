@@ -542,7 +542,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="account_settings_message_format_auto">자동 (HTML에 답장하지 않을 경우 평문)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">CC/BCC 항상 보기</string>
-    <string name="account_settings_always_show_cc_bcc_summary">참조/숨은 참조 입력칸을 항상 보입니다</string>
 
     <string name="account_settings_message_read_receipt_label">읽음 확인</string>
     <string name="account_settings_message_read_receipt_summary">항상 읽음 확인을 요청합니다</string>
@@ -854,12 +853,10 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="gestures_summary">제스처를 이용합니다</string>
 
     <string name="volume_navigation_title">볼륨 키 탐색</string>
-    <string name="volume_navigation_summary">볼륨 키로 메시지 목록의 각 항목을 넘김</string>
     <string name="volume_navigation_message">메시지 뷰</string>
     <string name="volume_navigation_list">다양한 리스트 뷰</string>
 
     <string name="start_integrated_inbox_title">통합 편지함으로 시작</string>
-    <string name="start_integrated_inbox_summary">통합 편지함을 시작시 보여 줍니다</string>
 
     <string name="measure_accounts_title">계정 용량을 보여 줍니다</string>
     <string name="measure_accounts_summary">빠른 처리를 위해 비활성화</string>

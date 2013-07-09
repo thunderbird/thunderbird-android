@@ -543,7 +543,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic</string>-->
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -854,12 +853,10 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="gestures_summary">Accepteer gebaren sturing</string>
 
     <string name="volume_navigation_title">Volume op/neer navigatie</string>
-    <string name="volume_navigation_summary">Spring tussen items door gebruik van de volumeknoppen</string>
     <string name="volume_navigation_message">Bericht beeld</string>
     <string name="volume_navigation_list">Variabele lijst beelden</string>
 
     <string name="start_integrated_inbox_title">Geïntegreerde Inbox bij start</string>
-    <string name="start_integrated_inbox_summary">Laat de geïntegreerde Inbox zien na opstarten</string>
 
     <string name="measure_accounts_title">Laat account grootte zien</string>
     <string name="measure_accounts_summary">Zet uit voor sneller beeldscherm</string>

@@ -516,7 +516,6 @@
     <string name="account_settings_message_format_auto">自動 (除非回覆HTML格式信件，否則以純文字處理)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">預設顯示副本/密件副本</string>
-    <string name="account_settings_always_show_cc_bcc_summary">在文字輸入框內顯示副本/密件副本</string>
 
     <string name="account_settings_message_read_receipt_label">讀取回條</string>
     <string name="account_settings_message_read_receipt_summary">永遠要求讀取回條</string>
@@ -819,12 +818,10 @@
     <string name="gestures_summary">接收手勢控制</string>
 
     <string name="volume_navigation_title">音量鍵導航</string>
-    <string name="volume_navigation_summary">利用音量鍵選擇項目</string>
     <string name="volume_navigation_message">訊息檢視</string>
     <string name="volume_navigation_list">不同的訊息檢視列表</string>
 
     <string name="start_integrated_inbox_title">從全域收件匣啟動</string>
-    <string name="start_integrated_inbox_summary">啟動後顯示全域收件匣</string>
 
     <string name="measure_accounts_title">顯示帳戶佔用的空間</string>
     <string name="measure_accounts_summary">關閉該功能以便加快顯示速度</string>

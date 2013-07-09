@@ -548,7 +548,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_message_format_auto">Automaticky (prostý text dokud neodpovídáte na zprávu v HTML formátu)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Vždy zobrazit kopie/skrytá</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Vždy zobrazit řádky kopie a skrytá kopie</string>
 
     <string name="account_settings_message_read_receipt_label">Potvrzení o přečtení</string>
     <string name="account_settings_message_read_receipt_summary">Vždy požadovat potvrzení o přečtení</string>
@@ -862,12 +861,10 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="gestures_summary">Používat ovládání gesty</string>
 
     <string name="volume_navigation_title">Navigace tlačítky hlasitosti</string>
-    <string name="volume_navigation_summary">Přeskakovat přes položky při použití ovladačů hlasitosti</string>
     <string name="volume_navigation_message">Zobrazení zpráv</string>
     <string name="volume_navigation_list">Různá zobrazení seznamů</string>
 
     <string name="start_integrated_inbox_title">Začít v Integrovaná doručené poště</string>
-    <string name="start_integrated_inbox_summary">Po startu zobrazit Integrovanou doručenou poštu</string>
 
     <string name="measure_accounts_title">Zobrazit velikost účtu</string>
     <string name="measure_accounts_summary">Vypněte pro rychlejší zobrazování</string>

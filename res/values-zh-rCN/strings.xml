@@ -537,7 +537,6 @@ K-9改进的功能包括：
     <string name="account_settings_message_format_auto">自动（纯文本，除非是在回复HTML邮件）</string>
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">已读回执</string>
     <string name="account_settings_message_read_receipt_summary">总是要求已读回执</string>
@@ -847,12 +846,10 @@ K-9改进的功能包括：
     <string name="gestures_summary">接收手势控制</string>
 
     <string name="volume_navigation_title">音量键导航</string>
-    <string name="volume_navigation_summary">利用音量键选择项目</string>
     <string name="volume_navigation_message">信息视图</string>
     <string name="volume_navigation_list">不同的列表视图</string>
 
     <string name="start_integrated_inbox_title">从全局收件箱启动</string>
-    <string name="start_integrated_inbox_summary">启动后显示全局收件箱</string>
 
     <string name="measure_accounts_title">显示账户占用的空间</string>
     <string name="measure_accounts_summary">关闭该功能以便加快显示速度</string>

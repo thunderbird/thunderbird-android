@@ -544,7 +544,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="account_settings_message_format_auto">Automatico (A meno che si risponda a un testo HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Mostra sempre CC/Ccn</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Mostra sempre i campi CC/Ccn</string>
 
     <string name="account_settings_message_read_receipt_label">Notifica di lettura</string>
     <string name="account_settings_message_read_receipt_summary">Richiedi sempre la notifica di lettura</string>
@@ -858,12 +857,10 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="gestures_summary">Attiva la gestione con il tocco dei controlli</string>
 
     <string name="volume_navigation_title">Navigazione tasti volume</string>
-    <string name="volume_navigation_summary">Scorri elementi utilizzando i controlli del volume</string>
     <string name="volume_navigation_message">Visualizzazione messaggi</string>
     <string name="volume_navigation_list">Diverse visualizzazioni di elenco</string>
 
     <string name="start_integrated_inbox_title">Avvia in Posta in arrivo unificata</string>
-    <string name="start_integrated_inbox_summary">Visualizza la Posta in arrivo unificata dopo l\'avvio</string>
 
     <string name="measure_accounts_title">Visualizza dimensione account</string>
     <string name="measure_accounts_summary">Disattiva per una visualizzazione più veloce</string>

@@ -539,7 +539,6 @@
     <string name="account_settings_message_format_auto">Αυτόματα (απλό κείμενο, εκτός αν απαντά σε μήνυμα HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Πάντα προβολή κοινοποιήσεων/ιδ. κοιν.</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Πάντα προβολή πεδίου κειμένου κοινοποιήσεων/ιδ. κοιν.</string>
 
     <string name="account_settings_message_read_receipt_label">Απόδειξη ανάγνωσης</string>
     <string name="account_settings_message_read_receipt_summary">Πάντοτε να απαιτείται απόδειξη ανάγνωσης</string>
@@ -853,12 +852,10 @@
     <string name="gestures_summary">Αποδοχή ελέγχου με χειρονομίες</string>
 
     <string name="volume_navigation_title">Πλοήγηση με πλήκτρο έντασης</string>
-    <string name="volume_navigation_summary">Μετακίνηση στις επιλογές με χρήση του πλήκτρου έντασης</string>
     <string name="volume_navigation_message">Προβολή μηνύματος</string>
     <string name="volume_navigation_list">Διάφορες προβολές λίστας</string>
 
     <string name="start_integrated_inbox_title">Εκκίνηση στα ενιαία εισερχόμενα</string>
-    <string name="start_integrated_inbox_summary">Προβολή των \'Ενιαίων Εισερχόμενων\' κατά την εκκίνηση</string>
 
     <string name="measure_accounts_title">Προβολή μεγέθους λογαριασμού</string>
     <string name="measure_accounts_summary">Απενεργοποιήστε το για ταχύτητα.</string>

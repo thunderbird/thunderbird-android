@@ -549,7 +549,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_message_format_auto">Automatic</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>
-    <string name="account_settings_always_show_cc_bcc_summary"></string>
 
     <string name="account_settings_message_read_receipt_label">Read receipt</string>
     <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
@@ -863,12 +862,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="gestures_summary">Enable gesture control</string>
 
     <string name="volume_navigation_title">Volume key navigation</string>
-    <string name="volume_navigation_summary"></string>
     <string name="volume_navigation_message">In message views</string>
     <string name="volume_navigation_list">In list views</string>
 
     <string name="start_integrated_inbox_title">Start in Unified Inbox</string>
-    <string name="start_integrated_inbox_summary"></string>
 
     <string name="measure_accounts_title">Show account size</string>
     <string name="measure_accounts_summary">Turn off for faster display</string>

@@ -543,7 +543,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <!-- NEW: <string name="account_settings_message_format_auto">Automatic</string>-->
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -855,12 +854,10 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="gestures_summary">Aceptar controles xestuáis</string>
 
     <string name="volume_navigation_title">Navegación con teclas de volume</string>
-    <string name="volume_navigation_summary">Permite moverse polas opcións usando os botóns de volume</string>
     <string name="volume_navigation_message">Vista de mensaxe</string>
     <string name="volume_navigation_list">Listas de mensaxes</string>
 
     <string name="start_integrated_inbox_title">Iniciar na Bandexa unificada</string>
-    <string name="start_integrated_inbox_summary">Amosar a Bandexa de Entrada unificada ao inicio</string>
 
     <string name="measure_accounts_title">Tamaño conta</string>
     <string name="measure_accounts_summary">Desactivar para mellorar rendimento</string>

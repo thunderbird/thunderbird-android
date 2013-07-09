@@ -544,7 +544,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="account_settings_message_format_auto">Автоматичний (plain text unless replying to an HTML message)</string>
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
 
     <string name="account_settings_message_read_receipt_label">Повідомлення про прочитання</string>
     <string name="account_settings_message_read_receipt_summary">Завжди запитувати повідомлення про прочитання</string>
@@ -856,12 +855,10 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="gestures_summary">Приймати управління жестами</string>
 
     <string name="volume_navigation_title">Використовувати управління гучністю для навігації</string>
-    <string name="volume_navigation_summary">Прокручування елементів за допомогою клавіш управління гучності</string>
     <string name="volume_navigation_message">Перегляд повідомлень</string>
     <string name="volume_navigation_list">Різноманітні списки елементів</string>
 
     <string name="start_integrated_inbox_title">При запуску відкривати спільну папку „Вхідні“</string>
-    <string name="start_integrated_inbox_summary">Показати спільну папку „Вхідні“ після запуску</string>
 
     <string name="measure_accounts_title">Показувати розмір скриньки</string>
     <string name="measure_accounts_summary">Вимкнути для швидкого відображення</string>
