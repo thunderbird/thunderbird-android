@@ -539,7 +539,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_settings_message_format_auto">Автоматически</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Включать Копия/Скрытая</string>
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary"/>-->
+    <string name="account_settings_always_show_cc_bcc_summary">Показать поля при создании сообщения</string>
 
     <string name="account_settings_message_read_receipt_label">Уведомление о прочтении</string>
     <string name="account_settings_message_read_receipt_summary">Всегда запрашивать уведомление о прочтении</string>
@@ -852,12 +852,12 @@ K-9 Mail — почтовый клиент для Android.
     <string name="gestures_summary">Управление жестами</string>
 
     <string name="volume_navigation_title">Прокрутка кнопками Vol+/-</string>
-    <!-- NEW: <string name="volume_navigation_summary"/>-->
+    <string name="volume_navigation_summary">Прокрутка текста в сообщении, списка сообщений в папке</string>
     <string name="volume_navigation_message">В сообщении</string>
     <string name="volume_navigation_list">В списке</string>
 
     <string name="start_integrated_inbox_title">Во \"Входящие\" при запуске</string>
-    <!-- NEW: <string name="start_integrated_inbox_summary"/>-->
+    <string name="start_integrated_inbox_summary">Автопереход в общие \"Входящие\" при запуске</string>
 
     <string name="measure_accounts_title">Размер ящика</string>
     <string name="measure_accounts_summary">Отключите для ускорения работы</string>
@@ -1117,8 +1117,8 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_background_as_unread_indicator_label">Затемнить прочитанные</string>
     <string name="global_settings_background_as_unread_indicator_summary">Выделять прочитанные сообщения менее ярким фоном</string>
 
-    <string name="global_settings_threaded_view_label">Группировка сообщений</string>
-    <string name="global_settings_threaded_view_summary">Объединить сообщения адресата</string>
+    <string name="global_settings_threaded_view_label">Сообщения в беседы</string>
+    <string name="global_settings_threaded_view_summary">Объединить, показав счётчик</string>
 
     <string name="upgrade_databases_title">Обновление данных</string>
     <string name="upgrade_databases_unspecified">Обновление данных…</string>
