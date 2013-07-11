@@ -198,6 +198,11 @@
         <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
     </provider>
 
+    <!-- Australia -->
+    <provider id="fastmail-fm" label="Fastmail" domain="fastmail.fm">
+        <incoming uri="imap+ssl+://mail.messagingengine.com" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.messagingengine.com" username="$email" />
+    </provider>
 
    <!-- UK -->
     <provider id="aol-uk" label="AOL" domain="aol.co.uk">
