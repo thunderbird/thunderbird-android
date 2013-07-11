@@ -1281,6 +1281,7 @@ public class WebDavStore extends Store {
         private boolean mIsOpen = false;
         private int mMessageCount = 0;
         private int mUnreadMessageCount = 0;
+        private int mTotalMessageCount = 0;
         private WebDavStore store;
 
         protected WebDavStore getStore() {
@@ -1424,6 +1425,11 @@ public class WebDavStore extends Store {
         }
 
         @Override
+        public int getTotalMessageCount() throws MessagingException {
+        	return(getMessageCount());
+        }
+        
+        @Override
         public boolean isOpen() {
             return this.mIsOpen;
         }
@@ -1447,6 +1453,7 @@ public class WebDavStore extends Store {
         public void close() {
             this.mMessageCount = 0;
             this.mUnreadMessageCount = 0;
+            this.mTotalMessageCount = 0;
             this.mIsOpen = false;
         }
 

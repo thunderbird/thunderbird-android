@@ -802,7 +802,8 @@ public class Account implements BaseAccount {
 
         String[] projection = {
                 StatsColumns.UNREAD_COUNT,
-                StatsColumns.FLAGGED_COUNT
+                StatsColumns.FLAGGED_COUNT,
+                StatsColumns.TOTAL_COUNT
         };
 
         // Create LocalSearch instance to exclude special folders (Trash, Drafts, Spam, Outbox,
@@ -825,6 +826,7 @@ public class Account implements BaseAccount {
             if (cursor.moveToFirst()) {
                 stats.unreadMessageCount = cursor.getInt(0);
                 stats.flaggedMessageCount = cursor.getInt(1);
+                stats.totalMessageCount = cursor.getInt(2);
             }
         } finally {
             cursor.close();

@@ -86,7 +86,8 @@ public class FolderList extends K9ListActivity {
     private FolderListHandler mHandler = new FolderListHandler();
 
     private int mUnreadMessageCount;
-
+    private int mTotalMessageCount;
+    
     private FontSizes mFontSizes = K9.getFontSizes();
     private Context context;
 
@@ -693,6 +694,7 @@ public class FolderList extends K9ListActivity {
                     return;
                 }
                 mUnreadMessageCount = stats.unreadMessageCount;
+                mTotalMessageCount = stats.totalMessageCount;
                 mHandler.refreshTitle();
             }
 
@@ -759,17 +761,19 @@ public class FolderList extends K9ListActivity {
                             holder = (FolderInfoHolder) getItem(folderIndex);
                         }
                         int unreadMessageCount = 0;
+                        int totalMessageCount = 0;
                         try {
                             unreadMessageCount  = folder.getUnreadMessageCount();
+                            totalMessageCount = folder.getTotalMessageCount();
                         } catch (Exception e) {
-                            Log.e(K9.LOG_TAG, "Unable to get unreadMessageCount for " + mAccount.getDescription() + ":"
+                            Log.e(K9.LOG_TAG, "Unable to get unreadMessageCount/totalMessageCount for " + mAccount.getDescription() + ":"
                                   + folder.getName());
                         }
 
                         if (holder == null) {
-                            holder = new FolderInfoHolder(context, folder, mAccount, unreadMessageCount);
+                            holder = new FolderInfoHolder(context, folder, mAccount, unreadMessageCount, totalMessageCount);
                         } else {
-                            holder.populate(context, folder, mAccount, unreadMessageCount);
+                            holder.populate(context, folder, mAccount, unreadMessageCount, totalMessageCount);
 
                         }
                         if (folder.isInTopGroup()) {
@@ -821,11 +825,14 @@ public class FolderList extends K9ListActivity {
                         }
                         localFolder = account.getLocalStore().getFolder(folderName);
                         int unreadMessageCount = localFolder.getUnreadMessageCount();
+                        int totalMessageCount = localFolder.getTotalMessageCount();
                         FolderInfoHolder folderHolder = getFolder(folderName);
                         if (folderHolder != null) {
                             int oldUnreadMessageCount = folderHolder.unreadMessageCount;
+                            int oldTotalMessageCount = folderHolder.totalMessageCount;
                             mUnreadMessageCount += unreadMessageCount - oldUnreadMessageCount;
-                            folderHolder.populate(context, localFolder, mAccount, unreadMessageCount);
+                            mTotalMessageCount += totalMessageCount - oldTotalMessageCount;
+                            folderHolder.populate(context, localFolder, mAccount, unreadMessageCount, totalMessageCount);
                             mHandler.dataChanged();
                         }
                     }
@@ -978,10 +985,13 @@ public class FolderList extends K9ListActivity {
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
+                holder.totalMessageCount = (TextView) view.findViewById(R.id.total_message_count);
                 holder.newMessageCountWrapper = (View) view.findViewById(R.id.new_message_count_wrapper);
                 holder.flaggedMessageCountWrapper = (View) view.findViewById(R.id.flagged_message_count_wrapper);
+                holder.totalMessageCountWrapper = (View) view.findViewById(R.id.total_message_count_wrapper);
                 holder.newMessageCountIcon = (View) view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = (View) view.findViewById(R.id.flagged_message_count_icon);
+                holder.totalMessageCountIcon = (View) view.findViewById(R.id.total_message_count_icon);
 
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
@@ -1051,6 +1061,17 @@ public class FolderList extends K9ListActivity {
                         mAccount.generateColorChip(false, false, false, false,true).drawable());
             } else {
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
+            }
+            
+            if (folder.totalMessageCount > 0) {
+                holder.totalMessageCount.setText("[" + Integer.toString(folder.totalMessageCount) + "]");
+//                holder.totalMessageCountWrapper.setOnClickListener(
+//                        createFlaggedSearch(mAccount, folder));
+                holder.totalMessageCountWrapper.setVisibility(View.VISIBLE);
+                holder.totalMessageCountIcon.setBackgroundDrawable(
+                        mAccount.generateColorChip(false, false, false, false,true).drawable());
+            } else {
+                holder.totalMessageCountWrapper.setVisibility(View.GONE);
             }
 
             holder.activeIcons.setOnClickListener(new OnClickListener() {
@@ -1203,10 +1224,13 @@ public class FolderList extends K9ListActivity {
 
         public TextView newMessageCount;
         public TextView flaggedMessageCount;
+        public TextView totalMessageCount;
         public View newMessageCountIcon;
         public View flaggedMessageCountIcon;
+        public View totalMessageCountIcon;
         public View newMessageCountWrapper;
         public View flaggedMessageCountWrapper;
+        public View totalMessageCountWrapper;
 
         public RelativeLayout activeIcons;
         public String rawFolderName;

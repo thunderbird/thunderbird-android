@@ -1582,6 +1582,37 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
+        public int getTotalMessageCount() throws MessagingException {
+            if (!isOpen()) {
+                open(OpenMode.READ_WRITE);
+            }
+
+            try {
+                return database.execute(false, new DbCallback<Integer>() {
+                    @Override
+                    public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
+                        int totalMessageCount = 0;
+                        Cursor cursor = db.query("messages", new String[] { "COUNT(*)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                                new String[] { Long.toString(mFolderId) }, null, null, null);
+
+                        try {
+                            if (cursor.moveToFirst()) {
+                                totalMessageCount = cursor.getInt(0);
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
+                        return totalMessageCount;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
+        }
+
+       @Override
         public void setLastChecked(final long lastChecked) throws MessagingException {
             try {
                 open(OpenMode.READ_WRITE);
