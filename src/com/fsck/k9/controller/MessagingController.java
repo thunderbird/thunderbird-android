@@ -3168,8 +3168,7 @@ public class MessagingController implements Runnable {
 
         if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
             List<Long> messageIds = Collections.singletonList(message.getId());
-            setFlagInCache(account, messageIds, Flag.SEEN, true);
-            setFlagSynchronous(account, messageIds, Flag.SEEN, true, false);
+            setFlag(account, messageIds, Flag.SEEN, true);
 
             ((LocalMessage) message).setFlagInternal(Flag.SEEN, true);
         }
