@@ -326,6 +326,51 @@
         <outgoing uri="smtp+tls://smtp.mail.nate.com" username="$user" />
     </provider>
     
+   <!-- Russia -->
+    <!-- Mail.Ru variants -->
+    <provider id="rumailmailimap" label="mail.ru" domain="mail.ru">
+        <incoming uri="imap+ssl+://imap.mail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
+    </provider>
+    <provider id="rumailinboximap" label="inbox.ru" domain="inbox.ru">
+        <incoming uri="imap+ssl+://imap.mail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
+    </provider>
+    <provider id="rumaillistimap" label="list.ru" domain="list.ru">
+        <incoming uri="imap+ssl+://imap.mail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
+    </provider>
+    <provider id="rumailbkimap" label="bk.ru" domain="bk.ru">
+        <incoming uri="imap+ssl+://imap.mail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
+    </provider>
+    <!-- Yandex.ru variants -->
+    <provider id="ruyanyandeximap" label="yandex.ru" domain="yandex.ru">
+        <incoming uri="imap+ssl+://imap.yandex.ru" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.yandex.ru" username="$user" />
+    </provider>
+    <provider id="ruyanyaimap" label="ya.ru" domain="ya.ru">
+        <incoming uri="imap+ssl+://imap.ya.ru" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.ya.ru" username="$user" />
+    </provider>
+    <provider id="ruyannarodimap" label="narod.ru" domain="narod.ru">
+        <incoming uri="imap+ssl+://imap.narod.ru" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.narod.ru" username="$user" />
+    </provider>
+    <!-- Rambler.ru variants -->
+    <provider id="ruramramblerimap" label="rambler.ru" domain="rambler.ru">
+        <incoming uri="imap+ssl+://mail.rambler.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.rambler.ru" username="$email" />
+    </provider>
+    <provider id="ruramlentaimap" label="lenta.ru" domain="lenta.ru">
+        <incoming uri="imap+ssl+://mail.rambler.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.rambler.ru" username="$email" />
+    </provider>
+    <provider id="ruramroimap" label="ro.ru" domain="ro.ru">
+        <incoming uri="imap+ssl+://mail.rambler.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.rambler.ru" username="$email" />
+    </provider>
+    
     <!-- Developers' vanity providers -->
     <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
         <incoming uri="imap+ssl://fsck.com"  username="$user" />
