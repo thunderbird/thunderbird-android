@@ -3117,7 +3117,6 @@ public class MessagingController implements Runnable {
                         return;
                     }
 
-                    markMessageAsReadOnView(account, message);
 
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
@@ -3138,6 +3137,7 @@ public class MessagingController implements Runnable {
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadMessageForViewFinished(account, folder, uid, message);
                     }
+                    markMessageAsReadOnView(account, message);
 
                 } catch (Exception e) {
                     for (MessagingListener l : getListeners(listener)) {
