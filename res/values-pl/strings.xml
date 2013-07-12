@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version='1.0' encoding='UTF-8'?>
 <!--  #################################################################################### -->
 <!--  ##                                                                                ## -->
 <!--  ##         Polska wersja jezykowa: Marcin Orlowski <carlos@wfmh.org.pl>           ## -->
@@ -12,7 +11,6 @@
 <!--  ## Updated by Błażej Jeżewski, 2012.04.10											## -->
 <!--  ##                                                                                ## -->
 <!--  #################################################################################### -->
-
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -139,7 +137,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="spam_action">Spam</string>
     <string name="forward_action">Prześlij dalej</string>
     <string name="move_action">Przenieś</string>
-    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send</string>-->
     <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Kontynuuj</string>
     <string name="back_action">Cofnij</string>
@@ -212,7 +210,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="compacting_account">Kompaktuję konto \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Czyszczę konto \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="recreating_account">Odtwarzam konto \"<xliff:g id="account">%s</xliff:g>\"</string> <!-- FIXME -->
+    <string name="recreating_account">Odtwarzam konto \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Nowa wiadomość</string>
     <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
@@ -220,7 +218,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_read">Mark Read</string>-->
     <!-- NEW: <string name="notification_action_delete">Delete</string>-->
     <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
     <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
@@ -239,6 +237,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="special_mailbox_name_sent">Wysłane</string>
     <string name="special_mailbox_name_archive">Archiwizuj</string>
     <string name="special_mailbox_name_spam">Spam</string>
+    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Szkice)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Usunięte)</string>
@@ -325,6 +324,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="global_settings_messageview_fixedwidth_label">Czcionka o stałej szer.</string>
     <string name="global_settings_messageview_fixedwidth_summary">Użyj czcionki o stałej szerokości do wyświetlania wiadomości tekstowych</string>
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
     <string name="global_settings_messageview_return_to_list_label">Skasuj i wróć do listy</string>
     <string name="global_settings_messageview_return_to_list_summary">Wraca do listy wiadomości po usunięciu danej wiadomości</string>
     <string name="global_settings_messageview_show_next_label">Pokaż następną wiadomość po usunięciu</string>
@@ -339,7 +340,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
@@ -368,7 +369,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_basics_password_hint">Hasło</string>
     <string name="account_setup_basics_manual_setup_action">Ustaw ręcznie</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Pobieram informacje…</string>
     <string name="account_setup_check_settings_check_incoming_msg">Sprawdzam ustawienia serwera…</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Sprawdzam ustawienia serwera…</string>
@@ -473,7 +474,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_options_mail_check_frequency_12hour">Co 12 godzin</string>
     <string name="account_setup_options_mail_check_frequency_24hour">Co 24 godziny</string>
 
-    <string name="push_poll_on_connect_label">Pobieraj podczas połączeń Push</string> <!-- FIXME -->
+    <string name="push_poll_on_connect_label">Pobieraj podczas połączeń Push</string>
     <string name="account_setup_options_enable_push_label">Włącz obsługe Push mail dla tego konta</string>
     <string name="account_setup_options_enable_push_summary">Jeżeli Twój serwer obsługuje, nowe wiadomości pojawią się natychmiast. Ta opcja może dramatycznie obniżyć lub zwiększyć wydajność.</string>
     <string name="idle_refresh_period_label">Odśwież połączenie IDLE</string>
@@ -549,8 +550,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_settings_message_format_html">HTML (z obrazkami i formatowaniem)</string>
     <string name="account_settings_message_format_auto">Automatycznie (czysty tekst, chyba że odpoiwadasz na wiadomość HTML)</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
 
     <string name="account_settings_message_read_receipt_label">Potwierdzenie przeczytania</string>
     <string name="account_settings_message_read_receipt_summary">Zawsze wymagaj potwierdzenia o przeczytaniu</string>
@@ -735,6 +735,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="sort_latest_first">Najnowsze wiadomości na początku</string>
     <string name="sort_subject_alpha">Alfabetycznie, po temacie (A-&gt;Z)</string>
     <string name="sort_subject_re_alpha">Alfabetycznie, po temacie (Z-&gt;A)</string>
+    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
+    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
     <string name="sort_flagged_first">Wiadomości oznaczone gwiazką jako pierwsze</string>
     <string name="sort_flagged_last">Wiadomości bez gwiazdki jako pierwsze</string>
     <string name="sort_unread_first">Nieprzeczytane wiadomości jako pierwsze</string>
@@ -746,6 +748,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="sort_by_date">Daty</string>
     <string name="sort_by_arrival">Daty otrzymania</string>
     <string name="sort_by_subject">Tematu</string>
+    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
     <string name="sort_by_flag">Gwiazdek</string>
     <string name="sort_by_unread">Przeczytane/nieprzeczytane</string>
     <string name="sort_by_attach">Załącznikach</string>
@@ -772,8 +775,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
 
-    <!-- NEW: V untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V untranslated -->
         Del lub D - Usuń\n
         R - Odpowiedz\n
         A - Odp. wszystkim\n
@@ -862,12 +864,10 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="gestures_summary">Pozwól na sterowanie gestami</string>
 
     <string name="volume_navigation_title">Nawigacja przyciskiem głośności</string>
-    <string name="volume_navigation_summary">Przeskakuj między rzeczami używając przycisków głośności</string>
     <string name="volume_navigation_message">Wygląd wiadomości</string>
     <string name="volume_navigation_list">Różne widoki list</string>
 
     <string name="start_integrated_inbox_title">Pokaż zintegrowaną</string>
-    <string name="start_integrated_inbox_summary">Wyświetl \"Zintegrowana odbiorcza\" po uruchomieniu programu</string>
 
     <string name="measure_accounts_title">Pokazuj rozmiary kont</string>
     <string name="measure_accounts_summary">Wyłącz, aby przyspieszyć wyświetlanie</string>
@@ -981,10 +981,24 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="dialog_confirm_delete_title">Potwiedź usunięcie</string>
     <string name="dialog_confirm_delete_message">Czy chcesz usunąć tą wiadomość?</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
+    <!-- NEW:
+    <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-    </plurals>-->
+    </plurals>
+    -->
     <string name="dialog_confirm_delete_confirm_button">Usuń</string>
     <string name="dialog_confirm_delete_cancel_button">Nie usuwaj</string>
 
@@ -1093,9 +1107,9 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include messages text in server search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
     <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
     <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
@@ -1108,13 +1122,13 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>-->
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>-->
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Group messages by conversation</string>-->
 
     <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
     <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
@@ -1132,7 +1146,9 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
     <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 </resources>

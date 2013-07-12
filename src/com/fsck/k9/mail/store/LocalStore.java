@@ -101,7 +101,22 @@ public class LocalStore extends Store implements Serializable {
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +
         "forwarded ";
 
-    static private String GET_FOLDER_COLS = "folders.id, name, SUM(read=0), visible_limit, last_updated, status, push_state, last_pushed, SUM(flagged), integrate, top_group, poll_class, push_class, display_class";
+    private static final String GET_FOLDER_COLS =
+        "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
+        "integrate, top_group, poll_class, push_class, display_class";
+
+    private static final int FOLDER_ID_INDEX = 0;
+    private static final int FOLDER_NAME_INDEX = 1;
+    private static final int FOLDER_VISIBLE_LIMIT_INDEX = 2;
+    private static final int FOLDER_LAST_CHECKED_INDEX = 3;
+    private static final int FOLDER_STATUS_INDEX = 4;
+    private static final int FOLDER_PUSH_STATE_INDEX = 5;
+    private static final int FOLDER_LAST_PUSHED_INDEX = 6;
+    private static final int FOLDER_INTEGRATE_INDEX = 7;
+    private static final int FOLDER_TOP_GROUP_INDEX = 8;
+    private static final int FOLDER_SYNC_CLASS_INDEX = 9;
+    private static final int FOLDER_PUSH_CLASS_INDEX = 10;
+    private static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
 
     private static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -193,74 +208,410 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public void doDbUpgrade(final SQLiteDatabase db) {
+            try {
+                upgradeDatabase(db);
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0", e);
+                db.setVersion(0);
+                upgradeDatabase(db);
+            }
+        }
+
+        private void upgradeDatabase(final SQLiteDatabase db) {
             Log.i(K9.LOG_TAG, String.format("Upgrading database from version %d to version %d",
                                             db.getVersion(), DB_VERSION));
-
 
             AttachmentProvider.clear(mApplication);
 
             db.beginTransaction();
             try {
-                try {
-                    // schema version 29 was when we moved to incremental updates
-                    // in the case of a new db or a < v29 db, we blow away and start from scratch
-                    if (db.getVersion() < 29) {
+                // schema version 29 was when we moved to incremental updates
+                // in the case of a new db or a < v29 db, we blow away and start from scratch
+                if (db.getVersion() < 29) {
 
-                        db.execSQL("DROP TABLE IF EXISTS folders");
-                        db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                                   + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
-                                   + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
-                                   + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT"
-                                   + ")");
+                    db.execSQL("DROP TABLE IF EXISTS folders");
+                    db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
+                               + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
+                               + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
+                               + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT"
+                               + ")");
 
-                        db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
-                        db.execSQL("DROP TABLE IF EXISTS messages");
-                        db.execSQL("CREATE TABLE messages (" +
-                                "id INTEGER PRIMARY KEY, " +
-                                "deleted INTEGER default 0, " +
-                                "folder_id INTEGER, " +
-                                "uid TEXT, " +
-                                "subject TEXT, " +
-                                "date INTEGER, " +
-                                "flags TEXT, " +
-                                "sender_list TEXT, " +
-                                "to_list TEXT, " +
-                                "cc_list TEXT, " +
-                                "bcc_list TEXT, " +
-                                "reply_to_list TEXT, " +
-                                "html_content TEXT, " +
-                                "text_content TEXT, " +
-                                "attachment_count INTEGER, " +
-                                "internal_date INTEGER, " +
-                                "message_id TEXT, " +
-                                "preview TEXT, " +
-                                "mime_type TEXT, "+
-                                "normalized_subject_hash INTEGER, " +
-                                "empty INTEGER, " +
-                                "read INTEGER default 0, " +
-                                "flagged INTEGER default 0, " +
-                                "answered INTEGER default 0, " +
-                                "forwarded INTEGER default 0" +
-                                ")");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
+                    db.execSQL("DROP TABLE IF EXISTS messages");
+                    db.execSQL("CREATE TABLE messages (" +
+                            "id INTEGER PRIMARY KEY, " +
+                            "deleted INTEGER default 0, " +
+                            "folder_id INTEGER, " +
+                            "uid TEXT, " +
+                            "subject TEXT, " +
+                            "date INTEGER, " +
+                            "flags TEXT, " +
+                            "sender_list TEXT, " +
+                            "to_list TEXT, " +
+                            "cc_list TEXT, " +
+                            "bcc_list TEXT, " +
+                            "reply_to_list TEXT, " +
+                            "html_content TEXT, " +
+                            "text_content TEXT, " +
+                            "attachment_count INTEGER, " +
+                            "internal_date INTEGER, " +
+                            "message_id TEXT, " +
+                            "preview TEXT, " +
+                            "mime_type TEXT, "+
+                            "normalized_subject_hash INTEGER, " +
+                            "empty INTEGER, " +
+                            "read INTEGER default 0, " +
+                            "flagged INTEGER default 0, " +
+                            "answered INTEGER default 0, " +
+                            "forwarded INTEGER default 0" +
+                            ")");
 
-                        db.execSQL("DROP TABLE IF EXISTS headers");
-                        db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
-                        db.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
+                    db.execSQL("DROP TABLE IF EXISTS headers");
+                    db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
 
-                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
-                        db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
+                    db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
+                    db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+
+                    db.execSQL("DROP INDEX IF EXISTS msg_empty");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)");
+
+                    db.execSQL("DROP INDEX IF EXISTS msg_read");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_read ON messages (read)");
+
+                    db.execSQL("DROP INDEX IF EXISTS msg_flagged");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_flagged ON messages (flagged)");
+
+                    db.execSQL("DROP TABLE IF EXISTS threads");
+                    db.execSQL("CREATE TABLE threads (" +
+                            "id INTEGER PRIMARY KEY, " +
+                            "message_id INTEGER, " +
+                            "root INTEGER, " +
+                            "parent INTEGER" +
+                            ")");
+
+                    db.execSQL("DROP INDEX IF EXISTS threads_message_id");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS threads_message_id ON threads (message_id)");
+
+                    db.execSQL("DROP INDEX IF EXISTS threads_root");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS threads_root ON threads (root)");
+
+                    db.execSQL("DROP INDEX IF EXISTS threads_parent");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS threads_parent ON threads (parent)");
+
+                    db.execSQL("DROP TRIGGER IF EXISTS set_thread_root");
+                    db.execSQL("CREATE TRIGGER set_thread_root " +
+                            "AFTER INSERT ON threads " +
+                            "BEGIN " +
+                            "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
+                            "END");
+
+                    db.execSQL("DROP TABLE IF EXISTS attachments");
+                    db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
+                               + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
+                               + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
+
+                    db.execSQL("DROP TABLE IF EXISTS pending_commands");
+                    db.execSQL("CREATE TABLE pending_commands " +
+                               "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
+
+                    db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
+                    db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
+
+                    db.execSQL("DROP TRIGGER IF EXISTS delete_message");
+                    db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
+                               + "DELETE FROM headers where old.id = message_id; END;");
+                } else {
+                    // in the case that we're starting out at 29 or newer, run all the needed updates
+
+                    if (db.getVersion() < 30) {
+                        try {
+                            db.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
+                        } catch (SQLiteException e) {
+                            if (! e.toString().startsWith("duplicate column name: deleted")) {
+                                throw e;
+                            }
+                        }
+                    }
+                    if (db.getVersion() < 31) {
                         db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+                    }
+                    if (db.getVersion() < 32) {
+                        db.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
+                    }
+                    if (db.getVersion() < 33) {
 
-                        db.execSQL("DROP INDEX IF EXISTS msg_empty");
-                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)");
+                        try {
+                            db.execSQL("ALTER TABLE messages ADD preview TEXT");
+                        } catch (SQLiteException e) {
+                            if (! e.toString().startsWith("duplicate column name: preview")) {
+                                throw e;
+                            }
+                        }
 
-                        db.execSQL("DROP INDEX IF EXISTS msg_read");
+                    }
+                    if (db.getVersion() < 34) {
+                        try {
+                            db.execSQL("ALTER TABLE folders ADD flagged_count INTEGER default 0");
+                        } catch (SQLiteException e) {
+                            if (! e.getMessage().startsWith("duplicate column name: flagged_count")) {
+                                throw e;
+                            }
+                        }
+                    }
+                    if (db.getVersion() < 35) {
+                        try {
+                            db.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
+                        } catch (SQLiteException e) {
+                            Log.e(K9.LOG_TAG, "Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
+                        }
+                    }
+                    if (db.getVersion() < 36) {
+                        try {
+                            db.execSQL("ALTER TABLE attachments ADD content_id TEXT");
+                        } catch (SQLiteException e) {
+                            Log.e(K9.LOG_TAG, "Unable to add content_id column to attachments");
+                        }
+                    }
+                    if (db.getVersion() < 37) {
+                        try {
+                            db.execSQL("ALTER TABLE attachments ADD content_disposition TEXT");
+                        } catch (SQLiteException e) {
+                            Log.e(K9.LOG_TAG, "Unable to add content_disposition column to attachments");
+                        }
+                    }
+
+                    // Database version 38 is solely to prune cached attachments now that we clear them better
+                    if (db.getVersion() < 39) {
+                        try {
+                            db.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
+                        } catch (SQLiteException e) {
+                            Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
+                        }
+                    }
+
+                    // V40: Store the MIME type for a message.
+                    if (db.getVersion() < 40) {
+                        try {
+                            db.execSQL("ALTER TABLE messages ADD mime_type TEXT");
+                        } catch (SQLiteException e) {
+                            Log.e(K9.LOG_TAG, "Unable to add mime_type column to messages");
+                        }
+                    }
+
+                    if (db.getVersion() < 41) {
+                        try {
+                            db.execSQL("ALTER TABLE folders ADD integrate INTEGER");
+                            db.execSQL("ALTER TABLE folders ADD top_group INTEGER");
+                            db.execSQL("ALTER TABLE folders ADD poll_class TEXT");
+                            db.execSQL("ALTER TABLE folders ADD push_class TEXT");
+                            db.execSQL("ALTER TABLE folders ADD display_class TEXT");
+                        } catch (SQLiteException e) {
+                            if (! e.getMessage().startsWith("duplicate column name:")) {
+                                throw e;
+                            }
+                        }
+                        Cursor cursor = null;
+
+                        try {
+
+                            SharedPreferences prefs = getPreferences();
+                            cursor = db.rawQuery("SELECT id, name FROM folders", null);
+                            while (cursor.moveToNext()) {
+                                try {
+                                    int id = cursor.getInt(0);
+                                    String name = cursor.getString(1);
+                                    update41Metadata(db, prefs, id, name);
+                                } catch (Exception e) {
+                                    Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder class", e);
+                                }
+                            }
+                        }
+
+
+                        catch (SQLiteException e) {
+                            Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished", e);
+
+                        } finally {
+                            Utility.closeQuietly(cursor);
+                        }
+                    }
+                    if (db.getVersion() == 41) {
+                        try {
+                            long startTime = System.currentTimeMillis();
+                            SharedPreferences.Editor editor = getPreferences().edit();
+
+                            List <? extends Folder >  folders = getPersonalNamespaces(true);
+                            for (Folder folder : folders) {
+                                if (folder instanceof LocalFolder) {
+                                    LocalFolder lFolder = (LocalFolder)folder;
+                                    lFolder.save(editor);
+                                }
+                            }
+
+                            editor.commit();
+                            long endTime = System.currentTimeMillis();
+                            Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() + " folders back into Preferences took " + (endTime - startTime) + " ms");
+                        } catch (Exception e) {
+                            Log.e(K9.LOG_TAG, "Could not replace Preferences in upgrade from DB_VERSION 41", e);
+                        }
+                    }
+                    if (db.getVersion() < 43) {
+                        try {
+                            // If folder "OUTBOX" (old, v3.800 - v3.802) exists, rename it to
+                            // "K9MAIL_INTERNAL_OUTBOX" (new)
+                            LocalFolder oldOutbox = new LocalFolder("OUTBOX");
+                            if (oldOutbox.exists()) {
+                                ContentValues cv = new ContentValues();
+                                cv.put("name", Account.OUTBOX);
+                                db.update("folders", cv, "name = ?", new String[] { "OUTBOX" });
+                                Log.i(K9.LOG_TAG, "Renamed folder OUTBOX to " + Account.OUTBOX);
+                            }
+
+                            // Check if old (pre v3.800) localized outbox folder exists
+                            String localizedOutbox = K9.app.getString(R.string.special_mailbox_name_outbox);
+                            LocalFolder obsoleteOutbox = new LocalFolder(localizedOutbox);
+                            if (obsoleteOutbox.exists()) {
+                                // Get all messages from the localized outbox ...
+                                Message[] messages = obsoleteOutbox.getMessages(null, false);
+
+                                if (messages.length > 0) {
+                                    // ... and move them to the drafts folder (we don't want to
+                                    // surprise the user by sending potentially very old messages)
+                                    LocalFolder drafts = new LocalFolder(mAccount.getDraftsFolderName());
+                                    obsoleteOutbox.moveMessages(messages, drafts);
+                                }
+
+                                // Now get rid of the localized outbox
+                                obsoleteOutbox.delete();
+                                obsoleteOutbox.delete(true);
+                            }
+                        } catch (Exception e) {
+                            Log.e(K9.LOG_TAG, "Error trying to fix the outbox folders", e);
+                        }
+                    }
+                    if (db.getVersion() < 44) {
+                        try {
+                            db.execSQL("ALTER TABLE messages ADD thread_root INTEGER");
+                            db.execSQL("ALTER TABLE messages ADD thread_parent INTEGER");
+                            db.execSQL("ALTER TABLE messages ADD normalized_subject_hash INTEGER");
+                            db.execSQL("ALTER TABLE messages ADD empty INTEGER");
+                        } catch (SQLiteException e) {
+                            if (! e.getMessage().startsWith("duplicate column name:")) {
+                                throw e;
+                            }
+                        }
+                    }
+                    if (db.getVersion() < 45) {
+                        try {
+                            db.execSQL("DROP INDEX IF EXISTS msg_empty");
+                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)");
+
+                            db.execSQL("DROP INDEX IF EXISTS msg_thread_root");
+                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_root ON messages (thread_root)");
+
+                            db.execSQL("DROP INDEX IF EXISTS msg_thread_parent");
+                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_parent ON messages (thread_parent)");
+                        } catch (SQLiteException e) {
+                            if (! e.getMessage().startsWith("duplicate column name:")) {
+                                throw e;
+                            }
+                        }
+                    }
+                    if (db.getVersion() < 46) {
+                        db.execSQL("ALTER TABLE messages ADD read INTEGER default 0");
+                        db.execSQL("ALTER TABLE messages ADD flagged INTEGER default 0");
+                        db.execSQL("ALTER TABLE messages ADD answered INTEGER default 0");
+                        db.execSQL("ALTER TABLE messages ADD forwarded INTEGER default 0");
+
+                        String[] projection = { "id", "flags" };
+
+                        ContentValues cv = new ContentValues();
+                        List<Flag> extraFlags = new ArrayList<Flag>();
+
+                        Cursor cursor = db.query("messages", projection, null, null, null, null, null);
+                        try {
+                            while (cursor.moveToNext()) {
+                                long id = cursor.getLong(0);
+                                String flagList = cursor.getString(1);
+
+                                boolean read = false;
+                                boolean flagged = false;
+                                boolean answered = false;
+                                boolean forwarded = false;
+
+                                if (flagList != null && flagList.length() > 0) {
+                                    String[] flags = flagList.split(",");
+
+                                    for (String flagStr : flags) {
+                                        try {
+                                            Flag flag = Flag.valueOf(flagStr);
+
+                                            switch (flag) {
+                                                case ANSWERED: {
+                                                    answered = true;
+                                                    break;
+                                                }
+                                                case DELETED: {
+                                                    // Don't store this in column 'flags'
+                                                    break;
+                                                }
+                                                case FLAGGED: {
+                                                    flagged = true;
+                                                    break;
+                                                }
+                                                case FORWARDED: {
+                                                    forwarded = true;
+                                                    break;
+                                                }
+                                                case SEEN: {
+                                                    read = true;
+                                                    break;
+                                                }
+                                                case DRAFT:
+                                                case RECENT:
+                                                case X_DESTROYED:
+                                                case X_DOWNLOADED_FULL:
+                                                case X_DOWNLOADED_PARTIAL:
+                                                case X_GOT_ALL_HEADERS:
+                                                case X_REMOTE_COPY_STARTED:
+                                                case X_SEND_FAILED:
+                                                case X_SEND_IN_PROGRESS: {
+                                                    extraFlags.add(flag);
+                                                    break;
+                                                }
+                                            }
+                                        } catch (Exception e) {
+                                            // Ignore bad flags
+                                        }
+                                    }
+                                }
+
+
+                                cv.put("flags", serializeFlags(extraFlags.toArray(EMPTY_FLAG_ARRAY)));
+                                cv.put("read", read);
+                                cv.put("flagged", flagged);
+                                cv.put("answered", answered);
+                                cv.put("forwarded", forwarded);
+
+                                db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
+
+                                cv.clear();
+                                extraFlags.clear();
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_read ON messages (read)");
-
-                        db.execSQL("DROP INDEX IF EXISTS msg_flagged");
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_flagged ON messages (flagged)");
+                    }
 
+                    if (db.getVersion() < 47) {
+                        // Create new 'threads' table
                         db.execSQL("DROP TABLE IF EXISTS threads");
                         db.execSQL("CREATE TABLE threads (" +
                                 "id INTEGER PRIMARY KEY, " +
@@ -269,6 +620,7 @@ public class LocalStore extends Store implements Serializable {
                                 "parent INTEGER" +
                                 ")");
 
+                        // Create indices for new table
                         db.execSQL("DROP INDEX IF EXISTS threads_message_id");
                         db.execSQL("CREATE INDEX IF NOT EXISTS threads_message_id ON threads (message_id)");
 
@@ -278,399 +630,65 @@ public class LocalStore extends Store implements Serializable {
                         db.execSQL("DROP INDEX IF EXISTS threads_parent");
                         db.execSQL("CREATE INDEX IF NOT EXISTS threads_parent ON threads (parent)");
 
-                        db.execSQL("DROP TRIGGER IF EXISTS set_thread_root");
+                        // Create entries for all messages in 'threads' table
+                        db.execSQL("INSERT INTO threads (message_id) SELECT id FROM messages");
+
+                        // Copy thread structure from 'messages' table to 'threads'
+                        Cursor cursor = db.query("messages",
+                                new String[] { "id", "thread_root", "thread_parent" },
+                                null, null, null, null, null);
+                        try {
+                            ContentValues cv = new ContentValues();
+                            while (cursor.moveToNext()) {
+                                cv.clear();
+                                long messageId = cursor.getLong(0);
+
+                                if (!cursor.isNull(1)) {
+                                    long threadRootMessageId = cursor.getLong(1);
+                                    db.execSQL("UPDATE threads SET root = (SELECT t.id FROM " +
+                                            "threads t WHERE t.message_id = ?) " +
+                                            "WHERE message_id = ?",
+                                            new String[] {
+                                                Long.toString(threadRootMessageId),
+                                                Long.toString(messageId)
+                                            });
+                                }
+
+                                if (!cursor.isNull(2)) {
+                                    long threadParentMessageId = cursor.getLong(2);
+                                    db.execSQL("UPDATE threads SET parent = (SELECT t.id FROM " +
+                                            "threads t WHERE t.message_id = ?) " +
+                                            "WHERE message_id = ?",
+                                            new String[] {
+                                                Long.toString(threadParentMessageId),
+                                                Long.toString(messageId)
+                                            });
+                                }
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
+                        // Remove indices for old thread-related columns in 'messages' table
+                        db.execSQL("DROP INDEX IF EXISTS msg_thread_root");
+                        db.execSQL("DROP INDEX IF EXISTS msg_thread_parent");
+
+                        // Clear out old thread-related columns in 'messages'
+                        ContentValues cv = new ContentValues();
+                        cv.putNull("thread_root");
+                        cv.putNull("thread_parent");
+                        db.update("messages", cv, null, null);
+                    }
+
+                    if (db.getVersion() < 48) {
+                        db.execSQL("UPDATE threads SET root=id WHERE root IS NULL");
+
                         db.execSQL("CREATE TRIGGER set_thread_root " +
                                 "AFTER INSERT ON threads " +
                                 "BEGIN " +
                                 "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
                                 "END");
-
-                        db.execSQL("DROP TABLE IF EXISTS attachments");
-                        db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
-                                   + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
-                                   + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
-
-                        db.execSQL("DROP TABLE IF EXISTS pending_commands");
-                        db.execSQL("CREATE TABLE pending_commands " +
-                                   "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
-
-                        db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
-                        db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
-
-                        db.execSQL("DROP TRIGGER IF EXISTS delete_message");
-                        db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
-                                   + "DELETE FROM headers where old.id = message_id; END;");
-                    } else {
-                        // in the case that we're starting out at 29 or newer, run all the needed updates
-
-                        if (db.getVersion() < 30) {
-                            try {
-                                db.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
-                            } catch (SQLiteException e) {
-                                if (! e.toString().startsWith("duplicate column name: deleted")) {
-                                    throw e;
-                                }
-                            }
-                        }
-                        if (db.getVersion() < 31) {
-                            db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
-                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
-                        }
-                        if (db.getVersion() < 32) {
-                            db.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
-                        }
-                        if (db.getVersion() < 33) {
-
-                            try {
-                                db.execSQL("ALTER TABLE messages ADD preview TEXT");
-                            } catch (SQLiteException e) {
-                                if (! e.toString().startsWith("duplicate column name: preview")) {
-                                    throw e;
-                                }
-                            }
-
-                        }
-                        if (db.getVersion() < 34) {
-                            try {
-                                db.execSQL("ALTER TABLE folders ADD flagged_count INTEGER default 0");
-                            } catch (SQLiteException e) {
-                                if (! e.getMessage().startsWith("duplicate column name: flagged_count")) {
-                                    throw e;
-                                }
-                            }
-                        }
-                        if (db.getVersion() < 35) {
-                            try {
-                                db.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
-                            } catch (SQLiteException e) {
-                                Log.e(K9.LOG_TAG, "Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
-                            }
-                        }
-                        if (db.getVersion() < 36) {
-                            try {
-                                db.execSQL("ALTER TABLE attachments ADD content_id TEXT");
-                            } catch (SQLiteException e) {
-                                Log.e(K9.LOG_TAG, "Unable to add content_id column to attachments");
-                            }
-                        }
-                        if (db.getVersion() < 37) {
-                            try {
-                                db.execSQL("ALTER TABLE attachments ADD content_disposition TEXT");
-                            } catch (SQLiteException e) {
-                                Log.e(K9.LOG_TAG, "Unable to add content_disposition column to attachments");
-                            }
-                        }
-
-                        // Database version 38 is solely to prune cached attachments now that we clear them better
-                        if (db.getVersion() < 39) {
-                            try {
-                                db.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
-                            } catch (SQLiteException e) {
-                                Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
-                            }
-                        }
-
-                        // V40: Store the MIME type for a message.
-                        if (db.getVersion() < 40) {
-                            try {
-                                db.execSQL("ALTER TABLE messages ADD mime_type TEXT");
-                            } catch (SQLiteException e) {
-                                Log.e(K9.LOG_TAG, "Unable to add mime_type column to messages");
-                            }
-                        }
-
-                        if (db.getVersion() < 41) {
-                            try {
-                                db.execSQL("ALTER TABLE folders ADD integrate INTEGER");
-                                db.execSQL("ALTER TABLE folders ADD top_group INTEGER");
-                                db.execSQL("ALTER TABLE folders ADD poll_class TEXT");
-                                db.execSQL("ALTER TABLE folders ADD push_class TEXT");
-                                db.execSQL("ALTER TABLE folders ADD display_class TEXT");
-                            } catch (SQLiteException e) {
-                                if (! e.getMessage().startsWith("duplicate column name:")) {
-                                    throw e;
-                                }
-                            }
-                            Cursor cursor = null;
-
-                            try {
-
-                                SharedPreferences prefs = getPreferences();
-                                cursor = db.rawQuery("SELECT id, name FROM folders", null);
-                                while (cursor.moveToNext()) {
-                                    try {
-                                        int id = cursor.getInt(0);
-                                        String name = cursor.getString(1);
-                                        update41Metadata(db, prefs, id, name);
-                                    } catch (Exception e) {
-                                        Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder class", e);
-                                    }
-                                }
-                            }
-
-
-                            catch (SQLiteException e) {
-                                Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished", e);
-
-                            } finally {
-                                Utility.closeQuietly(cursor);
-                            }
-                        }
-                        if (db.getVersion() == 41) {
-                            try {
-                                long startTime = System.currentTimeMillis();
-                                SharedPreferences.Editor editor = getPreferences().edit();
-
-                                List <? extends Folder >  folders = getPersonalNamespaces(true);
-                                for (Folder folder : folders) {
-                                    if (folder instanceof LocalFolder) {
-                                        LocalFolder lFolder = (LocalFolder)folder;
-                                        lFolder.save(editor);
-                                    }
-                                }
-
-                                editor.commit();
-                                long endTime = System.currentTimeMillis();
-                                Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() + " folders back into Preferences took " + (endTime - startTime) + " ms");
-                            } catch (Exception e) {
-                                Log.e(K9.LOG_TAG, "Could not replace Preferences in upgrade from DB_VERSION 41", e);
-                            }
-                        }
-                        if (db.getVersion() < 43) {
-                            try {
-                                // If folder "OUTBOX" (old, v3.800 - v3.802) exists, rename it to
-                                // "K9MAIL_INTERNAL_OUTBOX" (new)
-                                LocalFolder oldOutbox = new LocalFolder("OUTBOX");
-                                if (oldOutbox.exists()) {
-                                    ContentValues cv = new ContentValues();
-                                    cv.put("name", Account.OUTBOX);
-                                    db.update("folders", cv, "name = ?", new String[] { "OUTBOX" });
-                                    Log.i(K9.LOG_TAG, "Renamed folder OUTBOX to " + Account.OUTBOX);
-                                }
-
-                                // Check if old (pre v3.800) localized outbox folder exists
-                                String localizedOutbox = K9.app.getString(R.string.special_mailbox_name_outbox);
-                                LocalFolder obsoleteOutbox = new LocalFolder(localizedOutbox);
-                                if (obsoleteOutbox.exists()) {
-                                    // Get all messages from the localized outbox ...
-                                    Message[] messages = obsoleteOutbox.getMessages(null, false);
-
-                                    if (messages.length > 0) {
-                                        // ... and move them to the drafts folder (we don't want to
-                                        // surprise the user by sending potentially very old messages)
-                                        LocalFolder drafts = new LocalFolder(mAccount.getDraftsFolderName());
-                                        obsoleteOutbox.moveMessages(messages, drafts);
-                                    }
-
-                                    // Now get rid of the localized outbox
-                                    obsoleteOutbox.delete();
-                                    obsoleteOutbox.delete(true);
-                                }
-                            } catch (Exception e) {
-                                Log.e(K9.LOG_TAG, "Error trying to fix the outbox folders", e);
-                            }
-                        }
-                        if (db.getVersion() < 44) {
-                            try {
-                                db.execSQL("ALTER TABLE messages ADD thread_root INTEGER");
-                                db.execSQL("ALTER TABLE messages ADD thread_parent INTEGER");
-                                db.execSQL("ALTER TABLE messages ADD normalized_subject_hash INTEGER");
-                                db.execSQL("ALTER TABLE messages ADD empty INTEGER");
-                            } catch (SQLiteException e) {
-                                if (! e.getMessage().startsWith("duplicate column name:")) {
-                                    throw e;
-                                }
-                            }
-                        }
-                        if (db.getVersion() < 45) {
-                            try {
-                                db.execSQL("DROP INDEX IF EXISTS msg_empty");
-                                db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)");
-
-                                db.execSQL("DROP INDEX IF EXISTS msg_thread_root");
-                                db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_root ON messages (thread_root)");
-
-                                db.execSQL("DROP INDEX IF EXISTS msg_thread_parent");
-                                db.execSQL("CREATE INDEX IF NOT EXISTS msg_thread_parent ON messages (thread_parent)");
-                            } catch (SQLiteException e) {
-                                if (! e.getMessage().startsWith("duplicate column name:")) {
-                                    throw e;
-                                }
-                            }
-                        }
-                        if (db.getVersion() < 46) {
-                            db.execSQL("ALTER TABLE messages ADD read INTEGER default 0");
-                            db.execSQL("ALTER TABLE messages ADD flagged INTEGER default 0");
-                            db.execSQL("ALTER TABLE messages ADD answered INTEGER default 0");
-                            db.execSQL("ALTER TABLE messages ADD forwarded INTEGER default 0");
-
-                            String[] projection = { "id", "flags" };
-
-                            ContentValues cv = new ContentValues();
-                            List<Flag> extraFlags = new ArrayList<Flag>();
-
-                            Cursor cursor = db.query("messages", projection, null, null, null, null, null);
-                            try {
-                                while (cursor.moveToNext()) {
-                                    long id = cursor.getLong(0);
-                                    String flagList = cursor.getString(1);
-
-                                    boolean read = false;
-                                    boolean flagged = false;
-                                    boolean answered = false;
-                                    boolean forwarded = false;
-
-                                    if (flagList != null && flagList.length() > 0) {
-                                        String[] flags = flagList.split(",");
-
-                                        for (String flagStr : flags) {
-                                            try {
-                                                Flag flag = Flag.valueOf(flagStr);
-
-                                                switch (flag) {
-                                                    case ANSWERED: {
-                                                        answered = true;
-                                                        break;
-                                                    }
-                                                    case DELETED: {
-                                                        // Don't store this in column 'flags'
-                                                        break;
-                                                    }
-                                                    case FLAGGED: {
-                                                        flagged = true;
-                                                        break;
-                                                    }
-                                                    case FORWARDED: {
-                                                        forwarded = true;
-                                                        break;
-                                                    }
-                                                    case SEEN: {
-                                                        read = true;
-                                                        break;
-                                                    }
-                                                    case DRAFT:
-                                                    case RECENT:
-                                                    case X_DESTROYED:
-                                                    case X_DOWNLOADED_FULL:
-                                                    case X_DOWNLOADED_PARTIAL:
-                                                    case X_GOT_ALL_HEADERS:
-                                                    case X_REMOTE_COPY_STARTED:
-                                                    case X_SEND_FAILED:
-                                                    case X_SEND_IN_PROGRESS: {
-                                                        extraFlags.add(flag);
-                                                        break;
-                                                    }
-                                                }
-                                            } catch (Exception e) {
-                                                // Ignore bad flags
-                                            }
-                                        }
-                                    }
-
-
-                                    cv.put("flags", serializeFlags(extraFlags.toArray(EMPTY_FLAG_ARRAY)));
-                                    cv.put("read", read);
-                                    cv.put("flagged", flagged);
-                                    cv.put("answered", answered);
-                                    cv.put("forwarded", forwarded);
-
-                                    db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
-
-                                    cv.clear();
-                                    extraFlags.clear();
-                                }
-                            } finally {
-                                cursor.close();
-                            }
-
-                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_read ON messages (read)");
-                            db.execSQL("CREATE INDEX IF NOT EXISTS msg_flagged ON messages (flagged)");
-                        }
-
-                        if (db.getVersion() < 47) {
-                            // Create new 'threads' table
-                            db.execSQL("DROP TABLE IF EXISTS threads");
-                            db.execSQL("CREATE TABLE threads (" +
-                                    "id INTEGER PRIMARY KEY, " +
-                                    "message_id INTEGER, " +
-                                    "root INTEGER, " +
-                                    "parent INTEGER" +
-                                    ")");
-
-                            // Create indices for new table
-                            db.execSQL("DROP INDEX IF EXISTS threads_message_id");
-                            db.execSQL("CREATE INDEX IF NOT EXISTS threads_message_id ON threads (message_id)");
-
-                            db.execSQL("DROP INDEX IF EXISTS threads_root");
-                            db.execSQL("CREATE INDEX IF NOT EXISTS threads_root ON threads (root)");
-
-                            db.execSQL("DROP INDEX IF EXISTS threads_parent");
-                            db.execSQL("CREATE INDEX IF NOT EXISTS threads_parent ON threads (parent)");
-
-                            // Create entries for all messages in 'threads' table
-                            db.execSQL("INSERT INTO threads (message_id) SELECT id FROM messages");
-
-                            // Copy thread structure from 'messages' table to 'threads'
-                            Cursor cursor = db.query("messages",
-                                    new String[] { "id", "thread_root", "thread_parent" },
-                                    null, null, null, null, null);
-                            try {
-                                ContentValues cv = new ContentValues();
-                                while (cursor.moveToNext()) {
-                                    cv.clear();
-                                    long messageId = cursor.getLong(0);
-
-                                    if (!cursor.isNull(1)) {
-                                        long threadRootMessageId = cursor.getLong(1);
-                                        db.execSQL("UPDATE threads SET root = (SELECT t.id FROM " +
-                                                "threads t WHERE t.message_id = ?) " +
-                                                "WHERE message_id = ?",
-                                                new String[] {
-                                                    Long.toString(threadRootMessageId),
-                                                    Long.toString(messageId)
-                                                });
-                                    }
-
-                                    if (!cursor.isNull(2)) {
-                                        long threadParentMessageId = cursor.getLong(2);
-                                        db.execSQL("UPDATE threads SET parent = (SELECT t.id FROM " +
-                                                "threads t WHERE t.message_id = ?) " +
-                                                "WHERE message_id = ?",
-                                                new String[] {
-                                                    Long.toString(threadParentMessageId),
-                                                    Long.toString(messageId)
-                                                });
-                                    }
-                                }
-                            } finally {
-                                cursor.close();
-                            }
-
-                            // Remove indices for old thread-related columns in 'messages' table
-                            db.execSQL("DROP INDEX IF EXISTS msg_thread_root");
-                            db.execSQL("DROP INDEX IF EXISTS msg_thread_parent");
-
-                            // Clear out old thread-related columns in 'messages'
-                            ContentValues cv = new ContentValues();
-                            cv.putNull("thread_root");
-                            cv.putNull("thread_parent");
-                            db.update("messages", cv, null, null);
-                        }
-
-                        if (db.getVersion() < 48) {
-                            db.execSQL("UPDATE threads SET root=id WHERE root IS NULL");
-
-                            db.execSQL("CREATE TRIGGER set_thread_root " +
-                                    "AFTER INSERT ON threads " +
-                                    "BEGIN " +
-                                    "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
-                                    "END");
-                        }
                     }
-                } catch (SQLiteException e) {
-                    Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
-                    db.setVersion(0);
-                    throw new Error("Database upgrade failed! Resetting your DB version to 0 to force a full schema recreation.");
                 }
 
                 db.setVersion(DB_VERSION);
@@ -681,19 +699,8 @@ public class LocalStore extends Store implements Serializable {
             }
 
             if (db.getVersion() != DB_VERSION) {
-                throw new Error("Database upgrade failed!");
+                throw new RuntimeException("Database upgrade failed!");
             }
-
-            // Unless we're blowing away the whole data store, there's no reason to prune attachments
-            // every time the user upgrades. it'll just cost them money and pain.
-            // try
-            //{
-            //        pruneCachedAttachments(true);
-            //}
-            //catch (Exception me)
-            //{
-            //   Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
-            //}
         }
 
         private void update41Metadata(final SQLiteDatabase  db, SharedPreferences prefs, int id, String name) {
@@ -876,15 +883,14 @@ public class LocalStore extends Store implements Serializable {
 
                     try {
                         cursor = db.rawQuery("SELECT " + GET_FOLDER_COLS + " FROM folders " +
-                                "LEFT JOIN messages ON (folder_id = folders.id AND" +
-                                " (empty IS NULL OR empty != 1) AND deleted = 0) " +
-                                "GROUP BY folders.id ORDER BY name ASC", null);
+                                "ORDER BY name ASC", null);
                         while (cursor.moveToNext()) {
-                            if (cursor.isNull(0)) {
+                            if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;
                             }
-                            LocalFolder folder = new LocalFolder(cursor.getString(1));
-                            folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
+                            String folderName = cursor.getString(FOLDER_NAME_INDEX);
+                            LocalFolder folder = new LocalFolder(folderName);
+                            folder.open(cursor);
 
                             folders.add(folder);
                         }
@@ -1311,8 +1317,6 @@ public class LocalStore extends Store implements Serializable {
         private static final long serialVersionUID = -1973296520918624767L;
         private String mName = null;
         private long mFolderId = -1;
-        private int mUnreadMessageCount = -1;
-        private int mFlaggedMessageCount = -1;
         private int mVisibleLimit = -1;
         private String prefId = null;
         private FolderClass mDisplayClass = FolderClass.NO_CLASS;
@@ -1365,9 +1369,7 @@ public class LocalStore extends Store implements Serializable {
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                         Cursor cursor = null;
                         try {
-                            String baseQuery = "SELECT " + GET_FOLDER_COLS + " FROM folders " +
-                                    "LEFT JOIN messages ON (folder_id = folders.id AND" +
-                                    " (empty IS NULL OR empty != 1) AND deleted = 0) ";
+                            String baseQuery = "SELECT " + GET_FOLDER_COLS + " FROM folders ";
 
                             if (mName != null) {
                                 cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });
@@ -1375,10 +1377,10 @@ public class LocalStore extends Store implements Serializable {
                                 cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(mFolderId) });
                             }
 
-                            if (cursor.moveToFirst() && !cursor.isNull(0)) {
-                                int folderId = cursor.getInt(0);
+                            if (cursor.moveToFirst() && !cursor.isNull(FOLDER_ID_INDEX)) {
+                                int folderId = cursor.getInt(FOLDER_ID_INDEX);
                                 if (folderId > 0) {
-                                    open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getString(11), cursor.getString(12), cursor.getString(13));
+                                    open(cursor);
                                 }
                             } else {
                                 Log.w(K9.LOG_TAG, "Creating folder " + getName() + " with existing id " + getId());
@@ -1398,25 +1400,25 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount, int integrate, int topGroup, String syncClass, String pushClass, String displayClass) throws MessagingException {
-            mFolderId = id;
-            mName = name;
-            mUnreadMessageCount = unreadCount;
-            mVisibleLimit = visibleLimit;
-            mPushState = pushState;
-            mFlaggedMessageCount = flaggedCount;
-            super.setStatus(status);
+        private void open(Cursor cursor) throws MessagingException {
+            mFolderId = cursor.getInt(FOLDER_ID_INDEX);
+            mName = cursor.getString(FOLDER_NAME_INDEX);
+            mVisibleLimit = cursor.getInt(FOLDER_VISIBLE_LIMIT_INDEX);
+            mPushState = cursor.getString(FOLDER_PUSH_STATE_INDEX);
+            super.setStatus(cursor.getString(FOLDER_STATUS_INDEX));
             // Only want to set the local variable stored in the super class.  This class
             // does a DB update on setLastChecked
-            super.setLastChecked(lastChecked);
-            super.setLastPush(lastPushed);
-            mInTopGroup = topGroup == 1  ? true : false;
-            mIntegrate = integrate == 1 ? true : false;
+            super.setLastChecked(cursor.getLong(FOLDER_LAST_CHECKED_INDEX));
+            super.setLastPush(cursor.getLong(FOLDER_LAST_PUSHED_INDEX));
+            mInTopGroup = (cursor.getInt(FOLDER_TOP_GROUP_INDEX)) == 1  ? true : false;
+            mIntegrate = (cursor.getInt(FOLDER_INTEGRATE_INDEX) == 1) ? true : false;
             String noClass = FolderClass.NO_CLASS.toString();
+            String displayClass = cursor.getString(FOLDER_DISPLAY_CLASS_INDEX);
             mDisplayClass = Folder.FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
+            String pushClass = cursor.getString(FOLDER_PUSH_CLASS_INDEX);
             mPushClass = Folder.FolderClass.valueOf((pushClass == null) ? noClass : pushClass);
+            String syncClass = cursor.getString(FOLDER_SYNC_CLASS_INDEX);
             mSyncClass = Folder.FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
-
         }
 
         @Override
@@ -1519,13 +1521,6 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public int getUnreadMessageCount() throws MessagingException {
-            if (!isOpen()) {
-                // open() sums up the number of unread messages in the database
-                open(OpenMode.READ_WRITE);
-                return mUnreadMessageCount;
-            }
-
-            // Folder was already opened. Unread count might be outdated so query the database now.
             try {
                 return database.execute(false, new DbCallback<Integer>() {
                     @Override
@@ -1553,8 +1548,33 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public int getFlaggedMessageCount() throws MessagingException {
-            open(OpenMode.READ_WRITE);
-            return mFlaggedMessageCount;
+            if (!isOpen()) {
+                open(OpenMode.READ_WRITE);
+            }
+
+            try {
+                return database.execute(false, new DbCallback<Integer>() {
+                    @Override
+                    public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
+                        int flaggedMessageCount = 0;
+                        Cursor cursor = db.query("messages", new String[] { "SUM(flagged)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                                new String[] { Long.toString(mFolderId) }, null, null, null);
+
+                        try {
+                            if (cursor.moveToFirst()) {
+                                flaggedMessageCount = cursor.getInt(0);
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
+                        return flaggedMessageCount;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
         }
 
         @Override

@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     When removing strings from the main file, please cleanup the translations.
+     The script tools/sync_translation.py will get rid of any surplus strings.
+-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
-
-    <!--
-         When removing strings from the main file, please cleanup the translations.
-
-         This doesn't work on multiline strings, nor strings with the NEW tag.
-         find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
-     -->
 
     <!-- This should make it easier for forks to change the branding -->
 
@@ -552,7 +549,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_message_format_auto">Automatic</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>
-    <string name="account_settings_always_show_cc_bcc_summary"></string>
 
     <string name="account_settings_message_read_receipt_label">Read receipt</string>
     <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
@@ -866,12 +862,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="gestures_summary">Enable gesture control</string>
 
     <string name="volume_navigation_title">Volume key navigation</string>
-    <string name="volume_navigation_summary"></string>
     <string name="volume_navigation_message">In message views</string>
     <string name="volume_navigation_list">In list views</string>
 
     <string name="start_integrated_inbox_title">Start in Unified Inbox</string>
-    <string name="start_integrated_inbox_summary"></string>
 
     <string name="measure_accounts_title">Show account size</string>
     <string name="measure_accounts_summary">Turn off for faster display</string>
@@ -985,6 +979,18 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="dialog_confirm_delete_title">Confirm deletion</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
@@ -996,17 +1002,6 @@ Please submit bug reports, contribute new features and ask questions at
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Do you really want to move this message to the spam folder?</item>
         <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Yes</string>
     <string name="dialog_confirm_spam_cancel_button">No</string>
