@@ -92,7 +92,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="folders_title">Priečinky</string>
     <string name="advanced">Pokročilé</string>
 
-    <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
+    <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Vytvoriť</string>
     <string name="compose_title_reply">Odpovedať</string>
@@ -199,7 +199,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <xliff:g id="oldSize">%s</xliff:g>
     na
     <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    </string>
 
     <string name="compacting_account">Zmenšujem účet \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Čistím účet \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -223,7 +223,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="notification_bg_title_separator">:</string>
 
     <string name="special_mailbox_name_inbox">Doručená</string>
-    <string name="special_mailbox_name_outbox">Odoslaná</string>
+    <string name="special_mailbox_name_outbox">Pošta na odoslanie</string>
     <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Koncepty</string>
     <string name="special_mailbox_name_trash">Kôš</string>
@@ -432,7 +432,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
 
     <string name="account_setup_incoming_webdav_auth_path_label">Overovacia cesta</string>
     <string name="account_setup_incoming_webdav_auth_path_hint">Nepovinné</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_label">Alias schránky</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_label">Identita schránky</string>
     <string name="account_setup_incoming_webdav_mailbox_path_hint">Nepovinné</string>
 
     <string name="account_setup_outgoing_title">Nastavenia serveru odchádzajúcej pošty</string>
@@ -781,7 +781,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     S - Označiť/odznačiť\n
     J alebo P - Predchádzajúca správa\n
     K alebo N - Ďalšia správa\n
-    </string>
+    </string>
 
     <string name="folder_list_help_key">
     1 - Zobrazí len priečinky 1. triedy\u000A
@@ -868,8 +868,8 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="hide_special_accounts_summary">Skryť zjednotenú doručenú poštu a všetky správy pre účty</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - S hviezdičkou</string>
-    <string name="unread_modifier"> - Neprečítaná</string>
+    <string name="flagged_modifier"> - S hviezdičkou</string>
+    <string name="unread_modifier"> - Neprečítaná</string>
 
     <string name="search_all_messages_title">Všetky správy</string>
     <string name="search_all_messages_detail">Všetky správy v prehľadávaných priečinkoch</string>
