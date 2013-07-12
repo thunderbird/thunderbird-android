@@ -71,11 +71,6 @@
         android:paddingLeft="10dip"
         android:paddingRight="10dip">
 
-        <View
-            android:id="@+id/total_message_count_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"/>
-
         <TextView
             android:id="@+id/total_message_count"
             android:layout_width="wrap_content"

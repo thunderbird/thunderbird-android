@@ -2,6 +2,7 @@ package com.fsck.k9.view;
 
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Path.Direction;
 import android.graphics.RectF;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
@@ -13,6 +14,7 @@ public class ColorChip {
     public static final Path RIGHT_NOTCH = new Path();
     public static final Path STAR = new Path();
     public static final Path CHECKMARK = new Path();
+    public static final Path RECTANGLE = new Path();
 
 
     static {
@@ -52,7 +54,9 @@ public class ColorChip {
         CHECKMARK.moveTo(10f,160f);
         CHECKMARK.lineTo(120f,280f);
         CHECKMARK.lineTo(300f,40f);
-
+        
+        RECTANGLE.addRect(160-70, 160-70, 160+70, 160+70, Direction.CW);
+        RECTANGLE.close();
     }
 
     private ShapeDrawable mDrawable;

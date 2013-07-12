@@ -1430,6 +1430,11 @@ public class WebDavStore extends Store {
         }
         
         @Override
+        public boolean showTotalMessageCount() {
+        	return false;
+        }
+
+        @Override
         public boolean isOpen() {
             return this.mIsOpen;
         }

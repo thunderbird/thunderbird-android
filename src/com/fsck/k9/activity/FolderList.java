@@ -991,7 +991,6 @@ public class FolderList extends K9ListActivity {
                 holder.totalMessageCountWrapper = (View) view.findViewById(R.id.total_message_count_wrapper);
                 holder.newMessageCountIcon = (View) view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = (View) view.findViewById(R.id.flagged_message_count_icon);
-                holder.totalMessageCountIcon = (View) view.findViewById(R.id.total_message_count_icon);
 
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
@@ -1063,13 +1062,11 @@ public class FolderList extends K9ListActivity {
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
             }
             
-            if (folder.totalMessageCount > 0) {
+            if ((folder.totalMessageCount > 0) && folder.folder.showTotalMessageCount()) {
                 holder.totalMessageCount.setText("[" + Integer.toString(folder.totalMessageCount) + "]");
 //                holder.totalMessageCountWrapper.setOnClickListener(
 //                        createFlaggedSearch(mAccount, folder));
                 holder.totalMessageCountWrapper.setVisibility(View.VISIBLE);
-                holder.totalMessageCountIcon.setBackgroundDrawable(
-                        mAccount.generateColorChip(false, false, false, false,true).drawable());
             } else {
                 holder.totalMessageCountWrapper.setVisibility(View.GONE);
             }
@@ -1227,7 +1224,6 @@ public class FolderList extends K9ListActivity {
         public TextView totalMessageCount;
         public View newMessageCountIcon;
         public View flaggedMessageCountIcon;
-        public View totalMessageCountIcon;
         public View newMessageCountWrapper;
         public View flaggedMessageCountWrapper;
         public View totalMessageCountWrapper;

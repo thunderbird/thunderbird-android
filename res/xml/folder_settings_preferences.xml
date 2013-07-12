@@ -63,6 +63,13 @@
             android:key="folder_settings_include_in_integrated_inbox"
             android:title="@string/folder_settings_include_in_integrated_inbox_label"
             android:summary="@string/folder_settings_include_in_integrated_inbox_summary" />
+        
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="folder_settings_show_total_message_count"
+            android:title="@string/folder_settings_show_total_message_count_label"
+            android:summary="@string/folder_settings_show_total_message_count_summary" />
+        
 
     </PreferenceCategory>
 

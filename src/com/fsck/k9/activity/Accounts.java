@@ -1718,7 +1718,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
                 holder.newMessageCountIcon = (View) view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = (View) view.findViewById(R.id.flagged_message_count_icon);
-                holder.totalMessageCountIcon = (View) view.findViewById(R.id.total_message_count_icon);
                 
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
 
@@ -1759,11 +1758,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.flaggedMessageCountWrapper.setVisibility(stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.totalMessageCount.setText("[" + Integer.toString(stats.totalMessageCount) + "]");
-                holder.totalMessageCountWrapper.setVisibility(stats.totalMessageCount > 0 ? View.VISIBLE : View.GONE);
+                holder.totalMessageCountWrapper.setVisibility((stats.totalMessageCount > 0) && account.showTotalCountMessage() ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearchListener(account));
                 holder.newMessageCountWrapper.setOnClickListener(createUnreadSearchListener(account));
-// TODO:        holder.totalMessageCountWrapper.setOnClickListener(createTotalSearchListener(account));
 
                 holder.activeIcons.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
@@ -1776,6 +1774,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
+                holder.totalMessageCountWrapper.setVisibility(View.GONE);
             }
             if (account instanceof Account) {
                 Account realAccount = (Account)account;

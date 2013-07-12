@@ -162,7 +162,8 @@ public abstract class Folder {
 
     public abstract String getName();
 
-
+    public abstract boolean showTotalMessageCount();
+    
     /**
      * Indicated by the server "\*" ( * OK [PERMANENTFLAGS (\Answered .. \*)] Flags permitted). that
      * new keywords may be created

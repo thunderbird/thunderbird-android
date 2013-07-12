@@ -1301,6 +1301,11 @@ public class ImapStore extends Store {
         }
 
         @Override
+        public boolean showTotalMessageCount() {
+        	return false;
+        }
+
+        @Override
         public int getTotalMessageCount() throws MessagingException {
         	return getRemoteMessageCount("NOT DELETED");
         }

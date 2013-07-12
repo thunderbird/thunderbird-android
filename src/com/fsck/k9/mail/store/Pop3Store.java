@@ -498,6 +498,11 @@ public class Pop3Store extends Store {
         }
 
         @Override
+        public boolean showTotalMessageCount() {
+        	return false;
+        }
+
+        @Override
         public Message getMessage(String uid) throws MessagingException {
             Pop3Message message = mUidToMsgMap.get(uid);
             if (message == null) {
