@@ -6,4 +6,5 @@ public interface BaseAccount {
     public String getDescription();
     public void setDescription(String description);
     public String getUuid();
+    public boolean showTotalCountMessage();
 }

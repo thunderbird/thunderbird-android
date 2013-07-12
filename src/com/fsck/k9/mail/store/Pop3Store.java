@@ -492,6 +492,15 @@ public class Pop3Store extends Store {
         public int getFlaggedMessageCount() throws MessagingException {
             return -1;
         }
+        @Override
+        public int getTotalMessageCount() throws MessagingException {
+            return -1;
+        }
+
+        @Override
+        public boolean showTotalMessageCount() {
+        	return false;
+        }
 
         @Override
         public Message getMessage(String uid) throws MessagingException {

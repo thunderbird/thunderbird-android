@@ -382,7 +382,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private Account mAccount;
     private String[] mAccountUuids;
+    
     private int mUnreadMessageCount = 0;
+    private int mTotalMessageCount = 0;
 
     private Cursor[] mCursors;
     private boolean[] mCursorValid;

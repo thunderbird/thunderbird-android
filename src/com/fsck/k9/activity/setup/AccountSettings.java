@@ -120,6 +120,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
 
+    private static final String PREFERENCE_SHOW_TOTAL_MESSAGE_COUNT = "show_total_message_count";
 
     private Account mAccount;
     private boolean mIsMoveCapable = false;
@@ -137,6 +138,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMessageAge;
     private ListPreference mMessageSize;
     private CheckBoxPreference mAccountDefault;
+    private CheckBoxPreference mAccountShowTotalMessageCount;
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
     private ListPreference mAccountShowPictures;
@@ -191,7 +193,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mSpamFolder;
     private ListPreference mTrashFolder;
     private CheckBoxPreference mAlwaysShowCcBcc;
-
+    private CheckBoxPreference mShowTotalCount;
 
     public static void actionSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSettings.class);
@@ -470,7 +472,9 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-
+        mAccountShowTotalMessageCount = (CheckBoxPreference) findPreference(PREFERENCE_SHOW_TOTAL_MESSAGE_COUNT);
+        mAccountShowTotalMessageCount.setChecked(mAccount.getShowTotalCount());
+        
         mLocalStorageProvider = (ListPreference) findPreference(PREFERENCE_LOCAL_STORAGE_PROVIDER);
         {
             final Map<String, String> providers;
@@ -783,6 +787,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
         mAccount.setAlwaysShowCcBcc(mAlwaysShowCcBcc.isChecked());
+        mAccount.setShowTotalCount(mAccountShowTotalMessageCount.isChecked());
         mAccount.setMessageReadReceipt(mMessageReadReceipt.isChecked());
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
