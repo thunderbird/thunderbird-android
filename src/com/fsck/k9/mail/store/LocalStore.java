@@ -1,4 +1,3 @@
-
 package com.fsck.k9.mail.store;
 
 import java.io.ByteArrayInputStream;
@@ -1521,10 +1520,6 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public int getUnreadMessageCount() throws MessagingException {
-            if (!isOpen()) {
-                open(OpenMode.READ_WRITE);
-            }
-
             try {
                 return database.execute(false, new DbCallback<Integer>() {
                     @Override
@@ -1612,7 +1607,7 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-       @Override
+        @Override
         public void setLastChecked(final long lastChecked) throws MessagingException {
             try {
                 open(OpenMode.READ_WRITE);
