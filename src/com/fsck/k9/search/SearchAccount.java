@@ -97,4 +97,10 @@ public class SearchAccount implements BaseAccount {
     public String getUuid() {
         return mId;
     }
+
+
+	@Override
+	public boolean showTotalCountMessage() {
+		return false;
+	}
 }

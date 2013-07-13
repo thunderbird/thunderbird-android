@@ -60,4 +60,25 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/total_message_count_wrapper"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/new_message_count_wrapper"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip">
+
+        <TextView
+            android:id="@+id/total_message_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    </LinearLayout>
+    
 </RelativeLayout>
