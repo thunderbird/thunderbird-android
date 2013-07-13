@@ -719,6 +719,7 @@ public class MessagingController implements Runnable {
                         messages.add(message);
                         stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
                         stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
+                        stats.totalMessageCount++;
                         if (listener != null) {
                             listener.listLocalMessagesAddMessages(account, null, messages);
                         }
@@ -3688,10 +3689,12 @@ public class MessagingController implements Runnable {
 
         int unreadMessageCount = 0;
         int flaggedMessageCount = 0;
+        int totalMessageCount = 0;
 
         String[] projection = {
                 StatsColumns.UNREAD_COUNT,
-                StatsColumns.FLAGGED_COUNT
+                StatsColumns.FLAGGED_COUNT,
+                StatsColumns.TOTAL_COUNT
         };
 
         for (Account account : accounts) {
@@ -3712,6 +3715,7 @@ public class MessagingController implements Runnable {
                 if (cursor.moveToFirst()) {
                     unreadMessageCount += cursor.getInt(0);
                     flaggedMessageCount += cursor.getInt(1);
+                    totalMessageCount += cursor.getInt(2);
                 }
             } finally {
                 cursor.close();
@@ -3722,7 +3726,8 @@ public class MessagingController implements Runnable {
         AccountStats stats = new AccountStats();
         stats.unreadMessageCount = unreadMessageCount;
         stats.flaggedMessageCount = flaggedMessageCount;
-
+        stats.totalMessageCount = totalMessageCount;
+        
         // ...and notify the listener
         if (listener != null) {
             listener.accountStatusChanged(searchAccount, stats);
@@ -4554,6 +4559,7 @@ public class MessagingController implements Runnable {
                     stats.size = newSize;
                     stats.unreadMessageCount = 0;
                     stats.flaggedMessageCount = 0;
+                    stats.totalMessageCount = 0;
                     for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
                         l.accountStatusChanged(account, stats);
@@ -4582,6 +4588,7 @@ public class MessagingController implements Runnable {
                     stats.size = newSize;
                     stats.unreadMessageCount = 0;
                     stats.flaggedMessageCount = 0;
+                    stats.totalMessageCount = 0;
                     for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
                         l.accountStatusChanged(account, stats);

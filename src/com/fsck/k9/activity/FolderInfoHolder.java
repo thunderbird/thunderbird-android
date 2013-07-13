@@ -15,6 +15,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     public long lastChecked;
     public int unreadMessageCount;
     public int flaggedMessageCount;
+    public int totalMessageCount;
     public boolean loading;
     public String status;
     public boolean lastCheckFailed;
@@ -62,11 +63,11 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         populate(context, folder, account);
     }
 
-    public FolderInfoHolder(Context context, Folder folder, Account account, int unreadCount) {
-        populate(context, folder, account, unreadCount);
+    public FolderInfoHolder(Context context, Folder folder, Account account, int unreadCount, int totalCount) {
+        populate(context, folder, account, unreadCount, totalCount);
     }
 
-    public void populate(Context context, Folder folder, Account account, int unreadCount) {
+    public void populate(Context context, Folder folder, Account account, int unreadCount, int totalCount) {
 
         try {
             folder.open(Folder.OpenMode.READ_WRITE);
@@ -78,7 +79,8 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         populate(context, folder, account);
 
         this.unreadMessageCount = unreadCount;
-
+        this.totalMessageCount = totalCount;
+        
         try {
             this.flaggedMessageCount = folder.getFlaggedMessageCount();
         } catch (Exception e) {

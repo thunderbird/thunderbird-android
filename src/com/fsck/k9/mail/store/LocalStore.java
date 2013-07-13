@@ -1,4 +1,3 @@
-
 package com.fsck.k9.mail.store;
 
 import java.io.ByteArrayInputStream;
@@ -103,7 +102,7 @@ public class LocalStore extends Store implements Serializable {
 
     private static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
-        "integrate, top_group, poll_class, push_class, display_class";
+        "integrate, top_group, poll_class, push_class, display_class, show_total_count";
 
     private static final int FOLDER_ID_INDEX = 0;
     private static final int FOLDER_NAME_INDEX = 1;
@@ -117,7 +116,8 @@ public class LocalStore extends Store implements Serializable {
     private static final int FOLDER_SYNC_CLASS_INDEX = 9;
     private static final int FOLDER_PUSH_CLASS_INDEX = 10;
     private static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
-
+    private static final int FOLDER_SHOWTOTALCOUNT_INDEX = 12;
+    
     private static final String[] UID_CHECK_PROJECTION = { "uid" };
 
     /**
@@ -141,7 +141,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 48;
+    public static final int DB_VERSION = 49;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -233,7 +233,7 @@ public class LocalStore extends Store implements Serializable {
                     db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
                                + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
                                + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
-                               + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT"
+                               + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT, show_total_count INTEGER"
                                + ")");
 
                     db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
@@ -689,6 +689,39 @@ public class LocalStore extends Store implements Serializable {
                                 "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
                                 "END");
                     }
+                    if (db.getVersion() < 49) {
+                        try {
+                            db.execSQL("ALTER TABLE folders ADD show_total_count INTEGER");
+                        } catch (SQLiteException e) {
+                            if (! e.getMessage().startsWith("duplicate column name:")) {
+                                throw e;
+                            }
+                        }
+                        Cursor cursor = null;
+
+                        try {
+
+                            SharedPreferences prefs = getPreferences();
+                            cursor = db.rawQuery("SELECT id, name FROM folders", null);
+                            while (cursor.moveToNext()) {
+                                try {
+                                    int id = cursor.getInt(0);
+                                    String name = cursor.getString(1);
+                                    update41Metadata(db, prefs, id, name);
+                                } catch (Exception e) {
+                                    Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder class", e);
+                                }
+                            }
+                        }
+
+
+                        catch (SQLiteException e) {
+                            Log.e(K9.LOG_TAG, "Exception while upgrading database to v49. folder classes may have vanished", e);
+
+                        } finally {
+                            Utility.closeQuietly(cursor);
+                        }
+                    }
                 }
 
                 db.setVersion(DB_VERSION);
@@ -711,6 +744,7 @@ public class LocalStore extends Store implements Serializable {
             Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
             boolean inTopGroup = false;
             boolean integrate = false;
+            boolean showTotalCount = false;
             if (mAccount.getInboxFolderName().equals(name)) {
                 displayClass = Folder.FolderClass.FIRST_CLASS;
                 syncClass =  Folder.FolderClass.FIRST_CLASS;
@@ -725,6 +759,7 @@ public class LocalStore extends Store implements Serializable {
                 pushClass = Folder.FolderClass.valueOf(prefs.getString(uUid + "." + name + ".pushMode", pushClass.name()));
                 inTopGroup = prefs.getBoolean(uUid + "." + name + ".inTopGroup", inTopGroup);
                 integrate = prefs.getBoolean(uUid + "." + name + ".integrate", integrate);
+                showTotalCount = prefs.getBoolean(uUid + "." + name + ".showTotalCount", showTotalCount);
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, " Throwing away an error while trying to upgrade folder metadata", e);
             }
@@ -739,8 +774,8 @@ public class LocalStore extends Store implements Serializable {
                 pushClass = Folder.FolderClass.INHERITED;
             }
 
-            db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ? WHERE id = ?",
-                       new Object[] { integrate, inTopGroup, syncClass, pushClass, displayClass, id });
+            db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ? show_total_count = ? WHERE id = ?",
+                       new Object[] { integrate, inTopGroup, syncClass, pushClass, displayClass, showTotalCount, id });
 
         }
     }
@@ -1272,7 +1307,7 @@ public class LocalStore extends Store implements Serializable {
                     }
                     folder.refresh(name, prefHolder);   // Recover settings from Preferences
 
-                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?, ?)", new Object[] {
+                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, push_class, integrate, show_total_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    name,
                                    visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
@@ -1280,6 +1315,7 @@ public class LocalStore extends Store implements Serializable {
                                    prefHolder.syncClass.name(),
                                    prefHolder.pushClass.name(),
                                    prefHolder.integrate ? 1 : 0,
+                                   prefHolder.showTotalCount ? 1 : 0,
                                });
 
                 }
@@ -1325,6 +1361,7 @@ public class LocalStore extends Store implements Serializable {
         private boolean mInTopGroup = false;
         private String mPushState = null;
         private boolean mIntegrate = false;
+        private boolean mShowTotalCount = false;
         // mLastUid is used during syncs. It holds the highest UID within the local folder so we
         // know whether or not an unread message added to the local folder is actually "new" or not.
         private Integer mLastUid = null;
@@ -1412,6 +1449,7 @@ public class LocalStore extends Store implements Serializable {
             super.setLastPush(cursor.getLong(FOLDER_LAST_PUSHED_INDEX));
             mInTopGroup = (cursor.getInt(FOLDER_TOP_GROUP_INDEX)) == 1  ? true : false;
             mIntegrate = (cursor.getInt(FOLDER_INTEGRATE_INDEX) == 1) ? true : false;
+            mShowTotalCount = (cursor.getInt(FOLDER_SHOWTOTALCOUNT_INDEX) == 1) ? true : false;
             String noClass = FolderClass.NO_CLASS.toString();
             String displayClass = cursor.getString(FOLDER_DISPLAY_CLASS_INDEX);
             mDisplayClass = Folder.FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
@@ -1436,6 +1474,11 @@ public class LocalStore extends Store implements Serializable {
             return mName;
         }
 
+        @Override
+        public boolean showTotalMessageCount() {
+        	return mShowTotalCount;
+        }
+        
         @Override
         public boolean exists() throws MessagingException {
             return database.execute(false, new DbCallback<Boolean>() {
@@ -1483,6 +1526,7 @@ public class LocalStore extends Store implements Serializable {
             FolderClass pushClass = mPushClass;
             boolean inTopGroup = mInTopGroup;
             boolean integrate = mIntegrate;
+            boolean showTotalCount = mShowTotalCount;
         }
 
         @Override
@@ -1570,6 +1614,37 @@ public class LocalStore extends Store implements Serializable {
                         }
 
                         return flaggedMessageCount;
+                    }
+                });
+            } catch (WrappedException e) {
+                throw(MessagingException) e.getCause();
+            }
+        }
+
+        @Override
+        public int getTotalMessageCount() throws MessagingException {
+            if (!isOpen()) {
+                open(OpenMode.READ_WRITE);
+            }
+
+            try {
+                return database.execute(false, new DbCallback<Integer>() {
+                    @Override
+                    public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
+                        int totalMessageCount = 0;
+                        Cursor cursor = db.query("messages", new String[] { "COUNT(*)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                                new String[] { Long.toString(mFolderId) }, null, null, null);
+
+                        try {
+                            if (cursor.moveToFirst()) {
+                                totalMessageCount = cursor.getInt(0);
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
+                        return totalMessageCount;
                     }
                 });
             } catch (WrappedException e) {
@@ -1704,6 +1779,14 @@ public class LocalStore extends Store implements Serializable {
             updateFolderColumn("integrate", mIntegrate ? 1 : 0);
         }
 
+        public boolean getShowTotalCount() {
+        	return mShowTotalCount;
+        }
+        public void setShowTotalCount(boolean showTotalCount) throws MessagingException {
+        	mShowTotalCount = showTotalCount;
+        	updateFolderColumn("show_total_count", mShowTotalCount ? 1 : 0);
+        }
+        
         private String getPrefId(String name) {
             if (prefId == null) {
                 prefId = uUid + "." + name;
@@ -1728,7 +1811,8 @@ public class LocalStore extends Store implements Serializable {
             editor.remove(id + ".pushMode");
             editor.remove(id + ".inTopGroup");
             editor.remove(id + ".integrate");
-
+            editor.remove(id + ".showTotalCount");
+            
             editor.commit();
         }
 
@@ -1762,7 +1846,7 @@ public class LocalStore extends Store implements Serializable {
             editor.putBoolean(id + ".inTopGroup", mInTopGroup);
 
             editor.putBoolean(id + ".integrate", mIntegrate);
-
+            editor.putBoolean(id + ".showTotalCount", mShowTotalCount);
         }
 
         public void refresh(String name, PreferencesHolder prefHolder) {
@@ -1802,7 +1886,7 @@ public class LocalStore extends Store implements Serializable {
             }
             prefHolder.inTopGroup = preferences.getBoolean(id + ".inTopGroup", prefHolder.inTopGroup);
             prefHolder.integrate = preferences.getBoolean(id + ".integrate", prefHolder.integrate);
-
+            prefHolder.showTotalCount = preferences.getBoolean(id + ".showTotalCount", prefHolder.showTotalCount);
         }
 
         @Override

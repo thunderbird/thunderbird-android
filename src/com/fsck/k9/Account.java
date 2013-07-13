@@ -210,7 +210,8 @@ public class Account implements BaseAccount {
     private boolean mAllowRemoteSearch;
     private boolean mRemoteSearchFullText;
     private int mRemoteSearchNumResults;
-
+    private boolean mShowTotalCount;
+    
     private CryptoProvider mCryptoProvider = null;
 
     private ColorChip mUnreadColorChip;
@@ -316,7 +317,8 @@ public class Account implements BaseAccount {
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
         mAlwaysShowCcBcc = false;
-
+        mShowTotalCount = false;
+        
         searchableFolders = Searchable.ALL;
 
         identities = new ArrayList<Identity>();
@@ -377,6 +379,7 @@ public class Account implements BaseAccount {
         mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
+        mShowTotalCount = prefs.getBoolean(mUuid + ".showTotalCount", false);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = prefs.getInt(mUuid + ".idleRefreshMinutes", 24);
         mPushPollOnConnect = prefs.getBoolean(mUuid + ".pushPollOnConnect", true);
@@ -533,6 +536,7 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".name");
         editor.remove(mUuid + ".email");
         editor.remove(mUuid + ".alwaysBcc");
+        editor.remove(mUuid + ".showTotalCount");
         editor.remove(mUuid + ".automaticCheckIntervalMinutes");
         editor.remove(mUuid + ".pushPollOnConnect");
         editor.remove(mUuid + ".idleRefreshMinutes");
@@ -691,6 +695,7 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
+        editor.putBoolean(mUuid + ".showTotalCount",  mShowTotalCount);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
@@ -802,7 +807,8 @@ public class Account implements BaseAccount {
 
         String[] projection = {
                 StatsColumns.UNREAD_COUNT,
-                StatsColumns.FLAGGED_COUNT
+                StatsColumns.FLAGGED_COUNT,
+                StatsColumns.TOTAL_COUNT
         };
 
         // Create LocalSearch instance to exclude special folders (Trash, Drafts, Spam, Outbox,
@@ -825,6 +831,7 @@ public class Account implements BaseAccount {
             if (cursor.moveToFirst()) {
                 stats.unreadMessageCount = cursor.getInt(0);
                 stats.flaggedMessageCount = cursor.getInt(1);
+                stats.totalMessageCount = cursor.getInt(2);
             }
         } finally {
             cursor.close();
@@ -981,6 +988,14 @@ public class Account implements BaseAccount {
         this.mAlwaysBcc = alwaysBcc;
     }
 
+    public synchronized boolean getShowTotalCount() {
+    	return mShowTotalCount;
+    }
+    
+    public synchronized void setShowTotalCount(boolean showTotalCount) {
+    	this.mShowTotalCount = showTotalCount;
+    }
+    
     /* Have we sent a new mail notification on this account */
     public boolean isRingNotified() {
         return mRingNotified;
@@ -1885,4 +1900,9 @@ public class Account implements BaseAccount {
             search.and(Searchfield.FOLDER, folderName, Attribute.NOT_EQUALS);
         }
     }
+
+	@Override
+	public boolean showTotalCountMessage() {
+		return mShowTotalCount;
+	}
 }

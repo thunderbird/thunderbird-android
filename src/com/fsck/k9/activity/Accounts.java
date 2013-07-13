@@ -119,6 +119,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     private BaseAccount mSelectedContextAccount;
     private int mUnreadMessageCount = 0;
+    private int mTotalMessageCount = 0;
 
     private AccountsHandler mHandler = new AccountsHandler();
     private AccountsAdapter mAdapter;
@@ -1709,10 +1710,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.email = (TextView) view.findViewById(R.id.email);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
+                holder.totalMessageCount = (TextView) view.findViewById(R.id.total_message_count);
+                
                 holder.newMessageCountWrapper = (View) view.findViewById(R.id.new_message_count_wrapper);
                 holder.flaggedMessageCountWrapper = (View) view.findViewById(R.id.flagged_message_count_wrapper);
+                holder.totalMessageCountWrapper = (View) view.findViewById(R.id.total_message_count_wrapper);
+
                 holder.newMessageCountIcon = (View) view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = (View) view.findViewById(R.id.flagged_message_count_icon);
+                
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
 
                 holder.chip = view.findViewById(R.id.chip);
@@ -1751,6 +1757,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setVisibility(stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
 
+                holder.totalMessageCount.setText("[" + Integer.toString(stats.totalMessageCount) + "]");
+                holder.totalMessageCountWrapper.setVisibility((stats.totalMessageCount > 0) && account.showTotalCountMessage() ? View.VISIBLE : View.GONE);
+
                 holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearchListener(account));
                 holder.newMessageCountWrapper.setOnClickListener(createUnreadSearchListener(account));
 
@@ -1765,6 +1774,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
+                holder.totalMessageCountWrapper.setVisibility(View.GONE);
             }
             if (account instanceof Account) {
                 Account realAccount = (Account)account;
@@ -1841,10 +1851,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             public TextView email;
             public TextView newMessageCount;
             public TextView flaggedMessageCount;
+            public TextView totalMessageCount;
             public View newMessageCountIcon;
             public View flaggedMessageCountIcon;
+            public View totalMessageCountIcon;
             public View newMessageCountWrapper;
             public View flaggedMessageCountWrapper;
+            public View totalMessageCountWrapper;
             public RelativeLayout activeIcons;
             public View chip;
             public ImageButton folders;
