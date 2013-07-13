@@ -345,6 +345,10 @@
         <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
     </provider>
     <!-- Yandex.ru variants -->
+    <provider id="comyanyandeximap" label="yandex.com" domain="yandex.com">
+        <incoming uri="imap+ssl+://imap.yandex.com" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.yandex.com" username="$user" />
+    </provider>
     <provider id="ruyanyandeximap" label="yandex.ru" domain="yandex.ru">
         <incoming uri="imap+ssl+://imap.yandex.ru" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.yandex.ru" username="$user" />
