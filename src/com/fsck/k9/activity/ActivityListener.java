@@ -29,7 +29,7 @@ public class ActivityListener extends MessagingListener {
             informUserOfStatus();
         }
     };
-
+   
     public String getOperation(Context context) {
         String operation;
         String progress = null;

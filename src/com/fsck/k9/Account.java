@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.search.SqlQueryBuilder;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -84,7 +87,9 @@ public class Account implements BaseAccount {
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
     public static final String STORE_URI_KEY = "storeUri";
+    public static final String STORE_CCERT_KEY = "storeClientCertificateAlias";
     public static final String TRANSPORT_URI_KEY = "transportUri";
+    public static final String TRANSPORT_CCERT_KEY = "transportClientCertificateAlias";
 
     public static final String IDENTITY_NAME_KEY = "name";
     public static final String IDENTITY_EMAIL_KEY = "email";
@@ -146,6 +151,7 @@ public class Account implements BaseAccount {
 
     private final String mUuid;
     private String mStoreUri;
+    private String mStoreClientCertificateAlias;
 
     /**
      * Storage provider ID, used to locate and manage the underlying DB/file
@@ -153,6 +159,7 @@ public class Account implements BaseAccount {
      */
     private String mLocalStorageProviderId;
     private String mTransportUri;
+    private String mTransportClientCertificateAlias;
     private String mDescription;
     private String mAlwaysBcc;
     private int mAutomaticCheckIntervalMinutes;
@@ -373,8 +380,10 @@ public class Account implements BaseAccount {
         SharedPreferences prefs = preferences.getPreferences();
 
         mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
+        mStoreClientCertificateAlias = prefs.getString(mUuid + ".storeClientCertificateAlias", null);
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
         mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
+        mTransportClientCertificateAlias = prefs.getString(mUuid + ".transportClientCertificateAlias", null);
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
@@ -527,8 +536,10 @@ public class Account implements BaseAccount {
         }
 
         editor.remove(mUuid + ".storeUri");
+        editor.remove(mUuid + ".storeClientCertificateAlias");
         editor.remove(mUuid + ".localStoreUri");
         editor.remove(mUuid + ".transportUri");
+        editor.remove(mUuid + ".transportClientCertificateAlias");
         editor.remove(mUuid + ".description");
         editor.remove(mUuid + ".name");
         editor.remove(mUuid + ".email");
@@ -687,8 +698,10 @@ public class Account implements BaseAccount {
         }
 
         editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
+        editor.putString(mUuid + ".storeClientCertificateAlias", mStoreClientCertificateAlias);
         editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
         editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
+        editor.putString(mUuid + ".transportClientCertificateAlias", mTransportClientCertificateAlias);
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
@@ -921,12 +934,29 @@ public class Account implements BaseAccount {
         this.mStoreUri = storeUri;
     }
 
+    public synchronized String getStoreClientCertificateAlias() {
+    	return mStoreClientCertificateAlias;
+    }
+
+    public synchronized void setStoreClientCertificateAlias(String storeClientCertificateAlias) {
+    	this.mStoreClientCertificateAlias = storeClientCertificateAlias;
+    }
+    
+    
     public synchronized String getTransportUri() {
         return mTransportUri;
     }
 
     public synchronized void setTransportUri(String transportUri) {
         this.mTransportUri = transportUri;
+    }
+    
+    public synchronized String getTransportClientCertificateAlias() {
+    	return mTransportClientCertificateAlias;
+    }
+
+    public synchronized void setTransportClientCertificateAlias(String transportClientCertificateAlias) {
+    	this.mTransportClientCertificateAlias = transportClientCertificateAlias;
     }
 
     @Override

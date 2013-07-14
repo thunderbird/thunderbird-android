@@ -1099,56 +1099,59 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="image_saved_as">Obraz zapisany jako \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Błąd zapisu obrazu.</string>
 
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include messages text in server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
-    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
-    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
-    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
-    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+    <string name="account_settings_remote_search_num_results_entries_all">Wszystko</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Limit wyszukiwań serwera</string>
+    <string name="account_settings_remote_search_num_summary">Wyszukiwanie zakończy się po znalezieniu <xliff:g id="num_results">%s</xliff:g> wyników.</string>
+    <string name="account_settings_remote_search_full_text">Uwzględnij wiadomość tekstową w wyszukiwaniu</string>
+    <string name="account_settings_remote_search_full_text_summary">Wyszukiwanie pełnotekstowe może być powolne.</string>
+    <string name="remote_search_sending_query">Wysyłam zapytanie do serwera</string>
+    <string name="remote_search_downloading">Pobieranie %d wyników</string>
+    <string name="remote_search_downloading_limited">Pobieranie %1$d z %2$d wyników</string>
+    <string name="remote_search_error">Zdalne wyszukiwanie nie powiodło się</string>
 
-    <!-- NEW: <string name="account_settings_search">Search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
-    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>-->
+    <string name="account_settings_search">Wyszukaj</string>
+    <string name="account_settings_remote_search_enabled">Włącz wyszukiwanie na serwerze</string>
+    <string name="account_settings_remote_search_enabled_summary">Wyszukaj wiadomości na serwerze oraz na urządzeniu</string>
+    <string name="action_remote_search">Wyszukaj wiadomości na serwerze</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Dodaj do wyszukiwania na serwerze…</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Uwolnij z wyszukiwania na serwerze…</string>
+    <string name="remote_search_unavailable_no_network">Połączenie z internetem jest wymagane do wyszukiwania na serwerze.</string>
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>-->
+    <string name="global_settings_background_as_unread_indicator_label">Ukryj wiadomości po przeczytaniu</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Szare tło oznacza, że wiadomość jest przeczytana</string>
 
-    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Group messages by conversation</string>-->
+    <string name="global_settings_threaded_view_label">Widok wątków</string>
+    <string name="global_settings_threaded_view_summary">Grupuj wiadomości po rozmowie</string>
 
-    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
-    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
-    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+    <string name="upgrade_databases_title">Modernizuję bazę danych</string>
+    <string name="upgrade_databases_unspecified">Modernizuję bazy danych…</string>
+    <string name="upgrade_database_format">Modernizuję bazę danych konta \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+    <string name="message_list_loading">Pracuję…</string>
 
-    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
-    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+    <string name="global_settings_splitview_mode_label">Pokaż podzielony ekran</string>
+    <string name="global_settings_splitview_always">Zawsze</string>
+    <string name="global_settings_splitview_never">Nigdy</string>
+    <string name="global_settings_splitview_when_in_landscape">Kiedy w orientacji poziomej</string>
 
-    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+    <string name="message_view_empty">Proszę wybrać wiadomość po lewo</string>
 
-    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+    <string name="global_settings_show_contact_picture_label">Pokaż zdjęcie kontaktu</string>
+    <string name="global_settings_show_contact_picture_summary">Pokazuj zdjęcia kontaktów w spisie wiadomości</string>
 
-    <!-- NEW: <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
-    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+    <string name="last_refresh_time_format">Odświeżono<xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Odświeżono <xliff:g id="time_with_preposition">%s</xliff:g> (Dodaj aktywne)</string>
+    <string name="preposition_for_date">w <xliff:g id="date">%s</xliff:g></string>
 
-    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+    <string name="mark_all_as_read">Oznacz wszystko jako przeczytane</string>
+    
+    <string name="account_setup_use_ccert_label">Uwierzytelnianie certyfikatem klienta</string>
+    <string name="account_setup_failed_dlg_ccert_required">Obecne ustawienia wymagają poprawnego certyfikatu.</string>
 </resources>

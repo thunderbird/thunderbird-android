@@ -239,12 +239,9 @@ public class SmtpTransport extends Transport {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
                     if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
                             mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
-                        SSLContext sslContext = SSLContext.getInstance("TLS");
+                        
                         boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                        sslContext.init(null, new TrustManager[] {
-                                            TrustManagerFactory.get(mHost, secure)
-                                        }, new SecureRandom());
-                        mSocket = sslContext.getSocketFactory().createSocket();
+                        mSocket = TrustManagerFactory.createSslSocket(mHost, secure, mAccount.getTransportClientCertificateAlias());
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                     } else {
                         mSocket = new Socket();
@@ -296,15 +293,10 @@ public class SmtpTransport extends Transport {
             if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
                     || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
                 if (results.contains("STARTTLS")) {
-                    executeSimpleCommand("STARTTLS");
+                	executeSimpleCommand("STARTTLS");
 
-                    SSLContext sslContext = SSLContext.getInstance("TLS");
                     boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
-                    sslContext.init(null, new TrustManager[] {
-                                        TrustManagerFactory.get(mHost, secure)
-                                    }, new SecureRandom());
-                    mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
-                              true);
+                    mSocket = TrustManagerFactory.performStartTls(mSocket, mHost, mPort, secure, mAccount.getTransportClientCertificateAlias());
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                                   1024));
                     mOut = mSocket.getOutputStream();

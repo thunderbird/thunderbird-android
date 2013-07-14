@@ -23,6 +23,7 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.store.ImapStore.ImapStoreSettings;
 import com.fsck.k9.mail.store.WebDavStore.WebDavStoreSettings;
 
@@ -57,9 +58,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         ConnectionSecurity.STARTTLS_REQUIRED
     };
 
-    private static final String[] AUTH_TYPES = {
-        "PLAIN", "CRAM_MD5"
-    };
+  
 
 
     private int[] mAccountPorts;
@@ -71,6 +70,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private Spinner mSecurityTypeView;
     private Spinner mAuthTypeView;
     private CheckBox mImapAutoDetectNamespaceView;
+    private CheckBox mUseClientCertificates;
     private EditText mImapPathPrefixView;
     private EditText mWebdavPathPrefixView;
     private EditText mWebdavAuthPathView;
@@ -118,6 +118,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
         mWebdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
+        mUseClientCertificates = (CheckBox)findViewById(R.id.account_incoming_use_ccert);
         mNextButton = (Button)findViewById(R.id.next);
         mCompressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
         mCompressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
@@ -147,13 +148,21 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             getString(R.string.account_setup_incoming_security_tls_optional_label)),
             new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
-
-        // This needs to be kept in sync with the list at the top of the file.
-        // that makes me somewhat unhappy
-        SpinnerOption authTypeSpinnerOptions[] = {
-            new SpinnerOption(0, AUTH_TYPES[0]),
-            new SpinnerOption(1, AUTH_TYPES[1])
-        };
+        
+        int numAuthTypes = ImapStore.AuthType.values().length;
+        boolean includeExternal = TrustManagerFactory.isPlatformSupportsClientCertificates();
+        
+        if (!includeExternal) {
+        	numAuthTypes--;
+        }
+        
+        SpinnerOption authTypeSpinnerOptions[] = new SpinnerOption[numAuthTypes];
+        int authTypeIndex = 0;
+        for (ImapStore.AuthType authType : ImapStore.AuthType.values()) {
+        	if (!ImapStore.AuthType.EXTERNAL.equals(authType) || includeExternal) {
+        		authTypeSpinnerOptions[authTypeIndex++] = new SpinnerOption(authType, authType.name());
+        	}
+        }
 
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, securityTypes);
@@ -217,11 +226,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             if (settings.authenticationType != null) {
-                for (int i = 0; i < AUTH_TYPES.length; i++) {
-                    if (AUTH_TYPES[i].equals(settings.authenticationType)) {
-                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
-                    }
-                }
+            	for (ImapStore.AuthType authType : ImapStore.AuthType.values()) {
+            		if (authType.name().equals(settings.authenticationType)) {
+            			SpinnerOption.setSpinnerOptionValue(mAuthTypeView, authType);
+            		}
+            	}
             }
 
             mStoreType = settings.type;
@@ -287,12 +296,25 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
+            int selectedSecurityType = -1;
+            
             // Select currently configured security type
             for (int i = 0; i < CONNECTION_SECURITY_TYPES.length; i++) {
                 if (CONNECTION_SECURITY_TYPES[i] == settings.connectionSecurity) {
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
+                    selectedSecurityType = i;
+                    break;
                 }
             }
+            
+            if (TrustManagerFactory.isPlatformSupportsClientCertificates()) {
+            	if (mAccount.getStoreClientCertificateAlias() != null && selectedSecurityType > 0) {
+            		mUseClientCertificates.setChecked(true);
+            	}
+            } else {
+            	mUseClientCertificates.setVisibility(View.GONE);
+            }
+            
 
             /*
              * Updates the port when the user changes the security type. This allows
@@ -307,12 +329,32 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position,
                         long id) {
+                	// this indirectly triggers validateFields because the port text is watched
                     updatePortFromSecurityType();
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
             });
+
+            mUseClientCertificates.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					validateFields();
+				}
+			});
+            
+            mAuthTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int position, long id) {
+					updateClientCertificateCheckbox();
+					validateFields();
+				}
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) { /* unused */ }
+			});
+            
 
             mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
             mCompressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
@@ -343,11 +385,21 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void validateFields() {
+    	String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+    	boolean isAuthTypeExternal = ImapStore.AuthType.EXTERNAL.name().equals(authType) ;
+    	
+    	int secLevel = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
+    	boolean hasConnectionSecurity =  secLevel > 0;
+    	
+    	boolean isCcertEnabled = mUseClientCertificates.isChecked();
+    	
         mNextButton
         .setEnabled(Utility.requiredFieldValid(mUsernameView)
-                    && Utility.requiredFieldValid(mPasswordView)
+                    && (isAuthTypeExternal || Utility.requiredFieldValid(mPasswordView))
                     && Utility.domainFieldValid(mServerView)
-                    && Utility.requiredFieldValid(mPortView));
+                    && Utility.requiredFieldValid(mPortView)
+                    && (!isAuthTypeExternal || hasConnectionSecurity)
+                    && (!isAuthTypeExternal || isCcertEnabled));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -356,6 +408,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
             mPortView.setText(Integer.toString(mAccountPorts[securityType]));
         }
+    }
+    
+    /**
+     * automatically check the "use client certificates" checkbox when EXTERNAL
+     * is selected. EXTERNAL requires use of ccerts, but not vice versa
+     */
+    private void updateClientCertificateCheckbox() {
+    	String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+
+    	if (ImapStore.AuthType.EXTERNAL.name().equals(authType)) {
+    		mUseClientCertificates.setChecked(true);
+    	}
     }
 
     @Override
@@ -437,7 +501,17 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount.setCompression(Account.TYPE_OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
+ 
+            
+            // if client certs are not enabled, reset the setting (if enabled the value will be 
+            // obtained and set during the SSL handshake)
+            if (!mUseClientCertificates.isChecked()) {
+            	mAccount.setStoreClientCertificateAlias(null);
+            }
+
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false, 
+            		mUseClientCertificates.isChecked());
+            
         } catch (Exception e) {
             failure(e);
         }

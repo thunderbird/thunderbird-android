@@ -16,6 +16,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.transport.SmtpTransport;
 
 import java.io.UnsupportedEncodingException;
@@ -62,6 +63,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private ViewGroup mRequireLoginSettingsView;
     private Spinner mSecurityTypeView;
     private Spinner mAuthTypeView;
+    private CheckBox mUseClientCertificates;
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
@@ -95,7 +97,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         try {
             if (new URI(mAccount.getStoreUri()).getScheme().startsWith("webdav")) {
                 mAccount.setTransportUri(mAccount.getStoreUri());
-                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true, false);
             }
         } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
@@ -112,6 +114,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
         mAuthTypeView = (Spinner)findViewById(R.id.account_auth_type);
         mNextButton = (Button)findViewById(R.id.next);
+        mUseClientCertificates = (CheckBox)findViewById(R.id.account_use_ccert);
 
         mNextButton.setOnClickListener(this);
         mRequireLoginView.setOnCheckedChangeListener(this);
@@ -214,11 +217,24 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 }
             }
 
+            
+            int selectedSecurityType = -1;
+            
             // Select currently configured security type
             for (int i = 0; i < smtpSchemes.length; i++) {
                 if (smtpSchemes[i].equals(uri.getScheme())) {
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
+                    selectedSecurityType = i;
+                    break;
                 }
+            }
+
+            if (TrustManagerFactory.isPlatformSupportsClientCertificates()) {
+            	if (mAccount.getTransportClientCertificateAlias() != null && selectedSecurityType > 0) {
+            		mUseClientCertificates.setChecked(true);
+            	}
+            } else {
+            	mUseClientCertificates.setVisibility(View.GONE);
             }
 
             /*
@@ -241,6 +257,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
             });
 
+            mUseClientCertificates.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					validateFields();
+				}
+			});
+            
             if (uri.getHost() != null) {
                 mServerView.setText(uri.getHost());
             }
@@ -268,13 +291,16 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     private void validateFields() {
+    	int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
+
         mNextButton
         .setEnabled(
             Utility.domainFieldValid(mServerView) &&
             Utility.requiredFieldValid(mPortView) &&
             (!mRequireLoginView.isChecked() ||
              (Utility.requiredFieldValid(mUsernameView) &&
-              Utility.requiredFieldValid(mPasswordView))));
+              Utility.requiredFieldValid(mPasswordView))) &&
+            (!mUseClientCertificates.isChecked() || securityType > 0));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -308,10 +334,21 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             if (mRequireLoginView.isChecked()) {
                 userInfo = usernameEnc + ":" + passwordEnc + ":" + authType;
             }
+            
             uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
                           Integer.parseInt(mPortView.getText().toString()), null, null, null);
             mAccount.setTransportUri(uri.toString());
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+            
+
+            // if client certs are not enabled, reset the setting (if enabled the value will be 
+            // obtained and set during the SSL handshake)
+            if (!mUseClientCertificates.isChecked()) { 
+            	mAccount.setTransportClientCertificateAlias(null);
+            }
+            
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true, 
+            		mUseClientCertificates.isChecked());
+            
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
