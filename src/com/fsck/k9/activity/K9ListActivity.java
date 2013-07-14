@@ -4,6 +4,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockListActivity;
@@ -72,8 +73,10 @@ public class K9ListActivity extends SherlockListActivity implements K9ActivityMa
                 (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
                 keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
             return true;
+        } else if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_MENU && Build.VERSION.SDK_INT < 11) {
+            openOptionsMenu();
+            return true;
         }
-
         return super.onKeyUp(keyCode, event);
     }
 }
