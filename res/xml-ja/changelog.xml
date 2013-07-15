@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-
+    <release version="4.506" versioncode="18006" >
+        <change>パフォーマンスを改善しました</change>
+        <change>Fastmail.FMのための自動設定を追加しました</change>
+        <change>新たにスロバキア後の翻訳を追加しました</change>
+        <change>イタリア語、ロシア語の翻訳を更新しました</change>
+        <change>シグネチャを使わない設定のとき、下書き保存時にX-K9mail-Identityヘッダにシグネチャを保存しないようにしました</change>
+    </release>
+    <release version="4.505" versioncode="18005" >
+        <change>フォルダ一覧の性能を向上しました</change>
+        <change>カタロニア語、中国語、ロシア語の翻訳を更新しました</change>
+        <change>いくつかのバグを修正しました</change>
+    </release>
     <release version="4.503" versioncode="18003" >
         <change>フォルダ一覧へのショートカットを追加しました</change>
-        <change>Tweaks to checkboxes and color chip display</change>
+        <change>チェックボックスとカラーチップの表示を微調整しました</change>
         <change>アカウントコンテキストメニューにゴミ箱を空にするを追加しました</change>
         <change>プライバシーモードが有効な場合に(JellyBeanの)拡張通知領域を使わないようにしました</change>
         <change>Galaxyデバイスのバグのため、アカウントのコンテキストメニューからサブメニューを削除しました</change>

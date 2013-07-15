@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.507" versioncode="18007" >
+        <change>Add some Russian ISPs for autoconfiguration</change>
+    </release>
     <release version="4.506" versioncode="18006" >
         <change>Performance improvements</change>
         <change>Added autoconfiguration for Fastmail.FM</change>
