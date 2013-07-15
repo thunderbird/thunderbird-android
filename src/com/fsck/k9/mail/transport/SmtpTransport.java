@@ -17,6 +17,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.TrustManager;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -380,6 +381,8 @@ public class SmtpTransport extends Transport {
                     throw new MessagingException("No valid authentication mechanism found.");
                 }
             }
+        } catch (SSLHandshakeException e) {    
+        	throw new ClientCertificateRequiredException(e);
         } catch (SSLException e) {
             throw new CertificateValidationException(e.getMessage(), e);
         } catch (GeneralSecurityException gse) {

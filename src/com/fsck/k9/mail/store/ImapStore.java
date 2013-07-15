@@ -2643,10 +2643,10 @@ public class ImapStore extends Store {
                     }
                 }
 
-           // } catch (SSLHandshakeException e) {    
-            //	throw new ClientCertificateRequiredException(e);
+            } catch (SSLHandshakeException e) {    
+            	throw new ClientCertificateRequiredException(e);
             } catch (SSLException e) {
-                throw new CertificateValidationException(e.getMessage(), e);
+                throw new CertificateValidationException(e.getMessage(), e);          
             } catch (GeneralSecurityException gse) {
                 throw new MessagingException(
                     "Unable to open connection to IMAP server due to security error.", gse);
@@ -2659,6 +2659,7 @@ public class ImapStore extends Store {
                 } else {
                     throw ce;
                 }
+               
             } finally {
                 if (!authSuccess) {
                     Log.e(K9.LOG_TAG, "Failed to login, closing connection for " + getLogId());

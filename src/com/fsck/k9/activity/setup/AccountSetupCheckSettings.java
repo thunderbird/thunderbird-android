@@ -177,29 +177,51 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 } catch (final CertificateValidationException cve) {
                     Log.e(K9.LOG_TAG, "Error while testing settings", cve);
 
-                    // Avoid NullPointerException in acceptKeyDialog()
-                    if (TrustManagerFactory.getLastCertChain() != null) {
-                    	if(mPromptForClientCertificate) {
-                    		//accept server certificate if we are authorizing using client-side certificate
-                    		final X509Certificate[] chain = TrustManagerFactory.getLastCertChain();
-                    		acceptCert(chain);
-                    	} else {
-                    		acceptKeyDialog(
-                    				R.string.account_setup_failed_dlg_certificate_message_fmt,
-                    				cve);
-                    	}
-                        	
-                    } else {
-                        showErrorDialog(
-                                R.string.account_setup_failed_dlg_server_message_fmt,
-                                (cve.getMessage() == null ? "" : cve.getMessage()));
-                    }
-                } catch(ClientCertificateRequiredException e) {
+                    handleCertValidationException(cve);
+                    
+                } catch(final ClientCertificateRequiredException e) {
                 
 	            	if(TrustManagerFactory.isPlatformSupportsClientCertificates()) {
-	            		//ask if user want to pick a client certificate - if not then just go with CertificateValidationException block as always before
+	            		runOnUiThread(new Runnable() {
+							public void run() {
+								//ask if user want to pick a client certificate - if not then just go with CertificateValidationException block as always before
+								AlertDialog.Builder builder = new AlertDialog.Builder(AccountSetupCheckSettings.this);
+								builder.setMessage(R.string.do_you_want_to_pick_ccert)
+								.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										
+										//accept server certificate if we are authorizing using client-side certificate
+										AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
+								        		mCheckIncoming, mCheckOutgoing, true);
+										
+									}
+								})
+								.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										handleCertValidationException(e);
+									}
+								});
+								builder.create();
+								builder.show();
+							}
+						});
+	                    
 	            	} else {
-	            		
+	            		//Certificates center (KeyChain) is not available in this Android version - inform user about this and go with  CertificateValidationException block as always before
+
+	            		runOnUiThread(new Runnable() {
+							public void run() {
+								AlertDialog.Builder builder = new AlertDialog.Builder(AccountSetupCheckSettings.this);
+								builder.setMessage(R.string.ccert_not_available)
+								.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										handleCertValidationException(e);
+									}
+								});
+								builder.create();
+								builder.show();
+							}
+						});
 	            	}
                 	
             	} catch (ClientCertificateAliasRequiredException ccr) {
@@ -244,6 +266,26 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         .start();
     }
 
+    private void handleCertValidationException(Exception cve) {
+    	// Avoid NullPointerException in acceptKeyDialog()
+        if (TrustManagerFactory.getLastCertChain() != null) {
+        	if(mPromptForClientCertificate) {
+        		//accept server certificate if we are authorizing using client-side certificate
+        		final X509Certificate[] chain = TrustManagerFactory.getLastCertChain();
+        		acceptCert(chain);
+        	} else {
+        		acceptKeyDialog(
+        				R.string.account_setup_failed_dlg_certificate_message_fmt,
+        				cve);
+        	}
+            	
+        } else {
+            showErrorDialog(
+                    R.string.account_setup_failed_dlg_server_message_fmt,
+                    (cve.getMessage() == null ? "" : cve.getMessage()));
+        }
+    }
+    
     @Override
     public void onDestroy() {
         super.onDestroy();
