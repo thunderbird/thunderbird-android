@@ -363,7 +363,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="account_setup_basics_manual_setup_action">Ručné nastavenie</string>
 
     <string name="account_setup_check_settings_title"/>
-    <string name="account_setup_check_settings_retr_info_msg">Získavanie informácií o účte\u2026</string>
+    <string name="account_setup_check_settings_retr_info_msg">Načítavanie informácií o účte\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrola nastavení serveru prichádzajúcej pošty\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrola nastavení serveru odchádzajúcej pošty\u2026</string>
     <string name="account_setup_check_settings_authenticate">Overovanie\u2026</string>
@@ -554,7 +554,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
 
     <string name="account_settings_general_title">Všeobecné nastavenia</string>
     <string name="account_settings_reading_mail">Čítanie pošty</string>
-    <string name="account_settings_sync">Získavanie pošty</string>
+    <string name="account_settings_sync">Sťahovanie pošty</string>
     <string name="account_settings_folders">Priečinky</string>
     <string name="account_settings_quote_prefix_label">Predpona citovaného textu</string>
     <string name="account_settings_crypto">Šifrovanie</string>
@@ -678,7 +678,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="account_settings_vibrate_pattern_5">Vzor 5</string>
     <string name="account_settings_vibrate_times">Opakovať vibrovanie</string>
     <string name="account_settings_ringtone">Zvonenie pre nový email</string>
-    <string name="account_settings_led_label">Blikanie LED</string>
+    <string name="account_settings_led_label">LED blikanie</string>
     <string name="account_settings_led_summary">Blikať LED diódou pri doručení nového e-mailu</string>
 
     <string name="account_settings_composition_title">Možnosti vytvárania správ</string>
@@ -700,7 +700,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="manage_identities_edit_action">Upraviť</string>
     <string name="manage_identities_move_up_action">Posunúť hore</string>
     <string name="manage_identities_move_down_action">Posunúť dole</string>
-    <string name="manage_identities_move_top_action">Posunúť  na začiatok/nastaviť ako predvolené</string>
+    <string name="manage_identities_move_top_action">Posunúť na začiatok/nastaviť ako predvolené</string>
     <string name="manage_identities_remove_action">Odstrániť</string>
 
     <string name="edit_identity_description_label">Popis identity</string>
@@ -810,7 +810,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="debug_preferences">Ladenie</string>
     <string name="privacy_preferences">Súkromie</string>
     <string name="network_preferences">Sieť</string>
-    <string name="interaction_preferences">Interakcia</string>
+    <string name="interaction_preferences">Interakcie</string>
     <string name="accountlist_preferences">Zoznam účtov</string>
     <string name="messagelist_preferences">Zoznamy správ</string>
     <string name="messageview_preferences">Správy</string>
@@ -1074,8 +1074,8 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="webview_contextmenu_image_view_action">Zobraziť obrázok</string>
     <string name="webview_contextmenu_image_save_action">Uložiť obrázok</string>
     <string name="webview_contextmenu_image_download_action">Stiahnuť obrázok</string>
-    <string name="webview_contextmenu_image_copy_action">Skopírovať URL adresu obrázka do schránky</string>
-    <string name="webview_contextmenu_image_clipboard_label">URL adresa obrázku</string>
+    <string name="webview_contextmenu_image_copy_action">Skopírovať URL do schránky</string>
+    <string name="webview_contextmenu_image_clipboard_label">URL adresa obrázka</string>
 
     <string name="webview_contextmenu_phone_call_action">Volať číslo</string>
     <string name="webview_contextmenu_phone_save_action">Uložiť do kontaktov</string>
