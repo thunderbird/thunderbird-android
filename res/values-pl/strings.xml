@@ -44,7 +44,7 @@ Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
 <ul>
   <li>Obsługa Push Mail z użyciem IMAP IDLE</li>
   <li>Lepsza wydajność</li>
-  <li>Message refiling</li>
+  <li>Reorganizaowanie wiadomości</li>
   <li>Obsługa sygnaturek</li>
   <li>Kopia UDW-do-siebie</li>
   <li>Subscrypcja wybranych folderów</li>
@@ -113,7 +113,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="choose_folder_title">Wybierz folder</string>
 
-    <string name="status_loading_account_folder">Sprawdzam <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading_account_folder">Sprawdzam <xliff:g id="account">%s</xliff:g>: <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_account_folder_headers">Nagłówki: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Wysyłam: <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_processing_account">Przetwarzam: <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -138,7 +138,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="forward_action">Prześlij dalej</string>
     <string name="move_action">Przenieś</string>
     <string name="single_message_options_action">Wyślij</string>
-    <string name="refile_action">Wypełnij ponownie</string>
+    <string name="refile_action">Operacje…</string>
     <string name="continue_action">Kontynuuj</string>
     <string name="back_action">Cofnij</string>
     <string name="done_action">Gotowe</string> <!--  Used to complete a multi-step process -->
@@ -149,7 +149,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="refresh_folders_action">Odśwież listę</string>
     <string name="filter_folders_action">Wyszukaj folder</string>
     <string name="add_account_action">Dodaj konto</string>
-    <string name="compose_action">Napisz</string>
+    <string name="compose_action">Nowa wiadomość</string>
     <string name="search_action">Szukaj</string>
     <string name="search_results">Wyniki</string>
     <string name="preferences_action">Ustawienia</string>
@@ -173,7 +173,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="message_view_theme_action_dark">Przełącz na ciemny styl</string>
     <string name="message_view_theme_action_light">Przełącz na jasny styl</string>
 
-    <string name="mark_as_unread_action">Jako nieprzeczytane</string>
+    <string name="mark_as_unread_action">Oznacz jako nieprzeczytane</string>
     <string name="add_cc_bcc_action">Dodaj DW/UDW</string>
     <string name="read_receipt">Powiadomienie o przeczytaniu</string>
     <string name="read_receipt_enabled">Żadaj powiadomienia o przeczytaniu</string>
@@ -311,8 +311,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="global_settings_show_correspondent_names_label">Pokazuj nazwiska korespondentów</string>
     <string name="global_settings_show_correspondent_names_summary">Pokazuj nazwiska korespondentów zamiast ich adresów email</string>
 
-    <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>
-    <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>
+    <string name="global_settings_sender_above_subject_label">Korespondent powyżej tematu</string>
+    <string name="global_settings_sender_above_subject_summary">Wyświetlaj nazwę korespondenta powyżej, zamiast poniżej tematu</string>
 
     <string name="global_settings_show_contact_name_label">Pokazuj nazwę kontaktu</string>
     <string name="global_settings_show_contact_name_summary">Użyj nazw nadawców, jeżeli występują w Twojej książce kontaktowej</string>
@@ -831,7 +831,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="settings_compose_theme_label">Kolorystyka widoku tworzenia wiadomości</string>
     <string name="settings_language_label">Język</string>
 
-    <string name="settings_message_theme_selection_label">Możliwość zmiany kolorystyki widoku wiadomości</string>
+    <string name="settings_message_theme_selection_label">Stała kolorystyka widoku wiadomości</string>
     <string name="settings_message_theme_selection_summary_off">Wybierz kolorystykę z poziomu widoku wiadomości</string>
     <string name="settings_message_theme_selection_summary_on">Użyj kolorystyki wskazanej w konfiguracji</string>
 
@@ -867,7 +867,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="volume_navigation_message">Wygląd wiadomości</string>
     <string name="volume_navigation_list">Różne widoki list</string>
 
-    <string name="start_integrated_inbox_title">Pokaż zintegrowaną</string>
+    <string name="start_integrated_inbox_title">Zintegrowana skrzynka</string>
 
     <string name="measure_accounts_title">Pokazuj rozmiary kont</string>
     <string name="measure_accounts_summary">Wyłącz, aby przyspieszyć wyświetlanie</string>
@@ -1055,7 +1055,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="settings_import_use_incoming_server_password">Użyj hasła serwera przychodzącego</string>
     <string name="activate_account_action">Aktywuj</string>
 
-    <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" jest niedostępne; sprawdź pamięć</string>
+    <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" jest niedostępne; sprawdź dostępną pamięć</string>
 
     <string name="settings_attachment_default_path">Zapisuj załączniki do…</string>
     <string name="attachment_save_title">Zapisz załączniki</string>
@@ -1122,7 +1122,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
     <string name="remote_search_unavailable_no_network">Połączenie sieciowe jest wymagane aby korzystać z wyszukiwania na serwerze.</string>
 
-    <string name="global_settings_background_as_unread_indicator_label">Przyciemnij wiadomość po przeczytaniu</string>
+    <string name="global_settings_background_as_unread_indicator_label">Przyciemnij po przeczytaniu</string>
     <string name="global_settings_background_as_unread_indicator_summary">Przeczytane wiadomości będą oznaczane szarym tłem</string>
 
     <string name="global_settings_threaded_view_label">Widok wątków</string>
