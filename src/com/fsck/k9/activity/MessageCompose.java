@@ -28,6 +28,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
 import android.view.ContextThemeWrapper;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -103,6 +104,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MessageCompose extends K9Activity implements OnClickListener {
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_MENU && Build.VERSION.SDK_INT < 11) {
+            openOptionsMenu();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
     private static final int DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY = 3;
@@ -2268,6 +2278,11 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
         if (!mAccount.hasDraftsFolder()) {
             menu.findItem(R.id.save).setEnabled(false);
+        }
+
+        // We can't display the icon pre-Honeycomb as theres not enough room, but we want to for everything else
+        if (Build.VERSION.SDK_INT >= 11) {
+            menu.findItem(R.id.add_attachment).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
 
         /*

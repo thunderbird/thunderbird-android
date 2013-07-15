@@ -117,12 +117,9 @@ public class ActionMenuPresenter extends BaseMenuPresenter
         mScrapActionButtonView = null;
     }
 
+    // Show the overflow menu for pre-Honeycomb
     public static boolean reserveOverflow(Context context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB);
-        } else {
-            return !HasPermanentMenuKey.get(context);
-        }
+        return true;
     }
 
     private static class HasPermanentMenuKey {

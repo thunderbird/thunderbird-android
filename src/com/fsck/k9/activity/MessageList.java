@@ -727,6 +727,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                     Log.v(K9.LOG_TAG, "Swallowed key up.");
                 return true;
             }
+        } else if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_MENU && Build.VERSION.SDK_INT < 11) {
+            openOptionsMenu(); 
+            return true;
         }
         return super.onKeyUp(keyCode, event);
     }

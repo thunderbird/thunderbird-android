@@ -12,7 +12,6 @@
         android:alphabeticShortcut="n"
         android:title="@string/add_attachment_action"
         android:icon="?attr/iconActionAddAttachment"
-        android:showAsAction="always"
     />
     <item
         android:id="@+id/send"
