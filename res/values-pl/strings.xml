@@ -3,12 +3,10 @@
 <!--  ##                                                                                ## -->
 <!--  ##         Polska wersja jezykowa: Marcin Orlowski <carlos@wfmh.org.pl>           ## -->
 <!--  ##                                                                                ## -->
-<!--  ## Wersja robocza. Przeslij wszelkie sugestie oraz uwagi na w/w adres.            ## -->
-<!--  ## This is draft. Send all your notes or suggestions to address given above.      ## -->
-<!--  ##                                                                                ## -->
-<!--  ## Latest update: (YYYY-MM-DD): 2010.07.03                                        ## -->
-<!--  ## Modified by rabbbit, 2011.03.03				        						## -->
-<!--  ## Updated by Błażej Jeżewski, 2012.04.10											## -->
+<!--  ## Latest update: (YYYY-MM-DD): 2013.07.15                                        ## -->
+<!--  ## Modified by rabbbit, 2011.03.03                                                ## -->
+<!--  ## Updated by Błażej Jeżewski, 2012.04.10                                         ## -->
+<!--  ## Updated by Mirosław Lach, 2013.07.15                                           ## -->
 <!--  ##                                                                                ## -->
 <!--  #################################################################################### -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
@@ -1118,8 +1116,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_settings_remote_search_enabled">Włącz wyszukiwanie na serwerze</string>
     <string name="account_settings_remote_search_enabled_summary">Szukaj wiadomości na serwerze oraz tych na urządzeniu</string>
     <string name="action_remote_search">Wyszukuj wiadomości na serwerze</string>
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Pociągnij…</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Zwolnij…</string>
     <string name="remote_search_unavailable_no_network">Połączenie sieciowe jest wymagane aby korzystać z wyszukiwania na serwerze.</string>
 
     <string name="global_settings_background_as_unread_indicator_label">Przyciemnij po przeczytaniu</string>
