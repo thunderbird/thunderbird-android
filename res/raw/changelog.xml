@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.406" versioncode="17043" >
+        <change>Add some Russian ISPs for autoconfiguration</change>
+    </release>
     <release version="4.405" versioncode="17042" >
         <change>Updates to Catalan, Chinese and Russian translations</change>
         <change>Workarounds for some broken POP3 servers</change>
