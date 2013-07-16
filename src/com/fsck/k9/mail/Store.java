@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.store.ImapStore;
@@ -49,6 +50,13 @@ public abstract class Store {
      * Get an instance of a remote mail store.
      */
     public synchronized static Store getRemoteInstance(Account account) throws MessagingException {
+    	return getRemoteInstance(account, false);
+    }
+    
+    /**
+     * Get an instance of a remote mail store.
+     */
+    public synchronized static Store getRemoteInstance(Account account, boolean reload) throws MessagingException {
         String uri = account.getStoreUri();
 
         if (uri.startsWith("local")) {
@@ -56,7 +64,7 @@ public abstract class Store {
         }
 
         Store store = sStores.get(uri);
-        if (store == null) {
+        if (store == null || reload) {
             if (uri.startsWith("imap")) {
                 store = new ImapStore(account);
             } else if (uri.startsWith("pop3")) {

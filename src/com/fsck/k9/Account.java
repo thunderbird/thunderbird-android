@@ -151,7 +151,7 @@ public class Account implements BaseAccount {
 
     private final String mUuid;
     private String mStoreUri;
-    private String mStoreClientCertificateAlias;
+    private String mClientCertificateAlias;
 
     /**
      * Storage provider ID, used to locate and manage the underlying DB/file
@@ -159,7 +159,6 @@ public class Account implements BaseAccount {
      */
     private String mLocalStorageProviderId;
     private String mTransportUri;
-    private String mTransportClientCertificateAlias;
     private String mDescription;
     private String mAlwaysBcc;
     private int mAutomaticCheckIntervalMinutes;
@@ -380,10 +379,9 @@ public class Account implements BaseAccount {
         SharedPreferences prefs = preferences.getPreferences();
 
         mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
-        mStoreClientCertificateAlias = prefs.getString(mUuid + ".storeClientCertificateAlias", null);
+        mClientCertificateAlias = prefs.getString(mUuid + ".clientCertificateAlias", null);
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
         mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
-        mTransportClientCertificateAlias = prefs.getString(mUuid + ".transportClientCertificateAlias", null);
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
@@ -698,10 +696,9 @@ public class Account implements BaseAccount {
         }
 
         editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
-        editor.putString(mUuid + ".storeClientCertificateAlias", mStoreClientCertificateAlias);
+        editor.putString(mUuid + ".clientCertificateAlias", mClientCertificateAlias);
         editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
         editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
-        editor.putString(mUuid + ".transportClientCertificateAlias", mTransportClientCertificateAlias);
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
@@ -934,12 +931,12 @@ public class Account implements BaseAccount {
         this.mStoreUri = storeUri;
     }
 
-    public synchronized String getStoreClientCertificateAlias() {
-    	return mStoreClientCertificateAlias;
+    public synchronized String getClientCertificateAlias() {
+    	return mClientCertificateAlias;
     }
 
-    public synchronized void setStoreClientCertificateAlias(String storeClientCertificateAlias) {
-    	this.mStoreClientCertificateAlias = storeClientCertificateAlias;
+    public synchronized void setClientCertificateAlias(String clientCertificateAlias) {
+    	this.mClientCertificateAlias = clientCertificateAlias;
     }
     
     
@@ -951,14 +948,6 @@ public class Account implements BaseAccount {
         this.mTransportUri = transportUri;
     }
     
-    public synchronized String getTransportClientCertificateAlias() {
-    	return mTransportClientCertificateAlias;
-    }
-
-    public synchronized void setTransportClientCertificateAlias(String transportClientCertificateAlias) {
-    	this.mTransportClientCertificateAlias = transportClientCertificateAlias;
-    }
-
     @Override
     public synchronized String getDescription() {
         return mDescription;
@@ -1342,6 +1331,10 @@ public class Account implements BaseAccount {
 
     public Store getRemoteStore() throws MessagingException {
         return Store.getRemoteInstance(this);
+    }
+
+    public Store getRemoteStore(boolean reload) throws MessagingException {
+    	return Store.getRemoteInstance(this, reload);
     }
 
     // It'd be great if this actually went into the store implementation

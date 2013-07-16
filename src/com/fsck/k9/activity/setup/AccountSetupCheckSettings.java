@@ -24,6 +24,7 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ClientCertificateAliasRequiredException;
 import com.fsck.k9.mail.ClientCertificateRequiredException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.KeyChainKeyManager;
@@ -128,10 +129,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 	if (mPromptForClientCertificate) {
                 		Log.d(K9.LOG_TAG, "AccountSetupCheckSettings will prompt for client cert");
                         TrustManagerFactory.setInteractiveClientCertificateAliasSelectionRequired(true);
+                        
                 	} else {
                 		Log.d(K9.LOG_TAG, "AccountSetupCheckSettings will NOT prompt for client cert");
                 	}
-
                 	
                     if (mDestroyed) {
                         return;
@@ -146,7 +147,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             mAccount, mCheckIncoming, mCheckOutgoing);
 
                     if (mCheckIncoming) {
-                		store = mAccount.getRemoteStore();
+                    	//we need to refresh URI that stores settings in order to include certificate that user set
+                		store = mAccount.getRemoteStore(mIsClientCertSet);
                     		
                 		if (store instanceof WebDavStore) {
                 			setMessage(R.string.account_setup_check_settings_authenticate);
@@ -154,15 +156,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 			setMessage(R.string.account_setup_check_settings_check_incoming_msg);
                 		}
                 		
-                		if(!mIsClientCertSet) {
 
-                			//don't check settings if user already pick a certificate - it will cause SSLException even if everything is ok
-                    		store.checkSettings();
-                    		
-                    		if (store instanceof WebDavStore) {
-                    			setMessage(R.string.account_setup_check_settings_fetch);
-                    		}
-                    	}
+                		store.checkSettings();
+                		
+                		if (store instanceof WebDavStore) {
+                			setMessage(R.string.account_setup_check_settings_fetch);
+                		}
 
                     	
                         MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
@@ -204,38 +203,73 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     handleCertValidationException(cve);
                     
                 } catch(final ClientCertificateRequiredException e) {
-                /* 
-                	if(mIsClientCertSet) {
-                		//ain't do nothing - user already passed client side certificate
-                		setResult(RESULT_OK);
-                        finish();
-                	} else 
-                	*/	
+                	
+                	
+
                 		if(TrustManagerFactory.isPlatformSupportsClientCertificates()) {
-	            		runOnUiThread(new Runnable() {
-							public void run() {
-								//ask if user want to pick a client certificate - if not then just go with CertificateValidationException block as always before
-								AlertDialog.Builder builder = new AlertDialog.Builder(AccountSetupCheckSettings.this);
-								builder.setMessage(R.string.do_you_want_to_pick_ccert)
-								.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int id) {
-										
-										//accept server certificate if we are authorizing using client-side certificate
-										AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
-								        		mCheckIncoming, mCheckOutgoing, true);
-										
-									}
-								})
-								.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int id) {
-										handleCertValidationException(e);
-									}
-								});
-								builder.create();
-								builder.show();
-							}
-						});
-	                    
+                			
+                			if(mPromptForClientCertificate) {
+                				//there are no certs if we are back here - suggest installing new certs
+                				runOnUiThread(new Runnable() {
+                					public void run() {
+    								
+	    								AlertDialog.Builder builder = new AlertDialog.Builder(AccountSetupCheckSettings.this);
+	    								builder.setMessage(R.string.no_ccerts)
+	    								.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	    									public void onClick(DialogInterface dialog, int id) {
+	    										
+	    										//redirect user to security settings
+	    										startActivity(new Intent(android.provider.Settings.ACTION_SECURITY_SETTINGS));
+
+	    										finish();
+	    				                        return;
+	    										
+	    									}
+	    								})
+	    								.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+	    									public void onClick(DialogInterface dialog, int id) {
+	    										handleCertValidationException(e);
+	    									}
+	    								});
+	    								builder.create();
+	    								builder.show();
+                					}
+                				});
+    	            		
+                		} else {
+                			
+                			//ask if user want to pick a client certificate - if not then just go with CertificateValidationException block as always before
+    	            		runOnUiThread(new Runnable() {
+    							public void run() {
+    								int msgId = R.string.do_you_want_to_pick_ccert;
+    								if(mIsClientCertSet) {
+    									//client already set certificate and we still can't log in
+    									msgId = R.string.do_you_want_to_pick_ccert_error;
+    								}
+    								
+    								AlertDialog.Builder builder = new AlertDialog.Builder(AccountSetupCheckSettings.this);
+    								builder.setMessage(msgId)
+    								.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+    									public void onClick(DialogInterface dialog, int id) {
+    										
+    										//accept server certificate if we are authorizing using client-side certificate
+    										AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
+    								        		mCheckIncoming, mCheckOutgoing, true);
+    										
+    									}
+    								})
+    								.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+    									public void onClick(DialogInterface dialog, int id) {
+    										handleCertValidationException(e);
+    									}
+    								});
+    								builder.create();
+    								builder.show();
+    							}
+    						});
+    	            		
+                		}
+                			
 	            	} else {
 	            		//Certificates center (KeyChain) is not available in this Android version - inform user about this and go with  CertificateValidationException block as always before
 
@@ -256,7 +290,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 	
             	} catch (ClientCertificateAliasRequiredException ccr) {
                 	Log.e( "Certificate required", ccr.getMessage());
-                	String alias = mCheckIncoming ? mAccount.getStoreClientCertificateAlias() : mAccount.getTransportClientCertificateAlias();
+                	String alias = mCheckIncoming ? mAccount.getClientCertificateAlias() : mAccount.getClientCertificateAlias();
                 	
                 	alias = KeyChainKeyManager.interactivelyChooseClientCertificateAlias(AccountSetupCheckSettings.this, 
                 			ccr.getKeyTypes(),
@@ -269,10 +303,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 	if (alias != null) {
                     	if (mCheckIncoming) {
                     		Log.d(K9.LOG_TAG, "setting store client cert. alias to:"+alias);
-                    		mAccount.setStoreClientCertificateAlias(alias);
+                    		mAccount.setClientCertificateAlias(alias);
                     	} else if (mCheckOutgoing) {
                     		Log.d(K9.LOG_TAG, "setting transport client cert. alias to:"+alias);
-                    		mAccount.setTransportClientCertificateAlias(alias);
+                    		mAccount.setClientCertificateAlias(alias);
                     	}
                     	
                     	//don't ask for certificate anymore

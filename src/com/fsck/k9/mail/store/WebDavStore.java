@@ -273,6 +273,7 @@ public class WebDavStore extends Store {
         protected WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
                 String authenticationType, String username, String password, String alias,
                 String path, String authPath, String mailboxPath) {
+        	
             super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
                     password);
             this.alias = alias;

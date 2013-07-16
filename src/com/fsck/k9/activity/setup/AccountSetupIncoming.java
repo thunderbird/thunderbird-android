@@ -479,7 +479,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount.setCompression(Account.TYPE_WIFI, mCompressionWifi.isChecked());
             mAccount.setCompression(Account.TYPE_OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
-
+            
+            //reset user certificate so he will be able to set another one
+            mAccount.setClientCertificateAlias(null);
+            
             //check if settings are valid
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false, 
             		false);

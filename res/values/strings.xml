@@ -1151,6 +1151,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_use_ccert_label">Use Client Certificate Authentication</string>
     <string name="account_setup_failed_dlg_ccert_required">Current settings require a valid client certificate to be selected.</string>
 
+    <string name="no_ccerts">You don\'t have any valid certificates.\nDo you want to install any?</string>
     <string name="do_you_want_to_pick_ccert">Do you want to pick a client certificate?</string>
+    <string name="do_you_want_to_pick_ccert_error">Can\'t log in.\nDo you want to pick a client certificate?</string>
     <string name="ccert_not_available">Client certificate authentication is not supported for Android versions below 4.0</string>
 </resources>

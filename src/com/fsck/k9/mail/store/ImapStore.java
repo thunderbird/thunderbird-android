@@ -366,7 +366,7 @@ public class ImapStore extends Store {
     private volatile String mPathDelimeter = null;
 
     public class StoreImapSettings implements ImapSettings {
-
+    	
         @Override
         public String getHost() {
             return mHost;
@@ -488,7 +488,7 @@ public class ImapStore extends Store {
             break;
         }
 
-        mClientCertificateAlias = mAccount.getStoreClientCertificateAlias();
+        mClientCertificateAlias = mAccount.getClientCertificateAlias();
         
         mAuthType = AuthType.valueOf(settings.authenticationType);
         mUsername = settings.username;
@@ -2449,6 +2449,7 @@ public class ImapStore extends Store {
                                 connectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
                             boolean secure = connectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
                             mSocket = TrustManagerFactory.createSslSocket(mSettings.getHost(), secure, mSettings.getClientCertificateAlias() );
+                            Log.e("Using cert alias:", mSettings.getClientCertificateAlias() + "");
                         } else {
                             mSocket = new Socket();
                         }

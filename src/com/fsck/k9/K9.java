@@ -3,6 +3,7 @@ package com.fsck.k9;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +66,12 @@ public class K9 extends Application {
     public static Application app = null;
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
-
+    
+    /** We need to keep reference to this key so it won't get GC. 
+	 * If it will then whole app will crash in Android 4.0+  with "Fatal signal 11 code=1" it's some kind of a bug in a system I guess
+     */
+    public static ArrayList<PrivateKey> certsReferenceKeeper = new ArrayList<PrivateKey>();
+    
     /**
      * Name of the {@link SharedPreferences} file used to store the last known version of the
      * accounts' databases.
