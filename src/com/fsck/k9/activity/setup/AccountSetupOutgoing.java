@@ -63,7 +63,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private ViewGroup mRequireLoginSettingsView;
     private Spinner mSecurityTypeView;
     private Spinner mAuthTypeView;
-    private CheckBox mUseClientCertificates;
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
@@ -114,7 +113,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
         mAuthTypeView = (Spinner)findViewById(R.id.account_auth_type);
         mNextButton = (Button)findViewById(R.id.next);
-        mUseClientCertificates = (CheckBox)findViewById(R.id.account_use_ccert);
 
         mNextButton.setOnClickListener(this);
         mRequireLoginView.setOnCheckedChangeListener(this);
@@ -229,14 +227,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 }
             }
 
-            if (TrustManagerFactory.isPlatformSupportsClientCertificates()) {
-            	if (mAccount.getTransportClientCertificateAlias() != null && selectedSecurityType > 0) {
-            		mUseClientCertificates.setChecked(true);
-            	}
-            } else {
-            	mUseClientCertificates.setVisibility(View.GONE);
-            }
-
             /*
              * Updates the port when the user changes the security type. This allows
              * us to show a reasonable default which the user can change.
@@ -257,12 +247,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
             });
 
-            mUseClientCertificates.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					validateFields();
-				}
-			});
             
             if (uri.getHost() != null) {
                 mServerView.setText(uri.getHost());
@@ -300,7 +284,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             (!mRequireLoginView.isChecked() ||
              (Utility.requiredFieldValid(mUsernameView) &&
               Utility.requiredFieldValid(mPasswordView))) &&
-            (!mUseClientCertificates.isChecked() || securityType > 0));
+            ( securityType > 0));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -340,14 +324,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             mAccount.setTransportUri(uri.toString());
             
 
-            // if client certs are not enabled, reset the setting (if enabled the value will be 
-            // obtained and set during the SSL handshake)
-            if (!mUseClientCertificates.isChecked()) { 
-            	mAccount.setTransportClientCertificateAlias(null);
-            }
-            
+            //check if settings are valid
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true, 
-            		mUseClientCertificates.isChecked());
+            		false);
             
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8

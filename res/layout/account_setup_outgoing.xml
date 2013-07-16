@@ -54,11 +54,6 @@
             android:layout_width="fill_parent"
             android:contentDescription="@string/account_setup_outgoing_port_label" />
         <CheckBox
-            android:id="@+id/account_use_ccert"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/account_setup_use_ccert_label" />
-        <CheckBox
             android:id="@+id/account_require_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

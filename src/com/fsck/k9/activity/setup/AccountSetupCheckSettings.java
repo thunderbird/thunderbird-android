@@ -15,6 +15,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
@@ -67,8 +69,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     private boolean mCheckOutgoing;
     
     private boolean mPromptForClientCertificate;
+
+    private boolean mIsClientCertSet;
     
     private static final String EXTRA_PROMPT_CCERT = "promptCcert";
+
+    private static final String EXTRA_CCERT_SET = "ccert_set";
 
     private boolean mCanceled;
 
@@ -77,12 +83,22 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     public static void actionCheckSettings(Activity context, Account account,
                                            boolean checkIncoming, boolean checkOutgoing,
                                            boolean promptForClientCertificate) {
-        Intent i = new Intent(context, AccountSetupCheckSettings.class);
+        actionCheckSettings(context, account, checkIncoming, checkOutgoing, promptForClientCertificate, false);
+    }
+    
+    public static void actionCheckSettings(Activity context, Account account,
+            boolean checkIncoming, boolean checkOutgoing,
+            boolean promptForClientCertificate, boolean userPassedCert) {
+    	
+    	Intent i = new Intent(context, AccountSetupCheckSettings.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_CHECK_INCOMING, checkIncoming);
         i.putExtra(EXTRA_CHECK_OUTGOING, checkOutgoing);
         i.putExtra(EXTRA_PROMPT_CCERT, promptForClientCertificate);
+        i.putExtra(EXTRA_CCERT_SET, userPassedCert);
+        
         context.startActivityForResult(i, ACTIVITY_REQUEST_CODE);
+    	
     }
 
     @Override
@@ -101,6 +117,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         mCheckIncoming = getIntent().getBooleanExtra(EXTRA_CHECK_INCOMING, false);
         mCheckOutgoing = getIntent().getBooleanExtra(EXTRA_CHECK_OUTGOING, false);
         mPromptForClientCertificate = getIntent().getBooleanExtra(EXTRA_PROMPT_CCERT, false);
+        mIsClientCertSet = getIntent().getBooleanExtra(EXTRA_CCERT_SET, false);
         
         new Thread() {
             @Override
@@ -129,18 +146,25 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             mAccount, mCheckIncoming, mCheckOutgoing);
 
                     if (mCheckIncoming) {
-                        store = mAccount.getRemoteStore();
+                		store = mAccount.getRemoteStore();
+                    		
+                		if (store instanceof WebDavStore) {
+                			setMessage(R.string.account_setup_check_settings_authenticate);
+                		} else {
+                			setMessage(R.string.account_setup_check_settings_check_incoming_msg);
+                		}
+                		
+                		if(!mIsClientCertSet) {
 
-                        if (store instanceof WebDavStore) {
-                            setMessage(R.string.account_setup_check_settings_authenticate);
-                        } else {
-                            setMessage(R.string.account_setup_check_settings_check_incoming_msg);
-                        }
-                        store.checkSettings();
+                			//don't check settings if user already pick a certificate - it will cause SSLException even if everything is ok
+                    		store.checkSettings();
+                    		
+                    		if (store instanceof WebDavStore) {
+                    			setMessage(R.string.account_setup_check_settings_fetch);
+                    		}
+                    	}
 
-                        if (store instanceof WebDavStore) {
-                            setMessage(R.string.account_setup_check_settings_fetch);
-                        }
+                    	
                         MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
                         MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null);
                     }
@@ -180,8 +204,14 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     handleCertValidationException(cve);
                     
                 } catch(final ClientCertificateRequiredException e) {
-                
-	            	if(TrustManagerFactory.isPlatformSupportsClientCertificates()) {
+                /* 
+                	if(mIsClientCertSet) {
+                		//ain't do nothing - user already passed client side certificate
+                		setResult(RESULT_OK);
+                        finish();
+                	} else 
+                	*/	
+                		if(TrustManagerFactory.isPlatformSupportsClientCertificates()) {
 	            		runOnUiThread(new Runnable() {
 							public void run() {
 								//ask if user want to pick a client certificate - if not then just go with CertificateValidationException block as always before
@@ -235,6 +265,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 			ccr.getPort(),
                 			alias);
                 	
+                	//save certificate
                 	if (alias != null) {
                     	if (mCheckIncoming) {
                     		Log.d(K9.LOG_TAG, "setting store client cert. alias to:"+alias);
@@ -244,8 +275,9 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     		mAccount.setTransportClientCertificateAlias(alias);
                     	}
                     	
+                    	//don't ask for certificate anymore
                     	AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
-                                mCheckIncoming, mCheckOutgoing, false);
+                                mCheckIncoming, mCheckOutgoing, false, true);
                 	} else {
                 		showErrorDialog(R.string.account_setup_failed_dlg_ccert_required);
                 	}

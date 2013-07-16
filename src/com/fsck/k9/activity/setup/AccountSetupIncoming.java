@@ -70,7 +70,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private Spinner mSecurityTypeView;
     private Spinner mAuthTypeView;
     private CheckBox mImapAutoDetectNamespaceView;
-    private CheckBox mUseClientCertificates;
     private EditText mImapPathPrefixView;
     private EditText mWebdavPathPrefixView;
     private EditText mWebdavAuthPathView;
@@ -118,7 +117,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
         mWebdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
-        mUseClientCertificates = (CheckBox)findViewById(R.id.account_incoming_use_ccert);
         mNextButton = (Button)findViewById(R.id.next);
         mCompressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
         mCompressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
@@ -307,14 +305,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
             }
             
-            if (TrustManagerFactory.isPlatformSupportsClientCertificates()) {
-            	if (mAccount.getStoreClientCertificateAlias() != null && selectedSecurityType > 0) {
-            		mUseClientCertificates.setChecked(true);
-            	}
-            } else {
-            	mUseClientCertificates.setVisibility(View.GONE);
-            }
-            
 
             /*
              * Updates the port when the user changes the security type. This allows
@@ -337,13 +327,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
             });
 
-            mUseClientCertificates.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					validateFields();
-				}
-			});
-            
             mAuthTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 				@Override
 				public void onItemSelected(AdapterView<?> parent, View view,
@@ -391,7 +374,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     	int secLevel = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
     	boolean hasConnectionSecurity =  secLevel > 0;
     	
-    	boolean isCcertEnabled = mUseClientCertificates.isChecked();
     	
         mNextButton
         .setEnabled(Utility.requiredFieldValid(mUsernameView)
@@ -399,7 +381,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     && Utility.domainFieldValid(mServerView)
                     && Utility.requiredFieldValid(mPortView)
                     && (!isAuthTypeExternal || hasConnectionSecurity)
-                    && (!isAuthTypeExternal || isCcertEnabled));
+                    && (!isAuthTypeExternal ));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -417,9 +399,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private void updateClientCertificateCheckbox() {
     	String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
 
-    	if (ImapStore.AuthType.EXTERNAL.name().equals(authType)) {
-    		mUseClientCertificates.setChecked(true);
-    	}
     }
 
     @Override
@@ -501,16 +480,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount.setCompression(Account.TYPE_OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
- 
-            
-            // if client certs are not enabled, reset the setting (if enabled the value will be 
-            // obtained and set during the SSL handshake)
-            if (!mUseClientCertificates.isChecked()) {
-            	mAccount.setStoreClientCertificateAlias(null);
-            }
-
+            //check if settings are valid
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false, 
-            		mUseClientCertificates.isChecked());
+            		false);
             
         } catch (Exception e) {
             failure(e);

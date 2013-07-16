@@ -68,11 +68,6 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:contentDescription="@string/account_setup_incoming_security_label" />
-        <CheckBox
-            android:id="@+id/account_incoming_use_ccert"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/account_setup_use_ccert_label" />
         <TextView
             android:id="@+id/account_auth_type_label"
             android:text="@string/account_setup_incoming_auth_type_label"

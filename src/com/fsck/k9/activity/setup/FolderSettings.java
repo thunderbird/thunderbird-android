@@ -32,7 +32,7 @@ public class FolderSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_INTEGRATE = "folder_settings_include_in_integrated_inbox";
 
     private LocalFolder mFolder;
-
+    
     private CheckBoxPreference mInTopGroup;
     private CheckBoxPreference mIntegrate;
     private ListPreference mDisplayClass;
