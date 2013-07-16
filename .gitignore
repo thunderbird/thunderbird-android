@@ -17,6 +17,7 @@ local.properties
 monkey.txt
 *~
 *.iws
+atlassian-ide-plugin.xml
 target
 build
 .gradle
