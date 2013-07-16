@@ -1565,6 +1565,10 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public int getUnreadMessageCount() throws MessagingException {
+            if (mFolderId == -1) {
+                open(OpenMode.READ_WRITE);
+            }
+
             try {
                 return database.execute(false, new DbCallback<Integer>() {
                     @Override
@@ -1592,7 +1596,7 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public int getFlaggedMessageCount() throws MessagingException {
-            if (!isOpen()) {
+            if (mFolderId == -1) {
                 open(OpenMode.READ_WRITE);
             }
 

@@ -1,4 +1,3 @@
-
 package com.fsck.k9.activity;
 
 import java.io.FileNotFoundException;
