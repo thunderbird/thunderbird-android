@@ -732,8 +732,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="sort_latest_first">Nejnovější zprávy první</string>
     <string name="sort_subject_alpha">Předmět abecedně A-&gt;Z</string>
     <string name="sort_subject_re_alpha">Předmět abecedně Z-&gt;A</string>
-    <string name="sort_sender_alpha">Odesílatel A-Z</string>-->
-    <string name="sort_sender_re_alpha">Odesílatel  Z-A</string>-->
+    <string name="sort_sender_alpha">Odesílatel A-Z</string>
+    <string name="sort_sender_re_alpha">Odesílatel  Z-A</string>
     <string name="sort_flagged_first">S \u2605 první</string>
     <string name="sort_flagged_last">Bez \u2606 první</string>
     <string name="sort_unread_first">Nepřečtené první</string>
@@ -745,7 +745,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="sort_by_date">Datum</string>
     <string name="sort_by_arrival">Příchodu</string>
     <string name="sort_by_subject">Předmět</string>
-    <string name="sort_by_sender">Odesílatel</string>-->
+    <string name="sort_by_sender">Odesílatel</string>
     <string name="sort_by_flag">Hvězdička</string>
     <string name="sort_by_unread">Přečtená/Nepřečtená</string>
     <string name="sort_by_attach">Příloha</string>
@@ -1148,5 +1148,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="last_refresh_time_format">Poslední obnova <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">Poslední obnova <xliff:g id="time_with_preposition">%s</xliff:g> (Push)</string>
     <string name="preposition_for_date">v <xliff:g id="date">%s</xliff:g></string>
-    <string name="mark_all_as_read">Označ vše jako přečtené</string>-->
+
+    <string name="mark_all_as_read">Označ vše jako přečtené</string>
 </resources>
