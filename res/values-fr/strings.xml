@@ -595,8 +595,8 @@ de plus</string>
     <string name="account_settings_crypto_app_none">Aucun</string>
     <string name="account_settings_crypto_auto_signature">Signature automatique</string>
     <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse e-mail du compte pour déduire la clé de signature</string>
-    <string name="account_settings_crypto_auto_encrypt">Cryptation automatique</string>
-    <string name="account_settings_crypto_auto_encrypt_summary">Cryptation automatique si une clé publique correspond au destinataire.</string>
+    <string name="account_settings_crypto_auto_encrypt">Encryption automatique</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Encryption automatique si une clé publique correspond au destinataire.</string>
     <string name="account_settings_crypto_apg_not_installed">APG non installé</string>
 
     <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
