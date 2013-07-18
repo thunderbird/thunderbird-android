@@ -81,7 +81,10 @@ public class TitleBarWebView extends WebView implements TitleBarDelegate {
     boolean mTouchMove;
     private Rect mClipBounds = new Rect();
     private Matrix mMatrix = new Matrix();
-    private Method mNativeGetVisibleTitleHeightMethod;
+    private static boolean checkedForNativeGetVisibleTitleHeightMethod = false;
+    private static Method nativeGetVisibleTitleHeightMethod;
+    private static Method nativeSetEmbeddedTitleBarMethod;
+    private static boolean checkedForNativeSetEmbeddedTitleBarMethod = false;
 
     /**
      * This will always contain a reference to the title bar view no matter if
@@ -171,16 +174,23 @@ public class TitleBarWebView extends WebView implements TitleBarDelegate {
      * @param v The view to set or null for removing the title bar view.
      */
     public void setEmbeddedTitleBarCompat(View v) {
+        if(checkedForNativeSetEmbeddedTitleBarMethod && nativeSetEmbeddedTitleBarMethod == null) {
+            setEmbeddedTitleBarJellyBean(v);
+        } else {
         try {
-            Method nativeMethod = getClass().getMethod("setEmbeddedTitleBar",
-                    View.class);
-            nativeMethod.invoke(this, v);
+
+            if (nativeSetEmbeddedTitleBarMethod == null) {
+                nativeSetEmbeddedTitleBarMethod = getClass().getMethod("setEmbeddedTitleBar",
+                   View.class);
+                checkedForNativeSetEmbeddedTitleBarMethod = true;
+            }
+            nativeSetEmbeddedTitleBarMethod.invoke(this, v);
         } catch(Exception e) {
             Log.d(TAG,
                     "Native setEmbeddedTitleBar not available. Starting workaround");
             setEmbeddedTitleBarJellyBean(v);
         }
-
+        }
         mTitleBarView = v;
     }
 
@@ -222,9 +232,9 @@ public class TitleBarWebView extends WebView implements TitleBarDelegate {
      * @return Visible height of title bar view or 0 if not set.
      */
     protected int getVisibleTitleHeightCompat() {
-        if(mTitleBar == null && mNativeGetVisibleTitleHeightMethod != null) {
+        if(mTitleBar == null && nativeGetVisibleTitleHeightMethod != null) {
             try {
-                return (Integer) mNativeGetVisibleTitleHeightMethod
+                return (Integer) nativeGetVisibleTitleHeightMethod
                         .invoke(this);
             } catch(Exception e) {
             }
@@ -310,13 +320,17 @@ public class TitleBarWebView extends WebView implements TitleBarDelegate {
     }
 
     private void init() {
-        try {
-            mNativeGetVisibleTitleHeightMethod = WebView.class
-                    .getDeclaredMethod("getVisibleTitleHeight");
-        } catch(NoSuchMethodException e) {
-            Log.w(TAG,
-                    "Could not retrieve native hidden getVisibleTitleHeight method");
+        if (checkedForNativeGetVisibleTitleHeightMethod == false) {
+	        try {
+	            nativeGetVisibleTitleHeightMethod = WebView.class
+	                    .getDeclaredMethod("getVisibleTitleHeight");
+	        } catch(NoSuchMethodException e) {
+	            Log.w(TAG,
+	                    "Could not retrieve native hidden getVisibleTitleHeight method");
+	        }
+	        checkedForNativeGetVisibleTitleHeightMethod = true;
         }
+
     }
 
     /**

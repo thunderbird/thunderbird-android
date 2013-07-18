@@ -1157,7 +1157,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 showMessageView();
             }
         }
-        invalidateOptionsMenu();
     }
 
     @Override
