@@ -117,7 +117,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="okay_action">Aceptar</string> <!-- User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
-    <string name="send_again_action">Reenviar</string>
+    <string name="send_again_action">Reenviar al remitente</string>
     <string name="reply_action">Responder</string>
     <string name="reply_all_action">Responder a todos</string>
     <string name="delete_action">Borrar</string>
