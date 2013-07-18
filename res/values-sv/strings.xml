@@ -390,10 +390,10 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_setup_incoming_security_label">Säkerhetstyp</string>
     <string name="account_setup_incoming_auth_type_label">Autentiseringstyp</string>
     <string name="account_setup_incoming_security_none_label">Ingen</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (om tillgängligt)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (alltid)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (om tillgängligt)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (alltid)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (om tillgängligt)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (alltid)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (om tillgängligt)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (alltid)</string>
 
     <string name="account_setup_incoming_delete_policy_label">När jag raderar ett brev</string>
     <string name="account_setup_incoming_delete_policy_never_label">Radera inte på servern</string>

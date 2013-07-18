@@ -390,10 +390,10 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="account_setup_incoming_security_label">Zabezpečenie</string>
     <string name="account_setup_incoming_auth_type_label">Overovanie</string>
     <string name="account_setup_incoming_security_none_label">Žiadne</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (ak je k dispozícii)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (vždy)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (ak je k dispozícii)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (vždy)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (ak je k dispozícii)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (vždy)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (ak je k dispozícii)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (vždy)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Keď zmažem správu</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nemazať na serveri</string>

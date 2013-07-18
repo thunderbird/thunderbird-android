@@ -395,10 +395,10 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_incoming_security_label">Zabezpieczenia</string>
     <string name="account_setup_incoming_auth_type_label">Rodzaj uwierzytelnienia</string>
     <string name="account_setup_incoming_security_none_label">Brak</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (jeśli dostępne)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (zawsze)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (jeśli dostępne)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (zawsze)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (jeśli dostępne)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (zawsze)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (jeśli dostępne)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (zawsze)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Gdy skasuję wiadomość</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie usuwaj z serwera</string>

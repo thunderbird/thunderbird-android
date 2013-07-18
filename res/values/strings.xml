@@ -395,10 +395,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_incoming_security_label">Security</string>
     <string name="account_setup_incoming_auth_type_label">Authentication</string>
     <string name="account_setup_incoming_security_none_label">None</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (if available)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (always)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (if available)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (always)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (if available)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (always)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (if available)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (always)</string>
 
     <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
     <string name="account_setup_incoming_delete_policy_never_label">Do not delete on server</string>

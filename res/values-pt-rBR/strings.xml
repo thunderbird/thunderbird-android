@@ -386,10 +386,10 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_setup_incoming_security_label">Tipo de segurança</string>
     <string name="account_setup_incoming_auth_type_label">Tipo de autenticação</string>
     <string name="account_setup_incoming_security_none_label">Nenhum</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (se disponível)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (sempre)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (se disponível)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (sempre)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (se disponível)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (sempre)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (se disponível)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (sempre)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Quando eu excluir uma mensagem</string>
     <string name="account_setup_incoming_delete_policy_never_label">Não excluí-la do servidor</string>
