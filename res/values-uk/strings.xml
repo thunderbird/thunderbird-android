@@ -390,10 +390,10 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="account_setup_incoming_security_label">Тип системи захисту</string>
     <string name="account_setup_incoming_auth_type_label">Метод автентифікації</string>
     <string name="account_setup_incoming_security_none_label">Немає</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (якщо доступно)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (завжди)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (якщо доступно)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (завжди)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (якщо доступно)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (завжди)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (якщо доступно)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (завжди)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Коли повідомлення видалено</string>
     <string name="account_setup_incoming_delete_policy_never_label">Не видаляти на сервері</string>

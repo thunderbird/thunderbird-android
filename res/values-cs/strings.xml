@@ -394,10 +394,10 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_setup_incoming_security_label">Typ zabezpečení</string>
     <string name="account_setup_incoming_auth_type_label">Typ ověření</string>
     <string name="account_setup_incoming_security_none_label">Žádné</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (je-li dostupné)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (vždy)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (je-li dostupné)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (vždy)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (je-li dostupné)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (vždy)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (je-li dostupné)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (vždy)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Když smažu zprávu</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nemazat ji na serveru</string>
