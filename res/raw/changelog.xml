@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.508" versioncode="18008" >
+        <change>Move 'share' menu item back, at least for the moment</change>
+    </release>
     <release version="4.507" versioncode="18007" >
         <change>Add some Russian ISPs for autoconfiguration</change>
         <change>Polish and Slovak translation updates</change>
