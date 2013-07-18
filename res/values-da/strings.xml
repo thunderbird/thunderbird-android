@@ -388,10 +388,10 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_setup_incoming_security_label">Sikkerhed</string>
     <string name="account_setup_incoming_auth_type_label">Autentifikations type</string>
     <string name="account_setup_incoming_security_none_label">Ingen</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (hvis tilgængelig)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (altid)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (hvis tilgængelig)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (altid)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (hvis tilgængelig)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (altid)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (hvis tilgængelig)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (altid)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Når jeg sletter en mail</string>
     <string name="account_setup_incoming_delete_policy_never_label">Undlad at slette på server</string>

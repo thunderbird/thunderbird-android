@@ -387,10 +387,10 @@ K-9 Mail это программа электронной почты для Andr
     <string name="account_setup_incoming_security_label">Безопасность</string>
     <string name="account_setup_incoming_auth_type_label">Аутентификация</string>
     <string name="account_setup_incoming_security_none_label">Нет</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (если доступно)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (всегда)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (если доступно)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (всегда)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (если доступно)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (всегда)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (если доступно)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (всегда)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Удалённое, на сервере</string>
     <string name="account_setup_incoming_delete_policy_never_label">Оставить</string>

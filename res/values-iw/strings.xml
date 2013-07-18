@@ -389,10 +389,10 @@
     <string name="account_setup_incoming_security_label">סוג אבטחה</string>
     <string name="account_setup_incoming_auth_type_label">סוג אימות</string>
     <string name="account_setup_incoming_security_none_label">כלום</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (אם זמין)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (תמיד)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (אם זמין)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (תמיד)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (אם זמין)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (תמיד)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (אם זמין)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (תמיד)</string>
 
     <string name="account_setup_incoming_delete_policy_label">כאשר אני מוחק הודעה</string>
     <string name="account_setup_incoming_delete_policy_never_label">אל תמחוק בשרת</string>

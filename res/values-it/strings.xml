@@ -390,10 +390,10 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="account_setup_incoming_security_label">Tipo di protezione</string>
     <string name="account_setup_incoming_auth_type_label">Tipo di autenticazione</string>
     <string name="account_setup_incoming_security_none_label">Nessuna</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (se disponibile)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (sempre)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (se disponibile)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (sempre)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (se disponibile)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (sempre)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (se disponibile)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (sempre)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Quando si elimina un messaggio</string>
     <string name="account_setup_incoming_delete_policy_never_label">Non eliminare dal server</string>

@@ -389,10 +389,10 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="account_setup_incoming_security_label">保護された接続</string>
     <string name="account_setup_incoming_auth_type_label">認証タイプ</string>
     <string name="account_setup_incoming_security_none_label">使用しない</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">可能なら SSL を使用する</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL を使用する</string>
-    <string name="account_setup_incoming_security_tls_optional_label">可能なら TLS を使用する</string>
-    <string name="account_setup_incoming_security_tls_label">TLS を使用する</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">可能なら SSL/TLS を使用する</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS を使用する</string>
+    <string name="account_setup_incoming_security_tls_optional_label">可能なら STARTTLS を使用する</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS を使用する</string>
 
     <string name="account_setup_incoming_delete_policy_label">メール削除時の動作</string>
     <string name="account_setup_incoming_delete_policy_never_label">サーバでは削除しない</string>

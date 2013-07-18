@@ -381,10 +381,10 @@ K-9改进的功能包括：
     <string name="account_setup_incoming_security_label">加密方法</string>
     <string name="account_setup_incoming_auth_type_label">身份验证方法</string>
     <string name="account_setup_incoming_security_none_label">无</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL（如果可能的话）</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL（总是）</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS（如果可能的话）</string>
-    <string name="account_setup_incoming_security_tls_label">TLS（总是）</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS（如果可能的话）</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS（总是）</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS（如果可能的话）</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS（总是）</string>
 
     <string name="account_setup_incoming_delete_policy_label">当我删除邮件时</string>
     <string name="account_setup_incoming_delete_policy_never_label">不要从服务器上删除</string>

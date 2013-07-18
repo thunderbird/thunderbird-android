@@ -383,10 +383,10 @@
     <string name="account_setup_incoming_security_label">Ασφάλεια</string>
     <string name="account_setup_incoming_auth_type_label">Πιστοποίηση</string>
     <string name="account_setup_incoming_security_none_label">Καμιά</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (αν υπάρχει)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (πάντοτε)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (αν υπάρχει)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (πάντοτε)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (αν υπάρχει)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (πάντοτε)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (αν υπάρχει)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (πάντοτε)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Κατά τη διαγραφή μηνύματος</string>
     <string name="account_setup_incoming_delete_policy_never_label">Να μη διαγράφεται στο server</string>

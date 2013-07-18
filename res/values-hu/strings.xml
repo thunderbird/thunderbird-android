@@ -388,10 +388,10 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="account_setup_incoming_security_label">Kapcsolat biztonsága</string>
     <string name="account_setup_incoming_auth_type_label">Hitelesítés típus</string>
     <string name="account_setup_incoming_security_none_label">Nincs</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (ha elérhető)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (mindig)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (ha elérhető)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (mindig)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (ha elérhető)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (mindig)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (ha elérhető)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (mindig)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Üzenet törlésekor</string>
     <string name="account_setup_incoming_delete_policy_never_label">Ne törlődjön a szerverről</string>

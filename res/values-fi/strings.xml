@@ -396,10 +396,10 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_setup_incoming_security_label">Suojauksen tyyppi</string>
     <string name="account_setup_incoming_auth_type_label">Todennuksen tyyppi</string>
     <string name="account_setup_incoming_security_none_label">Ei mitään</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (jos käytettävissä)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (aina)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (jos käytettävissä)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (aina)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (jos käytettävissä)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (aina)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (jos käytettävissä)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (aina)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Kun viesti poistetaan</string>
     <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
