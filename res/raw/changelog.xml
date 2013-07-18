@@ -5,6 +5,7 @@
         <change>Polish and Slovak translation updates</change>
         <change>Performance improvements</change>
         <change>Build system improvements</change>
+        <change>Move 'share' menu item up a level in the menu to ease discoverability</change>
     </release>
     <release version="4.506" versioncode="18006" >
         <change>Performance improvements</change>
