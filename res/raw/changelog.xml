@@ -2,6 +2,12 @@
 <changelog>
     <release version="4.406" versioncode="17043" >
         <change>Add some Russian ISPs for autoconfiguration</change>
+        <change>Performance improvements when opening messages and marking them as read</change>
+        <change>Update the Play Store's URL</change>
+        <change>Performance improvements to our message view</change>
+        <change>Update the android-support library to the latest version</change>
+        <change>Fix a bug where actions started from the message list context menu could act on the wrong message</change>
+        <change>
     </release>
     <release version="4.405" versioncode="17042" >
         <change>Updates to Catalan, Chinese and Russian translations</change>
