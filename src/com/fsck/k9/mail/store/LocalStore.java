@@ -141,7 +141,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 48;
+    public static final int DB_VERSION = 49;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -283,6 +283,11 @@ public class LocalStore extends Store implements Serializable {
 
                     db.execSQL("DROP INDEX IF EXISTS msg_flagged");
                     db.execSQL("CREATE INDEX IF NOT EXISTS msg_flagged ON messages (flagged)");
+
+                    db.execSQL("DROP INDEX IF EXISTS msg_composite");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_composite ON messages (deleted, empty,folder_id,flagged,read)");
+
+
 
                     db.execSQL("DROP TABLE IF EXISTS threads");
                     db.execSQL("CREATE TABLE threads (" +
@@ -688,6 +693,10 @@ public class LocalStore extends Store implements Serializable {
                                 "BEGIN " +
                                 "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
                                 "END");
+                    }
+                    if (db.getVersion() < 49) {
+                        db.execSQL("CREATE INDEX IF NOT EXISTS msg_composite ON messages (deleted, empty,folder_id,flagged,read)");
+
                     }
                 }
 
