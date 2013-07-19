@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.407" versioncode="17044" >
+        <change>Fixed a typo that made the changelog not visible on version 4.406</change>
+    </release>
     <release version="4.406" versioncode="17043" >
         <change>Add some Russian ISPs for autoconfiguration</change>
         <change>Performance improvements when opening messages and marking them as read</change>
