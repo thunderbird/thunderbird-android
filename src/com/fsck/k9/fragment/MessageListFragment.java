@@ -155,6 +155,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             THREAD_COUNT_COLUMN);
 
 
+
     public static MessageListFragment newInstance(LocalSearch search, boolean isThreadDisplay, boolean threadedList) {
         MessageListFragment fragment = new MessageListFragment();
         Bundle args = new Bundle();
@@ -456,6 +457,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mInitialized = false;
 
     private ContactPictureLoader mContactsPictureLoader;
+    private float mScreenDensity;
 
     private LocalBroadcastManager mLocalBroadcastManager;
     private BroadcastReceiver mCacheBroadcastReceiver;
@@ -780,6 +782,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         Context appContext = getActivity().getApplicationContext();
 
+        mScreenDensity = appContext.getResources().getDisplayMetrics().density;
         mPreferences = Preferences.getPreferences(appContext);
         mController = MessagingController.getInstance(getActivity().getApplication());
 
@@ -1808,7 +1811,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             MessageViewHolder holder = new MessageViewHolder();
             holder.date = (TextView) view.findViewById(R.id.date);
             holder.chip = view.findViewById(R.id.chip);
-            holder.preview = (TextView) view.findViewById(R.id.preview);
+            if (mPreviewLines == 0) {
+                view.findViewById(R.id.preview).setVisibility(View.GONE);
+                holder.preview = (TextView) view.findViewById(R.id.sender_compact);
+                ViewGroup.LayoutParams params = holder.chip.getLayoutParams();
+                params.height=(int) (16.0f * mScreenDensity);
+                params.width=(int) (16.0f * mScreenDensity);
+
+            } else {
+                view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
+                holder.preview = (TextView) view.findViewById(R.id.preview);
+            }
 
             QuickContactBadge contactBadge =
                     (QuickContactBadge) view.findViewById(R.id.contact_badge);
