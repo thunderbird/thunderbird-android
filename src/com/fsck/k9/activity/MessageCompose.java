@@ -99,6 +99,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -142,6 +144,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
     private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
     private static final String STATE_KEY_DRAFT_NEEDS_SAVING = "com.fsck.k9.activity.MessageCompose.mDraftNeedsSaving";
+    private static final String STATE_KEY_LAST_SAVE_WAS_AUTO = "com.fsck.k9.activity.MessageCompose.mLastSaveWasAuto";
     private static final String STATE_KEY_FORCE_PLAIN_TEXT =
             "com.fsck.k9.activity.MessageCompose.forcePlainText";
     private static final String STATE_KEY_QUOTED_TEXT_FORMAT =
@@ -316,6 +319,13 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     private boolean mIgnoreOnPause = false;
 
     /**
+     * java.util.Timer object - used to handle period saves of the composed message into the drafts folder
+     */
+    private Timer mPeriodicTimer = null;								// Used to provide periodic saves of the message
+    private Boolean mLastSaveWasAuto = false;							// <true> if the last time a draft was saved was because of the periodic timer
+    private static final int PERIODIC_SAVE_DELAY = 60 * 1000;			// # ms delay before the first save
+    
+    /**
      * The database ID of this message's draft. This is used when saving drafts so the message in
      * the database is updated instead of being created anew. This property is INVALID_DRAFT_ID
      * until the first save.
@@ -339,6 +349,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                     Toast.LENGTH_LONG).show();
                 break;
             case MSG_SAVED_DRAFT:
+            	//	NOTE: This is only called during a manual save - not during the periodic timer saves
                 Toast.makeText(
                     MessageCompose.this,
                     getString(R.string.message_saved_toast),
@@ -1053,16 +1064,19 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         super.onResume();
         mIgnoreOnPause = false;
         MessagingController.getInstance(getApplication()).addListener(mListener);
+        resetPeriodicTimer();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        if(mPeriodicTimer != null)
+        	mPeriodicTimer.cancel();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
         // Save email as draft when activity is changed (go to home screen, call received) or screen locked
         // don't do this if only changing orientations
         if (!mIgnoreOnPause && (getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0) {
-            saveIfNeeded();
+            saveIfNeeded(false);
         }
     }
 
@@ -1097,6 +1111,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         outState.putSerializable(STATE_KEY_HTML_QUOTE, mQuotedHtmlContent);
         outState.putBoolean(STATE_KEY_READ_RECEIPT, mReadReceipt);
         outState.putBoolean(STATE_KEY_DRAFT_NEEDS_SAVING, mDraftNeedsSaving);
+        outState.putBoolean(STATE_KEY_LAST_SAVE_WAS_AUTO, mLastSaveWasAuto);
         outState.putBoolean(STATE_KEY_FORCE_PLAIN_TEXT, mForcePlainText);
         outState.putSerializable(STATE_KEY_QUOTED_TEXT_FORMAT, mQuotedTextFormat);
     }
@@ -1138,6 +1153,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         mInReplyTo = savedInstanceState.getString(STATE_IN_REPLY_TO);
         mReferences = savedInstanceState.getString(STATE_REFERENCES);
         mDraftNeedsSaving = savedInstanceState.getBoolean(STATE_KEY_DRAFT_NEEDS_SAVING);
+        mLastSaveWasAuto = savedInstanceState.getBoolean(STATE_KEY_LAST_SAVE_WAS_AUTO);
         mForcePlainText = savedInstanceState.getBoolean(STATE_KEY_FORCE_PLAIN_TEXT);
         mQuotedTextFormat = (SimpleMessageFormat) savedInstanceState.getSerializable(
                 STATE_KEY_QUOTED_TEXT_FORMAT);
@@ -1737,20 +1753,33 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         new SendMessageTask().execute();
     }
 
-    private void saveMessage() {
-        new SaveMessageTask().execute();
+    private void saveMessage(Boolean bManualSave) {
+        new SaveMessageTask().execute(bManualSave);
     }
 
-    private void saveIfNeeded() {
+    private void saveIfNeeded(Boolean bManualSave) {
         if (!mDraftNeedsSaving || mPreventDraftSaving || mPgpData.hasEncryptionKeys() ||
                 mEncryptCheckbox.isChecked() || !mAccount.hasDraftsFolder()) {
             return;
         }
-
+        resetPeriodicTimer();
         mDraftNeedsSaving = false;
-        saveMessage();
+        mLastSaveWasAuto = !bManualSave;
+        saveMessage(bManualSave);
     }
 
+	//	Reset the auto timer so that we cancel any pending save, and then re-establish a new auto-save
+    private void resetPeriodicTimer() {
+    	if(mPeriodicTimer != null)
+	    	mPeriodicTimer.cancel();
+        mPeriodicTimer = new Timer();
+    	mPeriodicTimer.schedule(new TimerTask() {
+    		public void run() {
+    			saveIfNeeded(false);
+    		}
+    	}, PERIODIC_SAVE_DELAY);
+	}
+    
     public void onEncryptionKeySelectionDone() {
         if (mPgpData.hasEncryptionKeys()) {
             onSend();
@@ -1836,7 +1865,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     }
 
     private void onSave() {
-        saveIfNeeded();
+        saveIfNeeded(true);
         finish();
     }
 
@@ -2083,7 +2112,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                 if (K9.DEBUG) {
                     Log.v(K9.LOG_TAG, "Account switch, saving new draft in new account");
                 }
-                saveMessage();
+                saveMessage(true);
 
                 if (previousDraftId != INVALID_DRAFT_ID) {
                     if (K9.DEBUG) {
@@ -2291,7 +2320,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
     @Override
     public void onBackPressed() {
-        if (mDraftNeedsSaving) {
+        if (mDraftNeedsSaving || mLastSaveWasAuto) {			// An auto-save sets mDraftNeedsSaving to false - but we still need to prompt the user to keep it
             if (mEncryptCheckbox.isChecked()) {
                 showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
             } else if (!mAccount.hasDraftsFolder()) {
@@ -3410,9 +3439,9 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         }
     }
 
-    private class SaveMessageTask extends AsyncTask<Void, Void, Void> {
+    private class SaveMessageTask extends AsyncTask<Boolean, Void, Void> {
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(Boolean... params) {
             /*
              * Create the message from all the data the user has entered.
              */
@@ -3441,7 +3470,9 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             Message draftMessage = messagingController.saveDraft(mAccount, message, mDraftId);
             mDraftId = messagingController.getId(draftMessage);
 
-            mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
+            //	Only inform the user if this is a manually instigated save
+            if(params[0])
+            	mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
             return null;
         }
     }
