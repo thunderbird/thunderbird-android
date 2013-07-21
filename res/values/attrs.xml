@@ -17,7 +17,6 @@
         <attr name="iconActionSearch" format="reference" />
         <attr name="iconActionSearchFolder" format="reference" />
         <attr name="iconActionSend" format="reference" />
-        <attr name="iconActionSettings" format="reference" />
         <attr name="iconActionSingleMessageOptions" format="reference" />
         <attr name="iconActionSort" format="reference" />
         <attr name="iconActionSpam" format="reference" />
@@ -26,14 +25,16 @@
         <attr name="iconActionMarkAsRead" format="reference" />
         <attr name="iconActionMarkAsUnread" format="reference" />
         <attr name="iconActionRemoteSearch" format="reference" />
-        <attr name="iconActionAbout" format="reference" />
-        <attr name="iconActionAdd" format="reference" />
-        <attr name="iconActionImportExport" format="reference" />
-        <attr name="iconActionUpload" format="reference" />
-        <attr name="iconActionSelectAll" format="reference" />
-        <attr name="iconActionSave" format="reference" />
-        <attr name="iconActionCancel" format="reference" />
-        <attr name="iconActionRequestReadReceipt" format="reference" />
+        <attr name="iconMenuAdd" format="reference" />
+        <attr name="iconMenuAttachment" format="reference" />
+        <attr name="iconMenuCloseClearCancel" format="reference" />
+        <attr name="iconMenuDelete" format="reference" />
+        <attr name="iconMenuPreferences" format="reference" />
+        <attr name="iconMenuRefresh" format="reference" />
+        <attr name="iconMenuReplyReceipt" format="reference" />
+        <attr name="iconMenuSaveDraft" format="reference" />
+        <attr name="iconMenuSelectAll" format="reference" />
+        <attr name="iconMenuShowFolders" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />

@@ -54,7 +54,7 @@
     />
     <item
         android:id="@+id/select_all"
-        android:icon="?attr/iconActionSelectAll"
+        android:icon="?attr/iconMenuSelectAll"
         android:showAsAction="never"
         android:title="@string/batch_select_all"
     />

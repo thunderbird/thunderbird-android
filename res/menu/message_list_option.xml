@@ -82,7 +82,6 @@
     <!-- MessageView -->
     <item
         android:id="@+id/refile"
-        android:icon="?attr/iconActionSingleMessageOptions"
         android:showAsAction="never"
         android:title="@string/refile_action">
         <menu>
@@ -169,7 +168,7 @@
     <!-- MessageList -->
     <item
         android:id="@+id/select_all"
-        android:icon="?attr/iconActionSelectAll"
+        android:icon="?attr/iconMenuSelectAll"
         android:showAsAction="never"
         android:title="@string/batch_select_all"/>
 
@@ -183,7 +182,7 @@
     <item
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
-        android:icon="?attr/iconActionUpload"
+        android:icon="?attr/iconMenuRefresh"
         android:showAsAction="never"
         android:title="@string/send_messages_action"/>
 
@@ -211,7 +210,7 @@
     <!-- always -->
     <item
         android:id="@+id/settings"
-        android:icon="?attr/iconActionSettings"
+        android:icon="?attr/iconMenuPreferences"
         android:showAsAction="never"
         android:title="@string/preferences_action">
         <menu>

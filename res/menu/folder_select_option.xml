@@ -21,7 +21,7 @@
         android:title="@string/folder_list_display_mode_not_second_class"/>
     <item
         android:id="@+id/list_folders"
-        android:icon="?attr/iconActionRefresh"
+        android:icon="?attr/iconMenuRefresh"
         android:title="@string/refresh_folders_action"/>
 
 </menu>
