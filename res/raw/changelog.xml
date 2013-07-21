@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release version="4.409" versioncode="17046" >
-        <change>Some longitme users of K-9 have reported incredibly slow message
+        <change>Some longtime users of K-9 have reported incredibly slow message
             display times in 4.4. We haven't yet gotten our hands on a device
             that exhibits the problem, so we haven't been able to develop
             a proper fix. One thing that has worked for everyone who's tried it is to
@@ -14,6 +14,7 @@
         <change>Updates to Czech, Spanish, Finnish, French, Korean, Polish and Russian translations.</change>
         <change>Labels for SSL/TLS and STARTTLS have been clarified.</change>
         <change>Added autoconfiguration for Fastmail.FM</change>
+        <change>Tightened up the account list display for narrow devices</change>
     </release>
     <release version="4.408" versioncode="17045" >
         <change>Restore K-9's super-dense message lists when contact pictures are disabled and the number of preview lines is set to 0.</change>
