@@ -1809,7 +1809,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             MessageViewHolder holder = new MessageViewHolder();
             holder.date = (TextView) view.findViewById(R.id.date);
             holder.chip = view.findViewById(R.id.chip);
-            if (mPreviewLines == 0) {
+            if (mPreviewLines == 0 && mContactsPictureLoader == null) {
                 view.findViewById(R.id.preview).setVisibility(View.GONE);
                 holder.preview = (TextView) view.findViewById(R.id.sender_compact);
                 ViewGroup.LayoutParams params = holder.chip.getLayoutParams();
