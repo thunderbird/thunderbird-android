@@ -1875,15 +1875,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             CharSequence displayName = mMessageHelper.getDisplayName(account, fromAddrs, toAddrs);
             CharSequence displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN));
 
-            String counterpartyAddress = null;
+            Address counterpartyAddress = null;
             if (fromMe) {
                 if (toAddrs.length > 0) {
-                    counterpartyAddress = toAddrs[0].getAddress();
+                    counterpartyAddress = toAddrs[0];
                 } else if (ccAddrs.length > 0) {
-                    counterpartyAddress = ccAddrs[0].getAddress();
+                    counterpartyAddress = ccAddrs[0];
                 }
             } else if (fromAddrs.length > 0) {
-                counterpartyAddress = fromAddrs[0].getAddress();
+                counterpartyAddress = fromAddrs[0];
             }
 
             int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
@@ -1923,7 +1923,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.position = cursor.getPosition();
 
             if (holder.contactBadge != null) {
-                holder.contactBadge.assignContactFromEmail(counterpartyAddress, true);
+                holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                 if (counterpartyAddress != null) {
                     /*
                      * At least in Android 2.2 a different background + padding is used when no

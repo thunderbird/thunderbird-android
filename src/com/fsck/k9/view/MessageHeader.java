@@ -226,15 +226,15 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         Address[] ccAddrs = message.getRecipients(Message.RecipientType.CC);
         boolean fromMe = mMessageHelper.toMe(account, fromAddrs);
 
-        String counterpartyAddress = null;
+        Address counterpartyAddress = null;
         if (fromMe) {
             if (toAddrs.length > 0) {
-                counterpartyAddress = toAddrs[0].getAddress();
+                counterpartyAddress = toAddrs[0];
             } else if (ccAddrs.length > 0) {
-                counterpartyAddress = ccAddrs[0].getAddress();
+                counterpartyAddress = ccAddrs[0];
             }
         } else if (fromAddrs.length > 0) {
-            counterpartyAddress = fromAddrs[0].getAddress();
+            counterpartyAddress = fromAddrs[0];
         }
 
         /*
@@ -275,7 +275,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mDateView.setText(dateTime);
 
         if (K9.showContactPicture()) {
-            mContactBadge.assignContactFromEmail(counterpartyAddress, true);
+            mContactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
             if (counterpartyAddress != null) {
                 mContactsPictureLoader.loadContactPicture(counterpartyAddress, mContactBadge);
             } else {
