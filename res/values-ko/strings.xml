@@ -313,10 +313,10 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="global_settings_folderlist_wrap_folder_names_label">폴더 이름 자동 줄 바꿈</string>
     <string name="global_settings_folderlist_wrap_folder_names_summary">폴더 이름이 길 때 여러 줄에 모두 표시</string>
 
-    <string name="global_settings_messageview_fixedwidth_label">고정 넓이 폰트</string>
-    <string name="global_settings_messageview_fixedwidth_summary">평문 메시지를 보여줄때 고정 너비 폰트 사용</string>
-    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
-    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
+    <string name="global_settings_messageview_fixedwidth_label">고정폭 폰트</string>
+    <string name="global_settings_messageview_fixedwidth_summary">평문 메시지를 보여줄때 고정폭 폰트를 사용합니다</string>
+    <string name="global_settings_messageview_autofit_width_label">너비 자동 맞춤</string>
+    <string name="global_settings_messageview_autofit_width_summary">화면에 맞도록 메시지를 줄입니다</string>
     <string name="global_settings_messageview_return_to_list_label">삭제 후 목록으로</string>
     <string name="global_settings_messageview_return_to_list_summary">메시지 삭제 후에 메시지 목록으로 돌아갑니다</string>
     <string name="global_settings_messageview_show_next_label">삭제 후 다음 메시지 보기</string>
@@ -722,12 +722,12 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="no_removable_identity">신원을 제거할 수 없습니다.</string>
     <string name="identity_has_no_email">이메일 주소 없이 신원을 사용할 수 없습니다.</string>
 
-    <string name="sort_earliest_first">오래된 메시지를 순서</string>
-    <string name="sort_latest_first">최근 메시지 순서</string>
-    <string name="sort_subject_alpha">제목의 알파벳/가나다 순서</string>
-    <string name="sort_subject_re_alpha">제목의 알파벳/가나다 순서의 역순</string>
-    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
-    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
+    <string name="sort_earliest_first">오래된 메시지 우선</string>
+    <string name="sort_latest_first">최근 메시지 우선</string>
+    <string name="sort_subject_alpha">제목의 사전 순서로</string>
+    <string name="sort_subject_re_alpha">제목의 사전 역순으로</string>
+    <string name="sort_sender_alpha">보낸 사람의 사전 순서로</string>
+    <string name="sort_sender_re_alpha">보낸 사람의 사전 역순으로</string>
     <string name="sort_flagged_first">별표된 메시지 먼저</string>
     <string name="sort_flagged_last">별표 없는 메시지 먼저</string>
     <string name="sort_unread_first">읽지 않은 메시지 먼저</string>
@@ -739,7 +739,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="sort_by_date">날짜</string>
     <string name="sort_by_arrival">수신 일시</string>
     <string name="sort_by_subject">제목</string>
-    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
+    <string name="sort_by_sender">보낸 사람</string>
     <string name="sort_by_flag">별표</string>
     <string name="sort_by_unread">읽음/읽지 않음</string>
     <string name="sort_by_attach">첨부</string>
@@ -1137,5 +1137,5 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="last_refresh_time_format_with_push"><xliff:g id="time_with_preposition">%s</xliff:g>에 마지막 새로 고침 (푸시 활성화됨)</string>
     <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g>에</string>
 
-    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+    <string name="mark_all_as_read">모두 읽은 것으로 표시</string>
 </resources>

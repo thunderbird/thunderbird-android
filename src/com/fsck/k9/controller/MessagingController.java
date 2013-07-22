@@ -5606,6 +5606,9 @@ public class MessagingController implements Runnable {
         Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
 
         for (Message message : messages) {
+            if ( message == null) {
+               continue;
+            }
             Folder folder = message.getFolder();
             Account account = folder.getAccount();
 
