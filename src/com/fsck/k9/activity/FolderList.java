@@ -411,6 +411,24 @@ public class FolderList extends K9ListActivity {
             setDisplayMode(FolderMode.ALL);
             return true;
         }
+        case KeyEvent.KEYCODE_BACK: {
+            String currentFolder = mAdapter.getHierarchyFilter().getFolder();
+            Log.d("FOLDER", "Back key event, folder filter: " + currentFolder);
+            if (! currentFolder.equals("") ) { // are we in some subfolder?
+                int index = currentFolder.lastIndexOf('/');
+
+                String newFolder;
+                if (index == -1)
+                    newFolder = "";
+                else
+                    newFolder = currentFolder.substring(0, currentFolder.lastIndexOf('/'));
+
+                mAdapter.getHierarchyFilter().filter(newFolder);
+
+                return true;
+            }
+        }
+
         }//switch
 
 
@@ -660,7 +678,7 @@ public class FolderList extends K9ListActivity {
         private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter();
-        private Filter mHierarchyFilter = new FolderHierarchyFilter();
+        private FolderHierarchyFilter mHierarchyFilter = new FolderHierarchyFilter();
 
         public Object getItem(long position) {
             return getItem((int)position);
@@ -1172,18 +1190,25 @@ public class FolderList extends K9ListActivity {
             return mFilter;
         }
 
-        public Filter getHierarchyFilter() {
+        public FolderHierarchyFilter getHierarchyFilter() {
             return mHierarchyFilter;
         }
 
         public class FolderHierarchyFilter extends Filter {
             private boolean enabled = true;
+            String currentFolder;
+
+            public String getFolder() {
+                return currentFolder;
+            }
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 Log.d("FOLDER", "FolderHierarchyFilter.performFiltering(" + constraint.toString() + ")");
 
                 String folder = constraint.toString();
+                currentFolder = folder;
+
                 if (!folder.equals(""))
                     folder = folder + "/";
 
