@@ -131,7 +131,7 @@ public class K9 extends Application {
      * Log.d, including protocol dumps.
      * Controlled by Preferences at run-time
      */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /**
      * Should K-9 log the conversation it has over the wire with

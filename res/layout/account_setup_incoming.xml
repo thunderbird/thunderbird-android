@@ -30,6 +30,7 @@
             android:layout_width="fill_parent"
             android:contentDescription="@string/account_setup_incoming_username_label" />
         <TextView
+            android:id="@+id/account_password_label"
             android:text="@string/account_setup_incoming_password_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"

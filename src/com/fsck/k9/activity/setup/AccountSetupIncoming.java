@@ -65,6 +65,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private String mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
+    private TextView mPasswordViewLabel;
     private EditText mServerView;
     private EditText mPortView;
     private Spinner mSecurityTypeView;
@@ -107,6 +108,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
         mUsernameView = (EditText)findViewById(R.id.account_username);
         mPasswordView = (EditText)findViewById(R.id.account_password);
+        mPasswordViewLabel = (TextView)findViewById(R.id.account_password_label);
         TextView serverLabelView = (TextView) findViewById(R.id.account_server_label);
         mServerView = (EditText)findViewById(R.id.account_server);
         mPortView = (EditText)findViewById(R.id.account_port);
@@ -172,23 +174,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAuthTypeView.setAdapter(authTypesAdapter);
 
-        /*
-         * Calls validateFields() which enables or disables the Next button
-         * based on the fields' validity.
-         */
-        TextWatcher validationTextWatcher = new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                validateFields();
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                /* unused */
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                /* unused */
-            }
-        };
         mUsernameView.addTextChangedListener(validationTextWatcher);
         mPasswordView.addTextChangedListener(validationTextWatcher);
         mServerView.addTextChangedListener(validationTextWatcher);
@@ -331,7 +316,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 				@Override
 				public void onItemSelected(AdapterView<?> parent, View view,
 						int position, long id) {
-					updateClientCertificateCheckbox();
 					validateFields();
 				}
 				@Override
@@ -371,6 +355,21 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     	String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
     	boolean isAuthTypeExternal = ImapStore.AuthType.EXTERNAL.name().equals(authType) ;
     	
+    	//if user wants to user external authentication only, then we need to hide password field, since it won't be used 
+    	if(isAuthTypeExternal) {
+    		mPasswordView.removeTextChangedListener(validationTextWatcher);
+    		mPasswordView.setText("");
+    		mPasswordView.addTextChangedListener(validationTextWatcher);
+    		
+    		//hide password fields
+    		mPasswordView.setVisibility(View.GONE);
+    		mPasswordViewLabel.setVisibility(View.GONE);
+    	} else {
+    		//show password fields
+    		mPasswordView.setVisibility(View.VISIBLE);
+    		mPasswordViewLabel.setVisibility(View.VISIBLE);
+    	}
+    	
     	int secLevel = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
     	boolean hasConnectionSecurity =  secLevel > 0;
     	
@@ -381,7 +380,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     && Utility.domainFieldValid(mServerView)
                     && Utility.requiredFieldValid(mPortView)
                     && (!isAuthTypeExternal || hasConnectionSecurity)
-                    && (!isAuthTypeExternal ));
+                    );
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -392,14 +391,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
     }
     
-    /**
-     * automatically check the "use client certificates" checkbox when EXTERNAL
-     * is selected. EXTERNAL requires use of ccerts, but not vice versa
-     */
-    private void updateClientCertificateCheckbox() {
-    	String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -512,4 +503,22 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
         toast.show();
     }
+    
+    /*
+     * Calls validateFields() which enables or disables the Next button
+     * based on the fields' validity.
+     */
+    TextWatcher validationTextWatcher = new TextWatcher() {
+        public void afterTextChanged(Editable s) {
+            validateFields();
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            /* unused */
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            /* unused */
+        }
+    };
 }
