@@ -1,9 +1,6 @@
 package com.fsck.k9.activity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import android.content.Context;
 import android.content.Intent;
@@ -47,14 +44,13 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
+import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
@@ -745,22 +741,43 @@ public class FolderList extends K9ListActivity {
 
             @Override
             public void listFolders(Account account, Folder[] folders) {
-                //Log.d("FOLDER", "FolderList.listFolders()");
+                Log.d("FOLDER", "FolderList.listFolders()");
 
                 if (account.equals(mAccount)) {
+                    Arrays.sort(folders);
 
                     List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
                     List<FolderInfoHolder> topFolders = new LinkedList<FolderInfoHolder>();
 
                     Account.FolderMode aMode = account.getFolderDisplayMode();
                     Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
+
+                    Folder previous = null;
                     for (Folder folder : folders) {
-                        /*
-                        // This just hides folders that have subfolders, instead we should strip everything after the first / and unique it and ...
-                        if (!folder.getName().startsWith(currentFolder) || folder.getName().substring(currentFolder.length()+1).indexOf('/') != -1) {
-                            Log.v("FOLDER", "Skipped folder: " + folder.getName());
-                            continue;
-                        }*/
+                        String folderString = folder.getName();
+                        int index = folderString.lastIndexOf('/');
+
+                        //Log.v("FOLDER", "List: " + folder.getName() + " found slash at " + index);
+
+                        while (index != -1) {
+                            //Log.d("FOLDER", "working on substring: " + substring + " soon to be shortened to: " + substring.substring(0, index));
+
+                            folderString = folderString.substring(0, index); // get this folders' parent
+
+                            if (previous == null || ! previous.getName().startsWith(folderString)) {
+                                Log.d("FOLDER", "Artificial fake folder: " + folderString);
+
+                                FolderInfoHolder holder = new FolderInfoHolder();
+                                holder.name = folderString;
+                                holder.displayName = folderString;
+                                holder.folder = new FakeFolder(account, folderString);
+
+                                newFolders.add(holder);
+                            }
+
+                            index = folderString.lastIndexOf('/');
+                        }
+
 
                         try {
                             folder.refresh(prefs);
@@ -796,18 +813,20 @@ public class FolderList extends K9ListActivity {
                             holder = new FolderInfoHolder(context, folder, mAccount, unreadMessageCount);
                         } else {
                             holder.populate(context, folder, mAccount, unreadMessageCount);
-
                         }
                         if (folder.isInTopGroup()) {
                             topFolders.add(holder);
                         } else {
                             newFolders.add(holder);
                         }
+
+                        previous = folder;
                     }
                     Collections.sort(newFolders);
                     Collections.sort(topFolders);
                     topFolders.addAll(newFolders);
                     mHandler.newFolders(topFolders);
+
                 }
                 super.listFolders(account, folders);
 
@@ -1158,38 +1177,46 @@ public class FolderList extends K9ListActivity {
         }
 
         public class FolderHierarchyFilter extends Filter {
+            private boolean enabled = true;
+
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 Log.d("FOLDER", "FolderHierarchyFilter.performFiltering(" + constraint.toString() + ")");
 
-                final String folder = constraint.toString();
+                String folder = constraint.toString();
+                if (!folder.equals(""))
+                    folder = folder + "/";
 
                 FilterResults results = new FilterResults();
 
                 final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
 
+                if (!enabled) {
+                    results.values = mFolders;
+                    results.count = mFolders.size();
+                    return results;
+                }
+
                 for (final FolderInfoHolder value : mFolders) {
-                    Log.d("FOLDER", "Filtering for: " + folder + " on " + value.displayName );
                     if (value.displayName == null) {
                         continue;
                     }
 
                     if (value.displayName.startsWith(folder) && !value.displayName.equals(folder)) { // only display stuff in the current folder
-                        String subname;
-                        if (folder.isEmpty())
-                          subname = value.displayName.substring(folder.length());
-                        else  // remove trailing / as well
-                          subname = value.displayName.substring(folder.length()+1);
+                        String subname = value.displayName.substring(folder.length());
 
-                        Log.d("FOLDER", "Subname: " + subname + " indexof/: " + Integer.toString(subname.indexOf('/')));
-                        if (subname.indexOf('/') != -1) // a subsubfolder
+                        if (subname.indexOf('/') != -1) { // a subsubfolder
+                            Log.d("FOLDER", "Skipping subsubfolder " + value.displayName);
                             continue;
+                        }
+                        else
+                            Log.d("FOLDER", "including " + value.displayName);
 
                         value.displayName = subname;
                         newValues.add(value);
-
-                        Log.d("FOLDER", "Display of " + value.displayName + " for " + value.displayName);
                     }
+                    else
+                        Log.d("FOLDER", "Skipping " + value.displayName);
                 }
 
                 results.values = newValues;
@@ -1308,6 +1335,119 @@ public class FolderList extends K9ListActivity {
         @Override
         public void onClick(View v) {
             MessageList.actionDisplaySearch(FolderList.this, search, true, false);
+        }
+    }
+
+    private class FakeFolder extends Folder {
+        String name;
+
+        private FakeFolder(Account account, String name) {
+            super(account);
+            this.name = name;
+        }
+
+        @Override
+        public void open(OpenMode mode) throws MessagingException {
+
+        }
+
+        @Override
+        public void close() {
+
+        }
+
+        @Override
+        public boolean isOpen() {
+            return false;
+        }
+
+        @Override
+        public OpenMode getMode() {
+            return null;
+        }
+
+        @Override
+        public boolean create(FolderType type) throws MessagingException {
+            return false;
+        }
+
+        @Override
+        public boolean exists() throws MessagingException {
+            return false;
+        }
+
+        @Override
+        public int getMessageCount() throws MessagingException {
+            return 0;
+        }
+
+        @Override
+        public int getUnreadMessageCount() throws MessagingException {
+            return 0;
+        }
+
+        @Override
+        public int getFlaggedMessageCount() throws MessagingException {
+            return 0;
+        }
+
+        @Override
+        public Message getMessage(String uid) throws MessagingException {
+            return null;
+        }
+
+        @Override
+        public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener) throws MessagingException {
+            return new Message[0];
+        }
+
+        @Override
+        public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
+            return new Message[0];
+        }
+
+        @Override
+        public Message[] getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
+            return new Message[0];
+        }
+
+        @Override
+        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
+            return null;
+        }
+
+        @Override
+        public void setFlags(Message[] messages, Flag[] flags, boolean value) throws MessagingException {
+
+        }
+
+        @Override
+        public void setFlags(Flag[] flags, boolean value) throws MessagingException {
+
+        }
+
+        @Override
+        public String getUidFromMessageId(Message message) throws MessagingException {
+            return null;
+        }
+
+        @Override
+        public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener) throws MessagingException {
+
+        }
+
+        @Override
+        public void delete(boolean recurse) throws MessagingException {
+
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }

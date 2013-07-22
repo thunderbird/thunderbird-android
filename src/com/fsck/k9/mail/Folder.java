@@ -11,7 +11,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
 
 
-public abstract class Folder {
+public abstract class Folder implements Comparable<Folder> {
     protected final Account mAccount;
 
     private String status = null;
@@ -245,5 +245,18 @@ public abstract class Folder {
     public List<Message> search(String queryString, final Flag[] requiredFlags, final Flag[] forbiddenFlags)
         throws MessagingException {
         throw new MessagingException("K-9 does not support searches on this folder type");
+    }
+
+    public int compareTo(Folder o) {
+        String s1 = getName();
+        String s2 = o.getName();
+
+        int ret = s1.compareToIgnoreCase(s2);
+        if (ret != 0) {
+            return ret;
+        } else {
+            return s1.compareTo(s2);
+        }
+
     }
 }
