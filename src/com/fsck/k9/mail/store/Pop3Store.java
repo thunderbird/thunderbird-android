@@ -10,9 +10,11 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.store.ImapStore.AuthType;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.TrustManager;
 import java.io.*;
 import java.net.*;
@@ -37,7 +39,8 @@ public class Pop3Store extends Store {
 
     private enum AuthType {
         PLAIN,
-        CRAM_MD5
+        CRAM_MD5,
+        EXTERNAL
     }
 
     private static final String STLS_COMMAND = "STLS";
@@ -57,6 +60,7 @@ public class Pop3Store extends Store {
     private static final String PIPELINING_CAPABILITY = "PIPELINING";
     private static final String USER_CAPABILITY = "USER";
     private static final String TOP_CAPABILITY = "TOP";
+    private static final String EXTERNAL_CAPABILITY = "AUTH=EXTERNAL";
 
     /**
      * Decodes a Pop3Store URI.
@@ -203,6 +207,7 @@ public class Pop3Store extends Store {
     private String mPassword;
     private AuthType mAuthType;
     private int mConnectionSecurity;
+    private String mClientCertificateAlias;
     private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
 
@@ -248,6 +253,7 @@ public class Pop3Store extends Store {
         mUsername = settings.username;
         mPassword = settings.password;
         mAuthType = AuthType.valueOf(settings.authenticationType);
+        mClientCertificateAlias = mAccount.getClientCertificateAlias();
     }
 
     @Override
@@ -325,12 +331,11 @@ public class Pop3Store extends Store {
                 SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
                 if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
                         mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
+                	
                     SSLContext sslContext = SSLContext.getInstance("TLS");
-                    final boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                    sslContext.init(null, new TrustManager[] {
-                                        TrustManagerFactory.get(mHost, secure)
-                                    }, new SecureRandom());
-                    mSocket = sslContext.getSocketFactory().createSocket();
+                    boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+                    mSocket = TrustManagerFactory.createSslSocket(mHost, secure, mClientCertificateAlias );
+                    Log.e("Using cert alias:", mClientCertificateAlias + "");
                 } else {
                     mSocket = new Socket();
                 }
@@ -354,19 +359,20 @@ public class Pop3Store extends Store {
                     if (mCapabilities.stls) {
                         writeLine(STLS_COMMAND);
 
-                        SSLContext sslContext = SSLContext.getInstance("TLS");
                         boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
-                        sslContext.init(null, new TrustManager[] {
-                                            TrustManagerFactory.get(mHost, secure)
-                                        }, new SecureRandom());
-                        mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
-                                  true);
+                        mSocket = TrustManagerFactory.performStartTls(mSocket, mHost, mPort, secure, mClientCertificateAlias);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
                         mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
                         if (!isOpen()) {
                             throw new MessagingException("Unable to connect socket");
                         }
+                        
+                        if (K9.DEBUG) {
+                        	Log.i(K9.LOG_TAG, "Updating capabilities after successful TLS connection");
+                        }
+                		mCapabilities = getCapabilities();
+                        
                     } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
                         throw new MessagingException("TLS not supported but required");
                     }
@@ -382,6 +388,13 @@ public class Pop3Store extends Store {
                     } catch (MessagingException me) {
                         throw new AuthenticationFailedException(null, me);
                     }
+                }  else if (mAuthType == AuthType.EXTERNAL) {
+                	if (mCapabilities.external) {
+                		executeSimpleCommand(String.format("AUTHENTICATE EXTERNAL %s", Utility.base64Encode(mUsername)), false);
+                	} else {
+                		//throw new MessagingException("EXTERNAL authentication not advertised by server");
+                	}
+                	
                 } else {
                     try {
                         executeSimpleCommand(USER_COMMAND + " " + mUsername);
@@ -392,6 +405,8 @@ public class Pop3Store extends Store {
                 }
 
                 mCapabilities = getCapabilities();
+            } catch (SSLHandshakeException e) {    
+            	throw new ClientCertificateRequiredException(e);    
             } catch (SSLException e) {
                 throw new CertificateValidationException(e.getMessage(), e);
             } catch (GeneralSecurityException gse) {
@@ -995,6 +1010,8 @@ public class Pop3Store extends Store {
                         capabilities.user = true;
                     } else if (response.equalsIgnoreCase(TOP_CAPABILITY)) {
                         capabilities.top = true;
+                    } else if (response.equalsIgnoreCase(EXTERNAL_CAPABILITY)) {
+                    	capabilities.external = true;
                     }
                 }
 
@@ -1116,15 +1133,17 @@ public class Pop3Store extends Store {
         public boolean user;
         public boolean uidl;
         public boolean pipelining;
+        public boolean external;
 
         @Override
         public String toString() {
-            return String.format("STLS %b, TOP %b, USER %b, UIDL %b, PIPELINING %b",
+            return String.format("STLS %b, TOP %b, USER %b, UIDL %b, PIPELINING %b, EXTERNAL %b",
                                  stls,
                                  top,
                                  user,
                                  uidl,
-                                 pipelining);
+                                 pipelining,
+                                 external);
         }
     }
 

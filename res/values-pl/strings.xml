@@ -1157,6 +1157,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     
     <string name="no_ccerts">Nie posiadasz ważnych certyfikatów.\nChcesz je zainstalować?</string>
     <string name="do_you_want_to_pick_ccert">Czy chcesz użyć certyfikatu klienta?</string>
-    <string name="do_you_want_to_pick_ccert_error">Nie można się zalogować. Czy chcesz użyć certyfikatu klienta?</string>
+    <string name="do_you_want_to_pick_ccert_error">Nie można się zalogować.\nCzy chcesz użyć certyfikatu klienta?</string>
     <string name="ccert_not_available">Uwierzytelnianie przy pomocy certyfikatów klienta nie jest dostępne poniżej wersji Androida 4.0</string>
 </resources>
