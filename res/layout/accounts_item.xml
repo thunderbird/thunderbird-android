@@ -55,7 +55,7 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="4dip"
+            android:layout_marginLeft="2dip"
             android:layout_marginRight="4dip"
             android:background="?attr/compatDividerVertical"
             android:layout_alignParentTop="true"/>
