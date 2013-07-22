@@ -1202,21 +1202,23 @@ public class FolderList extends K9ListActivity {
                         continue;
                     }
 
-                    if (value.displayName.startsWith(folder) && !value.displayName.equals(folder)) { // only display stuff in the current folder
-                        String subname = value.displayName.substring(folder.length());
+                    if (value.name.startsWith(folder) && !value.name.equals(folder)) { // only display stuff in the current folder
+                        String subname = value.name.substring(folder.length());
 
                         if (subname.indexOf('/') != -1) { // a subsubfolder
-                            Log.d("FOLDER", "Skipping subsubfolder " + value.displayName);
-                            continue;
+                            Log.d("FOLDER", "Skipping subsubfolder " + value.name);
                         }
-                        else
-                            Log.d("FOLDER", "including " + value.displayName);
+                        else {
+                            Log.d("FOLDER", "including " + value.name + " displayname: " + value.displayName);
 
-                        value.displayName = subname;
-                        newValues.add(value);
+                            if (value.name.equals(value.displayName))
+                                value.displayName = subname;
+
+                            newValues.add(value);
+                        }
                     }
                     else
-                        Log.d("FOLDER", "Skipping " + value.displayName);
+                        Log.d("FOLDER", "Skipping not in current path " + value.displayName);
                 }
 
                 results.values = newValues;
