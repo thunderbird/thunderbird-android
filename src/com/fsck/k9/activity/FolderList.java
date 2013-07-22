@@ -428,6 +428,7 @@ public class FolderList extends K9ListActivity {
             MailService.actionRestartPushers(this, null);
         }
         mAdapter.getFilter().filter(null);
+        mAdapter.getHierarchyFilter().filter("");
         onRefresh(false);
     }
 
@@ -568,6 +569,19 @@ public class FolderList extends K9ListActivity {
      }
 
     private void onOpenFolder(String folder) {
+        // if is parent folder: { show subfolders } else { $current_code }
+
+        Log.d("FOLDER", "onOpenFolder: " + folder);
+
+        // check if folder has *any* subfolders
+        for (FolderInfoHolder f: mAdapter.mFolders) {
+            if (f.name.startsWith(folder) && f.name.length() > folder.length()) {
+                //Log.d("FOLDER", "found subfolder for " + folder + ": " +f.name);
+                mAdapter.getHierarchyFilter().filter(folder);
+                return;
+            }
+        }
+
         LocalSearch search = new LocalSearch(folder);
         search.addAccountUuid(mAccount.getUuid());
         search.addAllowedFolder(folder);
@@ -650,6 +664,7 @@ public class FolderList extends K9ListActivity {
         private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter();
+        private Filter mHierarchyFilter = new FolderHierarchyFilter();
 
         public Object getItem(long position) {
             return getItem((int)position);
@@ -679,6 +694,8 @@ public class FolderList extends K9ListActivity {
         }
 
         private ActivityListener mListener = new ActivityListener() {
+            private String currentFolder = "";
+
             @Override
             public void informUserOfStatus() {
                 mHandler.refreshTitle();
@@ -728,6 +745,8 @@ public class FolderList extends K9ListActivity {
 
             @Override
             public void listFolders(Account account, Folder[] folders) {
+                //Log.d("FOLDER", "FolderList.listFolders()");
+
                 if (account.equals(mAccount)) {
 
                     List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
@@ -736,6 +755,13 @@ public class FolderList extends K9ListActivity {
                     Account.FolderMode aMode = account.getFolderDisplayMode();
                     Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
                     for (Folder folder : folders) {
+                        /*
+                        // This just hides folders that have subfolders, instead we should strip everything after the first / and unique it and ...
+                        if (!folder.getName().startsWith(currentFolder) || folder.getName().substring(currentFolder.length()+1).indexOf('/') != -1) {
+                            Log.v("FOLDER", "Skipped folder: " + folder.getName());
+                            continue;
+                        }*/
+
                         try {
                             folder.refresh(prefs);
 
@@ -784,6 +810,8 @@ public class FolderList extends K9ListActivity {
                     mHandler.newFolders(topFolders);
                 }
                 super.listFolders(account, folders);
+
+                getHierarchyFilter().filter("");
             }
 
             @Override
@@ -1124,6 +1152,61 @@ public class FolderList extends K9ListActivity {
         public Filter getFilter() {
             return mFilter;
         }
+
+        public Filter getHierarchyFilter() {
+            return mHierarchyFilter;
+        }
+
+        public class FolderHierarchyFilter extends Filter {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                Log.d("FOLDER", "FolderHierarchyFilter.performFiltering(" + constraint.toString() + ")");
+
+                final String folder = constraint.toString();
+
+                FilterResults results = new FilterResults();
+
+                final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
+
+                for (final FolderInfoHolder value : mFolders) {
+                    Log.d("FOLDER", "Filtering for: " + folder + " on " + value.displayName );
+                    if (value.displayName == null) {
+                        continue;
+                    }
+
+                    if (value.displayName.startsWith(folder) && !value.displayName.equals(folder)) { // only display stuff in the current folder
+                        String subname;
+                        if (folder.isEmpty())
+                          subname = value.displayName.substring(folder.length());
+                        else  // remove trailing / as well
+                          subname = value.displayName.substring(folder.length()+1);
+
+                        Log.d("FOLDER", "Subname: " + subname + " indexof/: " + Integer.toString(subname.indexOf('/')));
+                        if (subname.indexOf('/') != -1) // a subsubfolder
+                            continue;
+
+                        value.displayName = subname;
+                        newValues.add(value);
+
+                        Log.d("FOLDER", "Display of " + value.displayName + " for " + value.displayName);
+                    }
+                }
+
+                results.values = newValues;
+                results.count = newValues.size();
+
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                //noinspection unchecked
+                mFilteredFolders = Collections.unmodifiableList((ArrayList<FolderInfoHolder>) results.values);
+                // Send notification that the data set changed now
+                notifyDataSetChanged();
+            }
+        }
+
 
         /**
          * Filter to search for occurences of the search-expression in any place of the
