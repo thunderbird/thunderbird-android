@@ -144,7 +144,7 @@ public class ContactPictureLoader {
     		letter = m.group(1).toUpperCase();
     	}
     	
-    	return letter.length() == 0 ? 'K' : letter.charAt(0);
+        return letter.length() == 0 ? '?' : letter.charAt(0);
     }
     
     /** Calculates a bitmap with a color and a capital letter for
