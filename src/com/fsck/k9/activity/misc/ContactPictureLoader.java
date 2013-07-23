@@ -67,6 +67,23 @@ public class ContactPictureLoader {
      */
     private final LruCache<String, int[]> mUnknownContactsCache;
 
+    private final static int CONTACT_DUMMY_COLORS_ARGB[] = {
+        0xffff0000, // 0 R, G, B
+        0xff00ff00,
+        0xff0000ff,
+        0xffff8000, // 3 mix ff with 80
+        0xff0080ff,
+        0xff80ff00,
+        0xff8000ff,
+        0xffff0080,
+        0xff00ff80,
+        0xff8040ff, // 9 mit 80 with 40 and ff
+        0xff80ff40,
+        0xffff4080,
+        0xffff8040,
+        0xff40ff80,
+        0xff4080ff,
+    };
 
     public ContactPictureLoader(Context context, int defaultPictureResource) {
         Context appContext = context.getApplicationContext();
@@ -145,12 +162,8 @@ public class ContactPictureLoader {
     }
     
     private int calcUnknownContactColor(Address address) {
-    	int val = address.getAddress().toLowerCase().hashCode();
-    	int rgb = 
-    			(0xff) << 24 |
-    			(~val & 0xff) << 16 |
-    			(val & 0xff) << 8 |
-    			(val>>>8 & 0xff);
+        int val = address.getAddress().toLowerCase().hashCode();
+        int rgb = CONTACT_DUMMY_COLORS_ARGB[val % CONTACT_DUMMY_COLORS_ARGB.length];
     	return rgb;
     }
     
