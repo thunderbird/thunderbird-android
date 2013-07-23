@@ -166,8 +166,7 @@ public class ContactPictureLoader {
     	paint.setAntiAlias(true);
     	paint.setStyle(Paint.Style.FILL);
     	paint.setARGB(255, 255, 255, 255);
-    	paint.setFakeBoldText(true);        
-    	paint.setTextSize(mPictureSizeInPx);
+        paint.setTextSize(mPictureSizeInPx * 3 / 4); // just scale this down a bit
     	Rect rect = new Rect();
     	paint.getTextBounds(letter, 0, 1, rect);
     	float width = paint.measureText(letter);
