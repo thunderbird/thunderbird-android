@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -203,7 +203,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="notification_new_title">Novo e-mail</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> mais em <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Responder</string>
@@ -278,7 +278,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="message_view_show_pictures_action">Mostrar imagens</string>
     <string name="message_view_show_message_action">Exibir mensagem</string>
     <string name="message_view_show_attachments_action">Exibir anexos</string>
-    <string name="message_view_show_more_attachments_action">Mais&#8230;</string>
+    <string name="message_view_show_more_attachments_action">Mais…</string>
     <string name="message_view_fetching_attachment_toast">Buscando anexo</string>
     <string name="message_view_no_viewer">Não foi possível encontrar um visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Transferir mensagem completa</string>
@@ -313,6 +313,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="global_settings_messageview_fixedwidth_label">Fontes de tamanho fixo</string>
     <string name="global_settings_messageview_fixedwidth_summary">Use um tamanho fixo de fonte quando mostrar mensagens com texto simples</string>
+    <string name="global_settings_messageview_autofit_width_label">Auto-ajustar mensagens</string>
+    <string name="global_settings_messageview_autofit_width_summary">Ajustar texto para caber na tela</string>
     <string name="global_settings_messageview_return_to_list_label">Retornar para lista após exclusão</string>
     <string name="global_settings_messageview_return_to_list_summary">Retornar para lista de mensagem após exclusão de mensagens</string>
     <string name="global_settings_messageview_show_next_label">Mostrar próxima mensagem após exclusão</string>
@@ -356,7 +358,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_setup_basics_password_hint">Senha</string>
     <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Recuperando informações de conta\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Verificando as configurações do servidor de entrada\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Verificando as configurações do servidor de saída\u2026</string>
@@ -384,10 +386,10 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_setup_incoming_security_label">Tipo de segurança</string>
     <string name="account_setup_incoming_auth_type_label">Tipo de autenticação</string>
     <string name="account_setup_incoming_security_none_label">Nenhum</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (se disponível)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (sempre)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (se disponível)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (sempre)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (se disponível)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (sempre)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (se disponível)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (sempre)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Quando eu excluir uma mensagem</string>
     <string name="account_setup_incoming_delete_policy_never_label">Não excluí-la do servidor</string>
@@ -529,8 +531,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_reply_after_quote_label">Resposta após texto da mensagem</string>
     <string name="account_settings_reply_after_quote_summary">Quando respondendo mensagens, o texto original deverá aparecer acima da minha resposta.</string>
 
-    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>-->
-    <!-- NEW: <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>-->
+    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signatures on reply</string>-->
+    <!-- NEW: <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>-->
 
     <string name="account_settings_message_format_label">Formato da Mensagem</string>
     <string name="account_settings_message_format_text">Texto (imagens e formatação serão removidas)</string>
@@ -538,7 +540,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_message_format_auto">Automático (texto plano exceto ao responder uma mensagem em HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Sempre exibir CC/CCO</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Sempre exibir os campos CC/CCO</string>
 
     <string name="account_settings_message_read_receipt_label">Confirmação de leitura</string>
     <string name="account_settings_message_read_receipt_summary">Sempre solicitar confirmação de leitura</string>
@@ -723,6 +724,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="sort_latest_first">Mensagens recentes primeiro</string>
     <string name="sort_subject_alpha">Assunto em ordem alfabética</string>
     <string name="sort_subject_re_alpha">Assunto em ordem alfabética reversa</string>
+    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
+    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
     <string name="sort_flagged_first">Mensagens favoritas primeiro</string>
     <string name="sort_flagged_last">Messages não favoritas primeiro</string>
     <string name="sort_unread_first">Não lidas primeiro</string>
@@ -750,11 +753,11 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
         endereço de e-mail e senha corretos, talvez você não tenha uma conta \"Plus\" paga.
         Por favor, abra seu Web browser para conseguir acesso a estes tipos de contas.</string>
     <string name="provider_note_yahoojp">Se desejar utilizar POP3 para este provedor, você deverá permitir o uso deste na página de configurações de se e-mail Yahoo.</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">Be sure to enable IMAP or POP3 on the Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">Be sure to enable IMAP or POP3 on the Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">Be sure to enable IMAP or POP3 on the Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado desconhecido</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
@@ -849,12 +852,10 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="gestures_summary">Aceitar controle de gestos</string>
 
     <string name="volume_navigation_title">Tecla de volume para navegação</string>
-    <string name="volume_navigation_summary">Percorrer itens usando controle de volume</string>
     <string name="volume_navigation_message">Visualizar mensagem</string>
     <string name="volume_navigation_list">Vários modos de exibição da lista</string>
 
     <string name="start_integrated_inbox_title">Iniciar na Caixa de Entrada Unificada</string>
-    <string name="start_integrated_inbox_summary">Mostra Caixas Unificadas ao abrir o K-9 Mail</string>
 
     <string name="measure_accounts_title">Mostrar tamanho da conta</string>
     <string name="measure_accounts_summary">Desligar visualização rápida</string>
@@ -968,6 +969,18 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="dialog_confirm_delete_title">Confirmar exclusão</string>
     <string name="dialog_confirm_delete_message">Deseja mesmo excluir esta mensagem?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Deseja mesmo excluir esta mensagem?</item>
         <item quantity="other">Deseja mesmo excluir estas <xliff:g id="message_count">%1$d</xliff:g> mensagens?</item>
@@ -979,16 +992,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Deseja mesmo mover esta mensagem para a pasta de spam?</item>
         <item quantity="other">Deseja mesmo mover <xliff:g id="message_count">%1$d</xliff:g> mensagens para a pasta de spam?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Sim</string>
     <string name="dialog_confirm_spam_cancel_button">Não</string>
@@ -1033,10 +1036,12 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     </plurals>
     <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
     <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <plurals name="settings_import_setting_passwords">
+    <!-- NEW:
+    <plurals name="settings_import_setting_passwords">
         <item quantity="one">Setting password…</item>
         <item quantity="other">Setting passwords…</item>
-    </plurals>-->
+    </plurals>
+    -->
     <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
     <!-- NEW: <string name="activate_account_action">Activate</string>-->
 
@@ -1132,7 +1137,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="last_refresh_time_format">Última atualização <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">Última atualização <xliff:g id="time_with_preposition">%s</xliff:g> (Push ativado)</string>
     <string name="preposition_for_date">em <xliff:g id="date">%s</xliff:g></string>
+
     <string name="mark_all_as_read">Marcar todas como lidas</string>
-    <string name="global_settings_messageview_autofit_width_label">Auto-ajustar mensagens</string>
-    <string name="global_settings_messageview_autofit_width_summary">Ajustar texto para caber na tela</string>
 </resources>

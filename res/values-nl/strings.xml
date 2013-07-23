@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -68,7 +68,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">There is no suitable application to handle the import operation. Please install a file manager application from Google Play Store.</string>-->
+    <!-- NEW: <string name="import_dialog_error_message">Please install a file manager to continue with this import.</string>-->
     <!-- NEW: <string name="open_market">Open Play Store</string>-->
 
 
@@ -125,7 +125,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="spam_action">Spam</string>
     <string name="forward_action">Doorsturen</string>
     <string name="move_action">Verplaatsen</string>
-    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send</string>-->
     <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Doorgaan</string>
     <!-- NEW: <string name="back_action">Back</string>-->
@@ -164,8 +164,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="mark_as_unread_action">Markeer als ongelezen</string>
     <string name="add_cc_bcc_action">Voeg Cc/Bcc toe</string>
     <!-- NEW: <string name="read_receipt">Read receipt</string>-->
-    <!-- NEW: <string name="read_receipt_enabled">Read receipt will be requested</string>-->
-    <!-- NEW: <string name="read_receipt_disabled">Read receipt will not be requested</string>-->
+    <!-- NEW: <string name="read_receipt_enabled">Will request read receipt</string>-->
+    <!-- NEW: <string name="read_receipt_disabled">Will not not request read receipt</string>-->
     <string name="add_attachment_action">Voeg bijlage toe</string>
     <string name="add_attachment_action_image">Voeg bijlage toe (Afbeelding)</string>
     <string name="add_attachment_action_video">Voeg bijlage toe (Video)</string>
@@ -210,7 +210,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_read">Mark Read</string>-->
     <!-- NEW: <string name="notification_action_delete">Delete</string>-->
     <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
     <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
@@ -281,7 +281,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="message_view_show_pictures_action">Laat afbeeldingen zien</string>
     <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
     <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More&#8230;</string>-->
+    <!-- NEW: <string name="message_view_show_more_attachments_action">More…</string>-->
     <string name="message_view_fetching_attachment_toast">bijlage ophalen.</string>
     <string name="message_view_no_viewer">Niet in staat viewer te vinden voor <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download compleet bericht</string>
@@ -316,6 +316,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="global_settings_messageview_fixedwidth_label">Vaste breedte lettertypen</string>
     <string name="global_settings_messageview_fixedwidth_summary">Gebruik een lettertype met vaste breedte bij het weergeven van plain-tekstberichten</string>
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
     <string name="global_settings_messageview_return_to_list_label">Terug naar lijst na verwijderen</string>
     <string name="global_settings_messageview_return_to_list_summary">Terug naar de berichtenlijst na bericht verwijderen</string>
     <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
@@ -324,13 +326,13 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="global_settings_confirm_actions_title">Bevestig acties</string>
     <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoerd</string>
     <string name="global_settings_confirm_action_delete">Verwijder (alleen berichten bekijken)</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (message view only)</string>-->
+    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>-->
     <string name="global_settings_confirm_action_spam">Spam</string>
     <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
@@ -359,7 +361,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_setup_basics_password_hint">Wachtwoord</string>
     <string name="account_setup_basics_manual_setup_action">Handmatige setup</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Ophalen account informatie\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Controleren van inkomende serverinstellingen\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Controleren van uitgaande serverinstellingen\u2026</string>
@@ -387,10 +389,10 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_setup_incoming_security_label">Beveiligings type</string>
     <string name="account_setup_incoming_auth_type_label">Authenticatie type</string>
     <string name="account_setup_incoming_security_none_label">Geen</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (indien beschikbaar)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (altijd)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (indien beschikbaar)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (altijd)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (indien beschikbaar)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (altijd)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (indien beschikbaar)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (altijd)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Wanneer ik een bericht verwijder</string>
     <string name="account_setup_incoming_delete_policy_never_label">Verwijder niet van server</string>
@@ -516,7 +518,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_settings_notification_opens_unread_summary">Zoekt voor ongelezen berichten wanneer Notificatie is geopend</string>
     <string name="account_settings_notification_unread_count_label">Toon aantal ongelezen</string>
     <string name="account_settings_notification_unread_count_summary">Toon het aantal ongelezen berichten in de \'notification bar\'.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark message as read when opening</string>-->
+    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>-->
     <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
 
     <string name="account_settings_show_pictures_label">Laat afbeeldingen automatisch zien</string>
@@ -526,22 +528,21 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="account_settings_composition">Schrijven berichten</string>
 
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote original message when replying</string>-->
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">When replying to messages, the original message is in your reply.</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>-->
+    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">Include the original message in your reply.</string>-->
 
     <string name="account_settings_reply_after_quote_label">Antwoorden na quote</string>
     <string name="account_settings_reply_after_quote_summary">Wanneer u antwoord op berichten, zal het originele bericht boven uw antwoord staan.</string>
 
-    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signature from quoted reply</string>-->
-    <!-- NEW: <string name="account_settings_strip_signature_summary">When replying to messages, the signature of the quoted text will be stripped</string>-->
+    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signatures on reply</string>-->
+    <!-- NEW: <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>-->
 
     <string name="account_settings_message_format_label">Berichtopmaak</string>
     <string name="account_settings_message_format_text">Platte Tekst (plaatjes en formattering worden verwijderd)</string>
     <string name="account_settings_message_format_html">HTML (plaatjes en formattering blijven behouden)</string>
-    <!-- NEW: <string name="account_settings_message_format_auto">Automatic (plain text unless replying to an HTML message)</string>-->
+    <!-- NEW: <string name="account_settings_message_format_auto">Automatic</string>-->
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
 
     <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
     <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
@@ -726,6 +727,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="sort_latest_first">Nieuwste berichten eerst</string>
     <string name="sort_subject_alpha">Onderwerp alfabetische volgorde</string>
     <string name="sort_subject_re_alpha">Onderwerp omgekeerd alfabetische volgorde</string>
+    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
+    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
     <string name="sort_flagged_first">Berichten met ster eerst</string>
     <string name="sort_flagged_last">Berichten zonder ster eerst</string>
     <string name="sort_unread_first">Ongelezen berichten eerst</string>
@@ -737,6 +740,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="sort_by_date">Datum</string>
     <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
     <string name="sort_by_subject">Onderwerp</string>
+    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
     <string name="sort_by_flag">Ster</string>
     <string name="sort_by_unread">Gelezen/ongelezen</string>
     <string name="sort_by_attach">Bijlagen</string>
@@ -750,18 +754,17 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="provider_note_live">Alleen sommige \"Plus\" accounts staan POP access
  toe om verbinding te krijgen met dit programma. Als het niet mogelijk is om in te loggen met de juiste gebruikersnaam en wachtwoord, heb je misschien geen betaalde \"Plus\" account.  Start de webbrowser om de toegang tot deze e-mailaccount te krijgen.</string>
     <string name="provider_note_yahoojp">Als je POP3 wilt gebruiken, moet je het geebruik van POP3 activeren op de Yahoo mail settings pagina.</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_hanmail">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Hanmail(Daum) mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_paran">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Paran mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_nate">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Nate mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_hanmail">Be sure to enable IMAP or POP3 on the Hanmail(Daum) mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_paran">Be sure to enable IMAP or POP3 on the Paran mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_nate">Be sure to enable IMAP or POP3 on the Nate mail settings page.</string>-->
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Onbekend Certificaat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
     Del (or D) - Verwijder\n
     R - Antwoord\n
     A - Antwoord Alle\n
@@ -850,12 +853,10 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="gestures_summary">Accepteer gebaren sturing</string>
 
     <string name="volume_navigation_title">Volume op/neer navigatie</string>
-    <string name="volume_navigation_summary">Spring tussen items door gebruik van de volumeknoppen</string>
     <string name="volume_navigation_message">Bericht beeld</string>
     <string name="volume_navigation_list">Variabele lijst beelden</string>
 
     <string name="start_integrated_inbox_title">Geïntegreerde Inbox bij start</string>
-    <string name="start_integrated_inbox_summary">Laat de geïntegreerde Inbox zien na opstarten</string>
 
     <string name="measure_accounts_title">Laat account grootte zien</string>
     <string name="measure_accounts_summary">Zet uit voor sneller beeldscherm</string>
@@ -969,10 +970,24 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="dialog_confirm_delete_title">Bevestig verwijderen</string>
     <string name="dialog_confirm_delete_message">Wil je dit bericht verwijderen?</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
+    <!-- NEW:
+    <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-    </plurals>-->
+    </plurals>
+    -->
     <string name="dialog_confirm_delete_confirm_button">Verwijder</string>
     <string name="dialog_confirm_delete_cancel_button">Niet verwijderen</string>
 
@@ -980,17 +995,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Wil je dit bericht echt verplaatsen naar de spam map?</item>
         <item quantity="other">Wil je dit bericht echt verplaatsen naar de spam map?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ja</string>
     <string name="dialog_confirm_spam_cancel_button">Nee</string>
@@ -999,7 +1003,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="debug_logging_enabled">Debug logging van Android logging systeem ingeschakeld</string>
 
-    <string name="messagelist_sent_to_me_sigil">»</string> <!-- why is this language dependent? -->
+    <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Kan geen verbinding maken.</string>
 
@@ -1017,10 +1021,12 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
     <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
     <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <plurals name="settings_import_success">
+    <!-- NEW:
+    <plurals name="settings_import_success">
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
-    </plurals>-->
+    </plurals>
+    -->
     <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
     <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
     <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
@@ -1029,16 +1035,20 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
     <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
     <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s</xliff:g>.</string>-->
-    <!-- NEW: <plurals name="settings_import_server_passwords">
+    <!-- NEW:
+    <plurals name="settings_import_server_passwords">
         <item quantity="one">server password</item>
         <item quantity="other">server passwords</item>
-    </plurals>-->
+    </plurals>
+    -->
     <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
     <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <plurals name="settings_import_setting_passwords">
+    <!-- NEW:
+    <plurals name="settings_import_setting_passwords">
         <item quantity="one">Setting password…</item>
         <item quantity="other">Setting passwords…</item>
-    </plurals>-->
+    </plurals>
+    -->
     <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
     <!-- NEW: <string name="activate_account_action">Activate</string>-->
 
@@ -1059,7 +1069,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <!-- NEW: <string name="webview_empty_message">No text</string>-->
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open for viewing</string>-->
+    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open link</string>-->
     <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
     <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
     <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
@@ -1073,12 +1083,12 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
     <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy phone number to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy number to clipboard</string>-->
     <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
 
     <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
     <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy email address to clipboard</string>-->
+    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy address to clipboard</string>-->
     <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
 
     <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
@@ -1092,9 +1102,9 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include messages text in server search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
     <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
     <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
@@ -1107,13 +1117,13 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>-->
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>-->
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Group messages by conversation</string>-->
 
     <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
     <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
@@ -1131,7 +1141,9 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
     <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 </resources>

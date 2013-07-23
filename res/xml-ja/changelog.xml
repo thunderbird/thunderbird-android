@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-
-    <release version="4.401" versioncode="17038" >
+    <release version="4.506" versioncode="18006" >
+        <change>パフォーマンスを改善しました</change>
+        <change>Fastmail.FMのための自動設定を追加しました</change>
+        <change>新たにスロバキア後の翻訳を追加しました</change>
+        <change>イタリア語、ロシア語の翻訳を更新しました</change>
+        <change>シグネチャを使わない設定のとき、下書き保存時にX-K9mail-Identityヘッダにシグネチャを保存しないようにしました</change>
+    </release>
+    <release version="4.505" versioncode="18005" >
+        <change>フォルダ一覧の性能を向上しました</change>
+        <change>カタロニア語、中国語、ロシア語の翻訳を更新しました</change>
+        <change>いくつかのバグを修正しました</change>
+    </release>
+    <release version="4.503" versioncode="18003" >
+        <change>フォルダ一覧へのショートカットを追加しました</change>
+        <change>チェックボックスとカラーチップの表示を微調整しました</change>
+        <change>アカウントコンテキストメニューにゴミ箱を空にするを追加しました</change>
         <change>プライバシーモードが有効な場合に(JellyBeanの)拡張通知領域を使わないようにしました</change>
         <change>Galaxyデバイスのバグのため、アカウントのコンテキストメニューからサブメニューを削除しました</change>
-        <change>Google Playで報告されたいくつかのバグを修正しました</change>
-    </release>
-    <release version="4.400" versioncode="17037" >
-        <change>K-9 4.4 の正式リリース</change>
-    </release>
-    <release version="4.393" versioncode="17036" >
         <change>デバッグ用にビルドしたときだけデバッグ用ログを有効にできるようにしました</change>
         <change>SDK 8からの機能を利用していたので、minSdkVersionを8に上げました</change>
-    </release>
-    <release version="4.392" versioncode="17035" >
-        <change>チェコ語、フランス語、ドイツ語、日本語、ブラジルポルトガル語の翻訳を更新しました</change>
-    </release>
-    <release version="4.391" versioncode="17034" >
-        <change>いくつかの条件で前と次のメッセージに移動できないバグを修正しました</change>
-        <change>日本語とブラジルポルトガル語の翻訳を更新しました</change>
+        <change>ロシア語、フランス語、ドイツ語、ブラジルポルトガル語の翻訳を更新しました</change>
+        <change>多くのバグを修正しました</change>
     </release>
 
-    <release version="4.390" versioncode="17033" >
+    <release version="4.502" versioncode="18002" >
+        <change>いくつかの条件で前と次のメッセージに移動できないバグを修正しました</change>
+        <change>日本語、チェコ語、ブラジルポルトガル語の翻訳を更新しました</change>
+        <change>ふたつのバグを修正しました</change>
+    </release>
+
+    <release version="4.501" versioncode="18001" >
         <change>自動的にメッセージ表示を画面幅に縮小する設定を追加しました</change>
+        <change>ドイツ語の翻訳を更新しました</change>
     </release>
 
     <release version="4.331" versioncode="17032" >

@@ -155,6 +155,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             THREAD_COUNT_COLUMN);
 
 
+
     public static MessageListFragment newInstance(LocalSearch search, boolean isThreadDisplay, boolean threadedList) {
         MessageListFragment fragment = new MessageListFragment();
         Bundle args = new Bundle();
@@ -454,10 +455,23 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mInitialized = false;
 
     private ContactPictureLoader mContactsPictureLoader;
+    private float mScreenDensity;
 
     private LocalBroadcastManager mLocalBroadcastManager;
     private BroadcastReceiver mCacheBroadcastReceiver;
     private IntentFilter mCacheIntentFilter;
+
+    /**
+     * Stores the unique ID of the message the context menu was opened for.
+     *
+     * We have to save this because the message list might change between the time the menu was
+     * opened and when the user clicks on a menu item. When this happens the 'adapter position' that
+     * is accessible via the {@code ContextMenu} object might correspond to another list item and we
+     * would end up using/modifying the wrong message.
+     *
+     * The value of this field is {@code 0} when no context menu is currently open.
+     */
+    private long mContextMenuUniqueId = 0;
 
 
     /**
@@ -766,6 +780,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         Context appContext = getActivity().getApplicationContext();
 
+        mScreenDensity = appContext.getResources().getDisplayMetrics().density;
         mPreferences = Preferences.getPreferences(appContext);
         mController = MessagingController.getInstance(getActivity().getApplication());
 
@@ -1447,8 +1462,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        int adapterPosition = listViewToAdapterPosition(info.position);
+        if (mContextMenuUniqueId == 0) {
+            return false;
+        }
+
+        int adapterPosition = getPositionForUniqueId(mContextMenuUniqueId);
+        if (adapterPosition == AdapterView.INVALID_POSITION) {
+            return false;
+        }
 
         switch (item.getItemId()) {
             case R.id.reply: {
@@ -1525,6 +1546,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
+        mContextMenuUniqueId = 0;
         return true;
     }
 
@@ -1548,6 +1570,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
 
+        mContextMenuUniqueId = cursor.getLong(mUniqueIdColumn);
         Account account = getAccountFromCursor(cursor);
 
         String subject = cursor.getString(SUBJECT_COLUMN);
@@ -1786,7 +1809,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             MessageViewHolder holder = new MessageViewHolder();
             holder.date = (TextView) view.findViewById(R.id.date);
             holder.chip = view.findViewById(R.id.chip);
-            holder.preview = (TextView) view.findViewById(R.id.preview);
+            if (mPreviewLines == 0 && mContactsPictureLoader == null) {
+                view.findViewById(R.id.preview).setVisibility(View.GONE);
+                holder.preview = (TextView) view.findViewById(R.id.sender_compact);
+                ViewGroup.LayoutParams params = holder.chip.getLayoutParams();
+                params.height=(int) (16.0f * mScreenDensity);
+                params.width=(int) (16.0f * mScreenDensity);
+
+            } else {
+                view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
+                holder.preview = (TextView) view.findViewById(R.id.preview);
+            }
 
             QuickContactBadge contactBadge =
                     (QuickContactBadge) view.findViewById(R.id.contact_badge);
@@ -1842,15 +1875,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             CharSequence displayName = mMessageHelper.getDisplayName(account, fromAddrs, toAddrs);
             CharSequence displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN));
 
-            String counterpartyAddress = null;
+            Address counterpartyAddress = null;
             if (fromMe) {
                 if (toAddrs.length > 0) {
-                    counterpartyAddress = toAddrs[0].getAddress();
+                    counterpartyAddress = toAddrs[0];
                 } else if (ccAddrs.length > 0) {
-                    counterpartyAddress = ccAddrs[0].getAddress();
+                    counterpartyAddress = ccAddrs[0];
                 }
             } else if (fromAddrs.length > 0) {
-                counterpartyAddress = fromAddrs[0].getAddress();
+                counterpartyAddress = fromAddrs[0];
             }
 
             int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
@@ -1890,7 +1923,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.position = cursor.getPosition();
 
             if (holder.contactBadge != null) {
-                holder.contactBadge.assignContactFromEmail(counterpartyAddress, true);
+                holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                 if (counterpartyAddress != null) {
                     /*
                      * At least in Android 2.2 a different background + padding is used when no
@@ -3035,6 +3068,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         return listViewToAdapterPosition(listViewPosition);
     }
 
+    private int getPositionForUniqueId(long uniqueId) {
+        for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
+            Cursor cursor = (Cursor) mAdapter.getItem(position);
+            if (cursor.getLong(mUniqueIdColumn) == uniqueId) {
+                return position;
+            }
+        }
+
+        return AdapterView.INVALID_POSITION;
+    }
+
     private Message getMessageAtPosition(int adapterPosition) {
         if (adapterPosition == AdapterView.INVALID_POSITION) {
             return null;
@@ -3343,6 +3387,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         cleanupSelected(cursor);
+        updateContextMenu(cursor);
 
         mAdapter.swapCursor(cursor);
 
@@ -3369,6 +3414,28 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         return loadFinished;
+    }
+
+    /**
+     * Close the context menu when the message it was opened for is no longer in the message list.
+     */
+    private void updateContextMenu(Cursor cursor) {
+        if (mContextMenuUniqueId == 0) {
+            return;
+        }
+
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            long uniqueId = cursor.getLong(mUniqueIdColumn);
+            if (uniqueId == mContextMenuUniqueId) {
+                return;
+            }
+        }
+
+        mContextMenuUniqueId = 0;
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.closeContextMenu();
+        }
     }
 
     private void cleanupSelected(Cursor cursor) {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Translator: (c) 2013, Jan Urbánek urbanek.jan.locus(a-t)gmail.com -->
 <!-- This file is distributed under the same license as the k9mail project. -->
 <!-- Available Plural-Forms: 3 -->
@@ -211,7 +211,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="notification_new_title">Nová zpráva</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nepřečteno (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) --> <!-- PLURALS: wrong!!! -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nepřečteno (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> více v <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Odpovědět</string>
@@ -366,7 +366,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_setup_basics_password_hint">Heslo</string>
     <string name="account_setup_basics_manual_setup_action">Ruční nastavení</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Získávání informací o účtu\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrola nastavení serveru příchozí pošty\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrola nastavení serveru odchozí pošty\u2026</string>
@@ -394,10 +394,10 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_setup_incoming_security_label">Typ zabezpečení</string>
     <string name="account_setup_incoming_auth_type_label">Typ ověření</string>
     <string name="account_setup_incoming_security_none_label">Žádné</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (je-li dostupné)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (vždy)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (je-li dostupné)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (vždy)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (je-li dostupné)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (vždy)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (je-li dostupné)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (vždy)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Když smažu zprávu</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nemazat ji na serveru</string>
@@ -548,7 +548,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_message_format_auto">Automaticky (prostý text dokud neodpovídáte na zprávu v HTML formátu)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Vždy zobrazit kopie/skrytá</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Vždy zobrazit řádky kopie a skrytá kopie</string>
 
     <string name="account_settings_message_read_receipt_label">Potvrzení o přečtení</string>
     <string name="account_settings_message_read_receipt_summary">Vždy požadovat potvrzení o přečtení</string>
@@ -733,6 +732,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="sort_latest_first">Nejnovější zprávy první</string>
     <string name="sort_subject_alpha">Předmět abecedně A-&gt;Z</string>
     <string name="sort_subject_re_alpha">Předmět abecedně Z-&gt;A</string>
+    <string name="sort_sender_alpha">Odesílatel A-Z</string>
+    <string name="sort_sender_re_alpha">Odesílatel  Z-A</string>
     <string name="sort_flagged_first">S \u2605 první</string>
     <string name="sort_flagged_last">Bez \u2606 první</string>
     <string name="sort_unread_first">Nepřečtené první</string>
@@ -744,6 +745,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="sort_by_date">Datum</string>
     <string name="sort_by_arrival">Příchodu</string>
     <string name="sort_by_subject">Předmět</string>
+    <string name="sort_by_sender">Odesílatel</string>
     <string name="sort_by_flag">Hvězdička</string>
     <string name="sort_by_unread">Přečtená/Nepřečtená</string>
     <string name="sort_by_attach">Příloha</string>
@@ -770,7 +772,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
 
-    <!-- NEW: V, Z untranslated -->
     <string name="message_list_help_key">
     Del (nebo D) - Smazat\n
     R - Odpovědět\n
@@ -778,7 +779,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     C - Nová\n
     F - Přeposlat\n
     M - Přesun\n
-    V - Archive\n
+    V - Archiv\n
     Y - Kopie\n
     Z - Označit (ne)přečteno\n
     G - Hvězdička\n
@@ -860,12 +861,10 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="gestures_summary">Používat ovládání gesty</string>
 
     <string name="volume_navigation_title">Navigace tlačítky hlasitosti</string>
-    <string name="volume_navigation_summary">Přeskakovat přes položky při použití ovladačů hlasitosti</string>
     <string name="volume_navigation_message">Zobrazení zpráv</string>
     <string name="volume_navigation_list">Různá zobrazení seznamů</string>
 
     <string name="start_integrated_inbox_title">Začít v Integrovaná doručené poště</string>
-    <string name="start_integrated_inbox_summary">Po startu zobrazit Integrovanou doručenou poštu</string>
 
     <string name="measure_accounts_title">Zobrazit velikost účtu</string>
     <string name="measure_accounts_summary">Vypněte pro rychlejší zobrazování</string>
@@ -979,6 +978,18 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="dialog_confirm_delete_title">Potvrzení mazání</string>
     <string name="dialog_confirm_delete_message">Chcete smazat tuto zprávu?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Opravdu si přejete smazat tuto zprávu?</item>
         <item quantity="few">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zprávy?</item>
@@ -992,17 +1003,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
         <item quantity="one">Opravdu chcete přesunout tuto zprávy do nevyžádané pošty?</item>
         <item quantity="few">Opravdu chcete přesunout <xliff:g id="message_count">%1$d</xliff:g> zprávy do nevyžádané pošty?</item>
         <item quantity="other">Opravdu chcete přesunout <xliff:g id="message_count">%1$d</xliff:g> zpráv do nevyžádané pošty?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ano</string>
     <string name="dialog_confirm_spam_cancel_button">Ne</string>
@@ -1045,7 +1045,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <plurals name="settings_import_server_passwords">
         <item quantity="one">heslo</item>
         <item quantity="few">hesla</item><!-- 2-4 need to be this few and 5- other -->
-         <item quantity="other">hesel</item>
+        <item quantity="other">hesel</item>
     </plurals>
     <string name="settings_import_incoming_server">Příchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Odchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
@@ -1148,4 +1148,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="last_refresh_time_format">Poslední obnova <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">Poslední obnova <xliff:g id="time_with_preposition">%s</xliff:g> (Push)</string>
     <string name="preposition_for_date">v <xliff:g id="date">%s</xliff:g></string>
+
+    <string name="mark_all_as_read">Označ vše jako přečtené</string>
 </resources>

@@ -2899,8 +2899,9 @@ public class MessagingController implements Runnable {
             // Update the messages in the local store
             localFolder.setFlags(messages, new Flag[] {flag}, newState);
 
+            int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folderName, localFolder.getUnreadMessageCount());
+                l.folderStatusChanged(account, folderName, unreadMessageCount);
             }
 
 
@@ -3116,7 +3117,6 @@ public class MessagingController implements Runnable {
                         return;
                     }
 
-                    markMessageAsReadOnView(account, message);
 
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
@@ -3137,6 +3137,7 @@ public class MessagingController implements Runnable {
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadMessageForViewFinished(account, folder, uid, message);
                     }
+                    markMessageAsReadOnView(account, message);
 
                 } catch (Exception e) {
                     for (MessagingListener l : getListeners(listener)) {
@@ -3167,8 +3168,7 @@ public class MessagingController implements Runnable {
 
         if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
             List<Long> messageIds = Collections.singletonList(message.getId());
-            setFlagInCache(account, messageIds, Flag.SEEN, true);
-            setFlagSynchronous(account, messageIds, Flag.SEEN, true, false);
+            setFlag(account, messageIds, Flag.SEEN, true);
 
             ((LocalMessage) message).setFlagInternal(Flag.SEEN, true);
         }
@@ -5599,6 +5599,9 @@ public class MessagingController implements Runnable {
         Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
 
         for (Message message : messages) {
+            if ( message == null) {
+               continue;
+            }
             Folder folder = message.getFolder();
             Account account = folder.getAccount();
 

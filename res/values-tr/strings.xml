@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -125,7 +125,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="spam_action">Spam</string>
     <string name="forward_action">İlet</string>
     <string name="move_action">Taşı</string>
-    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send</string>-->
     <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Devam</string>
     <string name="back_action">Geri</string>
@@ -211,7 +211,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_read">Mark Read</string>-->
     <!-- NEW: <string name="notification_action_delete">Delete</string>-->
     <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
     <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
@@ -282,7 +282,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="message_view_show_pictures_action">Resimleri Göster</string>
     <string name="message_view_show_message_action">Mesajı göster</string>
     <string name="message_view_show_attachments_action">Ekleri göster</string>
-    <string name="message_view_show_more_attachments_action">Daha fazla&#8230;</string>
+    <string name="message_view_show_more_attachments_action">Daha fazla…</string>
     <string name="message_view_fetching_attachment_toast">Ek alınıyor.</string>
     <string name="message_view_no_viewer">için görüntüleyici bulunamadı. <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Bütün mesajı indir.</string>
@@ -317,6 +317,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 
     <string name="global_settings_messageview_fixedwidth_label">Sabit genişlikli yazı tipleri</string>
     <string name="global_settings_messageview_fixedwidth_summary">Düz metin mesajları gösterdiğinde sabit genişlikli yazı tipi kullan.</string>
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
     <string name="global_settings_messageview_return_to_list_label">Sildikten sonra listeye dön.</string>
     <string name="global_settings_messageview_return_to_list_summary">Mesajı sildikten sonra mesaj listesine dön.</string>
     <string name="global_settings_messageview_show_next_label">Sildikten sonra sonraki mesajı göster</string>
@@ -331,7 +333,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
@@ -360,7 +362,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_setup_basics_password_hint">Şifre</string>
     <string name="account_setup_basics_manual_setup_action">El ile ayar</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Hesap bilgisi alınıyor\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Gelen sunucu ayarları kontrol ediliyor\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Giden sunucu ayarları kontrol ediliyor\u2026</string>
@@ -388,10 +390,10 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_setup_incoming_security_label">Güvenlik tipi</string>
     <string name="account_setup_incoming_auth_type_label">Kimlik doğrulama tipi</string>
     <string name="account_setup_incoming_security_none_label">Hiçbiri</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (Varsa)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (daima)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (Varsa)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (Daima)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (Varsa)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (daima)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (Varsa)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (Daima)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Bir mesaj sildiğim zaman</string>
     <string name="account_setup_incoming_delete_policy_never_label">Sunucudan silme</string>
@@ -541,8 +543,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_settings_message_format_html">HTML (resimler ve biçimler korunacak)</string>
     <string name="account_settings_message_format_auto">Otomatik (HTML mesajına yanıt verilmiyorsa düz metin)</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
 
     <string name="account_settings_message_read_receipt_label">Okundu raporu</string>
     <string name="account_settings_message_read_receipt_summary">Daima bir okuma raporu iste</string>
@@ -727,6 +728,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="sort_latest_first">En son mesajlar ilk</string>
     <string name="sort_subject_alpha">Konuyu alfabetik sırala</string>
     <string name="sort_subject_re_alpha">Konuyu ters alfabetik sırala</string>
+    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
+    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
     <string name="sort_flagged_first">Yıldızlı mesajlar ilk</string>
     <string name="sort_flagged_last">Yıldızsız mesajlar ilk</string>
     <string name="sort_unread_first">Okunmamış mesajlar ilk</string>
@@ -738,6 +741,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="sort_by_date">Tarih</string>
     <string name="sort_by_arrival">Ulaşma</string>
     <string name="sort_by_subject">Konu</string>
+    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
     <string name="sort_by_flag">Yıldız</string>
     <string name="sort_by_unread">Okundu/Okunmadı</string>
     <string name="sort_by_attach">Ekler</string>
@@ -763,8 +767,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Kabul Tuşu</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
 
-    <!-- NEW: V untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V untranslated -->
     Del (veya D) - Sil\n
     R - Cevapla\n
     A - Hepsini cevapla\n
@@ -853,12 +856,10 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="gestures_summary">Hareket kontrolünü kabul et</string>
 
     <string name="volume_navigation_title">Ses Düğmesi ile dolaşma</string>
-    <string name="volume_navigation_summary">Ses kontrollerini kullanarak ürün sayfalarını çevir</string>
     <string name="volume_navigation_message">Mesaj görünümü</string>
     <string name="volume_navigation_list">Çeşitli liste görünümleri</string>
 
     <string name="start_integrated_inbox_title">Birleşik Gelen Kutusu ile başla</string>
-    <string name="start_integrated_inbox_summary">Başlangıçta Birleşik Gelen Kutusunu göster</string>
 
     <string name="measure_accounts_title">Hesap boyutunu göster</string>
     <string name="measure_accounts_summary">Daha hızlı görüntüleme için kapatın</string>
@@ -972,10 +973,24 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 
     <string name="dialog_confirm_delete_title">Silmeyi onayla</string>
     <string name="dialog_confirm_delete_message">Bu mesajı silmek istiyor musunuz?</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
+    <!-- NEW:
+    <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-    </plurals>-->
+    </plurals>
+    -->
     <string name="dialog_confirm_delete_confirm_button">Sil</string>
     <string name="dialog_confirm_delete_cancel_button">Silme</string>
 
@@ -983,17 +998,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Bu mesajı gerçekten Spam klasörüne taşımak istiyor musunuz?</item>
         <item quantity="other"><xliff:g id="message_count">%1$d</xliff:g> mesajı Spam klasörüne gerçekten taşımak istiyor musunuz?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Evet</string>
     <string name="dialog_confirm_spam_cancel_button">Hayır</string>
@@ -1095,9 +1099,9 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include messages text in server search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
     <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
     <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
@@ -1110,13 +1114,13 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>-->
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>-->
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Group messages by conversation</string>-->
 
     <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
     <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
@@ -1134,7 +1138,9 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
     <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 </resources>

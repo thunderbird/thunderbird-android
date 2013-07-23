@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -124,7 +124,7 @@ K-9改进的功能包括：
     <string name="spam_action">标记为垃圾</string>
     <string name="forward_action">转发</string>
     <string name="move_action">移动</string>
-    <!-- NEW: <string name="single_message_options_action">Message Options</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send</string>-->
     <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">继续</string>
     <string name="back_action">返回</string>
@@ -204,7 +204,7 @@ K-9改进的功能包括：
     <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Read</string>-->
+    <!-- NEW: <string name="notification_action_read">Mark Read</string>-->
     <!-- NEW: <string name="notification_action_delete">Delete</string>-->
     <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
     <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
@@ -275,7 +275,7 @@ K-9改进的功能包括：
     <string name="message_view_show_pictures_action">显示图片</string>
     <string name="message_view_show_message_action">显示邮件</string>
     <string name="message_view_show_attachments_action">显示附件</string>
-    <string name="message_view_show_more_attachments_action">更多&#8230;</string>
+    <string name="message_view_show_more_attachments_action">更多…</string>
     <string name="message_view_fetching_attachment_toast">正在接收附件</string>
     <string name="message_view_no_viewer">无法打开<xliff:g id="mimetype">%s</xliff:g>。找不到可以阅读该文件的程序。</string>
     <string name="message_view_download_remainder">下载完整邮件</string>
@@ -310,6 +310,8 @@ K-9改进的功能包括：
 
     <string name="global_settings_messageview_fixedwidth_label">定宽字体</string>
     <string name="global_settings_messageview_fixedwidth_summary">使用定宽字体显示纯文本邮件</string>
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
+    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
     <string name="global_settings_messageview_return_to_list_label">删除后回到自动返回到列表</string>
     <string name="global_settings_messageview_return_to_list_summary">邮件删除后自动返回到邮件列表</string>
     <string name="global_settings_messageview_show_next_label">删除后显示下一封邮件</string>
@@ -324,7 +326,7 @@ K-9改进的功能包括：
 
     <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When phone is locked</string>-->
+    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>-->
     <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
 
     <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
@@ -353,7 +355,7 @@ K-9改进的功能包括：
     <string name="account_setup_basics_password_hint">密码</string>
     <string name="account_setup_basics_manual_setup_action">手工设置</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">正在获取账户信息\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">正在检查收件服务器设置\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">正在检查发件服务器设置\u2026</string>
@@ -381,10 +383,10 @@ K-9改进的功能包括：
     <string name="account_setup_incoming_security_label">加密方法</string>
     <string name="account_setup_incoming_auth_type_label">身份验证方法</string>
     <string name="account_setup_incoming_security_none_label">无</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL（如果可能的话）</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL（总是）</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS（如果可能的话）</string>
-    <string name="account_setup_incoming_security_tls_label">TLS（总是）</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS（如果可能的话）</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS（总是）</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS（如果可能的话）</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS（总是）</string>
 
     <string name="account_setup_incoming_delete_policy_label">当我删除邮件时</string>
     <string name="account_setup_incoming_delete_policy_never_label">不要从服务器上删除</string>
@@ -534,8 +536,7 @@ K-9改进的功能包括：
     <string name="account_settings_message_format_html">HTML（图片和排版将被保留）</string>
     <string name="account_settings_message_format_auto">自动（纯文本，除非是在回复HTML邮件）</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show CC/BCC</string>-->
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_summary">Always show the CC/BCC text input fields</string>-->
+    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
 
     <string name="account_settings_message_read_receipt_label">已读回执</string>
     <string name="account_settings_message_read_receipt_summary">总是要求已读回执</string>
@@ -720,6 +721,8 @@ K-9改进的功能包括：
     <string name="sort_latest_first">优先显示最近的邮件</string>
     <string name="sort_subject_alpha">按主题升序</string>
     <string name="sort_subject_re_alpha">按主题降序</string>
+    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
+    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
     <string name="sort_flagged_first">优先显示带有星标的邮件</string>
     <string name="sort_flagged_last">优先显示没有星标的邮件</string>
     <string name="sort_unread_first">优先显示未读邮件</string>
@@ -731,6 +734,7 @@ K-9改进的功能包括：
     <string name="sort_by_date">日期</string>
     <string name="sort_by_arrival">到达时间</string>
     <string name="sort_by_subject">主题</string>
+    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
     <string name="sort_by_flag">星标</string>
     <string name="sort_by_unread">已读/未读</string>
     <string name="sort_by_attach">附件</string>
@@ -743,7 +747,7 @@ K-9改进的功能包括：
 
     <string name="provider_note_live">只有一些“高级账户”允许POP访问并允许该程序连接。如果您使用了正确的用户名和密码却仍旧无法登录，则您可能没有购买这些“高级账户”。请使用浏览器来访问这些账户。</string>
     <string name="provider_note_yahoojp">如果您想使用POP3，请在Yahoo mail的设置页面里设置允许POP3。</string>
-    <!-- NEW: <string name="provider_note_auonejp">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on au one mail settings page.</string>-->
+    <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
     <string name="provider_note_naver">如果您想使用IMAP或者POP3，请在Naver mail的设置页面设置允许IMAP或者POP3。</string>
     <string name="provider_note_hanmail">如果您想使用IMAP或者POP3，请在Hanmail(Daum) mail的设置页面设置允许IMAP或者POP3。</string>
     <string name="provider_note_paran">如果您想使用IMAP或者POP3，请在Paran mail的设置页面设置允许IMAP或者POP3。</string>
@@ -753,8 +757,7 @@ K-9改进的功能包括：
     <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
 
-    <!-- NEW: V, Z untranslated -->
-    <string name="message_list_help_key">
+    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
     Del (or D) - 删除\n
     R - 回复\n
     A - 全部回复\n
@@ -843,12 +846,10 @@ K-9改进的功能包括：
     <string name="gestures_summary">接收手势控制</string>
 
     <string name="volume_navigation_title">音量键导航</string>
-    <string name="volume_navigation_summary">利用音量键选择项目</string>
     <string name="volume_navigation_message">信息视图</string>
     <string name="volume_navigation_list">不同的列表视图</string>
 
     <string name="start_integrated_inbox_title">从全局收件箱启动</string>
-    <string name="start_integrated_inbox_summary">启动后显示全局收件箱</string>
 
     <string name="measure_accounts_title">显示账户占用的空间</string>
     <string name="measure_accounts_summary">关闭该功能以便加快显示速度</string>
@@ -962,10 +963,24 @@ K-9改进的功能包括：
 
     <string name="dialog_confirm_delete_title">删除确认</string>
     <string name="dialog_confirm_delete_message">你确定要删除这封邮件么？</string>
-    <!-- NEW: <plurals name="dialog_confirm_delete_message">
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
+    <!-- NEW:
+    <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-    </plurals>-->
+    </plurals>
+    -->
     <string name="dialog_confirm_delete_confirm_button">删除</string>
     <string name="dialog_confirm_delete_cancel_button">不要删除</string>
 
@@ -1074,9 +1089,9 @@ K-9改进的功能包括：
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
     <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search result limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after <xliff:g id="num_results">%s</xliff:g> results have been found.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include body text in server search</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search limit</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>-->
+    <!-- NEW: <string name="account_settings_remote_search_full_text">Include messages text in server search</string>-->
     <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
     <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
     <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
@@ -1089,13 +1104,13 @@ K-9改进的功能包括：
     <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
     <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">Remote search is unavailable without network connectivity.</string>-->
+    <!-- NEW: <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>-->
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Use background as (un)read indicator</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">Show read and unread messages with different background colors</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>-->
+    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>-->
 
     <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Collapse messages belonging to the same thread</string>-->
+    <!-- NEW: <string name="global_settings_threaded_view_summary">Group messages by conversation</string>-->
 
     <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
     <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
@@ -1113,7 +1128,9 @@ K-9改进的功能包括：
     <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
     <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
 
-    <!-- NEW: <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
+    <!-- NEW: <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
+    <!-- NEW: <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+
+    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 </resources>
