@@ -997,7 +997,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="dialog_confirm_spam_title">Conferma spam</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Vuoi davvero spostare il messaggio nella cartella spam?</item>
-        <item quantity="other">vuoi davvero spostare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati nella cartella spam?</item>
+        <item quantity="other">Vuoi davvero spostare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati nella cartella spam?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Sì</string>
     <string name="dialog_confirm_spam_cancel_button">No</string>
