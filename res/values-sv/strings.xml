@@ -318,7 +318,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="global_settings_messageview_fixedwidth_label">Teckensnitt med fast bredd</string>
     <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd för att visa brev med enbart text</string>
     <string name="global_settings_messageview_autofit_width_label">Auto-passa meddelanden</string>
-	<string name="global_settings_messageview_autofit_width_summary">Krymp meddelanden så att de får plats på skärmen</string>
+    <string name="global_settings_messageview_autofit_width_summary">Krymp meddelanden så att de får plats på skärmen</string>
     <string name="global_settings_messageview_return_to_list_label">Återvänd till listan efter radering</string>
     <string name="global_settings_messageview_return_to_list_summary">Återvänd till listan efter att ha raderat ett brev</string>
     <string name="global_settings_messageview_show_next_label">Visa nästa meddelande efter borttagning</string>
@@ -985,22 +985,18 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Vill du verkligen radera detta meddelande?</item>
         <item quantity="other">Vill du verkligen radera <xliff:g id="message_count">%1$d</xliff:g> meddelanden?</item>
     </plurals>
-
     <string name="dialog_confirm_delete_confirm_button">Radera</string>
     <string name="dialog_confirm_delete_cancel_button">Radera inte</string>
 
     <string name="dialog_confirm_spam_title">Bekräfta flyttning till skräpmapp</string>
-
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Vill du verkligen flytta detta meddelande till skräpmappen?</item>
         <item quantity="other">Vill du verkligen flytta <xliff:g id="message_count">%1$d</xliff:g> meddelanden till skräpmappen?</item>
     </plurals>
-
     <string name="dialog_confirm_spam_confirm_button">Ja</string>
     <string name="dialog_confirm_spam_cancel_button">Nej</string>
 
@@ -1026,12 +1022,10 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="settings_export_success">Sparade exporterade inställningar till <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Importerade globala inställningar från <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importerade <xliff:g id="accounts">%s</xliff:g> från <xliff:g id="filename">%s</xliff:g></string>
-
     <plurals name="settings_import_success">
         <item quantity="one">1 konto</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> konton</item>
     </plurals>
-
     <string name="settings_export_failure">Export av inställningar misslyckades</string>
     <string name="settings_import_failure">Kunde inte importera några inställningar ifrån <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_export_success_header">Export lyckades</string>
@@ -1040,18 +1034,14 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="settings_import_failed_header">Import misslyckades</string>
     <string name="settings_import_activate_account_header">Activera konto</string>
     <string name="settings_import_activate_account_intro">För att kunna använda kontot \"<xliff:g id="account">%s</xliff:g>\" måste du ange <xliff:g id="server_passwords">%s</xliff:g>.</string>
-
     <plurals name="settings_import_server_passwords">
         <item quantity="other">lösenord för servern</item>
     </plurals>
-
     <string name="settings_import_incoming_server">Inkommande server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Utgående server (<xliff:g id="hostname">%s</xliff:g>):</string>
-
     <plurals name="settings_import_setting_passwords">
         <item quantity="other">Sätter lösenord…</item>
     </plurals>
-
     <string name="settings_import_use_incoming_server_password">Använd lösenordet för inkommande server</string>
     <string name="activate_account_action">Activera</string>
 

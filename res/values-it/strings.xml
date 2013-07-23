@@ -211,7 +211,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> altri su <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Rispondi</string>
-    <!-- the following is the button to mark the message(s) as read, not to read the message(s) -->
     <string name="notification_action_read">Letto</string>
     <string name="notification_action_delete">Elimina</string>
     <string name="notification_certificate_error_title">Errore di certificato per <xliff:g id="account">%s</xliff:g></string>
