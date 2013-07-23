@@ -43,22 +43,20 @@ public class ContactPictureLoader {
      */
     private final LruCache<String, Bitmap> mBitmapCache;
 
+    /**
+     * @see <a href="http://developer.android.com/design/style/color.html">Color palette used</a>
+     */
     private final static int CONTACT_DUMMY_COLORS_ARGB[] = {
-        0xffff0000, // 0 R, G, B
-        0xff00ff00,
-        0xff0000ff,
-        0xffff8000, // 3 mix ff with 80
-        0xff0080ff,
-        0xff80ff00,
-        0xff8000ff,
-        0xffff0080,
-        0xff00ff80,
-        0xff8040ff, // 9 mit 80 with 40 and ff
-        0xff80ff40,
-        0xffff4080,
-        0xffff8040,
-        0xff40ff80,
-        0xff4080ff,
+        0xff33B5E5,
+        0xffAA66CC,
+        0xff99CC00,
+        0xffFFBB33,
+        0xffFF4444,
+        0xff0099CC,
+        0xff9933CC,
+        0xff669900,
+        0xffFF8800,
+        0xffCC0000
     };
 
     public ContactPictureLoader(Context context, int defaultPictureResource) {
