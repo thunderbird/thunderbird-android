@@ -33,17 +33,6 @@ public class ContactPictureLoader {
      */
     private static final int PICTURE_SIZE = 40;
 
-    /**
-     * Maximum number of email addresses to store in {@link #mUnknownContactsCache}.
-     */
-    private static final int MAX_UNKNOWN_CONTACTS = 1000;
-
-    /**
-     * Used as lightweight dummy value for entries in {@link #mUnknownContactsCache}.
-     */
-    private static final int[] DUMMY_INT_ARRAY = new int[0];
-
-
     private ContentResolver mContentResolver;
     private Resources mResources;
     private Contacts mContactsHelper;
@@ -53,19 +42,6 @@ public class ContactPictureLoader {
      * LRU cache of contact pictures.
      */
     private final LruCache<String, Bitmap> mBitmapCache;
-
-    /**
-     * LRU cache of email addresses that don't belong to a contact we have a picture for.
-     *
-     * <p>
-     * We don't store the default picture for unknown contacts or contacts without a picture in
-     * {@link #mBitmapCache}, because that would lead to an unnecessarily complex implementation of
-     * the {@code LruCache.sizeOf()} method. Instead, we save the email addresses we know don't
-     * belong to one of our contacts with a picture. Knowing this, we can avoid querying the
-     * contacts database for those addresses and immediately return the default picture.
-     * </p>
-     */
-    private final LruCache<String, int[]> mUnknownContactsCache;
 
     private final static int CONTACT_DUMMY_COLORS_ARGB[] = {
         0xffff0000, // 0 R, G, B
@@ -112,8 +88,6 @@ public class ContactPictureLoader {
                 return bitmap.getRowBytes() * bitmap.getHeight();
             }
         };
-
-        mUnknownContactsCache = new LruCache<String, int[]>(MAX_UNKNOWN_CONTACTS);
     }
 
     /**
@@ -142,10 +116,6 @@ public class ContactPictureLoader {
         if (bitmap != null) {
             // The picture was found in the bitmap cache
             badge.setImageBitmap(bitmap);
-        } else if (isEmailInUnknownContactsCache(email)) {
-            // This email address doesn't belong to a contact we have a picture for. Use the
-            // default picture.
-            badge.setImageBitmap(calculateFallbackBitmap(address));
         } else if (cancelPotentialWork(email, badge)) {
             // Query the contacts database in a background thread and try to load the contact
             // picture, if there is one.
@@ -216,16 +186,6 @@ public class ContactPictureLoader {
 
     private Bitmap getBitmapFromCache(String key) {
         return mBitmapCache.get(key);
-    }
-
-    private void addEmailToUnknownContactsCache(String key) {
-        if (!isEmailInUnknownContactsCache(key)) {
-            mUnknownContactsCache.put(key, DUMMY_INT_ARRAY);
-        }
-    }
-
-    private boolean isEmailInUnknownContactsCache(String key) {
-        return mUnknownContactsCache.get(key) != null;
     }
 
     /**
@@ -329,7 +289,7 @@ public class ContactPictureLoader {
             	bitmap = calculateFallbackBitmap(mAddress);
             	
                 // Remember that we don't have a contact picture for this email address
-                addEmailToUnknownContactsCache(email);
+                addBitmapToCache(email, bitmap);
             } else {
                 // Save the picture of the contact with that email address in the memory cache
                 addBitmapToCache(email, bitmap);
