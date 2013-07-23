@@ -33,14 +33,12 @@
 package de.cketti.library.changelog;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -357,20 +355,13 @@ public class ChangeLog {
 
         Resources resources = mContext.getResources();
 
-        // Read master change log from raw/changelog.xml
+        // Read master change log from xml/changelog_master.xml
+        XmlResourceParser xml = mContext.getResources().getXml(R.xml.changelog_master);
         SparseArray<ReleaseItem> defaultChangelog;
         try {
-            XmlPullParser xml = XmlPullParserFactory.newInstance().newPullParser();
-            InputStreamReader reader = new InputStreamReader(resources.openRawResource(R.raw.changelog));
-            xml.setInput(reader);
-            try {
-                defaultChangelog = readChangeLog(xml, full);
-            } finally {
-                try { reader.close(); } catch (Exception e) { /* do nothing */ }
-            }
-        } catch (XmlPullParserException e) {
-            Log.e(LOG_TAG, "Error reading raw/changelog.xml", e);
-            return null;
+            defaultChangelog = readChangeLog(xml, full);
+        } finally {
+            xml.close();
         }
 
         // Read localized change log from xml[-lang]/changelog.xml
