@@ -22,7 +22,7 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
+    <string name="welcome_message_title">Välkommen till K-9 E-post</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
 K-9 Mail är en e-postklient med öppen källkod för Android, ursprungligen baserad på standard-e-postklienten i Android.
@@ -68,8 +68,8 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">Please install a file manager to continue with this import.</string>-->
-    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+    <string name="import_dialog_error_message">Vänligen installera en filhanterare för att fortsätta med denna import.</string>
+    <string name="open_market">Öppna Play-butiken</string>
 
 
 
@@ -89,15 +89,15 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Konton</string>
-    <!-- NEW: <string name="folders_title">Folders</string>-->
+    <string name="folders_title">Mappar</string>
     <string name="advanced">Avancerat</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Skriv</string>
-    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
-    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
-    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+    <string name="compose_title_reply">Svara</string>
+    <string name="compose_title_reply_all">Svara alla</string>
+    <string name="compose_title_forward">Vidarebefordra</string>
 
     <string name="choose_folder_title">Välj en mapp</string>
 
@@ -110,7 +110,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="status_next_poll">Nästa kontroll <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Synk avaktiverat</string>
 
-    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valda</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Nästa</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Föregående</string> <!-- Used as part of a multi-step process -->
@@ -125,17 +125,17 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="spam_action">Spam</string>
     <string name="forward_action">Vidarebefordra</string>
     <string name="move_action">Flytta</string>
-    <!-- NEW: <string name="single_message_options_action">Send</string>-->
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <string name="single_message_options_action">Skicka</string>
+    <string name="refile_action">Omarkivera</string>
     <string name="continue_action">Fortsätt</string>
-    <!-- NEW: <string name="back_action">Back</string>-->
+    <string name="back_action">Tillbaka</string>
     <string name="done_action">Färdig</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Radera</string>
     <string name="save_draft_action">Spara som utkast</string>
     <string name="check_mail_action">Kontrollera e-post</string>
     <string name="send_messages_action">Skicka e-post</string>
     <string name="refresh_folders_action">Läs om mappar</string>
-    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
+    <string name="filter_folders_action">Hitta mapp</string>
     <string name="add_account_action">Lägg till konto</string>
     <string name="compose_action">Skriv</string>
     <string name="search_action">Sök</string>
@@ -155,17 +155,17 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="unflag_action">Ta bort stjärna</string>
     <string name="copy_action">Kopiera</string>
     <string name="select_text_action">Markera text</string>
-    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
-    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
+    <string name="show_headers_action">Visa huvuden</string>
+    <string name="hide_headers_action">Dölj huvuden</string>
 
-    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
-    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
+    <string name="message_view_theme_action_dark">Växla till mörkt tema</string>
+    <string name="message_view_theme_action_light">Växla till ljust tema</string>
 
     <string name="mark_as_unread_action">Markera som oläst</string>
     <string name="add_cc_bcc_action">Lägg till Cc/Bcc</string>
-    <!-- NEW: <string name="read_receipt">Read receipt</string>-->
-    <!-- NEW: <string name="read_receipt_enabled">Will request read receipt</string>-->
-    <!-- NEW: <string name="read_receipt_disabled">Will not not request read receipt</string>-->
+    <string name="read_receipt">Läskvitto</string>
+    <string name="read_receipt_enabled">Kommer att begära läskvitto</string>
+    <string name="read_receipt_disabled">Kommer inte att begära läskvitto</string>
     <string name="add_attachment_action">Lägg till bilaga</string>
     <string name="add_attachment_action_image">Lägg till bilaga (Bild)</string>
     <string name="add_attachment_action_video">Lägg till bilaga (Video)</string>
@@ -206,15 +206,15 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="recreating_account">Skapar om konto \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Ny e-post</string>
-    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> olästa (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> ytterligare på <xliff:g id="account">%s</xliff:g></string>
 
-    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Mark Read</string>-->
-    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
-    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
-    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
+    <string name="notification_action_reply">Svara</string>
+    <string name="notification_action_read">Markera som läst</string>
+    <string name="notification_action_delete">Radera</string>
+    <string name="notification_certificate_error_title">Certificatsfel för <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">Kontrollera dina serverinställningar</string>
 
     <string name="notification_bg_sync_ticker">Kontrollerar e-post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Kontrollerar e-post</string>
@@ -254,7 +254,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Ämne</string>
     <string name="message_compose_content_hint">Meddelandetext</string>
-    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
+    <string name="message_compose_signature_hint">Signatur</string>
     <string name="message_compose_quote_header_separator">-------- Originalmeddelande --------</string>
     <string name="message_compose_quote_header_subject">Ämne:</string>
     <string name="message_compose_quote_header_send_date">Skickat:</string>
@@ -263,14 +263,14 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:\n</string>
     <string name="message_compose_error_no_recipients">Du måste ange åtminstone en mottagare.</string>
-    <!-- NEW: <string name="error_contact_address_not_found">No email address could be found for this contact.</string>-->
+    <string name="error_contact_address_not_found">Kan inte hitta e-post-adress för denna kontakt.</string>
     <string name="message_compose_attachments_skipped_toast">Några bilagor kan inte vidarebefordras eftersom de inte har hämtats.</string>
-    <!-- NEW: <string name="message_compose_show_quoted_text_action">Quote message</string>-->
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <string name="message_compose_show_quoted_text_action">Citera meddelande</string>
+    <string name="message_compose_description_add_to">Lägg till mottagare (Till)</string>
+    <string name="message_compose_description_add_cc">Lägg till mottagare (CC)</string>
+    <string name="message_compose_description_add_bcc">Lägg till mottagare (BCC)</string>
+    <string name="message_compose_description_delete_quoted_text">Radera citerad text</string>
+    <string name="message_compose_description_edit_quoted_text">Redigera citerad text</string>
 
     <string name="message_view_from_format">Från: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Till:</string>
@@ -280,13 +280,13 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_view_status_attachment_saved">Bilagan har sparats till SD-kortet som <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Kan inte spara bilaga till SD-kortet.</string>
     <string name="message_view_show_pictures_action">Visa bilder</string>
-    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
-    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More…</string>-->
+    <string name="message_view_show_message_action">Visa meddelande</string>
+    <string name="message_view_show_attachments_action">Visa bilagor</string>
+    <string name="message_view_show_more_attachments_action">Mer…</string>
     <string name="message_view_fetching_attachment_toast">Hämtar bilaga.</string>
     <string name="message_view_no_viewer">Kan inte hitta visare för <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Hämta hem hela brevet</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Hämtar…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Alla huvuden har inte hämtats eller sparats. Välj \"Spara alla huvuden lokalt\" i inställningarna för kontots inkommande server för att aktivera detta för framtiden.</string>
@@ -304,53 +304,53 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="global_settings_show_correspondent_names_label">Visa korrespondensnamn</string>
     <string name="global_settings_show_correspondent_names_summary">Visa namn på korrespondens hellre än e-post-adresser</string>
 
-    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
-    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
+    <string name="global_settings_sender_above_subject_label">Avsändare över ämne</string>
+    <string name="global_settings_sender_above_subject_summary">Visar avsändarens namn över ämnesraden istället för under den</string>
 
     <string name="global_settings_show_contact_name_label">Visa kontaktnamn</string>
     <string name="global_settings_show_contact_name_summary">Använd avsändarnamn ifrån kontakter när tillgängligt</string>
     <string name="global_settings_registered_name_color_label">Färglägg kontakter</string>
     <string name="global_settings_registered_name_color_default">Färglägg inte namn i kontaktlistan</string>
     <string name="global_settings_registered_name_color_changed">Färglägg namn i kontaktlistan</string>
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
+    <string name="global_settings_folderlist_wrap_folder_names_label">Radbryt långa mappnamn</string>
+    <string name="global_settings_folderlist_wrap_folder_names_summary">Använd flera rader för att visa långa mappnamn</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Teckensnitt med fast bredd</string>
     <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd för att visa brev med enbart text</string>
-    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
-    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
+    <string name="global_settings_messageview_autofit_width_label">Auto-passa meddelanden</string>
+	<string name="global_settings_messageview_autofit_width_summary">Krymp meddelanden så att de får plats på skärmen</string>
     <string name="global_settings_messageview_return_to_list_label">Återvänd till listan efter radering</string>
     <string name="global_settings_messageview_return_to_list_summary">Återvänd till listan efter att ha raderat ett brev</string>
-    <!-- NEW: <string name="global_settings_messageview_show_next_label">Show next message after delete</string>-->
-    <!-- NEW: <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>-->
+    <string name="global_settings_messageview_show_next_label">Visa nästa meddelande efter borttagning</string>
+    <string name="global_settings_messageview_show_next_summary">Visa nästa meddelande som standard efter att ha raderat ett meddelande</string>
 
     <string name="global_settings_confirm_actions_title">Bekräfta åtgärder</string>
     <string name="global_settings_confirm_actions_summary">Visa en dialogruta när du genomför utvalda åtgärder</string>
     <string name="global_settings_confirm_action_delete">Radera (endast meddelandevyn)</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>-->
+    <string name="global_settings_confirm_action_delete_starred">Radera stjärnmärkta (i meddelandevyn)</string>
     <string name="global_settings_confirm_action_spam">Skräp</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
+    <string name="global_settings_confirm_action_delete_notif">Radera (från notifiering)</string>
 
-    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+    <string name="global_settings_notification_hide_subject_title">Dölj ämne i notifieringarations</string>
+    <string name="global_settings_notification_hide_subject_never">Never</string>
+    <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>
+    <string name="global_settings_notification_hide_subject_always">Always</string>
 
-    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
+    <string name="global_settings_notification_quick_delete_title">Visa \'Radera\'-knapp</string>
+    <string name="global_settings_notification_quick_delete_never">Aldrig</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">För radering av enstaka meddelande</string>
+    <string name="global_settings_notification_quick_delete_always">Alltid</string>
+    <string name="global_settings_notification_quick_delete_description">Visa en knapp i notifieringen som möjliggör snabb radering av meddelandet</string>
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_batch_buttons">Batch-knappar</string>
+    <string name="global_settings_batch_buttons_summary">Konfigurera batch-knappar för meddelandelista</string>
+    <string name="global_settings_mark_read">Markera som läst/oläst</string>
+    <string name="global_settings_delete">Radera</string>
+    <string name="global_settings_archive">Flytta till arkiv</string>
+    <string name="global_settings_archive_disabled_reason">Inga arkivmappar.</string>
+    <string name="global_settings_move">Flytta</string>
+    <string name="global_settings_flag">Flagga</string>
+    <string name="global_settings_unselect">Avmarkera</string>
 
     <string name="quiet_time">Tyst tid</string>
     <string name="quiet_time_description">Avaktivera ringsignaler, vibration och blinkande på natten</string>
@@ -415,7 +415,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_setup_expunge_policy_on_poll">Vid varje e-post-kontroll</string>
     <string name="account_setup_expunge_policy_manual">Endast manuellt</string>
 
-    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
+    <string name="account_setup_incoming_autodetect_namespace_label">Auto-detektera namnområde för IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_label">Sökvägsprefix för IMAP</string>
 
     <string name="drafts_folder_label">Namn på utkastmapp</string>
@@ -519,8 +519,8 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_settings_notification_opens_unread_summary">Letar efter oläst e-post när notifieringen öppnas</string>
     <string name="account_settings_notification_unread_count_label">Visa antal olästa</string>
     <string name="account_settings_notification_unread_count_summary">Visar antalet olästa brev i notifieringsytan.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
+    <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst vid visning</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Markera ett meddelande som läst när det visas</string>
 
     <string name="account_settings_show_pictures_label">Visa bilder automatiskt</string>
     <string name="account_settings_show_pictures_never">Aldrig</string>
@@ -529,31 +529,31 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="account_settings_composition">Skriva brev</string>
 
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>-->
-    <!-- NEW: <string name="account_settings_default_quoted_text_shown_summary">Include the original message in your reply.</string>-->
+    <string name="account_settings_default_quoted_text_shown_label">Citera meddelande vid svar</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Inkludera orginalmeddelandet i ditt svar.</string>
 
     <string name="account_settings_reply_after_quote_label">Svar efter citat</string>
     <string name="account_settings_reply_after_quote_summary">Vid svar på e-post placeras originalmeddelandet ovanför ditt svar.</string>
 
-    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signatures on reply</string>-->
-    <!-- NEW: <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>-->
+    <string name="account_settings_strip_signature_label">Avlägsna signaturer vid svar</string>
+    <string name="account_settings_strip_signature_summary">Signaturer kommer att avlägsnas ifrån citerade meddelanden</string>
 
     <string name="account_settings_message_format_label">Brevformat</string>
     <string name="account_settings_message_format_text">Ren text (bilder och formatering tas bort)</string>
     <string name="account_settings_message_format_html">HTML (bilder och formatering behålls)</string>
-    <!-- NEW: <string name="account_settings_message_format_auto">Automatic</string>-->
+    <string name="account_settings_message_format_auto">Automatiskt</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
+    <string name="account_settings_always_show_cc_bcc_label">Visa alltid Cc/Bcc</string>
 
-    <!-- NEW: <string name="account_settings_message_read_receipt_label">Read receipt</string>-->
-    <!-- NEW: <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>-->
+    <string name="account_settings_message_read_receipt_label">Läskvitto</string>
+    <string name="account_settings_message_read_receipt_summary">Begär alltid läskvitto</string>
 
     <string name="account_settings_quote_style_label">Citationsstil vid svar</string>
     <string name="account_settings_quote_style_prefix">Prefix (som Gmail, Pine)</string>
     <string name="account_settings_quote_style_header">Header (som Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Allmänna inställningar</string>
-    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
+    <string name="account_settings_reading_mail">Läsning av e-post</string>
     <string name="account_settings_sync">Mappsynkronisering</string>
     <string name="account_settings_folders">Mappar</string>
     <string name="account_settings_quote_prefix_label">Citatprefix</string>
@@ -562,9 +562,9 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_settings_crypto_app_none">Ingen</string>
     <string name="account_settings_crypto_auto_signature">Auto-signera</string>
     <string name="account_settings_crypto_auto_signature_summary">Använd kontots e-post-adress för att gissa signaturnyckeln.</string>
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>-->
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
-    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
+    <string name="account_settings_crypto_auto_encrypt">Auto-kryptera</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Kryptera automatiskt om en publik nyckel machar en mottagare.</string>
+    <string name="account_settings_crypto_apg_not_installed">APG är inte installerat</string>
 
     <string name="account_settings_mail_check_frequency_label">Frekvens för att kontrollera mappar</string>
 
@@ -728,8 +728,8 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="sort_latest_first">Nyaste brev först</string>
     <string name="sort_subject_alpha">Sortera efter ämne</string>
     <string name="sort_subject_re_alpha">Sortera efter ämne omvänt</string>
-    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
-    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
+    <string name="sort_sender_alpha">Avsändare i bokstavsordning</string>
+    <string name="sort_sender_re_alpha">Avsändare i omvänd bokstavsordning</string>
     <string name="sort_flagged_first">Stjärnmärkta brev först</string>
     <string name="sort_flagged_last">Icke stjärnmärkta brev först</string>
     <string name="sort_unread_first">Olästa brev först</string>
@@ -739,9 +739,9 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="sort_by">Sortera efter…</string>
     <string name="sort_by_date">Datum</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
+    <string name="sort_by_arrival">Mottaget</string>
     <string name="sort_by_subject">Ämne</string>
-    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
+    <string name="sort_by_sender">Avsändare</string>
     <string name="sort_by_flag">Stjärnor</string>
     <string name="sort_by_unread">Lästa/olästa</string>
     <string name="sort_by_attach">Bilagor</string>
@@ -757,26 +757,26 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
         med din korrekta adress och lösenord så kanske du inte har ett betalt
         \"Plus\"-konto. Vänligen starta webbläsaren för att komma åt dessa konton.</string>
     <string name="provider_note_yahoojp">Om du vill använda POP3 med denna leverantör måste du välja att tillåta POP3 på inställningssidan för Yahoo!.</string>
-    <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_hanmail">Be sure to enable IMAP or POP3 on the Hanmail(Daum) mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_paran">Be sure to enable IMAP or POP3 on the Paran mail settings page.</string>-->
-    <!-- NEW: <string name="provider_note_nate">Be sure to enable IMAP or POP3 on the Nate mail settings page.</string>-->
+    <string name="provider_note_auonejp">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för au one.</string>
+    <string name="provider_note_naver">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för Naver.</string>
+    <string name="provider_note_hanmail">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för Hanmail(Daum).</string>
+    <string name="provider_note_paran">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för Paran.</string>
+    <string name="provider_note_nate">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för Nate.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt Certifikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Neka nyckel</string>
 
-    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
     Del (eller D) - Radera\n
     R - Svara\n
     A - Svara alla\n
     C - Skriv\n
     F - Vidarebefordra\n
     M - Flytta\n
-    V - Archive\n
+    V - Arkivera\n
     Y - Kopiera\n
-    Z - Mark (Un)read\n
+    Z - Markera som oläst\n
     G - Stjärna\n
     O - Sorteringstyp\n
     I - Sorteringsordning\n
@@ -794,7 +794,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     Q - Återvänd till konton\u000A
     S - Redigera kontoinställningar</string>
 
-    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
+    <string name="folder_list_filter_hint">mappnamnet innehåller</string>
 
     <string name="folder_list_display_mode_label">Mappar</string>
     <string name="folder_list_display_mode_all">Visa alla mappar</string>
@@ -805,7 +805,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_settings_signature__location_label">Signaturposition</string>
     <string name="account_settings_signature__location_before_quoted_text">Före citerad text</string>
     <string name="account_settings_signature__location_after_quoted_text">Efter citerad text</string>
-    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
+    <string name="setting_theme_global">Använd appens tema</string>
     <string name="setting_theme_dark">Mörk</string>
     <string name="setting_theme_light">Ljus</string>
     <string name="display_preferences">Utseende</string>
@@ -817,15 +817,15 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="accountlist_preferences">Kontolista</string>
     <string name="messagelist_preferences">E-post-listor</string>
     <string name="messageview_preferences">Brev</string>
-    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
+    <string name="folderlist_preferences">Mapplistor</string>
     <string name="settings_theme_label">Tema</string>
-    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
-    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
+    <string name="settings_message_theme_label">Tema för meddelandevy</string>
+    <string name="settings_compose_theme_label">Tema för skriv-vy</string>
     <string name="settings_language_label">Språk</string>
 
-    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
+    <string name="settings_message_theme_selection_label">Fast meddelandetema</string>
+    <string name="settings_message_theme_selection_summary_off">Välj tema för meddelandevyn medan meddelandet visas</string>
+    <string name="settings_message_theme_selection_summary_on">Använd ett fast tema för meddelandevyn</string>
 
     <string name="settings_messageview_mobile_layout_label">En-kolumns-layout</string>
     <string name="settings_messageview_mobile_layout_summary">Formatera om HTML-brev för mindre skärmar</string>
@@ -837,7 +837,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="background_ops_always">Alltid</string>
     <string name="background_ops_enabled">När \'Bakgrundsdata\' är aktiverad</string>
     <string name="background_ops_auto_sync">När \'Bakgrundsdata\' &amp; \'Auto-sync\' är aktiverade</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">Endast när \'Auto-sync\' är aktiverad</string>
 
     <string name="batch_select_all">Markera alla</string>
 
@@ -867,8 +867,8 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="count_search_title">Räkna sökresultat</string>
     <string name="count_search_summary">Avaktivera för snabbare visning</string>
 
-    <!-- NEW: <string name="hide_special_accounts_title">Hide special accounts</string>-->
-    <!-- NEW: <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>-->
+    <string name="hide_special_accounts_title">Göm specialkonton</string>
+    <string name="hide_special_accounts_summary">Göm den integrearde inkorgen och mappen för alla meddelanden</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier"> - Stjärnmärkta</string>
@@ -916,10 +916,10 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="font_size_message_view_date">Tid och datum</string>
     <string name="font_size_message_view_content">Innehåll</string>
 
-    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
-    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
+    <string name="font_size_message_compose">Skriva meddelanden</string>
+    <string name="font_size_message_compose_input">Fält för textinmatning</string>
 
-    <!-- NEW: <string name="font_size_default">Default</string>-->
+    <string name="font_size_default">Standard</string>
     <string name="font_size_tiniest">Minst</string>
     <string name="font_size_tiny">Mindre</string>
     <string name="font_size_smaller">Liten</string>
@@ -960,14 +960,14 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="save_or_discard_draft_message_dlg_title">Spara utkast?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Spara eller kasta detta brev?</string>
 
-    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
-    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+    <string name="confirm_discard_draft_message_title">Kasta meddelande?</string>
+    <string name="confirm_discard_draft_message">Är du säker på att du vill kasta detta meddelande?</string>
 
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>-->
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
+    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Vägra att spara meddelande i utkast.</string>
+    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Vägra att spara meddelanden markerade som krypterade i utkast.</string>
 
-    <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
-    <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
+    <string name="continue_without_public_key_dlg_title">Fortsätta utan publik nyckel?</string>
+    <string name="continue_without_public_key_instructions_fmt">En eller flera mottagare har ingen sparad publik nyckel. Fortsätta ändå?</string>
 
     <string name="select_text_now">Välj text att kopiera.</string>
 
@@ -985,26 +985,26 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <!-- NEW:
+
     <plurals name="dialog_confirm_delete_message">
-        <item quantity="one">Do you really want to delete this message?</item>
-        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+        <item quantity="one">Vill du verkligen radera detta meddelande?</item>
+        <item quantity="other">Vill du verkligen radera <xliff:g id="message_count">%1$d</xliff:g> meddelanden?</item>
     </plurals>
-    -->
+
     <string name="dialog_confirm_delete_confirm_button">Radera</string>
     <string name="dialog_confirm_delete_cancel_button">Radera inte</string>
 
-    <!-- NEW: <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>-->
-    <!-- NEW:
-    <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Do you really want to move this message to the spam folder?</item>
-        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
-    </plurals>
-    -->
-    <!-- NEW: <string name="dialog_confirm_spam_confirm_button">Yes</string>-->
-    <!-- NEW: <string name="dialog_confirm_spam_cancel_button">No</string>-->
+    <string name="dialog_confirm_spam_title">Bekräfta flyttning till skräpmapp</string>
 
-    <!-- NEW: <string name="dialog_attachment_progress_title">Downloading attachment</string>-->
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Vill du verkligen flytta detta meddelande till skräpmappen?</item>
+        <item quantity="other">Vill du verkligen flytta <xliff:g id="message_count">%1$d</xliff:g> meddelanden till skräpmappen?</item>
+    </plurals>
+
+    <string name="dialog_confirm_spam_confirm_button">Ja</string>
+    <string name="dialog_confirm_spam_cancel_button">Nej</string>
+
+    <string name="dialog_attachment_progress_title">Hämtar bilaga</string>
 
     <string name="debug_logging_enabled">Debug-loggning till Androids loggsystem är aktiverat</string>
 
@@ -1012,143 +1012,141 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">Kan inte ansluta.</string>
 
-    <!-- NEW: <string name="import_export_action">Settings Import &amp; Export</string>-->
-    <!-- NEW: <string name="settings_export_account">Export account settings</string>-->
-    <!-- NEW: <string name="settings_export_all">Export settings and accounts</string>-->
-    <!-- NEW: <string name="settings_import_dialog_title">Import</string>-->
-    <!-- NEW: <string name="settings_export_dialog_title">Export</string>-->
-    <!-- NEW: <string name="settings_import">Import settings</string>-->
-    <!-- NEW: <string name="settings_import_selection">Import selection</string>-->
-    <!-- NEW: <string name="settings_import_global_settings">Global settings</string>-->
-    <!-- NEW: <string name="settings_exporting">Exporting settings…</string>-->
-    <!-- NEW: <string name="settings_importing">Importing settings…</string>-->
-    <!-- NEW: <string name="settings_import_scanning_file">Scanning file…</string>-->
-    <!-- NEW: <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW:
+    <string name="import_export_action">Import &amp; export av inställningar</string>
+    <string name="settings_export_account">Exportera konton</string>
+    <string name="settings_export_all">Exportera inställningar och konton</string>
+    <string name="settings_import_dialog_title">Importera</string>
+    <string name="settings_export_dialog_title">Exportera</string>
+    <string name="settings_import">Importera inställningar</string>
+    <string name="settings_import_selection">Importera markering</string>
+    <string name="settings_import_global_settings">Globala inställningar</string>
+    <string name="settings_exporting">Exporterar inställningar…</string>
+    <string name="settings_importing">Importerar inställningar…</string>
+    <string name="settings_import_scanning_file">Skannar fil…</string>
+    <string name="settings_export_success">Sparade exporterade inställningar till <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Importerade globala inställningar från <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Importerade <xliff:g id="accounts">%s</xliff:g> från <xliff:g id="filename">%s</xliff:g></string>
+
     <plurals name="settings_import_success">
-        <item quantity="one">1 account</item>
-        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
+        <item quantity="one">1 konto</item>
+        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> konton</item>
     </plurals>
-    -->
-    <!-- NEW: <string name="settings_export_failure">Failed to export settings</string>-->
-    <!-- NEW: <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>-->
-    <!-- NEW: <string name="settings_export_success_header">Export succeeded</string>-->
-    <!-- NEW: <string name="settings_export_failed_header">Export failed</string>-->
-    <!-- NEW: <string name="settings_import_success_header">Import succeeded</string>-->
-    <!-- NEW: <string name="settings_import_failed_header">Import failed</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_header">Activate account</string>-->
-    <!-- NEW: <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s</xliff:g>.</string>-->
-    <!-- NEW:
+
+    <string name="settings_export_failure">Export av inställningar misslyckades</string>
+    <string name="settings_import_failure">Kunde inte importera några inställningar ifrån <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success_header">Export lyckades</string>
+    <string name="settings_export_failed_header">Export misslyckades</string>
+    <string name="settings_import_success_header">Import lyckades</string>
+    <string name="settings_import_failed_header">Import misslyckades</string>
+    <string name="settings_import_activate_account_header">Activera konto</string>
+    <string name="settings_import_activate_account_intro">För att kunna använda kontot \"<xliff:g id="account">%s</xliff:g>\" måste du ange <xliff:g id="server_passwords">%s</xliff:g>.</string>
+
     <plurals name="settings_import_server_passwords">
-        <item quantity="one">server password</item>
-        <item quantity="other">server passwords</item>
+        <item quantity="other">lösenord för servern</item>
     </plurals>
-    -->
-    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW:
+
+    <string name="settings_import_incoming_server">Inkommande server (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">Utgående server (<xliff:g id="hostname">%s</xliff:g>):</string>
+
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Setting password…</item>
-        <item quantity="other">Setting passwords…</item>
+        <item quantity="other">Sätter lösenord…</item>
     </plurals>
-    -->
-    <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
-    <!-- NEW: <string name="activate_account_action">Activate</string>-->
 
-    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+    <string name="settings_import_use_incoming_server_password">Använd lösenordet för inkommande server</string>
+    <string name="activate_account_action">Activera</string>
 
-    <!-- NEW: <string name="settings_attachment_default_path">Save attachments to…</string>-->
-    <!-- NEW: <string name="attachment_save_title">Save attachment</string>-->
-    <!-- NEW: <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>-->
+    <string name="account_unavailable">Kontot \"<xliff:g id="account">%s</xliff:g>\" är inte tillgängligt; kontrollera lagring</string>
 
-    <!-- NEW: <string name="manage_accounts_move_up_action">Move up</string>-->
-    <!-- NEW: <string name="manage_accounts_move_down_action">Move down</string>-->
-    <!-- NEW: <string name="manage_accounts_moving_message">Moving account…</string>-->
+    <string name="settings_attachment_default_path">Spara bilagor till…</string>
+    <string name="attachment_save_title">Spara bilaga</string>
+    <string name="attachment_save_desc">Ingen filhanterare kunde hittas. Var vill du spara denna bilaga?</string>
 
-    <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
+    <string name="manage_accounts_move_up_action">Flytta upp</string>
+    <string name="manage_accounts_move_down_action">Flytta ner</string>
+    <string name="manage_accounts_moving_message">Flyttar konto…</string>
 
-    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
-    <!-- NEW: <string name="close">Close</string>-->
+    <string name="unread_widget_select_account">Visa antal olästa för…</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="import_dialog_error_title">Saknar filhanterar-app</string>
+    <string name="close">Stäng</string>
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+    <string name="webview_empty_message">Ingen text</string>
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+    <string name="webview_contextmenu_link_view_action">Öppna länk</string>
+    <string name="webview_contextmenu_link_share_action">Dela länk</string>
+    <string name="webview_contextmenu_link_copy_action">Kopiera länk</string>
+    <string name="webview_contextmenu_link_clipboard_label">Länk</string>
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy number to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+    <string name="webview_contextmenu_image_title">Bild</string>
+    <string name="webview_contextmenu_image_view_action">Visa bild</string>
+    <string name="webview_contextmenu_image_save_action">Spara bild</string>
+    <string name="webview_contextmenu_image_download_action">Hämta bild</string>
+    <string name="webview_contextmenu_image_copy_action">Kopiera bild</string>
+    <string name="webview_contextmenu_image_clipboard_label">Bildadress</string>
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy address to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+    <string name="webview_contextmenu_phone_call_action">Ring nummer</string>
+    <string name="webview_contextmenu_phone_save_action">Spara till kontakter</string>
+    <string name="webview_contextmenu_phone_copy_action">Kopiera nummer</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Telefonnummer</string>
 
-    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+    <string name="webview_contextmenu_email_send_action">Skicka e-post</string>
+    <string name="webview_contextmenu_email_save_action">Spara till kontakter</string>
+    <string name="webview_contextmenu_email_copy_action">Kopiera adress</string>
+    <string name="webview_contextmenu_email_clipboard_label">E-post-adress</string>
 
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include messages text in server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
-    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
-    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
-    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
-    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+    <string name="image_saved_as">Sparade bild som \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Misslyckades med att spara bild.</string>
 
-    <!-- NEW: <string name="account_settings_search">Search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
-    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>-->
+    <string name="account_settings_remote_search_num_results_entries_all">Alla</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Serverns sökgräns</string>
+    <string name="account_settings_remote_search_num_summary">Sökning kommer att sluta efter <xliff:g id="num_results">%s</xliff:g> träffar.</string>
+    <string name="account_settings_remote_search_full_text">Inkludera meddelandetext i serversökning</string>
+    <string name="account_settings_remote_search_full_text_summary">Fulltextsökningar kan vara långsamma.</string>
+    <string name="remote_search_sending_query">Skickar fråga till servern</string>
+    <string name="remote_search_downloading">Hämtar %d resultat</string>
+    <string name="remote_search_downloading_limited">Hämtar %1$d av %2$d resultat</string>
+    <string name="remote_search_error">Fjärrsökning misslyckades</string>
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>-->
+    <string name="account_settings_search">Sök</string>
+    <string name="account_settings_remote_search_enabled">Aktivera serversökning</string>
+    <string name="account_settings_remote_search_enabled_summary">Sök även meddelanden på servern</string>
+    <string name="action_remote_search">Sök meddelanden på servern</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Dra för att söka på servern…</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Släpp för att söka på servern…</string>
+    <string name="remote_search_unavailable_no_network">En nätverksanslutning krävs för serversökning.</string>
 
-    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Group messages by conversation</string>-->
+    <string name="global_settings_background_as_unread_indicator_label">Tona ner meddelanden efter läsning</string>
+    <string name="global_settings_background_as_unread_indicator_summary">En grå bakgrund kommer att visa att ett meddelande har lästs</string>
 
-    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
-    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
-    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+    <string name="global_settings_threaded_view_label">Trådad vy</string>
+    <string name="global_settings_threaded_view_summary">Gruppera meddelanden efter konversation</string>
 
-    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+    <string name="upgrade_databases_title">Uppgraderar databaser</string>
+    <string name="upgrade_databases_unspecified">Uppgraderar databaser…</string>
+    <string name="upgrade_database_format">Uppgraderar databas för konto \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
-    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+    <string name="message_list_loading">Hämtar…</string>
 
-    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+    <string name="global_settings_splitview_mode_label">Dela skärm</string>
+    <string name="global_settings_splitview_always">Alltid</string>
+    <string name="global_settings_splitview_never">Aldrig</string>
+    <string name="global_settings_splitview_when_in_landscape">Bara i liggande läge</string>
 
-    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+    <string name="message_view_empty">Vänligen välj ett meddelande till vänster</string>
 
-    <!-- NEW: <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
-    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
+    <string name="global_settings_show_contact_picture_label">Visa kontaktbilder</string>
+    <string name="global_settings_show_contact_picture_summary">Visa bilder för kontakter i meddelandelistan</string>
 
-    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+    <string name="last_refresh_time_format">Uppdaterade <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Uppdaterade <xliff:g id="time_with_preposition">%s</xliff:g> (Push aktiverat)</string>
+    <string name="preposition_for_date"> <xliff:g id="date">%s</xliff:g></string>
+
+    <string name="mark_all_as_read">Markera alla som lästa</string>
 </resources>
