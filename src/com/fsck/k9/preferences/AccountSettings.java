@@ -30,6 +30,9 @@ public class AccountSettings {
          * and use that for whatever you add here.
          */
 
+        s.put("showTotalCount",  Settings.versions(
+        		new V(29, new BooleanSetting(false))
+        	));
         s.put("alwaysBcc", Settings.versions(
                 new V(11, new StringSetting(""))
             ));

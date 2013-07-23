@@ -79,6 +79,7 @@ public abstract class Folder {
 
     public abstract int getUnreadMessageCount() throws MessagingException;
     public abstract int getFlaggedMessageCount() throws MessagingException;
+    public abstract int getTotalMessageCount() throws MessagingException;
 
     public abstract Message getMessage(String uid) throws MessagingException;
 
@@ -161,7 +162,8 @@ public abstract class Folder {
 
     public abstract String getName();
 
-
+    public abstract boolean showTotalMessageCount();
+    
     /**
      * Indicated by the server "\*" ( * OK [PERMANENTFLAGS (\Answered .. \*)] Flags permitted). that
      * new keywords may be created

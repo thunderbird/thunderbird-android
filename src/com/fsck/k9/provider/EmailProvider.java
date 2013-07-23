@@ -185,6 +185,7 @@ public class EmailProvider extends ContentProvider {
     public interface StatsColumns {
         public static final String UNREAD_COUNT = "unread_count";
         public static final String FLAGGED_COUNT = "flagged_count";
+        public static final String TOTAL_COUNT = "total_count";
     }
 
     private static final String[] STATS_DEFAULT_PROJECTION = {
@@ -563,6 +564,8 @@ public class EmailProvider extends ContentProvider {
                 sql.append("SUM(" + MessageColumns.READ + "=0) AS " + StatsColumns.UNREAD_COUNT);
             } else if (StatsColumns.FLAGGED_COUNT.equals(columnName)) {
                 sql.append("SUM(" + MessageColumns.FLAGGED + ") AS " + StatsColumns.FLAGGED_COUNT);
+            } else if (StatsColumns.TOTAL_COUNT.equals(columnName)) {
+                sql.append("COUNT(*)");
             } else {
                 throw new IllegalArgumentException("Column name not allowed: " + columnName);
             }

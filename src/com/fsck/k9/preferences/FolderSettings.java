@@ -40,7 +40,10 @@ public class FolderSettings {
         s.put("integrate", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-
+        s.put("showTotalCount",  Settings.versions(
+        		new V(29, new BooleanSetting(false))
+        	));
+        
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();

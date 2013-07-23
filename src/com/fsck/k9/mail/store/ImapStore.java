@@ -1300,6 +1300,16 @@ public class ImapStore extends Store {
             return getRemoteMessageCount("FLAGGED NOT DELETED");
         }
 
+        @Override
+        public boolean showTotalMessageCount() {
+        	return false;
+        }
+
+        @Override
+        public int getTotalMessageCount() throws MessagingException {
+        	return getRemoteMessageCount("NOT DELETED");
+        }
+        
         protected long getHighestUid() {
             try {
                 ImapSearcher searcher = new ImapSearcher() {

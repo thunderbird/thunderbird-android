@@ -30,11 +30,13 @@ public class FolderSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_PUSH_CLASS = "folder_settings_folder_push_mode";
     private static final String PREFERENCE_IN_TOP_GROUP = "folder_settings_in_top_group";
     private static final String PREFERENCE_INTEGRATE = "folder_settings_include_in_integrated_inbox";
-
+    private static final String PREFERENCE_SHOW_TOTAL_COUNT = "folder_settings_show_total_message_count";
+    
     private LocalFolder mFolder;
 
     private CheckBoxPreference mInTopGroup;
     private CheckBoxPreference mIntegrate;
+    private CheckBoxPreference mShowTotalCount;
     private ListPreference mDisplayClass;
     private ListPreference mSyncClass;
     private ListPreference mPushClass;
@@ -83,7 +85,9 @@ public class FolderSettings extends K9PreferenceActivity {
         mInTopGroup.setChecked(mFolder.isInTopGroup());
         mIntegrate = (CheckBoxPreference)findPreference(PREFERENCE_INTEGRATE);
         mIntegrate.setChecked(mFolder.isIntegrate());
-
+        mShowTotalCount = (CheckBoxPreference)findPreference(PREFERENCE_SHOW_TOTAL_COUNT);
+        
+        mShowTotalCount.setChecked(mFolder.getShowTotalCount());
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);
         mDisplayClass.setValue(mFolder.getDisplayClass().name());
         mDisplayClass.setSummary(mDisplayClass.getEntry());
@@ -134,7 +138,8 @@ public class FolderSettings extends K9PreferenceActivity {
         mFolder.setDisplayClass(FolderClass.valueOf(mDisplayClass.getValue()));
         mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
         mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
-
+        mFolder.setShowTotalCount(mShowTotalCount.isChecked());
+        
         mFolder.save();
 
         FolderClass newPushClass = mFolder.getPushClass();

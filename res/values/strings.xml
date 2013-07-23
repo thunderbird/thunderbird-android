@@ -578,6 +578,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">The accent color of this account used in folder and account list</string>
 
+    <string name="account_settings_show_total_message_count_label">Show total message count</string>
+    <string name="account_settings_show_total_message_count_summary">Show the total number of messages in the account</string>
+    
     <string name="account_settings_led_color_label">Notification LED color</string>
     <string name="account_settings_led_color_summary">The color your device LED should blink for this account</string>
 
@@ -891,6 +894,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">All messages are shown in Unified Inbox</string>
 
+    <string name="folder_settings_show_total_message_count_label">Show total message count</string>
+    <string name="folder_settings_show_total_message_count_summary">Show the total number of messages in the folder</string>
+    
     <string name="account_settings_searchable_label">Folders to search</string>
     <string name="account_settings_searchable_all">All</string>
     <string name="account_settings_searchable_displayable">Displayable</string>
