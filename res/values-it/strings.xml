@@ -317,8 +317,8 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
 
     <string name="global_settings_messageview_fixedwidth_label">Carattere a larghezza fissa</string>
     <string name="global_settings_messageview_fixedwidth_summary">Usa carattere a larghezza fissa quando mostri i messaggi di testo</string>
-    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
-    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
+    <string name="global_settings_messageview_autofit_width_label">Adattamento automatico messaggi</string>
+    <string name="global_settings_messageview_autofit_width_summary">Compatta i messaggi per adattarli allo schermo</string>
     <string name="global_settings_messageview_return_to_list_label">Torna all\'elenco dopo l\'eliminazione</string>
     <string name="global_settings_messageview_return_to_list_summary">Ritorna all\'elenco dei messaggi dopo l\'eliminazione del messaggio</string>
     <string name="global_settings_messageview_show_next_label">Mostra messaggio successivo dopo l\'eliminazione</string>
@@ -728,8 +728,8 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="sort_latest_first">Data messaggio (più vecchi)</string>
     <string name="sort_subject_alpha">Oggetto (A-Z)</string>
     <string name="sort_subject_re_alpha">Oggetto (Z-A)</string>
-    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
-    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
+    <string name="sort_sender_alpha">Mittente in ordine alfabetico</string>
+    <string name="sort_sender_re_alpha">Mittente in ordine alfabetico inverso</string>
     <string name="sort_flagged_first">Messaggi con stella</string>
     <string name="sort_flagged_last">Messaggi senza stella</string>
     <string name="sort_unread_first">Messaggi non letti</string>
@@ -741,7 +741,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="sort_by_date">Data</string>
     <string name="sort_by_arrival">Arrivo</string>
     <string name="sort_by_subject">Oggetto</string>
-    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
+    <string name="sort_by_sender">Mittente</string>
     <string name="sort_by_flag">Stella</string>
     <string name="sort_by_unread">Letto/da leggere</string>
     <string name="sort_by_attach">Allegati</string>
@@ -1141,5 +1141,5 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="last_refresh_time_format_with_push">Ultimo aggiornamento <xliff:g id="time_with_preposition">%s</xliff:g> (Push attivo)</string>
     <string name="preposition_for_date">il <xliff:g id="date">%s</xliff:g></string>
 
-    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+    <string name="mark_all_as_read">Marca tutti come letti</string>
 </resources>
