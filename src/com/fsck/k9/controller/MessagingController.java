@@ -4888,7 +4888,7 @@ public class MessagingController implements Runnable {
             }
 
             builder.addAction(R.drawable.ic_action_mark_as_read_dark,
-                    context.getString(R.string.notification_action_read),
+                    context.getString(R.string.notification_action_mark_as_read),
                     NotificationActionService.getReadAllMessagesIntent(context, account, allRefs));
 
             NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();

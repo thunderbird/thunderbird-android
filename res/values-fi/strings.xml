@@ -212,7 +212,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> viestiä lisää tilillä <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Vastaa</string>
-    <string name="notification_action_read">Lue</string>
+    <string name="notification_action_mark_as_read">Lue</string>
     <string name="notification_action_delete">Poista</string>
     <string name="notification_certificate_error_title">Varmennevirhe tilissä <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Tarkista palvelinasetuksesi</string>
