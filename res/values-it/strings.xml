@@ -211,7 +211,8 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> altri su <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Rispondi</string>
-    <string name="notification_action_read">Leggi</string>
+    <!-- the following is the button to mark the message(s) as read, not to read the message(s) -->
+    <string name="notification_action_read">Letto</string>
     <string name="notification_action_delete">Elimina</string>
     <string name="notification_certificate_error_title">Errore di certificato per <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Controlla le impostazioni del server</string>
@@ -988,7 +989,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Vuoi davvero eliminare questo messaggio?</item>
-        <item quantity="other">Vuoi davvero eliminare <xliff:g id="message_count">%1$d</xliff:g> messaggi?</item>
+        <item quantity="other">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Elimina</string>
     <string name="dialog_confirm_delete_cancel_button">Non eliminare</string>
@@ -996,7 +997,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="dialog_confirm_spam_title">Conferma spam</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Vuoi davvero spostare il messaggio nella cartella spam?</item>
-        <item quantity="other">vuoi davvero spostare i messaggi <xliff:g id="message_count">%1$d</xliff:g> nella cartella spam?</item>
+        <item quantity="other">vuoi davvero spostare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati nella cartella spam?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Sì</string>
     <string name="dialog_confirm_spam_cancel_button">No</string>
