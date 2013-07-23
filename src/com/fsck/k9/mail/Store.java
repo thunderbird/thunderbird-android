@@ -209,5 +209,13 @@ public abstract class Store {
         return mAccount;
     }
 
+    public void resetRemoteStore(Account account) {
+        String uri = account.getStoreUri();
+        if (uri.startsWith("local")) {
+            throw new RuntimeException(
+                    "Asked to get non-local Store object but given LocalStore URI");
+        }
+        sStores.remove(uri);
+    }
 
 }
