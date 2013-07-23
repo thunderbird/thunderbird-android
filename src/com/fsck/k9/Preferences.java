@@ -123,6 +123,14 @@ public class Preferences {
             accountsInOrder.remove(account);
         }
 
+        try {
+            account.getRemoteStore().resetRemoteStore(account);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Failed to reset remote store for account "
+                    + account.getUuid());
+            e.printStackTrace();
+        }
+
         account.delete(this);
 
         if (newAccount == account) {
