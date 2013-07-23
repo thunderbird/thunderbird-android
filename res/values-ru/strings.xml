@@ -206,7 +206,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> в <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Ответить</string>
-    <string name="notification_action_read">Открыть</string>
+    <string name="notification_action_mark_as_read">Открыть</string>
     <string name="notification_action_delete">Удалить</string>
     <string name="notification_certificate_error_title">Ошибка сертификата <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>

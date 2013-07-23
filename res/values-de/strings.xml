@@ -211,7 +211,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="notification_additional_messages">und <xliff:g id="additional_messages">%d</xliff:g> weitere (<xliff:g id="account">%s</xliff:g>)</string>
 
     <string name="notification_action_reply">Antworten</string>
-    <string name="notification_action_read">Gelesen</string>
+    <string name="notification_action_mark_as_read">Gelesen</string>
     <string name="notification_action_delete">Löschen</string>
     <string name="notification_certificate_error_title">Zertifikatsproblem (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_certificate_error_text">Servereinstellungen überprüfen</string>

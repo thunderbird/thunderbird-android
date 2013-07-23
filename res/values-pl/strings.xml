@@ -216,7 +216,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> więcej na <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Odpowiedz</string>
-    <string name="notification_action_read">Oznacz jako przeczytane</string>
+    <string name="notification_action_mark_as_read">Oznacz jako przeczytane</string>
     <string name="notification_action_delete">Usuń</string>
     <string name="notification_certificate_error_title">Błąd certyfikatu dla <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Sprawdź ustawienia serwera</string>

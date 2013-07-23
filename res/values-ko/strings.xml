@@ -209,7 +209,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> 통의 메일 추가됨 (<xliff:g id="account">%s</xliff:g>)</string>
 
     <string name="notification_action_reply">답장</string>
-    <string name="notification_action_read">읽음</string>
+    <string name="notification_action_mark_as_read">읽음</string>
     <string name="notification_action_delete">삭제</string>
     <string name="notification_certificate_error_title">계정 인증 오류 (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_certificate_error_text">서버 설정을 점검하십시오.</string>

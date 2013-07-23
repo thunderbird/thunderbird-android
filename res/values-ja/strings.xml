@@ -210,7 +210,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">返信</string>
-    <string name="notification_action_read">既読</string>
+    <string name="notification_action_mark_as_read">既読</string>
     <string name="notification_action_delete">削除</string>
     <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>の証明書エラー</string>
     <string name="notification_certificate_error_text">サーバの設定を確認してください</string>

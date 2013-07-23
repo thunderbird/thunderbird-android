@@ -211,7 +211,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> ytterligare på <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Svara</string>
-    <string name="notification_action_read">Markera som läst</string>
+    <string name="notification_action_mark_as_read">Markera som läst</string>
     <string name="notification_action_delete">Radera</string>
     <string name="notification_certificate_error_title">Certificatsfel för <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Kontrollera dina serverinställningar</string>
