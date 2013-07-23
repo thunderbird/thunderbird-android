@@ -163,7 +163,7 @@ public class ContactPictureLoader {
     
     private int calcUnknownContactColor(Address address) {
         int val = address.getAddress().toLowerCase().hashCode();
-        int rgb = CONTACT_DUMMY_COLORS_ARGB[val % CONTACT_DUMMY_COLORS_ARGB.length];
+        int rgb = CONTACT_DUMMY_COLORS_ARGB[Math.abs(val) % CONTACT_DUMMY_COLORS_ARGB.length];
     	return rgb;
     }
     
