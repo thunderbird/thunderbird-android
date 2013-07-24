@@ -209,5 +209,7 @@ public abstract class Store {
         return mAccount;
     }
 
-
+    public String getPathDelimiter() {
+        return null;
+    }
 }

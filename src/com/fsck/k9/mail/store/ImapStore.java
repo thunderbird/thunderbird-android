@@ -521,6 +521,11 @@ public class ImapStore extends Store {
     }
 
     @Override
+    public String getPathDelimiter() {
+        return mPathDelimiter;
+    }
+
+    @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         ImapConnection connection = getConnection();
         try {
