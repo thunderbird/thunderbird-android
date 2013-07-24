@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>___k9mail</name>
+	<name>k9mail</name>
 	<comment></comment>
 	<projects>
 		<project>k9mail-ActionBarSherlock</project>
