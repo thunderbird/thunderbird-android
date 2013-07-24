@@ -770,28 +770,30 @@ public class FolderList extends K9ListActivity {
 
                     Folder previous = null;
                     for (Folder folder : folders) {
-                        String folderString = folder.getName();
-                        int index = folderString.lastIndexOf(mAdapter.getHierarchyFilter().getPathDelimiter());
+                        if (K9.folderHierarchy()) {
+                            String folderString = folder.getName();
+                            int index = folderString.lastIndexOf(mAdapter.getHierarchyFilter().getPathDelimiter());
 
-                        //Log.v("FOLDER", "List: " + folder.getName() + " found slash at " + index);
+                            //Log.v("FOLDER", "List: " + folder.getName() + " found slash at " + index);
 
-                        while (index != -1) {
-                            //Log.d("FOLDER", "working on substring: " + substring + " soon to be shortened to: " + substring.substring(0, index));
+                            while (index != -1) {
+                                //Log.d("FOLDER", "working on substring: " + substring + " soon to be shortened to: " + substring.substring(0, index));
 
-                            folderString = folderString.substring(0, index); // get this folders' parent
+                                folderString = folderString.substring(0, index); // get this folders' parent
 
-                            if (previous == null || ! previous.getName().startsWith(folderString)) {
-                                Log.d("FOLDER", "Artificial fake folder: " + folderString);
+                                if (previous == null || ! previous.getName().startsWith(folderString)) {
+                                    Log.d("FOLDER", "Artificial fake folder: " + folderString);
 
-                                FolderInfoHolder holder = new FolderInfoHolder();
-                                holder.name = folderString;
-                                holder.displayName = folderString;
-                                holder.folder = new FakeFolder(account, folderString);
+                                    FolderInfoHolder holder = new FolderInfoHolder();
+                                    holder.name = folderString;
+                                    holder.displayName = folderString;
+                                    holder.folder = new FakeFolder(account, folderString);
 
-                                newFolders.add(holder);
+                                    newFolders.add(holder);
+                                }
+
+                                index = folderString.lastIndexOf(mAdapter.getHierarchyFilter().getPathDelimiter());
                             }
-
-                            index = folderString.lastIndexOf(mAdapter.getHierarchyFilter().getPathDelimiter());
                         }
 
 
@@ -1236,7 +1238,7 @@ public class FolderList extends K9ListActivity {
 
                 final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
 
-                if (!enabled) { // no folder hierarchy
+                if (!K9.folderHierarchy()) { // no folder hierarchy
                     newValues.ensureCapacity(mFolders.size());
 
                     for (final FolderInfoHolder value : mFolders)
