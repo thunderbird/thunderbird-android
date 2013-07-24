@@ -359,7 +359,7 @@ public class ImapStore extends Store {
     private AuthType mAuthType;
     private volatile String mPathPrefix;
     private volatile String mCombinedPrefix = null;
-    private volatile String mPathDelimeter = null;
+    private volatile String mPathDelimiter = null;
 
     public class StoreImapSettings implements ImapSettings {
 
@@ -409,13 +409,13 @@ public class ImapStore extends Store {
         }
 
         @Override
-        public String getPathDelimeter() {
-            return mPathDelimeter;
+        public String getPathDelimiter() {
+            return mPathDelimiter;
         }
 
         @Override
-        public void setPathDelimeter(String delimeter) {
-            mPathDelimeter = delimeter;
+        public void setPathDelimiter(String delimiter) {
+            mPathDelimiter = delimiter;
         }
 
         @Override
@@ -505,7 +505,7 @@ public class ImapStore extends Store {
         if (mCombinedPrefix == null) {
             if (mPathPrefix != null) {
                 String tmpPrefix = mPathPrefix.trim();
-                String tmpDelim = (mPathDelimeter != null ? mPathDelimeter.trim() : "");
+                String tmpDelim = (mPathDelimiter != null ? mPathDelimiter.trim() : "");
                 if (tmpPrefix.endsWith(tmpDelim)) {
                     mCombinedPrefix = tmpPrefix;
                 } else if (tmpPrefix.length() > 0) {
@@ -582,8 +582,8 @@ public class ImapStore extends Store {
 
                 String folder = decodedFolderName;
 
-                if (mPathDelimeter == null) {
-                    mPathDelimeter = response.getString(2);
+                if (mPathDelimiter == null) {
+                    mPathDelimiter = response.getString(2);
                     mCombinedPrefix = null;
                 }
 
@@ -669,8 +669,8 @@ public class ImapStore extends Store {
                     continue;
                 }
 
-                if (mPathDelimeter == null) {
-                    mPathDelimeter = response.getString(2);
+                if (mPathDelimiter == null) {
+                    mPathDelimiter = response.getString(2);
                     mCombinedPrefix = null;
                 }
 
@@ -2595,10 +2595,10 @@ public class ImapStore extends Store {
                                             Log.d(K9.LOG_TAG, "Got first personal namespaces: " + firstNamespace);
                                         bracketed = (ImapList)firstNamespace;
                                         mSettings.setPathPrefix(bracketed.getString(0));
-                                        mSettings.setPathDelimeter(bracketed.getString(1));
+                                        mSettings.setPathDelimiter(bracketed.getString(1));
                                         mSettings.setCombinedPrefix(null);
                                         if (K9.DEBUG)
-                                            Log.d(K9.LOG_TAG, "Got path '" + mSettings.getPathPrefix() + "' and separator '" + mSettings.getPathDelimeter() + "'");
+                                            Log.d(K9.LOG_TAG, "Got path '" + mSettings.getPathPrefix() + "' and separator '" + mSettings.getPathDelimiter() + "'");
                                     }
                                 }
                             }
@@ -2609,20 +2609,20 @@ public class ImapStore extends Store {
                         mSettings.setPathPrefix("");
                     }
                 }
-                if (mSettings.getPathDelimeter() == null) {
+                if (mSettings.getPathDelimiter() == null) {
                     try {
                         List<ImapResponse> nameResponses =
                             executeSimpleCommand(String.format("LIST \"\" \"\""));
                         for (ImapResponse response : nameResponses) {
                             if (ImapResponseParser.equalsIgnoreCase(response.get(0), "LIST")) {
-                                mSettings.setPathDelimeter(response.getString(2));
+                                mSettings.setPathDelimiter(response.getString(2));
                                 mSettings.setCombinedPrefix(null);
                                 if (K9.DEBUG)
-                                    Log.d(K9.LOG_TAG, "Got path delimeter '" + mSettings.getPathDelimeter() + "' for " + getLogId());
+                                    Log.d(K9.LOG_TAG, "Got path delimiter '" + mSettings.getPathDelimiter() + "' for " + getLogId());
                             }
                         }
                     } catch (Exception e) {
-                        Log.e(K9.LOG_TAG, "Unable to get path delimeter using LIST", e);
+                        Log.e(K9.LOG_TAG, "Unable to get path delimiter using LIST", e);
                     }
                 }
 
