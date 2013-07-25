@@ -216,8 +216,8 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
     <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
 
-    <string name="notification_bg_sync_ticker">Levelek ellenörzése: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
-    <string name="notification_bg_sync_title">Levelek ellenörzése</string>
+    <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
     <string name="notification_bg_send_ticker">Küldés a <xliff:g id="account">%s</xliff:g> fiókkal</string>
     <string name="notification_bg_send_title">Levél küldése</string>
     <string name="notification_bg_title_separator">:</string>
@@ -315,7 +315,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
     <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
 
-    <string name="global_settings_messageview_fixedwidth_label">Fix szélleségű betűk</string>
+    <string name="global_settings_messageview_fixedwidth_label">Fix szélességű betűk</string>
     <string name="global_settings_messageview_fixedwidth_summary">Fix szélességű betűtípus használata a sima szöveges üzeneteknél</string>
     <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
     <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
@@ -337,9 +337,9 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="global_settings_notification_hide_subject_always">Mindig</string>
 
     <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
+    <string name="global_settings_notification_quick_delete_never">Soha</string>
     <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
+    <string name="global_settings_notification_quick_delete_always">Mindig</string>
     <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
 
     <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
@@ -358,7 +358,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="quiet_time_ends">Csendes mód vége</string>
 
     <string name="account_setup_basics_title">Új fiók létrehozása</string>
-    <string name="account_setup_basics_email_hint">Email cím</string>
+    <string name="account_setup_basics_email_hint">E-mail cím</string>
     <string name="account_setup_basics_password_hint">Jelszó</string>
     <string name="account_setup_basics_manual_setup_action">Kézi beállítás</string>
 
@@ -541,7 +541,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="account_settings_message_format_label">Levél formátuma</string>
     <string name="account_settings_message_format_text">Sima szöveg (képek és formázás nélkül)</string>
     <string name="account_settings_message_format_html">HTML (képekkel és formázással)</string>
-    <!-- NEW: <string name="account_settings_message_format_auto">Automatic</string>-->
+    <string name="account_settings_message_format_auto">Automatikus</string>
 
     <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
 
@@ -794,7 +794,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="folder_list_filter_hint">mappa neve</string>
 
     <string name="folder_list_display_mode_label">Mappák megjelenítése</string>
-    <string name="folder_list_display_mode_all">Minen mappa</string>
+    <string name="folder_list_display_mode_all">Minden mappa</string>
     <string name="folder_list_display_mode_first_class">Csak az Elsődleges</string>
     <string name="folder_list_display_mode_first_and_second_class">Első és Másodlagos</string>
     <string name="folder_list_display_mode_not_second_class">Mind, kivéve a Másodlagost</string>
