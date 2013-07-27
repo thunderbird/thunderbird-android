@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="17029"
-    android:versionName="4.328" package="com.fsck.k9"
+    android:versionCode="18008"
+    android:versionName="4.508" package="com.fsck.k9"
     >
     <uses-sdk
-       android:minSdkVersion="7"
-       android:targetSdkVersion="15"
-       />
+       android:minSdkVersion="8"
+       android:targetSdkVersion="17"
+    />
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
@@ -59,7 +59,7 @@
         android:label="@string/app_name"
         android:name="K9"
         android:allowTaskReparenting="false"
-        android:theme="@style/Theme.K9.Light"
+        android:theme="@style/Theme.K9.Startup"
         >
         <meta-data android:name="android.app.default_searchable"
                    android:value=".activity.Search" />
@@ -395,6 +395,7 @@ otherwise it would make K-9 start at the wrong time
             android:multiprocess="true"
             android:grantUriPermissions="true"
             android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"
+            android:exported="true"
             />
         <provider
             android:name=".provider.MessageProvider"
@@ -403,6 +404,7 @@ otherwise it would make K-9 start at the wrong time
             android:grantUriPermissions="true"
             android:readPermission="com.fsck.k9.permission.READ_MESSAGES"
             android:writePermission="com.fsck.k9.permission.DELETE_MESSAGES"
+            android:exported="true"
             />
         <provider
             android:name=".provider.EmailProvider"
@@ -425,9 +427,6 @@ otherwise it would make K-9 start at the wrong time
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.AccountList">
         </activity>
         <activity
             android:name=".activity.UpgradeDatabases"

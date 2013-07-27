@@ -42,8 +42,14 @@ public class SqlQueryBuilder {
                 case SEARCHABLE: {
                     switch (account.getSearchableFolders()) {
                         case ALL: {
-                            // Dummy condition, always select
-                            query.append("1");
+                            // Create temporary LocalSearch object so we can use...
+                            LocalSearch tempSearch = new LocalSearch();
+                            // ...the helper methods in Account to create the necessary conditions
+                            // to exclude "unwanted" folders.
+                            account.excludeUnwantedFolders(tempSearch);
+
+                            buildWhereClauseInternal(account, tempSearch.getConditions(), query,
+                                    selectionArgs);
                             break;
                         }
                         case DISPLAYABLE: {

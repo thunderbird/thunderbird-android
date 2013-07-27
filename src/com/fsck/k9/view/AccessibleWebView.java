@@ -68,10 +68,8 @@ public class AccessibleWebView extends TextView {
         return mDummyWebView.getSettings();
     }
 
-    public void loadDataWithBaseURL(String baseUrl, String data, String mimeType, String encoding,
-                                    String historyUrl) {
-        mHtmlSource = data;
-        this.setText(Html.fromHtml(mHtmlSource, null, null));
+    public void setText(String text) {
+        this.setText(Html.fromHtml(text, null, null));
 
         // Let everyone know that loading has finished.
         if (mListeners != null) {

@@ -53,8 +53,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
@@ -68,7 +66,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -156,6 +153,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     private static final String[] PROJECTION = Utility.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
+
 
 
     public static MessageListFragment newInstance(LocalSearch search, boolean isThreadDisplay, boolean threadedList) {
@@ -303,7 +301,32 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             String subject1 = cursor1.getString(SUBJECT_COLUMN);
             String subject2 = cursor2.getString(SUBJECT_COLUMN);
 
+            if (subject1 == null) {
+                return (subject2 == null) ? 0 : -1;
+            } else if (subject2 == null) {
+                return 1;
+            }
+
             return subject1.compareToIgnoreCase(subject2);
+        }
+    }
+
+    public static class SenderComparator implements Comparator<Cursor> {
+
+        @Override
+        public int compare(Cursor cursor1, Cursor cursor2) {
+            String sender1 = getSenderAddressFromCursor(cursor1);
+            String sender2 = getSenderAddressFromCursor(cursor2);
+
+            if (sender1 == null && sender2 == null) {
+                return 0;
+            } else if (sender1 == null) {
+                return 1;
+            } else if (sender2 == null) {
+                return -1;
+            } else {
+                return sender1.compareToIgnoreCase(sender2);
+            }
         }
     }
 
@@ -335,6 +358,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         map.put(SortType.SORT_ARRIVAL, new ArrivalComparator());
         map.put(SortType.SORT_FLAGGED, new FlaggedComparator());
         map.put(SortType.SORT_SUBJECT, new SubjectComparator());
+        map.put(SortType.SORT_SENDER, new SenderComparator());
         map.put(SortType.SORT_UNREAD, new UnreadComparator());
 
         // make it immutable to prevent accidental alteration (content is immutable already)
@@ -378,6 +402,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private LocalSearch mSearch = null;
     private boolean mSingleAccountMode;
     private boolean mSingleFolderMode;
+    private boolean mAllAccounts;
 
     private MessageListHandler mHandler = new MessageListHandler();
 
@@ -430,10 +455,23 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mInitialized = false;
 
     private ContactPictureLoader mContactsPictureLoader;
+    private float mScreenDensity;
 
     private LocalBroadcastManager mLocalBroadcastManager;
     private BroadcastReceiver mCacheBroadcastReceiver;
     private IntentFilter mCacheIntentFilter;
+
+    /**
+     * Stores the unique ID of the message the context menu was opened for.
+     *
+     * We have to save this because the message list might change between the time the menu was
+     * opened and when the user clicks on a menu item. When this happens the 'adapter position' that
+     * is accessible via the {@code ContextMenu} object might correspond to another list item and we
+     * would end up using/modifying the wrong message.
+     *
+     * The value of this field is {@code 0} when no context menu is currently open.
+     */
+    private long mContextMenuUniqueId = 0;
 
 
     /**
@@ -700,6 +738,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+        if (cursor == null) {
+            return;
+        }
+
         if (mSelectedCount > 0) {
             toggleMessageSelect(position);
         } else {
@@ -738,6 +780,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         Context appContext = getActivity().getApplicationContext();
 
+        mScreenDensity = appContext.getResources().getDisplayMetrics().density;
         mPreferences = Preferences.getPreferences(appContext);
         mController = MessagingController.getInstance(getActivity().getApplication());
 
@@ -895,17 +938,24 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mCurrentFolder = getFolder(mFolderName, mAccount);
         }
 
+        mAllAccounts = false;
         if (mSingleAccountMode) {
             mAccountUuids = new String[] { mAccount.getUuid() };
         } else {
             if (accountUuids.length == 1 &&
                     accountUuids[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
+                mAllAccounts = true;
 
                 Account[] accounts = mPreferences.getAccounts();
 
                 mAccountUuids = new String[accounts.length];
                 for (int i = 0, len = accounts.length; i < len; i++) {
                     mAccountUuids[i] = accounts[i].getUuid();
+                }
+
+                if (mAccountUuids.length == 1) {
+                    mSingleAccountMode = true;
+                    mAccount = accounts[0];
                 }
             } else {
                 mAccountUuids = accountUuids;
@@ -1005,12 +1055,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mSenderAboveSubject = K9.messageListSenderAboveSubject();
 
         if (!mLoaderJustInitialized) {
-            // Refresh the message list
-            LoaderManager loaderManager = getLoaderManager();
-            for (int i = 0; i < mAccountUuids.length; i++) {
-                loaderManager.restartLoader(i, null, this);
-                mCursorValid[i] = false;
-            }
+            restartLoader();
         } else {
             mLoaderJustInitialized = false;
         }
@@ -1053,6 +1098,19 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         updateTitle();
     }
 
+    private void restartLoader() {
+        if (mCursorValid == null) {
+            return;
+        }
+
+        // Refresh the message list
+        LoaderManager loaderManager = getLoaderManager();
+        for (int i = 0; i < mAccountUuids.length; i++) {
+            loaderManager.restartLoader(i, null, this);
+            mCursorValid[i] = false;
+        }
+    }
+
     private void initializePullToRefresh(LayoutInflater inflater, View layout) {
         mPullToRefreshView = (PullToRefreshListView) layout.findViewById(R.id.message_list);
 
@@ -1060,8 +1118,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         View loadingView = inflater.inflate(R.layout.message_list_loading, null);
         mPullToRefreshView.setEmptyView(loadingView);
 
-        if (isPullToRefreshAllowed()) {
-            if (mSearch.isManualSearch() && mAccount.allowRemoteSearch()) {
+        if (isCheckMailSupported()) {
+            if (mSearch.isManualSearch() && mSingleAccountMode && mAccount.allowRemoteSearch()) {
                 // "Pull to search server"
                 mPullToRefreshView.setOnRefreshListener(
                         new PullToRefreshBase.OnRefreshListener<ListView>() {
@@ -1090,13 +1148,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         // Disable pull-to-refresh until the message list has been loaded
         setPullToRefreshEnabled(false);
-    }
-
-    /**
-     * Returns whether or not pull-to-refresh is allowed in this message list.
-     */
-    private boolean isPullToRefreshAllowed() {
-        return mSingleFolderMode;
     }
 
     /**
@@ -1283,9 +1334,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
                 mActiveMessages = null; // don't need it any more
 
-                // We currently only support copy/move in 'single account mode', so it's okay to
-                // use mAccount.
-                mAccount.setLastSelectedFolderName(destFolderName);
+                if (messages.size() > 0) {
+                    Account account = messages.get(0).getFolder().getAccount();
+                    account.setLastSelectedFolderName(destFolderName);
+                }
 
                 switch (requestCode) {
                 case ACTIVITY_CHOOSE_FOLDER_MOVE:
@@ -1359,10 +1411,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             changeSort(SortType.SORT_SUBJECT);
             return true;
         }
-//        case R.id.set_sort_sender: {
-//            changeSort(SortType.SORT_SENDER);
-//            return true;
-//        }
+        case R.id.set_sort_sender: {
+            changeSort(SortType.SORT_SENDER);
+            return true;
+        }
         case R.id.set_sort_flag: {
             changeSort(SortType.SORT_FLAGGED);
             return true;
@@ -1410,8 +1462,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        int adapterPosition = listViewToAdapterPosition(info.position);
+        if (mContextMenuUniqueId == 0) {
+            return false;
+        }
+
+        int adapterPosition = getPositionForUniqueId(mContextMenuUniqueId);
+        if (adapterPosition == AdapterView.INVALID_POSITION) {
+            return false;
+        }
 
         switch (item.getItemId()) {
             case R.id.reply: {
@@ -1488,11 +1546,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
         }
 
+        mContextMenuUniqueId = 0;
         return true;
     }
 
 
-    private String getSenderAddressFromCursor(Cursor cursor) {
+    private static String getSenderAddressFromCursor(Cursor cursor) {
         String fromList = cursor.getString(SENDER_LIST_COLUMN);
         Address[] fromAddrs = Address.unpack(fromList);
         return (fromAddrs.length > 0) ? fromAddrs[0].getAddress() : null;
@@ -1511,6 +1570,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
 
+        mContextMenuUniqueId = cursor.getLong(mUniqueIdColumn);
         Account account = getAccountFromCursor(cursor);
 
         String subject = cursor.getString(SUBJECT_COLUMN);
@@ -1693,14 +1753,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         @Override
-        public void searchStats(AccountStats stats) {
-            mUnreadMessageCount = stats.unreadMessageCount;
-            super.searchStats(stats);
-        }
-
-        @Override
         public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
-            if (updateForMe(account, folder)) {
+            if (isSingleAccountMode() && isSingleFolderMode() && mAccount.equals(account) &&
+                    mFolderName.equals(folder)) {
                 mUnreadMessageCount = unreadMessageCount;
             }
             super.folderStatusChanged(account, folder, unreadMessageCount);
@@ -1711,9 +1766,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 return false;
             }
 
-            // FIXME: There could be more than one account and one folder
+            if (!Utility.arrayContains(mAccountUuids, account.getUuid())) {
+                return false;
+            }
 
-            return ((account.equals(mAccount) && folder.equals(mFolderName)));
+            List<String> folderNames = mSearch.getFolderNames();
+            return (folderNames.size() == 0 || folderNames.contains(folder));
         }
     }
 
@@ -1751,7 +1809,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             MessageViewHolder holder = new MessageViewHolder();
             holder.date = (TextView) view.findViewById(R.id.date);
             holder.chip = view.findViewById(R.id.chip);
-            holder.preview = (TextView) view.findViewById(R.id.preview);
+            if (mPreviewLines == 0 && mContactsPictureLoader == null) {
+                view.findViewById(R.id.preview).setVisibility(View.GONE);
+                holder.preview = (TextView) view.findViewById(R.id.sender_compact);
+                ViewGroup.LayoutParams params = holder.chip.getLayoutParams();
+                params.height=(int) (16.0f * mScreenDensity);
+                params.width=(int) (16.0f * mScreenDensity);
+
+            } else {
+                view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
+                holder.preview = (TextView) view.findViewById(R.id.preview);
+            }
 
             QuickContactBadge contactBadge =
                     (QuickContactBadge) view.findViewById(R.id.contact_badge);
@@ -1780,12 +1848,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
 
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
-            if (mCheckboxes) {
-                holder.selected.setOnCheckedChangeListener(holder);
-                holder.selected.setVisibility(View.VISIBLE);
-            } else {
-                holder.selected.setVisibility(View.GONE);
-            }
+            holder.selected.setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
+
+            view.findViewById(R.id.chip_wrapper).setOnClickListener(holder);
 
             view.setTag(holder);
 
@@ -1810,15 +1875,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             CharSequence displayName = mMessageHelper.getDisplayName(account, fromAddrs, toAddrs);
             CharSequence displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN));
 
-            String counterpartyAddress = null;
+            Address counterpartyAddress = null;
             if (fromMe) {
                 if (toAddrs.length > 0) {
-                    counterpartyAddress = toAddrs[0].getAddress();
+                    counterpartyAddress = toAddrs[0];
                 } else if (ccAddrs.length > 0) {
-                    counterpartyAddress = ccAddrs[0].getAddress();
+                    counterpartyAddress = ccAddrs[0];
                 }
             } else if (fromAddrs.length > 0) {
-                counterpartyAddress = fromAddrs[0].getAddress();
+                counterpartyAddress = fromAddrs[0];
             }
 
             int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
@@ -1853,20 +1918,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             }
 
             if (mCheckboxes) {
-                // Set holder.position to -1 to avoid MessageViewHolder.onCheckedChanged() toggling
-                // the selection state when setChecked() is called below.
-                holder.position = -1;
-
-                // Only set the UI state, don't actually toggle the message selection.
                 holder.selected.setChecked(selected);
-
-                // Now save the position so MessageViewHolder.onCheckedChanged() will know what
-                // message to (de)select.
-                holder.position = cursor.getPosition();
             }
+            holder.position = cursor.getPosition();
 
             if (holder.contactBadge != null) {
-                holder.contactBadge.assignContactFromEmail(counterpartyAddress, true);
+                holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                 if (counterpartyAddress != null) {
                     /*
                      * At least in Android 2.2 a different background + padding is used when no
@@ -1998,7 +2055,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
     }
 
-    class MessageViewHolder implements OnCheckedChangeListener {
+    class MessageViewHolder implements View.OnClickListener {
         public TextView subject;
         public TextView preview;
         public TextView from;
@@ -2011,7 +2068,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public QuickContactBadge contactBadge;
 
         @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        public void onClick(View view) {
             if (position != -1) {
                 toggleMessageSelectWithAdapterPosition(position);
             }
@@ -2517,18 +2574,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * @param messages
      *         The list of messages to copy or move. Never {@code null}.
      * @param destination
-     *         The name of the destination folder. Never {@code null}.
+     *         The name of the destination folder. Never {@code null} or {@link K9#FOLDER_NONE}.
      * @param operation
      *         Specifies what operation to perform. Never {@code null}.
      */
     private void copyOrMove(List<Message> messages, final String destination,
             final FolderOperation operation) {
 
-        if (K9.FOLDER_NONE.equalsIgnoreCase(destination) || !mSingleAccountMode) {
-            return;
-        }
-
-        Account account = mAccount;
         Map<String, List<Message>> folderMap = new HashMap<String, List<Message>>();
 
         for (Message message : messages) {
@@ -2561,6 +2613,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         for (String folderName : folderMap.keySet()) {
             List<Message> outMessages = folderMap.get(folderName);
+            Account account = outMessages.get(0).getFolder().getAccount();
 
             if (operation == FolderOperation.MOVE) {
                 if (mThreadedList) {
@@ -2822,8 +2875,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     public void checkMail() {
-        mController.synchronizeMailbox(mAccount, mFolderName, mListener, null);
-        mController.sendPendingMessages(mAccount, mListener);
+        if (isSingleAccountMode() && isSingleFolderMode()) {
+            mController.synchronizeMailbox(mAccount, mFolderName, mListener, null);
+            mController.sendPendingMessages(mAccount, mListener);
+        } else if (mAllAccounts) {
+            mController.checkMail(mContext, null, true, true, mListener);
+        } else {
+            for (String accountUuid : mAccountUuids) {
+                Account account = mPreferences.getAccount(accountUuid);
+                mController.checkMail(mContext, account, true, true, mListener);
+            }
+        }
     }
 
     /**
@@ -3006,6 +3068,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         return listViewToAdapterPosition(listViewPosition);
     }
 
+    private int getPositionForUniqueId(long uniqueId) {
+        for (int position = 0, end = mAdapter.getCount(); position < end; position++) {
+            Cursor cursor = (Cursor) mAdapter.getItem(position);
+            if (cursor.getLong(mUniqueIdColumn) == uniqueId) {
+                return position;
+            }
+        }
+
+        return AdapterView.INVALID_POSITION;
+    }
+
     private Message getMessageAtPosition(int adapterPosition) {
         if (adapterPosition == AdapterView.INVALID_POSITION) {
             return null;
@@ -3034,7 +3107,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             long uniqueId = cursor.getLong(mUniqueIdColumn);
 
             if (mSelected.contains(uniqueId)) {
-                messages.add(getMessageAtPosition(position));
+                Message message = getMessageAtPosition(position);
+                if (message != null) {
+                    messages.add(message);
+                }
             }
         }
 
@@ -3107,7 +3183,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         if (!mController.isMoveCapable(mAccount)) {
             // For POP3 accounts only the Inbox is a remote folder.
-            return (mFolderName != null && !mFolderName.equals(mAccount.getInboxFolderName()));
+            return (mFolderName != null && mFolderName.equals(mAccount.getInboxFolderName()));
         }
 
         return true;
@@ -3185,7 +3261,19 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<String>();
         if (needConditions) {
+            boolean selectActive = mActiveMessage != null && mActiveMessage.accountUuid.equals(accountUuid);
+
+            if (selectActive) {
+                query.append("(" + MessageColumns.UID + " = ? AND " + SpecialColumns.FOLDER_NAME + " = ?) OR (");
+                queryArgs.add(mActiveMessage.uid);
+                queryArgs.add(mActiveMessage.folderName);
+            }
+
             SqlQueryBuilder.buildWhereClause(account, mSearch.getConditions(), query, queryArgs);
+
+            if (selectActive) {
+                query.append(')');
+            }
         }
 
         String selection = query.toString();
@@ -3223,11 +3311,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 sortColumn = "(" + MessageColumns.FLAGGED + " != 1)";
                 break;
             }
-//            case SORT_SENDER: {
-//                //FIXME
-//                sortColumn = MessageColumns.SENDER_LIST;
-//                break;
-//            }
+            case SORT_SENDER: {
+                //FIXME
+                sortColumn = MessageColumns.SENDER_LIST;
+                break;
+            }
             case SORT_SUBJECT: {
                 sortColumn = MessageColumns.SUBJECT + " COLLATE NOCASE";
                 break;
@@ -3266,7 +3354,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mPullToRefreshView.setEmptyView(null);
 
         // Enable pull-to-refresh if allowed
-        if (isPullToRefreshAllowed()) {
+        if (isCheckMailSupported()) {
             setPullToRefreshEnabled(true);
         }
 
@@ -3286,7 +3374,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (mIsThreadDisplay) {
             if (cursor.moveToFirst()) {
                 mTitle = cursor.getString(SUBJECT_COLUMN);
-                mTitle = Utility.stripSubject(mTitle);
+                if (!StringUtils.isNullOrEmpty(mTitle)) {
+                    mTitle = Utility.stripSubject(mTitle);
+                }
                 if (StringUtils.isNullOrEmpty(mTitle)) {
                    mTitle = getString(R.string.general_no_subject);
                 }
@@ -3297,6 +3387,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         cleanupSelected(cursor);
+        updateContextMenu(cursor);
 
         mAdapter.swapCursor(cursor);
 
@@ -3323,6 +3414,28 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         return loadFinished;
+    }
+
+    /**
+     * Close the context menu when the message it was opened for is no longer in the message list.
+     */
+    private void updateContextMenu(Cursor cursor) {
+        if (mContextMenuUniqueId == 0) {
+            return;
+        }
+
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            long uniqueId = cursor.getLong(mUniqueIdColumn);
+            if (uniqueId == mContextMenuUniqueId) {
+                return;
+            }
+        }
+
+        mContextMenuUniqueId = 0;
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.closeContextMenu();
+        }
     }
 
     private void cleanupSelected(Cursor cursor) {
@@ -3414,6 +3527,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      */
     public void setActiveMessage(MessageReference messageReference) {
         mActiveMessage = messageReference;
+
+        // Reload message list with modified query that always includes the active message
+        if (isAdded()) {
+            restartLoader();
+        }
+
+        // Redraw list immediately
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }
@@ -3429,5 +3549,20 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
     public boolean isInitialized() {
         return mInitialized;
+    }
+
+    public boolean isMarkAllAsReadSupported() {
+        return (isSingleAccountMode() && isSingleFolderMode());
+    }
+
+    public void markAllAsRead() {
+        if (isMarkAllAsReadSupported()) {
+            mController.markAllMessagesRead(mAccount, mFolderName);
+        }
+    }
+
+    public boolean isCheckMailSupported() {
+        return (mAllAccounts || !isSingleAccountMode() || !isSingleFolderMode() ||
+                isRemoteFolder());
     }
 }

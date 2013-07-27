@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     When removing strings from the main file, please cleanup the translations.
+     The script tools/sync_translation.py will get rid of any surplus strings.
+-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
-
-    <!--
-         When removing strings from the main file, please cleanup the translations.
-
-         This doesn't work on multiline strings, nor strings with the NEW tag.
-         find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
-     -->
 
     <!-- This should make it easier for forks to change the branding -->
 
@@ -219,7 +216,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>
-    <string name="notification_action_read">Read</string>
+    <string name="notification_action_read">Mark Read</string>
     <string name="notification_action_delete">Delete</string>
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
@@ -269,7 +266,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_compose_quote_header_from">From:</string>
     <string name="message_compose_quote_header_to">To:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
@@ -325,6 +322,8 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
+    <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>
+    <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>
     <string name="global_settings_messageview_return_to_list_label">Return to list after delete</string>
     <string name="global_settings_messageview_return_to_list_summary">Return to message list after message deletion</string>
     <string name="global_settings_messageview_show_next_label">Show next message after delete</string>
@@ -396,10 +395,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_incoming_security_label">Security</string>
     <string name="account_setup_incoming_auth_type_label">Authentication</string>
     <string name="account_setup_incoming_security_none_label">None</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (if available)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (always)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (if available)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (always)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (if available)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (always)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (if available)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (always)</string>
 
     <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
     <string name="account_setup_incoming_delete_policy_never_label">Do not delete on server</string>
@@ -505,7 +504,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_setup_failed_dlg_title">Setup could not finish</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Cannot safely connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">The server presented an invalid SSL certificate. Sometimes, this is because of a server misconfiguration. Sometimes it is because someone is trying to attack you or your mail server. If you\'re not sure what\'s up, click Reject and contact the folks who manage your mail server.\n\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
     <string name="account_setup_failed_dlg_server_message_fmt">Cannot connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">Edit details</string>
     <string name="account_setup_failed_dlg_continue_action">Continue</string>
@@ -550,7 +549,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_message_format_auto">Automatic</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>
-    <string name="account_settings_always_show_cc_bcc_summary"></string>
 
     <string name="account_settings_message_read_receipt_label">Read receipt</string>
     <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
@@ -735,6 +733,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="sort_latest_first">Latest messages first</string>
     <string name="sort_subject_alpha">Subject alphabetical</string>
     <string name="sort_subject_re_alpha">Subject reverse alphabetical</string>
+    <string name="sort_sender_alpha">Sender alphabetical</string>
+    <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>
     <string name="sort_flagged_first">Starred messages first</string>
     <string name="sort_flagged_last">Unstarred messages first</string>
     <string name="sort_unread_first">Unread messages first</string>
@@ -746,6 +746,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="sort_by_date">Date</string>
     <string name="sort_by_arrival">Arrival</string>
     <string name="sort_by_subject">Subject</string>
+    <string name="sort_by_sender">Sender</string>
     <string name="sort_by_flag">Star</string>
     <string name="sort_by_unread">Read/unread</string>
     <string name="sort_by_attach">Attachments</string>
@@ -861,12 +862,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="gestures_summary">Enable gesture control</string>
 
     <string name="volume_navigation_title">Volume key navigation</string>
-    <string name="volume_navigation_summary"></string>
     <string name="volume_navigation_message">In message views</string>
     <string name="volume_navigation_list">In list views</string>
 
     <string name="start_integrated_inbox_title">Start in Unified Inbox</string>
-    <string name="start_integrated_inbox_summary"></string>
 
     <string name="measure_accounts_title">Show account size</string>
     <string name="measure_accounts_summary">Turn off for faster display</string>
@@ -980,6 +979,18 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="dialog_confirm_delete_title">Confirm deletion</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
@@ -991,17 +1002,6 @@ Please submit bug reports, contribute new features and ask questions at
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Do you really want to move this message to the spam folder?</item>
         <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Yes</string>
     <string name="dialog_confirm_spam_cancel_button">No</string>
@@ -1144,10 +1144,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_show_contact_picture_label">Show contact pictures</string>
     <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>
 
-    <string name="last_refresh_time_format">Last refreshed <xliff:g id="formatted_time">%s</xliff:g></string>
-    <string name="last_refresh_time_format_with_push">Last refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>
+    <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>
     <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>
 
     <string name="account_setup_password_not_stored">Don\'t store my password</string>
     <string name="forget_session_pwds">Forget session passwords</string>
+
+    <string name="mark_all_as_read">Mark all as read</string>
 </resources>

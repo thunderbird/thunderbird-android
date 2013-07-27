@@ -126,39 +126,28 @@ public class HtmlConverter {
 
     private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
 
-    public static final String getHtmlHeader() {
-        return "<html><head/><body>";
-    }
-
-    public static final String getHtmlFooter() {
-        return "</body></html>";
-    }
-
     /**
      * Naively convert a text string into an HTML document.
      *
      * <p>
      * This method avoids using regular expressions on the entire message body to save memory.
      * </p>
+     * <p>
+     * No HTML headers or footers are added to the result.  Headers and footers
+     * are added at display time in
+     * {@link com.fsck.k9.view#MessageWebView.setText(String) MessageWebView.setText()}
+     * </p>
      *
      * @param text
      *         Plain text string.
-     * @param useHtmlTag
-     *         If {@code true} this method adds headers and footers to create a proper HTML
-     *         document.
-     *
      * @return HTML string.
      */
-    private static String simpleTextToHtml(String text, boolean useHtmlTag) {
+    private static String simpleTextToHtml(String text) {
         // Encode HTML entities to make sure we don't display something evil.
         text = TextUtils.htmlEncode(text);
 
         StringReader reader = new StringReader(text);
         StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-
-        if (useHtmlTag) {
-            buff.append(getHtmlHeader());
-        }
 
         buff.append(htmlifyMessageHeader());
 
@@ -184,10 +173,6 @@ public class HtmlConverter {
 
         buff.append(htmlifyMessageFooter());
 
-        if (useHtmlTag) {
-            buff.append(getHtmlFooter());
-        }
-
         return buff.toString();
     }
 
@@ -201,86 +186,79 @@ public class HtmlConverter {
      * Convert a text string into an HTML document.
      *
      * <p>
-     * Attempts to do smart replacement for large documents to prevent OOM errors. This method
-     * optionally adds headers and footers to create a proper HTML document. To convert to a
-     * fragment, use {@link #textToHtmlFragment(String)}.
+     * Attempts to do smart replacement for large documents to prevent OOM
+     * errors.
+     * <p>
+     * No HTML headers or footers are added to the result.  Headers and footers
+     * are added at display time in
+     * {@link com.fsck.k9.view#MessageWebView.setText(String) MessageWebView.setText()}
+     * </p>
+     * <p>
+     * To convert to a fragment, use {@link #textToHtmlFragment(String)} .
      * </p>
      *
      * @param text
      *         Plain text string.
-     * @param useHtmlTag
-     *         If {@code true} this method adds headers and footers to create a proper HTML
-     *         document.
-     *
      * @return HTML string.
      */
-    public static String textToHtml(String text, boolean useHtmlTag) {
+    public static String textToHtml(String text) {
         // Our HTMLification code is somewhat memory intensive
         // and was causing lots of OOM errors on the market
         // if the message is big and plain text, just do
         // a trivial htmlification
         if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH) {
-            return simpleTextToHtml(text, useHtmlTag);
+            return simpleTextToHtml(text);
         }
         StringReader reader = new StringReader(text);
         StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-        boolean isStartOfLine = false;  // Are we currently at the start of a line?
+        boolean isStartOfLine = true;  // Are we currently at the start of a line?
+        int spaces = 0;
         int quoteDepth = 0; // Number of DIVs deep we are.
         int quotesThisLine = 0; // How deep we should be quoting for this line.
         try {
             int c;
             while ((c = reader.read()) != -1) {
-                switch (c) {
-                case '\n':
-                    // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
-                    // doublespaced.
-                    buff.append(HTML_NEWLINE);
-                    isStartOfLine = true;
-                    quotesThisLine = 0;
-                    break;
-                case '&':
-                    buff.append("&amp;");
-                    break;
-                case '<':
-                    buff.append("&lt;");
-                    break;
-                case '>':
-                    if (isStartOfLine) {
+                if (isStartOfLine) {
+                    switch (c) {
+                    case ' ':
+                        spaces++;
+                        break;
+                    case '>':
                         quotesThisLine++;
-                    } else {
-                        // We use a token here which can't occur in htmlified text because &gt; is valid
-                        // within links (where > is not), and linkifying links will include it if we
-                        // do it here. We'll make another pass and change this back to &gt; after
-                        // the linkification is done.
-                        buff.append("<gt>");
-                    }
-                    break;
-                case '\r':
-                    break;
-                case ' ':
-                    if (isStartOfLine) {
-                        // If we're still in the start of the line and we have spaces, don't output them, since they
-                        // may be collapsed by our div-converting magic.
+                        spaces = 0;
+                        break;
+                    case '\n':
+                        appendbq(buff, quotesThisLine, quoteDepth);
+                        quoteDepth = quotesThisLine;
+
+                        appendsp(buff, spaces);
+                        spaces = 0;
+
+                        appendchar(buff, c);
+                        isStartOfLine = true;
+                        quotesThisLine = 0;
+                        break;
+                    default:
+                        isStartOfLine = false;
+
+                        appendbq(buff, quotesThisLine, quoteDepth);
+                        quoteDepth = quotesThisLine;
+
+                        appendsp(buff, spaces);
+                        spaces = 0;
+
+                        appendchar(buff, c);
+                        isStartOfLine = false;
                         break;
                     }
-                default:
-                    if (isStartOfLine) {
-                        // Not a quote character and not a space.  Content is starting now.
-                        isStartOfLine = false;
-                        // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
-                        if (quotesThisLine > quoteDepth) {
-                            for (int i = quoteDepth; i < quotesThisLine; i++) {
-                                buff.append(HTML_BLOCKQUOTE_START.replace(HTML_BLOCKQUOTE_COLOR_TOKEN, getQuoteColor(i + 1)));
-                            }
-                        } else if (quotesThisLine < quoteDepth) {
-                            for (int i = quoteDepth; i > quotesThisLine; i--) {
-                                buff.append(HTML_BLOCKQUOTE_END);
-                            }
-                        }
-                        quoteDepth = quotesThisLine;
+                }
+                else {
+                    appendchar(buff, c);
+                    if (c == '\n') {
+                        isStartOfLine = true;
+                        quotesThisLine = 0;
                     }
-                    buff.append((char)c);
-                }//switch
+                }
             }
         } catch (IOException e) {
             //Should never happen
@@ -312,17 +290,9 @@ public class HtmlConverter {
 
         StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
 
-        if (useHtmlTag) {
-            sb.append(getHtmlHeader());
-        }
-
         sb.append(htmlifyMessageHeader());
         linkifyText(text, sb);
         sb.append(htmlifyMessageFooter());
-
-        if (useHtmlTag) {
-            sb.append(getHtmlFooter());
-        }
 
         text = sb.toString();
 
@@ -332,12 +302,61 @@ public class HtmlConverter {
         return text;
     }
 
+    private static void appendchar(StringBuilder buff, int c) {
+        switch (c) {
+        case '&':
+            buff.append("&amp;");
+            break;
+        case '<':
+            buff.append("&lt;");
+            break;
+        case '>':
+            // We use a token here which can't occur in htmlified text because &gt; is valid
+            // within links (where > is not), and linkifying links will include it if we
+            // do it here. We'll make another pass and change this back to &gt; after
+            // the linkification is done.
+            buff.append("<gt>");
+            break;
+        case '\r':
+            break;
+        case '\n':
+            // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
+            // doublespaced.
+            buff.append(HTML_NEWLINE);
+            break;
+        default:
+            buff.append((char)c);
+            break;
+        }
+    }
+
+    private static void appendsp(StringBuilder buff, int spaces) {
+        while (spaces > 0) {
+            buff.append(' ');
+            spaces--;
+        }
+    }
+
+    private static void appendbq(StringBuilder buff, int quotesThisLine, int quoteDepth) {
+        // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
+        if (quotesThisLine > quoteDepth) {
+            for (int i = quoteDepth; i < quotesThisLine; i++) {
+                buff.append(HTML_BLOCKQUOTE_START.replace(HTML_BLOCKQUOTE_COLOR_TOKEN, getQuoteColor(i + 1)));
+            }
+        } else if (quotesThisLine < quoteDepth) {
+            for (int i = quoteDepth; i > quotesThisLine; i--) {
+                buff.append(HTML_BLOCKQUOTE_END);
+            }
+        }
+    }
+
     protected static final String QUOTE_COLOR_DEFAULT = "#ccc";
     protected static final String QUOTE_COLOR_LEVEL_1 = "#729fcf";
     protected static final String QUOTE_COLOR_LEVEL_2 = "#ad7fa8";
     protected static final String QUOTE_COLOR_LEVEL_3 = "#8ae234";
     protected static final String QUOTE_COLOR_LEVEL_4 = "#fcaf3e";
     protected static final String QUOTE_COLOR_LEVEL_5 = "#e9b96e";
+    private static final String K9MAIL_CSS_CLASS = "k9mail";
 
     /**
      * Return an HTML hex color string for a given quote level.
@@ -1251,14 +1270,32 @@ public class HtmlConverter {
     }
 
     private static String htmlifyMessageHeader() {
-        final String font = K9.messageViewFixedWidthFont()
-                            ? "monospace"
-                            : "sans-serif";
-        return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; font-family: " + font + "; margin-top: 0px\">";
+        return "<pre class=\"" + K9MAIL_CSS_CLASS + "\">";
     }
 
     private static String htmlifyMessageFooter() {
         return "</pre>";
+    }
+
+    /**
+     * Dynamically generate a CSS style for {@code <pre>} elements.
+     *
+     *  <p>
+     *  The style incorporates the user's current preference
+     *  setting for the font family used for plain text messages.
+     *  </p>
+     *
+     * @return
+     *      A {@code <style>} element that can be dynamically included in the HTML
+     *      {@code <head>} element when messages are displayed.
+     */
+    public static String cssStylePre() {
+        final String font = K9.messageViewFixedWidthFont()
+                ? "monospace"
+                : "sans-serif";
+        return "<style type=\"text/css\"> pre." + K9MAIL_CSS_CLASS +
+                " {white-space: pre-wrap; word-wrap:break-word; " +
+                "font-family: " + font + "; margin-top: 0px}</style>";
     }
 
     /**

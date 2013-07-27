@@ -217,6 +217,12 @@
                 android:title="@string/settings_messageview_mobile_layout_label"
                 android:summary="@string/settings_messageview_mobile_layout_summary" />
 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messageview_autofit_width"
+                android:title="@string/global_settings_messageview_autofit_width_label"
+                android:summary="@string/global_settings_messageview_autofit_width_summary"/>
+
         </PreferenceCategory>
 
     </PreferenceScreen>
@@ -229,7 +235,6 @@
             android:persistent="false"
             android:key="start_integrated_inbox"
             android:title="@string/start_integrated_inbox_title"
-            android:summary="@string/start_integrated_inbox_summary"
             android:dependency="hide_special_accounts" />
 
         <CheckBoxPreference
@@ -242,7 +247,6 @@
             android:persistent="false"
             android:key="volumeNavigation"
             android:title="@string/volume_navigation_title"
-            android:summary="@string/volume_navigation_summary"
             android:dialogTitle="@string/volume_navigation_title"
             android:positiveButtonText="@android:string/ok"
             android:negativeButtonText="@android:string/cancel" />

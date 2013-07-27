@@ -641,7 +641,15 @@ public class MessagingController implements Runnable {
                      */
                     for (Folder localFolder : localFolders) {
                         String localFolderName = localFolder.getName();
-                        if (!account.isSpecialFolder(localFolderName) && !remoteFolderNames.contains(localFolderName)) {
+
+                        // FIXME: This is a hack used to clean up when we accidentally created the
+                        //        special placeholder folder "-NONE-".
+                        if (K9.FOLDER_NONE.equals(localFolderName)) {
+                            localFolder.delete(false);
+                        }
+
+                        if (!account.isSpecialFolder(localFolderName) &&
+                                !remoteFolderNames.contains(localFolderName)) {
                             localFolder.delete(false);
                         }
                     }
@@ -2803,10 +2811,10 @@ public class MessagingController implements Runnable {
         try {
             if (threadedList) {
                 localStore.setFlagForThreads(ids, flag, newState);
-                removeFlagFromCache(account, ids, flag);
+                removeFlagForThreadsFromCache(account, ids, flag);
             } else {
                 localStore.setFlag(ids, flag, newState);
-                removeFlagForThreadsFromCache(account, ids, flag);
+                removeFlagFromCache(account, ids, flag);
             }
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Couldn't set flags in local database", e);
@@ -2891,8 +2899,9 @@ public class MessagingController implements Runnable {
             // Update the messages in the local store
             localFolder.setFlags(messages, new Flag[] {flag}, newState);
 
+            int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folderName, localFolder.getUnreadMessageCount());
+                l.folderStatusChanged(account, folderName, unreadMessageCount);
             }
 
 
@@ -3108,7 +3117,6 @@ public class MessagingController implements Runnable {
                         return;
                     }
 
-                    markMessageAsReadOnView(account, message);
 
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
@@ -3129,6 +3137,7 @@ public class MessagingController implements Runnable {
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadMessageForViewFinished(account, folder, uid, message);
                     }
+                    markMessageAsReadOnView(account, message);
 
                 } catch (Exception e) {
                     for (MessagingListener l : getListeners(listener)) {
@@ -3158,9 +3167,10 @@ public class MessagingController implements Runnable {
             throws MessagingException {
 
         if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
-            message.setFlag(Flag.SEEN, true);
-            setFlagSynchronous(account, Collections.singletonList(Long.valueOf(message.getId())),
-                    Flag.SEEN, true, false);
+            List<Long> messageIds = Collections.singletonList(message.getId());
+            setFlag(account, messageIds, Flag.SEEN, true);
+
+            ((LocalMessage) message).setFlagInternal(Flag.SEEN, true);
         }
     }
 
@@ -4812,15 +4822,12 @@ public class MessagingController implements Runnable {
         final CharSequence subject = getMessageSubject(context, message);
         CharSequence summary = buildMessageSummary(context, sender, subject);
 
-        // If privacy mode active and keyguard active
-        // OR
-        // GlobalPreference is ALWAYS hide subject
-        // OR
-        // If we could not set a per-message notification, revert to a default message
-        if ((K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED &&
-                    keyguardService.inKeyguardRestrictedInputMode()) ||
+        boolean privacyModeEnabled =
                 (K9.getNotificationHideSubject() == NotificationHideSubject.ALWAYS) ||
-                summary.length() == 0) {
+                (K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED &&
+                keyguardService.inKeyguardRestrictedInputMode());
+
+        if (privacyModeEnabled || summary.length() == 0) {
             summary = context.getString(R.string.notification_new_title);
         }
 
@@ -4845,7 +4852,7 @@ public class MessagingController implements Runnable {
                 account.getDescription() : account.getEmail();
         final ArrayList<MessageReference> allRefs = data.getAllMessageRefs();
 
-        if (platformSupportsExtendedNotifications()) {
+        if (platformSupportsExtendedNotifications() && !privacyModeEnabled) {
             if (newMessages > 1) {
                 // multiple messages pending, show inbox style
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
@@ -4939,7 +4946,8 @@ public class MessagingController implements Runnable {
         }
 
         builder.setContentIntent(stack.getPendingIntent(
-                account.getAccountNumber(), PendingIntent.FLAG_UPDATE_CURRENT));
+                account.getAccountNumber(),
+                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT));
         builder.setDeleteIntent(NotificationActionService.getAcknowledgeIntent(context, account));
 
         // Only ring or vibrate if we have not done so already on this account and fetch
@@ -4962,26 +4970,32 @@ public class MessagingController implements Runnable {
         notifMgr.notify(account.getAccountNumber(), builder.build());
     }
 
-    private TaskStackBuilder buildFolderListBackStack(Context context, Account account) {
+    private TaskStackBuilder buildAccountsBackStack(Context context) {
         TaskStackBuilder stack = TaskStackBuilder.create(context);
-        stack.addNextIntent(new Intent(context, Accounts.class).putExtra(Accounts.EXTRA_STARTUP, false));
+        if (!skipAccountsInBackStack(context)) {
+            stack.addNextIntent(new Intent(context, Accounts.class).putExtra(Accounts.EXTRA_STARTUP, false));
+        }
+        return stack;
+    }
+
+    private TaskStackBuilder buildFolderListBackStack(Context context, Account account) {
+        TaskStackBuilder stack = buildAccountsBackStack(context);
         stack.addNextIntent(FolderList.actionHandleAccountIntent(context, account, false));
         return stack;
     }
 
     private TaskStackBuilder buildUnreadBackStack(Context context, final Account account) {
-        TaskStackBuilder stack = buildFolderListBackStack(context, account);
-        String description = context.getString(R.string.search_title,
-                account.getDescription(), context.getString(R.string.unread_modifier));
-        LocalSearch search = new LocalSearch(description);
-        search.addAccountUuid(account.getUuid());
-        search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
+        TaskStackBuilder stack = buildAccountsBackStack(context);
+        LocalSearch search = Accounts.createUnreadSearch(context, account);
         stack.addNextIntent(MessageList.intentDisplaySearch(context, search, true, false, false));
         return stack;
     }
 
     private TaskStackBuilder buildMessageListBackStack(Context context, Account account, String folder) {
-        TaskStackBuilder stack = buildFolderListBackStack(context, account);
+        TaskStackBuilder stack = skipFolderListInBackStack(context, account, folder)
+                ? buildAccountsBackStack(context)
+                : buildFolderListBackStack(context, account);
+
         if (folder != null) {
             LocalSearch search = new LocalSearch(folder);
             search.addAllowedFolder(folder);
@@ -4996,6 +5010,14 @@ public class MessagingController implements Runnable {
         TaskStackBuilder stack = buildMessageListBackStack(context, account, message.folderName);
         stack.addNextIntent(MessageList.actionDisplayMessageIntent(context, message));
         return stack;
+    }
+
+    private boolean skipFolderListInBackStack(Context context, Account account, String folder) {
+        return folder != null && folder.equals(account.getAutoExpandFolderName());
+    }
+
+    private boolean skipAccountsInBackStack(Context context) {
+        return Preferences.getPreferences(context).getAccounts().length == 1;
     }
 
     /**
@@ -5577,6 +5599,9 @@ public class MessagingController implements Runnable {
         Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
 
         for (Message message : messages) {
+            if ( message == null) {
+               continue;
+            }
             Folder folder = message.getFolder();
             Account account = folder.getAccount();
 

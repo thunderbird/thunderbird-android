@@ -110,7 +110,7 @@ public class Account implements BaseAccount {
         SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
         SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
         SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true),
-//        SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true),
+        SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true),
         SORT_UNREAD(R.string.sort_unread_first, R.string.sort_unread_last, true),
         SORT_FLAGGED(R.string.sort_flagged_first, R.string.sort_flagged_last, true),
         SORT_ATTACHMENT(R.string.sort_attach_first, R.string.sort_unattached_first, true);
@@ -882,24 +882,24 @@ public class Account implements BaseAccount {
         if (messageRead) {
             if (messageFlagged) {
                 chip = mFlaggedReadColorChip;
-            } else if (toMe) {
-                chip = mToMeReadColorChip;
-            } else if (ccMe) {
-                chip = mCcMeReadColorChip;
-            } else if (fromMe) {
-                chip = mFromMeReadColorChip;
+          //  } else if (toMe) {
+          //      chip = mToMeReadColorChip;
+          //  } else if (ccMe) {
+          //      chip = mCcMeReadColorChip;
+          //  } else if (fromMe) {
+          //      chip = mFromMeReadColorChip;
             } else {
                 chip = mReadColorChip;
             }
         } else {
             if (messageFlagged) {
                 chip = mFlaggedUnreadColorChip;
-            } else if (toMe) {
-                chip = mToMeUnreadColorChip;
-            } else if (ccMe) {
-                chip = mCcMeUnreadColorChip;
-            } else if (fromMe) {
-                chip = mFromMeUnreadColorChip;
+          //  } else if (toMe) {
+          //      chip = mToMeUnreadColorChip;
+          //  } else if (ccMe) {
+          //      chip = mCcMeUnreadColorChip;
+          //  } else if (fromMe) {
+          //      chip = mFromMeUnreadColorChip;
             } else {
                 chip = mUnreadColorChip;
             }
@@ -1934,11 +1934,41 @@ public class Account implements BaseAccount {
      *         The {@code LocalSearch} instance to modify.
      */
     public void excludeSpecialFolders(LocalSearch search) {
-        search.and(Searchfield.FOLDER, getTrashFolderName(), Attribute.NOT_EQUALS);
-        search.and(Searchfield.FOLDER, getDraftsFolderName(), Attribute.NOT_EQUALS);
-        search.and(Searchfield.FOLDER, getSpamFolderName(), Attribute.NOT_EQUALS);
-        search.and(Searchfield.FOLDER, getOutboxFolderName(), Attribute.NOT_EQUALS);
-        search.and(Searchfield.FOLDER, getSentFolderName(), Attribute.NOT_EQUALS);
+        excludeSpecialFolder(search, getTrashFolderName());
+        excludeSpecialFolder(search, getDraftsFolderName());
+        excludeSpecialFolder(search, getSpamFolderName());
+        excludeSpecialFolder(search, getOutboxFolderName());
+        excludeSpecialFolder(search, getSentFolderName());
         search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+    }
+
+    /**
+     * Modify the supplied {@link LocalSearch} instance to exclude "unwanted" folders.
+     *
+     * <p>
+     * Currently the following folders are excluded:
+     * <ul>
+     *   <li>Trash</li>
+     *   <li>Spam</li>
+     *   <li>Outbox</li>
+     * </ul>
+     * The Inbox will always be included even if one of the special folders is configured to point
+     * to the Inbox.
+     * </p>
+     *
+     * @param search
+     *         The {@code LocalSearch} instance to modify.
+     */
+    public void excludeUnwantedFolders(LocalSearch search) {
+        excludeSpecialFolder(search, getTrashFolderName());
+        excludeSpecialFolder(search, getSpamFolderName());
+        excludeSpecialFolder(search, getOutboxFolderName());
+        search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+    }
+
+    private void excludeSpecialFolder(LocalSearch search, String folderName) {
+        if (!K9.FOLDER_NONE.equals(folderName)) {
+            search.and(Searchfield.FOLDER, folderName, Attribute.NOT_EQUALS);
+        }
     }
 }

@@ -205,8 +205,7 @@
         <CheckBoxPreference
             android:persistent="false"
             android:key="always_show_cc_bcc"
-            android:title="@string/account_settings_always_show_cc_bcc_label"
-            android:summary="@string/account_settings_always_show_cc_bcc_summary" />
+            android:title="@string/account_settings_always_show_cc_bcc_label" />
 
         <CheckBoxPreference
         android:persistent="false"

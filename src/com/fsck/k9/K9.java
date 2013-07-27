@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -179,6 +180,10 @@ public class K9 extends Application {
      */
     private static SharedPreferences sDatabaseVersionCache;
 
+    /**
+     * {@code true} if this is a debuggable build.
+     */
+    private static boolean sIsDebuggable;
 
     private static boolean mAnimations = true;
 
@@ -218,7 +223,7 @@ public class K9 extends Application {
         WHEN_IN_LANDSCAPE
     }
 
-    private static boolean mMessageListCheckboxes = false;
+    private static boolean mMessageListCheckboxes = true;
     private static int mMessageListPreviewLines = 2;
 
     private static boolean mShowCorrespondentNames = true;
@@ -239,6 +244,7 @@ public class K9 extends Application {
     private static boolean mCountSearchMessages = true;
     private static boolean mHideSpecialAccounts = false;
     private static boolean mMobileOptimizedLayout = false;
+    private static boolean mAutofitWidth;
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
@@ -487,6 +493,7 @@ public class K9 extends Application {
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
+        editor.putBoolean("autofitWidth", mAutofitWidth);
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
         editor.putString("quietTimeEnds", mQuietTimeEnds);
@@ -540,6 +547,8 @@ public class K9 extends Application {
         app = this;
 
         galleryBuggy = checkForBuggyGallery();
+
+        sIsDebuggable = ((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
 
         checkCachedDatabaseVersion();
 
@@ -665,7 +674,7 @@ public class K9 extends Application {
     public static void loadPrefs(Preferences prefs) {
         SharedPreferences sprefs = prefs.getPreferences();
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
-        if (!DEBUG && Debug.isDebuggerConnected()) {
+        if (!DEBUG && sIsDebuggable && Debug.isDebuggerConnected()) {
             // If the debugger is attached, we're probably (surprise surprise) debugging something.
             DEBUG = true;
             Log.i(K9.LOG_TAG, "Debugger attached; enabling debug logging.");
@@ -680,10 +689,11 @@ public class K9 extends Application {
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
         mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
+        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", true);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
+        mAutofitWidth = sprefs.getBoolean("autofitWidth", true);
 
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
         mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
@@ -931,6 +941,14 @@ public class K9 extends Application {
 
     public static void setMobileOptimizedLayout(boolean mobileOptimizedLayout) {
         mMobileOptimizedLayout = mobileOptimizedLayout;
+    }
+
+    public static boolean autofitWidth() {
+        return mAutofitWidth;
+    }
+
+    public static void setAutofitWidth(boolean autofitWidth) {
+        mAutofitWidth = autofitWidth;
     }
 
     public static boolean getQuietTimeEnabled() {

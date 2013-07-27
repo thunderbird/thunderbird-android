@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
 Copyright (C) 2009 The Android Open Source Project
 
@@ -27,13 +27,6 @@ Android Localizer (aiLocalizer)
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
-
-    <!--
-         When removing strings from the main file, please cleanup the translations.
-
-         This doesn't work on multiline strings, nor strings with the NEW tag.
-         find . -name strings.xml | xargs perl -pi -e's!^\s+<string name="string_name_here".+?</string>\s*\z!!'
-     -->
 
     <!-- This should make it easier for forks to change the branding -->
 
@@ -146,7 +139,7 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Suivant</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Précédent</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string>
+    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Annuler</string>
     <string name="send_action">Envoyer</string>
     <string name="send_again_action">Envoyer à nouveau</string>
@@ -161,7 +154,7 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="refile_action">Déposer</string>
     <string name="continue_action">Continuer</string>
     <string name="back_action">Retour</string>
-    <string name="done_action">Terminé</string>
+    <string name="done_action">Terminé</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Abandonner</string>
     <string name="save_draft_action">Enregistrer dans les brouillons</string>
     <string name="check_mail_action">Vérif. messages</string>
@@ -183,8 +176,8 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="send_alternate_action">Transférer avec une autre application</string>
     <string name="send_alternate_chooser_title">Choisir l\'expéditeur</string>
 
-    <string name="flag_action">Ajouter une étoile</string>
-    <string name="unflag_action">Enlever l\'étoile</string>
+    <string name="flag_action">Ajouter aux favoris</string>
+    <string name="unflag_action">Enlever des favoris</string>
     <string name="copy_action">Copier</string>
     <string name="select_text_action">Sélection de texte</string>
     <string name="show_headers_action">Afficher entêtes</string>
@@ -239,7 +232,7 @@ de plus</string>
 
     <string name="notification_new_title">Nouvel e-mail</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nouveaux messages</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> sur <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Répondre</string>
@@ -293,7 +286,7 @@ de plus</string>
     <string name="message_compose_quote_header_from">De\u00A0:</string>
     <string name="message_compose_quote_header_to">À\u00A0:</string>
     <string name="message_compose_quote_header_cc">Cc\u00A0:</string>
-    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> a écrit\u00A0:\n\n</string>
+    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> a écrit\u00A0:\n</string>
     <string name="message_compose_error_no_recipients">Vous devez ajouter au moins un destinataire.</string>
     <string name="error_contact_address_not_found">Aucune adresse e-mail trouvée</string>
     <string name="message_compose_attachments_skipped_toast">Certaines pièces jointes ne peuvent pas être transmises car elles n\'ont pas été téléchargées.</string>
@@ -349,6 +342,8 @@ de plus</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Polices à taille fixe</string>
     <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à taille fixe pour les messages en texte brut</string>
+    <string name="global_settings_messageview_autofit_width_label">Ajustement auto des messages</string>
+    <string name="global_settings_messageview_autofit_width_summary">Réduit les messages pour s\'adapter à l\'écran</string>
     <string name="global_settings_messageview_return_to_list_label">Retour à la liste après suppression</string>
     <string name="global_settings_messageview_return_to_list_summary">Retourner à la liste de messages après la suppression d\'un message</string>
     <string name="global_settings_messageview_show_next_label">Voir le message suivant après suppression</string>
@@ -392,7 +387,7 @@ de plus</string>
     <string name="account_setup_basics_password_hint">Mot de passe</string>
     <string name="account_setup_basics_manual_setup_action">Configuration manuelle</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Récupération des informations de compte\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Vérification des paramètres de serveur entrant\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Vérification des paramètres de serveur sortant\u2026</string>
@@ -420,10 +415,10 @@ de plus</string>
     <string name="account_setup_incoming_security_label">Type de sécurité</string>
     <string name="account_setup_incoming_auth_type_label">Type d\'authentification</string>
     <string name="account_setup_incoming_security_none_label">Aucun</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL (si disponible)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL (toujours)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">TLS (si disponible)</string>
-    <string name="account_setup_incoming_security_tls_label">TLS (toujours)</string>
+    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (si disponible)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (toujours)</string>
+    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (si disponible)</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS (toujours)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Supprimer les messages du serveur\u00A0:</string>
     <string name="account_setup_incoming_delete_policy_never_label">Jamais</string>
@@ -528,9 +523,9 @@ de plus</string>
     <string name="move_copy_cannot_copy_unsynced_message">Impossibilité de copier ou déplacer un message qui n\'est pas synchronisé aver le serveur</string>
 
     <string name="account_setup_failed_dlg_title">La configuration n\'a pu terminer</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'utilisateur ou mot de passe incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Impossible de se connecter de manière sûre au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Impossible de se connecter au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'utilisateur ou mot de passe incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Impossible de se connecter de manière sûre au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_server_message_fmt">Impossible de se connecter au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">Modifier les détails</string>
     <string name="account_setup_failed_dlg_continue_action">Continuer</string>
 
@@ -539,10 +534,10 @@ de plus</string>
     <string name="account_settings_default_label">Compte par défaut</string>
     <string name="account_settings_default_summary">Envoyer les messages de ce compte par défaut</string>
     <string name="account_settings_notify_label">Nouveaux e-mails</string>
-    <string name="account_settings_notify_summary">Afficher une notification dans la barre d\'état à la réception d\'un e-mail</string>
     <string name="account_settings_notify_sync_label">Synchronisation</string>
-    <string name="account_settings_notify_sync_summary">Afficher une notification dans la barre d\'état à la vérification de nouveaux messages</string>
     <string name="account_settings_email_label">Votre adresse e-mail</string>
+    <string name="account_settings_notify_summary">Afficher une notification dans la barre d\'état à la réception d\'un e-mail</string>
+    <string name="account_settings_notify_sync_summary">Afficher une notification dans la barre d\'état à la vérification de nouveaux messages</string>
     <string name="account_settings_notify_self_label">Messages dont je suis l\'expéditeur</string>
     <string name="account_settings_notify_self_summary">Afficher une notification dans la barre d\'état même lors d\'un envoi à partir d\'une identité reliée à un compte</string>
     <string name="account_settings_notification_opens_unread_label">Ouvrir message non lu via notification</string>
@@ -569,12 +564,11 @@ de plus</string>
     <string name="account_settings_strip_signature_summary">Lorsque vous répondez à des messages, la signature du texte cité sera éffacée</string>
 
     <string name="account_settings_message_format_label">Format du message</string>
-    <string name="account_settings_message_format_html">HTML (formattage et images conservés)</string>
     <string name="account_settings_message_format_text">Text brut (formattage et images omis)</string>
+    <string name="account_settings_message_format_html">HTML (formattage et images conservés)</string>
     <string name="account_settings_message_format_auto">Automatique (Text brut à moins de répondre à un message HTML)</string>
 
     <string name="account_settings_always_show_cc_bcc_label">Toujours afficher Cc/Cci</string>
-    <string name="account_settings_always_show_cc_bcc_summary">Toujours afficher les champs Copie et Copie cachée</string>
 
     <string name="account_settings_message_read_receipt_label">Accusé de réception</string>
     <string name="account_settings_message_read_receipt_summary">Toujours demander un accusé de réception</string>
@@ -593,8 +587,8 @@ de plus</string>
     <string name="account_settings_crypto_app_none">Aucun</string>
     <string name="account_settings_crypto_auto_signature">Signature automatique</string>
     <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse e-mail du compte pour déduire la clé de signature</string>
-    <string name="account_settings_crypto_auto_encrypt">Cryptation automatique</string>
-    <string name="account_settings_crypto_auto_encrypt_summary">Cryptation automatique si une clé publique correspond au destinataire.</string>
+    <string name="account_settings_crypto_auto_encrypt">Encryption automatique</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Encryption automatique si une clé publique correspond au destinataire.</string>
     <string name="account_settings_crypto_apg_not_installed">APG non installé</string>
 
     <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
@@ -697,7 +691,7 @@ de plus</string>
     <string name="account_settings_outgoing_summary">Configurer le serveur de messagerie sortant</string>
     <string name="account_settings_description_label">Nom du compte</string>
     <string name="account_settings_name_label">Votre nom</string>
-    <string name="notifications_title">Paramètres de notification</string>
+    <string name="notifications_title">Notifications</string>
     <string name="account_settings_vibrate_enable">Vibreur</string>
     <string name="account_settings_vibrate_summary">Vibrer à la réception d\'un e-mail</string>
     <string name="account_settings_vibrate_pattern_label">Type de vibration</string>
@@ -759,7 +753,9 @@ de plus</string>
     <string name="sort_latest_first">Plus récents en premier</string>
     <string name="sort_subject_alpha">A-Z par sujet</string>
     <string name="sort_subject_re_alpha">Z-A par sujet</string>
-    <string name="sort_flagged_first">Messages avec étoiles en premier</string>
+    <string name="sort_sender_alpha">A-Z par expéditeur</string>
+    <string name="sort_sender_re_alpha">Z-A par expéditeur</string>
+    <string name="sort_flagged_first">Messages favoris en premier</string>
     <string name="sort_flagged_last">Messages sans étoiles en premier</string>
     <string name="sort_unread_first">Messages non lus en premier</string>
     <string name="sort_unread_last">Messages lus en premier</string>
@@ -770,7 +766,8 @@ de plus</string>
     <string name="sort_by_date">Date</string>
     <string name="sort_by_arrival">Date de réception</string>
     <string name="sort_by_subject">Sujet</string>
-    <string name="sort_by_flag">Étoile</string>
+    <string name="sort_by_sender">Expéditeur</string>
+    <string name="sort_by_flag">Favoris</string>
     <string name="sort_by_unread">Lu/Non lu</string>
     <string name="sort_by_attach">Pièces jointes</string>
 
@@ -806,7 +803,7 @@ de plus</string>
     V - Archive\n
     Y - Copier\n
     Z - Marquer (Non)lu\n
-    G - Étoile\n
+    G - Favoris\n
     O - Trier\n
     I - Ordre de tri\n
     Q - Retourner aux dossiers\n
@@ -885,12 +882,10 @@ de plus</string>
     <string name="gestures_summary">Accepter le contrôle par gestuelle</string>
 
     <string name="volume_navigation_title">Navigation à l\'aide du volume</string>
-    <string name="volume_navigation_summary">Passer d\'un élément à l\'autre grâce aux touches de volume</string>
     <string name="volume_navigation_message">Visualisation d\'un message</string>
     <string name="volume_navigation_list">Différents écrans à liste</string>
 
     <string name="start_integrated_inbox_title">Boîte de messagerie unifiée au démarrage</string>
-    <string name="start_integrated_inbox_summary">Afficher la boîte de messagerie unifiée au démarrage</string>
 
     <string name="measure_accounts_title">Afficher la taille du compte</string>
     <string name="measure_accounts_summary">Désactiver pour un affichage plus rapide</string>
@@ -902,7 +897,7 @@ de plus</string>
     <string name="hide_special_accounts_summary">Cacher «\u00A0Boîte de messagerie unifiée\u00A0» et «\u00A0Tous les messages\u00A0»</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - Avec étoile</string>
+    <string name="flagged_modifier"> - Favoris</string>
     <string name="unread_modifier"> - Non lu</string>
 
     <string name="search_all_messages_title">Tous les messages</string>
@@ -1004,6 +999,18 @@ de plus</string>
 
     <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
+
+    <!--
+      Translators:
+
+      Please review how to handle pluralization for your language at (1) and ajust
+      the <item> elements accordingly
+
+      Possible values for 'quantity': zero, one, two, few, many, other
+
+      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+    -->
     <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Voulez-vous vraiment supprimer ce message?</item>
         <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
@@ -1015,17 +1022,6 @@ de plus</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Voulez-vous déplacer ce message vers le dossiers à spams\u00A0?</item>
         <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> messages vers le dossiers à spams\u00A0?</item>
-<!--
-  Translators:
-
-  Please review how to handle pluralization for your language at (1) and ajust
-  the <item> elements accordingly
-
-  Possible values for 'quantity': zero, one, two, few, many, other
-
-  (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
--->
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Déplacer</string>
     <string name="dialog_confirm_spam_cancel_button">Ne pas déplacer</string>
@@ -1169,4 +1165,6 @@ de plus</string>
     <string name="last_refresh_time_format">Dernière vérification <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">Dernière vérification <xliff:g id="time_with_preposition">%s</xliff:g> (Push activé)</string>
     <string name="preposition_for_date">le <xliff:g id="date">%s</xliff:g></string>
+
+    <string name="mark_all_as_read">Marquer tous comme lus</string>
 </resources>

@@ -490,6 +490,7 @@
         <item>zh_CN</item>
         <item>ja</item>
         <item>ko</item>
+        <item>sk</item>
     </string-array>
 
     <string-array name="settings_theme_entries">

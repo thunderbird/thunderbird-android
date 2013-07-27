@@ -236,7 +236,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         NONE,
         SHOW,
         HIDE
-    };
+    }
 
     private boolean mReadReceipt = false;
 
@@ -362,6 +362,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     private Validator mAddressValidator;
 
     private FontSizes mFontSizes = K9.getFontSizes();
+    private ContextThemeWrapper mThemeContext;
 
 
     static class Attachment implements Serializable {
@@ -490,17 +491,18 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         if (K9.getK9ComposerThemeSetting() != K9.Theme.USE_GLOBAL) {
             // theme the whole content according to the theme (except the action bar)
-            ContextThemeWrapper wrapper = new ContextThemeWrapper(this,
+            mThemeContext = new ContextThemeWrapper(this,
                     K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
-            View v = ((LayoutInflater) wrapper.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+            View v = ((LayoutInflater) mThemeContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
                     inflate(R.layout.message_compose, null);
             TypedValue outValue = new TypedValue();
             // background color needs to be forced
-            wrapper.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+            mThemeContext.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
             v.setBackgroundColor(outValue.data);
             setContentView(v);
         } else {
             setContentView(R.layout.message_compose);
+            mThemeContext = this;
         }
 
         final Intent intent = getIntent();
@@ -534,7 +536,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         mContacts = Contacts.getInstance(MessageCompose.this);
 
-        mAddressAdapter = new EmailAddressAdapter(this);
+        mAddressAdapter = new EmailAddressAdapter(mThemeContext);
         mAddressValidator = new EmailAddressValidator();
 
         mChooseIdentityButton = (Button) findViewById(R.id.identity);
@@ -1126,7 +1128,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         mQuotedHtmlContent =
                 (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
         if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null) {
-            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), "text/html");
+            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
         }
 
         mDraftId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
@@ -1600,7 +1602,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         uri.appendQueryParameter(IdentityField.MESSAGE_FORMAT.value(), mMessageFormat.name());
 
         // If we're not using the standard identity of signature, append it on to the identity blob.
-        if (mSignatureChanged) {
+        if (mIdentity.getSignatureUse() && mSignatureChanged) {
             uri.appendQueryParameter(IdentityField.SIGNATURE.value(), mSignatureView.getText().toString());
         }
 
@@ -2815,7 +2817,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                     } else {
                         mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
                     }
-                    mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), "text/html");
+                    mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {
@@ -2999,7 +3001,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mQuoteStyle);
 
             // Load the message with the reply header.
-            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), "text/html");
+            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
 
             // TODO: Also strip the signature from the text/plain part
             mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage,
@@ -3047,7 +3049,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             if (part != null) {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, text found.");
-                return HtmlConverter.textToHtml(MimeUtility.getTextFromPart(part), true);
+                return HtmlConverter.textToHtml(MimeUtility.getTextFromPart(part));
             }
         } else if (format == SimpleMessageFormat.TEXT) {
             // Text takes precedence, then html.

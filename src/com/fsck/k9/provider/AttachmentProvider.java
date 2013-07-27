@@ -218,6 +218,13 @@ public class AttachmentProvider extends ContentProvider {
             return null;
         }
 
+        if (attachmentInfo == null) {
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "No attachment info for ID: " + id);
+            }
+            return null;
+        }
+
         MatrixCursor ret = new MatrixCursor(columnNames);
         Object[] values = new Object[columnNames.length];
         for (int i = 0, count = columnNames.length; i < count; i++) {
