@@ -17,17 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
@@ -261,9 +253,12 @@ public class FolderList extends K9ListActivity {
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(false);
+        mListView.setItemsCanFocus(false);
+
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onOpenFolder(((FolderInfoHolder)mAdapter.getItem(position)).name);
+                Log.d("FOLDERS", "mListView.onItemClick(, , position = " + position + ")");
+                onOpenFolder(((FolderInfoHolder) mAdapter.getItem(position)).name);
             }
         });
         registerForContextMenu(mListView);
@@ -448,7 +443,7 @@ public class FolderList extends K9ListActivity {
 
 
     private void onRefresh(final boolean forceRemote) {
-
+        Log.d("FOLDERS", "FolderList::onRefresh()");
         MessagingController.getInstance(getApplication()).listFolders(mAccount, forceRemote, mAdapter.mListener);
 
     }
@@ -588,13 +583,13 @@ public class FolderList extends K9ListActivity {
         Log.d("FOLDER", "onOpenFolder: " + folder);
 
         // check if folder has *any* subfolders
-        for (FolderInfoHolder f: mAdapter.mFolders) {
+        /*for (FolderInfoHolder f: mAdapter.mFolders) {
             if (f.name.startsWith(folder) && f.name.length() > folder.length()) {
                 //Log.d("FOLDER", "found subfolder for " + folder + ": " +f.name);
                 mAdapter.getHierarchyFilter().filter(folder);
                 return;
             }
-        }
+        }*/
 
         LocalSearch search = new LocalSearch(folder);
         search.addAccountUuid(mAccount.getUuid());
@@ -1028,6 +1023,8 @@ public class FolderList extends K9ListActivity {
         }
 
         public View getItemView(int itemPosition, View convertView, ViewGroup parent) {
+            Log.d("FOLDERS", "getItemView(int itemPosition = " + itemPosition + ", ...)");
+
             FolderInfoHolder folder = (FolderInfoHolder) getItem(itemPosition);
             View view;
             if (convertView != null) {
@@ -1054,8 +1051,15 @@ public class FolderList extends K9ListActivity {
                 holder.folderListItemLayout = (LinearLayout)view.findViewById(R.id.folder_list_item_layout);
                 holder.rawFolderName = folder.name;
 
+                holder.folders = (ImageButton)view.findViewById(R.id.folders);
+
                 view.setTag(holder);
             }
+
+            if (hasSubFolder(holder.rawFolderName) && K9.folderHierarchy())
+                holder.folders.setOnClickListener(createFolderOpener(holder.rawFolderName));
+            else
+                holder.folders.setVisibility(View.GONE);
 
             if (folder == null) {
                 return view;
@@ -1141,6 +1145,29 @@ public class FolderList extends K9ListActivity {
             mFontSizes.setViewTextSize(holder.folderStatus, mFontSizes.getFolderStatus());
 
             return view;
+        }
+
+        private boolean hasSubFolder(String folder) {
+            for (FolderInfoHolder f: mAdapter.mFolders) {
+                if (f.name.startsWith(folder) && f.name.length() > folder.length()) {
+                    Log.d("FOLDERS", "found subfolder for " + folder + ": " +f.name);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private OnClickListener createFolderOpener(final String folder) {
+            Log.d("FOLDERS", "createFolderOpener(" + folder + ")");
+
+            return new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("FOLDERS", "createFolderOpener(" + folder + ").onClick()");
+                    mAdapter.getHierarchyFilter().filter(folder);
+                }
+            };
         }
 
         private OnClickListener createFlaggedSearch(Account account, FolderInfoHolder folder) {
@@ -1374,6 +1401,8 @@ public class FolderList extends K9ListActivity {
         public String rawFolderName;
         public View chip;
         public LinearLayout folderListItemLayout;
+
+        public ImageButton folders;
     }
 
     private class FolderClickListener implements OnClickListener {

@@ -651,6 +651,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * @return false if unsuccessfull
      */
     private boolean onOpenAccount(BaseAccount account) {
+        Log.d("FOLDERS", "Accounts::onOpenAccount()");
+
         if (account instanceof SearchAccount) {
             SearchAccount searchAccount = (SearchAccount)account;
             MessageList.actionDisplaySearch(this, searchAccount.getRelatedSearch(), false, false);
@@ -1192,6 +1194,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("FOLDERS", "Accounts::onItemClick(" + position + ")");
         BaseAccount account = (BaseAccount)parent.getItemAtPosition(position);
         onOpenAccount(account);
     }
