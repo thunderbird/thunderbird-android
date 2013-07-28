@@ -802,9 +802,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     activity.setNonConfigurationInstance(null);
-
-                    if (mAccount.needsToAskForSessionPasswords())
-                    	FolderList.actionHandleAccount(activity, mAccount);
                 }
             });
             mDialog = builder.create();
