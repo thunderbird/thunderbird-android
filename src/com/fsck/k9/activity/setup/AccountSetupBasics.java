@@ -14,6 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
@@ -32,7 +35,7 @@ import java.net.URLEncoder;
  * AccountSetupAccountType activity.
  */
 public class AccountSetupBasics extends K9Activity
-    implements OnClickListener, TextWatcher {
+    implements OnClickListener, TextWatcher, OnCheckedChangeListener {
     private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
@@ -40,6 +43,7 @@ public class AccountSetupBasics extends K9Activity
 
     private EditText mEmailView;
     private EditText mPasswordView;
+    private CheckBox mPasswordNotStored;
     private Button mNextButton;
     private Button mManualSetupButton;
     private Account mAccount;
@@ -58,6 +62,7 @@ public class AccountSetupBasics extends K9Activity
         setContentView(R.layout.account_setup_basics);
         mEmailView = (EditText)findViewById(R.id.account_email);
         mPasswordView = (EditText)findViewById(R.id.account_password);
+        mPasswordNotStored = (CheckBox)findViewById(R.id.account_password_not_stored);
         mNextButton = (Button)findViewById(R.id.next);
         mManualSetupButton = (Button)findViewById(R.id.manual_setup);
 
@@ -66,6 +71,7 @@ public class AccountSetupBasics extends K9Activity
 
         mEmailView.addTextChangedListener(this);
         mPasswordView.addTextChangedListener(this);
+        mPasswordNotStored.setOnCheckedChangeListener(this);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             String accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
@@ -77,6 +83,21 @@ public class AccountSetupBasics extends K9Activity
         }
     }
 
+    protected void onPasswordNotStoredClicked(boolean isChecked) {
+    	mPasswordView.setEnabled(!isChecked);
+        validateFields();
+    }
+    	
+    	
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    	switch (buttonView.getId()) {
+        case R.id.account_password_not_stored:
+        	onPasswordNotStoredClicked(isChecked);
+            break;
+        }
+    }
+
+    
     @Override
     public void onResume() {
         super.onResume();
@@ -107,8 +128,9 @@ public class AccountSetupBasics extends K9Activity
     private void validateFields() {
         String email = mEmailView.getText().toString();
         boolean valid = Utility.requiredFieldValid(mEmailView)
-                        && Utility.requiredFieldValid(mPasswordView)
-                        && mEmailValidator.isValidAddressOnly(email);
+                        && mEmailValidator.isValidAddressOnly(email)
+        				&& (Utility.requiredFieldValid(mPasswordView)
+        					|| mPasswordNotStored.isChecked());
 
         mNextButton.setEnabled(valid);
         mManualSetupButton.setEnabled(valid);
@@ -168,6 +190,8 @@ public class AccountSetupBasics extends K9Activity
     private void finishAutoSetup() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        if (mPasswordNotStored.isChecked())
+        	password = Account.DONT_STORE_MY_PASSWORD;
         String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
@@ -213,7 +237,9 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setName(getOwnerName());
             mAccount.setEmail(email);
             mAccount.setStoreUri(incomingUri.toString());
+            mAccount.setStoreUri_DontStorePassword(mPasswordNotStored.isChecked());
             mAccount.setTransportUri(outgoingUri.toString());
+            mAccount.setTransportUri_DontStorePassword(mPasswordNotStored.isChecked());
             mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
             mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
             mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
@@ -277,6 +303,8 @@ public class AccountSetupBasics extends K9Activity
     private void onManualSetup() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        if (mPasswordNotStored.isChecked())
+        	password = Account.DONT_STORE_MY_PASSWORD;
         String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];

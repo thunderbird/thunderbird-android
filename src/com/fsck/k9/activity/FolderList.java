@@ -590,31 +590,33 @@ public class FolderList extends K9ListActivity {
     private void configureFolderSearchView(Menu menu) {
         final MenuItem folderMenuItem = menu.findItem(R.id.filter_folders);
         final SearchView folderSearchView = (SearchView) folderMenuItem.getActionView();
-        folderSearchView.setQueryHint(getString(R.string.folder_list_filter_hint));
-        folderSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        if (null != folderSearchView) {
+        	folderSearchView.setQueryHint(getString(R.string.folder_list_filter_hint));
+        	folderSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                folderMenuItem.collapseActionView();
-                mActionBarTitle.setText(getString(R.string.filter_folders_action));
-                return true;
-            }
+            	@Override
+            	public boolean onQueryTextSubmit(String query) {
+                	folderMenuItem.collapseActionView();
+                	mActionBarTitle.setText(getString(R.string.filter_folders_action));
+                	return true;
+            	}
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mAdapter.getFilter().filter(newText);
-                return true;
-            }
-        });
+            	@Override
+            	public boolean onQueryTextChange(String newText) {
+                	mAdapter.getFilter().filter(newText);
+                	return true;
+            	}
+        	});
 
-        folderSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+        	folderSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
 
-            @Override
-            public boolean onClose() {
-                mActionBarTitle.setText(getString(R.string.folders_title));
-                return false;
-            }
-        });
+            	@Override
+            	public boolean onClose() {
+            		mActionBarTitle.setText(getString(R.string.folders_title));
+                	return false;
+            	}
+        	});
+        }
     }
 
     @Override public boolean onContextItemSelected(android.view.MenuItem item) {

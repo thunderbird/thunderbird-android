@@ -35,6 +35,11 @@
         android:layout_width="fill_parent"
         android:nextFocusDown="@+id/next"
         />
+    <CheckBox
+        android:id="@+id/account_password_not_stored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/account_setup_password_not_stored" />
     <View
         android:layout_width="fill_parent"
         android:layout_height="0dip"
