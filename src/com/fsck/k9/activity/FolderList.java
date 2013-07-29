@@ -442,7 +442,7 @@ public class FolderList extends K9ListActivity {
             MailService.actionRestartPushers(this, null);
         }
         mAdapter.getFilter().filter(null);
-        mAdapter.getHierarchyFilter().filter(null);
+        mAdapter.getHierarchyFilter().filter("");
         onRefresh(false);
     }
 
@@ -1262,7 +1262,9 @@ public class FolderList extends K9ListActivity {
             protected FilterResults performFiltering(CharSequence constraint) {
 
                 String folder;
-                if (constraint == null || constraint.equals(""))
+                if (constraint == null)
+                    folder = mCurrentFolder;
+                else if (constraint.equals(""))
                     folder = "";
                 else
                     folder = constraint.toString() + getPathDelimiter();
