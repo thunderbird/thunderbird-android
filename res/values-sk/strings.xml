@@ -211,7 +211,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> viac v <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Odpovedať</string>
-    <string name="notification_action_read">Ozn. ako prečítané</string>
+    <string name="notification_action_mark_as_read">Ozn. ako prečítané</string>
     <string name="notification_action_delete">Zmazať</string>
     <string name="notification_certificate_error_title">Chyba certifikátu pre <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Skontrolujte nastavenia serveru</string>

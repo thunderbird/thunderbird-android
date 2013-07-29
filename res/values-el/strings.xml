@@ -206,7 +206,7 @@
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> περισσότερα στον <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Απάντηση</string>
-    <string name="notification_action_read">Ανάγνωση</string>
+    <string name="notification_action_mark_as_read">Ανάγνωση</string>
     <string name="notification_action_delete">Διαγραφή</string>
     <string name="notification_certificate_error_title">Σφάλμα πιστοποιητικού για <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Ελέγξτε τις ρυθμίσεις του εξυπηρετητή</string>

@@ -140,7 +140,7 @@
 
         <echo>Setting version to ${version-name}</echo>
         <exec executable="perl" failonerror="true">
-            <arg line="-0 -ne '/\x3Crelease version=\x22${version-name}\x22/ or die qq/No changelog for ${version-name}\n/' res/raw/changelog.xml" />
+            <arg line="-0 -ne '/\x3Crelease version=\x22${version-name}\x22/ or die qq/No changelog for ${version-name}\n/' res/xml/changelog_master.xml" />
         </exec>
         <replace file="AndroidManifest.xml"
             token="android:versionName=&quot;${current-version-name}&quot;"
@@ -333,7 +333,7 @@
             </else>
         </if.contrib>
     </target>
-	
+
     <target name="init" depends="-update-abs, -update-ptr, -update-cl, -update-hcp"
             description="Initialize environment for building" />
 

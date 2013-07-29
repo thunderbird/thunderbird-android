@@ -207,7 +207,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> mais em <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Responder</string>
-    <string name="notification_action_read">Lido</string>
+    <string name="notification_action_mark_as_read">Lido</string>
     <string name="notification_action_delete">Excluir</string>
     <string name="notification_certificate_error_title">Erro no certificado de <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Verifique suas configurações de servidor</string>

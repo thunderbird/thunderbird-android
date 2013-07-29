@@ -4888,7 +4888,7 @@ public class MessagingController implements Runnable {
             }
 
             builder.addAction(R.drawable.ic_action_mark_as_read_dark,
-                    context.getString(R.string.notification_action_read),
+                    context.getString(R.string.notification_action_mark_as_read),
                     NotificationActionService.getReadAllMessagesIntent(context, account, allRefs));
 
             NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
@@ -5599,6 +5599,9 @@ public class MessagingController implements Runnable {
         Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
 
         for (Message message : messages) {
+            if ( message == null) {
+               continue;
+            }
             Folder folder = message.getFolder();
             Account account = folder.getAccount();
 

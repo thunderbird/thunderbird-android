@@ -1,7 +1,7 @@
 # ckChangeLog - An Android Library to display a Change Log
 
-![Screenshot](https://github.com/cketti/ckChangeLog/raw/master/screenshot_1.png)
-![Screenshot](https://github.com/cketti/ckChangeLog/raw/master/screenshot_2.png)
+![Screenshot](screenshot_1.png)
+![Screenshot](screenshot_2.png)
 
 This library provides an easy way to display a change log in your app.
 
@@ -9,39 +9,47 @@ This library provides an easy way to display a change log in your app.
 
  * Uses a simple XML file as source
  * Supports partial translations
- 
+
 Repository at <https://github.com/cketti/ckChangeLog>.
 
 
 ## Usage
 
-1. Create the master change log in `res/raw/changelog.xml`. Formatted like this:
+1. Create the master change log in `res/xml/changelog_master.xml`. Formatted like this:
 
-        <?xml version="1.0" encoding="utf-8"?>
-        <changelog>
-            <release version="1.1" versioncode="11" >
-                <change>Totally new and shiny version</change>
-            </release>
-            <release version="1.0" versioncode="10" >
-                <change>Fixed: A bug fix</change>
-                <change>Some other changes I can't quite remember</change>
-            </release>
-            <release version="0.1" versioncode="1">
-                <change>First release</change>
-            </release>
-        </changelog>
-	
-2. Create translations of this file under language-specific versions of `res/xml`, e.g. `res/xml-de`.
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <changelog>
+      <release version="1.1" versioncode="11" >
+          <change>Totally new and shiny version</change>
+      </release>
+      <release version="1.0" versioncode="10" >
+          <change>Fixed: A bug fix</change>
+          <change>Some other changes I can't quite remember</change>
+      </release>
+      <release version="0.1" versioncode="1">
+          <change>First release</change>
+      </release>
+  </changelog>
+  ```
+
+2. Create translations of this `changelog_master.xml` file in files named `changelog.xml` under
+language-specific versions of `res/xml/`, e.g. `res/xml-de/changelog.xml`.
 
 3. Display the change log dialog by putting the following code in your activity's `onCreate()` method:
 
-        ChangeLog cl = new ChangeLog(this);
-        if (cl.isFirstRun()) {
-            cl.getLogDialog().show();
-        }
-
+  ```java
+  ChangeLog cl = new ChangeLog(this);
+  if (cl.isFirstRun()) {
+      cl.getLogDialog().show();
+  }
+  ```
 
 ## Changelog
+
+### Version 1.0.0
+* **Breaking change!** Moved master translation from `res/raw/changelog.xml` to `res/xml/changelog_master.xml`
+* Added German translation of the sample app
 
 ### Version 0.1
 * Initial release
@@ -54,6 +62,9 @@ This library is based on:
 * [Inscription](https://github.com/MartinvanZ/Inscription/) by [Martin van Zuilekom](https://github.com/MartinvanZ/)
 
 Other contributors:
+* [Andrew Chen](https://github.com/andrewachen)
+* [Artur Dryomov](https://github.com/ming13)
+* [zjw](https://github.com/zjw)
 * You? Pull requests welcome!
 
 

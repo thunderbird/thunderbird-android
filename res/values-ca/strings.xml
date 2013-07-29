@@ -211,7 +211,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="notification_additional_messages">i <xliff:g id="additional_messages">%d</xliff:g> més a <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Respon</string>
-    <string name="notification_action_read">Mostra</string>
+    <string name="notification_action_mark_as_read">Mostra</string>
     <string name="notification_action_delete">Elimina</string>
     <string name="notification_certificate_error_title">Error en el certificat de <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Comproveu els paràmetres del servidor.</string>
