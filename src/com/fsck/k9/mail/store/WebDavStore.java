@@ -456,6 +456,8 @@ public class WebDavStore extends Store {
         if (folderName != null)
             mAccount.setSentFolderName(folderName);
 
+        mAccount.setPathDelimiter(mPathDelimiter);
+
         /**
          * Next we get all the folders (including "special" ones)
          */

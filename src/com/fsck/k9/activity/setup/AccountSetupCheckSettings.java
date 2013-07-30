@@ -120,6 +120,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         }
                         store.checkSettings();
 
+                        mAccount.setPathDelimiter(store.getPathDelimiter());
+
                         if (store instanceof WebDavStore) {
                             setMessage(R.string.account_setup_check_settings_fetch);
                         }

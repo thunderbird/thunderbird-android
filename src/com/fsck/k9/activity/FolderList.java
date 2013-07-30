@@ -118,6 +118,8 @@ public class FolderList extends K9ListActivity {
                     mAdapter.mFolders.clear();
                     mAdapter.mFolders.addAll(newFolders);
                     mAdapter.mFilteredFolders = mAdapter.mFolders;
+                    Log.d("FOLDERS", "newFolders(" + newFolders.size() +") -> going to call getHierarchyFilter().filter(null)");
+                    mAdapter.getHierarchyFilter().filter(null);
                     mHandler.dataChanged();
                 }
             });
@@ -410,7 +412,7 @@ public class FolderList extends K9ListActivity {
             String currentFolder = mAdapter.getHierarchyFilter().getFolder();
             Log.d("FOLDER", "Back key event, folder filter: " + currentFolder);
             if (! currentFolder.equals("") ) { // are we in some subfolder?
-                if (currentFolder.endsWith("/"))
+                if (currentFolder.endsWith(mAdapter.getHierarchyFilter().getPathDelimiter()))
                     currentFolder = currentFolder.substring(0, currentFolder.length()-1);
 
                 int index = currentFolder.lastIndexOf(mAdapter.getHierarchyFilter().getPathDelimiter());
@@ -627,7 +629,12 @@ public class FolderList extends K9ListActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                Log.d("FOLDERS", "onQueryTextChange(" + newText + ")");
+
                 mAdapter.getFilter().filter(newText);
+                if (newText == null || newText.equals(""))
+                    mAdapter.getHierarchyFilter().filter(null);
+
                 return true;
             }
         });
@@ -750,16 +757,15 @@ public class FolderList extends K9ListActivity {
                 }
                 super.listFoldersFinished(account);
 
-                Log.d("FOLDERS", "listFoldersFinished() -> going to call getHierarchyFilter().filter(null)");
-                mAdapter.getHierarchyFilter().filter(null);
+                //Log.d("FOLDERS", "listFoldersFinished() -> going to call getHierarchyFilter().filter(null)");
+                //mAdapter.getHierarchyFilter().filter(null);
             }
 
             @Override
             public void listFolders(Account account, Folder[] folders) {
-                Log.d("FOLDERS", "FolderList.listFolders()");
+                Log.d("FOLDERS", "FolderList.listFolders(" + account.getName() + " ?= mAccount: " + mAccount.getName() + "," + folders.length + ")");
 
                 if (account.equals(mAccount)) {
-                    Log.d("FOLDERS", "we have " + folders.length + " folders");
                     Arrays.sort(folders);
 
                     List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
@@ -1032,7 +1038,7 @@ public class FolderList extends K9ListActivity {
         }
 
         public View getItemView(int itemPosition, View convertView, ViewGroup parent) {
-            Log.d("FOLDERS", "getItemView(int itemPosition = " + itemPosition + ", ...)");
+            //Log.d("FOLDERS", "getItemView(int itemPosition = " + itemPosition + ", ...)");
 
             FolderInfoHolder folder = (FolderInfoHolder) getItem(itemPosition);
             View view;
@@ -1160,8 +1166,8 @@ public class FolderList extends K9ListActivity {
 
         private boolean hasSubFolder(String folder) {
             for (FolderInfoHolder f: mAdapter.mFolders) {
-                if (f.name.startsWith(folder + "/") && f.name.length() > folder.length()) {
-                    Log.d("FOLDERS", "hasSubFolder(" + folder + "): " +f.name);
+                if (f.name.startsWith(folder + mAdapter.getHierarchyFilter().getPathDelimiter()) && f.name.length() > folder.length()) {
+                    //Log.d("FOLDERS", "hasSubFolder(" + folder + "): " +f.name);
                     return true;
                 }
             }
@@ -1240,6 +1246,8 @@ public class FolderList extends K9ListActivity {
             public FolderHierarchyFilter() {
                 super();
                 mCurrentFolder = "";
+                mPathDelimiter = mAccount.getPathDelimiter();
+                Log.d(K9.LOG_TAG, "FolderHierarchyFilter got path delimiter: " + mPathDelimiter);
             }
 
             public String getFolder() {
@@ -1247,18 +1255,6 @@ public class FolderList extends K9ListActivity {
             }
 
             public String getPathDelimiter() {
-                if (mPathDelimiter == null) {
-                    try {
-                        mPathDelimiter = mAccount.getRemoteStore().getPathDelimiter();
-                    }
-                    catch (MessagingException e) {
-                        Log.d(K9.LOG_TAG, "FolderHierarchyFilter() could not get path delimiter for remote store, falling back to default. " + e.getMessage());
-                        mPathDelimiter = "/";
-                    }
-                }
-
-                //Log.d("FOLDER", "getPathDelimiter() returned " + mPathDelimiter);
-
                 return mPathDelimiter;
             }
 

@@ -416,6 +416,7 @@ public class ImapStore extends Store {
         @Override
         public void setPathDelimiter(String delimiter) {
             mPathDelimiter = delimiter;
+            mAccount.setPathDelimiter(delimiter);
         }
 
         @Override
@@ -589,6 +590,7 @@ public class ImapStore extends Store {
 
                 if (mPathDelimiter == null) {
                     mPathDelimiter = response.getString(2);
+                    mAccount.setPathDelimiter(mPathDelimiter);
                     mCombinedPrefix = null;
                 }
 
@@ -676,6 +678,7 @@ public class ImapStore extends Store {
 
                 if (mPathDelimiter == null) {
                     mPathDelimiter = response.getString(2);
+                    mAccount.setPathDelimiter(mPathDelimiter);
                     mCombinedPrefix = null;
                 }
 
