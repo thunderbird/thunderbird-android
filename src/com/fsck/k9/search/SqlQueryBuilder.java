@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Folder.OpenMode;
+import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
@@ -98,7 +98,7 @@ public class SqlQueryBuilder {
         try {
             LocalStore localStore = account.getLocalStore();
             LocalFolder folder = localStore.getFolder(folderName);
-            folder.open(OpenMode.READ_ONLY);
+            folder.open(Folder.OPEN_MODE_RO);
             folderId = folder.getId();
         } catch (MessagingException e) {
             //FIXME

@@ -11,8 +11,9 @@ import android.util.Log;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.K9PreferenceActivity;
+import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderClass;
-import com.fsck.k9.mail.Folder.OpenMode;
+
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
@@ -57,7 +58,7 @@ public class FolderSettings extends K9PreferenceActivity {
         try {
             LocalStore localStore = mAccount.getLocalStore();
             mFolder = localStore.getFolder(folderName);
-            mFolder.open(OpenMode.READ_WRITE);
+            mFolder.open(Folder.OPEN_MODE_RW);
         } catch (MessagingException me) {
             Log.e(K9.LOG_TAG, "Unable to edit folder " + folderName + " preferences", me);
             return;

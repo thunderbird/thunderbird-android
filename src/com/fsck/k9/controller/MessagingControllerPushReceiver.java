@@ -8,7 +8,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.OpenMode;
+
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.store.LocalStore;
@@ -88,7 +88,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         try {
             LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folderName);
-            localFolder.open(OpenMode.READ_WRITE);
+            localFolder.open(Folder.OPEN_MODE_RW);
             return localFolder.getPushState();
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Unable to get push state from account " + account.getDescription()
