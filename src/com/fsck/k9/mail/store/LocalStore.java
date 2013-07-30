@@ -1512,7 +1512,7 @@ public class LocalStore extends Store implements Serializable {
                         }
                         Cursor cursor = null;
                         try {
-                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE (empty IS NULL OR empty != 1) AND deleted = 0 and folder_id = ?",
+                            cursor = db.rawQuery("SELECT COUNT(id) FROM messages WHERE (empty IS NULL OR empty != 1) AND deleted = 0 and folder_id = ?",
                                                  new String[] {
                                                      Long.toString(mFolderId)
                                                  });
@@ -1539,8 +1539,8 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                         int unreadMessageCount = 0;
-                        Cursor cursor = db.query("messages", new String[] { "SUM(read=0)" },
-                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                        Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0 AND read=0",
                                 new String[] { Long.toString(mFolderId) }, null, null, null);
 
                         try {
@@ -1570,8 +1570,8 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                         int flaggedMessageCount = 0;
-                        Cursor cursor = db.query("messages", new String[] { "SUM(flagged)" },
-                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                        Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0 AND flagged IS true",
                                 new String[] { Long.toString(mFolderId) }, null, null, null);
 
                         try {
