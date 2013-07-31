@@ -1923,8 +1923,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.position = cursor.getPosition();
 
             if (holder.contactBadge != null) {
-                holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                 if (counterpartyAddress != null) {
+                    holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                     /*
                      * At least in Android 2.2 a different background + padding is used when no
                      * email address is available. ListView reuses the views but QuickContactBadge
