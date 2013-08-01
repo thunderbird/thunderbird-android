@@ -155,7 +155,7 @@
     </target>
 
     <!-- rules -->
-    <target name="bump-version" depends="-set-version,-commit-version">
+    <target name="bump-version" depends="-set-version,-commit-version,-update-gh-pages-branch,-push-version">
         <echo>Bumped K-9 to ${version-name}</echo>
     </target>
 
@@ -166,6 +166,43 @@
         <exec executable="git" failonerror="true">
             <arg line="tag ${version-name}" />
         </exec>
+    </target>
+
+    <!-- Copy the changelog to the gh-pages branch. -->
+    <target name="-update-gh-pages-branch">
+        <!-- Check for a clean index, because it's about to be reset -->
+        <exec executable="git" failonerror="true">
+            <arg line="diff-index --cached --quiet HEAD" />
+        </exec>
+        <exec executable="git" failonerror="true" outputproperty="git-branch-ref" errorproperty="git-branch-ref-error">
+            <arg line="symbolic-ref HEAD" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="symbolic-ref HEAD refs/heads/gh-pages" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="reset -q" />
+        </exec>
+        <exec executable="git" failonerror="true" outputproperty="git-ls-tree" errorproperty="git-ls-tree-error">
+            <arg line="ls-tree ${git-branch-ref} res/xml/changelog_master.xml" />
+        </exec>
+        <regex property="changelog-path-dst" input="${git-branch-ref}" regexp=".*/([^/]+$)" select="changelog_\1_branch.xml" />
+        <regex property="git-index-info" input="${git-ls-tree}" regexp="(.*\t).*" select="\1${changelog-path-dst}" />
+        <exec executable="git" failonerror="true" inputstring="${git-index-info}">
+            <arg line="update-index --index-info" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="commit -m'Update changelog for version ${version-name}'" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="symbolic-ref HEAD ${git-branch-ref}" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="reset -q" />
+        </exec>
+    </target>
+
+    <target name="-push-version">
         <exec executable="git" failonerror="true">
             <arg line="push" />
         </exec>
