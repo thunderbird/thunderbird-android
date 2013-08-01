@@ -225,10 +225,7 @@
 
     <target name="-push-version">
         <exec executable="git" failonerror="true">
-            <arg line="push" />
-        </exec>
-        <exec executable="git" failonerror="true">
-            <arg line="push origin tag ${version-name}" />
+            <arg line="push origin HEAD gh-pages tag ${version-name}" />
         </exec>
     </target>
 
