@@ -130,17 +130,7 @@
         <regex property="version-name" input="${major}." regexp="(\d+.)" replace="\1${minor}" />
     </target>
 
-    <target name="-set-version" depends="-get-version-name,-get-version-code">
-        <!-- pass -Dversion-name=4.200 to define the version instead of auto-incrementing it -->
-        <if.contrib>
-            <isset property="version-name" />
-            <else>
-                <runtarget target="-auto-incr-version" />
-            </else>
-        </if.contrib>
-
-        <echo>Setting version to ${version-name}</echo>
-
+    <target name="-pre-bump-check" depends="-get-version-name,-auto-incr-version">
         <xpath
             input="${changelog-path-src}"
             expression="/changelog/release[@version='${version-name}']/@version"
@@ -163,6 +153,24 @@
             </else>
         </if.contrib>
 
+        <!-- Check for a clean index, because it will be reset in -update-gh-pages-branch -->
+        <exec executable="git" failonerror="true">
+            <arg line="diff-index --cached --quiet HEAD" />
+        </exec>
+
+    </target>
+
+    <target name="-set-version" depends="-get-version-name,-get-version-code">
+        <!-- pass -Dversion-name=4.200 to define the version instead of auto-incrementing it -->
+        <if.contrib>
+            <isset property="version-name" />
+            <else>
+                <runtarget target="-auto-incr-version" />
+            </else>
+        </if.contrib>
+
+        <echo>Setting version to ${version-name}</echo>
+
         <replace file="AndroidManifest.xml"
             token="android:versionName=&quot;${current-version-name}&quot;"
             value="android:versionName=&quot;${version-name}&quot;" summary="true"
@@ -176,7 +184,7 @@
     </target>
 
     <!-- rules -->
-    <target name="bump-version" depends="-set-version,-commit-version,-update-gh-pages-branch,-push-version">
+    <target name="bump-version" depends="-pre-bump-check,-set-version,-commit-version,-update-gh-pages-branch,-push-version">
         <echo>Bumped K-9 to ${version-name}</echo>
     </target>
 
@@ -191,10 +199,6 @@
 
     <!-- Copy the changelog to the gh-pages branch. -->
     <target name="-update-gh-pages-branch">
-        <!-- Check for a clean index, because it's about to be reset -->
-        <exec executable="git" failonerror="true">
-            <arg line="diff-index --cached --quiet HEAD" />
-        </exec>
         <exec executable="git" failonerror="true" outputproperty="git-branch-ref" errorproperty="git-branch-ref-error">
             <arg line="symbolic-ref HEAD" />
         </exec>
