@@ -1571,7 +1571,7 @@ public class LocalStore extends Store implements Serializable {
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                         int flaggedMessageCount = 0;
                         Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0 AND flagged IS true",
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0 AND flagged IS 1",
                                 new String[] { Long.toString(mFolderId) }, null, null, null);
 
                         try {
