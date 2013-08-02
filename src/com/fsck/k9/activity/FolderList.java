@@ -58,19 +58,19 @@ import de.cketti.library.changelog.ChangeLog;
  */
 
 public class FolderList extends K9ListActivity {
-    private static final String EXTRA_ACCOUNT = "account";
+    protected static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_FROM_SHORTCUT = "fromShortcut";
 
     private static final boolean REFRESH_REMOTE = true;
 
-    private ListView mListView;
+    protected ListView mListView;
 
-    private FolderListAdapter mAdapter;
+    protected FolderListAdapter mAdapter;
 
     private LayoutInflater mInflater;
 
-    private Account mAccount;
+    protected Account mAccount;
 
     private FolderListHandler mHandler = new FolderListHandler();
 
@@ -682,7 +682,7 @@ public class FolderList extends K9ListActivity {
         private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter();
-        private FolderHierarchyFilter mHierarchyFilter = new FolderHierarchyFilter();
+        private FolderHierarchyFilter mHierarchyFilter = new FolderListHierarchyFilter(mAccount.getPathDelimiter(), mFolders);
 
         public Object getItem(long position) {
             return getItem((int)position);
@@ -1239,81 +1239,9 @@ public class FolderList extends K9ListActivity {
             return mHierarchyFilter;
         }
 
-        public class FolderHierarchyFilter extends Filter {
-            private String mCurrentFolder;
-            private String mPathDelimiter;
-
-            public FolderHierarchyFilter() {
-                super();
-                mCurrentFolder = "";
-                mPathDelimiter = mAccount.getPathDelimiter();
-                Log.d(K9.LOG_TAG, "FolderHierarchyFilter got path delimiter: " + mPathDelimiter);
-            }
-
-            public String getFolder() {
-                return mCurrentFolder;
-            }
-
-            public String getPathDelimiter() {
-                return mPathDelimiter;
-            }
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-
-                String folder;
-                if (constraint == null)
-                    folder = mCurrentFolder;
-                else if (constraint.equals(""))
-                    folder = "";
-                else
-                    folder = constraint.toString() + getPathDelimiter();
-
-                Log.d("FOLDER", "FolderHierarchyFilter.performFiltering(" + folder + ")");
-                mCurrentFolder = folder;
-                FilterResults results = new FilterResults();
-
-                final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
-
-                if (!K9.folderHierarchy()) { // no folder hierarchy
-                    Log.d("FOLDERS", "no hierarchy");
-                    newValues.ensureCapacity(mFolders.size());
-
-                    for (final FolderInfoHolder value : mFolders)
-                        if (value.displayName != null)
-                            newValues.add(value);
-                }
-                else { // with folder hierarchy
-                    Log.d("FOLDERS", "working on building hierarchy for " + mFolders.size() + " folders");
-                    for (final FolderInfoHolder value : mFolders) {
-                        if (value.displayName == null) {
-                            continue;
-                        }
-
-                        if (value.name.startsWith(folder) && !value.name.equals(folder)) { // only display stuff in the current folder
-                            String subname = value.name.substring(folder.length());
-
-                            if (subname.indexOf(getPathDelimiter()) != -1) { // a subsubfolder
-                                //Log.d("FOLDER", "Skipping subsubfolder " + value.name);
-                            }
-                            else {
-                                //Log.d("FOLDER", "including " + value.name + " displayname: " + value.displayName);
-
-                                if (value.name.equals(value.displayName))
-                                    value.displayName = subname;
-
-                                newValues.add(value);
-                            }
-                        }
-                       // else
-                       //     Log.d("FOLDER", "Skipping not in current path " + value.displayName);
-                    }
-                }
-
-                results.values = newValues;
-                results.count = newValues.size();
-
-                return results;
+        public class FolderListHierarchyFilter extends FolderHierarchyFilter {
+            FolderListHierarchyFilter(String pathDelimiter, ArrayList<FolderInfoHolder> folders) {
+                super(pathDelimiter, folders);
             }
 
             @Override
@@ -1430,6 +1358,105 @@ public class FolderList extends K9ListActivity {
             MessageList.actionDisplaySearch(FolderList.this, search, true, false);
         }
     }
+
+
+    protected class FolderHierarchyFilter extends Filter {
+        private String mCurrentFolder;
+        private String mPathDelimiter;
+        private ArrayList<FolderInfoHolder> mFolders;
+
+        public FolderHierarchyFilter(String pathDelimiter, ArrayList<FolderInfoHolder> folders) {
+            super();
+            mCurrentFolder = "";
+            mPathDelimiter = pathDelimiter;
+            Log.d(K9.LOG_TAG, "FolderHierarchyFilter got path delimiter: " + mPathDelimiter);
+            mFolders = folders;
+        }
+
+        public String getFolder() {
+            return mCurrentFolder;
+        }
+
+        public String getPathDelimiter() {
+            return mPathDelimiter;
+        }
+
+        public void filterParent(String folder) {
+            String parent = "";
+            try {
+                int index = folder.lastIndexOf(mPathDelimiter);
+                if (index != -1)
+                    parent = folder.substring(0, index);
+            }
+            catch (NullPointerException e) {
+            }
+
+            filter(parent);
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            String folder;
+            if (constraint == null)
+                folder = mCurrentFolder;
+            else if (constraint.equals(""))
+                folder = "";
+            else
+                folder = constraint.toString() + getPathDelimiter();
+
+            Log.d("FOLDER", "FolderHierarchyFilter.performFiltering(" + folder + ")");
+            mCurrentFolder = folder;
+            FilterResults results = new FilterResults();
+
+            final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
+
+            if (!K9.folderHierarchy()) { // no folder hierarchy
+                Log.d("FOLDERS", "no hierarchy");
+                newValues.ensureCapacity(mFolders.size());
+
+                for (final FolderInfoHolder value : mFolders)
+                    if (value.displayName != null)
+                        newValues.add(value);
+            }
+            else { // with folder hierarchy
+                Log.d("FOLDERS", "working on building hierarchy for " + mFolders.size() + " folders");
+                for (final FolderInfoHolder value : mFolders) {
+                    if (value.displayName == null) {
+                        continue;
+                    }
+
+                    if (value.name.startsWith(folder) && !value.name.equals(folder)) { // only display stuff in the current folder
+                        String subname = value.name.substring(folder.length());
+
+                        if (subname.indexOf(getPathDelimiter()) != -1) { // a subsubfolder
+                            //Log.d("FOLDER", "Skipping subsubfolder " + value.name);
+                        }
+                        else {
+                            //Log.d("FOLDER", "including " + value.name + " displayname: " + value.displayName);
+
+                            if (value.name.equals(value.displayName))
+                                value.displayName = subname;
+
+                            newValues.add(value);
+                        }
+                    }
+                    // else
+                    //     Log.d("FOLDER", "Skipping not in current path " + value.displayName);
+                }
+            }
+
+            results.values = newValues;
+            results.count = newValues.size();
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+        }
+    }
+
 
     private class FakeFolder extends Folder {
         String name;
