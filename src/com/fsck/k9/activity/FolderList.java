@@ -465,7 +465,7 @@ public class FolderList extends K9ListActivity {
                 return;
             }
             localFolder = account.getLocalStore().getFolder(folderName);
-            localFolder.open(Folder.OpenMode.READ_WRITE);
+            localFolder.open(Folder.OPEN_MODE_RW);
             localFolder.clearAllMessages();
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Exception while clearing folder", e);

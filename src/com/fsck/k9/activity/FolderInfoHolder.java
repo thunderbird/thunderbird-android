@@ -69,7 +69,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     public void populate(Context context, Folder folder, Account account, int unreadCount) {
 
         try {
-            folder.open(Folder.OpenMode.READ_WRITE);
+            folder.open(Folder.OPEN_MODE_RW);
             //  unreadCount = folder.getUnreadMessageCount();
         } catch (MessagingException me) {
             Log.e(K9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);

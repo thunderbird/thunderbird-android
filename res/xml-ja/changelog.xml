@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.508" versioncode="18008" >
+        <change>一時的に共有のメニューの位置を戻しました</change>
+    </release>
+    <release version="4.507" versioncode="18007" >
+        <change>ロシアのISPのために自動設定を追加しました</change>
+        <change>ポーランド語とスロバキア語の翻訳を更新しました</change>
+        <change>性能を向上しました</change>
+        <change>ビルドシステムを改善しました</change>
+        <change>見つけやすいように共有メニューを一つ上のレベルに移動しました</change>
+    </release>
     <release version="4.506" versioncode="18006" >
         <change>パフォーマンスを改善しました</change>
         <change>Fastmail.FMのための自動設定を追加しました</change>

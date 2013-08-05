@@ -33,17 +33,6 @@ public class ContactPictureLoader {
      */
     private static final int PICTURE_SIZE = 40;
 
-    /**
-     * Maximum number of email addresses to store in {@link #mUnknownContactsCache}.
-     */
-    private static final int MAX_UNKNOWN_CONTACTS = 1000;
-
-    /**
-     * Used as lightweight dummy value for entries in {@link #mUnknownContactsCache}.
-     */
-    private static final int[] DUMMY_INT_ARRAY = new int[0];
-
-
     private ContentResolver mContentResolver;
     private Resources mResources;
     private Contacts mContactsHelper;
@@ -55,18 +44,20 @@ public class ContactPictureLoader {
     private final LruCache<String, Bitmap> mBitmapCache;
 
     /**
-     * LRU cache of email addresses that don't belong to a contact we have a picture for.
-     *
-     * <p>
-     * We don't store the default picture for unknown contacts or contacts without a picture in
-     * {@link #mBitmapCache}, because that would lead to an unnecessarily complex implementation of
-     * the {@code LruCache.sizeOf()} method. Instead, we save the email addresses we know don't
-     * belong to one of our contacts with a picture. Knowing this, we can avoid querying the
-     * contacts database for those addresses and immediately return the default picture.
-     * </p>
+     * @see <a href="http://developer.android.com/design/style/color.html">Color palette used</a>
      */
-    private final LruCache<String, int[]> mUnknownContactsCache;
-
+    private final static int CONTACT_DUMMY_COLORS_ARGB[] = {
+        0xff33B5E5,
+        0xffAA66CC,
+        0xff99CC00,
+        0xffFFBB33,
+        0xffFF4444,
+        0xff0099CC,
+        0xff9933CC,
+        0xff669900,
+        0xffFF8800,
+        0xffCC0000
+    };
 
     public ContactPictureLoader(Context context, int defaultPictureResource) {
         Context appContext = context.getApplicationContext();
@@ -95,8 +86,6 @@ public class ContactPictureLoader {
                 return bitmap.getRowBytes() * bitmap.getHeight();
             }
         };
-
-        mUnknownContactsCache = new LruCache<String, int[]>(MAX_UNKNOWN_CONTACTS);
     }
 
     /**
@@ -120,15 +109,11 @@ public class ContactPictureLoader {
      * @see #mUnknownContactsCache
      */
     public void loadContactPicture(Address address, QuickContactBadge badge) {
-	String email = address.getAddress();
+    	String email = address.getAddress();
         Bitmap bitmap = getBitmapFromCache(email);
         if (bitmap != null) {
             // The picture was found in the bitmap cache
             badge.setImageBitmap(bitmap);
-        } else if (isEmailInUnknownContactsCache(email)) {
-            // This email address doesn't belong to a contact we have a picture for. Use the
-            // default picture.
-            badge.setImageBitmap(calculateFallbackBitmap(address));
         } else if (cancelPotentialWork(email, badge)) {
             // Query the contacts database in a background thread and try to load the contact
             // picture, if there is one.
@@ -143,56 +128,51 @@ public class ContactPictureLoader {
             }
         }
     }
-
+    
     private int calcUnknownContactColor(Address address) {
-	int val = address.getAddress().toLowerCase().hashCode();
-	int rgb =
-			(0xff) << 24 |
-			(~val & 0xff) << 16 |
-			(val & 0xff) << 8 |
-			(val>>>8 & 0xff);
-	return rgb;
+        int val = address.getAddress().toLowerCase().hashCode();
+        int rgb = CONTACT_DUMMY_COLORS_ARGB[Math.abs(val) % CONTACT_DUMMY_COLORS_ARGB.length];
+    	return rgb;
     }
-
+    
     private char calcUnknownContactLetter(Address address) {
-	String letter = "";
-	Pattern p = Pattern.compile("[^a-zA-Z]*([a-zA-Z]).*");
-	String str = address.getPersonal() != null ? address.getPersonal() : address.getAddress();
-	Matcher m = p.matcher(str);
-	if (m.matches()) {
-		letter = m.group(1).toUpperCase();
-	}
-
-	return letter.length() == 0 ? 'K' : letter.charAt(0);
+    	String letter = "";
+    	Pattern p = Pattern.compile("[^a-zA-Z]*([a-zA-Z]).*");
+    	String str = address.getPersonal() != null ? address.getPersonal() : address.getAddress();
+    	Matcher m = p.matcher(str);
+    	if (m.matches()) {
+    		letter = m.group(1).toUpperCase();
+    	}
+    	
+        return letter.length() == 0 ? '?' : letter.charAt(0);
     }
-
+    
     /** Calculates a bitmap with a color and a capital letter for
      * contacts without picture.
      * */
     private Bitmap calculateFallbackBitmap(Address address) {
-	Bitmap result = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx, Bitmap.Config.ARGB_8888);
-
-	Canvas canvas = new Canvas(result);
-
-	int rgb = calcUnknownContactColor(address);
-	result.eraseColor(rgb);
-
-	String letter = Character.toString(calcUnknownContactLetter(address));
-
-	Paint paint = new Paint();
-	paint.setAntiAlias(true);
-	paint.setStyle(Paint.Style.FILL);
-	paint.setARGB(255, 255, 255, 255);
-	paint.setFakeBoldText(true);
-	paint.setTextSize(mPictureSizeInPx);
-	Rect rect = new Rect();
-	paint.getTextBounds(letter, 0, 1, rect);
-	float width = paint.measureText(letter);
-	canvas.drawText(letter,
-			mPictureSizeInPx/2f-width/2f,
-			mPictureSizeInPx/2f+rect.height()/2f, paint);
-
-	return result;
+    	Bitmap result = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx, Bitmap.Config.ARGB_8888);
+    	
+    	Canvas canvas = new Canvas(result);
+    	
+    	int rgb = calcUnknownContactColor(address);
+    	result.eraseColor(rgb);
+    	
+    	String letter = Character.toString(calcUnknownContactLetter(address));
+    	
+    	Paint paint = new Paint();
+    	paint.setAntiAlias(true);
+    	paint.setStyle(Paint.Style.FILL);
+    	paint.setARGB(255, 255, 255, 255);
+        paint.setTextSize(mPictureSizeInPx * 3 / 4); // just scale this down a bit
+    	Rect rect = new Rect();
+    	paint.getTextBounds(letter, 0, 1, rect);
+    	float width = paint.measureText(letter);
+    	canvas.drawText(letter, 
+    			mPictureSizeInPx/2f-width/2f, 
+    			mPictureSizeInPx/2f+rect.height()/2f, paint);
+    	
+    	return result;
     }
 
     private void addBitmapToCache(String key, Bitmap bitmap) {
@@ -203,16 +183,6 @@ public class ContactPictureLoader {
 
     private Bitmap getBitmapFromCache(String key) {
         return mBitmapCache.get(key);
-    }
-
-    private void addEmailToUnknownContactsCache(String key) {
-        if (!isEmailInUnknownContactsCache(key)) {
-            mUnknownContactsCache.put(key, DUMMY_INT_ARRAY);
-        }
-    }
-
-    private boolean isEmailInUnknownContactsCache(String key) {
-        return mUnknownContactsCache.get(key) != null;
     }
 
     /**
@@ -313,10 +283,9 @@ public class ContactPictureLoader {
             }
 
             if (bitmap == null) {
-		bitmap = calculateFallbackBitmap(mAddress);
-
+            	bitmap = calculateFallbackBitmap(mAddress);
                 // Remember that we don't have a contact picture for this email address
-                addEmailToUnknownContactsCache(email);
+                addBitmapToCache(email, bitmap);
             } else {
                 // Save the picture of the contact with that email address in the memory cache
                 addBitmapToCache(email, bitmap);

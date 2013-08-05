@@ -17,9 +17,10 @@ public abstract class Folder {
     private String status = null;
     private long lastChecked = 0;
     private long lastPush = 0;
-    public enum OpenMode {
-        READ_WRITE, READ_ONLY,
-    }
+
+    public static final int OPEN_MODE_RW=0;
+    public static final int OPEN_MODE_RO=0;
+
     // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
     public enum FolderClass {
         NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS
@@ -39,7 +40,7 @@ public abstract class Folder {
      *
      * @param mode READ_ONLY or READ_WRITE
      */
-    public abstract void open(OpenMode mode) throws MessagingException;
+    public abstract void open(int mode) throws MessagingException;
 
     /**
      * Forces a close of the MailProvider. Any further access will attempt to
@@ -58,7 +59,7 @@ public abstract class Folder {
      * was requested with.
      * @return
      */
-    public abstract OpenMode getMode();
+    public abstract int getMode();
 
     public abstract boolean create(FolderType type) throws MessagingException;
 

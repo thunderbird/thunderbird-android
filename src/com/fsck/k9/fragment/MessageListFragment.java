@@ -85,7 +85,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.OpenMode;
+
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
@@ -1024,7 +1024,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         try {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolderById(folderId);
-            localFolder.open(OpenMode.READ_ONLY);
+            localFolder.open(Folder.OPEN_MODE_RO);
             return localFolder;
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "getFolderNameById() failed.", e);
@@ -1923,8 +1923,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.position = cursor.getPosition();
 
             if (holder.contactBadge != null) {
-                holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                 if (counterpartyAddress != null) {
+                    holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                     /*
                      * At least in Android 2.2 a different background + padding is used when no
                      * email address is available. ListView reuses the views but QuickContactBadge

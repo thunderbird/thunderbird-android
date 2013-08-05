@@ -8,7 +8,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.Folder.OpenMode;
+
 import com.fsck.k9.mail.internet.MimeMessage;
 
 import javax.net.ssl.SSLContext;
@@ -270,7 +270,7 @@ public class Pop3Store extends Store {
     @Override
     public void checkSettings() throws MessagingException {
         Pop3Folder folder = new Pop3Folder(mAccount.getInboxFolderName());
-        folder.open(OpenMode.READ_WRITE);
+        folder.open(Folder.OPEN_MODE_RW);
         if (!mCapabilities.uidl) {
             /*
              * Run an additional test to see if UIDL is supported on the server. If it's not we
@@ -312,7 +312,7 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public synchronized void open(OpenMode mode) throws MessagingException {
+        public synchronized void open(int mode) throws MessagingException {
             if (isOpen()) {
                 return;
             }
@@ -417,8 +417,8 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public OpenMode getMode() {
-            return OpenMode.READ_WRITE;
+        public int getMode() {
+            return Folder.OPEN_MODE_RW;
         }
 
         @Override
@@ -1020,7 +1020,7 @@ public class Pop3Store extends Store {
 
         private String executeSimpleCommand(String command, boolean sensitive) throws MessagingException {
             try {
-                open(OpenMode.READ_WRITE);
+                open(Folder.OPEN_MODE_RW);
 
                 if (command != null) {
                     if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
