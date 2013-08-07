@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.409" versioncode="17046" >
+        <change>長くK-9を利用してきたユーザ達からVer4.4でメッセージ表示にかかる時間が信じられないくらい遅いとの報告がありました。私達はまだその問題を再現するデバイスを持っていないので、適切な修正ができていません。この事象を改善する一つの手段は、アカウント一覧でアカウント名を長押しし、"アカウント再作成"を選択することです。これはデバイスのローカルにコピーされたあなたのメールを完全に削除しサーバからコピーを再ダウンロードします。あなたのデバイスにあるどのメールもサーバからは削除されません(IMAPの場合)</change>
+        <change>高密度なメッセージリストは今はグローバル設定のプレビュー行数を0に設定し、連絡先の画像を表示しない設定にしたときだけ表示されます</change>
+        <change>新たにスロバキア語の翻訳を追加しました</change>
+        <change>チェコ語、スペイン語、フィンランド語、フランス語、韓国語、ポーランド語、ロシア語の翻訳を更新しました</change>
+        <change>SSL/TLS や STARTTLS のためのラベルを明確にしました</change>
+        <change>Fastmail.FMのための自動設定を追加しました</change>
+        <change>狭いデバイスのためにアカウント一覧の表示を引き締めました</change>
+    </release>
+    <release version="4.408" versioncode="17045" >
+        <change>連絡先の画像が無効でメッセージリストのプレビュー行数を0に設定しているときに、高密度のメッセージリストを復活させました</change>
+    </release>
+    <release version="4.407" versioncode="17044" >
+        <change>4.406で変更履歴が表示されない間違いを修正しました</change>
+    </release>
+    <release version="4.406" versioncode="17043" >
+        <change>ロシアのISPのために自動設定を追加しました</change>
+        <change>メッセージを開いて既読にするときの性能を改善しました</change>
+        <change>Google PlayのURLを更新しました</change>
+        <change>メッセージ表示の性能を改善しました</change>
+        <change>Android support libraryを最新版に更新しました</change>
+        <change>メッセージリストのコンテキストメニューから開始したアクションが他のメッセージに対して処理するバグを修正しました</change>
+    </release>
+    <release version="4.405" versioncode="17042" >
+        <change>カタロニア語、中国語、ロシア語の翻訳を更新しました</change>
+        <change>ある壊れたPOP3サーバに対処しました</change>
+        <change>性能を改善しました</change>
+    </release>
     <release version="4.404" versioncode="17041" >
         <change>ある限定された状況でK-9がクラッシュするバグを修正しました</change>
         <change>新しいフォルダメニューの項目のバグを修正しました</change>
