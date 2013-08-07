@@ -4010,11 +4010,15 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public void writeTo(OutputStream out) throws IOException, MessagingException {
             InputStream in = getInputStream();
-            Base64OutputStream base64Out = new Base64OutputStream(out);
             try {
-                IOUtils.copy(in, base64Out);
+                Base64OutputStream base64Out = new Base64OutputStream(out);
+                try {
+                    IOUtils.copy(in, base64Out);
+                } finally {
+                    base64Out.close();
+                }
             } finally {
-                base64Out.close();
+                in.close();
             }
         }
 
