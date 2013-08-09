@@ -504,6 +504,10 @@ public class Account implements BaseAccount {
 
         cacheChips();
 
+        // Use email address as account description if necessary
+        if (mDescription == null) {
+            mDescription = getEmail();
+        }
     }
 
     protected synchronized void delete(Preferences preferences) {
