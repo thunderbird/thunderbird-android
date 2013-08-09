@@ -498,10 +498,8 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand("DATA");
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                new SmtpDataStuffing(
-                    new LineWrapOutputStream(
-                        new BufferedOutputStream(mOut, 1024),
-                        1000)));
+                    new LineWrapOutputStream(new SmtpDataStuffing(
+                            new BufferedOutputStream(mOut, 1024)), 1000));
 
             message.writeTo(msgOut);
 
