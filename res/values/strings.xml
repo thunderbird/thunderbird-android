@@ -130,6 +130,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="spam_action">Spam</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
+    <string name="folder_selected">Selected folder</string>
     <string name="single_message_options_action">Send</string>
     <string name="refile_action">Refile</string>
     <string name="continue_action">Continue</string>

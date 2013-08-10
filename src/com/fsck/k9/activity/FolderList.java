@@ -77,7 +77,7 @@ public class FolderList extends K9ListActivity {
     private int mUnreadMessageCount;
 
     private FontSizes mFontSizes = K9.getFontSizes();
-    private Context context;
+    protected Context context;
 
     private MenuItem mRefreshMenuItem;
     private View mActionBarProgressView;

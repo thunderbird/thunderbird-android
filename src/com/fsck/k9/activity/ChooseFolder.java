@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
+import com.fsck.k9.R;
 
 public class ChooseFolder extends FolderList {
     public static final String EXTRA_ACCOUNT = FolderList.EXTRA_ACCOUNT;
@@ -38,6 +40,9 @@ public class ChooseFolder extends FolderList {
 
                 setResult(RESULT_OK, result);
                 finish();
+
+                Toast toast = Toast.makeText(context, context.getString(R.string.folder_selected) + " " + ((FolderInfoHolder) mAdapter.getItem(position)).name, Toast.LENGTH_LONG);
+                toast.show();
             }
         });
     }
