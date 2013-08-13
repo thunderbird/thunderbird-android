@@ -200,6 +200,9 @@ public class GlobalSettings {
         s.put("wrapFolderNames", Settings.versions(
                 new V(22, new BooleanSetting(false))
             ));
+        s.put("folderHierarchy", Settings.versions(
+                new V(29, new BooleanSetting(true))
+            ));
         s.put("notificationHideSubject", Settings.versions(
                 new V(12, new EnumSetting<NotificationHideSubject>(
                         NotificationHideSubject.class, NotificationHideSubject.NEVER))

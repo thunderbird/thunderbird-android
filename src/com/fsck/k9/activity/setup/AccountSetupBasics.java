@@ -224,6 +224,7 @@ public class AccountSetupBasics extends K9Activity
                 mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
             }
             mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
+
             if (incomingUri.toString().startsWith("imap")) {
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
             } else if (incomingUri.toString().startsWith("pop3")) {

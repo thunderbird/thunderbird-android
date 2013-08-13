@@ -8,6 +8,7 @@
     android:paddingRight="4dip"
     android:paddingBottom="2dip"
     android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants"
     android:gravity="center_vertical" >
 
     <View
@@ -48,4 +49,5 @@
     </LinearLayout>
 
     <include layout="@layout/accounts_folders_icons" />
+    <include layout="@layout/folder_list_subfolder"/>
 </LinearLayout>

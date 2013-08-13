@@ -149,6 +149,7 @@
             android:name=".activity.ChooseFolder"
             android:theme="@style/Theme.K9Dialog"
             android:label="@string/choose_folder_title"
+            android:uiOptions="splitActionBarWhenNarrow"
             android:configChanges="locale"
             android:noHistory="true"
             >

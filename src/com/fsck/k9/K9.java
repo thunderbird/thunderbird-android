@@ -250,6 +250,7 @@ public class K9 extends Application {
     private static String mQuietTimeEnds = null;
     private static String mAttachmentDefaultPath = "";
     private static boolean mWrapFolderNames = false;
+    private static boolean mFolderHierarchy = true;
 
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
@@ -514,6 +515,7 @@ public class K9 extends Application {
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
         editor.putBoolean("messageViewShowNext", mMessageViewShowNext);
         editor.putBoolean("wrapFolderNames", mWrapFolderNames);
+        editor.putBoolean("folderHierarchy", mFolderHierarchy);
 
         editor.putString("language", language);
         editor.putInt("theme", theme.ordinal());
@@ -708,6 +710,7 @@ public class K9 extends Application {
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
         mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
         mWrapFolderNames = sprefs.getBoolean("wrapFolderNames", false);
+        mFolderHierarchy = sprefs.getBoolean("folderHierarchy", true);
 
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
@@ -1241,6 +1244,13 @@ public class K9 extends Application {
     }
     public static void setWrapFolderNames(final boolean state) {
         mWrapFolderNames = state;
+    }
+
+    public static boolean folderHierarchy() {
+        return mFolderHierarchy;
+    }
+    public static void setFolderHierarchy(final boolean state) {
+        mFolderHierarchy = state;
     }
 
     public static String getAttachmentDefaultPath() {

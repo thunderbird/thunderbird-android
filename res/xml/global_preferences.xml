@@ -123,6 +123,14 @@
                 android:title="@string/global_settings_folderlist_wrap_folder_names_label"
                 android:summary="@string/global_settings_folderlist_wrap_folder_names_summary" />
 
+            <CheckBoxPreference
+                    android:persistent="false"
+                    android:key="folderlist_hierarchy"
+                    android:title="@string/global_settings_folderlist_hierarchy_label"
+                    android:summary="@string/global_settings_folderlist_hierarchy_summary" />
+
+
+
         </PreferenceCategory>
 
         <PreferenceCategory

@@ -84,6 +84,7 @@ public class WebDavStore extends Store {
     private static final String DAV_MAIL_OUTBOX_FOLDER = "outbox";
     private static final String DAV_MAIL_SENT_FOLDER = "sentitems";
 
+    private static final String mPathDelimiter = "/";
 
     /**
      * Decodes a WebDavStore URI.
@@ -454,6 +455,8 @@ public class WebDavStore extends Store {
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SENT_FOLDER));
         if (folderName != null)
             mAccount.setSentFolderName(folderName);
+
+        mAccount.setPathDelimiter(mPathDelimiter);
 
         /**
          * Next we get all the folders (including "special" ones)
@@ -1268,9 +1271,14 @@ public class WebDavStore extends Store {
         }
     }
 
-    /*************************************************************************
-     * Helper and Inner classes
-     */
+    @Override
+    public String getPathDelimiter() {
+        return mPathDelimiter;
+    }
+
+        /*************************************************************************
+         * Helper and Inner classes
+         */
 
     /**
      * A WebDav Folder

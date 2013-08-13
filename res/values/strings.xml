@@ -130,6 +130,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="spam_action">Spam</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
+    <string name="folder_selected">Selected folder</string>
     <string name="single_message_options_action">Send</string>
     <string name="refile_action">Refile</string>
     <string name="continue_action">Continue</string>
@@ -319,6 +320,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_registered_name_color_changed">Colorize names in your contact list</string>
     <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>
     <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>
+    <string name="global_settings_folderlist_hierarchy_label">Hierarchical folder list</string>
+    <string name="global_settings_folderlist_hierarchy_summary">Show folder tree as hierarchy rather than as a flat list.</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
