@@ -62,6 +62,8 @@ public class FolderList extends K9ListActivity {
 
     private static final String EXTRA_FROM_SHORTCUT = "fromShortcut";
 
+    private static final String CURRENT_FOLDER = "hierarchyFilterFolder";
+
     private static final boolean REFRESH_REMOTE = true;
 
     protected ListView mListView;
@@ -278,6 +280,22 @@ public class FolderList extends K9ListActivity {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // persist which folder is currently open over a device rotation
+        outState.putString(CURRENT_FOLDER, mAdapter.getHierarchyFilter().getFolder());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // restore which folder is currently open after a device rotation
+        mAdapter.getHierarchyFilter().setFolder(savedInstanceState.getString(CURRENT_FOLDER, null));
+    }
+
     private void initializeActionBar() {
         mActionBar.setDisplayShowCustomEnabled(true);
         mActionBar.setCustomView(R.layout.actionbar_custom);
@@ -315,21 +333,9 @@ public class FolderList extends K9ListActivity {
 
     private void initializeActivityView() {
         mAdapter = new FolderListAdapter();
-        restorePreviousData();
         setListAdapter(mAdapter);
         getListView().setTextFilterEnabled(mAdapter.getFilter() != null); // should never be false but better safe then sorry
     }
-
-    @SuppressWarnings("unchecked")
-    private void restorePreviousData() {
-        final Object previousData = getLastNonConfigurationInstance();
-
-        if (previousData != null) {
-            mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
-            mAdapter.mFilteredFolders = Collections.unmodifiableList(mAdapter.mFolders);
-        }
-    }
-
 
     @Override public Object onRetainNonConfigurationInstance() {
         return (mAdapter == null) ? null : mAdapter.mFolders;
@@ -1333,6 +1339,13 @@ public class FolderList extends K9ListActivity {
 
         public String getFolder() {
             return mCurrentFolder;
+        }
+
+        public void setFolder(String folder) {
+            if (folder != null)
+                mCurrentFolder = folder;
+            else if (mCurrentFolder == null)
+                mCurrentFolder = "";
         }
 
         public String getPathDelimiter() {
