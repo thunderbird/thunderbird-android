@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -90,6 +91,7 @@ public class LocalStore extends Store implements Serializable {
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * a String containing the columns getMessages expects to work with
@@ -3984,8 +3986,39 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
+    public static class TempFileBody implements Body {
+        private final File mFile;
+
+        public TempFileBody(String filename) {
+            mFile = new File(filename);
+        }
+
+        @Override
+        public InputStream getInputStream() throws MessagingException {
+            try {
+                return new FileInputStream(mFile);
+            } catch (FileNotFoundException e) {
+                return new ByteArrayInputStream(EMPTY_BYTE_ARRAY);
+            }
+        }
+
+        @Override
+        public void writeTo(OutputStream out) throws IOException, MessagingException {
+            InputStream in = getInputStream();
+            try {
+                Base64OutputStream base64Out = new Base64OutputStream(out);
+                try {
+                    IOUtils.copy(in, base64Out);
+                } finally {
+                    base64Out.close();
+                }
+            } finally {
+                in.close();
+            }
+        }
+    }
+
     public static class LocalAttachmentBody implements Body {
-        private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
         private Application mApplication;
         private Uri mUri;
 
