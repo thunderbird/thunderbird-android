@@ -564,7 +564,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_settings_crypto_auto_signature_summary">E-Mail-Adresse des Kontos verwenden, um den Signaturschlüssel zu finden</string>
     <string name="account_settings_crypto_auto_encrypt">Automatische Verschlüsselung</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Automatisch verschlüsseln, falls für den Empfänger ein öffentlicher Schlüssel vorhanden ist</string>
-    <string name="account_settings_crypto_apg_not_installed">AGP ist nicht installiert</string>
+    <string name="account_settings_crypto_apg_not_installed">APG ist nicht installiert</string>
 
     <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
 

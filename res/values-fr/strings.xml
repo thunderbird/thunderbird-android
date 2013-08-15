@@ -87,7 +87,7 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera supprimé de K-9 Mail.</string>
     <string name="account_recreate_dlg_instructions_fmt">Toutes les données du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacées de K-9 Mail, mais les paramètres seront conservés.</string>
     <string name="account_clear_dlg_instructions_fmt">Tous les messages du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacés de K-9 Mail, mais les paramètres seront conservés.</string>
-    <string name="insufficient_apg_permissions">K-9 Mail n\'a pas la permission d\'accéder à AGP, veuillez réinstaller K-9 Mail pour corriger cela.</string>
+    <string name="insufficient_apg_permissions">K-9 Mail n\'a pas la permission d\'accéder à APG, veuillez réinstaller K-9 Mail pour corriger cela.</string>
 
 
 
