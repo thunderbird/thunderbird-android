@@ -92,21 +92,20 @@ public class ContactPictureLoader {
      * Load a contact picture and display it using the supplied {@link QuickContactBadge} instance.
      *
      * <p>
-     * If the supplied email address doesn't belong to any of our contacts, the default picture is
-     * returned. If the picture is found in the cache, it is displayed in the
-     * {@code QuickContactBadge} immediately. Otherwise a {@link ContactPictureRetrievalTask} is
-     * started to try to load the contact picture in a background thread. The picture is then
-     * stored in the bitmap cache or the email address is stored in the "unknown contacts cache" if
-     * it doesn't belong to one of our contacts.
+     * If a picture is found in the cache, it is displayed in the {@code QuickContactBadge}
+     * immediately. Otherwise a {@link ContactPictureRetrievalTask} is started to try to load the
+     * contact picture in a background thread. Depending on the result the contact picture or a
+     * fallback picture is then stored in the bitmap cache.
      * </p>
      *
-     * @param email
-     *         The email address that is used to search the contacts database.
+     * @param address
+     *         The {@link Address} instance holding the email address that is used to search the
+     *         contacts database.
      * @param badge
      *         The {@code QuickContactBadge} instance to receive the picture.
      *
      * @see #mBitmapCache
-     * @see #mUnknownContactsCache
+     * @see #calculateFallbackBitmap(Address)
      */
     public void loadContactPicture(Address address, QuickContactBadge badge) {
     	String email = address.getAddress();
@@ -118,23 +117,24 @@ public class ContactPictureLoader {
             // Query the contacts database in a background thread and try to load the contact
             // picture, if there is one.
             ContactPictureRetrievalTask task = new ContactPictureRetrievalTask(badge);
-            AsyncDrawable asyncDrawable = new AsyncDrawable(mResources, calculateFallbackBitmap(address), task);
+            AsyncDrawable asyncDrawable = new AsyncDrawable(mResources,
+                    calculateFallbackBitmap(address), task);
             badge.setImageDrawable(asyncDrawable);
             try {
                 task.exec(address.getAddress(), address.getPersonal());
             } catch (RejectedExecutionException e) {
-                // We flooded the thread pool queue... fall back to using the default picture
+                // We flooded the thread pool queue... use a fallback picture
                 badge.setImageBitmap(calculateFallbackBitmap(address));
             }
         }
     }
-    
+
     private int calcUnknownContactColor(Address address) {
         int val = address.getAddress().toLowerCase().hashCode();
         int rgb = CONTACT_DUMMY_COLORS_ARGB[Math.abs(val) % CONTACT_DUMMY_COLORS_ARGB.length];
     	return rgb;
     }
-    
+
     private char calcUnknownContactLetter(Address address) {
     	String letter = "";
     	Pattern p = Pattern.compile("[^a-zA-Z]*([a-zA-Z]).*");
@@ -143,23 +143,24 @@ public class ContactPictureLoader {
     	if (m.matches()) {
     		letter = m.group(1).toUpperCase();
     	}
-    	
+
         return letter.length() == 0 ? '?' : letter.charAt(0);
     }
-    
-    /** Calculates a bitmap with a color and a capital letter for
-     * contacts without picture.
-     * */
+
+    /**
+     * Calculates a bitmap with a color and a capital letter for contacts without picture.
+     */
     private Bitmap calculateFallbackBitmap(Address address) {
-    	Bitmap result = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx, Bitmap.Config.ARGB_8888);
-    	
+    	Bitmap result = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx,
+                Bitmap.Config.ARGB_8888);
+
     	Canvas canvas = new Canvas(result);
-    	
+
     	int rgb = calcUnknownContactColor(address);
     	result.eraseColor(rgb);
-    	
+
     	String letter = Character.toString(calcUnknownContactLetter(address));
-    	
+
     	Paint paint = new Paint();
     	paint.setAntiAlias(true);
     	paint.setStyle(Paint.Style.FILL);
@@ -168,10 +169,10 @@ public class ContactPictureLoader {
     	Rect rect = new Rect();
     	paint.getTextBounds(letter, 0, 1, rect);
     	float width = paint.measureText(letter);
-    	canvas.drawText(letter, 
-    			mPictureSizeInPx/2f-width/2f, 
+    	canvas.drawText(letter,
+    			mPictureSizeInPx/2f-width/2f,
     			mPictureSizeInPx/2f+rect.height()/2f, paint);
-    	
+
     	return result;
     }
 
@@ -284,12 +285,10 @@ public class ContactPictureLoader {
 
             if (bitmap == null) {
             	bitmap = calculateFallbackBitmap(mAddress);
-                // Remember that we don't have a contact picture for this email address
-                addBitmapToCache(email, bitmap);
-            } else {
-                // Save the picture of the contact with that email address in the memory cache
-                addBitmapToCache(email, bitmap);
             }
+
+            // Save the picture of the contact with that email address in the bitmap cache
+            addBitmapToCache(email, bitmap);
 
             return bitmap;
         }
