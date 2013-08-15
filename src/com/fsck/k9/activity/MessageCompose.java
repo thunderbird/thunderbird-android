@@ -5,19 +5,18 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.provider.OpenableColumns;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
@@ -55,6 +54,9 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.loader.AttachmentContentLoader;
+import com.fsck.k9.activity.loader.AttachmentInfoLoader;
+import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
@@ -86,14 +88,13 @@ import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
-import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -146,6 +147,8 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             "com.fsck.k9.activity.MessageCompose.forcePlainText";
     private static final String STATE_KEY_QUOTED_TEXT_FORMAT =
             "com.fsck.k9.activity.MessageCompose.quotedTextFormat";
+
+    private static final String LOADER_ARG_ATTACHMENT = "attachment";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -218,6 +221,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
      * have already been added from the restore of the view state.
      */
     private boolean mSourceMessageProcessed = false;
+    private int mMaxLoaderId = 0;
 
     enum Action {
         COMPOSE,
@@ -364,14 +368,6 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     private FontSizes mFontSizes = K9.getFontSizes();
     private ContextThemeWrapper mThemeContext;
 
-
-    static class Attachment implements Serializable {
-        private static final long serialVersionUID = 3642382876618963734L;
-        public String name;
-        public String contentType;
-        public long size;
-        public Uri uri;
-    }
 
     /**
      * Compose a new message using the given account. If account is null the default account
@@ -1077,12 +1073,13 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<Uri> attachments = new ArrayList<Uri>();
+        ArrayList<Attachment> attachments = new ArrayList<Attachment>();
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
             View view = mAttachments.getChildAt(i);
             Attachment attachment = (Attachment) view.getTag();
-            attachments.add(attachment.uri);
+            attachments.add(attachment);
         }
+
         outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, attachments);
         outState.putBoolean(STATE_KEY_CC_SHOWN, mCcWrapper.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccWrapper.getVisibility() == View.VISIBLE);
@@ -1104,11 +1101,22 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        ArrayList<Parcelable> attachments = savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
+
         mAttachments.removeAllViews();
-        for (Parcelable p : attachments) {
-            Uri uri = (Uri) p;
-            addAttachment(uri);
+        mMaxLoaderId = 0;
+
+        ArrayList<Attachment> attachments = savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
+        for (Attachment attachment : attachments) {
+            addAttachmentView(attachment);
+            if (attachment.loaderId > mMaxLoaderId) {
+                mMaxLoaderId = attachment.loaderId;
+            }
+
+            if (attachment.state == Attachment.LoadingState.URI_ONLY) {
+                initAttachmentInfoLoader(attachment);
+            } else if (attachment.state == Attachment.LoadingState.METADATA) {
+                initAttachmentContentLoader(attachment);
+            }
         }
 
         mReadReceipt = savedInstanceState
@@ -1474,8 +1482,11 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
             Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
 
-            MimeBodyPart bp = new MimeBodyPart(
-                new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
+            if (attachment.state != Attachment.LoadingState.COMPLETE) {
+                continue;
+            }
+
+            MimeBodyPart bp = new MimeBodyPart(new LocalStore.TempFileBody(attachment.filename));
 
             /*
              * Correctly encode the filename here. Otherwise the whole
@@ -1911,70 +1922,130 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     }
 
     private void addAttachment(Uri uri, String contentType) {
-        long size = -1;
-        String name = null;
-
-        ContentResolver contentResolver = getContentResolver();
-
-        Cursor metadataCursor = contentResolver.query(
-                                    uri,
-                                    new String[] { OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE },
-                                    null,
-                                    null,
-                                    null);
-
-        if (metadataCursor != null) {
-            try {
-                if (metadataCursor.moveToFirst()) {
-                    name = metadataCursor.getString(0);
-                    size = metadataCursor.getInt(1);
-                }
-            } finally {
-                metadataCursor.close();
-            }
-        }
-
-        if (name == null) {
-            name = uri.getLastPathSegment();
-        }
-
-        String usableContentType = contentType;
-        if ((usableContentType == null) || (usableContentType.indexOf('*') != -1)) {
-            usableContentType = contentResolver.getType(uri);
-        }
-        if (usableContentType == null) {
-            usableContentType = MimeUtility.getMimeTypeByExtension(name);
-        }
-
-        if (size <= 0) {
-            String uriString = uri.toString();
-            if (uriString.startsWith("file://")) {
-                Log.v(K9.LOG_TAG, uriString.substring("file://".length()));
-                File f = new File(uriString.substring("file://".length()));
-                size = f.length();
-            } else {
-                Log.v(K9.LOG_TAG, "Not a file: " + uriString);
-            }
-        } else {
-            Log.v(K9.LOG_TAG, "old attachment.size: " + size);
-        }
-        Log.v(K9.LOG_TAG, "new attachment.size: " + size);
-
         Attachment attachment = new Attachment();
+        attachment.state = Attachment.LoadingState.URI_ONLY;
         attachment.uri = uri;
-        attachment.contentType = usableContentType;
-        attachment.name = name;
-        attachment.size = size;
+        attachment.contentType = contentType;
+        attachment.loaderId = ++mMaxLoaderId;
+
+        addAttachmentView(attachment);
+
+        initAttachmentInfoLoader(attachment);
+    }
+
+    private void initAttachmentInfoLoader(Attachment attachment) {
+        LoaderManager loaderManager = getSupportLoaderManager();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment);
+        loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentInfoLoaderCallback);
+    }
+
+    private void initAttachmentContentLoader(Attachment attachment) {
+        LoaderManager loaderManager = getSupportLoaderManager();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment);
+        loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentContentLoaderCallback);
+    }
+
+    private void addAttachmentView(Attachment attachment) {
+        boolean hasMetadata = (attachment.state != Attachment.LoadingState.URI_ONLY);
+        boolean isLoadingComplete = (attachment.state == Attachment.LoadingState.COMPLETE);
 
         View view = getLayoutInflater().inflate(R.layout.message_compose_attachment, mAttachments, false);
-        TextView nameView = (TextView)view.findViewById(R.id.attachment_name);
-        ImageButton delete = (ImageButton)view.findViewById(R.id.attachment_delete);
-        nameView.setText(attachment.name);
-        delete.setOnClickListener(this);
+        TextView nameView = (TextView) view.findViewById(R.id.attachment_name);
+        View progressBar = view.findViewById(R.id.progressBar);
+
+        if (hasMetadata) {
+            nameView.setText(attachment.name);
+        } else {
+            nameView.setText(R.string.loading_attachment);
+        }
+
+        progressBar.setVisibility(isLoadingComplete ? View.GONE : View.VISIBLE);
+
+        ImageButton delete = (ImageButton) view.findViewById(R.id.attachment_delete);
+        delete.setOnClickListener(MessageCompose.this);
         delete.setTag(view);
+
         view.setTag(attachment);
         mAttachments.addView(view);
     }
+
+    private View getAttachmentView(int loaderId) {
+        for (int i = 0, childCount = mAttachments.getChildCount(); i < childCount; i++) {
+            View view = mAttachments.getChildAt(i);
+            Attachment tag = (Attachment) view.getTag();
+            if (tag != null && tag.loaderId == loaderId) {
+                return view;
+            }
+        }
+
+        return null;
+    }
+
+    private LoaderManager.LoaderCallbacks<Attachment> mAttachmentInfoLoaderCallback =
+            new LoaderManager.LoaderCallbacks<Attachment>() {
+        @Override
+        public Loader<Attachment> onCreateLoader(int id, Bundle args) {
+            Attachment attachment = args.getParcelable(LOADER_ARG_ATTACHMENT);
+            return new AttachmentInfoLoader(MessageCompose.this, attachment);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Attachment> loader, Attachment attachment) {
+            int loaderId = loader.getId();
+
+            View view = getAttachmentView(loaderId);
+            if (view != null) {
+                view.setTag(attachment);
+
+                TextView nameView = (TextView) view.findViewById(R.id.attachment_name);
+                nameView.setText(attachment.name);
+
+                attachment.loaderId = ++mMaxLoaderId;
+                initAttachmentContentLoader(attachment);
+            }
+
+            getSupportLoaderManager().destroyLoader(loaderId);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Attachment> loader) {
+        }
+    };
+
+    private LoaderManager.LoaderCallbacks<Attachment> mAttachmentContentLoaderCallback =
+            new LoaderManager.LoaderCallbacks<Attachment>() {
+        @Override
+        public Loader<Attachment> onCreateLoader(int id, Bundle args) {
+            Attachment attachment = args.getParcelable(LOADER_ARG_ATTACHMENT);
+            return new AttachmentContentLoader(MessageCompose.this, attachment);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Attachment> loader, Attachment attachment) {
+            int loaderId = loader.getId();
+
+            View view = getAttachmentView(loaderId);
+            if (view != null) {
+                if (attachment.state == Attachment.LoadingState.COMPLETE) {
+                    view.setTag(attachment);
+
+                    View progressBar = view.findViewById(R.id.progressBar);
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    mAttachments.removeView(view);
+                }
+            }
+
+            getSupportLoaderManager().destroyLoader(loaderId);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Attachment> loader) {
+        }
+    };
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
