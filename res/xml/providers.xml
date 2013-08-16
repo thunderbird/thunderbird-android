@@ -374,6 +374,136 @@
         <incoming uri="imap+ssl+://mail.rambler.ru" username="$email" />
         <outgoing uri="smtp+ssl+://mail.rambler.ru" username="$email" />
     </provider>
+    <!-- QIP.RU variants -->
+    <provider id="ruqipqipimap" label="qip.ru" domain="qip.ru">
+        <incoming uri="imap+ssl+://imap.qip.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.qip.ru" username="$email" />
+    </provider>
+    <provider id="ruqippochtaimap" label="pochta.ru" domain="pochta.ru">
+        <incoming uri="imap+ssl+://imap.pochta.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pochta.ru" username="$email" />
+    </provider>
+    <provider id="comqipfromruimap" label="fromru.com" domain="fromru.com">
+        <incoming uri="imap+ssl+://imap.fromru.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.fromru.com" username="$email" />
+    </provider>
+    <provider id="ruqipfrontimap" label="front.ru" domain="front.ru">
+        <incoming uri="imap+ssl+://imap.front.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.front.ru" username="$email" />
+    </provider>
+    <provider id="ruqiphotboximap" label="hotbox.ru" domain="hotbox.ru">
+        <incoming uri="imap+ssl+://imap.hotbox.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.hotbox.ru" username="$email" />
+    </provider>
+    <provider id="ruqiphotmailimap" label="hotmail.ru" domain="hotmail.ru">
+        <incoming uri="imap+ssl+://imap.hotmail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.hotmail.ru" username="$email" />
+    </provider>
+    <provider id="suqipkrovatkaimap" label="krovatka.su" domain="krovatka.su">
+        <incoming uri="imap+ssl+://imap.krovatka.su" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.krovatka.su" username="$email" />
+    </provider>
+    <provider id="ruqiplandimap" label="land.ru" domain="land.ru">
+        <incoming uri="imap+ssl+://imap.land.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.land.ru" username="$email" />
+    </provider>
+    <provider id="comqipmail15imap" label="mail15.com" domain="mail15.com">
+        <incoming uri="imap+ssl+://imap.mail15.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail15.com" username="$email" />
+    </provider>
+    <provider id="comqipmail333imap" label="mail333.com" domain="mail333.com">
+        <incoming uri="imap+ssl+://imap.mail333.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail333.com" username="$email" />
+    </provider>
+    <provider id="ruqipnewmailimap" label="newmail.ru" domain="newmail.ru">
+        <incoming uri="imap+ssl+://imap.newmail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.newmail.ru" username="$email" />
+    </provider>
+    <provider id="ruqipnightmailimap" label="nightmail.ru" domain="nightmail.ru">
+        <incoming uri="imap+ssl+://imap.nightmail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.nightmail.ru" username="$email" />
+    </provider>
+    <provider id="ruqipnmimap" label="nm.ru" domain="nm.ru">
+        <incoming uri="imap+ssl+://imap.nm.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.nm.ru" username="$email" />
+    </provider>
+    <provider id="netqippisemimap" label="pisem.net" domain="pisem.net">
+        <incoming uri="imap+ssl+://imap.pisem.net" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pisem.net" username="$email" />
+    </provider>
+    <provider id="ruqippochtamtimap" label="pochtamt.ru" domain="pochtamt.ru">
+        <incoming uri="imap+ssl+://imap.pochtamt.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pochtamt.ru" username="$email" />
+    </provider>
+    <provider id="ruqippop3imap" label="pop3.ru" domain="pop3.ru">
+        <incoming uri="imap+ssl+://imap.pop3.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pop3.ru" username="$email" />
+    </provider>
+    <provider id="ruqiprbcmailimap" label="rbcmail.ru" domain="rbcmail.ru">
+        <incoming uri="imap+ssl+://imap.rbcmail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.rbcmail.ru" username="$email" />
+    </provider>
+    <provider id="ruqipsmtpimap" label="smtp.ru" domain="smtp.ru">
+        <incoming uri="imap+ssl+://imap.smtp.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.smtp.ru" username="$email" />
+    </provider>
+    <provider id="ruqip5ballovimap" label="5ballov.ru" domain="5ballov.ru">
+        <incoming uri="imap+ssl+://imap.5ballov.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.5ballov.ru" username="$email" />
+    </provider>
+    <provider id="ruqipaeternaimap" label="aeterna.ru" domain="aeterna.ru">
+        <incoming uri="imap+ssl+://imap.aeterna.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aeterna.ru" username="$email" />
+    </provider>
+    <provider id="ruqipzizaimap" label="ziza.ru" domain="ziza.ru">
+        <incoming uri="imap+ssl+://imap.ziza.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.ziza.ru" username="$email" />
+    </provider>
+    <provider id="ruqipmemoriimap" label="memori.ru" domain="memori.ru">
+        <incoming uri="imap+ssl+://imap.memori.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.memori.ru" username="$email" />
+    </provider>
+    <provider id="ruqipphotofileimap" label="photofile.ru" domain="photofile.ru">
+        <incoming uri="imap+ssl+://imap.photofile.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.photofile.ru" username="$email" />
+    </provider>
+    <provider id="ruqipfotoplenkaimap" label="fotoplenka.ru" domain="fotoplenka.ru">
+        <incoming uri="imap+ssl+://imap.fotoplenka.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.fotoplenka.ru" username="$email" />
+    </provider>
+    <provider id="comqippochtaimap" label="pochta.com" domain="pochta.com">
+        <incoming uri="imap+ssl+://imap.pochta.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pochta.ru" username="$email" />
+    </provider>
+    <!-- KM.RU variants -->
+    <provider id="rukmrkmpop" label="km.ru" domain="km.ru">
+        <incoming uri="pop3://pop.km.ru" username="$email" />
+        <outgoing uri="smtp://smtp.km.ru:2525" username="$email" />
+    </provider>
+    <provider id="rukmrmegaboxpop" label="megabox.ru" domain="megabox.ru">
+        <incoming uri="pop3://pop.megabox.ru" username="$email" />
+        <outgoing uri="smtp://smtp.megabox.ru:2525" username="$email" />
+    </provider>
+    <provider id="rukmrfreemailpop" label="freemail.ru" domain="freemail.ru">
+        <incoming uri="pop3://pop.freemail.ru" username="$email" />
+        <outgoing uri="smtp://smtp.freemail.ru:2525" username="$email" />
+    </provider>
+    <provider id="rukmrbossmailpop" label="bossmail.ru" domain="bossmail.ru">
+        <incoming uri="pop3://pop.bossmail.ru" username="$email" />
+        <outgoing uri="smtp://smtp.bossmail.ru:2525" username="$email" />
+    </provider>
+    <provider id="rukmrgirlmailpop" label="girlmail.ru" domain="girlmail.ru">
+        <incoming uri="pop3://pop.girlmail.ru" username="$email" />
+        <outgoing uri="smtp://smtp.girlmail.ru:2525" username="$email" />
+    </provider>
+    <provider id="rukmrboymailpop" label="boymail.ru" domain="boymail.ru">
+        <incoming uri="pop3://pop.boymail.ru" username="$email" />
+        <outgoing uri="smtp://smtp.boymail.ru:2525" username="$email" />
+    </provider>
+    <provider id="rukmrsafeboxpop" label="safebox.ru" domain="safebox.ru">
+        <incoming uri="pop3://pop.safebox.ru" username="$email" />
+        <outgoing uri="smtp://smtp.safebox.ru:2525" username="$email" />
+    </provider>
     
     <!-- Developers' vanity providers -->
     <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
