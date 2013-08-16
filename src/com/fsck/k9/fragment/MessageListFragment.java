@@ -1809,12 +1809,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             MessageViewHolder holder = new MessageViewHolder();
             holder.date = (TextView) view.findViewById(R.id.date);
             holder.chip = view.findViewById(R.id.chip);
+
+
             if (mPreviewLines == 0 && mContactsPictureLoader == null) {
                 view.findViewById(R.id.preview).setVisibility(View.GONE);
                 holder.preview = (TextView) view.findViewById(R.id.sender_compact);
-                ViewGroup.LayoutParams params = holder.chip.getLayoutParams();
-                params.height=(int) (16.0f * mScreenDensity);
-                params.width=(int) (16.0f * mScreenDensity);
 
             } else {
                 view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
@@ -1850,7 +1849,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
             holder.selected.setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
 
-            view.findViewById(R.id.chip_wrapper).setOnClickListener(holder);
+            view.findViewById(R.id.checkbox_wrapper).setOnClickListener(holder);
 
             view.setTag(holder);
 
@@ -1910,12 +1909,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             long uniqueId = cursor.getLong(mUniqueIdColumn);
             boolean selected = mSelected.contains(uniqueId);
 
-            if (!mCheckboxes && selected) {
-                holder.chip.setBackgroundDrawable(account.getCheckmarkChip().drawable());
-            } else {
-                holder.chip.setBackgroundDrawable(account.generateColorChip(read, toMe, ccMe,
-                        fromMe, flagged).drawable());
-            }
+
+            holder.chip.setBackgroundColor(account.getChipColor());
 
             if (mCheckboxes) {
                 holder.selected.setChecked(selected);

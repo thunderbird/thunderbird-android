@@ -1769,20 +1769,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (account instanceof Account) {
                 Account realAccount = (Account)account;
 
-                holder.chip.setBackgroundDrawable(realAccount.generateColorChip().drawable());
-                if (unreadMessageCount == null) {
-                    holder.chip.setBackgroundDrawable(realAccount.generateColorChip().drawable());
-                } else if (unreadMessageCount == 0) {
-                    holder.chip.setBackgroundDrawable(realAccount.generateColorChip(true, false, false, false, false).drawable());
-                } else {
-                    holder.chip.setBackgroundDrawable(realAccount.generateColorChip(false, false, false, false, false).drawable());
-                }
+                holder.chip.setBackgroundColor(realAccount.getChipColor());
 
                 holder.flaggedMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false,true).drawable() );
                 holder.newMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false, false).drawable() );
 
             } else {
-                holder.chip.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable());
+                holder.chip.setBackgroundColor(0xff999999);
                 holder.newMessageCountIcon.setBackgroundDrawable( new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable() );
                 holder.flaggedMessageCountIcon.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.STAR).drawable());
             }

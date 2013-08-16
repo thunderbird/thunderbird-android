@@ -1060,8 +1060,8 @@ public class FolderList extends K9ListActivity {
                 }
             });
 
-            holder.chip.setBackgroundDrawable(mAccount.generateColorChip(
-                    folder.unreadMessageCount == 0, false, false, false,false).drawable());
+            holder.chip.setBackgroundColor(mAccount.getChipColor());
+
 
             mFontSizes.setViewTextSize(holder.folderName, mFontSizes.getFolderName());
 

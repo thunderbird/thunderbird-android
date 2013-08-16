@@ -18,7 +18,7 @@
             <!-- Color chip -->
             <View
                     android:id="@+id/chip"
-                    android:layout_width="6dip"
+                    android:layout_width="8dip"
                     android:layout_height="match_parent"/>
 
             <LinearLayout
