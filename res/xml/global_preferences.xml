@@ -180,6 +180,12 @@
 
             <CheckBoxPreference
                 android:persistent="false"
+                android:key="messagelist_colorize_missing_contact_pictures"
+                android:title="@string/global_settings_colorize_missing_contact_pictures"
+                />
+
+            <CheckBoxPreference
+                android:persistent="false"
                 android:key="messagelist_background_as_unread_indicator"
                 android:title="@string/global_settings_background_as_unread_indicator_label"
                 android:summary="@string/global_settings_background_as_unread_indicator_summary"

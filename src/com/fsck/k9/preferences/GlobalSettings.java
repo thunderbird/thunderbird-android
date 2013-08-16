@@ -225,6 +225,9 @@ public class GlobalSettings {
         s.put("autofitWidth", Settings.versions(
                 new V(28, new BooleanSetting(true))
             ));
+        s.put("colorizeMissingContactPictures", Settings.versions(
+                new V(29, new BooleanSetting(true))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

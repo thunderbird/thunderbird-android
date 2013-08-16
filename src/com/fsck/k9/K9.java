@@ -260,6 +260,7 @@ public class K9 extends Application {
     private static boolean sUseBackgroundAsUnreadIndicator = true;
     private static boolean sThreadedViewEnabled = true;
     private static SplitViewMode sSplitViewMode = SplitViewMode.NEVER;
+    private static boolean sColorizeMissingContactPictures = true;
 
     /**
      * @see #areDatabasesUpToDate()
@@ -537,6 +538,7 @@ public class K9 extends Application {
         editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
         editor.putBoolean("threadedView", sThreadedViewEnabled);
         editor.putString("splitViewMode", sSplitViewMode.name());
+        editor.putBoolean("colorizeMissingContactPictures", sColorizeMissingContactPictures);
         fontSizes.save(editor);
     }
 
@@ -756,6 +758,8 @@ public class K9 extends Application {
         } catch (Exception e) {
             setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
         }
+
+        sColorizeMissingContactPictures = sprefs.getBoolean("colorizeMissingContactPictures", true);
 
         K9.setK9Language(sprefs.getString("language", ""));
 
@@ -1301,6 +1305,15 @@ public class K9 extends Application {
     public static void setShowContactPicture(boolean show) {
         sShowContactPicture = show;
     }
+
+    public static boolean isColorizeMissingContactPictures() {
+        return sColorizeMissingContactPictures;
+    }
+
+    public static void setColorizeMissingContactPictures(boolean enabled) {
+        sColorizeMissingContactPictures = enabled;
+    }
+
 
     /**
      * Check if we already know whether all databases are using the current database schema.

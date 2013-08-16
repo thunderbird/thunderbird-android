@@ -78,6 +78,7 @@ import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
+import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.StringUtils;
@@ -788,8 +789,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mCheckboxes = K9.messageListCheckboxes();
 
         if (K9.showContactPicture()) {
-            mContactsPictureLoader = new ContactPictureLoader(getActivity(),
-                    R.drawable.ic_contact_picture);
+            mContactsPictureLoader = ContactPicture.getContactPictureLoader(getActivity());
         }
 
         restoreInstanceState(savedInstanceState);

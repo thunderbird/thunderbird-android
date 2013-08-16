@@ -38,6 +38,8 @@ public class ContactPictureLoader {
     private Contacts mContactsHelper;
     private int mPictureSizeInPx;
 
+    private int mDefaultBackgroundColor;
+
     /**
      * LRU cache of contact pictures.
      */
@@ -59,7 +61,16 @@ public class ContactPictureLoader {
         0xffCC0000
     };
 
-    public ContactPictureLoader(Context context, int defaultPictureResource) {
+    /**
+     * Constructor.
+     *
+     * @param context
+     *         A {@link Context} instance.
+     * @param defaultBackgroundColor
+     *         The ARGB value to be used as background color for the fallback picture. {@code 0} to
+     *         use a dynamically calculated background color.
+     */
+    public ContactPictureLoader(Context context, int defaultBackgroundColor) {
         Context appContext = context.getApplicationContext();
         mContentResolver = appContext.getContentResolver();
         mResources = appContext.getResources();
@@ -67,6 +78,8 @@ public class ContactPictureLoader {
 
         float scale = mResources.getDisplayMetrics().density;
         mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
+
+        mDefaultBackgroundColor = defaultBackgroundColor;
 
         ActivityManager activityManager =
                 (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
@@ -130,6 +143,10 @@ public class ContactPictureLoader {
     }
 
     private int calcUnknownContactColor(Address address) {
+        if (mDefaultBackgroundColor != 0) {
+            return mDefaultBackgroundColor;
+        }
+
         int val = address.getAddress().toLowerCase().hashCode();
         int rgb = CONTACT_DUMMY_COLORS_ARGB[Math.abs(val) % CONTACT_DUMMY_COLORS_ARGB.length];
     	return rgb;

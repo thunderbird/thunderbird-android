@@ -51,6 +51,7 @@
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="compatDividerVertical" format="reference"/>
         <attr name="compatSelectableItemBackground" format="reference"/>
+        <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
     </declare-styleable>
 
 </resources>

@@ -51,6 +51,7 @@
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_light</item>
         <item name="compatDividerVertical">?attr/messageListDividerColor</item>
         <item name="compatSelectableItemBackground">@android:color/transparent</item>
+        <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
     </style>
 
     <style name="Theme.K9.Dark.Base" parent="Theme.Sherlock">
@@ -101,6 +102,7 @@
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_dark</item>
         <item name="compatDividerVertical">?attr/messageListDividerColor</item>
         <item name="compatSelectableItemBackground">@android:color/transparent</item>
+        <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
     </style>
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Base">
