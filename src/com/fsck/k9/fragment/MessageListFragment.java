@@ -1845,11 +1845,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.preview.setLines(Math.max(mPreviewLines,1));
             mFontSizes.setViewTextSize(holder.preview, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
+            view.findViewById(R.id.selected_checkbox_wrapper).setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
 
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
-            holder.selected.setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
+            holder.selected.setOnClickListener(holder);
 
-            view.findViewById(R.id.checkbox_wrapper).setOnClickListener(holder);
 
             view.setTag(holder);
 
