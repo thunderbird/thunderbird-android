@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/contact_badge"
                 android:layout_below="@+id/subject_wrapper"
-                android:layout_toLeftOf="@+id/thread_count"
+                android:layout_toLeftOf="@+id/flagged"
                 android:layout_marginLeft="1dip"
                 android:layout_marginBottom="3dip"
                 android:layout_marginRight="3dip"
@@ -128,6 +128,19 @@
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"/>
+            <CheckBox
+                android:id="@+id/flagged"
+                style="?android:attr/starStyle"
+               android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/date"
+                android:layout_alignParentRight="true"
+
+                android:paddingTop="3dip"
+                android:paddingLeft="2dip"
+                android:paddingRight="4dip"
+                android:focusable="false"
+                />
 
         <TextView
                 android:id="@+id/thread_count"
