@@ -741,7 +741,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="sort_by_date">Data</string>
     <string name="sort_by_arrival">Arrivada</string>
     <string name="sort_by_subject">Assumpte</string>
-    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
+    <string name="sort_by_sender">Remitent</string>
     <string name="sort_by_flag">Estel</string>
     <string name="sort_by_unread">Llegit/no llegit</string>
     <string name="sort_by_attach">Adjunts</string>
@@ -810,7 +810,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="setting_theme_global">Utilitza el tema de l\'aplicació</string>
     <string name="setting_theme_dark">Fosc</string>
     <string name="setting_theme_light">Clar</string>
-    <string name="display_preferences">Pantalla</string>
+    <string name="display_preferences">Visualització</string>
     <string name="global_preferences">Global</string>
     <string name="debug_preferences">Depura</string>
     <string name="privacy_preferences">Privadesa</string>
@@ -1010,12 +1010,12 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">No es pot connectar.</string>
 
-    <string name="import_export_action">Importació i exportació de la configuració</string>
+    <string name="import_export_action">Importa i exporta la configuració</string>
     <string name="settings_export_account">Exporta els paràmetres del compte</string>
-    <string name="settings_export_all">Exporta els comptes i configuracions</string>
+    <string name="settings_export_all">Exporta comptes i paràmetres</string>
     <string name="settings_import_dialog_title">Importa</string>
     <string name="settings_export_dialog_title">Exporta</string>
-    <string name="settings_import">Importa els paràmetres</string>
+    <string name="settings_import">Importa paràmetres</string>
     <string name="settings_import_selection">Importa la selecció</string>
     <string name="settings_import_global_settings">Paràmetres globals</string>
     <string name="settings_exporting">Exporta els paràmetres</string>
