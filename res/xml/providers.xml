@@ -224,8 +224,8 @@
         <outgoing uri="smtp+ssl://mx.freenet.de" username="$email" />
     </provider>
     <provider id="gmx" label="GMX" domain="gmx.de">
-        <incoming uri="pop3://pop.gmx.net" username="$email" />
-        <outgoing uri="smtp://mail.gmx.net" username="$email" />
+        <incoming uri="pop3+ssl+://pop.gmx.net" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
     </provider>
     <provider id="T-Online" label="T-Online" domain="t-online.de">
         <incoming uri="pop3://popmail.t-online.de" username="$email" />
