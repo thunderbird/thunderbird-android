@@ -695,7 +695,7 @@ public class K9 extends Application {
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
         mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", true);
+        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
         mMessageListStars = sprefs.getBoolean("messageListStars", true);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
