@@ -412,6 +412,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mSortDateAscending = false;
     private boolean mSenderAboveSubject = false;
     private boolean mCheckboxes = true;
+    private boolean mStars = true;
 
     private int mSelectedCount = 0;
     private Set<Long> mSelected = new HashSet<Long>();
@@ -787,6 +788,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mPreviewLines = K9.messageListPreviewLines();
         mCheckboxes = K9.messageListCheckboxes();
+        mStars = K9.messageListStars();
 
         if (K9.showContactPicture()) {
             mContactsPictureLoader = ContactPicture.getContactPictureLoader(getActivity());
@@ -1847,6 +1849,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
             view.findViewById(R.id.selected_checkbox_wrapper).setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
 
+            holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
+            holder.flagged.setVisibility(mStars ? View.VISIBLE : View.GONE);
+            holder.flagged.setOnClickListener(holder);
+
+
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
             holder.selected.setOnClickListener(holder);
 
@@ -1914,6 +1921,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             if (mCheckboxes) {
                 holder.selected.setChecked(selected);
+            }
+
+            if (mStars) {
+                holder.flagged.setChecked(flagged);
             }
             holder.position = cursor.getPosition();
 
@@ -2058,14 +2069,22 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public TextView date;
         public View chip;
         public TextView threadCount;
+        public CheckBox flagged;
         public CheckBox selected;
         public int position = -1;
         public QuickContactBadge contactBadge;
-
         @Override
         public void onClick(View view) {
             if (position != -1) {
-                toggleMessageSelectWithAdapterPosition(position);
+
+                switch (view.getId()) {
+                    case R.id.selected_checkbox:
+                        toggleMessageSelectWithAdapterPosition(position);
+                        break;
+                    case R.id.flagged:
+                        toggleMessageFlagWithAdapterPosition(position);
+                        break;
+                }
             }
         }
     }
@@ -2179,6 +2198,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         toggleMessageSelectWithAdapterPosition(adapterPosition);
+    }
+
+    private void toggleMessageFlagWithAdapterPosition(int adapterPosition) {
+        Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+        boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
+
+        setFlag(adapterPosition,Flag.FLAGGED, !flagged);
     }
 
     private void toggleMessageSelectWithAdapterPosition(int adapterPosition) {
