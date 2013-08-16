@@ -298,6 +298,8 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="message_discarded_toast">Mail kasseret</string>
     <string name="message_saved_toast">Mail gemt som kladde</string>
 
+    <string name="global_settings_flag_label">Vis stjerner</string>
+    <string name="global_settings_flag_summary">Stjerne indikerer mails med flag</string>
     <string name="global_settings_checkbox_label">Checkbokse for multible valg</string>
     <string name="global_settings_checkbox_summary">Vis altid checkbokse for multible valg</string>
     <string name="global_settings_preview_lines_label">Linier i forhåndsvisning</string>

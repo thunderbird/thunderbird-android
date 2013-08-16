@@ -298,6 +298,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="message_discarded_toast">Mesaj silindi</string>
     <string name="message_saved_toast">Mesaj taslak olarak kaydedildi.</string>
 
+    <string name="global_settings_flag_label">Yıldızları Göster</string>
+    <string name="global_settings_flag_summary">Yıldızlar bayraklı mesajları gösterir.</string>
     <string name="global_settings_checkbox_label">Çoklu-seçim işaret kutuları</string>
     <string name="global_settings_checkbox_summary">Çoklu-seçim işaret kutularını Daima göster.</string>
     <string name="global_settings_preview_lines_label">Önizleme hatları</string>

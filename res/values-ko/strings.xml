@@ -321,6 +321,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="global_settings_messageview_return_to_list_summary">메시지 삭제 후에 메시지 목록으로 돌아갑니다</string>
     <string name="global_settings_messageview_show_next_label">삭제 후 다음 메시지 보기</string>
     <string name="global_settings_messageview_show_next_summary">메시지 삭제 후 다음 메시지를 보도록 기본값으로 설정합니다</string>
+    <string name="global_settings_flag_label">즐겨찾기 보기</string>
+    <string name="global_settings_flag_summary">체크된 메시지 즐겨찾기등록</string>
 
     <string name="global_settings_confirm_actions_title">동작시 행동</string>
     <string name="global_settings_confirm_actions_summary">설정한 행동을 할 경우 대화 상자를 보여 줍니다</string>

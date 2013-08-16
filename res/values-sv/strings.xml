@@ -298,6 +298,8 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_discarded_toast">Brevet kasserat</string>
     <string name="message_saved_toast">Brevet sparat som utkast</string>
 
+    <string name="global_settings_flag_label">Stjärnor</string>
+    <string name="global_settings_flag_summary">Stjärnor indikerar flaggade brev</string>
     <string name="global_settings_checkbox_label">Checkboxar för flerval</string>
     <string name="global_settings_checkbox_summary">Visa alltid checkboxar för flerval</string>
     <string name="global_settings_preview_lines_label">Förhandsgranska rader</string>

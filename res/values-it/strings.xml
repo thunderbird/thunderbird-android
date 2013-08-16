@@ -298,6 +298,8 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="message_discarded_toast">Messaggio scartato</string>
     <string name="message_saved_toast">Messaggio salvato come bozza</string>
 
+    <string name="global_settings_flag_label">Mostra stelle</string>
+    <string name="global_settings_flag_summary">Le stelle indicano i messaggi evidenziati</string>
     <string name="global_settings_checkbox_label">Caselle di selezione multipla</string>
     <string name="global_settings_checkbox_summary">Mostra sempre caselle di selezione multipla</string>
     <string name="global_settings_preview_lines_label">Righe di anteprima</string>

@@ -323,6 +323,8 @@ de plus</string>
     <string name="message_discarded_toast">Message abandonné</string>
     <string name="message_saved_toast">Message enregistré comme brouillon</string>
 
+    <string name="global_settings_flag_label">Étoiles des messages</string>
+    <string name="global_settings_flag_summary">Les étoiles indiquent des messages suivis</string>
     <string name="global_settings_checkbox_label">Cases à cocher</string>
     <string name="global_settings_checkbox_summary">Toujours afficher les cases à cocher</string>
     <string name="global_settings_preview_lines_label">Lignes dʼaperçu</string>
