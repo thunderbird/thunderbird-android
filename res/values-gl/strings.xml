@@ -118,6 +118,8 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
     <string name="send_again_action">Volver a enviar</string>
+    <string name="select_action">Seleccionar</string>
+    <string name="deselect_action">Deseleccionar</string>
     <string name="reply_action">Responder</string>
     <string name="reply_all_action">Responder a todos</string>
     <string name="delete_action">Borrar</string>

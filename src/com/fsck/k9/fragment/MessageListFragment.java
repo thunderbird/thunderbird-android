@@ -1474,6 +1474,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         switch (item.getItemId()) {
+            case R.id.deselect:
+            case R.id.select: {
+                toggleMessageSelectWithAdapterPosition(adapterPosition);
+                break;
+            }
             case R.id.reply: {
                 Message message = getMessageAtPosition(adapterPosition);
                 onReply(message);
@@ -1580,6 +1585,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
 
         menu.setHeaderTitle(subject);
+
+        if(  mSelected.contains(mContextMenuUniqueId)) {
+            menu.findItem(R.id.select).setVisible(false);
+        } else {
+            menu.findItem(R.id.deselect).setVisible(false);
+        }
 
         if (read) {
             menu.findItem(R.id.mark_as_read).setVisible(false);

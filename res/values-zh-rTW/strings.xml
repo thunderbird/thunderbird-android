@@ -91,6 +91,8 @@
     <string name="cancel_action">取消</string>
     <string name="send_action">寄送</string>
     <string name="send_again_action">再次寄送</string>
+    <string name="select_action">選擇</string>
+    <string name="deselect_action">取消選擇</string>
     <string name="reply_action">回覆</string>
     <string name="reply_all_action">全部回覆</string>
     <string name="delete_action">刪除</string>

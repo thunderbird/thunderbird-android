@@ -118,6 +118,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="cancel_action">Annuleren</string>
     <string name="send_action">Verzenden</string>
     <string name="send_again_action">Opnieuw Verzenden</string>
+    <string name="select_action">Selecteren</string>
+    <string name="deselect_action">Annuleer selectie</string>
     <string name="reply_action">Antwoorden</string>
     <string name="reply_all_action">Iedereen antwoorden</string>
     <string name="delete_action">Verwijderen</string>

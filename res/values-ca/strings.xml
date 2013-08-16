@@ -118,6 +118,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="cancel_action">Cancel·la</string>
     <string name="send_action">Envia</string>
     <string name="send_again_action">Torna a enviar</string>
+    <string name="select_action">Selecciona</string>
+    <string name="deselect_action">Desselecciona</string>
     <string name="reply_action">Respon</string>
     <string name="reply_all_action">Respon a tothom</string>
     <string name="delete_action">Esborra</string>
