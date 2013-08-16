@@ -299,6 +299,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_discarded_toast">Viesti peruutettu</string>
     <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
 
+    <string name="global_settings_flag_label">Viestin tähdet</string>
+    <string name="global_settings_flag_summary">Tähdet ilmaisevat merkityt viestit</string>
     <string name="global_settings_checkbox_label">Usean valinnan valintaruudut</string>
     <string name="global_settings_checkbox_summary">Näytä aina usean valinnan valintaruudut</string>
     <string name="global_settings_preview_lines_label">Rivien esikatselu</string>

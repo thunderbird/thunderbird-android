@@ -297,6 +297,8 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="message_discarded_toast">Mensaxes descartadas</string>
     <string name="message_saved_toast">Mensaxe guardada coma borrador</string>
 
+    <string name="global_settings_flag_label">Ver estrelas</string>
+    <string name="global_settings_flag_summary">As estrelas indican unha mensaxe destacada</string>
     <string name="global_settings_checkbox_label">Selección múltiple</string>
     <string name="global_settings_checkbox_summary">Permitir múltiple selección</string>
     <string name="global_settings_preview_lines_label">Previsualizar liñas</string>

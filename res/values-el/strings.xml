@@ -293,6 +293,8 @@
     <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε.</string>
     <string name="message_saved_toast">Το μήνυμα αποθηκεύτηκε στα πρόχειρα.</string>
 
+    <string name="global_settings_flag_label">Προβολή αστεριών</string>
+    <string name="global_settings_flag_summary">Τα αστέρια υποδηλώνουν σημαντικά μηνύματα</string>
     <string name="global_settings_checkbox_label">Κουτιά πολλαπλής επιλογής</string>
     <string name="global_settings_checkbox_summary">Προβολή κουτιών επιλογής πάντοτε</string>
     <string name="global_settings_preview_lines_label">Προεπισκόπηση μηνυμάτων</string>

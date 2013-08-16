@@ -298,6 +298,8 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="message_discarded_toast">Повідомлення скасовано</string>
     <string name="message_saved_toast">Повідомлення збережено як чернетка</string>
 
+    <string name="global_settings_flag_label">Показувати зірочки</string>
+    <string name="global_settings_flag_summary">Зірочки показують відмічені повідомлення</string>
     <string name="global_settings_checkbox_label">Прапорці для множинного вибору</string>
     <string name="global_settings_checkbox_summary">Завжди показувати прапорці множинного вибору</string>
     <string name="global_settings_preview_lines_label">Рядки попереднього перегляду</string>

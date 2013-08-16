@@ -303,6 +303,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="message_discarded_toast">Wiadomość usunięta</string>
     <string name="message_saved_toast">Wiadomość zapisana jako szkic</string>
 
+    <string name="global_settings_flag_label">Oznaczaj gwiazdkami</string>
+    <string name="global_settings_flag_summary">Gwiazka wskazuje oznakowane wiadomości</string>
     <string name="global_settings_checkbox_label">Zaznaczanie wielu</string>
     <string name="global_settings_checkbox_summary">Opcja zaznaczania wielu wiadomości dostępna zawsze w trybie wielokrotnego wyboru</string>
     <string name="global_settings_preview_lines_label">Podglądaj linie</string>

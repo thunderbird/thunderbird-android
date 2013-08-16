@@ -298,6 +298,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="message_discarded_toast">S\'ha descartat el missatge</string>
     <string name="message_saved_toast">S\'ha desat el missatge com a esborrany</string>
 
+    <string name="global_settings_flag_label">Mostra estels</string>
+    <string name="global_settings_flag_summary">Els estels indiquen els missatges senyalats</string>
     <string name="global_settings_checkbox_label">Selecció múltiple</string>
     <string name="global_settings_checkbox_summary">Ensenya sempre la selecció múltiple</string>
     <string name="global_settings_preview_lines_label">Previsualització de línies</string>

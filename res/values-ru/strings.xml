@@ -328,6 +328,8 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="global_settings_notification_hide_subject_title">Скрыть тему в уведомлении</string>
     <string name="global_settings_notification_hide_subject_never">Никогда</string>
+    <string name="global_settings_flag_label">Показывать звёзды</string>
+    <string name="global_settings_flag_summary">Звёзды указывают отмеченные сообщения</string>
     <string name="global_settings_notification_hide_subject_when_locked">При блокировке</string>
     <string name="global_settings_notification_hide_subject_always">Всегда</string>
 

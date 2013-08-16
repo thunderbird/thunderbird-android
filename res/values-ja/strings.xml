@@ -297,6 +297,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="message_discarded_toast">メールを破棄しました</string>
     <string name="message_saved_toast">下書きに保存しました</string>
 
+    <string name="global_settings_flag_label">スターを表示</string>
+    <string name="global_settings_flag_summary">スターは印の付いたメッセージを示す</string>
     <string name="global_settings_checkbox_label">複数選択チェックボックス</string>
     <string name="global_settings_checkbox_summary">複数選択チェックボックス常時表示</string>
     <string name="global_settings_preview_lines_label">メッセージプレビューの行数</string>
