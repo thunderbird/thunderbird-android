@@ -545,6 +545,8 @@ public class K9 extends Application {
     @Override
     public void onCreate() {
         maybeSetupStrictMode();
+        PRNGFixes.apply();
+
         super.onCreate();
         app = this;
 
