@@ -128,6 +128,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="cancel_action">Anuluj</string>
     <string name="send_action">Wyślij</string>
     <string name="send_again_action">Prześlij ponownie</string>
+    <string name="select_action">Zaznacz</string>
+    <string name="deselect_action">Odznacz</string>
     <string name="reply_action">Odpowiedz</string>
     <string name="reply_all_action">Odpowiedz wszystkim</string>
     <string name="delete_action">Usuń</string>

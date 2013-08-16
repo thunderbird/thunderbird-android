@@ -118,6 +118,8 @@
     <string name="cancel_action">ביטול</string>
     <string name="send_action">שלח</string>
     <string name="send_again_action">שלח שוב</string>
+    <string name="select_action">בחר</string>
+    <string name="deselect_action">בטל בחירה</string>
     <string name="reply_action">השב</string>
     <string name="reply_all_action">השב על הכל</string>
     <string name="delete_action">מחק</string>

@@ -118,6 +118,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="cancel_action">İptal</string>
     <string name="send_action">Gönder</string>
     <string name="send_again_action">Tekrar Gönder</string>
+    <string name="select_action">Seç</string>
+    <string name="deselect_action">Kaldır</string>
     <string name="reply_action">Cevap</string>
     <string name="reply_all_action">Hepsini Cevapla</string>
     <string name="delete_action">Sil</string>
