@@ -28,8 +28,11 @@
             android:paddingTop="5dip">
 
         <LinearLayout
-                android:id="@+id/checkbox_wrapper"
-                android:layout_width="42dip"
+                android:id="@+id/selected_checkbox_wrapper"
+                android:layout_width="wrap_content"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
@@ -45,7 +48,7 @@
                     android:button="?attr/messageListCheckbox"
                     android:focusable="false"
                     android:clickable="false"
-                    android:visibility="gone"/>
+                    />
 
         </LinearLayout>
 
@@ -57,7 +60,8 @@
                 android:layout_marginBottom="3dip"
                 android:layout_height="40dip"
                 android:layout_width="40dip"
-                android:layout_toRightOf="@id/checkbox_wrapper"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_toRightOf="@id/selected_checkbox_wrapper"
                 android:src="@drawable/ic_contact_picture"
                 style="?android:attr/quickContactBadgeStyleWindowLarge"
                 android:background="@android:color/transparent"/>
