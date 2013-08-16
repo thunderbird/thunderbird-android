@@ -137,6 +137,14 @@
                 android:entryValues="@array/settings_preview_lines_values"
                 android:dialogTitle="@string/global_settings_preview_lines_label"
                 />
+
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messagelist_stars"
+                android:title="@string/global_settings_flag_label"
+                android:summary="@string/global_settings_flag_summary" />
+
             <CheckBoxPreference
                 android:persistent="false"
                 android:key="messagelist_checkboxes"

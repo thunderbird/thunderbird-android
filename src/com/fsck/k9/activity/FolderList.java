@@ -1042,7 +1042,7 @@ public class FolderList extends K9ListActivity {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
             }
 
-            if (folder.flaggedMessageCount > 0) {
+            if (K9.messageListStars() && folder.flaggedMessageCount > 0) {
                 holder.flaggedMessageCount.setText(Integer.toString(folder.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setOnClickListener(
                         createFlaggedSearch(mAccount, folder));
