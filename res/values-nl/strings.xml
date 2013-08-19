@@ -1118,7 +1118,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="global_settings_threaded_view_summary">Groepeer berichten per gesprek</string>
 
     <string name="upgrade_databases_title">Databases bijwerken</string>
-    <string name="upgrade_databases_unspecified">Databases bijwerken…</string>-
+    <string name="upgrade_databases_unspecified">Databases bijwerken…</string>
     <string name="upgrade_database_format">Database van account \"<xliff:g id="account">%s</xliff:g>\" bijwerken</string>
 
     <string name="message_list_loading">Laden…</string>
