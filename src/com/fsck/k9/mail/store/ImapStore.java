@@ -566,6 +566,12 @@ public class ImapStore extends Store {
             if (ImapResponseParser.equalsIgnoreCase(response.get(0), commandResponse)) {
                 boolean includeFolder = true;
 
+                if (response.size() > 4 || !(response.getObject(3) instanceof String)) {
+                    Log.w(K9.LOG_TAG, "Skipping incorrectly parsed " + commandResponse +
+                            " reply: " + response);
+                    continue;
+                }
+
                 String decodedFolderName;
                 try {
                     decodedFolderName = decodeFolderName(response.getString(3));
