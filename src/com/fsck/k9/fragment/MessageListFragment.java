@@ -1827,10 +1827,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             if (mPreviewLines == 0 && mContactsPictureLoader == null) {
                 view.findViewById(R.id.preview).setVisibility(View.GONE);
                 holder.preview = (TextView) view.findViewById(R.id.sender_compact);
+                holder.flagged = (CheckBox) view.findViewById(R.id.flagged_center_right);
+                view.findViewById(R.id.flagged_bottom_right).setVisibility(View.GONE);
+
+
 
             } else {
                 view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
+                holder.flagged = (CheckBox) view.findViewById(R.id.flagged_bottom_right);
+                view.findViewById(R.id.flagged_center_right).setVisibility(View.GONE);
+
             }
 
             QuickContactBadge contactBadge =
@@ -1861,7 +1868,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             mFontSizes.setViewTextSize(holder.threadCount, mFontSizes.getMessageListSubject()); // thread count is next to subject
             view.findViewById(R.id.selected_checkbox_wrapper).setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
 
-            holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
             holder.flagged.setVisibility(mStars ? View.VISIBLE : View.GONE);
             holder.flagged.setOnClickListener(holder);
 
