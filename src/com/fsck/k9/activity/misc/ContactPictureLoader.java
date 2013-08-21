@@ -128,7 +128,7 @@ public class ContactPictureLoader {
      * @see #calculateFallbackBitmap(Address)
      */
     public void loadContactPicture(Address address, QuickContactBadge badge) {
-    	String email = address.getAddress();
+        String email = address.getAddress();
         Bitmap bitmap = getBitmapFromCache(email);
         if (bitmap != null) {
             // The picture was found in the bitmap cache
@@ -156,12 +156,12 @@ public class ContactPictureLoader {
 
         int val = address.getAddress().toLowerCase().hashCode();
         int rgb = CONTACT_DUMMY_COLORS_ARGB[Math.abs(val) % CONTACT_DUMMY_COLORS_ARGB.length];
-    	return rgb;
+        return rgb;
     }
 
     private char calcUnknownContactLetter(Address address) {
-    	String letter = "";
-    	String str = address.getPersonal() != null ? address.getPersonal() : address.getAddress();
+        String letter = "";
+        String str = address.getPersonal() != null ? address.getPersonal() : address.getAddress();
 
         Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
         if (m.find()) {
@@ -175,29 +175,29 @@ public class ContactPictureLoader {
      * Calculates a bitmap with a color and a capital letter for contacts without picture.
      */
     private Bitmap calculateFallbackBitmap(Address address) {
-    	Bitmap result = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx,
+        Bitmap result = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx,
                 Bitmap.Config.ARGB_8888);
 
-    	Canvas canvas = new Canvas(result);
+        Canvas canvas = new Canvas(result);
 
-    	int rgb = calcUnknownContactColor(address);
-    	result.eraseColor(rgb);
+        int rgb = calcUnknownContactColor(address);
+        result.eraseColor(rgb);
 
-    	String letter = Character.toString(calcUnknownContactLetter(address));
+        String letter = Character.toString(calcUnknownContactLetter(address));
 
-    	Paint paint = new Paint();
-    	paint.setAntiAlias(true);
-    	paint.setStyle(Paint.Style.FILL);
-    	paint.setARGB(255, 255, 255, 255);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setARGB(255, 255, 255, 255);
         paint.setTextSize(mPictureSizeInPx * 3 / 4); // just scale this down a bit
-    	Rect rect = new Rect();
-    	paint.getTextBounds(letter, 0, 1, rect);
-    	float width = paint.measureText(letter);
-    	canvas.drawText(letter,
-    			mPictureSizeInPx/2f-width/2f,
-    			mPictureSizeInPx/2f+rect.height()/2f, paint);
+        Rect rect = new Rect();
+        paint.getTextBounds(letter, 0, 1, rect);
+        float width = paint.measureText(letter);
+        canvas.drawText(letter,
+                mPictureSizeInPx/2f-width/2f,
+                mPictureSizeInPx/2f+rect.height()/2f, paint);
 
-    	return result;
+        return result;
     }
 
     private void addBitmapToCache(String key, Bitmap bitmap) {
@@ -307,7 +307,7 @@ public class ContactPictureLoader {
             }
 
             if (bitmap == null) {
-            	bitmap = calculateFallbackBitmap(mAddress);
+                bitmap = calculateFallbackBitmap(mAddress);
             }
 
             // Save the picture of the contact with that email address in the bitmap cache

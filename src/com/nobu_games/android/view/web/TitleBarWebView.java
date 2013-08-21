@@ -321,14 +321,14 @@ public class TitleBarWebView extends WebView implements TitleBarDelegate {
 
     private void init() {
         if (checkedForNativeGetVisibleTitleHeightMethod == false) {
-	        try {
-	            nativeGetVisibleTitleHeightMethod = WebView.class
-	                    .getDeclaredMethod("getVisibleTitleHeight");
-	        } catch(NoSuchMethodException e) {
-	            Log.w(TAG,
-	                    "Could not retrieve native hidden getVisibleTitleHeight method");
-	        }
-	        checkedForNativeGetVisibleTitleHeightMethod = true;
+            try {
+                nativeGetVisibleTitleHeightMethod = WebView.class
+                        .getDeclaredMethod("getVisibleTitleHeight");
+            } catch(NoSuchMethodException e) {
+                Log.w(TAG,
+                        "Could not retrieve native hidden getVisibleTitleHeight method");
+            }
+            checkedForNativeGetVisibleTitleHeightMethod = true;
         }
 
     }
