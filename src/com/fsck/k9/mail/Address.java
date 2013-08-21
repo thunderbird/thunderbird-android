@@ -47,12 +47,18 @@ public class Address {
 
     String mPersonal;
 
+
+    public Address(Address address) {
+        mAddress = address.mAddress;
+        mPersonal = address.mPersonal;
+    }
+
     public Address(String address, String personal) {
         this(address, personal, true);
     }
 
     public Address(String address) {
-        this(address, null);
+        this(address, null, true);
     }
 
     private Address(String address, String personal, boolean parse) {

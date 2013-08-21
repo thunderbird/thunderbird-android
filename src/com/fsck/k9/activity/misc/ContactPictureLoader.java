@@ -129,12 +129,12 @@ public class ContactPictureLoader {
         } else if (cancelPotentialWork(email, badge)) {
             // Query the contacts database in a background thread and try to load the contact
             // picture, if there is one.
-            ContactPictureRetrievalTask task = new ContactPictureRetrievalTask(badge);
+            ContactPictureRetrievalTask task = new ContactPictureRetrievalTask(badge, address);
             AsyncDrawable asyncDrawable = new AsyncDrawable(mResources,
                     calculateFallbackBitmap(address), task);
             badge.setImageDrawable(asyncDrawable);
             try {
-                task.exec(address.getAddress(), address.getPersonal());
+                task.exec();
             } catch (RejectedExecutionException e) {
                 // We flooded the thread pool queue... use a fallback picture
                 badge.setImageBitmap(calculateFallbackBitmap(address));
@@ -250,15 +250,16 @@ public class ContactPictureLoader {
     /**
      * Load a contact picture in a background thread.
      */
-    class ContactPictureRetrievalTask extends AsyncTask<String, Void, Bitmap> {
+    class ContactPictureRetrievalTask extends AsyncTask<Void, Void, Bitmap> {
         private final WeakReference<QuickContactBadge> mQuickContactBadgeReference;
         private Address mAddress;
 
-        ContactPictureRetrievalTask(QuickContactBadge badge) {
+        ContactPictureRetrievalTask(QuickContactBadge badge, Address address) {
             mQuickContactBadgeReference = new WeakReference<QuickContactBadge>(badge);
+            mAddress = new Address(address);
         }
 
-        public void exec(String... args) {
+        public void exec(Void... args) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, args);
             } else {
@@ -271,10 +272,8 @@ public class ContactPictureLoader {
         }
 
         @Override
-        protected Bitmap doInBackground(String... args) {
-            String email = args[0];
-            String personal = args[1];
-            mAddress = new Address(email, personal);
+        protected Bitmap doInBackground(Void... args) {
+            final String email = mAddress.getAddress();
             final Uri x = mContactsHelper.getPhotoUri(email);
             Bitmap bitmap = null;
             if (x != null) {
