@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +33,12 @@ public class ContactPictureLoader {
      * Resize the pictures to the following value (device-independent pixels).
      */
     private static final int PICTURE_SIZE = 40;
+
+    /**
+     * Pattern to extract the letter to be displayed as fallback image.
+     */
+    private static final Pattern EXTRACT_LETTER_PATTERN = Pattern.compile("[a-zA-Z]");
+
 
     private ContentResolver mContentResolver;
     private Resources mResources;
@@ -154,12 +161,12 @@ public class ContactPictureLoader {
 
     private char calcUnknownContactLetter(Address address) {
     	String letter = "";
-    	Pattern p = Pattern.compile("[^a-zA-Z]*([a-zA-Z]).*");
     	String str = address.getPersonal() != null ? address.getPersonal() : address.getAddress();
-    	Matcher m = p.matcher(str);
-    	if (m.matches()) {
-    		letter = m.group(1).toUpperCase();
-    	}
+
+        Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
+        if (m.find()) {
+            letter = m.group(0).toUpperCase(Locale.US);
+        }
 
         return letter.length() == 0 ? '?' : letter.charAt(0);
     }
