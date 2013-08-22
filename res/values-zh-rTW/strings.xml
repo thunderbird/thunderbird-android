@@ -91,6 +91,8 @@
     <string name="cancel_action">取消</string>
     <string name="send_action">寄送</string>
     <string name="send_again_action">再次寄送</string>
+    <string name="select_action">選擇</string>
+    <string name="deselect_action">取消選擇</string>
     <string name="reply_action">回覆</string>
     <string name="reply_all_action">全部回覆</string>
     <string name="delete_action">刪除</string>
@@ -267,6 +269,8 @@
     <string name="message_discarded_toast">郵件已忽略</string>
     <string name="message_saved_toast">郵件已儲存為草稿</string>
 
+    <string name="global_settings_flag_label">顯示星號</string>
+    <string name="global_settings_flag_summary">顯示標記過星號的郵件</string>
     <string name="global_settings_checkbox_label">多選核取方塊</string>
     <string name="global_settings_checkbox_summary">預設顯示多選核取方塊</string>
     <string name="global_settings_preview_lines_label">預覽行數</string>

@@ -136,11 +136,13 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(true))
             ));
         s.put("messageListCheckboxes", Settings.versions(
-                new V(1, new BooleanSetting(false)),
-                new V(27, new BooleanSetting(true))
+                new V(1, new BooleanSetting(false))
             ));
         s.put("messageListPreviewLines", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 100, 2))
+            ));
+        s.put("messageListStars", Settings.versions(
+                new V(1, new BooleanSetting(true))
             ));
         s.put("messageViewFixedWidthFont", Settings.versions(
                 new V(1, new BooleanSetting(false))

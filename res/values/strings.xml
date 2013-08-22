@@ -123,6 +123,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
     <string name="send_again_action">Send Again</string>
+    <string name="select_action">Select</string>
+    <string name="deselect_action">Deselect</string>
     <string name="reply_action">Reply</string>
     <string name="reply_all_action">Reply all</string>
     <string name="delete_action">Delete</string>
@@ -303,6 +305,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_discarded_toast">Message discarded</string>
     <string name="message_saved_toast">Message saved as draft</string>
 
+    <string name="global_settings_flag_label">Show stars</string>
+    <string name="global_settings_flag_summary">Stars indicate flagged messages</string>
     <string name="global_settings_checkbox_label">Multi-select checkboxes</string>
     <string name="global_settings_checkbox_summary">Always show multi-select checkboxes</string>
     <string name="global_settings_preview_lines_label">Preview lines</string>

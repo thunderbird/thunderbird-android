@@ -118,6 +118,8 @@
     <string name="cancel_action">ביטול</string>
     <string name="send_action">שלח</string>
     <string name="send_again_action">שלח שוב</string>
+    <string name="select_action">בחר</string>
+    <string name="deselect_action">בטל בחירה</string>
     <string name="reply_action">השב</string>
     <string name="reply_all_action">השב על הכל</string>
     <string name="delete_action">מחק</string>
@@ -298,6 +300,8 @@
     <string name="message_discarded_toast">ההודעה נמחקה</string>
     <string name="message_saved_toast">ההודעה נשמרה כטיוטה</string>
 
+    <string name="global_settings_flag_label">הצג כוכבים</string>
+    <string name="global_settings_flag_summary">הכוכבים מצביעים על ההודעות המסומנות</string>
     <string name="global_settings_checkbox_label">תיבות סימון בחירה-מרובה</string>
     <string name="global_settings_checkbox_summary">תמיד הצג תיבות סימון בחירה-מרובה</string>
     <string name="global_settings_preview_lines_label">קווי תצוגה מקדימה</string>

@@ -118,6 +118,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="cancel_action">キャンセル</string>
     <string name="send_action">送信</string>
     <string name="send_again_action">再編集</string>
+    <string name="select_action">選択</string>
+    <string name="deselect_action">選択解除</string>
     <string name="reply_action">返信</string>
     <string name="reply_all_action">全員に返信</string>
     <string name="delete_action">削除</string>
@@ -297,6 +299,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="message_discarded_toast">メールを破棄しました</string>
     <string name="message_saved_toast">下書きに保存しました</string>
 
+    <string name="global_settings_flag_label">スターを表示</string>
+    <string name="global_settings_flag_summary">スターは印の付いたメッセージを示す</string>
     <string name="global_settings_checkbox_label">複数選択チェックボックス</string>
     <string name="global_settings_checkbox_summary">複数選択チェックボックス常時表示</string>
     <string name="global_settings_preview_lines_label">メッセージプレビューの行数</string>

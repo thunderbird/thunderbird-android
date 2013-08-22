@@ -117,6 +117,8 @@
     <string name="cancel_action">Άκυρο</string>
     <string name="send_action">Αποστολή</string>
     <string name="send_again_action">Αποστολή πάλι</string>
+    <string name="select_action">Επιλογή</string>
+    <string name="deselect_action">Απο-επιλογή</string>
     <string name="reply_action">Απάντηση</string>
     <string name="reply_all_action">Απάντηση σε όλους</string>
     <string name="delete_action">Διαγραφή</string>
@@ -293,6 +295,8 @@
     <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε.</string>
     <string name="message_saved_toast">Το μήνυμα αποθηκεύτηκε στα πρόχειρα.</string>
 
+    <string name="global_settings_flag_label">Προβολή αστεριών</string>
+    <string name="global_settings_flag_summary">Τα αστέρια υποδηλώνουν σημαντικά μηνύματα</string>
     <string name="global_settings_checkbox_label">Κουτιά πολλαπλής επιλογής</string>
     <string name="global_settings_checkbox_summary">Προβολή κουτιών επιλογής πάντοτε</string>
     <string name="global_settings_preview_lines_label">Προεπισκόπηση μηνυμάτων</string>

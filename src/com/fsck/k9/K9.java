@@ -224,6 +224,7 @@ public class K9 extends Application {
     }
 
     private static boolean mMessageListCheckboxes = true;
+    private static boolean mMessageListStars = true;
     private static int mMessageListPreviewLines = 2;
 
     private static boolean mShowCorrespondentNames = true;
@@ -504,6 +505,7 @@ public class K9 extends Application {
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
         editor.putBoolean("messageListSenderAboveSubject", mMessageListSenderAboveSubject);
         editor.putBoolean("hideSpecialAccounts", mHideSpecialAccounts);
+        editor.putBoolean("messageListStars", mMessageListStars);
         editor.putInt("messageListPreviewLines", mMessageListPreviewLines);
         editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
         editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
@@ -693,7 +695,8 @@ public class K9 extends Application {
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
         mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", true);
+        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
+        mMessageListStars = sprefs.getBoolean("messageListStars", true);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
@@ -1050,13 +1053,20 @@ public class K9 extends Application {
         mMessageListPreviewLines = lines;
     }
 
-
     public static boolean messageListCheckboxes() {
         return mMessageListCheckboxes;
     }
 
     public static void setMessageListCheckboxes(boolean checkboxes) {
         mMessageListCheckboxes = checkboxes;
+    }
+
+    public static boolean messageListStars() {
+        return mMessageListStars;
+    }
+
+    public static void setMessageListStars(boolean stars) {
+        mMessageListStars = stars;
     }
 
     public static boolean showCorrespondentNames() {

@@ -412,6 +412,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mSortDateAscending = false;
     private boolean mSenderAboveSubject = false;
     private boolean mCheckboxes = true;
+    private boolean mStars = true;
 
     private int mSelectedCount = 0;
     private Set<Long> mSelected = new HashSet<Long>();
@@ -787,6 +788,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         mPreviewLines = K9.messageListPreviewLines();
         mCheckboxes = K9.messageListCheckboxes();
+        mStars = K9.messageListStars();
 
         if (K9.showContactPicture()) {
             mContactsPictureLoader = ContactPicture.getContactPictureLoader(getActivity());
@@ -1472,6 +1474,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         switch (item.getItemId()) {
+            case R.id.deselect:
+            case R.id.select: {
+                toggleMessageSelectWithAdapterPosition(adapterPosition);
+                break;
+            }
             case R.id.reply: {
                 Message message = getMessageAtPosition(adapterPosition);
                 onReply(message);
@@ -1578,6 +1585,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
 
         menu.setHeaderTitle(subject);
+
+        if(  mSelected.contains(mContextMenuUniqueId)) {
+            menu.findItem(R.id.select).setVisible(false);
+        } else {
+            menu.findItem(R.id.deselect).setVisible(false);
+        }
 
         if (read) {
             menu.findItem(R.id.mark_as_read).setVisible(false);
@@ -1809,16 +1822,22 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             MessageViewHolder holder = new MessageViewHolder();
             holder.date = (TextView) view.findViewById(R.id.date);
             holder.chip = view.findViewById(R.id.chip);
+
+
             if (mPreviewLines == 0 && mContactsPictureLoader == null) {
                 view.findViewById(R.id.preview).setVisibility(View.GONE);
                 holder.preview = (TextView) view.findViewById(R.id.sender_compact);
-                ViewGroup.LayoutParams params = holder.chip.getLayoutParams();
-                params.height=(int) (16.0f * mScreenDensity);
-                params.width=(int) (16.0f * mScreenDensity);
+                holder.flagged = (CheckBox) view.findViewById(R.id.flagged_center_right);
+                view.findViewById(R.id.flagged_bottom_right).setVisibility(View.GONE);
+
+
 
             } else {
                 view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
+                holder.flagged = (CheckBox) view.findViewById(R.id.flagged_bottom_right);
+                view.findViewById(R.id.flagged_center_right).setVisibility(View.GONE);
+
             }
 
             QuickContactBadge contactBadge =
@@ -1846,11 +1865,16 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.preview.setLines(Math.max(mPreviewLines,1));
             mFontSizes.setViewTextSize(holder.preview, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
+            mFontSizes.setViewTextSize(holder.threadCount, mFontSizes.getMessageListSubject()); // thread count is next to subject
+            view.findViewById(R.id.selected_checkbox_wrapper).setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
+
+            holder.flagged.setVisibility(mStars ? View.VISIBLE : View.GONE);
+            holder.flagged.setOnClickListener(holder);
+
 
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
-            holder.selected.setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
+            holder.selected.setOnClickListener(holder);
 
-            view.findViewById(R.id.chip_wrapper).setOnClickListener(holder);
 
             view.setTag(holder);
 
@@ -1910,15 +1934,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             long uniqueId = cursor.getLong(mUniqueIdColumn);
             boolean selected = mSelected.contains(uniqueId);
 
-            if (!mCheckboxes && selected) {
-                holder.chip.setBackgroundDrawable(account.getCheckmarkChip().drawable());
-            } else {
-                holder.chip.setBackgroundDrawable(account.generateColorChip(read, toMe, ccMe,
-                        fromMe, flagged).drawable());
-            }
+
+            holder.chip.setBackgroundColor(account.getChipColor());
 
             if (mCheckboxes) {
                 holder.selected.setChecked(selected);
+            }
+
+            if (mStars) {
+                holder.flagged.setChecked(flagged);
             }
             holder.position = cursor.getPosition();
 
@@ -2063,14 +2087,22 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public TextView date;
         public View chip;
         public TextView threadCount;
+        public CheckBox flagged;
         public CheckBox selected;
         public int position = -1;
         public QuickContactBadge contactBadge;
-
         @Override
         public void onClick(View view) {
             if (position != -1) {
-                toggleMessageSelectWithAdapterPosition(position);
+
+                switch (view.getId()) {
+                    case R.id.selected_checkbox:
+                        toggleMessageSelectWithAdapterPosition(position);
+                        break;
+                    case R.id.flagged:
+                        toggleMessageFlagWithAdapterPosition(position);
+                        break;
+                }
             }
         }
     }
@@ -2184,6 +2216,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         toggleMessageSelectWithAdapterPosition(adapterPosition);
+    }
+
+    private void toggleMessageFlagWithAdapterPosition(int adapterPosition) {
+        Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+        boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
+
+        setFlag(adapterPosition,Flag.FLAGGED, !flagged);
     }
 
     private void toggleMessageSelectWithAdapterPosition(int adapterPosition) {

@@ -118,6 +118,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="cancel_action">Annuleren</string>
     <string name="send_action">Verzenden</string>
     <string name="send_again_action">Opnieuw Verzenden</string>
+    <string name="select_action">Selecteren</string>
+    <string name="deselect_action">Annuleer selectie</string>
     <string name="reply_action">Antwoorden</string>
     <string name="reply_all_action">Iedereen antwoorden</string>
     <string name="delete_action">Verwijderen</string>
@@ -297,6 +299,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="message_discarded_toast">Bericht verwijderd</string>
     <string name="message_saved_toast">Bericht opgeslagen als concept</string>
 
+    <string name="global_settings_flag_label">Bericht sterren</string>
+    <string name="global_settings_flag_summary">Sterren geven gemarkeerde berichten aan</string>
     <string name="global_settings_checkbox_label">Multi-selecteer selectieboxen</string>
     <string name="global_settings_checkbox_summary">Laat altijd multi-selecteer selectieboxen zien</string>
     <string name="global_settings_preview_lines_label">Preview regels</string>

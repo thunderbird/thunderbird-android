@@ -117,6 +117,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="cancel_action">Abbrechen</string>
     <string name="send_action">Senden</string>
     <string name="send_again_action">Erneut senden</string>
+    <string name="select_action">Auswählen</string>
+    <string name="deselect_action">Abwählen</string>
     <string name="reply_action">Antworten</string>
     <string name="reply_all_action">Allen antworten</string>
     <string name="delete_action">Löschen</string>
@@ -298,6 +300,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="message_discarded_toast">Nachricht wurde verworfen</string>
     <string name="message_saved_toast">Nachricht wurde als Entwurf gespeichert</string>
 
+    <string name="global_settings_flag_label">Wichtige Nachrichten</string>
+    <string name="global_settings_flag_summary">Sterne weisen auf wichtige Nachrichten hin.</string>
     <string name="global_settings_checkbox_label">Mehrfachauswahl</string>
     <string name="global_settings_checkbox_summary">Immer Mehrfachauswahl-Felder anzeigen</string>
     <string name="global_settings_preview_lines_label">Vorschauzeilen</string>

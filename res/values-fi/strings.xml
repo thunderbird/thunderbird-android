@@ -119,6 +119,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="cancel_action">Peruuta</string>
     <string name="send_action">Lähetä</string>
     <string name="send_again_action">Lähetä uudelleen</string>
+    <string name="select_action">Valitse</string>
+    <string name="deselect_action">Poista valinta</string>
     <string name="reply_action">Vastaa</string>
     <string name="reply_all_action">Vastaa kaikille</string>
     <string name="delete_action">Poista</string>
@@ -299,6 +301,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_discarded_toast">Viesti peruutettu</string>
     <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
 
+    <string name="global_settings_flag_label">Viestin tähdet</string>
+    <string name="global_settings_flag_summary">Tähdet ilmaisevat merkityt viestit</string>
     <string name="global_settings_checkbox_label">Usean valinnan valintaruudut</string>
     <string name="global_settings_checkbox_summary">Näytä aina usean valinnan valintaruudut</string>
     <string name="global_settings_preview_lines_label">Rivien esikatselu</string>

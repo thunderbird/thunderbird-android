@@ -117,6 +117,8 @@ K-9改进的功能包括：
     <string name="cancel_action">取消</string>
     <string name="send_action">发送</string>
     <string name="send_again_action">重新发送</string>
+    <string name="select_action">选择</string>
+    <string name="deselect_action">取消选择</string>
     <string name="reply_action">回复</string>
     <string name="reply_all_action">全部回复</string>
     <string name="delete_action">删除</string>
@@ -291,6 +293,8 @@ K-9改进的功能包括：
     <string name="message_discarded_toast">邮件已忽略</string>
     <string name="message_saved_toast">邮件已保存为草稿</string>
 
+    <string name="global_settings_flag_label">显示星标</string>
+    <string name="global_settings_flag_summary">星标指示标记过的邮件</string>
     <string name="global_settings_checkbox_label">复选框</string>
     <string name="global_settings_checkbox_summary">总是显示多选框</string>
     <string name="global_settings_preview_lines_label">预览行数</string>

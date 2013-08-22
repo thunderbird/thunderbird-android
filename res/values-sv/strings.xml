@@ -118,6 +118,8 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="cancel_action">Avbryt</string>
     <string name="send_action">Skicka</string>
     <string name="send_again_action">Skicka igen</string>
+    <string name="select_action">Markera</string>
+    <string name="deselect_action">Avmarkera</string>
     <string name="reply_action">Svara</string>
     <string name="reply_all_action">Svara alla</string>
     <string name="delete_action">Radera</string>
@@ -298,6 +300,8 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_discarded_toast">Brevet kasserat</string>
     <string name="message_saved_toast">Brevet sparat som utkast</string>
 
+    <string name="global_settings_flag_label">Stjärnor</string>
+    <string name="global_settings_flag_summary">Stjärnor indikerar flaggade brev</string>
     <string name="global_settings_checkbox_label">Checkboxar för flerval</string>
     <string name="global_settings_checkbox_summary">Visa alltid checkboxar för flerval</string>
     <string name="global_settings_preview_lines_label">Förhandsgranska rader</string>

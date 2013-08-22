@@ -119,6 +119,8 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="cancel_action">Mégse</string>
     <string name="send_action">Küldés</string>
     <string name="send_again_action">Újraküldés</string>
+    <string name="select_action">Megjelöl</string>
+    <string name="deselect_action">Nem jelöl</string>
     <string name="reply_action">Válasz</string>
     <string name="reply_all_action">Válasz mindenkinek</string>
     <string name="delete_action">Törlés</string>
@@ -298,6 +300,8 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="message_discarded_toast">Levél eldobva</string>
     <string name="message_saved_toast">Levél mentve a piszkozatokba</string>
 
+    <string name="global_settings_flag_label">Csillagok</string>
+    <string name="global_settings_flag_summary">Csillag jelzi a fontos leveleket</string>
     <string name="global_settings_checkbox_label">Többszörös kijelölés</string>
     <string name="global_settings_checkbox_summary">Kijelölő négyzetet a levelek mellet</string>
     <string name="global_settings_preview_lines_label">Előnézeti sorok száma</string>

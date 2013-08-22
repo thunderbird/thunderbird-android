@@ -292,10 +292,7 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
 
-        int chipColor = mAccount.getChipColor();
-        int chipColorAlpha = (!message.isSet(Flag.SEEN)) ? 255 : 127;
-        mChip.setBackgroundColor(chipColor);
-        mChip.getBackground().setAlpha(chipColorAlpha);
+        mChip.setBackgroundColor(mAccount.getChipColor());
 
         setVisibility(View.VISIBLE);
 

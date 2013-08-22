@@ -118,6 +118,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
     <string name="send_again_action">Reenviar al remitente</string>
+    <string name="select_action">Seleccionar</string>
+    <string name="deselect_action">Deseleccionar</string>
     <string name="reply_action">Responder</string>
     <string name="reply_all_action">Responder a todos</string>
     <string name="delete_action">Borrar</string>
@@ -299,6 +301,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
 
     <string name="global_settings_checkbox_label">Casillas de selección múltiple</string>
     <string name="global_settings_checkbox_summary">Mostrar casillas de selección múltiple</string>
+    <string name="global_settings_flag_label">Ver estrellas</string>
+    <string name="global_settings_flag_summary">Las estrellas indican un mensaje destacado</string>
     <string name="global_settings_preview_lines_label">Previsualizar lineas</string>
     <string name="global_settings_show_correspondent_names_label">Mostrar nombre asociado</string>
     <string name="global_settings_show_correspondent_names_summary">Mostrar nombre asociado en vez de dirección de correo</string>

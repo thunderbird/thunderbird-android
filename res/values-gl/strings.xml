@@ -118,6 +118,8 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
     <string name="send_again_action">Volver a enviar</string>
+    <string name="select_action">Seleccionar</string>
+    <string name="deselect_action">Deseleccionar</string>
     <string name="reply_action">Responder</string>
     <string name="reply_all_action">Responder a todos</string>
     <string name="delete_action">Borrar</string>
@@ -297,6 +299,8 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="message_discarded_toast">Mensaxes descartadas</string>
     <string name="message_saved_toast">Mensaxe guardada coma borrador</string>
 
+    <string name="global_settings_flag_label">Ver estrelas</string>
+    <string name="global_settings_flag_summary">As estrelas indican unha mensaxe destacada</string>
     <string name="global_settings_checkbox_label">Selección múltiple</string>
     <string name="global_settings_checkbox_summary">Permitir múltiple selección</string>
     <string name="global_settings_preview_lines_label">Previsualizar liñas</string>

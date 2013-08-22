@@ -118,6 +118,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
     <string name="send_again_action">Reenviar</string>
+    <string name="select_action">Selecionar</string>
+    <string name="deselect_action">Desselecionar</string>
     <string name="reply_action">Responder</string>
     <string name="reply_all_action">Responder a todos</string>
     <string name="delete_action">Excluir</string>
@@ -294,6 +296,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="message_discarded_toast">Mensagem descartada</string>
     <string name="message_saved_toast">Mensagem salva como rascunho</string>
 
+    <string name="global_settings_flag_label">Mostrar favoritos</string>
+    <string name="global_settings_flag_summary">Estrelas indicam mensagens favoritas</string>
     <string name="global_settings_checkbox_label">Caixas de multi-seleção</string>
     <string name="global_settings_checkbox_summary">Sempre mostrar caixas de multi-seleção</string>
     <string name="global_settings_preview_lines_label">Linhas de visualização</string>
