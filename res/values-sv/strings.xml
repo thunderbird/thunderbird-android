@@ -33,7 +33,7 @@ K-9\'s förbättrade funktioner inkluderar:
   <li>Push-mail med hjälp av IMAP IDLE</li>
   <li>Bättre prestanda</li>
   <li>Omarkivering av e-post</li>
-  <li>E-post-signaturer</li>
+  <li>E-postsignaturer</li>
   <li>Bcc till dig själv</li>
   <li>Mapp-prenumerationer</li>
   <li>Synkronisera alla mappar</li>
@@ -83,9 +83,9 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="read_attachment_label">Läs bilagor</string>
     <string name="read_attachment_desc">Tillåter denna applikation att läsa bifogade filer.</string>
     <string name="read_messages_label">Läs e-post</string>
-    <string name="read_messages_desc">Tillåter denna applikation att läsa dina e-post-meddelanden.</string>
+    <string name="read_messages_desc">Tillåter denna applikation att läsa dina e-postmeddelanden.</string>
     <string name="delete_messages_label">Radera e-post</string>
-    <string name="delete_messages_desc">Tillåter denna applikation att radera dina e-post-meddelanden.</string>
+    <string name="delete_messages_desc">Tillåter denna applikation att radera dina e-postmeddelanden.</string>
 
     <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Konton</string>
@@ -265,7 +265,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:\n</string>
     <string name="message_compose_error_no_recipients">Du måste ange åtminstone en mottagare.</string>
-    <string name="error_contact_address_not_found">Kan inte hitta e-post-adress för denna kontakt.</string>
+    <string name="error_contact_address_not_found">Kan inte hitta e-postadress för denna kontakt.</string>
     <string name="message_compose_attachments_skipped_toast">Några bilagor kan inte vidarebefordras eftersom de inte har hämtats.</string>
     <string name="message_compose_show_quoted_text_action">Citera meddelande</string>
     <string name="message_compose_description_add_to">Lägg till mottagare (Till)</string>
@@ -306,7 +306,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="global_settings_checkbox_summary">Visa alltid checkboxar för flerval</string>
     <string name="global_settings_preview_lines_label">Förhandsgranska rader</string>
     <string name="global_settings_show_correspondent_names_label">Visa korrespondensnamn</string>
-    <string name="global_settings_show_correspondent_names_summary">Visa namn på korrespondens hellre än e-post-adresser</string>
+    <string name="global_settings_show_correspondent_names_summary">Visa namn på korrespondens hellre än e-postadresser</string>
 
     <string name="global_settings_sender_above_subject_label">Avsändare över ämne</string>
     <string name="global_settings_sender_above_subject_summary">Visar avsändarens namn över ämnesraden istället för under den</string>
@@ -416,7 +416,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="account_setup_expunge_policy_label">Utplåna e-post</string>
     <string name="account_setup_expunge_policy_immediately">Direkt efter radering eller flytt</string>
-    <string name="account_setup_expunge_policy_on_poll">Vid varje e-post-kontroll</string>
+    <string name="account_setup_expunge_policy_on_poll">Vid varje e-postkontroll</string>
     <string name="account_setup_expunge_policy_manual">Endast manuellt</string>
 
     <string name="account_setup_incoming_autodetect_namespace_label">Auto-detektera namnområde för IMAP</string>
@@ -508,7 +508,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_setup_failed_dlg_edit_details_action">Redigera detaljer</string>
     <string name="account_setup_failed_dlg_continue_action">Fortsätt</string>
 
-    <string name="account_settings_push_advanced_title">Advancerat</string>
+    <string name="account_settings_push_advanced_title">Avancerat</string>
     <string name="account_settings_title_fmt">Allmänna inställningar</string>
     <string name="account_settings_default_label">Standardkonto</string>
     <string name="account_settings_default_summary">Skicka e-post från detta konto som standard</string>
@@ -565,7 +565,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_settings_crypto_app">OpenPGP-leverantör</string>
     <string name="account_settings_crypto_app_none">Ingen</string>
     <string name="account_settings_crypto_auto_signature">Auto-signera</string>
-    <string name="account_settings_crypto_auto_signature_summary">Använd kontots e-post-adress för att gissa signaturnyckeln.</string>
+    <string name="account_settings_crypto_auto_signature_summary">Använd kontots e-postadress för att gissa signaturnyckeln.</string>
     <string name="account_settings_crypto_auto_encrypt">Auto-kryptera</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Kryptera automatiskt om en publik nyckel machar en mottagare.</string>
     <string name="account_settings_crypto_apg_not_installed">APG är inte installerat</string>
@@ -761,11 +761,11 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
         med din korrekta adress och lösenord så kanske du inte har ett betalt
         \"Plus\"-konto. Vänligen starta webbläsaren för att komma åt dessa konton.</string>
     <string name="provider_note_yahoojp">Om du vill använda POP3 med denna leverantör måste du välja att tillåta POP3 på inställningssidan för Yahoo!.</string>
-    <string name="provider_note_auonejp">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för au one.</string>
-    <string name="provider_note_naver">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för Naver.</string>
-    <string name="provider_note_hanmail">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för Hanmail(Daum).</string>
-    <string name="provider_note_paran">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för Paran.</string>
-    <string name="provider_note_nate">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-post-inställningarna för Nate.</string>
+    <string name="provider_note_auonejp">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för au one.</string>
+    <string name="provider_note_naver">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för Naver.</string>
+    <string name="provider_note_hanmail">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för Hanmail(Daum).</string>
+    <string name="provider_note_paran">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för Paran.</string>
+    <string name="provider_note_nate">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för Nate.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt Certifikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
@@ -819,7 +819,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="network_preferences">Nätverk</string>
     <string name="interaction_preferences">Interaktion</string>
     <string name="accountlist_preferences">Kontolista</string>
-    <string name="messagelist_preferences">E-post-listor</string>
+    <string name="messagelist_preferences">E-postlistor</string>
     <string name="messageview_preferences">Brev</string>
     <string name="folderlist_preferences">Mapplistor</string>
     <string name="settings_theme_label">Tema</string>
@@ -860,7 +860,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="gestures_summary">Acceptera gestkontroll</string>
 
     <string name="volume_navigation_title">Volym upp/ner-navigering</string>
-    <string name="volume_navigation_message">E-post-vy</string>
+    <string name="volume_navigation_message">E-postvy</string>
     <string name="volume_navigation_list">Diverse listvyer</string>
 
     <string name="start_integrated_inbox_title">Integrerad inkorg vid start</string>
@@ -905,13 +905,13 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="font_size_folder_name">Mappnamn</string>
     <string name="font_size_folder_status">Mappstatus</string>
 
-    <string name="font_size_message_list">E-post-lista</string>
+    <string name="font_size_message_list">E-postlista</string>
     <string name="font_size_message_list_subject">Ämne</string>
     <string name="font_size_message_list_sender">Avsändare</string>
     <string name="font_size_message_list_date">Datum</string>
     <string name="font_size_message_list_preview">Förhandsvisning</string>
 
-    <string name="font_size_message_view">E-post-vy</string>
+    <string name="font_size_message_view">E-postvy</string>
     <string name="font_size_message_view_sender">Avsändare</string>
     <string name="font_size_message_view_to">Mottagare (Till)</string>
     <string name="font_size_message_view_cc">Mottagare (CC)</string>
@@ -945,7 +945,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_compose_use_workaround">Använd \"Lägg till bilaga (Bild)\" eller \"Lägg till bilaga (Video)\" för att bifoga bilder eller video med Gallery 3D.</string>
 
     <string name="miscellaneous_preferences">Diverse</string>
-    <string name="misc_preferences_attachment_title">Använd work-adound för bug i Gallery</string>
+    <string name="misc_preferences_attachment_title">Använd workadound för bug i Gallery</string>
     <string name="misc_preferences_attachment_description">Visa knappar för att bifoga image/video (to work around a Gallery 3D bug)</string>
 
     <!-- APG related -->
@@ -1061,7 +1061,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="unread_widget_select_account">Visa antal olästa för…</string>
 
-    <string name="import_dialog_error_title">Saknar filhanterar-app</string>
+    <string name="import_dialog_error_title">Saknar filhanterarapp</string>
     <string name="close">Stäng</string>
 
     <string name="webview_empty_message">Ingen text</string>
@@ -1086,7 +1086,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="webview_contextmenu_email_send_action">Skicka e-post</string>
     <string name="webview_contextmenu_email_save_action">Spara till kontakter</string>
     <string name="webview_contextmenu_email_copy_action">Kopiera adress</string>
-    <string name="webview_contextmenu_email_clipboard_label">E-post-adress</string>
+    <string name="webview_contextmenu_email_clipboard_label">E-postadress</string>
 
     <string name="image_saved_as">Sparade bild som \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Misslyckades med att spara bild.</string>
