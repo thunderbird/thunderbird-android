@@ -8,6 +8,26 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.509" versioncode="18009" >
+		<change>Updates to Catalan, Czech, Dutch, Finnish, French, German, Korean, Spanish and Swedish translations</change>
+		<change>Several performance improvements and crash fixes</change>
+		<change>tweak message list item "read item" background color so you can see the item divider a bit better</change>
+		<change>Add back select/deselect action to the message list context menu</change>
+		<change>Default message list checkboxes to off again</change>
+		<change>move message list thread count up to the subject line</change>
+		<change>add back stars to the message list UI</change>
+		<change>Return to old style color chips for accounts, folders and messages.</change>
+		<change>Skip incorrectly formatted/parsed LSUB/LIST replies from IMAP servers</change>
+		<change>Autoconfigure SSL for provider gmx.de</change>
+		<change>Autoconfiguration for a comprehensive list of .ru mail providers.</change>
+		<change>Use Google's fix for the PRNG mess Source: http://android-developers.blogspot.de/2013/08/some-securerandom-thoughts.html</change>
+		<change>Add an actionbar item for "add account" to the account list (if there's room)</change>
+		<change>GMail-app-style generated colorful one-letter contact pictures for pictureless contacts</change>
+		<change>Tighten up the account list display for narrow-screened devices like the HTC One</change>
+		<change>Updated invalid certificate message to be a bit more user-friendly.</change>
+		<change>Restore super-dense message list layout when the user has selected 0 lines of message preview and no contact pictures</change>
+		<change>Rename "SSL" to "SSL/TLS" and "TLS" to "STARTTLS" to better explain what's really going on</change>
+    </release>
     <release version="4.508" versioncode="18008" >
         <change>Move 'share' menu item back, at least for the moment</change>
     </release>
