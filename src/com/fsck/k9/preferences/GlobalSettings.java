@@ -230,6 +230,21 @@ public class GlobalSettings {
         s.put("colorizeMissingContactPictures", Settings.versions(
                 new V(29, new BooleanSetting(true))
             ));
+        s.put("messageViewDeleteActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(true))
+            ));
+        s.put("messageViewArchiveActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(true))
+            ));
+        s.put("messageViewMoveActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(true))
+            ));
+        s.put("messageViewCopyActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(true))
+            ));
+        s.put("messageViewSpamActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(true))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

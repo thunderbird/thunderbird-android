@@ -56,6 +56,30 @@
         android:icon="?attr/iconActionDelete"
         android:showAsAction="always"
         android:title="@string/delete_action"/>
+    <!-- MessageView -->
+    <item
+        android:id="@+id/archive"
+        android:icon="?attr/iconActionArchive"
+        android:showAsAction="ifRoom"
+        android:title="@string/archive_action"/>
+    <!-- MessageView -->
+    <item
+        android:id="@+id/spam"
+        android:icon="?attr/iconActionSpam"
+        android:showAsAction="ifRoom"
+        android:title="@string/spam_action"/>
+    <!-- MessageView -->
+    <item
+        android:id="@+id/move"
+        android:icon="?attr/iconActionMoveOrCopy"
+        android:showAsAction="ifRoom"
+        android:title="@string/move_action"/>
+    <!-- MessageView -->
+    <item
+        android:id="@+id/copy"
+        android:icon="?attr/iconActionMoveOrCopy"
+        android:showAsAction="ifRoom"
+        android:title="@string/copy_action"/>
 
     <!-- MessageView -->
     <item
