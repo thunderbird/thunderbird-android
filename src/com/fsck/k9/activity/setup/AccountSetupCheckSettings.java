@@ -159,11 +159,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 } catch (final CertificateValidationException cve) {
                     Log.e(K9.LOG_TAG, "Error while testing settings", cve);
 
+                    X509Certificate[] chain = cve.getCertChain();
                     // Avoid NullPointerException in acceptKeyDialog()
-                    if (TrustManagerFactory.getLastCertChain() != null) {
+                    if (chain != null) {
                         acceptKeyDialog(
                             R.string.account_setup_failed_dlg_certificate_message_fmt,
-                            cve);
+                            cve, chain);
                     } else {
                         showErrorDialog(
                                 R.string.account_setup_failed_dlg_server_message_fmt,
@@ -232,16 +233,16 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             }
         });
     }
-    private void acceptKeyDialog(final int msgResId, final Object... args) {
+
+    private void acceptKeyDialog(final int msgResId,
+            final CertificateValidationException ex, final X509Certificate[] chain) {
         mHandler.post(new Runnable() {
             public void run() {
                 if (mDestroyed) {
                     return;
                 }
-                final X509Certificate[] chain = TrustManagerFactory.getLastCertChain();
                 String exMessage = "Unknown Error";
 
-                Exception ex = ((Exception)args[0]);
                 if (ex != null) {
                     if (ex.getCause() != null) {
                         if (ex.getCause().getCause() != null) {
