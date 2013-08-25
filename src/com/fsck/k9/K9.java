@@ -1347,7 +1347,6 @@ public class K9 extends Application {
         sColorizeMissingContactPictures = enabled;
     }
 
-
     public static boolean isMessageViewArchiveActionVisible() {
     	return sMessageViewArchiveActionVisible;
     }

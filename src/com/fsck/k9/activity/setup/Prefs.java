@@ -100,6 +100,12 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
+    // Named indices for the mVisibleRefileActions field
+    private static final int VISIBLE_REFILE_ACTIONS_DELETE = 0;
+    private static final int VISIBLE_REFILE_ACTIONS_ARCHIVE = 1;
+    private static final int VISIBLE_REFILE_ACTIONS_MOVE = 2;
+    private static final int VISIBLE_REFILE_ACTIONS_COPY = 3;
+    private static final int VISIBLE_REFILE_ACTIONS_SPAM = 4;
 
     private ListPreference mLanguage;
     private ListPreference mTheme;
@@ -413,20 +419,19 @@ public class Prefs extends K9PreferenceActivity {
         mWrapFolderNames.setChecked(K9.wrapFolderNames());
 
         mVisibleRefileActions = (CheckBoxListPreference) findPreference(PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS);
-        CharSequence[] visibleRefileActionsEntries = {
-        		getString(R.string.delete_action),
-        		getString(R.string.archive_action),
-        		getString(R.string.move_action),
-        		getString(R.string.copy_action),
-        		getString(R.string.spam_action),
-        };
-        boolean[] visibleRefileActionsValues = {
-        		K9.isMessageViewDeleteActionVisible(),
-        		K9.isMessageViewArchiveActionVisible(),
-        		K9.isMessageViewMoveActionVisible(),
-        		K9.isMessageViewCopyActionVisible(),
-        		K9.isMessageViewSpamActionVisible(),
-        };
+        CharSequence[] visibleRefileActionsEntries = new CharSequence[5];
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_DELETE] = getString(R.string.delete_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_ARCHIVE] = getString(R.string.archive_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_MOVE] = getString(R.string.move_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_COPY] = getString(R.string.copy_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_SPAM] = getString(R.string.spam_action);
+
+        boolean[] visibleRefileActionsValues = new boolean[5];
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_DELETE] = K9.isMessageViewDeleteActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_ARCHIVE] = K9.isMessageViewArchiveActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_MOVE] = K9.isMessageViewMoveActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_COPY] = K9.isMessageViewCopyActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_SPAM] = K9.isMessageViewSpamActionVisible();
 
         mVisibleRefileActions.setItems(visibleRefileActionsEntries);
         mVisibleRefileActions.setCheckedItems(visibleRefileActionsValues);
@@ -500,11 +505,16 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMobileOptimizedLayout(mMobileOptimizedLayout.isChecked());
         K9.setAutofitWidth(mAutofitWidth.isChecked());
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
-        K9.setMessageViewDeleteActionVisible(mVisibleRefileActions.getCheckedItems()[0]);
-        K9.setMessageViewArchiveActionVisible(mVisibleRefileActions.getCheckedItems()[1]);
-        K9.setMessageViewMoveActionVisible(mVisibleRefileActions.getCheckedItems()[2]);
-        K9.setMessageViewCopyActionVisible(mVisibleRefileActions.getCheckedItems()[3]);
-        K9.setMessageViewSpamActionVisible(mVisibleRefileActions.getCheckedItems()[4]);
+        K9.setMessageViewDeleteActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_DELETE]);
+        K9.setMessageViewArchiveActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_ARCHIVE]);
+        K9.setMessageViewMoveActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_MOVE]);
+        K9.setMessageViewCopyActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_COPY]);
+        K9.setMessageViewSpamActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_SPAM]);
 
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
         K9.setQuietTimeEnds(mQuietTimeEnds.getTime());

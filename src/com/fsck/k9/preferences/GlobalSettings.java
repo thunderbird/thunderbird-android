@@ -234,16 +234,16 @@ public class GlobalSettings {
                 new V(30, new BooleanSetting(true))
             ));
         s.put("messageViewArchiveActionVisible", Settings.versions(
-                new V(30, new BooleanSetting(true))
+                new V(30, new BooleanSetting(false))
             ));
         s.put("messageViewMoveActionVisible", Settings.versions(
-                new V(30, new BooleanSetting(true))
+                new V(30, new BooleanSetting(false))
             ));
         s.put("messageViewCopyActionVisible", Settings.versions(
-                new V(30, new BooleanSetting(true))
+                new V(30, new BooleanSetting(false))
             ));
         s.put("messageViewSpamActionVisible", Settings.versions(
-                new V(30, new BooleanSetting(true))
+                new V(30, new BooleanSetting(false))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);
