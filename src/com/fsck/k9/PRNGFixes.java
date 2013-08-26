@@ -215,8 +215,7 @@ public final class PRNGFixes {
                 out.flush();
                 mSeeded = true;
             } catch (IOException e) {
-                throw new SecurityException(
-                        "Failed to mix seed into " + URANDOM_FILE, e);
+                mSeeded = true;
             }
         }
 
