@@ -1154,5 +1154,5 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>
     
-    <string name="acra_crash_toast_text">K9 has crashed! We have created a crash log file on the SDcard in the K9LOG folder</string>
+    <string name="acra_crash_toast_text">K9 has crashed! We have created a crash log file on the sdcard in the com.fsck.k9 folder</string>
 </resources>

@@ -3,7 +3,9 @@ package com.fsck.k9.helper;
 import android.os.Environment;
 import android.util.Log;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
 
@@ -42,61 +44,79 @@ public class AcraCustomFileSender implements ReportSender{
 
     @Override
     public void send(CrashReportData data) throws ReportSenderException {
-        String versionCode = data.getProperty(ReportField.APP_VERSION_NAME);
         String logcat = data.getProperty(ReportField.LOGCAT);
-        Log.e(K9.LOG_TAG, "XXXX sending report "+logFolder + " " + versionCode,new RuntimeException("XXXXXXXXXXX"));
 
+        ReportField[] fields = {
+            ReportField.APP_VERSION_NAME,
+            ReportField.ANDROID_VERSION,
+            ReportField.AVAILABLE_MEM_SIZE,
+            ReportField.TOTAL_MEM_SIZE,
+            ReportField.THREAD_DETAILS,
+            ReportField.SETTINGS_SECURE
+        };
         
         String state = Environment.getExternalStorageState();
-        
-        
+
         if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             // TODO we can not write our log
             Log.w(K9.LOG_TAG, "can't write error log -> sd path "+ logFolder + " readonly ");
             return;
         }
         
-        File dir = new File(logFolder.getAbsolutePath() + "/k9LOG/");
-        dir.mkdirs();
+        logFolder.mkdirs();
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US);
-        String filename = sdf.format(new Date());
-        File file = new File(dir, filename);
+        String filename = "crash-"+sdf.format(new Date());
+        File file = new File(logFolder, filename);
 
-        Set<String> uuids = new HashSet<String>();
+        
+        
         try {
             FileOutputStream f = new FileOutputStream(file);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(f));
             
             bw.write("#### k9 generated LOGFILE");
             bw.newLine();
-            bw.write("gen:" + filename);
+            bw.write("generated:" + filename);
             bw.newLine();
-            bw.write("Version:" + versionCode);
-            bw.newLine();
+            for(ReportField field : fields) {
+                bw.write(field.toString()+":"+data.getProperty(field));
+                bw.newLine();
+            }
             
+            bw.newLine();
             bw.write("#### AccountSettings"); 
             bw.newLine();
             try {
-                getAccountSettings(uuids);
+                bw.write(getAccountSettings(listAccountUUids()));
+                bw.newLine();
             } catch (SettingsImportExportException e) {
                 bw.write("can not get account settings for crash log");
                 Log.e(K9.LOG_TAG,"can not get account settings for crash log",e);
             }
-            bw.newLine();
             
+            bw.newLine();
             bw.write("#### Logcat");
             bw.newLine();
             bw.write(logcat);
             
             bw.close();
             
-            Log.i(K9.LOG_TAG, "wrote file" + dir+ "/"+filename);
+            Log.i(K9.LOG_TAG, "wrote file" + logFolder+ "/"+filename);
         } catch (IOException e) {
             // TODO can not write log file
             Log.e(K9.LOG_TAG, "can not write log file",e);
         } 
         
+    }
+    
+    private Set<String> listAccountUUids() {
+        Account[] accounts = Preferences.getPreferences(K9.app.getApplicationContext()).getAccounts();
+        Set<String> uuids = new HashSet<String>(); //TODO get uuids of account
+        for(Account a : accounts) {
+            uuids.add(a.getUuid());
+        }
+        return uuids;
     }
     
     /***

@@ -564,7 +564,7 @@ public class K9 extends Application {
         super.onCreate();
         ACRA.init(this);
         File sdCard = Environment.getExternalStorageDirectory();
-        AcraCustomFileSender sender = new AcraCustomFileSender(sdCard);
+        AcraCustomFileSender sender = new AcraCustomFileSender(new File(sdCard,"com.fsck.k9"));
         ACRA.getErrorReporter().setReportSender(sender);
         app = this;
 
