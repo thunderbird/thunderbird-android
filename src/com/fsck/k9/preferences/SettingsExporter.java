@@ -244,11 +244,10 @@ public class SettingsExporter {
         }
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType);
-
         writeElement(serializer, USERNAME_ELEMENT, incoming.username);
         // XXX For now we don't export the password
-        // writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
-        
+        //writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
+
         Map<String, String> extras = incoming.getExtra();
         if (extras != null && extras.size() > 0) {
             serializer.startTag(null, EXTRA_ELEMENT);
@@ -272,7 +271,6 @@ public class SettingsExporter {
         }
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType);
-        
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
         // XXX For now we don't export the password
         //writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
@@ -375,7 +373,7 @@ public class SettingsExporter {
             for (String folder : folders) {
                 writeFolder(serializer, accountUuid, folder, prefs);
             }
-            serializer.endTag(null, FOLDERS_ELEMENT);   
+            serializer.endTag(null, FOLDERS_ELEMENT);
         }
 
         serializer.endTag(null, ACCOUNT_ELEMENT);
