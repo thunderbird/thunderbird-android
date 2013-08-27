@@ -54,7 +54,8 @@ import java.util.concurrent.SynchronousQueue;
         formUri = "",
         mode = ReportingInteractionMode.TOAST,
         forceCloseDialogAfterToast = true, // optional, default false
-        resToastText = R.string.acra_crash_toast_text
+        resToastText = R.string.acra_crash_toast_text,
+        logcatArguments = { "-t", "400", "-v", "time" , "K9:D", "ACRA:I" }
 )
 public class K9 extends Application {
     /**

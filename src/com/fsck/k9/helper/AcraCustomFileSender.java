@@ -27,6 +27,10 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+/***
+ * Customer Report sender which writes ACRA reports into files on the SD card (default:
+ * sdcard/com.fsck.k9/crash-yyyy-MM-dd_HHmmss)
+ */
 public class AcraCustomFileSender implements ReportSender{
 
     /**
@@ -44,19 +48,25 @@ public class AcraCustomFileSender implements ReportSender{
 
     @Override
     public void send(CrashReportData data) throws ReportSenderException {
-        String logcat = data.getProperty(ReportField.LOGCAT);
 
-        ReportField[] fields = {
+        //See: https://github.com/ACRA/acra/wiki/ReportContent
+        ReportField[] includeFields = {
             ReportField.APP_VERSION_NAME,
             ReportField.ANDROID_VERSION,
             ReportField.AVAILABLE_MEM_SIZE,
             ReportField.TOTAL_MEM_SIZE,
+            ReportField.PHONE_MODEL,
+            ReportField.BRAND,
+            ReportField.PRODUCT,
             ReportField.THREAD_DETAILS,
-            ReportField.SETTINGS_SECURE
+            ReportField.USER_APP_START_DATE,
+            ReportField.USER_CRASH_DATE,
+            ReportField.ENVIRONMENT,
+            ReportField.SETTINGS_SECURE,
+            ReportField.CRASH_CONFIGURATION
         };
         
         String state = Environment.getExternalStorageState();
-
         if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             // TODO we can not write our log
             Log.w(K9.LOG_TAG, "can't write error log -> sd path "+ logFolder + " readonly ");
@@ -68,8 +78,6 @@ public class AcraCustomFileSender implements ReportSender{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US);
         String filename = "crash-"+sdf.format(new Date());
         File file = new File(logFolder, filename);
-
-        
         
         try {
             FileOutputStream f = new FileOutputStream(file);
@@ -79,7 +87,7 @@ public class AcraCustomFileSender implements ReportSender{
             bw.newLine();
             bw.write("generated:" + filename);
             bw.newLine();
-            for(ReportField field : fields) {
+            for(ReportField field : includeFields) {
                 bw.write(field.toString()+":"+data.getProperty(field));
                 bw.newLine();
             }
@@ -96,23 +104,32 @@ public class AcraCustomFileSender implements ReportSender{
             }
             
             bw.newLine();
+            bw.write("#### Exception");
+            bw.newLine();
+            bw.write(data.getProperty(ReportField.STACK_TRACE));
+            
+            bw.newLine();
+            bw.write("#### eventlog");
+            bw.newLine();
+            bw.write(""+data.getProperty(ReportField.EVENTSLOG));
+            
+            
+            bw.newLine();
             bw.write("#### Logcat");
             bw.newLine();
-            bw.write(logcat);
+            bw.write(""+data.getProperty(ReportField.LOGCAT));
             
             bw.close();
-            
             Log.i(K9.LOG_TAG, "wrote file" + logFolder+ "/"+filename);
         } catch (IOException e) {
             // TODO can not write log file
             Log.e(K9.LOG_TAG, "can not write log file",e);
         } 
-        
     }
     
     private Set<String> listAccountUUids() {
         Account[] accounts = Preferences.getPreferences(K9.app.getApplicationContext()).getAccounts();
-        Set<String> uuids = new HashSet<String>(); //TODO get uuids of account
+        Set<String> uuids = new HashSet<String>();
         for(Account a : accounts) {
             uuids.add(a.getUuid());
         }
