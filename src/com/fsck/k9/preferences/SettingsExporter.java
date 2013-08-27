@@ -1,19 +1,5 @@
 package com.fsck.k9.preferences;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.Map.Entry;
-import org.xmlpull.v1.XmlSerializer;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -24,11 +10,27 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
+
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 
 public class SettingsExporter {
@@ -75,9 +77,9 @@ public class SettingsExporter {
     public static final String DESCRIPTION_ELEMENT = "description";
 
     /**
-     * used to mask sensitiv fields in anonymous settings exports (e.g for crash reports)
+     * lists the fields that get marked with **** if anonymous = True
      */
-    public static final String ANNON_STRING = "*******";
+    private static Set<String> privateFields = null;
     
     public static String exportToFile(Context context, boolean includeGlobals,
             Set<String> accountUuids)
@@ -114,6 +116,13 @@ public class SettingsExporter {
     public static void exportPreferences(Context context, OutputStream os, boolean includeGlobals,
             Set<String> accountUuids,boolean anonymize) throws SettingsImportExportException  {
 
+        if(anonymize) {
+            // pass the hidden fields to startElements with this static memeber
+            privateFields = new HashSet<String>(Arrays.asList(USERNAME_ELEMENT, PASSWORD_ELEMENT,
+                    NAME_ELEMENT, EMAIL_ELEMENT, HOST_ELEMENT, PORT_ELEMENT));
+        } else {
+            privateFields = new HashSet<String>();
+        }
         try {
             XmlSerializer serializer = Xml.newSerializer();
             serializer.setOutput(os, "UTF-8");
@@ -155,7 +164,7 @@ public class SettingsExporter {
             serializer.startTag(null, ACCOUNTS_ELEMENT);
             for (String accountUuid : exportAccounts) {
                 Account account = preferences.getAccount(accountUuid);
-                writeAccount(serializer, account, prefs, anonymize);
+                writeAccount(serializer, account, prefs);
             }
             serializer.endTag(null, ACCOUNTS_ELEMENT);
 
@@ -207,7 +216,7 @@ public class SettingsExporter {
     }
 
     private static void writeAccount(XmlSerializer serializer, Account account,
-            Map<String, Object> prefs, boolean anonymize) throws IOException {
+            Map<String, Object> prefs) throws IOException {
 
         Set<Integer> identities = new HashSet<Integer>();
         Set<String> folders = new HashSet<String>();
@@ -229,14 +238,14 @@ public class SettingsExporter {
         serializer.startTag(null, INCOMING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, incoming.type);
 
-        writeElement(serializer, HOST_ELEMENT, anonymize ? ANNON_STRING : incoming.host);
+        writeElement(serializer, HOST_ELEMENT, incoming.host);
         if (incoming.port != -1) {
-            writeElement(serializer, PORT_ELEMENT, anonymize ? ANNON_STRING : Integer.toString(incoming.port));
+            writeElement(serializer, PORT_ELEMENT, Integer.toString(incoming.port));
         }
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType);
 
-        writeElement(serializer, USERNAME_ELEMENT, anonymize ? ANNON_STRING  :incoming.username);
+        writeElement(serializer, USERNAME_ELEMENT, incoming.username);
         // XXX For now we don't export the password
         // writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
         
@@ -257,14 +266,14 @@ public class SettingsExporter {
         serializer.startTag(null, OUTGOING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, outgoing.type);
 
-        writeElement(serializer, HOST_ELEMENT, anonymize ? ANNON_STRING : outgoing.host);
+        writeElement(serializer, HOST_ELEMENT, outgoing.host);
         if (outgoing.port != -1) {
-            writeElement(serializer, PORT_ELEMENT, anonymize ? ANNON_STRING : Integer.toString(outgoing.port));
+            writeElement(serializer, PORT_ELEMENT, Integer.toString(outgoing.port));
         }
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType);
         
-        writeElement(serializer, USERNAME_ELEMENT, anonymize ? ANNON_STRING : outgoing.username);
+        writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
         // XXX For now we don't export the password
         //writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
         extras = outgoing.getExtra();
@@ -356,7 +365,7 @@ public class SettingsExporter {
             Collections.sort(sortedIdentities);
 
             for (Integer identityIndex : sortedIdentities) {
-                writeIdentity(serializer, accountUuid, identityIndex.toString(), prefs, anonymize);
+                writeIdentity(serializer, accountUuid, identityIndex.toString(), prefs);
             }
             serializer.endTag(null, IDENTITIES_ELEMENT);
         }
@@ -373,7 +382,7 @@ public class SettingsExporter {
     }
 
     private static void writeIdentity(XmlSerializer serializer, String accountUuid,
-            String identity, Map<String, Object> prefs, boolean anonymize) throws IOException {
+            String identity, Map<String, Object> prefs) throws IOException {
 
         serializer.startTag(null, IDENTITY_ELEMENT);
 
@@ -382,23 +391,17 @@ public class SettingsExporter {
 
         // Write name belonging to the identity
         String name = (String) prefs.get(prefix + Account.IDENTITY_NAME_KEY + suffix);
-        serializer.startTag(null, NAME_ELEMENT);
         
-        serializer.text(anonymize ? ANNON_STRING : name);
-        serializer.endTag(null, NAME_ELEMENT);
+        writeElement(serializer, NAME_ELEMENT, name);
 
         // Write email address belonging to the identity
         String email = (String) prefs.get(prefix + Account.IDENTITY_EMAIL_KEY + suffix);
-        serializer.startTag(null, EMAIL_ELEMENT);
-        serializer.text(anonymize ? ANNON_STRING : email);
-        serializer.endTag(null, EMAIL_ELEMENT);
+        writeElement(serializer, EMAIL_ELEMENT, email);
 
         // Write identity description
         String description = (String) prefs.get(prefix + Account.IDENTITY_DESCRIPTION_KEY + suffix);
         if (description != null) {
-            serializer.startTag(null, DESCRIPTION_ELEMENT);
-            serializer.text(description);
-            serializer.endTag(null, DESCRIPTION_ELEMENT);
+            writeElement(serializer, DESCRIPTION_ELEMENT, description);    
         }
 
         // Write identity settings
@@ -502,7 +505,12 @@ public class SettingsExporter {
             throws IllegalArgumentException, IllegalStateException, IOException {
         if (value != null) {
             serializer.startTag(null, elementName);
-            serializer.text(value);
+            
+            if(privateFields.contains(elementName)) {
+                serializer.text("******");
+            } else {
+                serializer.text(value);
+            }
             serializer.endTag(null, elementName);
         }
     }
