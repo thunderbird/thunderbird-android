@@ -74,7 +74,11 @@ public class SettingsExporter {
     public static final String EMAIL_ELEMENT = "email";
     public static final String DESCRIPTION_ELEMENT = "description";
 
-
+    /**
+     * used to mask sensitiv fields in anonymous settings exports (e.g for crash reports)
+     */
+    public static final String ANNON_STRING = "*******";
+    
     public static String exportToFile(Context context, boolean includeGlobals,
             Set<String> accountUuids)
             throws SettingsImportExportException {
@@ -225,14 +229,14 @@ public class SettingsExporter {
         serializer.startTag(null, INCOMING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, incoming.type);
 
-        writeElement(serializer, HOST_ELEMENT, anonymize ? "annon" : incoming.host);
+        writeElement(serializer, HOST_ELEMENT, anonymize ? ANNON_STRING : incoming.host);
         if (incoming.port != -1) {
-            writeElement(serializer, PORT_ELEMENT, anonymize ? "annon" : Integer.toString(incoming.port));
+            writeElement(serializer, PORT_ELEMENT, anonymize ? ANNON_STRING : Integer.toString(incoming.port));
         }
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType);
 
-        writeElement(serializer, USERNAME_ELEMENT, anonymize ? "annon"  :incoming.username);
+        writeElement(serializer, USERNAME_ELEMENT, anonymize ? ANNON_STRING  :incoming.username);
         // XXX For now we don't export the password
         // writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
         
@@ -253,14 +257,14 @@ public class SettingsExporter {
         serializer.startTag(null, OUTGOING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, outgoing.type);
 
-        writeElement(serializer, HOST_ELEMENT, anonymize ? "annon" : outgoing.host);
+        writeElement(serializer, HOST_ELEMENT, anonymize ? ANNON_STRING : outgoing.host);
         if (outgoing.port != -1) {
-            writeElement(serializer, PORT_ELEMENT, anonymize ? "annon" : Integer.toString(outgoing.port));
+            writeElement(serializer, PORT_ELEMENT, anonymize ? ANNON_STRING : Integer.toString(outgoing.port));
         }
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType);
         
-        writeElement(serializer, USERNAME_ELEMENT, anonymize ? "annon" : outgoing.username);
+        writeElement(serializer, USERNAME_ELEMENT, anonymize ? ANNON_STRING : outgoing.username);
         // XXX For now we don't export the password
         //writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
         extras = outgoing.getExtra();
@@ -380,17 +384,13 @@ public class SettingsExporter {
         String name = (String) prefs.get(prefix + Account.IDENTITY_NAME_KEY + suffix);
         serializer.startTag(null, NAME_ELEMENT);
         
-        if(!anonymize) {
-            serializer.text("annon");
-        } else {
-            serializer.text(name);
-        }
+        serializer.text(anonymize ? ANNON_STRING : name);
         serializer.endTag(null, NAME_ELEMENT);
 
         // Write email address belonging to the identity
         String email = (String) prefs.get(prefix + Account.IDENTITY_EMAIL_KEY + suffix);
         serializer.startTag(null, EMAIL_ELEMENT);
-        serializer.text(anonymize ? "annon" : email);
+        serializer.text(anonymize ? ANNON_STRING : email);
         serializer.endTag(null, EMAIL_ELEMENT);
 
         // Write identity description
