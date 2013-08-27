@@ -17,7 +17,7 @@
 
     <!-- Used in the about dialog -->
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+    <string name="app_copyright_fmt">Autorské práva 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Licencované pod Apache licenciou vo verzii 2.0.</string>
 
 
@@ -119,6 +119,8 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="send_action">Odoslať</string>
     <string name="send_again_action">Odoslať znovu</string>
     <string name="reply_action">Odpovedať</string>
+    <string name="select_action">Vybrať</string>
+    <string name="deselect_action">Zrušiť výber</string>
     <string name="reply_all_action">Odpovedať všetkým</string>
     <string name="delete_action">Vymazať</string>
     <string name="archive_action">Archivovať</string>
@@ -244,7 +246,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="debug_enable_debug_logging_title">Povoliť vytváranie záznamov pre ladenie</string>
     <string name="debug_enable_debug_logging_summary">Zaznamenávať rozšírené diagnostické informácie</string>
     <string name="debug_enable_sensitive_logging_title">Zaznamenávať citlivé informácie</string>
-    <string name="debug_enable_sensitive_logging_summary">V záznamoch môžu byť zobrazené heslá.</string>
+    <string name="debug_enable_sensitive_logging_summary">V záznamoch môžu byť zobrazené heslá</string>
 
     <string name="message_list_load_more_messages_action">Načítať viac práv</string>
     <string name="message_to_fmt">Komu:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -298,6 +300,8 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="message_discarded_toast">Správa nebola uložená</string>
     <string name="message_saved_toast">Správa bola uložená ako koncept</string>
 
+    <string name="global_settings_flag_label">Zobraziť hviezdičky</string>
+    <string name="global_settings_flag_summary">Hviezdička indikuje označenú správu</string>
     <string name="global_settings_checkbox_label">Zaškrtávacie polia pre viacnásobný výber</string>
     <string name="global_settings_checkbox_summary">Vždy zobraziť zaškrtávacie polia pre viacnásobný výber</string>
     <string name="global_settings_preview_lines_label">Počet riadkov náhľadu</string>
@@ -347,7 +351,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="global_settings_mark_read">Označiť ako prečítané/neprečítané</string>
     <string name="global_settings_delete">Vymazať</string>
     <string name="global_settings_archive">Presunúť do archívu</string>
-    <string name="global_settings_archive_disabled_reason">Žiadne priečinky archívu.</string>
+    <string name="global_settings_archive_disabled_reason">Žiadne priečinky v archíve.</string>
     <string name="global_settings_move">Presunúť</string>
     <string name="global_settings_flag">Značka</string>
     <string name="global_settings_unselect">Odznačiť</string>
@@ -439,7 +443,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">Zabezpečenie</string>
-    <string name="account_setup_outgoing_require_login_label">Vyžadovať prihlásenie.</string>
+    <string name="account_setup_outgoing_require_login_label">Vyžadovať prihlásenie</string>
     <string name="account_setup_outgoing_username_label">Užívateľské meno</string>
     <string name="account_setup_outgoing_password_label">Heslo</string>
     <string name="account_setup_outgoing_authentication_label">Overovanie</string>
@@ -518,7 +522,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="account_settings_notification_opens_unread_label">Oznámenie otvorí neprečítané správy</string>
     <string name="account_settings_notification_opens_unread_summary">Zobraziť neprečítané správy, keď je oznámenie otvorené</string>
     <string name="account_settings_notification_unread_count_label">Zobraziť počet neprečítaných</string>
-    <string name="account_settings_notification_unread_count_summary">Zobraziť počet neprečítaných správ v notifikačnej lište.</string>
+    <string name="account_settings_notification_unread_count_summary">Zobraziť počet neprečítaných správ v notifikačnej lište</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Po otvorení označiť ako prečítané</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Označiť správu ako prečítanú po jej otvorení na zobrazenie</string>
 
@@ -530,10 +534,10 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="account_settings_composition">Odosielanie správy</string>
 
     <string name="account_settings_default_quoted_text_shown_label">Citovať správu pri odpovedi</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Zahrnúť pôvodnú správu do Vašej odpovede.</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Zahrnúť pôvodnú správu do Vašej odpovede</string>
 
     <string name="account_settings_reply_after_quote_label">Odpovedať za citovaným textom</string>
-    <string name="account_settings_reply_after_quote_summary">Pôvodná správa bude umiestnená nad Vašou odpoveďou.</string>
+    <string name="account_settings_reply_after_quote_summary">Pôvodná správa bude umiestnená nad Vašou odpoveďou</string>
 
     <string name="account_settings_strip_signature_label">Odstrániť podpis z citovanej odpovedi</string>
     <string name="account_settings_strip_signature_summary">Podpisy budú odstránené z citovaných správ</string>
@@ -561,7 +565,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="account_settings_crypto_app">Poskytovateľ OpenPGP</string>
     <string name="account_settings_crypto_app_none">Žiadne</string>
     <string name="account_settings_crypto_auto_signature">Automaticky podpisovať</string>
-    <string name="account_settings_crypto_auto_signature_summary">Používať e-mailovú adresu účtu pre uhádnutie podpisového kľúča.</string>
+    <string name="account_settings_crypto_auto_signature_summary">Používať e-mailovú adresu účtu pre uhádnutie podpisového kľúča</string>
     <string name="account_settings_crypto_auto_encrypt">Automaticky šifrovať</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Automaticky zašifrovať, ak sa verejný kľúč zhoduje s príjemcom</string>
     <string name="account_settings_crypto_apg_not_installed">APG nie je nainštalované</string>
@@ -932,13 +936,13 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="font_size_webview_larger">Najväčší</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
-    <string name="message_compose_buggy_gallery">Skontrolujte \"Nastavenia\" -&gt; \"Používať vlastné riešenie pre chybu Galérie\", aby ste boli schopný pripojiť obrázky alebo videá pomocou Galérie 3D.</string>
+    <string name="message_compose_buggy_gallery">Skontrolujte \"Nastavenia\" -&gt; \"Používať riešenie chyby pre Galériu\", aby ste boli schopný pripojiť obrázky alebo videá pomocou Galérie 3D.</string>
 
     <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
     <string name="message_compose_use_workaround">Použite \"Pridať prílohu (obrázok)\" or \"Pridať prílohu (video)\" pre pridanie obrázkov a videí pomocou Galérie 3D.</string>
 
     <string name="miscellaneous_preferences">Rôzne</string>
-    <string name="misc_preferences_attachment_title">Používať vlastné riešenie pre chybu Galérie</string>
+    <string name="misc_preferences_attachment_title">Používať riešenie chyby pre Galériu</string>
     <string name="misc_preferences_attachment_description">Zobraziť tlačidlá pre pridanie príloh (obrázky, videá) pre riešenie chyby Galérie 3D</string>
 
     <!-- APG related -->
@@ -1142,4 +1146,6 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="preposition_for_date">v <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Označiť všetky ako prečítané</string>
+
+    <string name="global_settings_colorize_missing_contact_pictures">Zafarbiť chýbajúce obrázky kontaktov</string>
 </resources>
