@@ -215,6 +215,12 @@ public final class PRNGFixes {
                 out.flush();
                 mSeeded = true;
             } catch (IOException e) {
+                // Some devices don't have a writable urandom:
+                // Certain third-party android builds replace urandom with
+                // frandom and erandom, which make urandom into a symlink to
+                // erandom
+                // Details can be found in
+                // https://github.com/k9mail/k-9/pull/367
                 mSeeded = true;
             }
         }
