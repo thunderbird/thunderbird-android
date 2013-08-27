@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.510" versioncode="18010" >
+        <change>Fix erroneous SSL certificate warnings when connecting to a server that speaks STARTTLS</change>
+        <change>Updates to Russian and Slovakian translations</change>
+        <change>Major performance updates when opening folder lists</change>
+        <change>Fix a crashing bug related to random number generation on some 3rd party roms</change>
+        <change>Fixed a bug that prevented starring messages in the message list</change>
+    </release>
     <release version="4.509" versioncode="18009" >
 		<change>Updates to Catalan, Czech, Dutch, Finnish, French, German, Korean, Spanish and Swedish translations</change>
 		<change>Several performance improvements and crash fixes</change>
