@@ -13,8 +13,8 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     public String name;
     public String displayName;
     public long lastChecked;
-    public int unreadMessageCount;
-    public int flaggedMessageCount;
+    public int unreadMessageCount = -1;
+    public int flaggedMessageCount = -1;
     public boolean loading;
     public String status;
     public boolean lastCheckFailed;
@@ -67,24 +67,8 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     }
 
     public void populate(Context context, Folder folder, Account account, int unreadCount) {
-
-        try {
-            folder.open(Folder.OPEN_MODE_RW);
-            //  unreadCount = folder.getUnreadMessageCount();
-        } catch (MessagingException me) {
-            Log.e(K9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
-        }
-
         populate(context, folder, account);
-
         this.unreadMessageCount = unreadCount;
-
-        try {
-            this.flaggedMessageCount = folder.getFlaggedMessageCount();
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Unable to get flaggedMessageCount", e);
-        }
-
         folder.close();
 
     }
