@@ -2099,7 +2099,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     case R.id.selected_checkbox:
                         toggleMessageSelectWithAdapterPosition(position);
                         break;
-                    case R.id.flagged:
+                    case R.id.flagged_bottom_right:
+                    case R.id.flagged_center_right:
                         toggleMessageFlagWithAdapterPosition(position);
                         break;
                 }
