@@ -163,8 +163,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     // Avoid NullPointerException in acceptKeyDialog()
                     if (chain != null) {
                         acceptKeyDialog(
-                            R.string.account_setup_failed_dlg_certificate_message_fmt,
-                            cve, chain);
+                                R.string.account_setup_failed_dlg_certificate_message_fmt,
+                                cve);
                     } else {
                         showErrorDialog(
                                 R.string.account_setup_failed_dlg_server_message_fmt,
@@ -235,7 +235,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     }
 
     private void acceptKeyDialog(final int msgResId,
-            final CertificateValidationException ex, final X509Certificate[] chain) {
+            final CertificateValidationException ex) {
         mHandler.post(new Runnable() {
             public void run() {
                 if (mDestroyed) {
@@ -264,6 +264,9 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 } catch (NoSuchAlgorithmException e) {
                     Log.e(K9.LOG_TAG, "Error while initializing MessageDigest", e);
                 }
+
+                final X509Certificate[] chain = ex.getCertChain();
+                // We already know chain != null (tested before calling this method)
                 for (int i = 0; i < chain.length; i++) {
                     // display certificate chain information
                     //TODO: localize this strings

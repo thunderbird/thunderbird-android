@@ -8,16 +8,19 @@ import java.security.cert.X509Certificate;
 public class CertificateValidationException extends MessagingException {
     public static final long serialVersionUID = -1;
     private X509Certificate[] mCertChain;
+    private boolean mNeedsUserAttention = false;
 
     public CertificateValidationException(String message) {
         super(message);
+        scanForCause();
     }
 
     public CertificateValidationException(final String message, Throwable throwable) {
         super(message, throwable);
+        scanForCause();
     }
 
-    public boolean needsUserAttention() {
+    private void scanForCause() {
         Throwable throwable = getCause();
 
         /* user attention is required if the certificate was deemed invalid */
@@ -27,10 +30,16 @@ public class CertificateValidationException extends MessagingException {
             throwable = throwable.getCause();
         }
 
-        if (throwable instanceof CertificateChainException) {
-            mCertChain = ((CertificateChainException) throwable).getCertChain();
+        if (throwable != null) {
+            mNeedsUserAttention = true;
+            if (throwable instanceof CertificateChainException) {
+                mCertChain = ((CertificateChainException) throwable).getCertChain();
+            }
         }
-        return throwable != null;
+    }
+
+    public boolean needsUserAttention() {
+        return mNeedsUserAttention;
     }
 
     /**
@@ -42,7 +51,6 @@ public class CertificateValidationException extends MessagingException {
      *         chain, or else null.
      */
     public X509Certificate[] getCertChain() {
-        needsUserAttention();
         return mCertChain;
     }
 }
