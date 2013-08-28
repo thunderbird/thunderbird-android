@@ -1,19 +1,5 @@
 package com.fsck.k9.preferences;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.Map.Entry;
-import org.xmlpull.v1.XmlSerializer;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -24,11 +10,27 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
+
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 
 public class SettingsExporter {
@@ -74,7 +76,11 @@ public class SettingsExporter {
     public static final String EMAIL_ELEMENT = "email";
     public static final String DESCRIPTION_ELEMENT = "description";
 
-
+    /**
+     * lists the fields that get marked with **** if anonymous = True
+     */
+    private static Set<String> privateFields = null;
+    
     public static String exportToFile(Context context, boolean includeGlobals,
             Set<String> accountUuids)
             throws SettingsImportExportException {
@@ -90,7 +96,7 @@ public class SettingsExporter {
             filename = file.getAbsolutePath();
             os = new FileOutputStream(filename);
 
-            exportPreferences(context, os, includeGlobals, accountUuids);
+            exportPreferences(context, os, includeGlobals, accountUuids,false);
 
             // If all went well, we return the name of the file just written.
             return filename;
@@ -108,8 +114,15 @@ public class SettingsExporter {
     }
 
     public static void exportPreferences(Context context, OutputStream os, boolean includeGlobals,
-            Set<String> accountUuids) throws SettingsImportExportException  {
+            Set<String> accountUuids,boolean anonymize) throws SettingsImportExportException  {
 
+        if(anonymize) {
+            // pass the hidden fields to startElements with this static memeber
+            privateFields = new HashSet<String>(Arrays.asList(USERNAME_ELEMENT, PASSWORD_ELEMENT,
+                    NAME_ELEMENT, EMAIL_ELEMENT, HOST_ELEMENT, PORT_ELEMENT));
+        } else {
+            privateFields = new HashSet<String>();
+        }
         try {
             XmlSerializer serializer = Xml.newSerializer();
             serializer.setOutput(os, "UTF-8");
@@ -261,7 +274,6 @@ public class SettingsExporter {
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
         // XXX For now we don't export the password
         //writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
-
         extras = outgoing.getExtra();
         if (extras != null && extras.size() > 0) {
             serializer.startTag(null, EXTRA_ELEMENT);
@@ -377,22 +389,17 @@ public class SettingsExporter {
 
         // Write name belonging to the identity
         String name = (String) prefs.get(prefix + Account.IDENTITY_NAME_KEY + suffix);
-        serializer.startTag(null, NAME_ELEMENT);
-        serializer.text(name);
-        serializer.endTag(null, NAME_ELEMENT);
+        
+        writeElement(serializer, NAME_ELEMENT, name);
 
         // Write email address belonging to the identity
         String email = (String) prefs.get(prefix + Account.IDENTITY_EMAIL_KEY + suffix);
-        serializer.startTag(null, EMAIL_ELEMENT);
-        serializer.text(email);
-        serializer.endTag(null, EMAIL_ELEMENT);
+        writeElement(serializer, EMAIL_ELEMENT, email);
 
         // Write identity description
         String description = (String) prefs.get(prefix + Account.IDENTITY_DESCRIPTION_KEY + suffix);
         if (description != null) {
-            serializer.startTag(null, DESCRIPTION_ELEMENT);
-            serializer.text(description);
-            serializer.endTag(null, DESCRIPTION_ELEMENT);
+            writeElement(serializer, DESCRIPTION_ELEMENT, description);    
         }
 
         // Write identity settings
@@ -496,7 +503,12 @@ public class SettingsExporter {
             throws IllegalArgumentException, IllegalStateException, IOException {
         if (value != null) {
             serializer.startTag(null, elementName);
-            serializer.text(value);
+            
+            if(privateFields.contains(elementName)) {
+                serializer.text("******");
+            } else {
+                serializer.text(value);
+            }
             serializer.endTag(null, elementName);
         }
     }

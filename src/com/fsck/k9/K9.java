@@ -1,14 +1,6 @@
 
 package com.fsck.k9;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.SynchronousQueue;
-
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -33,6 +25,7 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.AcraCustomFileSender;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -44,6 +37,26 @@ import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+
+@ReportsCrashes(
+        formKey = "", 
+        formUri = "",
+        mode = ReportingInteractionMode.TOAST,
+        forceCloseDialogAfterToast = true, // optional, default false
+        resToastText = R.string.acra_crash_toast_text,
+        logcatArguments = { "-t", "400", "-v", "time" , "K9:D", "ACRA:I" }
+)
 public class K9 extends Application {
     /**
      * Components that are interested in knowing when the K9 instance is
@@ -550,6 +563,10 @@ public class K9 extends Application {
         PRNGFixes.apply();
 
         super.onCreate();
+        ACRA.init(this);
+        File sdCard = Environment.getExternalStorageDirectory();
+        AcraCustomFileSender sender = new AcraCustomFileSender(new File(sdCard,"com.fsck.k9"));
+        ACRA.getErrorReporter().setReportSender(sender);
         app = this;
 
         galleryBuggy = checkForBuggyGallery();
