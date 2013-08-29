@@ -435,8 +435,7 @@ public class Prefs extends K9PreferenceActivity {
 
         mVisibleRefileActions.setItems(visibleRefileActionsEntries);
         mVisibleRefileActions.setCheckedItems(visibleRefileActionsValues);
-        
-        
+
         mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
@@ -505,16 +504,13 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMobileOptimizedLayout(mMobileOptimizedLayout.isChecked());
         K9.setAutofitWidth(mAutofitWidth.isChecked());
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
-        K9.setMessageViewDeleteActionVisible(
-                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_DELETE]);
-        K9.setMessageViewArchiveActionVisible(
-                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_ARCHIVE]);
-        K9.setMessageViewMoveActionVisible(
-                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_MOVE]);
-        K9.setMessageViewCopyActionVisible(
-                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_COPY]);
-        K9.setMessageViewSpamActionVisible(
-                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_SPAM]);
+
+        boolean[] enabledRefileActions = mVisibleRefileActions.getCheckedItems();
+        K9.setMessageViewDeleteActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_DELETE]);
+        K9.setMessageViewArchiveActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_ARCHIVE]);
+        K9.setMessageViewMoveActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_MOVE]);
+        K9.setMessageViewCopyActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_COPY]);
+        K9.setMessageViewSpamActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_SPAM]);
 
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
         K9.setQuietTimeEnds(mQuietTimeEnds.getTime());

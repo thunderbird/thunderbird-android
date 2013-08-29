@@ -1031,23 +1031,23 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
             menu.findItem(R.id.delete).setVisible(K9.isMessageViewDeleteActionVisible());
             menu.findItem(R.id.copy).setVisible(mMessageViewFragment.isCopyCapable()
-            		&& K9.isMessageViewCopyActionVisible());
+                    && K9.isMessageViewCopyActionVisible());
             menu.findItem(R.id.move).setVisible(mMessageViewFragment.isMoveCapable()
-            		&& K9.isMessageViewMoveActionVisible());
+                    && K9.isMessageViewMoveActionVisible());
             menu.findItem(R.id.archive).setVisible(mMessageViewFragment.isMoveCapable()
-            		&& mMessageViewFragment.canMessageBeArchived()
-            		&& K9.isMessageViewArchiveActionVisible());
+                    && mMessageViewFragment.canMessageBeArchived()
+                    && K9.isMessageViewArchiveActionVisible());
             menu.findItem(R.id.spam).setVisible(mMessageViewFragment.isMoveCapable()
-            		&& mMessageViewFragment.canMessageBeMovedToSpam()
-            		&& K9.isMessageViewSpamActionVisible());
-            
+                    && mMessageViewFragment.canMessageBeMovedToSpam()
+                    && K9.isMessageViewSpamActionVisible());
+
             Menu refileSubmenu = menu.findItem(R.id.refile).getSubMenu();
             refileSubmenu.findItem(R.id.copy).setVisible(mMessageViewFragment.isCopyCapable());
             refileSubmenu.findItem(R.id.move).setVisible(mMessageViewFragment.isMoveCapable());
             refileSubmenu.findItem(R.id.archive).setVisible(mMessageViewFragment.isMoveCapable()
-            		&& mMessageViewFragment.canMessageBeArchived());
+                    && mMessageViewFragment.canMessageBeArchived());
             refileSubmenu.findItem(R.id.spam).setVisible(mMessageViewFragment.isMoveCapable()
-            		&& mMessageViewFragment.canMessageBeMovedToSpam());
+                    && mMessageViewFragment.canMessageBeMovedToSpam());
 
             if (mMessageViewFragment.allHeadersVisible()) {
                 menu.findItem(R.id.show_headers).setVisible(false);
