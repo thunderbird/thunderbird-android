@@ -225,6 +225,15 @@
                 android:title="@string/global_settings_messageview_fixedwidth_label"
                 android:summary="@string/global_settings_messageview_fixedwidth_summary" />
 
+            <com.fsck.k9.preferences.CheckBoxListPreference
+                android:persistent="false"
+                android:key="messageview_visible_refile_actions"
+                android:title="@string/global_settings_messageview_visible_refile_actions_title"
+                android:summary="@string/global_settings_messageview_visible_refile_actions_summary"
+                android:dialogTitle="@string/global_settings_messageview_visible_refile_actions_title"
+                android:positiveButtonText="@android:string/ok"
+                android:negativeButtonText="@android:string/cancel" />
+
             <CheckBoxPreference
                 android:persistent="false"
                 android:key="messageview_mobile_layout"

@@ -28,11 +28,12 @@
         android:id="@+id/move"
         android:title="@string/move_action"
         android:showAsAction="ifRoom"
-        android:icon="?attr/iconActionMoveOrCopy"
+        android:icon="?attr/iconActionMove"
     />
     <item
         android:id="@+id/copy"
         android:title="@string/copy_action"
+        android:icon="?attr/iconActionCopy"
     />
     <item
         android:id="@+id/flag"

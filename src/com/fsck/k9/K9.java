@@ -263,6 +263,13 @@ public class K9 extends Application {
     private static SplitViewMode sSplitViewMode = SplitViewMode.NEVER;
     private static boolean sColorizeMissingContactPictures = true;
 
+    private static boolean sMessageViewArchiveActionVisible = false;
+    private static boolean sMessageViewDeleteActionVisible = true;
+    private static boolean sMessageViewMoveActionVisible = false;
+    private static boolean sMessageViewCopyActionVisible = false;
+    private static boolean sMessageViewSpamActionVisible = false;
+
+
     /**
      * @see #areDatabasesUpToDate()
      */
@@ -541,6 +548,13 @@ public class K9 extends Application {
         editor.putBoolean("threadedView", sThreadedViewEnabled);
         editor.putString("splitViewMode", sSplitViewMode.name());
         editor.putBoolean("colorizeMissingContactPictures", sColorizeMissingContactPictures);
+
+        editor.putBoolean("messageViewArchiveActionVisible", sMessageViewArchiveActionVisible);
+        editor.putBoolean("messageViewDeleteActionVisible", sMessageViewDeleteActionVisible);
+        editor.putBoolean("messageViewMoveActionVisible", sMessageViewMoveActionVisible);
+        editor.putBoolean("messageViewCopyActionVisible", sMessageViewCopyActionVisible);
+        editor.putBoolean("messageViewSpamActionVisible", sMessageViewSpamActionVisible);
+
         fontSizes.save(editor);
     }
 
@@ -765,6 +779,13 @@ public class K9 extends Application {
         }
 
         sColorizeMissingContactPictures = sprefs.getBoolean("colorizeMissingContactPictures", true);
+
+        sMessageViewArchiveActionVisible = sprefs.getBoolean("messageViewArchiveActionVisible", false);
+        sMessageViewDeleteActionVisible = sprefs.getBoolean("messageViewDeleteActionVisible", true);
+        sMessageViewMoveActionVisible = sprefs.getBoolean("messageViewMoveActionVisible", false);
+        sMessageViewCopyActionVisible = sprefs.getBoolean("messageViewCopyActionVisible", false);
+        sMessageViewSpamActionVisible = sprefs.getBoolean("messageViewSpamActionVisible", false);
+
 
         K9.setK9Language(sprefs.getString("language", ""));
 
@@ -1326,6 +1347,45 @@ public class K9 extends Application {
         sColorizeMissingContactPictures = enabled;
     }
 
+    public static boolean isMessageViewArchiveActionVisible() {
+        return sMessageViewArchiveActionVisible;
+    }
+
+    public static void setMessageViewArchiveActionVisible(boolean visible) {
+        sMessageViewArchiveActionVisible = visible;
+    }
+
+    public static boolean isMessageViewDeleteActionVisible() {
+        return sMessageViewDeleteActionVisible;
+    }
+
+    public static void setMessageViewDeleteActionVisible(boolean visible) {
+        sMessageViewDeleteActionVisible = visible;
+    }
+
+    public static boolean isMessageViewMoveActionVisible() {
+        return sMessageViewMoveActionVisible;
+    }
+
+    public static void setMessageViewMoveActionVisible(boolean visible) {
+        sMessageViewMoveActionVisible = visible;
+    }
+
+    public static boolean isMessageViewCopyActionVisible() {
+        return sMessageViewCopyActionVisible;
+    }
+
+    public static void setMessageViewCopyActionVisible(boolean visible) {
+        sMessageViewCopyActionVisible = visible;
+    }
+
+    public static boolean isMessageViewSpamActionVisible() {
+        return sMessageViewSpamActionVisible;
+    }
+
+    public static void setMessageViewSpamActionVisible(boolean visible) {
+        sMessageViewSpamActionVisible = visible;
+    }
 
     /**
      * Check if we already know whether all databases are using the current database schema.
