@@ -71,13 +71,13 @@
     <!-- MessageView -->
     <item
         android:id="@+id/move"
-        android:icon="?attr/iconActionMoveOrCopy"
+        android:icon="?attr/iconActionMove"
         android:showAsAction="ifRoom"
         android:title="@string/move_action"/>
     <!-- MessageView -->
     <item
         android:id="@+id/copy"
-        android:icon="?attr/iconActionMoveOrCopy"
+        android:icon="?attr/iconActionCopy"
         android:showAsAction="ifRoom"
         android:title="@string/copy_action"/>
 
@@ -126,13 +126,14 @@
             <!-- MessageView -->
             <item
                 android:id="@+id/move"
-                android:icon="?attr/iconActionMoveOrCopy"
+                android:icon="?attr/iconActionMove"
                 android:showAsAction="ifRoom"
                 android:title="@string/move_action"/>
 
             <!-- MessageView -->
             <item
                 android:id="@+id/copy"
+                android:icon="?attr/iconActionCopy"
                 android:title="@string/copy_action"/>
         </menu>
     </item>
@@ -228,7 +229,7 @@
         android:id="@+id/toggle_message_view_theme"
         android:showAsAction="never"
         android:title="@string/message_view_theme_action_dark"/>
-    <item 
+    <item
         android:id="@+id/show_folder_list"
         android:showAsAction="never"
         android:title="@string/folders_title" />
