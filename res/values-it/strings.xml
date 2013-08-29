@@ -118,6 +118,8 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="cancel_action">Annulla</string>
     <string name="send_action">Invia</string>
     <string name="send_again_action">Invia di nuovo</string>
+    <!-- NEW: <string name="select_action">Select</string>-->
+    <!-- NEW: <string name="deselect_action">Deselect</string>-->
     <string name="reply_action">Rispondi</string>
     <string name="reply_all_action">Rispondi a tutti</string>
     <string name="delete_action">Elimina</string>
@@ -1144,4 +1146,9 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="preposition_for_date">il <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Marca tutti come letti</string>
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 </resources>

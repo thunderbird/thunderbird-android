@@ -128,7 +128,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="forward_action">Reenviar</string>
     <string name="move_action">Mover</string>
     <string name="single_message_options_action">Opciones del mensaje…</string>
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">Continuar</string>
     <string name="back_action">Atrás</string>
     <string name="done_action">Terminado</string> <!--  Used to complete a multi-step process -->
@@ -299,10 +299,10 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="message_discarded_toast">Mensaje descartado</string>
     <string name="message_saved_toast">Mensaje guardado como borrador</string>
 
-    <string name="global_settings_checkbox_label">Casillas de selección múltiple</string>
-    <string name="global_settings_checkbox_summary">Mostrar casillas de selección múltiple</string>
     <string name="global_settings_flag_label">Ver estrellas</string>
     <string name="global_settings_flag_summary">Las estrellas indican un mensaje destacado</string>
+    <string name="global_settings_checkbox_label">Casillas de selección múltiple</string>
+    <string name="global_settings_checkbox_summary">Mostrar casillas de selección múltiple</string>
     <string name="global_settings_preview_lines_label">Previsualizar lineas</string>
     <string name="global_settings_show_correspondent_names_label">Mostrar nombre asociado</string>
     <string name="global_settings_show_correspondent_names_summary">Mostrar nombre asociado en vez de dirección de correo</string>
@@ -1145,4 +1145,9 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 </resources>

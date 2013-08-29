@@ -295,6 +295,8 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_discarded_toast">Сообщение отменено</string>
     <string name="message_saved_toast">Черновик сохранён</string>
 
+    <string name="global_settings_flag_label">Показывать звёзды</string>
+    <string name="global_settings_flag_summary">Для метки сообщений</string>
     <string name="global_settings_checkbox_label">Выбор элементов</string>
     <string name="global_settings_checkbox_summary">Показать поля выбора элементов</string>
     <string name="global_settings_preview_lines_label">Строки предпросмотра</string>
@@ -309,7 +311,6 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_registered_name_color_label">Цвет</string>
     <string name="global_settings_registered_name_color_default">Не выделять цветом имена из контактов</string>
     <string name="global_settings_registered_name_color_changed">Выделять цветом имена из контактов</string>
-    <string name="global_settings_colorize_missing_contact_pictures">Цветные места для фото</string>
     <string name="global_settings_folderlist_wrap_folder_names_label">Перенос имён папок</string>
     <string name="global_settings_folderlist_wrap_folder_names_summary">Длинные имена папок в несколько строк</string>
 
@@ -331,8 +332,6 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="global_settings_notification_hide_subject_title">Скрыть тему в уведомлении</string>
     <string name="global_settings_notification_hide_subject_never">Никогда</string>
-    <string name="global_settings_flag_label">Показывать звёзды</string>
-    <string name="global_settings_flag_summary">Для метки сообщений</string>
     <string name="global_settings_notification_hide_subject_when_locked">При блокировке</string>
     <string name="global_settings_notification_hide_subject_always">Всегда</string>
 
@@ -1143,4 +1142,9 @@ K-9 Mail — почтовый клиент для Android.
     <string name="preposition_for_date">в <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Прочитаны все</string>
+
+    <string name="global_settings_colorize_missing_contact_pictures">Цветные места для фото</string>
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 </resources>

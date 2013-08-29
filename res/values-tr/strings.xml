@@ -127,8 +127,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="spam_action">Spam</string>
     <string name="forward_action">İlet</string>
     <string name="move_action">Taşı</string>
-    <!-- NEW: <string name="single_message_options_action">Send</string>-->
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send…</string>-->
+    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">Devam</string>
     <string name="back_action">Geri</string>
     <string name="done_action">Tamam</string> <!--  Used to complete a multi-step process -->
@@ -1147,4 +1147,9 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 </resources>

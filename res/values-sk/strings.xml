@@ -118,9 +118,9 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="cancel_action">Zrušiť</string>
     <string name="send_action">Odoslať</string>
     <string name="send_again_action">Odoslať znovu</string>
-    <string name="reply_action">Odpovedať</string>
     <string name="select_action">Vybrať</string>
     <string name="deselect_action">Zrušiť výber</string>
+    <string name="reply_action">Odpovedať</string>
     <string name="reply_all_action">Odpovedať všetkým</string>
     <string name="delete_action">Vymazať</string>
     <string name="archive_action">Archivovať</string>
@@ -1148,4 +1148,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="mark_all_as_read">Označiť všetky ako prečítané</string>
 
     <string name="global_settings_colorize_missing_contact_pictures">Zafarbiť chýbajúce obrázky kontaktov</string>
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 </resources>

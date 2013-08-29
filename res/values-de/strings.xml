@@ -1146,4 +1146,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="preposition_for_date">am <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Alle als gelesen markieren</string>
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 </resources>

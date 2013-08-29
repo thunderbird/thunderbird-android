@@ -126,8 +126,8 @@ K-9改进的功能包括：
     <string name="spam_action">标记为垃圾</string>
     <string name="forward_action">转发</string>
     <string name="move_action">移动</string>
-    <!-- NEW: <string name="single_message_options_action">Send</string>-->
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send…</string>-->
+    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">继续</string>
     <string name="back_action">返回</string>
     <string name="done_action">完成</string> <!--  Used to complete a multi-step process -->
@@ -1137,4 +1137,9 @@ K-9改进的功能包括：
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 </resources>

@@ -143,6 +143,8 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="cancel_action">Annuler</string>
     <string name="send_action">Envoyer</string>
     <string name="send_again_action">Envoyer à nouveau</string>
+    <!-- NEW: <string name="select_action">Select</string>-->
+    <!-- NEW: <string name="deselect_action">Deselect</string>-->
     <string name="reply_action">Répondre</string>
     <string name="reply_all_action">Répondre à tous</string>
     <string name="delete_action">Supprimer</string>
@@ -1169,4 +1171,9 @@ de plus</string>
     <string name="preposition_for_date">le <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Marquer tous comme lus</string>
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 </resources>

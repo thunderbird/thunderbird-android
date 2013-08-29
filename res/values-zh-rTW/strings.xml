@@ -101,6 +101,7 @@
     <string name="forward_action">轉寄</string>
     <string name="move_action">移動</string>
     <string name="single_message_options_action">訊息選項…</string>
+    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">繼續</string>
     <string name="back_action">返回</string>
     <string name="done_action">完成</string> <!--  Used to complete a multi-step process -->
@@ -1106,4 +1107,9 @@
     <string name="preposition_for_date">於 %s</string>
 
     <string name="mark_all_as_read">標記全部為已讀</string>
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 </resources>
