@@ -1153,4 +1153,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="mark_all_as_read">Mark all as read</string>
 
     <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>
+    
+    <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>
 </resources>

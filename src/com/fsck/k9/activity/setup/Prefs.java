@@ -76,6 +76,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGELIST_COLORIZE_MISSING_CONTACT_PICTURES =
             "messagelist_colorize_missing_contact_pictures";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
+    private static final String PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS = "messageview_visible_refile_actions";
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
     private static final String PREFERENCE_MESSAGEVIEW_SHOW_NEXT = "messageview_show_next";
@@ -99,6 +100,12 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
+    // Named indices for the mVisibleRefileActions field
+    private static final int VISIBLE_REFILE_ACTIONS_DELETE = 0;
+    private static final int VISIBLE_REFILE_ACTIONS_ARCHIVE = 1;
+    private static final int VISIBLE_REFILE_ACTIONS_MOVE = 2;
+    private static final int VISIBLE_REFILE_ACTIONS_COPY = 3;
+    private static final int VISIBLE_REFILE_ACTIONS_SPAM = 4;
 
     private ListPreference mLanguage;
     private ListPreference mTheme;
@@ -133,6 +140,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference mWrapFolderNames;
+    private CheckBoxListPreference mVisibleRefileActions;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
@@ -410,6 +418,25 @@ public class Prefs extends K9PreferenceActivity {
         mWrapFolderNames = (CheckBoxPreference)findPreference(PREFERENCE_FOLDERLIST_WRAP_NAME);
         mWrapFolderNames.setChecked(K9.wrapFolderNames());
 
+        mVisibleRefileActions = (CheckBoxListPreference) findPreference(PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS);
+        CharSequence[] visibleRefileActionsEntries = new CharSequence[5];
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_DELETE] = getString(R.string.delete_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_ARCHIVE] = getString(R.string.archive_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_MOVE] = getString(R.string.move_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_COPY] = getString(R.string.copy_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_SPAM] = getString(R.string.spam_action);
+
+        boolean[] visibleRefileActionsValues = new boolean[5];
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_DELETE] = K9.isMessageViewDeleteActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_ARCHIVE] = K9.isMessageViewArchiveActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_MOVE] = K9.isMessageViewMoveActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_COPY] = K9.isMessageViewCopyActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_SPAM] = K9.isMessageViewSpamActionVisible();
+
+        mVisibleRefileActions.setItems(visibleRefileActionsEntries);
+        mVisibleRefileActions.setCheckedItems(visibleRefileActionsValues);
+        
+        
         mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
@@ -478,6 +505,16 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMobileOptimizedLayout(mMobileOptimizedLayout.isChecked());
         K9.setAutofitWidth(mAutofitWidth.isChecked());
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
+        K9.setMessageViewDeleteActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_DELETE]);
+        K9.setMessageViewArchiveActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_ARCHIVE]);
+        K9.setMessageViewMoveActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_MOVE]);
+        K9.setMessageViewCopyActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_COPY]);
+        K9.setMessageViewSpamActionVisible(
+                mVisibleRefileActions.getCheckedItems()[VISIBLE_REFILE_ACTIONS_SPAM]);
 
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
         K9.setQuietTimeEnds(mQuietTimeEnds.getTime());
