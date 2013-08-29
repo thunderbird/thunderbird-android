@@ -100,8 +100,7 @@
     <string name="spam_action">標記為垃圾</string>
     <string name="forward_action">轉寄</string>
     <string name="move_action">移動</string>
-    <string name="single_message_options_action">訊息選項</string>
-    <string name="refile_action">Refile</string>
+    <string name="single_message_options_action">訊息選項…</string>
     <string name="continue_action">繼續</string>
     <string name="back_action">返回</string>
     <string name="done_action">完成</string> <!--  Used to complete a multi-step process -->

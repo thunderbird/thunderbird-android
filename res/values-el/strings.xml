@@ -126,8 +126,8 @@
     <string name="spam_action">Σκουπιδοταχυδρομείο</string>
     <string name="forward_action">Προώθηση</string>
     <string name="move_action">Μετακίνηση</string>
-    <string name="single_message_options_action">Επιλογές μηνύματος</string>
-    <string name="refile_action">Επαναρχειοθέτηση</string>
+    <string name="single_message_options_action">Επιλογές μηνύματος…</string>
+    <string name="refile_action">Επαναρχειοθέτηση…</string>
     <string name="continue_action">Συνέχεια</string>
     <string name="back_action">Πίσω</string>
     <string name="done_action">Συμπληρώθηκε</string> <!--  Used to complete a multi-step process -->

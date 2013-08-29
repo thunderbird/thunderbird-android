@@ -127,8 +127,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="spam_action">迷惑メールとみなす</string>
     <string name="forward_action">転送</string>
     <string name="move_action">移動</string>
-    <string name="single_message_options_action">メッセージ操作</string>
-    <string name="refile_action">整理</string>
+    <string name="single_message_options_action">メッセージ操作…</string>
+    <string name="refile_action">整理…</string>
     <string name="continue_action">継続</string>
     <string name="back_action">戻る</string>
     <string name="done_action">完了</string> <!--  Used to complete a multi-step process -->

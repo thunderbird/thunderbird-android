@@ -126,8 +126,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="spam_action">스팸</string>
     <string name="forward_action">전달</string>
     <string name="move_action">이동</string>
-    <string name="single_message_options_action">메시지 옵션</string>
-    <string name="refile_action">관리</string>
+    <string name="single_message_options_action">메시지 옵션…</string>
+    <string name="refile_action">관리…</string>
     <string name="continue_action">계속</string>
     <string name="back_action">뒤로</string>
     <string name="done_action">완료</string> <!--  Used to complete a multi-step process -->

@@ -127,7 +127,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="spam_action">Spam</string>
     <string name="forward_action">Reenviar</string>
     <string name="move_action">Mover</string>
-    <string name="single_message_options_action">Opciones del mensaje</string>
+    <string name="single_message_options_action">Opciones del mensaje…</string>
     <!-- NEW: <string name="refile_action">Refile</string>-->
     <string name="continue_action">Continuar</string>
     <string name="back_action">Atrás</string>

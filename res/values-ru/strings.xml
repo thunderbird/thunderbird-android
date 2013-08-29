@@ -128,8 +128,8 @@ K-9 Mail — почтовый клиент для Android.
     <string name="spam_action">Спам</string>
     <string name="forward_action">Переслать</string>
     <string name="move_action">Переместить</string>
-    <string name="single_message_options_action">Отправить</string>
-    <string name="refile_action">Смена папки</string>
+    <string name="single_message_options_action">Отправить…</string>
+    <string name="refile_action">Смена папки…</string>
     <string name="continue_action">Далее</string>
     <string name="back_action">Назад</string>
     <string name="done_action">Готово</string> <!--  Used to complete a multi-step process -->

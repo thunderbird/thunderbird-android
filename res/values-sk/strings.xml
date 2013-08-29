@@ -127,8 +127,8 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="spam_action">Spam</string>
     <string name="forward_action">Preposlať</string>
     <string name="move_action">Presunúť</string>
-    <string name="single_message_options_action">Odoslať</string>
-    <string name="refile_action">Presmerovať</string>
+    <string name="single_message_options_action">Odoslať…</string>
+    <string name="refile_action">Presmerovať…</string>
     <string name="continue_action">Pokračovať</string>
     <string name="back_action">Späť</string>
     <string name="done_action">Hotovo</string> <!--  Used to complete a multi-step process -->

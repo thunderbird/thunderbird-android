@@ -137,7 +137,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="spam_action">Spam</string>
     <string name="forward_action">Prześlij dalej</string>
     <string name="move_action">Przenieś</string>
-    <string name="single_message_options_action">Wyślij</string>
+    <string name="single_message_options_action">Wyślij…</string>
     <string name="refile_action">Operacje…</string>
     <string name="continue_action">Kontynuuj</string>
     <string name="back_action">Cofnij</string>

@@ -150,8 +150,8 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="spam_action">Spam</string>
     <string name="forward_action">Transférer</string>
     <string name="move_action">Déplacer</string>
-    <string name="single_message_options_action">Options de message</string>
-    <string name="refile_action">Déposer</string>
+    <string name="single_message_options_action">Options de message…</string>
+    <string name="refile_action">Déposer…</string>
     <string name="continue_action">Continuer</string>
     <string name="back_action">Retour</string>
     <string name="done_action">Terminé</string> <!--  Used to complete a multi-step process -->

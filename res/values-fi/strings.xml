@@ -128,8 +128,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="spam_action">Roskaposti</string>
     <string name="forward_action">Välitä</string>
     <string name="move_action">Siirrä</string>
-    <string name="single_message_options_action">Viestin asetukset</string>
-    <string name="refile_action">Arkistoi</string>
+    <string name="single_message_options_action">Viestin asetukset…</string>
+    <string name="refile_action">Arkistoi…</string>
     <string name="continue_action">Jatka</string>
     <string name="back_action">Takaisin</string>
     <string name="done_action">Valmis</string> <!--  Used to complete a multi-step process -->

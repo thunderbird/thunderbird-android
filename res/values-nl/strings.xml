@@ -127,8 +127,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="spam_action">Spam</string>
     <string name="forward_action">Doorsturen</string>
     <string name="move_action">Verplaatsen</string>
-    <string name="single_message_options_action">Verzend</string>
-    <string name="refile_action">Opnieuw opslaan</string>
+    <string name="single_message_options_action">Verzend…</string>
+    <string name="refile_action">Opnieuw opslaan…</string>
     <string name="continue_action">Doorgaan</string>
     <string name="back_action">Terug</string>
     <string name="done_action">Klaar</string> <!--  Used to complete a multi-step process -->

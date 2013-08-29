@@ -126,8 +126,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="spam_action">Spam</string>
     <string name="forward_action">Weiterleiten</string>
     <string name="move_action">Verschieben</string>
-    <string name="single_message_options_action">Aktionen</string>
-    <string name="refile_action">Umsortieren</string>
+    <string name="single_message_options_action">Aktionen…</string>
+    <string name="refile_action">Umsortieren…</string>
     <string name="continue_action">Fortfahren</string>
     <string name="back_action">Zurück</string>
     <string name="done_action">Fertig</string> <!--  Used to complete a multi-step process -->

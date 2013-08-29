@@ -127,8 +127,8 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="spam_action">Spam</string>
     <string name="forward_action">Vidarebefordra</string>
     <string name="move_action">Flytta</string>
-    <string name="single_message_options_action">Skicka</string>
-    <string name="refile_action">Omarkivera</string>
+    <string name="single_message_options_action">Skicka…</string>
+    <string name="refile_action">Omarkivera…</string>
     <string name="continue_action">Fortsätt</string>
     <string name="back_action">Tillbaka</string>
     <string name="done_action">Färdig</string> <!--  Used to complete a multi-step process -->

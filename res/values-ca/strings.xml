@@ -127,8 +127,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="spam_action">Brossa</string>
     <string name="forward_action">Reenvia</string>
     <string name="move_action">Mou</string>
-    <string name="single_message_options_action">Opcions del missatge</string>
-    <string name="refile_action">Rearxiva</string>
+    <string name="single_message_options_action">Opcions del missatge…</string>
+    <string name="refile_action">Rearxiva…</string>
     <string name="continue_action">Continua</string>
     <string name="back_action">Enrere</string>
     <string name="done_action">Fet</string> <!--  Used to complete a multi-step process -->

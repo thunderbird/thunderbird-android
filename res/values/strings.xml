@@ -132,8 +132,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="spam_action">Spam</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
-    <string name="single_message_options_action">Send</string>
-    <string name="refile_action">Refile</string>
+    <string name="single_message_options_action">Send…</string>
+    <string name="refile_action">Refile…</string>
     <string name="continue_action">Continue</string>
     <string name="back_action">Back</string>
     <string name="done_action">Done</string> <!--  Used to complete a multi-step process -->
@@ -1153,7 +1153,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="mark_all_as_read">Mark all as read</string>
 
     <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>
-    
+
     <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>
 </resources>

@@ -131,8 +131,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="spam_action">Nevyžádaná</string>
     <string name="forward_action">Přeposlat</string>
     <string name="move_action">Přesunout</string>
-    <string name="single_message_options_action">Vlastnosti zprávy</string>
-    <string name="refile_action">Přesměrovat</string>
+    <string name="single_message_options_action">Vlastnosti zprávy…</string>
+    <string name="refile_action">Přesměrovat…</string>
     <string name="continue_action">Pokračovat</string>
     <string name="back_action">Zpět</string>
     <string name="done_action">Hotovo</string> <!--  Used to complete a multi-step process -->
