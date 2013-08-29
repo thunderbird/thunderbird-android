@@ -1030,31 +1030,46 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             menu.findItem(R.id.select_text).setVisible(Build.VERSION.SDK_INT < 16);
 
             menu.findItem(R.id.delete).setVisible(K9.isMessageViewDeleteActionVisible());
-            menu.findItem(R.id.copy).setVisible(mMessageViewFragment.isCopyCapable()
-                    && K9.isMessageViewCopyActionVisible());
-            menu.findItem(R.id.move).setVisible(mMessageViewFragment.isMoveCapable()
-                    && K9.isMessageViewMoveActionVisible());
-            menu.findItem(R.id.archive).setVisible(mMessageViewFragment.isMoveCapable()
-                    && mMessageViewFragment.canMessageBeArchived()
-                    && K9.isMessageViewArchiveActionVisible());
-            menu.findItem(R.id.spam).setVisible(mMessageViewFragment.isMoveCapable()
-                    && mMessageViewFragment.canMessageBeMovedToSpam()
-                    && K9.isMessageViewSpamActionVisible());
 
+            /*
+             * Set visibility of copy, move, archive, spam in action bar and refile submenu
+             */
             Menu refileSubmenu = menu.findItem(R.id.refile).getSubMenu();
-            refileSubmenu.findItem(R.id.copy).setVisible(mMessageViewFragment.isCopyCapable());
-            refileSubmenu.findItem(R.id.move).setVisible(mMessageViewFragment.isMoveCapable());
-            refileSubmenu.findItem(R.id.archive).setVisible(mMessageViewFragment.isMoveCapable()
-                    && mMessageViewFragment.canMessageBeArchived());
-            refileSubmenu.findItem(R.id.spam).setVisible(mMessageViewFragment.isMoveCapable()
-                    && mMessageViewFragment.canMessageBeMovedToSpam());
+
+            if (mMessageViewFragment.isCopyCapable()) {
+                menu.findItem(R.id.copy).setVisible(K9.isMessageViewCopyActionVisible());
+                refileSubmenu.findItem(R.id.copy).setVisible(true);
+            } else {
+                menu.findItem(R.id.copy).setVisible(false);
+                refileSubmenu.findItem(R.id.copy).setVisible(false);
+            }
+
+            if (mMessageViewFragment.isMoveCapable()) {
+                boolean canMessageBeArchived = mMessageViewFragment.canMessageBeArchived();
+                boolean canMessageBeMovedToSpam = mMessageViewFragment.canMessageBeMovedToSpam();
+
+                menu.findItem(R.id.move).setVisible(K9.isMessageViewMoveActionVisible());
+                menu.findItem(R.id.archive).setVisible(canMessageBeArchived &&
+                        K9.isMessageViewArchiveActionVisible());
+                menu.findItem(R.id.spam).setVisible(canMessageBeMovedToSpam &&
+                        K9.isMessageViewSpamActionVisible());
+
+                refileSubmenu.findItem(R.id.move).setVisible(true);
+                refileSubmenu.findItem(R.id.archive).setVisible(canMessageBeArchived);
+                refileSubmenu.findItem(R.id.spam).setVisible(canMessageBeMovedToSpam);
+            } else {
+                menu.findItem(R.id.move).setVisible(false);
+                menu.findItem(R.id.archive).setVisible(false);
+                menu.findItem(R.id.spam).setVisible(false);
+
+                menu.findItem(R.id.refile).setVisible(false);
+            }
 
             if (mMessageViewFragment.allHeadersVisible()) {
                 menu.findItem(R.id.show_headers).setVisible(false);
             } else {
                 menu.findItem(R.id.hide_headers).setVisible(false);
             }
-
         }
 
 
