@@ -12,7 +12,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
 import com.fsck.k9.preferences.Editor;
 import com.fsck.k9.preferences.Storage;
 
@@ -126,11 +126,9 @@ public class Preferences {
         }
 
         try {
-            account.getRemoteStore().resetRemoteStore(account);
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Failed to reset remote store for account "
-                    + account.getUuid());
-            e.printStackTrace();
+            Store.removeRemoteInstance(account);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Failed to reset remote store for account " + account.getUuid(), e);
         }
 
         account.delete(this);

@@ -112,6 +112,23 @@ public abstract class Store {
     }
 
     /**
+     * Release reference to a remote mail store instance.
+     *
+     * @param account
+     *         {@link Account} instance that is used to get the remote mail store instance.
+     */
+    public synchronized static void removeRemoteInstance(Account account) {
+        String uri = account.getStoreUri();
+
+        if (uri.startsWith("local")) {
+            throw new RuntimeException("Asked to get non-local Store object but given " +
+                    "LocalStore URI");
+        }
+
+        sStores.remove(uri);
+    }
+
+    /**
      * Decodes the contents of store-specific URIs and puts them into a {@link ServerSettings}
      * object.
      *
@@ -208,14 +225,4 @@ public abstract class Store {
     public Account getAccount() {
         return mAccount;
     }
-
-    public void resetRemoteStore(Account account) {
-        String uri = account.getStoreUri();
-        if (uri.startsWith("local")) {
-            throw new RuntimeException(
-                    "Asked to get non-local Store object but given LocalStore URI");
-        }
-        sStores.remove(uri);
-    }
-
 }
