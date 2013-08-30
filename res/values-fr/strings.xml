@@ -238,7 +238,7 @@ de plus</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> sur <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Répondre</string>
-    <string name="notification_action_mark_as_read">Lire</string>
+    <string name="notification_action_mark_as_read">Lu</string>
     <string name="notification_action_delete">Supprimer</string>
     <string name="notification_certificate_error_title">Erreur de certificat (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_certificate_error_text">Vérifier les paramètres serveur</string>
@@ -1172,8 +1172,8 @@ de plus</string>
 
     <string name="mark_all_as_read">Marquer tous comme lus</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+    <string name="global_settings_colorize_missing_contact_pictures">Colorier les images de contact manquantes</string>
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+    <string name="global_settings_messageview_visible_refile_actions_title">Actions disponibles dans les messages</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Afficher les actions séléctionnées dans le menu des messages</string>
 </resources>
