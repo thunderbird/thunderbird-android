@@ -7,8 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.Pop3Store;
@@ -111,13 +113,38 @@ public abstract class Store {
         }
     }
 
+    public static void removeAccount(Account account) {
+        try {
+            removeRemoteInstance(account);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Failed to reset remote store for account " + account.getUuid(), e);
+        }
+
+        try {
+            removeLocalInstance(account);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Failed to reset local store for account " + account.getUuid(), e);
+        }
+    }
+
+    /**
+     * Release reference to a local mail store instance.
+     *
+     * @param account
+     *         {@link Account} instance that is used to get the local mail store instance.
+     */
+    private static void removeLocalInstance(Account account) {
+        String accountUuid = account.getUuid();
+        sLocalStores.remove(accountUuid);
+    }
+
     /**
      * Release reference to a remote mail store instance.
      *
      * @param account
      *         {@link Account} instance that is used to get the remote mail store instance.
      */
-    public synchronized static void removeRemoteInstance(Account account) {
+    private synchronized static void removeRemoteInstance(Account account) {
         String uri = account.getStoreUri();
 
         if (uri.startsWith("local")) {

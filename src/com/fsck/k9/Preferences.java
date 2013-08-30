@@ -125,11 +125,7 @@ public class Preferences {
             accountsInOrder.remove(account);
         }
 
-        try {
-            Store.removeRemoteInstance(account);
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to reset remote store for account " + account.getUuid(), e);
-        }
+        Store.removeAccount(account);
 
         account.delete(this);
 
