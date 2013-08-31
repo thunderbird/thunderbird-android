@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.511" versioncode="18011" >
+        <change>Remove remote/local store references when deleting accounts</change>
+        <change>Add visual indicator that a menu item opens a submenu</change>
+        <change>Make actions shown in message view menu configurable</change>
+        <change>Remove icons from the "Refile" submenu, as we don't show icons in any other submenu.</change>
+        <change>Add icon for the copy action</change>
+    </release>
     <release version="4.510" versioncode="18010" >
         <change>Fix erroneous SSL certificate warnings when connecting to a server that speaks STARTTLS</change>
         <change>Updates to Russian and Slovakian translations</change>
