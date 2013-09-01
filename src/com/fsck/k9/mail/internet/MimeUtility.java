@@ -1172,6 +1172,7 @@ public class MimeUtility {
         }
 
         BinaryTempFileBody tempBody = new BinaryTempFileBody();
+        tempBody.setEncoding(contentTransferEncoding);
         OutputStream out = tempBody.getOutputStream();
         try {
             IOUtils.copy(in, out);
