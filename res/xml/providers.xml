@@ -223,10 +223,6 @@
         <incoming uri="pop3://mx.freenet.de" username="$user" />
         <outgoing uri="smtp+ssl://mx.freenet.de" username="$email" />
     </provider>
-    <provider id="gmx" label="GMX" domain="gmx.de">
-        <incoming uri="pop3+ssl+://pop.gmx.net" username="$email" />
-        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
-    </provider>
     <provider id="T-Online" label="T-Online" domain="t-online.de">
         <incoming uri="pop3://popmail.t-online.de" username="$email" />
         <outgoing uri="smtp://smtpmail.t-online.de" username="$email" />
@@ -235,7 +231,28 @@
         <incoming uri="imap+ssl://imap.web.de" username="$user" />
         <outgoing uri="smtp://smtp.web.de" username="$user" />
     </provider>
-
+    <!-- GMX variants -->
+    <provider id="gmx.net" label="GMX.net" domain="gmx.net">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+    </provider>
+    <provider id="gmx.de" label="GMX.de" domain="gmx.de">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+    </provider>
+    <provider id="gmx.at" label="GMX.at" domain="gmx.at">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+    </provider>
+    <provider id="gmx.ch" label="GMX.ch" domain="gmx.ch">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+    </provider>
+    <provider id="gmx.eu" label="GMX.eu" domain="gmx.eu">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+    </provider>
+    
     <!-- Netherlands -->
     <!-- TODO:  For all of these, please confirm POP3, and switch to IMAP if supported -->
     <!-- TODO:  username="" in incoming element is broken - will not work -->
