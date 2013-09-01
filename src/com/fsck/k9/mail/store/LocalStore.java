@@ -25,6 +25,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.util.MimeUtil;
 
 import android.app.Application;
 import android.content.ContentResolver;
@@ -1936,6 +1937,7 @@ public class LocalStore extends Store implements Serializable {
                                             String contentUri = cursor.getString(5);
                                             String contentId = cursor.getString(6);
                                             String contentDisposition = cursor.getString(7);
+                                            String encoding = (MimeUtil.isMessage(type)? "8bit" : "base64");
                                             Body body = null;
 
                                             if (contentDisposition == null) {
@@ -1944,10 +1946,11 @@ public class LocalStore extends Store implements Serializable {
 
                                             if (contentUri != null) {
                                                 body = new LocalAttachmentBody(Uri.parse(contentUri), mApplication);
+                                                ((LocalAttachmentBody) body).setEncoding(encoding);
                                             }
 
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
+                                            bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
                                             if (name != null) {
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                                                              String.format("%s;\n name=\"%s\"",
@@ -3988,6 +3991,7 @@ public class LocalStore extends Store implements Serializable {
         private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
         private Application mApplication;
         private Uri mUri;
+        private String mEncoding;
 
         public LocalAttachmentBody(Uri uri, Application application) {
             mApplication = application;
@@ -4011,11 +4015,21 @@ public class LocalStore extends Store implements Serializable {
         public void writeTo(OutputStream out) throws IOException, MessagingException {
             InputStream in = getInputStream();
             try {
-                Base64OutputStream base64Out = new Base64OutputStream(out);
+
+                // TODO: attachments of type rfc822 are sent with 8bit encoding
+                // without regard to the SMTP server's support of 8BITMIME, whereas
+                // strict protocol compliance requires that they be converted to
+                // 7bit in the (unlikely) event that 8BITMIME is not supported.
+
+                if (MimeUtil.isBase64Encoding(mEncoding)) {
+                    out = new Base64OutputStream(out);
+                }
                 try {
-                    IOUtils.copy(in, base64Out);
+                    IOUtils.copy(in, out);
                 } finally {
-                    base64Out.close();
+                    if (MimeUtil.isBase64Encoding(mEncoding)) {
+                        out.close();
+                    }
                 }
             } finally {
                 in.close();
@@ -4024,6 +4038,10 @@ public class LocalStore extends Store implements Serializable {
 
         public Uri getContentUri() {
             return mUri;
+        }
+
+        public void setEncoding(String encoding) {
+            mEncoding = encoding;
         }
     }
 

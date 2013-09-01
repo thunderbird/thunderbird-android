@@ -78,10 +78,10 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
-import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 import com.fsck.k9.view.MessageWebView;
 import org.apache.james.mime4j.codec.EncoderUtil;
+import org.apache.james.mime4j.util.MimeUtil;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
@@ -1473,9 +1473,12 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     private void addAttachmentsToMessage(final MimeMultipart mp) throws MessagingException {
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
             Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
+            String contentType = attachment.contentType;
+            String encoding = (MimeUtil.isMessage(contentType)? "8bit" : "base64");
 
-            MimeBodyPart bp = new MimeBodyPart(
-                new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
+            LocalAttachmentBody body = new LocalAttachmentBody(attachment.uri, getApplication());
+            MimeBodyPart bp = new MimeBodyPart(body);
+            body.setEncoding(encoding);
 
             /*
              * Correctly encode the filename here. Otherwise the whole
@@ -1483,11 +1486,11 @@ public class MessageCompose extends K9Activity implements OnClickListener {
              * MimeHeader.writeTo().
              */
             bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"",
-                         attachment.contentType,
+                         contentType,
                          EncoderUtil.encodeIfNecessary(attachment.name,
                                  EncoderUtil.Usage.WORD_ENTITY, 7)));
 
-            bp.addHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
+            bp.addHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
 
             /*
              * TODO: Oh the joys of MIME...
