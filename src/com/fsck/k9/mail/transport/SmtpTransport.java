@@ -490,8 +490,8 @@ public class SmtpTransport extends Transport {
 
         Address[] from = message.getFrom();
         try {
-            //TODO: Add BODY=8BITMIME parameter if appropriate?
-            executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">");
+            executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
+                    + (m8bitEncodingAllowed ? " BODY=8BITMIME" : null));
             for (String address : addresses) {
                 executeSimpleCommand("RCPT TO:" + "<" + address + ">");
             }
