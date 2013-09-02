@@ -384,7 +384,7 @@ public class MimeMessage extends Message {
                 setEncoding(MimeUtil.ENC_8BIT);
             }
         } else if (body instanceof TextBody) {
-            setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n charset=utf-8",
+            setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n charset=utf-8",
                       getMimeType()));
             setEncoding(MimeUtil.ENC_8BIT);
         }

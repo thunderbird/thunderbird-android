@@ -76,10 +76,10 @@ public class MimeBodyPart extends BodyPart {
                 setEncoding(MimeUtil.ENC_8BIT);
             }
         } else if (body instanceof TextBody) {
-            String contentType = String.format("%s;\n charset=utf-8", getMimeType());
+            String contentType = String.format("%s;\r\n charset=utf-8", getMimeType());
             String name = MimeUtility.getHeaderParameter(getContentType(), "name");
             if (name != null) {
-                contentType += String.format(";\n name=\"%s\"", name);
+                contentType += String.format(";\r\n name=\"%s\"", name);
             }
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
             setEncoding(MimeUtil.ENC_8BIT);

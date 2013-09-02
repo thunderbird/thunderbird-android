@@ -3367,7 +3367,7 @@ public class MimeUtility {
 
     public static void setCharset(String charset, Part part) throws MessagingException {
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                       part.getMimeType() + ";\n charset=" + getExternalCharset(charset));
+                       part.getMimeType() + ";\r\n charset=" + getExternalCharset(charset));
     }
 
     public static String getExternalCharset(String charset) {
