@@ -122,7 +122,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     public boolean isMimeType(String mimeType) throws MessagingException {
-        return getMimeType().equals(mimeType);
+        return getMimeType().equalsIgnoreCase(mimeType);
     }
 
     public int getSize() {

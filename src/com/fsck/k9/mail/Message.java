@@ -139,10 +139,6 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract void setBody(Body body) throws MessagingException;
 
-    public boolean isMimeType(String mimeType) throws MessagingException {
-        return getContentType().startsWith(mimeType);
-    }
-
     public abstract long getId();
 
     public abstract String getPreview();

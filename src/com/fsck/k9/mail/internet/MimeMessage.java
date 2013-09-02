@@ -164,7 +164,7 @@ public class MimeMessage extends Message {
     @Override
     public String getContentType() throws MessagingException {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : contentType.toLowerCase(Locale.US);
+        return (contentType == null) ? "text/plain" : contentType;
     }
 
     public String getDisposition() throws MessagingException {
@@ -175,6 +175,10 @@ public class MimeMessage extends Message {
     }
     public String getMimeType() throws MessagingException {
         return MimeUtility.getHeaderParameter(getContentType(), null);
+    }
+
+    public boolean isMimeType(String mimeType) throws MessagingException {
+        return getMimeType().equalsIgnoreCase(mimeType);
     }
 
     public int getSize() {
