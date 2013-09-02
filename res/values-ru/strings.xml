@@ -295,7 +295,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_discarded_toast">Сообщение отменено</string>
     <string name="message_saved_toast">Черновик сохранён</string>
 
-    <string name="global_settings_flag_label">Показывать звёзды</string>
+    <string name="global_settings_flag_label">Показать звёзды</string>
     <string name="global_settings_flag_summary">Для метки сообщений</string>
     <string name="global_settings_checkbox_label">Выбор элементов</string>
     <string name="global_settings_checkbox_summary">Показать поля выбора элементов</string>
@@ -1145,6 +1145,6 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="global_settings_colorize_missing_contact_pictures">Цветные места для фото</string>
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+    <string name="global_settings_messageview_visible_refile_actions_title">Действия для сообщений</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Видимость пунктов меню в списке сообщений</string>
 </resources>
