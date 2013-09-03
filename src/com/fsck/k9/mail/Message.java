@@ -15,7 +15,7 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 
 
-public abstract class Message implements Part, Body {
+public abstract class Message implements Part, CompositeBody {
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
 
     private MessageReference mReference = null;
@@ -240,7 +240,7 @@ public abstract class Message implements Part, Body {
 
     public void destroy() throws MessagingException {}
 
-    public abstract void setEncoding(String encoding) throws UnavailableStorageException;
+    public abstract void setEncoding(String encoding) throws UnavailableStorageException, MessagingException;
 
     public abstract void setCharset(String charset) throws MessagingException;
 
@@ -298,4 +298,5 @@ public abstract class Message implements Part, Body {
      * </p>
      */
     public abstract Message clone();
+    public abstract void setUsing7bitTransport() throws MessagingException;
 }

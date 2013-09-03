@@ -20,13 +20,13 @@ public class BinaryTempFileBody implements Body {
 
     private File mFile;
 
-    private String mEncoding = null;
+    String mEncoding = null;
 
     public static void setTempDirectory(File tempDirectory) {
         mTempDirectory = tempDirectory;
     }
 
-    public void setEncoding(String encoding) {
+    public void setEncoding(String encoding) throws MessagingException {
         mEncoding  = encoding;
     }
 

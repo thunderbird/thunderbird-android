@@ -22,10 +22,12 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import org.apache.james.mime4j.util.MimeUtil;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -69,7 +71,23 @@ public class MimeMessage extends Message {
         parse(in);
     }
 
-    protected void parse(InputStream in) throws IOException, MessagingException {
+    /**
+     * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
+     *
+     * @param in
+     * @param recurse A boolean indicating to recurse through all nested MimeMessage subparts.
+     * @throws IOException
+     * @throws MessagingException
+     */
+    public MimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
+        parse(in, true);
+    }
+
+     protected void parse(InputStream in) throws IOException, MessagingException {
+        parse(in, false);
+    }
+
+    protected void parse(InputStream in, boolean recurse) throws IOException, MessagingException {
         mHeader.clear();
         mFrom = null;
         mTo = null;
@@ -92,6 +110,9 @@ public class MimeMessage extends Message {
         parserConfig.setMaxHeaderCount(-1); // Disable the check for header count.
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
         parser.setContentHandler(new MimeMessageBuilder());
+        if (recurse) {
+            parser.setRecurse();
+        }
         try {
             parser.parse(new EOLConvertingInputStream(in));
         } catch (MimeException me) {
@@ -355,11 +376,17 @@ public class MimeMessage extends Message {
         if (body instanceof Multipart) {
             Multipart multipart = ((Multipart)body);
             multipart.setParent(this);
-            setHeader(MimeHeader.HEADER_CONTENT_TYPE, multipart.getContentType());
+            String type = multipart.getContentType();
+            setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
+            if ("multipart/signed".equalsIgnoreCase(type)) {
+                setEncoding(MimeUtil.ENC_7BIT);
+            } else {
+                setEncoding(MimeUtil.ENC_8BIT);
+            }
         } else if (body instanceof TextBody) {
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n charset=utf-8",
                       getMimeType()));
-            setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "quoted-printable");
+            setEncoding(MimeUtil.ENC_8BIT);
         }
     }
 
@@ -408,13 +435,11 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setEncoding(String encoding) throws UnavailableStorageException {
-        if (mBody instanceof Multipart) {
-            ((Multipart)mBody).setEncoding(encoding);
-        } else if (mBody instanceof TextBody) {
-            setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
-            ((TextBody)mBody).setEncoding(encoding);
+    public void setEncoding(String encoding) throws MessagingException {
+        if (mBody != null) {
+            mBody.setEncoding(encoding);
         }
+        setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
     }
 
     @Override
@@ -487,8 +512,9 @@ public class MimeMessage extends Message {
 
         public void body(BodyDescriptor bd, InputStream in) throws IOException {
             expect(Part.class);
-            Body body = MimeUtility.decodeBody(in, bd.getTransferEncoding());
             try {
+                Body body = MimeUtility.decodeBody(in,
+                        bd.getTransferEncoding(), bd.getMimeType());
                 ((Part)stack.peek()).setBody(body);
             } catch (MessagingException me) {
                 throw new Error(me);
@@ -596,5 +622,48 @@ public class MimeMessage extends Message {
 
     public boolean hasAttachments() {
         return false;
+    }
+
+
+    @Override
+    public void setUsing7bitTransport() throws MessagingException {
+        String type = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
+        /*
+         * We don't trust that a multipart/* will properly have an 8bit encoding
+         * header if any of its subparts are 8bit, so we automatically recurse
+         * (as long as its not multipart/signed).
+         */
+        if (mBody instanceof CompositeBody
+                && !"multipart/signed".equalsIgnoreCase(type)) {
+            setEncoding(MimeUtil.ENC_7BIT);
+            // recurse
+            ((CompositeBody) mBody).setUsing7bitTransport();
+        } else if (!MimeUtil.ENC_8BIT
+                .equalsIgnoreCase(getFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING))) {
+            return;
+        } else if (type != null
+                && (type.equalsIgnoreCase("multipart/signed") || type
+                        .toLowerCase(Locale.US).startsWith("message/"))) {
+            /*
+             * This shouldn't happen. In any case, it would be wrong to convert
+             * them to some other encoding for 7bit transport.
+             *
+             * RFC 1847 says multipart/signed must be 7bit. It also says their
+             * bodies must be treated as opaque, so we must not change the
+             * encoding.
+             *
+             * We've dealt with (CompositeBody) type message/rfc822 above. Here
+             * we must deal with all other message/* types. RFC 2045 says
+             * message/* can only be 7bit or 8bit. RFC 2046 says unknown
+             * message/* types must be treated as application/octet-stream,
+             * which means we can't recurse into them. It also says that
+             * existing subtypes message/partial and message/external must only
+             * be 7bit, and that future subtypes "should be" 7bit.
+             */
+            throw new MessagingException(
+                    "Unable to convert 8bit body part to 7bit");
+        } else {
+            setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
+        }
     }
 }

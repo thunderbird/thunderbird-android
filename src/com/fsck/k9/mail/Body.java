@@ -9,6 +9,6 @@ import com.fsck.k9.mail.store.UnavailableStorageException;
 
 public interface Body {
     public InputStream getInputStream() throws MessagingException;
-    public void setEncoding(String encoding) throws UnavailableStorageException;
+    public void setEncoding(String encoding) throws UnavailableStorageException, MessagingException;
     public void writeTo(OutputStream out) throws IOException, MessagingException;
 }
