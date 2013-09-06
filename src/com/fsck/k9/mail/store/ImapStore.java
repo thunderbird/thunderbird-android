@@ -1653,9 +1653,12 @@ public class ImapStore extends Store {
                                 String bodyString = (String)literal;
                                 InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
 
-                                String contentTransferEncoding = part.getHeader(
-                                                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                                part.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
+                                String contentTransferEncoding = part
+                                        .getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                String contentType = part
+                                        .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
+                                part.setBody(MimeUtility.decodeBody(bodyStream,
+                                        contentTransferEncoding, contentType));
                             } else {
                                 // This shouldn't happen
                                 throw new MessagingException("Got FETCH response with bogus parameters");
@@ -3547,10 +3550,13 @@ public class ImapStore extends Store {
                     ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
                 //TODO: check for correct UID
 
-                String contentTransferEncoding = mPart.getHeader(
-                                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                String contentTransferEncoding = mPart
+                        .getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                String contentType = mPart
+                        .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
 
-                return MimeUtility.decodeBody(literal, contentTransferEncoding);
+                return MimeUtility.decodeBody(literal, contentTransferEncoding,
+                        contentType);
             }
             return null;
         }
