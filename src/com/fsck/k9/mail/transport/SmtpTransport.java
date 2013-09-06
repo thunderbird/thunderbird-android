@@ -493,7 +493,7 @@ public class SmtpTransport extends Transport {
         Address[] from = message.getFrom();
         try {
             executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
-                    + (m8bitEncodingAllowed ? " BODY=8BITMIME" : null));
+                    + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""));
             for (String address : addresses) {
                 executeSimpleCommand("RCPT TO:" + "<" + address + ">");
             }
