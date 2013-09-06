@@ -18,9 +18,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
@@ -189,49 +187,13 @@ public final class PRNGFixes {
          */
         private static DataInputStream sUrandomIn;
 
-        /**
-         * Output stream for writing to Linux PRNG or {@code null} if not yet
-         * opened.
-         *
-         * @GuardedBy("sLock")
-         */
-        private static OutputStream sUrandomOut;
-
-        /**
-         * Whether this engine instance has been seeded. This is needed because
-         * each instance needs to seed itself if the client does not explicitly
-         * seed it.
-         */
-        private boolean mSeeded;
-
         @Override
         protected void engineSetSeed(byte[] bytes) {
-            try {
-                OutputStream out;
-                synchronized (sLock) {
-                    out = getUrandomOutputStream();
-                }
-                out.write(bytes);
-                out.flush();
-                mSeeded = true;
-            } catch (IOException e) {
-                // Some devices don't have a writable urandom:
-                // Certain third-party android builds replace urandom with
-                // frandom and erandom, which make urandom into a symlink to
-                // erandom
-                // Details can be found in
-                // https://github.com/k9mail/k-9/pull/367
-                mSeeded = true;
-            }
+            // We use /dev/urandom so we don't need to worry about seeding
         }
 
         @Override
         protected void engineNextBytes(byte[] bytes) {
-            if (!mSeeded) {
-                // Mix in the device- and invocation-specific seed.
-                engineSetSeed(generateSeed());
-            }
-
             try {
                 DataInputStream in;
                 synchronized (sLock) {
@@ -269,20 +231,6 @@ public final class PRNGFixes {
                     }
                 }
                 return sUrandomIn;
-            }
-        }
-
-        private OutputStream getUrandomOutputStream() {
-            synchronized (sLock) {
-                if (sUrandomOut == null) {
-                    try {
-                        sUrandomOut = new FileOutputStream(URANDOM_FILE);
-                    } catch (IOException e) {
-                        throw new SecurityException("Failed to open "
-                                + URANDOM_FILE + " for writing", e);
-                    }
-                }
-                return sUrandomOut;
             }
         }
     }
