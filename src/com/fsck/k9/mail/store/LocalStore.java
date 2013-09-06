@@ -4031,7 +4031,7 @@ public class LocalStore extends Store implements Serializable {
             boolean closeStream = false;
             InputStream in = getInputStream();
             if (MimeUtil.isBase64Encoding(mEncoding)) {
-                out = (OutputStream) new Base64OutputStream(out);
+                out = new Base64OutputStream(out);
                 closeStream = true;
             } else if (MimeUtil.isQuotedPrintableEncoded(mEncoding)){
                 out = new QuotedPrintableOutputStream(out, false);
