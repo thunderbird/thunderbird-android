@@ -62,10 +62,13 @@ public class MimeMessage extends Message {
 
     /**
      * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
+     * Nested messages will not be recursively parsed.
      *
      * @param in
      * @throws IOException
      * @throws MessagingException
+     *
+     * @see #MimeMessage(InputStream in, boolean recurse)
      */
     public MimeMessage(InputStream in) throws IOException, MessagingException {
         parse(in);
@@ -80,7 +83,7 @@ public class MimeMessage extends Message {
      * @throws MessagingException
      */
     public MimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
-        parse(in, true);
+        parse(in, recurse);
     }
 
      protected void parse(InputStream in) throws IOException, MessagingException {
