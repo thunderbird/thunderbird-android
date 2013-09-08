@@ -1150,5 +1150,5 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="global_settings_colorize_missing_contact_pictures">Fehlende Kontaktbilder einfärben</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Sichtbare Nachrichtenaktionen</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">Ausgewählte Aktionen im Menü der Nachrichtenanzeigen anzeigen</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Ausgewählte Aktionen im Menü der Nachrichtenanzeige anzeigen</string>
 </resources>
