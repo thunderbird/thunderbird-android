@@ -143,8 +143,8 @@ Si vous avez des suggestions, découvert des bugs ou simplement une idée de fon
     <string name="cancel_action">Annuler</string>
     <string name="send_action">Envoyer</string>
     <string name="send_again_action">Envoyer à nouveau</string>
-    <!-- NEW: <string name="select_action">Select</string>-->
-    <!-- NEW: <string name="deselect_action">Deselect</string>-->
+    <string name="select_action">Sélectionner</string>
+    <string name="deselect_action">Désélectionner</string>
     <string name="reply_action">Répondre</string>
     <string name="reply_all_action">Répondre à tous</string>
     <string name="delete_action">Supprimer</string>
