@@ -3352,8 +3352,13 @@ public class MessagingController implements Runnable {
         builder.setSmallIcon(R.drawable.ic_notify_check_mail);
         builder.setWhen(System.currentTimeMillis());
         builder.setOngoing(true);
-        builder.setTicker(mApplication.getString(R.string.notification_bg_send_ticker,
-                account.getDescription()));
+        if(!TextUtils.isEmpty(account.getDescription())) {
+            builder.setTicker(mApplication.getString(R.string.notification_bg_send_ticker,
+                    account.getDescription()));
+        }else {
+            builder.setTicker(mApplication.getString(R.string.notification_bg_send_ticker,
+                    account.getEmail()));
+        }
 
         builder.setContentTitle(mApplication.getString(R.string.notification_bg_send_title));
         builder.setContentText(account.getDescription());
