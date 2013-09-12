@@ -124,8 +124,8 @@ K-9 Mail — почтовый клиент для Android.
     <string name="reply_action">Ответить</string>
     <string name="reply_all_action">Ответить всем</string>
     <string name="delete_action">Удалить</string>
-    <string name="archive_action">Архив</string>
-    <string name="spam_action">Спам</string>
+    <string name="archive_action">В Архив</string>
+    <string name="spam_action">В Спам</string>
     <string name="forward_action">Переслать</string>
     <string name="move_action">Переместить</string>
     <string name="single_message_options_action">Отправить…</string>
