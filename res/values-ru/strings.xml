@@ -120,7 +120,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="send_action">Отправить</string>
     <string name="send_again_action">Редактировать</string>
     <string name="select_action">Выбрать</string>
-    <string name="deselect_action">Сброс выбора</string>
+    <string name="deselect_action">Снять выбор</string>
     <string name="reply_action">Ответить</string>
     <string name="reply_all_action">Ответить всем</string>
     <string name="delete_action">Удалить</string>
@@ -324,7 +324,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_messageview_show_next_summary">Открыть следующее сообщение после удаления сообщения</string>
 
     <string name="global_settings_confirm_actions_title">Подтверждать действия</string>
-    <string name="global_settings_confirm_actions_summary">Запросить подтверждение указанных действий</string>
+    <string name="global_settings_confirm_actions_summary">Запросить подтверждение действий</string>
     <string name="global_settings_confirm_action_delete">Удаление (в просмотре)</string>
     <string name="global_settings_confirm_action_delete_starred">Удаление отмеченного (в просмотре)</string>
     <string name="global_settings_confirm_action_spam">Перемещение в Спам</string>
@@ -858,7 +858,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="volume_navigation_message">В сообщении</string>
     <string name="volume_navigation_list">В списке</string>
 
-    <string name="start_integrated_inbox_title">Во \"Входящие\" при запуске</string>
+    <string name="start_integrated_inbox_title">Запуск в общих \"Входящих\"</string>
 
     <string name="measure_accounts_title">Размер ящика</string>
     <string name="measure_accounts_summary">Отключите для ускорения работы</string>
@@ -879,7 +879,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="integrated_inbox_title">Входящие</string>
     <string name="integrated_inbox_detail">из всех ящиков</string>
 
-    <string name="tap_hint">Нажмите звёздочку или кружок для отображения только отмеченных или непрочитанных</string>
+    <string name="tap_hint">Нажмите звезду или кружок для фильтрации отмеченных или непрочитанных</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">Общие Входящие</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Показать почту в общих Входящих</string>
