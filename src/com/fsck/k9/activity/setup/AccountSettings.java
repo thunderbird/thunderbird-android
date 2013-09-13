@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openintents.openpgp.OpenPgpListPreference;
-import org.openintents.openpgp.OpenPgpSettingsHelper;
+import org.openintents.openpgp.OpenPgpHelper;
 
 import android.content.Context;
 import android.content.Intent;
@@ -692,7 +692,7 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        OpenPgpSettingsHelper openPgpHelper = new OpenPgpSettingsHelper(this);
+        OpenPgpHelper openPgpHelper = new OpenPgpHelper(this);
         mHasCrypto = (new Apg().isAvailable(this) || openPgpHelper.isAvailable());
         
         if (mHasCrypto) {

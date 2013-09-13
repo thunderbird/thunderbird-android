@@ -713,6 +713,20 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
             });
         }
     }
+    
+    /**
+     * Used by MessageOpenPgpView
+     * 
+     * @param pgpData
+     */
+    public void setMessageWithPgpData(PgpData pgpData) {
+        try {
+            mMessageView.setMessage(mAccount, (LocalMessage) mMessage, pgpData, mController,
+                    mListener);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
+        }
+    }
 
     // This REALLY should be in MessageCryptoView
     @Override

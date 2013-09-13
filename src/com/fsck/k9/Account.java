@@ -1731,6 +1731,14 @@ public class Account implements BaseAccount {
         }
         return mCryptoProvider;
     }
+    
+    public synchronized String getOpenPgpProvider() {
+        // only if not APG
+        if (getCryptoApp().equals("apg")) {
+            return null;
+        }
+        return getCryptoApp();
+    }
 
     public synchronized NotificationSetting getNotificationSetting() {
         return mNotificationSetting;

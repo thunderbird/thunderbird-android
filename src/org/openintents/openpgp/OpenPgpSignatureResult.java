@@ -25,6 +25,18 @@ public class OpenPgpSignatureResult implements Parcelable {
     boolean signatureSuccess;
     boolean signatureUnknown;
 
+    public String getSignatureUserId() {
+        return signatureUserId;
+    }
+
+    public boolean isSignatureSuccess() {
+        return signatureSuccess;
+    }
+
+    public boolean isSignatureUnknown() {
+        return signatureUnknown;
+    }
+
     public OpenPgpSignatureResult() {
 
     }
