@@ -138,25 +138,21 @@
         <incoming uri="pop3://pop.juno.com" username="$user" />
         <outgoing uri="smtp://smtp.juno.com" username="$user" />
     </provider>
-    <provider id="live" label="Windows Live Hotmail Plus" domain="live.com"
-            note="@string/provider_note_live">
-        <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
+    <provider id="live" label="Windows Live Hotmail" domain="live.com">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
     </provider>
-    <provider id="hotmail" label="Windows Live Hotmail Plus" domain="hotmail.com"
-            note="@string/provider_note_live">
-        <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
+    <provider id="hotmail" label="Hotmail" domain="hotmail.com">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
     </provider>
-    <provider id="outlook" label="Windows Live Outlook" domain="outlook.com"
-            note="@string/provider_note_live">
-        <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
+    <provider id="outlook" label="Outlook.com" domain="outlook.com">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
     </provider>
-    <provider id="msn" label="Windows Live Hotmail Plus" domain="msn.com"
-            note="@string/provider_note_live">
-        <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
+    <provider id="msn" label="MSN" domain="msn.com">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
     </provider>
     <!-- Note: Mac Mail.app sets IMAP to mail.mac.com, but it's the same server -->
     <provider id="mobileme" label="MobileMe" domain="me.com">
