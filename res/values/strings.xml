@@ -1156,4 +1156,14 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>
+    
+    <string name="openpgp_decrypting_verifying">Decrypting/Verifying…</string>
+    <string name="openpgp_successful_decryption">Successful decryption!</string>
+    <string name="openpgp_signature_valid">Valid signature by</string>
+    <string name="openpgp_signature_unknown">Unknown signature email</string>
+    <string name="openpgp_signature_invalid">Invalid signature</string>
+    <string name="openpgp_successful_decryption_valid_signature">Successful decryption and valid signature by</string>
+    <string name="openpgp_successful_decryption_unknown_signature">Successful decryption but unknown signature email</string>
+    <string name="openpgp_error">Error:</string>
+    
 </resources>

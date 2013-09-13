@@ -43,6 +43,10 @@ public class OpenPgpServiceConnection {
         return mService;
     }
 
+    public boolean isBound() {
+        return bound;
+    }
+
     private ServiceConnection mCryptoServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName name, IBinder service) {
             mService = IOpenPgpService.Stub.asInterface(service);

@@ -20,38 +20,40 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class OpenPgpSignatureResult implements Parcelable {
+    public static final int SIGNATURE_ERROR = 0;
+    public static final int SIGNATURE_SUCCESS = 1;
+    public static final int SIGNATURE_UNKNOWN = 2;
 
+    int signatureStatus;
     String signatureUserId;
-    boolean signatureSuccess;
-    boolean signatureUnknown;
+    boolean signatureOnly;
+
+    public int getSignatureStatus() {
+        return signatureStatus;
+    }
 
     public String getSignatureUserId() {
         return signatureUserId;
     }
 
-    public boolean isSignatureSuccess() {
-        return signatureSuccess;
-    }
-
-    public boolean isSignatureUnknown() {
-        return signatureUnknown;
+    public boolean isSignatureOnly() {
+        return signatureOnly;
     }
 
     public OpenPgpSignatureResult() {
 
     }
 
-    public OpenPgpSignatureResult(String signatureUserId, boolean signatureSuccess,
-            boolean signatureUnknown) {
+    public OpenPgpSignatureResult(int signatureStatus, String signatureUserId, boolean signatureOnly) {
+        this.signatureStatus = signatureStatus;
         this.signatureUserId = signatureUserId;
-        this.signatureSuccess = signatureSuccess;
-        this.signatureUnknown = signatureUnknown;
+        this.signatureOnly = signatureOnly;
     }
 
     public OpenPgpSignatureResult(OpenPgpSignatureResult b) {
+        this.signatureStatus = b.signatureStatus;
         this.signatureUserId = b.signatureUserId;
-        this.signatureSuccess = b.signatureSuccess;
-        this.signatureUnknown = b.signatureUnknown;
+        this.signatureOnly = b.signatureOnly;
     }
 
     public int describeContents() {
@@ -59,18 +61,17 @@ public class OpenPgpSignatureResult implements Parcelable {
     }
 
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(signatureStatus);
         dest.writeString(signatureUserId);
-
-        dest.writeByte((byte) (signatureSuccess ? 1 : 0));
-        dest.writeByte((byte) (signatureUnknown ? 1 : 0));
+        dest.writeByte((byte) (signatureOnly ? 1 : 0));
     }
 
     public static final Creator<OpenPgpSignatureResult> CREATOR = new Creator<OpenPgpSignatureResult>() {
         public OpenPgpSignatureResult createFromParcel(final Parcel source) {
             OpenPgpSignatureResult vr = new OpenPgpSignatureResult();
+            vr.signatureStatus = source.readInt();
             vr.signatureUserId = source.readString();
-            vr.signatureSuccess = source.readByte() == 1;
-            vr.signatureUnknown = source.readByte() == 1;
+            vr.signatureOnly = source.readByte() == 1;
             return vr;
         }
 
@@ -82,9 +83,9 @@ public class OpenPgpSignatureResult implements Parcelable {
     @Override
     public String toString() {
         String out = new String();
+        out += "\nsignatureStatus: " + signatureStatus;
         out += "signatureUserId: " + signatureUserId;
-        out += "\nsignatureSuccess: " + signatureSuccess;
-        out += "\nsignatureUnknown: " + signatureUnknown;
+        out += "\nsignatureOnly: " + signatureOnly;
         return out;
     }
 

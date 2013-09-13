@@ -3,7 +3,6 @@ package com.fsck.k9.view;
 
 import org.openintents.openpgp.IOpenPgpCallback;
 import org.openintents.openpgp.OpenPgpError;
-import org.openintents.openpgp.OpenPgpHelper;
 import org.openintents.openpgp.OpenPgpServiceConnection;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
@@ -13,15 +12,15 @@ import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.crypto.CryptoHelper;
 import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -32,14 +31,13 @@ public class MessageOpenPgpView extends LinearLayout {
 
     private Context mContext;
     private MessageViewFragment mFragment;
-    private Button mDecryptButton;
-    private LinearLayout mCryptoSignatureLayout = null;
-    private ImageView mCryptoSignatureStatusImage = null;
-    private TextView mCryptoSignatureUserId = null;
-    private TextView mCryptoSignatureUserIdRest = null;
+    private LinearLayout mSignatureLayout = null;
+    private ImageView mSignatureStatusImage = null;
+    private TextView mSignatureUserId = null;
+    private TextView mText = null;
+    private ProgressBar mProgress;
 
-    private OpenPgpHelper openPgpHelper;
-    private OpenPgpServiceConnection mCryptoServiceConnection;
+    private OpenPgpServiceConnection mOpenPgpServiceConnection;
 
     public MessageOpenPgpView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,12 +45,13 @@ public class MessageOpenPgpView extends LinearLayout {
     }
 
     public void setupChildViews() {
-        mCryptoSignatureLayout = (LinearLayout) findViewById(R.id.crypto_signature_openpgp);
-        mCryptoSignatureStatusImage = (ImageView) findViewById(R.id.ic_crypto_signature_status_openpgp);
-        mCryptoSignatureUserId = (TextView) findViewById(R.id.userId_openpgp);
-        mCryptoSignatureUserIdRest = (TextView) findViewById(R.id.userIdRest_openpgp);
-        mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
-        mDecryptButton = (Button) findViewById(R.id.btn_decrypt_openpgp);
+        mSignatureLayout = (LinearLayout) findViewById(R.id.openpgp_signature_layout);
+        mSignatureStatusImage = (ImageView) findViewById(R.id.openpgp_signature_status);
+        mSignatureUserId = (TextView) findViewById(R.id.openpgp_user_id);
+        mText = (TextView) findViewById(R.id.openpgp_text);
+        mProgress = (ProgressBar) findViewById(R.id.openpgp_progress);
+        mProgress.setVisibility(View.INVISIBLE);
+        mSignatureLayout.setVisibility(View.GONE);
     }
 
     public void setFragment(Fragment fragment) {
@@ -67,92 +66,87 @@ public class MessageOpenPgpView extends LinearLayout {
      * Fill the decrypt layout with signature data, if known, make controls
      * visible, if they should be visible.
      */
-    public void updateLayout(final String openPgpProvider, final PgpData pgpData,
+    public void updateLayout(final String openPgpProvider, String decryptedData,
+            final OpenPgpSignatureResult signatureResult,
             final Message message) {
-        openPgpHelper = new OpenPgpHelper(getContext());
-
         // bind to service
-        mCryptoServiceConnection = new OpenPgpServiceConnection(mFragment.getActivity(),
+        mOpenPgpServiceConnection = new OpenPgpServiceConnection(mFragment.getActivity(),
                 openPgpProvider);
-        mCryptoServiceConnection.bindToService();
+        mOpenPgpServiceConnection.bindToService();
 
-        // if (pgpData.getSignatureKeyId() != 0) {
-        if (pgpData.getSignatureUserId() != null) {
-            // mCryptoSignatureUserIdRest.setText(
-            // mContext.getString(R.string.key_id,
-            // Long.toHexString(pgpData.getSignatureKeyId() & 0xffffffffL)));
-            // String userId = pgpData.getSignatureUserId();
-            // if (userId == null) {
-            // userId =
-            // mContext.getString(R.string.unknown_crypto_signature_user_id);
-            // }
-            // String chunks[] = userId.split(" <", 2);
-            // String name = chunks[0];
-            // if (chunks.length > 1) {
-            // mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
-            // }
-            mCryptoSignatureUserId.setText(pgpData.getSignatureUserId());
-            if (pgpData.getSignatureSuccess()) {
-                mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
-            } else if (pgpData.getSignatureUnknown()) {
-                mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_error);
-            } else {
-                mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_error);
-            }
-            mCryptoSignatureLayout.setVisibility(View.VISIBLE);
-            this.setVisibility(View.VISIBLE);
-        } else {
-            mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
-        }
-        if ((message == null) && (pgpData.getDecryptedData() == null)) {
+        if ((message == null) && (decryptedData == null)) {
             this.setVisibility(View.GONE);
+
+            // don't process further
             return;
         }
-        if (pgpData.getDecryptedData() != null) {
-            // if (pgpData.getSignatureKeyId() == 0) {
-            if (pgpData.getSignatureUserId() == null) {
-                this.setVisibility(View.GONE);
-            } else {
-                // no need to show button after decryption/verification
-                mDecryptButton.setVisibility(View.GONE);
+        if (decryptedData != null && signatureResult == null) {
+            // only decrypt
+            MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                    R.color.openpgp_green));
+            mText.setText(R.string.openpgp_successful_decryption);
+
+            // don't process further
+            return;
+        } else if (signatureResult != null && decryptedData != null) {
+            // decryptAndVerify / only verify
+
+            switch (signatureResult.getSignatureStatus()) {
+                case OpenPgpSignatureResult.SIGNATURE_ERROR:
+                    mText.setText(R.string.openpgp_signature_invalid);
+                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                            R.color.openpgp_red));
+
+                    // mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                    mSignatureLayout.setVisibility(View.GONE);
+                    break;
+
+                case OpenPgpSignatureResult.SIGNATURE_SUCCESS:
+                    if (signatureResult.isSignatureOnly()) {
+                        mText.setText(R.string.openpgp_signature_valid);
+                    }
+                    else {
+                        mText.setText(R.string.openpgp_successful_decryption_valid_signature);
+                    }
+                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                            R.color.openpgp_green));
+
+                    mSignatureUserId.setText(signatureResult.getSignatureUserId());
+                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
+                    mSignatureLayout.setVisibility(View.VISIBLE);
+
+                    break;
+
+                case OpenPgpSignatureResult.SIGNATURE_UNKNOWN:
+                    if (signatureResult.isSignatureOnly()) {
+                        mText.setText(R.string.openpgp_signature_unknown);
+                    }
+                    else {
+                        mText.setText(R.string.openpgp_successful_decryption_unknown_signature);
+                    }
+                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                            R.color.openpgp_orange));
+
+                    mSignatureUserId.setText(R.string.openpgp_signature_unknown);
+                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                    mSignatureLayout.setVisibility(View.VISIBLE);
+
+                    break;
+
+                default:
+                    break;
             }
+
+            // don't process further
             return;
         }
 
-        mDecryptButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    String data = null;
-                    Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                    if (part == null) {
-                        part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-                    }
-                    if (part != null) {
-                        data = MimeUtility.getTextFromPart(part);
-                    }
-                    // cryptoProvider.decrypt(mFragment, data, pgpData);
-
-                    try {
-                        mCryptoServiceConnection.getService().decryptAndVerify(data.getBytes(),
-                                decryptAndVerifyCallback);
-                    } catch (RemoteException e) {
-                        Log.e(K9.LOG_TAG, "CryptoProviderDemo", e);
-                    }
-
-                } catch (MessagingException me) {
-                    Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);
-                }
-            }
-        });
-
-        mDecryptButton.setVisibility(View.VISIBLE);
-        if (openPgpHelper.isEncrypted(message)) {
-            mDecryptButton.setText(R.string.btn_decrypt);
+        // Start new decryption/verification
+        CryptoHelper helper = new CryptoHelper();
+        if (helper.isEncrypted(message) || helper.isSigned(message)) {
             this.setVisibility(View.VISIBLE);
-        } else if (openPgpHelper.isSigned(message)) {
-            mDecryptButton.setText(R.string.btn_verify);
-            this.setVisibility(View.VISIBLE);
+            // start automatic decrypt
+            decryptAndVerify(message);
         } else {
             this.setVisibility(View.GONE);
             try {
@@ -169,6 +163,53 @@ public class MessageOpenPgpView extends LinearLayout {
         }
     }
 
+    private void decryptAndVerify(final Message message) {
+        mProgress.setVisibility(View.VISIBLE);
+        MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                R.color.openpgp_orange));
+        mText.setText(R.string.openpgp_decrypting_verifying);
+
+        // waiting in a new thread
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    String data = null;
+                    Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+                    if (part == null) {
+                        part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+                    }
+                    if (part != null) {
+                        data = MimeUtility.getTextFromPart(part);
+                    }
+
+                    // TODO: handle with callback in cryptoserviceconnection
+                    // instead of
+                    while (!mOpenPgpServiceConnection.isBound()) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                        }
+                    }
+
+                    try {
+                        mOpenPgpServiceConnection.getService().decryptAndVerify(data.getBytes(),
+                                decryptAndVerifyCallback);
+                    } catch (RemoteException e) {
+                        Log.e(K9.LOG_TAG, "CryptoProviderDemo", e);
+                    }
+                } catch (MessagingException me) {
+                    Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);
+                }
+
+            }
+        };
+
+        new Thread(r).start();
+
+    }
+
     final IOpenPgpCallback.Stub decryptAndVerifyCallback = new IOpenPgpCallback.Stub() {
 
         @Override
@@ -180,18 +221,9 @@ public class MessageOpenPgpView extends LinearLayout {
 
                 @Override
                 public void run() {
-                    // TODO: get rid of PgpData
-                    PgpData data = new PgpData();
-                    data.setDecryptedData(new String(outputBytes));
+                    mProgress.setVisibility(View.INVISIBLE);
 
-                    if (signatureResult != null) {
-                        data.setSignatureUserId(signatureResult.getSignatureUserId());
-                        data.setSignatureSuccess(signatureResult.isSignatureSuccess());
-                        data.setSignatureUnknown(signatureResult.isSignatureUnknown());
-                    }
-
-                    mFragment.setMessageWithPgpData(data);
-
+                    mFragment.setMessageWithOpenPgp(new String(outputBytes), signatureResult);
                 }
             });
 
@@ -199,17 +231,22 @@ public class MessageOpenPgpView extends LinearLayout {
 
         @Override
         public void onError(final OpenPgpError error) throws RemoteException {
-            // TODO: better handling on error!
+            // TODO: better error handling with ids?
 
             mFragment.getActivity().runOnUiThread(new Runnable() {
 
                 @Override
                 public void run() {
-                    Toast.makeText(mFragment.getActivity(),
-                            "onError id:" + error.getErrorId() + "\n\n" + error.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                    Log.e(K9.LOG_TAG, "onError getErrorId:" + error.getErrorId());
-                    Log.e(K9.LOG_TAG, "onError getMessage:" + error.getMessage());
+                    mProgress.setVisibility(View.INVISIBLE);
+
+                    Log.d(K9.LOG_TAG, "onError getErrorId:" + error.getErrorId());
+                    Log.d(K9.LOG_TAG, "onError getMessage:" + error.getMessage());
+
+                    mText.setText(mFragment.getString(R.string.openpgp_error) + " "
+                            + error.getMessage());
+
+                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                            R.color.openpgp_red));
                 }
             });
         }
@@ -220,8 +257,8 @@ public class MessageOpenPgpView extends LinearLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        if (mCryptoServiceConnection != null) {
-            mCryptoServiceConnection.unbindFromService();
+        if (mOpenPgpServiceConnection != null) {
+            mOpenPgpServiceConnection.unbindFromService();
         }
     }
 

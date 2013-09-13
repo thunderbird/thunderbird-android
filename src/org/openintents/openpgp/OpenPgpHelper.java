@@ -17,13 +17,6 @@
 package org.openintents.openpgp;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeUtility;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,15 +24,6 @@ import android.content.pm.ResolveInfo;
 
 public class OpenPgpHelper {
     private Context context;
-
-    public static Pattern PGP_MESSAGE =
-            Pattern.compile(".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
-                    Pattern.DOTALL);
-
-    public static Pattern PGP_SIGNED_MESSAGE =
-            Pattern.compile(
-                    ".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
-                    Pattern.DOTALL);
 
     public OpenPgpHelper(Context context) {
         super();
@@ -54,51 +38,5 @@ public class OpenPgpHelper {
         } else {
             return false;
         }
-    }
-
-    public boolean isEncrypted(Message message) {
-        String data = null;
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null) {
-                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            }
-            if (part != null) {
-                data = MimeUtility.getTextFromPart(part);
-            }
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
-        }
-
-        if (data == null) {
-            return false;
-        }
-
-        Matcher matcher = PGP_MESSAGE.matcher(data);
-        return matcher.matches();
-    }
-
-    public boolean isSigned(Message message) {
-        String data = null;
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null) {
-                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            }
-            if (part != null) {
-                data = MimeUtility.getTextFromPart(part);
-            }
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
-        }
-
-        if (data == null) {
-            return false;
-        }
-
-        Matcher matcher = PGP_SIGNED_MESSAGE.matcher(data);
-        return matcher.matches();
     }
 }
