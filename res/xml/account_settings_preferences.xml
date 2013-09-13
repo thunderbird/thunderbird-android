@@ -460,13 +460,10 @@
         android:title="@string/account_settings_crypto"
         android:key="crypto">
 
-        <ListPreference
+        <org.openintents.openpgp.OpenPgpListPreference
             android:persistent="false"
             android:key="crypto_app"
-            android:title="@string/account_settings_crypto_app"
-            android:entries="@array/account_settings_crypto_app_entries"
-            android:entryValues="@array/account_settings_crypto_app_values"
-            android:dialogTitle="@string/account_settings_crypto_app" />
+            android:title="@string/account_settings_crypto_app" />
 
         <CheckBoxPreference
             android:persistent="false"
