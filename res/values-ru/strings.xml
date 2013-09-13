@@ -124,12 +124,12 @@ K-9 Mail — почтовый клиент для Android.
     <string name="reply_action">Ответить</string>
     <string name="reply_all_action">Ответить всем</string>
     <string name="delete_action">Удалить</string>
-    <string name="archive_action">Архив</string>
-    <string name="spam_action">Спам</string>
+    <string name="archive_action">В Архив</string>
+    <string name="spam_action">В Спам</string>
     <string name="forward_action">Переслать</string>
     <string name="move_action">Переместить</string>
-    <string name="single_message_options_action">Отправить…</string>
-    <string name="refile_action">Смена папки…</string>
+    <string name="single_message_options_action">Отправить</string>
+    <string name="refile_action">Смена папки</string>
     <string name="continue_action">Далее</string>
     <string name="back_action">Назад</string>
     <string name="done_action">Готово</string> <!--  Used to complete a multi-step process -->
@@ -172,7 +172,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="add_attachment_action">Вложение</string>
     <string name="add_attachment_action_image">Изображение</string>
     <string name="add_attachment_action_video">Видео</string>
-    <string name="empty_trash_action">Очистить Корзину</string>
+    <string name="empty_trash_action">Очистить корзину</string>
     <string name="expunge_action">Стереть</string>
     <string name="clear_local_folder_action">Стереть локальные</string>
     <string name="about_action">О программе</string>
@@ -573,7 +573,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_settings_color_summary">Метка в списке ящиков и папок</string>
 
     <string name="account_settings_led_color_label">Цвет LED-индикатора</string>
-    <string name="account_settings_led_color_summary">Цвет LED-индикатора устройства для оповещений этого ящика</string>
+    <string name="account_settings_led_color_summary">Цвет LED-индикатора для оповещений этого ящика</string>
 
     <string name="account_settings_mail_display_count_label">Отображать сообщений</string>
 
