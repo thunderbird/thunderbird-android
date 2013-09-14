@@ -37,6 +37,7 @@ public class MessageOpenPgpView extends LinearLayout {
     private TextView mText = null;
     private ProgressBar mProgress;
 
+    private String mOpenPgpProvider;
     private OpenPgpServiceConnection mOpenPgpServiceConnection;
 
     public MessageOpenPgpView(Context context, AttributeSet attrs) {
@@ -60,16 +61,21 @@ public class MessageOpenPgpView extends LinearLayout {
      * Fill the decrypt layout with signature data, if known, make controls
      * visible, if they should be visible.
      */
-    public void updateLayout(final String openPgpProvider, String decryptedData,
-            final OpenPgpSignatureResult signatureResult, final Message message) {
+    public void updateLayout(String openPgpProvider, String decryptedData,
+            final OpenPgpSignatureResult signatureResult,
+            final Message message) {
+
+        // set provider package
+        mOpenPgpProvider = openPgpProvider;
+
         // only use this view if a OpenPGP Provider is set
-        if (openPgpProvider == null) {
+        if (mOpenPgpProvider == null) {
             return;
         }
 
         // bind to service
         mOpenPgpServiceConnection = new OpenPgpServiceConnection(mFragment.getActivity(),
-                openPgpProvider);
+                mOpenPgpProvider);
         mOpenPgpServiceConnection.bindToService();
 
         if ((message == null) && (decryptedData == null)) {
@@ -228,7 +234,7 @@ public class MessageOpenPgpView extends LinearLayout {
 
         @Override
         public void onError(final OpenPgpError error) throws RemoteException {
-            
+
             mFragment.getActivity().runOnUiThread(new Runnable() {
 
                 @Override
@@ -249,6 +255,18 @@ public class MessageOpenPgpView extends LinearLayout {
         }
 
     };
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        // bind to service if a OpenPGP Provider is available
+        if (mOpenPgpProvider != null) {
+            mOpenPgpServiceConnection = new OpenPgpServiceConnection(mFragment.getActivity(),
+                    mOpenPgpProvider);
+            mOpenPgpServiceConnection.bindToService();
+        }
+    }
 
     @Override
     protected void onDetachedFromWindow() {

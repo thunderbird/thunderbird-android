@@ -49,7 +49,6 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
 import org.apache.commons.io.IOUtils;
-import org.openintents.openpgp.OpenPgpSignatureResult;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -623,7 +622,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (text != null) {
             loadBodyFromText(text);
             updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
-            mOpenPgpView.updateLayout(account.getOpenPgpProvider(), pgpData.getDecryptedData(),
+            mOpenPgpView.updateLayout(account.getOpenPgpProvider(),pgpData.getDecryptedData(),
                     pgpData.getSignatureResult(), message);
         } else {
             showStatusMessage(getContext().getString(R.string.webview_empty_message));
