@@ -757,12 +757,12 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private void handleCryptoAppDependencies() {
-        if ("".equals(mCryptoApp.getValue())) {
-            mCryptoAutoSignature.setEnabled(false);
-            mCryptoAutoEncrypt.setEnabled(false);
-        } else {
+        if ("apg".equals(mCryptoApp.getValue())) {
             mCryptoAutoSignature.setEnabled(true);
             mCryptoAutoEncrypt.setEnabled(true);
+        } else {
+            mCryptoAutoSignature.setEnabled(false);
+            mCryptoAutoEncrypt.setEnabled(false);
         }
     }
 

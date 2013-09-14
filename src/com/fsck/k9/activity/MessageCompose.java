@@ -842,21 +842,17 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                     CheckBox checkBox = (CheckBox) v;
                     if (checkBox.isChecked()) {
                         mPreventDraftSaving = true;
-                        // if (!crypto.selectSecretKey(MessageCompose.this,
-                        // mPgpData)) {
-                        // mPreventDraftSaving = false;
-                        // }
-                        // checkBox.setChecked(false);
-                    } else {
                     }
                 }
             });
 
             if (mAccount.getCryptoAutoSignature()) {
-                // TODO
+                // TODO: currently disabled for new openpgp providers (see AccountSettings)
             }
             updateMessageFormat();
-            mAutoEncrypt = mAccount.isCryptoAutoEncrypt();
+            // TODO: currently disabled for new openpgp providers (see AccountSettings)
+            mAutoEncrypt = false;
+            //mAutoEncrypt = mAccount.isCryptoAutoEncrypt();
         } else if (crypto.isAvailable(this)) {
             mEncryptLayout.setVisibility(View.VISIBLE);
             mCryptoSignatureCheckbox.setOnClickListener(new OnClickListener() {

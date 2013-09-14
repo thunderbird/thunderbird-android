@@ -50,7 +50,6 @@ public class MessageOpenPgpView extends LinearLayout {
         mSignatureUserId = (TextView) findViewById(R.id.openpgp_user_id);
         mText = (TextView) findViewById(R.id.openpgp_text);
         mProgress = (ProgressBar) findViewById(R.id.openpgp_progress);
-        mProgress.setVisibility(View.INVISIBLE);
     }
 
     public void setFragment(Fragment fragment) {
@@ -219,7 +218,7 @@ public class MessageOpenPgpView extends LinearLayout {
 
                 @Override
                 public void run() {
-                    mProgress.setVisibility(View.INVISIBLE);
+                    mProgress.setVisibility(View.GONE);
 
                     mFragment.setMessageWithOpenPgp(new String(outputBytes), signatureResult);
                 }
@@ -234,7 +233,7 @@ public class MessageOpenPgpView extends LinearLayout {
 
                 @Override
                 public void run() {
-                    mProgress.setVisibility(View.INVISIBLE);
+                    mProgress.setVisibility(View.GONE);
 
                     Log.d(K9.LOG_TAG, "onError getErrorId:" + error.getErrorId());
                     Log.d(K9.LOG_TAG, "onError getMessage:" + error.getMessage());
