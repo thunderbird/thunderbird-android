@@ -51,15 +51,10 @@ public class MessageOpenPgpView extends LinearLayout {
         mText = (TextView) findViewById(R.id.openpgp_text);
         mProgress = (ProgressBar) findViewById(R.id.openpgp_progress);
         mProgress.setVisibility(View.INVISIBLE);
-        mSignatureLayout.setVisibility(View.GONE);
     }
 
     public void setFragment(Fragment fragment) {
         mFragment = (MessageViewFragment) fragment;
-    }
-
-    public void hide() {
-        this.setVisibility(View.GONE);
     }
 
     /**
@@ -69,6 +64,11 @@ public class MessageOpenPgpView extends LinearLayout {
     public void updateLayout(final String openPgpProvider, String decryptedData,
             final OpenPgpSignatureResult signatureResult,
             final Message message) {
+        // only use this view if a OpenPGP Provider is set
+        if (openPgpProvider == null) {
+            return;
+        }
+        
         // bind to service
         mOpenPgpServiceConnection = new OpenPgpServiceConnection(mFragment.getActivity(),
                 openPgpProvider);

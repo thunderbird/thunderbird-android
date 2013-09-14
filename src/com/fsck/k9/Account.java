@@ -1733,8 +1733,8 @@ public class Account implements BaseAccount {
     }
     
     public synchronized String getOpenPgpProvider() {
-        // only if not APG
-        if (getCryptoApp().equals("apg")) {
+        // return null if set to "APG" or "None"
+        if (getCryptoApp().equals("apg") || getCryptoApp().equals("")) {
             return null;
         }
         return getCryptoApp();
