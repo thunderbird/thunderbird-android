@@ -62,13 +62,12 @@ public class MessageOpenPgpView extends LinearLayout {
      * visible, if they should be visible.
      */
     public void updateLayout(final String openPgpProvider, String decryptedData,
-            final OpenPgpSignatureResult signatureResult,
-            final Message message) {
+            final OpenPgpSignatureResult signatureResult, final Message message) {
         // only use this view if a OpenPGP Provider is set
         if (openPgpProvider == null) {
             return;
         }
-        
+
         // bind to service
         mOpenPgpServiceConnection = new OpenPgpServiceConnection(mFragment.getActivity(),
                 openPgpProvider);
@@ -93,6 +92,7 @@ public class MessageOpenPgpView extends LinearLayout {
 
             switch (signatureResult.getSignatureStatus()) {
                 case OpenPgpSignatureResult.SIGNATURE_ERROR:
+                    // TODO: signature error but decryption works?
                     mText.setText(R.string.openpgp_signature_invalid);
                     MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_red));
@@ -119,7 +119,7 @@ public class MessageOpenPgpView extends LinearLayout {
 
                 case OpenPgpSignatureResult.SIGNATURE_UNKNOWN:
                     if (signatureResult.isSignatureOnly()) {
-                        mText.setText(R.string.openpgp_signature_unknown);
+                        mText.setText(R.string.openpgp_signature_unknown_text);
                     }
                     else {
                         mText.setText(R.string.openpgp_successful_decryption_unknown_signature);
@@ -144,11 +144,9 @@ public class MessageOpenPgpView extends LinearLayout {
         // Start new decryption/verification
         CryptoHelper helper = new CryptoHelper();
         if (helper.isEncrypted(message) || helper.isSigned(message)) {
-            this.setVisibility(View.VISIBLE);
             // start automatic decrypt
             decryptAndVerify(message);
         } else {
-            this.setVisibility(View.GONE);
             try {
                 // check for PGP/MIME encryption
                 Part pgp = MimeUtility
@@ -164,6 +162,7 @@ public class MessageOpenPgpView extends LinearLayout {
     }
 
     private void decryptAndVerify(final Message message) {
+        this.setVisibility(View.VISIBLE);
         mProgress.setVisibility(View.VISIBLE);
         MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                 R.color.openpgp_orange));
@@ -185,7 +184,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     }
 
                     // TODO: handle with callback in cryptoserviceconnection
-                    // instead of
+                    // instead of sleep
                     while (!mOpenPgpServiceConnection.isBound()) {
                         try {
                             Thread.sleep(100);
@@ -197,7 +196,7 @@ public class MessageOpenPgpView extends LinearLayout {
                         mOpenPgpServiceConnection.getService().decryptAndVerify(data.getBytes(),
                                 decryptAndVerifyCallback);
                     } catch (RemoteException e) {
-                        Log.e(K9.LOG_TAG, "CryptoProviderDemo", e);
+                        Log.e(K9.LOG_TAG, "MessageOpenPgpView", e);
                     }
                 } catch (MessagingException me) {
                     Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);
@@ -215,7 +214,6 @@ public class MessageOpenPgpView extends LinearLayout {
         @Override
         public void onSuccess(final byte[] outputBytes, final OpenPgpSignatureResult signatureResult)
                 throws RemoteException {
-            Log.d(K9.LOG_TAG, "decryptAndVerifyCallback");
 
             mFragment.getActivity().runOnUiThread(new Runnable() {
 
@@ -231,8 +229,7 @@ public class MessageOpenPgpView extends LinearLayout {
 
         @Override
         public void onError(final OpenPgpError error) throws RemoteException {
-            // TODO: better error handling with ids?
-
+            
             mFragment.getActivity().runOnUiThread(new Runnable() {
 
                 @Override
@@ -242,6 +239,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     Log.d(K9.LOG_TAG, "onError getErrorId:" + error.getErrorId());
                     Log.d(K9.LOG_TAG, "onError getMessage:" + error.getMessage());
 
+                    // TODO: better error handling with ids?
                     mText.setText(mFragment.getString(R.string.openpgp_error) + " "
                             + error.getMessage());
 

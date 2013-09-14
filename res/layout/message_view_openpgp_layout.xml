@@ -18,20 +18,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:ellipsize="end"
             android:gravity="center"
+            android:maxLines="1"
             android:padding="2dp"
+            android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:textColorPrimaryInverse"
             android:textIsSelectable="false" />
 
         <LinearLayout
             android:id="@+id/openpgp_signature_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="2dp" >
+            android:padding="2dp"
+            android:visibility="gone" >
 
             <RelativeLayout
                 android:layout_width="wrap_content"
