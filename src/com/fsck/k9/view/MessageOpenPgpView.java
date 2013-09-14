@@ -82,7 +82,7 @@ public class MessageOpenPgpView extends LinearLayout {
         if (decryptedData != null && signatureResult == null) {
             // only decrypt
             MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
-                    R.color.openpgp_green));
+                    R.color.openpgp_blue));
             mText.setText(R.string.openpgp_successful_decryption);
 
             // don't process further
