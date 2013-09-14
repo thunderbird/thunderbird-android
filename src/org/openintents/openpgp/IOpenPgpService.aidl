@@ -51,7 +51,7 @@ interface IOpenPgpService {
     oneway void sign(in byte[] inputBytes, in boolean asciiArmor, in IOpenPgpCallback callback);
     
     /**
-     * Encrypt and sign
+     * Sign then encrypt
      *
      * @param inputBytes
      *            Byte array you want to encrypt
@@ -64,7 +64,7 @@ interface IOpenPgpService {
      * @param callback
      *            Callback where to return results
      */
-    oneway void encryptAndSign(in byte[] inputBytes, in String[] encryptionUserIds, in boolean asciiArmor, in IOpenPgpCallback callback);
+    oneway void signAndEncrypt(in byte[] inputBytes, in String[] encryptionUserIds, in boolean asciiArmor, in IOpenPgpCallback callback);
     
     /**
      * Decrypts and verifies given input bytes. If no signature is present this method

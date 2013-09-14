@@ -1853,7 +1853,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
                 try {
                     if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
-                        mCryptoServiceConnection.getService().encryptAndSign(text.getBytes(),
+                        mCryptoServiceConnection.getService().signAndEncrypt(text.getBytes(),
                                 emailsArray, true, encryptCallback);
                     } else if (mCryptoSignatureCheckbox.isChecked()) {
                         mCryptoServiceConnection.getService().sign(text.getBytes(), true, encryptCallback);
