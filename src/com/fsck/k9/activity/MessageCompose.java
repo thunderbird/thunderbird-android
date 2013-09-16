@@ -1837,8 +1837,9 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         final CryptoProvider crypto = mAccount.getCryptoProvider();
         if (mOpenPgpProvider != null) {
             // New OpenPGP Provider API
-            // only if not already encrypted. Then proceed with onSend()
-            if (mPgpData.getEncryptedData() == null) {
+            // If not already encrypted but user wants to encrypt...
+            if (mPgpData.getEncryptedData() == null && 
+                    (mEncryptCheckbox.isChecked() || mCryptoSignatureCheckbox.isChecked())) {
                 
                 String[] emailsArray = null;
                 if (mEncryptCheckbox.isChecked()) {
@@ -1850,7 +1851,6 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                     }
                     emailsArray = emails.toArray(new String[emails.size()]);
                 }
-                
                 String text = buildText(false).getText();
 
                 try {
@@ -1867,9 +1867,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                     Log.e(K9.LOG_TAG, "MessageCompose", e);
                 }
                 
-
-                // encrypt
-                // onSend() is called again in encryptOrSign callback!
+                // onSend() is called again in encryptOrSign callback and with encryptedData set in pgpData!
                 return;
             }
         } else if (crypto.isAvailable(this)) {
