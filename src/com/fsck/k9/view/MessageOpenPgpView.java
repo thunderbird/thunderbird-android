@@ -106,7 +106,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     mSignatureLayout.setVisibility(View.GONE);
                     break;
 
-                case OpenPgpSignatureResult.SIGNATURE_SUCCESS:
+                case OpenPgpSignatureResult.SIGNATURE_SUCCESS_TRUSTED:
                     if (signatureResult.isSignatureOnly()) {
                         mText.setText(R.string.openpgp_signature_valid);
                     }
@@ -198,7 +198,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     }
 
                     try {
-                        mOpenPgpServiceConnection.getService().decryptAndVerify(data.getBytes(),
+                        mOpenPgpServiceConnection.getService().decryptAndVerify(data.getBytes(), true,
                                 decryptAndVerifyCallback);
                     } catch (RemoteException e) {
                         Log.e(K9.LOG_TAG, "MessageOpenPgpView", e);

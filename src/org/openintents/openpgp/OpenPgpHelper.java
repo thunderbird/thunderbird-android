@@ -17,6 +17,7 @@
 package org.openintents.openpgp;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,14 @@ import android.content.pm.ResolveInfo;
 
 public class OpenPgpHelper {
     private Context context;
+
+    public static Pattern PGP_MESSAGE = Pattern.compile(
+            ".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*", Pattern.DOTALL);
+
+    public static Pattern PGP_SIGNED_MESSAGE = Pattern
+            .compile(
+                    ".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
+                    Pattern.DOTALL);
 
     public OpenPgpHelper(Context context) {
         super();
@@ -39,4 +48,5 @@ public class OpenPgpHelper {
             return false;
         }
     }
+
 }
