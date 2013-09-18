@@ -436,5 +436,24 @@ otherwise it would make K-9 start at the wrong time
             android:name=".service.DatabaseUpgradeService"
             android:exported="false">
         </service>
+
+        <service android:name=".service.K9DashclockExtension"
+            android:icon="@drawable/icon"
+            android:label="@string/app_name"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+            <meta-data android:name="protocolVersion" android:value="2" />
+            <meta-data android:name="worldReadable" android:value="false" />
+            <meta-data android:name="description"
+                android:value="@string/dashclock_service_description" />
+            <meta-data android:name="settingsActivity"
+                android:value=".activity.setup.DashclockSettingsActivity" />
+        </service>
+        <activity android:name=".activity.setup.DashclockSettingsActivity"
+            android:label="@string/dashclock_settings_activity_label"
+            android:exported="true" />
+
     </application>
 </manifest>
