@@ -502,7 +502,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="account_setup_failed_dlg_title">設定エラー</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">アカウント名またはパスワード設定にエラーがあります\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">サーバに安全な接続ができません\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">サーバが無効なSSL証明書を発行しました。これはサーバの設定ミスが原因で起こることがあります。あるいは誰かがあなたやあなたのメールサーバに攻撃を試みることによって起こることもあります。何が起こっているのかがよくわからないのであれば、「拒否」をクリックし、メールサーバを管理している人たちに連絡をとってください。\n\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
     <string name="account_setup_failed_dlg_server_message_fmt">サーバに接続できません\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">詳細再編集</string>
     <string name="account_setup_failed_dlg_continue_action">続行</string>
@@ -755,7 +755,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="account_clear_dlg_title">アカウントクリア</string>
 
-    <string name="provider_note_live">このプログラムでPOPアクセスが許可されているのは一部の「Plus」アカウントだけです。有料の「Plus」アカウントがなければ、正しいメールアドレスとパスワードを入力してもログインできません。これらのアカウントにはブラウザからアクセスしてください。</string>
     <string name="provider_note_yahoojp">Yahoo! JapanでPOP3アクセスを行う場合は、Yahoo!メールサイトの「メールの設定」にてPOPアクセスが許可されていることを確認してください。</string>
     <string name="provider_note_auonejp">au oneでIMAPアクセスを行う場合は、au oneポータルサイトの「メール」→「設定」ページにて「IMAPを有効にする」をチェックしてください。</string>
     <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>
@@ -1141,8 +1140,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="mark_all_as_read">すべて既読にする</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+    <string name="global_settings_colorize_missing_contact_pictures">頭文字の画像に色を付ける</string>
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+    <string name="global_settings_messageview_visible_refile_actions_title">表示するアクションの選択</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">メッセージビューのメニューに選択したアクションを表示する</string>
 </resources>
