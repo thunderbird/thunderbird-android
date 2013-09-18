@@ -1147,7 +1147,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="mark_all_as_read">Alle als gelesen markieren</string>
 
-    <string name="global_settings_colorize_missing_contact_pictures">Fehlende Kontaktbilder einfärben</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Fehlende Kontaktbilder einfärben</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Sichtbare Nachrichtenaktionen</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Ausgewählte Aktionen im Menü der Nachrichtenanzeige anzeigen</string>

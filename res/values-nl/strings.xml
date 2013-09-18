@@ -1143,7 +1143,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="mark_all_as_read">Markeer alles als gelezen</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
 
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->

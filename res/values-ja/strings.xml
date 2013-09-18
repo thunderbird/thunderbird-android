@@ -1140,7 +1140,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="mark_all_as_read">すべて既読にする</string>
 
-    <string name="global_settings_colorize_missing_contact_pictures">頭文字の画像に色を付ける</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">頭文字の画像に色を付ける</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">連絡先に写真がない場合に頭文字の画像に色を付ける</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">表示するアクションの選択</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">メッセージビューのメニューに選択したアクションを表示する</string>

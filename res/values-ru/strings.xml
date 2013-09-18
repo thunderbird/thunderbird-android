@@ -1143,7 +1143,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="mark_all_as_read">Прочитаны все</string>
 
-    <string name="global_settings_colorize_missing_contact_pictures">Цветные места для фото</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Цветные места для фото</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Действия для сообщений</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Видимость пунктов меню в списке сообщений</string>

@@ -1143,7 +1143,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
     <string name="mark_all_as_read">모두 읽은 것으로 표시</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
 
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->

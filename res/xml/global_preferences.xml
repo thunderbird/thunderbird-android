@@ -189,7 +189,9 @@
             <CheckBoxPreference
                 android:persistent="false"
                 android:key="messagelist_colorize_missing_contact_pictures"
-                android:title="@string/global_settings_colorize_missing_contact_pictures"
+                android:title="@string/global_settings_colorize_missing_contact_pictures_label"
+                android:summary="@string/global_settings_colorize_missing_contact_pictures_summary"
+                android:dependency="messagelist_show_contact_picture"
                 />
 
             <CheckBoxPreference

@@ -1172,7 +1172,7 @@ de plus</string>
 
     <string name="mark_all_as_read">Marquer tous comme lus</string>
 
-    <string name="global_settings_colorize_missing_contact_pictures">Colorier les images de contact manquantes</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Colorier les images de contact manquantes</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Actions disponibles dans les messages</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Afficher les actions séléctionnées dans le menu des messages</string>

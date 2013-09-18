@@ -1147,7 +1147,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
 
     <string name="mark_all_as_read">Označiť všetky ako prečítané</string>
 
-    <string name="global_settings_colorize_missing_contact_pictures">Zafarbiť chýbajúce obrázky kontaktov</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Zafarbiť chýbajúce obrázky kontaktov</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Viditeľné akcie pre správu</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Zobraziť vybrané akcie v ponuke pri zobrazení správy</string>
