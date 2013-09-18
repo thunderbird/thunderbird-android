@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.512" versioncode="18012" >
+        <change>outlook.com でIMAPを使うときの自動設定を更新しました</change>
+        <change>プロバイダgmx.deのための自動設定を更新しました</change>
+        <change>メール送信の時に通知で "null" を表示しないようにしました</change>
+        <change>チェコ語、フランス語、ドイツ語、ロシア語、スロバキア語の翻訳を更新しました</change>
+        <change>/dev/urandomに書き込むコードを削除しました。/dev/urandomを書き込み不可能なrandomにリンクしている2,3のカスタムROMのため。今やSamsungのSELinuxポリシーも書き込みのために/dev/urandomを開くことを禁止しています。私たちは/dev/urandomに書き込む必要はないので、とにかく単にそれをしません</change>
+        <change>MIMEパーサを改善しました</change>
+        <change>8BITMIMEの準拠に関して劇的に改善しました</change>
+    </release>
+    <release version="4.511" versioncode="18011" >
+        <change>アカウントを削除するときに、リモート/ローカルストアの参照を削除するようにしました</change>
+        <change>サブメニューを開くメニューアイテムにインジケータを追加しました</change>
+        <change>メッセージ表示のアクションの表示を設定可能にしました</change>
+        <change>他のサブメニューでアイコンを表示しないのと同じように"整理"サブメニューからアイコンを削除しました</change>
+        <change>Add icon for the copy action</change>
+    </release>
+    <release version="4.510" versioncode="18010" >
+        <change>STARTTLSを話すサーバ接続時のSSL証明書の警告を修正しました</change>
+        <change>ロシア語とスロバキア語の翻訳を更新しました</change>
+        <change>フォルダ一覧を開くときの性能を改善しました</change>
+        <change>いくつかのサードパーティROMでの乱数生成に関するバグを修正しました</change>
+        <change>メッセージ一覧でスターの付与を阻害するバグを修正しました</change>
+    </release>
+    <release version="4.509" versioncode="18009" >
+        <change>カタロニア語、チェコ語、オランダ語、スペイン語、韓国語、ドイツ語、フランス語、フィンランド語とスウェーデン語の翻訳を更新しました</change>
+        <change>いくつかの性能改善とクラッシュの修正をしました</change>
+        <change>メッセージ一覧の"既読アイテム"の背景色を微調整しましたtweak message list item "read item" </change>
+        <change>メッセージ一覧のコンテキストメニューに選択/非選択のアクションを戻しました</change>
+        <change>メッセージ一覧のチェックボックスのデフォルトを再度非表示にしました</change>
+        <change>メッセージ一覧のスレッド数の表示ををSubjectの行に移動しました</change>
+        <change>メッセージ一覧のUIにスターを戻しました</change>
+        <change>アカウント、フォルダ、メッセージ一覧のカラーチップを以前のスタイルに戻しました</change>
+        <change>不正に整形、パースしたLSUB/LIST コマンドのIMAPサーバからの応答を読み飛ばすようにしました</change>
+        <change>プロバイダgmx.deのためにSSLの自動設定を追加しました</change>
+        <change>ロシアのメールプロバイダの包括的な一覧による自動設定を追加しました</change>
+        <change>疑似乱数生成器(PRNG)の混乱(？)のために Google の修正を利用します ソース: http://android-developers.blogspot.de/2013/08/some-securerandom-thoughts.html</change>
+        <change>アカウント一覧にアカウント追加のアクションを追加しました</change>
+        <change>画像のない連絡先のためにGMailアプリスタイルのカラフルな頭文字の連絡先画像を生成しました</change>
+        <change>HTC Oneのような画面が狭いデバイスのためにアカウント一覧の表示を縮めました</change>
+        <change>無効な証明書に対するメッセージを少しわかりやすくしました</change>
+        <change>メッセージ一覧のプレビュー行数を0に、連絡先の画像をなしにしたときの高精細なメッセージリストを元に戻しました</change>
+        <change>本当に起きていることが何かをより良く説明するために "SSL" を "SSL/TLS" に "TLS" を "STARTTLS" に変更しました</change>
+    </release>
     <release version="4.508" versioncode="18008" >
         <change>一時的に共有のメニューの位置を戻しました</change>
     </release>
