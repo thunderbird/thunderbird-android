@@ -1972,6 +1972,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     holder.contactBadge.setPadding(0, 0, 0, 0);
                     mContactsPictureLoader.loadContactPicture(counterpartyAddress, holder.contactBadge);
                 } else {
+                    holder.contactBadge.assignContactUri(null);
                     holder.contactBadge.setImageResource(R.drawable.ic_contact_picture);
                 }
             }
