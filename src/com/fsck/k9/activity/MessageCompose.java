@@ -17,12 +17,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.os.RemoteException;
 import android.provider.OpenableColumns;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
@@ -45,6 +47,7 @@ import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
@@ -81,12 +84,18 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentMessageBody;
 import com.fsck.k9.view.MessageWebView;
+
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
+import org.openintents.openpgp.IOpenPgpCallback;
+import org.openintents.openpgp.OpenPgpError;
+import org.openintents.openpgp.OpenPgpServiceConnection;
+import org.openintents.openpgp.OpenPgpSignatureResult;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -284,7 +293,10 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     private PgpData mPgpData = null;
     private boolean mAutoEncrypt = false;
     private boolean mContinueWithoutPublicKey = false;
-
+    
+    private String mOpenPgpProvider;
+    private OpenPgpServiceConnection mCryptoServiceConnection;
+    
     private String mReferences;
     private String mInReplyTo;
     private Menu mMenu;
@@ -796,6 +808,12 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         mEncryptLayout = findViewById(R.id.layout_encrypt);
         mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
+        mCryptoSignatureCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateMessageFormat();
+            }
+        });
         mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
         mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
         mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
@@ -813,8 +831,35 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         }
 
         initializeCrypto();
+        
         final CryptoProvider crypto = mAccount.getCryptoProvider();
-        if (crypto.isAvailable(this)) {
+        mOpenPgpProvider = mAccount.getOpenPgpProvider();
+        if (mOpenPgpProvider != null) {
+            // New OpenPGP Provider API
+
+            // bind to service
+            mCryptoServiceConnection = new OpenPgpServiceConnection(this, mOpenPgpProvider);
+            mCryptoServiceConnection.bindToService();
+            
+            mEncryptLayout.setVisibility(View.VISIBLE);
+            mCryptoSignatureCheckbox.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CheckBox checkBox = (CheckBox) v;
+                    if (checkBox.isChecked()) {
+                        mPreventDraftSaving = true;
+                    }
+                }
+            });
+
+            if (mAccount.getCryptoAutoSignature()) {
+                // TODO: currently disabled for new openpgp providers (see AccountSettings)
+            }
+            updateMessageFormat();
+            // TODO: currently disabled for new openpgp providers (see AccountSettings)
+            mAutoEncrypt = false;
+            //mAutoEncrypt = mAccount.isCryptoAutoEncrypt();
+        } else if (crypto.isAvailable(this)) {
             mEncryptLayout.setVisibility(View.VISIBLE);
             mCryptoSignatureCheckbox.setOnClickListener(new OnClickListener() {
                 @Override
@@ -865,6 +910,15 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         updateMessageFormat();
 
         setTitle();
+    }
+    
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mCryptoServiceConnection != null) {
+            mCryptoServiceConnection.unbindFromService();
+        }
     }
 
     /**
@@ -1781,39 +1835,78 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             return;
         }
         final CryptoProvider crypto = mAccount.getCryptoProvider();
-        if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
-            // key selection before encryption
-            StringBuilder emails = new StringBuilder();
-            for (Address address : getRecipientAddresses()) {
+        if (mOpenPgpProvider != null) {
+            // New OpenPGP Provider API
+            
+            // If not already encrypted but user wants to encrypt...
+            if (mPgpData.getEncryptedData() == null && 
+                    (mEncryptCheckbox.isChecked() || mCryptoSignatureCheckbox.isChecked())) {
+                
+                String[] emailsArray = null;
+                if (mEncryptCheckbox.isChecked()) {
+                    // get emails as array
+                    ArrayList<String> emails = new ArrayList<String>();
+
+                    for (Address address : getRecipientAddresses()) {
+                        emails.add(address.getAddress());
+                    }
+                    emailsArray = emails.toArray(new String[emails.size()]);
+                }
+                String text = buildText(false).getText();
+
+                try {
+                    if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
+                        mCryptoServiceConnection.getService().signAndEncrypt(text.getBytes(),
+                                emailsArray, true, true, encryptCallback);
+                    } else if (mCryptoSignatureCheckbox.isChecked()) {
+                        mCryptoServiceConnection.getService().sign(text.getBytes(), true, true,
+                                encryptCallback);
+                    } else if (mEncryptCheckbox.isChecked()) {
+                        mCryptoServiceConnection.getService().encrypt(text.getBytes(),
+                                emailsArray, true, true, encryptCallback);
+                    }
+                } catch (RemoteException e) {
+                    Log.e(K9.LOG_TAG, "MessageCompose", e);
+                }
+                
+                // onSend() is called again in encryptCallback and with encryptedData set in pgpData!
+                return;
+            }
+        } else if (crypto.isAvailable(this)) {
+            if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
+                // key selection before encryption
+                StringBuilder emails = new StringBuilder();
+                for (Address address : getRecipientAddresses()) {
+                    if (emails.length() != 0) {
+                        emails.append(',');
+                    }
+                    emails.append(address.getAddress());
+                    if (!mContinueWithoutPublicKey &&
+                            !crypto.hasPublicKeyForEmail(this, address.getAddress())) {
+                        showDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
+                        return;
+                    }
+                }
                 if (emails.length() != 0) {
                     emails.append(',');
                 }
-                emails.append(address.getAddress());
-                if (!mContinueWithoutPublicKey &&
-                        !crypto.hasPublicKeyForEmail(this, address.getAddress())) {
-                    showDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
-                    return;
-                }
-            }
-            if (emails.length() != 0) {
-                emails.append(',');
-            }
-            emails.append(mIdentity.getEmail());
-
-            mPreventDraftSaving = true;
-            if (!crypto.selectEncryptionKeys(MessageCompose.this, emails.toString(), mPgpData)) {
-                mPreventDraftSaving = false;
-            }
-            return;
-        }
-        if (mPgpData.hasEncryptionKeys() || mPgpData.hasSignatureKey()) {
-            if (mPgpData.getEncryptedData() == null) {
-                String text = buildText(false).getText();
+                emails.append(mIdentity.getEmail());
+    
                 mPreventDraftSaving = true;
-                if (!crypto.encrypt(this, text, mPgpData)) {
+                if (!crypto.selectEncryptionKeys(MessageCompose.this, emails.toString(), mPgpData)) {
                     mPreventDraftSaving = false;
                 }
                 return;
+            }
+            if (mPgpData.hasEncryptionKeys() || mPgpData.hasSignatureKey()) {
+                if (mPgpData.getEncryptedData() == null) {
+                    String text = buildText(false).getText();
+                    mPreventDraftSaving = true;
+                    if (!crypto.encrypt(this, text, mPgpData)) {
+                        mPreventDraftSaving = false;
+                    }
+                    return;
+                }
             }
         }
         sendMessage();
@@ -1831,6 +1924,44 @@ public class MessageCompose extends K9Activity implements OnClickListener {
         mDraftNeedsSaving = false;
         finish();
     }
+    
+    /**
+     * Callback from remote crypto service
+     */
+    final IOpenPgpCallback.Stub encryptCallback = new IOpenPgpCallback.Stub() {
+
+        @Override
+        public void onSuccess(final byte[] outputBytes, OpenPgpSignatureResult signatureResult)
+                throws RemoteException {
+            Log.d(K9.LOG_TAG, "encryptCallback");
+
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    mPgpData.setEncryptedData(new String(outputBytes));
+                    onSend();
+                }
+            });
+        }
+
+        @Override
+        public void onError(final OpenPgpError error) throws RemoteException {
+            // TODO: better handling on error!
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Toast.makeText(MessageCompose.this,
+                            "onError id:" + error.getErrorId() + "\n\n" + error.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                    Log.e(K9.LOG_TAG, "onError getErrorId:" + error.getErrorId());
+                    Log.e(K9.LOG_TAG, "onError getMessage:" + error.getMessage());
+                }
+            });
+        }
+
+    };
 
     private void onDiscard() {
         if (mDraftId != INVALID_DRAFT_ID) {
@@ -1903,7 +2034,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
      *         The MIME type we want our attachment to have.
      */
     private void onAddAttachment2(final String mime_type) {
-        if (mAccount.getCryptoProvider().isAvailable(this)) {
+        if (mAccount.getCryptoProvider().isAvailable(this) || mAccount.getOpenPgpProvider() != null) {
             Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
         }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);

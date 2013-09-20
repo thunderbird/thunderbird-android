@@ -256,6 +256,8 @@
         </LinearLayout>
 
         <include layout="@layout/message_view_crypto_layout"/>
+        
+        <include layout="@layout/message_view_openpgp_layout"/>
 
     </LinearLayout>
 
