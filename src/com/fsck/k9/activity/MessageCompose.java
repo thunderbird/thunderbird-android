@@ -88,6 +88,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.TextBodyBuilder;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
@@ -111,6 +112,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1350,136 +1352,51 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      *         original message.
      */
     private TextBody buildText(boolean isDraft, SimpleMessageFormat messageFormat) {
-        // The length of the formatted version of the user-supplied text/reply
-        int composedMessageLength;
-
-        // The offset of the user-supplied text/reply in the final text body
-        int composedMessageOffset;
+        TextBodyBuilder textBodyBuilder =
+                new TextBodyBuilder(
+                        mMessageContentView.getText().toString(),
+                        mIdentity.getSignatureUse() ? mSignatureView.getCharacters() : null
+                );
 
         /*
          * Find out if we need to include the original message as quoted text.
          *
-         * We include the quoted text in the body if the user didn't choose to hide it. We always
-         * include the quoted text when we're saving a draft. That's so the user is able to
-         * "un-hide" the quoted text if (s)he opens a saved draft.
+         * We include the quoted text in the body if the user didn't choose to
+         * hide it. We always include the quoted text when we're saving a draft.
+         * That's so the user is able to "un-hide" the quoted text if (s)he
+         * opens a saved draft.
          */
-        boolean includeQuotedText = (mQuotedTextMode.equals(QuotedTextMode.SHOW) || isDraft);
+        if (isDraft || mQuotedTextMode == QuotedTextMode.SHOW) {
+            textBodyBuilder.setIncludeQuotedText(true);
+        }
+        else {
+            textBodyBuilder.setIncludeQuotedText(false);
+        }
+        if (!isDraft) {
+            textBodyBuilder.setAppendSignature(true);
+        }
+        else {
+            textBodyBuilder.setAppendSignature(false);
+        }
+        textBodyBuilder.setDraft(isDraft);
+        textBodyBuilder.setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText());
 
-        // Reply after quote makes no sense for HEADER style replies
-        boolean replyAfterQuote = (mQuoteStyle == QuoteStyle.HEADER) ?
-                false : mAccount.isReplyAfterQuote();
-
-        boolean signatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
-
-        // Get the user-supplied text
-        String text = mMessageContentView.getCharacters();
-
-        // Handle HTML separate from the rest of the text content
-        if (messageFormat == SimpleMessageFormat.HTML) {
-
-            // Do we have to modify an existing message to include our reply?
-            if (includeQuotedText && mQuotedHtmlContent != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "insertable: " + mQuotedHtmlContent.toDebugString());
-                }
-
-                if (!isDraft) {
-                    // Append signature to the reply
-                    if (replyAfterQuote || signatureBeforeQuotedText) {
-                        text = appendSignature(text);
-                    }
-                }
-
-                // Convert the text to HTML
-                text = HtmlConverter.textToHtmlFragment(text);
-
-                /*
-                 * Set the insertion location based upon our reply after quote setting.
-                 * Additionally, add some extra separators between the composed message and quoted
-                 * message depending on the quote location. We only add the extra separators when
-                 * we're sending, that way when we load a draft, we don't have to know the length
-                 * of the separators to remove them before editing.
-                 */
-                if (replyAfterQuote) {
-                    mQuotedHtmlContent.setInsertionLocation(
-                            InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
-                    if (!isDraft) {
-                        text = "<br clear=\"all\">" + text;
-                    }
-                } else {
-                    mQuotedHtmlContent.setInsertionLocation(
-                            InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
-                    if (!isDraft) {
-                        text += "<br><br>";
-                    }
-                }
-
-                if (!isDraft) {
-                    // Place signature immediately after the quoted text
-                    if (!(replyAfterQuote || signatureBeforeQuotedText)) {
-                        mQuotedHtmlContent.insertIntoQuotedFooter(getSignatureHtml());
-                    }
-                }
-
-                mQuotedHtmlContent.setUserContent(text);
-
-                // Save length of the body and its offset.  This is used when thawing drafts.
-                composedMessageLength = text.length();
-                composedMessageOffset = mQuotedHtmlContent.getInsertionPoint();
-                text = mQuotedHtmlContent.toString();
-
-            } else {
-                // There is no text to quote so simply append the signature if available
-                if (!isDraft) {
-                    text = appendSignature(text);
-                }
-
-                // Convert the text to HTML
-                text = HtmlConverter.textToHtmlFragment(text);
-
-                //TODO: Wrap this in proper HTML tags
-
-                composedMessageLength = text.length();
-                composedMessageOffset = 0;
-            }
-
-        } else {
-            // Capture composed message length before we start attaching quoted parts and signatures.
-            composedMessageLength = text.length();
-            composedMessageOffset = 0;
-
-            if (!isDraft) {
-                // Append signature to the text/reply
-                if (replyAfterQuote || signatureBeforeQuotedText) {
-                    text = appendSignature(text);
-                }
-            }
-
-            String quotedText = mQuotedText.getCharacters();
-            if (includeQuotedText && quotedText.length() > 0) {
-                if (replyAfterQuote) {
-                    composedMessageOffset = quotedText.length() + "\r\n".length();
-                    text = quotedText + "\r\n" + text;
-                } else {
-                    text += "\r\n\r\n" + quotedText.toString();
-                }
-            }
-
-            if (!isDraft) {
-                // Place signature immediately after the quoted text
-                if (!(replyAfterQuote || signatureBeforeQuotedText)) {
-                    text = appendSignature(text);
-                }
-            }
+        if (mQuoteStyle == QuoteStyle.PREFIX && mAccount.isReplyAfterQuote()) {
+            textBodyBuilder.setReplyAfterQuote(true);
+        }
+        else {
+            textBodyBuilder.setReplyAfterQuote(false);
         }
 
-        TextBody body = new TextBody(text);
-        body.setComposedMessageLength(composedMessageLength);
-        body.setComposedMessageOffset(composedMessageOffset);
-
+        TextBody body;
+        if (messageFormat == SimpleMessageFormat.HTML) {
+            body = textBodyBuilder.buildTextHtml(mQuotedHtmlContent);
+        }
+        else {
+            body = textBodyBuilder.buildTextPlain(mQuotedText.getText().toString());
+        }
         return body;
     }
-
     /**
      * Build the final message to be sent (or saved). If there is another message quoted in this one, it will be baked
      * into the final message here.
@@ -1825,35 +1742,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         return identity;
-    }
-
-
-    private String appendSignature(String originalText) {
-        String text = originalText;
-        if (mIdentity.getSignatureUse()) {
-            String signature = mSignatureView.getCharacters();
-
-            if (signature != null && !signature.contentEquals("")) {
-                text += "\r\n" + signature;
-            }
-        }
-
-        return text;
-    }
-
-    /**
-     * Get an HTML version of the signature in the #mSignatureView, if any.
-     * @return HTML version of signature.
-     */
-    private String getSignatureHtml() {
-        String signature = "";
-        if (mIdentity.getSignatureUse()) {
-            signature = mSignatureView.getCharacters();
-            if(!StringUtils.isNullOrEmpty(signature)) {
-                signature = HtmlConverter.textToHtmlFragment("\r\n" + signature);
-            }
-        }
-        return signature;
     }
 
     private void sendMessage() {
