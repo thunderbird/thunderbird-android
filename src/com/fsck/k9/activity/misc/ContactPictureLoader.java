@@ -9,6 +9,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -96,6 +97,7 @@ public class ContactPictureLoader {
         final int cacheSize = 1024 * 1024 * memClass / 16;
 
         mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
             @Override
             protected int sizeOf(String key, Bitmap bitmap) {
                 // The cache size will be measured in bytes rather than number of items.
@@ -266,6 +268,7 @@ public class ContactPictureLoader {
             mAddress = new Address(address);
         }
 
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         public void exec(Void... args) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, args);
