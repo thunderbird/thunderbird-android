@@ -756,11 +756,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="account_clear_dlg_title">Nachrichten löschen</string>
 
-    <string name="provider_note_live">Nur einige \"Plus\"-Konten mit POP-Zugriff
-        ermöglichen diesem Programm die Verbindung. Wenn Sie sich nicht mit
-        der richtigen E-Mail-Adresse und dem richtigen Kennwort anmelden können, haben Sie möglicherweise die Gebühren für das
-        \"Plus\"-Konto nicht bezahlt. Starten Sie den Webbrowser, um auf
-        diese Mailkonten zuzugreifen.</string>
     <string name="provider_note_yahoojp">Wenn Sie für diesen Anbieter POP3 verwenden möchten, sollten Sie in den "Yahoo! Mail"-Einstellungen POP3 aktivieren.</string>
     <string name="provider_note_auonejp">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "AU One"-Einstellungsseite aktivieren.</string>
     <string name="provider_note_naver">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Naver Mail"-Einstellungsseite aktivieren.</string>
@@ -1147,8 +1142,14 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="mark_all_as_read">Alle als gelesen markieren</string>
 
-    <string name="global_settings_colorize_missing_contact_pictures_label">Fehlende Kontaktbilder einfärben</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Kontaktbilder einfärben</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Fehlende Kontaktbilder einfärben</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Sichtbare Nachrichtenaktionen</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Ausgewählte Aktionen im Menü der Nachrichtenanzeige anzeigen</string>
+
+    <string name="loading_attachment">Anhang wird geladen…</string>
+    <string name="fetching_attachment_dialog_title_send">Nachricht senden</string>
+    <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
+    <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
 </resources>
