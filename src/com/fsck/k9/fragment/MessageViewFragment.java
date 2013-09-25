@@ -752,8 +752,8 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                 break;
             }
             case R.id.dialog_attachment_progress: {
-                String title = getString(R.string.dialog_attachment_progress_title);
-                fragment = ProgressDialogFragment.newInstance(title);
+                String message = getString(R.string.dialog_attachment_progress_title);
+                fragment = ProgressDialogFragment.newInstance(null, message);
                 break;
             }
             default: {

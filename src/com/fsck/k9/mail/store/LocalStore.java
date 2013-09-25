@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -93,6 +94,7 @@ public class LocalStore extends Store implements Serializable {
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * a String containing the columns getMessages expects to work with
@@ -4002,11 +4004,67 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    public static class LocalAttachmentBody implements Body {
-        private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    public abstract static class BinaryAttachmentBody implements Body {
+        protected String mEncoding;
+
+        @Override
+        public abstract InputStream getInputStream() throws MessagingException;
+
+        @Override
+        public void writeTo(OutputStream out) throws IOException, MessagingException {
+            InputStream in = getInputStream();
+            try {
+                boolean closeStream = false;
+                if (MimeUtil.isBase64Encoding(mEncoding)) {
+                    out = new Base64OutputStream(out);
+                    closeStream = true;
+                } else if (MimeUtil.isQuotedPrintableEncoded(mEncoding)){
+                    out = new QuotedPrintableOutputStream(out, false);
+                    closeStream = true;
+                }
+
+                try {
+                    IOUtils.copy(in, out);
+                } finally {
+                    if (closeStream) {
+                        out.close();
+                    }
+                }
+            } finally {
+                in.close();
+            }
+        }
+
+        @Override
+        public void setEncoding(String encoding) throws MessagingException {
+            mEncoding = encoding;
+        }
+
+        public String getEncoding() {
+            return mEncoding;
+        }
+    }
+
+    public static class TempFileBody extends BinaryAttachmentBody {
+        private final File mFile;
+
+        public TempFileBody(String filename) {
+            mFile = new File(filename);
+        }
+
+        @Override
+        public InputStream getInputStream() throws MessagingException {
+            try {
+                return new FileInputStream(mFile);
+            } catch (FileNotFoundException e) {
+                return new ByteArrayInputStream(EMPTY_BYTE_ARRAY);
+            }
+        }
+    }
+
+    public static class LocalAttachmentBody extends BinaryAttachmentBody {
         private Application mApplication;
         private Uri mUri;
-        protected String mEncoding;
 
         public LocalAttachmentBody(Uri uri, Application application) {
             mApplication = application;
@@ -4054,10 +4112,6 @@ public class LocalStore extends Store implements Serializable {
         public Uri getContentUri() {
             return mUri;
         }
-
-        public void setEncoding(String encoding) throws MessagingException {
-            mEncoding = encoding;
-        }
     }
 
     /**
@@ -4071,25 +4125,8 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
-        public void writeTo(OutputStream out) throws IOException,
-                MessagingException {
-            InputStream in = getInputStream();
-            try {
-                if (MimeUtil.ENC_7BIT.equalsIgnoreCase(mEncoding)) {
-                    /*
-                     * If we knew the message was already 7bit clean, then it
-                     * could be sent along without processing. But since we
-                     * don't know, we recursively parse it.
-                     */
-                    MimeMessage message = new MimeMessage(in, true);
-                    message.setUsing7bitTransport();
-                    message.writeTo(out);
-                } else {
-                    IOUtils.copy(in, out);
-                }
-            } finally {
-                in.close();
-            }
+        public void writeTo(OutputStream out) throws IOException, MessagingException {
+            AttachmentMessageBodyUtil.writeTo(this, out);
         }
 
         @Override
@@ -4111,6 +4148,56 @@ public class LocalStore extends Store implements Serializable {
                         "Incompatible content-transfer-encoding applied to a CompositeBody");
             }
             mEncoding = encoding;
+        }
+    }
+
+    public static class TempFileMessageBody extends TempFileBody implements CompositeBody {
+
+        public TempFileMessageBody(String filename) {
+            super(filename);
+        }
+
+        @Override
+        public void writeTo(OutputStream out) throws IOException, MessagingException {
+            AttachmentMessageBodyUtil.writeTo(this, out);
+        }
+
+        @Override
+        public void setUsing7bitTransport() throws MessagingException {
+            // see LocalAttachmentMessageBody.setUsing7bitTransport()
+        }
+
+        @Override
+        public void setEncoding(String encoding) throws MessagingException {
+            if (!MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding)
+                    && !MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
+                throw new MessagingException(
+                        "Incompatible content-transfer-encoding applied to a CompositeBody");
+            }
+            mEncoding = encoding;
+        }
+    }
+
+    public static class AttachmentMessageBodyUtil {
+        public static void writeTo(BinaryAttachmentBody body, OutputStream out) throws IOException,
+                MessagingException {
+            InputStream in = body.getInputStream();
+            try {
+                if (MimeUtil.ENC_7BIT.equalsIgnoreCase(body.getEncoding())) {
+                    /*
+                     * If we knew the message was already 7bit clean, then it
+                     * could be sent along without processing. But since we
+                     * don't know, we recursively parse it.
+                     */
+                    MimeMessage message = new MimeMessage(in, true);
+                    message.setUsing7bitTransport();
+                    message.writeTo(out);
+                } else {
+                    IOUtils.copy(in, out);
+                }
+            } finally {
+                in.close();
+            }
         }
     }
 
