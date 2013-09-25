@@ -7,7 +7,6 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.Attachment;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;

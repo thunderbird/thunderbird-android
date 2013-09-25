@@ -156,7 +156,7 @@ public class ContactPictureLoader {
             return mDefaultBackgroundColor;
         }
 
-        int val = address.getAddress().toLowerCase().hashCode();
+        int val = address.getAddress().toLowerCase(Locale.getDefault()).hashCode();
         int rgb = CONTACT_DUMMY_COLORS_ARGB[Math.abs(val) % CONTACT_DUMMY_COLORS_ARGB.length];
         return rgb;
     }

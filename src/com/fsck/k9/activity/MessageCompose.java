@@ -2157,6 +2157,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 performSave();
                 break;
             }
+            case NONE:
+                break;
         }
     }
 

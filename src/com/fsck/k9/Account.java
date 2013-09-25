@@ -218,12 +218,6 @@ public class Account implements BaseAccount {
 
     private ColorChip mFlaggedUnreadColorChip;
     private ColorChip mFlaggedReadColorChip;
-    private ColorChip mToMeUnreadColorChip;
-    private ColorChip mToMeReadColorChip;
-    private ColorChip mCcMeUnreadColorChip;
-    private ColorChip mCcMeReadColorChip;
-    private ColorChip mFromMeUnreadColorChip;
-    private ColorChip mFromMeReadColorChip;
     private ColorChip mCheckmarkChip;
 
 
@@ -851,12 +845,6 @@ public class Account implements BaseAccount {
     public synchronized void cacheChips() {
         mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
         mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
-        mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
-        mToMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_POINTING);
-        mCcMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_NOTCH);
-        mCcMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_NOTCH);
-        mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
-        mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
         mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
         mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
         mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
@@ -878,24 +866,12 @@ public class Account implements BaseAccount {
         if (messageRead) {
             if (messageFlagged) {
                 chip = mFlaggedReadColorChip;
-          //  } else if (toMe) {
-          //      chip = mToMeReadColorChip;
-          //  } else if (ccMe) {
-          //      chip = mCcMeReadColorChip;
-          //  } else if (fromMe) {
-          //      chip = mFromMeReadColorChip;
             } else {
                 chip = mReadColorChip;
             }
         } else {
             if (messageFlagged) {
                 chip = mFlaggedUnreadColorChip;
-          //  } else if (toMe) {
-          //      chip = mToMeUnreadColorChip;
-          //  } else if (ccMe) {
-          //      chip = mCcMeUnreadColorChip;
-          //  } else if (fromMe) {
-          //      chip = mFromMeUnreadColorChip;
             } else {
                 chip = mUnreadColorChip;
             }

@@ -142,6 +142,7 @@ public final class PRNGFixes {
      * all requests to the Linux PRNG.
      */
     private static class LinuxPRNGSecureRandomProvider extends Provider {
+        private static final long serialVersionUID = 6538669771360998378L;
 
         public LinuxPRNGSecureRandomProvider() {
             super("LinuxPRNG",
@@ -174,6 +175,8 @@ public final class PRNGFixes {
          * serialized (on sLock) to ensure that multiple threads do not get
          * duplicated PRNG output.
          */
+
+        private static final long serialVersionUID = 628140755730642770L;
 
         private static final File URANDOM_FILE = new File("/dev/urandom");
 

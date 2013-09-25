@@ -276,8 +276,8 @@ public class MessageHeader extends ScrollView implements OnClickListener {
         mDateView.setText(dateTime);
 
         if (K9.showContactPicture()) {
-            mContactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
             if (counterpartyAddress != null) {
+                mContactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                 mContactsPictureLoader.loadContactPicture(counterpartyAddress, mContactBadge);
             } else {
                 mContactBadge.setImageResource(R.drawable.ic_contact_picture);

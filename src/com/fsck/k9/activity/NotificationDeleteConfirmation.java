@@ -45,7 +45,7 @@ public class NotificationDeleteConfirmation extends Activity {
         final Intent intent = getIntent();
 
         mAccount = preferences.getAccount(intent.getStringExtra(EXTRA_ACCOUNT));
-        mMessageRefs = (ArrayList<MessageReference>) intent.getSerializableExtra(EXTRA_MESSAGE_LIST);
+        mMessageRefs = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
 
         if (mAccount == null || mMessageRefs == null || mMessageRefs.isEmpty()) {
             finish();

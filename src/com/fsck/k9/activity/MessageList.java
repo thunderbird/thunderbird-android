@@ -163,7 +163,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private LocalSearch mSearch;
     private boolean mSingleFolderMode;
     private boolean mSingleAccountMode;
-    private boolean mStars = true;
 
     private ProgressBar mActionBarProgress;
     private MenuItem mMenuButtonCheckMail;
@@ -490,7 +489,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     @Override
     public void onResume() {
         super.onResume();
-        mStars = K9.messageListStars();
 
         if (!(this instanceof Search)) {
             //necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
