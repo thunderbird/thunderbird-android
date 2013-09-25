@@ -61,6 +61,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
@@ -94,7 +95,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -103,7 +103,9 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MessageCompose extends K9Activity implements OnClickListener {
+public class MessageCompose extends K9Activity implements OnClickListener,
+        ProgressDialogFragment.CancelListener {
+
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
     private static final int DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY = 3;
@@ -147,14 +149,19 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             "com.fsck.k9.activity.MessageCompose.forcePlainText";
     private static final String STATE_KEY_QUOTED_TEXT_FORMAT =
             "com.fsck.k9.activity.MessageCompose.quotedTextFormat";
+    private static final String STATE_KEY_NUM_ATTACHMENTS_LOADING = "numAttachmentsLoading";
+    private static final String STATE_KEY_WAITING_FOR_ATTACHMENTS = "waitingForAttachments";
 
     private static final String LOADER_ARG_ATTACHMENT = "attachment";
+
+    private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
     private static final int MSG_SKIPPED_ATTACHMENTS = 3;
     private static final int MSG_SAVED_DRAFT = 4;
     private static final int MSG_DISCARDED_DRAFT = 5;
+    private static final int MSG_PERFORM_STALLED_ACTION = 6;
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
     private static final int CONTACT_PICKER_TO = 4;
@@ -326,6 +333,23 @@ public class MessageCompose extends K9Activity implements OnClickListener {
      */
     private long mDraftId = INVALID_DRAFT_ID;
 
+    /**
+     * Number of attachments currently being fetched.
+     */
+    private int mNumAttachmentsLoading = 0;
+
+    private enum WaitingAction {
+        NONE,
+        SEND,
+        SAVE
+    }
+
+    /**
+     * Specifies what action to perform once attachments have been fetched.
+     */
+    private WaitingAction mWaitingForAttachments = WaitingAction.NONE;
+
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -353,6 +377,9 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                     MessageCompose.this,
                     getString(R.string.message_discarded_toast),
                     Toast.LENGTH_LONG).show();
+                break;
+            case MSG_PERFORM_STALLED_ACTION:
+                performStalledAction();
                 break;
             default:
                 super.handleMessage(msg);
@@ -1080,6 +1107,8 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             attachments.add(attachment);
         }
 
+        outState.putInt(STATE_KEY_NUM_ATTACHMENTS_LOADING, mNumAttachmentsLoading);
+        outState.putString(STATE_KEY_WAITING_FOR_ATTACHMENTS, mWaitingForAttachments.name());
         outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, attachments);
         outState.putBoolean(STATE_KEY_CC_SHOWN, mCcWrapper.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccWrapper.getVisibility() == View.VISIBLE);
@@ -1104,6 +1133,16 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         mAttachments.removeAllViews();
         mMaxLoaderId = 0;
+
+        mNumAttachmentsLoading = savedInstanceState.getInt(STATE_KEY_NUM_ATTACHMENTS_LOADING);
+        mWaitingForAttachments = WaitingAction.NONE;
+        try {
+            String waitingFor = savedInstanceState.getString(STATE_KEY_WAITING_FOR_ATTACHMENTS);
+            mWaitingForAttachments = WaitingAction.valueOf(waitingFor);
+        } catch (Exception e) {
+            Log.w(K9.LOG_TAG, "Couldn't read value \" + STATE_KEY_WAITING_FOR_ATTACHMENTS +" +
+                    "\" from saved instance state", e);
+        }
 
         ArrayList<Attachment> attachments = savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
         for (Attachment attachment : attachments) {
@@ -1784,6 +1823,20 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
         }
+
+        if (mWaitingForAttachments != WaitingAction.NONE) {
+            return;
+        }
+
+        if (mNumAttachmentsLoading > 0) {
+            mWaitingForAttachments = WaitingAction.SEND;
+            showWaitingForAttachmentDialog();
+        } else {
+            performSend();
+        }
+    }
+
+    private void performSend() {
         final CryptoProvider crypto = mAccount.getCryptoProvider();
         if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
             // key selection before encryption
@@ -1847,6 +1900,19 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     }
 
     private void onSave() {
+        if (mWaitingForAttachments != WaitingAction.NONE) {
+            return;
+        }
+
+        if (mNumAttachmentsLoading > 0) {
+            mWaitingForAttachments = WaitingAction.SAVE;
+            showWaitingForAttachmentDialog();
+        } else {
+            performSend();
+        }
+    }
+
+    private void performSave() {
         saveIfNeeded();
         finish();
     }
@@ -1987,6 +2053,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             new LoaderManager.LoaderCallbacks<Attachment>() {
         @Override
         public Loader<Attachment> onCreateLoader(int id, Bundle args) {
+            onFetchAttachmentStarted();
             Attachment attachment = args.getParcelable(LOADER_ARG_ATTACHMENT);
             return new AttachmentInfoLoader(MessageCompose.this, attachment);
         }
@@ -2004,6 +2071,8 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
                 attachment.loaderId = ++mMaxLoaderId;
                 initAttachmentContentLoader(attachment);
+            } else {
+                onFetchAttachmentFinished();
             }
 
             getSupportLoaderManager().destroyLoader(loaderId);
@@ -2011,6 +2080,7 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         @Override
         public void onLoaderReset(Loader<Attachment> loader) {
+            onFetchAttachmentFinished();
         }
     };
 
@@ -2038,14 +2108,48 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                 }
             }
 
+            onFetchAttachmentFinished();
+
             getSupportLoaderManager().destroyLoader(loaderId);
         }
 
         @Override
         public void onLoaderReset(Loader<Attachment> loader) {
+            onFetchAttachmentFinished();
         }
     };
 
+    private void onFetchAttachmentStarted() {
+        mNumAttachmentsLoading += 1;
+    }
+
+    private void onFetchAttachmentFinished() {
+        // We're not allowed to perform fragment transactions when called from onLoadFinished().
+        // So we use the Handler to call performStalledAction().
+        mHandler.sendEmptyMessage(MSG_PERFORM_STALLED_ACTION);
+    }
+
+    private void performStalledAction() {
+        mNumAttachmentsLoading -= 1;
+
+        WaitingAction waitingFor = mWaitingForAttachments;
+        mWaitingForAttachments = WaitingAction.NONE;
+
+        if (waitingFor != WaitingAction.NONE) {
+            dismissWaitingForAttachmentDialog();
+        }
+
+        switch (waitingFor) {
+            case SEND: {
+                performSend();
+                break;
+            }
+            case SAVE: {
+                performSave();
+                break;
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -2377,6 +2481,45 @@ public class MessageCompose extends K9Activity implements OnClickListener {
             } else {
                 super.onBackPressed();
             }
+        }
+    }
+
+    private void showWaitingForAttachmentDialog() {
+        String title;
+
+        switch (mWaitingForAttachments) {
+            case SEND: {
+                title = getString(R.string.fetching_attachment_dialog_title_send);
+                break;
+            }
+            case SAVE: {
+                title = getString(R.string.fetching_attachment_dialog_title_save);
+                break;
+            }
+            default: {
+                return;
+            }
+        }
+
+        ProgressDialogFragment fragment = ProgressDialogFragment.newInstance(title,
+                getString(R.string.fetching_attachment_dialog_message));
+        fragment.show(getSupportFragmentManager(), FRAGMENT_WAITING_FOR_ATTACHMENT);
+    }
+
+    public void onCancel(ProgressDialogFragment fragment) {
+        attachmentProgressDialogCancelled();
+    }
+
+    void attachmentProgressDialogCancelled() {
+        mWaitingForAttachments = WaitingAction.NONE;
+    }
+
+    private void dismissWaitingForAttachmentDialog() {
+        ProgressDialogFragment fragment = (ProgressDialogFragment)
+                getSupportFragmentManager().findFragmentByTag(FRAGMENT_WAITING_FOR_ATTACHMENT);
+
+        if (fragment != null) {
+            fragment.dismiss();
         }
     }
 

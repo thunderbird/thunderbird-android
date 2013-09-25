@@ -1149,4 +1149,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="mark_all_as_read">Mark all as read</string>
 
     <string name="loading_attachment">Loading attachment…</string>
+    <string name="fetching_attachment_dialog_title_send">Sending message</string>
+    <string name="fetching_attachment_dialog_title_save">Saving draft</string>
+    <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
 </resources>
