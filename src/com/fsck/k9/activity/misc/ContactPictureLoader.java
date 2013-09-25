@@ -128,7 +128,7 @@ public class ContactPictureLoader {
      * @see #calculateFallbackBitmap(Address)
      */
     public void loadContactPicture(Address address, QuickContactBadge badge) {
-        String email = address.getAddress();
+        String email = address.getPersonal() != null ? address.getPersonal() : address.getAddress();
         Bitmap bitmap = getBitmapFromCache(email);
         if (bitmap != null) {
             // The picture was found in the bitmap cache
