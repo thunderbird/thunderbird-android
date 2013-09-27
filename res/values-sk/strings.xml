@@ -756,7 +756,6 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
 
     <string name="account_clear_dlg_title">Vyčistiť účet</string>
 
-    <string name="provider_note_live">Len niektoré \"Plus\" účty zahŕňajú POP prístup umožňujúci tejto aplikácii sa pripojiť. Ak nie ste schopný prihlásiť sa so správnu e-mailovú adresu a heslom, pravdepodobne nemáte platený \"Plus\" účet. Prosím spusťte internetový prehliadač pre prístup k týmto e-mailovým účtom.</string>
     <string name="provider_note_yahoojp">Uistite sa, že ste povolili POP3 na Yahoo stránke pre nastavenie pošty.</string>
     <string name="provider_note_auonejp">Uistite sa, že ste povolili IMAP alebo POP3 na au one stránke pre nastavenie pošty.</string>
     <string name="provider_note_naver">Uistite sa, že ste povolili IMAP alebo POP3 na Naver stránke pre nastavenie pošty.</string>
@@ -1151,4 +1150,9 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
 
     <string name="global_settings_messageview_visible_refile_actions_title">Viditeľné akcie pre správu</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Zobraziť vybrané akcie v ponuke pri zobrazení správy</string>
+	
+    <string name="loading_attachment">Načítavam prílohu…</string>
+    <string name="fetching_attachment_dialog_title_send">Odosielam správu</string>
+    <string name="fetching_attachment_dialog_title_save">Ukladám koncept</string>
+    <string name="fetching_attachment_dialog_message">Sťahujem prílohu…</string>
 </resources>
