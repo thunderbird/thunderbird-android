@@ -51,7 +51,7 @@ public class ContactPictureLoader {
     /**
      * LRU cache of contact pictures.
      */
-    private final LruCache<String, Bitmap> mBitmapCache;
+    private final LruCache<Address, Bitmap> mBitmapCache;
 
     /**
      * @see <a href="http://developer.android.com/design/style/color.html">Color palette used</a>
@@ -96,10 +96,10 @@ public class ContactPictureLoader {
         // Use 1/16th of the available memory for this memory cache.
         final int cacheSize = 1024 * 1024 * memClass / 16;
 
-        mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
+        mBitmapCache = new LruCache<Address, Bitmap>(cacheSize) {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
             @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
+            protected int sizeOf(Address key, Bitmap bitmap) {
                 // The cache size will be measured in bytes rather than number of items.
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
                     return bitmap.getByteCount();
@@ -130,12 +130,11 @@ public class ContactPictureLoader {
      * @see #calculateFallbackBitmap(Address)
      */
     public void loadContactPicture(Address address, QuickContactBadge badge) {
-        String email = address.getPersonal() != null ? address.getPersonal() : address.getAddress();
-        Bitmap bitmap = getBitmapFromCache(email);
+        Bitmap bitmap = getBitmapFromCache(address);
         if (bitmap != null) {
             // The picture was found in the bitmap cache
             badge.setImageBitmap(bitmap);
-        } else if (cancelPotentialWork(email, badge)) {
+        } else if (cancelPotentialWork(address, badge)) {
             // Query the contacts database in a background thread and try to load the contact
             // picture, if there is one.
             ContactPictureRetrievalTask task = new ContactPictureRetrievalTask(badge, address);
@@ -202,13 +201,13 @@ public class ContactPictureLoader {
         return result;
     }
 
-    private void addBitmapToCache(String key, Bitmap bitmap) {
+    private void addBitmapToCache(Address key, Bitmap bitmap) {
         if (getBitmapFromCache(key) == null) {
             mBitmapCache.put(key, bitmap);
         }
     }
 
-    private Bitmap getBitmapFromCache(String key) {
+    private Bitmap getBitmapFromCache(Address key) {
         return mBitmapCache.get(key);
     }
 
@@ -216,7 +215,7 @@ public class ContactPictureLoader {
      * Checks if a {@code ContactPictureRetrievalTask} was already created to load the contact
      * picture for the supplied email address.
      *
-     * @param email
+     * @param address
      *         The email address to check the contacts database for.
      * @param badge
      *         The {@code QuickContactBadge} instance that will receive the picture.
@@ -225,12 +224,11 @@ public class ContactPictureLoader {
      *         {@code false}, if another {@link ContactPictureRetrievalTask} was already scheduled
      *         to load that contact picture.
      */
-    private boolean cancelPotentialWork(String email, QuickContactBadge badge) {
+    private boolean cancelPotentialWork(Address address, QuickContactBadge badge) {
         final ContactPictureRetrievalTask task = getContactPictureRetrievalTask(badge);
 
-        if (task != null && email != null) {
-            String emailFromTask = task.getAddress().getAddress();
-            if (!email.equals(emailFromTask)) {
+        if (task != null && address != null) {
+            if (!address.equals(task.getAddress())) {
                 // Cancel previous task
                 task.cancel(true);
             } else {
@@ -314,7 +312,7 @@ public class ContactPictureLoader {
             }
 
             // Save the picture of the contact with that email address in the bitmap cache
-            addBitmapToCache(email, bitmap);
+            addBitmapToCache(mAddress, bitmap);
 
             return bitmap;
         }

@@ -167,14 +167,22 @@ public class Address {
     @Override
     public boolean equals(Object o) {
         if (o instanceof Address) {
-            return getAddress().equals(((Address) o).getAddress());
+            Address other = (Address) o;
+            if (mPersonal != null && other.mPersonal != null && !mPersonal.equals(other.mPersonal)) {
+                return false;
+            }
+            return mAddress.equals(other.mAddress);
         }
         return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return getAddress().hashCode();
+        int hash = mAddress.hashCode();
+        if (mPersonal != null) {
+            hash += 3 * mPersonal.hashCode();
+        }
+        return hash;
     }
 
     @Override
