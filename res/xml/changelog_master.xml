@@ -8,6 +8,11 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.590" versioncode="18013" >
+        <change>Updated German, Russian, and Slovak translations</change>
+        <change>Better fallback letters for contact pictures in some circumstances</change>
+        <change>More reliable generation of file attachments</change>
+    </release>
     <release version="4.512" versioncode="18012" >
         <change>Updated auto-configuration settings to use IMAP for outlook.com</change>
         <change>Updated auto-configuration settings for gmx.de</change>
