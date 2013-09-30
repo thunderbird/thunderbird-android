@@ -213,10 +213,11 @@ public class ContactPictureLoader {
 
     /**
      * Checks if a {@code ContactPictureRetrievalTask} was already created to load the contact
-     * picture for the supplied email address.
+     * picture for the supplied {@code Address}.
      *
      * @param address
-     *         The email address to check the contacts database for.
+     *         The {@link Address} instance holding the email address that is used to search the
+     *         contacts database.
      * @param badge
      *         The {@code QuickContactBadge} instance that will receive the picture.
      *
@@ -333,7 +334,7 @@ public class ContactPictureLoader {
      * that is trying to load the contact picture.
      *
      * <p>
-     * The reference is used by {@link ContactPictureLoader#cancelPotentialWork(String,
+     * The reference is used by {@link ContactPictureLoader#cancelPotentialWork(Address,
      * QuickContactBadge)} to find out if the contact picture is already being loaded by a
      * {@code ContactPictureRetrievalTask}.
      * </p>
