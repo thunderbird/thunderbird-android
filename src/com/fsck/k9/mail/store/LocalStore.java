@@ -4084,31 +4084,6 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        @Override
-        public void writeTo(OutputStream out) throws IOException, MessagingException {
-            InputStream in = getInputStream();
-            try {
-                boolean closeStream = false;
-                if (MimeUtil.isBase64Encoding(mEncoding)) {
-                    out = new Base64OutputStream(out);
-                    closeStream = true;
-                } else if (MimeUtil.isQuotedPrintableEncoded(mEncoding)){
-                    out = new QuotedPrintableOutputStream(out, false);
-                    closeStream = true;
-                }
-
-                try {
-                    IOUtils.copy(in, out);
-                } finally {
-                    if (closeStream) {
-                        out.close();
-                    }
-                }
-            } finally {
-                in.close();
-            }
-        }
-
         public Uri getContentUri() {
             return mUri;
         }
