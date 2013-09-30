@@ -5,7 +5,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 import android.test.AndroidTestCase;
 
-import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;

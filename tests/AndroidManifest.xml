@@ -4,6 +4,7 @@
           package="com.fsck.k9.tests"
           android:versionCode="1"
           android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
     <!-- We add an application tag here just so that we can indicate that
          this package needs to link against the android.test library,
          which is needed when building test cases. -->
