@@ -163,7 +163,7 @@
   <string name="message_compose_subject_hint">Tema</string>
   <string name="message_compose_content_hint">Pranešimo tekstas</string>
   <string name="message_compose_signature_hint">Parašas</string>
-  <string name="message_compose_quote_header_separator">-------- Originalus tekstas pranešimas --------</string>
+  <string name="message_compose_quote_header_separator">-------- Originalus tekstas --------</string>
   <string name="message_compose_quote_header_subject">Tema:</string>
   <string name="message_compose_quote_header_send_date">Išsiųsta:</string>
   <string name="message_compose_quote_header_from">Nuo:</string>
