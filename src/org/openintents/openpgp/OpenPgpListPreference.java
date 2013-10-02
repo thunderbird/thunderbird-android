@@ -23,7 +23,9 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.pm.ServiceInfo;
 import android.graphics.drawable.Drawable;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
@@ -34,15 +36,17 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class OpenPgpListPreference extends DialogPreference {
-    static final Intent intent = new Intent(IOpenPgpService.class.getName());
-
     ArrayList<OpenPgpProviderEntry> mProviderList = new ArrayList<OpenPgpProviderEntry>();
     private String mSelectedPackage;
+
+    public static final int REQUIRED_API_VERSION = 1;
 
     public OpenPgpListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        List<ResolveInfo> resInfo = context.getPackageManager().queryIntentServices(intent, 0);
+        List<ResolveInfo> resInfo =
+                context.getPackageManager().queryIntentServices(
+                        new Intent(IOpenPgpService.class.getName()), PackageManager.GET_META_DATA);
         if (!resInfo.isEmpty()) {
             for (ResolveInfo resolveInfo : resInfo) {
                 if (resolveInfo.serviceInfo == null)
@@ -52,7 +56,13 @@ public class OpenPgpListPreference extends DialogPreference {
                 String simpleName = String.valueOf(resolveInfo.serviceInfo
                         .loadLabel(context.getPackageManager()));
                 Drawable icon = resolveInfo.serviceInfo.loadIcon(context.getPackageManager());
-                mProviderList.add(new OpenPgpProviderEntry(packageName, simpleName, icon));
+
+                // get api version
+                ServiceInfo si = resolveInfo.serviceInfo;
+                int apiVersion = si.metaData.getInt("api_version");
+
+                mProviderList.add(new OpenPgpProviderEntry(packageName, simpleName, icon,
+                        apiVersion));
             }
         }
     }
@@ -68,8 +78,10 @@ public class OpenPgpListPreference extends DialogPreference {
      * @param simpleName
      * @param icon
      */
-    public void addProvider(int position, String packageName, String simpleName, Drawable icon) {
-        mProviderList.add(position, new OpenPgpProviderEntry(packageName, simpleName, icon));
+    public void addProvider(int position, String packageName, String simpleName, Drawable icon,
+            int apiVersion) {
+        mProviderList.add(position, new OpenPgpProviderEntry(packageName, simpleName, icon,
+                apiVersion));
     }
 
     @Override
@@ -91,13 +103,23 @@ public class OpenPgpListPreference extends DialogPreference {
                 int dp5 = (int) (5 * getContext().getResources().getDisplayMetrics().density + 0.5f);
                 tv.setCompoundDrawablePadding(dp5);
 
+                // disable if it has the wrong api_version
+                if (mProviderList.get(position).apiVersion == REQUIRED_API_VERSION) {
+                    tv.setEnabled(true);
+                } else {
+                    tv.setEnabled(false);
+                    tv.setText(tv.getText() + " (API v"
+                            + mProviderList.get(position).apiVersion + ", needs v"
+                            + REQUIRED_API_VERSION + ")");
+                }
+
                 return v;
             }
         };
 
         builder.setSingleChoiceItems(adapter, getIndexOfProviderList(getValue()),
                 new DialogInterface.OnClickListener() {
-            
+
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mSelectedPackage = mProviderList.get(which).packageName;
@@ -167,11 +189,14 @@ public class OpenPgpListPreference extends DialogPreference {
         private String packageName;
         private String simpleName;
         private Drawable icon;
+        private int apiVersion;
 
-        public OpenPgpProviderEntry(String packageName, String simpleName, Drawable icon) {
+        public OpenPgpProviderEntry(String packageName, String simpleName, Drawable icon,
+                int apiVersion) {
             this.packageName = packageName;
             this.simpleName = simpleName;
             this.icon = icon;
+            this.apiVersion = apiVersion;
         }
 
         @Override

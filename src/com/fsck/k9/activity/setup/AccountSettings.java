@@ -701,10 +701,11 @@ public class AccountSettings extends K9PreferenceActivity {
             // add "none"
             mCryptoApp.addProvider(
                     0, "", getString(R.string.account_settings_crypto_app_none),
-                    getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
+                    getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel),
+                    OpenPgpListPreference.REQUIRED_API_VERSION);
             // add "apg"
             if (new Apg().isAvailable(this)) {
-                mCryptoApp.addProvider(1, "apg", "APG", null);
+                mCryptoApp.addProvider(1, "apg", "APG", null, OpenPgpListPreference.REQUIRED_API_VERSION);
             }
             
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
