@@ -1157,4 +1157,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="fetching_attachment_dialog_title_send">Sending message</string>
     <string name="fetching_attachment_dialog_title_save">Saving draft</string>
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
+
+    <plurals name="dashclock_title">
+        <item quantity="one">1 unread</item>
+        <item quantity="other">%d unread</item>
+    </plurals>
+    <string name="dashclock_settings_activity_label">Select K-9 mail accounts</string>
+    <string name="dashclock_service_description">Dashclock widget for K-9 email client</string>
 </resources>
