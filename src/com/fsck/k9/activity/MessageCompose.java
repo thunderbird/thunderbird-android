@@ -1857,13 +1857,13 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                 try {
                     if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
                         mCryptoServiceConnection.getService().signAndEncrypt(text.getBytes(),
-                                emailsArray, true, true, encryptCallback);
+                                emailsArray, true, encryptCallback);
                     } else if (mCryptoSignatureCheckbox.isChecked()) {
-                        mCryptoServiceConnection.getService().sign(text.getBytes(), true, true,
+                        mCryptoServiceConnection.getService().sign(text.getBytes(), true,
                                 encryptCallback);
                     } else if (mEncryptCheckbox.isChecked()) {
                         mCryptoServiceConnection.getService().encrypt(text.getBytes(),
-                                emailsArray, true, true, encryptCallback);
+                                emailsArray, true, encryptCallback);
                     }
                 } catch (RemoteException e) {
                     Log.e(K9.LOG_TAG, "MessageCompose", e);

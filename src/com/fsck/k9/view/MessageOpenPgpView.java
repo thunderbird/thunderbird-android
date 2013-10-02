@@ -122,7 +122,7 @@ public class MessageOpenPgpView extends LinearLayout {
 
                     break;
 
-                case OpenPgpSignatureResult.SIGNATURE_UNKNOWN:
+                case OpenPgpSignatureResult.SIGNATURE_UNKNOWN_PUB_KEY:
                     if (signatureResult.isSignatureOnly()) {
                         mText.setText(R.string.openpgp_signature_unknown_text);
                     }
@@ -198,7 +198,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     }
 
                     try {
-                        mOpenPgpServiceConnection.getService().decryptAndVerify(data.getBytes(), true,
+                        mOpenPgpServiceConnection.getService().decryptAndVerify(data.getBytes(),
                                 decryptAndVerifyCallback);
                     } catch (RemoteException e) {
                         Log.e(K9.LOG_TAG, "MessageOpenPgpView", e);

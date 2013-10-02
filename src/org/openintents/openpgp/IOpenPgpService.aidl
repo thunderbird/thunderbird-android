@@ -23,61 +23,67 @@ import org.openintents.openpgp.IOpenPgpCallback;
  * Results are returned to the callback, which has to be implemented on client side.
  */
 interface IOpenPgpService {
-       
+    
     /**
      * Encrypt
+     * 
+     * After successful encryption, callback's onSuccess will contain the resulting output bytes.
      * 
      * @param inputBytes
      *            Byte array you want to encrypt
      * @param encryptionUserIds
      *            User Ids (emails) of recipients
      * @param asciiArmor
-     *            Encode for ASCII (Radix-64, 33 percent overhead compared to binary)
+     *            Encode result for ASCII (Radix-64, 33 percent overhead compared to binary)
      * @param allowUserInteraction
      *            Allows the OpenPGP Provider to handle missing keys by showing activities
      * @param callback
      *            Callback where to return results
      */
-    oneway void encrypt(in byte[] inputBytes, in String[] encryptionUserIds,
-            in boolean asciiArmor, in boolean allowUserInteraction, in IOpenPgpCallback callback);
-    
-    /**
-     * Sign
-     *
-     * @param inputBytes
-     *            Byte array you want to encrypt
-     * @param asciiArmor
-     *            Encode for ASCII (Radix-64, 33 percent overhead compared to binary)
-     * @param allowUserInteraction
-     *            Allows the OpenPGP Provider to handle missing keys by showing activities
-     * @param callback
-     *            Callback where to return results
-     */
-    oneway void sign(in byte[] inputBytes, in boolean asciiArmor, in boolean allowUserInteraction,
+    oneway void encrypt(in byte[] inputBytes, in String[] encryptionUserIds, in boolean asciiArmor,
             in IOpenPgpCallback callback);
     
     /**
-     * Sign then encrypt
+     * Sign
+     * 
+     * After successful signing, callback's onSuccess will contain the resulting output bytes.
      *
      * @param inputBytes
-     *            Byte array you want to encrypt
-     * @param encryptionUserIds
-     *            User Ids (emails) of recipients
-     * @param signatureUserId
-     *            User Ids (email) of sender
+     *            Byte array you want to sign
      * @param asciiArmor
-     *            Encode for ASCII (Radix-64, 33 percent overhead compared to binary)
+     *            Encode result for ASCII (Radix-64, 33 percent overhead compared to binary)
      * @param allowUserInteraction
      *            Allows the OpenPGP Provider to handle missing keys by showing activities
      * @param callback
      *            Callback where to return results
      */
-    oneway void signAndEncrypt(in byte[] inputBytes, in String[] encryptionUserIds,
-            in boolean asciiArmor, in boolean allowUserInteraction, in IOpenPgpCallback callback);
+    oneway void sign(in byte[] inputBytes, in boolean asciiArmor, in IOpenPgpCallback callback);
     
     /**
-     * Decrypts and verifies given input bytes. If no signature is present this method
-     * will only decrypt.
+     * Sign then encrypt
+     * 
+     * After successful signing and encryption, callback's onSuccess will contain the resulting output bytes.
+     *
+     * @param inputBytes
+     *            Byte array you want to sign and encrypt
+     * @param encryptionUserIds
+     *            User Ids (emails) of recipients
+     * @param asciiArmor
+     *            Encode result for ASCII (Radix-64, 33 percent overhead compared to binary)
+     * @param allowUserInteraction
+     *            Allows the OpenPGP Provider to handle missing keys by showing activities
+     * @param callback
+     *            Callback where to return results
+     */
+    oneway void signAndEncrypt(in byte[] inputBytes, in String[] encryptionUserIds, in boolean asciiArmor,
+            in IOpenPgpCallback callback);
+    
+    /**
+     * Decrypts and verifies given input bytes. This methods handles encrypted-only, signed-and-encrypted,
+     * and also signed-only inputBytes.
+     * 
+     * After successful decryption/verification, callback's onSuccess will contain the resulting output bytes.
+     * The signatureResult in onSuccess is only non-null if signed-and-encrypted or signed-only inputBytes were given.
      * 
      * @param inputBytes
      *            Byte array you want to decrypt and verify
@@ -86,7 +92,8 @@ interface IOpenPgpService {
      * @param callback
      *            Callback where to return results
      */
-    oneway void decryptAndVerify(in byte[] inputBytes, in boolean allowUserInteraction,
-            in IOpenPgpCallback callback);
+    oneway void decryptAndVerify(in byte[] inputBytes, in IOpenPgpCallback callback);
+    
+    boolean isKeyAvailable(in String[] userIds);
     
 }
