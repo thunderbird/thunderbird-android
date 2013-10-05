@@ -27,7 +27,7 @@
             android:textColor="?android:textColorPrimaryInverse"
             android:textIsSelectable="false" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/openpgp_signature_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +37,7 @@
             android:visibility="gone" >
 
             <RelativeLayout
+                android:id="@+id/openpgp_signature_layout_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -53,24 +54,30 @@
                     android:src="@drawable/overlay_error" />
             </RelativeLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/openpgp_user_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="5dip" >
-
-                <TextView
-                    android:id="@+id/openpgp_user_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:ellipsize="end"
-                    android:text="User Id"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:textColorPrimaryInverse" />
-            </LinearLayout>
-        </LinearLayout>
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/openpgp_signature_layout_image"
+                android:ellipsize="end"
+                android:paddingLeft="5dip"
+                android:text="User Id"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?android:textColorPrimaryInverse" />
+        </RelativeLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/openpgp_get_key"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/openpgp_signature_layout_image"
+        android:layout_gravity="center_vertical"
+        android:text="@string/openpgp_get_key"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/openpgp_progress"

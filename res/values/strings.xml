@@ -1165,6 +1165,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_signature_unknown_text">Missing public key for this signature</string>
     <string name="openpgp_successful_decryption_valid_signature">Successful decryption and valid signature</string>
     <string name="openpgp_successful_decryption_unknown_signature">Successful decryption but missing public key</string>
+    <string name="openpgp_get_key">Lookup missing key</string>
     <string name="openpgp_error">Error:</string>
     
 </resources>

@@ -92,6 +92,8 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
 import org.openintents.openpgp.IOpenPgpCallback;
+import org.openintents.openpgp.IOpenPgpKeyIdsCallback;
+import org.openintents.openpgp.OpenPgpData;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpServiceConnection;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -1852,18 +1854,24 @@ public class MessageCompose extends K9Activity implements OnClickListener {
                     }
                     emailsArray = emails.toArray(new String[emails.size()]);
                 }
-                String text = buildText(false).getText();
 
                 try {
                     if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
-                        mCryptoServiceConnection.getService().signAndEncrypt(text.getBytes(),
-                                emailsArray, true, encryptCallback);
+                        // get key ids for signAndEncrypt
+                        // actual signAndEncrypt is executed in the callback
+                        mCryptoServiceConnection.getService().getKeyIds(emailsArray, true,
+                                getKeyIdsSignAndEncryptCallback);
                     } else if (mCryptoSignatureCheckbox.isChecked()) {
-                        mCryptoServiceConnection.getService().sign(text.getBytes(), true,
+                        // sign directly
+                        String text = buildText(false).getText();
+                        mCryptoServiceConnection.getService().sign(new OpenPgpData(text),
+                                new OpenPgpData(OpenPgpData.TYPE_STRING),
                                 encryptCallback);
                     } else if (mEncryptCheckbox.isChecked()) {
-                        mCryptoServiceConnection.getService().encrypt(text.getBytes(),
-                                emailsArray, true, encryptCallback);
+                        // get key ids for encrypt
+                        // actual encrypt is executed in the callback
+                        mCryptoServiceConnection.getService().getKeyIds(emailsArray, true,
+                                getKeyIdsEncryptCallback);
                     }
                 } catch (RemoteException e) {
                     Log.e(K9.LOG_TAG, "MessageCompose", e);
@@ -1926,20 +1934,77 @@ public class MessageCompose extends K9Activity implements OnClickListener {
     }
     
     /**
-     * Callback from remote crypto service
+     * Callbacks from remote OpenPGP service
      */
-    final IOpenPgpCallback.Stub encryptCallback = new IOpenPgpCallback.Stub() {
-
+    final IOpenPgpKeyIdsCallback.Stub getKeyIdsEncryptCallback = new IOpenPgpKeyIdsCallback.Stub() {
         @Override
-        public void onSuccess(final byte[] outputBytes, OpenPgpSignatureResult signatureResult)
-                throws RemoteException {
-            Log.d(K9.LOG_TAG, "encryptCallback");
-
+        public void onSuccess(final long[] keyIds) throws RemoteException {
             runOnUiThread(new Runnable() {
 
                 @Override
                 public void run() {
-                    mPgpData.setEncryptedData(new String(outputBytes));
+                    // encrypt after getting key ids
+                    String text = buildText(false).getText();
+                    OpenPgpData input = new OpenPgpData(text);
+
+                    try {
+                        mCryptoServiceConnection.getService().encrypt(input,
+                                new OpenPgpData(OpenPgpData.TYPE_STRING), keyIds, encryptCallback);
+                    } catch (RemoteException e) {
+                        Log.e(K9.LOG_TAG, "MessageCompose", e);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onError(OpenPgpError error) throws RemoteException {
+            handleOpenPgpErrors(error);
+        }
+    };
+
+    /**
+     * Called after succesfully getting key ids for signAndEncrypt, which is then executed.
+     */
+    final IOpenPgpKeyIdsCallback.Stub getKeyIdsSignAndEncryptCallback = new IOpenPgpKeyIdsCallback.Stub() {
+        @Override
+        public void onSuccess(final long[] keyIds) throws RemoteException {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // sign and encrypt after getting key ids
+                    String text = buildText(false).getText();
+                    OpenPgpData input = new OpenPgpData(text);
+
+                    try {
+                        mCryptoServiceConnection.getService().signAndEncrypt(input,
+                                new OpenPgpData(OpenPgpData.TYPE_STRING), keyIds, encryptCallback);
+                    } catch (RemoteException e) {
+                        Log.e(K9.LOG_TAG, "MessageCompose", e);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onError(OpenPgpError error) throws RemoteException {
+            handleOpenPgpErrors(error);
+        }
+    };
+    
+    /**
+     * Called after successful encryption and/or signing
+     */
+    final IOpenPgpCallback.Stub encryptCallback = new IOpenPgpCallback.Stub() {
+        @Override
+        public void onSuccess(final OpenPgpData output, OpenPgpSignatureResult signatureResult)
+                throws RemoteException {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mPgpData.setEncryptedData(output.getString());
                     onSend();
                 }
             });
@@ -1947,21 +2012,24 @@ public class MessageCompose extends K9Activity implements OnClickListener {
 
         @Override
         public void onError(final OpenPgpError error) throws RemoteException {
-            // TODO: better handling on error!
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    Toast.makeText(MessageCompose.this,
-                            "onError id:" + error.getErrorId() + "\n\n" + error.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                    Log.e(K9.LOG_TAG, "onError getErrorId:" + error.getErrorId());
-                    Log.e(K9.LOG_TAG, "onError getMessage:" + error.getMessage());
-                }
-            });
+            handleOpenPgpErrors(error);
         }
-
     };
+    
+    private void handleOpenPgpErrors(final OpenPgpError error) {
+        // TODO: better handling on error!
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(MessageCompose.this,
+                        "onError id:" + error.getErrorId() + "\n\n" + error.getMessage(),
+                        Toast.LENGTH_LONG).show();
+                Log.e(K9.LOG_TAG, "onError getErrorId:" + error.getErrorId());
+                Log.e(K9.LOG_TAG, "onError getMessage:" + error.getMessage());
+            }
+        });
+    }
 
     private void onDiscard() {
         if (mDraftId != INVALID_DRAFT_ID) {

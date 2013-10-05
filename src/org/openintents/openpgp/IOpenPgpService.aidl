@@ -16,7 +16,9 @@
  
 package org.openintents.openpgp;
 
+import org.openintents.openpgp.OpenPgpData;
 import org.openintents.openpgp.IOpenPgpCallback;
+import org.openintents.openpgp.IOpenPgpKeyIdsCallback;
 
 /**
  * All methods are oneway, which means they are asynchronous and non-blocking.
@@ -29,54 +31,76 @@ interface IOpenPgpService {
      * 
      * After successful encryption, callback's onSuccess will contain the resulting output bytes.
      * 
-     * @param inputBytes
-     *            Byte array you want to encrypt
-     * @param encryptionUserIds
-     *            User Ids (emails) of recipients
-     * @param asciiArmor
-     *            Encode result for ASCII (Radix-64, 33 percent overhead compared to binary)
-     * @param allowUserInteraction
-     *            Allows the OpenPGP Provider to handle missing keys by showing activities
+     * @param input
+     *            OpenPgpData object containing String, byte[], ParcelFileDescriptor, or Uri
+     * @param output
+     *            Request output format by defining OpenPgpData object
+     *            
+     *            new OpenPgpData(OpenPgpData.TYPE_STRING)
+     *                Returns as String
+     *                (OpenPGP Radix-64, 33 percent overhead compared to binary, see http://tools.ietf.org/html/rfc4880#page-53)
+     *            new OpenPgpData(OpenPgpData.TYPE_BYTE_ARRAY)
+     *                Returns as byte[]
+     *            new OpenPgpData(uri)
+     *                Writes output to given Uri
+     *            new OpenPgpData(fileDescriptor)
+     *                Writes output to given ParcelFileDescriptor
+     * @param keyIds
+     *            Key Ids of recipients. Can be retrieved with getKeyIds()
      * @param callback
      *            Callback where to return results
      */
-    oneway void encrypt(in byte[] inputBytes, in String[] encryptionUserIds, in boolean asciiArmor,
-            in IOpenPgpCallback callback);
+    oneway void encrypt(in OpenPgpData input, in OpenPgpData output, in long[] keyIds, in IOpenPgpCallback callback);
     
     /**
      * Sign
      * 
      * After successful signing, callback's onSuccess will contain the resulting output bytes.
      *
-     * @param inputBytes
-     *            Byte array you want to sign
-     * @param asciiArmor
-     *            Encode result for ASCII (Radix-64, 33 percent overhead compared to binary)
-     * @param allowUserInteraction
-     *            Allows the OpenPGP Provider to handle missing keys by showing activities
+     * @param input
+     *            OpenPgpData object containing String, byte[], ParcelFileDescriptor, or Uri
+     * @param output
+     *            Request output format by defining OpenPgpData object
+     *            
+     *            new OpenPgpData(OpenPgpData.TYPE_STRING)
+     *                Returns as String
+     *                (OpenPGP Radix-64, 33 percent overhead compared to binary, see http://tools.ietf.org/html/rfc4880#page-53)
+     *            new OpenPgpData(OpenPgpData.TYPE_BYTE_ARRAY)
+     *                Returns as byte[]
+     *            new OpenPgpData(uri)
+     *                Writes output to given Uri
+     *            new OpenPgpData(fileDescriptor)
+     *                Writes output to given ParcelFileDescriptor
      * @param callback
      *            Callback where to return results
      */
-    oneway void sign(in byte[] inputBytes, in boolean asciiArmor, in IOpenPgpCallback callback);
+    oneway void sign(in OpenPgpData input, in OpenPgpData output, in IOpenPgpCallback callback);
     
     /**
      * Sign then encrypt
      * 
      * After successful signing and encryption, callback's onSuccess will contain the resulting output bytes.
      *
-     * @param inputBytes
-     *            Byte array you want to sign and encrypt
-     * @param encryptionUserIds
-     *            User Ids (emails) of recipients
-     * @param asciiArmor
-     *            Encode result for ASCII (Radix-64, 33 percent overhead compared to binary)
-     * @param allowUserInteraction
-     *            Allows the OpenPGP Provider to handle missing keys by showing activities
+     * @param input
+     *            OpenPgpData object containing String, byte[], ParcelFileDescriptor, or Uri
+     * @param output
+     *            Request output format by defining OpenPgpData object
+     *            
+     *            new OpenPgpData(OpenPgpData.TYPE_STRING)
+     *                Returns as String
+     *                (OpenPGP Radix-64, 33 percent overhead compared to binary, see http://tools.ietf.org/html/rfc4880#page-53)
+     *            new OpenPgpData(OpenPgpData.TYPE_BYTE_ARRAY)
+     *                Returns as byte[]
+     *            new OpenPgpData(uri)
+     *                Writes output to given Uri
+     *            new OpenPgpData(fileDescriptor)
+     *                Writes output to given ParcelFileDescriptor
+     * @param keyIds
+     *            Key Ids of recipients. Can be retrieved with getKeyIds()
      * @param callback
      *            Callback where to return results
      */
-    oneway void signAndEncrypt(in byte[] inputBytes, in String[] encryptionUserIds, in boolean asciiArmor,
-            in IOpenPgpCallback callback);
+    oneway void signAndEncrypt(in OpenPgpData input, in OpenPgpData output, in long[] keyIds, in IOpenPgpCallback callback);
     
     /**
      * Decrypts and verifies given input bytes. This methods handles encrypted-only, signed-and-encrypted,
@@ -85,15 +109,35 @@ interface IOpenPgpService {
      * After successful decryption/verification, callback's onSuccess will contain the resulting output bytes.
      * The signatureResult in onSuccess is only non-null if signed-and-encrypted or signed-only inputBytes were given.
      * 
-     * @param inputBytes
-     *            Byte array you want to decrypt and verify
-     * @param allowUserInteraction
-     *            Allows the OpenPGP Provider to handle missing keys by showing activities
+     * @param input
+     *            OpenPgpData object containing String, byte[], ParcelFileDescriptor, or Uri
+     * @param output
+     *            Request output format by defining OpenPgpData object
+     *            
+     *            new OpenPgpData(OpenPgpData.TYPE_STRING)
+     *                Returns as String
+     *                (OpenPGP Radix-64, 33 percent overhead compared to binary, see http://tools.ietf.org/html/rfc4880#page-53)
+     *            new OpenPgpData(OpenPgpData.TYPE_BYTE_ARRAY)
+     *                Returns as byte[]
+     *            new OpenPgpData(uri)
+     *                Writes output to given Uri
+     *            new OpenPgpData(fileDescriptor)
+     *                Writes output to given ParcelFileDescriptor
      * @param callback
      *            Callback where to return results
      */
-    oneway void decryptAndVerify(in byte[] inputBytes, in IOpenPgpCallback callback);
+    oneway void decryptAndVerify(in OpenPgpData input, in OpenPgpData output, in IOpenPgpCallback callback);
     
-    boolean isKeyAvailable(in String[] userIds);
+    /**
+     * Get available key ids based on given user ids
+     *
+     * @param ids
+     *            User Ids (emails) of recipients OR key ids
+     * @param allowUserInteraction
+     *            Enable user interaction to lookup and import unknown keys
+     * @param callback
+     *            Callback where to return results (different type than callback in other functions!)
+     */
+    oneway void getKeyIds(in String[] ids, in boolean allowUserInteraction, in IOpenPgpKeyIdsCallback callback);
     
 }

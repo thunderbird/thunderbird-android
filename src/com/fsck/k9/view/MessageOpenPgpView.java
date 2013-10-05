@@ -2,6 +2,8 @@
 package com.fsck.k9.view;
 
 import org.openintents.openpgp.IOpenPgpCallback;
+import org.openintents.openpgp.IOpenPgpKeyIdsCallback;
+import org.openintents.openpgp.OpenPgpData;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpServiceConnection;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -12,9 +14,11 @@ import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,14 +35,20 @@ public class MessageOpenPgpView extends LinearLayout {
 
     private Context mContext;
     private MessageViewFragment mFragment;
-    private LinearLayout mSignatureLayout = null;
+    private RelativeLayout mSignatureLayout = null;
     private ImageView mSignatureStatusImage = null;
     private TextView mSignatureUserId = null;
     private TextView mText = null;
     private ProgressBar mProgress;
+    private Button mGetKeyButton;
+
+    private OpenPgpServiceConnection mOpenPgpServiceConnection;
 
     private String mOpenPgpProvider;
-    private OpenPgpServiceConnection mOpenPgpServiceConnection;
+    private String mDecryptedData;
+    private Message mMessage;
+
+    private long mMissingKeyId;
 
     public MessageOpenPgpView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -46,11 +56,19 @@ public class MessageOpenPgpView extends LinearLayout {
     }
 
     public void setupChildViews() {
-        mSignatureLayout = (LinearLayout) findViewById(R.id.openpgp_signature_layout);
+        mSignatureLayout = (RelativeLayout) findViewById(R.id.openpgp_signature_layout);
         mSignatureStatusImage = (ImageView) findViewById(R.id.openpgp_signature_status);
         mSignatureUserId = (TextView) findViewById(R.id.openpgp_user_id);
         mText = (TextView) findViewById(R.id.openpgp_text);
         mProgress = (ProgressBar) findViewById(R.id.openpgp_progress);
+        mGetKeyButton = (Button) findViewById(R.id.openpgp_get_key);
+
+        mGetKeyButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMissingKey();
+            }
+        });
     }
 
     public void setFragment(Fragment fragment) {
@@ -65,8 +83,10 @@ public class MessageOpenPgpView extends LinearLayout {
             final OpenPgpSignatureResult signatureResult,
             final Message message) {
 
-        // set provider package
+        // set class variables
         mOpenPgpProvider = openPgpProvider;
+        mDecryptedData = decryptedData;
+        mMessage = message;
 
         // only use this view if a OpenPGP Provider is set
         if (mOpenPgpProvider == null) {
@@ -95,7 +115,7 @@ public class MessageOpenPgpView extends LinearLayout {
         } else if (signatureResult != null && decryptedData != null) {
             // decryptAndVerify / only verify
 
-            switch (signatureResult.getSignatureStatus()) {
+            switch (signatureResult.getStatus()) {
                 case OpenPgpSignatureResult.SIGNATURE_ERROR:
                     // TODO: signature error but decryption works?
                     mText.setText(R.string.openpgp_signature_invalid);
@@ -116,7 +136,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_green));
 
-                    mSignatureUserId.setText(signatureResult.getSignatureUserId());
+                    mSignatureUserId.setText(signatureResult.getUserId());
                     mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
                     mSignatureLayout.setVisibility(View.VISIBLE);
 
@@ -129,6 +149,8 @@ public class MessageOpenPgpView extends LinearLayout {
                     else {
                         mText.setText(R.string.openpgp_successful_decryption_unknown_signature);
                     }
+                    mMissingKeyId = signatureResult.getKeyId();
+                    mGetKeyButton.setVisibility(View.VISIBLE);
                     MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_orange));
 
@@ -188,8 +210,7 @@ public class MessageOpenPgpView extends LinearLayout {
                         data = MimeUtility.getTextFromPart(part);
                     }
 
-                    // TODO: handle with callback in cryptoserviceconnection
-                    // instead of sleep
+                    // wait for service to be bound
                     while (!mOpenPgpServiceConnection.isBound()) {
                         try {
                             Thread.sleep(100);
@@ -198,7 +219,8 @@ public class MessageOpenPgpView extends LinearLayout {
                     }
 
                     try {
-                        mOpenPgpServiceConnection.getService().decryptAndVerify(data.getBytes(),
+                        mOpenPgpServiceConnection.getService().decryptAndVerify(
+                                new OpenPgpData(data), new OpenPgpData(OpenPgpData.TYPE_STRING),
                                 decryptAndVerifyCallback);
                     } catch (RemoteException e) {
                         Log.e(K9.LOG_TAG, "MessageOpenPgpView", e);
@@ -211,50 +233,81 @@ public class MessageOpenPgpView extends LinearLayout {
         };
 
         new Thread(r).start();
-
     }
 
-    final IOpenPgpCallback.Stub decryptAndVerifyCallback = new IOpenPgpCallback.Stub() {
+    private void getMissingKey() {
+        try {
+            mOpenPgpServiceConnection.getService().getKeyIds(new String[] {
+                    String.valueOf(mMissingKeyId)
+            }, true, getKeyIdsCallback);
+        } catch (RemoteException e) {
+            Log.e(K9.LOG_TAG, "MessageOpenPgpView", e);
+        }
+    }
 
+    /**
+     * Called on successful decrypt/verification
+     */
+    final IOpenPgpCallback.Stub decryptAndVerifyCallback = new IOpenPgpCallback.Stub() {
         @Override
-        public void onSuccess(final byte[] outputBytes, final OpenPgpSignatureResult signatureResult)
+        public void onSuccess(final OpenPgpData output, final OpenPgpSignatureResult signatureResult)
                 throws RemoteException {
 
             mFragment.getActivity().runOnUiThread(new Runnable() {
-
                 @Override
                 public void run() {
                     mProgress.setVisibility(View.GONE);
 
-                    mFragment.setMessageWithOpenPgp(new String(outputBytes), signatureResult);
+                    mFragment.setMessageWithOpenPgp(output.getString(), signatureResult);
                 }
             });
-
         }
 
         @Override
         public void onError(final OpenPgpError error) throws RemoteException {
+            handleError(error, true);
+        }
+    };
 
-            mFragment.getActivity().runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    mProgress.setVisibility(View.GONE);
-
-                    Log.d(K9.LOG_TAG, "onError getErrorId:" + error.getErrorId());
-                    Log.d(K9.LOG_TAG, "onError getMessage:" + error.getMessage());
-
-                    // TODO: better error handling with ids?
-                    mText.setText(mFragment.getString(R.string.openpgp_error) + " "
-                            + error.getMessage());
-
-                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
-                            R.color.openpgp_red));
-                }
-            });
+    /**
+     * Called after get keys button getMissingKey() was successful
+     */
+    final IOpenPgpKeyIdsCallback.Stub getKeyIdsCallback = new IOpenPgpKeyIdsCallback.Stub() {
+        @Override
+        public void onSuccess(long[] keyIds) throws RemoteException {
+            // try again after downloading key from keyserver
+            if (keyIds.length > 0) {
+                mGetKeyButton.setVisibility(View.GONE);
+                decryptAndVerify(mMessage);
+            }
         }
 
+        @Override
+        public void onError(OpenPgpError error) throws RemoteException {
+            handleError(error, false);
+        }
     };
+
+    private void handleError(final OpenPgpError error, final boolean changeColor) {
+        mFragment.getActivity().runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                mProgress.setVisibility(View.GONE);
+
+                Log.d(K9.LOG_TAG, "onError getErrorId:" + error.getErrorId());
+                Log.d(K9.LOG_TAG, "onError getMessage:" + error.getMessage());
+
+                // TODO: better error handling with ids?
+                mText.setText(mFragment.getString(R.string.openpgp_error) + " "
+                        + error.getMessage());
+
+                if (changeColor)
+                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                            R.color.openpgp_red));
+            }
+        });
+    }
 
     @Override
     protected void onAttachedToWindow() {
