@@ -54,20 +54,20 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
+    <string name="default_signature">-- \n나의 안드로이드 폰 K-9 메일에서 보냅니다. 메시지가 짧은 점 양해 부탁드립니다.</string>
 
 
     <!-- General strings that include the app name -->
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
     <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 데이터가 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
     <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 메일이 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
-    <string name="insufficient_apg_permissions">K-9이 APG에 완벽하게 접근할 권한이 없습니다. 이를 고치려면 K-9를 재설치하십시오.</string>
+    <string name="insufficient_apg_permissions">K-9은 APG에 대한 완전한 접근 권한이 없습니다. 이를 고치려면 K-9를 재설치하십시오.</string>
 
 
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <string name="import_dialog_error_message">가져오기에 적합한 애플리케이션이 없습니다. 구글 플레이 스토어에서 파일 매니저를 설치하십시오.</string>
+    <string name="import_dialog_error_message">가져오기에 적합한 애플리케이션이 없습니다. 구글 플레이 스토어에서 파일 관리자를 설치하십시오.</string>
     <string name="open_market">플레이 스토어 열기</string>
 
 
@@ -187,7 +187,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
     <string name="status_loading_more_failed">메시지 로딩 실패</string>
 
-    <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g>개 이메일 더 불러오기</string>
+    <string name="load_more_messages_fmt">최대 <xliff:g id="messages_to_load">%d</xliff:g>개 더 불러오기</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -205,7 +205,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="clearing_account">계정 비우기 \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="recreating_account">계정 재생성 \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <string name="notification_new_title">새 이메일</string>
+    <string name="notification_new_title">새 메일</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> 통의 새 메일</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 통의 읽지 않은 메일 (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> 통의 메일 추가됨 (<xliff:g id="account">%s</xliff:g>)</string>
@@ -285,7 +285,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="message_view_show_more_attachments_action">더 보기…</string>
     <string name="message_view_fetching_attachment_toast">첨부 파일 가져오는 중.</string>
     <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>에 대한 뷰어를 찾을 수 없습니다.</string>
-    <string name="message_view_download_remainder">다운로드 완료 메시지</string>
+    <string name="message_view_download_remainder">메시지의 남은 부분 다운로드</string>
     <string name="message_view_downloading">다운로드 중…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
