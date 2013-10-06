@@ -1243,7 +1243,7 @@ public class ImapStore extends Store {
                 return;
 
             if (trashFolderName == null || getName().equalsIgnoreCase(trashFolderName)) {
-                setFlags(messages, new Flag[] { Flag.DELETED }, true);
+                setFlags(messages, new Flag[] { Flag.DELETED, Flag.SEEN }, true);
             } else {
                 ImapFolder remoteTrashFolder = (ImapFolder)getStore().getFolder(trashFolderName);
                 String remoteTrashName = encodeString(encodeFolderName(remoteTrashFolder.getPrefixedName()));
