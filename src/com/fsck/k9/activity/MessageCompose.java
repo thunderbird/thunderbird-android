@@ -1394,10 +1394,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (includeQuotedText) {
                 String quotedText = mQuotedText.getCharacters();
                 if (replyAfterQuote) {
-                    composedMessageOffset = quotedText.length() + "\n".length();
-                    text = quotedText + "\n" + text;
+                    composedMessageOffset = quotedText.length() + "\r\n".length();
+                    text = quotedText + "\r\n" + text;
                 } else {
-                    text += "\n\n" + quotedText.toString();
+                    text += "\r\n\r\n" + quotedText.toString();
                 }
             }
 
@@ -1541,7 +1541,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              * header value (all parameters at once) will be encoded by
              * MimeHeader.writeTo().
              */
-            bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"",
+            bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
                          contentType,
                          EncoderUtil.encodeIfNecessary(attachment.name,
                                  EncoderUtil.Usage.WORD_ENTITY, 7)));
@@ -1564,7 +1564,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              *  title*3="isn't it!"
              */
             bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(
-                             "attachment;\n filename=\"%s\";\n size=%d",
+                             "attachment;\r\n filename=\"%s\";\r\n size=%d",
                              attachment.name, attachment.size));
 
             mp.addBodyPart(bp);
@@ -1770,7 +1770,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             String signature = mSignatureView.getCharacters();
 
             if (signature != null && !signature.contentEquals("")) {
-                text += "\n" + signature;
+                text += "\r\n" + signature;
             }
         }
 
@@ -1786,7 +1786,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (mIdentity.getSignatureUse()) {
             signature = mSignatureView.getCharacters();
             if(!StringUtils.isNullOrEmpty(signature)) {
-                signature = HtmlConverter.textToHtmlFragment("\n" + signature);
+                signature = HtmlConverter.textToHtmlFragment("\r\n" + signature);
             }
         }
         return signature;
@@ -3071,7 +3071,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         showOrHideQuotedText(quotedMode);
     }
 
-    /*
+    /**
      * Pull out the parts of the now loaded source message and apply them to the new message
      * depending on the type of message being composed.
      * @param message Source message
@@ -3096,13 +3096,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
                 // Regenerate the quoted text without our user content in it nor added newlines.
                 StringBuilder quotedText = new StringBuilder();
-                if (bodyOffset == 0 && text.substring(bodyLength, bodyLength + 2).equals("\n\n")) {
+                if (bodyOffset == 0 && text.substring(bodyLength, bodyLength + 4).equals("\r\n\r\n")) {
                     // top-posting: ignore two newlines at start of quote
-                    quotedText.append(text.substring(bodyLength + 2));
+                    quotedText.append(text.substring(bodyLength + 4));
                 } else if (bodyOffset + bodyLength == text.length() &&
-                        text.substring(bodyOffset - 1, bodyOffset).equals("\n")) {
+                        text.substring(bodyOffset - 2, bodyOffset).equals("\r\n")) {
                     // bottom-posting: ignore newline at end of quote
-                    quotedText.append(text.substring(0, bodyOffset - 1));
+                    quotedText.append(text.substring(0, bodyOffset - 2));
                 } else {
                     quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
                     quotedText.append(text.substring(bodyOffset + bodyLength));
@@ -3322,7 +3322,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int FIND_INSERTION_POINT_FIRST_GROUP = 1;
     // HTML bits to insert as appropriate
     // TODO is it safe to assume utf-8 here?
-    private static final String FIND_INSERTION_POINT_HTML_CONTENT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<html>";
+    private static final String FIND_INSERTION_POINT_HTML_CONTENT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\r\n<html>";
     private static final String FIND_INSERTION_POINT_HTML_END_CONTENT = "</html>";
     private static final String FIND_INSERTION_POINT_HEAD_CONTENT = "<head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"></head>";
     // Index of the start of the beginning of a String.
@@ -3715,24 +3715,24 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return quotedText.toString().replaceAll("\\\r", "");
         } else if (quoteStyle == QuoteStyle.HEADER) {
             StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
-            quotedText.append("\n");
-            quotedText.append(getString(R.string.message_compose_quote_header_separator)).append("\n");
+            quotedText.append("\r\n");
+            quotedText.append(getString(R.string.message_compose_quote_header_separator)).append("\r\n");
             if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_from)).append(" ").append(Address.toString(originalMessage.getFrom())).append("\n");
+                quotedText.append(getString(R.string.message_compose_quote_header_from)).append(" ").append(Address.toString(originalMessage.getFrom())).append("\r\n");
             }
             if (originalMessage.getSentDate() != null) {
-                quotedText.append(getString(R.string.message_compose_quote_header_send_date)).append(" ").append(originalMessage.getSentDate()).append("\n");
+                quotedText.append(getString(R.string.message_compose_quote_header_send_date)).append(" ").append(originalMessage.getSentDate()).append("\r\n");
             }
             if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_to)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.TO))).append("\n");
+                quotedText.append(getString(R.string.message_compose_quote_header_to)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.TO))).append("\r\n");
             }
             if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_cc)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.CC))).append("\n");
+                quotedText.append(getString(R.string.message_compose_quote_header_cc)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.CC))).append("\r\n");
             }
             if (originalMessage.getSubject() != null) {
-                quotedText.append(getString(R.string.message_compose_quote_header_subject)).append(" ").append(originalMessage.getSubject()).append("\n");
+                quotedText.append(getString(R.string.message_compose_quote_header_subject)).append(" ").append(originalMessage.getSubject()).append("\r\n");
             }
-            quotedText.append("\n");
+            quotedText.append("\r\n");
 
             quotedText.append(body);
 
@@ -3763,7 +3763,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                               Address.toString(originalMessage.getFrom()))
                                                           ));
             header.append("<blockquote class=\"gmail_quote\" " +
-                          "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\n");
+                          "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\r\n");
 
             String footer = "</blockquote></div>";
 
@@ -3772,35 +3772,35 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else if (quoteStyle == QuoteStyle.HEADER) {
 
             StringBuilder header = new StringBuilder();
-            header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\n");
-            header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\n"); // This gets converted into a horizontal line during html to text conversion.
+            header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\r\n");
+            header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\r\n"); // This gets converted into a horizontal line during html to text conversion.
             if (mSourceMessage.getFrom() != null && Address.toString(mSourceMessage.getFrom()).length() != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ")
                     .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getFrom())))
-                    .append("<br>\n");
+                    .append("<br>\r\n");
             }
             if (mSourceMessage.getSentDate() != null) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_send_date)).append("</b> ")
                     .append(mSourceMessage.getSentDate())
-                    .append("<br>\n");
+                    .append("<br>\r\n");
             }
             if (mSourceMessage.getRecipients(RecipientType.TO) != null && mSourceMessage.getRecipients(RecipientType.TO).length != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_to)).append("</b> ")
                     .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.TO))))
-                    .append("<br>\n");
+                    .append("<br>\r\n");
             }
             if (mSourceMessage.getRecipients(RecipientType.CC) != null && mSourceMessage.getRecipients(RecipientType.CC).length != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_cc)).append("</b> ")
                     .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.CC))))
-                    .append("<br>\n");
+                    .append("<br>\r\n");
             }
             if (mSourceMessage.getSubject() != null) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_subject)).append("</b> ")
                     .append(HtmlConverter.textToHtmlFragment(mSourceMessage.getSubject()))
-                    .append("<br>\n");
+                    .append("<br>\r\n");
             }
-            header.append("</div>\n");
-            header.append("<br>\n");
+            header.append("</div>\r\n");
+            header.append("<br>\r\n");
 
             insertable.insertIntoQuotedHeader(header.toString());
         }

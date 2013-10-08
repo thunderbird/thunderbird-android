@@ -70,7 +70,7 @@ public class HtmlConverter {
             if (tag.equals("hr") && opening) {
                 // In the case of an <hr>, replace it with a bunch of underscores. This is roughly
                 // the behaviour of Outlook in Rich Text mode.
-                output.append("_____________________________________________\n");
+                output.append("_____________________________________________\r\n");
             } else if (TAGS_WITH_IGNORED_CONTENT.contains(tag)) {
                 handleIgnoredTag(opening, output);
             }
@@ -282,11 +282,16 @@ public class HtmlConverter {
         // Replace lines of -,= or _ with horizontal rules
         text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
 
-        // TODO: reverse engineer (or troll history) and document
+        /*
+         * Unwrap multi-line paragraphs into single line paragraphs that are
+         * wrapped when displayed. But try to avoid unwrapping consecutive lines
+         * of text that are not paragraphs, such as lists of system log entries
+         * or long URLs that are on their own line.
+         */
         text = text.replaceAll("(?m)^([^\r\n]{4,}[\\s\\w,:;+/])(?:\r\n|\n|\r)(?=[a-z]\\S{0,10}[\\s\\n\\r])", "$1 ");
 
         // Compress four or more newlines down to two newlines
-        text = text.replaceAll("(?m)(\r\n|\n|\r){4,}", "\n\n");
+        text = text.replaceAll("(?m)(\r\n|\n|\r){4,}", "\r\n\r\n");
 
         StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
 
@@ -1315,7 +1320,7 @@ public class HtmlConverter {
         //
         // For some reason, TextUtils.htmlEncode escapes ' into &apos;, which is technically part of the XHTML 1.0
         // standard, but Gmail doesn't recognize it as an HTML entity. We unescape that here.
-        return linkified.toString().replace("\n", "<br>\n").replace("&apos;", "&#39;");
+        return linkified.toString().replaceAll("\r?\n", "<br>\r\n").replace("&apos;", "&#39;");
     }
 
     /**
@@ -1345,10 +1350,10 @@ public class HtmlConverter {
                         lastChar = output.charAt(output.length() - 1);
                     }
                     if (lastChar != '\n') {
-                        output.append("\n");
+                        output.append("\r\n");
                     }
                 } else {
-                    output.append("\n");
+                    output.append("\r\n");
                 }
             }
 
@@ -1356,7 +1361,7 @@ public class HtmlConverter {
                 if (opening) {
                     output.append("\t•  ");
                 } else {
-                    output.append("\n");
+                    output.append("\r\n");
                 }
             }
         }

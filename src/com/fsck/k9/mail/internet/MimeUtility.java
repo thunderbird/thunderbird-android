@@ -1732,7 +1732,7 @@ public class MimeUtility {
             text.append(context.getString(R.string.message_compose_quote_header_from));
             text.append(' ');
             text.append(Address.toString(from));
-            text.append("\n");
+            text.append("\r\n");
         }
 
         // To: <recipients>
@@ -1741,7 +1741,7 @@ public class MimeUtility {
             text.append(context.getString(R.string.message_compose_quote_header_to));
             text.append(' ');
             text.append(Address.toString(to));
-            text.append("\n");
+            text.append("\r\n");
         }
 
         // Cc: <recipients>
@@ -1750,7 +1750,7 @@ public class MimeUtility {
             text.append(context.getString(R.string.message_compose_quote_header_cc));
             text.append(' ');
             text.append(Address.toString(cc));
-            text.append("\n");
+            text.append("\r\n");
         }
 
         // Date: <date>
@@ -1759,7 +1759,7 @@ public class MimeUtility {
             text.append(context.getString(R.string.message_compose_quote_header_send_date));
             text.append(' ');
             text.append(date.toString());
-            text.append("\n");
+            text.append("\r\n");
         }
 
         // Subject: <subject>
@@ -1771,7 +1771,7 @@ public class MimeUtility {
         } else {
             text.append(subject);
         }
-        text.append("\n\n");
+        text.append("\r\n\r\n");
     }
 
     /**
@@ -1919,7 +1919,7 @@ public class MimeUtility {
         if (prependDivider) {
             String filename = getPartName(part);
 
-            text.append("\n\n");
+            text.append("\r\n\r\n");
             int len = filename.length();
             if (len > 0) {
                 if (len > TEXT_DIVIDER_LENGTH - FILENAME_PREFIX_LENGTH - FILENAME_SUFFIX_LENGTH) {
@@ -1934,7 +1934,7 @@ public class MimeUtility {
             } else {
                 text.append(TEXT_DIVIDER);
             }
-            text.append("\n\n");
+            text.append("\r\n\r\n");
         }
     }
 
