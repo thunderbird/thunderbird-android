@@ -19,6 +19,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -273,14 +274,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private MultiAutoCompleteTextView mCcView;
     private MultiAutoCompleteTextView mBccView;
     private EditText mSubjectView;
-    private EditText mSignatureView;
-    private EditText mMessageContentView;
+    private EolConvertingEditText mSignatureView;
+    private EolConvertingEditText mMessageContentView;
     private LinearLayout mAttachments;
     private Button mQuotedTextShow;
     private View mQuotedTextBar;
     private ImageButton mQuotedTextEdit;
     private ImageButton mQuotedTextDelete;
-    private EditText mQuotedText;
+    private EolConvertingEditText mQuotedText;
     private MessageWebView mQuotedHTML;
     private InsertableHtmlContent mQuotedHtmlContent;   // Container for HTML reply as it's being built.
     private View mEncryptLayout;
@@ -588,10 +589,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             onAddCcBcc();
         }
 
-        EditText upperSignature = (EditText)findViewById(R.id.upper_signature);
-        EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
+        EolConvertingEditText upperSignature = (EolConvertingEditText)findViewById(R.id.upper_signature);
+        EolConvertingEditText lowerSignature = (EolConvertingEditText)findViewById(R.id.lower_signature);
 
-        mMessageContentView = (EditText)findViewById(R.id.message_content);
+        mMessageContentView = (EolConvertingEditText)findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
@@ -599,7 +600,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
         mQuotedTextEdit = (ImageButton)findViewById(R.id.quoted_text_edit);
         mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
-        mQuotedText = (EditText)findViewById(R.id.quoted_text);
+        mQuotedText = (EolConvertingEditText)findViewById(R.id.quoted_text);
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
 
         mQuotedHTML = (MessageWebView) findViewById(R.id.quoted_html);
@@ -949,7 +950,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             CharSequence text = intent.getCharSequenceExtra(Intent.EXTRA_TEXT);
             // Only use EXTRA_TEXT if the body hasn't already been set by the mailto URI
             if (text != null && mMessageContentView.getText().length() == 0) {
-                mMessageContentView.setText(text);
+                mMessageContentView.setCharacters(text);
             }
 
             String type = intent.getType();
@@ -1307,7 +1308,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         boolean signatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
 
         // Get the user-supplied text
-        String text = mMessageContentView.getText().toString();
+        String text = mMessageContentView.getCharacters();
 
         // Handle HTML separate from the rest of the text content
         if (messageFormat == SimpleMessageFormat.HTML) {
@@ -1391,7 +1392,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             if (includeQuotedText) {
-                String quotedText = mQuotedText.getText().toString();
+                String quotedText = mQuotedText.getCharacters();
                 if (replyAfterQuote) {
                     composedMessageOffset = quotedText.length() + "\n".length();
                     text = quotedText + "\n" + text;
@@ -1661,7 +1662,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         // If we're not using the standard identity of signature, append it on to the identity blob.
         if (mIdentity.getSignatureUse() && mSignatureChanged) {
-            uri.appendQueryParameter(IdentityField.SIGNATURE.value(), mSignatureView.getText().toString());
+            uri.appendQueryParameter(IdentityField.SIGNATURE.value(), mSignatureView.getCharacters());
         }
 
         if (mIdentityChanged) {
@@ -1766,7 +1767,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private String appendSignature(String originalText) {
         String text = originalText;
         if (mIdentity.getSignatureUse()) {
-            String signature = mSignatureView.getText().toString();
+            String signature = mSignatureView.getCharacters();
 
             if (signature != null && !signature.contentEquals("")) {
                 text += "\n" + signature;
@@ -1783,7 +1784,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private String getSignatureHtml() {
         String signature = "";
         if (mIdentity.getSignatureUse()) {
-            signature = mSignatureView.getText().toString();
+            signature = mSignatureView.getCharacters();
             if(!StringUtils.isNullOrEmpty(signature)) {
                 signature = HtmlConverter.textToHtmlFragment("\n" + signature);
             }
@@ -2320,7 +2321,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void updateSignature() {
         if (mIdentity.getSignatureUse()) {
-            mSignatureView.setText(mIdentity.getSignature());
+            mSignatureView.setCharacters(mIdentity.getSignature());
             mSignatureView.setVisibility(View.VISIBLE);
         } else {
             mSignatureView.setVisibility(View.GONE);
@@ -3006,7 +3007,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // we'll display the whole message (including the quoted part) in the
             // composition window. If that's the case, try and convert it to text to
             // match the behavior in text mode.
-            mMessageContentView.setText(getBodyTextFromMessage(message, SimpleMessageFormat.TEXT));
+            mMessageContentView.setCharacters(getBodyTextFromMessage(message, SimpleMessageFormat.TEXT));
             mForcePlainText = true;
 
             showOrHideQuotedText(quotedMode);
@@ -3025,7 +3026,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
                 // Grab our reply text.
                 String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
-                mMessageContentView.setText(HtmlConverter.htmlToText(bodyText));
+                mMessageContentView.setCharacters(HtmlConverter.htmlToText(bodyText));
 
                 // Regenerate the quoted html without our user content in it.
                 StringBuilder quotedHTML = new StringBuilder();
@@ -3101,10 +3102,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     quotedText.append(text.substring(bodyOffset + bodyLength));
                 }
 
-                if (viewMessageContent) mMessageContentView.setText(bodyText);
-                mQuotedText.setText(quotedText.toString());
+                if (viewMessageContent) {
+                    mMessageContentView.setCharacters(bodyText);
+                }
+
+                mQuotedText.setCharacters(quotedText);
             } else {
-                if (viewMessageContent) mMessageContentView.setText(text);
+                if (viewMessageContent) {
+                    mMessageContentView.setCharacters(text);
+                }
             }
         }
     }
@@ -3228,7 +3234,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
 
             // TODO: Also strip the signature from the text/plain part
-            mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage,
+            mQuotedText.setCharacters(quoteOriginalTextMessage(mSourceMessage,
                     getBodyTextFromMessage(mSourceMessage, SimpleMessageFormat.TEXT), mQuoteStyle));
 
         } else if (mQuotedTextFormat == SimpleMessageFormat.TEXT) {
@@ -3239,7 +3245,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             }
 
-            mQuotedText.setText(quoteOriginalTextMessage(mSourceMessage, content, mQuoteStyle));
+            mQuotedText.setCharacters(quoteOriginalTextMessage(mSourceMessage, content, mQuoteStyle));
         }
 
         if (showQuotedText) {
@@ -3558,7 +3564,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // Read message body from the "body" parameter.
         List<String> body = uri.getQueryParameters("body");
         if (!body.isEmpty()) {
-            mMessageContentView.setText(body.get(0));
+            mMessageContentView.setCharacters(body.get(0));
         }
     }
 
@@ -3969,5 +3975,36 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean includeQuotedText() {
         return (mQuotedTextMode == QuotedTextMode.SHOW);
+    }
+
+    /**
+     * An {@link EditText} extension with methods that convert line endings from
+     * {@code \r\n} to {@code \n} and back again when setting and getting text.
+     *
+     */
+    private static class EolConvertingEditText extends EditText {
+
+        public EolConvertingEditText(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        /**
+         * Return the text the EolConvertingEditText is displaying.
+         *
+         * @return A string with any line endings converted to {@code \r\n}.
+         */
+        public String getCharacters() {
+            return getText().toString().replace("\n", "\r\n");
+        }
+
+        /**
+         * Sets the string value of the EolConvertingEditText. Any line endings
+         * in the string will be converted to {@code \n}.
+         *
+         * @param text
+         */
+        public void  setCharacters(CharSequence text) {
+            setText(text.toString().replace("\r\n", "\n"));
+        }
     }
 }

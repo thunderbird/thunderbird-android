@@ -3416,7 +3416,7 @@ public class MimeUtility {
         if (part.isMimeType("text/plain")) {
             String bodyText = getTextFromPart(part);
             if (bodyText != null) {
-                text = fixDraftTextBody(bodyText);
+                text = bodyText;
                 html = HtmlConverter.textToHtml(text);
             }
         } else if (part.isMimeType("multipart/alternative") &&
@@ -3427,31 +3427,14 @@ public class MimeUtility {
                 String bodyText = getTextFromPart(bodyPart);
                 if (bodyText != null) {
                     if (text.length() == 0 && bodyPart.isMimeType("text/plain")) {
-                        text = fixDraftTextBody(bodyText);
+                        text = bodyText;
                     } else if (html.length() == 0 && bodyPart.isMimeType("text/html")) {
-                        html = fixDraftTextBody(bodyText);
+                        html = bodyText;
                     }
                 }
             }
         }
 
         return new ViewableContainer(text, html, attachments);
-    }
-
-    /**
-     * Fix line endings of text bodies in draft messages.
-     *
-     * <p>
-     * We create drafts with LF line endings. The values in the identity header are based on that.
-     * So we replace CRLF with LF when loading messages (from the server).
-     * </p>
-     *
-     * @param text
-     *         The body text with CRLF line endings
-     *
-     * @return The text with LF line endings
-     */
-    private static String fixDraftTextBody(String text) {
-        return text.replace("\r\n", "\n");
     }
 }
