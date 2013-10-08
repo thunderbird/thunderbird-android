@@ -1391,8 +1391,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             }
 
-            if (includeQuotedText) {
-                String quotedText = mQuotedText.getCharacters();
+            String quotedText = mQuotedText.getCharacters();
+            if (includeQuotedText && quotedText.length() > 0) {
                 if (replyAfterQuote) {
                     composedMessageOffset = quotedText.length() + "\r\n".length();
                     text = quotedText + "\r\n" + text;
@@ -3091,31 +3091,37 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             // If we had a body length (and it was valid), separate the composition from the quoted text
             // and put them in their respective places in the UI.
-            try {
-                String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
+            if (bodyLength > 0) {
+                try {
+                    String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
 
-                // Regenerate the quoted text without our user content in it nor added newlines.
-                StringBuilder quotedText = new StringBuilder();
-                if (bodyOffset == 0 && text.substring(bodyLength, bodyLength + 4).equals("\r\n\r\n")) {
-                    // top-posting: ignore two newlines at start of quote
-                    quotedText.append(text.substring(bodyLength + 4));
-                } else if (bodyOffset + bodyLength == text.length() &&
-                        text.substring(bodyOffset - 2, bodyOffset).equals("\r\n")) {
-                    // bottom-posting: ignore newline at end of quote
-                    quotedText.append(text.substring(0, bodyOffset - 2));
-                } else {
-                    quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
-                    quotedText.append(text.substring(bodyOffset + bodyLength));
+                    // Regenerate the quoted text without our user content in it nor added newlines.
+                    StringBuilder quotedText = new StringBuilder();
+                    if (bodyOffset == 0 && text.substring(bodyLength, bodyLength + 4).equals("\r\n\r\n")) {
+                        // top-posting: ignore two newlines at start of quote
+                        quotedText.append(text.substring(bodyLength + 4));
+                    } else if (bodyOffset + bodyLength == text.length() &&
+                            text.substring(bodyOffset - 2, bodyOffset).equals("\r\n")) {
+                        // bottom-posting: ignore newline at end of quote
+                        quotedText.append(text.substring(0, bodyOffset - 2));
+                    } else {
+                        quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
+                        quotedText.append(text.substring(bodyOffset + bodyLength));
+                    }
+
+                    if (viewMessageContent) {
+                        mMessageContentView.setCharacters(bodyText);
+                    }
+
+                    mQuotedText.setCharacters(quotedText);
+                } catch (IndexOutOfBoundsException e) {
+                    // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
+                    Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid bodyOffset/bodyLength");
+                    if (viewMessageContent) {
+                        mMessageContentView.setCharacters(text);
+                    }
                 }
-
-                if (viewMessageContent) {
-                    mMessageContentView.setCharacters(bodyText);
-                }
-
-                mQuotedText.setCharacters(quotedText);
-            } catch (IndexOutOfBoundsException e) {
-                // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
-                Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid bodyOffset/bodyLength");
+            } else {
                 if (viewMessageContent) {
                     mMessageContentView.setCharacters(text);
                 }
