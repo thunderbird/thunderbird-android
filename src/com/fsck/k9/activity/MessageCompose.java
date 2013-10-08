@@ -3024,6 +3024,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
                 }
 
+                if (bodyOffset + bodyLength > text.length()) {
+                    // The draft was edited outside of K-9 Mail?
+                    Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid LENGTH/OFFSET");
+                    bodyOffset = 0;
+                    bodyLength = 0;
+                }
                 // Grab our reply text.
                 String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
                 mMessageContentView.setCharacters(HtmlConverter.htmlToText(bodyText));
@@ -3085,7 +3091,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             // If we had a body length (and it was valid), separate the composition from the quoted text
             // and put them in their respective places in the UI.
-            if (bodyLength != null && bodyLength + 1 < text.length()) { // + 1 to get rid of the newline we added when saving the draft
+            try {
                 String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
 
                 // Regenerate the quoted text without our user content in it nor added newlines.
@@ -3107,7 +3113,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
 
                 mQuotedText.setCharacters(quotedText);
-            } else {
+            } catch (IndexOutOfBoundsException e) {
+                // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
+                Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid bodyOffset/bodyLength");
                 if (viewMessageContent) {
                     mMessageContentView.setCharacters(text);
                 }
