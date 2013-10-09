@@ -736,6 +736,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         if (initFromIntent(intent)) {
             mAction = Action.COMPOSE;
+            mDraftNeedsSaving = true;
         } else {
             String action = intent.getAction();
             if (ACTION_COMPOSE.equals(action)) {
@@ -872,8 +873,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             mEncryptLayout.setVisibility(View.GONE);
         }
-
-        mDraftNeedsSaving = false;
 
         // Set font size of input controls
         int fontSize = mFontSizes.getMessageComposeInput();
