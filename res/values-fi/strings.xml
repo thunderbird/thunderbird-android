@@ -264,7 +264,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_compose_quote_header_from">Lähettäjä:</string>
     <string name="message_compose_quote_header_to">Vastaanottaja:</string>
     <string name="message_compose_quote_header_cc">Kopio:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:</string>
     <string name="message_compose_error_no_recipients">Valitse vähintään yksi vastaanottaja.</string>
     <string name="error_contact_address_not_found">Tämän henkilön sähköpostiosoitetta ei löytynyt.</string>
     <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida lähettää edelleen, koska niitä ei ole ladattu.</string>

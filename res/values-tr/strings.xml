@@ -263,7 +263,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="message_compose_quote_header_from">Kimden:</string>
     <string name="message_compose_quote_header_to">Alıcı:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> yazdı:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> yazdı:</string>
     <string name="message_compose_error_no_recipients">En az bir Alıcı eklemelisiniz.</string>
     <string name="error_contact_address_not_found">E-posta adresi bulunamadı.</string>
     <string name="message_compose_attachments_skipped_toast">Bazı ekler iletilemedi çünkü indirilemedi.</string>

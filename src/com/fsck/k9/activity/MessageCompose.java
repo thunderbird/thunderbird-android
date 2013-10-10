@@ -3700,7 +3700,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (quoteStyle == QuoteStyle.PREFIX) {
             StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
             quotedText.append(String.format(
-                                  getString(R.string.message_compose_reply_header_fmt),
+                                  getString(R.string.message_compose_reply_header_fmt) + "\r\n",
                                   Address.toString(originalMessage.getFrom()))
                              );
 
@@ -3757,9 +3757,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (quoteStyle == QuoteStyle.PREFIX) {
             StringBuilder header = new StringBuilder(QUOTE_BUFFER_LENGTH);
             header.append("<div class=\"gmail_quote\">");
-            // Remove all trailing newlines so that the quote starts immediately after the header.  "Be like Gmail!"
             header.append(HtmlConverter.textToHtmlFragment(String.format(
-                              getString(R.string.message_compose_reply_header_fmt).replaceAll("\n$", ""),
+                              getString(R.string.message_compose_reply_header_fmt),
                               Address.toString(originalMessage.getFrom()))
                                                           ));
             header.append("<blockquote class=\"gmail_quote\" " +

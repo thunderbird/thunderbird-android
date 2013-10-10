@@ -263,7 +263,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_compose_quote_header_from">Från:</string>
     <string name="message_compose_quote_header_to">Till:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:</string>
     <string name="message_compose_error_no_recipients">Du måste ange åtminstone en mottagare.</string>
     <string name="error_contact_address_not_found">Kan inte hitta e-postadress för denna kontakt.</string>
     <string name="message_compose_attachments_skipped_toast">Några bilagor kan inte vidarebefordras eftersom de inte har hämtats.</string>

@@ -259,7 +259,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="message_compose_quote_header_from">De:</string>
     <string name="message_compose_quote_header_to">Para:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escreveu:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escreveu:</string>
     <string name="message_compose_error_no_recipients">Você deve incluir ao menos um destinatário.</string>
     <string name="error_contact_address_not_found">Não foi possível encontrar o endereço de e-mail.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram inclusos na mensagem.</string>
