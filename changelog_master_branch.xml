@@ -8,14 +8,21 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.700" versioncode="19001" >
+        <change>Code cleanups</change>
+        <change>Fixed a bug that could have caused message drafts to be sent before they were ready</change>
+        <change>Updates to German, Japanese, Russian, Slovak translations</change>
+        <change>Fix some small bugs in contact picture generation</change>
+        <change>Fetch attachments while MessageCompose activity is running</change>
+    </release>
     <release version="4.512" versioncode="18012" >
-        <change>Updated autoconfiguration system to use IMAP for outlook.com properties</change>
-        <change>Updated autoconfiguration settings for gmx.de</change>
-        <change>Nootifications no longer show "null" when sending mail</change>
-        <change>Updated Czech, French, German, Russian and Slovak translation</change>
-        <change>Removed code to write to /dev/urandom. In addition to a couple of custom ROMs linking /dev/urandom to a non-writable *random version, now Samsung's SELinux policy also prevents apps from opening /dev/urandom for writing. Since we shouldn't need to write to /dev/urandom anyway we now simply don't.</change>
-        <change>Improved to MIME parser.</change>
+        <change>Updated auto-configuration settings to use IMAP for outlook.com</change>
+        <change>Updated auto-configuration settings for gmx.de</change>
+        <change>Notifications no longer show "null" when sending mail</change>
+        <change>Increased compatibility with custom ROMs and newer Samsung firmwares</change>
+        <change>Improved message generation</change>
         <change>Dramatically improved SMTP 8BITMIME compliance</change>
+        <change>Updated Czech, French, German, Russian and Slovak translation</change>
     </release>
     <release version="4.511" versioncode="18011" >
         <change>Remove remote/local store references when deleting accounts</change>
