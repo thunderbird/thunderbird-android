@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.700" versioncode="19001" >
+        <change>コードをきれいにしました</change>
+        <change>ドラフトメッセージが送信されてしまうバグを修正しました</change>
+        <change>ドイツ語、日本語、ロシア語、スロバキア語の翻訳を更新しました</change>
+        <change>連絡先の画像生成に関するいくつかの小さなバグを修正しました</change>
+        <change>MessageComposeアクティビティが実行している間に添付ファイルを取得するようにしました(取得完了までプログレスバーが表示されます)</change>
+    </release>
     <release version="4.512" versioncode="18012" >
         <change>outlook.com でIMAPを使うときの自動設定を更新しました</change>
         <change>プロバイダgmx.deのための自動設定を更新しました</change>
