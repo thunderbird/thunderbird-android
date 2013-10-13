@@ -953,15 +953,15 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="btn_verify">Overiť</string>
     <string name="unknown_crypto_signature_user_id">&lt;neznámy&gt;</string>
     <string name="key_id">ID: %s</string>
-    <string name="pgp_mime_unsupported">Formát správy PGP/MIME nie je ešte podporovaný.</string>
-    <string name="attachment_encryption_unsupported">Varovanie: prílohy ešte nie je možné podpísať či šifrovať.</string>
+    <string name="pgp_mime_unsupported">Formát správy PGP/MIME nie je zatiať podporovaný.</string>
+    <string name="attachment_encryption_unsupported">Varovanie: prílohy zatiaľ nie je možné podpísať či šifrovať.</string>
     <string name="send_aborted">Odosielanie prerušené.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Uložiť koncept správy?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Ste si istý, že chcete uložiť túto správu?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Ste si istí, že chcete uložiť túto správu?</string>
 
     <string name="confirm_discard_draft_message_title">Neukladať správu?</string>
-    <string name="confirm_discard_draft_message">Ste si istý, že nechcete uložiť túto správu?</string>
+    <string name="confirm_discard_draft_message">Ste si istí, že nechcete uložiť túto správu?</string>
 
     <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Odmietnuť uloženie konceptu správy.</string>
     <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Odmietnuť uloženie konceptu zašifrovanej správy.</string>
