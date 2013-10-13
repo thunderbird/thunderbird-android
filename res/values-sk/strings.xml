@@ -124,7 +124,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="reply_all_action">Odpovedať všetkým</string>
     <string name="delete_action">Vymazať</string>
     <string name="archive_action">Archivovať</string>
-    <string name="spam_action">Spam</string>
+    <string name="spam_action">Nevyžiadané</string>
     <string name="forward_action">Preposlať</string>
     <string name="move_action">Presunúť</string>
     <string name="single_message_options_action">Odoslať…</string>
@@ -231,14 +231,14 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="special_mailbox_name_trash">Kôš</string>
     <string name="special_mailbox_name_sent">Odoslaná</string>
     <string name="special_mailbox_name_archive">Archív</string>
-    <string name="special_mailbox_name_spam">Spam</string>
+    <string name="special_mailbox_name_spam">Nevyžiadaná</string>
     <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Koncepty)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Kôš)</string>
-    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Odoslané)</string>
+    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Odoslaná)</string>
     <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archív)</string>
-    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
+    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Nevyžiadaná)</string>
 
     <string name="send_failure_subject">Nepodarilo sa odoslať niektoré správy</string>
 
@@ -332,7 +332,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="global_settings_confirm_actions_summary">Zobraziť dialógové okno vždy, keď budete vykonávať vybrané akcie</string>
     <string name="global_settings_confirm_action_delete">Mazanie (v zobrazení správ)</string>
     <string name="global_settings_confirm_action_delete_starred">Mazanie správ s hviezdičkou (v zobrazení správ)</string>
-    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_spam">Nevyžiadaná pošta</string>
     <string name="global_settings_confirm_action_delete_notif">Mazanie (z oznámenia)</string>
 
     <string name="global_settings_notification_hide_subject_title">Skryť predmet v oznámeniach</string>
@@ -426,7 +426,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="sent_folder_label">Priečinok Odoslaná</string>
     <string name="trash_folder_label">Priečinok Kôš</string>
     <string name="archive_folder_label">Priečinok Archív</string>
-    <string name="spam_folder_label">Priečinok Spam</string>
+    <string name="spam_folder_label">Priečinok Nevyžiadaná</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Zobraziť iba odoberané priečinky</string>
     <string name="account_setup_auto_expand_folder">Automaticky rozbaliť priečinok</string>
@@ -531,7 +531,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="account_settings_show_pictures_only_from_contacts">Od kontaktov</string>
     <string name="account_settings_show_pictures_always">Od každého</string>
 
-    <string name="account_settings_composition">Odosielanie správy</string>
+    <string name="account_settings_composition">Odosielanie správ</string>
 
     <string name="account_settings_default_quoted_text_shown_label">Citovať správu pri odpovedi</string>
     <string name="account_settings_default_quoted_text_shown_summary">Zahrnúť pôvodnú správu do Vašej odpovede</string>
@@ -953,15 +953,15 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="btn_verify">Overiť</string>
     <string name="unknown_crypto_signature_user_id">&lt;neznámy&gt;</string>
     <string name="key_id">ID: %s</string>
-    <string name="pgp_mime_unsupported">Formát správy PGP/MIME nie je ešte podporovaný.</string>
-    <string name="attachment_encryption_unsupported">Varovanie: prílohy ešte nie je možné podpísať či šifrovať.</string>
+    <string name="pgp_mime_unsupported">Formát správy PGP/MIME nie je zatiať podporovaný.</string>
+    <string name="attachment_encryption_unsupported">Varovanie: prílohy zatiaľ nie je možné podpísať či šifrovať.</string>
     <string name="send_aborted">Odosielanie prerušené.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Uložiť koncept správy?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Ste si istý, že chcete uložiť túto správu?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Ste si istí, že chcete uložiť túto správu?</string>
 
     <string name="confirm_discard_draft_message_title">Neukladať správu?</string>
-    <string name="confirm_discard_draft_message">Ste si istý, že nechcete uložiť túto správu?</string>
+    <string name="confirm_discard_draft_message">Ste si istí, že nechcete uložiť túto správu?</string>
 
     <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Odmietnuť uloženie konceptu správy.</string>
     <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Odmietnuť uloženie konceptu zašifrovanej správy.</string>
@@ -986,18 +986,18 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
 
     -->
     <plurals name="dialog_confirm_delete_message">
-    <item quantity="one">Naozaj chcete zmazať túto správu?</item>
-        <item quantity="few">Naozaj chcete zmazať <xliff:g id="message_count">%1$d</xliff:g> správy?</item>
-        <item quantity="other">Naozaj chcete zmazať <xliff:g id="message_count">%1$d</xliff:g> správ?</item>
+    <item quantity="one">Vymazať túto správu?</item>
+        <item quantity="few">Vymmazať <xliff:g id="message_count">%1$d</xliff:g> správy?</item>
+        <item quantity="other">Vymazať <xliff:g id="message_count">%1$d</xliff:g> správ?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Áno</string>
     <string name="dialog_confirm_delete_cancel_button">Nie</string>
 
-    <string name="dialog_confirm_spam_title">Potvrdiť presun do priečinka Spam</string>
+    <string name="dialog_confirm_spam_title">Potvrdiť presun do priečinka Nevyžiadaná</string>
     <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">Naozaj chcete presunúť túto správu do priečinka Spam?</item>
-        <item quantity="few">Naozaj chcete presunúť <xliff:g id="message_count">%1$d</xliff:g> správy do priečinka Spam?</item>
-        <item quantity="other">Naozaj chcete presunúť <xliff:g id="message_count">%1$d</xliff:g> správ do priečinka Spam?</item>
+    <item quantity="one">Presunúť túto správu do priečinka Nevyžiadaná?</item>
+        <item quantity="few">Presunúť <xliff:g id="message_count">%1$d</xliff:g> správy do priečinka Nevyžiadaná?</item>
+        <item quantity="other">Presunúť <xliff:g id="message_count">%1$d</xliff:g> správ do priečinka Nevyžiadaná?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Áno</string>
     <string name="dialog_confirm_spam_cancel_button">Nie</string>
@@ -1146,7 +1146,8 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
 
     <string name="mark_all_as_read">Označiť všetky ako prečítané</string>
 
-    <string name="global_settings_colorize_missing_contact_pictures_label">Zafarbiť chýbajúce obrázky kontaktov</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Zafarbiť obrázky kontaktov</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Zafarbiť chýbajúce obrázky kontaktov</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Viditeľné akcie pre správu</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Zobraziť vybrané akcie v ponuke pri zobrazení správy</string>
