@@ -17,6 +17,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -245,6 +246,7 @@ public class SmtpTransport extends Transport {
                                             TrustManagerFactory.get(mHost, secure)
                                         }, new SecureRandom());
                         mSocket = sslContext.getSocketFactory().createSocket();
+                        TrustedSocketFactory.hardenSocket((SSLSocket)mSocket);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                     } else {
                         mSocket = new Socket();

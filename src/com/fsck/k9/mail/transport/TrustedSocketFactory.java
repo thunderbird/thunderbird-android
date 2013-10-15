@@ -21,6 +21,27 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
     private SSLSocketFactory mSocketFactory;
     private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
 
+    protected static final String ENABLED_CIPHERS[] = {
+        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+        "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+        "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
+        "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
+        "TLS_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_RSA_WITH_AES_256_CBC_SHA",
+        "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+        "SSL_RSA_WITH_RC4_128_SHA",
+        "SSL_RSA_WITH_RC4_128_MD5",
+    };
+
+    protected static final String ENABLED_PROTOCOLS[] = {
+        "TLSv1.2", "TLSv1.1", "TLSv1"
+    };
+
     public TrustedSocketFactory(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, new TrustManager[] {
@@ -45,6 +66,12 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
     public boolean isSecure(Socket sock) throws IllegalArgumentException {
         return mSchemeSocketFactory.isSecure(sock);
     }
+
+    public static void hardenSocket(SSLSocket sock) {
+        sock.setEnabledCipherSuites(ENABLED_CIPHERS);
+        sock.setEnabledProtocols(ENABLED_PROTOCOLS);
+    }
+
     public Socket createSocket(
         final Socket socket,
         final String host,
@@ -59,6 +86,7 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
                               );
         //hostnameVerifier.verify(host, sslSocket);
         // verifyHostName() didn't blowup - good!
+        hardenSocket(sslSocket);
         return sslSocket;
     }
 }

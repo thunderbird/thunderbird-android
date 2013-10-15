@@ -50,6 +50,7 @@ import java.util.zip.InflaterInputStream;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
 
 import org.apache.commons.io.IOUtils;
@@ -96,6 +97,7 @@ import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
+import com.fsck.k9.mail.transport.TrustedSocketFactory;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 
@@ -2450,6 +2452,7 @@ public class ImapStore extends Store {
                                                 TrustManagerFactory.get(mSettings.getHost(), secure)
                                             }, new SecureRandom());
                             mSocket = sslContext.getSocketFactory().createSocket();
+                            TrustedSocketFactory.hardenSocket((SSLSocket)mSocket);
                         } else {
                             mSocket = new Socket();
                         }
