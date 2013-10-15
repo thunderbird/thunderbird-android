@@ -27,6 +27,7 @@ import android.os.Build;
 import android.support.v4.util.LruCache;
 import android.widget.QuickContactBadge;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
 
 public class ContactPictureLoader {
@@ -39,6 +40,11 @@ public class ContactPictureLoader {
      * Pattern to extract the letter to be displayed as fallback image.
      */
     private static final Pattern EXTRACT_LETTER_PATTERN = Pattern.compile("[a-zA-Z]");
+
+    /**
+     * Letter to use when {@link #EXTRACT_LETTER_PATTERN} couldn't find a match.
+     */
+    private static final String FALLBACK_CONTACT_LETTER = "?";
 
 
     private ContentResolver mContentResolver;
@@ -160,16 +166,18 @@ public class ContactPictureLoader {
         return rgb;
     }
 
-    private char calcUnknownContactLetter(Address address) {
-        String letter = "";
-        String str = address.getPersonal() != null ? address.getPersonal() : address.getAddress();
+    private String calcUnknownContactLetter(Address address) {
+        String letter = null;
+        String personal = address.getPersonal();
+        String str = (personal != null) ? personal : address.getAddress();
 
         Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
         if (m.find()) {
             letter = m.group(0).toUpperCase(Locale.US);
         }
 
-        return letter.length() == 0 ? '?' : letter.charAt(0);
+        return (StringUtils.isNullOrEmpty(letter)) ?
+                FALLBACK_CONTACT_LETTER : letter.substring(0, 1);
     }
 
     /**
@@ -184,7 +192,7 @@ public class ContactPictureLoader {
         int rgb = calcUnknownContactColor(address);
         result.eraseColor(rgb);
 
-        String letter = Character.toString(calcUnknownContactLetter(address));
+        String letter = calcUnknownContactLetter(address);
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
@@ -195,8 +203,8 @@ public class ContactPictureLoader {
         paint.getTextBounds(letter, 0, 1, rect);
         float width = paint.measureText(letter);
         canvas.drawText(letter,
-                mPictureSizeInPx/2f-width/2f,
-                mPictureSizeInPx/2f+rect.height()/2f, paint);
+                (mPictureSizeInPx / 2f) - (width / 2f),
+                (mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
 
         return result;
     }
@@ -213,10 +221,11 @@ public class ContactPictureLoader {
 
     /**
      * Checks if a {@code ContactPictureRetrievalTask} was already created to load the contact
-     * picture for the supplied email address.
+     * picture for the supplied {@code Address}.
      *
      * @param address
-     *         The email address to check the contacts database for.
+     *         The {@link Address} instance holding the email address that is used to search the
+     *         contacts database.
      * @param badge
      *         The {@code QuickContactBadge} instance that will receive the picture.
      *
@@ -259,7 +268,7 @@ public class ContactPictureLoader {
      */
     class ContactPictureRetrievalTask extends AsyncTask<Void, Void, Bitmap> {
         private final WeakReference<QuickContactBadge> mQuickContactBadgeReference;
-        private Address mAddress;
+        private final Address mAddress;
 
         ContactPictureRetrievalTask(QuickContactBadge badge, Address address) {
             mQuickContactBadgeReference = new WeakReference<QuickContactBadge>(badge);
@@ -282,11 +291,11 @@ public class ContactPictureLoader {
         @Override
         protected Bitmap doInBackground(Void... args) {
             final String email = mAddress.getAddress();
-            final Uri x = mContactsHelper.getPhotoUri(email);
+            final Uri photoUri = mContactsHelper.getPhotoUri(email);
             Bitmap bitmap = null;
-            if (x != null) {
+            if (photoUri != null) {
                 try {
-                    InputStream stream = mContentResolver.openInputStream(x);
+                    InputStream stream = mContentResolver.openInputStream(photoUri);
                     if (stream != null) {
                         try {
                             Bitmap tempBitmap = BitmapFactory.decodeStream(stream);
@@ -333,7 +342,7 @@ public class ContactPictureLoader {
      * that is trying to load the contact picture.
      *
      * <p>
-     * The reference is used by {@link ContactPictureLoader#cancelPotentialWork(String,
+     * The reference is used by {@link ContactPictureLoader#cancelPotentialWork(Address,
      * QuickContactBadge)} to find out if the contact picture is already being loaded by a
      * {@code ContactPictureRetrievalTask}.
      * </p>
