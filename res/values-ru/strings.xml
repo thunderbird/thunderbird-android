@@ -1144,7 +1144,13 @@ K-9 Mail — почтовый клиент для Android.
     <string name="mark_all_as_read">Прочитаны все</string>
 
     <string name="global_settings_colorize_missing_contact_pictures_label">Цветные места для фото</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Инициалы контактов на цветном фоне при отсутствии фото</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Действия для сообщения</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Видимость действий для открытого сообщения</string>
+    
+    <string name="loading_attachment">Загрузка вложений…</string>
+    <string name="fetching_attachment_dialog_title_send">Отправка сообщения</string>
+    <string name="fetching_attachment_dialog_title_save">Сохранение черновика</string>
+    <string name="fetching_attachment_dialog_message">Получение вложений…</string>
 </resources>

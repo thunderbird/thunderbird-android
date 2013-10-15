@@ -248,7 +248,12 @@
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
         <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
     </provider>
-    
+    <!-- Universities -->
+    <provider id="stud.uni-goettingen.de" label="Uni Goettingen Student" domain="stud.uni-goettingen.de">
+        <incoming uri="imap+ssl+://email.stud.uni-goettingen.de" username="ug-student\$user" />
+        <outgoing uri="smtp+tls+://email.stud.uni-goettingen.de" username="ug-student\$user" />
+    </provider>
+
     <!-- Netherlands -->
     <!-- TODO:  For all of these, please confirm POP3, and switch to IMAP if supported -->
     <!-- TODO:  username="" in incoming element is broken - will not work -->
