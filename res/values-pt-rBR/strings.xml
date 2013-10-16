@@ -493,7 +493,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_setup_options_mail_display_count_250">250 mensagens</string>
     <string name="account_setup_options_mail_display_count_500">500 mensagens</string>
     <string name="account_setup_options_mail_display_count_1000">1000 mensagens</string>
-    <string name="account_setup_options_mail_display_count_all">Todas as mensagens</string>
+    <string name="account_setup_options_mail_display_count_all">Todas as Mensagens</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Não é possível copiar ou mover uma mensagem que não foi sincronizada com o servidor</string>
 
@@ -535,8 +535,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="account_settings_reply_after_quote_label">Resposta após texto da mensagem</string>
     <string name="account_settings_reply_after_quote_summary">Quando respondendo mensagens, o texto original deverá aparecer acima da minha resposta.</string>
 
-    <!-- NEW: <string name="account_settings_strip_signature_label">Strip signatures on reply</string>-->
-    <!-- NEW: <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>-->
+    <string name="account_settings_strip_signature_label">Tirar assinaturas em respostas</string>
+    <string name="account_settings_strip_signature_summary">Assinaturas serão removidas em mensagens com citação</string>
 
     <string name="account_settings_message_format_label">Formato da Mensagem</string>
     <string name="account_settings_message_format_text">Texto (imagens e formatação serão removidas)</string>
@@ -728,8 +728,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="sort_latest_first">Mensagens recentes primeiro</string>
     <string name="sort_subject_alpha">Assunto em ordem alfabética</string>
     <string name="sort_subject_re_alpha">Assunto em ordem alfabética reversa</string>
-    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
-    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
+    <string name="sort_sender_alpha">Remetente de A-Z</string>
+    <string name="sort_sender_re_alpha">Remetente de Z-A</string>
     <string name="sort_flagged_first">Mensagens favoritas primeiro</string>
     <string name="sort_flagged_last">Messages não favoritas primeiro</string>
     <string name="sort_unread_first">Não lidas primeiro</string>
@@ -877,7 +877,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="search_all_messages_title">Todas as mensagens</string>
     <string name="search_all_messages_detail">Todas as mensagens em pastas pesquisáveis</string>
 
-    <string name="integrated_inbox_title">Caixa de Entrada Unificada</string>
+    <string name="integrated_inbox_title">Entrada Unificada</string>
     <string name="integrated_inbox_detail">Todas as mensagens nas pastas unificadas</string>
 
     <string name="tap_hint">Toque em um envelope, uma mensagem não lida com estrela ou mensagem favorita</string>
@@ -1144,8 +1144,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="mark_all_as_read">Marcar todas como lidas</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
+    <string name="global_settings_colorize_missing_contact_pictures_label">Colorir contatos sem foto</string>
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+    <string name="global_settings_messageview_visible_refile_actions_title">Ações de mensagens visíveis</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Exibir as ações selecionadas na tela de mensagem</string>
 </resources>
