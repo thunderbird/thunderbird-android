@@ -751,10 +751,6 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="account_clear_dlg_title">Очистка ящика</string>
 
-    <string name="provider_note_live">Доступ по POP-протоколу доступен только для \"Plus\"-аккаунтов.
-        Если подключение с правильными настройками не удаётся, требуется
-        переход на версию \"Plus\". Воспользуйтесь мобильной версией
-        Yahoo! Mail или зайдите в аккаунт через браузер</string>
     <string name="provider_note_yahoojp">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта Yahoo</string>
     <string name="provider_note_auonejp">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта au one</string>
     <string name="provider_note_naver">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта Naver</string>
@@ -1148,7 +1144,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="global_settings_messageview_visible_refile_actions_title">Действия для сообщения</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Видимость действий для открытого сообщения</string>
-    
+
     <string name="loading_attachment">Загрузка вложений…</string>
     <string name="fetching_attachment_dialog_title_send">Отправка сообщения</string>
     <string name="fetching_attachment_dialog_title_save">Сохранение черновика</string>

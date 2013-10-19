@@ -756,11 +756,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="account_clear_dlg_title">Neteja el compte</string>
 
-    <string name="provider_note_live">Només alguns comptes \"Plus\" inclouen accés POP
-        permetent aquest programa a connectar. Si no pots connectar-te a
-        a la teva adreça i contrasenya correctes, pots no haver pagat
-        el compte \"Plus\". Si us plau, executeu el navegador d\'Internet per obtenir accés a
-        aquests comptes de correu.</string>
     <string name="provider_note_yahoojp">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu de Yahoo.</string>
     <string name="provider_note_auonejp">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu d\'Auone.</string>
     <string name="provider_note_naver">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu de Naver.</string>
@@ -1148,8 +1143,14 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="mark_all_as_read">Marca\'ls tots com a llegits</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

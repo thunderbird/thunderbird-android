@@ -751,11 +751,6 @@
 
     <string name="account_clear_dlg_title">Εξάλειψη λογαριασμού</string>
 
-    <string name="provider_note_live">Μόνο μερικοί λογαριασμοί \'Plus\' περιλαμβάνουν προσπέλαση POP
-        επιτρέποντας σε αυτό το πρόγραμμα να συνδεθεί. Αν δεν μπορείτε να συνδεθείτε με τη
-        σωστή ηλεκτρονική σας διεύθυνση και συνθηματικό, μπορεί να μην έχετε ένα επί πληρωμή
-        \'Plus\' λογαριασμό. Ανοίξτε τον σελιδομετρητή ιστοσελίδων για να προσπελάσετε
-        τέτοιους λογαριασμούς ταχυδρομείου.</string>
     <string name="provider_note_yahoojp">Αν θέλετε να χρησιμοποιήσετε POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση POP3 στη σελίδα ρυθμίσεων του Yahoo mail.</string>
     <string name="provider_note_auonejp">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του au one mail.</string>
     <string name="provider_note_naver">Αν θέλετε να χρησιμοποιήσετε IMAP ή POP3 για αυτόν το πάροχο, πρέπει να επιτρέψετε την χρήση IMAP ή POP3 στη σελίδα ρυθμίσεων του Naver.</string>
@@ -1143,7 +1138,13 @@
     <string name="mark_all_as_read">Μαρκάρισμα όλων ως αναγνωσμένων</string>
 
     <string name="global_settings_colorize_missing_contact_pictures_label">Χρωματισμός επαφών χωρίς εικόνα</string>
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
     <string name="global_settings_messageview_visible_refile_actions_title">Ορατές ενέργειες μηνυμάτων</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Προβολή των επιλεγμένων ενεργειών στο μενού προβολής μηνύματος</string>
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

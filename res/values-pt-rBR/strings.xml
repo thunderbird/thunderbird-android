@@ -752,10 +752,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
 
     <string name="account_clear_dlg_title">Limpar conta</string>
 
-    <string name="provider_note_live">Apenas algumas contas \"Plus\" incluem acesso POP,
-        permitindo que este programa se conecte. Se não estiver conseguindo logar nela com seu
-        endereço de e-mail e senha corretos, talvez você não tenha uma conta \"Plus\" paga.
-        Por favor, abra seu Web browser para conseguir acesso a estes tipos de contas.</string>
     <string name="provider_note_yahoojp">Se desejar utilizar POP3 para este provedor, você deverá permitir o uso deste na página de configurações de se e-mail Yahoo.</string>
     <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
     <!-- NEW: <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>-->
@@ -1145,7 +1141,13 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="mark_all_as_read">Marcar todas como lidas</string>
 
     <string name="global_settings_colorize_missing_contact_pictures_label">Colorir contatos sem foto</string>
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
     <string name="global_settings_messageview_visible_refile_actions_title">Ações de mensagens visíveis</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Exibir as ações selecionadas na tela de mensagem</string>
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

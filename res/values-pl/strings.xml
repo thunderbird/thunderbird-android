@@ -761,11 +761,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="account_clear_dlg_title">Wyczyść konto</string>
 
-    <string name="provider_note_live">Tylko niektóre konta Yahoo! \"Plus\" obsługują protokół POP3,
-        umożliwiający K-9 odbiór poczty. Jeśli nie możesz zalogować się
-        do swojego konta z użyciem poprawnego hasła i adresu email, najprawdopodobniej
-        nie masz płatnego konta typu \"Plus\". W takim przypadku musisz z poczty
-        korzystać w dotychczasowy sposób, za pośrednictwem przeglądarki.</string>
     <string name="provider_note_yahoojp">Jeśli chcesz używać POP3 dla tego dostawcy, powinieneś zezwolić na użycie POP3 na stronie ustawień poczty Yahoo.</string>
     <string name="provider_note_auonejp">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Au one.</string>
     <string name="provider_note_naver">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Naver.</string>
@@ -1152,8 +1147,14 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

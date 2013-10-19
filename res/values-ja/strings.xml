@@ -1145,4 +1145,9 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="global_settings_messageview_visible_refile_actions_title">表示するアクションの選択</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">メッセージビューのメニューに選択したアクションを表示する</string>
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

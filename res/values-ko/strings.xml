@@ -754,9 +754,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
 
     <string name="account_clear_dlg_title">계정 비우기</string>
 
-    <string name="provider_note_live">\"Plus\" 계정이어야 이 프로그램으로 POP3에 접속할 수 있습니다.
-    올바른 이메일 주소와 비밀번호로 로그인에 실패할 경우 \"Plus\" 계정으로 유료 전환해야 할 수 있습니다.
-    웹브라우저를 통해 메일에 접속하십시오.</string>
     <string name="provider_note_yahoojp">야후 메일 설정페이지에서 POP3 이용을 설정해야 합니다.</string>
     <string name="provider_note_auonejp">au one 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정해야 합니다.</string>
     <string name="provider_note_naver">네이버 메일 환경설정 페이지에서 IMAP/POP3 이용을 설정해야 합니다.</string>

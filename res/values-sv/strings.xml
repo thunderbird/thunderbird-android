@@ -756,10 +756,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="account_clear_dlg_title">Rensa konto</string>
 
-    <string name="provider_note_live">Bara vissa \"Plus\"-konton inkluderar POP-tillgång
-        vilket krävs för detta program för att ansluta. Om du misslyckas med att logga in
-        med din korrekta adress och lösenord så kanske du inte har ett betalt
-        \"Plus\"-konto. Vänligen starta webbläsaren för att komma åt dessa konton.</string>
     <string name="provider_note_yahoojp">Om du vill använda POP3 med denna leverantör måste du välja att tillåta POP3 på inställningssidan för Yahoo!.</string>
     <string name="provider_note_auonejp">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för au one.</string>
     <string name="provider_note_naver">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för Naver.</string>
@@ -1144,8 +1140,14 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="mark_all_as_read">Markera alla som lästa</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

@@ -756,9 +756,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
 
     <string name="account_clear_dlg_title">Очистити обліковий запис</string>
 
-    <string name="provider_note_live"> Тільки деякі скриньки \"Plus\" підтримують отримання пошти через POP. Якщо ви не можете підключитися з правильними даними,
-        то, можливо, ви не маєте такої
-        \"Plus\" скриньки. Будь ласка, завантажте веб-браузер, щоб отримати доступ до таких пощтових скриньок.</string>
     <string name="provider_note_yahoojp">Якщо ви хочете використовувати POP3 для цього постачальника, ви маєте дозволити використання POP3 на сторінці налаштувань пошти Yahoo.</string>
     <string name="provider_note_auonejp">Якщо ви хочете використовувати IMAP або POP3 для цього постачальника, ви маєте дозволити використання IMAP або POP3 на сторінці налаштувань пошти.</string>
     <string name="provider_note_naver">Якщо ви хочете використовувати IMAP або POP3 для цього постачальника, ви маєте дозволити використання IMAP або POP3 на сторінці налаштувань пошти Naver.</string>
@@ -1149,8 +1146,14 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>
