@@ -17,13 +17,41 @@
 
     <!-- Used in the about dialog -->
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-    <string name="app_copyright_fmt">Autorinės teisės 2008-<xliff:g>%s</xliff:g>" K-9 Dog Walkers. Dalis autorinių teisių priklauso 2006-"<xliff:g>%s</xliff:g>" the Android Open Source Project."</string>
+    <string name="app_copyright_fmt">Autorinės teisės 2008-<xliff:g>%s</xliff:g> K-9 Dog Walkers. Dalis autorinių teisių priklauso 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Išleista pagal Apache License sąlygas, versija 2.</string>
 
 
     <!-- Welcome message -->
     <string name="welcome_message_title">Sveiki atvykę į „K-9 Mail“</string>
-    <string name="accounts_welcome">&lt;p&gt; „K-9 Mail“ yra galingas ir nemokamas pašto klientas Android įrenginiams. &lt;/p&gt;&lt;p&gt; Pagerintos galimybės: &lt;/p&gt; &lt;ul&gt; &lt;li&gt;Siųsti laiškus naudojant IMAP IDLE&lt;/li&gt; &lt;li&gt;Geresnė greitaveika&lt;/li&gt; &lt;li&gt;Laiškų užpildymas&lt;/li&gt; &lt;li&gt;Laiško parašai&lt;/li&gt; &lt;li&gt;Bcc-sau&lt;/li&gt; &lt;li&gt;Aplankų prenumerata&lt;/li&gt; &lt;li&gt;Visų aplankų sinchronizacija &lt;li&gt;Atsakymo adreso konfigūracija&lt;/li&gt; &lt;li&gt;Klaviatūros trumpiniai&lt;/li&gt; &lt;li&gt;Geresnis IMAP palaikymas&lt;/li&gt; &lt;li&gt;Priedų išsaugojimas į SD&lt;/li&gt; &lt;li&gt;Šiukšlinės išvalymas&lt;/li&gt; &lt;li&gt;Laiškų rikiavimas&lt;/li&gt; &lt;li&gt;…ir dar daug daugiau&lt;/li&gt; &lt;/ul&gt; &lt;p&gt; Pastaba: K-9 nepalaiko daugumos Hotmail paskyrų ir kaip dauguma el. pašto klientų turi keblumų bendraujant su Microsoft Exchange. &lt;/p&gt;&lt;p&gt; Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus mūsų tinklapyje &lt;a href=http://k9mail.googlecode.com/&gt;http://k9mail.googlecode.com/&lt;/a&gt;. &lt;/p&gt;</string>
+    <string name="accounts_welcome"><![CDATA[
+<p>
+„K-9 Mail“ yra galingas ir nemokamas pašto klientas Android įrenginiams.
+</p><p>
+Pagerintos galimybės:
+</p>
+<ul>
+  <li>Siųsti laiškus naudojant IMAP IDLE</li>
+  <li>Geresnė greitaveika</li>
+  <li>Laiškų užpildymas</li>
+  <li>Laiško parašai</li>
+  <li>Bcc-sau</li>
+  <li>Aplankų prenumerata</li>
+  <li>Visų aplankų sinchronizacija
+  <li>Atsakymo adreso konfigūracija</li>
+  <li>Klaviatūros trumpiniai</li>
+  <li>Geresnis IMAP palaikymas</li>
+  <li>Priedų išsaugojimas į SD</li>
+  <li>Šiukšlinės išvalymas</li>
+  <li>Laiškų rikiavimas</li>
+  <li>…ir dar daug daugiau</li>
+</ul>
+<p>
+Pastaba: K-9 nepalaiko daugumos Hotmail paskyrų ir kaip dauguma el. pašto klientų turi keblumų bendraujant su Microsoft Exchange.
+</p><p>
+Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus mūsų tinklapyje
+<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
 
 
     <!-- Default signature -->
@@ -33,7 +61,7 @@
     <!-- General strings that include the app name -->
     <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „K-9 Mail“.</string>
     <string name="account_recreate_dlg_instructions_fmt">Visi vietiniai \"<xliff:g id="account">%s</xliff:g>\" duomenys bus pašalinti. Paskyros nustatymai išliks.</string>
-    <string name="account_clear_dlg_instructions_fmt">"Vietinės  \""<xliff:g id="account">%s</xliff:g>\" laiškų kopijos bus pašalintos. Paskyros nustatymai išliks.</string>
+    <string name="account_clear_dlg_instructions_fmt">Vietinės  \"<xliff:g id="account">%s</xliff:g>\" laiškų kopijos bus pašalintos. Paskyros nustatymai išliks.</string>
     <string name="insufficient_apg_permissions">K-9 neturi reikiamų leidimų pasiekti AGP, norėdami tai pataisyti iš naujo įdiekite K-9.</string>
 
 
@@ -47,10 +75,10 @@
 
     <!-- === General strings ================================================================== -->
 
-    <string name="app_authors_fmt">"Autoriai: "<xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_fmt">"Laidos informacija: "<xliff:g id="app_revision_url">%s</xliff:g></string>
-    <string name="app_libraries">"Mes naudojame šias trečiųjų šalių bibliotekas: "<xliff:g id="app_libraries_list">%s</xliff:g></string>
-    <string name="app_emoji_icons">"Emoji piktogramos: "<xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
+    <string name="app_authors_fmt">Autoriai: <xliff:g id="app_authors">%s</xliff:g></string>
+    <string name="app_revision_fmt">Laidos informacija: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_libraries">Mes naudojame šias trečiųjų šalių bibliotekas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+    <string name="app_emoji_icons">Emoji piktogramos: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_attachment_label">žiūrėti el. pašto priedus</string>
     <string name="read_attachment_desc">Leidžia šiai programai peržiūrėti jūsų laiškų priedus.</string>
@@ -59,12 +87,12 @@
     <string name="delete_messages_label">Šalinti laiškus</string>
     <string name="delete_messages_desc">Leidžia programai šalinti jūsų laiškus.</string>
 
-    <string name="about_title_fmt">"Apie "<xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_title_fmt">Apie <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Paskyros</string>
     <string name="folders_title">Aplankai</string>
     <string name="advanced">Išplėstinis</string>
 
-    <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>" "</string>
+    <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Sukurti</string>
     <string name="compose_title_reply">Atsakyti</string>
@@ -73,16 +101,16 @@
 
     <string name="choose_folder_title">Pasirinkite aplanką</string>
 
-    <string name="status_loading_account_folder">"Užklausiama "<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_loading_account_folder_headers">"Gaunamos antraštės "<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_sending_account">"Siunčiama "<xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="status_processing_account">"Apdorojama "<xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="folder_progress">" "<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+    <string name="status_loading_account_folder">Užklausiama <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading_account_folder_headers">Gaunamos antraštės <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_sending_account">Siunčiama <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_processing_account">Apdorojama <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+    <string name="folder_progress"> <xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
-    <string name="status_next_poll">"Sekantis tikrinimas "<xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_next_poll">Sekantis tikrinimas <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">Sinchronizavimas išjungtas</string>
 
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g>" pasirinkta"</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Kitas</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Ankstesnis</string> <!-- Used as part of a multi-step process -->
@@ -99,8 +127,8 @@
     <string name="spam_action">Brukalas</string>
     <string name="forward_action">Persiųsti</string>
     <string name="move_action">Perkelti</string>
-    <string name="single_message_options_action">Siųsti...</string>
-    <string name="refile_action">Refile...</string>
+    <string name="single_message_options_action">Siųsti…</string>
+    <string name="refile_action">Refile…</string>
     <string name="continue_action">Tęsti</string>
     <string name="back_action">Atgal</string>
     <string name="done_action">Atlikta</string> <!--  Used to complete a multi-step process -->
@@ -154,39 +182,39 @@
     <string name="general_no_subject">(Nėra temos)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_sender">Nėra siuntėjo</string>
     <string name="status_loading">Sekimas</string>
-    <string name="status_loading_more">Įkeliami laiškai...</string>
+    <string name="status_loading_more">Įkeliami laiškai…</string>
     <string name="status_network_error">Prisijungimo klaida</string>
     <string name="status_invalid_id_error">Laiškas nerastas</string>
 
     <string name="status_loading_more_failed">Pabandyti dar kartą įkelti daugiau laiškų</string>
 
-    <string name="load_more_messages_fmt">"Įkelti dar iki "<xliff:g id="messages_to_load">%d</xliff:g>" laiškų"</string>
+    <string name="load_more_messages_fmt">Įkelti dar iki <xliff:g id="messages_to_load">%d</xliff:g> laiškų</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">" Paskyra \""<xliff:g id="account">%s</xliff:g>"\" sumažinta nuo "<xliff:g id="oldSize">%s</xliff:g>" iki "<xliff:g id="newSize">%s</xliff:g>" "</string>
+    <string name="account_size_changed"> Paskyra \"<xliff:g id="account">%s</xliff:g>\" sumažinta nuo <xliff:g id="oldSize">%s</xliff:g> iki <xliff:g id="newSize">%s</xliff:g> </string>
 
-    <string name="compacting_account">"Suspaudžiama paskyra  \""<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="clearing_account">"Išvaloma paskyra  \""<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="recreating_account">"Iš naujo kuriama paskyra  \""<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="compacting_account">Suspaudžiama paskyra  \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="clearing_account">Išvaloma paskyra  \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="recreating_account">Iš naujo kuriama paskyra  \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Naujas laiškas</string>
-    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g>" naujų laiškų"</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g>" Neskaitytų ("<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <string name="notification_additional_messages">"+ "<xliff:g id="additional_messages">%d</xliff:g>" daugiau "<xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Neskaitytų (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> daugiau <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Atsakyti</string>
     <string name="notification_action_mark_as_read">Pažymėti kaip skaitytą</string>
     <string name="notification_action_delete">Šalinti</string>
-    <string name="notification_certificate_error_title">"Sertifikato klaida "<xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_title">Sertifikato klaida <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Patikrinkite serverio nustatymus</string>
 
-    <string name="notification_bg_sync_ticker">"Tikrinamas paštas: "<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Tikrinamas paštas: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Tikrinamas paštas</string>
-    <string name="notification_bg_send_ticker">"Siunčiamas paštas: "<xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_ticker">Siunčiamas paštas: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Siunčiamas paštas</string>
     <string name="notification_bg_title_separator">:</string>
 
@@ -200,15 +228,15 @@
     <string name="special_mailbox_name_spam">Brukalas</string>
     <!-- Mailbox names displayed to user -->
 
-    <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g>" (Juodraščiai)"</string>
-    <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g>" (Šiukšlės)"</string>
-    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g>" (Išsiųsta)"</string>
-    <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g>" (Archyvas)"</string>
-    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g>" (Brukalas)"</string>
+    <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Juodraščiai)</string>
+    <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Šiukšlės)</string>
+    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Išsiųsta)</string>
+    <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archyvas)</string>
+    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Brukalas)</string>
 
     <string name="send_failure_subject">Kai kurių laiškų išsiųsti nepavyko</string>
 
-    <string name="debug_version_fmt">"Versija: "<xliff:g id="version">%s</xliff:g></string>
+    <string name="debug_version_fmt">Versija: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_title">Įjungti derinimo žurnalą</string>
     <string name="debug_enable_debug_logging_summary">Įrašyti papildomą diagnostinę informaciją</string>
     <string name="debug_enable_sensitive_logging_title">Įrašyti jautrią informaciją</string>
@@ -229,7 +257,7 @@
     <string name="message_compose_quote_header_from">Nuo:</string>
     <string name="message_compose_quote_header_to">Kam:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>" rašė:\n"</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> rašė:\n</string>
     <string name="message_compose_error_no_recipients">Turite pridėti bent vieną gavėją.</string>
     <string name="error_contact_address_not_found">Nepavyko rasti šio kontakto el. pašto adreso.</string>
     <string name="message_compose_attachments_skipped_toast">Kai kurių priedų negalima persiųsti, nes jie nebuvo parsiųsti.</string>
@@ -240,21 +268,21 @@
     <string name="message_compose_description_delete_quoted_text">Pašalinti cituojamą tekstą</string>
     <string name="message_compose_description_edit_quoted_text">Redaguoti cituojamą tekstą</string>
 
-    <string name="message_view_from_format">"Nuo: "<xliff:g id="name">%s</xliff:g>" &lt;"<xliff:g id="email">%s</xliff:g>&gt;</string>
+    <string name="message_view_from_format">Nuo: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Kam:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_attachment_view_action">Atverti</string>
     <string name="message_view_attachment_download_action">Išsaugoti</string>
-    <string name="message_view_status_attachment_saved">"Priedas išsaugotas SD kortelėje kaip  "<xliff:g id="filename">%s</xliff:g>.</string>
+    <string name="message_view_status_attachment_saved">Priedas išsaugotas SD kortelėje kaip <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Išsaugoti priedų SD kortelėje nepavyko.</string>
     <string name="message_view_show_pictures_action">Rodyti paveikslėlius</string>
     <string name="message_view_show_message_action">Rodyti laišką</string>
     <string name="message_view_show_attachments_action">Rodyti priedus</string>
-    <string name="message_view_show_more_attachments_action">Daugiau...</string>
+    <string name="message_view_show_more_attachments_action">Daugiau…</string>
     <string name="message_view_fetching_attachment_toast">Gaunamas priedas.</string>
-    <string name="message_view_no_viewer">"Nepavyko rasto "<xliff:g id="mimetype">%s</xliff:g>" peržiūros programos."</string>
+    <string name="message_view_no_viewer">Nepavyko rasto <xliff:g id="mimetype">%s</xliff:g> peržiūros programos.</string>
     <string name="message_view_download_remainder">Parsiųsti visą laišką</string>
-    <string name="message_view_downloading">Atsiunčiama...</string>
+    <string name="message_view_downloading">Atsiunčiama…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Nevisos antraštės buvo parsiųstos ar išsaugotos. Norėdami įgalinti šią parinkty, paskyros gaunamųjų serverio nustatymuose, pasirinkite „Išsaugoti visas antraštes įrenginyje“.</string>
@@ -333,12 +361,12 @@
     <string name="account_setup_basics_manual_setup_action">Rankinis nustatymas</string>
 
     <!-- NEW: <string name="account_setup_check_settings_title"/>-->
-    <string name="account_setup_check_settings_retr_info_msg">Gaunama paskyros informacija...</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Tikrinami gaunamųjų serverio nustatymai...</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Tikrinami siunčiamųjų serverio nustatymai...</string>
-    <string name="account_setup_check_settings_authenticate">Patvirtinama tapatybė...</string>
-    <string name="account_setup_check_settings_fetch">Gaunami paskyros nustatymai...</string>
-    <string name="account_setup_check_settings_canceling_msg">Atšaukiama...</string>
+    <string name="account_setup_check_settings_retr_info_msg">Gaunama paskyros informacija…</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Tikrinami gaunamųjų serverio nustatymai…</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Tikrinami siunčiamųjų serverio nustatymai…</string>
+    <string name="account_setup_check_settings_authenticate">Patvirtinama tapatybė…</string>
+    <string name="account_setup_check_settings_fetch">Gaunami paskyros nustatymai…</string>
+    <string name="account_setup_check_settings_canceling_msg">Atšaukiama…</string>
 
     <string name="account_setup_names_title">Beveik baigėte!</string>
     <string name="account_setup_names_account_name_label">Pavadinkite šią paskyrą (nebūtina):</string>
@@ -414,7 +442,7 @@
     <string name="account_setup_outgoing_password_label">Slaptažodis</string>
     <string name="account_setup_outgoing_authentication_label">Tapatumo nustatymas</string>
 
-    <string name="account_setup_bad_uri">"Netinkamai nustatyta: "<xliff:g id="err_mess">%s</xliff:g></string>
+    <string name="account_setup_bad_uri">Netinkamai nustatyta: <xliff:g id="err_mess">%s</xliff:g></string>
 
     <string name="account_setup_options_title">Paskyros parinktys</string>
 
@@ -707,7 +735,7 @@
     <string name="sort_attach_first">Pirmiausia laiškai su priedais</string>
     <string name="sort_unattached_first">Pirmiausia laiškai be priedų</string>
 
-    <string name="sort_by">Rikiuoti pagal...</string>
+    <string name="sort_by">Rikiuoti pagal…</string>
     <string name="sort_by_date">Data</string>
     <string name="sort_by_arrival">Pristatymas</string>
     <string name="sort_by_subject">Tema</string>
@@ -739,7 +767,7 @@
 
     <string name="folder_list_filter_hint">aplanko varde yra</string>
 
-    <string name="folder_list_display_mode_label">Rodyti aplankus...</string>
+    <string name="folder_list_display_mode_label">Rodyti aplankus…</string>
     <string name="folder_list_display_mode_all">Visus aplankus</string>
     <string name="folder_list_display_mode_first_class">1 klasės aplankus</string>
     <string name="folder_list_display_mode_first_and_second_class">1 ir 2 klasės aplankus</string>
@@ -778,8 +806,8 @@
     <string name="background_ops_label">Sinchronizuoti fone</string>
     <string name="background_ops_never">Niekada</string>
     <string name="background_ops_always">Visada</string>
-    <string name="background_ops_enabled">"Kai pažymėta „Fono duomenys“ "</string>
-    <string name="background_ops_auto_sync">"Kai pažymėta „Fono duomenys“ ir „Automatinis sinchronizavimas“ "</string>
+    <string name="background_ops_enabled">Kai pažymėta „Fono duomenys“</string>
+    <string name="background_ops_auto_sync">Kai pažymėta „Fono duomenys“ ir „Automatinis sinchronizavimas“</string>
     <string name="background_ops_auto_sync_only">Kai pažymėtas „automatinis sinchronizavimas“</string>
 
     <string name="batch_select_all">Pasirinkti viską</string>
@@ -813,7 +841,7 @@
     <string name="hide_special_accounts_title">Slėpti specialias paskyras</string>
     <string name="hide_special_accounts_summary">Slėpti suvestinį gautųjų aplanką ir visas paskyras</string>
 
-    <string name="search_title"><xliff:g id="search_name">%s</xliff:g>" "<xliff:g id="modifier">%s</xliff:g></string>
+    <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
     <string name="flagged_modifier">- Su žvaigždute</string>
     <string name="unread_modifier">- Neskaityta</string>
 
@@ -939,7 +967,7 @@
 
     <string name="dialog_confirm_spam_title">Patvirtinti perkėlimą į brukalo aplanką</string>
     <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">Ar tikrai norite perkelti šį laišką į brukalo aplanką?</item>
+        <item quantity="one">Ar tikrai norite perkelti šį laišką į brukalo aplanką?</item>
         <item quantity="few">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškus į brukalo aplanką?</item>
         <item quantity="other">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškų į brukalo aplanką?</item>
     </plurals>
@@ -962,12 +990,12 @@
     <string name="settings_import">Importuoti nustatymus</string>
     <string name="settings_import_selection">Importuoti pasirinkimą</string>
     <string name="settings_import_global_settings">Bendrieji nustatymai</string>
-    <string name="settings_exporting">Eksportuojami nustatymai...</string>
-    <string name="settings_importing">Importuojami nustatymai...</string>
-    <string name="settings_import_scanning_file">Skenuojamas failas...</string>
-    <string name="settings_export_success">"Eksportuoti nustatymai išsaugoti "<xliff:g id="filename">%s</xliff:g></string>
-    <string name="settings_import_global_settings_success">"Importuoti globalius nustatymus iš "<xliff:g id="filename">%s</xliff:g></string>
-    <string name="settings_import_success">"Importuota  "<xliff:g id="accounts">%s</xliff:g>" iš "<xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_exporting">Eksportuojami nustatymai…</string>
+    <string name="settings_importing">Importuojami nustatymai…</string>
+    <string name="settings_import_scanning_file">Skenuojamas failas…</string>
+    <string name="settings_export_success">Eksportuoti nustatymai išsaugoti <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Importuoti globalius nustatymus iš <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_success">Importuota <xliff:g id="accounts">%s</xliff:g> iš <xliff:g id="filename">%s</xliff:g></string>
     <!-- NEW:
     <plurals name="settings_import_success">
         <item quantity="one">1 account</item>
@@ -975,39 +1003,39 @@
     </plurals>
     -->
     <string name="settings_export_failure">Eksportuoti nustatymų nepavyko</string>
-    <string name="settings_import_failure">"Nustatymų iš "<xliff:g id="filename">%s</xliff:g>" importuoti nepavyko"</string>
+    <string name="settings_import_failure">Nustatymų iš <xliff:g id="filename">%s</xliff:g> importuoti nepavyko</string>
     <string name="settings_export_success_header">Eksportuota sėkmingai</string>
     <string name="settings_export_failed_header">Eksportuoti nepavyko</string>
     <string name="settings_import_success_header">Sėkmingai importuota</string>
     <string name="settings_import_failed_header">Importuoti nepavyko</string>
     <string name="settings_import_activate_account_header">Aktyvuoti paskyrą</string>
-    <string name="settings_import_activate_account_intro">Norint naudoti paskyrą \"<xliff:g id="account">%s</xliff:g>"\" turite suteikti "<xliff:g id="server_passwords">%s</xliff:g>.</string>
+    <string name="settings_import_activate_account_intro">Norint naudoti paskyrą \"<xliff:g id="account">%s</xliff:g>\" turite suteikti <xliff:g id="server_passwords">%s</xliff:g>.</string>
     <plurals name="settings_import_server_passwords">
-    <item quantity="one">serverio slaptažodis</item>
+        <item quantity="one">serverio slaptažodis</item>
         <item quantity="few">serverio slaptažodžiai</item>
         <item quantity="other">serverio slaptažodžių</item>
     </plurals>
     <string name="settings_import_incoming_server">Gaunamųjų serveris (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Siunčiamųjų serveris (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Nustatomas slaptažodis...</item>
-        <item quantity="few">Nustatomi slaptažodžiai...</item>
-        <item quantity="other">Nustatoma slaptažodžių...</item>
+        <item quantity="one">Nustatomas slaptažodis…</item>
+        <item quantity="few">Nustatomi slaptažodžiai…</item>
+        <item quantity="other">Nustatoma slaptažodžių…</item>
     </plurals>
     <string name="settings_import_use_incoming_server_password">Naudoti gaunamųjų laiškų serverio slaptažodį</string>
     <string name="activate_account_action">Aktyvuoti</string>
 
     <string name="account_unavailable">Paskyra \"<xliff:g id="account">%s</xliff:g>\" neprieinama; patikrinkite saugyklą</string>
 
-    <string name="settings_attachment_default_path">Priedus išsaugoti į...</string>
+    <string name="settings_attachment_default_path">Priedus išsaugoti į…</string>
     <string name="attachment_save_title">Išsaugoti priedą</string>
     <string name="attachment_save_desc">Failų tvarkyklė nerasta. Kur norite išsaugoti priedą?</string>
 
     <string name="manage_accounts_move_up_action">Pakelti</string>
     <string name="manage_accounts_move_down_action">Perkelti žemyn</string>
-    <string name="manage_accounts_moving_message">Perkeliama paskyra...</string>
+    <string name="manage_accounts_moving_message">Perkeliama paskyra…</string>
 
-    <string name="unread_widget_select_account">Rodyti neskaitytų skaičių...</string>
+    <string name="unread_widget_select_account">Rodyti neskaitytų skaičių…</string>
 
     <string name="import_dialog_error_title">Failų tvarkyklė nerasta</string>
     <string name="close">Užverti</string>
@@ -1048,7 +1076,7 @@
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Serverio paieškos limitas</string>
-    <string name="account_settings_remote_search_num_summary">"Paieška bus nutraukta radus "<xliff:g id="num_results">%s</xliff:g>" rezultatus."</string>
+    <string name="account_settings_remote_search_num_summary">Paieška bus nutraukta radus <xliff:g id="num_results">%s</xliff:g> rezultatus.</string>
     <string name="account_settings_remote_search_full_text">Ieškant serveryje ieškoti ir laiško tekste</string>
     <string name="account_settings_remote_search_full_text_summary">Paieška visame tekste gali būti lėta.</string>
     <string name="remote_search_sending_query">Užklausiamas serveris</string>
@@ -1060,18 +1088,18 @@
     <string name="account_settings_remote_search_enabled">Įgalinti paiešką serveryje</string>
     <string name="account_settings_remote_search_enabled_summary">Ieškoti laiškų ir serveryje, ne vien įrenginyje</string>
     <string name="action_remote_search">Ieškoti laiškų serveryje</string>
-    <string name="pull_to_refresh_remote_search_from_local_search_pull">Perduodama paieškos serveriui...</string>
-    <string name="pull_to_refresh_remote_search_from_local_search_release">Gaunama iš paieškos serverio...</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Perduodama paieškos serveriui…</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Gaunama iš paieškos serverio…</string>
     <string name="remote_search_unavailable_no_network">Paieškai serveryje reikia interneto ryšio.</string>
 
-    <string name="global_settings_background_as_unread_indicator_label">"Išblukinti perskaitytus laiškus "</string>
+    <string name="global_settings_background_as_unread_indicator_label">Išblukinti perskaitytus laiškus </string>
     <string name="global_settings_background_as_unread_indicator_summary">Pilkas fonas parodo jog laiškas perskaitytas</string>
 
     <string name="global_settings_threaded_view_label">Teminis rodinys</string>
     <string name="global_settings_threaded_view_summary">Grupuoti laiškus pagal pokalbį</string>
 
     <string name="upgrade_databases_title">Atnaujinamos duomenų bazės</string>
-    <string name="upgrade_databases_unspecified">Atnaujinamos duomenų bazės...</string>
+    <string name="upgrade_databases_unspecified">Atnaujinamos duomenų bazės…</string>
     <string name="upgrade_database_format">Atnaujinama \"<xliff:g id="account">%s</xliff:g>\" paskyros duomenų bazė</string>
 
     <string name="message_list_loading">Įkeliama…</string>
@@ -1086,9 +1114,9 @@
     <string name="global_settings_show_contact_picture_label">Rodyti kontaktų paveikslėlius</string>
     <string name="global_settings_show_contact_picture_summary">Laiškų sąraše rodyti kontaktų paveikslėlius</string>
 
-    <string name="last_refresh_time_format">"Atnaujinta "<xliff:g id="formatted_time">%s</xliff:g></string>
-    <string name="last_refresh_time_format_with_push">"Atnaujinta "<xliff:g id="time_with_preposition">%s</xliff:g>" (Siuntimas aktyvus)"</string>
-    <string name="preposition_for_date">" "<xliff:g id="date">%s</xliff:g></string>
+    <string name="last_refresh_time_format">Atnaujinta <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Atnaujinta <xliff:g id="time_with_preposition">%s</xliff:g> (Siuntimas aktyvus)</string>
+    <string name="preposition_for_date"> <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Pažymėti visus kaip skaitytus</string>
 
@@ -1098,8 +1126,8 @@
     <string name="global_settings_messageview_visible_refile_actions_title">Matomi laiško veiksmai</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Laiško peržiūros meniu rodyti pasirinktus veiksmus</string>
 
-    <string name="loading_attachment">Įkeliamas priedas...</string>
+    <string name="loading_attachment">Įkeliamas priedas…</string>
     <string name="fetching_attachment_dialog_title_send">Siunčiamas laiškas</string>
     <string name="fetching_attachment_dialog_title_save">Išsaugomas juodraštis</string>
-    <string name="fetching_attachment_dialog_message">Gaunamas priedas...</string>
+    <string name="fetching_attachment_dialog_message">Gaunamas priedas…</string>
 </resources>
