@@ -1964,18 +1964,18 @@ public class LocalStore extends Store implements Serializable {
                                             bp.setEncoding(encoding);
                                             if (name != null) {
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                                                             String.format("%s;\n name=\"%s\"",
+                                                             String.format("%s;\r\n name=\"%s\"",
                                                                            type,
                                                                            name));
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                             String.format("%s;\n filename=\"%s\";\n size=%d",
+                                                             String.format("%s;\r\n filename=\"%s\";\r\n size=%d",
                                                                            contentDisposition,
                                                                            name, // TODO: Should use encoded word defined in RFC 2231.
                                                                            size));
                                             } else {
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                        String.format("%s;\n size=%d",
+                                                        String.format("%s;\r\n size=%d",
                                                                       contentDisposition,
                                                                       size));
                                             }

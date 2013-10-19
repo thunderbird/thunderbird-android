@@ -12,16 +12,16 @@ public class HtmlConverterTest extends TestCase {
     private static final String OUTPUT_FILE = "C:/temp/parse.html";
 
     public void testTextQuoteToHtmlBlockquote() {
-        String message = "Panama!\n" +
-            "\n" +
-            "Bob Barker <bob@aol.com> wrote:\n" +
-            "> a canal\n" +
-            ">\n" +
-            "> Dorothy Jo Gideon <dorothy@aol.com> espoused:\n" +
-            "> >A man, a plan...\n" +
-            "> Too easy!\n" +
-            "\n" +
-            "Nice job :)\n" +
+        String message = "Panama!\r\n" +
+            "\r\n" +
+            "Bob Barker <bob@aol.com> wrote:\r\n" +
+            "> a canal\r\n" +
+            ">\r\n" +
+            "> Dorothy Jo Gideon <dorothy@aol.com> espoused:\r\n" +
+            "> >A man, a plan...\r\n" +
+            "> Too easy!\r\n" +
+            "\r\n" +
+            "Nice job :)\r\n" +
             ">> Guess!";
         String result = HtmlConverter.textToHtml(message);
         writeToFile(result);
@@ -49,13 +49,13 @@ public class HtmlConverterTest extends TestCase {
     }
 
     public void testTextQuoteToHtmlBlockquoteIndented() {
-        String message = "*facepalm*\n" +
-            "\n" +
-            "Bob Barker <bob@aol.com> wrote:\n" +
-            "> A wise man once said...\n" +
-            ">\n" +
-            ">     LOL F1RST!!!!!\n" +
-            ">\n" +
+        String message = "*facepalm*\r\n" +
+            "\r\n" +
+            "Bob Barker <bob@aol.com> wrote:\r\n" +
+            "> A wise man once said...\r\n" +
+            ">\r\n" +
+            ">     LOL F1RST!!!!!\r\n" +
+            ">\r\n" +
             "> :)";
         String result = HtmlConverter.textToHtml(message);
         writeToFile(result);
@@ -84,12 +84,12 @@ public class HtmlConverterTest extends TestCase {
         assertEquals(HtmlConverter.getQuoteColor(0), HtmlConverter.QUOTE_COLOR_DEFAULT);
         assertEquals(HtmlConverter.getQuoteColor(6), HtmlConverter.QUOTE_COLOR_DEFAULT);
 
-        String message = "zero\n" +
-            "> one\n" +
-            ">> two\n" +
-            ">>> three\n" +
-            ">>>> four\n" +
-            ">>>>> five\n" +
+        String message = "zero\r\n" +
+            "> one\r\n" +
+            ">> two\r\n" +
+            ">>> three\r\n" +
+            ">>>> four\r\n" +
+            ">>>>> five\r\n" +
             ">>>>>> six";
         String result = HtmlConverter.textToHtml(message);
         writeToFile(result);
@@ -136,9 +136,9 @@ public class HtmlConverterTest extends TestCase {
     }
 
     public void testPreserveSpacesAtFirst() {
-        String message = "foo\n"
-                + " bar\n"
-                + "  baz\n";
+        String message = "foo\r\n"
+                + " bar\r\n"
+                + "  baz\r\n";
         String result = HtmlConverter.textToHtml(message);
         writeToFile(result);
         assertEquals("<pre class=\"k9mail\">"
@@ -150,11 +150,11 @@ public class HtmlConverterTest extends TestCase {
 
     public void testPreserveSpacesAtFirstForSpecialCharacters() {
         String message =
-                  " \n"
-                + "  &\n"
-                + "    \r\n"
-                + "   <\n"
-                + "  > \n";
+                  " \r\n"
+                + "  &\r\n"
+                + "    \n"
+                + "   <\r\n"
+                + "  > \r\n";
         String result = HtmlConverter.textToHtml(message);
         writeToFile(result);
         assertEquals("<pre class=\"k9mail\">"

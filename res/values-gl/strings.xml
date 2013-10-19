@@ -262,7 +262,7 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="message_compose_quote_header_from">Dende:</string>
     <string name="message_compose_quote_header_to">Para:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribiu:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribiu:</string>
     <string name="message_compose_error_no_recipients">Debes engadir un destinatario</string>
     <string name="error_contact_address_not_found">Non atopo enderezo electrónico.</string>
     <string name="message_compose_attachments_skipped_toast">Algúns adxuntos non poden reenviarse porque non foron descargados.</string>

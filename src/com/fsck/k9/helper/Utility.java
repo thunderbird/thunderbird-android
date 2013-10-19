@@ -282,7 +282,7 @@ public class Utility {
         StringBuilder result = new StringBuilder();
         for (String piece : str.split(NEWLINE_REGEX)) {
             result.append(wrap(piece, wrapLength, null, false));
-            result.append("\n");
+            result.append("\r\n");
         }
         return result.toString();
     }
@@ -330,7 +330,7 @@ public class Utility {
             return null;
         }
         if (newLineStr == null) {
-            newLineStr = "\n";
+            newLineStr = "\r\n";
         }
         if (wrapLength < 1) {
             wrapLength = 1;

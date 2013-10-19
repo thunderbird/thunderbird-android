@@ -288,7 +288,7 @@ de plus</string>
     <string name="message_compose_quote_header_from">De\u00A0:</string>
     <string name="message_compose_quote_header_to">À\u00A0:</string>
     <string name="message_compose_quote_header_cc">Cc\u00A0:</string>
-    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> a écrit\u00A0:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> a écrit\u00A0:</string>
     <string name="message_compose_error_no_recipients">Vous devez ajouter au moins un destinataire.</string>
     <string name="error_contact_address_not_found">Aucune adresse e-mail trouvée</string>
     <string name="message_compose_attachments_skipped_toast">Certaines pièces jointes ne peuvent pas être transmises car elles n\'ont pas été téléchargées.</string>
