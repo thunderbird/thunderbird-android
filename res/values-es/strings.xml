@@ -755,9 +755,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
 
     <string name="account_clear_dlg_title">Limpiar cuenta</string>
 
-    <string name="provider_note_live">Sólo algunas cuentas \"Plus\" pueden utilizar acceso POP
-        Si no puede acceder con su contraseña y usuario y no tiene una cuenta de pago.
-        Es posible que pueda acceder sólo via web.</string>
     <string name="provider_note_yahoojp">Si quiere utilizar el correo POP3 para este proveedor debe activar este acceso en la Configuración de Yahoo.</string>
     <string name="provider_note_auonejp">Si quiere usar IMAP o POP3 con este proveedor debe autorizar el uso de IMAP o POP3 en la página de configuración de correo au one.</string>
     <string name="provider_note_naver">Si quiere usar IMAP o POP3 con este proveedor debe autorizar el uso de IMAP o POP3 en la página de configuración de correo Naver.</string>
@@ -1146,8 +1143,14 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

@@ -756,11 +756,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
 
     <string name="account_clear_dlg_title">Cancella account</string>
 
-    <string name="provider_note_live">Solo alcuni account \"Plus\" comprendono l\'accesso POP
-        consentendo il collegamento del programma. Se non riesci ad accedere con
-        indirizzo email e password corretti, è possibile che non sia stato pagato un account
-        \"Plus\". Esegui il browser Internet per acquistare l\'accesso a questo
-        genere di account email.</string>
     <string name="provider_note_yahoojp">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di Yahoo.</string>
     <string name="provider_note_auonejp">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di au one mail.</string>
     <string name="provider_note_naver">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di Naver mail.</string>
@@ -1147,8 +1142,14 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
 
     <string name="mark_all_as_read">Marca tutti come letti</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

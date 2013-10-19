@@ -883,7 +883,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="tap_hint">Für ungelesene oder wichtige Nachrichten Umschlag oder Stern berühren</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">In gem. Posteingang integrieren</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Ungelesene Nachrichten im gemeinsamen Posteingang anzeigen</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Nachrichten im gemeinsamen Posteingang anzeigen</string>
 
     <string name="account_settings_searchable_label">Durchsuchbare Ordner</string>
     <string name="account_settings_searchable_all">Alle</string>

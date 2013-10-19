@@ -728,7 +728,6 @@
 
     <string name="account_clear_dlg_title">清除帳戶</string>
 
-    <string name="provider_note_live">只有某些「付費帳戶」允許POP服務並允許該程式連接。如果您使用了正確的使用者名稱和密碼卻仍然無法登入，則您可能沒有購買這些「付費帳戶」。請使用瀏覽器來連接這些帳戶。</string>
     <string name="provider_note_yahoojp">要使用此提供者的POP3服務，請先至Yahoo郵箱設定頁面設定POP3使用許可。</string>
     <string name="provider_note_auonejp">要使用此提供者的IMAP或POP3，請先至au one郵箱設定頁面設定允許使用IMAP或POP3。</string>
     <string name="provider_note_naver">要使用此提供者的IMAP或POP3，請先至Naver郵箱設定頁面設定允許使用IMAP或POP3。</string>
@@ -1108,8 +1107,14 @@
 
     <string name="mark_all_as_read">標記全部為已讀</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

@@ -755,9 +755,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
 
     <string name="account_clear_dlg_title">Limpar conta</string>
 
-    <string name="provider_note_live">Só algunhas contas \"Plus\" poden usar acceso POP
-        Se non podes acceder coa tua contrasinal e usuario e non tes unha conta de pago.
-        É posible que podas acceder só vía web.</string>
     <string name="provider_note_yahoojp">Se queres usar o correo POP3 para este proveedor debes activar este acceso na Configuración de Yahoo.</string>
     <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
     <!-- NEW: <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>-->
@@ -1152,8 +1149,14 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize missing contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visisble message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
     <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

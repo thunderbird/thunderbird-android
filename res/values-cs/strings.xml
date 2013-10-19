@@ -760,11 +760,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="account_clear_dlg_title">Vyčistit účet</string>
 
-    <string name="provider_note_live">Jen některé \"Plus\" účty zahrnují POP přístup,
-        který umožňuje tomuto programu se připojit. Pokud nejste schopni se připojit
-        s vaší správnou emailovou adresou a heslem, nemusíte mít placený \"Plus\"
-        účet. Spusťte si prosím webový prohlížeč, kterým na takové účty získáte
-        přístup.</string>
     <string name="provider_note_yahoojp">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Yahoo.</string>
     <string name="provider_note_auonejp">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Au one.</string>
     <string name="provider_note_naver">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Naver.</string>
@@ -1156,7 +1151,13 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="mark_all_as_read">Označ vše jako přečtené</string>
 
     <string name="global_settings_colorize_missing_contact_pictures_label">Zabarvit chybějcí obrázky kontaktů</string>
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
     <string name="global_settings_messageview_visible_refile_actions_title">Zobrazení funkcí zpráv</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Zobrazí vybrané funkce v dolním menu u zpráv</string>
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>
