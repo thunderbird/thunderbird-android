@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -166,6 +167,8 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     private ProgressBar mActionBarProgress;
     private MenuItem mMenuButtonCheckMail;
+    private View mCheckMailRefreshView;
+    private Animation mCheckMailRotation;
     private View mActionButtonIndeterminateProgress;
     private int mLastDirection = (K9.messageViewShowNext()) ? NEXT : PREVIOUS;
 
@@ -532,6 +535,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         mActionBarProgress = (ProgressBar) customView.findViewById(R.id.actionbar_progress);
         mActionButtonIndeterminateProgress =
                 getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
+        
+        if (android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.HONEYCOMB) {
+	    	mCheckMailRefreshView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_imageview, null);
+	    	mCheckMailRotation = AnimationUtils.loadAnimation(
+	    			MessageList.this, R.anim.rotate_refresh);    
+        }
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -925,6 +934,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         getSupportMenuInflater().inflate(R.menu.message_list_option, menu);
         mMenu = menu;
         mMenuButtonCheckMail= menu.findItem(R.id.check_mail);
+        mMenuButtonCheckMail.setActionView(mCheckMailRefreshView);
         return true;
     }
 
@@ -1370,10 +1380,21 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         if (mMenuButtonCheckMail != null && mMenuButtonCheckMail.isVisible()) {
             mActionBarProgress.setVisibility(ProgressBar.GONE);
             if (enable) {
-                mMenuButtonCheckMail
-                        .setActionView(mActionButtonIndeterminateProgress);
+            	if (mCheckMailRefreshView != null)  {
+            		mCheckMailRefreshView.startAnimation(mCheckMailRotation);
+            	}
+            	else {
+            		mMenuButtonCheckMail
+            			.setActionView(mActionButtonIndeterminateProgress);
+            	}
             } else {
-                mMenuButtonCheckMail.setActionView(null);
+            	if (mCheckMailRefreshView != null)  {
+            		mCheckMailRefreshView.clearAnimation();
+            		mCheckMailRefreshView.setRotation(0);
+            	}
+            	else {
+            		mMenuButtonCheckMail.setActionView(null);
+            	}
             }
         } else {
             if (mMenuButtonCheckMail != null)
