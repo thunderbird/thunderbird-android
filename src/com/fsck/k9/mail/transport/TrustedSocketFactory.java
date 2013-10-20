@@ -25,43 +25,49 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
 	protected static final String ENABLED_CIPHERS[];
 
     static {
-        List<String> enabledCiphers = new ArrayList<String>();
-        try {
-            String preferredCiphers[] = {
-                "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-                "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
-                "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
-                "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
-                "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
-                "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
-                "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
-                "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
-                "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
-                "TLS_RSA_WITH_AES_128_CBC_SHA",
-                "TLS_RSA_WITH_AES_256_CBC_SHA",
-                "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
-                "SSL_RSA_WITH_RC4_128_SHA",
-                "SSL_RSA_WITH_RC4_128_MD5",
-            };
+        String preferredCiphers[] = {
+            "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+            "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+            "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+            "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+            "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+            "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+            "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+            "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
+            "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
+            "TLS_RSA_WITH_AES_128_CBC_SHA",
+            "TLS_RSA_WITH_AES_256_CBC_SHA",
+            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+            "SSL_RSA_WITH_RC4_128_SHA",
+            "SSL_RSA_WITH_RC4_128_MD5",
+        };
 
+        String[] supportedCiphers = null;
+
+        try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, null, new SecureRandom());
             SSLSocketFactory sf = sslContext.getSocketFactory();
-            Set<String> supportedCiphers = new HashSet<String>();
-            Collections.addAll(supportedCiphers, sf.getSupportedCipherSuites());
-
-            for (String preferredCipher : preferredCiphers) {
-                if (supportedCiphers.contains(preferredCipher)) {
-                    enabledCiphers.add(preferredCipher);
-                }
-            }
+            supportedCiphers = sf.getSupportedCipherSuites();
         } catch (KeyManagementException kme) {
             kme.printStackTrace();
         } catch (NoSuchAlgorithmException nsae) {
             nsae.printStackTrace();
         }
-        ENABLED_CIPHERS = enabledCiphers.isEmpty() ? null :
-            enabledCiphers.toArray(new String[enabledCiphers.size()]);
+
+        ENABLED_CIPHERS = supportedCiphers == null ? null :
+            filterBySupport(preferredCiphers, supportedCiphers);
+    }
+
+    protected static String[] filterBySupport(String[] preferred, String[] supported) {
+        List<String> enabled = new ArrayList<String>();
+        Set<String> available = new HashSet<String>();
+        Collections.addAll(available, supported);
+
+        for (String item : preferred) {
+            if (available.contains(item)) enabled.add(item);
+        }
+        return enabled.toArray(new String[enabled.size()]);
     }
 
     protected static final String ENABLED_PROTOCOLS[] = {
