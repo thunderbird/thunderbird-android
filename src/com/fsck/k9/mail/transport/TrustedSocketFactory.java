@@ -23,6 +23,7 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
     private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
 
 	protected static final String ENABLED_CIPHERS[];
+    protected static final String ENABLED_PROTOCOLS[];
 
     static {
         String preferredCiphers[] = {
@@ -41,14 +42,22 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
             "SSL_RSA_WITH_RC4_128_SHA",
             "SSL_RSA_WITH_RC4_128_MD5",
         };
+        String preferredProtocols[] = {
+            "TLSv1.2", "TLSv1.1", "TLSv1"
+        };
 
         String[] supportedCiphers = null;
+        String[] supportedProtocols = null;
 
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, null, new SecureRandom());
             SSLSocketFactory sf = sslContext.getSocketFactory();
             supportedCiphers = sf.getSupportedCipherSuites();
+            SSLSocket sock = (SSLSocket)sf.createSocket();
+            supportedProtocols = sock.getSupportedProtocols();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         } catch (KeyManagementException kme) {
             kme.printStackTrace();
         } catch (NoSuchAlgorithmException nsae) {
@@ -57,6 +66,8 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
 
         ENABLED_CIPHERS = supportedCiphers == null ? null :
             filterBySupport(preferredCiphers, supportedCiphers);
+        ENABLED_PROTOCOLS = supportedProtocols == null ? null :
+            filterBySupport(preferredProtocols, supportedProtocols);
     }
 
     protected static String[] filterBySupport(String[] preferred, String[] supported) {
@@ -69,10 +80,6 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
         }
         return enabled.toArray(new String[enabled.size()]);
     }
-
-    protected static final String ENABLED_PROTOCOLS[] = {
-        "TLSv1.2", "TLSv1.1", "TLSv1"
-    };
 
     public TrustedSocketFactory(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -103,7 +110,9 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
         if (ENABLED_CIPHERS != null) {
             sock.setEnabledCipherSuites(ENABLED_CIPHERS);
         }
-        sock.setEnabledProtocols(ENABLED_PROTOCOLS);
+        if (ENABLED_PROTOCOLS != null) {
+            sock.setEnabledProtocols(ENABLED_PROTOCOLS);
+        }
     }
 
     public Socket createSocket(
