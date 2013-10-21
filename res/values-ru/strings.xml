@@ -77,7 +77,7 @@ K-9 Mail — почтовый клиент для Android.
     <!-- === General strings ================================================================== -->
 
     <string name="app_authors_fmt">Авторы: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_fmt">Список изменений: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_revision_fmt">Изменения: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">Сторонние компоненты: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Значки настроения: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
