@@ -56,4 +56,7 @@
     <item
         android:id="@+id/same_sender"
         android:title="@string/from_same_sender" />
+    <item
+        android:id="@+id/add_to_calendar"
+        android:title="@string/add_to_calendar_action" />
 </menu>

@@ -130,6 +130,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="delete_action">Delete</string>
     <string name="archive_action">Archive</string>
     <string name="spam_action">Spam</string>
+    <string name="add_to_calendar_action">Add to calendar</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
     <string name="single_message_options_action">Send…</string>

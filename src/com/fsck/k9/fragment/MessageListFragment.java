@@ -2,6 +2,7 @@ package com.fsck.k9.fragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -27,6 +28,8 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -87,7 +90,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
@@ -152,6 +154,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private static final int ACCOUNT_UUID_COLUMN = 16;
     private static final int FOLDER_NAME_COLUMN = 17;
     private static final int THREAD_COUNT_COLUMN = 18;
+    
+    private static final String TITLE = "title";
+    private static final String BEGIN_TIME = "beginTime";
+    private static final String END_TIME = "endTime";
+    private static final String DESCRIPTION = "description";
+    private static final String CALENDAR_INTENT_TYPE = "vnd.android.cursor.item/event";
+    
 
     private static final String[] PROJECTION = Utility.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
@@ -1565,14 +1574,19 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 onCopy(message);
                 break;
             }
+            
+            case R.id.add_to_calendar: {
+            	Message message = getMessageAtPosition(adapterPosition);
+            	onAddToCalendar(message);
+            	break;
+            }
         }
 
         mContextMenuUniqueId = 0;
         return true;
     }
 
-
-    private static String getSenderAddressFromCursor(Cursor cursor) {
+	private static String getSenderAddressFromCursor(Cursor cursor) {
         String fromList = cursor.getString(SENDER_LIST_COLUMN);
         Address[] fromAddrs = Address.unpack(fromList);
         return (fromAddrs.length > 0) ? fromAddrs[0].getAddress() : null;
@@ -1634,6 +1648,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         if (!account.hasSpamFolder()) {
             menu.findItem(R.id.spam).setVisible(false);
+        }
+        
+        if (!isSupportedCalendarAPI()) {
+        	menu.findItem(R.id.add_to_calendar).setVisible(false);
         }
 
     }
@@ -3621,4 +3639,33 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         return (mAllAccounts || !isSingleAccountMode() || !isSingleFolderMode() ||
                 isRemoteFolder());
     }
+
+    public boolean isSupportedCalendarAPI() {
+    	return (VERSION.SDK_INT >= VERSION_CODES.ICE_CREAM_SANDWICH);
+    }
+    
+    private void onAddToCalendar(Message message) {
+    	if (!isSupportedCalendarAPI()) {
+    		return;
+    	}
+    	Calendar beginTime = Calendar.getInstance();
+    	beginTime.add(Calendar.HOUR_OF_DAY, 1);
+    	beginTime.set(Calendar.MINUTE, 0);
+    	Calendar endTime = Calendar.getInstance();
+    	endTime.add(Calendar.HOUR_OF_DAY, beginTime.get(Calendar.HOUR_OF_DAY)+1);
+    	endTime.set(Calendar.MINUTE, 0);
+    	String calTitle = "";
+    	String calDesc = "";
+    	if (message != null) {
+    		calTitle = message.getSubject() != null ? message.getSubject() : "";
+    		calDesc =  message.getPreview() != null ? message.getPreview() : "";
+    	}
+    	Intent calendarIntent = new Intent(Intent.ACTION_INSERT);
+    	calendarIntent.setType(CALENDAR_INTENT_TYPE)
+    			.putExtra(TITLE, calTitle)		
+    			.putExtra(BEGIN_TIME, beginTime.getTimeInMillis())
+    			.putExtra(END_TIME, endTime.getTimeInMillis())
+				.putExtra(DESCRIPTION, calDesc);
+		startActivity(calendarIntent);
+	}
 }
