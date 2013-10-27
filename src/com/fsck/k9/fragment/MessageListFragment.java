@@ -3652,7 +3652,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     	beginTime.add(Calendar.HOUR_OF_DAY, 1);
     	beginTime.set(Calendar.MINUTE, 0);
     	Calendar endTime = Calendar.getInstance();
-    	endTime.add(Calendar.HOUR_OF_DAY, beginTime.get(Calendar.HOUR_OF_DAY)+1);
+    	endTime.set(Calendar.HOUR_OF_DAY, beginTime.get(Calendar.HOUR_OF_DAY)+1);
     	endTime.set(Calendar.MINUTE, 0);
     	String calTitle = "";
     	String calDesc = "";
