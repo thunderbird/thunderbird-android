@@ -1054,10 +1054,6 @@ public class MessagingController implements Runnable {
                 Log.v(K9.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " + remoteMessageCount);
             final Date earliestDate = account.getEarliestPollDate();
 
-            if (extraMessageCount < 0) {
-                extraMessageCount = K9.DEFAULT_FETCH_AMOUNT;
-            }
-
             if (remoteMessageCount > 0) {
                 /* Message numbers start at 1.  */
                 int remoteStart = Math.max(0, remoteMessageCount - (localMessageCount + extraMessageCount)) + 1;
@@ -1067,7 +1063,7 @@ public class MessagingController implements Runnable {
                     case there are no local messages yet and we don't fetch extra
                  */
                 if (remoteStart > remoteEnd) {
-                    remoteStart = remoteEnd;
+                    remoteStart = remoteEnd - K9.DEFAULT_FETCH_AMOUNT + 1;
                 }
 
                 if (K9.DEBUG)
@@ -1077,7 +1073,6 @@ public class MessagingController implements Runnable {
                 for (MessagingListener l : getListeners(listener)) {
                     l.synchronizeMailboxHeadersStarted(account, folder);
                 }
-
 
                 remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteEnd, earliestDate, null);
 
