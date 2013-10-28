@@ -2693,47 +2693,25 @@ public class ImapStore extends Store {
                     ImapStore.encodeString(mSettings.getPassword())), true));
         }
 
-        protected void authCramMD5() throws AuthenticationFailedException, MessagingException {
+        protected void authCramMD5() throws MessagingException, IOException {
+            String command = "AUTHENTICATE CRAM-MD5";
+            String tag = sendCommand(command, false);
+            ImapResponse response = readContinuationResponse(tag);
+            if (response.size() != 1 || !(response.get(0) instanceof String)) {
+                throw new MessagingException("Invalid Cram-MD5 nonce received");
+            }
+            byte[] b64Nonce = response.getString(0).getBytes();
+            byte[] b64CRAM = Authentication.computeCramMd5Bytes(
+                    mSettings.getUsername(), mSettings.getPassword(), b64Nonce);
+
+            mOut.write(b64CRAM);
+            mOut.write('\r');
+            mOut.write('\n');
+            mOut.flush();
             try {
-                String tag = sendCommand("AUTHENTICATE CRAM-MD5", false);
-                byte[] buf = new byte[1024];
-                int b64NonceLen = 0;
-                for (int i = 0; i < buf.length; i++) {
-                    buf[i] = (byte)mIn.read();
-                    if (buf[i] == 0x0a) {
-                        b64NonceLen = i;
-                        break;
-                    }
-                }
-                if (b64NonceLen == 0) {
-                    throw new AuthenticationFailedException("Error negotiating CRAM-MD5: nonce too long.");
-                }
-                byte[] b64NonceTrim = new byte[b64NonceLen - 2];
-                System.arraycopy(buf, 1, b64NonceTrim, 0, b64NonceLen - 2);
-
-                byte[] b64CRAM = Authentication.computeCramMd5Bytes(mSettings.getUsername(),
-                                 mSettings.getPassword(), b64NonceTrim);
-
-                mOut.write(b64CRAM);
-                mOut.write(new byte[] { 0x0d, 0x0a });
-                mOut.flush();
-
-                int respLen = 0;
-                for (int i = 0; i < buf.length; i++) {
-                    buf[i] = (byte)mIn.read();
-                    if (buf[i] == 0x0a) {
-                        respLen = i;
-                        break;
-                    }
-                }
-
-                String toMatch = tag + " OK";
-                String respStr = new String(buf, 0, respLen);
-                if (!respStr.startsWith(toMatch)) {
-                    throw new AuthenticationFailedException("CRAM-MD5 error: " + respStr);
-                }
-            } catch (IOException ioe) {
-                throw new AuthenticationFailedException("CRAM-MD5 Auth Failed.", ioe);
+                receiveCapabilities(readStatusResponse(tag, command, null));
+            } catch (MessagingException e) {
+                throw new AuthenticationFailedException(e.getMessage());
             }
         }
 
