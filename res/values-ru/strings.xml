@@ -1147,4 +1147,15 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="global_settings_messageview_visible_refile_actions_title">Действия для сообщений</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Видимость пунктов меню в списке сообщений</string>
+    
+    <string name="openpgp_decrypting_verifying">Дешифровка/Проверка…</string>
+    <string name="openpgp_successful_decryption">Дешифровано успешно</string>
+    <string name="openpgp_signature_valid">Верная подпись</string>
+    <string name="openpgp_signature_unknown">Неизвестный подписант</string>
+    <string name="openpgp_signature_invalid">Неверная подпись</string>
+    <string name="openpgp_signature_unknown_text">Нет публичного ключа подписи</string>
+    <string name="openpgp_successful_decryption_valid_signature">Дешифровано, подпись верна</string>
+    <string name="openpgp_successful_decryption_unknown_signature">Дешифровано, нет публичного ключа</string>
+    <string name="openpgp_get_key">Поиск отсутствующего ключа</string>
+    <string name="openpgp_error">Ошибка:</string>
 </resources>
