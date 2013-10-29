@@ -1,28 +1,25 @@
-package com.fsck.k9.mail.transport;
-
-import com.fsck.k9.mail.store.TrustManagerFactory;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.scheme.LayeredSocketFactory;
-import org.apache.http.params.HttpParams;
+package com.fsck.k9.mail.store;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
 
-public class TrustedSocketFactory implements LayeredSocketFactory {
-    private SSLSocketFactory mSocketFactory;
-    private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
 
-	protected static final String ENABLED_CIPHERS[];
+/**
+ * Filter and reorder list of cipher suites and TLS versions.
+ *
+ * <p>
+ * See: <a href="http://op-co.de/blog/posts/android_ssl_downgrade/">http://op-co.de/blog/posts/android_ssl_downgrade/</a>
+ * </p>
+ */
+public class TrustedSocketFactory {
+    protected static final String ENABLED_CIPHERS[];
     protected static final String ENABLED_PROTOCOLS[];
 
     static {
@@ -81,55 +78,19 @@ public class TrustedSocketFactory implements LayeredSocketFactory {
         return enabled.toArray(new String[enabled.size()]);
     }
 
-    public TrustedSocketFactory(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException {
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, new TrustManager[] {
-                            TrustManagerFactory.get(host, secure)
-                        }, new SecureRandom());
-        mSocketFactory = sslContext.getSocketFactory();
-        mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();
-        mSchemeSocketFactory.setHostnameVerifier(
-            org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+    public static Socket createSocket(SSLContext sslContext) throws IOException {
+        SSLSocket socket = (SSLSocket) sslContext.getSocketFactory().createSocket();
+        hardenSocket(socket);
+
+        return socket;
     }
 
-    public Socket connectSocket(Socket sock, String host, int port,
-                                InetAddress localAddress, int localPort, HttpParams params)
-    throws IOException, UnknownHostException, ConnectTimeoutException {
-        return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
-    }
-
-    public Socket createSocket() throws IOException {
-        return mSocketFactory.createSocket();
-    }
-
-    public boolean isSecure(Socket sock) throws IllegalArgumentException {
-        return mSchemeSocketFactory.isSecure(sock);
-    }
-
-    public static void hardenSocket(SSLSocket sock) {
+    private static void hardenSocket(SSLSocket sock) {
         if (ENABLED_CIPHERS != null) {
             sock.setEnabledCipherSuites(ENABLED_CIPHERS);
         }
         if (ENABLED_PROTOCOLS != null) {
             sock.setEnabledProtocols(ENABLED_PROTOCOLS);
         }
-    }
-
-    public Socket createSocket(
-        final Socket socket,
-        final String host,
-        final int port,
-        final boolean autoClose
-    ) throws IOException, UnknownHostException {
-        SSLSocket sslSocket = (SSLSocket) mSocketFactory.createSocket(
-                                  socket,
-                                  host,
-                                  port,
-                                  autoClose
-                              );
-        //hostnameVerifier.verify(host, sslSocket);
-        // verifyHostName() didn't blowup - good!
-        hardenSocket(sslSocket);
-        return sslSocket;
     }
 }

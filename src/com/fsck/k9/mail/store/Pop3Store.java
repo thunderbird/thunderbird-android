@@ -7,14 +7,12 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.transport.TrustedSocketFactory;
 import com.fsck.k9.mail.*;
 
 import com.fsck.k9.mail.internet.MimeMessage;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
 import java.io.*;
 import java.net.*;
@@ -332,8 +330,7 @@ public class Pop3Store extends Store {
                     sslContext.init(null, new TrustManager[] {
                                         TrustManagerFactory.get(mHost, secure)
                                     }, new SecureRandom());
-                    mSocket = sslContext.getSocketFactory().createSocket();
-                    TrustedSocketFactory.hardenSocket((SSLSocket)mSocket);
+                    mSocket = TrustedSocketFactory.createSocket(sslContext);
                 } else {
                     mSocket = new Socket();
                 }
