@@ -330,7 +330,7 @@ public class Pop3Store extends Store {
                     sslContext.init(null, new TrustManager[] {
                                         TrustManagerFactory.get(mHost, secure)
                                     }, new SecureRandom());
-                    mSocket = sslContext.getSocketFactory().createSocket();
+                    mSocket = TrustedSocketFactory.createSocket(sslContext);
                 } else {
                     mSocket = new Socket();
                 }
