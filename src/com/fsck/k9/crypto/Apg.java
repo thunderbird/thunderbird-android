@@ -14,6 +14,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.fsck.k9.R;
@@ -498,14 +499,23 @@ public class Apg extends CryptoProvider {
     @Override
     public boolean isEncrypted(Message message) {
         String data = null;
+        Log.i("crypto", message.getPreview());
         try {
             Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
             if (part == null) {
                 part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             }
-            if (part != null) {
-                data = MimeUtility.getTextFromPart(part);
+            
+            if (part != null)
+            {
+            	data = MimeUtility.getTextFromPart(part);
             }
+            
+            if (data == null || data.startsWith("<pre class="))
+            {
+            	data = processPGPattachment(message);
+            }
+            
         } catch (MessagingException e) {
             // guess not...
             // TODO: maybe log this?
@@ -516,8 +526,52 @@ public class Apg extends CryptoProvider {
         }
 
         Matcher matcher = PGP_MESSAGE.matcher(data);
-        return matcher.matches();
+        boolean returnValue = matcher.matches();
+        Log.i("crypto", "Returning: " + returnValue);
+        return returnValue;
     }
+
+	/**
+	 * Traverses through the attachments and collects the first pgp-encrypted one, 
+	 * extracts its text with a charset given (if not, us-ascii will be used) and 
+	 * return the encrypted part as a string. 
+	 * 
+	 * @param message the message to be parsed
+	 * @return the pgp encrypted text in the pgp encrypted attachment
+	 * @throws MessagingException
+	 */
+	public static String processPGPattachment(Message message)
+			throws MessagingException {
+		if (message == null)
+		{
+			return null;
+		}
+		
+		Part part = null;
+
+		//There is also a content-type of application/pgp-encrypted which is e.g. used by
+		//gpgtools
+
+		List <Part> attachmentParts = MimeUtility.collectAttachments(message);
+		boolean gotPGPencrypted = false;
+
+		for (Part attachmentPart : attachmentParts) //MimeUtility.collectAttachments(message))
+		{
+			if (attachmentPart.getContentType().startsWith("application/pgp-encrypted"))
+			{
+				gotPGPencrypted = true;
+				continue;
+			}
+
+			if (gotPGPencrypted && attachmentPart.getContentType().startsWith("application/octet-stream"))
+			{
+				part = attachmentPart;
+				gotPGPencrypted = false;
+				break;
+			}
+		}
+		return (part == null)? null : MimeUtility.getTextFromPart(part);
+	}
 
     @Override
     public boolean isSigned(Message message) {

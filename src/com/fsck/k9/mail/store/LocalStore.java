@@ -41,10 +41,10 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.activity.Search;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
@@ -4013,6 +4013,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public void writeTo(OutputStream out) throws IOException, MessagingException {
             InputStream in = getInputStream();
+            
             try {
                 boolean closeStream = false;
                 if (MimeUtil.isBase64Encoding(mEncoding)) {
@@ -4027,6 +4028,7 @@ public class LocalStore extends Store implements Serializable {
                     IOUtils.copy(in, out);
                 } finally {
                     if (closeStream) {
+                    	out.flush();
                         out.close();
                     }
                 }

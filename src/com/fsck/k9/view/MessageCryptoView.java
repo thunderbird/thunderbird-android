@@ -6,8 +6,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.mail.Message;
@@ -108,6 +110,12 @@ public class MessageCryptoView extends LinearLayout {
                     if (part != null) {
                         data = MimeUtility.getTextFromPart(part);
                     }
+                    
+                    if (data == null || data.startsWith("<pre class="))
+                    {
+                    	data = Apg.processPGPattachment(message);
+                    }
+                    
                     cryptoProvider.decrypt(mFragment, data, pgpData);
                 } catch (MessagingException me) {
                     Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);

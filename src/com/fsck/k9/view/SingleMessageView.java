@@ -620,6 +620,11 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
         } else {
             showStatusMessage(getContext().getString(R.string.webview_empty_message));
+        }  
+        
+        if (text != null || message.hasAttachments())
+        {
+        	 updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
         }
     }
 
