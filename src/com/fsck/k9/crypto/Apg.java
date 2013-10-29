@@ -540,7 +540,7 @@ public class Apg extends CryptoProvider {
 	 * @return the pgp encrypted text in the pgp encrypted attachment
 	 * @throws MessagingException
 	 */
-	public static String processPGPattachment(Message message)
+	public String processPGPattachment(Message message)
 			throws MessagingException {
 		if (message == null)
 		{

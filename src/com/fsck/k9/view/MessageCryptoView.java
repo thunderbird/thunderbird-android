@@ -113,7 +113,7 @@ public class MessageCryptoView extends LinearLayout {
                     
                     if (data == null || data.startsWith("<pre class="))
                     {
-                    	data = Apg.processPGPattachment(message);
+                    	data = cryptoProvider.processPGPattachment(message);
                     }
                     
                     cryptoProvider.decrypt(mFragment, data, pgpData);
