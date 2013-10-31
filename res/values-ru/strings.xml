@@ -200,7 +200,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="compacting_account">Сжатие ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Очистка ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="recreating_account">Пересоздание ящика\"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="recreating_account">Пересоздание ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Новая почта</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> новых</string>
@@ -213,9 +213,9 @@ K-9 Mail — почтовый клиент для Android.
     <string name="notification_certificate_error_title">Ошибка сертификата <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
 
-    <string name="notification_bg_sync_ticker">Проверка: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Проверка <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
-    <string name="notification_bg_send_ticker">Отправка: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Отправка почты</string>
     <string name="notification_bg_title_separator">:</string>
 
