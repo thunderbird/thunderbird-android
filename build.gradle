@@ -4,7 +4,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.5.+'
+    classpath 'com.android.tools.build:gradle:0.6.+'
   }
 }
 
@@ -20,7 +20,7 @@ dependencies {
 
 android {
   compileSdkVersion 17
-  buildToolsVersion '17'
+  buildToolsVersion '18.1.1'
 
   sourceSets {
     main {
