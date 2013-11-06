@@ -8,6 +8,16 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.701" versioncode="19002" >
+        <change>Overhauled how we do message view scrolling to fix a KitKat issue. Thanks to Joe Steele!</change>
+        <change>Hardened TLS cipher suites and versions</change>
+        <change>K-9 no longer adds blank lines to composed messages if there is no quoted text</change>
+        <change>Fixed serveral issues related to message drafts</change>
+        <change>Better cleanup of old data when deleting an account</change>
+        <change>Worked around a bug in KitKat that stopped settings import from working</change>
+        <change>Updated German, Greek, Japanese, Korean, Lithuanian, Portugese, Russian and Slovak translations</change>
+        <change></change>
+    </release>
     <release version="4.700" versioncode="19001" >
         <change>Code cleanups</change>
         <change>Fixed a bug that could have caused message drafts to be sent before they were ready</change>
