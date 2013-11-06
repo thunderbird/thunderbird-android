@@ -9,7 +9,7 @@
         <change>引用テキストがない場合に不要な空行を追加しないようにしました</change>
         <change>メッセージの下書きに関連するいくつかの問題を修正しました</change>
         <change>アカウントを削除した時に古いデータの削除を改善しました</change>
-        <change>KitKatのバグを一時的に回避するため設定のインポートを停止しました/change>
+        <change>KitKatのバグを一時的に回避するため設定のインポートを停止しました</change>
         <change>ドイツ語、ギリシャ語、日本語、韓国語、リトアニア語、ポルトガル語、ロシア語そしてスロバキア語の翻訳を更新しました</change>
     </release>
     <release version="4.700" versioncode="19001" >
