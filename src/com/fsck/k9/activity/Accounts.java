@@ -1373,7 +1373,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType(MimeUtility.K9_SETTINGS_MIME_TYPE);
+        i.setType("*/*"); // KitKat seems to be ignoring mimetypes and won't load settings
+        // MimeUtility.K9_SETTINGS_MIME_TYPE);
 
         PackageManager packageManager = getPackageManager();
         List<ResolveInfo> infos = packageManager.queryIntentActivities(i, 0);
