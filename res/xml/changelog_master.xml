@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.800" versioncode="20000" >
+        <change>This release should behave better on KitKat devices. A version of 4.8 that runs on older devices should appear shortly.</change>
+    </release>
     <release version="4.701" versioncode="19002" >
         <change>Overhauled how we do message view scrolling to fix a KitKat issue. Thanks to Joe Steele!</change>
         <change>Hardened TLS cipher suites and versions</change>
