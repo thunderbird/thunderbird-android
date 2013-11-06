@@ -1,6 +1,27 @@
 package com.fsck.k9.activity;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.james.mime4j.codec.EncoderUtil;
+import org.apache.james.mime4j.util.MimeUtil;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.SimpleHtmlSerializer;
+import org.htmlcleaner.TagNode;
+
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -22,12 +43,8 @@ import android.text.util.Rfc822Tokenizer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -45,6 +62,10 @@ import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
@@ -86,25 +107,6 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileMessageBody;
 import com.fsck.k9.view.MessageWebView;
-import org.apache.james.mime4j.codec.EncoderUtil;
-import org.apache.james.mime4j.util.MimeUtil;
-import org.htmlcleaner.CleanerProperties;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.SimpleHtmlSerializer;
-import org.htmlcleaner.TagNode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MessageCompose extends K9Activity implements OnClickListener,
         ProgressDialogFragment.CancelListener {
@@ -297,6 +299,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private PgpData mPgpData = null;
     private boolean mAutoEncrypt = false;
     private boolean mContinueWithoutPublicKey = false;
+    private MimeMultipart encryptedMultipart = null;
 
     private String mReferences;
     private String mInReplyTo;
@@ -1457,9 +1460,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
+        // FIXME: Code needs to be deleted if the attachment-based pgp-encryption works
         if (mPgpData.getEncryptedData() != null) {
-            String text = mPgpData.getEncryptedData();
-            body = new TextBody(text);
+//            String text = mPgpData.getEncryptedData();
+            body = new TextBody(""); //text);
         } else {
             body = buildText(isDraft);
         }
@@ -1485,23 +1489,35 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 // (composedMimeMessage) with the user's composed messages, and subsequent parts for
                 // the attachments.
                 MimeMultipart mp = new MimeMultipart();
-                mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
+                if (encryptedMultipart != null)
+                	mp = encryptedMultipart;
+                else
+                	mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
                 addAttachmentsToMessage(mp);
                 message.setBody(mp);
             } else {
                 // If no attachments, our multipart/alternative part is the only one we need.
-                message.setBody(composedMimeMessage);
+            	if (encryptedMultipart != null)
+            		message.setBody(encryptedMultipart);
+            	else
+            		message.setBody(composedMimeMessage);
             }
         } else if (mMessageFormat == SimpleMessageFormat.TEXT) {
             // Text-only message.
             if (hasAttachments) {
                 MimeMultipart mp = new MimeMultipart();
-                mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
+                if (encryptedMultipart != null)
+                	mp = encryptedMultipart;
+                else
+                	mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
                 addAttachmentsToMessage(mp);
                 message.setBody(mp);
             } else {
                 // No attachments to include, just stick the text body in the message and call it good.
-                message.setBody(body);
+            	if (encryptedMultipart != null)
+            		message.setBody(encryptedMultipart);
+            	else
+            		message.setBody(body);
             }
         }
 
@@ -1819,7 +1835,29 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void onEncryptDone() {
+    	//Here the encrypted data arrives...
+    	//Put it in the attachments...
         if (mPgpData.getEncryptedData() != null) {
+        	try {
+				MimeMultipart mpart = new MimeMultipart();
+				mpart.setSubType("encrypted");
+				mpart.addValuePair("protocol", "application/pgp-encrypted");
+				
+				MimeBodyPart bpart = new MimeBodyPart();
+				bpart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/pgp-encrypted");
+				bpart.setBody(new TextBody("Version: 1"));
+				mpart.addBodyPart(bpart);
+				
+				bpart = new MimeBodyPart();
+				bpart.addHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/octet-stream; name=encrypted.asc");
+				bpart.setBody(new TextBody(mPgpData.getEncryptedData()));
+				mpart.addBodyPart(bpart);
+				
+				encryptedMultipart = mpart;
+			} catch (MessagingException e) {
+				Log.e("crypto", e.getMessage());
+			}
+        	
             onSend();
         } else {
             Toast.makeText(this, R.string.send_aborted, Toast.LENGTH_SHORT).show();

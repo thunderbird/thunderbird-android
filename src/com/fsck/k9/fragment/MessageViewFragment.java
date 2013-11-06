@@ -38,6 +38,9 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
@@ -721,11 +724,64 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         LocalMessage message = (LocalMessage) mMessage;
         MessagingController controller = mController;
         Listener listener = mListener;
+        
+        //TODO: This is ugly and the cleared data shouldn't overwrite the original one, but duuude...
+        pgpData.setDecryptedData(postProcessMessage(pgpData.getDecryptedData()));
         try {
             mMessageView.setMessage(account, message, pgpData, controller, listener);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }
+    }
+    
+    /**
+     * The decrypted messages do have a problem because they may have different 
+     * encodings and additional information which is not really necessary...
+     * 
+     * @param originalMessage the message as it was decrypted.
+     * @return the message after it was cleared.
+     */
+    private String postProcessMessage(String originalMessage)
+    {
+    	Log.i("crypto", "originalMessage: " + originalMessage);
+    	TextBody body = new TextBody(originalMessage);
+    	MimeBodyPart mpart = null;
+    	Part part = null;
+		try {
+			mpart = new MimeBodyPart(body);
+//			part = MimeUtility.findFirstPartByMimeType(mpart, "multipart/signed");
+//			if (part != null)
+//			{
+				part = MimeUtility.findFirstPartByMimeType(mpart, "text/plain");
+				if (part != null)
+				{
+					String text = MimeUtility.getTextFromPart(part);
+					return text;
+				}
+				//TODO: Should we also check for the signature?
+//			}			
+		} catch (MessagingException e) {
+			Log.e("crypto", e.getMessage());
+		}
+    	
+    	
+    	
+    	/*
+    	 * Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
+            if (part == null) {
+                // If that fails, try and get a text part.
+                part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
+                if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
+                    text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
+                }
+            } else {
+                // We successfully found an HTML part; do the necessary character set decoding.
+                text = MimeUtility.getTextFromPart(part);
+            }
+    	 * 
+    	 */
+    	
+    	return originalMessage; //sbuilder.toString();
     }
 
     private void showDialog(int dialogId) {

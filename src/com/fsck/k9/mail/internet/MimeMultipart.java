@@ -63,7 +63,13 @@ public class MimeMultipart extends Multipart {
 
     public void setSubType(String subType) {
         this.mSubType = subType;
-        mContentType = String.format("multipart/%s; boundary=\"%s\"", subType, mBoundary);
+        mContentType = String.format("multipart/%s; boundary=\"%s\";", subType, mBoundary);
+    }
+    
+    public void addValuePair(String name, String value)
+    {
+    	if (mContentType != null && name != null && value != null)
+    		mContentType = mContentType.concat(String.format("%s=\"%s\";", name, value));
     }
 
     public void writeTo(OutputStream out) throws IOException, MessagingException {
