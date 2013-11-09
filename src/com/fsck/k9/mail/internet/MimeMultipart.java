@@ -17,6 +17,8 @@ public class MimeMultipart extends Multipart {
     protected String mBoundary;
 
     protected String mSubType;
+    
+    protected boolean mPgpEncrypted = false;
 
     public MimeMultipart() throws MessagingException {
         mBoundary = generateBoundary();
@@ -63,13 +65,9 @@ public class MimeMultipart extends Multipart {
 
     public void setSubType(String subType) {
         this.mSubType = subType;
-        mContentType = String.format("multipart/%s; boundary=\"%s\";", subType, mBoundary);
-    }
-    
-    public void addValuePair(String name, String value)
-    {
-    	if (mContentType != null && name != null && value != null)
-    		mContentType = mContentType.concat(String.format("%s=\"%s\";", name, value));
+        mContentType = String.format("multipart/%s; boundary=\"%s\"; ", subType, mBoundary);
+        if (mPgpEncrypted)
+        	mContentType = mContentType.concat("protocol=\"application/pgp-encrypted\"; ");
     }
 
     public void writeTo(OutputStream out) throws IOException, MessagingException {
@@ -111,5 +109,10 @@ public class MimeMultipart extends Multipart {
         for (BodyPart part : mParts) {
             part.setUsing7bitTransport();
         }
+    }
+    
+    public void setPGPEncrypted(boolean newValue)
+    {
+    	this.mPgpEncrypted = newValue;
     }
 }
