@@ -1840,17 +1840,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (mPgpData.getEncryptedData() != null) {
         	try {
 				MimeMultipart mpart = new MimeMultipart();
+				mpart.setPGPEncrypted(true);
 				mpart.setSubType("encrypted");
-				mpart.addValuePair("protocol", "application/pgp-encrypted");
 				
 				MimeBodyPart bpart = new MimeBodyPart();
 				bpart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/pgp-encrypted");
 				bpart.setBody(new TextBody("Version: 1"));
+				bpart.setUsing7bitTransport();
 				mpart.addBodyPart(bpart);
 				
 				bpart = new MimeBodyPart();
 				bpart.addHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/octet-stream; name=encrypted.asc");
 				bpart.setBody(new TextBody(mPgpData.getEncryptedData()));
+				bpart.setUsing7bitTransport();
 				mpart.addBodyPart(bpart);
 				
 				encryptedMultipart = mpart;
