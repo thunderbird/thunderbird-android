@@ -767,7 +767,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Kulcs elfogadva</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs elutasítva</string>
 
-    <string name="message_list_help_key"><!-- NEW: V, Z untranslated -->
+    <string name="message_list_help_key">
     Del (vagy D) - Törlés\n
     R - Válasz\n
     A - Válasz mindenkinek\n
@@ -989,17 +989,14 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
         <item quantity="one">Biztos hogy törli ezt a levelet?</item>
         <item quantity="other">Biztos hogy törli ezt: <xliff:g id="message_count">%1$d</xliff:g> ?</item>
     </plurals>
-
     <string name="dialog_confirm_delete_confirm_button">Törlés</string>
     <string name="dialog_confirm_delete_cancel_button">Nem törlöm</string>
 
     <string name="dialog_confirm_spam_title">Levélszemét mappa áthelyezésének jóváhagyása</string>
-    
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Valóban át akarja helyezni ezt a levelet a spam mappába?</item>
         <item quantity="other">Valóban át akarja helyezni ezt a levelet a spam mappába: <xliff:g id="message_count">%1$d</xliff:g> ?</item>
     </plurals>
-    
     <string name="dialog_confirm_spam_confirm_button">Igen</string>
     <string name="dialog_confirm_spam_cancel_button">Nem</string>
 
@@ -1043,12 +1040,10 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     </plurals>
     <string name="settings_import_incoming_server">Bejövő szerver (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Kimenő szerver (<xliff:g id="hostname">%s</xliff:g>):</string>
-
     <plurals name="settings_import_setting_passwords">
         <item quantity="one">Jelszó beállítása…</item>
         <item quantity="other">Jelszavak beállítása…</item>
     </plurals>
-    
     <string name="settings_import_use_incoming_server_password">Bejövő kiszolgáló jelszavának használata</string>
     <string name="activate_account_action">Aktiválás</string>
 
