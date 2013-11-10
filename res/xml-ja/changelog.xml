@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.801" versioncode="20002" >
+        <change>KitKatでの設定をインポートする際のバグを修正しました</change>
+        <change>'メッセージサイズ自動調整'オプションをチェックした時に空のメッセージが表示される問題を修正しました</change>
+    </release>
     <release version="4.800" versioncode="20001" >
-        <change>これはKitKatデバイスでよりよく振る舞うべくリリースされました。古いデバイスで動く4.8のバージョンはすぐに現れなければなりませんでした</change>
+        <change>これはKitKatデバイスでよりよく振る舞うべくリリースされました。古いデバイスで動く4.8のバージョンはすぐに現れなければなりません</change>
     </release>
     <release version="4.701" versioncode="19002" >
         <change>KitKatでの問題を修正するためにメッセージビューのスクロールの仕方を見直しました。ありがとう Joe Steele!</change>
