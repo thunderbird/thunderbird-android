@@ -2504,8 +2504,8 @@ public class ImapStore extends Store {
                         sslContext.init(null, new TrustManager[] {
                                             TrustManagerFactory.get(mSettings.getHost(), secure)
                                         }, new SecureRandom());
-                        mSocket = sslContext.getSocketFactory().createSocket(mSocket, mSettings.getHost(), mSettings.getPort(),
-                                  true);
+                        mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket,
+                                mSettings.getHost(), mSettings.getPort(), true);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new PeekableInputStream(new BufferedInputStream(mSocket
                                                       .getInputStream(), 1024));
