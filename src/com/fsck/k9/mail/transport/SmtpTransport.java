@@ -304,8 +304,8 @@ public class SmtpTransport extends Transport {
                     sslContext.init(null, new TrustManager[] {
                                         TrustManagerFactory.get(mHost, secure)
                                     }, new SecureRandom());
-                    mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
-                              true);
+                    mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
+                              mPort, true);
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                                   1024));
                     mOut = mSocket.getOutputStream();
