@@ -227,6 +227,10 @@
         <incoming uri="imap+ssl://imap.web.de" username="$user" />
         <outgoing uri="smtp://smtp.web.de" username="$user" />
     </provider>
+    <provider id="posteo" label="Posteo" domain="posteo.de">
+    	<incoming uri="imap+tls+://posteo.de" username="$email" />
+        <outgoing uri="smtp+tls+://posteo.de" username="$email" />
+    </provider>
     <!-- GMX variants -->
     <provider id="gmx.net" label="GMX.net" domain="gmx.net">
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
