@@ -38,6 +38,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -1847,7 +1848,12 @@ public class LocalStore extends Store implements Serializable {
                                         String textContent = cursor.getString(1);
                                         String mimeType = cursor.getString(2);
                                         if (mimeType != null && mimeType.toLowerCase(Locale.US).startsWith("multipart/")) {
-                                            // If this is a multipart message, preserve both text
+                                        	// FIXME: This is a bloody workaround because when the email is saved, everything behind the subtype is NOT saved. 
+                                        	if (mimeType.equalsIgnoreCase("multipart/encrypted"))
+                                            {
+                                            	mp.setPGPEncrypted(true);
+                                            }
+                                        	// If this is a multipart message, preserve both text
                                             // and html parts, as well as the subtype.
                                             mp.setSubType(mimeType.toLowerCase(Locale.US).replaceFirst("^multipart/", ""));
                                             if (textContent != null) {
