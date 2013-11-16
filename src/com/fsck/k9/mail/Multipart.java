@@ -14,6 +14,8 @@ public abstract class Multipart implements CompositeBody {
     protected ArrayList<BodyPart> mParts = new ArrayList<BodyPart>();
 
     protected String mContentType;
+    
+    protected String mContentDescription;
 
     public void addBodyPart(BodyPart part) {
         mParts.add(part);
@@ -75,5 +77,15 @@ public abstract class Multipart implements CompositeBody {
             MimeUtility.setCharset(charset, part);
             ((TextBody)body).setCharset(charset);
         }
+    }
+    
+    public String getContentDescription()
+    {
+    	return mContentDescription;
+    }
+    
+    public void setContentDescription(String contentDescription)
+    {
+    	mContentDescription = contentDescription;
     }
 }

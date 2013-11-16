@@ -385,6 +385,9 @@ public class MimeMessage extends Message {
             multipart.setParent(this);
             String type = multipart.getContentType();
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
+            String description = multipart.getContentDescription();
+            if (description != null)
+            	setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION,description);
             if ("multipart/signed".equalsIgnoreCase(type) || type.startsWith("multipart/encrypted")) {
                 setEncoding(MimeUtil.ENC_7BIT);
             } else {
@@ -428,7 +431,6 @@ public class MimeMessage extends Message {
 
     public void writeTo(OutputStream out) throws IOException, MessagingException {
 
-    	//FIXME: The OutputStreamWriter uses the default file encoding of the os, therefore the original encoding is disregarded
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         mHeader.writeTo(out);
         writer.write("\r\n");

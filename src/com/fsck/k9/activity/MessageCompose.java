@@ -1464,6 +1464,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (mPgpData.getEncryptedData() != null) {
 //            String text = mPgpData.getEncryptedData();
             body = new TextBody(""); //text);
+        	//body = new TextBody("This is an OpenPGP/MIME encrypted message (RFC 2440 and 3156)");
         } else {
             body = buildText(isDraft);
         }
@@ -1582,7 +1583,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(
                              "attachment;\r\n filename=\"%s\";\r\n size=%d",
                              attachment.name, attachment.size));
-
+            
             mp.addBodyPart(bp);
         }
     }
@@ -1841,16 +1842,21 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         	try {
 				MimeMultipart mpart = new MimeMultipart();
 				mpart.setPGPEncrypted(true);
+				//FIXME: To really use the content description, the database has to be altered -> Not the case at the moment
+				mpart.setContentDescription("OpenPGP encrypted message");
 				mpart.setSubType("encrypted");
 				
 				MimeBodyPart bpart = new MimeBodyPart();
+				bpart = new MimeBodyPart();
 				bpart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/pgp-encrypted");
-				bpart.setBody(new TextBody("Version: 1"));
+				bpart.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "PGP/MIME Versions Identification");
+				bpart.setBody(new TextBody("Version: 1\r\n"));
 				bpart.setUsing7bitTransport();
 				mpart.addBodyPart(bpart);
 				
 				bpart = new MimeBodyPart();
-				bpart.addHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/octet-stream; name=encrypted.asc");
+				bpart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/octet-stream; name=encrypted.asc");
+				bpart.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "OpenPGP encrypted message");
 				bpart.setBody(new TextBody(mPgpData.getEncryptedData()));
 				bpart.setUsing7bitTransport();
 				mpart.addBodyPart(bpart);

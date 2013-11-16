@@ -13,7 +13,7 @@ public class MimeMultipart extends Multipart {
     protected String mPreamble;
 
     protected String mContentType;
-
+    
     protected String mBoundary;
 
     protected String mSubType;

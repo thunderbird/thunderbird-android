@@ -2213,7 +2213,10 @@ public class MimeUtility {
             return (MimeUtil.ENC_BASE64);
         } else if (MimeUtil.isMessage(type)) {
             return (MimeUtil.ENC_8BIT);
-        } else if ("multipart/signed".equalsIgnoreCase(type) || type.toLowerCase(Locale.US).startsWith("message/")) {
+        } else if ("multipart/signed".equalsIgnoreCase(type) 
+        		|| type.toLowerCase(Locale.US).startsWith("message/")
+        		|| type.equalsIgnoreCase("application/pgp-encrypted")
+        		|| type.startsWith("application/octet-stream")) {
             return (MimeUtil.ENC_7BIT);
         } else if (type.toLowerCase(Locale.US).startsWith("multipart/")) {
             return (MimeUtil.ENC_8BIT);

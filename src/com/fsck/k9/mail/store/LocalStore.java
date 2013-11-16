@@ -1852,6 +1852,7 @@ public class LocalStore extends Store implements Serializable {
                                         	if (mimeType.equalsIgnoreCase("multipart/encrypted"))
                                             {
                                             	mp.setPGPEncrypted(true);
+                                            	mp.setContentDescription("OpenPGP encrypted message");
                                             }
                                         	// If this is a multipart message, preserve both text
                                             // and html parts, as well as the subtype.
@@ -1969,21 +1970,37 @@ public class LocalStore extends Store implements Serializable {
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
                                             bp.setEncoding(encoding);
                                             if (name != null) {
-                                                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                                                             String.format("%s;\r\n name=\"%s\"",
-                                                                           type,
-                                                                           name));
-                                                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                             String.format("%s;\r\n filename=\"%s\";\r\n size=%d",
-                                                                           contentDisposition,
-                                                                           name, // TODO: Should use encoded word defined in RFC 2231.
-                                                                           size));
+                                                //PGP encrypted Mail must have other content-dispositions
+                                            	  bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                                                          String.format("%s;\r\n name=\"%s\"",
+                                                                        type,
+                                                                        name));
+                                            	  
+                                                if (bp.getContentType().equalsIgnoreCase("application/octet-stream;\r\n name=\"encrypted.asc\""))
+                                                {
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(
+                                                            "inline;\r\n filename=\"%s\"",
+                                                            name));
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "OpenPGP encrypted message");
+                                                }
+                                                else if (!bp.getContentType().equalsIgnoreCase("application/pgp-encrypted"))
+                                                {
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(
+                                                                 "attachment;\r\n filename=\"%s\";\r\n size=%d",
+                                                                 name, size));
+                                                }
                                             } else {
-                                                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
-                                                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
+                                            	bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
+                                            	 
+                                                if (!bp.getContentType().equalsIgnoreCase("application/pgp-encrypted"))
+                                                {
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
                                                         String.format("%s;\r\n size=%d",
                                                                       contentDisposition,
                                                                       size));
+                                                } else {
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "PGP/MIME Versions Identification");
+                                                }
                                             }
 
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
@@ -3586,7 +3603,7 @@ public class LocalStore extends Store implements Serializable {
             super.setRecipients(RecipientType.CC, mCc);
             super.setRecipients(RecipientType.BCC, mBcc);
             if (mMessageId != null) super.setMessageId(mMessageId);
-
+            
             mMessageDirty = false;
         }
 
