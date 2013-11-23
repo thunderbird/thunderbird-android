@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -46,6 +47,7 @@ public class AccountSetupBasics extends K9Activity
     private Provider mProvider;
 
     private EmailAddressValidator mEmailValidator = new EmailAddressValidator();
+    private boolean mCheckedIncoming = false;
 
     public static void actionNewAccount(Context context) {
         Intent i = new Intent(context, AccountSetupBasics.class);
@@ -229,7 +231,8 @@ public class AccountSetupBasics extends K9Activity
             } else if (incomingUri.toString().startsWith("pop3")) {
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
             }
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, true);
+            // Check incoming here.  Then check outgoing in onActivityResult()
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
@@ -266,11 +269,18 @@ public class AccountSetupBasics extends K9Activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            mAccount.setDescription(mAccount.getEmail());
-            mAccount.save(Preferences.getPreferences(this));
-            K9.setServicesEnabled(this);
-            AccountSetupNames.actionSetNames(this, mAccount);
-            finish();
+            if (!mCheckedIncoming) {
+                //We've successfully checked incoming.  Now check outgoing.
+                mCheckedIncoming = true;
+                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
+            } else {
+                //We've successfully checked outgoing as well.
+                mAccount.setDescription(mAccount.getEmail());
+                mAccount.save(Preferences.getPreferences(this));
+                K9.setServicesEnabled(this);
+                AccountSetupNames.actionSetNames(this, mAccount);
+                finish();
+            }
         }
     }
 

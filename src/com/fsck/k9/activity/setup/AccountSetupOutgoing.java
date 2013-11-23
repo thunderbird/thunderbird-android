@@ -15,6 +15,7 @@ import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.transport.SmtpTransport;
 
@@ -95,7 +96,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         try {
             if (new URI(mAccount.getStoreUri()).getScheme().startsWith("webdav")) {
                 mAccount.setTransportUri(mAccount.getStoreUri());
-                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
             }
         } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
@@ -311,7 +312,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
                           Integer.parseInt(mPortView.getText().toString()), null, null, null);
             mAccount.setTransportUri(uri.toString());
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
