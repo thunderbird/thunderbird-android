@@ -47,9 +47,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     private static final String EXTRA_ACCOUNT = "account";
 
-    private static final String EXTRA_CHECK_INCOMING = "checkIncoming";
+    private static final String EXTRA_CHECK_DIRECTION ="checkDirection";
 
-    private static final String EXTRA_CHECK_OUTGOING = "checkOutgoing";
+    public enum CheckDirection {
+        INCOMING,
+        OUTGOING
+    }
 
     private Handler mHandler = new Handler();
 
@@ -59,20 +62,16 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     private Account mAccount;
 
-    private boolean mCheckIncoming;
-
-    private boolean mCheckOutgoing;
+    private CheckDirection mDirection;
 
     private boolean mCanceled;
 
     private boolean mDestroyed;
 
-    public static void actionCheckSettings(Activity context, Account account,
-                                           boolean checkIncoming, boolean checkOutgoing) {
+    public static void actionCheckSettings(Activity context, Account account, CheckDirection direction) {
         Intent i = new Intent(context, AccountSetupCheckSettings.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_CHECK_INCOMING, checkIncoming);
-        i.putExtra(EXTRA_CHECK_OUTGOING, checkOutgoing);
+        i.putExtra(EXTRA_CHECK_DIRECTION, direction);
         context.startActivityForResult(i, ACTIVITY_REQUEST_CODE);
     }
 
@@ -89,8 +88,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        mCheckIncoming = getIntent().getBooleanExtra(EXTRA_CHECK_INCOMING, false);
-        mCheckOutgoing = getIntent().getBooleanExtra(EXTRA_CHECK_OUTGOING, false);
+        mDirection = (CheckDirection) getIntent().getSerializableExtra(EXTRA_CHECK_DIRECTION);
 
         new Thread() {
             @Override
@@ -108,9 +106,9 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
                     final MessagingController ctrl = MessagingController.getInstance(getApplication());
                     ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
-                            mAccount, mCheckIncoming, mCheckOutgoing);
+                            mAccount, mDirection);
 
-                    if (mCheckIncoming) {
+                    if (mDirection.equals(CheckDirection.INCOMING)) {
                         store = mAccount.getRemoteStore();
 
                         if (store instanceof WebDavStore) {
@@ -133,7 +131,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         finish();
                         return;
                     }
-                    if (mCheckOutgoing) {
+                    if (mDirection.equals(CheckDirection.OUTGOING)) {
                         if (!(mAccount.getRemoteStore() instanceof WebDavStore)) {
                             setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
                         }
@@ -366,21 +364,20 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            String alias = mAccount.getUuid();
-                            if (mCheckIncoming) {
-                                alias = alias + ".incoming";
+                            Uri uri = null;
+                            if (mDirection.equals(CheckDirection.INCOMING)) {
+                                uri = Uri.parse(mAccount.getStoreUri());
+                            } else {
+                                uri = Uri.parse(mAccount.getTransportUri());
                             }
-                            if (mCheckOutgoing) {
-                                alias = alias + ".outgoing";
-                            }
-                            TrustManagerFactory.addCertificateChain(alias, chain);
+                            TrustManagerFactory.addCertificate(uri.getHost(), uri.getPort(), chain[0]);
                         } catch (CertificateException e) {
                             showErrorDialog(
                                 R.string.account_setup_failed_dlg_certificate_message_fmt,
                                 e.getMessage() == null ? "" : e.getMessage());
                         }
                         AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
-                                mCheckIncoming, mCheckOutgoing);
+                                mDirection);
                     }
                 })
                 .setNegativeButton(

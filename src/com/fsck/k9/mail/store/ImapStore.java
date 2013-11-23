@@ -2446,9 +2446,12 @@ public class ImapStore extends Store {
                                 connectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
                             SSLContext sslContext = SSLContext.getInstance("TLS");
                             boolean secure = connectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                            sslContext.init(null, new TrustManager[] {
-                                                TrustManagerFactory.get(mSettings.getHost(), secure)
-                                            }, new SecureRandom());
+                            sslContext
+                                    .init(null,
+                                            new TrustManager[] { TrustManagerFactory.get(
+                                                    mSettings.getHost(),
+                                                    mSettings.getPort(), secure) },
+                                            new SecureRandom());
                             mSocket = TrustedSocketFactory.createSocket(sslContext);
                         } else {
                             mSocket = new Socket();
@@ -2501,9 +2504,11 @@ public class ImapStore extends Store {
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
                         boolean secure = mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED;
-                        sslContext.init(null, new TrustManager[] {
-                                            TrustManagerFactory.get(mSettings.getHost(), secure)
-                                        }, new SecureRandom());
+                        sslContext.init(null,
+                                new TrustManager[] { TrustManagerFactory.get(
+                                        mSettings.getHost(),
+                                        mSettings.getPort(), secure) },
+                                new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket,
                                 mSettings.getHost(), mSettings.getPort(), true);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);

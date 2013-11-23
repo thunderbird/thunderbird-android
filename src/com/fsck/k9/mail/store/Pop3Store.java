@@ -327,9 +327,9 @@ public class Pop3Store extends Store {
                         mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
                     SSLContext sslContext = SSLContext.getInstance("TLS");
                     final boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                    sslContext.init(null, new TrustManager[] {
-                                        TrustManagerFactory.get(mHost, secure)
-                                    }, new SecureRandom());
+                    sslContext.init(null,
+                            new TrustManager[] { TrustManagerFactory.get(mHost,
+                                    mPort, secure) }, new SecureRandom());
                     mSocket = TrustedSocketFactory.createSocket(sslContext);
                 } else {
                     mSocket = new Socket();
@@ -356,9 +356,10 @@ public class Pop3Store extends Store {
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
                         boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
-                        sslContext.init(null, new TrustManager[] {
-                                            TrustManagerFactory.get(mHost, secure)
-                                        }, new SecureRandom());
+                        sslContext.init(null,
+                                new TrustManager[] { TrustManagerFactory.get(
+                                        mHost, mPort, secure) },
+                                new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
                                 mPort, true);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
