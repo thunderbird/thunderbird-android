@@ -29,7 +29,6 @@ public final class TrustManagerFactory {
 
     private static X509TrustManager defaultTrustManager;
     private static X509TrustManager unsecureTrustManager;
-    private static X509TrustManager localTrustManager;
 
     private static File keyStoreFile;
     private static KeyStore keyStore;
@@ -80,30 +79,32 @@ public final class TrustManagerFactory {
         }
 
         public void checkServerTrusted(X509Certificate[] chain, String authType)
-        throws CertificateException {
+                throws CertificateException {
+            boolean foundInGlobalKeyStore = false;
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);
-            } catch (CertificateException e) {
+                foundInGlobalKeyStore = true;
+            } catch (CertificateException e) { /* ignore */ }
+
+            X509Certificate certificate = chain[0];
+
+            // Check the local key store if we couldn't verify the certificate using the global
+            // key store or if the host name doesn't match the certificate name
+            if (!foundInGlobalKeyStore || !DomainNameChecker.match(certificate, mHost)) {
                 try {
-                    localTrustManager.checkServerTrusted(
-                            new X509Certificate[] { chain[0] }, authType);
-                } catch (CertificateException ce) {
-                    throw new CertificateChainException(ce, chain);
-                }
-            }
-            if (!DomainNameChecker.match(chain[0], mHost)) {
-                try {
-                    Certificate storedCert = keyStore
-                            .getCertificate(getCertKey(mHost, mPort));
-                    if (storedCert != null && storedCert.equals(chain[0])) {
+                    Certificate storedCert = keyStore.getCertificate(getCertKey(mHost, mPort));
+                    if (storedCert != null && storedCert.equals(certificate)) {
                         return;
                     }
                 } catch (KeyStoreException e) {
-                    throw new CertificateException("Certificate cannot be verified; KeyStore Exception: " + e);
+                    throw new CertificateException("Certificate cannot be verified", e);
                 }
-                throw new CertificateChainException(
-                        "Certificate domain name does not match " + mHost,
-                        chain);
+
+                String message = (foundInGlobalKeyStore) ?
+                        "Certificate domain name does not match " + mHost :
+                        "Couldn't find certificate in local key store";
+
+                throw new CertificateChainException(message, chain);
             }
         }
 
@@ -115,21 +116,12 @@ public final class TrustManagerFactory {
 
     static {
         try {
-            javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
             loadKeyStore();
-            tmf.init(keyStore);
+
+            javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
+            tmf.init((KeyStore) null);
+
             TrustManager[] tms = tmf.getTrustManagers();
-            if (tms != null) {
-                for (TrustManager tm : tms) {
-                    if (tm instanceof X509TrustManager) {
-                        localTrustManager = (X509TrustManager)tm;
-                        break;
-                    }
-                }
-            }
-            tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
-            tmf.init((KeyStore)null);
-            tms = tmf.getTrustManagers();
             if (tms != null) {
                 for (TrustManager tm : tms) {
                     if (tm instanceof X509TrustManager) {
@@ -138,7 +130,6 @@ public final class TrustManagerFactory {
                     }
                 }
             }
-
         } catch (NoSuchAlgorithmException e) {
             Log.e(LOG_TAG, "Unable to get X509 Trust Manager ", e);
         } catch (KeyStoreException e) {
@@ -183,25 +174,10 @@ public final class TrustManagerFactory {
                unsecureTrustManager;
     }
 
-    public static KeyStore getKeyStore() {
-        return keyStore;
-    }
-
     public static void addCertificate(String host, int port, X509Certificate certificate) throws CertificateException {
         try {
-            javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
             keyStore.setCertificateEntry(getCertKey(host, port), certificate);
 
-            tmf.init(keyStore);
-            TrustManager[] tms = tmf.getTrustManagers();
-            if (tms != null) {
-                for (TrustManager tm : tms) {
-                    if (tm instanceof X509TrustManager) {
-                        localTrustManager = (X509TrustManager) tm;
-                        break;
-                    }
-                }
-            }
             java.io.OutputStream keyStoreStream = null;
             try {
                 keyStoreStream = new java.io.FileOutputStream(keyStoreFile);
