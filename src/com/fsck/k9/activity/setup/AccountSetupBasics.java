@@ -37,7 +37,9 @@ public class AccountSetupBasics extends K9Activity
     private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
-        "com.fsck.k9.AccountSetupBasics.provider";
+            "com.fsck.k9.AccountSetupBasics.provider";
+    private final static String STATE_KEY_CHECKED_INCOMING =
+            "com.fsck.k9.AccountSetupBasics.checkedIncoming";
 
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -68,15 +70,6 @@ public class AccountSetupBasics extends K9Activity
 
         mEmailView.addTextChangedListener(this);
         mPasswordView.addTextChangedListener(this);
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
-            String accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        }
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_PROVIDER)) {
-            mProvider = (Provider)savedInstanceState.getSerializable(STATE_KEY_PROVIDER);
-        }
     }
 
     @Override
@@ -94,6 +87,23 @@ public class AccountSetupBasics extends K9Activity
         if (mProvider != null) {
             outState.putSerializable(STATE_KEY_PROVIDER, mProvider);
         }
+        outState.putBoolean(STATE_KEY_CHECKED_INCOMING, mCheckedIncoming);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
+            String accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
+            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        }
+
+        if (savedInstanceState.containsKey(STATE_KEY_PROVIDER)) {
+            mProvider = (Provider) savedInstanceState.getSerializable(STATE_KEY_PROVIDER);
+        }
+
+        mCheckedIncoming = savedInstanceState.getBoolean(STATE_KEY_CHECKED_INCOMING);
     }
 
     public void afterTextChanged(Editable s) {
