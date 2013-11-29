@@ -1,7 +1,6 @@
 
 package com.fsck.k9.mail.store;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import com.fsck.k9.K9;
@@ -13,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStore;
@@ -114,26 +114,9 @@ public final class TrustManagerFactory {
     }
 
     static {
-        java.io.InputStream fis = null;
         try {
             javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
-            Application app = K9.app;
-            keyStoreFile = new File(app.getDir("KeyStore", Context.MODE_PRIVATE) + File.separator + "KeyStore.bks");
-            keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            try {
-                fis = new java.io.FileInputStream(keyStoreFile);
-            } catch (FileNotFoundException e1) {
-                fis = null;
-            }
-            try {
-                keyStore.load(fis, "".toCharArray());
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "KeyStore IOException while initializing TrustManagerFactory ", e);
-                keyStore = null;
-            } catch (CertificateException e) {
-                Log.e(LOG_TAG, "KeyStore CertificateException while initializing TrustManagerFactory ", e);
-                keyStore = null;
-            }
+            loadKeyStore();
             tmf.init(keyStore);
             TrustManager[] tms = tmf.getTrustManagers();
             if (tms != null) {
@@ -160,10 +143,36 @@ public final class TrustManagerFactory {
             Log.e(LOG_TAG, "Unable to get X509 Trust Manager ", e);
         } catch (KeyStoreException e) {
             Log.e(LOG_TAG, "Key Store exception while initializing TrustManagerFactory ", e);
+        }
+        unsecureTrustManager = new SimpleX509TrustManager();
+    }
+
+    static void loadKeyStore() throws KeyStoreException, NoSuchAlgorithmException {
+        Context context = K9.app;
+
+        keyStoreFile = new File(context.getDir("KeyStore", Context.MODE_PRIVATE) +
+                File.separator + "KeyStore.bks");
+        keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+
+        FileInputStream fis;
+        try {
+            fis = new FileInputStream(keyStoreFile);
+        } catch (FileNotFoundException e) {
+            // If the file doesn't exist, that's fine, too
+            fis = null;
+        }
+
+        try {
+            keyStore.load(fis, "".toCharArray());
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "KeyStore IOException while initializing TrustManagerFactory ", e);
+            keyStore = null;
+        } catch (CertificateException e) {
+            Log.e(LOG_TAG, "KeyStore CertificateException while initializing TrustManagerFactory ", e);
+            keyStore = null;
         } finally {
             IOUtils.closeQuietly(fis);
         }
-        unsecureTrustManager = new SimpleX509TrustManager();
     }
 
     private TrustManagerFactory() {
