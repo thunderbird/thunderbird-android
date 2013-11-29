@@ -115,6 +115,21 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         assertFalse("The certificate should have been rejected but wasn't", certificateValid);
     }
 
+    public void testCertificateOfOtherHost() throws Exception {
+        TrustManagerFactory.addCertificate(MATCHING_HOST, PORT1, mCert1);
+        TrustManagerFactory.addCertificate(MATCHING_HOST, PORT2, mCert2);
+
+        X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
+        boolean certificateValid;
+        try {
+            trustManager.checkServerTrusted(new X509Certificate[] { mCert2 }, "authType");
+            certificateValid = true;
+        } catch (CertificateException e) {
+            certificateValid = false;
+        }
+        assertFalse("The certificate should have been rejected but wasn't", certificateValid);
+    }
+
     private static class DummyApplication extends Application {
         private final Context mContext;
 
