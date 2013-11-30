@@ -2,8 +2,9 @@ package com.fsck.k9.mail.store;
 
 import javax.net.ssl.X509TrustManager;
 import com.fsck.k9.K9;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -11,7 +12,6 @@ import java.util.concurrent.CountDownLatch;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.test.AndroidTestCase;
 
 /**
@@ -23,11 +23,48 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     public static final int PORT1 = 993;
     public static final int PORT2 = 465;
 
+    private static final String K9_EXAMPLE_COM_CERT1 =
+              "-----BEGIN CERTIFICATE-----\n"
+            + "MIICCTCCAXICCQD/R0TV7d0C5TANBgkqhkiG9w0BAQUFADBJMQswCQYDVQQGEwJD\n"
+            + "SDETMBEGA1UECBMKU29tZS1TdGF0ZTEMMAoGA1UEChMDSy05MRcwFQYDVQQDEw5r\n"
+            + "OS5leGFtcGxlLmNvbTAeFw0xMTA5MDYxOTU3MzVaFw0yMTA5MDMxOTU3MzVaMEkx\n"
+            + "CzAJBgNVBAYTAkNIMRMwEQYDVQQIEwpTb21lLVN0YXRlMQwwCgYDVQQKEwNLLTkx\n"
+            + "FzAVBgNVBAMTDms5LmV4YW1wbGUuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCB\n"
+            + "iQKBgQCp7FvHRaQaOIu3iyB5GB0PtPCxy/bLlBxBb8p9QsMimX2Yz3SNjWVUzU5N\n"
+            + "ggpXmmeGopLAnvZlhWYSx0yIGWwPB44kGK5eaYDRWav+K+XXgdNCJij1UWPSmFwZ\n"
+            + "hUoNbrahco5AFw0jC1qi+3Dht6Y64nfNzTOYTcm1Pz4tqXiADQIDAQABMA0GCSqG\n"
+            + "SIb3DQEBBQUAA4GBAIPsgd6fuFRojSOAcUyhaoKaY5hXJf8d7R3AYWxcAPYmn6g7\n"
+            + "3Zms+f7/CH0y/tM81oBTlq9ZLbrJyLzC7vG1pqWHMNaK7miAho22IRuk+HwvL6OA\n"
+            + "uH3x3W1/mH4ci268cIFVmofID0nYLTqOxBTczfYhI7q0VBUXqv/bZ+3bVMSh\n"
+            + "-----END CERTIFICATE-----\n";
 
-    private Context mTestContext;
+    private static final String K9_EXAMPLE_COM_CERT2 =
+              "-----BEGIN CERTIFICATE-----\n"
+            + "MIICCTCCAXICCQDMryqq0gZ80jANBgkqhkiG9w0BAQUFADBJMQswCQYDVQQGEwJD\n"
+            + "SDETMBEGA1UECBMKU29tZS1TdGF0ZTEMMAoGA1UEChMDSy05MRcwFQYDVQQDEw5r\n"
+            + "OS5leGFtcGxlLmNvbTAeFw0xMTA5MDYyMDAwNTVaFw0yMTA5MDMyMDAwNTVaMEkx\n"
+            + "CzAJBgNVBAYTAkNIMRMwEQYDVQQIEwpTb21lLVN0YXRlMQwwCgYDVQQKEwNLLTkx\n"
+            + "FzAVBgNVBAMTDms5LmV4YW1wbGUuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCB\n"
+            + "iQKBgQDOLzRucC3tuXL/NthnGkgTnVn03balrvYPkABvvrG83Dpp5ipIC/iPsQvw\n"
+            + "pvqypSNHqrloEB7o3obQ8tiRDtbOsNQ7gKJ+YoD1drDNClV0pBvr7mvRgA2AcDpw\n"
+            + "CTLKwVIyKmE+rm3vl8CWFd9CqHcYQ3Mc1KXXasN4DEAzZ/sHRwIDAQABMA0GCSqG\n"
+            + "SIb3DQEBBQUAA4GBAFDcHFpmZ9SUrc0WayrKNUpSaHLRG94uzIx0VUMLROcXEEWU\n"
+            + "soRw1RfoSBkcy2SEjB4CAvex6qAiOT3ubXuL+BYFav/uU8JPWZ9ovSAYqBZ9aUJo\n"
+            + "G6A2hvA1lpvP97qQ/NFaGQ38XqSykZamZwSx3PlZUM/i9S9n/3MfuuXWqtLC\n"
+            + "-----END CERTIFICATE-----\n";
+
+
     private X509Certificate mCert1;
     private X509Certificate mCert2;
 
+
+    public TrustManagerFactoryTest() throws CertificateException {
+        CertificateFactory certFactory = CertificateFactory.getInstance("X509");
+        mCert1 = (X509Certificate) certFactory.generateCertificate(
+                new ByteArrayInputStream(K9_EXAMPLE_COM_CERT1.getBytes()));
+        mCert2 = (X509Certificate) certFactory.generateCertificate(
+                new ByteArrayInputStream(K9_EXAMPLE_COM_CERT2.getBytes()));
+    }
 
     @Override
     public void setUp() throws Exception {
@@ -36,10 +73,6 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         // Hack to make sure TrustManagerFactory.loadKeyStore() can create the key store file
         K9.app = new DummyApplication(getContext());
 
-        // Source: https://kmansoft.wordpress.com/2011/04/18/accessing-resources-in-an-androidtestcase/
-        Method m = AndroidTestCase.class.getMethod("getTestContext", new Class[] {});
-        mTestContext = (Context) m.invoke(this, (Object[]) null);
-
         // Delete the key store file to make sure we start without any stored certificates
         File keyStoreDir = getContext().getDir("KeyStore", Context.MODE_PRIVATE);
         new File(keyStoreDir + File.separator + "KeyStore.bks").delete();
@@ -47,12 +80,6 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         // Load the empty key store file
         TrustManagerFactory.loadKeyStore();
 
-        // Load certificates
-        AssetManager assets = mTestContext.getAssets();
-
-        CertificateFactory certFactory = CertificateFactory.getInstance("X509");
-        mCert1 = (X509Certificate) certFactory.generateCertificate(assets.open("cert1.der"));
-        mCert2 = (X509Certificate) certFactory.generateCertificate(assets.open("cert2.der"));
     }
 
     private void waitForAppInitialization() throws InterruptedException {
