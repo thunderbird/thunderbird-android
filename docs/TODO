@@ -1,7 +1,7 @@
 Currently
 --
 Need to add NOOP checking to Pop3Store and ImapStore on cached connections.
-
+added to gezimail
 
 
 
