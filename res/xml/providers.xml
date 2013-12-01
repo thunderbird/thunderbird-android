@@ -360,8 +360,8 @@
     
     <!-- Slovakia -->
     <provider id="azet.sk" label="Azet.sk" domain="azet.sk">
-        <incoming uri="imap+ssl+://imap-mail.azet.sk"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp-mail.azet.sk" username="$email" />
+        <incoming uri="imap+ssl+://imap.azet.sk"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.azet.sk" username="$email" />
     </provider>
     
     <!-- Yandex.ru variants -->
