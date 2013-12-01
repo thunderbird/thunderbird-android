@@ -521,7 +521,13 @@
         <incoming uri="pop3://pop.safebox.ru" username="$email" />
         <outgoing uri="smtp://smtp.safebox.ru:2525" username="$email" />
     </provider>
-    
+
+    <!-- Slovakia -->
+    <provider id="azet.sk" label="Azet.sk" domain="azet.sk">
+        <incoming uri="imap+ssl+://imap.azet.sk" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.azet.sk" username="$email" />
+    </provider>
+
     <!-- Developers' vanity providers -->
     <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
         <incoming uri="imap+ssl://fsck.com"  username="$user" />
