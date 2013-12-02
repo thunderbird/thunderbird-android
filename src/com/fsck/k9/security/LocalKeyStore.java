@@ -22,6 +22,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 
 public class LocalKeyStore {
+    private static final int KEY_STORE_FILE_VERSION = 1;
     private static final LocalKeyStore sInstance = new LocalKeyStore();
     private File mKeyStoreFile;
     private KeyStore mKeyStore;
@@ -31,6 +32,7 @@ public class LocalKeyStore {
     }
 
     private LocalKeyStore() {
+        upgradeKeyStoreFile();
         setKeyStoreFile(null);
     }
 
@@ -45,14 +47,14 @@ public class LocalKeyStore {
      */
     public synchronized void setKeyStoreFile(File file) {
         if (file == null) {
-            file = new File(K9.app.getDir("KeyStore", Context.MODE_PRIVATE)
-                    + File.separator + "KeyStore.bks");
+            file = new File(getKeyStoreFilePath(KEY_STORE_FILE_VERSION));
         }
         if (file.length() == 0) {
-            // The file may be empty (e.g., if it was created with
-            // File.createTempFile)
-            // We can't pass an empty file to Keystore.load. Instead, we let it
-            // be created anew.
+            /*
+             * The file may be empty (e.g., if it was created with
+             * File.createTempFile). We can't pass an empty file to
+             * Keystore.load. Instead, we let it be created anew.
+             */
             file.delete();
         }
 
@@ -185,13 +187,32 @@ public class LocalKeyStore {
     }
 
     /**
-     * Examine the settings for the account and attempt to delete (possibly non-existent)
-     * certificates for the incoming and outgoing servers.
+     * Examine the settings for the account and attempt to delete (possibly
+     * non-existent) certificates for the incoming and outgoing servers.
+     *
      * @param account
      */
     public void deleteCertificates(Account account) {
         Uri uri = Uri.parse(account.getStoreUri());
         deleteCertificate(uri.getHost(), uri.getPort());
         uri = Uri.parse(account.getTransportUri());
-        deleteCertificate(uri.getHost(), uri.getPort());    }
+        deleteCertificate(uri.getHost(), uri.getPort());
+    }
+
+    private void upgradeKeyStoreFile() {
+        if (KEY_STORE_FILE_VERSION > 0) {
+            // Blow away version "0" because certificate aliases have changed.
+            new File(getKeyStoreFilePath(0)).delete();
+        }
+    }
+
+    private String getKeyStoreFilePath(int version) {
+        if (version < 1) {
+            return K9.app.getDir("KeyStore", Context.MODE_PRIVATE)
+                    + File.separator + "KeyStore.bks";
+        } else {
+            return K9.app.getDir("KeyStore", Context.MODE_PRIVATE)
+                    + File.separator + "KeyStore_v" + version + ".bks";
+        }
+    }
 }
