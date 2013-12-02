@@ -22,7 +22,7 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.store.TrustManagerFactory;
+import com.fsck.k9.mail.store.LocalKeyStore;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
 
@@ -370,7 +370,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             } else {
                                 uri = Uri.parse(mAccount.getTransportUri());
                             }
-                            TrustManagerFactory.addCertificate(uri.getHost(), uri.getPort(), chain[0]);
+                            LocalKeyStore.getInstance().addCertificate(uri.getHost(), uri.getPort(), chain[0]);
                         } catch (CertificateException e) {
                             showErrorDialog(
                                 R.string.account_setup_failed_dlg_certificate_message_fmt,
