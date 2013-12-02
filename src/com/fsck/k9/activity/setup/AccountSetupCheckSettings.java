@@ -364,13 +364,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            Uri uri = null;
-                            if (mDirection.equals(CheckDirection.INCOMING)) {
-                                uri = Uri.parse(mAccount.getStoreUri());
-                            } else {
-                                uri = Uri.parse(mAccount.getTransportUri());
-                            }
-                            LocalKeyStore.getInstance().addCertificate(uri.getHost(), uri.getPort(), chain[0]);
+                            LocalKeyStore.getInstance().addCertificate(mAccount, mDirection, chain[0]);
                         } catch (CertificateException e) {
                             showErrorDialog(
                                 R.string.account_setup_failed_dlg_certificate_message_fmt,
