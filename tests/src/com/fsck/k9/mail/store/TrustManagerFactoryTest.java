@@ -27,6 +27,10 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     private Context mTestContext;
     private X509Certificate mCert1;
     private X509Certificate mCert2;
+    private X509Certificate mCaCert;
+    private X509Certificate mCert3;
+    private X509Certificate mDigiCert;
+    private X509Certificate mGithubCert;
 
 
     @Override
@@ -53,6 +57,12 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         CertificateFactory certFactory = CertificateFactory.getInstance("X509");
         mCert1 = (X509Certificate) certFactory.generateCertificate(assets.open("cert1.der"));
         mCert2 = (X509Certificate) certFactory.generateCertificate(assets.open("cert2.der"));
+
+        mCaCert = (X509Certificate) certFactory.generateCertificate(assets.open("cacert.der"));
+        mCert3 = (X509Certificate) certFactory.generateCertificate(assets.open("cert3.der"));
+
+        mDigiCert = (X509Certificate) certFactory.generateCertificate(assets.open("digicert.der"));
+        mGithubCert = (X509Certificate) certFactory.generateCertificate(assets.open("github.der"));
     }
 
     private void waitForAppInitialization() throws InterruptedException {
@@ -105,14 +115,7 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     public void testWrongCertificate() throws Exception {
         TrustManagerFactory.addCertificate(MATCHING_HOST, PORT1, mCert1);
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
-        boolean certificateValid;
-        try {
-            trustManager.checkServerTrusted(new X509Certificate[] { mCert2 }, "authType");
-            certificateValid = true;
-        } catch (CertificateException e) {
-            certificateValid = false;
-        }
-        assertFalse("The certificate should have been rejected but wasn't", certificateValid);
+        assertCertificateRejection(trustManager, new X509Certificate[] { mCert2 });
     }
 
     public void testCertificateOfOtherHost() throws Exception {
@@ -120,9 +123,52 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         TrustManagerFactory.addCertificate(MATCHING_HOST, PORT2, mCert2);
 
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
+        assertCertificateRejection(trustManager, new X509Certificate[] { mCert2 });
+    }
+
+    public void testUntrustedCertificateChain() throws Exception {
+        X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
+        assertCertificateRejection(trustManager, new X509Certificate[] { mCert3, mCaCert });
+    }
+
+    public void testLocallyTrustedCertificateChain() throws Exception {
+        TrustManagerFactory.addCertificate(MATCHING_HOST, PORT1, mCert3);
+
+        X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
+        trustManager.checkServerTrusted(new X509Certificate[] { mCert3, mCaCert }, "authType");
+    }
+
+    public void testLocallyTrustedCertificateChainNotMatchingHost() throws Exception {
+        TrustManagerFactory.addCertificate(NOT_MATCHING_HOST, PORT1, mCert3);
+
+        X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1, true);
+        trustManager.checkServerTrusted(new X509Certificate[] { mCert3, mCaCert }, "authType");
+    }
+
+    public void testGloballyTrustedCertificateChain() throws Exception {
+        X509TrustManager trustManager = TrustManagerFactory.get("github.com", PORT1, true);
+        X509Certificate[] certificates = new X509Certificate[] { mGithubCert, mDigiCert };
+        trustManager.checkServerTrusted(certificates, "authType");
+    }
+
+    public void testGloballyTrustedCertificateNotMatchingHost() throws Exception {
+        X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1, true);
+        assertCertificateRejection(trustManager, new X509Certificate[] { mGithubCert, mDigiCert});
+    }
+
+    public void testGloballyTrustedCertificateNotMatchingHostOverride() throws Exception {
+        TrustManagerFactory.addCertificate(MATCHING_HOST, PORT1, mGithubCert);
+
+        X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
+        X509Certificate[] certificates = new X509Certificate[] { mGithubCert, mDigiCert };
+        trustManager.checkServerTrusted(certificates, "authType");
+    }
+
+    private void assertCertificateRejection(X509TrustManager trustManager,
+            X509Certificate[] certificates) {
         boolean certificateValid;
         try {
-            trustManager.checkServerTrusted(new X509Certificate[] { mCert2 }, "authType");
+            trustManager.checkServerTrusted(certificates, "authType");
             certificateValid = true;
         } catch (CertificateException e) {
             certificateValid = false;
