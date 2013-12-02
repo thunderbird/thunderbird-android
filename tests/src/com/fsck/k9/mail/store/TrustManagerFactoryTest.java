@@ -1,17 +1,11 @@
 package com.fsck.k9.mail.store;
 
 import javax.net.ssl.X509TrustManager;
-import com.fsck.k9.K9;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.concurrent.CountDownLatch;
-
-import android.app.Application;
-import android.content.Context;
 import android.test.AndroidTestCase;
 
 /**
@@ -56,6 +50,8 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
 
     private X509Certificate mCert1;
     private X509Certificate mCert2;
+    private File mKeyStoreFile;
+    private LocalKeyStore mKeyStore;
 
 
     public TrustManagerFactoryTest() throws CertificateException {
@@ -68,31 +64,15 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
 
     @Override
     public void setUp() throws Exception {
-        waitForAppInitialization();
-
-        // Hack to make sure TrustManagerFactory.loadKeyStore() can create the key store file
-        K9.app = new DummyApplication(getContext());
-
-        // Delete the key store file to make sure we start without any stored certificates
-        File keyStoreDir = getContext().getDir("KeyStore", Context.MODE_PRIVATE);
-        new File(keyStoreDir + File.separator + "KeyStore.bks").delete();
-
-        // Load the empty key store file
-        TrustManagerFactory.loadKeyStore();
-
+        mKeyStoreFile = File.createTempFile("localKeyStore", null, getContext()
+                .getCacheDir());
+        mKeyStore = LocalKeyStore.getInstance();
+        mKeyStore.setKeyStoreFile(mKeyStoreFile);
     }
 
-    private void waitForAppInitialization() throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        K9.registerApplicationAware(new K9.ApplicationAware() {
-            @Override
-            public void initializeComponent(Application application) {
-                latch.countDown();
-            }
-        });
-
-        latch.await();
+    @Override
+    protected void tearDown() {
+        mKeyStoreFile.delete();
     }
 
     /**
@@ -108,8 +88,8 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
      *         if anything goes wrong
      */
     public void testDifferentCertificatesOnSameServer() throws Exception {
-        TrustManagerFactory.addCertificate(NOT_MATCHING_HOST, PORT1, mCert1);
-        TrustManagerFactory.addCertificate(NOT_MATCHING_HOST, PORT2, mCert2);
+        mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT1, mCert1);
+        mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT2, mCert2);
 
         X509TrustManager trustManager1 = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1, true);
         X509TrustManager trustManager2 = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT2, true);
@@ -118,19 +98,19 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     }
 
     public void testSelfSignedCertificateMatchingHost() throws Exception {
-        TrustManagerFactory.addCertificate(MATCHING_HOST, PORT1, mCert1);
+        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
         trustManager.checkServerTrusted(new X509Certificate[] { mCert1 }, "authType");
     }
 
     public void testSelfSignedCertificateNotMatchingHost() throws Exception {
-        TrustManagerFactory.addCertificate(NOT_MATCHING_HOST, PORT1, mCert1);
+        mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT1, mCert1);
         X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1, true);
         trustManager.checkServerTrusted(new X509Certificate[] { mCert1 }, "authType");
     }
 
     public void testWrongCertificate() throws Exception {
-        TrustManagerFactory.addCertificate(MATCHING_HOST, PORT1, mCert1);
+        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
         boolean certificateValid;
         try {
@@ -143,8 +123,8 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     }
 
     public void testCertificateOfOtherHost() throws Exception {
-        TrustManagerFactory.addCertificate(MATCHING_HOST, PORT1, mCert1);
-        TrustManagerFactory.addCertificate(MATCHING_HOST, PORT2, mCert2);
+        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
+        mKeyStore.addCertificate(MATCHING_HOST, PORT2, mCert2);
 
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
         boolean certificateValid;
@@ -157,15 +137,21 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         assertFalse("The certificate should have been rejected but wasn't", certificateValid);
     }
 
-    private static class DummyApplication extends Application {
-        private final Context mContext;
+    public void testKeyStoreLoading() throws Exception {
+        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
+        mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT2, mCert2);
+        assertTrue(mKeyStore.isValidCertificate(mCert1, MATCHING_HOST, PORT1));
+        assertTrue(mKeyStore.isValidCertificate(mCert2, NOT_MATCHING_HOST, PORT2));
 
-        DummyApplication(Context context) {
-            mContext = context;
-        }
+        // reload store from same file
+        mKeyStore.setKeyStoreFile(mKeyStoreFile);
+        assertTrue(mKeyStore.isValidCertificate(mCert1, MATCHING_HOST, PORT1));
+        assertTrue(mKeyStore.isValidCertificate(mCert2, NOT_MATCHING_HOST, PORT2));
 
-        public File getDir(String name, int mode) {
-            return mContext.getDir(name, mode);
-        }
+        // reload store from empty file
+        mKeyStoreFile.delete();
+        mKeyStore.setKeyStoreFile(mKeyStoreFile);
+        assertFalse(mKeyStore.isValidCertificate(mCert1, MATCHING_HOST, PORT1));
+        assertFalse(mKeyStore.isValidCertificate(mCert2, NOT_MATCHING_HOST, PORT2));
     }
 }
