@@ -22,9 +22,9 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.store.LocalKeyStore;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
+import com.fsck.k9.security.LocalKeyStore;
 
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateEncodingException;

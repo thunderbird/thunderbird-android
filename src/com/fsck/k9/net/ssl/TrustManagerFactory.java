@@ -1,9 +1,10 @@
 
-package com.fsck.k9.mail.store;
+package com.fsck.k9.net.ssl;
 
 import android.util.Log;
 import com.fsck.k9.helper.DomainNameChecker;
 import com.fsck.k9.mail.CertificateChainException;
+import com.fsck.k9.security.LocalKeyStore;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;

@@ -1,6 +1,10 @@
 package com.fsck.k9.mail.store;
 
 import javax.net.ssl.X509TrustManager;
+
+import com.fsck.k9.net.ssl.TrustManagerFactory;
+import com.fsck.k9.security.LocalKeyStore;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.security.cert.CertificateException;

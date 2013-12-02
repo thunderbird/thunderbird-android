@@ -10,6 +10,8 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.net.ssl.TrustManagerFactory;
+import com.fsck.k9.net.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
