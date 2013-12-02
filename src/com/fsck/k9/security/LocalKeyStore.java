@@ -14,9 +14,12 @@ import java.security.cert.X509Certificate;
 import org.apache.commons.io.IOUtils;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 
 public class LocalKeyStore {
     private static final LocalKeyStore sInstance = new LocalKeyStore();
@@ -81,9 +84,18 @@ public class LocalKeyStore {
             throw new CertificateException(
                     "Certificate not added because key store not initialized");
         }
-        java.io.OutputStream keyStoreStream = null;
         try {
             mKeyStore.setCertificateEntry(getCertKey(host, port), certificate);
+        } catch (KeyStoreException e) {
+            throw new CertificateException(
+                    "Failed to add certificate to local key store", e);
+        }
+        writeCertificateFile();
+    }
+
+    private void writeCertificateFile() throws CertificateException {
+        java.io.OutputStream keyStoreStream = null;
+        try {
             keyStoreStream = new java.io.FileOutputStream(mKeyStoreFile);
             mKeyStore.store(keyStoreStream, "".toCharArray());
         } catch (FileNotFoundException e) {
@@ -106,8 +118,19 @@ public class LocalKeyStore {
         }
     }
 
-    public synchronized boolean isValidCertificate(Certificate certificate, String host,
-            int port) {
+    public void addCertificate(Account account, CheckDirection direction,
+            X509Certificate certificate) throws CertificateException {
+        Uri uri = null;
+        if (direction.equals(CheckDirection.INCOMING)) {
+            uri = Uri.parse(account.getStoreUri());
+        } else {
+            uri = Uri.parse(account.getTransportUri());
+        }
+        addCertificate(uri.getHost(), uri.getPort(), certificate);
+    }
+
+    public synchronized boolean isValidCertificate(Certificate certificate,
+            String host, int port) {
         if (mKeyStore == null) {
             return false;
         }
@@ -123,4 +146,52 @@ public class LocalKeyStore {
     private static String getCertKey(String host, int port) {
         return host + ":" + port;
     }
+
+    public synchronized void deleteCertificate(String oldHost, int oldPort) {
+        if (mKeyStore == null) {
+            return;
+        }
+        try {
+            mKeyStore.deleteEntry(getCertKey(oldHost, oldPort));
+            writeCertificateFile();
+        } catch (KeyStoreException e) {
+            // Ignore: most likely there was no cert. found
+        } catch (CertificateException e) {
+            Log.e(K9.LOG_TAG, "Error updating the local key store file", e);
+        }
+    }
+
+    /**
+     * Examine the existing settings for an account.  If the old host/port is different from
+     * the new host/port, then try and delete any (possibly non-existent) certificate stored
+     * for the old host/port.
+     * @param account
+     * @param newHost
+     * @param newPort
+     * @param direction
+     */
+    public void deleteCertificate(Account account, String newHost, int newPort, CheckDirection direction) {
+        Uri uri = null;
+        if (direction.equals(CheckDirection.INCOMING)) {
+            uri = Uri.parse(account.getStoreUri());
+        } else {
+            uri = Uri.parse(account.getTransportUri());
+        }
+        String oldHost = uri.getHost();
+        int oldPort = uri.getPort();
+        if (!newHost.equals(oldHost) || newPort != oldPort) {
+            deleteCertificate(oldHost, oldPort);
+        }
+    }
+
+    /**
+     * Examine the settings for the account and attempt to delete (possibly non-existent)
+     * certificates for the incoming and outgoing servers.
+     * @param account
+     */
+    public void deleteCertificates(Account account) {
+        Uri uri = Uri.parse(account.getStoreUri());
+        deleteCertificate(uri.getHost(), uri.getPort());
+        uri = Uri.parse(account.getTransportUri());
+        deleteCertificate(uri.getHost(), uri.getPort());    }
 }

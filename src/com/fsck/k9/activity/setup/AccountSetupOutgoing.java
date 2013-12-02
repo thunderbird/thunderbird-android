@@ -18,6 +18,7 @@ import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.security.LocalKeyStore;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -309,8 +310,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             if (mRequireLoginView.isChecked()) {
                 userInfo = usernameEnc + ":" + passwordEnc + ":" + authType;
             }
-            uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
-                          Integer.parseInt(mPortView.getText().toString()), null, null, null);
+            String newHost = mServerView.getText().toString();
+            int newPort = Integer.parseInt(mPortView.getText().toString());
+            uri = new URI(smtpSchemes[securityType], userInfo, newHost, newPort, null, null, null);
+            LocalKeyStore.getInstance().deleteCertificate(mAccount, newHost, newPort, CheckDirection.OUTGOING);
             mAccount.setTransportUri(uri.toString());
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
         } catch (UnsupportedEncodingException enc) {
