@@ -1873,15 +1873,16 @@ public class Account implements BaseAccount {
     /**
      * Add a new certificate for the incoming or outgoing server to the local key store.
      */
-    public void addCertificate(CheckDirection direction, X509Certificate certificate)
-            throws CertificateException {
+    public void addCertificate(Context context, CheckDirection direction,
+            X509Certificate certificate) throws CertificateException {
         Uri uri;
         if (direction.equals(CheckDirection.INCOMING)) {
             uri = Uri.parse(getStoreUri());
         } else {
             uri = Uri.parse(getTransportUri());
         }
-        LocalKeyStore.getInstance().addCertificate(uri.getHost(), uri.getPort(), certificate);
+        LocalKeyStore localKeyStore = LocalKeyStore.getInstance(context);
+        localKeyStore.addCertificate(uri.getHost(), uri.getPort(), certificate);
     }
 
     /**
@@ -1889,7 +1890,8 @@ public class Account implements BaseAccount {
      * new host/port, then try and delete any (possibly non-existent) certificate stored for the
      * old host/port.
      */
-    public void deleteCertificate(String newHost, int newPort, CheckDirection direction) {
+    public void deleteCertificate(Context context, String newHost, int newPort,
+            CheckDirection direction) {
         Uri uri;
         if (direction.equals(CheckDirection.INCOMING)) {
             uri = Uri.parse(getStoreUri());
@@ -1899,7 +1901,8 @@ public class Account implements BaseAccount {
         String oldHost = uri.getHost();
         int oldPort = uri.getPort();
         if (!newHost.equals(oldHost) || newPort != oldPort) {
-            LocalKeyStore.getInstance().deleteCertificate(oldHost, oldPort);
+            LocalKeyStore localKeyStore = LocalKeyStore.getInstance(context);
+            localKeyStore.deleteCertificate(oldHost, oldPort);
         }
     }
 
@@ -1907,8 +1910,8 @@ public class Account implements BaseAccount {
      * Examine the settings for the account and attempt to delete (possibly non-existent)
      * certificates for the incoming and outgoing servers.
      */
-    public void deleteCertificates() {
-        LocalKeyStore localKeyStore = LocalKeyStore.getInstance();
+    public void deleteCertificates(Context context) {
+        LocalKeyStore localKeyStore = LocalKeyStore.getInstance(context);
 
         Uri uri = Uri.parse(getStoreUri());
         localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());

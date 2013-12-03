@@ -128,7 +128,7 @@ public class Preferences {
 
         Store.removeAccount(account);
 
-        account.deleteCertificates();
+        account.deleteCertificates(mContext);
         account.delete(this);
 
         if (newAccount == account) {

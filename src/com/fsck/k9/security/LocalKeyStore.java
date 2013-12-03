@@ -20,15 +20,25 @@ import com.fsck.k9.K9;
 
 public class LocalKeyStore {
     private static final int KEY_STORE_FILE_VERSION = 1;
-    private static final LocalKeyStore sInstance = new LocalKeyStore();
-    private File mKeyStoreFile;
-    private KeyStore mKeyStore;
 
-    public static LocalKeyStore getInstance() {
+    private static LocalKeyStore sInstance;
+
+
+    public static LocalKeyStore getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new LocalKeyStore(context);
+        }
         return sInstance;
     }
 
-    private LocalKeyStore() {
+
+    private final Context mContext;
+    private File mKeyStoreFile;
+    private KeyStore mKeyStore;
+
+
+    private LocalKeyStore(Context context) {
+        mContext = context.getApplicationContext();
         upgradeKeyStoreFile();
         setKeyStoreFile(null);
     }
@@ -157,12 +167,11 @@ public class LocalKeyStore {
     }
 
     private String getKeyStoreFilePath(int version) {
+        File dir = mContext.getDir("KeyStore", Context.MODE_PRIVATE);
         if (version < 1) {
-            return K9.app.getDir("KeyStore", Context.MODE_PRIVATE)
-                    + File.separator + "KeyStore.bks";
+            return dir + File.separator + "KeyStore.bks";
         } else {
-            return K9.app.getDir("KeyStore", Context.MODE_PRIVATE)
-                    + File.separator + "KeyStore_v" + version + ".bks";
+            return dir + File.separator + "KeyStore_v" + version + ".bks";
         }
     }
 }
