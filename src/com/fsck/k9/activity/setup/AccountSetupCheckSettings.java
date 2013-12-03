@@ -24,7 +24,6 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
-import com.fsck.k9.security.LocalKeyStore;
 
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateEncodingException;
@@ -364,7 +363,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            LocalKeyStore.getInstance().addCertificate(mAccount, mDirection, chain[0]);
+                            mAccount.addCertificate(mDirection, chain[0]);
                         } catch (CertificateException e) {
                             showErrorDialog(
                                 R.string.account_setup_failed_dlg_certificate_message_fmt,
