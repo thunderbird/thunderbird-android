@@ -1,6 +1,8 @@
 
 package com.fsck.k9;
 
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -22,6 +24,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
+import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
@@ -40,6 +43,7 @@ import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.security.LocalKeyStore;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
 
@@ -1864,5 +1868,51 @@ public class Account implements BaseAccount {
         if (!K9.FOLDER_NONE.equals(folderName)) {
             search.and(Searchfield.FOLDER, folderName, Attribute.NOT_EQUALS);
         }
+    }
+
+    /**
+     * Add a new certificate for the incoming or outgoing server to the local key store.
+     */
+    public void addCertificate(CheckDirection direction, X509Certificate certificate)
+            throws CertificateException {
+        Uri uri;
+        if (direction.equals(CheckDirection.INCOMING)) {
+            uri = Uri.parse(getStoreUri());
+        } else {
+            uri = Uri.parse(getTransportUri());
+        }
+        LocalKeyStore.getInstance().addCertificate(uri.getHost(), uri.getPort(), certificate);
+    }
+
+    /**
+     * Examine the existing settings for an account.  If the old host/port is different from the
+     * new host/port, then try and delete any (possibly non-existent) certificate stored for the
+     * old host/port.
+     */
+    public void deleteCertificate(String newHost, int newPort, CheckDirection direction) {
+        Uri uri;
+        if (direction.equals(CheckDirection.INCOMING)) {
+            uri = Uri.parse(getStoreUri());
+        } else {
+            uri = Uri.parse(getTransportUri());
+        }
+        String oldHost = uri.getHost();
+        int oldPort = uri.getPort();
+        if (!newHost.equals(oldHost) || newPort != oldPort) {
+            LocalKeyStore.getInstance().deleteCertificate(oldHost, oldPort);
+        }
+    }
+
+    /**
+     * Examine the settings for the account and attempt to delete (possibly non-existent)
+     * certificates for the incoming and outgoing servers.
+     */
+    public void deleteCertificates() {
+        LocalKeyStore localKeyStore = LocalKeyStore.getInstance();
+
+        Uri uri = Uri.parse(getStoreUri());
+        localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
+        uri = Uri.parse(getTransportUri());
+        localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
     }
 }

@@ -128,8 +128,8 @@ public class Preferences {
 
         Store.removeAccount(account);
 
+        account.deleteCertificates();
         account.delete(this);
-        LocalKeyStore.getInstance().deleteCertificates(account);
 
         if (newAccount == account) {
             newAccount = null;

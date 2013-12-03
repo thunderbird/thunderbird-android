@@ -26,7 +26,6 @@ import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.store.ImapStore.ImapStoreSettings;
 import com.fsck.k9.mail.store.WebDavStore.WebDavStoreSettings;
-import com.fsck.k9.security.LocalKeyStore;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -429,7 +428,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         mWebdavMailboxPathView.getText().toString());
             }
 
-            LocalKeyStore.getInstance().deleteCertificate(mAccount, host, port, CheckDirection.INCOMING);
+            mAccount.deleteCertificate(host, port, CheckDirection.INCOMING);
             ServerSettings settings = new ServerSettings(mStoreType, host, port,
                     connectionSecurity, authType, username, password, extra);
 
