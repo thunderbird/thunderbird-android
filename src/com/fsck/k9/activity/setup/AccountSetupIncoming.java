@@ -428,7 +428,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         mWebdavMailboxPathView.getText().toString());
             }
 
-            mAccount.deleteCertificate(host, port, CheckDirection.INCOMING);
+            mAccount.deleteCertificate(this, host, port, CheckDirection.INCOMING);
             ServerSettings settings = new ServerSettings(mStoreType, host, port,
                     connectionSecurity, authType, username, password, extra);
 

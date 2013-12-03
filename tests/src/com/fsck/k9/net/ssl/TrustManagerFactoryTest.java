@@ -2,7 +2,6 @@ package com.fsck.k9.net.ssl;
 
 import javax.net.ssl.X509TrustManager;
 
-import com.fsck.k9.net.ssl.TrustManagerFactory;
 import com.fsck.k9.security.LocalKeyStore;
 
 import java.io.ByteArrayInputStream;
@@ -208,9 +207,8 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
 
     @Override
     public void setUp() throws Exception {
-        mKeyStoreFile = File.createTempFile("localKeyStore", null, getContext()
-                .getCacheDir());
-        mKeyStore = LocalKeyStore.getInstance();
+        mKeyStoreFile = File.createTempFile("localKeyStore", null, getContext().getCacheDir());
+        mKeyStore = LocalKeyStore.getInstance(getContext());
         mKeyStore.setKeyStoreFile(mKeyStoreFile);
     }
 
