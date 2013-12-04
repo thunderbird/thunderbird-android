@@ -24,7 +24,7 @@ public class LocalKeyStore {
     private static LocalKeyStore sInstance;
 
 
-    public static LocalKeyStore getInstance(Context context) {
+    public synchronized static LocalKeyStore getInstance(Context context) {
         if (sInstance == null) {
             sInstance = new LocalKeyStore(context);
         }
