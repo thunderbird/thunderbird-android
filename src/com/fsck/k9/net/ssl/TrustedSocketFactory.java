@@ -13,46 +13,67 @@ import java.util.*;
 
 /**
  * Filter and reorder list of cipher suites and TLS versions.
- *
- * <p>
- * See: <a href="http://op-co.de/blog/posts/android_ssl_downgrade/">http://op-co.de/blog/posts/android_ssl_downgrade/</a>
- * </p>
  */
 public class TrustedSocketFactory {
     protected static final String ENABLED_CIPHERS[];
     protected static final String ENABLED_PROTOCOLS[];
 
-    static {
-        String preferredCiphers[] = {
-            "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-            "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+    // Order taken from OpenSSL 1.0.1c
+    protected static final String ORDERED_KNOWN_CIPHERS[] = {
             "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
             "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
-            "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
             "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+            "TLS_ECDH_RSA_WITH_AES_256_CBC_SHA",
+            "TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA",
+            "TLS_RSA_WITH_AES_256_CBC_SHA",
+            "TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
+            "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA",
+            "TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA",
+            "TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA",
+            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+            "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+            "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+            "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
             "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+            "TLS_ECDH_RSA_WITH_AES_128_CBC_SHA",
+            "TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA",
+            "TLS_RSA_WITH_AES_128_CBC_SHA",
             "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
             "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
-            "TLS_RSA_WITH_AES_128_CBC_SHA",
-            "TLS_RSA_WITH_AES_256_CBC_SHA",
-            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+            "TLS_ECDH_RSA_WITH_RC4_128_SHA",
+            "TLS_ECDH_ECDSA_WITH_RC4_128_SHA",
+            "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+            "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
             "SSL_RSA_WITH_RC4_128_SHA",
             "SSL_RSA_WITH_RC4_128_MD5",
-        };
-        String preferredProtocols[] = {
-            "TLSv1.2", "TLSv1.1", "TLSv1"
-        };
+    };
 
-        String[] supportedCiphers = null;
-        String[] supportedProtocols = null;
+    protected static final String[] BLACKLISTED_CIPHERS = {
+            "SSL_RSA_WITH_DES_CBC_SHA",
+            "SSL_DHE_RSA_WITH_DES_CBC_SHA",
+            "SSL_DHE_DSS_WITH_DES_CBC_SHA",
+            "SSL_RSA_EXPORT_WITH_RC4_40_MD5",
+            "SSL_RSA_EXPORT_WITH_DES40_CBC_SHA",
+            "SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA",
+            "SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA",
+    };
+
+    protected static final String ORDERED_KNOWN_PROTOCOLS[] = {
+            "TLSv1.2", "TLSv1.1", "TLSv1", "SSLv3"
+    };
+
+    static {
+        String[] enabledCiphers = null;
+        String[] enabledProtocols = null;
 
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, null, new SecureRandom());
             SSLSocketFactory sf = sslContext.getSocketFactory();
-            supportedCiphers = sf.getSupportedCipherSuites();
-            SSLSocket sock = (SSLSocket)sf.createSocket();
-            supportedProtocols = sock.getSupportedProtocols();
+            SSLSocket sock = (SSLSocket) sf.createSocket();
+            enabledCiphers = sock.getEnabledCipherSuites();
+            enabledProtocols = sock.getEnabledProtocols();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } catch (KeyManagementException kme) {
@@ -61,21 +82,37 @@ public class TrustedSocketFactory {
             nsae.printStackTrace();
         }
 
-        ENABLED_CIPHERS = supportedCiphers == null ? null :
-            filterBySupport(preferredCiphers, supportedCiphers);
-        ENABLED_PROTOCOLS = supportedProtocols == null ? null :
-            filterBySupport(preferredProtocols, supportedProtocols);
+        ENABLED_CIPHERS = (enabledCiphers == null) ? null :
+                reorder(enabledCiphers, ORDERED_KNOWN_CIPHERS, BLACKLISTED_CIPHERS);
+
+        ENABLED_PROTOCOLS = (enabledProtocols == null) ? null :
+            reorder(enabledProtocols, ORDERED_KNOWN_PROTOCOLS, null);
     }
 
-    protected static String[] filterBySupport(String[] preferred, String[] supported) {
-        List<String> enabled = new ArrayList<String>();
-        Set<String> available = new HashSet<String>();
-        Collections.addAll(available, supported);
+    protected static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
+        List<String> unknown = new ArrayList<String>();
+        Collections.addAll(unknown, enabled);
 
-        for (String item : preferred) {
-            if (available.contains(item)) enabled.add(item);
+        // Remove blacklisted items
+        if (blacklisted != null) {
+            for (String item : blacklisted) {
+                unknown.remove(item);
+            }
         }
-        return enabled.toArray(new String[enabled.size()]);
+
+        // Order known items
+        List<String> result = new ArrayList<String>();
+        for (String item : known) {
+            if (unknown.remove(item)) {
+                result.add(item);
+            }
+        }
+
+        // Add unknown items at the end. This way security won't get worse when unknown ciphers
+        // start showing up in the future.
+        result.addAll(unknown);
+
+        return result.toArray(new String[result.size()]);
     }
 
     public static Socket createSocket(SSLContext sslContext) throws IOException {
