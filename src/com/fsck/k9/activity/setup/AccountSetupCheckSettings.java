@@ -363,7 +363,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            mAccount.addCertificate(getApplicationContext(), mDirection, chain[0]);
+                            mAccount.addCertificate(mDirection, chain[0]);
                         } catch (CertificateException e) {
                             showErrorDialog(
                                 R.string.account_setup_failed_dlg_certificate_message_fmt,

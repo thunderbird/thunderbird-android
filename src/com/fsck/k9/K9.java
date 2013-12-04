@@ -39,6 +39,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.provider.UnreadWidgetProvider;
+import com.fsck.k9.security.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -589,6 +590,8 @@ public class K9 extends Application {
          * doesn't work in Android and MimeMessage does not have access to a Context.
          */
         BinaryTempFileBody.setTempDirectory(getCacheDir());
+
+        LocalKeyStore.setKeyStoreLocation(getDir("KeyStore", MODE_PRIVATE).toString());
 
         /*
          * Enable background sync of messages

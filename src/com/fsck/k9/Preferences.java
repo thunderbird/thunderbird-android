@@ -15,7 +15,6 @@ import android.util.Log;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.preferences.Editor;
 import com.fsck.k9.preferences.Storage;
-import com.fsck.k9.security.LocalKeyStore;
 
 public class Preferences {
 
@@ -128,7 +127,7 @@ public class Preferences {
 
         Store.removeAccount(account);
 
-        account.deleteCertificates(mContext);
+        account.deleteCertificates();
         account.delete(this);
 
         if (newAccount == account) {
