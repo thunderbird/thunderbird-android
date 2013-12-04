@@ -53,6 +53,7 @@ import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.NotificationDeleteConfirmation;
+import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.AccountSetupOutgoing;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -2671,14 +2672,13 @@ public class MessagingController implements Runnable {
     }
 
     public void clearCertificateErrorNotifications(Context context,
-            final Account account, boolean incoming, boolean outgoing) {
+            final Account account, CheckDirection direction) {
         final NotificationManager nm = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (incoming) {
+        if (direction.equals(CheckDirection.INCOMING)) {
             nm.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING + account.getAccountNumber());
-        }
-        if (outgoing) {
+        } else {
             nm.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING + account.getAccountNumber());
         }
     }
