@@ -208,7 +208,7 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     @Override
     public void setUp() throws Exception {
         mKeyStoreFile = File.createTempFile("localKeyStore", null, getContext().getCacheDir());
-        mKeyStore = LocalKeyStore.getInstance(getContext());
+        mKeyStore = LocalKeyStore.getInstance();
         mKeyStore.setKeyStoreFile(mKeyStoreFile);
     }
 

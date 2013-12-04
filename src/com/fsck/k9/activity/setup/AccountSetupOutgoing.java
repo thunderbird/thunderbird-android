@@ -312,7 +312,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             String newHost = mServerView.getText().toString();
             int newPort = Integer.parseInt(mPortView.getText().toString());
             uri = new URI(smtpSchemes[securityType], userInfo, newHost, newPort, null, null, null);
-            mAccount.deleteCertificate(this, newHost, newPort, CheckDirection.OUTGOING);
+            mAccount.deleteCertificate(newHost, newPort, CheckDirection.OUTGOING);
             mAccount.setTransportUri(uri.toString());
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
         } catch (UnsupportedEncodingException enc) {

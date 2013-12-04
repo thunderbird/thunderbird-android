@@ -3,7 +3,6 @@ package com.fsck.k9.net.ssl;
 
 import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.DomainNameChecker;
 import com.fsck.k9.mail.CertificateChainException;
 import com.fsck.k9.security.LocalKeyStore;
@@ -102,7 +101,7 @@ public final class TrustManagerFactory {
 
     static {
         try {
-            keyStore = LocalKeyStore.getInstance(K9.app);
+            keyStore = LocalKeyStore.getInstance();
 
             javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
             tmf.init((KeyStore) null);

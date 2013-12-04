@@ -13,7 +13,6 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.io.IOUtils;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -21,26 +20,32 @@ import com.fsck.k9.K9;
 public class LocalKeyStore {
     private static final int KEY_STORE_FILE_VERSION = 1;
 
-    private static LocalKeyStore sInstance;
+    private static String sKeyStoreLocation;
 
+    public static void setKeyStoreLocation(String directory) {
+        sKeyStoreLocation = directory;
+    }
 
-    public synchronized static LocalKeyStore getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new LocalKeyStore(context);
-        }
-        return sInstance;
+    private static class LocalKeyStoreHolder {
+        static final LocalKeyStore INSTANCE = new LocalKeyStore();
+    }
+
+    public static LocalKeyStore getInstance() {
+        return LocalKeyStoreHolder.INSTANCE;
     }
 
 
-    private final Context mContext;
     private File mKeyStoreFile;
     private KeyStore mKeyStore;
 
 
-    private LocalKeyStore(Context context) {
-        mContext = context.getApplicationContext();
-        upgradeKeyStoreFile();
-        setKeyStoreFile(null);
+    private LocalKeyStore() {
+        if (sKeyStoreLocation == null) {
+            Log.e(K9.LOG_TAG, "Local key store location has not been initialized");
+        } else {
+            upgradeKeyStoreFile();
+            setKeyStoreFile(null);
+        }
     }
 
     /**
@@ -167,11 +172,10 @@ public class LocalKeyStore {
     }
 
     private String getKeyStoreFilePath(int version) {
-        File dir = mContext.getDir("KeyStore", Context.MODE_PRIVATE);
         if (version < 1) {
-            return dir + File.separator + "KeyStore.bks";
+            return sKeyStoreLocation + File.separator + "KeyStore.bks";
         } else {
-            return dir + File.separator + "KeyStore_v" + version + ".bks";
+            return sKeyStoreLocation + File.separator + "KeyStore_v" + version + ".bks";
         }
     }
 }
