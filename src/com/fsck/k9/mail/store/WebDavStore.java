@@ -1079,7 +1079,7 @@ public class WebDavStore extends Store {
 
             SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
             try {
-                Scheme s = new Scheme("https", new WebDavSocketFactory(mHost, mSecure), 443);
+                Scheme s = new Scheme("https", new WebDavSocketFactory(mHost, 443, mSecure), 443);
                 reg.register(s);
             } catch (NoSuchAlgorithmException nsa) {
                 Log.e(K9.LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);

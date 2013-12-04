@@ -16,6 +16,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
@@ -427,6 +428,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         mWebdavMailboxPathView.getText().toString());
             }
 
+            mAccount.deleteCertificate(host, port, CheckDirection.INCOMING);
             ServerSettings settings = new ServerSettings(mStoreType, host, port,
                     connectionSecurity, authType, username, password, extra);
 
@@ -437,7 +439,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount.setCompression(Account.TYPE_OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
         } catch (Exception e) {
             failure(e);
         }
