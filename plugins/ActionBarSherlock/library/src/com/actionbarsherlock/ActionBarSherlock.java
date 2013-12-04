@@ -561,7 +561,7 @@ public abstract class ActionBarSherlock {
             OnCreateOptionsMenuListener listener = (OnCreateOptionsMenuListener)mActivity;
             result = listener.onCreateOptionsMenu(menu);
         }
-
+        
         if (DEBUG) Log.d(TAG, "[callbackCreateOptionsMenu] returning " + result);
         return result;
     }

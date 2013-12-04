@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="19002"
-    android:versionName="4.701" package="com.fsck.k9"
+    android:versionCode="20002"
+    android:versionName="4.801" package="com.fsck.k9"
     >
     <uses-sdk
-       android:minSdkVersion="8"
-       android:targetSdkVersion="17"
+       android:minSdkVersion="16"
+       android:targetSdkVersion="16"
     />
     <supports-screens
         android:largeScreens="true"

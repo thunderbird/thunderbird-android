@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-
+    <release version="4.800" versioncode="20001" >
+        <change>これはKitKatデバイスでよりよく振る舞うべくリリースされました。古いデバイスで動く4.8のバージョンはすぐに現れなければなりませんでした</change>
+    </release>
     <release version="4.701" versioncode="19002" >
         <change>KitKatでの問題を修正するためにメッセージビューのスクロールの仕方を見直しました。ありがとう Joe Steele!</change>
         <change>TLS暗号スイートとバージョンを堅牢にしました</change>

@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.801" versioncode="20002" >
+        <change>Further bugfixes for importing settings on KitKat</change>
+        <change>First pass at a fix for blank messages showing up when the 'Auto-fit messages' option is checked</change>
+    </release>
+    <release version="4.800" versioncode="20001" >
+        <change>This release should behave better on KitKat devices. A version of 4.8 that runs on older devices should appear shortly.</change>
+    </release>
     <release version="4.701" versioncode="19002" >
         <change>Overhauled how we do message view scrolling to fix a KitKat issue. Thanks to Joe Steele!</change>
         <change>Hardened TLS cipher suites and versions</change>

@@ -117,7 +117,7 @@ public class K9 extends Application {
      * It should NEVER be on for Market builds
      * Right now, it just governs strictmode
      **/
-    public static boolean DEVELOPER_MODE = true;
+    public static boolean DEVELOPER_MODE = false;
 
 
     /**
@@ -204,7 +204,7 @@ public class K9 extends Application {
     }
 
     private static NotificationQuickDelete sNotificationQuickDelete = NotificationQuickDelete.NEVER;
-
+ 
     /**
      * Controls behaviour of delete button in notifications.
      */

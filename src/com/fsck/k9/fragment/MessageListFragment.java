@@ -1673,7 +1673,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
             int listViewPosition = mListView.pointToPosition(listX, listY);
 
-            toggleMessageSelect(listViewPosition);
+            toggleMessageRead(listViewPosition);
         }
     }
 
@@ -2235,18 +2235,76 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         toggleMessageSelectWithAdapterPosition(adapterPosition);
     }
 
+    private void toggleMessageRead(int listViewPosition) {
+        int adapterPosition = listViewToAdapterPosition(listViewPosition);
+        if (adapterPosition == AdapterView.INVALID_POSITION) {
+            return;
+        }
+
+        toggleMessageReadWithAdapterPosition(adapterPosition);
+    }
+    
     private void toggleMessageFlagWithAdapterPosition(int adapterPosition) {
         Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
         boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
 
         setFlag(adapterPosition,Flag.FLAGGED, !flagged);
     }
+    private void toggleMessageReadWithAdapterPosition(int adapterPosition) {
+        Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+        long uniqueId = cursor.getLong(mUniqueIdColumn);
 
+        boolean selected = mSelected.contains(uniqueId);
+        if (adapterPosition == ListView.INVALID_POSITION) {
+            return;
+        }
+        boolean flagState = (cursor.getInt(READ_COLUMN) == 1);
+        setFlag(adapterPosition, Flag.SEEN, !flagState);
+
+
+        int selectedCountDelta = 1;
+        if (mThreadedList) {
+            int threadCount = cursor.getInt(THREAD_COUNT_COLUMN);
+            if (threadCount > 1) {
+                selectedCountDelta = threadCount;
+            }
+        }
+
+        if (mActionMode != null) {
+            if (mSelectedCount == selectedCountDelta && selected) {
+                mActionMode.finish();
+                mActionMode = null;
+                return;
+            }
+        } else {
+            mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
+        }
+        /*
+        if (selected) {
+            mSelectedCount -= selectedCountDelta;
+        } else {
+            mSelectedCount += selectedCountDelta;
+        }*/
+
+        computeBatchDirection();
+        //updateActionModeTitle();
+
+        // make sure the onPrepareActionMode is called
+        //mActionMode.invalidate();
+
+        //computeSelectAllVisibility();
+
+        //mAdapter.notifyDataSetChanged();
+    }
     private void toggleMessageSelectWithAdapterPosition(int adapterPosition) {
         Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
         long uniqueId = cursor.getLong(mUniqueIdColumn);
 
         boolean selected = mSelected.contains(uniqueId);
+        if (adapterPosition == ListView.INVALID_POSITION) {
+            return;
+        }
+        
         if (!selected) {
             mSelected.add(uniqueId);
         } else {

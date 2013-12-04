@@ -359,8 +359,8 @@ public class Pop3Store extends Store {
                         sslContext.init(null, new TrustManager[] {
                                             TrustManagerFactory.get(mHost, secure)
                                         }, new SecureRandom());
-                        mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
-                                mPort, true);
+                        mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
+                                  true);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
                         mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);

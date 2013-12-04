@@ -85,14 +85,6 @@ public class TrustedSocketFactory {
         return socket;
     }
 
-    public static Socket createSocket(SSLContext sslContext, Socket s, String host, int port,
-            boolean autoClose) throws IOException {
-        SSLSocket socket = (SSLSocket) sslContext.getSocketFactory().createSocket(s, host, port, autoClose);
-        hardenSocket(socket);
-
-        return socket;
-    }
-
     private static void hardenSocket(SSLSocket sock) {
         if (ENABLED_CIPHERS != null) {
             sock.setEnabledCipherSuites(ENABLED_CIPHERS);

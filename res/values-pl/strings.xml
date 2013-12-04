@@ -3,11 +3,10 @@
 <!--  ##                                                                                ## -->
 <!--  ##         Polska wersja jezykowa: Marcin Orlowski <carlos@wfmh.org.pl>           ## -->
 <!--  ##                                                                                ## -->
-<!--  ## Latest update: (YYYY-MM-DD): 2013.10.30                                        ## -->
+<!--  ## Latest update: (YYYY-MM-DD): 2013.07.15                                        ## -->
 <!--  ## Modified by rabbbit, 2011.03.03                                                ## -->
 <!--  ## Updated by Błażej Jeżewski, 2012.04.10                                         ## -->
 <!--  ## Updated by Mirosław Lach, 2013.07.15                                           ## -->
-<!--  ## Updated by Jacek Sowiński, 2013.10.30                                          ## -->
 <!--  ##                                                                                ## -->
 <!--  #################################################################################### -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
@@ -956,7 +955,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="btn_crypto_sign">Podpisz</string>
     <string name="btn_encrypt">Szyfruj</string>
     <string name="btn_decrypt">Deszyfruj</string>
-    <string name="btn_verify">Potwierdź</string>
+    <string name="btn_verify">Potwiedź</string>
     <string name="unknown_crypto_signature_user_id">&lt;nieznany&gt;</string>
     <string name="key_id">id: %s</string>
     <string name="pgp_mime_unsupported">Wiadomości PGP/MIME nie są jeszcze wspierane.</string>
@@ -1148,14 +1147,14 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
 
-    <string name="global_settings_colorize_missing_contact_pictures_label">Pokoloruj zdjęcia kontaktów</string>
-    <string name="global_settings_colorize_missing_contact_pictures_summary">Używa kolorów gdy brakuje zdjęć kontaktów</string>
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
-    <string name="global_settings_messageview_visible_refile_actions_title">Widoczne operacje wiadomości</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">Pokaż wybrane operacje w menu widoku wiadomości</string>
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
 
-    <string name="loading_attachment">Ładowanie załącznika…</string>
-    <string name="fetching_attachment_dialog_title_send">Wysyłanie wiadomości</string>
-    <string name="fetching_attachment_dialog_title_save">Zapisywanie szkicu</string>
-    <string name="fetching_attachment_dialog_message">Pobieranie załącznika…</string>
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

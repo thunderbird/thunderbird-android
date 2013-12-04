@@ -12,32 +12,20 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
-        <option name="LIBS_FOLDER_RELATIVE_PATH" value="/ignored" />
-        <option name="PROGUARD_CFG_PATH" value="/proguard.cfg" />
-        <includeSystemProguardFile>false</includeSystemProguardFile>
-        <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
-        <resOverlayFolders />
+        <option name="LIBRARY_PROJECT" value="true" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/bin/classes" />
-    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/tests/src" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
     </content>
     <orderEntry type="jdk" jdkName="Android 4.2.2 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="com.android.ide.eclipse.adt.DEPENDENCIES" level="application" />
-    <orderEntry type="module" module-name="k9mail-Android-PullToRefresh" />
-    <orderEntry type="module" module-name="k9mail-ActionBarSherlock" />
-    <orderEntry type="module" module-name="k9mail-ckChangeLog" />
-    <orderEntry type="module" module-name="k9mail-HoloColorPicker" />
   </component>
 </module>
 

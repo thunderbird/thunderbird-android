@@ -1138,13 +1138,13 @@
     <string name="mark_all_as_read">Μαρκάρισμα όλων ως αναγνωσμένων</string>
 
     <string name="global_settings_colorize_missing_contact_pictures_label">Χρωματισμός επαφών χωρίς εικόνα</string>
-    <string name="global_settings_colorize_missing_contact_pictures_summary">Χρωματισμός επαφών χωρίς εικόνα</string>
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
 
     <string name="global_settings_messageview_visible_refile_actions_title">Ορατές ενέργειες μηνυμάτων</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Προβολή των επιλεγμένων ενεργειών στο μενού προβολής μηνύματος</string>
 
-    <string name="loading_attachment">Φόρτωση συνημμένων…</string>
-    <string name="fetching_attachment_dialog_title_send">Αποστολή μηνύματος</string>
-    <string name="fetching_attachment_dialog_title_save">Αποθήκευση πρόχειρου</string>
-    <string name="fetching_attachment_dialog_message">Ανάκληση συνημμένων…</string>
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>
