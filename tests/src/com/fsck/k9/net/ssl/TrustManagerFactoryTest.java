@@ -73,7 +73,7 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
           + "zOztD2HZfxhIz3uH2gXmqUo=\n"
           + "-----END CERTIFICATE-----\n";
 
-          private static final String CERT3 =
+    private static final String CERT3 =
             "-----BEGIN CERTIFICATE-----\n"
           + "MIIDjDCCAnSgAwIBAgIBATANBgkqhkiG9w0BAQUFADBNMQswCQYDVQQGEwJDSDET\n"
           + "MBEGA1UECAwKU29tZS1TdGF0ZTEMMAoGA1UECgwDSy05MRswGQYDVQQDDBJ0ZXN0\n"
@@ -96,7 +96,7 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
           + "Dcf5/G8bZe2DnavBQfML1wI5d7NUWE8CWb95SsIvFXI0qZE0oIR+axBVl9u97uaO\n"
           + "-----END CERTIFICATE-----\n";
 
-          private static final String DIGI_CERT =
+    private static final String DIGI_CERT =
             "-----BEGIN CERTIFICATE-----\n"
           + "MIIG5jCCBc6gAwIBAgIQAze5KDR8YKauxa2xIX84YDANBgkqhkiG9w0BAQUFADBs\n"
           + "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"
@@ -137,7 +137,7 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
           + "zVMSW4SOwg/H7ZMZ2cn6j1g0djIvruFQFGHUqFijyDATI+/GJYw2jxyA\n"
           + "-----END CERTIFICATE-----\n";
 
-          private static final String GITHUB_CERT =
+    private static final String GITHUB_CERT =
             "-----BEGIN CERTIFICATE-----\n"
           + "MIIHOjCCBiKgAwIBAgIQBH++LkveAITSyvjj7P5wWDANBgkqhkiG9w0BAQUFADBp\n"
           + "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"

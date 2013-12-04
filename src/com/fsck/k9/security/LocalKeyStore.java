@@ -40,11 +40,17 @@ public class LocalKeyStore {
 
 
     private LocalKeyStore() {
-        if (sKeyStoreLocation == null) {
-            Log.e(K9.LOG_TAG, "Local key store location has not been initialized");
-        } else {
+        try {
             upgradeKeyStoreFile();
             setKeyStoreFile(null);
+        } catch (CertificateException e) {
+            /*
+             * Can happen if setKeyStoreLocation(String directory) has not been
+             * called before the first call to getInstance(). Not necessarily an
+             * error, presuming setKeyStoreFile(File) is called next with a
+             * non-null File.
+             */
+            Log.w(K9.LOG_TAG, "Local key store has not been initialized");
         }
     }
 
@@ -56,8 +62,11 @@ public class LocalKeyStore {
      *            {@link File} containing locally saved certificates. May be 0
      *            length, in which case it is deleted and recreated. May be
      *            {@code null}, in which case a default file location is used.
+     * @throws CertificateException
+     *            Occurs if {@code file == null} and
+     *            {@code setKeyStoreLocation(directory)} was not called previously.
      */
-    public synchronized void setKeyStoreFile(File file) {
+    public synchronized void setKeyStoreFile(File file) throws CertificateException {
         if (file == null) {
             file = new File(getKeyStoreFilePath(KEY_STORE_FILE_VERSION));
         }
@@ -164,14 +173,17 @@ public class LocalKeyStore {
         }
     }
 
-    private void upgradeKeyStoreFile() {
+    private void upgradeKeyStoreFile() throws CertificateException {
         if (KEY_STORE_FILE_VERSION > 0) {
             // Blow away version "0" because certificate aliases have changed.
             new File(getKeyStoreFilePath(0)).delete();
         }
     }
 
-    private String getKeyStoreFilePath(int version) {
+    private String getKeyStoreFilePath(int version) throws CertificateException {
+        if (sKeyStoreLocation == null) {
+            throw new CertificateException("Local key store location has not been initialized");
+        }
         if (version < 1) {
             return sKeyStoreLocation + File.separator + "KeyStore.bks";
         } else {
