@@ -1900,6 +1900,10 @@ public class Account implements BaseAccount {
         }
         String oldHost = uri.getHost();
         int oldPort = uri.getPort();
+        if (oldPort == -1) {
+            // This occurs when a new account is created
+            return;
+        }
         if (!newHost.equals(oldHost) || newPort != oldPort) {
             LocalKeyStore localKeyStore = LocalKeyStore.getInstance(context);
             localKeyStore.deleteCertificate(oldHost, oldPort);
