@@ -392,7 +392,9 @@ public class HtmlConverter {
      * @param outputBuffer Buffer to append linked text to.
      */
     private static void linkifyText(final String text, final StringBuffer outputBuffer) {
-        Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
+        String prepared = text.replaceAll(Regex.BITCOIN_URI_PATTERN, "<a href=\"$0\">$0</a>");
+
+        Matcher m = Regex.WEB_URL_PATTERN.matcher(prepared);
         while (m.find()) {
             int start = m.start();
             if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
