@@ -103,4 +103,7 @@ public class Regex {
           "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
           ")+"
       );
+
+    public static final String BITCOIN_URI_PATTERN =
+            "bitcoin:[1-9a-km-zA-HJ-NP-Z]{27,34}(\\?[a-zA-Z0-9$\\-_.+!*'(),%:@&=]*)?";
 }
