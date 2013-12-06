@@ -195,9 +195,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Conta \"<xliff:g id="account">%s</xliff:g>\" reduziu-se de <xliff:g id="oldSize">%s</xliff:g> para <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Conta \"<xliff:g id="account">%s</xliff:g>\" reduziu-se de <xliff:g id="oldSize">%s</xliff:g> para <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compactando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Limpando conta \"<xliff:g id="account">%s</xliff:g>\"</string>

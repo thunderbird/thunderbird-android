@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
      When removing strings from the main file, please cleanup the translations.
      The script tools/sync_translation.py will get rid of any surplus strings.
@@ -201,12 +201,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Account \"<xliff:g id="account">%s</xliff:g>\" shrunk from
-    <xliff:g id="oldSize">%s</xliff:g>
-    to
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" shrunk from <xliff:g id="oldSize">%s</xliff:g> to <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compacting account \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Clearing account \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -289,7 +284,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_show_pictures_action">Show pictures</string>
     <string name="message_view_show_message_action">Show message</string>
     <string name="message_view_show_attachments_action">Show attachments</string>
-    <string name="message_view_show_more_attachments_action">More&#8230;</string>
+    <string name="message_view_show_more_attachments_action">More…</string>
     <string name="message_view_fetching_attachment_toast">Fetching attachment.</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>
@@ -371,7 +366,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_basics_password_hint">Password</string>
     <string name="account_setup_basics_manual_setup_action">Manual setup</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Retrieving account information\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Checking incoming server settings\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Checking outgoing server settings\u2026</string>

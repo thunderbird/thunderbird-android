@@ -189,20 +189,14 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="status_loading_more_failed">Yritetään ladata uudelleen lisää viestejä</string>
 
-    <string name="load_more_messages_fmt">Lataa
-       <xliff:g id="messages_to_load">%d</xliff:g> lisää</string>
+    <string name="load_more_messages_fmt">Lataa <xliff:g id="messages_to_load">%d</xliff:g> lisää</string>
 
     <string name="abbrev_gigabytes">Gt</string>
     <string name="abbrev_megabytes">Mt</string>
     <string name="abbrev_kilobytes">kt</string>
     <string name="abbrev_bytes">t</string>
 
-    <string name="account_size_changed">
-    Tilin \"<xliff:g id="account">%s</xliff:g>\" vanha koko
-      <xliff:g id="oldSize">%s</xliff:g>
-      on nyt
-      <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Tilin \"<xliff:g id="account">%s</xliff:g>\" vanha koko <xliff:g id="oldSize">%s</xliff:g> on nyt <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Tiivistetään tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Tyhjennetään tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -788,12 +782,12 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     </string>
 
     <string name="folder_list_help_key">
-        1 - Näytä vain 1. luokan kansiot\u000A
-        2 - Näytä 1. ja 2. luokan kansiot\u000A
-        3 - Näytä kaikki paitsi 2. luokan kansiot\u000A
-        4 - Näytä kaikki kansiot\u000A
-        Q - Palaa tileihin\u000A
-        S - Muokkaa tilin asetuksia</string>
+        1 - Näytä vain 1. luokan kansiot\u000A
+        2 - Näytä 1. ja 2. luokan kansiot\u000A
+        3 - Näytä kaikki paitsi 2. luokan kansiot\u000A
+        4 - Näytä kaikki kansiot\u000A
+        Q - Palaa tileihin\u000A
+        S - Muokkaa tilin asetuksia</string>
 
     <string name="folder_list_filter_hint">kansionimi sisältää</string>
 

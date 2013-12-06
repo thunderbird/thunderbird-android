@@ -196,12 +196,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Konto \"<xliff:g id="account">%s</xliff:g>\" nedbragt fra
-    <xliff:g id="oldSize">%s</xliff:g>
-    til
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Konto \"<xliff:g id="account">%s</xliff:g>\" nedbragt fra <xliff:g id="oldSize">%s</xliff:g> til <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Komprimerer konto \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Renser konto \"<xliff:g id="account">%s</xliff:g>\"</string>

@@ -196,12 +196,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Účet \"<xliff:g id="account">%s</xliff:g>\" bol zmenšený z
-    <xliff:g id="oldSize">%s</xliff:g>
-    na
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Účet \"<xliff:g id="account">%s</xliff:g>\" bol zmenšený z <xliff:g id="oldSize">%s</xliff:g> na <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Zmenšujem účet \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Čistím účet \"<xliff:g id="account">%s</xliff:g>\"</string>

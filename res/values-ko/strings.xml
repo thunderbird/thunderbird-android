@@ -194,12 +194,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    \"<xliff:g id="account">%s</xliff:g>\" 계정이 차지하는 용량이
-    <xliff:g id="oldSize">%s</xliff:g>
-    에서
-    <xliff:g id="newSize">%s</xliff:g> 로 줄었습니다
-    </string>
+    <string name="account_size_changed">\"<xliff:g id="account">%s</xliff:g>\" 계정이 차지하는 용량이 <xliff:g id="oldSize">%s</xliff:g> 에서 <xliff:g id="newSize">%s</xliff:g> 로 줄었습니다</string>
 
     <string name="compacting_account">계정 최적화 \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">계정 비우기 \"<xliff:g id="account">%s</xliff:g>\"</string>
