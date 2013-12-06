@@ -188,20 +188,14 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
 
     <string name="status_loading_more_failed">Спробуйте ще раз завантажити повідомлення</string>
 
-    <string name="load_more_messages_fmt">Завантажити ще
-     <xliff:g id="messages_to_load">%d</xliff:g> </string>
+    <string name="load_more_messages_fmt">Завантажити ще <xliff:g id="messages_to_load">%d</xliff:g> </string>
 
     <string name="abbrev_gigabytes">ГБ</string>
     <string name="abbrev_megabytes">МБ</string>
     <string name="abbrev_kilobytes">кБ</string>
     <string name="abbrev_bytes">Б</string>
 
-    <string name="account_size_changed">
-    Розмір \"<xliff:g id="account">%s</xliff:g>\" зменшився від
-    <xliff:g id="oldSize">%s</xliff:g>
-    до
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Розмір \"<xliff:g id="account">%s</xliff:g>\" зменшився від <xliff:g id="oldSize">%s</xliff:g> до <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Стискання скриньки \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Очищення скриньки \"<xliff:g id="account">%s</xliff:g>\"</string>

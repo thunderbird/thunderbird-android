@@ -200,12 +200,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="abbrev_kilobytes">KiB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Účet \"<xliff:g id="account">%s</xliff:g>\" byl stlačen z
-    <xliff:g id="oldSize">%s</xliff:g>
-    na
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Účet \"<xliff:g id="account">%s</xliff:g>\" byl stlačen z <xliff:g id="oldSize">%s</xliff:g> na <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Stlačuji účet \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Čistím účet \"<xliff:g id="account">%s</xliff:g>\"</string>

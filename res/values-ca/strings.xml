@@ -196,12 +196,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Compte \"<xliff:g id="account">%s</xliff:g>\" comprimida des de
-    <xliff:g id="oldSize">%s</xliff:g>
-    a
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Compte \"<xliff:g id="account">%s</xliff:g>\" comprimida des de <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">S\'està compactant el compte \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">S\'està netejant el compte \"<xliff:g id="account">%s</xliff:g>\"</string>

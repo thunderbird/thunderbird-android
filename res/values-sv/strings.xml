@@ -196,12 +196,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Kontot \"<xliff:g id="account">%s</xliff:g>\" har krympt från
-    <xliff:g id="oldSize">%s</xliff:g>
-    till
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Kontot \"<xliff:g id="account">%s</xliff:g>\" har krympt från <xliff:g id="oldSize">%s</xliff:g> till <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Komprimerar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Rensar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
