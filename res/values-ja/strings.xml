@@ -195,12 +195,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    アカウント \"<xliff:g id="account">%s</xliff:g>\" 現在
-    <xliff:g id="oldSize">%s</xliff:g>
-    から
-    <xliff:g id="newSize">%s</xliff:g> へ
-    </string>
+    <string name="account_size_changed">アカウント \"<xliff:g id="account">%s</xliff:g>\" 現在 <xliff:g id="oldSize">%s</xliff:g> から <xliff:g id="newSize">%s</xliff:g> へ</string>
 
     <string name="compacting_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" を最適化しています</string>
     <string name="clearing_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" をクリアしています</string>
