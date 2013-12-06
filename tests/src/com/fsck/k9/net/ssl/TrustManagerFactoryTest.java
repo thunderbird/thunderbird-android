@@ -96,89 +96,70 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
           + "Dcf5/G8bZe2DnavBQfML1wI5d7NUWE8CWb95SsIvFXI0qZE0oIR+axBVl9u97uaO\n"
           + "-----END CERTIFICATE-----\n";
 
-    private static final String DIGI_CERT =
-            "-----BEGIN CERTIFICATE-----\n"
-          + "MIIG5jCCBc6gAwIBAgIQAze5KDR8YKauxa2xIX84YDANBgkqhkiG9w0BAQUFADBs\n"
-          + "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"
-          + "d3cuZGlnaWNlcnQuY29tMSswKQYDVQQDEyJEaWdpQ2VydCBIaWdoIEFzc3VyYW5j\n"
-          + "ZSBFViBSb290IENBMB4XDTA3MTEwOTEyMDAwMFoXDTIxMTExMDAwMDAwMFowaTEL\n"
-          + "MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3\n"
-          + "LmRpZ2ljZXJ0LmNvbTEoMCYGA1UEAxMfRGlnaUNlcnQgSGlnaCBBc3N1cmFuY2Ug\n"
-          + "RVYgQ0EtMTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPOWYth1bhn/\n"
-          + "PzR8SU8xfg0ETpmB4rOFVZEwscCvcLssqOcYqj9495BoUoYBiJfiOwZlkKq9ZXbC\n"
-          + "7L4QWzd4g2B1Rca9dKq2n6Q6AVAXxDlpufFP74LByvNK28yeUE9NQKM6kOeGZrzw\n"
-          + "PnYoTNF1gJ5qNRQ1A57bDIzCKK1Qss72kaPDpQpYSfZ1RGy6+c7pqzoC4E3zrOJ6\n"
-          + "4GAiBTyC01Li85xH+DvYskuTVkq/cKs+6WjIHY9YHSpNXic9rQpZL1oRIEDZaARo\n"
-          + "LfTAhAsKG3jf7RpY3PtBWm1r8u0c7lwytlzs16YDMqbo3rcoJ1mIgP97rYlY1R4U\n"
-          + "pPKwcNSgPqcCAwEAAaOCA4UwggOBMA4GA1UdDwEB/wQEAwIBhjA7BgNVHSUENDAy\n"
-          + "BggrBgEFBQcDAQYIKwYBBQUHAwIGCCsGAQUFBwMDBggrBgEFBQcDBAYIKwYBBQUH\n"
-          + "AwgwggHEBgNVHSAEggG7MIIBtzCCAbMGCWCGSAGG/WwCATCCAaQwOgYIKwYBBQUH\n"
-          + "AgEWLmh0dHA6Ly93d3cuZGlnaWNlcnQuY29tL3NzbC1jcHMtcmVwb3NpdG9yeS5o\n"
-          + "dG0wggFkBggrBgEFBQcCAjCCAVYeggFSAEEAbgB5ACAAdQBzAGUAIABvAGYAIAB0\n"
-          + "AGgAaQBzACAAQwBlAHIAdABpAGYAaQBjAGEAdABlACAAYwBvAG4AcwB0AGkAdAB1\n"
-          + "AHQAZQBzACAAYQBjAGMAZQBwAHQAYQBuAGMAZQAgAG8AZgAgAHQAaABlACAARABp\n"
-          + "AGcAaQBDAGUAcgB0ACAARQBWACAAQwBQAFMAIABhAG4AZAAgAHQAaABlACAAUgBl\n"
-          + "AGwAeQBpAG4AZwAgAFAAYQByAHQAeQAgAEEAZwByAGUAZQBtAGUAbgB0ACAAdwBo\n"
-          + "AGkAYwBoACAAbABpAG0AaQB0ACAAbABpAGEAYgBpAGwAaQB0AHkAIABhAG4AZAAg\n"
-          + "AGEAcgBlACAAaQBuAGMAbwByAHAAbwByAGEAdABlAGQAIABoAGUAcgBlAGkAbgAg\n"
-          + "AGIAeQAgAHIAZQBmAGUAcgBlAG4AYwBlAC4wEgYDVR0TAQH/BAgwBgEB/wIBADCB\n"
-          + "gwYIKwYBBQUHAQEEdzB1MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2Vy\n"
-          + "dC5jb20wTQYIKwYBBQUHMAKGQWh0dHA6Ly93d3cuZGlnaWNlcnQuY29tL0NBQ2Vy\n"
-          + "dHMvRGlnaUNlcnRIaWdoQXNzdXJhbmNlRVZSb290Q0EuY3J0MIGPBgNVHR8EgYcw\n"
-          + "gYQwQKA+oDyGOmh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEhpZ2hB\n"
-          + "c3N1cmFuY2VFVlJvb3RDQS5jcmwwQKA+oDyGOmh0dHA6Ly9jcmw0LmRpZ2ljZXJ0\n"
-          + "LmNvbS9EaWdpQ2VydEhpZ2hBc3N1cmFuY2VFVlJvb3RDQS5jcmwwHQYDVR0OBBYE\n"
-          + "FExYyyXwQU9S9CjIgUObpqig5pLlMB8GA1UdIwQYMBaAFLE+w2kD+L9HAdSYJhoI\n"
-          + "Au9jZCvDMA0GCSqGSIb3DQEBBQUAA4IBAQBMeheHKF0XvLIyc7/NLvVYMR3wsXFU\n"
-          + "nNabZ5PbLwM+Fm8eA8lThKNWYB54lBuiqG+jpItSkdfdXJW777UWSemlQk808kf/\n"
-          + "roF/E1S3IMRwFcuBCoHLdFfcnN8kpCkMGPAc5K4HM+zxST5Vz25PDVR708noFUjU\n"
-          + "xbvcNRx3RQdIRYW9135TuMAW2ZXNi419yWBP0aKb49Aw1rRzNubS+QOy46T15bg+\n"
-          + "BEkAui6mSnKDcp33C4ypieez12Qf1uNgywPE3IjpnSUBAHHLA7QpYCWP+UbRe3Gu\n"
-          + "zVMSW4SOwg/H7ZMZ2cn6j1g0djIvruFQFGHUqFijyDATI+/GJYw2jxyA\n"
-          + "-----END CERTIFICATE-----\n";
+    private static final String STARFIELD_CERT =
+            "-----BEGIN CERTIFICATE-----\n" +
+            "MIIFBzCCA++gAwIBAgICAgEwDQYJKoZIhvcNAQEFBQAwaDELMAkGA1UEBhMCVVMx\n" +
+            "JTAjBgNVBAoTHFN0YXJmaWVsZCBUZWNobm9sb2dpZXMsIEluYy4xMjAwBgNVBAsT\n" +
+            "KVN0YXJmaWVsZCBDbGFzcyAyIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTA2\n" +
+            "MTExNjAxMTU0MFoXDTI2MTExNjAxMTU0MFowgdwxCzAJBgNVBAYTAlVTMRAwDgYD\n" +
+            "VQQIEwdBcml6b25hMRMwEQYDVQQHEwpTY290dHNkYWxlMSUwIwYDVQQKExxTdGFy\n" +
+            "ZmllbGQgVGVjaG5vbG9naWVzLCBJbmMuMTkwNwYDVQQLEzBodHRwOi8vY2VydGlm\n" +
+            "aWNhdGVzLnN0YXJmaWVsZHRlY2guY29tL3JlcG9zaXRvcnkxMTAvBgNVBAMTKFN0\n" +
+            "YXJmaWVsZCBTZWN1cmUgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkxETAPBgNVBAUT\n" +
+            "CDEwNjg4NDM1MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4qddo+1m\n" +
+            "72ovKzYf3Y3TBQKgyg9eGa44cs8W2lRKy0gK9KFzEWWFQ8lbFwyaK74PmFF6YCkN\n" +
+            "bN7i6OUVTVb/kNGnpgQ/YAdKym+lEOez+FyxvCsq3AF59R019Xoog/KTc4KJrGBt\n" +
+            "y8JIwh3UBkQXPKwBR6s+cIQJC7ggCEAgh6FjGso+g9I3s5iNMj83v6G3W1/eXDOS\n" +
+            "zz4HzrlIS+LwVVAv+HBCidGTlopj2WYN5lhuuW2QvcrchGbyOY5bplhVc8tibBvX\n" +
+            "IBY7LFn1y8hWMkpQJ7pV06gBy3KpdIsMrTrlFbYq32X43or174Q7+edUZQuAvUdF\n" +
+            "pfBE2FM7voDxLwIDAQABo4IBRDCCAUAwHQYDVR0OBBYEFElLUifRG7zyoSFqYntR\n" +
+            "QnqK19VWMB8GA1UdIwQYMBaAFL9ft9HO3R+G9FtVrNzXEMIOqYjnMBIGA1UdEwEB\n" +
+            "/wQIMAYBAf8CAQAwOQYIKwYBBQUHAQEELTArMCkGCCsGAQUFBzABhh1odHRwOi8v\n" +
+            "b2NzcC5zdGFyZmllbGR0ZWNoLmNvbTBMBgNVHR8ERTBDMEGgP6A9hjtodHRwOi8v\n" +
+            "Y2VydGlmaWNhdGVzLnN0YXJmaWVsZHRlY2guY29tL3JlcG9zaXRvcnkvc2Zyb290\n" +
+            "LmNybDBRBgNVHSAESjBIMEYGBFUdIAAwPjA8BggrBgEFBQcCARYwaHR0cDovL2Nl\n" +
+            "cnRpZmljYXRlcy5zdGFyZmllbGR0ZWNoLmNvbS9yZXBvc2l0b3J5MA4GA1UdDwEB\n" +
+            "/wQEAwIBBjANBgkqhkiG9w0BAQUFAAOCAQEAhlK6sx+mXmuQpmQq/EWyrp8+s2Kv\n" +
+            "2x9nxL3KoS/HnA0hV9D4NiHOOiU+eHaz2d283vtshF8Mow0S6xE7cV+AHvEfbQ5f\n" +
+            "wezUpfdlux9MlQETsmqcC+sfnbHn7RkNvIV88xe9WWOupxoFzUfjLZZiUTIKCGhL\n" +
+            "Indf90XcYd70yysiKUQl0p8Ld3qhJnxK1w/C0Ty6DqeVmlsFChD5VV/Bl4t0zF4o\n" +
+            "aRN+0AqNnQ9gVHrEjBs1D3R6cLKCzx214orbKsayUWm/EheSYBeqPVsJ+IdlHaek\n" +
+            "KOUiAgOCRJo0Y577KM/ozS4OUiDtSss4fJ2ubnnXlSyokfOGASGRS7VApA==\n" +
+            "-----END CERTIFICATE-----\n";
 
-    private static final String GITHUB_CERT =
-            "-----BEGIN CERTIFICATE-----\n"
-          + "MIIHOjCCBiKgAwIBAgIQBH++LkveAITSyvjj7P5wWDANBgkqhkiG9w0BAQUFADBp\n"
-          + "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"
-          + "d3cuZGlnaWNlcnQuY29tMSgwJgYDVQQDEx9EaWdpQ2VydCBIaWdoIEFzc3VyYW5j\n"
-          + "ZSBFViBDQS0xMB4XDTEzMDYxMDAwMDAwMFoXDTE1MDkwMjEyMDAwMFowgfAxHTAb\n"
-          + "BgNVBA8MFFByaXZhdGUgT3JnYW5pemF0aW9uMRMwEQYLKwYBBAGCNzwCAQMTAlVT\n"
-          + "MRkwFwYLKwYBBAGCNzwCAQITCERlbGF3YXJlMRAwDgYDVQQFEwc1MTU3NTUwMRcw\n"
-          + "FQYDVQQJEw41NDggNHRoIFN0cmVldDEOMAwGA1UEERMFOTQxMDcxCzAJBgNVBAYT\n"
-          + "AlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2Nv\n"
-          + "MRUwEwYDVQQKEwxHaXRIdWIsIEluYy4xEzARBgNVBAMTCmdpdGh1Yi5jb20wggEi\n"
-          + "MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDt04nDXXByCfMzTxpydNm2WpVQ\n"
-          + "u2hhn/f7Hxnh2gQxrxV8Gn/5c68d5UMrVgkARWlK6MRb38J3UlEZW9Er2TllNqAy\n"
-          + "GRxBc/sysj2fmOyCWws3ZDkstxCDcs3w6iRL+tmULsOFFTmpOvaI2vQniaaVT4Si\n"
-          + "N058JXg6yYNtAheVeH1HqFWD7hPIGRqzPPFf/jsC4YX7EWarCV2fTEPwxyReKXIo\n"
-          + "ztR1aE8kcimuOSj8341PTYNzdAxvEZun3WLe/+LrF+b/DL/ALTE71lmi8t2HSkh7\n"
-          + "bTMRFE00nzI49sgZnfG2PcVG71ELisYz7UhhxB0XG718tmfpOc+lUoAK9OrNAgMB\n"
-          + "AAGjggNUMIIDUDAfBgNVHSMEGDAWgBRMWMsl8EFPUvQoyIFDm6aooOaS5TAdBgNV\n"
-          + "HQ4EFgQUh9GPGW7kh29TjHeRB1Dfo79VRyAwJQYDVR0RBB4wHIIKZ2l0aHViLmNv\n"
-          + "bYIOd3d3LmdpdGh1Yi5jb20wDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsG\n"
-          + "AQUFBwMBBggrBgEFBQcDAjBjBgNVHR8EXDBaMCugKaAnhiVodHRwOi8vY3JsMy5k\n"
-          + "aWdpY2VydC5jb20vZXZjYTEtZzIuY3JsMCugKaAnhiVodHRwOi8vY3JsNC5kaWdp\n"
-          + "Y2VydC5jb20vZXZjYTEtZzIuY3JsMIIBxAYDVR0gBIIBuzCCAbcwggGzBglghkgB\n"
-          + "hv1sAgEwggGkMDoGCCsGAQUFBwIBFi5odHRwOi8vd3d3LmRpZ2ljZXJ0LmNvbS9z\n"
-          + "c2wtY3BzLXJlcG9zaXRvcnkuaHRtMIIBZAYIKwYBBQUHAgIwggFWHoIBUgBBAG4A\n"
-          + "eQAgAHUAcwBlACAAbwBmACAAdABoAGkAcwAgAEMAZQByAHQAaQBmAGkAYwBhAHQA\n"
-          + "ZQAgAGMAbwBuAHMAdABpAHQAdQB0AGUAcwAgAGEAYwBjAGUAcAB0AGEAbgBjAGUA\n"
-          + "IABvAGYAIAB0AGgAZQAgAEQAaQBnAGkAQwBlAHIAdAAgAEMAUAAvAEMAUABTACAA\n"
-          + "YQBuAGQAIAB0AGgAZQAgAFIAZQBsAHkAaQBuAGcAIABQAGEAcgB0AHkAIABBAGcA\n"
-          + "cgBlAGUAbQBlAG4AdAAgAHcAaABpAGMAaAAgAGwAaQBtAGkAdAAgAGwAaQBhAGIA\n"
-          + "aQBsAGkAdAB5ACAAYQBuAGQAIABhAHIAZQAgAGkAbgBjAG8AcgBwAG8AcgBhAHQA\n"
-          + "ZQBkACAAaABlAHIAZQBpAG4AIABiAHkAIAByAGUAZgBlAHIAZQBuAGMAZQAuMH0G\n"
-          + "CCsGAQUFBwEBBHEwbzAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQu\n"
-          + "Y29tMEcGCCsGAQUFBzAChjtodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGln\n"
-          + "aUNlcnRIaWdoQXNzdXJhbmNlRVZDQS0xLmNydDAMBgNVHRMBAf8EAjAAMA0GCSqG\n"
-          + "SIb3DQEBBQUAA4IBAQBfFW1nwzrVo94WnEUzJtU9yRZ0NMqHSBsUkG31q0eGufW4\n"
-          + "4wFFZWjuqRJ1n3Ym7xF8fTjP3fdKGQnxIHKSsE0nuuh/XbQX5DpBJknHdGFoLwY8\n"
-          + "xZ9JPI57vgvzLo8+fwHyZp3Vm/o5IYLEQViSo+nlOSUQ8YAVqu6KcsP/e612UiqS\n"
-          + "+UMBmgdx9KPDDzZy4MJZC2hbfUoXj9A54mJN8cuEOPyw3c3yKOcq/h48KzVguQXi\n"
-          + "SdJbwfqNIbQ9oJM+YzDjzS62+TCtNSNWzWbwABZCmuQxK0oEOSbTmbhxUF7rND3/\n"
-          + "+mx9u8cY//7uAxLWYS5gIZlCbxcf0lkiKSHJB319\n"
-          + "-----END CERTIFICATE-----\n";
+    private static final String LINUX_COM_CERT =
+            "-----BEGIN CERTIFICATE-----\n" +
+            "MIIFfDCCBGSgAwIBAgIHJ7DOOMo+MDANBgkqhkiG9w0BAQUFADCB3DELMAkGA1UE\n" +
+            "BhMCVVMxEDAOBgNVBAgTB0FyaXpvbmExEzARBgNVBAcTClNjb3R0c2RhbGUxJTAj\n" +
+            "BgNVBAoTHFN0YXJmaWVsZCBUZWNobm9sb2dpZXMsIEluYy4xOTA3BgNVBAsTMGh0\n" +
+            "dHA6Ly9jZXJ0aWZpY2F0ZXMuc3RhcmZpZWxkdGVjaC5jb20vcmVwb3NpdG9yeTEx\n" +
+            "MC8GA1UEAxMoU3RhcmZpZWxkIFNlY3VyZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0\n" +
+            "eTERMA8GA1UEBRMIMTA2ODg0MzUwHhcNMTExMDA1MDI1MTQyWhcNMTQxMDA1MDI1\n" +
+            "MTQyWjBPMRQwEgYDVQQKFAsqLmxpbnV4LmNvbTEhMB8GA1UECxMYRG9tYWluIENv\n" +
+            "bnRyb2wgVmFsaWRhdGVkMRQwEgYDVQQDFAsqLmxpbnV4LmNvbTCCASIwDQYJKoZI\n" +
+            "hvcNAQEBBQADggEPADCCAQoCggEBANoZR/TDp2/8LtA8k9Li55I665ssC7rHX+Wk\n" +
+            "oiGa6xBeCKTvNy9mgaUVzHwrOQlwJ2GbxFI+X0e3W2sWXUDTSxESZSEW2VZnjEn2\n" +
+            "600Qm8XMhZPvqztLRweHH8IuBNNYZHnW4Z2L4DS/Mi03EmjKZt2g3heGQbrv74m4\n" +
+            "v9/g6Jgr5ZOIwES6LUJchSWV2zcL8VYunpxnAtbi2hq1YfA9oYU82ngP40Ds7HEB\n" +
+            "9pUlzcWu9gcasWGzTvbVBZ4nA29pz5zWn1LHYfSYVSmXKU/ggfZb2nXd5/NkbWQX\n" +
+            "7B2SNH9/OVrHtFZldzD1+ddfCt1DQjXfGv7QqpAVsFTdKspPDLMCAwEAAaOCAc0w\n" +
+            "ggHJMA8GA1UdEwEB/wQFMAMBAQAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUF\n" +
+            "BwMCMA4GA1UdDwEB/wQEAwIFoDA5BgNVHR8EMjAwMC6gLKAqhihodHRwOi8vY3Js\n" +
+            "LnN0YXJmaWVsZHRlY2guY29tL3NmczEtMjAuY3JsMFkGA1UdIARSMFAwTgYLYIZI\n" +
+            "AYb9bgEHFwEwPzA9BggrBgEFBQcCARYxaHR0cDovL2NlcnRpZmljYXRlcy5zdGFy\n" +
+            "ZmllbGR0ZWNoLmNvbS9yZXBvc2l0b3J5LzCBjQYIKwYBBQUHAQEEgYAwfjAqBggr\n" +
+            "BgEFBQcwAYYeaHR0cDovL29jc3Auc3RhcmZpZWxkdGVjaC5jb20vMFAGCCsGAQUF\n" +
+            "BzAChkRodHRwOi8vY2VydGlmaWNhdGVzLnN0YXJmaWVsZHRlY2guY29tL3JlcG9z\n" +
+            "aXRvcnkvc2ZfaW50ZXJtZWRpYXRlLmNydDAfBgNVHSMEGDAWgBRJS1In0Ru88qEh\n" +
+            "amJ7UUJ6itfVVjAhBgNVHREEGjAYggsqLmxpbnV4LmNvbYIJbGludXguY29tMB0G\n" +
+            "A1UdDgQWBBQ44sIiZfPIl4PY51fh2TCZkqtToTANBgkqhkiG9w0BAQUFAAOCAQEA\n" +
+            "HFMuDtEZ+hIrIp4hnRJXUiTsc4Vaycxd5X/axDzUx+ooT3y2jBw0rcNnFhgD1T3u\n" +
+            "9zKiOLGXidvy2G/ppy/ymE+gcNqcEzfV1pKggNqStCwpEX1K8GBD46mX5qJ1RxI+\n" +
+            "QoHo/FZe7Vt+dQjHHdGWh27iVWadpBo/FJnHOsTaHewKL8+Aho0M84nxnUolYxzC\n" +
+            "9H3ViEz+mfMISLzvWicxVU71aJ4yI9JmaL1ddRppBovZHOeWshizcMVtFwcza1S0\n" +
+            "ZfajonXj48ZkXMXGWuomWxE2dGro6ZW6DdyIjTpZHCJuIvGC10J3mHIR5XaTj6mv\n" +
+            "zkVBz5DhpshQe97x6OGLOA==\n" +
+            "-----END CERTIFICATE-----\n";
 
     private File mKeyStoreFile;
     private LocalKeyStore mKeyStore;
@@ -186,8 +167,8 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     private X509Certificate mCert2;
     private X509Certificate mCaCert;
     private X509Certificate mCert3;
-    private X509Certificate mDigiCert;
-    private X509Certificate mGithubCert;
+    private X509Certificate mStarfieldCert;
+    private X509Certificate mLinuxComCert;
 
 
     public TrustManagerFactoryTest() throws CertificateException {
@@ -195,8 +176,8 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         mCert2 = loadCert(K9_EXAMPLE_COM_CERT2);
         mCaCert = loadCert(CA_CERT);
         mCert3 = loadCert(CERT3);
-        mDigiCert = loadCert(DIGI_CERT);
-        mGithubCert = loadCert(GITHUB_CERT);
+        mStarfieldCert = loadCert(STARFIELD_CERT);
+        mLinuxComCert = loadCert(LINUX_COM_CERT);
     }
 
     private X509Certificate loadCert(String encodedCert) throws CertificateException {
@@ -285,21 +266,21 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     }
 
     public void testGloballyTrustedCertificateChain() throws Exception {
-        X509TrustManager trustManager = TrustManagerFactory.get("github.com", PORT1, true);
-        X509Certificate[] certificates = new X509Certificate[] { mGithubCert, mDigiCert };
+        X509TrustManager trustManager = TrustManagerFactory.get("www.linux.com", PORT1, true);
+        X509Certificate[] certificates = new X509Certificate[] { mLinuxComCert, mStarfieldCert };
         trustManager.checkServerTrusted(certificates, "authType");
     }
 
     public void testGloballyTrustedCertificateNotMatchingHost() throws Exception {
         X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1, true);
-        assertCertificateRejection(trustManager, new X509Certificate[] { mGithubCert, mDigiCert});
+        assertCertificateRejection(trustManager, new X509Certificate[] { mLinuxComCert, mStarfieldCert });
     }
 
     public void testGloballyTrustedCertificateNotMatchingHostOverride() throws Exception {
-        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mGithubCert);
+        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mLinuxComCert);
 
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1, true);
-        X509Certificate[] certificates = new X509Certificate[] { mGithubCert, mDigiCert };
+        X509Certificate[] certificates = new X509Certificate[] { mLinuxComCert, mStarfieldCert };
         trustManager.checkServerTrusted(certificates, "authType");
     }
 
