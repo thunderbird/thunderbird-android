@@ -71,11 +71,14 @@ public final class TrustManagerFactory {
 
         public void checkServerTrusted(X509Certificate[] chain, String authType)
                 throws CertificateException {
+            String message = null;
             boolean foundInGlobalKeyStore = false;
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);
                 foundInGlobalKeyStore = true;
-            } catch (CertificateException e) { /* ignore */ }
+            } catch (CertificateException e) {
+                message = e.getMessage();
+            }
 
             X509Certificate certificate = chain[0];
 
@@ -86,9 +89,12 @@ public final class TrustManagerFactory {
                     || keyStore.isValidCertificate(certificate, mHost, mPort)) {
                 return;
             }
-            String message = (foundInGlobalKeyStore) ?
-                    "Certificate domain name does not match " + mHost :
-                    "Couldn't find certificate in local key store";
+
+            if (message == null) {
+                message = (foundInGlobalKeyStore) ?
+                        "Certificate domain name does not match " + mHost :
+                        "Couldn't find certificate in local key store";
+            }
 
             throw new CertificateChainException(message, chain);
         }
