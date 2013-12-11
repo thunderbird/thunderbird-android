@@ -323,7 +323,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="global_settings_messageview_show_next_summary">Standaard volgend bericht laten zien na verwijderen</string>
 
     <string name="global_settings_confirm_actions_title">Bevestig acties</string>
-    <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoerd</string>
+    <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoert</string>
     <string name="global_settings_confirm_action_delete">Verwijder (alleen berichten bekijken)</string>
     <string name="global_settings_confirm_action_delete_starred">Gemarkeerd verwijderen (in bericht-view)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
@@ -855,7 +855,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="start_integrated_inbox_title">Geïntegreerde Inbox bij start</string>
 
-    <string name="measure_accounts_title">Laat account grootte zien</string>
+    <string name="measure_accounts_title">Laat accountgrootte zien</string>
     <string name="measure_accounts_summary">Zet uit voor sneller beeldscherm</string>
 
     <string name="count_search_title">Tel zoek resultaten</string>
