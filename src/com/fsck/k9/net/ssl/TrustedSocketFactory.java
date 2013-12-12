@@ -1,5 +1,9 @@
 package com.fsck.k9.net.ssl;
 
+import android.util.Log;
+
+import com.fsck.k9.K9;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -74,12 +78,9 @@ public class TrustedSocketFactory {
             SSLSocket sock = (SSLSocket) sf.createSocket();
             enabledCiphers = sock.getEnabledCipherSuites();
             enabledProtocols = sock.getEnabledProtocols();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (KeyManagementException kme) {
-            kme.printStackTrace();
-        } catch (NoSuchAlgorithmException nsae) {
-            nsae.printStackTrace();
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Error getting information about available SSL/TLS ciphers and " +
+                    "protocols", e);
         }
 
         ENABLED_CIPHERS = (enabledCiphers == null) ? null :
