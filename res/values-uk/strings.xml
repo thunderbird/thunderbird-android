@@ -163,7 +163,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
     <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
 
-    <string name="mark_as_unread_action">Відмітити як прочитаний</string>
+    <string name="mark_as_unread_action">Відмітити як непрочитаний</string>
     <string name="add_cc_bcc_action">Додати копію/приховану</string>
     <string name="read_receipt">Повідомлення про прочитання</string>
     <string name="read_receipt_enabled">Включити запит повідомлень про прочитання</string>
