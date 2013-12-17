@@ -685,7 +685,7 @@ public class ImapStore extends Store {
                 ImapList attributes = response.getList(1);
                 for (int i = 0, count = attributes.size(); i < count; i++) {
                     String attribute = attributes.getString(i);
-                    if (attribute.equals("\\Drafts") || (attribute.equals("\\Draft") && !mAccount.hasDraftsFolder())) {
+                    if (attribute.equals("\\Drafts")) {
                         mAccount.setDraftsFolderName(decodedFolderName);
                         if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected draft folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Sent")) {
