@@ -5,8 +5,8 @@
     android:versionName="4.801" package="com.fsck.k9"
     >
     <uses-sdk
-       android:minSdkVersion="19"
-       android:targetSdkVersion="19"
+       android:minSdkVersion="8"
+       android:targetSdkVersion="17"
     />
     <supports-screens
         android:largeScreens="true"
