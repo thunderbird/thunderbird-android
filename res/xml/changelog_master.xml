@@ -8,6 +8,18 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.802" versioncode="20003" >
+        <change>Added work-around for a display bug on Asus Transformer devices</change>
+        <change>Improved certificate validation. If you had to manually accept a certificate before you will have to do it again after this update.</change>
+        <change>Re-added support for SSLv3; fixed SSL-related problems with Android 2.2</change>
+        <change>Also use SSL/TLS hardening for STARTTLS connections</change>
+        <change>Added support for Bitcoin-URIs</change>
+        <change>Added higher resolution app icon</change>
+        <change>Added support for non-standard conforming servers when looking for "Drafts" folder</change>
+        <change>Added auto-configuration settings for some providers</change>
+        <change>Fixed color generation for contact picture placeholders</change>
+        <change>Updated Japanese, Polish, Czech, Russian, Greek, Hungarian, Dutch, Ukrainian, Brazilian Portuguese, French translations</change>
+    </release>
     <release version="4.801" versioncode="20002" >
         <change>Further bugfixes for importing settings on KitKat</change>
         <change>First pass at a fix for blank messages showing up when the 'Auto-fit messages' option is checked</change>
