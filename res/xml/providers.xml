@@ -525,7 +525,11 @@
     <!-- Slovakia -->
     <provider id="azet.sk" label="Azet.sk" domain="azet.sk">
         <incoming uri="imap+ssl+://imap.azet.sk" username="$email" />
-        <outgoing uri="smtp+tls+://smtp.azet.sk" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.azet.sk" username="$email" />
+    </provider>
+    <provider id="outlook.sk" label="Outlook.sk" domain="outlook.sk">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
     </provider>
 
     <!-- Developers' vanity providers -->
