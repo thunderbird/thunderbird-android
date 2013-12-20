@@ -40,7 +40,7 @@ Jeho vylepšené funkcie zahŕňajú:
   <li>Nastavenie spiatočnej adresy</li>
   <li>Klávesové skratky</li>
   <li>Lepšia podpora pre IMAP</li>
-  <li>Ukladanie príloh na SD</li>
+  <li>Ukladanie príloh na kartu SD</li>
   <li>Vyprázdňovanie koša</li>
   <li>Triedenie správ</li>
   <li>…a ďalšie</li>
@@ -403,7 +403,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Iná</string>
 
-    <string name="local_storage_provider_external_label">Externé úložisko (SD karta)</string>
+    <string name="local_storage_provider_external_label">Externé úložisko (Karta SD)</string>
     <string name="local_storage_provider_internal_label">Interné úložisko</string>
     <string name="local_storage_provider_samsunggalaxy_label">%1$s prídavné interné úložisko</string>
     <string name="local_storage_provider_label">Umiestnenie úložiska</string>
@@ -932,7 +932,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="message_compose_buggy_gallery">Skontrolujte \"Nastavenia\" -&gt; \"Používať riešenie chyby pre Galériu\", aby ste boli schopný pripojiť obrázky alebo videá pomocou Galérie 3D.</string>
 
     <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
-    <string name="message_compose_use_workaround">Použite \"Pridať prílohu (obrázok)\" or \"Pridať prílohu (video)\" pre pridanie obrázkov a videí pomocou Galérie 3D.</string>
+    <string name="message_compose_use_workaround">Použite \"Pridať prílohu (obrázok)\" alebo \"Pridať prílohu (video)\" pre pridanie obrázkov a videí pomocou Galérie 3D.</string>
 
     <string name="miscellaneous_preferences">Rôzne</string>
     <string name="misc_preferences_attachment_title">Používať riešenie chyby pre Galériu</string>
