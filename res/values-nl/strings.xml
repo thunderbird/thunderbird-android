@@ -663,7 +663,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_settings_outgoing_label">Uitgaande server</string>
     <string name="account_settings_outgoing_summary">Configureren van de uitgaande (SMTP) server</string>
     <string name="account_settings_description_label">Account naam</string>
-    <string name="account_settings_name_label">Jou naam</string>
+    <string name="account_settings_name_label">Jouw naam</string>
     <string name="notifications_title">Waarschuwingen</string>
     <string name="account_settings_vibrate_enable">Trillen</string>
     <string name="account_settings_vibrate_summary">Trillen wanneer nieuwe mail binnenkomt</string>
@@ -1130,8 +1130,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="global_settings_show_contact_picture_label">Laat contact afbeeldingen zien</string>
     <string name="global_settings_show_contact_picture_summary">Laat contact afbeeldingen in de berichtenlijst zien</string>
 
-    <string name="last_refresh_time_format">Verversd <xliff:g id="formatted_time">%s</xliff:g></string>
-    <string name="last_refresh_time_format_with_push">Verversd <xliff:g id="time_with_preposition">%s</xliff:g> (Push actief)</string>
+    <string name="last_refresh_time_format">Ververst <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Ververst <xliff:g id="time_with_preposition">%s</xliff:g> (Push actief)</string>
     <string name="preposition_for_date">op <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Markeer alles als gelezen</string>
