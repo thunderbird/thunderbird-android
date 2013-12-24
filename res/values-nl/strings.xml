@@ -1127,8 +1127,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="message_view_empty">Selecteer een bericht aan de linker kant</string>
 
-    <string name="global_settings_show_contact_picture_label">Laat contact afbeeldingen zien</string>
-    <string name="global_settings_show_contact_picture_summary">Laat contact afbeeldingen in de berichtenlijst zien</string>
+    <string name="global_settings_show_contact_picture_label">Laat contactafbeeldingen zien</string>
+    <string name="global_settings_show_contact_picture_summary">Laat contactafbeeldingen in de berichtenlijst zien</string>
 
     <string name="last_refresh_time_format">Ververst <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">Ververst <xliff:g id="time_with_preposition">%s</xliff:g> (Push actief)</string>
@@ -1136,14 +1136,14 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="mark_all_as_read">Markeer alles als gelezen</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+    <string name="global_settings_colorize_missing_contact_pictures_label">Contactafbeeldingen kleuren</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Voorzie afwezige contactafbeeldingen van een kleur</string>
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+    <string name="global_settings_messageview_visible_refile_actions_title">Zichtbare berichtacties</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Toon de geselecteerde acties in het Berichten-menu</string>
 
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <string name="loading_attachment">Bijlage laden…</string>
+    <string name="fetching_attachment_dialog_title_send">Bericht wordt verstuurd</string>
+    <string name="fetching_attachment_dialog_title_save">Concept wordt opgeslagen</string>
+    <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
 </resources>
