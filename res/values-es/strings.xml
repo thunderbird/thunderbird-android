@@ -853,7 +853,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="volume_navigation_message">Vista de mensaje</string>
     <string name="volume_navigation_list">Listas de mensajes</string>
 
-    <string name="start_integrated_inbox_title">Usar Bandeja inificada</string>
+    <string name="start_integrated_inbox_title">Usar Bandeja unificada</string>
 
     <string name="measure_accounts_title">Tamaño cuenta</string>
     <string name="measure_accounts_summary">Desactivar para mejorar rendimiento</string>
