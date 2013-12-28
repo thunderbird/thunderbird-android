@@ -1054,99 +1054,96 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="manage_accounts_move_down_action">Flyt ned</string>
     <string name="manage_accounts_moving_message">Flytter konto…</string>
 
-    <!-- NEW: <string name="unread_widget_select_account">Show unread count for…</string>-->
 
-    <!-- NEW: <string name="import_dialog_error_title">Missing File Manager Application</string>-->
-    <!-- NEW: <string name="close">Close</string>-->
+    <!-- NEW: Danish translation added-->
+    <string name="unread_widget_select_account">Vis antal ulæste for…</string>
+    <string name="import_dialog_error_title">Manglende File Manager program</string>
+    <string name="close">Luk</string>
+    <string name="webview_empty_message">Ingen tekst</string>
+    <string name="webview_contextmenu_link_view_action">Åben link</string>
+    <string name="webview_contextmenu_link_share_action">Del link</string>
+    <string name="webview_contextmenu_link_copy_action">Kopier link til clipboard</string>
+    <string name="webview_contextmenu_link_clipboard_label">Link</string>
+    <string name="webview_contextmenu_image_title">Bilelde</string>
+    <string name="webview_contextmenu_image_view_action">Vis billede</string>
+    <string name="webview_contextmenu_image_save_action">Gem billede</string>
+    <string name="webview_contextmenu_image_download_action">Download billede</string>
+    <string name="webview_contextmenu_image_copy_action">Kopier billed URL til clipboard</string>
+    <string name="webview_contextmenu_image_clipboard_label">Billed URL</string>
 
-    <!-- NEW: <string name="webview_empty_message">No text</string>-->
+    <string name="webview_contextmenu_phone_call_action">Opkald til nummer</string>
+    <string name="webview_contextmenu_phone_save_action">Gem i Kontakter</string>
+    <string name="webview_contextmenu_phone_copy_action">Kopier nummer til clipboard</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Telefonnummer</string>
 
-    <!-- NEW: <string name="webview_contextmenu_link_view_action">Open link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_share_action">Share link</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_link_clipboard_label">Link</string>-->
+    <string name="webview_contextmenu_email_send_action">Send mail</string>
+    <string name="webview_contextmenu_email_save_action">Gem i Kontakter</string>
+    <string name="webview_contextmenu_email_copy_action">Kopier addresse til clipboard</string>
+    <string name="webview_contextmenu_email_clipboard_label">Mail addresse</string>
 
-    <!-- NEW: <string name="webview_contextmenu_image_title">Image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_view_action">View image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_save_action">Save image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_download_action">Download image</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_copy_action">Copy image URL to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_image_clipboard_label">Image URL</string>-->
+    <string name="image_saved_as">Billed gemt som \"<xliff:g id="filename">%s</xliff:g>\"</string>
+    <string name="image_saving_failed">Fejl iforb. med at gemme billede.</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Alle</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Server søge begrænsning</string>
+    <string name="account_settings_remote_search_num_summary">Søgning vil stoppe når der er fundet <xliff:g id="num_results">%s</xliff:g> resultater</string>
+    <string name="account_settings_remote_search_full_text">Medtag meddelelsestekst i server søgning</string>
+    <string name="account_settings_remote_search_full_text_summary">Fuldtekstsøgning kan være langsom.</string>
+    <string name="remote_search_sending_query">Sender forspørgsel til server</string>
+    <string name="remote_search_downloading">Henter %d resultater</string>
+    <string name="remote_search_downloading_limited">Henter %1$d ud af %2$d resultater</string>
+    <string name="remote_search_error">Fjernsøgning fejlede</string>
 
-    <!-- NEW: <string name="webview_contextmenu_phone_call_action">Call number</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_copy_action">Copy number to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_phone_clipboard_label">Phone number</string>-->
+    <string name="account_settings_search">Søg</string>
+    <string name="account_settings_remote_search_enabled">Aktiver søgning på server</string>
+    <string name="account_settings_remote_search_enabled_summary">Søg meddelelser på både enhed og server</string>
+    <string name="action_remote_search">Søg i meddelelser på server</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_pull">Træ for at søge på server…</string>
+    <string name="pull_to_refresh_remote_search_from_local_search_release">Slip for at søge på server…</string>
+    <string name="remote_search_unavailable_no_network">En netværksforbindelse er nødvendig når der søges på server.</string>
 
-    <!-- NEW: <string name="webview_contextmenu_email_send_action">Send mail</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_save_action">Save to Contacts</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_copy_action">Copy address to clipboard</string>-->
-    <!-- NEW: <string name="webview_contextmenu_email_clipboard_label">Email address</string>-->
+    <string name="global_settings_background_as_unread_indicator_label">Nedton meddelelser efter læsning</string>
+    <string name="global_settings_background_as_unread_indicator_summary">En grå baggrund vil angive at meddelelse er læst</string>
 
-    <!-- NEW: <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>-->
-    <!-- NEW: <string name="image_saving_failed">Saving the image failed.</string>-->
+    <string name="global_settings_threaded_view_label">Visning i tråd</string>
+    <string name="global_settings_threaded_view_summary">Grupper meddelelser i tråde</string>
 
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_all">All</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_10">10</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_25">25</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_50">50</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_100">100</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_250">250</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_500">500</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_results_entries_1000">1000</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_label">Server search limit</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text">Include messages text in server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>-->
-    <!-- NEW: <string name="remote_search_sending_query">Sending query to server</string>-->
-    <!-- NEW: <string name="remote_search_downloading">Fetching %d results</string>-->
-    <!-- NEW: <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>-->
-    <!-- NEW: <string name="remote_search_error">Remote search failed</string>-->
+    <string name="upgrade_databases_title">Opdaterer databaser</string>
+    <string name="upgrade_databases_unspecified">Opdaterer databaser…</string>
+    <string name="upgrade_database_format">Opdaterer databaser for konto \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <!-- NEW: <string name="account_settings_search">Search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled">Enable server search</string>-->
-    <!-- NEW: <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>-->
-    <!-- NEW: <string name="action_remote_search">Search messages on server</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>-->
-    <!-- NEW: <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>-->
-    <!-- NEW: <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>-->
+    <string name="message_list_loading">Indlæser…</string>
 
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>-->
-    <!-- NEW: <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>-->
+    <string name="global_settings_splitview_mode_label">Vis delt skærm</string>
+    <string name="global_settings_splitview_always">Altid</string>
+    <string name="global_settings_splitview_never">Aldrig</string>
+    <string name="global_settings_splitview_when_in_landscape">Når skærm er i Landscape mode</string>
 
-    <!-- NEW: <string name="global_settings_threaded_view_label">Threaded view</string>-->
-    <!-- NEW: <string name="global_settings_threaded_view_summary">Group messages by conversation</string>-->
+    <string name="message_view_empty">Vær venlig og vælg en meddelelse fra venstre side</string>
 
-    <!-- NEW: <string name="upgrade_databases_title">Upgrading databases</string>-->
-    <!-- NEW: <string name="upgrade_databases_unspecified">Upgrading databases…</string>-->
-    <!-- NEW: <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>-->
+    <string name="global_settings_show_contact_picture_label">Vis kontaktbilleder</string>
+    <string name="global_settings_show_contact_picture_summary">Vis kontaktbilleder i meddelelsesliste</string>
 
-    <!-- NEW: <string name="message_list_loading">Loading…</string>-->
+    <string name="last_refresh_time_format">Opdateret <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Opdateret <xliff:g id="time_with_preposition">%s</xliff:g> (Push aktiveret)</string>
+    <string name="preposition_for_date">den <xliff:g id="date">%s</xliff:g></string>
 
-    <!-- NEW: <string name="global_settings_splitview_mode_label">Show split-screen</string>-->
-    <!-- NEW: <string name="global_settings_splitview_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_splitview_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>-->
+    <string name="mark_all_as_read">Marker alle som læst</string>
 
-    <!-- NEW: <string name="message_view_empty">Please select a message on the left</string>-->
+    <string name="global_settings_colorize_missing_contact_pictures_label">Farvelægning af kontakter</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Benyt farver hvis der ikke findes billede af kontakter</string>
 
-    <!-- NEW: <string name="global_settings_show_contact_picture_label">Show contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>-->
+    <string name="global_settings_messageview_visible_refile_actions_title">Visning af handlinger for valgte meddelelses</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Vis handlinger for valgte meddelelser i Visnings menu</string>>
 
-    <!-- NEW: <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>-->
-    <!-- NEW: <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>-->
-    <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
-
-    <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
-
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
-
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
-
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <string name="loading_attachment">Henter vedhæftning…</string>
+    <string name="fetching_attachment_dialog_title_send">Sender meddelelse</string>
+    <string name="fetching_attachment_dialog_title_save">Gemmer kladde</string>
+    <string name="fetching_attachment_dialog_message">Henter vedhæftning…</string>
 </resources>
