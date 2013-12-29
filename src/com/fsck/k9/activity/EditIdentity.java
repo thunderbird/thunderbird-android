@@ -2,6 +2,7 @@ package com.fsck.k9.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -29,6 +30,8 @@ public class EditIdentity extends K9Activity {
 //  private EditText mAlwaysBccView;
     private EditText mNameView;
     private EditText mReplyTo;
+    private Button mSentFolderButtonView;
+    private EditText mSentFolderView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class EditIdentity extends K9Activity {
         mReplyTo = (EditText) findViewById(R.id.reply_to);
         mReplyTo.setText(mIdentity.getReplyTo());
 
+
 //      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
 //      mAccountAlwaysBcc.setText(mIdentity.getAlwaysBcc());
 
@@ -88,6 +92,9 @@ public class EditIdentity extends K9Activity {
         } else {
             mSignatureLayout.setVisibility(View.GONE);
         }
+
+        mSentFolderButtonView = (Button) findViewById(R.id.choose_folder);
+        mSentFolderView = (EditText) findViewById(R.id.sent_folder);
     }
 
     private void saveIdentity() {
