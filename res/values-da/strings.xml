@@ -68,8 +68,8 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
 
     <!-- === App Store-specific strings ======================================================= -->
 
-    <!-- NEW: <string name="import_dialog_error_message">Please install a file manager to continue with this import.</string>-->
-    <!-- NEW: <string name="open_market">Open Play Store</string>-->
+    <string name="import_dialog_error_message">Du skal have en filemanager installeret for at kunne importere.</string>
+    <string name="open_market">Åben Play Store</string>
 
 
 
@@ -89,15 +89,15 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
 
     <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Konti</string>
-    <!-- NEW: <string name="folders_title">Folders</string>-->
+    <string name="folders_title">Mapper</string>
     <string name="advanced">Avanceret</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Skriv</string>
-    <!-- NEW: <string name="compose_title_reply">Reply</string>-->
-    <!-- NEW: <string name="compose_title_reply_all">Reply all</string>-->
-    <!-- NEW: <string name="compose_title_forward">Forward</string>-->
+    <string name="compose_title_reply">Svar</string>
+    <string name="compose_title_reply_all">Svar alle</string>
+    <string name="compose_title_forward">Vidersend</string>
 
     <string name="choose_folder_title">Vælg en mappe</string>
 
@@ -110,7 +110,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="status_next_poll">Næste synkronisering <xliff:g id="nexttime">%s</xliff:g></string>
     <string name="status_syncing_off">synkronisering deaktiveret</string>
 
-    <!-- NEW: <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>-->
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Næste</string> <!-- Used as part of a multi-step process -->
     <string name="previous_action">Forrige</string> <!-- Used as part of a multi-step process -->
@@ -127,17 +127,17 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="spam_action">Spam</string>
     <string name="forward_action">Videresend</string>
     <string name="move_action">Flyt</string>
-    <!-- NEW: <string name="single_message_options_action">Send…</string>-->
+    <string name="single_message_options_action">Send…</string>
     <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">Fortsæt</string>
-    <!-- NEW: <string name="back_action">Back</string>-->
+    <string name="back_action">Tilbage</string>
     <string name="done_action">Afslut</string> <!--  Used to complete a multi-step process -->
     <string name="discard_action">Slet</string>
     <string name="save_draft_action">Gem som kladde</string>
     <string name="check_mail_action">Synkroniser mails</string>
     <string name="send_messages_action">Send mails</string>
     <string name="refresh_folders_action">Genindlæs mapper</string>
-    <!-- NEW: <string name="filter_folders_action">Find folder</string>-->
+    <string name="filter_folders_action">Find mappe</string>
     <string name="add_account_action">Tilføj konto</string>
     <string name="compose_action">Skriv</string>
     <string name="search_action">Søg</string>
@@ -157,12 +157,12 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="unflag_action">Fjern stjernemarkering</string>
     <string name="copy_action">Kopier</string>
     <string name="select_text_action">Vælg tekst</string>
-    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
-    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
+    <string name="show_headers_action">Vis headers</string>
+    <string name="hide_headers_action">Skjul headers</string>
 
-    <!-- NEW: <string name="message_view_theme_action_dark">Switch to dark theme</string>-->
-    <!-- NEW: <string name="message_view_theme_action_light">Switch to light theme</string>-->
-
+    <string name="message_view_theme_action_dark">Skift til mørkt theme</string>
+    <string name="message_view_theme_action_light">Skift til lyst theme</string>
+    
     <string name="mark_as_unread_action">Marker som ulæst</string>
     <string name="add_cc_bcc_action">Tilføj Cc/Bcc</string>
     <string name="read_receipt">Kvittering for modtagelse</string>
@@ -203,15 +203,15 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="recreating_account">Genskaber konto \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Ny mail</string>
-    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nye meddelelser</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> yderligere på <xliff:g id="account">%s</xliff:g></string>
 
-    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_mark_as_read">Mark Read</string>-->
-    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
-    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
-    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
+    <string name="notification_action_reply">Svar</string>
+    <string name="notification_action_mark_as_read">Marker som læst</string>
+    <string name="notification_action_delete">Slet</string>
+    <string name="notification_certificate_error_title">Certifikat fejl for <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">Check indstillinger for server</string>
 
     <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Synkroniserer mail</string>
@@ -251,7 +251,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Emne</string>
     <string name="message_compose_content_hint">Meddelelsestekst</string>
-    <!-- NEW: <string name="message_compose_signature_hint">Signature</string>-->
+    <string name="message_compose_signature_hint">Signatur</string>
     <string name="message_compose_quote_header_separator">-------- Original meddelelse --------</string>
     <string name="message_compose_quote_header_subject">Emne:</string>
     <string name="message_compose_quote_header_send_date">Sendt:</string>
@@ -263,11 +263,11 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="error_contact_address_not_found">Mail addresse ikke fundet.</string>
     <string name="message_compose_attachments_skipped_toast">Nogle vedhæftninger kunne ikke videresendes fordi de ikke er blevet hentet fra server.</string>
     <string name="message_compose_show_quoted_text_action">Citer meddelelse</string>
-    <!-- NEW: <string name="message_compose_description_add_to">Add recipient (To)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_cc">Add recipient (CC)</string>-->
-    <!-- NEW: <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>-->
-    <!-- NEW: <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>-->
-    <!-- NEW: <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>-->
+    <string name="message_compose_description_add_to">Tilføj modtager (Til)</string>
+    <string name="message_compose_description_add_cc">ATilføj modtager (CC)</string>
+    <string name="message_compose_description_add_bcc">Tilføj modtager (BCC)</string>
+    <string name="message_compose_description_delete_quoted_text">Fjern citeret tekst</string>
+    <string name="message_compose_description_edit_quoted_text">Rediger citeret tekst</string>
 
     <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">Til:</string>
@@ -277,13 +277,13 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="message_view_status_attachment_saved">Vedhæftning gemt på SD kort som <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Kan ikke gemme vedhæftning på SD kort.</string>
     <string name="message_view_show_pictures_action">Vis billeder</string>
-    <!-- NEW: <string name="message_view_show_message_action">Show message</string>-->
-    <!-- NEW: <string name="message_view_show_attachments_action">Show attachments</string>-->
-    <!-- NEW: <string name="message_view_show_more_attachments_action">More…</string>-->
+    <string name="message_view_show_message_action">Vis meddelelse</string>
+    <string name="message_view_show_attachments_action">Vis vedhæftning</string>
+    <string name="message_view_show_more_attachments_action">Mere…</string>
     <string name="message_view_fetching_attachment_toast">Henter vedhæftede filer.</string>
     <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Hent hele meddelelsen</string>
-    <!-- NEW: <string name="message_view_downloading">Downloading…</string>-->
+    <string name="message_view_downloading">Henter…</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Ikke alle mail headers blev hentet eller gemt. Vælg \"Gem alle headers lokalt\" under kontoens indstillinger for indgående server, for at aktivere denne funktion fremover.</string>
@@ -311,13 +311,13 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="global_settings_registered_name_color_label">Farvelæg kontakter</string>
     <string name="global_settings_registered_name_color_default">Benyt ikke farvelægning af navne i kontaktlisten</string>
     <string name="global_settings_registered_name_color_changed">Farvelæg navne i kontaklisten</string>
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
+    <string name="global_settings_folderlist_wrap_folder_names_label">Wrap lange mappenavne</string>
+    <string name="global_settings_folderlist_wrap_folder_names_summary">Benyt flere linier til visning af lange mappenavne</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Tegnsæt med fast bredde</string>
     <string name="global_settings_messageview_fixedwidth_summary">Benyt tegnsæt med fast bredde til visning af mails med ren tekst</string>
-    <!-- NEW: <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>-->
-    <!-- NEW: <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>-->
+    <string name="global_settings_messageview_autofit_width_label">Auto tilpas størrelse på meddelser</string>
+    <string name="global_settings_messageview_autofit_width_summary">Afkort meddelser så de passer til skærm</string>
     <string name="global_settings_messageview_return_to_list_label">Retur til liste efter sletning</string>
     <string name="global_settings_messageview_return_to_list_summary">Returner til mailliste efter sletning af mail</string>
     <string name="global_settings_messageview_show_next_label">Vis næste mail efter sletning</string>
@@ -328,28 +328,28 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="global_settings_confirm_action_delete">Slet mail (kun i forb. med visning af mails)</string>
     <string name="global_settings_confirm_action_delete_starred">Slet stjernemarkeringer (kun i forb. med visning af mails)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <!-- NEW: <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>-->
+    <string name="global_settings_confirm_action_delete_notif">Slet (fra notifikation)</string>
 
-    <!-- NEW: <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>-->
-    <!-- NEW: <string name="global_settings_notification_hide_subject_always">Always</string>-->
+    <string name="global_settings_notification_hide_subject_title">Skjul emne i notifikations bjælke</string>
+    <string name="global_settings_notification_hide_subject_never">Aldrig</string>
+    <string name="global_settings_notification_hide_subject_when_locked">Når enhed er låst</string>
+    <string name="global_settings_notification_hide_subject_always">Altid</string>
 
-    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
+    <string name="global_settings_notification_quick_delete_title">Vis \'Slet\' knap</string>
+    <string name="global_settings_notification_quick_delete_never">Aldrig</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">For single meddelelse notifikation</string>
+    <string name="global_settings_notification_quick_delete_always">Altid</string>
+    <string name="global_settings_notification_quick_delete_description">Vis knap i notifikation bjælke som tillader sletning af meddelese</string>
 
-    <!-- NEW: <string name="global_settings_batch_buttons">Batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>-->
-    <!-- NEW: <string name="global_settings_mark_read">Mark read/unread</string>-->
-    <!-- NEW: <string name="global_settings_delete">Delete</string>-->
-    <!-- NEW: <string name="global_settings_archive">Move to archive</string>-->
-    <!-- NEW: <string name="global_settings_archive_disabled_reason">No archive folders.</string>-->
-    <!-- NEW: <string name="global_settings_move">Move</string>-->
-    <!-- NEW: <string name="global_settings_flag">Flag</string>-->
-    <!-- NEW: <string name="global_settings_unselect">Unselect</string>-->
+    <string name="global_settings_batch_buttons">Batch håndterings knapper</string>
+    <string name="global_settings_batch_buttons_summary">Konfigurer meddelelses liste batch håndterings knapper</string>
+    <string name="global_settings_mark_read">Marker som læst/ulæst</string>
+    <string name="global_settings_delete">Slet</string>
+    <string name="global_settings_archive">Flyt til arkiv</string>
+    <string name="global_settings_archive_disabled_reason">Ingen arkivmapper.</string>
+    <string name="global_settings_move">Flyt</string>
+    <string name="global_settings_flag">Marker</string>
+    <string name="global_settings_unselect">Fravælg</string>
 
     <string name="quiet_time">Tidsrum med stilhed</string>
     <string name="quiet_time_description">Undlad at ringe, vibrere og blinke i tidsrummet</string>
@@ -414,7 +414,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_setup_expunge_policy_on_poll">I forbindelse med hentning af mails</string>
     <string name="account_setup_expunge_policy_manual">Kun manuelt</string>
 
-    <!-- NEW: <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>-->
+    <string name="account_setup_incoming_autodetect_namespace_label">Auto detekter IMAP namespace</string>
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP søge prefix</string>
 
     <string name="drafts_folder_label">Navn på Kladde mappe</string>
@@ -518,8 +518,8 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_settings_notification_opens_unread_summary">Søger efter ulæste mails når besked vises</string>
     <string name="account_settings_notification_unread_count_label">Vis antal ulæste mails</string>
     <string name="account_settings_notification_unread_count_summary">Vis antallet af ulæste mails i statusbar.</string>
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>-->
-    <!-- NEW: <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>-->
+    <string name="account_settings_mark_message_as_read_on_view_label">Marker som læst ved åbning</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marker som læst når meddelses åbnes for læsning</string>
 
     <string name="account_settings_show_pictures_label">Vis altid billeder</string>
     <string name="account_settings_show_pictures_never">Aldrig</string>
@@ -542,7 +542,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_settings_message_format_html">HTML (billeder og formattering bevares)</string>
     <string name="account_settings_message_format_auto">Automatisk (ren tekst med mindre mail som besvares er i HTML format)</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
+    <string name="account_settings_always_show_cc_bcc_label">Vis altid Cc/Bcc</string>
 
     <string name="account_settings_message_read_receipt_label">Kvittering for modtagelse</string>
     <string name="account_settings_message_read_receipt_summary">Anmod altid om kvittering for modtagelse</string>
@@ -552,7 +552,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_settings_quote_style_header">Header (som Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Generelt</string>
-    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
+    <string name="account_settings_reading_mail">Læsning af mail</string>
     <string name="account_settings_sync">Hentning af mail</string>
     <string name="account_settings_folders">Mapper</string>
     <string name="account_settings_quote_prefix_label">Citeret tekst prefix</string>
@@ -561,9 +561,9 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_settings_crypto_app_none">Ingen</string>
     <string name="account_settings_crypto_auto_signature">Auto signering</string>
     <string name="account_settings_crypto_auto_signature_summary">Benyt kontoens mail addresse til at gætte signaturnøgle.</string>
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>-->
-    <!-- NEW: <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>-->
-    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
+    <string name="account_settings_crypto_auto_encrypt">Auto kryptering</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Automatisk kryptering hvis offentlig nøgle matcher en modtager.</string>
+    <string name="account_settings_crypto_apg_not_installed">APG ikke installeret</string>
 
     <string name="account_settings_mail_check_frequency_label">Frekvens for hentning af mails</string>
 
@@ -727,8 +727,8 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="sort_latest_first">Nyeste mails først</string>
     <string name="sort_subject_alpha">Sorter efter emne</string>
     <string name="sort_subject_re_alpha">Sorter efter emne omvendt alfabetisk</string>
-    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
-    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
+    <string name="sort_sender_alpha">Afsender alfabetisk</string>
+    <string name="sort_sender_re_alpha">Afsender omvendt alfabetisk</string>
     <string name="sort_flagged_first">Stjernemarkerede mails først</string>
     <string name="sort_flagged_last">Ikke stjernemarkerede mails først</string>
     <string name="sort_unread_first">Ulæste mails først</string>
@@ -738,9 +738,9 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
 
     <string name="sort_by">Sorter efter…</string>
     <string name="sort_by_date">Dato</string>
-    <!-- NEW: <string name="sort_by_arrival">Arrival</string>-->
+    <string name="sort_by_arrival">Modtagelsestidspunkt</string>
     <string name="sort_by_subject">Emne</string>
-    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
+    <string name="sort_by_sender">Afsender</string>
     <string name="sort_by_flag">Stjernemarkering</string>
     <string name="sort_by_unread">Læst/ulæst</string>
     <string name="sort_by_attach">Vedhæftning</string>
@@ -752,7 +752,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_clear_dlg_title">Rens konto</string>
 
     <string name="provider_note_yahoojp">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade POP3 i Yahoo\'s indstillinger for mail.</string>
-    <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
+    <string name="provider_note_auonejp">Husk at aktiver IMAP eller POP3 i \"au one mail\" indstillings siden.</string>
     <string name="provider_note_naver">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Naver\'s indstillinger for mail.</string>
     <string name="provider_note_hanmail">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Hanmail\'s(Daum)indstillinger for mail.</string>
     <string name="provider_note_paran">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Paran\'s indstillinger for mail.</string>
@@ -800,7 +800,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_settings_signature__location_label">Signatur position</string>
     <string name="account_settings_signature__location_before_quoted_text">Før citeret tekst</string>
     <string name="account_settings_signature__location_after_quoted_text">Efter citeret tekst</string>
-    <!-- NEW: <string name="setting_theme_global">Use app theme</string>-->
+    <string name="setting_theme_global">Benyt app theme</string>
     <string name="setting_theme_dark">Mørk</string>
     <string name="setting_theme_light">Lys</string>
     <string name="display_preferences">Visning</string>
@@ -812,15 +812,15 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="accountlist_preferences">Kontoliste</string>
     <string name="messagelist_preferences">Mailliste</string>
     <string name="messageview_preferences">Mails</string>
-    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
+    <string name="folderlist_preferences">Mappe lister</string>
     <string name="settings_theme_label">Tema</string>
-    <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
-    <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
+    <string name="settings_message_theme_label">Meddelelsesvisnings theme</string>
+    <string name="settings_compose_theme_label">Editor theme</string>
     <string name="settings_language_label">Sprog</string>
 
-    <!-- NEW: <string name="settings_message_theme_selection_label">Fixed message theme</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>-->
-    <!-- NEW: <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>-->
+    <string name="settings_message_theme_selection_label">Fixed meddelelses theme</string>
+    <string name="settings_message_theme_selection_summary_off">Benyt meddelelsesvisnings theme når meddelelser læses</string>
+    <string name="settings_message_theme_selection_summary_on">Benyt et fixed meddelelsesvisnings theme</string>
 
     <string name="settings_messageview_mobile_layout_label">Enkelkolonne layout</string>
     <string name="settings_messageview_mobile_layout_summary">Reformater HTML meddelelser til visning på små skærme</string>
@@ -832,7 +832,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="background_ops_always">Altid</string>
     <string name="background_ops_enabled">Når \"Baggrundsdata\" er aktiveret</string>
     <string name="background_ops_auto_sync">Når \"Baggrundsdata\" &amp; \"Auto-sync\" er aktiveret</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">Når \"Auto-sync\" er valgt</string>
 
     <string name="batch_select_all">Vælg alle</string>
 
@@ -911,10 +911,10 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="font_size_message_view_date">Tid og dato</string>
     <string name="font_size_message_view_content">Indhold</string>
 
-    <!-- NEW: <string name="font_size_message_compose">Message composition</string>-->
-    <!-- NEW: <string name="font_size_message_compose_input">Text input fields</string>-->
+    <string name="font_size_message_compose">Meddelelses redigering</string>
+    <string name="font_size_message_compose_input">Tekst input felter</string>
 
-    <!-- NEW: <string name="font_size_default">Default</string>-->
+    <string name="font_size_default">Forudvalgt</string>
     <string name="font_size_tiniest">Mindst</string>
     <string name="font_size_tiny">Mindre</string>
     <string name="font_size_smaller">Lille</string>
@@ -955,14 +955,14 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="save_or_discard_draft_message_dlg_title">Gem kladde?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Gem eller fortryd denne meddelelse?</string>
 
-    <!-- NEW: <string name="confirm_discard_draft_message_title">Discard message?</string>-->
-    <!-- NEW: <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>-->
+    <string name="confirm_discard_draft_message_title">Annuler meddelelse?</string>
+    <string name="confirm_discard_draft_message">Er du sikker på at du ønsker at annulere denne meddelelse?</string>
 
     <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>-->
     <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
 
-    <!-- NEW: <string name="continue_without_public_key_dlg_title">Continue without public key?</string>-->
-    <!-- NEW: <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>-->
+    <string name="continue_without_public_key_dlg_title">Fortsæt uden offentlig nøgle?</string>
+    <string name="continue_without_public_key_instructions_fmt">En eller flere modtagere har ikke en offentlig nøgle. Fortsæt?</string>
 
     <string name="select_text_now">Vælg tekst som skal kopieres.</string>
 
@@ -980,12 +980,11 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <!-- NEW:
     <plurals name="dialog_confirm_delete_message">
-        <item quantity="one">Do you really want to delete this message?</item>
-        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+        <item quantity="one">Ønsker du virkelig at slette denne meddelelse?</item>
+        <item quantity="other">Ønsker du virkelig at slette <xliff:g id="message_count">%1$d</xliff:g> meddelelser?</item>
     </plurals>
-    -->
+
     <string name="dialog_confirm_delete_confirm_button">Slet</string>
     <string name="dialog_confirm_delete_cancel_button">Slet ikke</string>
 
