@@ -1140,7 +1140,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="global_settings_colorize_missing_contact_pictures_summary">Benyt farver hvis der ikke findes billede af kontakter</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Visning af handlinger for valgte meddelelses</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">Vis handlinger for valgte meddelelser i Visnings menu</string>>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Vis handlinger for valgte meddelelser i Visnings menu</string>
 
     <string name="loading_attachment">Henter vedhæftning…</string>
     <string name="fetching_attachment_dialog_title_send">Sender meddelelse</string>
