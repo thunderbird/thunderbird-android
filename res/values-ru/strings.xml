@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Translation of RU version (2013): Igor Nedoboy (k9russian<AT>gmail<DOT>com) -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -213,9 +212,9 @@ K-9 Mail — почтовый клиент для Android.
     <string name="notification_certificate_error_title">Ошибка сертификата <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
 
-    <string name="notification_bg_sync_ticker">Проверка — <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Проверка <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
-    <string name="notification_bg_send_ticker">Отправка — <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Отправка почты</string>
     <string name="notification_bg_title_separator">:</string>
 
@@ -259,6 +258,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_compose_quote_header_to">Кому:</string>
     <string name="message_compose_quote_header_cc">Копия:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:</string>
+    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> пишет:</string>
     <string name="message_compose_error_no_recipients">Укажите адресата</string>
     <string name="error_contact_address_not_found">Контакт не содержит сведений о email</string>
     <string name="message_compose_attachments_skipped_toast">Некоторые вложения не были загружены и не могут быть отправлены</string>
