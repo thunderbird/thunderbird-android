@@ -1019,7 +1019,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="settings_export_success">Indstillinger gemt som <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Importerede globale indstillinger fra <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importerede <xliff:g id="accounts">%s</xliff:g> fra <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 konto</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> konti</item>
     </plurals>

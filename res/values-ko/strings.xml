@@ -978,7 +978,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">정말 이 메시지를 삭제하겠습니까?</item>
         <item quantity="other">정말 <xliff:g id="message_count">%1$d</xliff:g> 통의 메시지를 삭제하겠습니까?</item>
     </plurals>
@@ -1015,7 +1015,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="settings_export_success">설정을 파일 <xliff:g id="filename">%s</xliff:g>로 내보냄</string>
     <string name="settings_import_global_settings_success">설정을 <xliff:g id="filename">%s</xliff:g>로부터 가져옴</string>
     <string name="settings_import_success"><xliff:g id="filename">%s</xliff:g>에서 <xliff:g id="accounts">%s</xliff:g>를 가져옴</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">계정 하나</item>
         <item quantity="other">계정 <xliff:g id="numAccounts">%s</xliff:g> 개</item>
     </plurals>

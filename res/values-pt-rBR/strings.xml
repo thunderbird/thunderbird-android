@@ -979,7 +979,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Deseja mesmo excluir esta mensagem?</item>
         <item quantity="other">Deseja mesmo excluir estas <xliff:g id="message_count">%1$d</xliff:g> mensagens?</item>
     </plurals>
@@ -1016,7 +1016,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="settings_export_success">Configurações salvas para <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Configurações importadas de <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importação concluída para <xliff:g id="accounts">%s</xliff:g> de <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 conta</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> contas</item>
     </plurals>

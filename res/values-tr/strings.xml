@@ -1018,7 +1018,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="settings_export_success">Dışarı aktarılan ayarlar <xliff:g id="filename">%s</xliff:g> olarak kaydedildi.</string>
     <string name="settings_import_global_settings_success">Genel ayarlar <xliff:g id="filename">%s</xliff:g> dosyasından alındı</string>
     <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g>, <xliff:g id="filename">%s</xliff:g> dosyasından alındı</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 hesap</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> hesap</item>
     </plurals>

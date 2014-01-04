@@ -979,7 +979,7 @@
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Θέλετε πράγματι να διαγράψετε αυτό το μήνυμα;</item>
         <item quantity="other">Θέλετε πράγματι να διαγράψετε <xliff:g id="message_count">%1$d</xliff:g> μηνύματα;</item>
     </plurals>
@@ -1016,7 +1016,7 @@
     <string name="settings_export_success">Οι εξαγόμενες ρυθμίσεις αποθηκεύτηκαν στο <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Ρυθμίσεις εισήχθηκαν από το <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Εισήχθηκαν <xliff:g id="accounts">%s</xliff:g> λογαριασμοί από το <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 λογαριασμός</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> λογαριασμοί</item>
     </plurals>

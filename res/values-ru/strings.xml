@@ -980,7 +980,7 @@ K-9 Mail — почтовый клиент для Android.
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Сообщение будет удалено. Продолжить?</item>
         <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>
     </plurals>
@@ -1017,7 +1017,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="settings_export_success">Настройки сохранены в <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Настройки K-9 импортированы из <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Импортировано: <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 ящик</item>
         <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> ящика</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> ящиков</item>
