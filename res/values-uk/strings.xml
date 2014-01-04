@@ -1018,7 +1018,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
     <string name="settings_export_success">Налаштування були експортовані у <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Глобальні налаштування були імпортовані з <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Імпортовано <xliff:g id="accounts">%s</xliff:g> з <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 обліковий запис</item>
         <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> облікові записи</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> облікових записів</item>

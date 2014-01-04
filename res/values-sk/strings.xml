@@ -980,7 +980,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
     <item quantity="one">Vymazať túto správu?</item>
         <item quantity="few">Vymmazať <xliff:g id="message_count">%1$d</xliff:g> správy?</item>
         <item quantity="other">Vymazať <xliff:g id="message_count">%1$d</xliff:g> správ?</item>
@@ -1019,7 +1019,7 @@ Prosím nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte s
     <string name="settings_export_success">Exportované nastavenia boli uložené do <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Importované všeobecné nastavenia z <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importované: <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
     <item quantity="one">1 účet</item>
         <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> účty</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> účtov</item>

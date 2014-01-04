@@ -1005,7 +1005,7 @@ de plus</string>
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Voulez-vous vraiment supprimer ce message?</item>
         <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
     </plurals>
@@ -1042,7 +1042,7 @@ de plus</string>
     <string name="settings_export_success">Paramètres exportés vers <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Paramètres globaux importés depuis <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importés <xliff:g id="accounts">%s</xliff:g> depuis <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 compte</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> comptes</item>
     </plurals>

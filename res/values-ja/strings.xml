@@ -978,7 +978,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">本当にこのメッセージを削除しますか？</item>
         <item quantity="other">本当に<xliff:g id="message_count">%1$d</xliff:g>件のメッセージを削除しますか？</item>
     </plurals>
@@ -1015,7 +1015,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="settings_export_success">設定を <xliff:g id="filename">%s</xliff:g> に保存しました。</string>
     <string name="settings_import_global_settings_success">グローバル設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
     <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> の設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 アカウント</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> アカウント</item>
     </plurals>

@@ -1018,7 +1018,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="settings_export_success">Ajustes guardados en <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Ajustes globales importados desde <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> desde <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 cuenta</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> cuentas</item>
     </plurals>

@@ -1018,7 +1018,7 @@
     <string name="settings_export_success">יצוא הגדרות נשמרו ל <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">יבא הגדרות כלליות מ <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">יבא <xliff:g id="accounts">%s</xliff:g> מ <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">חשבון 1</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> חשבונות</item>
     </plurals>
