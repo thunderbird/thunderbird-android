@@ -100,7 +100,6 @@ public class EditIdentity extends K9Activity {
         }
 
         mSentFolderButtonView = (Button) findViewById(R.id.choose_folder);
-        mSentFolderView = (TextView) findViewById(R.id.sent_folder);
         mSentFolderButtonView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -113,6 +112,9 @@ public class EditIdentity extends K9Activity {
                 startActivityForResult(chooseIntent, ACTIVITY_CHOOSE_FOLDER);
             }
         });
+
+        mSentFolderView = (TextView) findViewById(R.id.sent_folder);
+        mSentFolderView.setText(mIdentity.getSentFolder());
     }
 
     private void saveIdentity() {
@@ -123,6 +125,7 @@ public class EditIdentity extends K9Activity {
         mIdentity.setName(mNameView.getText().toString());
         mIdentity.setSignatureUse(mSignatureUse.isChecked());
         mIdentity.setSignature(mSignatureView.getText().toString());
+        mIdentity.setSentFolder(mSentFolderView.getText().toString());
 
         if (mReplyTo.getText().length() == 0) {
             mIdentity.setReplyTo(null);
