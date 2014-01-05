@@ -980,7 +980,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Ønsker du virkelig at slette denne meddelelse?</item>
         <item quantity="other">Ønsker du virkelig at slette <xliff:g id="message_count">%1$d</xliff:g> meddelelser?</item>
     </plurals>
