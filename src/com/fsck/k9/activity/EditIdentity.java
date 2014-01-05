@@ -100,11 +100,9 @@ public class EditIdentity extends K9Activity {
         }
 
         mSentFolderButtonView = (Button) findViewById(R.id.choose_folder);
-        mSentFolderButtonView.setOnClickListener(new View.OnClickListener()
-        {
+        mSentFolderButtonView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Intent chooseIntent = new Intent(EditIdentity.this, ChooseFolder.class);
                 chooseIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
                 chooseIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
@@ -159,18 +157,15 @@ public class EditIdentity extends K9Activity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (resultCode == RESULT_OK)
-        {
-            switch (requestCode)
-            {
-                case ACTIVITY_CHOOSE_FOLDER:
-                    String folder = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-                    if (folder.equals(K9.FOLDER_NONE))
-                        folder = null;
-                    mSentFolderView.setText(folder);
-                    break;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+            case ACTIVITY_CHOOSE_FOLDER:
+                String folder = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                if (folder.equals(K9.FOLDER_NONE))
+                    folder = null;
+                mSentFolderView.setText(folder);
+                break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

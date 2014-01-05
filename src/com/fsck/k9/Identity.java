@@ -60,9 +60,13 @@ public class Identity implements Serializable {
         this.replyTo = replyTo;
     }
 
-    public synchronized String getSentFolder() { return sentFolder; }
+    public synchronized String getSentFolder() {
+        return sentFolder;
+    }
 
-    public synchronized void setSentFolder(String sentFolder) { this.sentFolder = sentFolder; }
+    public synchronized void setSentFolder(String sentFolder) {
+        this.sentFolder = sentFolder;
+    }
 
     @Override
     public synchronized String toString() {

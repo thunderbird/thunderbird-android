@@ -3557,8 +3557,7 @@ public class MessagingController implements Runnable {
 
                         String identitySentFolder = null;
                         String[] identitySentFolderArray = message.getHeader(K9.SENT_FOLDER_HEADER);
-                        if (identitySentFolderArray != null && identitySentFolderArray.length > 0)
-                        {
+                        if (identitySentFolderArray != null && identitySentFolderArray.length > 0) {
                             if (identitySentFolderArray.length > 1)
                                 throw new RuntimeException("Found more than one " + K9.SENT_FOLDER_HEADER + " header - coding error");
                             identitySentFolder = identitySentFolderArray[0];
