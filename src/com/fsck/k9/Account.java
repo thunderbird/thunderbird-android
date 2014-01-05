@@ -529,7 +529,6 @@ public class Account implements BaseAccount {
         }
 
         editor.remove(mUuid + ".storeUri");
-        editor.remove(mUuid + ".localStoreUri");
         editor.remove(mUuid + ".transportUri");
         editor.remove(mUuid + ".description");
         editor.remove(mUuid + ".name");
@@ -555,12 +554,10 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".vibrateTimes");
         editor.remove(mUuid + ".ring");
         editor.remove(mUuid + ".ringtone");
-        editor.remove(mUuid + ".lastFullSync");
         editor.remove(mUuid + ".folderDisplayMode");
         editor.remove(mUuid + ".folderSyncMode");
         editor.remove(mUuid + ".folderPushMode");
         editor.remove(mUuid + ".folderTargetMode");
-        editor.remove(mUuid + ".hideButtonsEnum");
         editor.remove(mUuid + ".signatureBeforeQuotedText");
         editor.remove(mUuid + ".expungePolicy");
         editor.remove(mUuid + ".syncRemoteDeletions");
@@ -586,13 +583,24 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".cryptoAutoSignature");
         editor.remove(mUuid + ".cryptoAutoEncrypt");
         editor.remove(mUuid + ".enabled");
-        editor.remove(mUuid + ".hideMoveButtonsEnum");
         editor.remove(mUuid + ".markMessageAsReadOnView");
         editor.remove(mUuid + ".alwaysShowCcBcc");
+        editor.remove(mUuid + ".allowRemoteSearch");
+        editor.remove(mUuid + ".remoteSearchFullText");
+        editor.remove(mUuid + ".remoteSearchNumResults");
+        editor.remove(mUuid + ".defaultQuotedTextShown");
+        editor.remove(mUuid + ".displayCount");
+        editor.remove(mUuid + ".inboxFolderName");
+        editor.remove(mUuid + ".localStorageProvider");
+        editor.remove(mUuid + ".messageFormat");
+        editor.remove(mUuid + ".messageReadReceipt");
+        editor.remove(mUuid + ".notifyMailCheck");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
         deleteIdentities(preferences.getPreferences(), editor);
+        // TODO: Remove preference settings that may exist for individual
+        // folders in the account.
         editor.commit();
     }
 
