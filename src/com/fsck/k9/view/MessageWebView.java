@@ -179,13 +179,7 @@ public class MessageWebView extends RigidWebView {
         }
         content += HtmlConverter.cssStylePre();
         content += "</head><body>" + text + "</body></html>";
-        
-        // Workaround for asus transformer devices
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            loadData(content, "text/html; charset=UTF-8", "utf-8");
-        } else {
-            loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
-        }
+        loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
     }
 
     /*
