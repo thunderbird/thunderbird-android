@@ -1511,6 +1511,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
         }
 
+        String sentFolder = mIdentity.getSentFolder();
+        if (sentFolder != null && sentFolder.length() > 0)
+            message.addHeader(K9.SENT_FOLDER_HEADER, sentFolder);
+
         return message;
     }
 
