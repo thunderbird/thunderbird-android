@@ -3555,10 +3555,25 @@ public class MessagingController implements Runnable {
 
                         }
 
+                        String identitySentFolder = null;
+                        String[] identitySentFolderArray = message.getHeader(K9.SENT_FOLDER_HEADER);
+                        if (identitySentFolderArray != null && identitySentFolderArray.length > 0)
+                        {
+                            if (identitySentFolderArray.length > 1)
+                                throw new RuntimeException("Found more than one " + K9.SENT_FOLDER_HEADER + " header - coding error");
+                            identitySentFolder = identitySentFolderArray[0];
+
+                            // Remove the sent-folder header from the message before it is sent.
+                            // MJH: I'm not sure if this will result in a persistent change to the message in the outbox.
+                            // We don't really want it to be persistent, in case sending fails and we need to try again.
+                            // Note: after tests, it appears that it isn't persistent.
+                            message.removeHeader(K9.SENT_FOLDER_HEADER);
+                        }
 
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "Sending message with UID " + message.getUid());
+
                         transport.sendMessage(message);
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
                         message.setFlag(Flag.SEEN, true);
@@ -3569,15 +3584,6 @@ public class MessagingController implements Runnable {
                             // at the top of this loop, and I'm not sure if we're supposed to use the same folder name on each
                             // call around this loop.
                             l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
-                        }
-
-                        String identitySentFolder = null;
-                        String[] identitySentFolderArray = message.getHeader(K9.SENT_FOLDER_HEADER);
-                        if (identitySentFolderArray != null && identitySentFolderArray.length > 0)
-                        {
-                            if (identitySentFolderArray.length > 1)
-                                throw new RuntimeException("Found more than one " + K9.SENT_FOLDER_HEADER + " header - coding error");
-                            identitySentFolder = identitySentFolderArray[0];
                         }
 
                         if (!account.hasSentFolder() && identitySentFolder == null) {
