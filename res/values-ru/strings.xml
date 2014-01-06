@@ -712,6 +712,9 @@ K-9 Mail — почтовый клиент для Android.
     <string name="edit_identity_reply_to_hint">опция</string>
     <string name="edit_identity_signature_label">Подпись</string>
     <string name="edit_identity_signature_hint">опция</string>
+    <string name="edit_identity_sent_folder_label">Папка отправленных</string>
+    <string name="edit_identity_sent_folder_hint">По умолчанию</string>
+    <string name="edit_identity_choose_sent_folder_button">Выбрать папку…</string>
 
     <string name="account_settings_signature_use_label">Использовать подпись</string>
     <string name="account_settings_signature_label">Подпись</string>
