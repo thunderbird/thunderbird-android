@@ -8,25 +8,14 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 
-import java.lang.reflect.Method;
-
 public class MessageWebView extends RigidWebView {
 
-
-    /**
-     * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
-     * bodies from loading external resources over the network. Unfortunately this method
-     * isn't exposed via the official Android API. That's why we use reflection to be able
-     * to call the method.
-     */
-    public static final Method mGetBlockNetworkLoads = K9.getMethod(WebSettings.class, "setBlockNetworkLoads");
 
     /**
      * Check whether the single column layout algorithm can be used on this version of Android.
@@ -67,22 +56,13 @@ public class MessageWebView extends RigidWebView {
      * @param shouldBlockNetworkData True if network data should be blocked, false to allow network data.
      */
     public void blockNetworkData(final boolean shouldBlockNetworkData) {
-        // Sanity check to make sure we don't blow up.
-        if (getSettings() == null) {
-            return;
-        }
+        WebSettings webSettings = getSettings();
 
         // Block network loads.
-        if (mGetBlockNetworkLoads != null) {
-            try {
-                mGetBlockNetworkLoads.invoke(getSettings(), shouldBlockNetworkData);
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Error on invoking WebSettings.setBlockNetworkLoads()", e);
-            }
-        }
+        webSettings.setBlockNetworkLoads(shouldBlockNetworkData);
 
         // Block network images.
-        getSettings().setBlockNetworkImage(shouldBlockNetworkData);
+        webSettings.setBlockNetworkImage(shouldBlockNetworkData);
     }
 
 
