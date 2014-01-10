@@ -4,6 +4,8 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.scheme.LayeredSocketFactory;
 import org.apache.http.params.HttpParams;
 
+import com.fsck.k9.net.ssl.TrustManagerFactory;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -26,10 +28,10 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
     private SSLSocketFactory mSocketFactory;
     private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
 
-    public WebDavSocketFactory(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException {
+    public WebDavSocketFactory(String host, int port, boolean secure) throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, new TrustManager[] {
-                TrustManagerFactory.get(host, secure)
+                TrustManagerFactory.get(host, port, secure)
         }, new SecureRandom());
         mSocketFactory = sslContext.getSocketFactory();
         mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();

@@ -8,15 +8,16 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Toast;
+
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 
 import java.lang.reflect.Method;
-import com.nobu_games.android.view.web.TitleBarWebView;
 
-public class MessageWebView extends TitleBarWebView {
+public class MessageWebView extends RigidWebView {
 
 
     /**
@@ -46,9 +47,6 @@ public class MessageWebView extends TitleBarWebView {
     public static boolean isSingleColumnLayoutSupported() {
         return (Build.VERSION.SDK_INT > 7 && Build.VERSION.SDK_INT < 11);
     }
-
-
-    private int mOverrideScrollCounter;
 
 
     public MessageWebView(Context context) {
@@ -113,12 +111,7 @@ public class MessageWebView extends TitleBarWebView {
         webSettings.setBuiltInZoomControls(true);
         webSettings.setUseWideViewPort(true);
         if (K9.autofitWidth()) {
-            // 1% will be smaller than overview, so it effectively
-            // goes into overview mode.
-            // Tried the following, neither of which worked:
-            //     webSettings.setLoadWithOverviewMode(true);
-            //     setInitialScale(0);
-            setInitialScale(1);
+            webSettings.setLoadWithOverviewMode(true);
         }
 
         disableDisplayZoomControls();
@@ -187,7 +180,6 @@ public class MessageWebView extends TitleBarWebView {
         content += HtmlConverter.cssStylePre();
         content += "</head><body>" + text + "</body></html>";
         loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
-        mOverrideScrollCounter = 0;
     }
 
     /*
@@ -206,25 +198,4 @@ public class MessageWebView extends TitleBarWebView {
         }
     }
 
-    @Override
-    public void scrollTo(int x, int y) {
-        if (Build.VERSION.SDK_INT >= 16 && mOverrideScrollCounter < 3) {
-            /*
-             * 2013-03-12 - cketti
-             *
-             * WebView on Android 4.1+ automatically scrolls past the title view using this method.
-             * It looks like user-triggered scroll operations don't call this method. So we use
-             * it to override the initial scrolling past the title view.
-             *
-             * It's a dirty hack and we should find a better way to display the message header. When
-             * testing this I saw up to two calls to this method during initialization. To make
-             * sure we don't totally cripple the WebView when the implementation changes we only
-             * override the first three scrollTo() invocations.
-             */
-            y = 0;
-            mOverrideScrollCounter++;
-        }
-
-        super.scrollTo(x, y);
-    }
 }

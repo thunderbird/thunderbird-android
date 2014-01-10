@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
@@ -40,8 +41,9 @@ public class ProgressDialogFragment extends SherlockDialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        CancelListener listener = (CancelListener) getActivity();
-        if (listener != null && listener instanceof CancelListener) {
+        FragmentActivity activity = getActivity();
+        if (activity != null && activity instanceof CancelListener) {
+            CancelListener listener = (CancelListener) activity;
             listener.onCancel(this);
         }
 

@@ -299,7 +299,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private PgpData mPgpData = null;
     private boolean mAutoEncrypt = false;
     private boolean mContinueWithoutPublicKey = false;
-    private MimeMultipart encryptedMultipart = null;
 
     private String mReferences;
     private String mInReplyTo;
@@ -1460,11 +1459,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
-        // FIXME: Code needs to be deleted if the attachment-based pgp-encryption works
         if (mPgpData.getEncryptedData() != null) {
-//            String text = mPgpData.getEncryptedData();
-            body = new TextBody(""); //text);
-        	//body = new TextBody("This is an OpenPGP/MIME encrypted message (RFC 2440 and 3156)");
+            String text = mPgpData.getEncryptedData();
+            body = new TextBody(text);
         } else {
             body = buildText(isDraft);
         }
@@ -1490,35 +1487,23 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 // (composedMimeMessage) with the user's composed messages, and subsequent parts for
                 // the attachments.
                 MimeMultipart mp = new MimeMultipart();
-                if (encryptedMultipart != null)
-                	mp = encryptedMultipart;
-                else
-                	mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
+                mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
                 addAttachmentsToMessage(mp);
                 message.setBody(mp);
             } else {
                 // If no attachments, our multipart/alternative part is the only one we need.
-            	if (encryptedMultipart != null)
-            		message.setBody(encryptedMultipart);
-            	else
-            		message.setBody(composedMimeMessage);
+                message.setBody(composedMimeMessage);
             }
         } else if (mMessageFormat == SimpleMessageFormat.TEXT) {
             // Text-only message.
             if (hasAttachments) {
                 MimeMultipart mp = new MimeMultipart();
-                if (encryptedMultipart != null)
-                	mp = encryptedMultipart;
-                else
-                	mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
+                mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
                 addAttachmentsToMessage(mp);
                 message.setBody(mp);
             } else {
                 // No attachments to include, just stick the text body in the message and call it good.
-            	if (encryptedMultipart != null)
-            		message.setBody(encryptedMultipart);
-            	else
-            		message.setBody(body);
+                message.setBody(body);
             }
         }
 
@@ -1836,36 +1821,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void onEncryptDone() {
-    	//Here the encrypted data arrives...
-    	//Put it in the attachments...
         if (mPgpData.getEncryptedData() != null) {
-        	try {
-				MimeMultipart mpart = new MimeMultipart();
-				mpart.setPGPEncrypted(true);
-				//FIXME: To really use the content description, the database has to be altered -> Not the case at the moment
-				mpart.setContentDescription("OpenPGP encrypted message");
-				mpart.setSubType("encrypted");
-				
-				MimeBodyPart bpart = new MimeBodyPart();
-				bpart = new MimeBodyPart();
-				bpart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/pgp-encrypted");
-				bpart.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "PGP/MIME Versions Identification");
-				bpart.setBody(new TextBody("Version: 1\r\n"));
-				bpart.setUsing7bitTransport();
-				mpart.addBodyPart(bpart);
-				
-				bpart = new MimeBodyPart();
-				bpart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/octet-stream; name=encrypted.asc");
-				bpart.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "OpenPGP encrypted message");
-				bpart.setBody(new TextBody(mPgpData.getEncryptedData()));
-				bpart.setUsing7bitTransport();
-				mpart.addBodyPart(bpart);
-				
-				encryptedMultipart = mpart;
-			} catch (MessagingException e) {
-				Log.e("crypto", e.getMessage());
-			}
-        	
             onSend();
         } else {
             Toast.makeText(this, R.string.send_aborted, Toast.LENGTH_SHORT).show();

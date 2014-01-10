@@ -90,7 +90,7 @@ public class NotificationDeleteConfirmation extends Activity {
         case DIALOG_CONFIRM:
             int messageCount = mMessageRefs.size();
             alert.setMessage(getResources().getQuantityString(
-                    R.plurals.dialog_confirm_delete_message, messageCount, messageCount));
+                    R.plurals.dialog_confirm_delete_messages, messageCount, messageCount));
             break;
         }
 

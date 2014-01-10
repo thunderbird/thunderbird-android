@@ -195,9 +195,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Conta \"<xliff:g id="account">%s</xliff:g>\" reduziu-se de <xliff:g id="oldSize">%s</xliff:g> para <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Conta \"<xliff:g id="account">%s</xliff:g>\" reduziu-se de <xliff:g id="oldSize">%s</xliff:g> para <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compactando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Limpando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -870,7 +868,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="flagged_modifier"> - Favorito</string>
     <string name="unread_modifier"> - Não lido</string>
 
-    <string name="search_all_messages_title">Todas as mensagens</string>
+    <string name="search_all_messages_title">Todas as Mensagens</string>
     <string name="search_all_messages_detail">Todas as mensagens em pastas pesquisáveis</string>
 
     <string name="integrated_inbox_title">Entrada Unificada</string>
@@ -981,7 +979,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Deseja mesmo excluir esta mensagem?</item>
         <item quantity="other">Deseja mesmo excluir estas <xliff:g id="message_count">%1$d</xliff:g> mensagens?</item>
     </plurals>
@@ -1018,7 +1016,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="settings_export_success">Configurações salvas para <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Configurações importadas de <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importação concluída para <xliff:g id="accounts">%s</xliff:g> de <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 conta</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> contas</item>
     </plurals>
@@ -1034,18 +1032,16 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
         <item quantity="one">senha do servidor</item>
         <item quantity="other">senhas do servidor</item>
     </plurals>
-    <!-- NEW: <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW: <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>-->
-    <!-- NEW:
+    <string name="settings_import_incoming_server">Servidor de entrada (<xliff:g id="hostname">%s</xliff:g>):</string>
+    <string name="settings_import_outgoing_server">Servidor de saída (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Setting password…</item>
-        <item quantity="other">Setting passwords…</item>
+        <item quantity="one">Definindo senha…</item>
+        <item quantity="other">Definindo senhas…</item>
     </plurals>
-    -->
-    <!-- NEW: <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>-->
-    <!-- NEW: <string name="activate_account_action">Activate</string>-->
+    <string name="settings_import_use_incoming_server_password">Usar a senha do servidor de entrada</string>
+    <string name="activate_account_action">Ativar</string>
 
-    <!-- NEW: <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>-->
+    <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" está indisponível; verifique o armazenamento</string>
 
     <string name="settings_attachment_default_path">Salvar anexos para…</string>
     <string name="attachment_save_title">Salvar anexo</string>
@@ -1141,13 +1137,13 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
     <string name="mark_all_as_read">Marcar todas como lidas</string>
 
     <string name="global_settings_colorize_missing_contact_pictures_label">Colorir contatos sem foto</string>
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Usar cores em contatos que não tiverem foto</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Ações de mensagens visíveis</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Exibir as ações selecionadas na tela de mensagem</string>
 
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <string name="loading_attachment">Carregando anexo…</string>
+    <string name="fetching_attachment_dialog_title_send">Enviando mensagem</string>
+    <string name="fetching_attachment_dialog_title_save">Salvando rascunho</string>
+    <string name="fetching_attachment_dialog_message">Buscando anexo…</string>
 </resources>

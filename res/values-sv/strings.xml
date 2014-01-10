@@ -196,12 +196,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Kontot \"<xliff:g id="account">%s</xliff:g>\" har krympt från
-    <xliff:g id="oldSize">%s</xliff:g>
-    till
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Kontot \"<xliff:g id="account">%s</xliff:g>\" har krympt från <xliff:g id="oldSize">%s</xliff:g> till <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Komprimerar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Rensar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -985,7 +980,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Vill du verkligen radera detta meddelande?</item>
         <item quantity="other">Vill du verkligen radera <xliff:g id="message_count">%1$d</xliff:g> meddelanden?</item>
     </plurals>
@@ -1022,7 +1017,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="settings_export_success">Sparade exporterade inställningar till <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Importerade globala inställningar från <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importerade <xliff:g id="accounts">%s</xliff:g> från <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 konto</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> konton</item>
     </plurals>

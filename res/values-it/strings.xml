@@ -188,20 +188,14 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
 
     <string name="status_loading_more_failed">Riprova a caricare altri messaggi</string>
 
-    <string name="load_more_messages_fmt">Scarica altri
-    <xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
+    <string name="load_more_messages_fmt">Scarica altri <xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Account \"<xliff:g id="account">%s</xliff:g>\" ridimensionato da
-    <xliff:g id="oldSize">%s</xliff:g>
-    a
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" ridimensionato da <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compattazione account \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Rimozione account \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -985,7 +979,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Vuoi davvero eliminare questo messaggio?</item>
         <item quantity="other">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati?</item>
     </plurals>
@@ -1022,7 +1016,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="settings_export_success">Salvata esportazione impostazioni in <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Impostazioni globali importate da <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importato <xliff:g id="accounts">%s</xliff:g> da <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> account</item>
     </plurals>

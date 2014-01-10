@@ -187,21 +187,14 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="status_loading_more_failed">Ladevorgang erneut starten</string>
 
-    <string name="load_more_messages_fmt">Bis zu
-    <xliff:g id="messages_to_load">%d</xliff:g> weitere abrufen</string>
+    <string name="load_more_messages_fmt">Bis zu <xliff:g id="messages_to_load">%d</xliff:g> weitere abrufen</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Konto \'<xliff:g id="account">%s</xliff:g>\' von
-    <xliff:g id="oldSize">%s</xliff:g>
-    auf
-    <xliff:g id="newSize">%s</xliff:g>
-    komprimiert
-    </string>
+    <string name="account_size_changed">Konto \'<xliff:g id="account">%s</xliff:g>\' von <xliff:g id="oldSize">%s</xliff:g> auf <xliff:g id="newSize">%s</xliff:g> komprimiert</string>
 
     <string name="compacting_account">Konto \'<xliff:g id="account">%s</xliff:g>\' wird komprimiert</string>
     <string name="clearing_account">Konto \'<xliff:g id="account">%s</xliff:g>\' wird bereinigt</string>
@@ -985,7 +978,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Möchten Sie diese Nachricht wirklich löschen?</item>
         <item quantity="other">Möchten Sie wirklich <xliff:g id="message_count">%1$d</xliff:g> Nachrichten löschen?</item>
     </plurals>
@@ -1022,7 +1015,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="settings_export_success">Exportierte Einstellungen wurden erfolgreich nach <xliff:g id="filename">%s</xliff:g> gespeichert</string>
     <string name="settings_import_global_settings_success">Globale Einstellungen erfolgreich aus <xliff:g id="filename">%s</xliff:g> importiert</string>
     <string name="settings_import_success">\'<xliff:g id="accounts">%s</xliff:g>\' erfolgreich aus <xliff:g id="filename">%s</xliff:g> importiert</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 Konto</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> Konten</item>
     </plurals>
