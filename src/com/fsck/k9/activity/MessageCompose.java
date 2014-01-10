@@ -107,6 +107,28 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileMessageBody;
 import com.fsck.k9.view.MessageWebView;
+import org.apache.james.mime4j.codec.EncoderUtil;
+import org.apache.james.mime4j.util.MimeUtil;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.SimpleHtmlSerializer;
+import org.htmlcleaner.TagNode;
+
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class MessageCompose extends K9Activity implements OnClickListener,
         ProgressDialogFragment.CancelListener {
@@ -3749,12 +3771,20 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private String quoteOriginalTextMessage(final Message originalMessage, final String messageBody, final QuoteStyle quoteStyle) throws MessagingException {
         String body = messageBody == null ? "" : messageBody;
+        String sentDate = getSentDateText(originalMessage);
         if (quoteStyle == QuoteStyle.PREFIX) {
             StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
-            quotedText.append(String.format(
-                                  getString(R.string.message_compose_reply_header_fmt) + "\r\n",
-                                  Address.toString(originalMessage.getFrom()))
-                             );
+            if (sentDate.length() != 0) {
+                quotedText.append(String.format(
+                        getString(R.string.message_compose_reply_header_fmt_with_date) + "\r\n",
+                        sentDate,
+                        Address.toString(originalMessage.getFrom())));
+            } else {
+                quotedText.append(String.format(
+                                      getString(R.string.message_compose_reply_header_fmt) + "\r\n",
+                                      Address.toString(originalMessage.getFrom()))
+                                 );
+            }
 
             final String prefix = mAccount.getQuotePrefix();
             final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
@@ -3772,8 +3802,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
                 quotedText.append(getString(R.string.message_compose_quote_header_from)).append(" ").append(Address.toString(originalMessage.getFrom())).append("\r\n");
             }
-            if (originalMessage.getSentDate() != null) {
-                quotedText.append(getString(R.string.message_compose_quote_header_send_date)).append(" ").append(originalMessage.getSentDate()).append("\r\n");
+            if (sentDate.length() != 0) {
+                quotedText.append(getString(R.string.message_compose_quote_header_send_date)).append(" ").append(sentDate).append("\r\n");
             }
             if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
                 quotedText.append(getString(R.string.message_compose_quote_header_to)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.TO))).append("\r\n");
@@ -3806,13 +3836,22 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private InsertableHtmlContent quoteOriginalHtmlMessage(final Message originalMessage, final String messageBody, final QuoteStyle quoteStyle) throws MessagingException {
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
+        String sentDate = getSentDateText(originalMessage);
         if (quoteStyle == QuoteStyle.PREFIX) {
             StringBuilder header = new StringBuilder(QUOTE_BUFFER_LENGTH);
             header.append("<div class=\"gmail_quote\">");
-            header.append(HtmlConverter.textToHtmlFragment(String.format(
-                              getString(R.string.message_compose_reply_header_fmt),
-                              Address.toString(originalMessage.getFrom()))
-                                                          ));
+            if (sentDate.length() != 0) {
+                header.append(HtmlConverter.textToHtmlFragment(String.format(
+                        getString(R.string.message_compose_reply_header_fmt_with_date),
+                        sentDate,
+                        Address.toString(originalMessage.getFrom()))
+                                                    ));
+            } else {
+                header.append(HtmlConverter.textToHtmlFragment(String.format(
+                                  getString(R.string.message_compose_reply_header_fmt),
+                                  Address.toString(originalMessage.getFrom()))
+                                                              ));
+            }
             header.append("<blockquote class=\"gmail_quote\" " +
                           "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\r\n");
 
@@ -3825,29 +3864,29 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             StringBuilder header = new StringBuilder();
             header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\r\n");
             header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\r\n"); // This gets converted into a horizontal line during html to text conversion.
-            if (mSourceMessage.getFrom() != null && Address.toString(mSourceMessage.getFrom()).length() != 0) {
+            if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getFrom())))
+                    .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getFrom())))
                     .append("<br>\r\n");
             }
-            if (mSourceMessage.getSentDate() != null) {
+            if (sentDate.length() != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_send_date)).append("</b> ")
-                    .append(mSourceMessage.getSentDate())
+                    .append(sentDate)
                     .append("<br>\r\n");
             }
-            if (mSourceMessage.getRecipients(RecipientType.TO) != null && mSourceMessage.getRecipients(RecipientType.TO).length != 0) {
+            if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_to)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.TO))))
+                    .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.TO))))
                     .append("<br>\r\n");
             }
-            if (mSourceMessage.getRecipients(RecipientType.CC) != null && mSourceMessage.getRecipients(RecipientType.CC).length != 0) {
+            if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_cc)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(Address.toString(mSourceMessage.getRecipients(RecipientType.CC))))
+                    .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.CC))))
                     .append("<br>\r\n");
             }
-            if (mSourceMessage.getSubject() != null) {
+            if (originalMessage.getSubject() != null) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_subject)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(mSourceMessage.getSubject()))
+                    .append(HtmlConverter.textToHtmlFragment(originalMessage.getSubject()))
                     .append("<br>\r\n");
             }
             header.append("</div>\r\n");
@@ -4034,6 +4073,26 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean includeQuotedText() {
         return (mQuotedTextMode == QuotedTextMode.SHOW);
+    }
+
+    /**
+     * Extract the date from a message and convert it into a locale-specific
+     * date string suitable for use in a header for a quoted message.
+     *
+     * @param message
+     * @return A string with the formatted date/time
+     */
+    private String getSentDateText(Message message) {
+        try {
+            final int dateStyle = DateFormat.LONG;
+            final int timeStyle = DateFormat.LONG;
+            Date date = message.getSentDate();
+            Locale locale = getResources().getConfiguration().locale;
+            return DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale)
+                    .format(date);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     /**
