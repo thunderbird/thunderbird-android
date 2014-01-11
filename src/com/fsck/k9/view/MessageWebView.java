@@ -2,12 +2,17 @@ package com.fsck.k9.view;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+
 import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Browser;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -91,26 +96,7 @@ public class MessageWebView extends RigidWebView {
             this.setBackgroundColor(0xff000000);
         }
 
-        setWebViewClient(new WebViewClient() {
-            @Override
-            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                Uri uri = Uri.parse(url);
-                if (AttachmentProvider.CID_SCHEME.equals(uri.getScheme())) {
-                    Uri contentUri = AttachmentProvider.convertToContentUri(uri);
-                    ContentResolver contentResolver = getContext().getContentResolver();
-                    InputStream inputStream;
-                    try {
-                        inputStream = contentResolver.openInputStream(contentUri);
-                    } catch (FileNotFoundException e) {
-                        return null;
-                    }
-                    String mimeType = contentResolver.getType(contentUri);
-                    return new WebResourceResponse(mimeType, null, inputStream);
-                } else {
-                    return null;
-                }
-            }
-        });
+        setWebViewClient(new LocalWebViewClient());
 
         final WebSettings webSettings = this.getSettings();
 
@@ -207,4 +193,68 @@ public class MessageWebView extends RigidWebView {
         }
     }
 
+    private class LocalWebViewClient extends WebViewClient {
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view,
+                String url) {
+            Uri uri = Uri.parse(url);
+            if (AttachmentProvider.CID_SCHEME.equals(uri.getScheme())) {
+                Uri contentUri = AttachmentProvider.convertToContentUri(uri);
+                ContentResolver contentResolver = getContext()
+                        .getContentResolver();
+                InputStream inputStream;
+                try {
+                    inputStream = contentResolver.openInputStream(contentUri);
+                } catch (FileNotFoundException e) {
+                    return null;
+                }
+                String mimeType = contentResolver.getType(contentUri);
+                return new WebResourceResponse(mimeType, null, inputStream);
+            } else {
+                return null;
+            }
+        }
+
+        /*
+         * This replicates the default behavior that would occur if no
+         * WebViewClient had been set for the WebView, i.e., as if:
+         *
+         * WebView.setWebViewClient(null);
+         *
+         * Without this, web links in message bodies fail to load when
+         * tapped.
+         *
+         * Code source:
+         * https://android.googlesource.com/platform/frameworks/webview/+/kitkat-mr1-release/chromium/java/com/android/webview/chromium/WebViewContentsClientAdapter.java
+         * WebViewContentsClientAdapter.NullWebViewClient.shouldOverrideUrlLoading
+         *
+         */
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Intent intent;
+            // Perform generic parsing of the URI to turn it into an Intent.
+            try {
+                intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+            } catch (URISyntaxException ex) {
+                Log.w(K9.LOG_TAG, "Bad URI " + url + ": " + ex.getMessage());
+                return false;
+            }
+            // Sanitize the Intent, ensuring web pages can not bypass browser
+            // security (only access to BROWSABLE activities).
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setComponent(null);
+            // Pass the package name as application ID so that the intent from
+            // the same application can be opened in the same tab.
+            intent.putExtra(Browser.EXTRA_APPLICATION_ID, view.getContext()
+                    .getPackageName());
+            try {
+                view.getContext().startActivity(intent);
+            } catch (ActivityNotFoundException ex) {
+                Log.w(K9.LOG_TAG, "No application can handle " + url);
+                return false;
+            }
+            return true;
+        }
+    }
 }
