@@ -31,6 +31,8 @@ import java.util.List;
  * </p>
  */
 public class AttachmentProvider extends ContentProvider {
+    public static final String CONTENT_SCHEME = "content";
+    public static final String CID_SCHEME = "kninecid";
     public static final Uri CONTENT_URI = Uri.parse("content://com.fsck.k9.attachmentprovider");
 
     private static final String FORMAT_RAW = "RAW";
@@ -49,6 +51,14 @@ public class AttachmentProvider extends ContentProvider {
         public static final String SIZE = "_size";
     }
 
+
+    public static Uri convertToCidUri(Uri contentUri) {
+        return contentUri.buildUpon().scheme(CID_SCHEME).build();
+    }
+
+    public static Uri convertToContentUri(Uri cidUri) {
+        return cidUri.buildUpon().scheme(CONTENT_SCHEME).build();
+    }
 
     public static Uri getAttachmentUri(Account account, long id) {
         return getAttachmentUri(account.getUuid(), id, true);

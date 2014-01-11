@@ -1,18 +1,26 @@
 package com.fsck.k9.view;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import android.annotation.TargetApi;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.provider.AttachmentProvider;
 
 public class MessageWebView extends RigidWebView {
 
@@ -82,6 +90,27 @@ public class MessageWebView extends RigidWebView {
             // we'll set the background of the messages on load
             this.setBackgroundColor(0xff000000);
         }
+
+        setWebViewClient(new WebViewClient() {
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                Uri uri = Uri.parse(url);
+                if (AttachmentProvider.CID_SCHEME.equals(uri.getScheme())) {
+                    Uri contentUri = AttachmentProvider.convertToContentUri(uri);
+                    ContentResolver contentResolver = getContext().getContentResolver();
+                    InputStream inputStream;
+                    try {
+                        inputStream = contentResolver.openInputStream(contentUri);
+                    } catch (FileNotFoundException e) {
+                        return null;
+                    }
+                    String mimeType = contentResolver.getType(contentUri);
+                    return new WebResourceResponse(mimeType, null, inputStream);
+                } else {
+                    return null;
+                }
+            }
+        });
 
         final WebSettings webSettings = this.getSettings();
 

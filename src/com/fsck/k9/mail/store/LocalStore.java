@@ -146,7 +146,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 49;
+    public static final int DB_VERSION = 50;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -702,6 +702,13 @@ public class LocalStore extends Store implements Serializable {
                     if (db.getVersion() < 49) {
                         db.execSQL("CREATE INDEX IF NOT EXISTS msg_composite ON messages (deleted, empty,folder_id,flagged,read)");
 
+                    }
+                    if (db.getVersion() < 50) {
+                        String contentUri = "content://com.fsck.k9.attachmentprovider";
+                        String cidUri = "kninecid://com.fsck.k9.attachmentprovider";
+                        db.execSQL(
+                                "UPDATE messages SET html_content = replace(html_content, ?, ?)",
+                                new String[] { contentUri, cidUri });
                     }
                 }
 
@@ -2889,9 +2896,12 @@ public class LocalStore extends Store implements Serializable {
                                         String htmlContent = cursor.getString(0);
 
                                         if (htmlContent != null) {
-                                            String newHtmlContent = htmlContent.replaceAll(
-                                                                        Pattern.quote("cid:" + contentId),
-                                                                        contentUri.toString());
+                                            String regEx = Pattern.quote("cid:" + contentId);
+                                            String replacement = AttachmentProvider
+                                                    .convertToCidUri(contentUri)
+                                                    .toString();
+                                            String newHtmlContent = htmlContent
+                                                    .replaceAll(regEx, replacement);
 
                                             ContentValues cv = new ContentValues();
                                             cv.put("html_content", newHtmlContent);
