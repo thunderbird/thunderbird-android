@@ -216,16 +216,16 @@
     
     <!-- Germany -->
     <provider id="freenet" label="Freenet" domain="freenet.de">
-        <incoming uri="pop3://mx.freenet.de" username="$user" />
-        <outgoing uri="smtp+ssl://mx.freenet.de" username="$email" />
+        <incoming uri="imap+tls+://mx.freenet.de" username="$email" />
+        <outgoing uri="smtp+tls+://mx.freenet.de" username="$email" />
     </provider>
     <provider id="T-Online" label="T-Online" domain="t-online.de">
-        <incoming uri="pop3://popmail.t-online.de" username="$email" />
-        <outgoing uri="smtp://smtpmail.t-online.de" username="$email" />
+        <incoming uri="imap+ssl+://secureimap.t-online.de" username="$email" />
+        <outgoing uri="smtp+tls+://securesmtp.t-online.de" username="$email" />
     </provider>
     <provider id="web.de" label="Web.de" domain="web.de">
-        <incoming uri="imap+ssl://imap.web.de" username="$user" />
-        <outgoing uri="smtp://smtp.web.de" username="$user" />
+        <incoming uri="imap+ssl+://imap.web.de" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.web.de" username="$user" />
     </provider>
     <provider id="posteo" label="Posteo" domain="posteo.de">
         <incoming uri="imap+tls+://posteo.de" username="$email" />
@@ -234,23 +234,23 @@
     <!-- GMX variants -->
     <provider id="gmx.net" label="GMX.net" domain="gmx.net">
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
-        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
     </provider>
     <provider id="gmx.de" label="GMX.de" domain="gmx.de">
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
-        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
     </provider>
     <provider id="gmx.at" label="GMX.at" domain="gmx.at">
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
-        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
     </provider>
     <provider id="gmx.ch" label="GMX.ch" domain="gmx.ch">
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
-        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
     </provider>
     <provider id="gmx.eu" label="GMX.eu" domain="gmx.eu">
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
-        <outgoing uri="smtp+ssl+://mail.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
     </provider>
     
     <!-- Netherlands -->
