@@ -56,13 +56,14 @@ public class MessageWebView extends RigidWebView {
      * @param shouldBlockNetworkData True if network data should be blocked, false to allow network data.
      */
     public void blockNetworkData(final boolean shouldBlockNetworkData) {
-        WebSettings webSettings = getSettings();
-
-        // Block network loads.
-        webSettings.setBlockNetworkLoads(shouldBlockNetworkData);
-
-        // Block network images.
-        webSettings.setBlockNetworkImage(shouldBlockNetworkData);
+        /*
+         * Block network loads.
+         *
+         * Images with content: URIs will not be blocked, nor
+         * will network images that are already in the WebView cache.
+         *
+         */
+        getSettings().setBlockNetworkLoads(shouldBlockNetworkData);
     }
 
 
