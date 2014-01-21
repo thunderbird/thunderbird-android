@@ -176,6 +176,17 @@
             </else>
         </if.contrib>
 
+        <!-- Check that there is no existing git tag for the new version -->
+        <exec executable="git" failonerror="true" outputproperty="git-tag-status" errorproperty="git-tag-status-error">
+            <arg line="tag --list ${version-name}" />
+        </exec>
+        <if.contrib>
+            <equals arg1="${git-tag-status}" arg2="" />
+            <else>
+                <fail>A git tag for version ${version-name} already exists (but should not).</fail>
+            </else>
+        </if.contrib>
+
         <!-- Assure that we have the latest gh-pages branch -->
         <exec executable="git" failonerror="true">
             <arg line="fetch ${origin} +refs/heads/gh-pages:refs/remotes/${origin}/gh-pages" />
