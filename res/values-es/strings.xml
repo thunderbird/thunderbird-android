@@ -157,8 +157,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="unflag_action">Borrar estrella</string>
     <string name="copy_action">Copiar</string>
     <string name="select_text_action">Seleccionar texto</string>
-    <!-- NEW: <string name="show_headers_action">Show headers</string>-->
-    <!-- NEW: <string name="hide_headers_action">Hide headers</string>-->
+    <string name="show_headers_action">Mostrar cabeceras</string>
+    <string name="hide_headers_action">Ocultar cabeceras</string>
 
     <string name="message_view_theme_action_dark">Cambiar a tema oscuro</string>
     <string name="message_view_theme_action_light">Cambiar a tema claro</string>
@@ -206,11 +206,11 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Sin Leer (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
 
-    <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_mark_as_read">Mark Read</string>-->
-    <!-- NEW: <string name="notification_action_delete">Delete</string>-->
-    <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
-    <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
+    <string name="notification_action_reply">Contestar</string>
+    <string name="notification_action_mark_as_read">Marcar como leído</string>
+    <string name="notification_action_delete">Borrar</string>
+    <string name="notification_certificate_error_title">Error de certificado para <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">Compruebe su configuración de servidor</string>
 
     <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Comprobando correo</string>
@@ -311,7 +311,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="global_settings_registered_name_color_default">No colorear los nombres en la lista de contactos</string>
     <string name="global_settings_registered_name_color_changed">Colorear nombres en la lista de contactos</string>
     <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>-->
-    <!-- NEW: <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>-->
+    <string name="global_settings_folderlist_wrap_folder_names_summary">Usar múltiples líneas para mostrar nombres de carpeta largos</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Fuentes de ancho fijo</string>
     <string name="global_settings_messageview_fixedwidth_summary">Utilizar fuentes de ancho fijo al mostrar mensajes en formato texto</string>
