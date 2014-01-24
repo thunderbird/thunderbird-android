@@ -979,12 +979,11 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <!-- NEW:
     <plurals name="dialog_confirm_delete_message">
-        <item quantity="one">Do you really want to delete this message?</item>
-        <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+        <item quantity="one">¿Está seguro de que quiere borrar este mensaje?</item>
+        <item quantity="other">¿Está seguro de que quiere borrar <xliff:g id="message_count">%1$d</xliff:g> mensajes?</item>
     </plurals>
-    -->
+    
     <string name="dialog_confirm_delete_confirm_button">Borrar</string>
     <string name="dialog_confirm_delete_cancel_button">No borrar</string>
 
