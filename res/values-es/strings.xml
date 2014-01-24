@@ -334,10 +334,10 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="global_settings_notification_hide_subject_when_locked">Cuando el dispositivo está bloqueado</string>
     <string name="global_settings_notification_hide_subject_always">Siempre</string>
 
-    <!-- NEW: <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Never</string>-->
+    <string name="global_settings_notification_quick_delete_title">Mostrar botón de \'Borrar\'</string>
+    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Nunca</string>
     <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
-    <!-- NEW: <string name="global_settings_notification_quick_delete_always">Always</string>-->
+    <string name="global_settings_notification_quick_delete_always">Siempre</string>
     <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
 
     <string name="global_settings_batch_buttons">Botones para acciones multimensaje</string>
@@ -541,7 +541,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="account_settings_message_format_html">HTML (se mantienen las imágenes y el formato)</string>
     <string name="account_settings_message_format_auto">Automática (texto simple excepto si se responde a un mensaje HTML)</string>
 
-    <!-- NEW: <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>-->
+    <string name="account_settings_always_show_cc_bcc_label">Mostrar siempre Cc/Bcc</string>
 
     <string name="account_settings_message_read_receipt_label">Confirmación de lectura</string>
     <string name="account_settings_message_read_receipt_summary">Solicitar siempre confirmación de lectura</string>
@@ -551,7 +551,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="account_settings_quote_style_header">Cabecera (como Outlook, Yahoo!, Hotmail)</string>
 
     <string name="account_settings_general_title">Configuración general</string>
-    <!-- NEW: <string name="account_settings_reading_mail">Reading mail</string>-->
+    <string name="account_settings_reading_mail">Leyendo correo</string>
     <string name="account_settings_sync">Comprobación de correo</string>
     <string name="account_settings_folders">Carpetas</string>
     <string name="account_settings_quote_prefix_label">Prefijo de texto citado</string>
@@ -562,7 +562,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="account_settings_crypto_auto_signature_summary">Utilizar el correo para adivinar la clave de firma</string>
     <string name="account_settings_crypto_auto_encrypt">Auto-encriptado</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Encripta automáticamente si la clave pública es compatible.</string>
-    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
+    <string name="account_settings_crypto_apg_not_installed">APG no instalado</string>
 
     <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
 
@@ -726,8 +726,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="sort_latest_first">Ultimos mensajes primero</string>
     <string name="sort_subject_alpha">Asunto (alfabético)</string>
     <string name="sort_subject_re_alpha">Asunto (alfabético inverso)</string>
-    <!-- NEW: <string name="sort_sender_alpha">Sender alphabetical</string>-->
-    <!-- NEW: <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>-->
+    <string name="sort_sender_alpha">Remitente (alfabético)</string>-->
+    <string name="sort_sender_re_alpha">Remitente (alfabético inverso)</string>
     <string name="sort_flagged_first">Marcados primero</string>
     <string name="sort_flagged_last">Sin marcar primero</string>
     <string name="sort_unread_first">Sin leer primero</string>
@@ -739,7 +739,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="sort_by_date">Fecha</string>
     <string name="sort_by_arrival">Llegada</string>
     <string name="sort_by_subject">Asunto</string>
-    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
+    <string name="sort_by_sender">Remitente</string>
     <string name="sort_by_flag">Estrellas</string>
     <string name="sort_by_unread">Leído/No leído</string>
     <string name="sort_by_attach">Adjuntos</string>
