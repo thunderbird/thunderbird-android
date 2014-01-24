@@ -1138,14 +1138,14 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="mark_all_as_read">Marca\'ls tots com a llegits</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+    <string name="global_settings_colorize_missing_contact_pictures_label">Colorejar imatges de contactes</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Colorejar imatges de contactes absents</string>
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+    <string name="global_settings_messageview_visible_refile_actions_title">Accions de missatge visibles</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Mostrar accions seleccionades en el menu de la vista de missatges</string>
 
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <string name="loading_attachment">Carregant adjunt…</string>
+    <string name="fetching_attachment_dialog_title_send">Enviant missatge</string>
+    <string name="fetching_attachment_dialog_title_save">Guardant esborrany</string>
+    <string name="fetching_attachment_dialog_message">Recuperant adjunt…</string>
 </resources>
