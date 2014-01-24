@@ -202,7 +202,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="recreating_account">Recreando cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Correo nuevo</string>
-    <!-- NEW: <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>-->
+    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nuevos mensajes</string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Sin Leer (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
     <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
 
@@ -335,7 +335,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="global_settings_notification_hide_subject_always">Siempre</string>
 
     <string name="global_settings_notification_quick_delete_title">Mostrar botón de \'Borrar\'</string>
-    <!-- NEW: <string name="global_settings_notification_quick_delete_never">Nunca</string>
+    <string name="global_settings_notification_quick_delete_never">Nunca</string>
     <!-- NEW: <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>-->
     <string name="global_settings_notification_quick_delete_always">Siempre</string>
     <!-- NEW: <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>-->
@@ -811,7 +811,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="accountlist_preferences">Lista de cuentas</string>
     <string name="messagelist_preferences">Lista de mensajes</string>
     <string name="messageview_preferences">Mensajes</string>
-    <!-- NEW: <string name="folderlist_preferences">Folder lists</string>-->
+    <string name="folderlist_preferences">Listas de carpetas</string>
     <string name="settings_theme_label">Tema</string>
     <!-- NEW: <string name="settings_message_theme_label">Message view theme</string>-->
     <!-- NEW: <string name="settings_compose_theme_label">Composer theme</string>-->
@@ -831,7 +831,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="background_ops_always">Siempre</string>
     <string name="background_ops_enabled">Cuando \'Sincronización en segundo plano\' esté activo</string>
     <string name="background_ops_auto_sync">Cuando \'Sincronización en segundo plano\' y \'Sincronización automática\' esten activos</string>
-    <!-- NEW: <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>-->
+    <string name="background_ops_auto_sync_only">Cuando \'Sincronización automática\' esten activos</string>
 
     <string name="batch_select_all">Seleccionar todos</string>
 
