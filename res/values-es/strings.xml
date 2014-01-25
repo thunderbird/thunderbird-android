@@ -726,7 +726,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="sort_latest_first">Ultimos mensajes primero</string>
     <string name="sort_subject_alpha">Asunto (alfabético)</string>
     <string name="sort_subject_re_alpha">Asunto (alfabético inverso)</string>
-    <string name="sort_sender_alpha">Remitente (alfabético)</string>-->
+    <string name="sort_sender_alpha">Remitente (alfabético)</string>
     <string name="sort_sender_re_alpha">Remitente (alfabético inverso)</string>
     <string name="sort_flagged_first">Marcados primero</string>
     <string name="sort_flagged_last">Sin marcar primero</string>
@@ -1116,7 +1116,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="global_settings_threaded_view_summary">Contraer mensajes de la misma conversación</string>
 
     <string name="upgrade_databases_title">Actualizando bases de datos</string>
-    <string name="upgrade_databases_unspecified">Actualizando bases de datos…</string>-->
+    <string name="upgrade_databases_unspecified">Actualizando bases de datos…</string>
     <string name="upgrade_database_format">Actualizando bases de datos de la cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="message_list_loading">Cargando…</string>
