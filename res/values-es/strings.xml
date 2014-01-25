@@ -855,7 +855,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
 
     <string name="start_integrated_inbox_title">Usar Bandeja unificada</string>
 
-    <string name="measure_accounts_title">Mostrar tamaño de la cuenta</string>
+    <string name="measure_accounts_title">Mostrar tamaño</string>
     <string name="measure_accounts_summary">Desactivar para mejorar rendimiento</string>
 
     <string name="count_search_title">Mostrar contador de búsqueda</string>
