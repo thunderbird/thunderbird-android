@@ -20,8 +20,8 @@ include $(BUILD_PACKAGE)
 ##################################################
 include $(CLEAR_VARS)
 
-LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES += libcore:libs/apache-mime4j-core-0.7-SNAPSHOT.jar
-LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES += libdom:libs/apache-mime4j-dom-0.7-SNAPSHOT.jar
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES += libcore:libs/apache-mime4j-core-0.7.2.jar
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES += libdom:libs/apache-mime4j-dom-0.7.2.jar
 LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES += libio:libs/commons-io-2.0.1.jar
 LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES += libjutf:libs/jutf7-1.0.1-SNAPSHOT.jar
 LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES += libjzlib:libs/jzlib-1.0.7.jar
