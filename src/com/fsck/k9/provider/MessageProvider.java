@@ -821,6 +821,10 @@ public class MessageProvider extends ContentProvider {
             checkClosed();
             return mCursor.getType(columnIndex);
         }
+
+        public Uri getNotificationUri() {
+            return null;
+        }
     }
 
     protected class ThrottlingQueryHandler implements QueryHandler {
