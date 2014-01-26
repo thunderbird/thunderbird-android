@@ -161,7 +161,7 @@ public class MessageWebView extends RigidWebView {
         content += HtmlConverter.cssStylePre();
         content += "</head><body>" + text + "</body></html>";
         loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
-	resumeTimers();
+        resumeTimers();
     }
 
     /*
