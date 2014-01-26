@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -1986,6 +1987,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
         }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType(mime_type);
         mIgnoreOnPause = true;
@@ -2178,7 +2180,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
         switch (requestCode) {
         case ACTIVITY_REQUEST_PICK_ATTACHMENT:
-            addAttachment(data.getData());
+            addAttachmentsFromResultIntent(data);
             mDraftNeedsSaving = true;
             break;
         case CONTACT_PICKER_TO:
@@ -2236,6 +2238,27 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 addAddress(mBccView, new Address(emailAddr, ""));
             }
             break;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void addAttachmentsFromResultIntent(Intent data) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            ClipData clipData = data.getClipData();
+            if (clipData != null) {
+                for (int i = 0, end = clipData.getItemCount(); i < end; i++) {
+                    Uri uri = clipData.getItemAt(i).getUri();
+                    if (uri != null) {
+                        addAttachment(uri);
+                    }
+                }
+                return;
+            }
+        }
+
+        Uri uri = data.getData();
+        if (uri != null) {
+            addAttachment(uri);
         }
     }
 
