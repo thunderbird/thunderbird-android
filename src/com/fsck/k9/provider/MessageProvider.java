@@ -822,6 +822,7 @@ public class MessageProvider extends ContentProvider {
             return mCursor.getType(columnIndex);
         }
 
+        @Override
         public Uri getNotificationUri() {
             return null;
         }

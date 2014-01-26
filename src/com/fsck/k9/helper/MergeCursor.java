@@ -461,6 +461,7 @@ public class MergeCursor implements Cursor {
         throw new RuntimeException("Not implemented");
     }
 
+    @Override
     public Uri getNotificationUri() {
         return null;
     }
