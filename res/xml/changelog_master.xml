@@ -8,6 +8,15 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.803" versioncode="20004" >
+        <change>Removed the work-around for the display bug on Asus Transformer devices introduced in v4.802 because it was causing problems</change>
+        <change>K-9 Mail now uses a locale-specific date in the header of a quoted message</change>
+        <change>Fixed bug where inline images where not showing in KitKat</change>
+        <change>Fixed POP3 STLS command</change>
+        <change>Added auto-configuration settings for some providers</change>
+        <change>Updated Dutch, Spanish, Danish, Slovak, Russian translation</change>
+        <change>More bug fixes</change>
+    </release>
     <release version="4.802" versioncode="20003" >
         <change>Added work-around for a display bug on Asus Transformer devices</change>
         <change>Improved certificate validation. If you had to manually accept a certificate before you will have to do it again after this update.</change>
