@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.fsck.k9.K9;
@@ -26,7 +25,7 @@ public class MessageWebView extends RigidWebView {
      * isn't exposed via the official Android API. That's why we use reflection to be able
      * to call the method.
      */
-    public static final Method mGetBlockNetworkLoads = K9.getMethod(WebSettings.class, "setBlockNetworkLoads");
+    public static final Method mSetBlockNetworkLoads = K9.getMethod(WebSettings.class, "setBlockNetworkLoads");
 
     /**
      * Check whether the single column layout algorithm can be used on this version of Android.
@@ -72,17 +71,20 @@ public class MessageWebView extends RigidWebView {
             return;
         }
 
-        // Block network loads.
-        if (mGetBlockNetworkLoads != null) {
+        /*
+         * Block network loads.
+         *
+         * Images with content: URIs will not be blocked, nor
+         * will network images that are already in the WebView cache.
+         *
+         */
+        if (mSetBlockNetworkLoads != null) {
             try {
-                mGetBlockNetworkLoads.invoke(getSettings(), shouldBlockNetworkData);
+                mSetBlockNetworkLoads.invoke(getSettings(), shouldBlockNetworkData);
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Error on invoking WebSettings.setBlockNetworkLoads()", e);
             }
         }
-
-        // Block network images.
-        getSettings().setBlockNetworkImage(shouldBlockNetworkData);
     }
 
 
