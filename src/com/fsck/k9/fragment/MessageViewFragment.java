@@ -1,6 +1,9 @@
 package com.fsck.k9.fragment;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 
 import android.app.Activity;
@@ -39,6 +42,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
@@ -726,7 +731,8 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         Listener listener = mListener;
         
         //TODO: This is ugly and the cleared data shouldn't overwrite the original one, but duuude...
-        pgpData.setDecryptedData(postProcessMessage(pgpData.getDecryptedData()));
+        pgpData.setDecryptedData(postProcessMessage(pgpData.getDecryptedData(), message));
+//        postProcessMessage(pgpData.getDecryptedData(), message);
         try {
             mMessageView.setMessage(account, message, pgpData, controller, listener);
         } catch (MessagingException e) {
@@ -741,29 +747,49 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
      * @param originalMessage the message as it was decrypted.
      * @return the message after it was cleared.
      */
-    private String postProcessMessage(String originalMessage)
+    private String postProcessMessage(String originalMessage, LocalMessage message)
     {
     	Log.i("crypto", "originalMessage: " + originalMessage);
-    	TextBody body = new TextBody(originalMessage);
-    	MimeBodyPart mpart = null;
-    	Part part = null;
-		try {
-			mpart = new MimeBodyPart(body);
+    	
+    	InputStream is = new ByteArrayInputStream(originalMessage.getBytes());
+    	MimeMessage tempMessage = null;
+    	
+    	try {
+			tempMessage = new MimeMessage(is);
+			if (tempMessage.getBody() instanceof MimeMultipart)
+	    	{
+	    		message.setBody(tempMessage.getBody());
+	    	}
+		} catch (IOException e1) {
+			// Will not happen...
+			Log.e("crypto", e1.getLocalizedMessage());
+		} catch (MessagingException e1) {
+			Log.e("crypto", e1.getLocalizedMessage());
+		}
+    	
+    	return originalMessage;
+    	
+    
+//    	TextBody body = new TextBody(originalMessage);
+//    	MimeBodyPart mpart = null;
+//    	Part part = null;
+//		try {
+//			mpart = new MimeBodyPart(body);
 //			part = MimeUtility.findFirstPartByMimeType(mpart, "multipart/signed");
 //			if (part != null)
 //			{
-				part = MimeUtility.findFirstPartByMimeType(mpart, "text/plain");
-				if (part != null)
-				{
-					String text = MimeUtility.getTextFromPart(part);
-					return text;
-				}
-				//TODO: Should we also check for the signature?
-//			}			
-		} catch (MessagingException e) {
-			Log.e("crypto", e.getMessage());
-		}
-    	
+//				part = MimeUtility.findFirstPartByMimeType(mpart, "text/plain");
+//				if (part != null)
+//				{
+//					String text = MimeUtility.getTextFromPart(part);
+//					return text;
+//				}
+//				//TODO: Should we also check for the signature?
+////			}			
+//		} catch (MessagingException e) {
+//			Log.e("crypto", e.getMessage());
+//		}
+//    	
     	
     	
     	/*
@@ -781,7 +807,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     	 * 
     	 */
     	
-    	return originalMessage; //sbuilder.toString();
+//    	return originalMessage; //sbuilder.toString();
     }
 
     private void showDialog(int dialogId) {
