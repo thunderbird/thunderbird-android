@@ -1134,32 +1134,30 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         View loadingView = inflater.inflate(R.layout.message_list_loading, null);
         mPullToRefreshView.setEmptyView(loadingView);
 
-        if (isCheckMailSupported()) {
-            if (mSearch.isManualSearch() && mSingleAccountMode && mAccount.allowRemoteSearch()) {
-                // "Pull to search server"
-                mPullToRefreshView.setOnRefreshListener(
-                        new PullToRefreshBase.OnRefreshListener<ListView>() {
-                    @Override
-                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                        mPullToRefreshView.onRefreshComplete();
-                        onRemoteSearchRequested();
-                    }
-                });
-                ILoadingLayout proxy = mPullToRefreshView.getLoadingLayoutProxy();
-                proxy.setPullLabel(getString(
-                        R.string.pull_to_refresh_remote_search_from_local_search_pull));
-                proxy.setReleaseLabel(getString(
-                        R.string.pull_to_refresh_remote_search_from_local_search_release));
-            } else {
-                // "Pull to refresh"
-                mPullToRefreshView.setOnRefreshListener(
-                        new PullToRefreshBase.OnRefreshListener<ListView>() {
-                    @Override
-                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                        checkMail();
-                    }
-                });
-            }
+        if (isRemoteSearchAllowed()) {
+            // "Pull to search server"
+            mPullToRefreshView.setOnRefreshListener(
+                    new PullToRefreshBase.OnRefreshListener<ListView>() {
+                        @Override
+                        public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                            mPullToRefreshView.onRefreshComplete();
+                            onRemoteSearchRequested();
+                        }
+                    });
+            ILoadingLayout proxy = mPullToRefreshView.getLoadingLayoutProxy();
+            proxy.setPullLabel(getString(
+                    R.string.pull_to_refresh_remote_search_from_local_search_pull));
+            proxy.setReleaseLabel(getString(
+                    R.string.pull_to_refresh_remote_search_from_local_search_release));
+        } else if (isCheckMailSupported()) {
+            // "Pull to refresh"
+            mPullToRefreshView.setOnRefreshListener(
+                    new PullToRefreshBase.OnRefreshListener<ListView>() {
+                @Override
+                public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                    checkMail();
+                }
+            });
         }
 
         // Disable pull-to-refresh until the message list has been loaded
@@ -1236,6 +1234,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mRemoteSearchPerformed = true;
         mRemoteSearchFuture = mController.searchRemoteMessages(searchAccount, searchFolder,
                 queryString, null, null, mListener);
+
+        setPullToRefreshEnabled(false);
 
         mFragmentListener.remoteSearchStarted();
     }
@@ -3409,10 +3409,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         // Remove the "Loading..." view
         mPullToRefreshView.setEmptyView(null);
 
-        // Enable pull-to-refresh if allowed
-        if (isCheckMailSupported()) {
-            setPullToRefreshEnabled(true);
-        }
+        setPullToRefreshEnabled(isPullToRefreshAllowed());
 
         final int loaderId = loader.getId();
         mCursors[loaderId] = data;
@@ -3620,5 +3617,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public boolean isCheckMailSupported() {
         return (mAllAccounts || !isSingleAccountMode() || !isSingleFolderMode() ||
                 isRemoteFolder());
+    }
+
+    private boolean isCheckMailAllowed() {
+        return (!isManualSearch() && isCheckMailSupported());
+    }
+
+    private boolean isPullToRefreshAllowed() {
+        return (isRemoteSearchAllowed() || isCheckMailAllowed());
     }
 }

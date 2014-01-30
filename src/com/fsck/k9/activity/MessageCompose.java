@@ -940,8 +940,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         final String action = intent.getAction();
 
         if (Intent.ACTION_VIEW.equals(action) || Intent.ACTION_SENDTO.equals(action)) {
-            startedByExternalIntent = true;
-
             /*
              * Someone has clicked a mailto: link. The address is in the URI.
              */
@@ -953,21 +951,21 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             /*
-             * Note: According to the documenation ACTION_VIEW and ACTION_SENDTO don't accept
+             * Note: According to the documentation ACTION_VIEW and ACTION_SENDTO don't accept
              * EXTRA_* parameters.
              * And previously we didn't process these EXTRAs. But it looks like nobody bothers to
              * read the official documentation and just copies wrong sample code that happens to
              * work with the AOSP Email application. And because even big players get this wrong,
-             * we're now finally giving in and read the EXTRAs for ACTION_SENDTO (below).
+             * we're now finally giving in and read the EXTRAs for those actions (below).
              */
         }
 
         if (Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action) ||
-                Intent.ACTION_SENDTO.equals(action)) {
+                Intent.ACTION_SENDTO.equals(action) || Intent.ACTION_VIEW.equals(action)) {
             startedByExternalIntent = true;
 
             /*
-             * Note: Here we allow a slight deviation from the documentated behavior.
+             * Note: Here we allow a slight deviation from the documented behavior.
              * EXTRA_TEXT is used as message body (if available) regardless of the MIME
              * type of the intent. In addition one or multiple attachments can be added
              * using EXTRA_STREAM.
@@ -1196,9 +1194,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // So compute the visibility of the "Add Cc/Bcc" menu item again.
         computeAddCcBccVisibility();
 
-        showOrHideQuotedText(
-                (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
-
         mQuotedHtmlContent =
                 (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
         if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null) {
@@ -1215,6 +1210,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mForcePlainText = savedInstanceState.getBoolean(STATE_KEY_FORCE_PLAIN_TEXT);
         mQuotedTextFormat = (SimpleMessageFormat) savedInstanceState.getSerializable(
                 STATE_KEY_QUOTED_TEXT_FORMAT);
+
+        showOrHideQuotedText(
+                (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
 
         initializeCrypto();
         updateFrom();

@@ -2,7 +2,6 @@
 package com.fsck.k9;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +24,7 @@ import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -570,7 +570,10 @@ public class K9 extends Application {
 
     @Override
     public void onCreate() {
-        maybeSetupStrictMode();
+        if (K9.DEVELOPER_MODE) {
+            StrictMode.enableDefaults();
+        }
+
         PRNGFixes.apply();
 
         super.onCreate();
@@ -816,24 +819,6 @@ public class K9 extends Application {
         K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
         K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
     }
-
-    private void maybeSetupStrictMode() {
-        if (!K9.DEVELOPER_MODE)
-            return;
-
-        try {
-            Class<?> strictMode = Class.forName("android.os.StrictMode");
-            Method enableDefaults = strictMode.getMethod("enableDefaults");
-            enableDefaults.invoke(strictMode);
-        }
-
-        catch (Exception e) {
-            // Discard , as it means we're not running on a device with strict mode
-            Log.v(K9.LOG_TAG, "Failed to turn on strict mode", e);
-        }
-
-    }
-
 
     /**
      * since Android invokes Application.onCreate() only after invoking all
@@ -1172,19 +1157,6 @@ public class K9 extends Application {
 
     public static void setMessageViewShowNext(boolean messageViewShowNext) {
         mMessageViewShowNext = messageViewShowNext;
-    }
-
-    public static Method getMethod(Class<?> classObject, String methodName) {
-        try {
-            return classObject.getMethod(methodName, boolean.class);
-        } catch (NoSuchMethodException e) {
-            Log.i(K9.LOG_TAG, "Can't get method " +
-                  classObject.toString() + "." + methodName);
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Error while using reflection to get method " +
-                  classObject.toString() + "." + methodName, e);
-        }
-        return null;
     }
 
     public static FontSizes getFontSizes() {
