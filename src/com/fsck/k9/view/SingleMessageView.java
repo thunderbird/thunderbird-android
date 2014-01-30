@@ -542,12 +542,12 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         resetView();
 
         String text = null;
-        if (pgpData != null) {
-            text = pgpData.getDecryptedData();
-            if (text != null) {
-                text = HtmlConverter.textToHtml(text);
-            }
-        }
+//        if (pgpData != null) {
+//            text = pgpData.getDecryptedData();
+//            if (text != null) {
+//                text = HtmlConverter.textToHtml(text);
+//            }
+//        }
 
         if (text == null) {
             text = message.getTextForDisplay();
