@@ -26,6 +26,8 @@ package com.fsck.k9.activity.setup;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
@@ -37,6 +39,8 @@ import com.fsck.k9.*;
  * @author Jay Weisskopf
  */
 public class SliderPreference extends DialogPreference {
+    private static final String STATE_KEY_SUPER = "super";
+    private static final String STATE_KEY_SEEK_BAR_VALUE = "seek_bar_value";
 
     protected final static int SEEKBAR_RESOLUTION = 10000;
 
@@ -168,5 +172,22 @@ public class SliderPreference extends DialogPreference {
         super.onDialogClosed(positiveResult);
     }
 
-    // TODO: Save and restore preference state.
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        Bundle state = new Bundle();
+        state.putParcelable(STATE_KEY_SUPER, superState);
+        state.putInt(STATE_KEY_SEEK_BAR_VALUE, mSeekBarValue);
+
+        return state;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        Bundle bundle = (Bundle) state;
+        super.onRestoreInstanceState(bundle.getParcelable(STATE_KEY_SUPER));
+        mSeekBarValue = bundle.getInt(STATE_KEY_SEEK_BAR_VALUE);
+
+        callChangeListener((float) mSeekBarValue / SEEKBAR_RESOLUTION);
+    }
 }
