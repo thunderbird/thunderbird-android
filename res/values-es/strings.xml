@@ -195,12 +195,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Cuenta \"<xliff:g id="account">%s</xliff:g>\" reducida desde
-    <xliff:g id="oldSize">%s</xliff:g>
-    a
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Cuenta \"<xliff:g id="account">%s</xliff:g>\" reducida desde <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compactando cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Limpiando cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -858,7 +853,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="volume_navigation_message">Vista de mensaje</string>
     <string name="volume_navigation_list">Listas de mensajes</string>
 
-    <string name="start_integrated_inbox_title">Usar Bandeja inificada</string>
+    <string name="start_integrated_inbox_title">Usar Bandeja unificada</string>
 
     <string name="measure_accounts_title">Tamaño cuenta</string>
     <string name="measure_accounts_summary">Desactivar para mejorar rendimiento</string>
@@ -1023,7 +1018,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="settings_export_success">Ajustes guardados en <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Ajustes globales importados desde <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> desde <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 cuenta</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> cuentas</item>
     </plurals>

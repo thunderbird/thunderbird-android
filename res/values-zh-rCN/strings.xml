@@ -1017,7 +1017,7 @@ K-9改进的功能包括：
     <string name="settings_export_success">设置已导出到<xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">全局设置已自<xliff:g id="filename">%s</xliff:g>导入</string>
     <string name="settings_import_success">账户<xliff:g id="accounts">%s</xliff:g>已自<xliff:g id="filename">%s</xliff:g>导入</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">单个账户</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> 账户</item>
     </plurals>

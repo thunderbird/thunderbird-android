@@ -195,12 +195,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Account \"<xliff:g id="account">%s</xliff:g>\" shrunk van
-    <xliff:g id="oldSize">%s</xliff:g>
-    naar
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" shrunk van <xliff:g id="oldSize">%s</xliff:g> naar <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Account \"<xliff:g id="account">%s</xliff:g>\" comprimeren</string>
     <string name="clearing_account">Account \"<xliff:g id="account">%s</xliff:g>\" wissen</string>
@@ -282,9 +277,9 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="message_view_status_attachment_not_saved">Opslaan bijlage op SD-kaart mislukt.</string>
     <string name="message_view_show_pictures_action">Laat afbeeldingen zien</string>
     <string name="message_view_show_message_action">Bericht laten zien</string>
-    <string name="message_view_show_attachments_action">Bijvoegsel laten zien</string>
+    <string name="message_view_show_attachments_action">Bijlage laten zien</string>
     <string name="message_view_show_more_attachments_action">Meer…</string>
-    <string name="message_view_fetching_attachment_toast">bijlage ophalen.</string>
+    <string name="message_view_fetching_attachment_toast">Bijlage ophalen.</string>
     <string name="message_view_no_viewer">Niet in staat viewer te vinden voor <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download compleet bericht</string>
     <string name="message_view_downloading">Downloaden…</string>
@@ -328,7 +323,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="global_settings_messageview_show_next_summary">Standaard volgend bericht laten zien na verwijderen</string>
 
     <string name="global_settings_confirm_actions_title">Bevestig acties</string>
-    <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoerd</string>
+    <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoert</string>
     <string name="global_settings_confirm_action_delete">Verwijder (alleen berichten bekijken)</string>
     <string name="global_settings_confirm_action_delete_starred">Gemarkeerd verwijderen (in bericht-view)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
@@ -668,7 +663,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_settings_outgoing_label">Uitgaande server</string>
     <string name="account_settings_outgoing_summary">Configureren van de uitgaande (SMTP) server</string>
     <string name="account_settings_description_label">Account naam</string>
-    <string name="account_settings_name_label">Jou naam</string>
+    <string name="account_settings_name_label">Jouw naam</string>
     <string name="notifications_title">Waarschuwingen</string>
     <string name="account_settings_vibrate_enable">Trillen</string>
     <string name="account_settings_vibrate_summary">Trillen wanneer nieuwe mail binnenkomt</string>
@@ -860,7 +855,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="start_integrated_inbox_title">Geïntegreerde Inbox bij start</string>
 
-    <string name="measure_accounts_title">Laat account grootte zien</string>
+    <string name="measure_accounts_title">Laat accountgrootte zien</string>
     <string name="measure_accounts_summary">Zet uit voor sneller beeldscherm</string>
 
     <string name="count_search_title">Tel zoek resultaten</string>
@@ -984,7 +979,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Wil je dit bericht echt verwijderen?</item>
         <item quantity="other">Wil je echt <xliff:g id="message_count">%1$d</xliff:g> berichten verwijderen?</item>
     </plurals>
@@ -1021,7 +1016,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="settings_export_success">Geexporteerde instellingen opgeslagen in <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Globale instellingen geimporteerd van <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> geimporteerd vanuit <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
     </plurals>
@@ -1132,23 +1127,23 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="message_view_empty">Selecteer een bericht aan de linker kant</string>
 
-    <string name="global_settings_show_contact_picture_label">Laat contact afbeeldingen zien</string>
-    <string name="global_settings_show_contact_picture_summary">Laat contact afbeeldingen in de berichtenlijst zien</string>
+    <string name="global_settings_show_contact_picture_label">Laat contactafbeeldingen zien</string>
+    <string name="global_settings_show_contact_picture_summary">Laat contactafbeeldingen in de berichtenlijst zien</string>
 
-    <string name="last_refresh_time_format">Verversd <xliff:g id="formatted_time">%s</xliff:g></string>
-    <string name="last_refresh_time_format_with_push">Verversd <xliff:g id="time_with_preposition">%s</xliff:g> (Push actief)</string>
+    <string name="last_refresh_time_format">Ververst <xliff:g id="formatted_time">%s</xliff:g></string>
+    <string name="last_refresh_time_format_with_push">Ververst <xliff:g id="time_with_preposition">%s</xliff:g> (Push actief)</string>
     <string name="preposition_for_date">op <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Markeer alles als gelezen</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+    <string name="global_settings_colorize_missing_contact_pictures_label">Contactafbeeldingen kleuren</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Voorzie afwezige contactafbeeldingen van een kleur</string>
 
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+    <string name="global_settings_messageview_visible_refile_actions_title">Zichtbare berichtacties</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Toon de geselecteerde acties in het Berichten-menu</string>
 
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <string name="loading_attachment">Bijlage laden…</string>
+    <string name="fetching_attachment_dialog_title_send">Bericht wordt verstuurd</string>
+    <string name="fetching_attachment_dialog_title_save">Concept wordt opgeslagen</string>
+    <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
 </resources>

@@ -948,7 +948,7 @@
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="other">確定要刪除 %1$d 則訊息?</item>
         <item quantity="one">確定要刪除此訊息?</item>
     </plurals>
@@ -985,7 +985,7 @@
     <string name="settings_export_success">匯出的設定檔案已經儲存到 %s</string>
     <string name="settings_import_global_settings_success">從 %s 匯入全域設定檔案</string>
     <string name="settings_import_success" formatted="false">成功匯入 %s 從 %s</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="other">%s 帳號</item>
         <item quantity="one">1 帳號</item>
     </plurals>

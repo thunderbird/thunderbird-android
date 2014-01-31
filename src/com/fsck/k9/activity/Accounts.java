@@ -1371,9 +1371,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     private void onImport() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType(MimeUtility.K9_SETTINGS_MIME_TYPE);
+        i.setType("*/*");
 
         PackageManager packageManager = getPackageManager();
         List<ResolveInfo> infos = packageManager.queryIntentActivities(i, 0);
@@ -1518,7 +1517,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             int imported = mImportResults.importedAccounts.size();
             String accounts = activity.getResources().getQuantityString(
-                                  R.plurals.settings_import_success, imported, imported);
+                                  R.plurals.settings_import_accounts, imported, imported);
             return activity.getString(R.string.settings_import_success, accounts, mFilename);
         }
 

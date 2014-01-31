@@ -2,7 +2,6 @@
 package com.fsck.k9;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +24,7 @@ import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -39,6 +39,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.provider.UnreadWidgetProvider;
+import com.fsck.k9.security.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -59,7 +60,7 @@ public class K9 extends Application {
          *            The application instance. Never <code>null</code>.
          * @throws Exception
          */
-        void initializeComponent(K9 application);
+        void initializeComponent(Application application);
     }
 
     public static Application app = null;
@@ -90,6 +91,15 @@ public class K9 extends Application {
      * @see ApplicationAware
      */
     private static List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
+
+    /**
+     * This will be {@code true} once the initialization is complete and {@link #notifyObservers()}
+     * was called.
+     * Afterwards calls to {@link #registerApplicationAware(com.fsck.k9.K9.ApplicationAware)} will
+     * immediately call {@link com.fsck.k9.K9.ApplicationAware#initializeComponent(K9)} for the
+     * supplied argument.
+     */
+    private static boolean sInitialized = false;
 
     public enum BACKGROUND_OPS {
         WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
@@ -560,7 +570,10 @@ public class K9 extends Application {
 
     @Override
     public void onCreate() {
-        maybeSetupStrictMode();
+        if (K9.DEVELOPER_MODE) {
+            StrictMode.enableDefaults();
+        }
+
         PRNGFixes.apply();
 
         super.onCreate();
@@ -580,6 +593,8 @@ public class K9 extends Application {
          * doesn't work in Android and MimeMessage does not have access to a Context.
          */
         BinaryTempFileBody.setTempDirectory(getCacheDir());
+
+        LocalKeyStore.setKeyStoreLocation(getDir("KeyStore", MODE_PRIVATE).toString());
 
         /*
          * Enable background sync of messages
@@ -805,39 +820,26 @@ public class K9 extends Application {
         K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
     }
 
-    private void maybeSetupStrictMode() {
-        if (!K9.DEVELOPER_MODE)
-            return;
-
-        try {
-            Class<?> strictMode = Class.forName("android.os.StrictMode");
-            Method enableDefaults = strictMode.getMethod("enableDefaults");
-            enableDefaults.invoke(strictMode);
-        }
-
-        catch (Exception e) {
-            // Discard , as it means we're not running on a device with strict mode
-            Log.v(K9.LOG_TAG, "Failed to turn on strict mode", e);
-        }
-
-    }
-
-
     /**
      * since Android invokes Application.onCreate() only after invoking all
      * other components' onCreate(), here is a way to notify interested
      * component that the application is available and ready
      */
     protected void notifyObservers() {
-        for (final ApplicationAware aware : observers) {
-            if (K9.DEBUG) {
-                Log.v(K9.LOG_TAG, "Initializing observer: " + aware);
+        synchronized (observers) {
+            for (final ApplicationAware aware : observers) {
+                if (K9.DEBUG) {
+                    Log.v(K9.LOG_TAG, "Initializing observer: " + aware);
+                }
+                try {
+                    aware.initializeComponent(this);
+                } catch (Exception e) {
+                    Log.w(K9.LOG_TAG, "Failure when notifying " + aware, e);
+                }
             }
-            try {
-                aware.initializeComponent(this);
-            } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Failure when notifying " + aware, e);
-            }
+
+            sInitialized = true;
+            observers.clear();
         }
     }
 
@@ -848,8 +850,12 @@ public class K9 extends Application {
      *            Never <code>null</code>.
      */
     public static void registerApplicationAware(final ApplicationAware component) {
-        if (!observers.contains(component)) {
-            observers.add(component);
+        synchronized (observers) {
+            if (sInitialized) {
+                component.initializeComponent(K9.app);
+            } else if (!observers.contains(component)) {
+                observers.add(component);
+            }
         }
     }
 
@@ -1151,19 +1157,6 @@ public class K9 extends Application {
 
     public static void setMessageViewShowNext(boolean messageViewShowNext) {
         mMessageViewShowNext = messageViewShowNext;
-    }
-
-    public static Method getMethod(Class<?> classObject, String methodName) {
-        try {
-            return classObject.getMethod(methodName, boolean.class);
-        } catch (NoSuchMethodException e) {
-            Log.i(K9.LOG_TAG, "Can't get method " +
-                  classObject.toString() + "." + methodName);
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Error while using reflection to get method " +
-                  classObject.toString() + "." + methodName, e);
-        }
-        return null;
     }
 
     public static FontSizes getFontSizes() {

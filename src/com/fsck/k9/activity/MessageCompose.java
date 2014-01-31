@@ -321,7 +321,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private PgpData mPgpData = null;
     private boolean mAutoEncrypt = false;
     private boolean mContinueWithoutPublicKey = false;
-    private MimeMultipart encryptedMultipart = null;
 
     private String mReferences;
     private String mInReplyTo;
@@ -940,8 +939,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         final String action = intent.getAction();
 
         if (Intent.ACTION_VIEW.equals(action) || Intent.ACTION_SENDTO.equals(action)) {
-            startedByExternalIntent = true;
-
             /*
              * Someone has clicked a mailto: link. The address is in the URI.
              */
@@ -953,21 +950,21 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             /*
-             * Note: According to the documenation ACTION_VIEW and ACTION_SENDTO don't accept
+             * Note: According to the documentation ACTION_VIEW and ACTION_SENDTO don't accept
              * EXTRA_* parameters.
              * And previously we didn't process these EXTRAs. But it looks like nobody bothers to
              * read the official documentation and just copies wrong sample code that happens to
              * work with the AOSP Email application. And because even big players get this wrong,
-             * we're now finally giving in and read the EXTRAs for ACTION_SENDTO (below).
+             * we're now finally giving in and read the EXTRAs for those actions (below).
              */
         }
 
         if (Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action) ||
-                Intent.ACTION_SENDTO.equals(action)) {
+                Intent.ACTION_SENDTO.equals(action) || Intent.ACTION_VIEW.equals(action)) {
             startedByExternalIntent = true;
 
             /*
-             * Note: Here we allow a slight deviation from the documentated behavior.
+             * Note: Here we allow a slight deviation from the documented behavior.
              * EXTRA_TEXT is used as message body (if available) regardless of the MIME
              * type of the intent. In addition one or multiple attachments can be added
              * using EXTRA_STREAM.
@@ -1196,9 +1193,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // So compute the visibility of the "Add Cc/Bcc" menu item again.
         computeAddCcBccVisibility();
 
-        showOrHideQuotedText(
-                (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
-
         mQuotedHtmlContent =
                 (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
         if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null) {
@@ -1215,6 +1209,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mForcePlainText = savedInstanceState.getBoolean(STATE_KEY_FORCE_PLAIN_TEXT);
         mQuotedTextFormat = (SimpleMessageFormat) savedInstanceState.getSerializable(
                 STATE_KEY_QUOTED_TEXT_FORMAT);
+
+        showOrHideQuotedText(
+                (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
 
         initializeCrypto();
         updateFrom();
@@ -1482,11 +1479,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
-        // FIXME: Code needs to be deleted if the attachment-based pgp-encryption works
         if (mPgpData.getEncryptedData() != null) {
-//            String text = mPgpData.getEncryptedData();
-            body = new TextBody(""); //text);
-        	//body = new TextBody("This is an OpenPGP/MIME encrypted message (RFC 2440 and 3156)");
+            String text = mPgpData.getEncryptedData();
+            body = new TextBody(text);
         } else {
             body = buildText(isDraft);
         }
@@ -1512,35 +1507,23 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 // (composedMimeMessage) with the user's composed messages, and subsequent parts for
                 // the attachments.
                 MimeMultipart mp = new MimeMultipart();
-                if (encryptedMultipart != null)
-                	mp = encryptedMultipart;
-                else
-                	mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
+                mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
                 addAttachmentsToMessage(mp);
                 message.setBody(mp);
             } else {
                 // If no attachments, our multipart/alternative part is the only one we need.
-            	if (encryptedMultipart != null)
-            		message.setBody(encryptedMultipart);
-            	else
-            		message.setBody(composedMimeMessage);
+                message.setBody(composedMimeMessage);
             }
         } else if (mMessageFormat == SimpleMessageFormat.TEXT) {
             // Text-only message.
             if (hasAttachments) {
                 MimeMultipart mp = new MimeMultipart();
-                if (encryptedMultipart != null)
-                	mp = encryptedMultipart;
-                else
-                	mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
+                mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
                 addAttachmentsToMessage(mp);
                 message.setBody(mp);
             } else {
                 // No attachments to include, just stick the text body in the message and call it good.
-            	if (encryptedMultipart != null)
-            		message.setBody(encryptedMultipart);
-            	else
-            		message.setBody(body);
+                message.setBody(body);
             }
         }
 
@@ -1858,36 +1841,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void onEncryptDone() {
-    	//Here the encrypted data arrives...
-    	//Put it in the attachments...
         if (mPgpData.getEncryptedData() != null) {
-        	try {
-				MimeMultipart mpart = new MimeMultipart();
-				mpart.setPGPEncrypted(true);
-				//FIXME: To really use the content description, the database has to be altered -> Not the case at the moment
-				mpart.setContentDescription("OpenPGP encrypted message");
-				mpart.setSubType("encrypted");
-				
-				MimeBodyPart bpart = new MimeBodyPart();
-				bpart = new MimeBodyPart();
-				bpart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/pgp-encrypted");
-				bpart.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "PGP/MIME Versions Identification");
-				bpart.setBody(new TextBody("Version: 1\r\n"));
-				bpart.setUsing7bitTransport();
-				mpart.addBodyPart(bpart);
-				
-				bpart = new MimeBodyPart();
-				bpart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/octet-stream; name=encrypted.asc");
-				bpart.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "OpenPGP encrypted message");
-				bpart.setBody(new TextBody(mPgpData.getEncryptedData()));
-				bpart.setUsing7bitTransport();
-				mpart.addBodyPart(bpart);
-				
-				encryptedMultipart = mpart;
-			} catch (MessagingException e) {
-				Log.e("crypto", e.getMessage());
-			}
-        	
             onSend();
         } else {
             Toast.makeText(this, R.string.send_aborted, Toast.LENGTH_SHORT).show();

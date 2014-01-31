@@ -195,8 +195,7 @@
     <string name="abbrev_kilobytes">Kb</string>
     <string name="abbrev_bytes">b</string>
 
-    <string name="account_size_changed">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' συμπυκνώθηκε από
-    <xliff:g id="oldSize">%s</xliff:g>    σε <xliff:g id="newSize">%s</xliff:g></string>
+    <string name="account_size_changed">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' συμπυκνώθηκε από <xliff:g id="oldSize">%s</xliff:g>    σε <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Συμπύκνωση λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
     <string name="clearing_account">Καθαρισμός λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
@@ -980,7 +979,7 @@
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Θέλετε πράγματι να διαγράψετε αυτό το μήνυμα;</item>
         <item quantity="other">Θέλετε πράγματι να διαγράψετε <xliff:g id="message_count">%1$d</xliff:g> μηνύματα;</item>
     </plurals>
@@ -1017,7 +1016,7 @@
     <string name="settings_export_success">Οι εξαγόμενες ρυθμίσεις αποθηκεύτηκαν στο <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Ρυθμίσεις εισήχθηκαν από το <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Εισήχθηκαν <xliff:g id="accounts">%s</xliff:g> λογαριασμοί από το <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 λογαριασμός</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> λογαριασμοί</item>
     </plurals>
@@ -1138,13 +1137,13 @@
     <string name="mark_all_as_read">Μαρκάρισμα όλων ως αναγνωσμένων</string>
 
     <string name="global_settings_colorize_missing_contact_pictures_label">Χρωματισμός επαφών χωρίς εικόνα</string>
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Χρωματισμός επαφών χωρίς εικόνα</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Ορατές ενέργειες μηνυμάτων</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Προβολή των επιλεγμένων ενεργειών στο μενού προβολής μηνύματος</string>
 
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <string name="loading_attachment">Φόρτωση συνημμένων…</string>
+    <string name="fetching_attachment_dialog_title_send">Αποστολή μηνύματος</string>
+    <string name="fetching_attachment_dialog_title_save">Αποθήκευση πρόχειρου</string>
+    <string name="fetching_attachment_dialog_message">Ανάκληση συνημμένων…</string>
 </resources>

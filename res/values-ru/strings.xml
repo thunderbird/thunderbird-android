@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Translation of RU version (06.07.2013): Igor Nedoboy (k9russian<AT>gmail<DOT>com) -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -200,7 +199,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="compacting_account">Сжатие ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Очистка ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="recreating_account">Пересоздание ящика\"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="recreating_account">Пересоздание ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Новая почта</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> новых</string>
@@ -213,9 +212,9 @@ K-9 Mail — почтовый клиент для Android.
     <string name="notification_certificate_error_title">Ошибка сертификата <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
 
-    <string name="notification_bg_sync_ticker">Проверка: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Проверка <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
-    <string name="notification_bg_send_ticker">Отправка: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Отправка почты</string>
     <string name="notification_bg_title_separator">:</string>
 
@@ -259,6 +258,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_compose_quote_header_to">Кому:</string>
     <string name="message_compose_quote_header_cc">Копия:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:</string>
+    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> пишет:</string>
     <string name="message_compose_error_no_recipients">Укажите адресата</string>
     <string name="error_contact_address_not_found">Контакт не содержит сведений о email</string>
     <string name="message_compose_attachments_skipped_toast">Некоторые вложения не были загружены и не могут быть отправлены</string>
@@ -980,7 +980,7 @@ K-9 Mail — почтовый клиент для Android.
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Сообщение будет удалено. Продолжить?</item>
         <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>
     </plurals>
@@ -1017,7 +1017,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="settings_export_success">Настройки сохранены в <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Настройки K-9 импортированы из <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Импортировано: <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 ящик</item>
         <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> ящика</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> ящиков</item>
