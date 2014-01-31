@@ -553,16 +553,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         resetView();
 
         String text = null;
-//        if (pgpData != null) {
-//            text = pgpData.getDecryptedData();
-//            if (text != null) {
-//                text = HtmlConverter.textToHtml(text);
-//            }
-//        }
-
-        if (text == null) {
-            text = message.getTextForDisplay();
-        }
+        text = message.getTextForDisplay();
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
         mText = text;
