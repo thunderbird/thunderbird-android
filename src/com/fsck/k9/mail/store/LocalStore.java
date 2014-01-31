@@ -65,6 +65,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.filter.Base64OutputStream;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -3566,9 +3567,14 @@ public class LocalStore extends Store implements Serializable {
             if (part == null) {
                 // If that fails, try and get a text part.
                 part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
-                if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
-                    text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
-                }
+                if (part != null)
+                {
+                	if (part.getBody() instanceof TextBody) 
+                		text = ((TextBody) part.getBody()).getText();
+                	if (part.getBody() instanceof BinaryTempFileBody)
+                		text = MimeUtility.getTextFromPart(part);
+                	text = HtmlConverter.textToHtml(text);
+                } 
             } else {
                 // We successfully found an HTML part; do the necessary character set decoding.
                 text = MimeUtility.getTextFromPart(part);

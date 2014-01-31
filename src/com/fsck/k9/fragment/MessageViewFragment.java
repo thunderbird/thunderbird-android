@@ -1,6 +1,7 @@
 package com.fsck.k9.fragment;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +42,9 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -732,7 +735,6 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         
         //TODO: This is ugly and the cleared data shouldn't overwrite the original one, but duuude...
         pgpData.setDecryptedData(postProcessMessage(pgpData.getDecryptedData(), message));
-//        postProcessMessage(pgpData.getDecryptedData(), message);
         try {
             mMessageView.setMessage(account, message, pgpData, controller, listener);
         } catch (MessagingException e) {
@@ -747,19 +749,48 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
      * @param originalMessage the message as it was decrypted.
      * @return the message after it was cleared.
      */
-    private String postProcessMessage(String originalMessage, LocalMessage message)
+    private String postProcessMessage(String originalMessageText, LocalMessage message)
     {
-    	Log.i("crypto", "originalMessage: " + originalMessage);
+    	Log.i("crypto", "originalMessage: " + originalMessageText);
     	
-    	InputStream is = new ByteArrayInputStream(originalMessage.getBytes());
+    	InputStream is = new ByteArrayInputStream(originalMessageText.getBytes());
     	MimeMessage tempMessage = null;
     	
     	try {
 			tempMessage = new MimeMessage(is);
-			if (tempMessage.getBody() instanceof MimeMultipart)
-	    	{
-	    		message.setBody(tempMessage.getBody());
-	    	}
+			
+			//If the email only contains text and not HTML plus text, the 
+			//BinaryTempFileBody will not be correctly identified as a placeholder
+			//for text later in the processing. Therefore I artificially packed the 
+			//BinaryTempFileBody in a Multipart instance which circumvents
+			//this issue. 
+			if (tempMessage.getBody() instanceof BinaryTempFileBody)
+			{
+				MimeMultipart multi = new MimeMultipart();
+				MimeBodyPart mpart = new MimeBodyPart(tempMessage.getBody());
+				
+				//Somewhere here the encoding or charset gets lost... we need to carry it over to preserve it
+				//In my test case it should be iso-8859-1
+				multi.addBodyPart(mpart);
+				message.setBody(multi);
+				
+				String[] contentType = tempMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
+				if (contentType.length == 1)
+				{
+					message.addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);	
+					mpart.addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
+					
+//					message.setCharset(contentType[0]);
+//					multi.setCharset(contentType[0]);
+					
+				}
+//				ByteArrayOutputStream os = new ByteArrayOutputStream(); 
+//				((BinaryTempFileBody)tempMessage.getBody()).writeTo(os);
+//				message.setBody(new TextBody(os.toString()));
+//				message.setBody(tempMessage.getBody());
+			} else {
+				message.setBody(tempMessage.getBody());
+			}
 		} catch (IOException e1) {
 			// Will not happen...
 			Log.e("crypto", e1.getLocalizedMessage());
@@ -767,7 +798,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 			Log.e("crypto", e1.getLocalizedMessage());
 		}
     	
-    	return originalMessage;
+    	return originalMessageText;
     	
     
 //    	TextBody body = new TextBody(originalMessage);
