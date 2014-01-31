@@ -1,6 +1,7 @@
 package com.fsck.k9.view;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -191,14 +192,14 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                         switch (item.getItemId()) {
                             case MENU_ITEM_LINK_VIEW: {
                                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                getContext().startActivity(intent);
+                                startActivityIfAvailable(getContext(), intent);
                                 break;
                             }
                             case MENU_ITEM_LINK_SHARE: {
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.setType("text/plain");
                                 intent.putExtra(Intent.EXTRA_TEXT, url);
-                                getContext().startActivity(intent);
+                                startActivityIfAvailable(getContext(), intent);
                                 break;
                             }
                             case MENU_ITEM_LINK_COPY: {
@@ -243,7 +244,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                                     // AttachmentProvider
                                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                                 }
-                                getContext().startActivity(intent);
+                                startActivityIfAvailable(getContext(), intent);
                                 break;
                             }
                             case MENU_ITEM_IMAGE_SAVE: {
@@ -291,7 +292,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                             case MENU_ITEM_PHONE_CALL: {
                                 Uri uri = Uri.parse(WebView.SCHEME_TEL + phoneNumber);
                                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                getContext().startActivity(intent);
+                                startActivityIfAvailable(getContext(), intent);
                                 break;
                             }
                             case MENU_ITEM_PHONE_SAVE: {
@@ -336,7 +337,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                             case MENU_ITEM_EMAIL_SEND: {
                                 Uri uri = Uri.parse(WebView.SCHEME_MAILTO + email);
                                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                getContext().startActivity(intent);
+                                startActivityIfAvailable(getContext(), intent);
                                 break;
                             }
                             case MENU_ITEM_EMAIL_SAVE: {
@@ -372,6 +373,14 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
                 break;
             }
+        }
+    }
+
+    private void startActivityIfAvailable(Context context, Intent intent) {
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, R.string.error_activity_not_found, Toast.LENGTH_LONG).show();
         }
     }
 
