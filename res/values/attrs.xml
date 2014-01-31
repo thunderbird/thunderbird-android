@@ -55,4 +55,8 @@
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
     </declare-styleable>
 
+    <declare-styleable name="SliderPreference">
+        <attr name="android:summary" />
+    </declare-styleable>
+
 </resources>
