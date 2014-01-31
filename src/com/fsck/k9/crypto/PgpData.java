@@ -11,6 +11,7 @@ public class PgpData implements Serializable {
     protected boolean mSignatureUnknown = false;
     protected String mDecryptedData = null;
     protected String mEncryptedData = null;
+    protected String GnuPGcharset = null;
 
     public void setSignatureKeyId(long keyId) {
         mSignatureKeyId = keyId;
@@ -74,5 +75,15 @@ public class PgpData implements Serializable {
 
     public void setSignatureUnknown(boolean unknown) {
         mSignatureUnknown = unknown;
+    }
+    
+    public void setGnuPGcharset(String charset)
+    {
+    	GnuPGcharset = charset;
+    }
+    
+    public String getGnuPGcharset()
+    {
+    	return GnuPGcharset;
     }
 }

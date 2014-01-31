@@ -733,8 +733,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         MessagingController controller = mController;
         Listener listener = mListener;
         
-        //TODO: This is ugly and the cleared data shouldn't overwrite the original one, but duuude...
-        pgpData.setDecryptedData(postProcessMessage(pgpData.getDecryptedData(), message));
+        pgpData.setDecryptedData(postProcessMessage(message, pgpData));
         try {
             mMessageView.setMessage(account, message, pgpData, controller, listener);
         } catch (MessagingException e) {
@@ -749,14 +748,17 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
      * @param originalMessage the message as it was decrypted.
      * @return the message after it was cleared.
      */
-    private String postProcessMessage(String originalMessageText, LocalMessage message)
+    private String postProcessMessage(LocalMessage message, PgpData pgpData)
     {
+    	String originalMessageText = pgpData.getDecryptedData();
     	Log.i("crypto", "originalMessage: " + originalMessageText);
     	
     	InputStream is = new ByteArrayInputStream(originalMessageText.getBytes());
     	MimeMessage tempMessage = null;
     	
     	try {
+    		//MimeMessage only works if the InputStream of the string actually contains Content-Type declarations. 
+    		//If there is just text, then the constructor returns an empty string. 
 			tempMessage = new MimeMessage(is);
 			
 			//If the email only contains text and not HTML plus text, the 
@@ -764,7 +766,25 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 			//for text later in the processing. Therefore I artificially packed the 
 			//BinaryTempFileBody in a Multipart instance which circumvents
 			//this issue. 
-			if (tempMessage.getBody() instanceof BinaryTempFileBody)
+			if (originalMessageText.startsWith("Content-Transfer-Encoding: ") != true && 
+					originalMessageText.startsWith("Content-Type: ") != true)
+			{
+				//Seems there is a decrypted string here which does not contain Content-Type declarations... 
+				//We cannot use the resulting BinaryTempFileBody because it will always contain an empty string
+				//and not the actual text...
+				//Let's hope the other tools do not start with something else than: Content-Transfer-Encoding...
+				message.setBody(new TextBody(originalMessageText));
+				
+				//Sorry, but GnuPG really encodes the charset into the second line of the ENCRYPTED text...
+               	String lines[] = pgpData.getEncryptedData().split("\\r?\\n");
+               	if (lines != null && lines.length > 2 && lines[2].startsWith("Charset: "))
+               	{
+               		message.addHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain;\r\n charset=" + lines[2].substring(9));               
+				} else {
+					message.addHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");	
+				}
+			}
+			else if (tempMessage.getBody() instanceof BinaryTempFileBody)
 			{
 				MimeMultipart multi = new MimeMultipart();
 				MimeBodyPart mpart = new MimeBodyPart(tempMessage.getBody());
@@ -775,19 +795,11 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 				message.setBody(multi);
 				
 				String[] contentType = tempMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
-				if (contentType.length == 1)
+				if (contentType != null && contentType.length == 1)
 				{
 					message.addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);	
 					mpart.addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
-					
-//					message.setCharset(contentType[0]);
-//					multi.setCharset(contentType[0]);
-					
 				}
-//				ByteArrayOutputStream os = new ByteArrayOutputStream(); 
-//				((BinaryTempFileBody)tempMessage.getBody()).writeTo(os);
-//				message.setBody(new TextBody(os.toString()));
-//				message.setBody(tempMessage.getBody());
 			} else {
 				message.setBody(tempMessage.getBody());
 			}

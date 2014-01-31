@@ -116,6 +116,8 @@ public class MessageCryptoView extends LinearLayout {
                     	data = cryptoProvider.processPGPattachment(message);
                     }
                     
+                    pgpData.setEncryptedData(data);
+                    
                     cryptoProvider.decrypt(mFragment, data, pgpData);
                 } catch (MessagingException me) {
                     Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);
