@@ -153,6 +153,12 @@
             android:entryValues="@array/font_values_webview"
             android:dialogTitle="@string/font_size_message_view_content" />
 
+        <com.fsck.k9.activity.setup.SliderPreference
+            android:persistent="false"
+            android:key="message_view_content_font_slider"
+            android:title="@string/font_size_message_view_content"
+            android:dialogTitle="@string/font_size_message_view_content" />
+
     </PreferenceScreen>
 
     <PreferenceScreen

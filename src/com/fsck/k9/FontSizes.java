@@ -28,6 +28,7 @@ public class FontSizes {
     private static final String MESSAGE_VIEW_SUBJECT = "fontSizeMessageViewSubject";
     private static final String MESSAGE_VIEW_DATE = "fontSizeMessageViewDate";
     private static final String MESSAGE_VIEW_CONTENT = "fontSizeMessageViewContent";
+    private static final String MESSAGE_VIEW_CONTENT_PERCENT = "fontSizeMessageViewContentPercent";
     private static final String MESSAGE_COMPOSE_INPUT = "fontSizeMessageComposeInput";
 
     /*
@@ -116,9 +117,17 @@ public class FontSizes {
     /**
      * Font size of the message content in the message view activity.
      *
-     * Note: The unit is WebSettings.TextSize
+     * Note: The unit is WebSettings.TextSize, this option is used only on Android 3.2 (API level 13) and below.
      */
     private TextSize messageViewContent = TextSize.NORMAL;
+
+
+    /**
+     * Font size of the message content in the message view activity, as percent from default size.
+     *
+     * Note: This option is used only on Android 4.0 (API level 14) and above.
+     */
+    private int messageViewContentPercent;
 
     /**
      * Font size for the input fields in the message compose activity.
@@ -147,6 +156,7 @@ public class FontSizes {
         messageViewAdditionalHeaders = FONT_DEFAULT;
         messageViewSubject = FONT_DEFAULT;
         messageViewDate = FONT_DEFAULT;
+        messageViewContentPercent = 100;
 
         messageComposeInput = MEDIUM;
     }
@@ -175,6 +185,7 @@ public class FontSizes {
         editor.putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         editor.putInt(MESSAGE_VIEW_DATE, messageViewDate);
         editor.putInt(MESSAGE_VIEW_CONTENT, getMessageViewContentAsInt());
+        editor.putInt(MESSAGE_VIEW_CONTENT_PERCENT, getMessageViewContentAsPercent());
 
         editor.putInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
     }
@@ -203,6 +214,7 @@ public class FontSizes {
         messageViewSubject = prefs.getInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         messageViewDate = prefs.getInt(MESSAGE_VIEW_DATE, messageViewDate);
         setMessageViewContent(prefs.getInt(MESSAGE_VIEW_CONTENT, 3));
+        setMessageViewContentAsPercent(prefs.getInt(MESSAGE_VIEW_CONTENT_PERCENT, 100));
 
         messageComposeInput = prefs.getInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
     }
@@ -357,6 +369,14 @@ public class FontSizes {
             messageViewContent = TextSize.LARGEST;
             break;
         }
+    }
+
+    public int getMessageViewContentAsPercent() {
+        return messageViewContentPercent;
+    }
+
+    public void setMessageViewContentAsPercent(int size) {
+        messageViewContentPercent = size;
     }
 
     public int getMessageComposeInput() {
