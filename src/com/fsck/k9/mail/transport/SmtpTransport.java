@@ -288,14 +288,14 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            List<String> results = sendHello(localHost);
+            HashMap<String,String> extensions = sendHello(localHost);
 
-            m8bitEncodingAllowed = results.contains("8BITMIME");
+            m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
 
 
             if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
                     || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
-                if (results.contains("STARTTLS")) {
+                if (extensions.containsKey("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
                     SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -312,7 +312,7 @@ public class SmtpTransport extends Transport {
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
                      * Exim.
                      */
-                    results = sendHello(localHost);
+                    extensions = sendHello(localHost);
                 } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
                     throw new MessagingException("TLS not supported but required");
                 }
@@ -328,23 +328,18 @@ public class SmtpTransport extends Transport {
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
-            for (String result : results) {
-                if (result.matches(".*AUTH.*LOGIN.*$")) {
-                    authLoginSupported = true;
-                }
-                if (result.matches(".*AUTH.*PLAIN.*$")) {
-                    authPlainSupported = true;
-                }
-                if (result.matches(".*AUTH.*CRAM-MD5.*$")) {
-                    authCramMD5Supported = true;
-                }
-                if (result.matches(".*SIZE \\d*$")) {
-                    try {
-                        mLargestAcceptableMessage = Integer.parseInt(result.substring(result.lastIndexOf(' ') + 1));
-                    } catch (Exception e) {
-                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                            Log.d(K9.LOG_TAG, "Tried to parse " + result + " and get an int out of the last word", e);
-                        }
+            if (extensions.containsKey("AUTH")) {
+                List<String> saslMech = Arrays.asList(extensions.get("AUTH").split(" "));
+                authLoginSupported = saslMech.contains("LOGIN");
+                authPlainSupported = saslMech.contains("PLAIN");
+                authCramMD5Supported = saslMech.contains("CRAM-MD5");
+            }
+            if (extensions.containsKey("SIZE")) {
+                try {
+                    mLargestAcceptableMessage = Integer.parseInt(extensions.get("SIZE"));
+                } catch (Exception e) {
+                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Tried to parse " + extensions.get("SIZE") + " and get an int", e);
                     }
                 }
             }
@@ -410,19 +405,24 @@ public class SmtpTransport extends Transport {
      * @param host
      *         The EHLO/HELO parameter as defined by the RFC.
      *
-     * @return The list of capabilities as returned by the EHLO command or an empty list.
+     * @return A (possibly empty) {@code HashMap<String,String>} of extensions (upper case) and
+     * their parameters (possibly 0 length) as returned by the EHLO command
      *
      * @throws IOException
      *          In case of a network error.
      * @throws MessagingException
      *          In case of a malformed response.
      */
-    private List<String> sendHello(String host) throws IOException, MessagingException {
+    private HashMap<String,String> sendHello(String host) throws IOException, MessagingException {
+        HashMap<String, String> extensions = new HashMap<String, String>();
         try {
-            //TODO: We currently assume the extension keywords returned by the server are always
-            //      uppercased. But the RFC allows mixed-case keywords!
-
-            return executeSimpleCommand("EHLO " + host);
+            List<String> results = executeSimpleCommand("EHLO " + host);
+            // Remove the EHLO greeting response
+            results.remove(0);
+            for (String result : results) {
+                String[] pair = result.split(" ", 2);
+                extensions.put(pair[0].toUpperCase(), pair.length == 1 ? "" : pair[1]);
+            }
         } catch (NegativeSmtpReplyException e) {
             if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "Server doesn't support the EHLO command. Trying HELO...");
@@ -434,8 +434,7 @@ public class SmtpTransport extends Transport {
                 Log.w(K9.LOG_TAG, "Server doesn't support the HELO command. Continuing anyway.");
             }
         }
-
-        return new ArrayList<String>(0);
+        return extensions;
     }
 
     @Override
