@@ -484,15 +484,15 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="account_setup_options_notify_sync_label">Értesítés adatszinkronizáláskor</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Látható levelek száma</string>
-    <string name="account_setup_options_mail_display_count_10">10 levél</string>
-    <string name="account_setup_options_mail_display_count_25">25 levél</string>
-    <string name="account_setup_options_mail_display_count_50">50 levél</string>
-    <string name="account_setup_options_mail_display_count_100">100 levél</string>
-    <string name="account_setup_options_mail_display_count_250">250 levél</string>
-    <string name="account_setup_options_mail_display_count_500">500 levél</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 levél</string>
-    <string name="account_setup_options_mail_display_count_all">Minden levél</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Látható levelek száma</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 levél</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 levél</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 levél</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 levél</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 levél</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 levél</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 levél</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Minden levél</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Ez a levél nem másolható illetve mozgatható máshova, mert nincs szinkronizálva a szerverrel.</string>
 
@@ -575,7 +575,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
     <string name="account_settings_led_color_label">Figyelmeztető LED színe</string>
     <string name="account_settings_led_color_summary">Telefon LED színe figyelmeztetéskor</string>
 
-    <string name="account_settings_mail_display_count_label">Helyi mappa mérete</string>
+    <string name="account_settings_mail_fetch_amount_label">Helyi mappa mérete</string>
 
     <string name="account_settings_autodownload_message_size_label">Letölthető levélméret</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

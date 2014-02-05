@@ -484,15 +484,15 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_setup_options_notify_sync_label">Ilmoitus postin tarkistamisesta</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Näytettävien viestien lukumäärä</string>
-    <string name="account_setup_options_mail_display_count_10">10 kansiota</string>
-    <string name="account_setup_options_mail_display_count_25">25 kansiota</string>
-    <string name="account_setup_options_mail_display_count_50">50 kansiota</string>
-    <string name="account_setup_options_mail_display_count_100">100 viestiä</string>
-    <string name="account_setup_options_mail_display_count_250">250 viestiä</string>
-    <string name="account_setup_options_mail_display_count_500">500 viestiä</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 viestiä</string>
-    <string name="account_setup_options_mail_display_count_all">Kaikki viestit</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Näytettävien viestien lukumäärä</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 kansiota</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 kansiota</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 kansiota</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 viestiä</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 viestiä</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 viestiä</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 viestiä</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Kaikki viestit</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää, koska sitä ei ole synkronoitu palvelimelle</string>
 
@@ -575,7 +575,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_settings_led_color_label">LED-ilmoitusvalon väri</string>
     <string name="account_settings_led_color_summary">Valitse väri, jota laitteesi vilkuttaa tälle tilille</string>
 
-    <string name="account_settings_mail_display_count_label">Paikallisen kansion koko</string>
+    <string name="account_settings_mail_fetch_amount_label">Paikallisen kansion koko</string>
 
     <string name="account_settings_autodownload_message_size_label">Hae viestit, joiden koko on enintään</string>
     <string name="account_settings_autodownload_message_size_1">1 kt</string>

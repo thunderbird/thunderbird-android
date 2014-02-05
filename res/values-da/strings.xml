@@ -484,15 +484,15 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_setup_options_notify_sync_label">Vis meddelelse når mail hentes</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Antal viste mails</string>
-    <string name="account_setup_options_mail_display_count_10">10 mails</string>
-    <string name="account_setup_options_mail_display_count_25">25 mails</string>
-    <string name="account_setup_options_mail_display_count_50">50 mails</string>
-    <string name="account_setup_options_mail_display_count_100">100 mails</string>
-    <string name="account_setup_options_mail_display_count_250">250 mails</string>
-    <string name="account_setup_options_mail_display_count_500">500 mails</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 mails</string>
-    <string name="account_setup_options_mail_display_count_all">alle mails</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Antal viste mails</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 mails</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 mails</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 mails</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 mails</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 mails</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 mails</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 mails</string>
+    <string name="account_setup_options_mail_fetch_amount_all">alle mails</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Kan ikke kopiere eller flytte mail som ikke er synkroniseret med server</string>
 
@@ -575,7 +575,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_settings_led_color_label">Notification LED farve</string>
     <string name="account_settings_led_color_summary">Vælg den farve som din telefonens LED skal benytte for denne konto</string>
 
-    <string name="account_settings_mail_display_count_label">Lokal mappestørrelse</string>
+    <string name="account_settings_mail_fetch_amount_label">Lokal mappestørrelse</string>
 
     <string name="account_settings_autodownload_message_size_label">Hent automatisk mail hvis indhold fylder op til</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

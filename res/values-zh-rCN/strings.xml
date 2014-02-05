@@ -482,15 +482,15 @@ K-9改进的功能包括：
     <string name="account_setup_options_notify_sync_label">检查新邮件时通知我</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">邮件显示数量</string>
-    <string name="account_setup_options_mail_display_count_10">10封</string>
-    <string name="account_setup_options_mail_display_count_25">25封</string>
-    <string name="account_setup_options_mail_display_count_50">50封</string>
-    <string name="account_setup_options_mail_display_count_100">100封</string>
-    <string name="account_setup_options_mail_display_count_250">250封</string>
-    <string name="account_setup_options_mail_display_count_500">500封</string>
-    <string name="account_setup_options_mail_display_count_1000">1000封</string>
-    <string name="account_setup_options_mail_display_count_all">所有邮件</string>
+    <string name="account_setup_options_mail_fetch_amount_label">邮件显示数量</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10封</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25封</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50封</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100封</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250封</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500封</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000封</string>
+    <string name="account_setup_options_mail_fetch_amount_all">所有邮件</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">没有与服务器同步的邮件无法进行拷贝或移动</string>
 
@@ -573,7 +573,7 @@ K-9改进的功能包括：
     <string name="account_settings_led_color_label">通知LED灯颜色</string>
     <string name="account_settings_led_color_summary">选择手机提示该账户信息时LED灯闪烁的颜色</string>
 
-    <string name="account_settings_mail_display_count_label">本地文件夹大小</string>
+    <string name="account_settings_mail_fetch_amount_label">本地文件夹大小</string>
 
     <string name="account_settings_autodownload_message_size_label">收取邮件的最大尺寸为</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

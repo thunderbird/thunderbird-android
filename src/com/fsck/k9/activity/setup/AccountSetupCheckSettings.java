@@ -121,7 +121,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             setMessage(R.string.account_setup_check_settings_fetch);
                         }
                         MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
-                        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null);
+                        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null, true);
                     }
                     if (mDestroyed) {
                         return;

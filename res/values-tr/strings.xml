@@ -483,15 +483,15 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_setup_options_notify_sync_label">Posta kontrol edilirken beni uyar.</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Görüntülenecek Mesaj sayısı</string>
-    <string name="account_setup_options_mail_display_count_10">10 mesaj</string>
-    <string name="account_setup_options_mail_display_count_25">25 mesaj</string>
-    <string name="account_setup_options_mail_display_count_50">50 mesaj</string>
-    <string name="account_setup_options_mail_display_count_100">100 mesaj</string>
-    <string name="account_setup_options_mail_display_count_250">250 mesaj</string>
-    <string name="account_setup_options_mail_display_count_500">500 mesaj</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 mesaj</string>
-    <string name="account_setup_options_mail_display_count_all">Bütün mesajlar</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Görüntülenecek Mesaj sayısı</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 mesaj</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 mesaj</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 mesaj</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 mesaj</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 mesaj</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 mesaj</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 mesaj</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Bütün mesajlar</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Sunucu ile eşleştirilmemiş bir mesaj kopyalanamaz veya taşınamaz.</string>
 
@@ -574,7 +574,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_settings_led_color_label">Bildirim LED ışığı rengi</string>
     <string name="account_settings_led_color_summary">Bu hesap için gösterilecek LED ışık rengini seçin</string>
 
-    <string name="account_settings_mail_display_count_label">Yerel klasör boyutu</string>
+    <string name="account_settings_mail_fetch_amount_label">Yerel klasör boyutu</string>
 
     <string name="account_settings_autodownload_message_size_label">Mesajları şu boyut üzerinden getir</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

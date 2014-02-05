@@ -1347,7 +1347,7 @@ public class ImapStore extends Store {
         throws MessagingException {
             if (start < 1 || end < 1 || end < start) {
                 throw new MessagingException(
-                    String.format("Invalid message set %d %d",
+                    String.format("Invalid message set start: %d  end: %d",
                                   start, end));
             }
             final StringBuilder dateSearchString = new StringBuilder();
@@ -3035,8 +3035,8 @@ public class ImapStore extends Store {
                                 }
                             }
 
-                            if (startUid < newUidNext - mAccount.getDisplayCount()) {
-                                startUid = newUidNext - mAccount.getDisplayCount();
+                            if (startUid < newUidNext - mAccount.getFetchAmount()) {
+                                startUid = newUidNext - mAccount.getFetchAmount();
                             }
                             if (startUid < 1) {
                                 startUid = 1;

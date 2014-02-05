@@ -488,15 +488,15 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_setup_options_notify_sync_label">Informuj mě o zjišťování pošty</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Počet zobrazených zpráv</string>
-    <string name="account_setup_options_mail_display_count_10">10 zpráv</string>
-    <string name="account_setup_options_mail_display_count_25">25 zpráv</string>
-    <string name="account_setup_options_mail_display_count_50">50 zpráv</string>
-    <string name="account_setup_options_mail_display_count_100">100 zpráv</string>
-    <string name="account_setup_options_mail_display_count_250">250 zpráv</string>
-    <string name="account_setup_options_mail_display_count_500">500 zpráv</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 zpráv</string>
-    <string name="account_setup_options_mail_display_count_all">všechny zprávy</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Počet zobrazených zpráv</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 zpráv</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 zpráv</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 zpráv</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 zpráv</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 zpráv</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 zpráv</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 zpráv</string>
+    <string name="account_setup_options_mail_fetch_amount_all">všechny zprávy</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Nelze kopírovat nebo přesunovat zprávu, která není synchronizována se serverem</string>
 
@@ -579,7 +579,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="account_settings_led_color_label">Barva oznamovací LED</string>
     <string name="account_settings_led_color_summary">Vyberte barvu, kterou má telefon blikat pro tento účet</string>
 
-    <string name="account_settings_mail_display_count_label">Počet zobrazených zpráv</string>
+    <string name="account_settings_mail_fetch_amount_label">Počet zobrazených zpráv</string>
 
     <string name="account_settings_autodownload_message_size_label">Stahovat zprávy až do</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>

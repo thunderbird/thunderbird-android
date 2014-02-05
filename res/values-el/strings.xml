@@ -483,15 +483,15 @@
     <string name="account_setup_options_notify_sync_label">Ειδοποίηση όσο ελέγχεται το γραμματοκιβώτιο</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Πλήθος μηνυμάτων που προβάλλονται</string>
-    <string name="account_setup_options_mail_display_count_10">10 μηνύματα</string>
-    <string name="account_setup_options_mail_display_count_25">25 μηνύματα</string>
-    <string name="account_setup_options_mail_display_count_50">50 μηνύματα</string>
-    <string name="account_setup_options_mail_display_count_100">100 μηνύματα</string>
-    <string name="account_setup_options_mail_display_count_250">250 μηνύματα</string>
-    <string name="account_setup_options_mail_display_count_500">500 μηνύματα</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 μηνύματα</string>
-    <string name="account_setup_options_mail_display_count_all">Όλα τα μηνύματα</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Πλήθος μηνυμάτων που προβάλλονται</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 μηνύματα</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 μηνύματα</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 μηνύματα</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 μηνύματα</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 μηνύματα</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 μηνύματα</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 μηνύματα</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Όλα τα μηνύματα</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Αδύνατη η αντιγραφή ή μετακίνηση μηνύματος που δεν έχει συγχρονιστεί με τον εξυπηρέτη</string>
 
@@ -574,7 +574,7 @@
     <string name="account_settings_led_color_label">Χρώμα ειδοποίησης LED</string>
     <string name="account_settings_led_color_summary">Επιλογή του χρώματος που θα αναβοσβήνει η λυχνία του κινητού για αυτό το λογαριασμό</string>
 
-    <string name="account_settings_mail_display_count_label">Μέγεθος τοπικού φακέλου</string>
+    <string name="account_settings_mail_fetch_amount_label">Μέγεθος τοπικού φακέλου</string>
 
     <string name="account_settings_autodownload_message_size_label">Ανάκτηση μηνυμάτων μέχρι</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

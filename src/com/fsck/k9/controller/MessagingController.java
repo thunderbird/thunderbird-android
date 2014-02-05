@@ -631,7 +631,7 @@ public class MessagingController implements Runnable {
                         }
                         remoteFolderNames.add(remoteFolder.getName());
                     }
-                    localStore.createFolders(foldersToCreate, account.getDisplayCount());
+                    localStore.createFolders(foldersToCreate);
 
                     localFolders = localStore.getPersonalNamespaces(false);
 
@@ -903,20 +903,11 @@ public class MessagingController implements Runnable {
         try {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(folder);
-            if (localFolder.getVisibleLimit() > 0) {
-                localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
-            }
-            synchronizeMailbox(account, folder, listener, null);
+            synchronizeMailbox(account, folder, listener, null, true);
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
 
             throw new RuntimeException("Unable to set visible limit on folder", me);
-        }
-    }
-
-    public void resetVisibleLimits(Collection<Account> accounts) {
-        for (Account account : accounts) {
-            account.resetVisibleLimits();
         }
     }
 
@@ -927,11 +918,12 @@ public class MessagingController implements Runnable {
      * @param listener
      * @param providedRemoteFolder TODO
      */
-    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener, final Folder providedRemoteFolder) {
+    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener,
+                                   final Folder providedRemoteFolder, final boolean fetchMore) {
         putBackground("synchronizeMailbox", listener, new Runnable() {
             @Override
             public void run() {
-                synchronizeMailboxSynchronous(account, folder, listener, providedRemoteFolder);
+                synchronizeMailboxSynchronous(account, folder, listener, providedRemoteFolder, fetchMore);
             }
         });
     }
@@ -945,7 +937,8 @@ public class MessagingController implements Runnable {
      * TODO Break this method up into smaller chunks.
      * @param providedRemoteFolder TODO
      */
-    private void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener, Folder providedRemoteFolder) {
+    private void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener,
+                                               Folder providedRemoteFolder, final boolean fetchMore) {
         Folder remoteFolder = null;
         LocalFolder tLocalFolder = null;
 
@@ -1020,8 +1013,8 @@ public class MessagingController implements Runnable {
                 Open the folder
                 Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
                 Get the message count
-                Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
-                getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
+                Get the list of the newest K9.DEFAULT_FETCH_AMOUNT messages
+                getMessages(messageCount - K9.DEFAULT_FETCH_AMOUNT, messageCount)
                 See if we have each message locally, if not fetch it's flags and envelope
                 Get and update the unread count for the folder
                 Update the remote flags of any messages we have locally with an internal date newer than the remote message.
@@ -1051,12 +1044,8 @@ public class MessagingController implements Runnable {
              * Get the remote message count.
              */
             int remoteMessageCount = remoteFolder.getMessageCount();
-
-            int visibleLimit = localFolder.getVisibleLimit();
-
-            if (visibleLimit < 0) {
-                visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
-            }
+            int localMessageCount = localFolder.getMessageCount();
+            int extraMessageCount = fetchMore ? account.getFetchAmount() : 0;
 
             Message[] remoteMessageArray = EMPTY_MESSAGE_ARRAY;
             final ArrayList<Message> remoteMessages = new ArrayList<Message>();
@@ -1066,16 +1055,17 @@ public class MessagingController implements Runnable {
                 Log.v(K9.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " + remoteMessageCount);
             final Date earliestDate = account.getEarliestPollDate();
 
-
             if (remoteMessageCount > 0) {
                 /* Message numbers start at 1.  */
-                int remoteStart;
-                if (visibleLimit > 0) {
-                    remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
-                } else {
-                    remoteStart = 1;
-                }
+                int remoteStart = Math.max(0, remoteMessageCount - (localMessageCount + extraMessageCount)) + 1;
                 int remoteEnd = remoteMessageCount;
+
+                /*
+                    case there are no local messages yet and we don't fetch extra
+                 */
+                if (remoteStart > remoteEnd) {
+                    remoteStart = remoteEnd - K9.DEFAULT_FETCH_AMOUNT + 1;
+                }
 
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: About to get messages " + remoteStart + " through " + remoteEnd + " for folder " + folder);
@@ -1085,20 +1075,21 @@ public class MessagingController implements Runnable {
                     l.synchronizeMailboxHeadersStarted(account, folder);
                 }
 
-
                 remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteEnd, earliestDate, null);
 
                 int messageCount = remoteMessageArray.length;
 
-                for (Message thisMess : remoteMessageArray) {
+                for (Message remoteMsg : remoteMessageArray) {
                     headerProgress.incrementAndGet();
                     for (MessagingListener l : getListeners(listener)) {
                         l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
                     }
-                    Message localMessage = localUidMap.get(thisMess.getUid());
+
+                    // determine if it's a new message
+                    Message localMessage = localUidMap.get(remoteMsg.getUid());
                     if (localMessage == null || !localMessage.olderThan(earliestDate)) {
-                        remoteMessages.add(thisMess);
-                        remoteUidMap.put(thisMess.getUid(), thisMess);
+                        remoteMessages.add(remoteMsg);
+                        remoteUidMap.put(remoteMsg.getUid(), remoteMsg);
                     }
                 }
                 if (K9.DEBUG)
@@ -1309,12 +1300,6 @@ public class MessagingController implements Runnable {
              * fetch results for newest to oldest. If not, no harm done.
              */
             Collections.sort(unsyncedMessages, new UidReverseComparator());
-            int visibleLimit = localFolder.getVisibleLimit();
-            int listSize = unsyncedMessages.size();
-
-            if ((visibleLimit > 0) && (listSize > visibleLimit)) {
-                unsyncedMessages = unsyncedMessages.subList(0, visibleLimit);
-            }
 
             FetchProfile fp = new FetchProfile();
             if (remoteFolder.supportsFetchingFlags()) {
@@ -1381,16 +1366,6 @@ public class MessagingController implements Runnable {
 
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
-
-        localFolder.purgeToVisibleLimit(new MessageRemovalListener() {
-            @Override
-            public void messageRemoved(Message message) {
-                for (MessagingListener l : getListeners()) {
-                    l.synchronizeMailboxRemovedMessage(account, folder, message);
-                }
-            }
-
-        });
 
         // If the oldest message seen on this sync is newer than
         // the oldest message seen on the previous sync, then
@@ -4500,7 +4475,7 @@ public class MessagingController implements Runnable {
                     }
                     notifyFetchingMail(account, folder);
                     try {
-                        synchronizeMailboxSynchronous(account, folder.getName(), listener, null);
+                        synchronizeMailboxSynchronous(account, folder.getName(), listener, null, false);
                     } finally {
                         notifyFetchingMailCancel(account);
                     }
@@ -4551,7 +4526,6 @@ public class MessagingController implements Runnable {
                     LocalStore localStore = account.getLocalStore();
                     long oldSize = localStore.getSize();
                     localStore.clear();
-                    localStore.resetVisibleLimits(account.getDisplayCount());
                     long newSize = localStore.getSize();
                     AccountStats stats = new AccountStats();
                     stats.size = newSize;
@@ -4579,7 +4553,6 @@ public class MessagingController implements Runnable {
                     LocalStore localStore = account.getLocalStore();
                     long oldSize = localStore.getSize();
                     localStore.recreate();
-                    localStore.resetVisibleLimits(account.getDisplayCount());
                     long newSize = localStore.getSize();
                     AccountStats stats = new AccountStats();
                     stats.size = newSize;

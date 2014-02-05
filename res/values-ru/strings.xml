@@ -608,7 +608,56 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_settings_message_age_6_months">6 месяцев</string>
     <string name="account_settings_message_age_1_year">1 год</string>
 
-    <string name="account_settings_folder_display_mode_label">Видимость папок</string>
+    <string name="account_settings_folder_display_mode_label">Видимость</string>
+    <string name="account_settings_crypto_auto_signature_summary">Использовать e-mail учётной записи для формирования ключа подписи.</string>
+    <string name="account_settings_crypto_auto_encrypt">Автоматическое шифрование</string>
+    <string name="account_settings_crypto_auto_encrypt_summary">Автоматическая настройка шифрования, если открытый ключ соответствует получателю</string>
+    <!-- NEW: <string name="account_settings_crypto_apg_not_installed">APG not installed</string>-->
+
+    <string name="account_settings_mail_check_frequency_label">Частота опроса папок</string>
+
+    <string name="account_settings_storage_title">Хранилище</string>
+
+    <string name="account_settings_color_label">Цвет учётной записи</string>
+    <string name="account_settings_color_summary">Выберите цвет учётной записи, используемый в папке и списке учётных записей</string>
+
+    <string name="account_settings_led_color_label">Цвет светодиода для уведомления</string>
+    <string name="account_settings_led_color_summary">Выбрать цвет мигания для учётной записи</string>
+
+    <string name="account_settings_mail_fetch_amount_label">Количество показываемых сообщений</string>
+
+    <string name="account_settings_autodownload_message_size_label">Загружать сообщения до</string>
+    <string name="account_settings_autodownload_message_size_1">1Kb</string>
+    <string name="account_settings_autodownload_message_size_2">2Kb</string>
+    <string name="account_settings_autodownload_message_size_4">4Kb</string>
+    <string name="account_settings_autodownload_message_size_8">8Kb</string>
+    <string name="account_settings_autodownload_message_size_16">16Kb</string>
+    <string name="account_settings_autodownload_message_size_32">32Kb</string>
+    <string name="account_settings_autodownload_message_size_64">64Kb</string>
+    <string name="account_settings_autodownload_message_size_128">128Kb</string>
+    <string name="account_settings_autodownload_message_size_256">256Kb</string>
+    <string name="account_settings_autodownload_message_size_512">512Kb</string>
+    <string name="account_settings_autodownload_message_size_1024">1Mb</string>
+    <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+    <string name="account_settings_autodownload_message_size_10240">10Mb</string>
+    <string name="account_settings_autodownload_message_size_any">любого размера без ограничений</string>
+
+    <string name="account_settings_message_age_label">Синхронизировать сообщения</string>
+    <string name="account_settings_message_age_any">без ограничения по давности</string>
+    <string name="account_settings_message_age_0">за сегодня</string>
+    <string name="account_settings_message_age_1">за 2 последних дня</string>
+    <string name="account_settings_message_age_2">за 3 последних дня</string>
+    <string name="account_settings_message_age_7">за последнюю неделю</string>
+    <string name="account_settings_message_age_14">за 2 последние недели</string>
+    <string name="account_settings_message_age_21">за 3 последние недели</string>
+    <string name="account_settings_message_age_1_month">за последний месяц</string>
+    <string name="account_settings_message_age_2_months">за 2 последних месяца</string>
+    <string name="account_settings_message_age_3_months">за 3 последних месяца</string>
+    <string name="account_settings_message_age_6_months">за 6 последних месяцев</string>
+    <string name="account_settings_message_age_1_year">за последний год</string>
+
+    <string name="account_settings_folder_display_mode_label">Выбор показываемых папок</string>
     <string name="account_settings_folder_display_mode_all">Все</string>
     <string name="account_settings_folder_display_mode_first_class">1 класс</string>
     <string name="account_settings_folder_display_mode_first_and_second_class">1 и 2 классы</string>

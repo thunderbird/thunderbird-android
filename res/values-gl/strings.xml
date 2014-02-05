@@ -483,15 +483,15 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="account_setup_options_notify_sync_label">Avisarme cuando se comprobe o correo</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Número de mensaxes a visualizar</string>
-    <string name="account_setup_options_mail_display_count_10">10 mensaxes</string>
-    <string name="account_setup_options_mail_display_count_25">25 mensaxes</string>
-    <string name="account_setup_options_mail_display_count_50">50 mensaxes</string>
-    <string name="account_setup_options_mail_display_count_100">100 mensaxes</string>
-    <string name="account_setup_options_mail_display_count_250">250 mensaxes</string>
-    <string name="account_setup_options_mail_display_count_500">500 mensaxes</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 mensaxes</string>
-    <string name="account_setup_options_mail_display_count_all">Todas as mensaxes</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Número de mensaxes a visualizar</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 mensaxes</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 mensaxes</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 mensaxes</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 mensaxes</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 mensaxes</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 mensaxes</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 mensaxes</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Todas as mensaxes</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Non se pode copiar/mover unha mensaxe que non foi sincronizada co servidor</string>
 
@@ -574,7 +574,7 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="account_settings_led_color_label">Cor de aviso</string>
     <string name="account_settings_led_color_summary">Elixe a cor do LED cando haxa un aviso para esta conta</string>
 
-    <string name="account_settings_mail_display_count_label">Tamaño carpeta local</string>
+    <string name="account_settings_mail_fetch_amount_label">Tamaño carpeta local</string>
 
     <string name="account_settings_autodownload_message_size_label">Obter mensaxes hata</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

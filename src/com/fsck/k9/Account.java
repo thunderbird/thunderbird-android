@@ -160,7 +160,7 @@ public class Account implements BaseAccount {
     private String mDescription;
     private String mAlwaysBcc;
     private int mAutomaticCheckIntervalMinutes;
-    private int mDisplayCount;
+    private int mFetchAmount;
     private int mChipColor;
     private long mLastAutomaticCheckTime;
     private long mLatestOldMessageSeenTime;
@@ -273,7 +273,7 @@ public class Account implements BaseAccount {
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
         mPushPollOnConnect = true;
-        mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
+        mFetchAmount = K9.DEFAULT_FETCH_AMOUNT;
         mAccountNumber = -1;
         mNotifyNewMail = true;
         mNotifySync = true;
@@ -378,9 +378,9 @@ public class Account implements BaseAccount {
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = prefs.getInt(mUuid + ".idleRefreshMinutes", 24);
         mPushPollOnConnect = prefs.getBoolean(mUuid + ".pushPollOnConnect", true);
-        mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
-        if (mDisplayCount < 0) {
-            mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
+        mFetchAmount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_FETCH_AMOUNT);
+        if (mFetchAmount < 0) {
+            mFetchAmount = K9.DEFAULT_FETCH_AMOUNT;
         }
         mLastAutomaticCheckTime = prefs.getLong(mUuid + ".lastAutomaticCheckTime", 0);
         mLatestOldMessageSeenTime = prefs.getLong(mUuid + ".latestOldMessageSeenTime", 0);
@@ -704,7 +704,7 @@ public class Account implements BaseAccount {
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
-        editor.putInt(mUuid + ".displayCount", mDisplayCount);
+        editor.putInt(mUuid + ".displayCount", mFetchAmount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putLong(mUuid + ".latestOldMessageSeenTime", mLatestOldMessageSeenTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
@@ -780,15 +780,6 @@ public class Account implements BaseAccount {
         saveIdentities(preferences.getPreferences(), editor);
 
         editor.commit();
-
-    }
-
-    public void resetVisibleLimits() {
-        try {
-            getLocalStore().resetVisibleLimits(getDisplayCount());
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
-        }
 
     }
 
@@ -1026,17 +1017,16 @@ public class Account implements BaseAccount {
         return (oldInterval != automaticCheckIntervalMinutes);
     }
 
-    public synchronized int getDisplayCount() {
-        return mDisplayCount;
+    public synchronized int getFetchAmount() {
+        return mFetchAmount;
     }
 
-    public synchronized void setDisplayCount(int displayCount) {
-        if (displayCount != -1) {
-            this.mDisplayCount = displayCount;
+    public synchronized void setFetchAmount(int fetchAmount) {
+        if (fetchAmount != -1) {
+            this.mFetchAmount = fetchAmount;
         } else {
-            this.mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
+            this.mFetchAmount = K9.DEFAULT_FETCH_AMOUNT;
         }
-        resetVisibleLimits();
     }
 
     public synchronized long getLastAutomaticCheckTime() {

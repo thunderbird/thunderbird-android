@@ -107,21 +107,20 @@ public class LocalStore extends Store implements Serializable {
         "forwarded ";
 
     private static final String GET_FOLDER_COLS =
-        "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
+        "folders.id, name, last_updated, status, push_state, last_pushed, " +
         "integrate, top_group, poll_class, push_class, display_class";
 
     private static final int FOLDER_ID_INDEX = 0;
     private static final int FOLDER_NAME_INDEX = 1;
-    private static final int FOLDER_VISIBLE_LIMIT_INDEX = 2;
-    private static final int FOLDER_LAST_CHECKED_INDEX = 3;
-    private static final int FOLDER_STATUS_INDEX = 4;
-    private static final int FOLDER_PUSH_STATE_INDEX = 5;
-    private static final int FOLDER_LAST_PUSHED_INDEX = 6;
-    private static final int FOLDER_INTEGRATE_INDEX = 7;
-    private static final int FOLDER_TOP_GROUP_INDEX = 8;
-    private static final int FOLDER_SYNC_CLASS_INDEX = 9;
-    private static final int FOLDER_PUSH_CLASS_INDEX = 10;
-    private static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
+    private static final int FOLDER_LAST_CHECKED_INDEX = 2;
+    private static final int FOLDER_STATUS_INDEX = 3;
+    private static final int FOLDER_PUSH_STATE_INDEX = 4;
+    private static final int FOLDER_LAST_PUSHED_INDEX = 5;
+    private static final int FOLDER_INTEGRATE_INDEX = 6;
+    private static final int FOLDER_TOP_GROUP_INDEX = 7;
+    private static final int FOLDER_SYNC_CLASS_INDEX = 8;
+    private static final int FOLDER_PUSH_CLASS_INDEX = 9;
+    private static final int FOLDER_DISPLAY_CLASS_INDEX = 10;
 
     private static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -236,7 +235,7 @@ public class LocalStore extends Store implements Serializable {
 
                     db.execSQL("DROP TABLE IF EXISTS folders");
                     db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                               + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
+                               + "last_updated INTEGER, unread_count INTEGER, status TEXT, "
                                + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
                                + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT"
                                + ")");
@@ -335,7 +334,6 @@ public class LocalStore extends Store implements Serializable {
                                + "DELETE FROM headers where old.id = message_id; END;");
                 } else {
                     // in the case that we're starting out at 29 or newer, run all the needed updates
-
                     if (db.getVersion() < 30) {
                         try {
                             db.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
@@ -905,7 +903,6 @@ public class LocalStore extends Store implements Serializable {
                             String folderName = cursor.getString(FOLDER_NAME_INDEX);
                             LocalFolder folder = new LocalFolder(folderName);
                             folder.open(cursor);
-
                             folders.add(folder);
                         }
                         return folders;
@@ -999,22 +996,6 @@ public class LocalStore extends Store implements Serializable {
                         }
                     }
                 }
-                return null;
-            }
-        });
-    }
-
-    public void resetVisibleLimits() throws UnavailableStorageException {
-        resetVisibleLimits(mAccount.getDisplayCount());
-    }
-
-    public void resetVisibleLimits(int visibleLimit) throws UnavailableStorageException {
-        final ContentValues cv = new ContentValues();
-        cv.put("visible_limit", Integer.toString(visibleLimit));
-        database.execute(false, new DbCallback<Void>() {
-            @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                db.update("folders", cv, null, null);
                 return null;
             }
         });
@@ -1256,7 +1237,7 @@ public class LocalStore extends Store implements Serializable {
         public String type;
     }
 
-    public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit) throws UnavailableStorageException {
+    public void createFolders(final List<LocalFolder> foldersToCreate) throws UnavailableStorageException {
         database.execute(true, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
@@ -1286,9 +1267,8 @@ public class LocalStore extends Store implements Serializable {
                     }
                     folder.refresh(name, prefHolder);   // Recover settings from Preferences
 
-                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?, ?)", new Object[] {
+                    db.execSQL("INSERT INTO folders (name, top_group, display_class, poll_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?)", new Object[] {
                                    name,
-                                   visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
                                    prefHolder.displayClass.name(),
                                    prefHolder.syncClass.name(),
@@ -1331,7 +1311,6 @@ public class LocalStore extends Store implements Serializable {
         private static final long serialVersionUID = -1973296520918624767L;
         private String mName = null;
         private long mFolderId = -1;
-        private int mVisibleLimit = -1;
         private String prefId = null;
         private FolderClass mDisplayClass = FolderClass.NO_CLASS;
         private FolderClass mSyncClass = FolderClass.INHERITED;
@@ -1417,7 +1396,6 @@ public class LocalStore extends Store implements Serializable {
         private void open(Cursor cursor) throws MessagingException {
             mFolderId = cursor.getInt(FOLDER_ID_INDEX);
             mName = cursor.getString(FOLDER_NAME_INDEX);
-            mVisibleLimit = cursor.getInt(FOLDER_VISIBLE_LIMIT_INDEX);
             mPushState = cursor.getString(FOLDER_PUSH_STATE_INDEX);
             super.setStatus(cursor.getString(FOLDER_STATUS_INDEX));
             // Only want to set the local variable stored in the super class.  This class
@@ -1476,17 +1454,12 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public boolean create(FolderType type) throws MessagingException {
-            return create(type, mAccount.getDisplayCount());
-        }
-
-        @Override
-        public boolean create(FolderType type, final int visibleLimit) throws MessagingException {
             if (exists()) {
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
             List<LocalFolder> foldersToCreate = new ArrayList<LocalFolder>(1);
             foldersToCreate.add(this);
-            LocalStore.this.createFolders(foldersToCreate, visibleLimit);
+            LocalStore.this.createFolders(foldersToCreate);
 
             return true;
         }
@@ -1615,34 +1588,6 @@ public class LocalStore extends Store implements Serializable {
                 throw new WrappedException(e);
             }
             updateFolderColumn("last_pushed", lastChecked);
-        }
-
-        public int getVisibleLimit() throws MessagingException {
-            open(OPEN_MODE_RW);
-            return mVisibleLimit;
-        }
-
-        public void purgeToVisibleLimit(MessageRemovalListener listener) throws MessagingException {
-            //don't purge messages while a Search is active since it might throw away search results
-            if (!Search.isActive()) {
-                if (mVisibleLimit == 0) {
-                    return ;
-                }
-                open(OPEN_MODE_RW);
-                Message[] messages = getMessages(null, false);
-                for (int i = mVisibleLimit; i < messages.length; i++) {
-                    if (listener != null) {
-                        listener.messageRemoved(messages[i]);
-                    }
-                    messages[i].destroy();
-                }
-            }
-        }
-
-
-        public void setVisibleLimit(final int visibleLimit) throws MessagingException {
-            mVisibleLimit = visibleLimit;
-            updateFolderColumn("visible_limit", mVisibleLimit);
         }
 
         @Override
@@ -3056,7 +3001,6 @@ public class LocalStore extends Store implements Serializable {
             setPushState(null);
             setLastPush(0);
             setLastChecked(0);
-            setVisibleLimit(mAccount.getDisplayCount());
         }
 
         @Override

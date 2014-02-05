@@ -65,8 +65,8 @@ public class AccountSettings {
                 new V(1, new DeletePolicySetting(Account.DELETE_POLICY_NEVER))
             ));
         s.put("displayCount", Settings.versions(
-                new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
-                        R.array.account_settings_display_count_values))
+                new V(1, new IntegerResourceSetting(K9.DEFAULT_FETCH_AMOUNT,
+                        R.array.account_settings_fetch_amount_values))
             ));
         s.put("draftsFolderName", Settings.versions(
                 new V(1, new StringSetting("Drafts"))

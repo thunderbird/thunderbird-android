@@ -482,15 +482,15 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="account_setup_options_notify_sync_label">메일 확인시 알림</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">화면에 보여질 메시지 수</string>
-    <string name="account_setup_options_mail_display_count_10">10 메시지</string>
-    <string name="account_setup_options_mail_display_count_25">25 메시지</string>
-    <string name="account_setup_options_mail_display_count_50">50 메시지</string>
-    <string name="account_setup_options_mail_display_count_100">100 메시지</string>
-    <string name="account_setup_options_mail_display_count_250">250 메시지</string>
-    <string name="account_setup_options_mail_display_count_500">500 메시지</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 메시지</string>
-    <string name="account_setup_options_mail_display_count_all">모든 메시지</string>
+    <string name="account_setup_options_mail_fetch_amount_label">화면에 보여질 메시지 수</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 메시지</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 메시지</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 메시지</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 메시지</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 메시지</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 메시지</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 메시지</string>
+    <string name="account_setup_options_mail_fetch_amount_all">모든 메시지</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">서버와 동기화되지 않은 메시지를 복사하거나 이동할 수 없습니다.</string>
 
@@ -573,7 +573,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="account_settings_led_color_label">알림 LED 색깔</string>
     <string name="account_settings_led_color_summary">이 계정의 LED 깜박임 색을 선택하십시오</string>
 
-    <string name="account_settings_mail_display_count_label">로컬 폴더 용량</string>
+    <string name="account_settings_mail_fetch_amount_label">로컬 폴더 용량</string>
 
     <string name="account_settings_autodownload_message_size_label">가져올 메시지 최대 용량</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>

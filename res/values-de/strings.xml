@@ -482,15 +482,15 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_setup_options_notify_sync_label">Benachrichtigen, wenn Nachrichten synchronisiert werden</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Anzahl sichtbarer Nachrichten</string>
-    <string name="account_setup_options_mail_display_count_10">10 Nachrichten</string>
-    <string name="account_setup_options_mail_display_count_25">25 Nachrichten</string>
-    <string name="account_setup_options_mail_display_count_50">50 Nachrichten</string>
-    <string name="account_setup_options_mail_display_count_100">100 Nachrichten</string>
-    <string name="account_setup_options_mail_display_count_250">250 Nachrichten</string>
-    <string name="account_setup_options_mail_display_count_500">500 Nachrichten</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 Nachrichten</string>
-    <string name="account_setup_options_mail_display_count_all">Alle Nachrichten</string>
+    <string name="account_setup_options_mail_fetch_amount_label">Anzahl sichtbarer Nachrichten</string>
+    <string name="account_setup_options_mail_fetch_amount_10">10 Nachrichten</string>
+    <string name="account_setup_options_mail_fetch_amount_25">25 Nachrichten</string>
+    <string name="account_setup_options_mail_fetch_amount_50">50 Nachrichten</string>
+    <string name="account_setup_options_mail_fetch_amount_100">100 Nachrichten</string>
+    <string name="account_setup_options_mail_fetch_amount_250">250 Nachrichten</string>
+    <string name="account_setup_options_mail_fetch_amount_500">500 Nachrichten</string>
+    <string name="account_setup_options_mail_fetch_amount_1000">1000 Nachrichten</string>
+    <string name="account_setup_options_mail_fetch_amount_all">Alle Nachrichten</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
 
@@ -573,7 +573,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_settings_led_color_label">LED-Farbe</string>
     <string name="account_settings_led_color_summary">Farbe, die für die Benachrichtigungs-LED bei Benachrichtigungen für dieses Konto verwendet wird</string>
 
-    <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
+    <string name="account_settings_mail_fetch_amount_label">Anzahl anzuzeigender Nachrichten</string>
 
     <string name="account_settings_autodownload_message_size_label">Nachrichten automatisch laden bis</string>
     <string name="account_settings_autodownload_message_size_1">1KB</string>

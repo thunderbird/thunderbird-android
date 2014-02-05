@@ -110,9 +110,9 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
         } else {
             remoteViews.setViewVisibility(R.id.unread_count, View.VISIBLE);
 
-            String displayCount = (unreadCount <= MAX_COUNT) ?
+            String fetchAmount = (unreadCount <= MAX_COUNT) ?
                     String.valueOf(unreadCount) : String.valueOf(MAX_COUNT) + "+";
-            remoteViews.setTextViewText(R.id.unread_count, displayCount);
+            remoteViews.setTextViewText(R.id.unread_count, fetchAmount);
         }
 
         remoteViews.setTextViewText(R.id.account_name, accountName);

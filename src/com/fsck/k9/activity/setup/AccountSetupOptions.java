@@ -21,7 +21,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
     private Spinner mCheckFrequencyView;
 
-    private Spinner mDisplayCountView;
+    private Spinner mFetchAmountView;
 
 
     private CheckBox mNotifyView;
@@ -43,7 +43,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         setContentView(R.layout.account_setup_options);
 
         mCheckFrequencyView = (Spinner)findViewById(R.id.account_check_frequency);
-        mDisplayCountView = (Spinner)findViewById(R.id.account_display_count);
+        mFetchAmountView = (Spinner)findViewById(R.id.account_fetch_amount);
         mNotifyView = (CheckBox)findViewById(R.id.account_notify);
         mNotifySyncView = (CheckBox)findViewById(R.id.account_notify_sync);
         mPushEnable = (CheckBox)findViewById(R.id.account_enable_push);
@@ -84,20 +84,20 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCheckFrequencyView.setAdapter(checkFrequenciesAdapter);
 
-        SpinnerOption displayCounts[] = {
-            new SpinnerOption(10, getString(R.string.account_setup_options_mail_display_count_10)),
-            new SpinnerOption(25, getString(R.string.account_setup_options_mail_display_count_25)),
-            new SpinnerOption(50, getString(R.string.account_setup_options_mail_display_count_50)),
-            new SpinnerOption(100, getString(R.string.account_setup_options_mail_display_count_100)),
-            new SpinnerOption(250, getString(R.string.account_setup_options_mail_display_count_250)),
-            new SpinnerOption(500, getString(R.string.account_setup_options_mail_display_count_500)),
-            new SpinnerOption(1000, getString(R.string.account_setup_options_mail_display_count_1000)),
+        SpinnerOption fetchAmounts[] = {
+            new SpinnerOption(10, getString(R.string.account_setup_options_mail_fetch_amount_10)),
+            new SpinnerOption(25, getString(R.string.account_setup_options_mail_fetch_amount_25)),
+            new SpinnerOption(50, getString(R.string.account_setup_options_mail_fetch_amount_50)),
+            new SpinnerOption(100, getString(R.string.account_setup_options_mail_fetch_amount_100)),
+            new SpinnerOption(250, getString(R.string.account_setup_options_mail_fetch_amount_250)),
+            new SpinnerOption(500, getString(R.string.account_setup_options_mail_fetch_amount_500)),
+            new SpinnerOption(1000, getString(R.string.account_setup_options_mail_fetch_amount_1000)),
         };
 
-        ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, displayCounts);
-        displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mDisplayCountView.setAdapter(displayCountsAdapter);
+        ArrayAdapter<SpinnerOption> fetchAmountsAdapter = new ArrayAdapter<SpinnerOption>(this,
+                android.R.layout.simple_spinner_item, fetchAmounts);
+        fetchAmountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mFetchAmountView.setAdapter(fetchAmountsAdapter);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -106,8 +106,8 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mNotifySyncView.setChecked(mAccount.isShowOngoing());
         SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
                                             .getAutomaticCheckIntervalMinutes());
-        SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
-                                            .getDisplayCount());
+        SpinnerOption.setSpinnerOptionValue(mFetchAmountView, mAccount
+                                            .getFetchAmount());
 
 
         boolean isPushCapable = false;
@@ -134,8 +134,8 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mAccount.setShowOngoing(mNotifySyncView.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption)mCheckFrequencyView
                 .getSelectedItem()).value);
-        mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView
-                                           .getSelectedItem()).value);
+        mAccount.setFetchAmount((Integer) ((SpinnerOption) mFetchAmountView
+                .getSelectedItem()).value);
 
         if (mPushEnable.isChecked()) {
             mAccount.setFolderPushMode(Account.FolderMode.FIRST_CLASS);
