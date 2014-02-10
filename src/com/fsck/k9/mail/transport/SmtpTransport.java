@@ -49,7 +49,7 @@ public class SmtpTransport extends Transport {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        AuthType authType = AuthType.AUTOMATIC;
+        AuthType authType = AuthType.PLAIN;
         String username = null;
         String password = null;
 
@@ -197,6 +197,7 @@ public class SmtpTransport extends Transport {
     @Override
     public void open() throws MessagingException {
         try {
+            boolean secureConnection = false;
             InetAddress[] addresses = InetAddress.getAllByName(mHost);
             for (int i = 0; i < addresses.length; i++) {
                 try {
@@ -211,6 +212,7 @@ public class SmtpTransport extends Transport {
                                 new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                        secureConnection = true;
                     } else {
                         mSocket = new Socket();
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
@@ -278,16 +280,11 @@ public class SmtpTransport extends Transport {
                      * Exim.
                      */
                     extensions = sendHello(localHost);
+                    secureConnection = true;
                 } else if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                     throw new MessagingException("TLS not supported but required");
                 }
             }
-
-            boolean useAuthPlain = AuthType.PLAIN.equals(mAuthType) || AuthType.LOGIN.equals(mAuthType);
-            boolean useAuthCramMD5 = AuthType.CRAM_MD5.equals(mAuthType);
-
-            // Automatically choose best authentication method if none was explicitly selected
-            boolean useAutomaticAuth = !(useAuthPlain || useAuthCramMD5);
 
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
@@ -310,37 +307,69 @@ public class SmtpTransport extends Transport {
 
             if (mUsername != null && mUsername.length() > 0 &&
                     mPassword != null && mPassword.length() > 0) {
-                if (useAuthCramMD5 || (useAutomaticAuth && authCramMD5Supported)) {
-                    if (!authCramMD5Supported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                        Log.d(K9.LOG_TAG, "Using CRAM_MD5 as authentication method although the " +
-                              "server didn't advertise support for it in EHLO response.");
-                    }
-                    saslAuthCramMD5(mUsername, mPassword);
-                } else if (useAuthPlain || (useAutomaticAuth && authPlainSupported)) {
-                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                        Log.d(K9.LOG_TAG, "Using PLAIN as authentication method although the " +
-                              "server didn't advertise support for it in EHLO response.");
-                    }
-                    try {
+
+                switch (mAuthType) {
+
+                /*
+                 * LOGIN is an obsolete option which is unavailable to users,
+                 * but it still may exist in a user's settings from a previous
+                 * version, or it may have been imported.
+                 */
+                case LOGIN:
+                case PLAIN:
+                    // try saslAuthPlain first, because it supports UTF-8 explicitly
+                    if (authPlainSupported) {
                         saslAuthPlain(mUsername, mPassword);
-                    } catch (MessagingException ex) {
-                        // PLAIN is a special case.  Historically, PLAIN has represented both PLAIN and LOGIN; only the
-                        // protocol being advertised by the server would be used, with PLAIN taking precedence.  Instead
-                        // of using only the requested protocol, we'll try PLAIN and then try LOGIN.
-                        if (useAuthPlain && authLoginSupported) {
-                            if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                                Log.d(K9.LOG_TAG, "Using legacy PLAIN authentication behavior and trying LOGIN.");
-                            }
+                    } else if (authLoginSupported) {
+                        saslAuthLogin(mUsername, mPassword);
+                    } else {
+                        throw new MessagingException("Authentication methods SASL PLAIN and LOGIN are unavailable.");
+                    }
+                    break;
+
+                case CRAM_MD5:
+                    if (authCramMD5Supported) {
+                        saslAuthCramMD5(mUsername, mPassword);
+                    } else {
+                        throw new MessagingException("Authentication method CRAM-MD5 is unavailable.");
+                    }
+                    break;
+
+                /*
+                 * AUTOMATIC is an obsolete option which is unavailable to users,
+                 * but it still may exist in a user's settings from a previous
+                 * version, or it may have been imported.
+                 */
+                case AUTOMATIC:
+                    if (secureConnection) {
+                        // try saslAuthPlain first, because it supports UTF-8 explicitly
+                        if (authPlainSupported) {
+                            saslAuthPlain(mUsername, mPassword);
+                        } else if (authLoginSupported) {
                             saslAuthLogin(mUsername, mPassword);
+                        } else if (authCramMD5Supported) {
+                            saslAuthCramMD5(mUsername, mPassword);
                         } else {
-                            // If it was auto detected and failed, continue throwing the exception back up.
-                            throw ex;
+                            throw new MessagingException("No supported authentication methods available.");
+                        }
+                    } else {
+                        if (authCramMD5Supported) {
+                            saslAuthCramMD5(mUsername, mPassword);
+                        } else {
+                            /*
+                             * We refuse to insecurely transmit the password
+                             * using the obsolete AUTOMATIC setting because of
+                             * the potential for a MITM attack. Affected users
+                             * must choose a different setting.
+                             */
+                            throw new MessagingException(
+                                    "Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable.");
                         }
                     }
-                } else if (useAutomaticAuth && authLoginSupported) {
-                    saslAuthLogin(mUsername, mPassword);
-                } else {
-                    throw new MessagingException("No valid authentication mechanism found.");
+                    break;
+
+                default:
+                    throw new MessagingException("Unhandled authentication method found in the server settings (bug).");
                 }
             }
         } catch (SSLException e) {
