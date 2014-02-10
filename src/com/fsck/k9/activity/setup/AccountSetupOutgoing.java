@@ -19,12 +19,12 @@ import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.transport.SmtpTransport;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     OnCheckedChangeListener {
@@ -35,9 +35,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private static final String SMTP_PORT = "587";
     private static final String SMTP_SSL_PORT = "465";
 
-    private static final String smtpSchemes[] = {
-        "smtp", "smtp+ssl", "smtp+ssl+", "smtp+tls", "smtp+tls+"
-    };
     private EditText mUsernameView;
     private EditText mPasswordView;
     private EditText mServerView;
@@ -152,21 +149,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
 
         try {
-            URI uri = new URI(mAccount.getTransportUri());
-            String username = null;
-            String password = null;
-            String authType = null;
-            if (uri.getUserInfo() != null) {
-                String[] userInfoParts = uri.getUserInfo().split(":");
-
-                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                if (userInfoParts.length > 1) {
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-                if (userInfoParts.length > 2) {
-                    authType = userInfoParts[2];
-                }
-            }
+            ServerSettings settings = Transport.decodeTransportUri(mAccount.getTransportUri());
+            String username = settings.username;
+            String password = settings.password;
 
             if (username != null) {
                 mUsernameView.setText(username);
@@ -177,17 +162,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 mPasswordView.setText(password);
             }
 
-            if (authType != null) {
-                int position = mAuthTypeAdapter.getPosition(AuthType.valueOf(authType));
-                mAuthTypeView.setSelection(position, false);
-            }
+            // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
+            int position = mAuthTypeAdapter.getPosition(settings.authenticationType);
+            mAuthTypeView.setSelection(position, false);
 
             // Select currently configured security type
-            for (int i = 0; i < smtpSchemes.length; i++) {
-                if (smtpSchemes[i].equals(uri.getScheme())) {
-                    SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
-                }
-            }
+            mSecurityTypeView.setSelection(settings.connectionSecurity.ordinal(), false);
 
             /*
              * Updates the port when the user changes the security type. This allows
@@ -209,12 +189,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
             });
 
-            if (uri.getHost() != null) {
-                mServerView.setText(uri.getHost());
+            if (settings.host != null) {
+                mServerView.setText(settings.host);
             }
 
-            if (uri.getPort() != -1) {
-                mPortView.setText(Integer.toString(uri.getPort()));
+            if (settings.port != -1) {
+                mPortView.setText(Integer.toString(settings.port));
             } else {
                 updatePortFromSecurityType();
             }
@@ -284,34 +264,25 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     protected void onNext() {
-        int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-        URI uri;
-        try {
-            String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8");
-            String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8");
-
-            String userInfo = null;
-            String authType = ((AuthType) mAuthTypeView.getSelectedItem()).name();
-            if (mRequireLoginView.isChecked()) {
-                userInfo = usernameEnc + ":" + passwordEnc + ":" + authType;
-            }
-            String newHost = mServerView.getText().toString();
-            int newPort = Integer.parseInt(mPortView.getText().toString());
-            uri = new URI(smtpSchemes[securityType], userInfo, newHost, newPort, null, null, null);
-            mAccount.deleteCertificate(newHost, newPort, CheckDirection.OUTGOING);
-            mAccount.setTransportUri(uri.toString());
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
-        } catch (UnsupportedEncodingException enc) {
-            // This really shouldn't happen since the encoding is hardcoded to UTF-8
-            Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
-        } catch (Exception e) {
-            /*
-             * It's unrecoverable if we cannot create a URI from components that
-             * we validated to be safe.
-             */
-            failure(e);
+        ConnectionSecurity securityType = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+        String uri;
+        String username = null;
+        String password = null;
+        AuthType authType = null;
+        if (mRequireLoginView.isChecked()) {
+            username = mUsernameView.getText().toString();
+            password = mPasswordView.getText().toString();
+            authType = (AuthType) mAuthTypeView.getSelectedItem();
         }
 
+        String newHost = mServerView.getText().toString();
+        int newPort = Integer.parseInt(mPortView.getText().toString());
+        String type = SmtpTransport.TRANSPORT_TYPE;
+        ServerSettings server = new ServerSettings(type, newHost, newPort, securityType, authType, username, password);
+        uri = Transport.createTransportUri(server);
+        mAccount.deleteCertificate(newHost, newPort, CheckDirection.OUTGOING);
+        mAccount.setTransportUri(uri);
+        AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
     }
 
     public void onClick(View v) {
