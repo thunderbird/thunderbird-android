@@ -84,6 +84,7 @@ import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -128,6 +129,9 @@ public class ImapStore extends Store {
     private Set<Flag> mPermanentFlagsIndex = new HashSet<Flag>();
 
     private static final String CAPABILITY_IDLE = "IDLE";
+    private static final String CAPABILITY_AUTH_CRAM_MD5 = "AUTH=CRAM-MD5";
+    private static final String CAPABILITY_AUTH_PLAIN = "AUTH=PLAIN";
+    private static final String CAPABILITY_LOGINDISABLED = "LOGINDISABLED";
     private static final String COMMAND_IDLE = "IDLE";
     private static final String CAPABILITY_NAMESPACE = "NAMESPACE";
     private static final String COMMAND_NAMESPACE = "NAMESPACE";
@@ -2517,6 +2521,14 @@ public class ImapStore extends Store {
                                                       .getInputStream(), 1024));
                         mParser = new ImapResponseParser(mIn);
                         mOut = mSocket.getOutputStream();
+                        // Per RFC 2595 (3.1):  Once TLS has been started, reissue CAPABILITY command
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Updating capabilities after STARTTLS for " + getLogId());
+                        capabilities.clear();
+                        List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
+                        if (responses.size() != 2) {
+                            throw new MessagingException("Invalid CAPABILITY response received");
+                        }
                     } else if (mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED) {
                         throw new MessagingException("TLS not supported but required");
                     }
@@ -2525,20 +2537,30 @@ public class ImapStore extends Store {
                 mOut = new BufferedOutputStream(mOut, 1024);
 
                 try {
-                    if (mSettings.getAuthType() == AuthType.CRAM_MD5) {
-                        authCramMD5();
-                        // The authCramMD5 method called on the previous line does not allow for handling updated capabilities
-                        // sent by the server.  So, to make sure we update to the post-authentication capability list
-                        // we fetch the capabilities here.
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "Updating capabilities after CRAM-MD5 authentication for " + getLogId());
-                        List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
-                        if (responses.size() != 2) {
-                            throw new MessagingException("Invalid CAPABILITY response received");
+                    switch (mSettings.getAuthType()) {
+                    case CRAM_MD5:
+                        if (hasCapability(CAPABILITY_AUTH_CRAM_MD5)) {
+                            authCramMD5();
+                        } else {
+                            throw new MessagingException(
+                                    "Server doesn't support encrypted passwords using CRAM-MD5.");
                         }
+                        break;
 
-                    } else if (mSettings.getAuthType() == AuthType.PLAIN) {
-                        receiveCapabilities(executeSimpleCommand(String.format("LOGIN %s %s", ImapStore.encodeString(mSettings.getUsername()), ImapStore.encodeString(mSettings.getPassword())), true));
+                    case PLAIN:
+                        if (hasCapability(CAPABILITY_AUTH_PLAIN)) {
+                            saslAuthPlain();
+                        } else if (!hasCapability(CAPABILITY_LOGINDISABLED)) {
+                            login();
+                        } else {
+                            throw new MessagingException(
+                                    "Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled.");
+                        }
+                        break;
+
+                    default:
+                        throw new MessagingException(
+                                "Unhandled authentication method found in the server settings (bug).");
                     }
                     authSuccess = true;
                 } catch (ImapException ie) {
@@ -2664,6 +2686,13 @@ public class ImapStore extends Store {
             }
         }
 
+        protected void login() throws IOException, MessagingException {
+            receiveCapabilities(executeSimpleCommand(String.format(
+                    "LOGIN %s %s",
+                    ImapStore.encodeString(mSettings.getUsername()),
+                    ImapStore.encodeString(mSettings.getPassword())), true));
+        }
+
         protected void authCramMD5() throws AuthenticationFailedException, MessagingException {
             try {
                 String tag = sendCommand("AUTHENTICATE CRAM-MD5", false);
@@ -2706,6 +2735,75 @@ public class ImapStore extends Store {
             } catch (IOException ioe) {
                 throw new AuthenticationFailedException("CRAM-MD5 Auth Failed.", ioe);
             }
+        }
+
+        protected void saslAuthPlain() throws IOException, MessagingException {
+            String command = "AUTHENTICATE PLAIN";
+            String tag = sendCommand(command, false);
+            readContinuationResponse(tag);
+            mOut.write(Base64.encodeBase64(("\000" + mSettings.getUsername()
+                    + "\000" + mSettings.getPassword()).getBytes()));
+            mOut.write('\r');
+            mOut.write('\n');
+            mOut.flush();
+            try {
+                receiveCapabilities(readStatusResponse(tag, command, null));
+            } catch (MessagingException e) {
+                throw new AuthenticationFailedException(e.getMessage());
+            }
+        }
+
+        protected ImapResponse readContinuationResponse(String tag)
+                throws IOException, MessagingException {
+            ImapResponse response;
+            do {
+                response = readResponse();
+                if (response.mTag != null) {
+                    if (response.mTag.equalsIgnoreCase(tag)) {
+                        throw new MessagingException(
+                                "Command continuation aborted: " + response);
+                    } else {
+                        Log.w(K9.LOG_TAG, "After sending tag " + tag
+                                + ", got tag response from previous command "
+                                + response + " for " + getLogId());
+                    }
+                }
+            } while (!response.mCommandContinuationRequested);
+            return response;
+        }
+
+        protected ArrayList<ImapResponse> readStatusResponse(String tag,
+                String commandToLog, UntaggedHandler untaggedHandler)
+                throws IOException, MessagingException {
+            ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
+            ImapResponse response;
+            do {
+                response = mParser.readResponse();
+                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
+                    Log.v(K9.LOG_TAG, getLogId() + "<<<" + response);
+
+                if (response.mTag != null && !response.mTag.equalsIgnoreCase(tag)) {
+                    Log.w(K9.LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + getLogId());
+                    Iterator<ImapResponse> iter = responses.iterator();
+                    while (iter.hasNext()) {
+                        ImapResponse delResponse = iter.next();
+                        if (delResponse.mTag != null || delResponse.size() < 2
+                                || (!ImapResponseParser.equalsIgnoreCase(delResponse.get(1), "EXISTS") && !ImapResponseParser.equalsIgnoreCase(delResponse.get(1), "EXPUNGE"))) {
+                            iter.remove();
+                        }
+                    }
+                    response.mTag = null;
+                    continue;
+                }
+                if (untaggedHandler != null) {
+                    untaggedHandler.handleAsyncUntaggedResponse(response);
+                }
+                responses.add(response);
+            } while (response.mTag == null);
+            if (response.size() < 1 || !ImapResponseParser.equalsIgnoreCase(response.get(0), "OK")) {
+                throw new ImapException("Command: " + commandToLog + "; response: " + response.toString(), response.getAlertText());
+            }
+            return responses;
         }
 
         protected void setReadTimeout(int millis) throws SocketException {
@@ -2832,35 +2930,7 @@ public class ImapStore extends Store {
             //if (K9.DEBUG)
             //    Log.v(K9.LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
 
-            ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
-            ImapResponse response;
-            do {
-                response = mParser.readResponse();
-                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
-                    Log.v(K9.LOG_TAG, getLogId() + "<<<" + response);
-
-                if (response.mTag != null && !response.mTag.equalsIgnoreCase(tag)) {
-                    Log.w(K9.LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + getLogId());
-                    Iterator<ImapResponse> iter = responses.iterator();
-                    while (iter.hasNext()) {
-                        ImapResponse delResponse = iter.next();
-                        if (delResponse.mTag != null || delResponse.size() < 2
-                                || (!ImapResponseParser.equalsIgnoreCase(delResponse.get(1), "EXISTS") && !ImapResponseParser.equalsIgnoreCase(delResponse.get(1), "EXPUNGE"))) {
-                            iter.remove();
-                        }
-                    }
-                    response.mTag = null;
-                    continue;
-                }
-                if (untaggedHandler != null) {
-                    untaggedHandler.handleAsyncUntaggedResponse(response);
-                }
-                responses.add(response);
-            } while (response.mTag == null);
-            if (response.size() < 1 || !ImapResponseParser.equalsIgnoreCase(response.get(0), "OK")) {
-                throw new ImapException("Command: " + commandToLog + "; response: " + response.toString(), response.getAlertText());
-            }
-            return responses;
+            return readStatusResponse(tag, commandToLog, untaggedHandler);
         }
     }
 
