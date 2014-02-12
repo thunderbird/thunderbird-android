@@ -385,7 +385,10 @@ public class MimeMessage extends Message {
             multipart.setParent(this);
             String type = multipart.getContentType();
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
-            if ("multipart/signed".equalsIgnoreCase(type)) {
+            String description = multipart.getContentDescription();
+            if (description != null)
+            	setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION,description);
+            if ("multipart/signed".equalsIgnoreCase(type) || type.startsWith("multipart/encrypted")) {
                 setEncoding(MimeUtil.ENC_7BIT);
             } else {
                 setEncoding(MimeUtil.ENC_8BIT);

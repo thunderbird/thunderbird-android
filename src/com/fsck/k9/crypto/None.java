@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 
 /**
  * Dummy CryptoProvider for when cryptography is disabled. It is never "available" and doesn't
@@ -99,5 +100,11 @@ public class None extends CryptoProvider {
     @Override
     public boolean test(Context context) {
         return true;
+    }
+    
+    @Override
+    public String processPGPattachment(Message message) throws MessagingException
+    {
+    	return null;
     }
 }

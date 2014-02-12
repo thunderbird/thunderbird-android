@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 
 /**
  * A CryptoProvider provides functionalities such as encryption, decryption, digital signatures.
@@ -33,6 +34,7 @@ abstract public class CryptoProvider {
     abstract public String getUserId(Context context, long keyId);
     abstract public String getName();
     abstract public boolean test(Context context);
+    abstract public String processPGPattachment(Message message) throws MessagingException;
 
     public static CryptoProvider createInstance(String name) {
         if (Apg.NAME.equals(name)) {

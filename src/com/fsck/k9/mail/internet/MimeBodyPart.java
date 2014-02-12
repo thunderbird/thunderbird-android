@@ -69,7 +69,10 @@ public class MimeBodyPart extends BodyPart {
             Multipart multipart = ((Multipart)body);
             multipart.setParent(this);
             String type = multipart.getContentType();
+            String description = multipart.getContentDescription();
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
+            if (description != null)
+            	setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION,description);
             if ("multipart/signed".equalsIgnoreCase(type)) {
                 setEncoding(MimeUtil.ENC_7BIT);
             } else {

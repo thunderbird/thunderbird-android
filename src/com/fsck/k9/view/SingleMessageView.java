@@ -551,16 +551,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         resetView();
 
         String text = null;
-        if (pgpData != null) {
-            text = pgpData.getDecryptedData();
-            if (text != null) {
-                text = HtmlConverter.textToHtml(text);
-            }
-        }
-
-        if (text == null) {
-            text = message.getTextForDisplay();
-        }
+        text = message.getTextForDisplay();
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
         mText = text;
@@ -616,8 +607,17 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (text != null) {
             loadBodyFromText(text);
             updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
+            if (account.getCryptoProvider().isEncrypted(message))
+            {
+            	showStatusMessage(getContext().getString(R.string.webview_empty_message));
+            }
         } else {
             showStatusMessage(getContext().getString(R.string.webview_empty_message));
+        }  
+        
+        if (text != null || message.hasAttachments())
+        {
+        	 updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
         }
     }
 

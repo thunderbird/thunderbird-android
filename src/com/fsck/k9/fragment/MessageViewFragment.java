@@ -1,6 +1,10 @@
 package com.fsck.k9.fragment;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 
 import android.app.Activity;
@@ -38,6 +42,13 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
@@ -721,11 +732,125 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         LocalMessage message = (LocalMessage) mMessage;
         MessagingController controller = mController;
         Listener listener = mListener;
+        
+        pgpData.setDecryptedData(postProcessMessage(message, pgpData));
         try {
             mMessageView.setMessage(account, message, pgpData, controller, listener);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }
+    }
+    
+    /**
+     * The decrypted messages do have a problem because they may have different 
+     * encodings and additional information which is not really necessary...
+     * 
+     * @param originalMessage the message as it was decrypted.
+     * @return the message after it was cleared.
+     */
+    private String postProcessMessage(LocalMessage message, PgpData pgpData)
+    {
+    	String originalMessageText = pgpData.getDecryptedData();
+    	Log.i("crypto", "originalMessage: " + originalMessageText);
+    	
+    	InputStream is = new ByteArrayInputStream(originalMessageText.getBytes());
+    	MimeMessage tempMessage = null;
+    	
+    	try {
+    		//MimeMessage only works if the InputStream of the string actually contains Content-Type declarations. 
+    		//If there is just text, then the constructor returns an empty string. 
+			tempMessage = new MimeMessage(is);
+			
+			//If the email only contains text and not HTML plus text, the 
+			//BinaryTempFileBody will not be correctly identified as a placeholder
+			//for text later in the processing. Therefore I artificially packed the 
+			//BinaryTempFileBody in a Multipart instance which circumvents
+			//this issue. 
+			if (originalMessageText.startsWith("Content-Transfer-Encoding: ") != true && 
+					originalMessageText.startsWith("Content-Type: ") != true)
+			{
+				//Seems there is a decrypted string here which does not contain Content-Type declarations... 
+				//We cannot use the resulting BinaryTempFileBody because it will always contain an empty string
+				//and not the actual text...
+				//Let's hope the other tools do not start with something else than: Content-Transfer-Encoding...
+				message.setBody(new TextBody(originalMessageText));
+				
+				//Sorry, but GnuPG really encodes the charset into the second line of the ENCRYPTED text...
+               	String lines[] = pgpData.getEncryptedData().split("\\r?\\n");
+               	if (lines != null && lines.length > 2 && lines[2].startsWith("Charset: "))
+               	{
+               		message.addHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain;\r\n charset=" + lines[2].substring(9));               
+				} else {
+					message.addHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");	
+				}
+			}
+			else if (tempMessage.getBody() instanceof BinaryTempFileBody)
+			{
+				MimeMultipart multi = new MimeMultipart();
+				MimeBodyPart mpart = new MimeBodyPart(tempMessage.getBody());
+				
+				//Somewhere here the encoding or charset gets lost... we need to carry it over to preserve it
+				//In my test case it should be iso-8859-1
+				multi.addBodyPart(mpart);
+				message.setBody(multi);
+				
+				String[] contentType = tempMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
+				if (contentType != null && contentType.length == 1)
+				{
+					message.addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);	
+					mpart.addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
+				}
+			} else {
+				message.setBody(tempMessage.getBody());
+			}
+		} catch (IOException e1) {
+			// Will not happen...
+			Log.e("crypto", e1.getLocalizedMessage());
+		} catch (MessagingException e1) {
+			Log.e("crypto", e1.getLocalizedMessage());
+		}
+    	
+    	return originalMessageText;
+    	
+    
+//    	TextBody body = new TextBody(originalMessage);
+//    	MimeBodyPart mpart = null;
+//    	Part part = null;
+//		try {
+//			mpart = new MimeBodyPart(body);
+//			part = MimeUtility.findFirstPartByMimeType(mpart, "multipart/signed");
+//			if (part != null)
+//			{
+//				part = MimeUtility.findFirstPartByMimeType(mpart, "text/plain");
+//				if (part != null)
+//				{
+//					String text = MimeUtility.getTextFromPart(part);
+//					return text;
+//				}
+//				//TODO: Should we also check for the signature?
+////			}			
+//		} catch (MessagingException e) {
+//			Log.e("crypto", e.getMessage());
+//		}
+//    	
+    	
+    	
+    	/*
+    	 * Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
+            if (part == null) {
+                // If that fails, try and get a text part.
+                part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
+                if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
+                    text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
+                }
+            } else {
+                // We successfully found an HTML part; do the necessary character set decoding.
+                text = MimeUtility.getTextFromPart(part);
+            }
+    	 * 
+    	 */
+    	
+//    	return originalMessage; //sbuilder.toString();
     }
 
     private void showDialog(int dialogId) {

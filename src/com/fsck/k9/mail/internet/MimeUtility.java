@@ -1,23 +1,11 @@
 
 package com.fsck.k9.mail.internet;
 
-import android.content.Context;
-import android.util.Log;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
-import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.internet.BinaryTempFileBody.BinaryTempFileBodyInputStream;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.james.mime4j.codec.Base64InputStream;
-import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
-import org.apache.james.mime4j.util.MimeUtil;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -26,8 +14,28 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.codec.Base64InputStream;
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+import org.apache.james.mime4j.util.MimeUtil;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.fsck.k9.K9;
+import com.fsck.k9.R;
+import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.BinaryTempFileBody.BinaryTempFileBodyInputStream;
+import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 
 
 public class MimeUtility {
@@ -1042,8 +1050,21 @@ public class MimeUtility {
                 if (body instanceof TextBody) {
                     return ((TextBody)body).getText();
                 }
-
+                
                 final String mimeType = part.getMimeType();
+                
+                //Currently,only the octet-stream is a hint for an encrypted attachment
+                if (body instanceof LocalAttachmentBody && mimeType.startsWith("application/octet"))
+                {
+                	//This is only needed when a PGP/MIME message is received and the local attachment
+                	//needs to be read -> written into a temporary OutputStream and then read and returned
+                	
+                	String charset = getHeaderParameter(part.getContentType(), "charset");
+                    String text = MimeUtility.readToString(body.getInputStream(), (charset == null)? "us-ascii" : charset);
+                	
+                	return text;
+                }
+                
                 if ((mimeType != null) && MimeUtility.mimeTypeMatches(mimeType, "text/*")) {
                     /*
                      * We've got a text part, so let's see if it needs to be processed further.
@@ -2192,7 +2213,10 @@ public class MimeUtility {
             return (MimeUtil.ENC_BASE64);
         } else if (MimeUtil.isMessage(type)) {
             return (MimeUtil.ENC_8BIT);
-        } else if ("multipart/signed".equalsIgnoreCase(type) || type.toLowerCase(Locale.US).startsWith("message/")) {
+        } else if ("multipart/signed".equalsIgnoreCase(type) 
+        		|| type.toLowerCase(Locale.US).startsWith("message/")
+        		|| type.equalsIgnoreCase("application/pgp-encrypted")
+        		|| type.startsWith("application/octet-stream")) {
             return (MimeUtil.ENC_7BIT);
         } else if (type.toLowerCase(Locale.US).startsWith("multipart/")) {
             return (MimeUtil.ENC_8BIT);

@@ -38,13 +38,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.activity.Search;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
@@ -64,6 +65,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.filter.Base64OutputStream;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -1847,7 +1849,13 @@ public class LocalStore extends Store implements Serializable {
                                         String textContent = cursor.getString(1);
                                         String mimeType = cursor.getString(2);
                                         if (mimeType != null && mimeType.toLowerCase(Locale.US).startsWith("multipart/")) {
-                                            // If this is a multipart message, preserve both text
+                                        	// FIXME: This is a bloody workaround because when the email is saved, everything behind the subtype is NOT saved. 
+                                        	if (mimeType.equalsIgnoreCase("multipart/encrypted"))
+                                            {
+                                            	mp.setPGPEncrypted(true);
+                                            	mp.setContentDescription("OpenPGP encrypted message");
+                                            }
+                                        	// If this is a multipart message, preserve both text
                                             // and html parts, as well as the subtype.
                                             mp.setSubType(mimeType.toLowerCase(Locale.US).replaceFirst("^multipart/", ""));
                                             if (textContent != null) {
@@ -1963,21 +1971,37 @@ public class LocalStore extends Store implements Serializable {
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
                                             bp.setEncoding(encoding);
                                             if (name != null) {
-                                                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                                                             String.format("%s;\r\n name=\"%s\"",
-                                                                           type,
-                                                                           name));
-                                                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                             String.format("%s;\r\n filename=\"%s\";\r\n size=%d",
-                                                                           contentDisposition,
-                                                                           name, // TODO: Should use encoded word defined in RFC 2231.
-                                                                           size));
+                                                //PGP encrypted Mail must have other content-dispositions
+                                            	  bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                                                          String.format("%s;\r\n name=\"%s\"",
+                                                                        type,
+                                                                        name));
+                                            	  
+                                                if (bp.getContentType().equalsIgnoreCase("application/octet-stream;\r\n name=\"encrypted.asc\""))
+                                                {
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(
+                                                            "inline;\r\n filename=\"%s\"",
+                                                            name));
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "OpenPGP encrypted message");
+                                                }
+                                                else if (!bp.getContentType().equalsIgnoreCase("application/pgp-encrypted"))
+                                                {
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(
+                                                                 "attachment;\r\n filename=\"%s\";\r\n size=%d",
+                                                                 name, size));
+                                                }
                                             } else {
-                                                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
-                                                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
+                                            	bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
+                                            	 
+                                                if (!bp.getContentType().equalsIgnoreCase("application/pgp-encrypted"))
+                                                {
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
                                                         String.format("%s;\r\n size=%d",
                                                                       contentDisposition,
                                                                       size));
+                                                } else {
+                                                	bp.setHeader(MimeHeader.HEADER_CONTENT_DESCRIPTION, "PGP/MIME Versions Identification");
+                                                }
                                             }
 
                                             bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
@@ -3543,9 +3567,14 @@ public class LocalStore extends Store implements Serializable {
             if (part == null) {
                 // If that fails, try and get a text part.
                 part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
-                if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
-                    text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
-                }
+                if (part != null)
+                {
+                	if (part.getBody() instanceof TextBody) 
+                		text = ((TextBody) part.getBody()).getText();
+                	if (part.getBody() instanceof BinaryTempFileBody)
+                		text = MimeUtility.getTextFromPart(part);
+                	text = HtmlConverter.textToHtml(text);
+                } 
             } else {
                 // We successfully found an HTML part; do the necessary character set decoding.
                 text = MimeUtility.getTextFromPart(part);
@@ -3580,7 +3609,7 @@ public class LocalStore extends Store implements Serializable {
             super.setRecipients(RecipientType.CC, mCc);
             super.setRecipients(RecipientType.BCC, mBcc);
             if (mMessageId != null) super.setMessageId(mMessageId);
-
+            
             mMessageDirty = false;
         }
 
@@ -4013,6 +4042,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public void writeTo(OutputStream out) throws IOException, MessagingException {
             InputStream in = getInputStream();
+            
             try {
                 boolean closeStream = false;
                 if (MimeUtil.isBase64Encoding(mEncoding)) {
@@ -4027,6 +4057,7 @@ public class LocalStore extends Store implements Serializable {
                     IOUtils.copy(in, out);
                 } finally {
                     if (closeStream) {
+                    	out.flush();
                         out.close();
                     }
                 }
