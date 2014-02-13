@@ -2,6 +2,8 @@ package com.fsck.k9.mail.store;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
@@ -13,7 +15,7 @@ public class ImapStoreUriTest extends TestCase {
         String uri = "imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix";
         ServerSettings settings = Store.decodeStoreUri(uri);
 
-        assertEquals("PLAIN", settings.authenticationType);
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
         assertEquals("pass", settings.password);
         assertEquals("server", settings.host);
@@ -26,7 +28,7 @@ public class ImapStoreUriTest extends TestCase {
         String uri = "imap://PLAIN:user:pass@server:143/";
         ServerSettings settings = Store.decodeStoreUri(uri);
 
-        assertEquals("PLAIN", settings.authenticationType);
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
         assertEquals("pass", settings.password);
         assertEquals("server", settings.host);
@@ -38,7 +40,7 @@ public class ImapStoreUriTest extends TestCase {
         String uri = "imap://PLAIN:user:pass@server:143/customPathPrefix";
         ServerSettings settings = Store.decodeStoreUri(uri);
 
-        assertEquals("PLAIN", settings.authenticationType);
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
         assertEquals("pass", settings.password);
         assertEquals("server", settings.host);
@@ -51,7 +53,7 @@ public class ImapStoreUriTest extends TestCase {
         String uri = "imap://PLAIN:user:pass@server:143/0%7C";
         ServerSettings settings = Store.decodeStoreUri(uri);
 
-        assertEquals("PLAIN", settings.authenticationType);
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
         assertEquals("pass", settings.password);
         assertEquals("server", settings.host);
@@ -64,7 +66,7 @@ public class ImapStoreUriTest extends TestCase {
         String uri = "imap://PLAIN:user:pass@server:143/1%7CcustomPathPrefix";
         ServerSettings settings = Store.decodeStoreUri(uri);
 
-        assertEquals("PLAIN", settings.authenticationType);
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
         assertEquals("pass", settings.password);
         assertEquals("server", settings.host);
@@ -80,7 +82,7 @@ public class ImapStoreUriTest extends TestCase {
         extra.put("pathPrefix", "customPathPrefix");
 
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
-                ConnectionSecurity.NONE, "PLAIN", "user", "pass", extra);
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", extra);
 
         String uri = Store.createStoreUri(settings);
 
@@ -93,7 +95,7 @@ public class ImapStoreUriTest extends TestCase {
         extra.put("pathPrefix", "");
 
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
-                ConnectionSecurity.NONE, "PLAIN", "user", "pass", extra);
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", extra);
 
         String uri = Store.createStoreUri(settings);
 
@@ -102,7 +104,7 @@ public class ImapStoreUriTest extends TestCase {
 
     public void testCreateStoreUriImapNoExtra() {
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
-                ConnectionSecurity.NONE, "PLAIN", "user", "pass");
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass");
 
         String uri = Store.createStoreUri(settings);
 
@@ -114,7 +116,7 @@ public class ImapStoreUriTest extends TestCase {
         extra.put("autoDetectNamespace", "true");
 
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
-                ConnectionSecurity.NONE, "PLAIN", "user", "pass", extra);
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", extra);
 
         String uri = Store.createStoreUri(settings);
 

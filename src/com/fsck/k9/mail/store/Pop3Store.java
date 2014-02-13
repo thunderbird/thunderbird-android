@@ -43,11 +43,6 @@ public class Pop3Store extends Store {
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
-    private enum AuthType {
-        PLAIN,
-        CRAM_MD5
-    }
-
     private static final String STLS_COMMAND = "STLS";
     private static final String USER_COMMAND = "USER";
     private static final String PASS_COMMAND = "PASS";
@@ -120,7 +115,7 @@ public class Pop3Store extends Store {
             port = pop3Uri.getPort();
         }
 
-        String authType = AuthType.PLAIN.name();
+        AuthType authType = AuthType.PLAIN;
         if (pop3Uri.getUserInfo() != null) {
             try {
                 int userIndex = 0, passwordIndex = 1;
@@ -131,7 +126,7 @@ public class Pop3Store extends Store {
                     // after an account was imported (so authType and username are present).
                     userIndex++;
                     passwordIndex++;
-                    authType = userInfoParts[0];
+                    authType = AuthType.valueOf(userInfoParts[0]);
                 }
                 username = URLDecoder.decode(userInfoParts[userIndex], "UTF-8");
                 if (userInfoParts.length > passwordIndex) {
@@ -190,14 +185,7 @@ public class Pop3Store extends Store {
                 break;
         }
 
-        try {
-            AuthType.valueOf(server.authenticationType);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid authentication type (" +
-                    server.authenticationType + ")");
-        }
-
-        String userInfo = server.authenticationType + ":" + userEnc + ":" + passwordEnc;
+        String userInfo = server.authenticationType.name() + ":" + userEnc + ":" + passwordEnc;
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
                     null).toString();
@@ -257,7 +245,7 @@ public class Pop3Store extends Store {
 
         mUsername = settings.username;
         mPassword = settings.password;
-        mAuthType = AuthType.valueOf(settings.authenticationType);
+        mAuthType = settings.authenticationType;
     }
 
     @Override

@@ -69,6 +69,7 @@ import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.Body;
@@ -117,8 +118,6 @@ public class ImapStore extends Store {
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
-    public enum AuthType { PLAIN, CRAM_MD5 }
-
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
     private static int MAX_DELAY_TIME = 5 * 60 * 1000; // 5 minutes
@@ -163,7 +162,7 @@ public class ImapStore extends Store {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        String authenticationType = null;
+        AuthType authenticationType = null;
         String username = null;
         String password = null;
         String pathPrefix = null;
@@ -209,14 +208,14 @@ public class ImapStore extends Store {
 
                 if (userinfo.endsWith(":")) {
                     // Password is empty. This can only happen after an account was imported.
-                    authenticationType = AuthType.valueOf(userInfoParts[0]).name();
+                    authenticationType = AuthType.valueOf(userInfoParts[0]);
                     username = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 } else if (userInfoParts.length == 2) {
-                    authenticationType = AuthType.PLAIN.name();
+                    authenticationType = AuthType.PLAIN;
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 } else {
-                    authenticationType = AuthType.valueOf(userInfoParts[0]).name();
+                    authenticationType = AuthType.valueOf(userInfoParts[0]);
                     username = URLDecoder.decode(userInfoParts[1], "UTF-8");
                     password = URLDecoder.decode(userInfoParts[2], "UTF-8");
                 }
@@ -291,15 +290,9 @@ public class ImapStore extends Store {
                 break;
         }
 
-        AuthType authType;
-        try {
-            authType = AuthType.valueOf(server.authenticationType);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid authentication type: " +
-                    server.authenticationType);
-        }
+        AuthType authType = server.authenticationType;
 
-        String userInfo = authType.toString() + ":" + userEnc + ":" + passwordEnc;
+        String userInfo = authType.name() + ":" + userEnc + ":" + passwordEnc;
         try {
             Map<String, String> extra = server.getExtra();
             String path = null;
@@ -334,7 +327,7 @@ public class ImapStore extends Store {
         public final String pathPrefix;
 
         protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-                String authenticationType, String username, String password,
+                AuthType authenticationType, String username, String password,
                 boolean autodetectNamespace, String pathPrefix) {
             super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
                     password);
@@ -485,7 +478,7 @@ public class ImapStore extends Store {
             break;
         }
 
-        mAuthType = AuthType.valueOf(settings.authenticationType);
+        mAuthType = settings.authenticationType;
         mUsername = settings.username;
         mPassword = settings.password;
 

@@ -17,7 +17,7 @@ import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.mail.AuthType;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -48,13 +48,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
     };
     */
-    private static final String authTypes[] = {
-        SmtpTransport.AUTH_AUTOMATIC,
-        SmtpTransport.AUTH_LOGIN,
-        SmtpTransport.AUTH_PLAIN,
-        SmtpTransport.AUTH_CRAM_MD5,
-    };
-
     private EditText mUsernameView;
     private EditText mPasswordView;
     private EditText mServerView;
@@ -127,18 +120,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
-        SpinnerOption authTypeSpinnerOptions[] = new SpinnerOption[authTypes.length];
-        for (int i = 0; i < authTypes.length; i++) {
-            authTypeSpinnerOptions[i] = new SpinnerOption(i, authTypes[i]);
-        }
-
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, securityTypes);
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
-        ArrayAdapter<SpinnerOption> authTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, authTypeSpinnerOptions);
+        ArrayAdapter<AuthType> authTypesAdapter = new ArrayAdapter<AuthType>(this,
+                android.R.layout.simple_spinner_item, AuthType.values());
         authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAuthTypeView.setAdapter(authTypesAdapter);
 
@@ -208,11 +196,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             }
 
             if (authType != null) {
-                for (int i = 0; i < authTypes.length; i++) {
-                    if (authTypes[i].equals(authType)) {
-                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
-                    }
-                }
+                int position = AuthType.valueOf(authType).ordinal();
+                mAuthTypeView.setSelection(position, false);
             }
 
             // Select currently configured security type
@@ -305,7 +290,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8");
 
             String userInfo = null;
-            String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+            String authType = ((AuthType) mAuthTypeView.getSelectedItem()).name();
             if (mRequireLoginView.isChecked()) {
                 userInfo = usernameEnc + ":" + passwordEnc + ":" + authType;
             }

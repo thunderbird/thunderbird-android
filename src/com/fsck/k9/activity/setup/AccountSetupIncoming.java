@@ -18,6 +18,7 @@ import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
@@ -58,11 +59,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         ConnectionSecurity.STARTTLS_REQUIRED
     };
 
-    private static final String[] AUTH_TYPES = {
-        "PLAIN", "CRAM_MD5"
-    };
-
-
     private int[] mAccountPorts;
     private String mStoreType;
     private EditText mUsernameView;
@@ -83,6 +79,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private CheckBox mCompressionWifi;
     private CheckBox mCompressionOther;
     private CheckBox mSubscribedFoldersOnly;
+    private ArrayAdapter<AuthType> mAuthTypeAdapter;
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
@@ -149,22 +146,16 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
-        // This needs to be kept in sync with the list at the top of the file.
-        // that makes me somewhat unhappy
-        SpinnerOption authTypeSpinnerOptions[] = {
-            new SpinnerOption(0, AUTH_TYPES[0]),
-            new SpinnerOption(1, AUTH_TYPES[1])
-        };
-
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, securityTypes);
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
-        ArrayAdapter<SpinnerOption> authTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, authTypeSpinnerOptions);
-        authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mAuthTypeView.setAdapter(authTypesAdapter);
+        AuthType[] acceptableAuthTypes = {AuthType.PLAIN, AuthType.CRAM_MD5};
+        mAuthTypeAdapter = new ArrayAdapter<AuthType>(this,
+                android.R.layout.simple_spinner_item, acceptableAuthTypes);
+        mAuthTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         /*
          * Calls validateFields() which enables or disables the Next button
@@ -217,13 +208,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 mPasswordView.setText(settings.password);
             }
 
-            if (settings.authenticationType != null) {
-                for (int i = 0; i < AUTH_TYPES.length; i++) {
-                    if (AUTH_TYPES[i].equals(settings.authenticationType)) {
-                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
-                    }
-                }
-            }
+            // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
+            int position = mAuthTypeAdapter.getPosition(settings.authenticationType);
+            mAuthTypeView.setSelection(position, false);
 
             mStoreType = settings.type;
             if (Pop3Store.STORE_TYPE.equals(settings.type)) {
@@ -407,7 +394,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             String username = mUsernameView.getText().toString();
             String password = mPasswordView.getText().toString();
-            String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+            AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
             String host = mServerView.getText().toString();
             int port = Integer.parseInt(mPortView.getText().toString());
 

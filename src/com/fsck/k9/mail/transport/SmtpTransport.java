@@ -39,15 +39,6 @@ public class SmtpTransport extends Transport {
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
-    public static final String AUTH_PLAIN = "PLAIN";
-
-    public static final String AUTH_CRAM_MD5 = "CRAM_MD5";
-
-    public static final String AUTH_LOGIN = "LOGIN";
-
-    public static final String AUTH_AUTOMATIC = "AUTOMATIC";
-
-
     /**
      * Decodes a SmtpTransport URI.
      *
@@ -64,7 +55,7 @@ public class SmtpTransport extends Transport {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        String authenticationType = AUTH_AUTOMATIC;
+        AuthType authType = AuthType.AUTOMATIC;
         String username = null;
         String password = null;
 
@@ -109,7 +100,7 @@ public class SmtpTransport extends Transport {
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 }
                 if (userInfoParts.length > 2) {
-                    authenticationType = userInfoParts[2];
+                    authType = AuthType.valueOf(userInfoParts[2]);
                 }
             } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
@@ -118,7 +109,7 @@ public class SmtpTransport extends Transport {
         }
 
         return new ServerSettings(TRANSPORT_TYPE, host, port, connectionSecurity,
-                authenticationType, username, password);
+                authType, username, password);
     }
 
     /**
@@ -165,15 +156,11 @@ public class SmtpTransport extends Transport {
                 break;
         }
 
-        String authType = server.authenticationType;
-        if (!(AUTH_AUTOMATIC.equals(authType) ||
-                AUTH_LOGIN.equals(authType) ||
-                AUTH_PLAIN.equals(authType) ||
-                AUTH_CRAM_MD5.equals(authType))) {
-            throw new IllegalArgumentException("Invalid authentication type: " + authType);
+        String userInfo = userEnc + ":" + passwordEnc;
+        AuthType authType = server.authenticationType;
+        if (authType != null) {
+            userInfo += ":" + authType.name();
         }
-
-        String userInfo = userEnc + ":" + passwordEnc + ":" + authType;
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
                     null).toString();
@@ -187,7 +174,7 @@ public class SmtpTransport extends Transport {
     int mPort;
     String mUsername;
     String mPassword;
-    String mAuthType;
+    AuthType mAuthType;
     int mConnectionSecurity;
     Socket mSocket;
     PeekableInputStream mIn;
@@ -318,9 +305,9 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            boolean useAuthLogin = AUTH_LOGIN.equals(mAuthType);
-            boolean useAuthPlain = AUTH_PLAIN.equals(mAuthType);
-            boolean useAuthCramMD5 = AUTH_CRAM_MD5.equals(mAuthType);
+            boolean useAuthLogin = AuthType.LOGIN.equals(mAuthType);
+            boolean useAuthPlain = AuthType.PLAIN.equals(mAuthType);
+            boolean useAuthCramMD5 = AuthType.CRAM_MD5.equals(mAuthType);
 
             // Automatically choose best authentication method if none was explicitly selected
             boolean useAutomaticAuth = !(useAuthLogin || useAuthPlain || useAuthCramMD5);
