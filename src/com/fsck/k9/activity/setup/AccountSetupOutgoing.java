@@ -103,10 +103,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
-        AuthType[] acceptableAuthTypes = {AuthType.AUTOMATIC, AuthType.PLAIN, AuthType.CRAM_MD5};
-        mAuthTypeAdapter = new ArrayAdapter<AuthType>(this,
-                android.R.layout.simple_spinner_item, acceptableAuthTypes);
-        mAuthTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAuthTypeAdapter = AuthType.getArrayAdapter(this);
         mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         /*
@@ -161,6 +158,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             if (password != null) {
                 mPasswordView.setText(password);
             }
+
+            updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
             // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
             int position = mAuthTypeAdapter.getPosition(settings.authenticationType);
@@ -229,6 +228,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private void updatePortFromSecurityType() {
         ConnectionSecurity securityType = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
         mPortView.setText(getDefaultSmtpPort(securityType));
+        updateAuthPlainTextFromSecurityType(securityType);
     }
 
     private String getDefaultSmtpPort(ConnectionSecurity securityType) {
@@ -248,6 +248,17 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             Log.e(K9.LOG_TAG, "Unhandled ConnectionSecurity type encountered");
         }
         return port;
+    }
+
+    private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
+        switch (securityType) {
+        case NONE:
+        case STARTTLS_OPTIONAL:
+            AuthType.PLAIN.useInsecureText(true, mAuthTypeAdapter);
+            break;
+        default:
+            AuthType.PLAIN.useInsecureText(false, mAuthTypeAdapter);
+        }
     }
 
     @Override

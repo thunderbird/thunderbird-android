@@ -129,10 +129,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
-        AuthType[] acceptableAuthTypes = {AuthType.PLAIN, AuthType.CRAM_MD5};
-        mAuthTypeAdapter = new ArrayAdapter<AuthType>(this,
-                android.R.layout.simple_spinner_item, acceptableAuthTypes);
-        mAuthTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAuthTypeAdapter = AuthType.getArrayAdapter(this);
         mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         /*
@@ -185,6 +182,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             if (settings.password != null) {
                 mPasswordView.setText(settings.password);
             }
+
+            updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
             // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
             int position = mAuthTypeAdapter.getPosition(settings.authenticationType);
@@ -319,6 +318,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private void updatePortFromSecurityType() {
         ConnectionSecurity securityType = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
         mPortView.setText(getDefaultPort(securityType));
+        updateAuthPlainTextFromSecurityType(securityType);
     }
 
     private String getDefaultPort(ConnectionSecurity securityType) {
@@ -349,6 +349,17 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             port = "";
         }
         return port;
+    }
+
+    private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
+        switch (securityType) {
+        case NONE:
+        case STARTTLS_OPTIONAL:
+            AuthType.PLAIN.useInsecureText(true, mAuthTypeAdapter);
+            break;
+        default:
+            AuthType.PLAIN.useInsecureText(false, mAuthTypeAdapter);
+        }
     }
 
     @Override
