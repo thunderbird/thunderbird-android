@@ -37,12 +37,6 @@ import java.util.Set;
 public class Pop3Store extends Store {
     public static final String STORE_TYPE = "POP3";
 
-    public static final int CONNECTION_SECURITY_NONE = 0;
-    public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
-    public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
-    public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
-    public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
-
     private static final String STLS_COMMAND = "STLS";
     private static final String USER_COMMAND = "USER";
     private static final String PASS_COMMAND = "PASS";
@@ -200,7 +194,7 @@ public class Pop3Store extends Store {
     private String mUsername;
     private String mPassword;
     private AuthType mAuthType;
-    private int mConnectionSecurity;
+    private ConnectionSecurity mConnectionSecurity;
     private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
 
@@ -225,23 +219,7 @@ public class Pop3Store extends Store {
         mHost = settings.host;
         mPort = settings.port;
 
-        switch (settings.connectionSecurity) {
-        case NONE:
-            mConnectionSecurity = CONNECTION_SECURITY_NONE;
-            break;
-        case STARTTLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-            break;
-        case STARTTLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-            break;
-        case SSL_TLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-            break;
-        case SSL_TLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-            break;
-        }
+        mConnectionSecurity = settings.connectionSecurity;
 
         mUsername = settings.username;
         mPassword = settings.password;
@@ -321,10 +299,10 @@ public class Pop3Store extends Store {
 
             try {
                 SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
-                if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                        mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
+                if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ||
+                        mConnectionSecurity == ConnectionSecurity.SSL_TLS_OPTIONAL) {
                     SSLContext sslContext = SSLContext.getInstance("TLS");
-                    final boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+                    final boolean secure = mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED;
                     sslContext.init(null,
                             new TrustManager[] { TrustManagerFactory.get(mHost,
                                     mPort, secure) }, new SecureRandom());
@@ -345,14 +323,14 @@ public class Pop3Store extends Store {
                 String serverGreeting = executeSimpleCommand(null);
 
                 mCapabilities = getCapabilities();
-                if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
-                        || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
+                if (mConnectionSecurity == ConnectionSecurity.STARTTLS_OPTIONAL
+                        || mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
 
                     if (mCapabilities.stls) {
                         executeSimpleCommand(STLS_COMMAND);
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
-                        boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
+                        boolean secure = mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED;
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
                                         mHost, mPort, secure) },
@@ -366,7 +344,7 @@ public class Pop3Store extends Store {
                             throw new MessagingException("Unable to connect socket");
                         }
                         mCapabilities = getCapabilities();
-                    } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
+                    } else if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                         throw new MessagingException("TLS not supported but required");
                     }
                 }

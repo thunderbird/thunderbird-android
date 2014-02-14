@@ -112,12 +112,6 @@ import com.jcraft.jzlib.ZOutputStream;
 public class ImapStore extends Store {
     public static final String STORE_TYPE = "IMAP";
 
-    public static final int CONNECTION_SECURITY_NONE = 0;
-    public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
-    public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
-    public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
-    public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
-
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
     private static int MAX_DELAY_TIME = 5 * 60 * 1000; // 5 minutes
@@ -355,7 +349,7 @@ public class ImapStore extends Store {
     private int mPort;
     private String mUsername;
     private String mPassword;
-    private int mConnectionSecurity;
+    private ConnectionSecurity mConnectionSecurity;
     private AuthType mAuthType;
     private volatile String mPathPrefix;
     private volatile String mCombinedPrefix = null;
@@ -374,7 +368,7 @@ public class ImapStore extends Store {
         }
 
         @Override
-        public int getConnectionSecurity() {
+        public ConnectionSecurity getConnectionSecurity() {
             return mConnectionSecurity;
         }
 
@@ -460,23 +454,7 @@ public class ImapStore extends Store {
         mHost = settings.host;
         mPort = settings.port;
 
-        switch (settings.connectionSecurity) {
-        case NONE:
-            mConnectionSecurity = CONNECTION_SECURITY_NONE;
-            break;
-        case STARTTLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-            break;
-        case STARTTLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-            break;
-        case SSL_TLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-            break;
-        case SSL_TLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-            break;
-        }
+        mConnectionSecurity = settings.connectionSecurity;
 
         mAuthType = settings.authenticationType;
         mUsername = settings.username;
@@ -2427,7 +2405,7 @@ public class ImapStore extends Store {
             }
 
             try {
-                int connectionSecurity = mSettings.getConnectionSecurity();
+                ConnectionSecurity connectionSecurity = mSettings.getConnectionSecurity();
 
                 // Try all IPv4 and IPv6 addresses of the host
                 InetAddress[] addresses = InetAddress.getAllByName(mSettings.getHost());
@@ -2441,10 +2419,10 @@ public class ImapStore extends Store {
                         SocketAddress socketAddress = new InetSocketAddress(addresses[i],
                                 mSettings.getPort());
 
-                        if (connectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                                connectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
+                        if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ||
+                                connectionSecurity == ConnectionSecurity.SSL_TLS_OPTIONAL) {
                             SSLContext sslContext = SSLContext.getInstance("TLS");
-                            boolean secure = connectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+                            boolean secure = connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED;
                             sslContext
                                     .init(null,
                                             new TrustManager[] { TrustManagerFactory.get(
@@ -2494,15 +2472,15 @@ public class ImapStore extends Store {
                     }
                 }
 
-                if (mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_OPTIONAL
-                        || mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED) {
+                if (mSettings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_OPTIONAL
+                        || mSettings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_REQUIRED) {
 
                     if (hasCapability("STARTTLS")) {
                         // STARTTLS
                         executeSimpleCommand("STARTTLS");
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
-                        boolean secure = mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED;
+                        boolean secure = mSettings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_REQUIRED;
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
                                         mSettings.getHost(),
@@ -2523,7 +2501,7 @@ public class ImapStore extends Store {
                         if (responses.size() != 2) {
                             throw new MessagingException("Invalid CAPABILITY response received");
                         }
-                    } else if (mSettings.getConnectionSecurity() == CONNECTION_SECURITY_TLS_REQUIRED) {
+                    } else if (mSettings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_REQUIRED) {
                         throw new MessagingException("TLS not supported but required");
                     }
                 }

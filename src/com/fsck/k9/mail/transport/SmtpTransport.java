@@ -33,12 +33,6 @@ import java.util.*;
 public class SmtpTransport extends Transport {
     public static final String TRANSPORT_TYPE = "SMTP";
 
-    public static final int CONNECTION_SECURITY_NONE = 0;
-    public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
-    public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
-    public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
-    public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
-
     /**
      * Decodes a SmtpTransport URI.
      *
@@ -175,7 +169,7 @@ public class SmtpTransport extends Transport {
     String mUsername;
     String mPassword;
     AuthType mAuthType;
-    int mConnectionSecurity;
+    ConnectionSecurity mConnectionSecurity;
     Socket mSocket;
     PeekableInputStream mIn;
     OutputStream mOut;
@@ -193,23 +187,7 @@ public class SmtpTransport extends Transport {
         mHost = settings.host;
         mPort = settings.port;
 
-        switch (settings.connectionSecurity) {
-        case NONE:
-            mConnectionSecurity = CONNECTION_SECURITY_NONE;
-            break;
-        case STARTTLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-            break;
-        case STARTTLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-            break;
-        case SSL_TLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-            break;
-        case SSL_TLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-            break;
-        }
+        mConnectionSecurity = settings.connectionSecurity;
 
         mAuthType = settings.authenticationType;
         mUsername = settings.username;
@@ -223,10 +201,10 @@ public class SmtpTransport extends Transport {
             for (int i = 0; i < addresses.length; i++) {
                 try {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
-                    if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                            mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
+                    if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ||
+                            mConnectionSecurity == ConnectionSecurity.SSL_TLS_OPTIONAL) {
                         SSLContext sslContext = SSLContext.getInstance("TLS");
-                        boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+                        boolean secure = mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED;
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
                                         mHost, mPort, secure) },
@@ -280,13 +258,13 @@ public class SmtpTransport extends Transport {
             m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
 
 
-            if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
-                    || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
+            if (mConnectionSecurity == ConnectionSecurity.STARTTLS_OPTIONAL
+                    || mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                 if (extensions.containsKey("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
                     SSLContext sslContext = SSLContext.getInstance("TLS");
-                    boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
+                    boolean secure = mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED;
                     sslContext.init(null,
                             new TrustManager[] { TrustManagerFactory.get(mHost,
                                     mPort, secure) }, new SecureRandom());
@@ -300,7 +278,7 @@ public class SmtpTransport extends Transport {
                      * Exim.
                      */
                     extensions = sendHello(localHost);
-                } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
+                } else if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                     throw new MessagingException("TLS not supported but required");
                 }
             }

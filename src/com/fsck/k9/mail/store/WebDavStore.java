@@ -57,13 +57,6 @@ import java.util.zip.GZIPInputStream;
 public class WebDavStore extends Store {
     public static final String STORE_TYPE = "WebDAV";
 
-    // Security options
-    private static final short CONNECTION_SECURITY_NONE = 0;
-    private static final short CONNECTION_SECURITY_TLS_OPTIONAL = 1;
-    private static final short CONNECTION_SECURITY_TLS_REQUIRED = 2;
-    private static final short CONNECTION_SECURITY_SSL_OPTIONAL = 3;
-    private static final short CONNECTION_SECURITY_SSL_REQUIRED = 4;
-
     // Authentication types
     private static final short AUTH_TYPE_NONE = 0;
     private static final short AUTH_TYPE_BASIC = 1;
@@ -298,7 +291,7 @@ public class WebDavStore extends Store {
     }
 
 
-    private short mConnectionSecurity;
+    private ConnectionSecurity mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
     private String mAlias; /* Stores the alias for the user's mailbox */
     private String mPassword; /* Stores the password for authentications */
@@ -334,23 +327,7 @@ public class WebDavStore extends Store {
         mHost = settings.host;
         mPort = settings.port;
 
-        switch (settings.connectionSecurity) {
-        case NONE:
-            mConnectionSecurity = CONNECTION_SECURITY_NONE;
-            break;
-        case STARTTLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-            break;
-        case STARTTLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-            break;
-        case SSL_TLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-            break;
-        case SSL_TLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-            break;
-        }
+        mConnectionSecurity = settings.connectionSecurity;
 
         mUsername = settings.username;
         mPassword = settings.password;
@@ -383,16 +360,16 @@ public class WebDavStore extends Store {
         // The inbox path would look like: "https://mail.domain.com/Exchange/alias/Inbox".
         mUrl = getRoot() + mPath + mMailboxPath;
 
-        mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+        mSecure = mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED;
         mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
     }
 
     private String getRoot() {
         String root;
-        if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED ||
-                mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL ||
-                mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
+        if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED ||
+                mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ||
+                mConnectionSecurity == ConnectionSecurity.STARTTLS_OPTIONAL ||
+                mConnectionSecurity == ConnectionSecurity.SSL_TLS_OPTIONAL) {
             root = "https";
         } else {
             root = "http";

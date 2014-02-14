@@ -18,6 +18,7 @@ import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -31,23 +32,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
-    private static final int smtpPorts[] = {
-        587, 465, 465, 587, 587
-    };
+    private static final String SMTP_PORT = "587";
+    private static final String SMTP_SSL_PORT = "465";
 
     private static final String smtpSchemes[] = {
         "smtp", "smtp+ssl", "smtp+ssl+", "smtp+tls", "smtp+tls+"
     };
-    /*
-    private static final int webdavPorts[] =
-    {
-        80, 443, 443, 443, 443
-    };
-    private static final String webdavSchemes[] =
-    {
-        "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
-    };
-    */
     private EditText mUsernameView;
     private EditText mPasswordView;
     private EditText mServerView;
@@ -111,18 +101,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mNextButton.setOnClickListener(this);
         mRequireLoginView.setOnCheckedChangeListener(this);
 
-        SpinnerOption securityTypes[] = {
-            new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
-            new SpinnerOption(1,
-            getString(R.string.account_setup_incoming_security_ssl_optional_label)),
-            new SpinnerOption(2, getString(R.string.account_setup_incoming_security_ssl_label)),
-            new SpinnerOption(3,
-            getString(R.string.account_setup_incoming_security_tls_optional_label)),
-            new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
-        };
-
-        ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, securityTypes);
+        ArrayAdapter<ConnectionSecurity> securityTypesAdapter = new ArrayAdapter<ConnectionSecurity>(this,
+                android.R.layout.simple_spinner_item, ConnectionSecurity.values());
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
@@ -267,8 +247,27 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     private void updatePortFromSecurityType() {
-        int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-        mPortView.setText(Integer.toString(smtpPorts[securityType]));
+        ConnectionSecurity securityType = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+        mPortView.setText(getDefaultSmtpPort(securityType));
+    }
+
+    private String getDefaultSmtpPort(ConnectionSecurity securityType) {
+        String port;
+        switch (securityType) {
+        case NONE:
+        case STARTTLS_OPTIONAL:
+        case STARTTLS_REQUIRED:
+            port = SMTP_PORT;
+            break;
+        case SSL_TLS_OPTIONAL:
+        case SSL_TLS_REQUIRED:
+            port = SMTP_SSL_PORT;
+            break;
+        default:
+            port = "";
+            Log.e(K9.LOG_TAG, "Unhandled ConnectionSecurity type encountered");
+        }
+        return port;
     }
 
     @Override

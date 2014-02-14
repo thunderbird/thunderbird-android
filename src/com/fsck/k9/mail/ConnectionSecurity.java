@@ -1,19 +1,23 @@
 package com.fsck.k9.mail;
 
-/**
- * The currently available connection security types.
- *
- * <p>
- * Right now this enum is only used by {@link ServerSettings} and converted to store- or
- * transport-specific constants in the different {@link Store} and {@link Transport}
- * implementations. In the future we probably want to change this and use
- * {@code ConnectionSecurity} exclusively.
- * </p>
- */
+import com.fsck.k9.K9;
+import com.fsck.k9.R;
+
 public enum ConnectionSecurity {
-    NONE,
-    STARTTLS_OPTIONAL,
-    STARTTLS_REQUIRED,
-    SSL_TLS_OPTIONAL,
-    SSL_TLS_REQUIRED
+    NONE(R.string.account_setup_incoming_security_none_label),
+    STARTTLS_OPTIONAL(R.string.account_setup_incoming_security_tls_optional_label),
+    STARTTLS_REQUIRED(R.string.account_setup_incoming_security_tls_label),
+    SSL_TLS_OPTIONAL(R.string.account_setup_incoming_security_ssl_optional_label),
+    SSL_TLS_REQUIRED(R.string.account_setup_incoming_security_ssl_label);
+
+    private final int mResourceId;
+
+    private ConnectionSecurity(int id) {
+        mResourceId = id;
+    }
+
+    @Override
+    public String toString() {
+        return K9.app.getString(mResourceId);
+    }
 }
