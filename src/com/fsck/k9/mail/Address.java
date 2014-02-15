@@ -14,6 +14,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.text.TextUtils;
 import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
@@ -198,14 +199,7 @@ public class Address {
         if (addresses == null) {
             return null;
         }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < addresses.length; i++) {
-            sb.append(addresses[i].toString());
-            if (i < addresses.length - 1) {
-                sb.append(", ");
-            }
-        }
-        return sb.toString();
+        return TextUtils.join(", ", addresses);
     }
 
     public String toEncodedString() {
