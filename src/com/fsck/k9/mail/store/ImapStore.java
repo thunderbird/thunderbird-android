@@ -531,7 +531,7 @@ public class ImapStore extends Store {
                 return allFolders;
             } else {
                 List<Folder> resultFolders = new LinkedList<Folder>();
-                HashSet<String> subscribedFolderNames = new HashSet<String>();
+                Set<String> subscribedFolderNames = new HashSet<String>();
                 List <? extends Folder > subscribedFolders = listFolders(connection, true);
                 for (Folder subscribedFolder : subscribedFolders) {
                     subscribedFolderNames.add(subscribedFolder.getName());
@@ -1488,7 +1488,7 @@ public class ImapStore extends Store {
              * Envelope - UID FETCH ([FLAGS] INTERNALDATE UID RFC822.SIZE FLAGS BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc)])
              *
              */
-            LinkedHashSet<String> fetchFields = new LinkedHashSet<String>();
+            Set<String> fetchFields = new LinkedHashSet<String>();
             fetchFields.add("UID");
             if (fp.contains(FetchProfile.Item.FLAGS)) {
                 fetchFields.add("FLAGS");

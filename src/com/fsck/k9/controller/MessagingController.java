@@ -616,11 +616,11 @@ public class MessagingController implements Runnable {
                     List <? extends Folder > remoteFolders = store.getPersonalNamespaces(false);
 
                     LocalStore localStore = account.getLocalStore();
-                    HashSet<String> remoteFolderNames = new HashSet<String>();
+                    Set<String> remoteFolderNames = new HashSet<String>();
                     List<LocalFolder> foldersToCreate = new LinkedList<LocalFolder>();
 
                     localFolders = localStore.getPersonalNamespaces(false);
-                    HashSet<String> localFolderNames = new HashSet<String>();
+                    Set<String> localFolderNames = new HashSet<String>();
                     for (Folder localFolder : localFolders) {
                         localFolderNames.add(localFolder.getName());
                     }
@@ -693,7 +693,7 @@ public class MessagingController implements Runnable {
 
     public void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
         final AccountStats stats = new AccountStats();
-        final HashSet<String> uuidSet = new HashSet<String>(Arrays.asList(search.getAccountUuids()));
+        final Set<String> uuidSet = new HashSet<String>(Arrays.asList(search.getAccountUuids()));
         Account[] accounts = Preferences.getPreferences(mApplication.getApplicationContext()).getAccounts();
         boolean allAccounts = uuidSet.contains(SearchSpecification.ALL_ACCOUNTS);
 

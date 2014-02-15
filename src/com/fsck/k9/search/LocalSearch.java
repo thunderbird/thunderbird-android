@@ -28,9 +28,9 @@ public class LocalSearch implements SearchSpecification {
     private boolean mManualSearch = false;
 
     // since the uuid isn't in the message table it's not in the tree neither
-    private HashSet<String> mAccountUuids = new HashSet<String>();
+    private Set<String> mAccountUuids = new HashSet<String>();
     private ConditionsTreeNode mConditions = null;
-    private HashSet<ConditionsTreeNode> mLeafSet = new HashSet<ConditionsTreeNode>();
+    private Set<ConditionsTreeNode> mLeafSet = new HashSet<ConditionsTreeNode>();
 
 
     ///////////////////////////////////////////////////////////////

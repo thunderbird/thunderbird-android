@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
@@ -168,7 +169,7 @@ public class Prefs extends K9PreferenceActivity {
         List<CharSequence> entryVector = new ArrayList<CharSequence>(Arrays.asList(mLanguage.getEntries()));
         List<CharSequence> entryValueVector = new ArrayList<CharSequence>(Arrays.asList(mLanguage.getEntryValues()));
         String supportedLanguages[] = getResources().getStringArray(R.array.supported_languages);
-        HashSet<String> supportedLanguageSet = new HashSet<String>(Arrays.asList(supportedLanguages));
+        Set<String> supportedLanguageSet = new HashSet<String>(Arrays.asList(supportedLanguages));
         for (int i = entryVector.size() - 1; i > -1; --i) {
             if (!supportedLanguageSet.contains(entryValueVector.get(i))) {
                 entryVector.remove(i);
