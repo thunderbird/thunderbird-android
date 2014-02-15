@@ -3462,12 +3462,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return false;
         }
 
-        boolean loadFinished = true;
-        for (int i = 0; i < mCursorValid.length; i++) {
-            loadFinished &= mCursorValid[i];
+        for (boolean cursorValid : mCursorValid) {
+			if (!cursorValid) return false;
         }
 
-        return loadFinished;
+        return true;
     }
 
     /**
