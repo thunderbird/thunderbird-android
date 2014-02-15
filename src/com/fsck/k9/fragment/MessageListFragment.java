@@ -895,7 +895,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         long[] selected = new long[mSelected.size()];
         int i = 0;
         for (Long id : mSelected) {
-            selected[i++] = Long.valueOf(id);
+            selected[i++] = id;
         }
         outState.putLongArray(STATE_SELECTED_MESSAGES, selected);
     }
