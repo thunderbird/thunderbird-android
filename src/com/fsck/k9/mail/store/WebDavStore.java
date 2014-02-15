@@ -463,8 +463,7 @@ public class WebDavStore extends Store {
         dataset = processRequest(this.mUrl, "SEARCH", getFolderListXml(), headers);
         String[] folderUrls = dataset.getHrefs();
 
-        for (int i = 0; i < folderUrls.length; i++) {
-            String tempUrl = folderUrls[i];
+        for (String tempUrl : folderUrls) {
             WebDavFolder folder = createFolder(tempUrl);
             if (folder != null)
                 folderList.add(folder);
