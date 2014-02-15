@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
 import android.util.AttributeSet;
@@ -2776,12 +2777,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (message.getMessageId() != null && message.getMessageId().length() > 0) {
             mInReplyTo = message.getMessageId();
 
-            if (message.getReferences() != null && message.getReferences().length > 0) {
-                StringBuilder buffy = new StringBuilder();
-                for (int i = 0; i < message.getReferences().length; i++)
-                    buffy.append(message.getReferences()[i]);
-
-                mReferences = buffy.toString() + " " + mInReplyTo;
+            String[] refs = message.getReferences();
+            if (refs != null && refs.length > 0) {
+                mReferences = TextUtils.join("", refs) + " " + mInReplyTo;
             } else {
                 mReferences = mInReplyTo;
             }
