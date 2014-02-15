@@ -619,9 +619,9 @@ public class Account implements BaseAccount {
 
     public static List<Integer> getExistingAccountNumbers(Preferences preferences) {
         Account[] accounts = preferences.getAccounts();
-        List<Integer> accountNumbers = new LinkedList<Integer>();
-        for (int i = 0; i < accounts.length; i++) {
-            accountNumbers.add(accounts[i].getAccountNumber());
+        List<Integer> accountNumbers = new ArrayList<Integer>(accounts.length);
+        for (Account a : accounts) {
+            accountNumbers.add(a.getAccountNumber());
         }
         return accountNumbers;
     }
