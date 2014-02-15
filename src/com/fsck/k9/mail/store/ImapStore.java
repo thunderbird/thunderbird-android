@@ -1476,11 +1476,10 @@ public class ImapStore extends Store {
             checkOpen(); //only need READ access
             List<String> uids = new ArrayList<String>(messages.length);
             HashMap<String, Message> messageMap = new HashMap<String, Message>();
-            for (int i = 0, count = messages.length; i < count; i++) {
-
-                String uid = messages[i].getUid();
+            for (Message msg : messages) {
+                String uid = msg.getUid();
                 uids.add(uid);
-                messageMap.put(uid, messages[i]);
+                messageMap.put(uid, msg);
             }
 
             /*
