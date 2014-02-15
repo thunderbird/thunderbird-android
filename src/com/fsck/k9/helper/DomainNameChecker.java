@@ -57,7 +57,7 @@ public class DomainNameChecker {
      */
     public static boolean match(X509Certificate certificate, String thisDomain) {
         if ((certificate == null) || (thisDomain == null)
-                || (thisDomain.length() == 0)) {
+                || thisDomain.isEmpty()) {
             return false;
         }
 
@@ -73,7 +73,7 @@ public class DomainNameChecker {
      * @return True iff the domain name is specified as an IP address
      */
     private static boolean isIpAddress(String domain) {
-        if ((domain == null) || (domain.length() == 0)) {
+        if ((domain == null) || domain.isEmpty()) {
             return false;
         }
 
@@ -210,8 +210,8 @@ public class DomainNameChecker {
                   + thatDomain);
         }
 
-        if ((thisDomain == null) || (thisDomain.length() == 0)
-                || (thatDomain == null) || (thatDomain.length() == 0)) {
+        if ((thisDomain == null) || thisDomain.isEmpty()
+                || (thatDomain == null) || thatDomain.isEmpty()) {
             return false;
         }
 
