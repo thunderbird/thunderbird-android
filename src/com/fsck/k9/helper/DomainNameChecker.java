@@ -118,10 +118,9 @@ public class DomainNameChecker {
         }
 
         try {
-            Collection<?> subjectAltNames = certificate.getSubjectAlternativeNames();
+            Collection<List<?>> subjectAltNames = certificate.getSubjectAlternativeNames();
             if (subjectAltNames != null) {
-                for (Object subjectAltName : subjectAltNames) {
-                    List<?> altNameEntry = (List<?>)(subjectAltName);
+                for (List<?> altNameEntry : subjectAltNames) {
                     if ((altNameEntry != null) && (2 <= altNameEntry.size())) {
                         Integer altNameType = (Integer)(altNameEntry.get(0));
                         if (altNameType != null && altNameType.intValue() == ALT_IPA_NAME) {
