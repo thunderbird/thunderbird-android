@@ -157,11 +157,9 @@ public class DomainNameChecker {
     private static boolean matchDns(X509Certificate certificate, String thisDomain) {
         boolean hasDns = false;
         try {
-            Collection<?> subjectAltNames = certificate.getSubjectAlternativeNames();
+            Collection<List<?>> subjectAltNames = certificate.getSubjectAlternativeNames();
             if (subjectAltNames != null) {
-                Iterator<?> i = subjectAltNames.iterator();
-                while (i.hasNext()) {
-                    List<?> altNameEntry = (List<?>)(i.next());
+                for (List<?> altNameEntry : subjectAltNames) {
                     if ((altNameEntry != null) && (2 <= altNameEntry.size())) {
                         Integer altNameType = (Integer)(altNameEntry.get(0));
                         if (altNameType != null && altNameType.intValue() == ALT_DNS_NAME) {
