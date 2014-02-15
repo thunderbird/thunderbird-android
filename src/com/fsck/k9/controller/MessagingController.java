@@ -2347,11 +2347,7 @@ public class MessagingController implements Runnable {
              * upto speed with the remote UIDs of remote destination folder.
              */
             if (!localUidMap.isEmpty() && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-                Set<Map.Entry<String, String>> remoteSrcEntries = remoteUidMap.entrySet();
-                Iterator<Map.Entry<String, String>> remoteSrcEntriesIterator = remoteSrcEntries.iterator();
-
-                while (remoteSrcEntriesIterator.hasNext()) {
-                    Map.Entry<String, String> entry = remoteSrcEntriesIterator.next();
+                for (Map.Entry<String, String> entry : remoteUidMap.entrySet()) {
                     String remoteSrcUid = entry.getKey();
                     String localDestUid = localUidMap.get(remoteSrcUid);
                     String newUid = entry.getValue();
