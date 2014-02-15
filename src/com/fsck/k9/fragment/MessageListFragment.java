@@ -2667,8 +2667,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             outMessages.add(message);
         }
 
-        for (String folderName : folderMap.keySet()) {
-            List<Message> outMessages = folderMap.get(folderName);
+        for (Map.Entry<String, List<Message>> entry : folderMap.entrySet()) {
+            String folderName = entry.getKey();
+            List<Message> outMessages = entry.getValue();
             Account account = outMessages.get(0).getFolder().getAccount();
 
             if (operation == FolderOperation.MOVE) {
