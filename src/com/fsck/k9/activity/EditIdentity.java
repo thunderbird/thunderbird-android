@@ -1,13 +1,18 @@
 package com.fsck.k9.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
+import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import java.util.List;
@@ -17,6 +22,8 @@ public class EditIdentity extends K9Activity {
     public static final String EXTRA_IDENTITY = "com.fsck.k9.EditIdentity_identity";
     public static final String EXTRA_IDENTITY_INDEX = "com.fsck.k9.EditIdentity_identity_index";
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.EditIdentity_account";
+
+    private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
     private Account mAccount;
     private Identity mIdentity;
@@ -29,6 +36,8 @@ public class EditIdentity extends K9Activity {
 //  private EditText mAlwaysBccView;
     private EditText mNameView;
     private EditText mReplyTo;
+    private Button mSentFolderButtonView;
+    private TextView mSentFolderView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +74,7 @@ public class EditIdentity extends K9Activity {
         mReplyTo = (EditText) findViewById(R.id.reply_to);
         mReplyTo.setText(mIdentity.getReplyTo());
 
+
 //      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
 //      mAccountAlwaysBcc.setText(mIdentity.getAlwaysBcc());
 
@@ -88,6 +98,21 @@ public class EditIdentity extends K9Activity {
         } else {
             mSignatureLayout.setVisibility(View.GONE);
         }
+
+        mSentFolderButtonView = (Button) findViewById(R.id.choose_folder);
+        mSentFolderButtonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent chooseIntent = new Intent(EditIdentity.this, ChooseFolder.class);
+                chooseIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
+                chooseIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
+                chooseIntent.putExtra(ChooseFolder.EXTRA_SHOW_FOLDER_NONE, "yes");
+                startActivityForResult(chooseIntent, ACTIVITY_CHOOSE_FOLDER);
+            }
+        });
+
+        mSentFolderView = (TextView) findViewById(R.id.sent_folder);
+        mSentFolderView.setText(mIdentity.getSentFolder());
     }
 
     private void saveIdentity() {
@@ -98,6 +123,7 @@ public class EditIdentity extends K9Activity {
         mIdentity.setName(mNameView.getText().toString());
         mIdentity.setSignatureUse(mSignatureUse.isChecked());
         mIdentity.setSignature(mSignatureView.getText().toString());
+        mIdentity.setSentFolder(mSentFolderView.getText().toString());
 
         if (mReplyTo.getText().length() == 0) {
             mIdentity.setReplyTo(null);
@@ -128,5 +154,20 @@ public class EditIdentity extends K9Activity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_IDENTITY, mIdentity);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+            case ACTIVITY_CHOOSE_FOLDER:
+                String folder = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                if (folder.equals(K9.FOLDER_NONE))
+                    folder = null;
+                mSentFolderView.setText(folder);
+                break;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

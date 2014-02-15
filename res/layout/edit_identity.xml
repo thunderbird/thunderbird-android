@@ -99,5 +99,31 @@
 	            android:layout_width="fill_parent" 
 	            android:hint="@string/edit_identity_signature_hint"/>
     	</LinearLayout>
+        <TextView
+            android:text="@string/edit_identity_sent_folder_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary"
+            />
+        <LinearLayout
+            android:id="@+id/sent_folder_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/sent_folder"
+                android:singleLine="false"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="@string/edit_identity_sent_folder_hint"
+                android:editable="false"
+                android:enabled="false"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_identity_choose_sent_folder_button"
+                android:id="@+id/choose_folder"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -93,6 +93,7 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_NAME_KEY = "name";
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
+    public static final String IDENTITY_SENT_FOLDER_KEY = "sentFolder";
 
     /*
      * http://developer.android.com/design/style/color.html
@@ -1370,6 +1371,7 @@ public class Account implements BaseAccount {
             String signature = prefs.getString(mUuid + ".signature." + ident, null);
             String description = prefs.getString(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident, null);
             final String replyTo = prefs.getString(mUuid + ".replyTo." + ident, null);
+            final String sentFolder = prefs.getString(mUuid + "." + IDENTITY_SENT_FOLDER_KEY + "." + ident, null);
             if (email != null) {
                 Identity identity = new Identity();
                 identity.setName(name);
@@ -1378,6 +1380,7 @@ public class Account implements BaseAccount {
                 identity.setSignature(signature);
                 identity.setDescription(description);
                 identity.setReplyTo(replyTo);
+                identity.setSentFolder(sentFolder);
                 newIdentities.add(identity);
                 gotOne = true;
             }
@@ -1414,6 +1417,8 @@ public class Account implements BaseAccount {
                 editor.remove(mUuid + ".signature." + ident);
                 editor.remove(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident);
                 editor.remove(mUuid + ".replyTo." + ident);
+                editor.remove(mUuid + "." + IDENTITY_SENT_FOLDER_KEY + "." + ident);
+
                 gotOne = true;
             }
             ident++;
@@ -1431,6 +1436,7 @@ public class Account implements BaseAccount {
             editor.putString(mUuid + ".signature." + ident, identity.getSignature());
             editor.putString(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident, identity.getDescription());
             editor.putString(mUuid + ".replyTo." + ident, identity.getReplyTo());
+            editor.putString(mUuid + "." + IDENTITY_SENT_FOLDER_KEY + "." + ident, identity.getSentFolder());
             ident++;
         }
     }

@@ -3555,30 +3555,51 @@ public class MessagingController implements Runnable {
 
                         }
 
+                        String identitySentFolder = null;
+                        String[] identitySentFolderArray = message.getHeader(K9.SENT_FOLDER_HEADER);
+                        if (identitySentFolderArray != null && identitySentFolderArray.length > 0) {
+                            if (identitySentFolderArray.length > 1)
+                                throw new RuntimeException("Found more than one " + K9.SENT_FOLDER_HEADER + " header - coding error");
+                            identitySentFolder = identitySentFolderArray[0];
+
+                            // Remove the sent-folder header from the message before it is sent.
+                            // MJH: I'm not sure if this will result in a persistent change to the message in the outbox.
+                            // We don't really want it to be persistent, in case sending fails and we need to try again.
+                            // Note: after tests, it appears that it isn't persistent.
+                            message.removeHeader(K9.SENT_FOLDER_HEADER);
+                        }
 
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "Sending message with UID " + message.getUid());
+
                         transport.sendMessage(message);
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
                         message.setFlag(Flag.SEEN, true);
                         progress++;
                         for (MessagingListener l : getListeners()) {
+                            // MJH: I can't figure out if it matters that this sent folder name may be wrong if a per-identity
+                            // sent folder is being used. We could fix this case, but I'm not sure how we'd fix the initial call
+                            // at the top of this loop, and I'm not sure if we're supposed to use the same folder name on each
+                            // call around this loop.
                             l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
                         }
-                        if (!account.hasSentFolder()) {
+
+                        if (!account.hasSentFolder() && identitySentFolder == null) {
                             if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Account does not have a sent mail folder; deleting sent message");
+                                Log.i(K9.LOG_TAG, "Account or identity does not have a sent mail folder; deleting sent message");
                             message.setFlag(Flag.DELETED, true);
                         } else {
-                            LocalFolder localSentFolder = (LocalFolder) localStore.getFolder(account.getSentFolderName());
+                            String localSentFolderName = identitySentFolder != null ? identitySentFolder : account.getSentFolderName();
+                            LocalFolder localSentFolder = (LocalFolder) localStore.getFolder(localSentFolderName);
+
                             if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+                                Log.i(K9.LOG_TAG, "Moving sent message to folder '" + localSentFolderName + "' (" + localSentFolder.getId() + ") ");
 
                             localFolder.moveMessages(new Message[] { message }, localSentFolder);
 
                             if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+                                Log.i(K9.LOG_TAG, "Moved sent message to folder '" + localSentFolderName + "' (" + localSentFolder.getId() + ") ");
 
                             PendingCommand command = new PendingCommand();
                             command.command = PENDING_COMMAND_APPEND;

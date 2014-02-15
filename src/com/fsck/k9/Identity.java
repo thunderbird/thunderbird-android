@@ -10,6 +10,7 @@ public class Identity implements Serializable {
     private String mSignature;
     private boolean mSignatureUse;
     private String replyTo;
+    private String sentFolder;
 
     public synchronized String getName() {
         return mName;
@@ -59,8 +60,16 @@ public class Identity implements Serializable {
         this.replyTo = replyTo;
     }
 
+    public synchronized String getSentFolder() {
+        return sentFolder;
+    }
+
+    public synchronized void setSentFolder(String sentFolder) {
+        this.sentFolder = sentFolder;
+    }
+
     @Override
     public synchronized String toString() {
-        return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", replyTo=" + replyTo + ", signature=" + mSignature;
+        return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", replyTo=" + replyTo + ", signature=" + mSignature + ", sentFolder=" + sentFolder;
     }
 }

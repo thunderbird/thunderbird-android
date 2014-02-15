@@ -718,6 +718,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="edit_identity_reply_to_hint">(Optional)</string>
     <string name="edit_identity_signature_label">Signature</string>
     <string name="edit_identity_signature_hint">(Optional)</string>
+    <string name="edit_identity_sent_folder_label">Sent folder</string>
+    <string name="edit_identity_sent_folder_hint">Account Default</string>
+    <string name="edit_identity_choose_sent_folder_button">Choose folder...</string>
 
     <string name="account_settings_signature_use_label">Use Signature</string>
     <string name="account_settings_signature_label">Signature</string>

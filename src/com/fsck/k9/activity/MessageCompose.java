@@ -1512,6 +1512,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
         }
 
+        String sentFolder = mIdentity.getSentFolder();
+        if (sentFolder != null && sentFolder.length() > 0)
+            message.addHeader(K9.SENT_FOLDER_HEADER, sentFolder);
+
         return message;
     }
 
@@ -2927,6 +2931,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         Identity newIdentity = new Identity();
+        if (message.getHeader(K9.SENT_FOLDER_HEADER) != null && message.getHeader(K9.SENT_FOLDER_HEADER).length > 0 && message.getHeader(K9.SENT_FOLDER_HEADER)[0] != null) {
+            newIdentity.setSentFolder(message.getHeader(K9.SENT_FOLDER_HEADER)[0]);
+        }
+
+
         if (k9identity.containsKey(IdentityField.SIGNATURE)) {
             newIdentity.setSignatureUse(true);
             newIdentity.setSignature(k9identity.get(IdentityField.SIGNATURE));
@@ -3652,7 +3661,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              */
             MimeMessage message;
             try {
-                message = createMessage(false);  // isDraft = true
+                message = createMessage(false);  // isDraft = false
             } catch (MessagingException me) {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);
