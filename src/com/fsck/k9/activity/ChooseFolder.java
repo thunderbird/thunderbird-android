@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -81,8 +82,6 @@ public class ChooseFolder extends K9ListActivity {
         getListView().setItemsCanFocus(false);
         getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
         Intent intent = getIntent();
-        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE);
         mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
         mSelectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
@@ -112,25 +111,35 @@ public class ChooseFolder extends K9ListActivity {
 
         setListAdapter(mAdapter);
 
-        mMode = mAccount.getFolderTargetMode();
-        MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
-
-        this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent result = new Intent();
-                result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
-                result.putExtra(EXTRA_CUR_FOLDER, mFolder);
-                String destFolderName = (String)((TextView)view).getText();
-                if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
-                    destFolderName = mHeldInbox;
-                }
-                result.putExtra(EXTRA_NEW_FOLDER, destFolderName);
-                result.putExtra(EXTRA_MESSAGE, mMessageReference);
-                setResult(RESULT_OK, result);
-                finish();
+        new AsyncTask<Intent, Void, Void>() {
+            protected Void doInBackground(Intent... args) {
+                String accountUuid = args[0].getStringExtra(EXTRA_ACCOUNT);
+                mAccount = Preferences.getPreferences(ChooseFolder.this).getAccount(accountUuid);
+                return null;
             }
-        });
+            
+            protected void onPostExecute(Void v) {
+                 mMode = mAccount.getFolderTargetMode();
+                 MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
+
+                 ChooseFolder.this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent result = new Intent();
+                        result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
+                        result.putExtra(EXTRA_CUR_FOLDER, mFolder);
+                        String destFolderName = (String)((TextView)view).getText();
+                        if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
+                            destFolderName = mHeldInbox;
+                        }
+                        result.putExtra(EXTRA_NEW_FOLDER, destFolderName);
+                        result.putExtra(EXTRA_MESSAGE, mMessageReference);
+                        setResult(RESULT_OK, result);
+                        finish();
+                    }
+                });
+            }
+        }.execute(intent);
     }
 
     class ChooseFolderHandler extends Handler {
