@@ -3463,7 +3463,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         for (boolean cursorValid : mCursorValid) {
-			if (!cursorValid) return false;
+            if (!cursorValid) {
+                return false;
+            }
         }
 
         return true;
