@@ -380,7 +380,7 @@ public class SettingsImporter {
 
         // Mark account as disabled if the settings file didn't contain a password
         boolean createAccountDisabled = (incoming.password == null ||
-                incoming.password.length() == 0);
+                incoming.password.isEmpty());
 
         if (account.outgoing == null && !WebDavStore.STORE_TYPE.equals(account.incoming.type)) {
             // All account types except WebDAV need to provide outgoing server settings
@@ -394,7 +394,7 @@ public class SettingsImporter {
             putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
 
             // Mark account as disabled if the settings file didn't contain a password
-            if (outgoing.password == null || outgoing.password.length() == 0) {
+            if (outgoing.password == null || outgoing.password.isEmpty()) {
                 createAccountDisabled = true;
             }
         }

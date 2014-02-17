@@ -137,7 +137,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
                 holder.email.setText(account.getEmail());
             }
 
-            if (description == null || description.length() == 0) {
+            if (description == null || description.isEmpty()) {
                 description = account.getEmail();
             }
 

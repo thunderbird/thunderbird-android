@@ -895,7 +895,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         long[] selected = new long[mSelected.size()];
         int i = 0;
         for (Long id : mSelected) {
-            selected[i++] = Long.valueOf(id);
+            selected[i++] = id;
         }
         outState.putLongArray(STATE_SELECTED_MESSAGES, selected);
     }
@@ -2667,8 +2667,9 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             outMessages.add(message);
         }
 
-        for (String folderName : folderMap.keySet()) {
-            List<Message> outMessages = folderMap.get(folderName);
+        for (Map.Entry<String, List<Message>> entry : folderMap.entrySet()) {
+            String folderName = entry.getKey();
+            List<Message> outMessages = entry.getValue();
             Account account = outMessages.get(0).getFolder().getAccount();
 
             if (operation == FolderOperation.MOVE) {
@@ -3461,12 +3462,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             return false;
         }
 
-        boolean loadFinished = true;
-        for (int i = 0; i < mCursorValid.length; i++) {
-            loadFinished &= mCursorValid[i];
+        for (boolean cursorValid : mCursorValid) {
+            if (!cursorValid) {
+                return false;
+            }
         }
 
-        return loadFinished;
+        return true;
     }
 
     /**

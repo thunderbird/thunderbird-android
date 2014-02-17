@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -99,18 +100,8 @@ public class Utility {
     public static String combine(Object[] parts, char separator) {
         if (parts == null) {
             return null;
-        } else if (parts.length == 0) {
-            return "";
-        } else if (parts.length == 1) {
-            return parts[0].toString();
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append(parts[0]);
-        for (int i = 1; i < parts.length; ++i) {
-            sb.append(separator);
-            sb.append(parts[i]);
-        }
-        return sb.toString();
+        return TextUtils.join(String.valueOf(separator), parts);
     }
 
     public static String base64Decode(String encoded) {

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Pop3Store extends Store {
     public static final String STORE_TYPE = "POP3";
@@ -628,7 +629,7 @@ public class Pop3Store extends Store {
 
         private void indexUids(ArrayList<String> uids)
         throws MessagingException, IOException {
-            HashSet<String> unindexedUids = new HashSet<String>();
+            Set<String> unindexedUids = new HashSet<String>();
             for (String uid : uids) {
                 if (mUidToMsgMap.get(uid) == null) {
                     if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
@@ -801,7 +802,7 @@ public class Pop3Store extends Store {
                     }
                 }
             } else {
-                HashSet<String> msgUidIndex = new HashSet<String>();
+                Set<String> msgUidIndex = new HashSet<String>();
                 for (Message message : messages) {
                     msgUidIndex.add(message.getUid());
                 }

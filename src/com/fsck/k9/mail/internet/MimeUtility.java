@@ -1059,7 +1059,7 @@ public class MimeUtility {
                             in.read(buf, 0, buf.length);
                             String str = new String(buf, "US-ASCII");
 
-                            if (str.length() == 0) {
+                            if (str.isEmpty()) {
                                 return "";
                             }
                             Pattern p = Pattern.compile("<meta http-equiv=\"?Content-Type\"? content=\"text/html; charset=(.+?)\">", Pattern.CASE_INSENSITIVE);
@@ -3426,9 +3426,9 @@ public class MimeUtility {
                 BodyPart bodyPart = multipart.getBodyPart(i);
                 String bodyText = getTextFromPart(bodyPart);
                 if (bodyText != null) {
-                    if (text.length() == 0 && bodyPart.isMimeType("text/plain")) {
+                    if (text.isEmpty() && bodyPart.isMimeType("text/plain")) {
                         text = bodyText;
-                    } else if (html.length() == 0 && bodyPart.isMimeType("text/html")) {
+                    } else if (html.isEmpty() && bodyPart.isMimeType("text/html")) {
                         html = bodyText;
                     }
                 }

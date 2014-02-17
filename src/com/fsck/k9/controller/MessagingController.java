@@ -616,11 +616,11 @@ public class MessagingController implements Runnable {
                     List <? extends Folder > remoteFolders = store.getPersonalNamespaces(false);
 
                     LocalStore localStore = account.getLocalStore();
-                    HashSet<String> remoteFolderNames = new HashSet<String>();
+                    Set<String> remoteFolderNames = new HashSet<String>();
                     List<LocalFolder> foldersToCreate = new LinkedList<LocalFolder>();
 
                     localFolders = localStore.getPersonalNamespaces(false);
-                    HashSet<String> localFolderNames = new HashSet<String>();
+                    Set<String> localFolderNames = new HashSet<String>();
                     for (Folder localFolder : localFolders) {
                         localFolderNames.add(localFolder.getName());
                     }
@@ -693,7 +693,7 @@ public class MessagingController implements Runnable {
 
     public void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
         final AccountStats stats = new AccountStats();
-        final HashSet<String> uuidSet = new HashSet<String>(Arrays.asList(search.getAccountUuids()));
+        final Set<String> uuidSet = new HashSet<String>(Arrays.asList(search.getAccountUuids()));
         Account[] accounts = Preferences.getPreferences(mApplication.getApplicationContext()).getAccounts();
         boolean allAccounts = uuidSet.contains(SearchSpecification.ALL_ACCOUNTS);
 
@@ -2344,14 +2344,10 @@ public class MessagingController implements Runnable {
 
             /*
              * This next part is used to bring the local UIDs of the local destination folder
-             * upto speed with the remote UIDs of remote destionation folder.
+             * upto speed with the remote UIDs of remote destination folder.
              */
             if (!localUidMap.isEmpty() && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-                Set<Map.Entry<String, String>> remoteSrcEntries = remoteUidMap.entrySet();
-                Iterator<Map.Entry<String, String>> remoteSrcEntriesIterator = remoteSrcEntries.iterator();
-
-                while (remoteSrcEntriesIterator.hasNext()) {
-                    Map.Entry<String, String> entry = remoteSrcEntriesIterator.next();
+                for (Map.Entry<String, String> entry : remoteUidMap.entrySet()) {
                     String remoteSrcUid = entry.getKey();
                     String localDestUid = localUidMap.get(remoteSrcUid);
                     String newUid = entry.getValue();
