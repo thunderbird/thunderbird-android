@@ -176,7 +176,7 @@ public class DecoderUtil {
             return null;
         }
 
-        if (encodedText.length() == 0) {
+        if (encodedText.isEmpty()) {
             Log.w(K9.LOG_TAG, "Missing encoded text in encoded word: '" + body.substring(begin, end) + "'");
             return null;
         }

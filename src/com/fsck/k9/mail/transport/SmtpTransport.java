@@ -183,7 +183,6 @@ public class SmtpTransport extends Transport {
     }
 
 
-    Account mAccount;
     String mHost;
     int mPort;
     String mUsername;
@@ -204,7 +203,6 @@ public class SmtpTransport extends Transport {
             throw new MessagingException("Error while decoding transport URI", e);
         }
 
-        mAccount = account;
         mHost = settings.host;
         mPort = settings.port;
 

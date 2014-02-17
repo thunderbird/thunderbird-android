@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
+import java.util.Set;
 
 import android.database.Cursor;
 import android.os.Parcel;
@@ -243,8 +244,8 @@ public class ConditionsTreeNode implements Parcelable {
      * Get a set of all the leaves in the tree.
      * @return Set of all the leaves.
      */
-    public HashSet<ConditionsTreeNode> getLeafSet() {
-        HashSet<ConditionsTreeNode> leafSet = new HashSet<ConditionsTreeNode>();
+    public Set<ConditionsTreeNode> getLeafSet() {
+        Set<ConditionsTreeNode> leafSet = new HashSet<ConditionsTreeNode>();
         return getLeafSet(leafSet);
     }
 
@@ -338,7 +339,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @param leafSet Leafset that's being built.
      * @return Set of leaves being completed.
      */
-    private HashSet<ConditionsTreeNode> getLeafSet(HashSet<ConditionsTreeNode> leafSet) {
+    private Set<ConditionsTreeNode> getLeafSet(Set<ConditionsTreeNode> leafSet) {
         if (mLeft == null && mRight == null) {
             // if we ended up in a leaf, add ourself and return
             leafSet.add(this);
