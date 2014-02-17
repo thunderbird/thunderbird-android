@@ -391,7 +391,7 @@ public class HtmlConverter {
      * @param text Plain text to be linkified.
      * @param outputBuffer Buffer to append linked text to.
      */
-    private static void linkifyText(final String text, final StringBuffer outputBuffer) {
+    protected static void linkifyText(final String text, final StringBuffer outputBuffer) {
         String prepared = text.replaceAll(Regex.BITCOIN_URI_PATTERN, "<a href=\"$0\">$0</a>");
 
         Matcher m = Regex.WEB_URL_PATTERN.matcher(prepared);
