@@ -215,6 +215,10 @@
     </provider>
     
     <!-- Germany -->
+    <provider id="mailbox.org" label="mailbox.org" domain="mailbox.org">
+        <incoming uri="imap+tls+://imap.mailbox.org" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mailbox.org" username="$email" />
+    </provider>
     <provider id="freenet" label="Freenet" domain="freenet.de">
         <incoming uri="imap+tls+://mx.freenet.de" username="$email" />
         <outgoing uri="smtp+tls+://mx.freenet.de" username="$email" />
