@@ -3,7 +3,9 @@ package com.fsck.k9.helper;
 import android.text.*;
 import android.text.Html.TagHandler;
 import android.util.Log;
+
 import com.fsck.k9.K9;
+
 import org.xml.sax.XMLReader;
 
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Contains common routines to convert html to text and vice versa.
@@ -209,67 +212,61 @@ public class HtmlConverter {
         if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH) {
             return simpleTextToHtml(text);
         }
+        boolean fixedWFont = K9.messageViewFixedWidthFont();
         StringReader reader = new StringReader(text);
         StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-        boolean isStartOfLine = true;  // Are we currently at the start of a line?
-        int spaces = 0;
+        StringBuilder line = new StringBuilder(100);
+        // Replace lines of -,= or _ with horizontal rules
+        Pattern hrPattern = Pattern.compile("^\\s*[-=_]{30,}\\s*$");
         int quoteDepth = 0; // Number of DIVs deep we are.
         int quotesThisLine = 0; // How deep we should be quoting for this line.
         try {
             int c;
             while ((c = reader.read()) != -1) {
-                if (isStartOfLine) {
-                    switch (c) {
-                    case ' ':
-                        spaces++;
-                        break;
-                    case '>':
-                        quotesThisLine++;
-                        spaces = 0;
-                        break;
-                    case '\n':
-                        appendbq(buff, quotesThisLine, quoteDepth);
-                        quoteDepth = quotesThisLine;
-
-                        appendsp(buff, spaces);
-                        spaces = 0;
-
-                        appendchar(buff, c);
-                        isStartOfLine = true;
-                        quotesThisLine = 0;
-                        break;
-                    default:
-                        isStartOfLine = false;
-
-                        appendbq(buff, quotesThisLine, quoteDepth);
-                        quoteDepth = quotesThisLine;
-
-                        appendsp(buff, spaces);
-                        spaces = 0;
-
-                        appendchar(buff, c);
-                        isStartOfLine = false;
+                // if the first character is a quote marker, then collect all the
+                // quote markers before handling the rest of the line
+                if (c == '>') {
+                    quotesThisLine++;
+                    while ((c = reader.read()) != -1) {
+                        switch (c) {
+                        case '>':
+                            quotesThisLine++;
+                            line.setLength(0);
+                            continue;
+                        case ' ':
+                            line.append(' ');
+                            continue;
+                        // no default
+                        }
                         break;
                     }
                 }
-                else {
-                    appendchar(buff, c);
+                if (c == -1)
+                    break;
+                do {
                     if (c == '\n') {
-                        isStartOfLine = true;
+                        appendbq(buff, quotesThisLine, quoteDepth);
+                        quoteDepth = quotesThisLine;
                         quotesThisLine = 0;
+                        if (!fixedWFont && hrPattern.matcher(line).matches())
+                            buff.append("<hr />");
+                        else
+                            buff.append(line);
+                        line.setLength(0);
+                        buff.append('\n');
+                        break;
                     }
-                }
+                    appendchar(line, c);
+                } while ((c = reader.read()) != -1);
             }
         } catch (IOException e) {
             //Should never happen
             Log.e(K9.LOG_TAG, "Could not read string to convert text to HTML:", e);
         }
         // Close off any quotes we may have opened.
-        if (quoteDepth > 0) {
-            for (int i = quoteDepth; i > 0; i--) {
-                buff.append(HTML_BLOCKQUOTE_END);
-            }
-        }
+        appendbq(buff, 0, quoteDepth);
+        if (line.length() > 0)
+            buff.append(line);
         text = buff.toString();
 
         // Make newlines at the end of blockquotes nicer by putting newlines beyond the first one outside of the
@@ -278,9 +275,6 @@ public class HtmlConverter {
                    "\\Q" + HTML_NEWLINE + "\\E((\\Q" + HTML_NEWLINE + "\\E)+?)\\Q" + HTML_BLOCKQUOTE_END + "\\E",
                    HTML_BLOCKQUOTE_END + "$1"
                );
-
-        // Replace lines of -,= or _ with horizontal rules
-        text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
 
         /*
          * Unwrap multi-line paragraphs into single line paragraphs that are
@@ -332,13 +326,6 @@ public class HtmlConverter {
         default:
             buff.append((char)c);
             break;
-        }
-    }
-
-    private static void appendsp(StringBuilder buff, int spaces) {
-        while (spaces > 0) {
-            buff.append(' ');
-            spaces--;
         }
     }
 
