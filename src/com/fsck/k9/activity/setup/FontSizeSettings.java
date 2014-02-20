@@ -131,7 +131,7 @@ public class FontSizeSettings extends K9PreferenceActivity {
                     final SliderPreference slider = (SliderPreference) preference;
                     final Float value = (Float) newValue;
                     slider.setSummary(String.valueOf(scaleToInt(value) + "%"));
-                    slider.setDialogTitle(slider.getTitle() + " " + slider.getSummary());
+                    slider.setDialogTitle(slider.getTitle() + ": " + slider.getSummary());
                     if (slider.getDialog() != null) {
                         slider.getDialog().setTitle(slider.getDialogTitle());
                     }
