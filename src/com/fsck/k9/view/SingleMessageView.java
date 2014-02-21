@@ -87,6 +87,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
     private boolean mScreenReaderEnabled;
     private MessageCryptoView mCryptoView;
+    private MessageOpenPgpView mOpenPgpView;
     private MessageWebView mMessageContentView;
     private AccessibleWebView mAccessibleMessageContentView;
     private MessageHeader mHeaderContainer;
@@ -128,6 +129,9 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mCryptoView = (MessageCryptoView) findViewById(R.id.layout_decrypt);
         mCryptoView.setFragment(fragment);
         mCryptoView.setupChildViews();
+        mOpenPgpView = (MessageOpenPgpView) findViewById(R.id.layout_decrypt_openpgp);
+        mOpenPgpView.setFragment(fragment);
+        mOpenPgpView.setupChildViews();
         mShowPicturesAction = findViewById(R.id.show_pictures);
         mShowMessageAction = findViewById(R.id.show_message);
 
@@ -545,7 +549,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     public boolean additionalHeadersVisible() {
         return mHeaderContainer.additionalHeadersVisible();
     }
-
+    
     public void setMessage(Account account, LocalMessage message, PgpData pgpData,
             MessagingController controller, MessagingListener listener) throws MessagingException {
         resetView();
@@ -616,6 +620,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (text != null) {
             loadBodyFromText(text);
             updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
+            mOpenPgpView.updateLayout(account.getOpenPgpProvider(),pgpData.getDecryptedData(),
+                    pgpData.getSignatureResult(), message);
         } else {
             showStatusMessage(getContext().getString(R.string.webview_empty_message));
         }

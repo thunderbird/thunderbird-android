@@ -51,7 +51,9 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.view.MessageHeader;
+import com.fsck.k9.view.MessageOpenPgpView;
 import com.fsck.k9.view.MessageTitleView;
+import com.fsck.k9.view.SingleMessageView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 
@@ -1568,4 +1570,19 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             removeMessageViewFragment();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // TODO: ugly pass-through! Can not be handled in fragment, because startIntentSenderForResult()
+        // does not support fragments!
+        // handle OpenPGP results from PendingIntents in OpenPGP view
+        MessageOpenPgpView mOpenPgpView = (MessageOpenPgpView) findViewById(R.id.layout_decrypt_openpgp);
+        if (mOpenPgpView != null && mOpenPgpView.handleOnActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+    }
+    
+    
 }

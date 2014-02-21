@@ -11,4 +11,9 @@ android {
       res.srcDirs = ['res']
     }
   }
+  
+  // Do not abort build if lint finds errors
+  lintOptions {
+    abortOnError false
+  }
 }
