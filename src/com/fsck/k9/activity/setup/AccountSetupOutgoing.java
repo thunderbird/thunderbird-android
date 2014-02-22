@@ -56,6 +56,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private ViewGroup mRequireLoginSettingsView;
     private Spinner mSecurityTypeView;
     private Spinner mAuthTypeView;
+    private ArrayAdapter<AuthType> mAuthTypeAdapter;
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
@@ -125,10 +126,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
-        ArrayAdapter<AuthType> authTypesAdapter = new ArrayAdapter<AuthType>(this,
-                android.R.layout.simple_spinner_item, AuthType.values());
-        authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mAuthTypeView.setAdapter(authTypesAdapter);
+        AuthType[] acceptableAuthTypes = {AuthType.AUTOMATIC, AuthType.PLAIN, AuthType.CRAM_MD5};
+        mAuthTypeAdapter = new ArrayAdapter<AuthType>(this,
+                android.R.layout.simple_spinner_item, acceptableAuthTypes);
+        mAuthTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         /*
          * Calls validateFields() which enables or disables the Next button
@@ -196,7 +198,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             }
 
             if (authType != null) {
-                int position = AuthType.valueOf(authType).ordinal();
+                int position = mAuthTypeAdapter.getPosition(AuthType.valueOf(authType));
                 mAuthTypeView.setSelection(position, false);
             }
 

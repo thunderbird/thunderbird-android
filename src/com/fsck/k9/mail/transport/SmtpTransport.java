@@ -305,12 +305,11 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            boolean useAuthLogin = AuthType.LOGIN.equals(mAuthType);
-            boolean useAuthPlain = AuthType.PLAIN.equals(mAuthType);
+            boolean useAuthPlain = AuthType.PLAIN.equals(mAuthType) || AuthType.LOGIN.equals(mAuthType);
             boolean useAuthCramMD5 = AuthType.CRAM_MD5.equals(mAuthType);
 
             // Automatically choose best authentication method if none was explicitly selected
-            boolean useAutomaticAuth = !(useAuthLogin || useAuthPlain || useAuthCramMD5);
+            boolean useAutomaticAuth = !(useAuthPlain || useAuthCramMD5);
 
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
@@ -360,11 +359,7 @@ public class SmtpTransport extends Transport {
                             throw ex;
                         }
                     }
-                } else if (useAuthLogin || (useAutomaticAuth && authLoginSupported)) {
-                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                        Log.d(K9.LOG_TAG, "Using LOGIN as authentication method although the " +
-                              "server didn't advertise support for it in EHLO response.");
-                    }
+                } else if (useAutomaticAuth && authLoginSupported) {
                     saslAuthLogin(mUsername, mPassword);
                 } else {
                     throw new MessagingException("No valid authentication mechanism found.");
