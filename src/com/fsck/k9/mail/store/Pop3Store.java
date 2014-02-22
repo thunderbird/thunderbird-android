@@ -377,21 +377,23 @@ public class Pop3Store extends Store {
                 }
 
                 if (mAuthType == AuthType.CRAM_MD5) {
+                    String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
+
+                    String b64CRAM = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
                     try {
-                        String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
-
-                        String b64CRAM = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
                         executeSimpleCommand(b64CRAM);
-
-                    } catch (MessagingException me) {
-                        throw new AuthenticationFailedException(null, me);
+                    } catch (Pop3ErrorResponse e) {
+                        throw new AuthenticationFailedException(
+                                "POP3 CRAM-MD5 authentication failed: "
+                                        + e.getMessage(), e);
                     }
                 } else {
+                    executeSimpleCommand(USER_COMMAND + " " + mUsername);
                     try {
-                        executeSimpleCommand(USER_COMMAND + " " + mUsername);
                         executeSimpleCommand(PASS_COMMAND + " " + mPassword, true);
-                    } catch (MessagingException me) {
-                        throw new AuthenticationFailedException(null, me);
+                    } catch (Pop3ErrorResponse e) {
+                        throw new AuthenticationFailedException(
+                                "POP3 login authentication failed: " + e.getMessage(), e);
                     }
                 }
 

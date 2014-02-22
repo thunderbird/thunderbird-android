@@ -714,7 +714,7 @@ public class SmtpTransport extends Transport {
 
         List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
         if (respList.size() != 1) {
-            throw new AuthenticationFailedException("Unable to negotiate CRAM-MD5");
+            throw new MessagingException("Unable to negotiate CRAM-MD5");
         }
 
         String b64Nonce = respList.get(0);
@@ -722,8 +722,8 @@ public class SmtpTransport extends Transport {
 
         try {
             executeSimpleCommand(b64CRAMString, true);
-        } catch (MessagingException me) {
-            throw new AuthenticationFailedException("Unable to negotiate MD5 CRAM");
+        } catch (NegativeSmtpReplyException exception) {
+            throw new AuthenticationFailedException(exception.getMessage(), exception);
         }
     }
 

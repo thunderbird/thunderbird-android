@@ -2537,39 +2537,32 @@ public class ImapStore extends Store {
 
                 mOut = new BufferedOutputStream(mOut, 1024);
 
-                try {
-                    switch (mSettings.getAuthType()) {
-                    case CRAM_MD5:
-                        if (hasCapability(CAPABILITY_AUTH_CRAM_MD5)) {
-                            authCramMD5();
-                        } else {
-                            throw new MessagingException(
-                                    "Server doesn't support encrypted passwords using CRAM-MD5.");
-                        }
-                        break;
-
-                    case PLAIN:
-                        if (hasCapability(CAPABILITY_AUTH_PLAIN)) {
-                            saslAuthPlain();
-                        } else if (!hasCapability(CAPABILITY_LOGINDISABLED)) {
-                            login();
-                        } else {
-                            throw new MessagingException(
-                                    "Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled.");
-                        }
-                        break;
-
-                    default:
+                switch (mSettings.getAuthType()) {
+                case CRAM_MD5:
+                    if (hasCapability(CAPABILITY_AUTH_CRAM_MD5)) {
+                        authCramMD5();
+                    } else {
                         throw new MessagingException(
-                                "Unhandled authentication method found in the server settings (bug).");
+                                "Server doesn't support encrypted passwords using CRAM-MD5.");
                     }
-                    authSuccess = true;
-                } catch (ImapException ie) {
-                    throw new AuthenticationFailedException(ie.getAlertText(), ie);
+                    break;
 
-                } catch (MessagingException me) {
-                    throw new AuthenticationFailedException(null, me);
+                case PLAIN:
+                    if (hasCapability(CAPABILITY_AUTH_PLAIN)) {
+                        saslAuthPlain();
+                    } else if (!hasCapability(CAPABILITY_LOGINDISABLED)) {
+                        login();
+                    } else {
+                        throw new MessagingException(
+                                "Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled.");
+                    }
+                    break;
+
+                default:
+                    throw new MessagingException(
+                            "Unhandled authentication method found in the server settings (bug).");
                 }
+                authSuccess = true;
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, CAPABILITY_COMPRESS_DEFLATE + " = " + hasCapability(CAPABILITY_COMPRESS_DEFLATE));
                 }
