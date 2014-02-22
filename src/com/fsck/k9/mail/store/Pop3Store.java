@@ -9,6 +9,8 @@ import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 
+import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.net.ssl.TrustManagerFactory;
 import com.fsck.k9.net.ssl.TrustedSocketFactory;
@@ -19,8 +21,11 @@ import javax.net.ssl.TrustManager;
 import java.io.*;
 import java.net.*;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.HashMap;
@@ -47,6 +52,7 @@ public class Pop3Store extends Store {
     private static final String USER_COMMAND = "USER";
     private static final String PASS_COMMAND = "PASS";
     private static final String CAPA_COMMAND = "CAPA";
+    private static final String AUTH_COMMAND = "AUTH";
     private static final String STAT_COMMAND = "STAT";
     private static final String LIST_COMMAND = "LIST";
     private static final String UIDL_COMMAND = "UIDL";
@@ -57,9 +63,10 @@ public class Pop3Store extends Store {
 
     private static final String STLS_CAPABILITY = "STLS";
     private static final String UIDL_CAPABILITY = "UIDL";
-    private static final String PIPELINING_CAPABILITY = "PIPELINING";
-    private static final String USER_CAPABILITY = "USER";
     private static final String TOP_CAPABILITY = "TOP";
+    private static final String SASL_CAPABILITY = "SASL";
+    private static final String AUTH_PLAIN_CAPABILITY = "PLAIN";
+    private static final String AUTH_CRAM_MD5_CAPABILITY = "CRAM-MD5";
 
     /**
      * Decodes a Pop3Store URI.
@@ -347,12 +354,11 @@ public class Pop3Store extends Store {
                     throw new MessagingException("Unable to connect socket");
                 }
 
-                // Eat the banner
-                executeSimpleCommand(null);
+                String serverGreeting = executeSimpleCommand(null);
 
+                mCapabilities = getCapabilities();
                 if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
                         || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
-                    mCapabilities = getCapabilities();
 
                     if (mCapabilities.stls) {
                         executeSimpleCommand(STLS_COMMAND);
@@ -371,33 +377,33 @@ public class Pop3Store extends Store {
                         if (!isOpen()) {
                             throw new MessagingException("Unable to connect socket");
                         }
+                        mCapabilities = getCapabilities();
                     } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
                         throw new MessagingException("TLS not supported but required");
                     }
                 }
 
-                if (mAuthType == AuthType.CRAM_MD5) {
-                    String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
+                switch (mAuthType) {
+                case PLAIN:
+                    if (mCapabilities.authPlain) {
+                        authPlain();
+                    } else {
+                        login();
+                    }
+                    break;
 
-                    String b64CRAM = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
-                    try {
-                        executeSimpleCommand(b64CRAM);
-                    } catch (Pop3ErrorResponse e) {
-                        throw new AuthenticationFailedException(
-                                "POP3 CRAM-MD5 authentication failed: "
-                                        + e.getMessage(), e);
+                case CRAM_MD5:
+                    if (mCapabilities.cramMD5) {
+                        authCramMD5();
+                    } else {
+                        authAPOP(serverGreeting);
                     }
-                } else {
-                    executeSimpleCommand(USER_COMMAND + " " + mUsername);
-                    try {
-                        executeSimpleCommand(PASS_COMMAND + " " + mPassword, true);
-                    } catch (Pop3ErrorResponse e) {
-                        throw new AuthenticationFailedException(
-                                "POP3 login authentication failed: " + e.getMessage(), e);
-                    }
+                    break;
+
+                default:
+                    throw new MessagingException(
+                            "Unhandled authentication method found in the server settings (bug).");
                 }
-
-                mCapabilities = getCapabilities();
             } catch (SSLException e) {
                 throw new CertificateValidationException(e.getMessage(), e);
             } catch (GeneralSecurityException gse) {
@@ -414,6 +420,67 @@ public class Pop3Store extends Store {
             mUidToMsgMap.clear();
             mMsgNumToMsgMap.clear();
             mUidToMsgNumMap.clear();
+        }
+
+        private void login() throws MessagingException {
+            executeSimpleCommand(USER_COMMAND + " " + mUsername);
+            try {
+                executeSimpleCommand(PASS_COMMAND + " " + mPassword, true);
+            } catch (Pop3ErrorResponse e) {
+                throw new AuthenticationFailedException(
+                        "POP3 login authentication failed: " + e.getMessage(), e);
+            }
+        }
+
+        private void authPlain() throws MessagingException {
+            executeSimpleCommand("AUTH PLAIN");
+            try {
+                byte[] encodedBytes = Base64.encodeBase64(("\000" + mUsername
+                        + "\000" + mPassword).getBytes());
+                executeSimpleCommand(new String(encodedBytes), true);
+            } catch (Pop3ErrorResponse e) {
+                throw new AuthenticationFailedException(
+                        "POP3 SASL auth PLAIN authentication failed: "
+                                + e.getMessage(), e);
+          }
+        }
+
+        private void authAPOP(String serverGreeting) throws MessagingException {
+            // regex based on RFC 2449 (3.) "Greeting"
+            String timestamp = serverGreeting.replaceFirst(
+                    "^\\+OK *(?:\\[[^\\]]+\\])?[^<]*(<[^>]*>)?[^<]*$", "$1");
+            if ("".equals(timestamp)) {
+                throw new MessagingException(
+                        "APOP authentication is not supported");
+            }
+            MessageDigest md;
+            try {
+                md = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                throw new MessagingException(
+                        "MD5 failure during POP3 auth APOP", e);
+            }
+            byte[] digest = md.digest((timestamp + mPassword).getBytes());
+            String hexDigest = new String(Hex.encodeHex(digest));
+            try {
+                executeSimpleCommand("APOP " + mUsername + " " + hexDigest, true);
+            } catch (Pop3ErrorResponse e) {
+                throw new AuthenticationFailedException(
+                        "POP3 APOP authentication failed: " + e.getMessage(), e);
+            }
+        }
+
+        private void authCramMD5() throws MessagingException {
+            String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
+
+            String b64CRAM = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
+            try {
+                executeSimpleCommand(b64CRAM, true);
+            } catch (Pop3ErrorResponse e) {
+                throw new AuthenticationFailedException(
+                        "POP3 CRAM-MD5 authentication failed: "
+                                + e.getMessage(), e);
+            }
         }
 
         @Override
@@ -986,21 +1053,53 @@ public class Pop3Store extends Store {
         private Pop3Capabilities getCapabilities() throws IOException {
             Pop3Capabilities capabilities = new Pop3Capabilities();
             try {
+                /*
+                 * Try sending an AUTH command with no arguments.
+                 *
+                 * The server may respond with a list of supported SASL
+                 * authentication mechanisms.
+                 *
+                 * Ref.: http://tools.ietf.org/html/draft-myers-sasl-pop3-05
+                 *
+                 * While this never became a standard, there are servers that
+                 * support it, and Thunderbird includes this check.
+                 */
+                String response = executeSimpleCommand(AUTH_COMMAND);
+                while ((response = readLine()) != null) {
+                    if (response.equals(".")) {
+                        break;
+                    }
+                    response = response.toUpperCase();
+                    if (response.equals(AUTH_PLAIN_CAPABILITY)) {
+                        capabilities.authPlain = true;
+                    } else if (response.equals(AUTH_CRAM_MD5_CAPABILITY)) {
+                        capabilities.cramMD5 = true;
+                    }
+                }
+            } catch (MessagingException e) {
+                // Assume AUTH command with no arguments is not supported.
+            }
+            try {
                 String response = executeSimpleCommand(CAPA_COMMAND);
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
                         break;
                     }
-                    if (response.equalsIgnoreCase(STLS_CAPABILITY)) {
+                    response = response.toUpperCase();
+                    if (response.equals(STLS_CAPABILITY)) {
                         capabilities.stls = true;
-                    } else if (response.equalsIgnoreCase(UIDL_CAPABILITY)) {
+                    } else if (response.equals(UIDL_CAPABILITY)) {
                         capabilities.uidl = true;
-                    } else if (response.equalsIgnoreCase(PIPELINING_CAPABILITY)) {
-                        capabilities.pipelining = true;
-                    } else if (response.equalsIgnoreCase(USER_CAPABILITY)) {
-                        capabilities.user = true;
-                    } else if (response.equalsIgnoreCase(TOP_CAPABILITY)) {
+                    } else if (response.equals(TOP_CAPABILITY)) {
                         capabilities.top = true;
+                    } else if (response.startsWith(SASL_CAPABILITY)) {
+                        List<String> saslAuthMechanisms = Arrays.asList(response.split(" "));
+                        if (saslAuthMechanisms.contains(AUTH_PLAIN_CAPABILITY)) {
+                            capabilities.authPlain = true;
+                        }
+                        if (saslAuthMechanisms.contains(AUTH_CRAM_MD5_CAPABILITY)) {
+                            capabilities.cramMD5 = true;
+                        }
                     }
                 }
 
@@ -1117,20 +1216,20 @@ public class Pop3Store extends Store {
     }
 
     static class Pop3Capabilities {
+        public boolean cramMD5;
+        public boolean authPlain;
         public boolean stls;
         public boolean top;
-        public boolean user;
         public boolean uidl;
-        public boolean pipelining;
 
         @Override
         public String toString() {
-            return String.format("STLS %b, TOP %b, USER %b, UIDL %b, PIPELINING %b",
+            return String.format("CRAM-MD5 %b, PLAIN %b, STLS %b, TOP %b, UIDL %b",
+                                 cramMD5,
+                                 authPlain,
                                  stls,
                                  top,
-                                 user,
-                                 uidl,
-                                 pipelining);
+                                 uidl);
         }
     }
 
