@@ -8,6 +8,11 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.902" versioncode="21005" >
+        <change>Avoid adding the same recipient twice when using "reply to all"</change>
+        <change>Fixed a bug with bitcoin URIs</change>
+        <change>Added mailbox.org to the list of providers</change>
+    </release>
     <release version="4.901" versioncode="21004" >
         <change>Added a slider to allow picking a font size for the message body (40% to 250%) in settings</change>
         <change>Added support for KitKat's Storage Access Framework that allows you to attach multiple files at once</change>
