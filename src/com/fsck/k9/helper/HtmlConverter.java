@@ -282,17 +282,6 @@ public class HtmlConverter {
         // Replace lines of -,= or _ with horizontal rules
         text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
 
-        /*
-         * Unwrap multi-line paragraphs into single line paragraphs that are
-         * wrapped when displayed. But try to avoid unwrapping consecutive lines
-         * of text that are not paragraphs, such as lists of system log entries
-         * or long URLs that are on their own line.
-         */
-        text = text.replaceAll("(?m)^([^\r\n]{4,}[\\s\\w,:;+/])(?:\r\n|\n|\r)(?=[a-z]\\S{0,10}[\\s\\n\\r])", "$1 ");
-
-        // Compress four or more newlines down to two newlines
-        text = text.replaceAll("(?m)(\r\n|\n|\r){4,}", "\r\n\r\n");
-
         StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
 
         sb.append(htmlifyMessageHeader());
