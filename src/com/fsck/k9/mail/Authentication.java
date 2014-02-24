@@ -54,7 +54,7 @@ public class Authentication {
         try {
             byte[] nonce = Base64.decodeBase64(b64Nonce);
 
-            byte[] secretBytes = password.getBytes(US_ASCII);
+            byte[] secretBytes = password.getBytes();
             MessageDigest md = MessageDigest.getInstance("MD5");
             if (secretBytes.length > 64) {
                 secretBytes = md.digest(secretBytes);
@@ -74,7 +74,7 @@ public class Authentication {
             byte[] result = md.digest(firstPass);
 
             String plainCRAM = username + " " + new String(Hex.encodeHex(result));
-            byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes(US_ASCII));
+            byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes());
 
             return b64CRAM;
 
