@@ -132,6 +132,7 @@ public class ImapStore extends Store {
     private static final String CAPABILITY_AUTH_CRAM_MD5 = "AUTH=CRAM-MD5";
     private static final String CAPABILITY_AUTH_PLAIN = "AUTH=PLAIN";
     private static final String CAPABILITY_LOGINDISABLED = "LOGINDISABLED";
+    private static final String CAPABILITY_LITERAL_PLUS = "LITERAL+";
     private static final String COMMAND_IDLE = "IDLE";
     private static final String CAPABILITY_NAMESPACE = "NAMESPACE";
     private static final String COMMAND_NAMESPACE = "NAMESPACE";
@@ -2687,10 +2688,31 @@ public class ImapStore extends Store {
         }
 
         protected void login() throws IOException, MessagingException {
-            receiveCapabilities(executeSimpleCommand(String.format(
-                    "LOGIN %s %s",
-                    ImapStore.encodeString(mSettings.getUsername()),
-                    ImapStore.encodeString(mSettings.getPassword())), true));
+            boolean hasLiteralPlus = hasCapability(CAPABILITY_LITERAL_PLUS);
+            String tag;
+                byte[] username = mSettings.getUsername().getBytes();
+                byte[] password = mSettings.getPassword().getBytes();
+                tag = sendCommand(String.format("LOGIN {%d%s}",
+                        username.length, hasLiteralPlus ? "+" : ""), true);
+                if (!hasLiteralPlus) {
+                    readContinuationResponse(tag);
+                }
+                mOut.write(username);
+                mOut.write(String.format(" {%d%s}\r\n", password.length,
+                        hasLiteralPlus ? "+" : "").getBytes());
+                if (!hasLiteralPlus) {
+                    mOut.flush();
+                    readContinuationResponse(tag);
+                }
+                mOut.write(password);
+                mOut.write('\r');
+                mOut.write('\n');
+                mOut.flush();
+            try {
+                receiveCapabilities(readStatusResponse(tag, "LOGIN", null));
+            } catch (MessagingException e) {
+                throw new AuthenticationFailedException(e.getMessage());
+            }
         }
 
         protected void authCramMD5() throws MessagingException, IOException {
