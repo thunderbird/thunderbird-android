@@ -68,6 +68,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private ArrayAdapter<AuthType> mAuthTypeAdapter;
     private String mDefaultPort = "";
     private String mDefaultSslPort = "";
+    private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
@@ -123,11 +124,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
             }
         });
-
-        ArrayAdapter<ConnectionSecurity> securityTypesAdapter = new ArrayAdapter<ConnectionSecurity>(this,
-                android.R.layout.simple_spinner_item, ConnectionSecurity.values());
-        securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSecurityTypeView.setAdapter(securityTypesAdapter);
 
         mAuthTypeAdapter = AuthType.getArrayAdapter(this);
         mAuthTypeView.setAdapter(mAuthTypeAdapter);
@@ -189,9 +185,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             int position = mAuthTypeAdapter.getPosition(settings.authenticationType);
             mAuthTypeView.setSelection(position, false);
 
-            // Select currently configured security type
-            mSecurityTypeView.setSelection(settings.connectionSecurity.ordinal(), false);
-
             mStoreType = settings.type;
             if (Pop3Store.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
@@ -231,6 +224,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mDefaultPort = WEBDAV_PORT;
                 mDefaultSslPort = WEBDAV_SSL_PORT;
+                mConnectionSecurityChoices = new ConnectionSecurity[] {
+                        ConnectionSecurity.NONE,
+                        ConnectionSecurity.SSL_TLS_REQUIRED };
 
                 // Hide the unnecessary fields
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
@@ -257,6 +253,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
+
+            ArrayAdapter<ConnectionSecurity> securityTypesAdapter = new ArrayAdapter<ConnectionSecurity>(this,
+                    android.R.layout.simple_spinner_item, mConnectionSecurityChoices);
+            securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSecurityTypeView.setAdapter(securityTypesAdapter);
+
+            // Select currently configured security type
+            mSecurityTypeView.setSelection(settings.connectionSecurity.ordinal(), false);
 
             /*
              * Updates the port when the user changes the security type. This allows
@@ -325,19 +329,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         String port;
         switch (securityType) {
         case NONE:
-            port = mDefaultPort;
-            break;
         case STARTTLS_REQUIRED:
-            if (WebDavStore.STORE_TYPE.equals(mStoreType)) {
-                /*
-                 * The concept of STARTTLS is not really applicable for WebDav and should never
-                 * have been made a user-selectable option.  But now we must support the setting
-                 * if it exists.
-                 */
-                port = mDefaultSslPort;
-            } else {
-                port = mDefaultPort;
-            }
+            port = mDefaultPort;
             break;
         case SSL_TLS_REQUIRED:
             port = mDefaultSslPort;
