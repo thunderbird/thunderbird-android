@@ -2807,10 +2807,10 @@ public class LocalStore extends Store implements Serializable {
                                  */
                                 String disposition = attachment.getDisposition();
                                 if (disposition != null) {
-                                    String s = MimeUtility.getHeaderParameter(disposition, "size");
-                                    if (s != null) {
+                                    String sizeParam = MimeUtility.getHeaderParameter(disposition, "size");
+                                    if (sizeParam != null) {
                                         try {
-                                            size = Integer.parseInt(s);
+                                            size = Integer.parseInt(sizeParam);
                                         } catch (NumberFormatException e) { /* Ignore */ }
                                     }
                                 }
