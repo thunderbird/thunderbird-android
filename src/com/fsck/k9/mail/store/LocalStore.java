@@ -1068,7 +1068,7 @@ public class LocalStore extends Store implements Serializable {
                     return null;
                 }
             });
-        } catch (UnsupportedEncodingException usee) {
+        } catch (UnsupportedEncodingException uee) {
             throw new Error("Aparently UTF-8 has been lost to the annals of history.");
         }
     }
