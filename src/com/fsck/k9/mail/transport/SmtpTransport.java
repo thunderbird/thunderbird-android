@@ -38,11 +38,9 @@ public class SmtpTransport extends Transport {
      *
      * <p>Possible forms:</p>
      * <pre>
-     * smtp://user:password@server:port CONNECTION_SECURITY_NONE
-     * smtp+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * smtp+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * smtp+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * smtp+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * smtp://user:password@server:port ConnectionSecurity.NONE
+     * smtp+tls+://user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
+     * smtp+ssl+://user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
     public static ServerSettings decodeUri(String uri) {
@@ -61,20 +59,26 @@ public class SmtpTransport extends Transport {
         }
 
         String scheme = smtpUri.getScheme();
+        /*
+         * Currently available schemes are:
+         * smtp
+         * smtp+tls+
+         * smtp+ssl+
+         *
+         * The following are obsolete schemes that may be found in pre-existing
+         * settings from earlier versions or that may be found when imported. We
+         * continue to recognize them and re-map them appropriately:
+         * smtp+tls
+         * smtp+ssl
+         */
         if (scheme.equals("smtp")) {
             connectionSecurity = ConnectionSecurity.NONE;
             port = 587;
-        } else if (scheme.equals("smtp+tls")) {
-            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
-            port = 587;
-        } else if (scheme.equals("smtp+tls+")) {
+        } else if (scheme.startsWith("smtp+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
             port = 587;
-        } else if (scheme.equals("smtp+ssl+")) {
+        } else if (scheme.startsWith("smtp+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 465;
-        } else if (scheme.equals("smtp+ssl")) {
-            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
             port = 465;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
@@ -132,14 +136,8 @@ public class SmtpTransport extends Transport {
 
         String scheme;
         switch (server.connectionSecurity) {
-            case SSL_TLS_OPTIONAL:
-                scheme = "smtp+ssl";
-                break;
             case SSL_TLS_REQUIRED:
                 scheme = "smtp+ssl+";
-                break;
-            case STARTTLS_OPTIONAL:
-                scheme = "smtp+tls";
                 break;
             case STARTTLS_REQUIRED:
                 scheme = "smtp+tls+";
@@ -202,13 +200,11 @@ public class SmtpTransport extends Transport {
             for (int i = 0; i < addresses.length; i++) {
                 try {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
-                    if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ||
-                            mConnectionSecurity == ConnectionSecurity.SSL_TLS_OPTIONAL) {
+                    if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
                         SSLContext sslContext = SSLContext.getInstance("TLS");
-                        boolean secure = mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED;
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
-                                        mHost, mPort, secure) },
+                                        mHost, mPort, true) },
                                 new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
@@ -260,16 +256,14 @@ public class SmtpTransport extends Transport {
             m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
 
 
-            if (mConnectionSecurity == ConnectionSecurity.STARTTLS_OPTIONAL
-                    || mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
+            if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                 if (extensions.containsKey("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
                     SSLContext sslContext = SSLContext.getInstance("TLS");
-                    boolean secure = mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED;
                     sslContext.init(null,
                             new TrustManager[] { TrustManagerFactory.get(mHost,
-                                    mPort, secure) }, new SecureRandom());
+                                    mPort, true) }, new SecureRandom());
                     mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
                               mPort, true);
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
@@ -281,7 +275,7 @@ public class SmtpTransport extends Transport {
                      */
                     extensions = sendHello(localHost);
                     secureConnection = true;
-                } else if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
+                } else {
                     throw new MessagingException("TLS not supported but required");
                 }
             }

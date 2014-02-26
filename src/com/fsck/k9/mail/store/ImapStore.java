@@ -146,11 +146,9 @@ public class ImapStore extends Store {
      *
      * <p>Possible forms:</p>
      * <pre>
-     * imap://auth:user:password@server:port CONNECTION_SECURITY_NONE
-     * imap+tls://auth:user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * imap+tls+://auth:user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * imap+ssl+://auth:user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * imap+ssl://auth:user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * imap://auth:user:password@server:port ConnectionSecurity.NONE
+     * imap+tls+://auth:user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
+     * imap+ssl+://auth:user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
     public static ImapStoreSettings decodeUri(String uri) {
@@ -171,20 +169,26 @@ public class ImapStore extends Store {
         }
 
         String scheme = imapUri.getScheme();
+        /*
+         * Currently available schemes are:
+         * imap
+         * imap+tls+
+         * imap+ssl+
+         *
+         * The following are obsolete schemes that may be found in pre-existing
+         * settings from earlier versions or that may be found when imported. We
+         * continue to recognize them and re-map them appropriately:
+         * imap+tls
+         * imap+ssl
+         */
         if (scheme.equals("imap")) {
             connectionSecurity = ConnectionSecurity.NONE;
             port = 143;
-        } else if (scheme.equals("imap+tls")) {
-            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
-            port = 143;
-        } else if (scheme.equals("imap+tls+")) {
+        } else if (scheme.startsWith("imap+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
             port = 143;
-        } else if (scheme.equals("imap+ssl+")) {
+        } else if (scheme.startsWith("imap+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 993;
-        } else if (scheme.equals("imap+ssl")) {
-            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
             port = 993;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
@@ -267,14 +271,8 @@ public class ImapStore extends Store {
 
         String scheme;
         switch (server.connectionSecurity) {
-            case SSL_TLS_OPTIONAL:
-                scheme = "imap+ssl";
-                break;
             case SSL_TLS_REQUIRED:
                 scheme = "imap+ssl+";
-                break;
-            case STARTTLS_OPTIONAL:
-                scheme = "imap+tls";
                 break;
             case STARTTLS_REQUIRED:
                 scheme = "imap+tls+";
@@ -2420,15 +2418,13 @@ public class ImapStore extends Store {
                         SocketAddress socketAddress = new InetSocketAddress(addresses[i],
                                 mSettings.getPort());
 
-                        if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ||
-                                connectionSecurity == ConnectionSecurity.SSL_TLS_OPTIONAL) {
+                        if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
                             SSLContext sslContext = SSLContext.getInstance("TLS");
-                            boolean secure = connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED;
                             sslContext
                                     .init(null,
                                             new TrustManager[] { TrustManagerFactory.get(
                                                     mSettings.getHost(),
-                                                    mSettings.getPort(), secure) },
+                                                    mSettings.getPort(), true) },
                                             new SecureRandom());
                             mSocket = TrustedSocketFactory.createSocket(sslContext);
                         } else {
@@ -2473,19 +2469,17 @@ public class ImapStore extends Store {
                     }
                 }
 
-                if (mSettings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_OPTIONAL
-                        || mSettings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_REQUIRED) {
+                if (mSettings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_REQUIRED) {
 
                     if (hasCapability("STARTTLS")) {
                         // STARTTLS
                         executeSimpleCommand("STARTTLS");
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
-                        boolean secure = mSettings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_REQUIRED;
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
                                         mSettings.getHost(),
-                                        mSettings.getPort(), secure) },
+                                        mSettings.getPort(), true) },
                                 new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket,
                                 mSettings.getHost(), mSettings.getPort(), true);
@@ -2502,7 +2496,7 @@ public class ImapStore extends Store {
                         if (responses.size() != 2) {
                             throw new MessagingException("Invalid CAPABILITY response received");
                         }
-                    } else if (mSettings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_REQUIRED) {
+                    } else {
                         throw new MessagingException("TLS not supported but required");
                     }
                 }

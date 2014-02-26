@@ -62,11 +62,9 @@ public class Pop3Store extends Store {
      *
      * <p>Possible forms:</p>
      * <pre>
-     * pop3://user:password@server:port CONNECTION_SECURITY_NONE
-     * pop3+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * pop3+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * pop3+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * pop3+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * pop3://user:password@server:port ConnectionSecurity.NONE
+     * pop3+tls+://user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
+     * pop3+ssl+://user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
     public static ServerSettings decodeUri(String uri) {
@@ -84,20 +82,26 @@ public class Pop3Store extends Store {
         }
 
         String scheme = pop3Uri.getScheme();
+        /*
+         * Currently available schemes are:
+         * pop3
+         * pop3+tls+
+         * pop3+ssl+
+         *
+         * The following are obsolete schemes that may be found in pre-existing
+         * settings from earlier versions or that may be found when imported. We
+         * continue to recognize them and re-map them appropriately:
+         * pop3+tls
+         * pop3+ssl
+         */
         if (scheme.equals("pop3")) {
             connectionSecurity = ConnectionSecurity.NONE;
             port = 110;
-        } else if (scheme.equals("pop3+tls")) {
-            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
-            port = 110;
-        } else if (scheme.equals("pop3+tls+")) {
+        } else if (scheme.startsWith("pop3+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
             port = 110;
-        } else if (scheme.equals("pop3+ssl+")) {
+        } else if (scheme.startsWith("pop3+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 995;
-        } else if (scheme.equals("pop3+ssl")) {
-            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
             port = 995;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
@@ -161,14 +165,8 @@ public class Pop3Store extends Store {
 
         String scheme;
         switch (server.connectionSecurity) {
-            case SSL_TLS_OPTIONAL:
-                scheme = "pop3+ssl";
-                break;
             case SSL_TLS_REQUIRED:
                 scheme = "pop3+ssl+";
-                break;
-            case STARTTLS_OPTIONAL:
-                scheme = "pop3+tls";
                 break;
             case STARTTLS_REQUIRED:
                 scheme = "pop3+tls+";
@@ -299,13 +297,11 @@ public class Pop3Store extends Store {
 
             try {
                 SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
-                if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ||
-                        mConnectionSecurity == ConnectionSecurity.SSL_TLS_OPTIONAL) {
+                if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
                     SSLContext sslContext = SSLContext.getInstance("TLS");
-                    final boolean secure = mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED;
                     sslContext.init(null,
                             new TrustManager[] { TrustManagerFactory.get(mHost,
-                                    mPort, secure) }, new SecureRandom());
+                                    mPort, true) }, new SecureRandom());
                     mSocket = TrustedSocketFactory.createSocket(sslContext);
                 } else {
                     mSocket = new Socket();
@@ -323,17 +319,15 @@ public class Pop3Store extends Store {
                 String serverGreeting = executeSimpleCommand(null);
 
                 mCapabilities = getCapabilities();
-                if (mConnectionSecurity == ConnectionSecurity.STARTTLS_OPTIONAL
-                        || mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
+                if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
 
                     if (mCapabilities.stls) {
                         executeSimpleCommand(STLS_COMMAND);
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
-                        boolean secure = mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED;
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
-                                        mHost, mPort, secure) },
+                                        mHost, mPort, true) },
                                 new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
                                 mPort, true);
@@ -344,7 +338,7 @@ public class Pop3Store extends Store {
                             throw new MessagingException("Unable to connect socket");
                         }
                         mCapabilities = getCapabilities();
-                    } else if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
+                    } else {
                         throw new MessagingException("TLS not supported but required");
                     }
                 }

@@ -82,11 +82,9 @@ public class WebDavStore extends Store {
      *
      * <p>Possible forms:</p>
      * <pre>
-     * webdav://user:password@server:port CONNECTION_SECURITY_NONE
-     * webdav+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * webdav+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * webdav+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * webdav+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * webdav://user:password@server:port ConnectionSecurity.NONE
+     * webdav+tls+://user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
+     * webdav+ssl+://user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
     public static WebDavStoreSettings decodeUri(String uri) {
@@ -109,15 +107,23 @@ public class WebDavStore extends Store {
         }
 
         String scheme = webDavUri.getScheme();
+        /*
+         * Currently available schemes are:
+         * webdav
+         * webdav+tls+
+         * webdav+ssl+
+         *
+         * The following are obsolete schemes that may be found in pre-existing
+         * settings from earlier versions or that may be found when imported. We
+         * continue to recognize them and re-map them appropriately:
+         * webdav+tls
+         * webdav+ssl
+         */
         if (scheme.equals("webdav")) {
             connectionSecurity = ConnectionSecurity.NONE;
-        } else if (scheme.equals("webdav+ssl")) {
-            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
-        } else if (scheme.equals("webdav+ssl+")) {
+        } else if (scheme.startsWith("webdav+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-        } else if (scheme.equals("webdav+tls")) {
-            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
-        } else if (scheme.equals("webdav+tls+")) {
+        } else if (scheme.startsWith("webdav+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
@@ -203,14 +209,8 @@ public class WebDavStore extends Store {
 
         String scheme;
         switch (server.connectionSecurity) {
-            case SSL_TLS_OPTIONAL:
-                scheme = "webdav+ssl";
-                break;
             case SSL_TLS_REQUIRED:
                 scheme = "webdav+ssl+";
-                break;
-            case STARTTLS_OPTIONAL:
-                scheme = "webdav+tls";
                 break;
             case STARTTLS_REQUIRED:
                 scheme = "webdav+tls+";
@@ -367,9 +367,7 @@ public class WebDavStore extends Store {
     private String getRoot() {
         String root;
         if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED ||
-                mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ||
-                mConnectionSecurity == ConnectionSecurity.STARTTLS_OPTIONAL ||
-                mConnectionSecurity == ConnectionSecurity.SSL_TLS_OPTIONAL) {
+                mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
             root = "https";
         } else {
             root = "http";

@@ -235,11 +235,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         String port;
         switch (securityType) {
         case NONE:
-        case STARTTLS_OPTIONAL:
         case STARTTLS_REQUIRED:
             port = SMTP_PORT;
             break;
-        case SSL_TLS_OPTIONAL:
         case SSL_TLS_REQUIRED:
             port = SMTP_SSL_PORT;
             break;
@@ -253,7 +251,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
         switch (securityType) {
         case NONE:
-        case STARTTLS_OPTIONAL:
             AuthType.PLAIN.useInsecureText(true, mAuthTypeAdapter);
             break;
         default:

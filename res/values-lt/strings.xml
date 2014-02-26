@@ -388,10 +388,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="account_setup_incoming_security_label">Saugumas</string>
     <string name="account_setup_incoming_auth_type_label">Tapatumo nustatymas</string>
     <string name="account_setup_incoming_security_none_label">Joks</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (jei įmanoma)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (visada)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (jei įmanoma)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (visada)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Kai pašalinu laišką</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nešalinti serveryje</string>

@@ -327,7 +327,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         case NONE:
             port = mDefaultPort;
             break;
-        case STARTTLS_OPTIONAL:
         case STARTTLS_REQUIRED:
             if (WebDavStore.STORE_TYPE.equals(mStoreType)) {
                 /*
@@ -340,7 +339,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 port = mDefaultPort;
             }
             break;
-        case SSL_TLS_OPTIONAL:
         case SSL_TLS_REQUIRED:
             port = mDefaultSslPort;
             break;
@@ -354,7 +352,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
         switch (securityType) {
         case NONE:
-        case STARTTLS_OPTIONAL:
             AuthType.PLAIN.useInsecureText(true, mAuthTypeAdapter);
             break;
         default:
