@@ -608,8 +608,8 @@ public class SettingsImporter {
     }
 
     private static boolean isIdentityDescriptionUsed(String description, List<Identity> identities) {
-        for (Identity identitiy : identities) {
-            if (identitiy.getDescription().equals(description)) {
+        for (Identity identity : identities) {
+            if (identity.getDescription().equals(description)) {
                 return true;
             }
         }
