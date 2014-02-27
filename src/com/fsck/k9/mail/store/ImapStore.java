@@ -65,6 +65,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
@@ -3138,6 +3139,7 @@ public class ImapStore extends Store {
                             if (stop.get()) {
                                 Log.i(K9.LOG_TAG, "Got exception while idling, but stop is set for " + getLogId());
                             } else {
+                                MessagingController.notifyUserIfCertificateProblem(K9.app, e, getAccount(), true);
                                 receiver.pushError("Push error for " + getName(), e);
                                 Log.e(K9.LOG_TAG, "Got exception while idling for " + getLogId(), e);
                                 int delayTimeInt = delayTime.get();
