@@ -27,6 +27,7 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -2683,9 +2684,6 @@ public class MessagingController implements Runnable {
     static long uidfill = 0;
     static AtomicBoolean loopCatch = new AtomicBoolean();
     public void addErrorMessage(Account account, String subject, Throwable t) {
-        if (!loopCatch.compareAndSet(false, true)) {
-            return;
-        }
         try {
             if (t == null) {
                 return;
@@ -2693,6 +2691,17 @@ public class MessagingController implements Runnable {
 
             CharArrayWriter baos = new CharArrayWriter(t.getStackTrace().length * 10);
             PrintWriter ps = new PrintWriter(baos);
+            try {
+                Application context = K9.app;
+                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
+                        context.getPackageName(), 0);
+                ps.format("K9-Mail version: %s\r\n", packageInfo.versionName);
+            } catch (Exception e) {
+                // ignore
+            }
+            ps.format("Device make: %s\r\n", Build.MANUFACTURER);
+            ps.format("Device model: %s\r\n", Build.MODEL);
+            ps.format("Android version: %s\r\n\r\n", Build.VERSION.RELEASE);
             t.printStackTrace(ps);
             ps.close();
 
@@ -2703,13 +2712,11 @@ public class MessagingController implements Runnable {
             addErrorMessage(account, subject, baos.toString());
         } catch (Throwable it) {
             Log.e(K9.LOG_TAG, "Could not save error message to " + account.getErrorFolderName(), it);
-        } finally {
-            loopCatch.set(false);
         }
     }
 
     public void addErrorMessage(Account account, String subject, String body) {
-        if (!K9.ENABLE_ERROR_FOLDER) {
+        if (!K9.DEBUG) {
             return;
         }
         if (!loopCatch.compareAndSet(false, true)) {
