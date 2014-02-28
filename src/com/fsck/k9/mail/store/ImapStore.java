@@ -2779,10 +2779,8 @@ public class ImapStore extends Store {
             try {
                 open();
                 String tag = Integer.toString(mNextCommandTag++);
-                String commandToSend = tag + " " + command;
+                String commandToSend = tag + " " + command + "\r\n";
                 mOut.write(commandToSend.getBytes());
-                mOut.write('\r');
-                mOut.write('\n');
                 mOut.flush();
 
                 if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP) {
