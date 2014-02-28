@@ -18,12 +18,14 @@ import com.fsck.k9.net.ssl.TrustedSocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
+
 import java.io.*;
 import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -339,7 +341,16 @@ public class Pop3Store extends Store {
                         }
                         mCapabilities = getCapabilities();
                     } else {
-                        throw new MessagingException("TLS not supported but required");
+                        /*
+                         * This exception triggers a "Certificate error"
+                         * notification that takes the user to the incoming
+                         * server settings for review. This might be needed if
+                         * the account was configured with an obsolete
+                         * "STARTTLS (if available)" setting.
+                         */
+                        throw new CertificateValidationException(
+                                "STARTTLS connection security not available",
+                                new CertificateException());
                     }
                 }
 

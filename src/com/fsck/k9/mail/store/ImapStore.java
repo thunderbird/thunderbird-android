@@ -27,6 +27,7 @@ import java.nio.charset.CodingErrorAction;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2497,7 +2498,16 @@ public class ImapStore extends Store {
                             throw new MessagingException("Invalid CAPABILITY response received");
                         }
                     } else {
-                        throw new MessagingException("TLS not supported but required");
+                        /*
+                         * This exception triggers a "Certificate error"
+                         * notification that takes the user to the incoming
+                         * server settings for review. This might be needed if
+                         * the account was configured with an obsolete
+                         * "STARTTLS (if available)" setting.
+                         */
+                        throw new CertificateValidationException(
+                                "STARTTLS connection security not available",
+                                new CertificateException());
                     }
                 }
 
