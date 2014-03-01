@@ -15,6 +15,7 @@ import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
+import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
@@ -27,6 +28,7 @@ import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.store.ImapStore.ImapStoreSettings;
 import com.fsck.k9.mail.store.WebDavStore.WebDavStoreSettings;
+import com.fsck.k9.service.MailService;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -356,6 +358,16 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
+                boolean isPushCapable = false;
+                try {
+                    Store store = mAccount.getRemoteStore();
+                    isPushCapable = store.isPushCapable();
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Could not get remote store", e);
+                }
+                if (isPushCapable && mAccount.getFolderPushMode() != FolderMode.NONE) {
+                    MailService.actionRestartPushers(this, null);
+                }
                 mAccount.save(Preferences.getPreferences(this));
                 finish();
             } else {
