@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -262,27 +263,34 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
         displayMessage(ref, true);
     }
 
-    private void displayMessage(MessageReference ref, boolean resetPgpData) {
+    private void displayMessage(MessageReference ref, final boolean resetPgpData) {
         mMessageReference = ref;
         if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
         }
 
-        Context appContext = getActivity().getApplicationContext();
-        mAccount = Preferences.getPreferences(appContext).getAccount(mMessageReference.accountUuid);
+        final Context appContext = getActivity().getApplicationContext();
+        new AsyncTask<Void, Void, Void>() {
+            protected Void doInBackground(Void... args) {
+                mAccount = Preferences.getPreferences(appContext).getAccount(mMessageReference.accountUuid);
+                return null;
+            }
 
-        if (resetPgpData) {
-            // start with fresh, empty PGP data
-            mPgpData = new PgpData();
-        }
+            protected void onPostExecute(Void v) {
+                if (resetPgpData) {
+                    // start with fresh, empty PGP data
+                    mPgpData = new PgpData();
+                }
 
-        // Clear previous message
-        mMessageView.resetView();
-        mMessageView.resetHeaderView();
+                // Clear previous message
+                mMessageView.resetView();
+                mMessageView.resetHeaderView();
 
-        mController.loadMessageForView(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
+                mController.loadMessageForView(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
 
-        mFragmentListener.updateMenu();
+                mFragmentListener.updateMenu();
+            }
+        }.execute();
     }
 
     /**
@@ -338,6 +346,8 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     }
 
     private void refileMessage(String dstFolder) {
+        if(mAccount == null)
+            return;
         String srcFolder = mMessageReference.folderName;
         Message messageToMove = mMessage;
         mFragmentListener.showNextMessageOrReturn();
@@ -363,7 +373,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     }
 
     public void onToggleFlagged() {
-        if (mMessage != null) {
+        if (mAccount != null && mMessage != null) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
                     new Message[] { mMessage }, Flag.FLAGGED, newState);
@@ -372,7 +382,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     }
 
     public void onMove() {
-        if ((!mController.isMoveCapable(mAccount))
+        if (mAccount == null || (!mController.isMoveCapable(mAccount))
                 || (mMessage == null)) {
             return;
         }
@@ -387,7 +397,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     }
 
     public void onCopy() {
-        if ((!mController.isCopyCapable(mAccount))
+        if ((mAccount == null) || (!mController.isCopyCapable(mAccount))
                 || (mMessage == null)) {
             return;
         }
@@ -401,10 +411,14 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     }
 
     public void onArchive() {
+        if(mAccount == null)
+            return;
         onRefile(mAccount.getArchiveFolderName());
     }
 
     public void onSpam() {
+        if(mAccount == null)
+            return;
         onRefile(mAccount.getSpamFolderName());
     }
 
@@ -424,7 +438,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mAccount.getCryptoProvider().onDecryptActivityResult(this, requestCode, resultCode, data, mPgpData)) {
+        if (mAccount == null || mAccount.getCryptoProvider().onDecryptActivityResult(this, requestCode, resultCode, data, mPgpData)) {
             return;
         }
 
@@ -474,13 +488,13 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     }
 
     public void onSendAlternate() {
-        if (mMessage != null) {
+        if (mAccount != null && mMessage != null) {
             mController.sendAlternate(getActivity(), mAccount, mMessage);
         }
     }
 
     public void onToggleRead() {
-        if (mMessage != null) {
+        if (mAccount != null && mMessage != null) {
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
                     new Message[] { mMessage }, Flag.SEEN, !mMessage.isSet(Flag.SEEN));
             mMessageView.setHeaders(mMessage, mAccount);
@@ -491,7 +505,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     }
 
     private void onDownloadRemainder() {
-        if (mMessage.isSet(Flag.X_DOWNLOADED_FULL)) {
+        if (mAccount == null || mMessage.isSet(Flag.X_DOWNLOADED_FULL)) {
             return;
         }
         mMessageView.downloadRemainderButton().setEnabled(false);
@@ -717,6 +731,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     // This REALLY should be in MessageCryptoView
     @Override
     public void onDecryptDone(PgpData pgpData) {
+        if(mAccount == null) return;
         Account account = mAccount;
         LocalMessage message = (LocalMessage) mMessage;
         MessagingController controller = mController;
@@ -829,19 +844,23 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     }
 
     public boolean isCopyCapable() {
+        if(mAccount == null) return false;
         return mController.isCopyCapable(mAccount);
     }
 
     public boolean isMoveCapable() {
+        if(mAccount == null) return false;
         return mController.isMoveCapable(mAccount);
     }
 
     public boolean canMessageBeArchived() {
+        if(mAccount == null) return false;
         return (!mMessageReference.folderName.equals(mAccount.getArchiveFolderName())
                 && mAccount.hasArchiveFolder());
     }
 
     public boolean canMessageBeMovedToSpam() {
+        if(mAccount == null) return false;
         return (!mMessageReference.folderName.equals(mAccount.getSpamFolderName())
                 && mAccount.hasSpamFolder());
     }

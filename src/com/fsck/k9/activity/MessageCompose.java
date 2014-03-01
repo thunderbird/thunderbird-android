@@ -409,15 +409,22 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * @param context
      * @param account
      */
-    public static void actionCompose(Context context, Account account) {
-        String accountUuid = (account == null) ?
-                Preferences.getPreferences(context).getDefaultAccount().getUuid() :
-                account.getUuid();
+    public static void actionCompose(final Context context, final Account account) {
+        new AsyncTask<Void, Void, String>() {
+            protected String doInBackground(Void... args) {
+                String accountUuid = (account == null) ?
+                        Preferences.getPreferences(context).getDefaultAccount().getUuid() :
+                        account.getUuid();
+                return accountUuid;
+            }
 
-        Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, accountUuid);
-        i.setAction(ACTION_COMPOSE);
-        context.startActivity(i);
+            protected void onPostExecute(String accountUuid) {
+                Intent i = new Intent(context, MessageCompose.class);
+                i.putExtra(EXTRA_ACCOUNT, accountUuid);
+                i.setAction(ACTION_COMPOSE);
+                context.startActivity(i);
+            }
+        }.execute();
     }
 
     /**
