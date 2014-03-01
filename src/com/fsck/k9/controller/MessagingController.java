@@ -2647,7 +2647,7 @@ public class MessagingController implements Runnable {
         final PendingIntent pi = PendingIntent.getActivity(context,
                 account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
         final String title = context.getString(
-                R.string.notification_certificate_error_title, account.getName());
+                R.string.notification_certificate_error_title, account.getDescription());
 
         final NotificationCompat.Builder builder = new NotificationBuilder(context);
         builder.setSmallIcon(R.drawable.ic_notify_new_mail);
