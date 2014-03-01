@@ -122,6 +122,8 @@ public class FontSizeSettings extends K9PreferenceActivity {
         mMessageViewContentSlider = (SliderPreference) findPreference(
                                   PREFERENCE_MESSAGE_VIEW_CONTENT_FONT_SLIDER);
 
+        final String summaryFormat = getString(R.string.font_size_message_view_content_summary);
+        final String titleFormat = getString(R.string.font_size_message_view_content_dialog_title);
         mMessageViewContentSlider.setValue(scaleFromInt(fontSizes.getMessageViewContentAsPercent()));
         mMessageViewContentSlider.setOnPreferenceChangeListener(
             new Preference.OnPreferenceChangeListener() {
@@ -130,8 +132,9 @@ public class FontSizeSettings extends K9PreferenceActivity {
                 public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                     final SliderPreference slider = (SliderPreference) preference;
                     final Float value = (Float) newValue;
-                    slider.setSummary(String.valueOf(scaleToInt(value) + "%"));
-                    slider.setDialogTitle(slider.getTitle() + " " + slider.getSummary());
+                    slider.setSummary(String.format(summaryFormat, scaleToInt(value)));
+                    slider.setDialogTitle(
+                            String.format(titleFormat, slider.getTitle(), slider.getSummary()));
                     if (slider.getDialog() != null) {
                         slider.getDialog().setTitle(slider.getDialogTitle());
                     }
