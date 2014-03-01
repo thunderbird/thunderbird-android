@@ -229,7 +229,7 @@ public class SmtpTransport extends Transport {
             mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
 
             mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), 1024));
-            mOut = mSocket.getOutputStream();
+            mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
 
             // Eat the banner
             executeSimpleCommand(null);
@@ -270,7 +270,7 @@ public class SmtpTransport extends Transport {
                               mPort, true);
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                                   1024));
-                    mOut = mSocket.getOutputStream();
+                    mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
                     /*
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
                      * Exim.
@@ -493,8 +493,7 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand("DATA");
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new LineWrapOutputStream(new SmtpDataStuffing(
-                            new BufferedOutputStream(mOut, 1024)), 1000));
+                    new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
 
             message.writeTo(msgOut);
 

@@ -2450,7 +2450,7 @@ public class ImapStore extends Store {
                 mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                               1024));
                 mParser = new ImapResponseParser(mIn);
-                mOut = mSocket.getOutputStream();
+                mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
 
                 capabilities.clear();
                 ImapResponse nullResponse = mParser.readResponse();
@@ -2488,7 +2488,7 @@ public class ImapStore extends Store {
                         mIn = new PeekableInputStream(new BufferedInputStream(mSocket
                                                       .getInputStream(), 1024));
                         mParser = new ImapResponseParser(mIn);
-                        mOut = mSocket.getOutputStream();
+                        mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
                         // Per RFC 2595 (3.1):  Once TLS has been started, reissue CAPABILITY command
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "Updating capabilities after STARTTLS for " + getLogId());
@@ -2510,8 +2510,6 @@ public class ImapStore extends Store {
                                 new CertificateException());
                     }
                 }
-
-                mOut = new BufferedOutputStream(mOut, 1024);
 
                 switch (mSettings.getAuthType()) {
                 case CRAM_MD5:
