@@ -331,14 +331,17 @@ public class LockableDatabase {
                 }
 
                 final StorageManager storageManager = getStorageManager();
+                File oldDatabase = storageManager.getDatabase(uUid, oldProviderId);
 
                 // create new path
                 prepareStorage(newProviderId);
 
                 // move all database files
-                Utility.moveRecursive(storageManager.getDatabase(uUid, oldProviderId), storageManager.getDatabase(uUid, newProviderId));
+                Utility.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
                 // move all attachment files
                 Utility.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId), storageManager.getAttachmentDirectory(uUid, newProviderId));
+                // remove any remaining old journal files
+                deleteDatabase(oldDatabase);
 
                 mStorageProviderId = newProviderId;
 
