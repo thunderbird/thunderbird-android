@@ -24,3 +24,5 @@ build
 out
 build.xml
 proguard-project.txt
+.idea/
+*.iml
