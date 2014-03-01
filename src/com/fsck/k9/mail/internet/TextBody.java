@@ -63,7 +63,7 @@ public class TextBody implements Body {
                 b = EMPTY_BYTE_ARRAY;
             }
             return new ByteArrayInputStream(b);
-        } catch (UnsupportedEncodingException usee) {
+        } catch (UnsupportedEncodingException uee) {
             return null;
         }
     }

@@ -1008,17 +1008,17 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private FolderInfoHolder getFolder(String folder, Account account) {
-        LocalFolder local_folder = null;
+        LocalFolder localFolder = null;
         try {
             LocalStore localStore = account.getLocalStore();
-            local_folder = localStore.getFolder(folder);
-            return new FolderInfoHolder(mContext, local_folder, account);
+            localFolder = localStore.getFolder(folder);
+            return new FolderInfoHolder(mContext, localFolder, account);
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "getFolder(" + folder + ") goes boom: ", e);
             return null;
         } finally {
-            if (local_folder != null) {
-                local_folder.close();
+            if (localFolder != null) {
+                localFolder.close();
             }
         }
     }
