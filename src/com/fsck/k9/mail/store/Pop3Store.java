@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -510,7 +511,7 @@ public class Pop3Store extends Store {
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
             if (start < 1 || end < 1 || end < start) {
-                throw new MessagingException(String.format("Invalid message set %d %d",
+                throw new MessagingException(String.format(Locale.US, "Invalid message set %d %d",
                                              start, end));
             }
             try {
@@ -791,7 +792,7 @@ public class Pop3Store extends Store {
                     if (listener != null) {
                         listener.messageStarted(pop3Message.getUid(), i, count);
                     }
-                    String response = executeSimpleCommand(String.format(LIST_COMMAND + " %d",
+                    String response = executeSimpleCommand(String.format(Locale.US, LIST_COMMAND + " %d",
                                                            mUidToMsgNumMap.get(pop3Message.getUid())));
                     String[] listParts = response.split(" ");
                     //int msgNum = Integer.parseInt(listParts[1]);
@@ -850,7 +851,7 @@ public class Pop3Store extends Store {
                               "Checking to see if the TOP command is supported nevertheless.");
                     }
 
-                    response = executeSimpleCommand(String.format(TOP_COMMAND + " %d %d",
+                    response = executeSimpleCommand(String.format(Locale.US, TOP_COMMAND + " %d %d",
                                                     mUidToMsgNumMap.get(message.getUid()), lines));
 
                     // TOP command is supported. Remember this for the next time.
@@ -872,7 +873,7 @@ public class Pop3Store extends Store {
             }
 
             if (response == null) {
-                executeSimpleCommand(String.format(RETR_COMMAND + " %d",
+                executeSimpleCommand(String.format(Locale.US, RETR_COMMAND + " %d",
                                      mUidToMsgNumMap.get(message.getUid())));
             }
 

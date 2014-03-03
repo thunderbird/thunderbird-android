@@ -4,6 +4,8 @@
 
 package com.fsck.k9.preferences;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.text.format.DateFormat;
@@ -94,8 +96,8 @@ public class TimePickerPreference extends DialogPreference implements
     @Override
     public void onTimeChanged(final TimePicker view, final int hour, final int minute) {
 
-        persistString(String.format("%02d:%02d", hour, minute));
-        callChangeListener(String.format("%02d:%02d", hour, minute));
+        persistString(String.format(Locale.US, "%02d:%02d", hour, minute));
+        callChangeListener(String.format(Locale.US, "%02d:%02d", hour, minute));
     }
 
     /**
@@ -106,8 +108,8 @@ public class TimePickerPreference extends DialogPreference implements
     protected void onDialogClosed(boolean positiveResult) {
 
         if (!positiveResult) {
-            persistString(String.format("%02d:%02d", originalHour, originalMinute));
-            callChangeListener(String.format("%02d:%02d", originalHour, originalMinute));
+            persistString(String.format(Locale.US, "%02d:%02d", originalHour, originalMinute));
+            callChangeListener(String.format(Locale.US, "%02d:%02d", originalHour, originalMinute));
         }
         super.onDialogClosed(positiveResult);
     }

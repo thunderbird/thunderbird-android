@@ -2,6 +2,7 @@ package com.fsck.k9.fragment;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -785,7 +786,7 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
     }
 
     private String getDialogTag(int dialogId) {
-        return String.format("dialog-%d", dialogId);
+        return String.format(Locale.US, "dialog-%d", dialogId);
     }
 
     public void zoom(KeyEvent event) {

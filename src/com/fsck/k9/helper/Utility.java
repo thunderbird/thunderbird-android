@@ -26,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -498,7 +499,7 @@ public class Utility {
             format = filename + "-%d";
         }
         for (int i = 2; i < Integer.MAX_VALUE; i++) {
-            file = new File(directory, String.format(format, i));
+            file = new File(directory, String.format(Locale.US, format, i));
             if (!file.exists()) {
                 return file;
             }

@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.Locale;
 
 /**
  * Prompts the user for the email address and password.
@@ -230,7 +231,7 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
             mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
             // Yahoo! has a special folder for Spam, called "Bulk Mail".
-            if (incomingUriTemplate.getHost().toLowerCase().endsWith(".yahoo.com")) {
+            if (incomingUriTemplate.getHost().toLowerCase(Locale.US).endsWith(".yahoo.com")) {
                 mAccount.setSpamFolderName("Bulk Mail");
             } else {
                 mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));

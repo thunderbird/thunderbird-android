@@ -1479,7 +1479,7 @@ public class WebDavStore extends Store {
             end = start + (end - prevStart);
 
             if (start < 0 || end < 0 || end < start) {
-                throw new MessagingException(String.format("Invalid message set %d %d", start, end));
+                throw new MessagingException(String.format(Locale.US, "Invalid message set %d %d", start, end));
             }
 
             if (start == 0 && end < 10) {

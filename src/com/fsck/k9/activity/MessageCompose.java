@@ -1565,7 +1565,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
              *  title*3="isn't it!"
              */
-            bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(
+            bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
                              "attachment;\r\n filename=\"%s\";\r\n size=%d",
                              attachment.name, attachment.size));
 

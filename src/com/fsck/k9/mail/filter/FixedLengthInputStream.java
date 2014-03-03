@@ -3,6 +3,7 @@ package com.fsck.k9.mail.filter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 /**
  * A filtering InputStream that stops allowing reads after the given length has been read. This
@@ -66,6 +67,6 @@ public class FixedLengthInputStream extends InputStream {
 
     @Override
     public String toString() {
-        return String.format("FixedLengthInputStream(in=%s, length=%d)", mIn.toString(), mLength);
+        return String.format(Locale.US, "FixedLengthInputStream(in=%s, length=%d)", mIn.toString(), mLength);
     }
 }
