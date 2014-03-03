@@ -2656,13 +2656,13 @@ public class ImapStore extends Store {
             String tag;
                 byte[] username = mSettings.getUsername().getBytes();
                 byte[] password = mSettings.getPassword().getBytes();
-                tag = sendCommand(String.format("LOGIN {%d%s}",
+                tag = sendCommand(String.format(Locale.US, "LOGIN {%d%s}",
                         username.length, hasLiteralPlus ? "+" : ""), true);
                 if (!hasLiteralPlus) {
                     readContinuationResponse(tag);
                 }
                 mOut.write(username);
-                mOut.write(String.format(" {%d%s}\r\n", password.length,
+                mOut.write(String.format(Locale.US, " {%d%s}\r\n", password.length,
                         hasLiteralPlus ? "+" : "").getBytes());
                 if (!hasLiteralPlus) {
                     mOut.flush();

@@ -1035,7 +1035,7 @@ public class Pop3Store extends Store {
                     if (response.equals(".")) {
                         break;
                     }
-                    response = response.toUpperCase();
+                    response = response.toUpperCase(Locale.US);
                     if (response.equals(AUTH_PLAIN_CAPABILITY)) {
                         capabilities.authPlain = true;
                     } else if (response.equals(AUTH_CRAM_MD5_CAPABILITY)) {
@@ -1051,7 +1051,7 @@ public class Pop3Store extends Store {
                     if (response.equals(".")) {
                         break;
                     }
-                    response = response.toUpperCase();
+                    response = response.toUpperCase(Locale.US);
                     if (response.equals(STLS_CAPABILITY)) {
                         capabilities.stls = true;
                     } else if (response.equals(UIDL_CAPABILITY)) {

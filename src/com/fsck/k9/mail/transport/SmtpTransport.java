@@ -410,7 +410,7 @@ public class SmtpTransport extends Transport {
             results.remove(0);
             for (String result : results) {
                 String[] pair = result.split(" ", 2);
-                extensions.put(pair[0].toUpperCase(), pair.length == 1 ? "" : pair[1]);
+                extensions.put(pair[0].toUpperCase(Locale.US), pair.length == 1 ? "" : pair[1]);
             }
         } catch (NegativeSmtpReplyException e) {
             if (K9.DEBUG) {
