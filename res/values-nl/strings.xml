@@ -388,10 +388,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_setup_incoming_security_label">Beveiligings type</string>
     <string name="account_setup_incoming_auth_type_label">Authenticatie type</string>
     <string name="account_setup_incoming_security_none_label">Geen</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (indien beschikbaar)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (altijd)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (indien beschikbaar)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (altijd)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Wanneer ik een bericht verwijder</string>
     <string name="account_setup_incoming_delete_policy_never_label">Verwijder niet van server</string>

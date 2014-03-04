@@ -48,7 +48,7 @@ public class ServerSettings {
      *
      * {@code null} if not applicable for the store or transport.
      */
-    public final String authenticationType;
+    public final AuthType authenticationType;
 
     /**
      * The username part of the credentials needed to authenticate to the server.
@@ -91,7 +91,7 @@ public class ServerSettings {
      *         see {@link ServerSettings#password}
      */
     public ServerSettings(String type, String host, int port,
-            ConnectionSecurity connectionSecurity, String authenticationType, String username,
+            ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
             String password) {
         this.type = type;
         this.host = host;
@@ -124,7 +124,7 @@ public class ServerSettings {
      *         see {@link ServerSettings#extra}
      */
     public ServerSettings(String type, String host, int port,
-            ConnectionSecurity connectionSecurity, String authenticationType, String username,
+            ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
             String password, Map<String, String> extra) {
         this.type = type;
         this.host = host;

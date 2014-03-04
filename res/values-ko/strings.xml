@@ -387,10 +387,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
     <string name="account_setup_incoming_security_label">보안 연결</string>
     <string name="account_setup_incoming_auth_type_label">인증 방식</string>
     <string name="account_setup_incoming_security_none_label">없음</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (유효할 경우)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (모든 인증서 허용)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (유효할 경우)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (모든 인증서 허용)</string>
 
     <string name="account_setup_incoming_delete_policy_label">메시지 삭제 시</string>
     <string name="account_setup_incoming_delete_policy_never_label">서버에는 메일을 삭제하지 않음</string>

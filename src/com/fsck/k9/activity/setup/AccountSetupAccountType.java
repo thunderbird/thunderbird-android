@@ -55,6 +55,11 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
             URI uri = new URI(mAccount.getStoreUri());
             uri = new URI("pop3", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
             mAccount.setStoreUri(uri.toString());
+
+            uri = new URI(mAccount.getTransportUri());
+            uri = new URI("smtp", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
+            mAccount.setTransportUri(uri.toString());
+
             AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
             finish();
         } catch (Exception use) {
@@ -68,6 +73,11 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
             URI uri = new URI(mAccount.getStoreUri());
             uri = new URI("imap", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
             mAccount.setStoreUri(uri.toString());
+
+            uri = new URI(mAccount.getTransportUri());
+            uri = new URI("smtp", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
+            mAccount.setTransportUri(uri.toString());
+
             AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
             finish();
         } catch (Exception use) {

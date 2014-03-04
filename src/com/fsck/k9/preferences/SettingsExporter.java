@@ -230,7 +230,7 @@ public class SettingsExporter {
             writeElement(serializer, PORT_ELEMENT, Integer.toString(incoming.port));
         }
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
-        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType);
+        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType.name());
         writeElement(serializer, USERNAME_ELEMENT, incoming.username);
         // XXX For now we don't export the password
         //writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
@@ -257,7 +257,7 @@ public class SettingsExporter {
             writeElement(serializer, PORT_ELEMENT, Integer.toString(outgoing.port));
         }
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
-        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType);
+        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType.name());
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
         // XXX For now we don't export the password
         //writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);

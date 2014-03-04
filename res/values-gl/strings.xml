@@ -388,10 +388,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="account_setup_incoming_security_label">Tipo de Seguridade</string>
     <string name="account_setup_incoming_auth_type_label">Tipo de autentificación</string>
     <string name="account_setup_incoming_security_none_label">Ningunha</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (se dispoñible)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (sempre)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (se dispoñible)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (sempre)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Borrado de mesaxes</string>
     <string name="account_setup_incoming_delete_policy_never_label">Non borrar do servidor</string>

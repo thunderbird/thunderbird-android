@@ -1,7 +1,8 @@
 package com.fsck.k9.mail.transport.imap;
 
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.store.ImapStore;
-import com.fsck.k9.mail.store.ImapStore.AuthType;
 import com.fsck.k9.mail.store.ImapStore.ImapConnection;
 
 /**
@@ -12,7 +13,7 @@ public interface ImapSettings {
 
     int getPort();
 
-    int getConnectionSecurity();
+    ConnectionSecurity getConnectionSecurity();
 
     AuthType getAuthType();
 

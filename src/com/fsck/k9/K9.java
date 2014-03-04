@@ -177,8 +177,9 @@ public class K9 extends Application {
     /**
      * Can create messages containing stack traces that can be forwarded
      * to the development team.
+     *
+     * Feature is enabled when DEBUG == true
      */
-    public static boolean ENABLE_ERROR_FOLDER = true;
     public static String ERROR_FOLDER_NAME = "K9mail-errors";
 
     /**
