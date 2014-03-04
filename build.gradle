@@ -37,6 +37,35 @@ android {
       assets.srcDirs = ['tests/assets']
     }
   }
+  
+  
+    /*
+     * To sign release build, create file gradle.properties in ~/.gradle/ with this content:
+     *
+     * signingStoreLocation=/home/key.store
+     * signingStorePassword=xxx
+     * signingKeyAlias=alias
+     * signingKeyPassword=xxx
+     */
+    if (project.hasProperty('signingStoreLocation') &&
+            project.hasProperty('signingStorePassword') &&
+            project.hasProperty('signingKeyAlias') &&
+            project.hasProperty('signingKeyPassword')) {
+        println "Found sign properties in gradle.properties! Signing build…"
+        
+        signingConfigs {
+            release {
+                storeFile file(signingStoreLocation)
+                storePassword signingStorePassword
+                keyAlias signingKeyAlias
+                keyPassword signingKeyPassword
+            }
+        }
+
+        buildTypes.release.signingConfig = signingConfigs.release
+    } else {
+        buildTypes.release.signingConfig = null
+    }
 
   // Do not abort build if lint finds errors
   lintOptions {

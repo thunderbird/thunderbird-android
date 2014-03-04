@@ -117,7 +117,6 @@ public class MessageOpenPgpView extends LinearLayout {
         }
         if (decryptedData != null && signatureResult == null) {
             // encrypted-only
-            Log.d(K9.LOG_TAG, "null!");
 
             MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                     R.color.openpgp_blue));
@@ -312,9 +311,6 @@ public class MessageOpenPgpView extends LinearLayout {
                             sigResult = result.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
                         }
 
-                        if (sigResult == null)
-                            Log.d(K9.LOG_TAG, "sig null");
-
                         if (K9.DEBUG)
                             Log.d(K9.LOG_TAG, "result: " + os.toByteArray().length
                                     + " str=" + output);
@@ -324,11 +320,9 @@ public class MessageOpenPgpView extends LinearLayout {
 
                         mProgress.setVisibility(View.GONE);
                         mFragment.setMessageWithOpenPgp(output, sigResult);
-
                     } catch (UnsupportedEncodingException e) {
                         Log.e(K9.LOG_TAG, "UnsupportedEncodingException", e);
                     }
-
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
