@@ -23,7 +23,7 @@
             android:maxLines="1"
             android:padding="2dp"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:textColorPrimaryInverse"
             android:textIsSelectable="false" />
 

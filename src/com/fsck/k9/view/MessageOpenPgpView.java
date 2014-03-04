@@ -116,15 +116,17 @@ public class MessageOpenPgpView extends LinearLayout {
             return;
         }
         if (decryptedData != null && signatureResult == null) {
-            // only decrypt
+            // encrypted-only
+            Log.d(K9.LOG_TAG, "null!");
+
             MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                     R.color.openpgp_blue));
             mText.setText(R.string.openpgp_successful_decryption);
 
             // don't process further
             return;
-        } else if (signatureResult != null && decryptedData != null) {
-            // decryptAndVerify / only verify
+        } else if (decryptedData != null && signatureResult != null) {
+            // signed-only and signed-and-encrypted
 
             switch (signatureResult.getStatus()) {
                 case OpenPgpSignatureResult.SIGNATURE_ERROR:
@@ -133,16 +135,16 @@ public class MessageOpenPgpView extends LinearLayout {
                     MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_red));
 
-                    // mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
                     mSignatureLayout.setVisibility(View.GONE);
                     break;
 
                 case OpenPgpSignatureResult.SIGNATURE_SUCCESS_CERTIFIED:
                     if (signatureResult.isSignatureOnly()) {
-                        mText.setText(R.string.openpgp_signature_valid);
+                        mText.setText(R.string.openpgp_signature_valid_certified);
                     }
                     else {
-                        mText.setText(R.string.openpgp_successful_decryption_valid_signature);
+                        mText.setText(R.string.openpgp_successful_decryption_valid_signature_certified);
                     }
                     MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_green));
@@ -166,6 +168,22 @@ public class MessageOpenPgpView extends LinearLayout {
 
                     mSignatureUserId.setText(R.string.openpgp_signature_unknown);
                     mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                    mSignatureLayout.setVisibility(View.VISIBLE);
+
+                    break;
+
+                case OpenPgpSignatureResult.SIGNATURE_SUCCESS_UNCERTIFIED:
+                    if (signatureResult.isSignatureOnly()) {
+                        mText.setText(R.string.openpgp_signature_valid_uncertified);
+                    }
+                    else {
+                        mText.setText(R.string.openpgp_successful_decryption_valid_signature_uncertified);
+                    }
+                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                            R.color.openpgp_orange));
+
+                    mSignatureUserId.setText(signatureResult.getUserId());
+                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
                     mSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
@@ -294,8 +312,11 @@ public class MessageOpenPgpView extends LinearLayout {
                             sigResult = result.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
                         }
 
+                        if (sigResult == null)
+                            Log.d(K9.LOG_TAG, "sig null");
+
                         if (K9.DEBUG)
-                            Log.d(OpenPgpApi.TAG, "result: " + os.toByteArray().length
+                            Log.d(K9.LOG_TAG, "result: " + os.toByteArray().length
                                     + " str=" + output);
 
                         // missing key -> PendingIntent to get keys
@@ -323,7 +344,7 @@ public class MessageOpenPgpView extends LinearLayout {
                 }
                 case OpenPgpApi.RESULT_CODE_ERROR: {
                     OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERRORS);
-                    handleError(error, true);
+                    handleError(error);
                     break;
                 }
             }
@@ -337,12 +358,11 @@ public class MessageOpenPgpView extends LinearLayout {
         // try again after user interaction
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DECRYPT_VERIFY) {
             /*
-             * The data originally given to the pgp method are are again
-             * returned here to be used when calling again after user
-             * interaction. They also contain results from the user interaction
-             * which happened, for example selected key ids.
+             * The data originally given to the decryptVerify() method, is again
+             * returned here to be used when calling decryptVerify() after user
+             * interaction. The Intent now also contains results from the user
+             * interaction, for example selected key ids.
              */
-
             decryptVerify(data);
 
             return true;
@@ -351,7 +371,7 @@ public class MessageOpenPgpView extends LinearLayout {
         return false;
     }
 
-    private void handleError(final OpenPgpError error, final boolean changeColor) {
+    private void handleError(final OpenPgpError error) {
         mFragment.getActivity().runOnUiThread(new Runnable() {
 
             @Override
@@ -359,17 +379,14 @@ public class MessageOpenPgpView extends LinearLayout {
                 mProgress.setVisibility(View.GONE);
 
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "handleError getErrorId:" + error.getErrorId());
-                    Log.d(K9.LOG_TAG, "handleError getMessage:" + error.getMessage());
+                    Log.d(K9.LOG_TAG, "OpenPGP Error ID:" + error.getErrorId());
+                    Log.d(K9.LOG_TAG, "OpenPGP Error Message:" + error.getMessage());
                 }
 
-                // TODO: better error handling with ids?
                 mText.setText(mFragment.getString(R.string.openpgp_error) + " "
                         + error.getMessage());
-
-                if (changeColor)
-                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
-                            R.color.openpgp_red));
+                MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                        R.color.openpgp_red));
             }
         });
     }
