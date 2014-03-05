@@ -1110,6 +1110,16 @@ public class SettingsImporter {
 
         private static ConnectionSecurity convertConnectionSecurity(String connectionSecurity) {
             try {
+                /*
+                 * TODO:
+                 * Add proper settings validation and upgrade capability for server settings.
+                 * Once that exists, move this code into a SettingsUpgrader.
+                 */
+                if ("SSL_TLS_OPTIONAL".equals(connectionSecurity)) {
+                    return ConnectionSecurity.SSL_TLS_REQUIRED;
+                } else if ("STARTTLS_OPTIONAL".equals(connectionSecurity)) {
+                    return ConnectionSecurity.STARTTLS_REQUIRED;
+                }
                 return ConnectionSecurity.valueOf(connectionSecurity);
             } catch (Exception e) {
                 return ConnectionSecurity.NONE;
