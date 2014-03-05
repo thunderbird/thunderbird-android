@@ -36,18 +36,18 @@
 
         Valid incoming uri schemes are:
             imap+tls+   IMAP with required TLS transport security.
-                            If TLS is not available the conneciton fails.
+                            If TLS is not available the connection fails.
             imap+ssl+   IMAP with required SSL transport security.
                             If SSL is not available the connection fails.
 
             pop3+tls+   POP3 with required TLS transport security.
-                            If TLS is not available the conneciton fails.
+                            If TLS is not available the connection fails.
             pop3+ssl+   POP3 with required SSL transport security.
                             If SSL is not available the connection fails.
 
         Valid outgoing uri schemes are:
             smtp+tls+   SMTP with required TLS transport security.
-                            If TLS is not available the conneciton fails.
+                            If TLS is not available the connection fails.
             smtp+ssl+   SMTP with required SSL transport security.
                             If SSL is not available the connection fails.
 
@@ -64,7 +64,7 @@
         Valid substitution values for the username attribute are:
             $email - the email address the user entered
             $user - the value before the @ sign in the email address the user entered
-            $domain - the value after the @ signin the email address the user entered
+            $domain - the value after the @ sign in the email address the user entered
             
         The username attribute MUST be specified for the incoming element, so the POP3 or IMAP
         server can identify the mailbox to be opened.
