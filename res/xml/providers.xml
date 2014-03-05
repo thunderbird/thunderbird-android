@@ -35,20 +35,17 @@
         will be used.
 
         Valid incoming uri schemes are:
-            imap        IMAP with no transport security.
             imap+tls+   IMAP with required TLS transport security.
                             If TLS is not available the conneciton fails.
             imap+ssl+   IMAP with required SSL transport security.
                             If SSL is not available the connection fails.
 
-            pop3        POP3 with no transport security.
             pop3+tls+   POP3 with required TLS transport security.
                             If TLS is not available the conneciton fails.
             pop3+ssl+   POP3 with required SSL transport security.
                             If SSL is not available the connection fails.
 
         Valid outgoing uri schemes are:
-            smtp        SMTP with no transport security.
             smtp+tls+   SMTP with required TLS transport security.
                             If TLS is not available the conneciton fails.
             smtp+ssl+   SMTP with required SSL transport security.
@@ -56,7 +53,6 @@
 
         The URIs should be full templates for connection, including a port if
         the service uses a non-default port.  The default ports are as follows:
-            imap        143     pop3        110     smtp        587
             imap+tls+   143     pop3+tls+   110     smtp+tls+   587
             imap+ssl+   993     pop3+ssl+   995     smtp+ssl+   465
 
@@ -75,6 +71,9 @@
         
         The username attribute MAY be the empty string for the outgoing element, but only if the 
         SMTP server supports anonymous transmission (most don't).
+
+        While it would technically work please DO NOT add providers that don't support encrypted
+        connections.
     -->
 
 <providers>
@@ -98,23 +97,9 @@
     </provider>
 
     <!-- USA -->
-    <!-- Note, AOL appears to support SSL on both sides, as well -->
-    <provider id="aim" label="AIM" domain="aim.com">
-        <incoming uri="imap://imap.aim.com" label="IMAP" username="$email" />
-        <outgoing uri="smtp://smtp.aim.com" username="$email" />
-    </provider>
-    <!-- Note, AOL appears to support SSL on both sides, as well -->
-    <provider id="aol" label="AOL" domain="aol.com">
-        <incoming uri="imap://imap.aol.com" label="IMAP" username="$email" />
-        <outgoing uri="smtp://smtp.aol.com" username="$email" />
-    </provider>
     <provider id="comcast" label="Comcast" domain="comcast.net">
         <incoming uri="pop3+ssl+://mail.comcast.net" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.comcast.net" username="$user" />
-    </provider>
-    <provider id="compuserve" label="CompuServe" domain="cs.com">
-        <incoming uri="imap://imap.cs.com" username="$user" />
-        <outgoing uri="smtp://smtp.cs.com" username="$user" />
     </provider>
     <provider id="cox" label="Cox" domain="cox.net">
         <incoming uri="pop3+ssl+://pop.east.cox.net" username="$user" />
@@ -123,14 +108,6 @@
     <provider id="dotmac" label=".Mac" domain="mac.com">
         <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
         <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$email" />
-    </provider>
-    <provider id="earthlink" label="Earthlink" domain="earthlink.net">
-        <incoming uri="pop3://pop.earthlink.net" username="$email" />
-        <outgoing uri="smtp://smtpauth.earthlink.net:587" username="$email" />
-    </provider>
-    <provider id="juno" label="Juno" domain="juno.com">
-        <incoming uri="pop3://pop.juno.com" username="$user" />
-        <outgoing uri="smtp://smtp.juno.com" username="$user" />
     </provider>
     <provider id="live" label="Windows Live Hotmail" domain="live.com">
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
@@ -151,18 +128,6 @@
     <provider id="mobileme" label="MobileMe" domain="me.com">
         <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
         <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$email" />
-    </provider>
-    <provider id="netzero" label="NetZero" domain="netzero.com">
-        <incoming uri="pop3://pop.netzero.com" username="$user" />
-        <outgoing uri="smtp://smtp.netzero.com" username="$user" />
-    </provider>
-    <provider id="sbcglobal" label="SBC Global" domain="sbcglobal.net">
-        <incoming uri="pop3://pop.sbcglobal.yahoo.com" username="$email" />
-        <outgoing uri="smtp://smtp.sbcglobal.yahoo.com" username="$email" />
-    </provider>
-    <provider id="verizon" label="Verizon" domain="verizon.net">
-        <incoming uri="pop3://incoming.verizon.net" username="$user" />
-        <outgoing uri="smtp://outgoing.verizon.net" username="$user" />
     </provider>
     <provider id="montclair.edu" label="MSU" domain="montclair.edu">
         <incoming uri="imap+ssl+://mail.montclair.edu" username="$user" />
@@ -197,10 +162,6 @@
     <provider id="aol-uk" label="AOL" domain="aol.co.uk">
         <incoming uri="imap+ssl+://imap.uk.aol.com" label="IMAP" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.uk.aol.com" username="$user" />
-    </provider>
-    <provider id="bt" label="BT Internet" domain="btinternet.com">
-        <incoming uri="pop3://mail.btinternet.com" username="$email" />
-        <outgoing uri="smtp://mail.btinternet.com" username="" />
     </provider>
     <provider id="yahoo-uk" label="Yahoo" domain="yahoo.co.uk">
         <incoming uri="pop3+ssl+://pop.mail.yahoo.co.uk" username="$user" />
@@ -250,44 +211,7 @@
         <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
     </provider>
     
-    <!-- Netherlands -->
-    <!-- TODO:  For all of these, please confirm POP3, and switch to IMAP if supported -->
-    <!-- TODO:  username="" in incoming element is broken - will not work -->
-    <!-- Disabled until username="" is resolved
-    <provider id="hetnet" label="Het Net" domain="hetnet.nl">
-        <incoming uri="pop3://pop.hetnet.nl" username="" />
-        <outgoing uri="smtp://mailhost.hetnet.nl" username="" />
-    </provider>
-    -->
-    <!-- Disabled until test accounts provided
-    <provider id="planet inet" label="Planet Internet" domain="planet.nl">
-        <incoming uri="pop3://pop.planet.nl" username="$user" />
-        <outgoing uri="smtp://mail.planet.nl" username="" />
-    </provider>
-    -->
-    <!-- TODO:  username="" in incoming element is broken - will not work -->
-    <!-- Disabled until username="" is resolved
-    <provider id="tiscali" label="Tiscali" domain="tiscali.nl">
-        <incoming uri="pop3://pop3.tiscali.nl" username="" />
-        <outgoing uri="smtp://smtp.tiscali.nl" username="" />
-    </provider>
-    -->
-    <!-- Disabled until test accounts provided
-    <provider id="wanadoo" label="Wanadoo" domain="wanadoo.nl">
-        <incoming uri="pop3://pop.wanadoo.nl" username="$user" />
-        <outgoing uri="smtp://smtp.wanadoo.nl" username="$user" />
-    </provider>
-     -->
-
     <!-- Poland -->
-    <provider id="onet" label="Onet.pl" domain="poczta.onet.pl">
-        <incoming uri="pop3://pop3.poczta.onet.pl" username="$email" />
-        <outgoing uri="smtp://smtp.poczta.onet.pl" username="$email" />
-    </provider>
-    <provider id="wirtualna" label="Wirtualna Polska" domain="wp.pl">
-        <incoming uri="pop3://pop3.wp.pl" username="$user" />
-        <outgoing uri="smtp://smtp.wp.pl" username="$user" />
-    </provider>
     <provider id="interia" label="Interia" domain="interia.pl">
         <incoming uri="pop3+ssl+://poczta.interia.pl" username="$user" />
         <outgoing uri="smtp+ssl+://poczta.interia.pl" username="$user" />
@@ -298,15 +222,6 @@
     </provider>
 
    <!-- Japanese -->
-    <provider id="nifty" label="Nifty" domain="nifty.com">
-        <incoming uri="pop3://pop.nifty.com" username="$email" />
-        <outgoing uri="smtp://smtp.nifty.com:587" username="$email" />
-    </provider>
-    <provider id="yahoo-jp" label="Yahoo Japan" domain="yahoo.co.jp"
-              note="@string/provider_note_yahoojp">
-        <incoming uri="pop3+ssl+://pop.mail.yahoo.co.jp"  username="$user" />
-        <outgoing uri="smtp://smtp.mail.yahoo.co.jp:587" username="$user" />
-    </provider>
     <provider id="auone" label="au one" domain="auone.jp"
               note="@string/provider_note_auonejp">
         <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
@@ -478,35 +393,6 @@
     <provider id="comqippochtaimap" label="pochta.com" domain="pochta.com">
         <incoming uri="imap+ssl+://imap.pochta.ru" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.pochta.ru" username="$email" />
-    </provider>
-    <!-- KM.RU variants -->
-    <provider id="rukmrkmpop" label="km.ru" domain="km.ru">
-        <incoming uri="pop3://pop.km.ru" username="$email" />
-        <outgoing uri="smtp://smtp.km.ru:2525" username="$email" />
-    </provider>
-    <provider id="rukmrmegaboxpop" label="megabox.ru" domain="megabox.ru">
-        <incoming uri="pop3://pop.megabox.ru" username="$email" />
-        <outgoing uri="smtp://smtp.megabox.ru:2525" username="$email" />
-    </provider>
-    <provider id="rukmrfreemailpop" label="freemail.ru" domain="freemail.ru">
-        <incoming uri="pop3://pop.freemail.ru" username="$email" />
-        <outgoing uri="smtp://smtp.freemail.ru:2525" username="$email" />
-    </provider>
-    <provider id="rukmrbossmailpop" label="bossmail.ru" domain="bossmail.ru">
-        <incoming uri="pop3://pop.bossmail.ru" username="$email" />
-        <outgoing uri="smtp://smtp.bossmail.ru:2525" username="$email" />
-    </provider>
-    <provider id="rukmrgirlmailpop" label="girlmail.ru" domain="girlmail.ru">
-        <incoming uri="pop3://pop.girlmail.ru" username="$email" />
-        <outgoing uri="smtp://smtp.girlmail.ru:2525" username="$email" />
-    </provider>
-    <provider id="rukmrboymailpop" label="boymail.ru" domain="boymail.ru">
-        <incoming uri="pop3://pop.boymail.ru" username="$email" />
-        <outgoing uri="smtp://smtp.boymail.ru:2525" username="$email" />
-    </provider>
-    <provider id="rukmrsafeboxpop" label="safebox.ru" domain="safebox.ru">
-        <incoming uri="pop3://pop.safebox.ru" username="$email" />
-        <outgoing uri="smtp://smtp.safebox.ru:2525" username="$email" />
     </provider>
 
     <!-- Slovakia -->
