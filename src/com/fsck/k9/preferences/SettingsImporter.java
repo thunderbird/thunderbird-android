@@ -1122,7 +1122,7 @@ public class SettingsImporter {
                 }
                 return ConnectionSecurity.valueOf(connectionSecurity);
             } catch (Exception e) {
-                return ConnectionSecurity.NONE;
+                return ConnectionSecurity.SSL_TLS_REQUIRED;
             }
         }
     }
