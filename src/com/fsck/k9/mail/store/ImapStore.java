@@ -2425,7 +2425,7 @@ public class ImapStore extends Store {
                                     .init(null,
                                             new TrustManager[] { TrustManagerFactory.get(
                                                     mSettings.getHost(),
-                                                    mSettings.getPort(), true) },
+                                                    mSettings.getPort()) },
                                             new SecureRandom());
                             mSocket = TrustedSocketFactory.createSocket(sslContext);
                         } else {
@@ -2480,7 +2480,7 @@ public class ImapStore extends Store {
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
                                         mSettings.getHost(),
-                                        mSettings.getPort(), true) },
+                                        mSettings.getPort()) },
                                 new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket,
                                 mSettings.getHost(), mSettings.getPort(), true);

@@ -206,7 +206,7 @@ public class SmtpTransport extends Transport {
                         SSLContext sslContext = SSLContext.getInstance("TLS");
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
-                                        mHost, mPort, true) },
+                                        mHost, mPort) },
                                 new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
@@ -265,7 +265,7 @@ public class SmtpTransport extends Transport {
                     SSLContext sslContext = SSLContext.getInstance("TLS");
                     sslContext.init(null,
                             new TrustManager[] { TrustManagerFactory.get(mHost,
-                                    mPort, true) }, new SecureRandom());
+                                    mPort) }, new SecureRandom());
                     mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
                               mPort, true);
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
