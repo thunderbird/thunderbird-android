@@ -296,7 +296,6 @@ public class WebDavStore extends Store {
     private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
     private String mMailboxPath; /* Stores the user specified path to the mailbox */
 
-    private boolean mSecure;
     private WebDavHttpClient mHttpClient = null;
     private HttpContext mContext = null;
     private String mAuthString;
@@ -354,7 +353,6 @@ public class WebDavStore extends Store {
         // The inbox path would look like: "https://mail.domain.com/Exchange/alias/Inbox".
         mUrl = getRoot() + mPath + mMailboxPath;
 
-        mSecure = mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED;
         mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
     }
 
@@ -1046,7 +1044,7 @@ public class WebDavStore extends Store {
 
             SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
             try {
-                Scheme s = new Scheme("https", new WebDavSocketFactory(mHost, 443, mSecure), 443);
+                Scheme s = new Scheme("https", new WebDavSocketFactory(mHost, 443), 443);
                 reg.register(s);
             } catch (NoSuchAlgorithmException nsa) {
                 Log.e(K9.LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
