@@ -17,13 +17,14 @@ import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.transport.SmtpTransport;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     OnCheckedChangeListener {
@@ -31,29 +32,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
-    private static final int smtpPorts[] = {
-        587, 465, 465, 587, 587
-    };
-
-    private static final String smtpSchemes[] = {
-        "smtp", "smtp+ssl", "smtp+ssl+", "smtp+tls", "smtp+tls+"
-    };
-    /*
-    private static final int webdavPorts[] =
-    {
-        80, 443, 443, 443, 443
-    };
-    private static final String webdavSchemes[] =
-    {
-        "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
-    };
-    */
-    private static final String authTypes[] = {
-        SmtpTransport.AUTH_AUTOMATIC,
-        SmtpTransport.AUTH_LOGIN,
-        SmtpTransport.AUTH_PLAIN,
-        SmtpTransport.AUTH_CRAM_MD5,
-    };
+    private static final String SMTP_PORT = "587";
+    private static final String SMTP_SSL_PORT = "465";
 
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -63,6 +43,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private ViewGroup mRequireLoginSettingsView;
     private Spinner mSecurityTypeView;
     private Spinner mAuthTypeView;
+    private ArrayAdapter<AuthType> mAuthTypeAdapter;
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
@@ -117,30 +98,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mNextButton.setOnClickListener(this);
         mRequireLoginView.setOnCheckedChangeListener(this);
 
-        SpinnerOption securityTypes[] = {
-            new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
-            new SpinnerOption(1,
-            getString(R.string.account_setup_incoming_security_ssl_optional_label)),
-            new SpinnerOption(2, getString(R.string.account_setup_incoming_security_ssl_label)),
-            new SpinnerOption(3,
-            getString(R.string.account_setup_incoming_security_tls_optional_label)),
-            new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
-        };
-
-        SpinnerOption authTypeSpinnerOptions[] = new SpinnerOption[authTypes.length];
-        for (int i = 0; i < authTypes.length; i++) {
-            authTypeSpinnerOptions[i] = new SpinnerOption(i, authTypes[i]);
-        }
-
-        ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, securityTypes);
+        ArrayAdapter<ConnectionSecurity> securityTypesAdapter = new ArrayAdapter<ConnectionSecurity>(this,
+                android.R.layout.simple_spinner_item, ConnectionSecurity.values());
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
-        ArrayAdapter<SpinnerOption> authTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, authTypeSpinnerOptions);
-        authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mAuthTypeView.setAdapter(authTypesAdapter);
+        mAuthTypeAdapter = AuthType.getArrayAdapter(this);
+        mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         /*
          * Calls validateFields() which enables or disables the Next button
@@ -182,21 +146,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
 
         try {
-            URI uri = new URI(mAccount.getTransportUri());
-            String username = null;
-            String password = null;
-            String authType = null;
-            if (uri.getUserInfo() != null) {
-                String[] userInfoParts = uri.getUserInfo().split(":");
-
-                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                if (userInfoParts.length > 1) {
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-                if (userInfoParts.length > 2) {
-                    authType = userInfoParts[2];
-                }
-            }
+            ServerSettings settings = Transport.decodeTransportUri(mAccount.getTransportUri());
+            String username = settings.username;
+            String password = settings.password;
 
             if (username != null) {
                 mUsernameView.setText(username);
@@ -207,20 +159,14 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 mPasswordView.setText(password);
             }
 
-            if (authType != null) {
-                for (int i = 0; i < authTypes.length; i++) {
-                    if (authTypes[i].equals(authType)) {
-                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
-                    }
-                }
-            }
+            updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
+
+            // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
+            int position = mAuthTypeAdapter.getPosition(settings.authenticationType);
+            mAuthTypeView.setSelection(position, false);
 
             // Select currently configured security type
-            for (int i = 0; i < smtpSchemes.length; i++) {
-                if (smtpSchemes[i].equals(uri.getScheme())) {
-                    SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
-                }
-            }
+            mSecurityTypeView.setSelection(settings.connectionSecurity.ordinal(), false);
 
             /*
              * Updates the port when the user changes the security type. This allows
@@ -242,12 +188,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
             });
 
-            if (uri.getHost() != null) {
-                mServerView.setText(uri.getHost());
+            if (settings.host != null) {
+                mServerView.setText(settings.host);
             }
 
-            if (uri.getPort() != -1) {
-                mPortView.setText(Integer.toString(uri.getPort()));
+            if (settings.port != -1) {
+                mPortView.setText(Integer.toString(settings.port));
             } else {
                 updatePortFromSecurityType();
             }
@@ -280,8 +226,36 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     private void updatePortFromSecurityType() {
-        int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-        mPortView.setText(Integer.toString(smtpPorts[securityType]));
+        ConnectionSecurity securityType = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+        mPortView.setText(getDefaultSmtpPort(securityType));
+        updateAuthPlainTextFromSecurityType(securityType);
+    }
+
+    private String getDefaultSmtpPort(ConnectionSecurity securityType) {
+        String port;
+        switch (securityType) {
+        case NONE:
+        case STARTTLS_REQUIRED:
+            port = SMTP_PORT;
+            break;
+        case SSL_TLS_REQUIRED:
+            port = SMTP_SSL_PORT;
+            break;
+        default:
+            port = "";
+            Log.e(K9.LOG_TAG, "Unhandled ConnectionSecurity type encountered");
+        }
+        return port;
+    }
+
+    private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
+        switch (securityType) {
+        case NONE:
+            AuthType.PLAIN.useInsecureText(true, mAuthTypeAdapter);
+            break;
+        default:
+            AuthType.PLAIN.useInsecureText(false, mAuthTypeAdapter);
+        }
     }
 
     @Override
@@ -298,34 +272,25 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     protected void onNext() {
-        int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-        URI uri;
-        try {
-            String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8");
-            String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8");
-
-            String userInfo = null;
-            String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
-            if (mRequireLoginView.isChecked()) {
-                userInfo = usernameEnc + ":" + passwordEnc + ":" + authType;
-            }
-            String newHost = mServerView.getText().toString();
-            int newPort = Integer.parseInt(mPortView.getText().toString());
-            uri = new URI(smtpSchemes[securityType], userInfo, newHost, newPort, null, null, null);
-            mAccount.deleteCertificate(newHost, newPort, CheckDirection.OUTGOING);
-            mAccount.setTransportUri(uri.toString());
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
-        } catch (UnsupportedEncodingException enc) {
-            // This really shouldn't happen since the encoding is hardcoded to UTF-8
-            Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
-        } catch (Exception e) {
-            /*
-             * It's unrecoverable if we cannot create a URI from components that
-             * we validated to be safe.
-             */
-            failure(e);
+        ConnectionSecurity securityType = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+        String uri;
+        String username = null;
+        String password = null;
+        AuthType authType = null;
+        if (mRequireLoginView.isChecked()) {
+            username = mUsernameView.getText().toString();
+            password = mPasswordView.getText().toString();
+            authType = (AuthType) mAuthTypeView.getSelectedItem();
         }
 
+        String newHost = mServerView.getText().toString();
+        int newPort = Integer.parseInt(mPortView.getText().toString());
+        String type = SmtpTransport.TRANSPORT_TYPE;
+        ServerSettings server = new ServerSettings(type, newHost, newPort, securityType, authType, username, password);
+        uri = Transport.createTransportUri(server);
+        mAccount.deleteCertificate(newHost, newPort, CheckDirection.OUTGOING);
+        mAccount.setTransportUri(uri);
+        AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
     }
 
     public void onClick(View v) {

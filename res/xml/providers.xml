@@ -36,16 +36,12 @@
 
         Valid incoming uri schemes are:
             imap        IMAP with no transport security.
-            imap+tls    IMAP with optional TLS transport security.
-                            If TLS is not available the connection is made as "imap"
             imap+tls+   IMAP with required TLS transport security.
                             If TLS is not available the conneciton fails.
             imap+ssl+   IMAP with required SSL transport security.
                             If SSL is not available the connection fails.
 
             pop3        POP3 with no transport security.
-            pop3+tls    POP3 with optional TLS transport security.
-                            If TLS is not available the connection is made as "pop3"
             pop3+tls+   POP3 with required TLS transport security.
                             If TLS is not available the conneciton fails.
             pop3+ssl+   POP3 with required SSL transport security.
@@ -53,8 +49,6 @@
 
         Valid outgoing uri schemes are:
             smtp        SMTP with no transport security.
-            smtp+tls    SMTP with optional TLS transport security.
-                            If TLS is not available the connection is made as "smtp"
             smtp+tls+   SMTP with required TLS transport security.
                             If TLS is not available the conneciton fails.
             smtp+ssl+   SMTP with required SSL transport security.
@@ -127,8 +121,8 @@
         <outgoing uri="smtp+ssl+://smtp.east.cox.net" username="$user" />
     </provider> 
     <provider id="dotmac" label=".Mac" domain="mac.com">
-        <incoming uri="imap+tls//mail.mac.com" username="$email" />
-        <outgoing uri="smtp+tls://smtp.mac.com" username="$email" />
+        <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$email" />
     </provider>
     <provider id="earthlink" label="Earthlink" domain="earthlink.net">
         <incoming uri="pop3://pop.earthlink.net" username="$email" />
@@ -154,10 +148,9 @@
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
     </provider>
-    <!-- Note: Mac Mail.app sets IMAP to mail.mac.com, but it's the same server -->
     <provider id="mobileme" label="MobileMe" domain="me.com">
-        <incoming uri="imap+tls://mail.me.com" username="$email" />
-        <outgoing uri="smtp+tls://smtp.me.com" username="$email" />
+        <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$email" />
     </provider>
     <provider id="netzero" label="NetZero" domain="netzero.com">
         <incoming uri="pop3://pop.netzero.com" username="$user" />
@@ -296,12 +289,12 @@
         <outgoing uri="smtp://smtp.wp.pl" username="$user" />
     </provider>
     <provider id="interia" label="Interia" domain="interia.pl">
-        <incoming uri="pop3+ssl://poczta.interia.pl" username="$user" />
-        <outgoing uri="smtp+ssl://poczta.interia.pl" username="$user" />
+        <incoming uri="pop3+ssl+://poczta.interia.pl" username="$user" />
+        <outgoing uri="smtp+ssl+://poczta.interia.pl" username="$user" />
     </provider>
     <provider id="o2" label="O2" domain="o2.pl">
-        <incoming uri="pop3+ssl://poczta.o2.pl" username="$user" />
-        <outgoing uri="smtp+ssl://poczta.o2.pl" username="$user" />
+        <incoming uri="pop3+ssl+://poczta.o2.pl" username="$user" />
+        <outgoing uri="smtp+ssl+://poczta.o2.pl" username="$user" />
     </provider>
 
    <!-- Japanese -->
@@ -323,28 +316,18 @@
    <!-- Korean -->
     <provider id="naver" label="Naver" domain="naver.com"
 			  note="@string/provider_note_naver">
-        <incoming uri="imap+ssl://imap.naver.com"  username="$user" />
-        <outgoing uri="smtp+tls://smtp.naver.com:587" username="$user" />
+        <incoming uri="imap+ssl+://imap.naver.com"  username="$user" />
+        <outgoing uri="smtp+tls+://smtp.naver.com:587" username="$user" />
     </provider>
     <provider id="hanmail" label="Hanmail" domain="hanmail.net"
 			  note="@string/provider_note_hanmail">
-        <incoming uri="imap+ssl://imap.hanmail.net"  username="$user" />
-        <outgoing uri="smtp+ssl://smtp.hanmail.net" username="$user" />
+        <incoming uri="imap+ssl+://imap.hanmail.net"  username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.hanmail.net" username="$user" />
     </provider>
     <provider id="daum" label="Hanmail" domain="daum.net"
 			  note="@string/provider_note_hanmail">
-        <incoming uri="imap+ssl://imap.hanmail.net"  username="$user" />
-        <outgoing uri="smtp+ssl://smtp.hanmail.net" username="$user" />
-    </provider>
-    <provider id="paran" label="Paran" domain="paran.com"
-			  note="@string/provider_note_paran">
-        <incoming uri="imap+ssl://imap.paran.com"  username="$email" />
-        <outgoing uri="smtp+tls://smtp.paran.com" username="$email" />
-    </provider>
-    <provider id="nate" label="Nate" domain="nate.com"
-			  note="@string/provider_note_nate">
-        <incoming uri="imap+ssl://imap.nate.com"  username="$user" />
-        <outgoing uri="smtp+tls://smtp.mail.nate.com" username="$user" />
+        <incoming uri="imap+ssl+://imap.hanmail.net"  username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.hanmail.net" username="$user" />
     </provider>
     
    <!-- Russia -->
@@ -538,11 +521,11 @@
 
     <!-- Developers' vanity providers -->
     <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
-        <incoming uri="imap+ssl://fsck.com"  username="$user" />
-        <outgoing uri="smtp+tls://mail.bestpractical.com:2525" />
+        <incoming uri="imap+ssl+://fsck.com"  username="$user" />
+        <outgoing uri="smtp+tls+://mail.bestpractical.com:2525" />
     </provider>
     <provider id="bestpractical.com" label="Best Practical Solutions" domain="bestpractical.com" >
-        <incoming uri="imap+ssl://imap.bestpractical.com"  username="$user" />
-        <outgoing uri="smtp+tls://smtp.bestpractical.com:2525" />
+        <incoming uri="imap+ssl+://imap.bestpractical.com"  username="$user" />
+        <outgoing uri="smtp+tls+://smtp.bestpractical.com:2525" />
     </provider>
 </providers>

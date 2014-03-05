@@ -19,6 +19,7 @@ import com.fsck.k9.net.ssl.TrustedSocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -27,44 +28,28 @@ import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
+import java.security.cert.CertificateException;
 
 import java.util.*;
 
 public class SmtpTransport extends Transport {
     public static final String TRANSPORT_TYPE = "SMTP";
 
-    public static final int CONNECTION_SECURITY_NONE = 0;
-    public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
-    public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
-    public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
-    public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
-
-    public static final String AUTH_PLAIN = "PLAIN";
-
-    public static final String AUTH_CRAM_MD5 = "CRAM_MD5";
-
-    public static final String AUTH_LOGIN = "LOGIN";
-
-    public static final String AUTH_AUTOMATIC = "AUTOMATIC";
-
-
     /**
      * Decodes a SmtpTransport URI.
      *
      * <p>Possible forms:</p>
      * <pre>
-     * smtp://user:password@server:port CONNECTION_SECURITY_NONE
-     * smtp+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * smtp+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * smtp+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * smtp+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * smtp://user:password@server:port ConnectionSecurity.NONE
+     * smtp+tls+://user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
+     * smtp+ssl+://user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
     public static ServerSettings decodeUri(String uri) {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        String authenticationType = AUTH_AUTOMATIC;
+        AuthType authType = AuthType.PLAIN;
         String username = null;
         String password = null;
 
@@ -76,20 +61,26 @@ public class SmtpTransport extends Transport {
         }
 
         String scheme = smtpUri.getScheme();
+        /*
+         * Currently available schemes are:
+         * smtp
+         * smtp+tls+
+         * smtp+ssl+
+         *
+         * The following are obsolete schemes that may be found in pre-existing
+         * settings from earlier versions or that may be found when imported. We
+         * continue to recognize them and re-map them appropriately:
+         * smtp+tls
+         * smtp+ssl
+         */
         if (scheme.equals("smtp")) {
             connectionSecurity = ConnectionSecurity.NONE;
             port = 587;
-        } else if (scheme.equals("smtp+tls")) {
-            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
-            port = 587;
-        } else if (scheme.equals("smtp+tls+")) {
+        } else if (scheme.startsWith("smtp+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
             port = 587;
-        } else if (scheme.equals("smtp+ssl+")) {
+        } else if (scheme.startsWith("smtp+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 465;
-        } else if (scheme.equals("smtp+ssl")) {
-            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
             port = 465;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
@@ -109,7 +100,7 @@ public class SmtpTransport extends Transport {
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 }
                 if (userInfoParts.length > 2) {
-                    authenticationType = userInfoParts[2];
+                    authType = AuthType.valueOf(userInfoParts[2]);
                 }
             } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
@@ -118,7 +109,7 @@ public class SmtpTransport extends Transport {
         }
 
         return new ServerSettings(TRANSPORT_TYPE, host, port, connectionSecurity,
-                authenticationType, username, password);
+                authType, username, password);
     }
 
     /**
@@ -147,14 +138,8 @@ public class SmtpTransport extends Transport {
 
         String scheme;
         switch (server.connectionSecurity) {
-            case SSL_TLS_OPTIONAL:
-                scheme = "smtp+ssl";
-                break;
             case SSL_TLS_REQUIRED:
                 scheme = "smtp+ssl+";
-                break;
-            case STARTTLS_OPTIONAL:
-                scheme = "smtp+tls";
                 break;
             case STARTTLS_REQUIRED:
                 scheme = "smtp+tls+";
@@ -165,15 +150,11 @@ public class SmtpTransport extends Transport {
                 break;
         }
 
-        String authType = server.authenticationType;
-        if (!(AUTH_AUTOMATIC.equals(authType) ||
-                AUTH_LOGIN.equals(authType) ||
-                AUTH_PLAIN.equals(authType) ||
-                AUTH_CRAM_MD5.equals(authType))) {
-            throw new IllegalArgumentException("Invalid authentication type: " + authType);
+        String userInfo = userEnc + ":" + passwordEnc;
+        AuthType authType = server.authenticationType;
+        if (authType != null) {
+            userInfo += ":" + authType.name();
         }
-
-        String userInfo = userEnc + ":" + passwordEnc + ":" + authType;
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
                     null).toString();
@@ -187,8 +168,8 @@ public class SmtpTransport extends Transport {
     int mPort;
     String mUsername;
     String mPassword;
-    String mAuthType;
-    int mConnectionSecurity;
+    AuthType mAuthType;
+    ConnectionSecurity mConnectionSecurity;
     Socket mSocket;
     PeekableInputStream mIn;
     OutputStream mOut;
@@ -206,23 +187,7 @@ public class SmtpTransport extends Transport {
         mHost = settings.host;
         mPort = settings.port;
 
-        switch (settings.connectionSecurity) {
-        case NONE:
-            mConnectionSecurity = CONNECTION_SECURITY_NONE;
-            break;
-        case STARTTLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-            break;
-        case STARTTLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-            break;
-        case SSL_TLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-            break;
-        case SSL_TLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-            break;
-        }
+        mConnectionSecurity = settings.connectionSecurity;
 
         mAuthType = settings.authenticationType;
         mUsername = settings.username;
@@ -232,20 +197,20 @@ public class SmtpTransport extends Transport {
     @Override
     public void open() throws MessagingException {
         try {
+            boolean secureConnection = false;
             InetAddress[] addresses = InetAddress.getAllByName(mHost);
             for (int i = 0; i < addresses.length; i++) {
                 try {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
-                    if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                            mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
+                    if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
                         SSLContext sslContext = SSLContext.getInstance("TLS");
-                        boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
-                                        mHost, mPort, secure) },
+                                        mHost, mPort) },
                                 new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                        secureConnection = true;
                     } else {
                         mSocket = new Socket();
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
@@ -264,7 +229,7 @@ public class SmtpTransport extends Transport {
             mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
 
             mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), 1024));
-            mOut = mSocket.getOutputStream();
+            mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
 
             // Eat the banner
             executeSimpleCommand(null);
@@ -288,104 +253,128 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            List<String> results = sendHello(localHost);
+            HashMap<String,String> extensions = sendHello(localHost);
 
-            m8bitEncodingAllowed = results.contains("8BITMIME");
+            m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
 
 
-            if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
-                    || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
-                if (results.contains("STARTTLS")) {
+            if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
+                if (extensions.containsKey("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
                     SSLContext sslContext = SSLContext.getInstance("TLS");
-                    boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
                     sslContext.init(null,
                             new TrustManager[] { TrustManagerFactory.get(mHost,
-                                    mPort, secure) }, new SecureRandom());
+                                    mPort) }, new SecureRandom());
                     mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
                               mPort, true);
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                                   1024));
-                    mOut = mSocket.getOutputStream();
+                    mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
                     /*
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
                      * Exim.
                      */
-                    results = sendHello(localHost);
-                } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
-                    throw new MessagingException("TLS not supported but required");
+                    extensions = sendHello(localHost);
+                    secureConnection = true;
+                } else {
+                    /*
+                     * This exception triggers a "Certificate error"
+                     * notification that takes the user to the incoming
+                     * server settings for review. This might be needed if
+                     * the account was configured with an obsolete
+                     * "STARTTLS (if available)" setting.
+                     */
+                    throw new CertificateValidationException(
+                            "STARTTLS connection security not available",
+                            new CertificateException());
                 }
             }
-
-            boolean useAuthLogin = AUTH_LOGIN.equals(mAuthType);
-            boolean useAuthPlain = AUTH_PLAIN.equals(mAuthType);
-            boolean useAuthCramMD5 = AUTH_CRAM_MD5.equals(mAuthType);
-
-            // Automatically choose best authentication method if none was explicitly selected
-            boolean useAutomaticAuth = !(useAuthLogin || useAuthPlain || useAuthCramMD5);
 
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
-            for (String result : results) {
-                if (result.matches(".*AUTH.*LOGIN.*$")) {
-                    authLoginSupported = true;
-                }
-                if (result.matches(".*AUTH.*PLAIN.*$")) {
-                    authPlainSupported = true;
-                }
-                if (result.matches(".*AUTH.*CRAM-MD5.*$")) {
-                    authCramMD5Supported = true;
-                }
-                if (result.matches(".*SIZE \\d*$")) {
-                    try {
-                        mLargestAcceptableMessage = Integer.parseInt(result.substring(result.lastIndexOf(' ') + 1));
-                    } catch (Exception e) {
-                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                            Log.d(K9.LOG_TAG, "Tried to parse " + result + " and get an int out of the last word", e);
-                        }
+            if (extensions.containsKey("AUTH")) {
+                List<String> saslMech = Arrays.asList(extensions.get("AUTH").split(" "));
+                authLoginSupported = saslMech.contains("LOGIN");
+                authPlainSupported = saslMech.contains("PLAIN");
+                authCramMD5Supported = saslMech.contains("CRAM-MD5");
+            }
+            if (extensions.containsKey("SIZE")) {
+                try {
+                    mLargestAcceptableMessage = Integer.parseInt(extensions.get("SIZE"));
+                } catch (Exception e) {
+                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+                        Log.d(K9.LOG_TAG, "Tried to parse " + extensions.get("SIZE") + " and get an int", e);
                     }
                 }
             }
 
             if (mUsername != null && mUsername.length() > 0 &&
                     mPassword != null && mPassword.length() > 0) {
-                if (useAuthCramMD5 || (useAutomaticAuth && authCramMD5Supported)) {
-                    if (!authCramMD5Supported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                        Log.d(K9.LOG_TAG, "Using CRAM_MD5 as authentication method although the " +
-                              "server didn't advertise support for it in EHLO response.");
-                    }
-                    saslAuthCramMD5(mUsername, mPassword);
-                } else if (useAuthPlain || (useAutomaticAuth && authPlainSupported)) {
-                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                        Log.d(K9.LOG_TAG, "Using PLAIN as authentication method although the " +
-                              "server didn't advertise support for it in EHLO response.");
-                    }
-                    try {
+
+                switch (mAuthType) {
+
+                /*
+                 * LOGIN is an obsolete option which is unavailable to users,
+                 * but it still may exist in a user's settings from a previous
+                 * version, or it may have been imported.
+                 */
+                case LOGIN:
+                case PLAIN:
+                    // try saslAuthPlain first, because it supports UTF-8 explicitly
+                    if (authPlainSupported) {
                         saslAuthPlain(mUsername, mPassword);
-                    } catch (MessagingException ex) {
-                        // PLAIN is a special case.  Historically, PLAIN has represented both PLAIN and LOGIN; only the
-                        // protocol being advertised by the server would be used, with PLAIN taking precedence.  Instead
-                        // of using only the requested protocol, we'll try PLAIN and then try LOGIN.
-                        if (useAuthPlain && authLoginSupported) {
-                            if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                                Log.d(K9.LOG_TAG, "Using legacy PLAIN authentication behavior and trying LOGIN.");
-                            }
+                    } else if (authLoginSupported) {
+                        saslAuthLogin(mUsername, mPassword);
+                    } else {
+                        throw new MessagingException("Authentication methods SASL PLAIN and LOGIN are unavailable.");
+                    }
+                    break;
+
+                case CRAM_MD5:
+                    if (authCramMD5Supported) {
+                        saslAuthCramMD5(mUsername, mPassword);
+                    } else {
+                        throw new MessagingException("Authentication method CRAM-MD5 is unavailable.");
+                    }
+                    break;
+
+                /*
+                 * AUTOMATIC is an obsolete option which is unavailable to users,
+                 * but it still may exist in a user's settings from a previous
+                 * version, or it may have been imported.
+                 */
+                case AUTOMATIC:
+                    if (secureConnection) {
+                        // try saslAuthPlain first, because it supports UTF-8 explicitly
+                        if (authPlainSupported) {
+                            saslAuthPlain(mUsername, mPassword);
+                        } else if (authLoginSupported) {
                             saslAuthLogin(mUsername, mPassword);
+                        } else if (authCramMD5Supported) {
+                            saslAuthCramMD5(mUsername, mPassword);
                         } else {
-                            // If it was auto detected and failed, continue throwing the exception back up.
-                            throw ex;
+                            throw new MessagingException("No supported authentication methods available.");
+                        }
+                    } else {
+                        if (authCramMD5Supported) {
+                            saslAuthCramMD5(mUsername, mPassword);
+                        } else {
+                            /*
+                             * We refuse to insecurely transmit the password
+                             * using the obsolete AUTOMATIC setting because of
+                             * the potential for a MITM attack. Affected users
+                             * must choose a different setting.
+                             */
+                            throw new MessagingException(
+                                    "Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable.");
                         }
                     }
-                } else if (useAuthLogin || (useAutomaticAuth && authLoginSupported)) {
-                    if (!authPlainSupported && K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                        Log.d(K9.LOG_TAG, "Using LOGIN as authentication method although the " +
-                              "server didn't advertise support for it in EHLO response.");
-                    }
-                    saslAuthLogin(mUsername, mPassword);
-                } else {
-                    throw new MessagingException("No valid authentication mechanism found.");
+                    break;
+
+                default:
+                    throw new MessagingException("Unhandled authentication method found in the server settings (bug).");
                 }
             }
         } catch (SSLException e) {
@@ -410,19 +399,24 @@ public class SmtpTransport extends Transport {
      * @param host
      *         The EHLO/HELO parameter as defined by the RFC.
      *
-     * @return The list of capabilities as returned by the EHLO command or an empty list.
+     * @return A (possibly empty) {@code HashMap<String,String>} of extensions (upper case) and
+     * their parameters (possibly 0 length) as returned by the EHLO command
      *
      * @throws IOException
      *          In case of a network error.
      * @throws MessagingException
      *          In case of a malformed response.
      */
-    private List<String> sendHello(String host) throws IOException, MessagingException {
+    private HashMap<String,String> sendHello(String host) throws IOException, MessagingException {
+        HashMap<String, String> extensions = new HashMap<String, String>();
         try {
-            //TODO: We currently assume the extension keywords returned by the server are always
-            //      uppercased. But the RFC allows mixed-case keywords!
-
-            return executeSimpleCommand("EHLO " + host);
+            List<String> results = executeSimpleCommand("EHLO " + host);
+            // Remove the EHLO greeting response
+            results.remove(0);
+            for (String result : results) {
+                String[] pair = result.split(" ", 2);
+                extensions.put(pair[0].toUpperCase(Locale.US), pair.length == 1 ? "" : pair[1]);
+            }
         } catch (NegativeSmtpReplyException e) {
             if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "Server doesn't support the EHLO command. Trying HELO...");
@@ -434,8 +428,7 @@ public class SmtpTransport extends Transport {
                 Log.w(K9.LOG_TAG, "Server doesn't support the HELO command. Continuing anyway.");
             }
         }
-
-        return new ArrayList<String>(0);
+        return extensions;
     }
 
     @Override
@@ -500,8 +493,7 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand("DATA");
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new LineWrapOutputStream(new SmtpDataStuffing(
-                            new BufferedOutputStream(mOut, 1024)), 1000));
+                    new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
 
             message.writeTo(msgOut);
 
@@ -714,7 +706,7 @@ public class SmtpTransport extends Transport {
 
         List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
         if (respList.size() != 1) {
-            throw new AuthenticationFailedException("Unable to negotiate CRAM-MD5");
+            throw new MessagingException("Unable to negotiate CRAM-MD5");
         }
 
         String b64Nonce = respList.get(0);
@@ -722,8 +714,8 @@ public class SmtpTransport extends Transport {
 
         try {
             executeSimpleCommand(b64CRAMString, true);
-        } catch (MessagingException me) {
-            throw new AuthenticationFailedException("Unable to negotiate MD5 CRAM");
+        } catch (NegativeSmtpReplyException exception) {
+            throw new AuthenticationFailedException(exception.getMessage(), exception);
         }
     }
 

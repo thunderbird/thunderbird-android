@@ -389,10 +389,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="account_setup_incoming_security_label">Tipus de seguretat</string>
     <string name="account_setup_incoming_auth_type_label">Tipus d\'autenticació</string>
     <string name="account_setup_incoming_security_none_label">Cap</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (si és disponible)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (sempre)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (si és disponible)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (sempre)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Quan esborro missatges</string>
     <string name="account_setup_incoming_delete_policy_never_label">No els esborris del servidor</string>

@@ -21,23 +21,9 @@ public final class TrustManagerFactory {
     private static final String LOG_TAG = "TrustManagerFactory";
 
     private static X509TrustManager defaultTrustManager;
-    private static X509TrustManager unsecureTrustManager;
 
     private static LocalKeyStore keyStore;
 
-    private static class SimpleX509TrustManager implements X509TrustManager {
-        public void checkClientTrusted(X509Certificate[] chain, String authType)
-        throws CertificateException {
-        }
-
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
-        throws CertificateException {
-        }
-
-        public X509Certificate[] getAcceptedIssuers() {
-            return null;
-        }
-    }
 
     private static class SecureX509TrustManager implements X509TrustManager {
         private static final Map<String, SecureX509TrustManager> mTrustManager =
@@ -126,14 +112,12 @@ public final class TrustManagerFactory {
         } catch (KeyStoreException e) {
             Log.e(LOG_TAG, "Key Store exception while initializing TrustManagerFactory ", e);
         }
-        unsecureTrustManager = new SimpleX509TrustManager();
     }
 
     private TrustManagerFactory() {
     }
 
-    public static X509TrustManager get(String host, int port, boolean secure) {
-        return secure ? SecureX509TrustManager.getInstance(host, port) :
-               unsecureTrustManager;
+    public static X509TrustManager get(String host, int port) {
+        return SecureX509TrustManager.getInstance(host, port);
     }
 }

@@ -15,9 +15,11 @@ import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
+import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
@@ -26,6 +28,7 @@ import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.store.ImapStore.ImapStoreSettings;
 import com.fsck.k9.mail.store.WebDavStore.WebDavStoreSettings;
+import com.fsck.k9.service.MailService;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -38,32 +41,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
-    private static final int[] POP3_PORTS = {
-        110, 995, 995, 110, 110
-    };
+    private static final String POP3_PORT = "110";
+    private static final String POP3_SSL_PORT = "995";
+    private static final String IMAP_PORT = "143";
+    private static final String IMAP_SSL_PORT = "993";
+    private static final String WEBDAV_PORT = "80";
+    private static final String WEBDAV_SSL_PORT = "443";
 
-    private static final int[] IMAP_PORTS = {
-        143, 993, 993, 143, 143
-    };
-
-    private static final int[] WEBDAV_PORTS = {
-        80, 443, 443, 443, 443
-    };
-
-    private static final ConnectionSecurity[] CONNECTION_SECURITY_TYPES = {
-        ConnectionSecurity.NONE,
-        ConnectionSecurity.SSL_TLS_OPTIONAL,
-        ConnectionSecurity.SSL_TLS_REQUIRED,
-        ConnectionSecurity.STARTTLS_OPTIONAL,
-        ConnectionSecurity.STARTTLS_REQUIRED
-    };
-
-    private static final String[] AUTH_TYPES = {
-        "PLAIN", "CRAM_MD5"
-    };
-
-
-    private int[] mAccountPorts;
     private String mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -83,6 +67,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private CheckBox mCompressionWifi;
     private CheckBox mCompressionOther;
     private CheckBox mSubscribedFoldersOnly;
+    private ArrayAdapter<AuthType> mAuthTypeAdapter;
+    private String mDefaultPort = "";
+    private String mDefaultSslPort = "";
+    private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
@@ -139,32 +127,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
         });
 
-        SpinnerOption securityTypes[] = {
-            new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
-            new SpinnerOption(1,
-            getString(R.string.account_setup_incoming_security_ssl_optional_label)),
-            new SpinnerOption(2, getString(R.string.account_setup_incoming_security_ssl_label)),
-            new SpinnerOption(3,
-            getString(R.string.account_setup_incoming_security_tls_optional_label)),
-            new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
-        };
-
-        // This needs to be kept in sync with the list at the top of the file.
-        // that makes me somewhat unhappy
-        SpinnerOption authTypeSpinnerOptions[] = {
-            new SpinnerOption(0, AUTH_TYPES[0]),
-            new SpinnerOption(1, AUTH_TYPES[1])
-        };
-
-        ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, securityTypes);
-        securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSecurityTypeView.setAdapter(securityTypesAdapter);
-
-        ArrayAdapter<SpinnerOption> authTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, authTypeSpinnerOptions);
-        authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mAuthTypeView.setAdapter(authTypesAdapter);
+        mAuthTypeAdapter = AuthType.getArrayAdapter(this);
+        mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         /*
          * Calls validateFields() which enables or disables the Next button
@@ -217,18 +181,17 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 mPasswordView.setText(settings.password);
             }
 
-            if (settings.authenticationType != null) {
-                for (int i = 0; i < AUTH_TYPES.length; i++) {
-                    if (AUTH_TYPES[i].equals(settings.authenticationType)) {
-                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
-                    }
-                }
-            }
+            updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
+
+            // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
+            int position = mAuthTypeAdapter.getPosition(settings.authenticationType);
+            mAuthTypeView.setSelection(position, false);
 
             mStoreType = settings.type;
             if (Pop3Store.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
-                mAccountPorts = POP3_PORTS;
+                mDefaultPort = POP3_PORT;
+                mDefaultSslPort = POP3_SSL_PORT;
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
@@ -240,7 +203,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
             } else if (ImapStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
-                mAccountPorts = IMAP_PORTS;
+                mDefaultPort = IMAP_PORT;
+                mDefaultSslPort = IMAP_SSL_PORT;
 
                 ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
 
@@ -260,7 +224,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
             } else if (WebDavStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
-                mAccountPorts = WEBDAV_PORTS;
+                mDefaultPort = WEBDAV_PORT;
+                mDefaultSslPort = WEBDAV_SSL_PORT;
+                mConnectionSecurityChoices = new ConnectionSecurity[] {
+                        ConnectionSecurity.NONE,
+                        ConnectionSecurity.SSL_TLS_REQUIRED };
 
                 // Hide the unnecessary fields
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
@@ -288,12 +256,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
+            ArrayAdapter<ConnectionSecurity> securityTypesAdapter = new ArrayAdapter<ConnectionSecurity>(this,
+                    android.R.layout.simple_spinner_item, mConnectionSecurityChoices);
+            securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSecurityTypeView.setAdapter(securityTypesAdapter);
+
             // Select currently configured security type
-            for (int i = 0; i < CONNECTION_SECURITY_TYPES.length; i++) {
-                if (CONNECTION_SECURITY_TYPES[i] == settings.connectionSecurity) {
-                    SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
-                }
-            }
+            mSecurityTypeView.setSelection(settings.connectionSecurity.ordinal(), false);
 
             /*
              * Updates the port when the user changes the security type. This allows
@@ -353,9 +322,35 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void updatePortFromSecurityType() {
-        if (mAccountPorts != null) {
-            int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-            mPortView.setText(Integer.toString(mAccountPorts[securityType]));
+        ConnectionSecurity securityType = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+        mPortView.setText(getDefaultPort(securityType));
+        updateAuthPlainTextFromSecurityType(securityType);
+    }
+
+    private String getDefaultPort(ConnectionSecurity securityType) {
+        String port;
+        switch (securityType) {
+        case NONE:
+        case STARTTLS_REQUIRED:
+            port = mDefaultPort;
+            break;
+        case SSL_TLS_REQUIRED:
+            port = mDefaultSslPort;
+            break;
+        default:
+            Log.e(K9.LOG_TAG, "Unhandled ConnectionSecurity type encountered");
+            port = "";
+        }
+        return port;
+    }
+
+    private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
+        switch (securityType) {
+        case NONE:
+            AuthType.PLAIN.useInsecureText(true, mAuthTypeAdapter);
+            break;
+        default:
+            AuthType.PLAIN.useInsecureText(false, mAuthTypeAdapter);
         }
     }
 
@@ -363,6 +358,16 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
+                boolean isPushCapable = false;
+                try {
+                    Store store = mAccount.getRemoteStore();
+                    isPushCapable = store.isPushCapable();
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Could not get remote store", e);
+                }
+                if (isPushCapable && mAccount.getFolderPushMode() != FolderMode.NONE) {
+                    MailService.actionRestartPushers(this, null);
+                }
                 mAccount.save(Preferences.getPreferences(this));
                 finish();
             } else {
@@ -402,12 +407,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
     protected void onNext() {
         try {
-            ConnectionSecurity connectionSecurity = CONNECTION_SECURITY_TYPES[
-                    (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value];
+            ConnectionSecurity connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
 
             String username = mUsernameView.getText().toString();
             String password = mPasswordView.getText().toString();
-            String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+            AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
             String host = mServerView.getText().toString();
             int port = Integer.parseInt(mPortView.getText().toString());
 

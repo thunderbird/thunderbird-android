@@ -23,6 +23,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
@@ -971,7 +972,8 @@ public class SettingsImporter {
                 } else if (SettingsExporter.CONNECTION_SECURITY_ELEMENT.equals(element)) {
                     server.connectionSecurity = getText(xpp);
                 } else if (SettingsExporter.AUTHENTICATION_TYPE_ELEMENT.equals(element)) {
-                    server.authenticationType = getText(xpp);
+                    String text = getText(xpp);
+                    server.authenticationType = AuthType.valueOf(text);
                 } else if (SettingsExporter.USERNAME_ELEMENT.equals(element)) {
                     server.username = getText(xpp);
                 } else if (SettingsExporter.PASSWORD_ELEMENT.equals(element)) {
@@ -1108,6 +1110,16 @@ public class SettingsImporter {
 
         private static ConnectionSecurity convertConnectionSecurity(String connectionSecurity) {
             try {
+                /*
+                 * TODO:
+                 * Add proper settings validation and upgrade capability for server settings.
+                 * Once that exists, move this code into a SettingsUpgrader.
+                 */
+                if ("SSL_TLS_OPTIONAL".equals(connectionSecurity)) {
+                    return ConnectionSecurity.SSL_TLS_REQUIRED;
+                } else if ("STARTTLS_OPTIONAL".equals(connectionSecurity)) {
+                    return ConnectionSecurity.STARTTLS_REQUIRED;
+                }
                 return ConnectionSecurity.valueOf(connectionSecurity);
             } catch (Exception e) {
                 return ConnectionSecurity.NONE;
@@ -1140,7 +1152,7 @@ public class SettingsImporter {
         public String host;
         public String port;
         public String connectionSecurity;
-        public String authenticationType;
+        public AuthType authenticationType;
         public String username;
         public String password;
         public ImportedSettings extras;

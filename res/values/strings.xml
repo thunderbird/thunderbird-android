@@ -385,6 +385,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
 
+    <string name="account_setup_auth_type_normal_password">Normal password</string>
+    <string name="account_setup_auth_type_insecure_password">Password, transmitted insecurely</string>
+    <string name="account_setup_auth_type_encrypted_password">Encrypted password</string>
+
     <string name="account_setup_incoming_title">Incoming server settings</string>
     <string name="account_setup_incoming_username_label">Username</string>
     <string name="account_setup_incoming_password_label">Password</string>
@@ -395,10 +399,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_incoming_security_label">Security</string>
     <string name="account_setup_incoming_auth_type_label">Authentication</string>
     <string name="account_setup_incoming_security_none_label">None</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (if available)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (always)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (if available)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (always)</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
 
     <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
     <string name="account_setup_incoming_delete_policy_never_label">Do not delete on server</string>

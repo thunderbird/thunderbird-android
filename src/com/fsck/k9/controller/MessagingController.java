@@ -27,6 +27,7 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -2627,7 +2628,7 @@ public class MessagingController implements Runnable {
         }
     }
 
-    private void notifyUserIfCertificateProblem(Context context, Exception e,
+    public static void notifyUserIfCertificateProblem(Context context, Exception e,
             Account account, boolean incoming) {
         if (!(e instanceof CertificateValidationException)) {
             return;
@@ -2647,7 +2648,7 @@ public class MessagingController implements Runnable {
         final PendingIntent pi = PendingIntent.getActivity(context,
                 account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
         final String title = context.getString(
-                R.string.notification_certificate_error_title, account.getName());
+                R.string.notification_certificate_error_title, account.getDescription());
 
         final NotificationCompat.Builder builder = new NotificationBuilder(context);
         builder.setSmallIcon(R.drawable.ic_notify_new_mail);
@@ -2683,9 +2684,6 @@ public class MessagingController implements Runnable {
     static long uidfill = 0;
     static AtomicBoolean loopCatch = new AtomicBoolean();
     public void addErrorMessage(Account account, String subject, Throwable t) {
-        if (!loopCatch.compareAndSet(false, true)) {
-            return;
-        }
         try {
             if (t == null) {
                 return;
@@ -2693,6 +2691,17 @@ public class MessagingController implements Runnable {
 
             CharArrayWriter baos = new CharArrayWriter(t.getStackTrace().length * 10);
             PrintWriter ps = new PrintWriter(baos);
+            try {
+                Application context = K9.app;
+                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
+                        context.getPackageName(), 0);
+                ps.format("K9-Mail version: %s\r\n", packageInfo.versionName);
+            } catch (Exception e) {
+                // ignore
+            }
+            ps.format("Device make: %s\r\n", Build.MANUFACTURER);
+            ps.format("Device model: %s\r\n", Build.MODEL);
+            ps.format("Android version: %s\r\n\r\n", Build.VERSION.RELEASE);
             t.printStackTrace(ps);
             ps.close();
 
@@ -2703,13 +2712,11 @@ public class MessagingController implements Runnable {
             addErrorMessage(account, subject, baos.toString());
         } catch (Throwable it) {
             Log.e(K9.LOG_TAG, "Could not save error message to " + account.getErrorFolderName(), it);
-        } finally {
-            loopCatch.set(false);
         }
     }
 
     public void addErrorMessage(Account account, String subject, String body) {
-        if (!K9.ENABLE_ERROR_FOLDER) {
+        if (!K9.DEBUG) {
             return;
         }
         if (!loopCatch.compareAndSet(false, true)) {
@@ -5037,7 +5044,7 @@ public class MessagingController implements Runnable {
      * @param ringAndVibrate
      *          {@code true}, if ringtone/vibration are allowed. {@code false}, otherwise.
      */
-    private void configureNotification(NotificationCompat.Builder builder, String ringtone,
+    private static void configureNotification(NotificationCompat.Builder builder, String ringtone,
             long[] vibrationPattern, Integer ledColor, int ledSpeed, boolean ringAndVibrate) {
 
         // if it's quiet time, then we shouldn't be ringing, buzzing or flashing

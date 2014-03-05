@@ -9,6 +9,8 @@ import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 
+import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.net.ssl.TrustManagerFactory;
 import com.fsck.k9.net.ssl.TrustedSocketFactory;
@@ -16,11 +18,16 @@ import com.fsck.k9.net.ssl.TrustedSocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
+
 import java.io.*;
 import java.net.*;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.HashMap;
@@ -33,21 +40,11 @@ import java.util.Set;
 public class Pop3Store extends Store {
     public static final String STORE_TYPE = "POP3";
 
-    public static final int CONNECTION_SECURITY_NONE = 0;
-    public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
-    public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
-    public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
-    public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
-
-    private enum AuthType {
-        PLAIN,
-        CRAM_MD5
-    }
-
     private static final String STLS_COMMAND = "STLS";
     private static final String USER_COMMAND = "USER";
     private static final String PASS_COMMAND = "PASS";
     private static final String CAPA_COMMAND = "CAPA";
+    private static final String AUTH_COMMAND = "AUTH";
     private static final String STAT_COMMAND = "STAT";
     private static final String LIST_COMMAND = "LIST";
     private static final String UIDL_COMMAND = "UIDL";
@@ -58,20 +55,19 @@ public class Pop3Store extends Store {
 
     private static final String STLS_CAPABILITY = "STLS";
     private static final String UIDL_CAPABILITY = "UIDL";
-    private static final String PIPELINING_CAPABILITY = "PIPELINING";
-    private static final String USER_CAPABILITY = "USER";
     private static final String TOP_CAPABILITY = "TOP";
+    private static final String SASL_CAPABILITY = "SASL";
+    private static final String AUTH_PLAIN_CAPABILITY = "PLAIN";
+    private static final String AUTH_CRAM_MD5_CAPABILITY = "CRAM-MD5";
 
     /**
      * Decodes a Pop3Store URI.
      *
      * <p>Possible forms:</p>
      * <pre>
-     * pop3://user:password@server:port CONNECTION_SECURITY_NONE
-     * pop3+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * pop3+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * pop3+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * pop3+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * pop3://user:password@server:port ConnectionSecurity.NONE
+     * pop3+tls+://user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
+     * pop3+ssl+://user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
     public static ServerSettings decodeUri(String uri) {
@@ -89,20 +85,26 @@ public class Pop3Store extends Store {
         }
 
         String scheme = pop3Uri.getScheme();
+        /*
+         * Currently available schemes are:
+         * pop3
+         * pop3+tls+
+         * pop3+ssl+
+         *
+         * The following are obsolete schemes that may be found in pre-existing
+         * settings from earlier versions or that may be found when imported. We
+         * continue to recognize them and re-map them appropriately:
+         * pop3+tls
+         * pop3+ssl
+         */
         if (scheme.equals("pop3")) {
             connectionSecurity = ConnectionSecurity.NONE;
             port = 110;
-        } else if (scheme.equals("pop3+tls")) {
-            connectionSecurity = ConnectionSecurity.STARTTLS_OPTIONAL;
-            port = 110;
-        } else if (scheme.equals("pop3+tls+")) {
+        } else if (scheme.startsWith("pop3+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
             port = 110;
-        } else if (scheme.equals("pop3+ssl+")) {
+        } else if (scheme.startsWith("pop3+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 995;
-        } else if (scheme.equals("pop3+ssl")) {
-            connectionSecurity = ConnectionSecurity.SSL_TLS_OPTIONAL;
             port = 995;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
@@ -114,7 +116,7 @@ public class Pop3Store extends Store {
             port = pop3Uri.getPort();
         }
 
-        String authType = AuthType.PLAIN.name();
+        AuthType authType = AuthType.PLAIN;
         if (pop3Uri.getUserInfo() != null) {
             try {
                 int userIndex = 0, passwordIndex = 1;
@@ -125,7 +127,7 @@ public class Pop3Store extends Store {
                     // after an account was imported (so authType and username are present).
                     userIndex++;
                     passwordIndex++;
-                    authType = userInfoParts[0];
+                    authType = AuthType.valueOf(userInfoParts[0]);
                 }
                 username = URLDecoder.decode(userInfoParts[userIndex], "UTF-8");
                 if (userInfoParts.length > passwordIndex) {
@@ -166,14 +168,8 @@ public class Pop3Store extends Store {
 
         String scheme;
         switch (server.connectionSecurity) {
-            case SSL_TLS_OPTIONAL:
-                scheme = "pop3+ssl";
-                break;
             case SSL_TLS_REQUIRED:
                 scheme = "pop3+ssl+";
-                break;
-            case STARTTLS_OPTIONAL:
-                scheme = "pop3+tls";
                 break;
             case STARTTLS_REQUIRED:
                 scheme = "pop3+tls+";
@@ -184,14 +180,7 @@ public class Pop3Store extends Store {
                 break;
         }
 
-        try {
-            AuthType.valueOf(server.authenticationType);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid authentication type (" +
-                    server.authenticationType + ")");
-        }
-
-        String userInfo = server.authenticationType + ":" + userEnc + ":" + passwordEnc;
+        String userInfo = server.authenticationType.name() + ":" + userEnc + ":" + passwordEnc;
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
                     null).toString();
@@ -206,7 +195,7 @@ public class Pop3Store extends Store {
     private String mUsername;
     private String mPassword;
     private AuthType mAuthType;
-    private int mConnectionSecurity;
+    private ConnectionSecurity mConnectionSecurity;
     private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
 
@@ -231,27 +220,11 @@ public class Pop3Store extends Store {
         mHost = settings.host;
         mPort = settings.port;
 
-        switch (settings.connectionSecurity) {
-        case NONE:
-            mConnectionSecurity = CONNECTION_SECURITY_NONE;
-            break;
-        case STARTTLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
-            break;
-        case STARTTLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
-            break;
-        case SSL_TLS_OPTIONAL:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
-            break;
-        case SSL_TLS_REQUIRED:
-            mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
-            break;
-        }
+        mConnectionSecurity = settings.connectionSecurity;
 
         mUsername = settings.username;
         mPassword = settings.password;
-        mAuthType = AuthType.valueOf(settings.authenticationType);
+        mAuthType = settings.authenticationType;
     }
 
     @Override
@@ -327,13 +300,11 @@ public class Pop3Store extends Store {
 
             try {
                 SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
-                if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                        mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
+                if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
                     SSLContext sslContext = SSLContext.getInstance("TLS");
-                    final boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
                     sslContext.init(null,
                             new TrustManager[] { TrustManagerFactory.get(mHost,
-                                    mPort, secure) }, new SecureRandom());
+                                    mPort) }, new SecureRandom());
                     mSocket = TrustedSocketFactory.createSocket(sslContext);
                 } else {
                     mSocket = new Socket();
@@ -348,21 +319,18 @@ public class Pop3Store extends Store {
                     throw new MessagingException("Unable to connect socket");
                 }
 
-                // Eat the banner
-                executeSimpleCommand(null);
+                String serverGreeting = executeSimpleCommand(null);
 
-                if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
-                        || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
-                    mCapabilities = getCapabilities();
+                mCapabilities = getCapabilities();
+                if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
 
                     if (mCapabilities.stls) {
                         executeSimpleCommand(STLS_COMMAND);
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
-                        boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
                         sslContext.init(null,
                                 new TrustManager[] { TrustManagerFactory.get(
-                                        mHost, mPort, secure) },
+                                        mHost, mPort) },
                                 new SecureRandom());
                         mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
                                 mPort, true);
@@ -372,31 +340,42 @@ public class Pop3Store extends Store {
                         if (!isOpen()) {
                             throw new MessagingException("Unable to connect socket");
                         }
-                    } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
-                        throw new MessagingException("TLS not supported but required");
+                        mCapabilities = getCapabilities();
+                    } else {
+                        /*
+                         * This exception triggers a "Certificate error"
+                         * notification that takes the user to the incoming
+                         * server settings for review. This might be needed if
+                         * the account was configured with an obsolete
+                         * "STARTTLS (if available)" setting.
+                         */
+                        throw new CertificateValidationException(
+                                "STARTTLS connection security not available",
+                                new CertificateException());
                     }
                 }
 
-                if (mAuthType == AuthType.CRAM_MD5) {
-                    try {
-                        String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
-
-                        String b64CRAM = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
-                        executeSimpleCommand(b64CRAM);
-
-                    } catch (MessagingException me) {
-                        throw new AuthenticationFailedException(null, me);
+                switch (mAuthType) {
+                case PLAIN:
+                    if (mCapabilities.authPlain) {
+                        authPlain();
+                    } else {
+                        login();
                     }
-                } else {
-                    try {
-                        executeSimpleCommand(USER_COMMAND + " " + mUsername);
-                        executeSimpleCommand(PASS_COMMAND + " " + mPassword, true);
-                    } catch (MessagingException me) {
-                        throw new AuthenticationFailedException(null, me);
+                    break;
+
+                case CRAM_MD5:
+                    if (mCapabilities.cramMD5) {
+                        authCramMD5();
+                    } else {
+                        authAPOP(serverGreeting);
                     }
+                    break;
+
+                default:
+                    throw new MessagingException(
+                            "Unhandled authentication method found in the server settings (bug).");
                 }
-
-                mCapabilities = getCapabilities();
             } catch (SSLException e) {
                 throw new CertificateValidationException(e.getMessage(), e);
             } catch (GeneralSecurityException gse) {
@@ -413,6 +392,67 @@ public class Pop3Store extends Store {
             mUidToMsgMap.clear();
             mMsgNumToMsgMap.clear();
             mUidToMsgNumMap.clear();
+        }
+
+        private void login() throws MessagingException {
+            executeSimpleCommand(USER_COMMAND + " " + mUsername);
+            try {
+                executeSimpleCommand(PASS_COMMAND + " " + mPassword, true);
+            } catch (Pop3ErrorResponse e) {
+                throw new AuthenticationFailedException(
+                        "POP3 login authentication failed: " + e.getMessage(), e);
+            }
+        }
+
+        private void authPlain() throws MessagingException {
+            executeSimpleCommand("AUTH PLAIN");
+            try {
+                byte[] encodedBytes = Base64.encodeBase64(("\000" + mUsername
+                        + "\000" + mPassword).getBytes());
+                executeSimpleCommand(new String(encodedBytes), true);
+            } catch (Pop3ErrorResponse e) {
+                throw new AuthenticationFailedException(
+                        "POP3 SASL auth PLAIN authentication failed: "
+                                + e.getMessage(), e);
+          }
+        }
+
+        private void authAPOP(String serverGreeting) throws MessagingException {
+            // regex based on RFC 2449 (3.) "Greeting"
+            String timestamp = serverGreeting.replaceFirst(
+                    "^\\+OK *(?:\\[[^\\]]+\\])?[^<]*(<[^>]*>)?[^<]*$", "$1");
+            if ("".equals(timestamp)) {
+                throw new MessagingException(
+                        "APOP authentication is not supported");
+            }
+            MessageDigest md;
+            try {
+                md = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                throw new MessagingException(
+                        "MD5 failure during POP3 auth APOP", e);
+            }
+            byte[] digest = md.digest((timestamp + mPassword).getBytes());
+            String hexDigest = new String(Hex.encodeHex(digest));
+            try {
+                executeSimpleCommand("APOP " + mUsername + " " + hexDigest, true);
+            } catch (Pop3ErrorResponse e) {
+                throw new AuthenticationFailedException(
+                        "POP3 APOP authentication failed: " + e.getMessage(), e);
+            }
+        }
+
+        private void authCramMD5() throws MessagingException {
+            String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
+
+            String b64CRAM = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
+            try {
+                executeSimpleCommand(b64CRAM, true);
+            } catch (Pop3ErrorResponse e) {
+                throw new AuthenticationFailedException(
+                        "POP3 CRAM-MD5 authentication failed: "
+                                + e.getMessage(), e);
+            }
         }
 
         @Override
@@ -985,21 +1025,53 @@ public class Pop3Store extends Store {
         private Pop3Capabilities getCapabilities() throws IOException {
             Pop3Capabilities capabilities = new Pop3Capabilities();
             try {
+                /*
+                 * Try sending an AUTH command with no arguments.
+                 *
+                 * The server may respond with a list of supported SASL
+                 * authentication mechanisms.
+                 *
+                 * Ref.: http://tools.ietf.org/html/draft-myers-sasl-pop3-05
+                 *
+                 * While this never became a standard, there are servers that
+                 * support it, and Thunderbird includes this check.
+                 */
+                String response = executeSimpleCommand(AUTH_COMMAND);
+                while ((response = readLine()) != null) {
+                    if (response.equals(".")) {
+                        break;
+                    }
+                    response = response.toUpperCase(Locale.US);
+                    if (response.equals(AUTH_PLAIN_CAPABILITY)) {
+                        capabilities.authPlain = true;
+                    } else if (response.equals(AUTH_CRAM_MD5_CAPABILITY)) {
+                        capabilities.cramMD5 = true;
+                    }
+                }
+            } catch (MessagingException e) {
+                // Assume AUTH command with no arguments is not supported.
+            }
+            try {
                 String response = executeSimpleCommand(CAPA_COMMAND);
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
                         break;
                     }
-                    if (response.equalsIgnoreCase(STLS_CAPABILITY)) {
+                    response = response.toUpperCase(Locale.US);
+                    if (response.equals(STLS_CAPABILITY)) {
                         capabilities.stls = true;
-                    } else if (response.equalsIgnoreCase(UIDL_CAPABILITY)) {
+                    } else if (response.equals(UIDL_CAPABILITY)) {
                         capabilities.uidl = true;
-                    } else if (response.equalsIgnoreCase(PIPELINING_CAPABILITY)) {
-                        capabilities.pipelining = true;
-                    } else if (response.equalsIgnoreCase(USER_CAPABILITY)) {
-                        capabilities.user = true;
-                    } else if (response.equalsIgnoreCase(TOP_CAPABILITY)) {
+                    } else if (response.equals(TOP_CAPABILITY)) {
                         capabilities.top = true;
+                    } else if (response.startsWith(SASL_CAPABILITY)) {
+                        List<String> saslAuthMechanisms = Arrays.asList(response.split(" "));
+                        if (saslAuthMechanisms.contains(AUTH_PLAIN_CAPABILITY)) {
+                            capabilities.authPlain = true;
+                        }
+                        if (saslAuthMechanisms.contains(AUTH_CRAM_MD5_CAPABILITY)) {
+                            capabilities.cramMD5 = true;
+                        }
                     }
                 }
 
@@ -1116,20 +1188,20 @@ public class Pop3Store extends Store {
     }
 
     static class Pop3Capabilities {
+        public boolean cramMD5;
+        public boolean authPlain;
         public boolean stls;
         public boolean top;
-        public boolean user;
         public boolean uidl;
-        public boolean pipelining;
 
         @Override
         public String toString() {
-            return String.format("STLS %b, TOP %b, USER %b, UIDL %b, PIPELINING %b",
+            return String.format("CRAM-MD5 %b, PLAIN %b, STLS %b, TOP %b, UIDL %b",
+                                 cramMD5,
+                                 authPlain,
                                  stls,
                                  top,
-                                 user,
-                                 uidl,
-                                 pipelining);
+                                 uidl);
         }
     }
 
