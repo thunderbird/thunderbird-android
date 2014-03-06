@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.903" versioncode="21006" >
+        <change>Offer encrypted connection by default when manually setting up an account</change>
+        <change>Simplified options for authentication and security</change>
+        <change>Removed auto-configuration settings for all providers that didn't support encrypted connections</change>
+        <change>Improved compatibility with IMAP (proxy) servers</change>
+        <change>More small fixes and improvements</change>
+    </release>
     <release version="4.902" versioncode="21005" >
         <change>Avoid adding the same recipient twice when using "reply to all"</change>
         <change>Fixed a bug with bitcoin URIs</change>
