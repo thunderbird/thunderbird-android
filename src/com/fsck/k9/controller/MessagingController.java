@@ -2628,7 +2628,7 @@ public class MessagingController implements Runnable {
         }
     }
 
-    public static void notifyUserIfCertificateProblem(Context context, Exception e,
+    void notifyUserIfCertificateProblem(Context context, Exception e,
             Account account, boolean incoming) {
         if (!(e instanceof CertificateValidationException)) {
             return;
@@ -5044,7 +5044,7 @@ public class MessagingController implements Runnable {
      * @param ringAndVibrate
      *          {@code true}, if ringtone/vibration are allowed. {@code false}, otherwise.
      */
-    private static void configureNotification(NotificationCompat.Builder builder, String ringtone,
+    private void configureNotification(NotificationCompat.Builder builder, String ringtone,
             long[] vibrationPattern, Integer ledColor, int ledSpeed, boolean ringAndVibrate) {
 
         // if it's quiet time, then we shouldn't be ringing, buzzing or flashing
