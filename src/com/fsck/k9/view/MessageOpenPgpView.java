@@ -337,7 +337,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_ERROR: {
-                    OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERRORS);
+                    OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
                     handleError(error);
                     break;
                 }

@@ -1927,7 +1927,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     emailsArray = emails.toArray(new String[emails.size()]);
                 }
                     if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
-                        Intent intent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCTYPT);
+                        Intent intent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
                         intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
                         executeOpenPgpMethod(intent);
                     } else if (mCryptoSignatureCheckbox.isChecked()) {
@@ -2055,7 +2055,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_ERROR: {
-                    OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERRORS);
+                    OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
                     handleOpenPgpErrors(error);
                     break;
                 }

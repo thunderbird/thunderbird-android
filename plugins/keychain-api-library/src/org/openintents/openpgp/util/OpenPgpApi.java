@@ -16,101 +16,110 @@
 
 package org.openintents.openpgp.util;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-
 import org.openintents.openpgp.IOpenPgpService;
 import org.openintents.openpgp.OpenPgpError;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class OpenPgpApi {
-
-    //TODO: fix this documentation
-    /**
-     * General extras
-     * --------------
-     *
-     * Intent extras:
-     * int          api_version (required)
-     * boolean      ascii_armor (request ascii armor for ouput)
-     *
-     * returned Bundle:
-     * int          result_code (0, 1, or 2 (see OpenPgpApi))
-     * OpenPgpError error       (if result_code == 0)
-     * Intent       intent      (if result_code == 2)
-     */
-
-    /**
-     * Sign only
-     *
-     * optional params:
-     * String       passphrase  (for key passphrase)
-     */
-
-    /**
-     * Encrypt
-     *
-     * Intent extras:
-     * long[]       key_ids
-     * or
-     * String[]     user_ids    (= emails of recipients) (if more than one key has this user_id, a PendingIntent is returned)
-     *
-     * optional extras:
-     * String       passphrase  (for key passphrase)
-     */
-
-    /**
-     * Sign and encrypt
-     *
-     * Intent extras:
-     * same as in encrypt()
-     */
-
-    /**
-     * Decrypts and verifies given input bytes. This methods handles encrypted-only, signed-and-encrypted,
-     * and also signed-only input.
-     *
-     * returned Bundle:
-     * OpenPgpSignatureResult   signature_result
-     */
-
-    /**
-     * Retrieves key ids based on given user ids (=emails)
-     *
-     * Intent extras:
-     * String[]     user_ids
-     *
-     * returned Bundle:
-     * long[]       key_ids
-     */
 
     public static final String TAG = "OpenPgp API";
 
     public static final int API_VERSION = 2;
     public static final String SERVICE_INTENT = "org.openintents.openpgp.IOpenPgpService";
 
+    /**
+     * Sign only
+     *
+     * optional params:
+     * String       EXTRA_PASSPHRASE  (for key passphrase)
+     */
     public static final String ACTION_SIGN = "org.openintents.openpgp.action.SIGN";
+
+    /**
+     * General extras
+     * --------------
+     *
+     * Intent extras:
+     * int          EXTRA_API_VERSION           (required)
+     * boolean      EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
+     *
+     * returned extras:
+     * int          RESULT_CODE                 (0, 1, or 2 (see OpenPgpApi))
+     * OpenPgpError RESULT_ERROR                (if result_code == 0)
+     * Intent       RESULT_INTENT               (if result_code == 2)
+     */
+
+    /**
+     * Encrypt
+     *
+     * extras:
+     * long[]       EXTRA_KEY_IDS
+     * or
+     * String[]     EXTRA_USER_IDS    (= emails of recipients) (if more than one key has this user_id, a PendingIntent is returned)
+     *
+     * optional extras:
+     * String       EXTRA_PASSPHRASE  (for key passphrase)
+     */
     public static final String ACTION_ENCRYPT = "org.openintents.openpgp.action.ENCRYPT";
-    public static final String ACTION_SIGN_AND_ENCTYPT = "org.openintents.openpgp.action.SIGN_AND_ENCRYPT";
+
+    /**
+     * Sign and encrypt
+     *
+     * extras:
+     * long[]       EXTRA_KEY_IDS
+     * or
+     * String[]     EXTRA_USER_IDS    (= emails of recipients) (if more than one key has this user_id, a PendingIntent is returned)
+     *
+     * optional extras:
+     * String       EXTRA_PASSPHRASE  (for key passphrase)
+     */
+    public static final String ACTION_SIGN_AND_ENCRYPT = "org.openintents.openpgp.action.SIGN_AND_ENCRYPT";
+
+    /**
+     * Decrypts and verifies given input bytes. This methods handles encrypted-only, signed-and-encrypted,
+     * and also signed-only input.
+     *
+     * returned extras:
+     * OpenPgpSignatureResult   RESULT_SIGNATURE
+     */
     public static final String ACTION_DECRYPT_VERIFY = "org.openintents.openpgp.action.DECRYPT_VERIFY";
-    public static final String ACTION_DOWNLOAD_KEYS = "org.openintents.openpgp.action.DOWNLOAD_KEYS";
+
+    /**
+     * Get key ids based on given user ids (=emails)
+     *
+     * Intent extras:
+     * String[]     EXTRA_KEY_IDS
+     *
+     * returned extras:
+     * long[]       EXTRA_USER_IDS
+     */
     public static final String ACTION_GET_KEY_IDS = "org.openintents.openpgp.action.GET_KEY_IDS";
+
+    /**
+     * Download keys from keyserver
+     *
+     * Intent extras:
+     * String[]     EXTRA_KEY_IDS
+     */
+    public static final String ACTION_DOWNLOAD_KEYS = "org.openintents.openpgp.action.DOWNLOAD_KEYS";
 
     /* Bundle params */
     public static final String EXTRA_API_VERSION = "api_version";
 
-    // SIGN, ENCRYPT, SIGN_ENCRYPT, DECRYPT_VERIFY
+    // SIGN, ENCRYPT, SIGN_AND_ENCRYPT, DECRYPT_VERIFY
     // request ASCII Armor for output
     // OpenPGP Radix-64, 33 percent overhead compared to binary, see http://tools.ietf.org/html/rfc4880#page-53)
     public static final String EXTRA_REQUEST_ASCII_ARMOR = "ascii_armor";
 
-    // ENCRYPT, SIGN_ENCRYPT
+    // ENCRYPT, SIGN_AND_ENCRYPT
     public static final String EXTRA_USER_IDS = "user_ids";
     public static final String EXTRA_KEY_IDS = "key_ids";
     // optional parameter:
@@ -118,17 +127,19 @@ public class OpenPgpApi {
 
     /* Service Bundle returns */
     public static final String RESULT_CODE = "result_code";
-    public static final String RESULT_SIGNATURE = "signature";
-    public static final String RESULT_ERRORS = "error";
-    public static final String RESULT_INTENT = "intent";
 
-    // get actual error object from RESULT_ERRORS
+    // get actual error object from RESULT_ERROR
     public static final int RESULT_CODE_ERROR = 0;
     // success!
     public static final int RESULT_CODE_SUCCESS = 1;
     // executeServiceMethod intent and do it again with intent
     public static final int RESULT_CODE_USER_INTERACTION_REQUIRED = 2;
 
+    public static final String RESULT_ERROR = "error";
+    public static final String RESULT_INTENT = "intent";
+
+    // DECRYPT_VERIFY
+    public static final String RESULT_SIGNATURE = "signature";
 
     IOpenPgpService mService;
     Context mContext;
@@ -166,6 +177,7 @@ public class OpenPgpApi {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void executeApiAsync(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {
         OpenPgpAsyncTask task = new OpenPgpAsyncTask(data, is, os, callback);
 
@@ -188,13 +200,13 @@ public class OpenPgpApi {
                 result = mService.execute(data, null, null);
                 return result;
             } else {
-                // send the input and output pfds
+                // pipe the input and output
                 ParcelFileDescriptor input = ParcelFileDescriptorUtil.pipeFrom(is,
                         new ParcelFileDescriptorUtil.IThreadListener() {
 
                             @Override
                             public void onThreadFinished(Thread thread) {
-                                Log.d(OpenPgpApi.TAG, "Copy to service finished");
+                                //Log.d(OpenPgpApi.TAG, "Copy to service finished");
                             }
                         });
                 ParcelFileDescriptor output = ParcelFileDescriptorUtil.pipeTo(os,
@@ -202,7 +214,7 @@ public class OpenPgpApi {
 
                             @Override
                             public void onThreadFinished(Thread thread) {
-                                Log.d(OpenPgpApi.TAG, "Service finished writing!");
+                                //Log.d(OpenPgpApi.TAG, "Service finished writing!");
                             }
                         });
 
@@ -222,7 +234,7 @@ public class OpenPgpApi {
             Log.e(OpenPgpApi.TAG, "Exception", e);
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
-            result.putExtra(RESULT_ERRORS,
+            result.putExtra(RESULT_ERROR,
                     new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
             return result;
         }
