@@ -34,58 +34,66 @@ public class OpenPgpApi {
 
     public static final int API_VERSION = 2;
     public static final String SERVICE_INTENT = "org.openintents.openpgp.IOpenPgpService";
-
-    /**
-     * Sign only
-     *
-     * optional params:
-     * String       EXTRA_PASSPHRASE  (for key passphrase)
-     */
-    public static final String ACTION_SIGN = "org.openintents.openpgp.action.SIGN";
-
+    
     /**
      * General extras
      * --------------
      *
-     * Intent extras:
-     * int          EXTRA_API_VERSION           (required)
-     * boolean      EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
+     * required extras:
+     * int           EXTRA_API_VERSION           (always required)
      *
      * returned extras:
-     * int          RESULT_CODE                 (0, 1, or 2 (see OpenPgpApi))
-     * OpenPgpError RESULT_ERROR                (if result_code == 0)
-     * Intent       RESULT_INTENT               (if result_code == 2)
+     * int           RESULT_CODE                 (RESULT_CODE_ERROR, RESULT_CODE_SUCCESS or RESULT_CODE_USER_INTERACTION_REQUIRED)
+     * OpenPgpError  RESULT_ERROR                (if RESULT_CODE == RESULT_CODE_ERROR)
+     * PendingIntent RESULT_INTENT               (if RESULT_CODE == RESULT_CODE_USER_INTERACTION_REQUIRED)
      */
+
+    /**
+     * Sign only
+     *
+     * optional extras:
+     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
+     * String        EXTRA_PASSPHRASE            (key passphrase)
+     */
+    public static final String ACTION_SIGN = "org.openintents.openpgp.action.SIGN";
 
     /**
      * Encrypt
      *
-     * extras:
-     * long[]       EXTRA_KEY_IDS
+     * required extras:
+     * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a user_id, a PendingIntent is returned via RESULT_INTENT)
      * or
-     * String[]     EXTRA_USER_IDS    (= emails of recipients) (if more than one key has this user_id, a PendingIntent is returned)
+     * long[]        EXTRA_KEY_IDS
      *
      * optional extras:
-     * String       EXTRA_PASSPHRASE  (for key passphrase)
+     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
+     * String        EXTRA_PASSPHRASE            (key passphrase)
      */
     public static final String ACTION_ENCRYPT = "org.openintents.openpgp.action.ENCRYPT";
 
     /**
      * Sign and encrypt
      *
-     * extras:
-     * long[]       EXTRA_KEY_IDS
+     * required extras:
+     * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a user_id, a PendingIntent is returned via RESULT_INTENT)
      * or
-     * String[]     EXTRA_USER_IDS    (= emails of recipients) (if more than one key has this user_id, a PendingIntent is returned)
+     * long[]        EXTRA_KEY_IDS
      *
      * optional extras:
-     * String       EXTRA_PASSPHRASE  (for key passphrase)
+     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
+     * String        EXTRA_PASSPHRASE            (key passphrase)
      */
     public static final String ACTION_SIGN_AND_ENCRYPT = "org.openintents.openpgp.action.SIGN_AND_ENCRYPT";
 
     /**
-     * Decrypts and verifies given input bytes. This methods handles encrypted-only, signed-and-encrypted,
+     * Decrypts and verifies given input stream. This methods handles encrypted-only, signed-and-encrypted,
      * and also signed-only input.
+     *
+     * If OpenPgpSignatureResult.getStatus() == OpenPgpSignatureResult.SIGNATURE_UNKNOWN_PUB_KEY
+     * in addition a PendingIntent is returned via RESULT_INTENT to download missing keys.
+     *
+     * optional extras:
+     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
      *
      * returned extras:
      * OpenPgpSignatureResult   RESULT_SIGNATURE
@@ -95,23 +103,27 @@ public class OpenPgpApi {
     /**
      * Get key ids based on given user ids (=emails)
      *
-     * Intent extras:
-     * String[]     EXTRA_KEY_IDS
+     * required extras:
+     * String[]      EXTRA_USER_IDS
      *
      * returned extras:
-     * long[]       EXTRA_USER_IDS
+     * long[]        EXTRA_KEY_IDS
      */
     public static final String ACTION_GET_KEY_IDS = "org.openintents.openpgp.action.GET_KEY_IDS";
 
     /**
-     * Download keys from keyserver
+     * This action returns RESULT_CODE_SUCCESS if the OpenPGP Provider already has the key
+     * corresponding to the given key id in its database.
      *
-     * Intent extras:
-     * String[]     EXTRA_KEY_IDS
+     * It returns RESULT_CODE_USER_INTERACTION_REQUIRED if the Provider does not have the key.
+     * The PendingIntent from RESULT_INTENT can be used to retrieve those from a keyserver.
+     *
+     * required extras:
+     * long        EXTRA_KEY_ID
      */
-    public static final String ACTION_DOWNLOAD_KEYS = "org.openintents.openpgp.action.DOWNLOAD_KEYS";
+    public static final String ACTION_GET_KEY = "org.openintents.openpgp.action.GET_KEY";
 
-    /* Bundle params */
+    /* Intent extras */
     public static final String EXTRA_API_VERSION = "api_version";
 
     // SIGN, ENCRYPT, SIGN_AND_ENCRYPT, DECRYPT_VERIFY
@@ -122,17 +134,21 @@ public class OpenPgpApi {
     // ENCRYPT, SIGN_AND_ENCRYPT
     public static final String EXTRA_USER_IDS = "user_ids";
     public static final String EXTRA_KEY_IDS = "key_ids";
-    // optional parameter:
+    // optional extras:
     public static final String EXTRA_PASSPHRASE = "passphrase";
 
-    /* Service Bundle returns */
+    // GET_KEY
+    public static final String EXTRA_KEY_ID = "key_id";
+
+    /* Service Intent returns */
     public static final String RESULT_CODE = "result_code";
 
     // get actual error object from RESULT_ERROR
     public static final int RESULT_CODE_ERROR = 0;
     // success!
     public static final int RESULT_CODE_SUCCESS = 1;
-    // executeServiceMethod intent and do it again with intent
+    // get PendingIntent from RESULT_INTENT, start PendingIntent with startIntentSenderForResult,
+    // and execute service method again in onActivityResult
     public static final int RESULT_CODE_USER_INTERACTION_REQUIRED = 2;
 
     public static final String RESULT_ERROR = "error";
