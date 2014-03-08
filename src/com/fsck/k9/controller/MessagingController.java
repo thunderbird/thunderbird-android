@@ -3599,6 +3599,7 @@ public class MessagingController implements Runnable {
                         }
 
                         notifyUserIfCertificateProblem(mApplication, e, account, false);
+                        addErrorMessage(account, "Failed to send message", e);
                         message.setFlag(Flag.X_SEND_FAILED, true);
                         Log.e(K9.LOG_TAG, "Failed to send message", e);
                         for (MessagingListener l : getListeners()) {
@@ -3611,6 +3612,7 @@ public class MessagingController implements Runnable {
                     for (MessagingListener l : getListeners()) {
                         l.synchronizeMailboxFailed(account, localFolder.getName(), getRootCauseMessage(e));
                     }
+                    addErrorMessage(account, "Failed to fetch message for sending", e);
                     lastFailure = e;
                 }
             }
