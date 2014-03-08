@@ -1113,7 +1113,7 @@ public class Pop3Store extends Store {
                 }
 
                 String response = readLine();
-                if (response.length() > 1 && response.charAt(0) == '-') {
+                if (response.length() == 0 || response.charAt(0) != '+') {
                     throw new Pop3ErrorResponse(response);
                 }
 
