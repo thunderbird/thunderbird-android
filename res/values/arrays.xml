@@ -54,6 +54,9 @@
         <item>@string/account_setup_options_mail_display_count_250</item>
         <item>@string/account_setup_options_mail_display_count_500</item>
         <item>@string/account_setup_options_mail_display_count_1000</item>
+        <item>@string/account_setup_options_mail_display_count_2500</item>
+        <item>@string/account_setup_options_mail_display_count_5000</item>
+        <item>@string/account_setup_options_mail_display_count_10000</item>
         <item>@string/account_setup_options_mail_display_count_all</item>
     </string-array>
 
@@ -65,6 +68,9 @@
         <item>250</item>
         <item>500</item>
         <item>1000</item>
+        <item>2500</item>
+        <item>5000</item>
+        <item>10000</item>
         <item>0</item>
     </string-array>
 
