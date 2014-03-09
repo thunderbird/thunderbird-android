@@ -2692,9 +2692,8 @@ public class MessagingController implements Runnable {
             CharArrayWriter baos = new CharArrayWriter(t.getStackTrace().length * 10);
             PrintWriter ps = new PrintWriter(baos);
             try {
-                Application context = K9.app;
-                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
-                        context.getPackageName(), 0);
+                PackageInfo packageInfo = mApplication.getPackageManager().getPackageInfo(
+                        mApplication.getPackageName(), 0);
                 ps.format("K9-Mail version: %s\r\n", packageInfo.versionName);
             } catch (Exception e) {
                 // ignore
