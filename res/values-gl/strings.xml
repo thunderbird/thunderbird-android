@@ -582,8 +582,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
-  <string name="background_ops_enabled">Cando \'Sincronización en segundo plano\' esté activo</string>
-  <string name="background_ops_auto_sync">Cando \'Sincronización en segundo plano\' e \'Sincronización automática\' estén activos</string>
   <string name="batch_select_all">Seleccionar todos</string>
   <string name="account_setup_push_limit_label">Max. subscripcións</string>
   <string name="account_setup_push_limit_10">10 carpetas</string>

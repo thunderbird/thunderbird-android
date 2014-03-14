@@ -644,8 +644,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="background_ops_label">Baggrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
   <string name="background_ops_always">Altid</string>
-  <string name="background_ops_enabled">Når \"Baggrundsdata\" er aktiveret</string>
-  <string name="background_ops_auto_sync">Når \"Baggrundsdata\" &amp; \"Auto-sync\" er aktiveret</string>
   <string name="background_ops_auto_sync_only">Når \"Auto-sync\" er valgt</string>
   <string name="batch_select_all">Vælg alle</string>
   <string name="account_setup_push_limit_label">Max antal mapper som skal kontrolleres ved push</string>

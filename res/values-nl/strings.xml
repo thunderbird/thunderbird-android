@@ -649,8 +649,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="background_ops_label">Achtergrond sync</string>
   <string name="background_ops_never">Nooit</string>
   <string name="background_ops_always">Altijd</string>
-  <string name="background_ops_enabled">Wanneer \'Achtergrond data\' is aangevinkt</string>
-  <string name="background_ops_auto_sync">Wanneer \'Achtergrond data\' &amp; \'Auto-sync\' zijn aangevinkt</string>
   <string name="background_ops_auto_sync_only">Als \'Auto-sync\' geselecteerd is</string>
   <string name="batch_select_all">Selecteer alle</string>
   <string name="account_setup_push_limit_label">Max mappen om te controleren met push</string>

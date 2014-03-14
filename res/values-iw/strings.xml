@@ -549,8 +549,6 @@
   <string name="background_ops_label">סנכרון ברקע</string>
   <string name="background_ops_never">אף פעם</string>
   <string name="background_ops_always">תמיד</string>
-  <string name="background_ops_enabled">"מתי ש\'נתונים ברקע\' מסומן "</string>
-  <string name="background_ops_auto_sync">"מתי ש\'נתונים ברקע\' ו\'סינכרון אוטומטי\' מסומנים "</string>
   <string name="batch_select_all">בחר הכל</string>
   <string name="account_setup_push_limit_label">מקסימום תיקיות כדי לבדוק עם דחיפה</string>
   <string name="account_setup_push_limit_10">10 תיקיות</string>

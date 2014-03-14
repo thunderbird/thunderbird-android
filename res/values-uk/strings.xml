@@ -647,8 +647,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="background_ops_label">Фонова синхронізація</string>
   <string name="background_ops_never">Ніколи</string>
   <string name="background_ops_always">Завжди</string>
-  <string name="background_ops_enabled">Коли \'Фонові дані\' включено</string>
-  <string name="background_ops_auto_sync">Коли \'Фонові дані\' та \'Автосинхронізація\' включено</string>
   <string name="background_ops_auto_sync_only">Коли \"Автосинхронізація\" увімкнена</string>
   <string name="batch_select_all">Вибрати усе</string>
   <string name="account_setup_push_limit_label">Найбільша кількість папок для перевірки з push</string>

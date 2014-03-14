@@ -649,8 +649,6 @@
   <string name="background_ops_label">Συγχρονισμός στο παρασκήνιο</string>
   <string name="background_ops_never">Ποτέ</string>
   <string name="background_ops_always">Πάντοτε</string>
-  <string name="background_ops_enabled">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\'</string>
-  <string name="background_ops_auto_sync">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\' &amp; \'Αυτόματο συγχρονισμός\'</string>
   <string name="background_ops_auto_sync_only">Όταν έχει επιλεγεί \'Auto-sync\'</string>
   <string name="batch_select_all">Επιλογή όλων</string>
   <string name="account_setup_push_limit_label">Μέγιστο φακέλων για σπρώξιμο</string>

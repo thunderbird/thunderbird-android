@@ -620,8 +620,6 @@
   <string name="background_ops_label">背景同步</string>
   <string name="background_ops_never">不要</string>
   <string name="background_ops_always">預設</string>
-  <string name="background_ops_enabled">當「背景資料」被勾選</string>
-  <string name="background_ops_auto_sync">當「背景資料」&amp;「自動同步」被勾選</string>
   <string name="background_ops_auto_sync_only">當「自動同步」被勾選</string>
   <string name="batch_select_all">選擇全部</string>
   <string name="account_setup_push_limit_label">推送時檢查信件匣上限數量</string>

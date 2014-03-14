@@ -657,8 +657,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="background_ops_label">Hintergrund-Synchronisierung</string>
   <string name="background_ops_never">Nie</string>
   <string name="background_ops_always">Immer</string>
-  <string name="background_ops_enabled">Wenn \'Hintergrunddaten\' aktiviert ist</string>
-  <string name="background_ops_auto_sync">Wenn \'Hintergrunddaten\' &amp; \'Automatische Synchronisation\' aktiviert sind</string>
   <string name="background_ops_auto_sync_only">Wenn \'Automatische Synchronisation\' aktiviert ist</string>
   <string name="batch_select_all">Alle auswählen</string>
   <string name="account_setup_push_limit_label">Maximale Push-Ordner-Anzahl</string>

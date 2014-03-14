@@ -649,8 +649,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="background_ops_label">Synchronizacja w tle</string>
   <string name="background_ops_never">Nigdy</string>
   <string name="background_ops_always">Zawsze</string>
-  <string name="background_ops_enabled">Gdy systemowa opcja \'Dane w tle\' jest włączone</string>
-  <string name="background_ops_auto_sync">Gdy systemowe opcje \'Dane w tle\' oraz \'Autosynchronizacja\' są włączone</string>
   <string name="background_ops_auto_sync_only">Gdy \'Autosynchronizacja\' jest włączona</string>
   <string name="batch_select_all">Zaznacz wszystko</string>
   <string name="account_setup_push_limit_label">Sprawdzanie przez Push</string>

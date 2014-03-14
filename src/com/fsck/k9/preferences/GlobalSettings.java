@@ -44,7 +44,7 @@ public class GlobalSettings {
             ));
         s.put("backgroundOperations", Settings.versions(
                 new V(1, new EnumSetting<K9.BACKGROUND_OPS>(
-                        K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED))
+                        K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC))
             ));
         s.put("changeRegisteredNameColor", Settings.versions(
                 new V(1, new BooleanSetting(false))

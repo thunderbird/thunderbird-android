@@ -648,8 +648,6 @@ K-9改进的功能包括：
   <string name="background_ops_label">后台同步</string>
   <string name="background_ops_never">从不</string>
   <string name="background_ops_always">总是</string>
-  <string name="background_ops_enabled">当“后台数据”被选中</string>
-  <string name="background_ops_auto_sync">当“后台数据”&amp;“自动同步”被选中</string>
   <string name="background_ops_auto_sync_only">当“自动同步”已选定</string>
   <string name="batch_select_all">选择全部</string>
   <string name="account_setup_push_limit_label">推送时最多检查文件夹数量</string>

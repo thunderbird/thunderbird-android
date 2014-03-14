@@ -46,12 +46,6 @@ public class BootReceiver extends CoreReceiver {
                 MailService.actionReset(context, tmpWakeLockId);
                 tmpWakeLockId = null;
             }
-        } else if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(action)) {
-            K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
-            if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED || bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC) {
-                MailService.actionReset(context, tmpWakeLockId);
-                tmpWakeLockId = null;
-            }
         } else if (FIRE_INTENT.equals(action)) {
             Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
             String alarmedAction = alarmedIntent.getAction();

@@ -650,8 +650,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="background_ops_label">Atzeko planoko sinkronizazioa</string>
   <string name="background_ops_never">Inoiz ez</string>
   <string name="background_ops_always">Beti</string>
-  <string name="background_ops_enabled">\'Background data\' gaituta dagoenean</string>
-  <string name="background_ops_auto_sync">\'Background data\' eta \'Auto-sinkronizazioa\' gaituta daudenean</string>
   <string name="background_ops_auto_sync_only">\'Auto-sinkronizazioa\' gaituta dagoenean</string>
   <string name="batch_select_all">Guztia hautatu</string>
   <string name="account_setup_push_limit_label">Push erabiliz egiaztatuko diren karpeta kopuru maximoa</string>

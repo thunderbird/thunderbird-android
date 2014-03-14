@@ -658,8 +658,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="background_ops_label">Фоновая синхронизация</string>
   <string name="background_ops_never">Никогда</string>
   <string name="background_ops_always">Всегда</string>
-  <string name="background_ops_enabled">Фоновые данные вкл.</string>
-  <string name="background_ops_auto_sync">Фоновые данные и Автосинхронизация вкл.</string>
   <string name="background_ops_auto_sync_only">Автосинхронизация вкл.</string>
   <string name="batch_select_all">Выбрать все</string>
   <string name="account_setup_push_limit_label">Лимит push-проверки</string>

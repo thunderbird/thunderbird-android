@@ -650,8 +650,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="background_ops_label">Synchronizace na pozadí</string>
   <string name="background_ops_never">Nikdy</string>
   <string name="background_ops_always">Vždy</string>
-  <string name="background_ops_enabled">Je-li \'Data na pozadí\' zaškrtnuto</string>
-  <string name="background_ops_auto_sync">Jsou-li \'Data na pozadí\' a \'Aut. synchronizace\' zaškrtnuty</string>
   <string name="background_ops_auto_sync_only">Jsou-li \'Aut. synchronizace\' zaškrtnuty</string>
   <string name="batch_select_all">Vybrat vše</string>
   <string name="account_setup_push_limit_label">Max. počet složek řízených PUSH</string>

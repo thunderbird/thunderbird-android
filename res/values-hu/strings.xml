@@ -638,8 +638,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="background_ops_label">Háttérszinkronizálás</string>
   <string name="background_ops_never">Soha</string>
   <string name="background_ops_always">Mindig</string>
-  <string name="background_ops_enabled">Ha a \'Háttéradatok\' bekapcsolva</string>
-  <string name="background_ops_auto_sync">Ha a \'Háttéradatok\' és \'Auto-szink\' bekapcsolva</string>
   <string name="background_ops_auto_sync_only">Amikor az \'Automatikus szinkronizáció\' be van kapcsolva</string>
   <string name="batch_select_all">Mindent kijelöl</string>
   <string name="account_setup_push_limit_label">Ellenőrizhető mappák száma</string>

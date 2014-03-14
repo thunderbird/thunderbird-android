@@ -648,8 +648,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="background_ops_label">백그라운드 동기화</string>
   <string name="background_ops_never">하지 않음</string>
   <string name="background_ops_always">항상</string>
-  <string name="background_ops_enabled">\'백그라운드 데이터\'가 선택된 경우</string>
-  <string name="background_ops_auto_sync">\'백그라운드 데이터\'와 \'자동 동기화\'가 선택된 경우</string>
   <string name="background_ops_auto_sync_only">\'자동 동기화\' 가 선택된 경우</string>
   <string name="batch_select_all">모두 선택</string>
   <string name="account_setup_push_limit_label">푸시할 때 점검할 최대 폴더 수</string>

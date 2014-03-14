@@ -650,8 +650,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="background_ops_label">Sincronització 2n pla</string>
   <string name="background_ops_never">Mai</string>
   <string name="background_ops_always">Sempre</string>
-  <string name="background_ops_enabled">Quan s\'està comprovant \'Dades en segon pla\'</string>
-  <string name="background_ops_auto_sync">Quan s\'està comprovant \'Dades en segon pla\' i \'Sincronització Automàtica\'</string>
   <string name="background_ops_auto_sync_only">Quan la Sincronització Automàtica està activada</string>
   <string name="batch_select_all">Selecciona-ho tot</string>
   <string name="account_setup_push_limit_label">Carpetes màximes a comprovar</string>
