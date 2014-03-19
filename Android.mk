@@ -24,6 +24,7 @@ LOCAL_SDK_VERSION := current
 
 LOCAL_PACKAGE_NAME := Email
 
+LOCAL_AAPT_INCLUDE_ALL_RESOURCES := true
 LOCAL_AAPT_FLAGS := --auto-add-overlay
 LOCAL_AAPT_FLAGS += --extra-packages de.cketti.library.changelog
 LOCAL_AAPT_FLAGS += --extra-packages android.support.v4.app
