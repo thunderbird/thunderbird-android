@@ -95,7 +95,9 @@ public class SmtpTransport extends Transport {
         if (smtpUri.getUserInfo() != null) {
             try {
                 String[] userInfoParts = smtpUri.getUserInfo().split(":");
-                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                if (userInfoParts.length > 0) {
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                }
                 if (userInfoParts.length > 1) {
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 }
