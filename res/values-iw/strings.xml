@@ -118,6 +118,8 @@
     <string name="cancel_action">ביטול</string>
     <string name="send_action">שלח</string>
     <string name="send_again_action">שלח שוב</string>
+    <string name="select_action">בחר</string>
+    <string name="deselect_action">בטל בחירה</string>
     <string name="reply_action">השב</string>
     <string name="reply_all_action">השב על הכל</string>
     <string name="delete_action">מחק</string>
@@ -125,8 +127,8 @@
     <string name="spam_action">דואר זבל</string>
     <string name="forward_action">קדימה</string>
     <string name="move_action">העבר</string>
-    <!-- NEW: <string name="single_message_options_action">Send</string>-->
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send…</string>-->
+    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">המשך</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">סיום</string> <!--  Used to complete a multi-step process -->
@@ -195,11 +197,7 @@
     <string name="abbrev_bytes">B</string>
 
     <string name="account_size_changed"><!-- NEW: Note: part of 'account_size_changed' is untranslated -->
-    חשבון \"<xliff:g id="account">%s</xliff:g>\" נדחס ל
-    <xliff:g id="oldSize">%s</xliff:g>
-    to
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    חשבון \"<xliff:g id="account">%s</xliff:g>\" נדחס ל <xliff:g id="oldSize">%s</xliff:g> to <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">דחיסת חשבון</string>
     <string name="clearing_account">מנקה חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -261,7 +259,7 @@
     <string name="message_compose_quote_header_from">מ:</string>
     <string name="message_compose_quote_header_to">ל:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> כותב:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> כותב:</string>
     <string name="message_compose_error_no_recipients">עליך להוסיף לפחות נמען אחד.</string>
     <string name="error_contact_address_not_found">לא ניתן למצוא כתובת דוא\"ל.</string>
     <string name="message_compose_attachments_skipped_toast">קבצים מסוימים אינם ניתנים להעברה בגלל שהם לא הורדו.</string>
@@ -298,6 +296,8 @@
     <string name="message_discarded_toast">ההודעה נמחקה</string>
     <string name="message_saved_toast">ההודעה נשמרה כטיוטה</string>
 
+    <string name="global_settings_flag_label">הצג כוכבים</string>
+    <string name="global_settings_flag_summary">הכוכבים מצביעים על ההודעות המסומנות</string>
     <string name="global_settings_checkbox_label">תיבות סימון בחירה-מרובה</string>
     <string name="global_settings_checkbox_summary">תמיד הצג תיבות סימון בחירה-מרובה</string>
     <string name="global_settings_preview_lines_label">קווי תצוגה מקדימה</string>
@@ -390,10 +390,6 @@
     <string name="account_setup_incoming_security_label">סוג אבטחה</string>
     <string name="account_setup_incoming_auth_type_label">סוג אימות</string>
     <string name="account_setup_incoming_security_none_label">כלום</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (אם זמין)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (תמיד)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (אם זמין)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (תמיד)</string>
 
     <string name="account_setup_incoming_delete_policy_label">כאשר אני מוחק הודעה</string>
     <string name="account_setup_incoming_delete_policy_never_label">אל תמחוק בשרת</string>
@@ -752,7 +748,6 @@
 
     <string name="account_clear_dlg_title">נקה חשבון</string>
 
-    <string name="provider_note_live">רק כמה חשבונות \ "פלוס \" כוללים גישת POP המאפשרת לתוכנית זו להתחבר. אם אינך יכול להיכנס עם כתובת הדוא"ל והסיסמה הנכונות שלך, ייתכן שאין לך חשבון \ "פלוס \" בתשלום. נא להפעיל את דפדפן האינטרנט כדי לקבל גישה אל חשבונות דואר האלו.</string>
     <string name="provider_note_yahoojp">אם אתה רוצה להשתמש ב POP3 עבור ספק זה, אתה צריך לאפשר להשתמש ב POP3 בדף הגדרות דואר Yahoo.</string>
     <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
     <string name="provider_note_naver">אם אתה רוצה להשתמש ב ב-IMAP או POP3 עבור ספק זה, אתה צריך לאפשר להשתמש ב ב-IMAP או POP3 בדף הגדרות הדואר Naver.</string>
@@ -1019,7 +1014,7 @@
     <string name="settings_export_success">יצוא הגדרות נשמרו ל <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">יבא הגדרות כלליות מ <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">יבא <xliff:g id="accounts">%s</xliff:g> מ <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">חשבון 1</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> חשבונות</item>
     </plurals>
@@ -1137,4 +1132,15 @@
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

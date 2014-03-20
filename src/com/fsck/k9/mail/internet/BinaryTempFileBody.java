@@ -4,6 +4,8 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
+import org.apache.james.mime4j.util.MimeUtil;
 
 import java.io.*;
 
@@ -18,8 +20,14 @@ public class BinaryTempFileBody implements Body {
 
     private File mFile;
 
+    String mEncoding = null;
+
     public static void setTempDirectory(File tempDirectory) {
         mTempDirectory = tempDirectory;
+    }
+
+    public void setEncoding(String encoding) throws MessagingException {
+        mEncoding  = encoding;
     }
 
     public BinaryTempFileBody() {
@@ -46,11 +54,21 @@ public class BinaryTempFileBody implements Body {
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         InputStream in = getInputStream();
         try {
-            Base64OutputStream base64Out = new Base64OutputStream(out);
+            boolean closeStream = false;
+            if (MimeUtil.isBase64Encoding(mEncoding)) {
+                out = new Base64OutputStream(out);
+                closeStream = true;
+            } else if (MimeUtil.isQuotedPrintableEncoded(mEncoding)){
+                out = new QuotedPrintableOutputStream(out, false);
+                closeStream = true;
+            }
+
             try {
-                IOUtils.copy(in, base64Out);
+                IOUtils.copy(in, out);
             } finally {
-                base64Out.close();
+                if (closeStream) {
+                    out.close();
+                }
             }
         } finally {
             in.close();

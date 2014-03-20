@@ -4,7 +4,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.5.+'
+    classpath 'com.android.tools.build:gradle:0.9.+'
   }
 }
 
@@ -19,19 +19,27 @@ dependencies {
 }
 
 android {
-  compileSdkVersion 17
-  buildToolsVersion '17'
+  compileSdkVersion 19
+  buildToolsVersion '19.0.3'
 
   sourceSets {
     main {
       manifest.srcFile 'AndroidManifest.xml'
       java.srcDirs = ['src']
       res.srcDirs = ['res']
+      assets.srcDirs = ['assets']
     }
 
     instrumentTest {
       manifest.srcFile 'tests/AndroidManifest.xml'
       java.srcDirs = ['tests/src']
+      assets.srcDirs = ['tests/assets']
     }
+  }
+
+  packagingOptions {
+    exclude 'META-INF/DEPENDENCIES'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/NOTICE'
   }
 }

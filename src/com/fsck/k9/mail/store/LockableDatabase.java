@@ -5,10 +5,12 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.os.Build;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -329,14 +331,17 @@ public class LockableDatabase {
                 }
 
                 final StorageManager storageManager = getStorageManager();
+                File oldDatabase = storageManager.getDatabase(uUid, oldProviderId);
 
                 // create new path
                 prepareStorage(newProviderId);
 
                 // move all database files
-                Utility.moveRecursive(storageManager.getDatabase(uUid, oldProviderId), storageManager.getDatabase(uUid, newProviderId));
+                Utility.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
                 // move all attachment files
                 Utility.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId), storageManager.getAttachmentDirectory(uUid, newProviderId));
+                // remove any remaining old journal files
+                deleteDatabase(oldDatabase);
 
                 mStorageProviderId = newProviderId;
 
@@ -479,7 +484,7 @@ public class LockableDatabase {
             } catch (Exception e) {
             }
             try {
-                storageManager.getDatabase(uUid, mStorageProviderId).delete();
+                deleteDatabase(storageManager.getDatabase(uUid, mStorageProviderId));
             } catch (Exception e) {
                 Log.i(K9.LOG_TAG, "LockableDatabase: delete(): Unable to delete backing DB file", e);
             }
@@ -495,4 +500,18 @@ public class LockableDatabase {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void deleteDatabase(File database) {
+        boolean deleted = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            deleted = SQLiteDatabase.deleteDatabase(database);
+        } else {
+            deleted = database.delete();
+            deleted |= new File(database.getPath() + "-journal").delete();
+        }
+        if (!deleted) {
+            Log.i(K9.LOG_TAG,
+                    "LockableDatabase: deleteDatabase(): No files deleted.");
+        }
+    }
 }

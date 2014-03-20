@@ -2,7 +2,6 @@
 package com.fsck.k9;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +24,7 @@ import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -39,6 +39,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.provider.UnreadWidgetProvider;
+import com.fsck.k9.security.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -59,7 +60,7 @@ public class K9 extends Application {
          *            The application instance. Never <code>null</code>.
          * @throws Exception
          */
-        void initializeComponent(K9 application);
+        void initializeComponent(Application application);
     }
 
     public static Application app = null;
@@ -90,6 +91,15 @@ public class K9 extends Application {
      * @see ApplicationAware
      */
     private static List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
+
+    /**
+     * This will be {@code true} once the initialization is complete and {@link #notifyObservers()}
+     * was called.
+     * Afterwards calls to {@link #registerApplicationAware(com.fsck.k9.K9.ApplicationAware)} will
+     * immediately call {@link com.fsck.k9.K9.ApplicationAware#initializeComponent(K9)} for the
+     * supplied argument.
+     */
+    private static boolean sInitialized = false;
 
     public enum BACKGROUND_OPS {
         WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
@@ -167,8 +177,9 @@ public class K9 extends Application {
     /**
      * Can create messages containing stack traces that can be forwarded
      * to the development team.
+     *
+     * Feature is enabled when DEBUG == true
      */
-    public static boolean ENABLE_ERROR_FOLDER = true;
     public static String ERROR_FOLDER_NAME = "K9mail-errors";
 
     /**
@@ -224,6 +235,7 @@ public class K9 extends Application {
     }
 
     private static boolean mMessageListCheckboxes = true;
+    private static boolean mMessageListStars = true;
     private static int mMessageListPreviewLines = 2;
 
     private static boolean mShowCorrespondentNames = true;
@@ -260,6 +272,14 @@ public class K9 extends Application {
     private static boolean sUseBackgroundAsUnreadIndicator = true;
     private static boolean sThreadedViewEnabled = true;
     private static SplitViewMode sSplitViewMode = SplitViewMode.NEVER;
+    private static boolean sColorizeMissingContactPictures = true;
+
+    private static boolean sMessageViewArchiveActionVisible = false;
+    private static boolean sMessageViewDeleteActionVisible = true;
+    private static boolean sMessageViewMoveActionVisible = false;
+    private static boolean sMessageViewCopyActionVisible = false;
+    private static boolean sMessageViewSpamActionVisible = false;
+
 
     /**
      * @see #areDatabasesUpToDate()
@@ -503,6 +523,7 @@ public class K9 extends Application {
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
         editor.putBoolean("messageListSenderAboveSubject", mMessageListSenderAboveSubject);
         editor.putBoolean("hideSpecialAccounts", mHideSpecialAccounts);
+        editor.putBoolean("messageListStars", mMessageListStars);
         editor.putInt("messageListPreviewLines", mMessageListPreviewLines);
         editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
         editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
@@ -537,12 +558,25 @@ public class K9 extends Application {
         editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
         editor.putBoolean("threadedView", sThreadedViewEnabled);
         editor.putString("splitViewMode", sSplitViewMode.name());
+        editor.putBoolean("colorizeMissingContactPictures", sColorizeMissingContactPictures);
+
+        editor.putBoolean("messageViewArchiveActionVisible", sMessageViewArchiveActionVisible);
+        editor.putBoolean("messageViewDeleteActionVisible", sMessageViewDeleteActionVisible);
+        editor.putBoolean("messageViewMoveActionVisible", sMessageViewMoveActionVisible);
+        editor.putBoolean("messageViewCopyActionVisible", sMessageViewCopyActionVisible);
+        editor.putBoolean("messageViewSpamActionVisible", sMessageViewSpamActionVisible);
+
         fontSizes.save(editor);
     }
 
     @Override
     public void onCreate() {
-        maybeSetupStrictMode();
+        if (K9.DEVELOPER_MODE) {
+            StrictMode.enableDefaults();
+        }
+
+        PRNGFixes.apply();
+
         super.onCreate();
         app = this;
 
@@ -560,6 +594,8 @@ public class K9 extends Application {
          * doesn't work in Android and MimeMessage does not have access to a Context.
          */
         BinaryTempFileBody.setTempDirectory(getCacheDir());
+
+        LocalKeyStore.setKeyStoreLocation(getDir("KeyStore", MODE_PRIVATE).toString());
 
         /*
          * Enable background sync of messages
@@ -689,7 +725,8 @@ public class K9 extends Application {
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
         mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", true);
+        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
+        mMessageListStars = sprefs.getBoolean("messageListStars", true);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
@@ -757,6 +794,15 @@ public class K9 extends Application {
             setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
         }
 
+        sColorizeMissingContactPictures = sprefs.getBoolean("colorizeMissingContactPictures", true);
+
+        sMessageViewArchiveActionVisible = sprefs.getBoolean("messageViewArchiveActionVisible", false);
+        sMessageViewDeleteActionVisible = sprefs.getBoolean("messageViewDeleteActionVisible", true);
+        sMessageViewMoveActionVisible = sprefs.getBoolean("messageViewMoveActionVisible", false);
+        sMessageViewCopyActionVisible = sprefs.getBoolean("messageViewCopyActionVisible", false);
+        sMessageViewSpamActionVisible = sprefs.getBoolean("messageViewSpamActionVisible", false);
+
+
         K9.setK9Language(sprefs.getString("language", ""));
 
         int themeValue = sprefs.getInt("theme", Theme.LIGHT.ordinal());
@@ -775,39 +821,26 @@ public class K9 extends Application {
         K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
     }
 
-    private void maybeSetupStrictMode() {
-        if (!K9.DEVELOPER_MODE)
-            return;
-
-        try {
-            Class<?> strictMode = Class.forName("android.os.StrictMode");
-            Method enableDefaults = strictMode.getMethod("enableDefaults");
-            enableDefaults.invoke(strictMode);
-        }
-
-        catch (Exception e) {
-            // Discard , as it means we're not running on a device with strict mode
-            Log.v(K9.LOG_TAG, "Failed to turn on strict mode", e);
-        }
-
-    }
-
-
     /**
      * since Android invokes Application.onCreate() only after invoking all
      * other components' onCreate(), here is a way to notify interested
      * component that the application is available and ready
      */
     protected void notifyObservers() {
-        for (final ApplicationAware aware : observers) {
-            if (K9.DEBUG) {
-                Log.v(K9.LOG_TAG, "Initializing observer: " + aware);
+        synchronized (observers) {
+            for (final ApplicationAware aware : observers) {
+                if (K9.DEBUG) {
+                    Log.v(K9.LOG_TAG, "Initializing observer: " + aware);
+                }
+                try {
+                    aware.initializeComponent(this);
+                } catch (Exception e) {
+                    Log.w(K9.LOG_TAG, "Failure when notifying " + aware, e);
+                }
             }
-            try {
-                aware.initializeComponent(this);
-            } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Failure when notifying " + aware, e);
-            }
+
+            sInitialized = true;
+            observers.clear();
         }
     }
 
@@ -818,8 +851,12 @@ public class K9 extends Application {
      *            Never <code>null</code>.
      */
     public static void registerApplicationAware(final ApplicationAware component) {
-        if (!observers.contains(component)) {
-            observers.add(component);
+        synchronized (observers) {
+            if (sInitialized) {
+                component.initializeComponent(K9.app);
+            } else if (!observers.contains(component)) {
+                observers.add(component);
+            }
         }
     }
 
@@ -1044,13 +1081,20 @@ public class K9 extends Application {
         mMessageListPreviewLines = lines;
     }
 
-
     public static boolean messageListCheckboxes() {
         return mMessageListCheckboxes;
     }
 
     public static void setMessageListCheckboxes(boolean checkboxes) {
         mMessageListCheckboxes = checkboxes;
+    }
+
+    public static boolean messageListStars() {
+        return mMessageListStars;
+    }
+
+    public static void setMessageListStars(boolean stars) {
+        mMessageListStars = stars;
     }
 
     public static boolean showCorrespondentNames() {
@@ -1114,19 +1158,6 @@ public class K9 extends Application {
 
     public static void setMessageViewShowNext(boolean messageViewShowNext) {
         mMessageViewShowNext = messageViewShowNext;
-    }
-
-    public static Method getMethod(Class<?> classObject, String methodName) {
-        try {
-            return classObject.getMethod(methodName, boolean.class);
-        } catch (NoSuchMethodException e) {
-            Log.i(K9.LOG_TAG, "Can't get method " +
-                  classObject.toString() + "." + methodName);
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Error while using reflection to get method " +
-                  classObject.toString() + "." + methodName, e);
-        }
-        return null;
     }
 
     public static FontSizes getFontSizes() {
@@ -1300,6 +1331,54 @@ public class K9 extends Application {
 
     public static void setShowContactPicture(boolean show) {
         sShowContactPicture = show;
+    }
+
+    public static boolean isColorizeMissingContactPictures() {
+        return sColorizeMissingContactPictures;
+    }
+
+    public static void setColorizeMissingContactPictures(boolean enabled) {
+        sColorizeMissingContactPictures = enabled;
+    }
+
+    public static boolean isMessageViewArchiveActionVisible() {
+        return sMessageViewArchiveActionVisible;
+    }
+
+    public static void setMessageViewArchiveActionVisible(boolean visible) {
+        sMessageViewArchiveActionVisible = visible;
+    }
+
+    public static boolean isMessageViewDeleteActionVisible() {
+        return sMessageViewDeleteActionVisible;
+    }
+
+    public static void setMessageViewDeleteActionVisible(boolean visible) {
+        sMessageViewDeleteActionVisible = visible;
+    }
+
+    public static boolean isMessageViewMoveActionVisible() {
+        return sMessageViewMoveActionVisible;
+    }
+
+    public static void setMessageViewMoveActionVisible(boolean visible) {
+        sMessageViewMoveActionVisible = visible;
+    }
+
+    public static boolean isMessageViewCopyActionVisible() {
+        return sMessageViewCopyActionVisible;
+    }
+
+    public static void setMessageViewCopyActionVisible(boolean visible) {
+        sMessageViewCopyActionVisible = visible;
+    }
+
+    public static boolean isMessageViewSpamActionVisible() {
+        return sMessageViewSpamActionVisible;
+    }
+
+    public static void setMessageViewSpamActionVisible(boolean visible) {
+        sMessageViewSpamActionVisible = visible;
     }
 
     /**

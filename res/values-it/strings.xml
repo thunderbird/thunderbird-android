@@ -118,6 +118,8 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="cancel_action">Annulla</string>
     <string name="send_action">Invia</string>
     <string name="send_again_action">Invia di nuovo</string>
+    <!-- NEW: <string name="select_action">Select</string>-->
+    <!-- NEW: <string name="deselect_action">Deselect</string>-->
     <string name="reply_action">Rispondi</string>
     <string name="reply_all_action">Rispondi a tutti</string>
     <string name="delete_action">Elimina</string>
@@ -125,8 +127,8 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="spam_action">Spam</string>
     <string name="forward_action">Inoltra</string>
     <string name="move_action">Sposta</string>
-    <string name="single_message_options_action">Opzioni messaggio</string>
-    <string name="refile_action">Riarchivia</string>
+    <string name="single_message_options_action">Opzioni messaggio…</string>
+    <string name="refile_action">Riarchivia…</string>
     <string name="continue_action">Continua</string>
     <string name="back_action">Indietro</string>
     <string name="done_action">Fatto</string> <!--  Used to complete a multi-step process -->
@@ -186,20 +188,14 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
 
     <string name="status_loading_more_failed">Riprova a caricare altri messaggi</string>
 
-    <string name="load_more_messages_fmt">Scarica altri
-    <xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
+    <string name="load_more_messages_fmt">Scarica altri <xliff:g id="messages_to_load">%d</xliff:g> messaggi</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Account \"<xliff:g id="account">%s</xliff:g>\" ridimensionato da
-    <xliff:g id="oldSize">%s</xliff:g>
-    a
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" ridimensionato da <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compattazione account \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Rimozione account \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -261,7 +257,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="message_compose_quote_header_from">Da:</string>
     <string name="message_compose_quote_header_to">A:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha scritto:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha scritto:</string>
     <string name="message_compose_error_no_recipients">È necessario specificare almeno un destinatario.</string>
     <string name="error_contact_address_not_found">Nessun indirizzo email trovato.</string>
     <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati in quanto non sono stati scaricati.</string>
@@ -298,6 +294,8 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="message_discarded_toast">Messaggio scartato</string>
     <string name="message_saved_toast">Messaggio salvato come bozza</string>
 
+    <string name="global_settings_flag_label">Mostra stelle</string>
+    <string name="global_settings_flag_summary">Le stelle indicano i messaggi evidenziati</string>
     <string name="global_settings_checkbox_label">Caselle di selezione multipla</string>
     <string name="global_settings_checkbox_summary">Mostra sempre caselle di selezione multipla</string>
     <string name="global_settings_preview_lines_label">Righe di anteprima</string>
@@ -390,10 +388,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="account_setup_incoming_security_label">Tipo di protezione</string>
     <string name="account_setup_incoming_auth_type_label">Tipo di autenticazione</string>
     <string name="account_setup_incoming_security_none_label">Nessuna</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (se disponibile)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (sempre)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (se disponibile)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (sempre)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Quando si elimina un messaggio</string>
     <string name="account_setup_incoming_delete_policy_never_label">Non eliminare dal server</string>
@@ -752,11 +746,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
 
     <string name="account_clear_dlg_title">Cancella account</string>
 
-    <string name="provider_note_live">Solo alcuni account \"Plus\" comprendono l\'accesso POP
-        consentendo il collegamento del programma. Se non riesci ad accedere con
-        indirizzo email e password corretti, è possibile che non sia stato pagato un account
-        \"Plus\". Esegui il browser Internet per acquistare l\'accesso a questo
-        genere di account email.</string>
     <string name="provider_note_yahoojp">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di Yahoo.</string>
     <string name="provider_note_auonejp">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di au one mail.</string>
     <string name="provider_note_naver">Se si desidera utilizzare IMAP o POP3 per questo provider, si deve consentire l\'utilizzo di IMAP o POP3 sulla pagina delle impostazioni di Naver mail.</string>
@@ -986,7 +975,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Vuoi davvero eliminare questo messaggio?</item>
         <item quantity="other">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati?</item>
     </plurals>
@@ -1023,7 +1012,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="settings_export_success">Salvata esportazione impostazioni in <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Impostazioni globali importate da <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importato <xliff:g id="accounts">%s</xliff:g> da <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> account</item>
     </plurals>
@@ -1142,4 +1131,15 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
     <string name="preposition_for_date">il <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Marca tutti come letti</string>
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

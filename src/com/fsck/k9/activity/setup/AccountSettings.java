@@ -510,7 +510,6 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             }
         );
-        updateRemoteSearchLimit(mRemoteSearchNumResults.getValue());
         //mRemoteSearchFullText = (CheckBoxPreference) findPreference(PREFERENCE_REMOTE_SEARCH_FULL_TEXT);
 
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
@@ -520,7 +519,9 @@ public class AccountSettings extends K9PreferenceActivity {
             mPushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
 
             mCloudSearchEnabled.setChecked(mAccount.allowRemoteSearch());
-            mRemoteSearchNumResults.setValue(Integer.toString(mAccount.getRemoteSearchNumResults()));
+            String searchNumResults = Integer.toString(mAccount.getRemoteSearchNumResults());
+            mRemoteSearchNumResults.setValue(searchNumResults);
+            updateRemoteSearchLimit(searchNumResults);
             //mRemoteSearchFullText.setChecked(mAccount.isRemoteSearchFullText());
 
             mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));

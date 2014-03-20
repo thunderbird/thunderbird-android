@@ -117,6 +117,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="cancel_action">Abbrechen</string>
     <string name="send_action">Senden</string>
     <string name="send_again_action">Erneut senden</string>
+    <string name="select_action">Auswählen</string>
+    <string name="deselect_action">Abwählen</string>
     <string name="reply_action">Antworten</string>
     <string name="reply_all_action">Allen antworten</string>
     <string name="delete_action">Löschen</string>
@@ -124,8 +126,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="spam_action">Spam</string>
     <string name="forward_action">Weiterleiten</string>
     <string name="move_action">Verschieben</string>
-    <string name="single_message_options_action">Aktionen</string>
-    <string name="refile_action">Umsortieren</string>
+    <string name="single_message_options_action">Aktionen…</string>
+    <string name="refile_action">Umsortieren…</string>
     <string name="continue_action">Fortfahren</string>
     <string name="back_action">Zurück</string>
     <string name="done_action">Fertig</string> <!--  Used to complete a multi-step process -->
@@ -185,21 +187,14 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="status_loading_more_failed">Ladevorgang erneut starten</string>
 
-    <string name="load_more_messages_fmt">Bis zu
-    <xliff:g id="messages_to_load">%d</xliff:g> weitere abrufen</string>
+    <string name="load_more_messages_fmt">Bis zu <xliff:g id="messages_to_load">%d</xliff:g> weitere abrufen</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Konto \'<xliff:g id="account">%s</xliff:g>\' von
-    <xliff:g id="oldSize">%s</xliff:g>
-    auf
-    <xliff:g id="newSize">%s</xliff:g>
-    komprimiert
-    </string>
+    <string name="account_size_changed">Konto \'<xliff:g id="account">%s</xliff:g>\' von <xliff:g id="oldSize">%s</xliff:g> auf <xliff:g id="newSize">%s</xliff:g> komprimiert</string>
 
     <string name="compacting_account">Konto \'<xliff:g id="account">%s</xliff:g>\' wird komprimiert</string>
     <string name="clearing_account">Konto \'<xliff:g id="account">%s</xliff:g>\' wird bereinigt</string>
@@ -261,7 +256,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="message_compose_quote_header_from">Von:</string>
     <string name="message_compose_quote_header_to">An:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> schrieb:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schrieb:</string>
     <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger wählen.</string>
     <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
     <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
@@ -298,6 +293,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="message_discarded_toast">Nachricht wurde verworfen</string>
     <string name="message_saved_toast">Nachricht wurde als Entwurf gespeichert</string>
 
+    <string name="global_settings_flag_label">Wichtige Nachrichten</string>
+    <string name="global_settings_flag_summary">Sterne weisen auf wichtige Nachrichten hin.</string>
     <string name="global_settings_checkbox_label">Mehrfachauswahl</string>
     <string name="global_settings_checkbox_summary">Immer Mehrfachauswahl-Felder anzeigen</string>
     <string name="global_settings_preview_lines_label">Vorschauzeilen</string>
@@ -390,10 +387,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_setup_incoming_security_label">Sicherheitstyp</string>
     <string name="account_setup_incoming_auth_type_label">Authentifizierungstyp</string>
     <string name="account_setup_incoming_security_none_label">Keine Verschlüsselung</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (falls verfügbar)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (immer)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (falls verfügbar)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (immer)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Beim Löschen von Nachrichten</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie von Server löschen</string>
@@ -450,7 +443,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="compact_action">Komprimieren</string>
     <string name="clear_action">Alle Daten löschen (Vorsicht!)</string>
-    <string name="recreate_action">Daten wiederherstellen (Letzter Ausweg!)</string>
+    <string name="recreate_action">Daten neu erstellen (Letzter Ausweg!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">E-Mail-Abfrage</string>
     <!-- Frequency also used in account_settings_* -->
@@ -564,7 +557,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_settings_crypto_auto_signature_summary">E-Mail-Adresse des Kontos verwenden, um den Signaturschlüssel zu finden</string>
     <string name="account_settings_crypto_auto_encrypt">Automatische Verschlüsselung</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Automatisch verschlüsseln, falls für den Empfänger ein öffentlicher Schlüssel vorhanden ist</string>
-    <string name="account_settings_crypto_apg_not_installed">AGP ist nicht installiert</string>
+    <string name="account_settings_crypto_apg_not_installed">APG ist nicht installiert</string>
 
     <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
 
@@ -748,15 +741,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="account_delete_dlg_title">Entfernen</string>
 
-    <string name="account_recreate_dlg_title">Konto wiederherstellen</string>
+    <string name="account_recreate_dlg_title">Konto neu erstellen</string>
 
     <string name="account_clear_dlg_title">Nachrichten löschen</string>
 
-    <string name="provider_note_live">Nur einige \"Plus\"-Konten mit POP-Zugriff
-        ermöglichen diesem Programm die Verbindung. Wenn Sie sich nicht mit
-        der richtigen E-Mail-Adresse und dem richtigen Kennwort anmelden können, haben Sie möglicherweise die Gebühren für das
-        \"Plus\"-Konto nicht bezahlt. Starten Sie den Webbrowser, um auf
-        diese Mailkonten zuzugreifen.</string>
     <string name="provider_note_yahoojp">Wenn Sie für diesen Anbieter POP3 verwenden möchten, sollten Sie in den "Yahoo! Mail"-Einstellungen POP3 aktivieren.</string>
     <string name="provider_note_auonejp">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "AU One"-Einstellungsseite aktivieren.</string>
     <string name="provider_note_naver">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Naver Mail"-Einstellungsseite aktivieren.</string>
@@ -884,7 +872,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="tap_hint">Für ungelesene oder wichtige Nachrichten Umschlag oder Stern berühren</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">In gem. Posteingang integrieren</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Ungelesene Nachrichten im gemeinsamen Posteingang anzeigen</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Nachrichten im gemeinsamen Posteingang anzeigen</string>
 
     <string name="account_settings_searchable_label">Durchsuchbare Ordner</string>
     <string name="account_settings_searchable_all">Alle</string>
@@ -986,7 +974,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Möchten Sie diese Nachricht wirklich löschen?</item>
         <item quantity="other">Möchten Sie wirklich <xliff:g id="message_count">%1$d</xliff:g> Nachrichten löschen?</item>
     </plurals>
@@ -1023,7 +1011,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="settings_export_success">Exportierte Einstellungen wurden erfolgreich nach <xliff:g id="filename">%s</xliff:g> gespeichert</string>
     <string name="settings_import_global_settings_success">Globale Einstellungen erfolgreich aus <xliff:g id="filename">%s</xliff:g> importiert</string>
     <string name="settings_import_success">\'<xliff:g id="accounts">%s</xliff:g>\' erfolgreich aus <xliff:g id="filename">%s</xliff:g> importiert</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 Konto</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> Konten</item>
     </plurals>
@@ -1142,4 +1130,15 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="preposition_for_date">am <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Alle als gelesen markieren</string>
+
+    <string name="global_settings_colorize_missing_contact_pictures_label">Kontaktbilder einfärben</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Fehlende Kontaktbilder einfärben</string>
+
+    <string name="global_settings_messageview_visible_refile_actions_title">Sichtbare Nachrichtenaktionen</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Ausgewählte Aktionen im Menü der Nachrichtenanzeige anzeigen</string>
+
+    <string name="loading_attachment">Anhang wird geladen…</string>
+    <string name="fetching_attachment_dialog_title_send">Nachricht senden</string>
+    <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
+    <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
 </resources>

@@ -460,4 +460,9 @@ public class MergeCursor implements Cursor {
     public Bundle respond(Bundle extras) {
         throw new RuntimeException("Not implemented");
     }
+
+    @Override
+    public Uri getNotificationUri() {
+        return null;
+    }
 }

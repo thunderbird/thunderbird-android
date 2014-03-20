@@ -118,6 +118,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="cancel_action">İptal</string>
     <string name="send_action">Gönder</string>
     <string name="send_again_action">Tekrar Gönder</string>
+    <string name="select_action">Seç</string>
+    <string name="deselect_action">Kaldır</string>
     <string name="reply_action">Cevap</string>
     <string name="reply_all_action">Hepsini Cevapla</string>
     <string name="delete_action">Sil</string>
@@ -125,8 +127,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="spam_action">Spam</string>
     <string name="forward_action">İlet</string>
     <string name="move_action">Taşı</string>
-    <!-- NEW: <string name="single_message_options_action">Send</string>-->
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send…</string>-->
+    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">Devam</string>
     <string name="back_action">Geri</string>
     <string name="done_action">Tamam</string> <!--  Used to complete a multi-step process -->
@@ -186,20 +188,14 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 
     <string name="status_loading_more_failed">Birden fazla mesaj yüklemeyi deniyor</string>
 
-    <string name="load_more_messages_fmt">Boyuta kadar yükle
-     <xliff:g id="messages_to_load">%d</xliff:g> daha fazla</string>
+    <string name="load_more_messages_fmt">Boyuta kadar yükle <xliff:g id="messages_to_load">%d</xliff:g> daha fazla</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    \"<xliff:g id="account">%s</xliff:g>\" hesabı
-    <xliff:g id="oldSize">%s</xliff:g>
-    den
-    <xliff:g id="newSize">%s</xliff:g>\'e küçüldü
-    </string>
+    <string name="account_size_changed">\"<xliff:g id="account">%s</xliff:g>\" hesabı <xliff:g id="oldSize">%s</xliff:g> den <xliff:g id="newSize">%s</xliff:g>\'e küçüldü</string>
 
     <string name="compacting_account">Hesap sıkıştırma \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Hesap temizleme \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -261,7 +257,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="message_compose_quote_header_from">Kimden:</string>
     <string name="message_compose_quote_header_to">Alıcı:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> yazdı:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> yazdı:</string>
     <string name="message_compose_error_no_recipients">En az bir Alıcı eklemelisiniz.</string>
     <string name="error_contact_address_not_found">E-posta adresi bulunamadı.</string>
     <string name="message_compose_attachments_skipped_toast">Bazı ekler iletilemedi çünkü indirilemedi.</string>
@@ -298,6 +294,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="message_discarded_toast">Mesaj silindi</string>
     <string name="message_saved_toast">Mesaj taslak olarak kaydedildi.</string>
 
+    <string name="global_settings_flag_label">Yıldızları Göster</string>
+    <string name="global_settings_flag_summary">Yıldızlar bayraklı mesajları gösterir.</string>
     <string name="global_settings_checkbox_label">Çoklu-seçim işaret kutuları</string>
     <string name="global_settings_checkbox_summary">Çoklu-seçim işaret kutularını Daima göster.</string>
     <string name="global_settings_preview_lines_label">Önizleme hatları</string>
@@ -390,10 +388,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="account_setup_incoming_security_label">Güvenlik tipi</string>
     <string name="account_setup_incoming_auth_type_label">Kimlik doğrulama tipi</string>
     <string name="account_setup_incoming_security_none_label">Hiçbiri</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (Varsa)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (daima)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (Varsa)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (Daima)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Bir mesaj sildiğim zaman</string>
     <string name="account_setup_incoming_delete_policy_never_label">Sunucudan silme</string>
@@ -752,10 +746,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 
     <string name="account_clear_dlg_title">Hesabı Temizle</string>
 
-    <string name="provider_note_live">Sadece bazı \"Plus\" hesaplar bu programın POP
-        erişiminden bağlanmasına izin verir. Eğer doğru e-posta adresi ve şifre ile
-        oturum açamıyorsanız, \"Plus\" hesap için bir ödeme yapmamışsınız demektir.
-        Lütfen Web gezginini bu posta hesaplarına erişebilmek için başlatın. </string>
     <string name="provider_note_yahoojp">Bu sağlayıcı için POP3 kullanmak isterseniz, Yahoo Mail ayarlar sayfasında POP3 kullanmak için vermelisiniz.</string>
     <string name="provider_note_auonejp">Bu sağlayıcı için IMAP veya POP3 kullanmak isterseniz, au one ayarlar sayfasında IMAP veya POP3 kullanmaya izin vermelisiniz.</string>
     <string name="provider_note_naver">Bu sağlayıcı için IMAP veya POP3 kullanmak isterseniz, Naver mail ayarlar sayfasında IMAP veya POP3 kullanmaya izin vermelisiniz.</string>
@@ -1024,7 +1014,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <string name="settings_export_success">Dışarı aktarılan ayarlar <xliff:g id="filename">%s</xliff:g> olarak kaydedildi.</string>
     <string name="settings_import_global_settings_success">Genel ayarlar <xliff:g id="filename">%s</xliff:g> dosyasından alındı</string>
     <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g>, <xliff:g id="filename">%s</xliff:g> dosyasından alındı</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 hesap</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> hesap</item>
     </plurals>
@@ -1143,4 +1133,15 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

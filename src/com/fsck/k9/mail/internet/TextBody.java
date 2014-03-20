@@ -7,6 +7,7 @@ import com.fsck.k9.mail.MessagingException;
 import java.io.*;
 
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
+import org.apache.james.mime4j.util.MimeUtil;
 
 public class TextBody implements Body {
 
@@ -31,7 +32,7 @@ public class TextBody implements Body {
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         if (mBody != null) {
             byte[] bytes = mBody.getBytes(mCharset);
-            if ("8bit".equals(mEncoding)) {
+            if (MimeUtil.ENC_8BIT.equalsIgnoreCase(mEncoding)) {
                 out.write(bytes);
             } else {
                 QuotedPrintableOutputStream qp = new QuotedPrintableOutputStream(out, false);
@@ -62,7 +63,7 @@ public class TextBody implements Body {
                 b = EMPTY_BYTE_ARRAY;
             }
             return new ByteArrayInputStream(b);
-        } catch (UnsupportedEncodingException usee) {
+        } catch (UnsupportedEncodingException uee) {
             return null;
         }
     }

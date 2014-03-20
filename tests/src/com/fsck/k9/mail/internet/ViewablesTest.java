@@ -5,7 +5,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 import android.test.AndroidTestCase;
 
-import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
@@ -82,8 +81,8 @@ public class ViewablesTest extends AndroidTestCase {
         ViewableContainer container = MimeUtility.extractTextAndAttachments(getContext(), message);
 
         String expectedText =
-                bodyText1 + "\n\n" +
-                "------------------------------------------------------------------------\n\n" +
+                bodyText1 + "\r\n\r\n" +
+                "------------------------------------------------------------------------\r\n\r\n" +
                 bodyText2;
         String expectedHtml =
                 "<pre class=\"k9mail\">" +
@@ -139,14 +138,14 @@ public class ViewablesTest extends AndroidTestCase {
 
         String expectedText =
                 bodyText +
-                "\n\n" +
+                "\r\n\r\n" +
                 "----- message.eml ------------------------------------------------------" +
-                "\n\n" +
-                "From: from@example.com" + "\n" +
-                "To: to@example.com" + "\n" +
-                "Sent: Sat Mar 17 00:00:00 GMT+01:00 2012" + "\n" +
-                "Subject: Subject" + "\n" +
-                "\n" +
+                "\r\n\r\n" +
+                "From: from@example.com" + "\r\n" +
+                "To: to@example.com" + "\r\n" +
+                "Sent: Sat Mar 17 00:00:00 GMT+01:00 2012" + "\r\n" +
+                "Subject: Subject" + "\r\n" +
+                "\r\n" +
                 innerBodyText;
         String expectedHtml =
                 "<pre class=\"k9mail\">" +

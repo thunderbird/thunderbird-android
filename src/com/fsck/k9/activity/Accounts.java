@@ -1371,9 +1371,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     private void onImport() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType(MimeUtility.K9_SETTINGS_MIME_TYPE);
+        i.setType("*/*");
 
         PackageManager packageManager = getPackageManager();
         List<ResolveInfo> infos = packageManager.queryIntentActivities(i, 0);
@@ -1518,7 +1517,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             int imported = mImportResults.importedAccounts.size();
             String accounts = activity.getResources().getQuantityString(
-                                  R.plurals.settings_import_success, imported, imported);
+                                  R.plurals.settings_import_accounts, imported, imported);
             return activity.getString(R.string.settings_import_success, accounts, mFilename);
         }
 
@@ -1736,7 +1735,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             }
 
             String description = account.getDescription();
-            if (description == null || description.length() == 0) {
+            if (description == null || description.isEmpty()) {
                 description = account.getEmail();
             }
 
@@ -1749,7 +1748,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.newMessageCountWrapper.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
-                holder.flaggedMessageCountWrapper.setVisibility(stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
+                holder.flaggedMessageCountWrapper.setVisibility(K9.messageListStars() && stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearchListener(account));
                 holder.newMessageCountWrapper.setOnClickListener(createUnreadSearchListener(account));
@@ -1769,20 +1768,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (account instanceof Account) {
                 Account realAccount = (Account)account;
 
-                holder.chip.setBackgroundDrawable(realAccount.generateColorChip().drawable());
-                if (unreadMessageCount == null) {
-                    holder.chip.setBackgroundDrawable(realAccount.generateColorChip().drawable());
-                } else if (unreadMessageCount == 0) {
-                    holder.chip.setBackgroundDrawable(realAccount.generateColorChip(true, false, false, false, false).drawable());
-                } else {
-                    holder.chip.setBackgroundDrawable(realAccount.generateColorChip(false, false, false, false, false).drawable());
-                }
+                holder.chip.setBackgroundColor(realAccount.getChipColor());
 
                 holder.flaggedMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false,true).drawable() );
                 holder.newMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false, false).drawable() );
 
             } else {
-                holder.chip.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable());
+                holder.chip.setBackgroundColor(0xff999999);
                 holder.newMessageCountIcon.setBackgroundDrawable( new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable() );
                 holder.flaggedMessageCountIcon.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.STAR).drawable());
             }

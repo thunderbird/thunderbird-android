@@ -1,12 +1,13 @@
 
 package com.fsck.k9;
 
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
+import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
@@ -40,6 +42,7 @@ import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.security.LocalKeyStore;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
 
@@ -218,12 +221,6 @@ public class Account implements BaseAccount {
 
     private ColorChip mFlaggedUnreadColorChip;
     private ColorChip mFlaggedReadColorChip;
-    private ColorChip mToMeUnreadColorChip;
-    private ColorChip mToMeReadColorChip;
-    private ColorChip mCcMeUnreadColorChip;
-    private ColorChip mCcMeReadColorChip;
-    private ColorChip mFromMeUnreadColorChip;
-    private ColorChip mFromMeReadColorChip;
     private ColorChip mCheckmarkChip;
 
 
@@ -504,6 +501,10 @@ public class Account implements BaseAccount {
 
         cacheChips();
 
+        // Use email address as account description if necessary
+        if (mDescription == null) {
+            mDescription = getEmail();
+        }
     }
 
     protected synchronized void delete(Preferences preferences) {
@@ -527,7 +528,6 @@ public class Account implements BaseAccount {
         }
 
         editor.remove(mUuid + ".storeUri");
-        editor.remove(mUuid + ".localStoreUri");
         editor.remove(mUuid + ".transportUri");
         editor.remove(mUuid + ".description");
         editor.remove(mUuid + ".name");
@@ -553,12 +553,10 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".vibrateTimes");
         editor.remove(mUuid + ".ring");
         editor.remove(mUuid + ".ringtone");
-        editor.remove(mUuid + ".lastFullSync");
         editor.remove(mUuid + ".folderDisplayMode");
         editor.remove(mUuid + ".folderSyncMode");
         editor.remove(mUuid + ".folderPushMode");
         editor.remove(mUuid + ".folderTargetMode");
-        editor.remove(mUuid + ".hideButtonsEnum");
         editor.remove(mUuid + ".signatureBeforeQuotedText");
         editor.remove(mUuid + ".expungePolicy");
         editor.remove(mUuid + ".syncRemoteDeletions");
@@ -584,13 +582,24 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".cryptoAutoSignature");
         editor.remove(mUuid + ".cryptoAutoEncrypt");
         editor.remove(mUuid + ".enabled");
-        editor.remove(mUuid + ".hideMoveButtonsEnum");
         editor.remove(mUuid + ".markMessageAsReadOnView");
         editor.remove(mUuid + ".alwaysShowCcBcc");
+        editor.remove(mUuid + ".allowRemoteSearch");
+        editor.remove(mUuid + ".remoteSearchFullText");
+        editor.remove(mUuid + ".remoteSearchNumResults");
+        editor.remove(mUuid + ".defaultQuotedTextShown");
+        editor.remove(mUuid + ".displayCount");
+        editor.remove(mUuid + ".inboxFolderName");
+        editor.remove(mUuid + ".localStorageProvider");
+        editor.remove(mUuid + ".messageFormat");
+        editor.remove(mUuid + ".messageReadReceipt");
+        editor.remove(mUuid + ".notifyMailCheck");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
         deleteIdentities(preferences.getPreferences(), editor);
+        // TODO: Remove preference settings that may exist for individual
+        // folders in the account.
         editor.commit();
     }
 
@@ -609,9 +618,9 @@ public class Account implements BaseAccount {
 
     public static List<Integer> getExistingAccountNumbers(Preferences preferences) {
         Account[] accounts = preferences.getAccounts();
-        List<Integer> accountNumbers = new LinkedList<Integer>();
-        for (int i = 0; i < accounts.length; i++) {
-            accountNumbers.add(accounts[i].getAccountNumber());
+        List<Integer> accountNumbers = new ArrayList<Integer>(accounts.length);
+        for (Account a : accounts) {
+            accountNumbers.add(a.getAccountNumber());
         }
         return accountNumbers;
     }
@@ -847,12 +856,6 @@ public class Account implements BaseAccount {
     public synchronized void cacheChips() {
         mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
         mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
-        mToMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_POINTING);
-        mToMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_POINTING);
-        mCcMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.RIGHT_NOTCH);
-        mCcMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.RIGHT_NOTCH);
-        mFromMeReadColorChip = new ColorChip(mChipColor, true, ColorChip.LEFT_POINTING);
-        mFromMeUnreadColorChip = new ColorChip(mChipColor, false,ColorChip.LEFT_POINTING);
         mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
         mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
         mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
@@ -874,24 +877,12 @@ public class Account implements BaseAccount {
         if (messageRead) {
             if (messageFlagged) {
                 chip = mFlaggedReadColorChip;
-          //  } else if (toMe) {
-          //      chip = mToMeReadColorChip;
-          //  } else if (ccMe) {
-          //      chip = mCcMeReadColorChip;
-          //  } else if (fromMe) {
-          //      chip = mFromMeReadColorChip;
             } else {
                 chip = mReadColorChip;
             }
         } else {
             if (messageFlagged) {
                 chip = mFlaggedUnreadColorChip;
-          //  } else if (toMe) {
-          //      chip = mToMeUnreadColorChip;
-          //  } else if (ccMe) {
-          //      chip = mCcMeUnreadColorChip;
-          //  } else if (fromMe) {
-          //      chip = mFromMeUnreadColorChip;
             } else {
                 chip = mUnreadColorChip;
             }
@@ -1853,6 +1844,7 @@ public class Account implements BaseAccount {
         excludeSpecialFolder(search, getSpamFolderName());
         excludeSpecialFolder(search, getOutboxFolderName());
         excludeSpecialFolder(search, getSentFolderName());
+        excludeSpecialFolder(search, getErrorFolderName());
         search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
     }
 
@@ -1884,5 +1876,58 @@ public class Account implements BaseAccount {
         if (!K9.FOLDER_NONE.equals(folderName)) {
             search.and(Searchfield.FOLDER, folderName, Attribute.NOT_EQUALS);
         }
+    }
+
+    /**
+     * Add a new certificate for the incoming or outgoing server to the local key store.
+     */
+    public void addCertificate(CheckDirection direction,
+            X509Certificate certificate) throws CertificateException {
+        Uri uri;
+        if (direction.equals(CheckDirection.INCOMING)) {
+            uri = Uri.parse(getStoreUri());
+        } else {
+            uri = Uri.parse(getTransportUri());
+        }
+        LocalKeyStore localKeyStore = LocalKeyStore.getInstance();
+        localKeyStore.addCertificate(uri.getHost(), uri.getPort(), certificate);
+    }
+
+    /**
+     * Examine the existing settings for an account.  If the old host/port is different from the
+     * new host/port, then try and delete any (possibly non-existent) certificate stored for the
+     * old host/port.
+     */
+    public void deleteCertificate(String newHost, int newPort,
+            CheckDirection direction) {
+        Uri uri;
+        if (direction.equals(CheckDirection.INCOMING)) {
+            uri = Uri.parse(getStoreUri());
+        } else {
+            uri = Uri.parse(getTransportUri());
+        }
+        String oldHost = uri.getHost();
+        int oldPort = uri.getPort();
+        if (oldPort == -1) {
+            // This occurs when a new account is created
+            return;
+        }
+        if (!newHost.equals(oldHost) || newPort != oldPort) {
+            LocalKeyStore localKeyStore = LocalKeyStore.getInstance();
+            localKeyStore.deleteCertificate(oldHost, oldPort);
+        }
+    }
+
+    /**
+     * Examine the settings for the account and attempt to delete (possibly non-existent)
+     * certificates for the incoming and outgoing servers.
+     */
+    public void deleteCertificates() {
+        LocalKeyStore localKeyStore = LocalKeyStore.getInstance();
+
+        Uri uri = Uri.parse(getStoreUri());
+        localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
+        uri = Uri.parse(getTransportUri());
+        localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
     }
 }

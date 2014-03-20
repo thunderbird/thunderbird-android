@@ -19,7 +19,7 @@ public abstract class Folder {
     private long lastPush = 0;
 
     public static final int OPEN_MODE_RW=0;
-    public static final int OPEN_MODE_RO=0;
+    public static final int OPEN_MODE_RO=1;
 
     // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
     public enum FolderClass {

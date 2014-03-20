@@ -101,7 +101,8 @@ public class GlobalSettings {
                 new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
             ));
         s.put("fontSizeMessageViewContent", Settings.versions(
-                new V(1, new WebFontSizeSetting(3))
+                new V(1, new WebFontSizeSetting(3)),
+                new V(31, null)
             ));
         s.put("fontSizeMessageViewDate", Settings.versions(
                 new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
@@ -136,11 +137,13 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(true))
             ));
         s.put("messageListCheckboxes", Settings.versions(
-                new V(1, new BooleanSetting(false)),
-                new V(27, new BooleanSetting(true))
+                new V(1, new BooleanSetting(false))
             ));
         s.put("messageListPreviewLines", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 100, 2))
+            ));
+        s.put("messageListStars", Settings.versions(
+                new V(1, new BooleanSetting(true))
             ));
         s.put("messageViewFixedWidthFont", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -225,12 +228,34 @@ public class GlobalSettings {
         s.put("autofitWidth", Settings.versions(
                 new V(28, new BooleanSetting(true))
             ));
+        s.put("colorizeMissingContactPictures", Settings.versions(
+                new V(29, new BooleanSetting(true))
+            ));
+        s.put("messageViewDeleteActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(true))
+            ));
+        s.put("messageViewArchiveActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(false))
+            ));
+        s.put("messageViewMoveActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(false))
+            ));
+        s.put("messageViewCopyActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(false))
+            ));
+        s.put("messageViewSpamActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(false))
+            ));
+        s.put("fontSizeMessageViewContentPercent", Settings.versions(
+                new V(31, new IntegerRangeSetting(40, 250, 100))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
         u.put(12, new SettingsUpgraderV12());
         u.put(24, new SettingsUpgraderV24());
+        u.put(31, new SettingsUpgraderV31());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -298,6 +323,49 @@ public class GlobalSettings {
             }
 
             return null;
+        }
+    }
+
+    /**
+     * Upgrades the settings from version 30 to 31.
+     *
+     * <p>
+     * Convert value from <em>fontSizeMessageViewContent</em> to
+     * <em>fontSizeMessageViewContentPercent</em>.
+     * </p>
+     */
+    public static class SettingsUpgraderV31 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            int oldSize = ((Integer) settings.get("fontSizeMessageViewContent")).intValue();
+
+            int newSize = convertFromOldSize(oldSize);
+
+            settings.put("fontSizeMessageViewContentPercent", newSize);
+
+            return new HashSet<String>(Arrays.asList("fontSizeMessageViewContent"));
+        }
+
+        public static int convertFromOldSize(int oldSize) {
+            switch (oldSize) {
+                case 1: {
+                    return 40;
+                }
+                case 2: {
+                    return 75;
+                }
+                case 4: {
+                    return 175;
+                }
+                case 5: {
+                    return 250;
+                }
+                case 3:
+                default: {
+                    return 100;
+                }
+            }
         }
     }
 

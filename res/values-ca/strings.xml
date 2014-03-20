@@ -118,6 +118,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="cancel_action">Cancel·la</string>
     <string name="send_action">Envia</string>
     <string name="send_again_action">Torna a enviar</string>
+    <string name="select_action">Selecciona</string>
+    <string name="deselect_action">Desselecciona</string>
     <string name="reply_action">Respon</string>
     <string name="reply_all_action">Respon a tothom</string>
     <string name="delete_action">Esborra</string>
@@ -125,8 +127,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="spam_action">Brossa</string>
     <string name="forward_action">Reenvia</string>
     <string name="move_action">Mou</string>
-    <string name="single_message_options_action">Opcions del missatge</string>
-    <string name="refile_action">Rearxiva</string>
+    <string name="single_message_options_action">Opcions del missatge…</string>
+    <string name="refile_action">Rearxiva…</string>
     <string name="continue_action">Continua</string>
     <string name="back_action">Enrere</string>
     <string name="done_action">Fet</string> <!--  Used to complete a multi-step process -->
@@ -194,12 +196,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Compte \"<xliff:g id="account">%s</xliff:g>\" comprimida des de
-    <xliff:g id="oldSize">%s</xliff:g>
-    a
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Compte \"<xliff:g id="account">%s</xliff:g>\" comprimida des de <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">S\'està compactant el compte \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">S\'està netejant el compte \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -261,7 +258,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="message_compose_quote_header_from">De:</string>
     <string name="message_compose_quote_header_to">A:</string>
     <string name="message_compose_quote_header_cc">A/c:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha escrit:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha escrit:</string>
     <string name="message_compose_error_no_recipients">Has d\'afegir-hi, com a mínim, un destinatari.</string>
     <string name="error_contact_address_not_found">No s\'ha trobat cap adreça de correu.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns adjunts no es poden reenviar perquè no s\'han carregat.</string>
@@ -298,6 +295,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="message_discarded_toast">S\'ha descartat el missatge</string>
     <string name="message_saved_toast">S\'ha desat el missatge com a esborrany</string>
 
+    <string name="global_settings_flag_label">Mostra estels</string>
+    <string name="global_settings_flag_summary">Els estels indiquen els missatges senyalats</string>
     <string name="global_settings_checkbox_label">Selecció múltiple</string>
     <string name="global_settings_checkbox_summary">Ensenya sempre la selecció múltiple</string>
     <string name="global_settings_preview_lines_label">Previsualització de línies</string>
@@ -390,10 +389,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="account_setup_incoming_security_label">Tipus de seguretat</string>
     <string name="account_setup_incoming_auth_type_label">Tipus d\'autenticació</string>
     <string name="account_setup_incoming_security_none_label">Cap</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (si és disponible)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (sempre)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (si és disponible)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (sempre)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Quan esborro missatges</string>
     <string name="account_setup_incoming_delete_policy_never_label">No els esborris del servidor</string>
@@ -741,7 +736,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="sort_by_date">Data</string>
     <string name="sort_by_arrival">Arrivada</string>
     <string name="sort_by_subject">Assumpte</string>
-    <!-- NEW: <string name="sort_by_sender">Sender</string>-->
+    <string name="sort_by_sender">Remitent</string>
     <string name="sort_by_flag">Estel</string>
     <string name="sort_by_unread">Llegit/no llegit</string>
     <string name="sort_by_attach">Adjunts</string>
@@ -752,11 +747,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="account_clear_dlg_title">Neteja el compte</string>
 
-    <string name="provider_note_live">Només alguns comptes \"Plus\" inclouen accés POP
-        permetent aquest programa a connectar. Si no pots connectar-te a
-        a la teva adreça i contrasenya correctes, pots no haver pagat
-        el compte \"Plus\". Si us plau, executeu el navegador d\'Internet per obtenir accés a
-        aquests comptes de correu.</string>
     <string name="provider_note_yahoojp">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu de Yahoo.</string>
     <string name="provider_note_auonejp">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu d\'Auone.</string>
     <string name="provider_note_naver">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu de Naver.</string>
@@ -810,7 +800,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="setting_theme_global">Utilitza el tema de l\'aplicació</string>
     <string name="setting_theme_dark">Fosc</string>
     <string name="setting_theme_light">Clar</string>
-    <string name="display_preferences">Pantalla</string>
+    <string name="display_preferences">Visualització</string>
     <string name="global_preferences">Global</string>
     <string name="debug_preferences">Depura</string>
     <string name="privacy_preferences">Privadesa</string>
@@ -987,7 +977,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Voleu eliminar aquest missatge?</item>
         <item quantity="other">Voleu eliminar <xliff:g id="message_count">%1$d</xliff:g> missatges?</item>
     </plurals>
@@ -1010,12 +1000,12 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="messagelist_sent_cc_me_sigil">›</string>
     <string name="error_unable_to_connect">No es pot connectar.</string>
 
-    <string name="import_export_action">Importació i exportació de la configuració</string>
+    <string name="import_export_action">Importa i exporta la configuració</string>
     <string name="settings_export_account">Exporta els paràmetres del compte</string>
-    <string name="settings_export_all">Exporta els comptes i configuracions</string>
+    <string name="settings_export_all">Exporta comptes i paràmetres</string>
     <string name="settings_import_dialog_title">Importa</string>
     <string name="settings_export_dialog_title">Exporta</string>
-    <string name="settings_import">Importa els paràmetres</string>
+    <string name="settings_import">Importa paràmetres</string>
     <string name="settings_import_selection">Importa la selecció</string>
     <string name="settings_import_global_settings">Paràmetres globals</string>
     <string name="settings_exporting">Exporta els paràmetres</string>
@@ -1024,7 +1014,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="settings_export_success">S\'han exportat els paràmetres globals a <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">S\'han importat els paràmetres globals de <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">S\'ha importat <xliff:g id="accounts">%s</xliff:g> des de <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">un compte</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> comptes</item>
     </plurals>
@@ -1143,4 +1133,15 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="preposition_for_date">el <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Marca\'ls tots com a llegits</string>
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

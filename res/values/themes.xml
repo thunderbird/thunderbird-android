@@ -12,7 +12,8 @@
         <item name="iconActionArchive">@drawable/ic_action_archive_light</item>
         <item name="iconActionCompose">@drawable/ic_action_compose_light</item>
         <item name="iconActionDelete">@drawable/ic_action_delete_light</item>
-        <item name="iconActionMoveOrCopy">@drawable/ic_action_move_or_copy_light</item>
+        <item name="iconActionMove">@drawable/ic_action_move_light</item>
+        <item name="iconActionCopy">@drawable/ic_action_copy_light</item>
         <item name="iconActionNextMessage">@drawable/ic_action_next_message_light</item>
         <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_light</item>
         <item name="iconActionRefresh">@drawable/ic_action_refresh_light</item>
@@ -39,7 +40,7 @@
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
-        <item name="messageListReadItemBackgroundColor">#80cdcdcd</item>
+        <item name="messageListReadItemBackgroundColor">#c0cdcdcd</item>
         <item name="messageListUnreadItemBackgroundColor">#00ffffff</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_light</item>
@@ -51,6 +52,7 @@
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_light</item>
         <item name="compatDividerVertical">?attr/messageListDividerColor</item>
         <item name="compatSelectableItemBackground">@android:color/transparent</item>
+        <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
     </style>
 
     <style name="Theme.K9.Dark.Base" parent="Theme.Sherlock">
@@ -62,7 +64,8 @@
         <item name="iconActionArchive">@drawable/ic_action_archive_dark</item>
         <item name="iconActionCompose">@drawable/ic_action_compose_dark</item>
         <item name="iconActionDelete">@drawable/ic_action_delete_dark</item>
-        <item name="iconActionMoveOrCopy">@drawable/ic_action_move_or_copy_dark</item>
+        <item name="iconActionMove">@drawable/ic_action_move_dark</item>
+        <item name="iconActionCopy">@drawable/ic_action_copy_dark</item>
         <item name="iconActionNextMessage">@drawable/ic_action_next_message_dark</item>
         <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_dark</item>
         <item name="iconActionRefresh">@drawable/ic_action_refresh_dark</item>
@@ -90,7 +93,7 @@
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
         <item name="messageListReadItemBackgroundColor">#00000000</item>
-        <item name="messageListUnreadItemBackgroundColor">#805a5a5a</item>
+        <item name="messageListUnreadItemBackgroundColor">#c05a5a5a</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_dark</item>
         <item name="messageListActiveItemBackgroundColor">#ff33b5e5</item>
@@ -101,6 +104,7 @@
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_dark</item>
         <item name="compatDividerVertical">?attr/messageListDividerColor</item>
         <item name="compatSelectableItemBackground">@android:color/transparent</item>
+        <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
     </style>
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Base">

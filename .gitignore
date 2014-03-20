@@ -22,3 +22,7 @@ target
 build
 .gradle
 out
+build.xml
+proguard-project.txt
+.idea/
+*.iml

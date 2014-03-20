@@ -2,8 +2,9 @@ package com.fsck.k9;
 
 import android.content.SharedPreferences;
 import android.util.TypedValue;
-import android.webkit.WebSettings.TextSize;
 import android.widget.TextView;
+
+import com.fsck.k9.preferences.GlobalSettings;
 
 /**
  * Manage font size of the information displayed in the account list, folder
@@ -28,6 +29,7 @@ public class FontSizes {
     private static final String MESSAGE_VIEW_SUBJECT = "fontSizeMessageViewSubject";
     private static final String MESSAGE_VIEW_DATE = "fontSizeMessageViewDate";
     private static final String MESSAGE_VIEW_CONTENT = "fontSizeMessageViewContent";
+    private static final String MESSAGE_VIEW_CONTENT_PERCENT = "fontSizeMessageViewContentPercent";
     private static final String MESSAGE_COMPOSE_INPUT = "fontSizeMessageComposeInput";
 
     /*
@@ -114,11 +116,9 @@ public class FontSizes {
     private int messageViewDate;
 
     /**
-     * Font size of the message content in the message view activity.
-     *
-     * Note: The unit is WebSettings.TextSize
+     * Font size of the message content in the message view activity, as percent from default size.
      */
-    private TextSize messageViewContent = TextSize.NORMAL;
+    private int messageViewContentPercent;
 
     /**
      * Font size for the input fields in the message compose activity.
@@ -147,6 +147,7 @@ public class FontSizes {
         messageViewAdditionalHeaders = FONT_DEFAULT;
         messageViewSubject = FONT_DEFAULT;
         messageViewDate = FONT_DEFAULT;
+        messageViewContentPercent = 100;
 
         messageComposeInput = MEDIUM;
     }
@@ -174,7 +175,7 @@ public class FontSizes {
         editor.putInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
         editor.putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         editor.putInt(MESSAGE_VIEW_DATE, messageViewDate);
-        editor.putInt(MESSAGE_VIEW_CONTENT, getMessageViewContentAsInt());
+        editor.putInt(MESSAGE_VIEW_CONTENT_PERCENT, getMessageViewContentAsPercent());
 
         editor.putInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
     }
@@ -202,9 +203,20 @@ public class FontSizes {
         messageViewAdditionalHeaders = prefs.getInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
         messageViewSubject = prefs.getInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         messageViewDate = prefs.getInt(MESSAGE_VIEW_DATE, messageViewDate);
-        setMessageViewContent(prefs.getInt(MESSAGE_VIEW_CONTENT, 3));
+
+        loadMessageViewContentPercent(prefs);
 
         messageComposeInput = prefs.getInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
+    }
+
+    private void loadMessageViewContentPercent(SharedPreferences prefs) {
+        int fallbackValue = 100;
+        if (!prefs.contains(MESSAGE_VIEW_CONTENT_PERCENT)) {
+            int oldValue = prefs.getInt(MESSAGE_VIEW_CONTENT, 3);
+            fallbackValue = GlobalSettings.SettingsUpgraderV31.convertFromOldSize(oldValue);
+        }
+
+        setMessageViewContentAsPercent(prefs.getInt(MESSAGE_VIEW_CONTENT_PERCENT, fallbackValue));
     }
 
     public int getAccountName() {
@@ -319,44 +331,12 @@ public class FontSizes {
         this.messageViewDate = messageViewDate;
     }
 
-    public TextSize getMessageViewContent() {
-        return messageViewContent;
+    public int getMessageViewContentAsPercent() {
+        return messageViewContentPercent;
     }
 
-    public int getMessageViewContentAsInt() {
-        switch (messageViewContent) {
-        case SMALLEST:
-            return 1;
-        case SMALLER:
-            return 2;
-        default:
-        case NORMAL:
-            return 3;
-        case LARGER:
-            return 4;
-        case LARGEST:
-            return 5;
-        }
-    }
-
-    public void setMessageViewContent(int size) {
-        switch (size) {
-        case 1:
-            messageViewContent = TextSize.SMALLEST;
-            break;
-        case 2:
-            messageViewContent = TextSize.SMALLER;
-            break;
-        case 3:
-            messageViewContent = TextSize.NORMAL;
-            break;
-        case 4:
-            messageViewContent = TextSize.LARGER;
-            break;
-        case 5:
-            messageViewContent = TextSize.LARGEST;
-            break;
-        }
+    public void setMessageViewContentAsPercent(int size) {
+        messageViewContentPercent = size;
     }
 
     public int getMessageComposeInput() {

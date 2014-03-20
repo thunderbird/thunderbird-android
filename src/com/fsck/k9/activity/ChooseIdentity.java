@@ -59,7 +59,7 @@ public class ChooseIdentity extends K9ListActivity {
         identities = mAccount.getIdentities();
         for (Identity identity : identities) {
             String description = identity.getDescription();
-            if (description == null || description.trim().length() == 0) {
+            if (description == null || description.trim().isEmpty()) {
                 description = getString(R.string.message_view_from_format, identity.getName(), identity.getEmail());
             }
             adapter.add(description);

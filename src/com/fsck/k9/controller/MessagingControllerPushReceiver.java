@@ -77,6 +77,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
     public void pushError(String errorMessage, Exception e) {
         String errMess = errorMessage;
 
+        controller.notifyUserIfCertificateProblem(mApplication, e, account, true);
         if (errMess == null && e != null) {
             errMess = e.getMessage();
         }

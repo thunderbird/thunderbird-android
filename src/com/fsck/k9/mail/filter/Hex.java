@@ -30,13 +30,13 @@ public class Hex {
     };
 
     /**
-     * Converts an array of bytes into an array of characters representing the hexidecimal values of each byte in order.
+     * Converts an array of bytes into an array of characters representing the hexadecimal values of each byte in order.
      * The returned array will be double the length of the passed array, as it takes two characters to represent any
      * given byte.
      *
      * @param data
      *                  a byte[] to convert to Hex characters
-     * @return A char[] containing hexidecimal characters
+     * @return A char[] containing lower-case hexadecimal characters
      */
     public static char[] encodeHex(byte[] data) {
 

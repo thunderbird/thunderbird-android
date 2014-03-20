@@ -3,6 +3,7 @@ package com.fsck.k9.mail.filter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 /**
  * A filtering InputStream that allows single byte "peeks" without consuming the byte. The
@@ -59,7 +60,7 @@ public class PeekableInputStream extends InputStream {
 
     @Override
     public String toString() {
-        return String.format("PeekableInputStream(in=%s, peeked=%b, peekedByte=%d)",
+        return String.format(Locale.US, "PeekableInputStream(in=%s, peeked=%b, peekedByte=%d)",
                              mIn.toString(), mPeeked, mPeekedByte);
     }
 }

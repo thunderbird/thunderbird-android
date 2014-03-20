@@ -1,5 +1,6 @@
 package com.fsck.k9.provider;
 
+import android.app.Application;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -820,6 +821,11 @@ public class MessageProvider extends ContentProvider {
             checkClosed();
             return mCursor.getType(columnIndex);
         }
+
+        @Override
+        public Uri getNotificationUri() {
+            return null;
+        }
     }
 
     protected class ThrottlingQueryHandler implements QueryHandler {
@@ -981,7 +987,7 @@ public class MessageProvider extends ContentProvider {
 
         K9.registerApplicationAware(new K9.ApplicationAware() {
             @Override
-            public void initializeComponent(final K9 application) {
+            public void initializeComponent(final Application application) {
                 Log.v(K9.LOG_TAG, "Registering content resolver notifier");
 
                 MessagingController.getInstance(application).addListener(new MessagingListener() {

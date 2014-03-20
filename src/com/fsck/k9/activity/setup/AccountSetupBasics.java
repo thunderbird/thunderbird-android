@@ -17,12 +17,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.Locale;
 
 /**
  * Prompts the user for the email address and password.
@@ -36,7 +38,9 @@ public class AccountSetupBasics extends K9Activity
     private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
-        "com.fsck.k9.AccountSetupBasics.provider";
+            "com.fsck.k9.AccountSetupBasics.provider";
+    private final static String STATE_KEY_CHECKED_INCOMING =
+            "com.fsck.k9.AccountSetupBasics.checkedIncoming";
 
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -46,6 +50,7 @@ public class AccountSetupBasics extends K9Activity
     private Provider mProvider;
 
     private EmailAddressValidator mEmailValidator = new EmailAddressValidator();
+    private boolean mCheckedIncoming = false;
 
     public static void actionNewAccount(Context context) {
         Intent i = new Intent(context, AccountSetupBasics.class);
@@ -66,15 +71,6 @@ public class AccountSetupBasics extends K9Activity
 
         mEmailView.addTextChangedListener(this);
         mPasswordView.addTextChangedListener(this);
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
-            String accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        }
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_PROVIDER)) {
-            mProvider = (Provider)savedInstanceState.getSerializable(STATE_KEY_PROVIDER);
-        }
     }
 
     @Override
@@ -92,6 +88,23 @@ public class AccountSetupBasics extends K9Activity
         if (mProvider != null) {
             outState.putSerializable(STATE_KEY_PROVIDER, mProvider);
         }
+        outState.putBoolean(STATE_KEY_CHECKED_INCOMING, mCheckedIncoming);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
+            String accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
+            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        }
+
+        if (savedInstanceState.containsKey(STATE_KEY_PROVIDER)) {
+            mProvider = (Provider) savedInstanceState.getSerializable(STATE_KEY_PROVIDER);
+        }
+
+        mCheckedIncoming = savedInstanceState.getBoolean(STATE_KEY_CHECKED_INCOMING);
     }
 
     public void afterTextChanged(Editable s) {
@@ -218,7 +231,7 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
             mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
             // Yahoo! has a special folder for Spam, called "Bulk Mail".
-            if (incomingUriTemplate.getHost().toLowerCase().endsWith(".yahoo.com")) {
+            if (incomingUriTemplate.getHost().toLowerCase(Locale.US).endsWith(".yahoo.com")) {
                 mAccount.setSpamFolderName("Bulk Mail");
             } else {
                 mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
@@ -229,7 +242,8 @@ public class AccountSetupBasics extends K9Activity
             } else if (incomingUri.toString().startsWith("pop3")) {
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
             }
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, true);
+            // Check incoming here.  Then check outgoing in onActivityResult()
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
         } catch (UnsupportedEncodingException enc) {
             // This really shouldn't happen since the encoding is hardcoded to UTF-8
             Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
@@ -266,11 +280,18 @@ public class AccountSetupBasics extends K9Activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            mAccount.setDescription(mAccount.getEmail());
-            mAccount.save(Preferences.getPreferences(this));
-            K9.setServicesEnabled(this);
-            AccountSetupNames.actionSetNames(this, mAccount);
-            finish();
+            if (!mCheckedIncoming) {
+                //We've successfully checked incoming.  Now check outgoing.
+                mCheckedIncoming = true;
+                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
+            } else {
+                //We've successfully checked outgoing as well.
+                mAccount.setDescription(mAccount.getEmail());
+                mAccount.save(Preferences.getPreferences(this));
+                K9.setServicesEnabled(this);
+                AccountSetupNames.actionSetNames(this, mAccount);
+                finish();
+            }
         }
     }
 

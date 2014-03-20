@@ -54,6 +54,9 @@
         <item>@string/account_setup_options_mail_display_count_250</item>
         <item>@string/account_setup_options_mail_display_count_500</item>
         <item>@string/account_setup_options_mail_display_count_1000</item>
+        <item>@string/account_setup_options_mail_display_count_2500</item>
+        <item>@string/account_setup_options_mail_display_count_5000</item>
+        <item>@string/account_setup_options_mail_display_count_10000</item>
         <item>@string/account_setup_options_mail_display_count_all</item>
     </string-array>
 
@@ -65,6 +68,9 @@
         <item>250</item>
         <item>500</item>
         <item>1000</item>
+        <item>2500</item>
+        <item>5000</item>
+        <item>10000</item>
         <item>0</item>
     </string-array>
 
@@ -326,7 +332,7 @@
         <item>Kirundi</item>
         <item>Kiswahili</item>
         <item>Latviešu</item>
-        <item>Lietuviškai</item>
+        <item>Lietuvių</item>
         <item>Magyar</item>
         <item>Malti</item>
         <item>Nederlands</item>
@@ -491,6 +497,7 @@
         <item>ja</item>
         <item>ko</item>
         <item>sk</item>
+        <item>lt</item>
     </string-array>
 
     <string-array name="settings_theme_entries">

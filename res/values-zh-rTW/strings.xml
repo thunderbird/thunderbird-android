@@ -91,6 +91,8 @@
     <string name="cancel_action">取消</string>
     <string name="send_action">寄送</string>
     <string name="send_again_action">再次寄送</string>
+    <string name="select_action">選擇</string>
+    <string name="deselect_action">取消選擇</string>
     <string name="reply_action">回覆</string>
     <string name="reply_all_action">全部回覆</string>
     <string name="delete_action">刪除</string>
@@ -98,8 +100,8 @@
     <string name="spam_action">標記為垃圾</string>
     <string name="forward_action">轉寄</string>
     <string name="move_action">移動</string>
-    <string name="single_message_options_action">訊息選項</string>
-    <string name="refile_action">Refile</string>
+    <string name="single_message_options_action">訊息選項…</string>
+    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">繼續</string>
     <string name="back_action">返回</string>
     <string name="done_action">完成</string> <!--  Used to complete a multi-step process -->
@@ -228,9 +230,7 @@
     <string name="message_compose_quote_header_from">寄件人：</string>
     <string name="message_compose_quote_header_to">收件人：</string>
     <string name="message_compose_quote_header_cc">副本：</string>
-    <string name="message_compose_reply_header_fmt">"%s寫到:
-
-"</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>寫到:</string>
     <string name="message_compose_error_no_recipients">至少必須加入一位收件人。</string>
     <string name="error_contact_address_not_found">沒有發現電子郵件地址</string>
     <string name="message_compose_attachments_skipped_toast">由於一些附件還沒有被下載，因此無法轉寄這些附件。</string>
@@ -267,6 +267,8 @@
     <string name="message_discarded_toast">郵件已忽略</string>
     <string name="message_saved_toast">郵件已儲存為草稿</string>
 
+    <string name="global_settings_flag_label">顯示星號</string>
+    <string name="global_settings_flag_summary">顯示標記過星號的郵件</string>
     <string name="global_settings_checkbox_label">多選核取方塊</string>
     <string name="global_settings_checkbox_summary">預設顯示多選核取方塊</string>
     <string name="global_settings_preview_lines_label">預覽行數</string>
@@ -359,10 +361,6 @@
     <string name="account_setup_incoming_security_label">加密類型</string>
     <string name="account_setup_incoming_auth_type_label">身份驗證類型</string>
     <string name="account_setup_incoming_security_none_label">無</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS（如果可用）</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS（預設）</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS（如果可用）</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS（預設）</string>
 
     <string name="account_setup_incoming_delete_policy_label">當我刪除郵件時</string>
     <string name="account_setup_incoming_delete_policy_never_label">不要從伺服器上刪除</string>
@@ -724,7 +722,6 @@
 
     <string name="account_clear_dlg_title">清除帳戶</string>
 
-    <string name="provider_note_live">只有某些「付費帳戶」允許POP服務並允許該程式連接。如果您使用了正確的使用者名稱和密碼卻仍然無法登入，則您可能沒有購買這些「付費帳戶」。請使用瀏覽器來連接這些帳戶。</string>
     <string name="provider_note_yahoojp">要使用此提供者的POP3服務，請先至Yahoo郵箱設定頁面設定POP3使用許可。</string>
     <string name="provider_note_auonejp">要使用此提供者的IMAP或POP3，請先至au one郵箱設定頁面設定允許使用IMAP或POP3。</string>
     <string name="provider_note_naver">要使用此提供者的IMAP或POP3，請先至Naver郵箱設定頁面設定允許使用IMAP或POP3。</string>
@@ -947,7 +944,7 @@
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="other">確定要刪除 %1$d 則訊息?</item>
         <item quantity="one">確定要刪除此訊息?</item>
     </plurals>
@@ -984,7 +981,7 @@
     <string name="settings_export_success">匯出的設定檔案已經儲存到 %s</string>
     <string name="settings_import_global_settings_success">從 %s 匯入全域設定檔案</string>
     <string name="settings_import_success" formatted="false">成功匯入 %s 從 %s</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="other">%s 帳號</item>
         <item quantity="one">1 帳號</item>
     </plurals>
@@ -1103,4 +1100,15 @@
     <string name="preposition_for_date">於 %s</string>
 
     <string name="mark_all_as_read">標記全部為已讀</string>
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

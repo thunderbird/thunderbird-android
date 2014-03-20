@@ -30,4 +30,17 @@ public interface Part {
     public void setBody(Body body) throws MessagingException;
 
     public void writeTo(OutputStream out) throws IOException, MessagingException;
+
+    /**
+     * Called just prior to transmission, once the type of transport is known to
+     * be 7bit.
+     * <p>
+     * All bodies that are 8bit will be converted to 7bit and recursed if of
+     * type {@link CompositeBody}, or will be converted to quoted-printable in all other
+     * cases. Bodies with encodings other than 8bit remain unchanged.
+     *
+     * @throws MessagingException
+     *
+     */
+    public abstract void setUsing7bitTransport() throws MessagingException;
 }

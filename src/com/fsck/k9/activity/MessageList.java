@@ -163,6 +163,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     private LocalSearch mSearch;
     private boolean mSingleFolderMode;
     private boolean mSingleAccountMode;
+
     private ProgressBar mActionBarProgress;
     private MenuItem mMenuButtonCheckMail;
     private View mActionButtonIndeterminateProgress;
@@ -970,8 +971,13 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 || !mMessageViewFragment.isInitialized()) {
             menu.findItem(R.id.next_message).setVisible(false);
             menu.findItem(R.id.previous_message).setVisible(false);
-            menu.findItem(R.id.delete).setVisible(false);
             menu.findItem(R.id.single_message_options).setVisible(false);
+            menu.findItem(R.id.delete).setVisible(false);
+            menu.findItem(R.id.compose).setVisible(false);
+            menu.findItem(R.id.archive).setVisible(false);
+            menu.findItem(R.id.move).setVisible(false);
+            menu.findItem(R.id.copy).setVisible(false);
+            menu.findItem(R.id.spam).setVisible(false);
             menu.findItem(R.id.refile).setVisible(false);
             menu.findItem(R.id.toggle_unread).setVisible(false);
             menu.findItem(R.id.select_text).setVisible(false);
@@ -1019,19 +1025,43 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action);
             }
 
-            menu.findItem(R.id.copy).setVisible(mMessageViewFragment.isCopyCapable());
-
             // Jellybean has built-in long press selection support
             menu.findItem(R.id.select_text).setVisible(Build.VERSION.SDK_INT < 16);
 
+            menu.findItem(R.id.delete).setVisible(K9.isMessageViewDeleteActionVisible());
+
+            /*
+             * Set visibility of copy, move, archive, spam in action bar and refile submenu
+             */
+            Menu refileSubmenu = menu.findItem(R.id.refile).getSubMenu();
+
+            if (mMessageViewFragment.isCopyCapable()) {
+                menu.findItem(R.id.copy).setVisible(K9.isMessageViewCopyActionVisible());
+                refileSubmenu.findItem(R.id.copy).setVisible(true);
+            } else {
+                menu.findItem(R.id.copy).setVisible(false);
+                refileSubmenu.findItem(R.id.copy).setVisible(false);
+            }
+
             if (mMessageViewFragment.isMoveCapable()) {
-                menu.findItem(R.id.move).setVisible(true);
-                menu.findItem(R.id.archive).setVisible(mMessageViewFragment.canMessageBeArchived());
-                menu.findItem(R.id.spam).setVisible(mMessageViewFragment.canMessageBeMovedToSpam());
+                boolean canMessageBeArchived = mMessageViewFragment.canMessageBeArchived();
+                boolean canMessageBeMovedToSpam = mMessageViewFragment.canMessageBeMovedToSpam();
+
+                menu.findItem(R.id.move).setVisible(K9.isMessageViewMoveActionVisible());
+                menu.findItem(R.id.archive).setVisible(canMessageBeArchived &&
+                        K9.isMessageViewArchiveActionVisible());
+                menu.findItem(R.id.spam).setVisible(canMessageBeMovedToSpam &&
+                        K9.isMessageViewSpamActionVisible());
+
+                refileSubmenu.findItem(R.id.move).setVisible(true);
+                refileSubmenu.findItem(R.id.archive).setVisible(canMessageBeArchived);
+                refileSubmenu.findItem(R.id.spam).setVisible(canMessageBeMovedToSpam);
             } else {
                 menu.findItem(R.id.move).setVisible(false);
                 menu.findItem(R.id.archive).setVisible(false);
                 menu.findItem(R.id.spam).setVisible(false);
+
+                menu.findItem(R.id.refile).setVisible(false);
             }
 
             if (mMessageViewFragment.allHeadersVisible()) {
@@ -1039,7 +1069,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             } else {
                 menu.findItem(R.id.hide_headers).setVisible(false);
             }
-
         }
 
 
@@ -1063,6 +1092,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         } else {
             menu.findItem(R.id.set_sort).setVisible(true);
             menu.findItem(R.id.select_all).setVisible(true);
+            menu.findItem(R.id.compose).setVisible(true);
             menu.findItem(R.id.mark_all_as_read).setVisible(
                     mMessageListFragment.isMarkAllAsReadSupported());
 

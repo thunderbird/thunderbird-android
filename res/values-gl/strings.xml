@@ -118,6 +118,8 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
     <string name="send_again_action">Volver a enviar</string>
+    <string name="select_action">Seleccionar</string>
+    <string name="deselect_action">Deseleccionar</string>
     <string name="reply_action">Responder</string>
     <string name="reply_all_action">Responder a todos</string>
     <string name="delete_action">Borrar</string>
@@ -125,8 +127,8 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="spam_action">Spam</string>
     <string name="forward_action">Reenviar</string>
     <string name="move_action">Mover</string>
-    <!-- NEW: <string name="single_message_options_action">Send</string>-->
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <!-- NEW: <string name="single_message_options_action">Send…</string>-->
+    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">Continuar</string>
     <!-- NEW: <string name="back_action">Back</string>-->
     <string name="done_action">Feito</string> <!--  Used to complete a multi-step process -->
@@ -193,12 +195,7 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Conta \"<xliff:g id="account">%s</xliff:g>\" reducida dende
-    <xliff:g id="oldSize">%s</xliff:g>
-    a
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Conta \"<xliff:g id="account">%s</xliff:g>\" reducida dende <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compactando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Limpando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -260,7 +257,7 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="message_compose_quote_header_from">Dende:</string>
     <string name="message_compose_quote_header_to">Para:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribiu:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribiu:</string>
     <string name="message_compose_error_no_recipients">Debes engadir un destinatario</string>
     <string name="error_contact_address_not_found">Non atopo enderezo electrónico.</string>
     <string name="message_compose_attachments_skipped_toast">Algúns adxuntos non poden reenviarse porque non foron descargados.</string>
@@ -297,6 +294,8 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="message_discarded_toast">Mensaxes descartadas</string>
     <string name="message_saved_toast">Mensaxe guardada coma borrador</string>
 
+    <string name="global_settings_flag_label">Ver estrelas</string>
+    <string name="global_settings_flag_summary">As estrelas indican unha mensaxe destacada</string>
     <string name="global_settings_checkbox_label">Selección múltiple</string>
     <string name="global_settings_checkbox_summary">Permitir múltiple selección</string>
     <string name="global_settings_preview_lines_label">Previsualizar liñas</string>
@@ -389,10 +388,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <string name="account_setup_incoming_security_label">Tipo de Seguridade</string>
     <string name="account_setup_incoming_auth_type_label">Tipo de autentificación</string>
     <string name="account_setup_incoming_security_none_label">Ningunha</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (se dispoñible)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (sempre)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (se dispoñible)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (sempre)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Borrado de mesaxes</string>
     <string name="account_setup_incoming_delete_policy_never_label">Non borrar do servidor</string>
@@ -751,9 +746,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
 
     <string name="account_clear_dlg_title">Limpar conta</string>
 
-    <string name="provider_note_live">Só algunhas contas \"Plus\" poden usar acceso POP
-        Se non podes acceder coa tua contrasinal e usuario e non tes unha conta de pago.
-        É posible que podas acceder só vía web.</string>
     <string name="provider_note_yahoojp">Se queres usar o correo POP3 para este proveedor debes activar este acceso na Configuración de Yahoo.</string>
     <!-- NEW: <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>-->
     <!-- NEW: <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>-->
@@ -1147,4 +1139,15 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

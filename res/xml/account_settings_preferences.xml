@@ -430,7 +430,10 @@
 
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="@string/account_settings_search" android:key="search">
+    <PreferenceScreen
+            android:title="@string/account_settings_search"
+            android:key="search">
+
         <CheckBoxPreference
             android:key="remote_search_enabled"
             android:title="@string/account_settings_remote_search_enabled"
@@ -438,6 +441,7 @@
             android:persistent="false"/>
 
         <ListPreference
+            android:persistent="false"
             android:entries="@array/account_settings_remote_search_num_results_entries"
             android:entryValues="@array/account_settings_remote_search_num_results_values"
             android:key="account_remote_search_num_results"

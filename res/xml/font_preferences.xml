@@ -137,7 +137,7 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_message_view_date" />
 
-          <ListPreference
+        <ListPreference
             android:persistent="false"
             android:key="message_view_additional_headers_font"
             android:title="@string/font_size_message_view_additional_headers"
@@ -145,12 +145,10 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_message_view_additional_headers" />
 
-        <ListPreference
+        <com.fsck.k9.activity.setup.SliderPreference
             android:persistent="false"
-            android:key="message_view_content_font"
+            android:key="message_view_content_font_slider"
             android:title="@string/font_size_message_view_content"
-            android:entries="@array/font_entries_webview"
-            android:entryValues="@array/font_values_webview"
             android:dialogTitle="@string/font_size_message_view_content" />
 
     </PreferenceScreen>

@@ -130,8 +130,8 @@ public class EncoderUtil {
     private static int qEncodedLength(byte[] bytes) {
         int count = 0;
 
-        for (int idx = 0; idx < bytes.length; idx++) {
-            int v = bytes[idx] & 0xff;
+        for (byte b : bytes) {
+            int v = b & 0xff;
             if (v == 32) {
                 count++;
             } else if (!Q_RESTRICTED_CHARS.get(v)) {

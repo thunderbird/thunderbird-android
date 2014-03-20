@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -149,7 +150,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         contentType = MimeUtility.getMimeTypeForViewing(part.getMimeType(), name);
         TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
         TextView attachmentInfo = (TextView) findViewById(R.id.attachment_info);
-        ImageView attachmentIcon = (ImageView) findViewById(R.id.attachment_icon);
+        final ImageView attachmentIcon = (ImageView) findViewById(R.id.attachment_icon);
         viewButton = (Button) findViewById(R.id.view);
         downloadButton = (Button) findViewById(R.id.download);
         if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
@@ -171,12 +172,20 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
         attachmentName.setText(name);
         attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
-        Bitmap previewIcon = getPreviewIcon();
-        if (previewIcon != null) {
-            attachmentIcon.setImageBitmap(previewIcon);
-        } else {
-            attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
-        }
+        new AsyncTask<Void, Void, Bitmap>() {
+            protected Bitmap doInBackground(Void... asyncTaskArgs) {
+                Bitmap previewIcon = getPreviewIcon();
+                return previewIcon;
+            }
+
+            protected void onPostExecute(Bitmap previewIcon) {
+                if (previewIcon != null) {
+                    attachmentIcon.setImageBitmap(previewIcon);
+                } else {
+                    attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
+                }
+            }
+        }.execute();
 
         return firstClassAttachment;
     }

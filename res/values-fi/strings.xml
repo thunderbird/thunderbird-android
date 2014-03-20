@@ -119,6 +119,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="cancel_action">Peruuta</string>
     <string name="send_action">Lähetä</string>
     <string name="send_again_action">Lähetä uudelleen</string>
+    <string name="select_action">Valitse</string>
+    <string name="deselect_action">Poista valinta</string>
     <string name="reply_action">Vastaa</string>
     <string name="reply_all_action">Vastaa kaikille</string>
     <string name="delete_action">Poista</string>
@@ -126,8 +128,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="spam_action">Roskaposti</string>
     <string name="forward_action">Välitä</string>
     <string name="move_action">Siirrä</string>
-    <string name="single_message_options_action">Viestin asetukset</string>
-    <string name="refile_action">Arkistoi</string>
+    <string name="single_message_options_action">Viestin asetukset…</string>
+    <string name="refile_action">Arkistoi…</string>
     <string name="continue_action">Jatka</string>
     <string name="back_action">Takaisin</string>
     <string name="done_action">Valmis</string> <!--  Used to complete a multi-step process -->
@@ -187,20 +189,14 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="status_loading_more_failed">Yritetään ladata uudelleen lisää viestejä</string>
 
-    <string name="load_more_messages_fmt">Lataa
-       <xliff:g id="messages_to_load">%d</xliff:g> lisää</string>
+    <string name="load_more_messages_fmt">Lataa <xliff:g id="messages_to_load">%d</xliff:g> lisää</string>
 
     <string name="abbrev_gigabytes">Gt</string>
     <string name="abbrev_megabytes">Mt</string>
     <string name="abbrev_kilobytes">kt</string>
     <string name="abbrev_bytes">t</string>
 
-    <string name="account_size_changed">
-    Tilin \"<xliff:g id="account">%s</xliff:g>\" vanha koko
-      <xliff:g id="oldSize">%s</xliff:g>
-      on nyt
-      <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Tilin \"<xliff:g id="account">%s</xliff:g>\" vanha koko <xliff:g id="oldSize">%s</xliff:g> on nyt <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Tiivistetään tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Tyhjennetään tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -262,7 +258,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_compose_quote_header_from">Lähettäjä:</string>
     <string name="message_compose_quote_header_to">Vastaanottaja:</string>
     <string name="message_compose_quote_header_cc">Kopio:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:</string>
     <string name="message_compose_error_no_recipients">Valitse vähintään yksi vastaanottaja.</string>
     <string name="error_contact_address_not_found">Tämän henkilön sähköpostiosoitetta ei löytynyt.</string>
     <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida lähettää edelleen, koska niitä ei ole ladattu.</string>
@@ -299,6 +295,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_discarded_toast">Viesti peruutettu</string>
     <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
 
+    <string name="global_settings_flag_label">Viestin tähdet</string>
+    <string name="global_settings_flag_summary">Tähdet ilmaisevat merkityt viestit</string>
     <string name="global_settings_checkbox_label">Usean valinnan valintaruudut</string>
     <string name="global_settings_checkbox_summary">Näytä aina usean valinnan valintaruudut</string>
     <string name="global_settings_preview_lines_label">Rivien esikatselu</string>
@@ -391,10 +389,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_setup_incoming_security_label">Suojauksen tyyppi</string>
     <string name="account_setup_incoming_auth_type_label">Todennuksen tyyppi</string>
     <string name="account_setup_incoming_security_none_label">Ei mitään</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (jos käytettävissä)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (aina)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (jos käytettävissä)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (aina)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Kun viesti poistetaan</string>
     <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
@@ -753,11 +747,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="account_clear_dlg_title">Tyhjennä tili</string>
 
-    <string name="provider_note_live">Vain jotkin Plus-tilit sisältävät POP-yhteyden,
-        joka mahdollistaa yhdistämisen tällä ohjelmalla. Jos et voi kirjautua
-        oikealla sähköpostiosoitteella ja salasanalla, sinulla ei ehkä ole maksullista
-        Plus-tiliä. Ole hyvä ja käynnistä www-selain käyttääksesi
-  näitä sähköpostitilejä.</string>
     <string name="provider_note_yahoojp">Jos haluat käyttää POP3:a tällä palveluntarjoajalla, sinun tulee sallia POP3:n käyttäminen Yahoo-sähköpostiasetukset-sivulla.</string>
     <string name="provider_note_auonejp">Jos haluat käyttää IMAP:ia tai POP3:a tällä palveluntarjoajalla, sinun tulee sallia IMAP:in tai POP3:n käyttäminen au one -sähköpostiasetukset-sivulla.</string>
     <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>
@@ -789,12 +778,12 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     </string>
 
     <string name="folder_list_help_key">
-        1 - Näytä vain 1. luokan kansiot\u000A
-        2 - Näytä 1. ja 2. luokan kansiot\u000A
-        3 - Näytä kaikki paitsi 2. luokan kansiot\u000A
-        4 - Näytä kaikki kansiot\u000A
-        Q - Palaa tileihin\u000A
-        S - Muokkaa tilin asetuksia</string>
+        1 - Näytä vain 1. luokan kansiot\u000A
+        2 - Näytä 1. ja 2. luokan kansiot\u000A
+        3 - Näytä kaikki paitsi 2. luokan kansiot\u000A
+        4 - Näytä kaikki kansiot\u000A
+        Q - Palaa tileihin\u000A
+        S - Muokkaa tilin asetuksia</string>
 
     <string name="folder_list_filter_hint">kansionimi sisältää</string>
 
@@ -987,7 +976,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Haluatko varmasti poistaa tämän viestin?</item>
         <item quantity="other">Haluatko varmasti poistaa <xliff:g id="message_count">%1$d</xliff:g> viestiä?</item>
     </plurals>
@@ -1024,7 +1013,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="settings_export_success">Viedyt asetukset tallennettu tiedostoon <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Yleiset asetukset tuotu tiedostosta <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Tuotu <xliff:g id="accounts">%s</xliff:g> tiedostosta <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 tili</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> tiliä</item>
     </plurals>
@@ -1143,4 +1132,15 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Merkitse kaikki luetuiksi</string>
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

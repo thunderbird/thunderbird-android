@@ -14,6 +14,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.text.TextUtils;
 import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
@@ -47,12 +48,18 @@ public class Address {
 
     String mPersonal;
 
+
+    public Address(Address address) {
+        mAddress = address.mAddress;
+        mPersonal = address.mPersonal;
+    }
+
     public Address(String address, String personal) {
         this(address, personal, true);
     }
 
     public Address(String address) {
-        this(address, null);
+        this(address, null, true);
     }
 
     private Address(String address, String personal, boolean parse) {
@@ -161,14 +168,22 @@ public class Address {
     @Override
     public boolean equals(Object o) {
         if (o instanceof Address) {
-            return getAddress().equals(((Address) o).getAddress());
+            Address other = (Address) o;
+            if (mPersonal != null && other.mPersonal != null && !mPersonal.equals(other.mPersonal)) {
+                return false;
+            }
+            return mAddress.equals(other.mAddress);
         }
         return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return getAddress().hashCode();
+        int hash = mAddress.hashCode();
+        if (mPersonal != null) {
+            hash += 3 * mPersonal.hashCode();
+        }
+        return hash;
     }
 
     @Override
@@ -184,14 +199,7 @@ public class Address {
         if (addresses == null) {
             return null;
         }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < addresses.length; i++) {
-            sb.append(addresses[i].toString());
-            if (i < addresses.length - 1) {
-                sb.append(", ");
-            }
-        }
-        return sb.toString();
+        return TextUtils.join(", ", addresses);
     }
 
     public String toEncodedString() {

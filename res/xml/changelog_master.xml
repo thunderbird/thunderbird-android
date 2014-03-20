@@ -1,5 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
+<!--
+     The master change log is kept in res/xml/changelog_master.xml.
+     Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
+
+     Don't edit the changelog_<name>_branch.xml files in the gh-pages branch.
+     They are automatically updated with "ant bump-version".
+-->
 <changelog>
+    <release version="4.903" versioncode="21006" >
+        <change>Offer encrypted connection by default when manually setting up an account</change>
+        <change>Simplified options for authentication and security</change>
+        <change>Removed auto-configuration settings for all providers that didn't support encrypted connections</change>
+        <change>Improved compatibility with IMAP (proxy) servers</change>
+        <change>More small fixes and improvements</change>
+    </release>
+    <release version="4.902" versioncode="21005" >
+        <change>Avoid adding the same recipient twice when using "reply to all"</change>
+        <change>Fixed a bug with bitcoin URIs</change>
+        <change>Added mailbox.org to the list of providers</change>
+    </release>
+    <release version="4.901" versioncode="21004" >
+        <change>Added a slider to allow picking a font size for the message body (40% to 250%) in settings</change>
+        <change>Added support for KitKat's Storage Access Framework that allows you to attach multiple files at once</change>
+        <change>Added support for apps that don't know how to properly use Android's 'share' functionality</change>
+        <change>Fixed a bug with IMAP Push that could cause excessive battery drain</change>
+        <change>Another attempt at working around the display bug on Asus Transformer devices</change>
+        <change>Don't lose formatting of the quoted message when changing orientation while replying</change>
+        <change>Disabled pull-to-refresh in search views where remote search isn't allowed</change>
+        <change>More bug fixes</change>
+        <change>Updated Japanese translation</change>
+    </release>
+    <release version="4.900" versioncode="21003" >
+        <change>Fix issue 6064: Inline images don't display on KitKat</change>
+        <change>Update list of German Internet providers</change>
+        <change>Add provider Outlook.sk and Azet.sk to provider list</change>
+        <change>Update Brazilian Portuguese, Czech, Danish, Dutch, French, Greek, Hungarian, Polish, Russian, Slovak, Spanish, and Ukrainian translations</change>
+        <change>Fix POP3 STLS command</change>
+        <change>Use a locale-specific date in the header of a quoted message</change>
+        <change>Account preferences clean-up</change>
+        <change>Make IMAP autoconfig recognize "Draft" as drafts folder</change>
+        <change>Add posteo.de to providers.xml</change>
+        <change>Return proper error message when certificate couldn't be verified against global key store</change>
+        <change>Add support for bitcoin URIs</change>
+        <change>Change the way we harden SSL/TLS sockets Blacklist a couple of weak ciphers, bring known ones in a defined order and sort unknown ciphers at the end. Also re-enable SSLv3 because it's still used a lot.</change>
+        <change>Implement pruning of old certificates from LocalKeyStore. Certificates are deleted whenever server settings are changed or an account is deleted.</change>
+        <change>Fix inadequate certificate validation. Proper host name validation was not being performed for certificates kept in the local keystore.  If an attacker could convince a user to accept and store an attacker's certificate, then that certificate could be used for MITM attacks, giving the attacker access to all connections to all servers in all accounts in K-9.</change>
+        <change>Users can now use different certificates for different servers on the same host (listening to different ports).</change>
+        <change>The above changes mean that users might have to re-accept certificates that they had previously accepted and are still using (but only if the certificate's Subject doesn't match the host that they are connecting to).</change>
+        <change>Make sure to return different colors for senders with different name, but the same mail address (e.g. mails sent by certain issue tracking systems).</change>
+        <change>With the new webview scrollview combo we've got loadinoverviewmode seems to behave better.</change>
+        <change>Fix file selection for import Using FLAG_ACTIVITY_NO_HISTORY will cause the file selection to fail when KitKat's "Open from" activity opens a third-party activity.</change>
+    </release>
+    <release version="4.701" versioncode="19002" >
+        <change>Overhauled how we do message view scrolling to fix a KitKat issue. Thanks to Joe Steele!</change>
+        <change>Hardened TLS cipher suites and versions</change>
+        <change>K-9 no longer adds blank lines to composed messages if there is no quoted text</change>
+        <change>Fixed serveral issues related to message drafts</change>
+        <change>Better cleanup of old data when deleting an account</change>
+        <change>Worked around a bug in KitKat that stopped settings import from working</change>
+        <change>Updated German, Greek, Japanese, Korean, Lithuanian, Portugese, Russian and Slovak translations</change>
+        <change></change>
+    </release>
+    <release version="4.700" versioncode="19001" >
+        <change>Code cleanups</change>
+        <change>Fixed a bug that could have caused message drafts to be sent before they were ready</change>
+        <change>Updates to German, Japanese, Russian, Slovak translations</change>
+        <change>Fix some small bugs in contact picture generation</change>
+        <change>Fetch attachments while MessageCompose activity is running</change>
+    </release>
+    <release version="4.512" versioncode="18012" >
+        <change>Updated auto-configuration settings to use IMAP for outlook.com</change>
+        <change>Updated auto-configuration settings for gmx.de</change>
+        <change>Notifications no longer show "null" when sending mail</change>
+        <change>Increased compatibility with custom ROMs and newer Samsung firmwares</change>
+        <change>Improved message generation</change>
+        <change>Dramatically improved SMTP 8BITMIME compliance</change>
+        <change>Updated Czech, French, German, Russian and Slovak translation</change>
+    </release>
+    <release version="4.511" versioncode="18011" >
+        <change>Remove remote/local store references when deleting accounts</change>
+        <change>Add visual indicator that a menu item opens a submenu</change>
+        <change>Make actions shown in message view menu configurable</change>
+        <change>Remove icons from the "Refile" submenu, as we don't show icons in any other submenu.</change>
+        <change>Add icon for the copy action</change>
+    </release>
+    <release version="4.510" versioncode="18010" >
+        <change>Fix erroneous SSL certificate warnings when connecting to a server that speaks STARTTLS</change>
+        <change>Updates to Russian and Slovakian translations</change>
+        <change>Major performance updates when opening folder lists</change>
+        <change>Fix a crashing bug related to random number generation on some 3rd party roms</change>
+        <change>Fixed a bug that prevented starring messages in the message list</change>
+    </release>
+    <release version="4.509" versioncode="18009" >
+        <change>Updates to Catalan, Czech, Dutch, Finnish, French, German, Korean, Spanish and Swedish translations</change>
+        <change>Several performance improvements and crash fixes</change>
+        <change>tweak message list item "read item" background color so you can see the item divider a bit better</change>
+        <change>Add back select/deselect action to the message list context menu</change>
+        <change>Default message list checkboxes to off again</change>
+        <change>move message list thread count up to the subject line</change>
+        <change>add back stars to the message list UI</change>
+        <change>Return to old style color chips for accounts, folders and messages.</change>
+        <change>Skip incorrectly formatted/parsed LSUB/LIST replies from IMAP servers</change>
+        <change>Autoconfigure SSL for provider gmx.de</change>
+        <change>Autoconfiguration for a comprehensive list of .ru mail providers.</change>
+        <change>Use Google's fix for the PRNG mess Source: http://android-developers.blogspot.de/2013/08/some-securerandom-thoughts.html</change>
+        <change>Add an actionbar item for "add account" to the account list (if there's room)</change>
+        <change>GMail-app-style generated colorful one-letter contact pictures for pictureless contacts</change>
+        <change>Tighten up the account list display for narrow-screened devices like the HTC One</change>
+        <change>Updated invalid certificate message to be a bit more user-friendly.</change>
+        <change>Restore super-dense message list layout when the user has selected 0 lines of message preview and no contact pictures</change>
+        <change>Rename "SSL" to "SSL/TLS" and "TLS" to "STARTTLS" to better explain what's really going on</change>
+    </release>
     <release version="4.508" versioncode="18008" >
         <change>Move 'share' menu item back, at least for the moment</change>
     </release>

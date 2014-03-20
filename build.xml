@@ -86,6 +86,14 @@
     <property name="rclib" value="${out.dir}/K9RemoteControl.jar" />
     <property name="rcdir" value="com/fsck/k9/remotecontrol/**" />
 
+    <property name="changelog-path-src" value="res/xml/changelog_master.xml" />
+
+    <!-- Name given to the remote git repository -->
+    <property name="origin" value="origin" />
+
+    <!-- Name used for the temporary gh-pages branch in the local git repo -->
+    <property name="gh-pages-tmp" value="gh-pages-tmp" />
+
     <condition property="android.executable" value="android.bat">
         <os family="windows" />
     </condition>
@@ -129,6 +137,63 @@
         <regex property="version-name" input="${major}." regexp="(\d+.)" replace="\1${minor}" />
     </target>
 
+    <target name="-pre-bump-check" depends="-get-version-name,-auto-incr-version">
+        <xpath
+            input="${changelog-path-src}"
+            expression="/changelog/release[@version='${version-name}']/@version"
+            output="changelog-test" />
+
+        <if.contrib>
+            <equals arg1="${changelog-test}" arg2="${version-name}" />
+            <else>
+                <fail>No changelog for ${version-name}.</fail>
+            </else>
+        </if.contrib>
+
+        <exec executable="git" failonerror="true" outputproperty="git-status" errorproperty="git-status-error">
+            <arg line="status -s ${changelog-path-src}" />
+        </exec>
+        <if.contrib>
+            <equals arg1="${git-status}" arg2="" />
+            <else>
+                <fail>Uncomitted changelog edits.</fail>
+            </else>
+        </if.contrib>
+
+        <!-- Check for a clean index, because it will be reset in -update-gh-pages-branch -->
+        <exec executable="git" failonerror="true">
+            <arg line="diff-index --cached --quiet HEAD" />
+        </exec>
+
+        <!-- Check that the temporary gh-pages branch doesn't exist in the local git repo -->
+        <exec executable="git" failonerror="true" outputproperty="gh-pages-tmp-status" errorproperty="gh-pages-tmp-status-error">
+            <arg line="branch --list ${gh-pages-tmp}" />
+        </exec>
+        <if.contrib>
+            <equals arg1="${gh-pages-tmp-status}" arg2="" />
+            <else>
+                <fail>Temporary branch ${gh-pages-tmp} exists (but should not).</fail>
+            </else>
+        </if.contrib>
+
+        <!-- Check that there is no existing git tag for the new version -->
+        <exec executable="git" failonerror="true" outputproperty="git-tag-status" errorproperty="git-tag-status-error">
+            <arg line="tag --list ${version-name}" />
+        </exec>
+        <if.contrib>
+            <equals arg1="${git-tag-status}" arg2="" />
+            <else>
+                <fail>A git tag for version ${version-name} already exists (but should not).</fail>
+            </else>
+        </if.contrib>
+
+        <!-- Assure that we have the latest gh-pages branch -->
+        <exec executable="git" failonerror="true">
+            <arg line="fetch ${origin} +refs/heads/gh-pages:refs/remotes/${origin}/gh-pages" />
+        </exec>
+
+    </target>
+
     <target name="-set-version" depends="-get-version-name,-get-version-code">
         <!-- pass -Dversion-name=4.200 to define the version instead of auto-incrementing it -->
         <if.contrib>
@@ -139,9 +204,7 @@
         </if.contrib>
 
         <echo>Setting version to ${version-name}</echo>
-        <exec executable="perl" failonerror="true">
-            <arg line="-0 -ne '/\x3Crelease version=\x22${version-name}\x22/ or die qq/No changelog for ${version-name}\n/' res/xml/changelog_master.xml" />
-        </exec>
+
         <replace file="AndroidManifest.xml"
             token="android:versionName=&quot;${current-version-name}&quot;"
             value="android:versionName=&quot;${version-name}&quot;" summary="true"
@@ -155,7 +218,7 @@
     </target>
 
     <!-- rules -->
-    <target name="bump-version" depends="-set-version,-commit-version">
+    <target name="bump-version" depends="-pre-bump-check,-set-version,-commit-version,-update-gh-pages-branch,-push-version">
         <echo>Bumped K-9 to ${version-name}</echo>
     </target>
 
@@ -166,11 +229,69 @@
         <exec executable="git" failonerror="true">
             <arg line="tag ${version-name}" />
         </exec>
+    </target>
+
+    <!-- Copy the changelog to the gh-pages branch. -->
+    <target name="-update-gh-pages-branch">
+
+        <!-- Create a temporary branch for use in updating the remote gh-pages branch.  -->
         <exec executable="git" failonerror="true">
-            <arg line="push" />
+            <arg line="branch ${gh-pages-tmp} ${origin}/gh-pages" />
         </exec>
+
+        <!-- Save HEAD before switching branches -->
+        <exec executable="git" failonerror="true" outputproperty="git-branch-ref" errorproperty="git-branch-ref-error">
+            <arg line="symbolic-ref HEAD" />
+        </exec>
+
+        <!-- Switch to the temporary branch with no checkout.  The working tree remains untouched. -->
         <exec executable="git" failonerror="true">
-            <arg line="push origin tag ${version-name}" />
+            <arg line="symbolic-ref HEAD refs/heads/${gh-pages-tmp}" />
+        </exec>
+
+        <!--  Clean up the index on the temporary branch -->
+        <exec executable="git" failonerror="true">
+            <arg line="reset -q" />
+        </exec>
+
+        <!-- Retrieve tree info for the changelog file to be copied from HEAD -->
+        <exec executable="git" failonerror="true" outputproperty="git-ls-tree" errorproperty="git-ls-tree-error">
+            <arg line="ls-tree ${git-branch-ref} ${changelog-path-src}" />
+        </exec>
+
+        <!-- Update the path and name of the changelog for where it will be stored in the temp. branch -->
+        <regex property="changelog-path-dst" input="${git-branch-ref}" regexp=".*/([^/]+$)" select="changelog_\1_branch.xml" />
+        <regex property="git-index-info" input="${git-ls-tree}" regexp="(.*\t).*" select="\1${changelog-path-dst}" />
+
+        <!-- Add the changelog to the index -->
+        <exec executable="git" failonerror="true" inputstring="${git-index-info}">
+            <arg line="update-index --index-info" />
+        </exec>
+
+        <!-- Commit the changelog -->
+        <exec executable="git" failonerror="true">
+            <arg line="commit -m'Update changelog for version ${version-name}'" />
+        </exec>
+
+        <!-- Switch back to HEAD, again without touching the (original) working tree -->
+        <exec executable="git" failonerror="true">
+            <arg line="symbolic-ref HEAD ${git-branch-ref}" />
+        </exec>
+
+        <!-- Clean up the index for HEAD -->
+        <exec executable="git" failonerror="true">
+            <arg line="reset -q" />
+        </exec>
+    </target>
+
+    <target name="-push-version">
+        <exec executable="git" failonerror="true">
+            <arg line="push ${origin} HEAD ${gh-pages-tmp}:gh-pages tag ${version-name}" />
+        </exec>
+
+        <!--  Delete the temporary branch -->
+        <exec executable="git" failonerror="true">
+            <arg line="branch -D ${gh-pages-tmp}" />
         </exec>
     </target>
 

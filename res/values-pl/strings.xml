@@ -3,10 +3,11 @@
 <!--  ##                                                                                ## -->
 <!--  ##         Polska wersja jezykowa: Marcin Orlowski <carlos@wfmh.org.pl>           ## -->
 <!--  ##                                                                                ## -->
-<!--  ## Latest update: (YYYY-MM-DD): 2013.07.15                                        ## -->
+<!--  ## Latest update: (YYYY-MM-DD): 2013.10.30                                        ## -->
 <!--  ## Modified by rabbbit, 2011.03.03                                                ## -->
 <!--  ## Updated by Błażej Jeżewski, 2012.04.10                                         ## -->
 <!--  ## Updated by Mirosław Lach, 2013.07.15                                           ## -->
+<!--  ## Updated by Jacek Sowiński, 2013.10.30                                          ## -->
 <!--  ##                                                                                ## -->
 <!--  #################################################################################### -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
@@ -128,6 +129,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="cancel_action">Anuluj</string>
     <string name="send_action">Wyślij</string>
     <string name="send_again_action">Prześlij ponownie</string>
+    <string name="select_action">Zaznacz</string>
+    <string name="deselect_action">Odznacz</string>
     <string name="reply_action">Odpowiedz</string>
     <string name="reply_all_action">Odpowiedz wszystkim</string>
     <string name="delete_action">Usuń</string>
@@ -135,7 +138,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="spam_action">Spam</string>
     <string name="forward_action">Prześlij dalej</string>
     <string name="move_action">Przenieś</string>
-    <string name="single_message_options_action">Wyślij</string>
+    <string name="single_message_options_action">Wyślij…</string>
     <string name="refile_action">Operacje…</string>
     <string name="continue_action">Kontynuuj</string>
     <string name="back_action">Cofnij</string>
@@ -203,8 +206,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Objętość konta \"<xliff:g id="account">%s</xliff:g>\" zmniejszyła się z <xliff:g id="oldSize">%s</xliff:g> do <xliff:g id="newSize">%s</xliff:g></string>
+    <string name="account_size_changed">Objętość konta \"<xliff:g id="account">%s</xliff:g>\" zmniejszyła się z <xliff:g id="oldSize">%s</xliff:g> do <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Kompaktuję konto \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Czyszczę konto \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -266,7 +268,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="message_compose_quote_header_from">Od:</string>
     <string name="message_compose_quote_header_to">Do:</string>
     <string name="message_compose_quote_header_cc">DW:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napisał:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napisał:</string>
     <string name="message_compose_error_no_recipients">Musisz dodać co najmniej jednego odbiorcę.</string>
     <string name="error_contact_address_not_found">Żaden adres email nie został znaleziony.</string>
     <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą być przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>
@@ -303,6 +305,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="message_discarded_toast">Wiadomość usunięta</string>
     <string name="message_saved_toast">Wiadomość zapisana jako szkic</string>
 
+    <string name="global_settings_flag_label">Oznaczaj gwiazdkami</string>
+    <string name="global_settings_flag_summary">Gwiazka wskazuje oznakowane wiadomości</string>
     <string name="global_settings_checkbox_label">Zaznaczanie wielu</string>
     <string name="global_settings_checkbox_summary">Opcja zaznaczania wielu wiadomości dostępna zawsze w trybie wielokrotnego wyboru</string>
     <string name="global_settings_preview_lines_label">Podglądaj linie</string>
@@ -395,10 +399,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_incoming_security_label">Zabezpieczenia</string>
     <string name="account_setup_incoming_auth_type_label">Rodzaj uwierzytelnienia</string>
     <string name="account_setup_incoming_security_none_label">Brak</string>
-    <string name="account_setup_incoming_security_ssl_optional_label">SSL/TLS (jeśli dostępne)</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS (zawsze)</string>
-    <string name="account_setup_incoming_security_tls_optional_label">STARTTLS (jeśli dostępne)</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS (zawsze)</string>
 
     <string name="account_setup_incoming_delete_policy_label">Gdy skasuję wiadomość</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie usuwaj z serwera</string>
@@ -757,11 +757,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="account_clear_dlg_title">Wyczyść konto</string>
 
-    <string name="provider_note_live">Tylko niektóre konta Yahoo! \"Plus\" obsługują protokół POP3,
-        umożliwiający K-9 odbiór poczty. Jeśli nie możesz zalogować się
-        do swojego konta z użyciem poprawnego hasła i adresu email, najprawdopodobniej
-        nie masz płatnego konta typu \"Plus\". W takim przypadku musisz z poczty
-        korzystać w dotychczasowy sposób, za pośrednictwem przeglądarki.</string>
     <string name="provider_note_yahoojp">Jeśli chcesz używać POP3 dla tego dostawcy, powinieneś zezwolić na użycie POP3 na stronie ustawień poczty Yahoo.</string>
     <string name="provider_note_auonejp">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Au one.</string>
     <string name="provider_note_naver">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Naver.</string>
@@ -956,7 +951,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="btn_crypto_sign">Podpisz</string>
     <string name="btn_encrypt">Szyfruj</string>
     <string name="btn_decrypt">Deszyfruj</string>
-    <string name="btn_verify">Potwiedź</string>
+    <string name="btn_verify">Potwierdź</string>
     <string name="unknown_crypto_signature_user_id">&lt;nieznany&gt;</string>
     <string name="key_id">id: %s</string>
     <string name="pgp_mime_unsupported">Wiadomości PGP/MIME nie są jeszcze wspierane.</string>
@@ -991,7 +986,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Na pewno chcesz usunąć wiadomość?</item>
         <item quantity="other">Na pewno chcesz usunąć <xliff:g id="message_count">%1$d</xliff:g> wiadomości?</item>
     </plurals>
@@ -1028,7 +1023,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="settings_export_success">Zapisano ustawienia do <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Importowano ustawienia z <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importowano <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 konto</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> kont</item>
     </plurals>
@@ -1147,4 +1142,15 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
+
+    <string name="global_settings_colorize_missing_contact_pictures_label">Pokoloruj zdjęcia kontaktów</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Używa kolorów gdy brakuje zdjęć kontaktów</string>
+
+    <string name="global_settings_messageview_visible_refile_actions_title">Widoczne operacje wiadomości</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Pokaż wybrane operacje w menu widoku wiadomości</string>
+
+    <string name="loading_attachment">Ładowanie załącznika…</string>
+    <string name="fetching_attachment_dialog_title_send">Wysyłanie wiadomości</string>
+    <string name="fetching_attachment_dialog_title_save">Zapisywanie szkicu</string>
+    <string name="fetching_attachment_dialog_message">Pobieranie załącznika…</string>
 </resources>
