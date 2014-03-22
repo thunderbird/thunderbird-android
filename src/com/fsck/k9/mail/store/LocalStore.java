@@ -772,9 +772,11 @@ public class LocalStore extends Store implements Serializable {
             public Long doDbWork(final SQLiteDatabase db) {
                 final File[] files = attachmentDirectory.listFiles();
                 long attachmentLength = 0;
-                for (File file : files) {
-                    if (file.exists()) {
-                        attachmentLength += file.length();
+                if (files != null) {
+                    for (File file : files) {
+                        if (file.exists()) {
+                            attachmentLength += file.length();
+                        }
                     }
                 }
 
