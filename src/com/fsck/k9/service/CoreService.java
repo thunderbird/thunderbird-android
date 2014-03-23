@@ -195,7 +195,6 @@ public abstract class CoreService extends Service {
         }
 
         mThreadPool = Executors.newFixedThreadPool(1);  // Must be single threaded
-        super.onCreate();
     }
 
     @Override
@@ -407,8 +406,6 @@ public abstract class CoreService extends Service {
         // Shut down thread pool
         mShutdown = true;
         mThreadPool.shutdown();
-
-        super.onDestroy();
     }
 
     /**
