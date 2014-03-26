@@ -15,7 +15,7 @@ dependencies {
   compile project(':plugins:Android-PullToRefresh:library')
   compile project(':plugins:ckChangeLog:library')
   compile project(':plugins:HoloColorPicker')
-  compile project(':plugins:keychain-api-library')
+  compile project(':plugins:openpgp-api-library')
   compile fileTree(dir: 'libs', include: '*.jar')
 }
 
