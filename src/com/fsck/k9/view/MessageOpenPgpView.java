@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.CryptoHelper;
@@ -60,6 +61,7 @@ public class MessageOpenPgpView extends LinearLayout {
     private static final int REQUEST_CODE_DECRYPT_VERIFY = 12;
 
     String mData;
+    Account mAccount;
 
     public MessageOpenPgpView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -90,12 +92,13 @@ public class MessageOpenPgpView extends LinearLayout {
      * Fill the decrypt layout with signature data, if known, make controls
      * visible, if they should be visible.
      */
-    public void updateLayout(String openPgpProvider, String decryptedData,
+    public void updateLayout(Account account, String decryptedData,
             final OpenPgpSignatureResult signatureResult,
             final Message message) {
 
         // set class variables
-        mOpenPgpProvider = openPgpProvider;
+        mAccount = account;
+        mOpenPgpProvider = mAccount.getOpenPgpProvider();
         mDecryptedData = decryptedData;
         mMessage = message;
 
@@ -263,6 +266,11 @@ public class MessageOpenPgpView extends LinearLayout {
     private void decryptVerify(Intent intent) {
         intent.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
         intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+        // this follows user id format of OpenPGP to allow key generation based on it
+        // includes account number to make it unique
+        String accName = mAccount.getName() + " (" + mAccount.getAccountNumber() + ") <"
+                + mAccount.getEmail() + ">";
+        intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accName);
 
         InputStream is = null;
         try {
