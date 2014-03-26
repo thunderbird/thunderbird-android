@@ -126,6 +126,8 @@ public class OpenPgpApi {
     /* Intent extras */
     public static final String EXTRA_API_VERSION = "api_version";
 
+    public static final String EXTRA_ACCOUNT_NAME = "account_name";
+
     // SIGN, ENCRYPT, SIGN_AND_ENCRYPT, DECRYPT_VERIFY
     // request ASCII Armor for output
     // OpenPGP Radix-64, 33 percent overhead compared to binary, see http://tools.ietf.org/html/rfc4880#page-53)

@@ -38,16 +38,32 @@ public class OpenPgpSignatureResult implements Parcelable {
         return status;
     }
 
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public boolean isSignatureOnly() {
         return signatureOnly;
+    }
+
+    public void setSignatureOnly(boolean signatureOnly) {
+        this.signatureOnly = signatureOnly;
     }
 
     public String getUserId() {
         return userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public long getKeyId() {
         return keyId;
+    }
+
+    public void setKeyId(long keyId) {
+        this.keyId = keyId;
     }
 
     public OpenPgpSignatureResult() {
@@ -55,7 +71,7 @@ public class OpenPgpSignatureResult implements Parcelable {
     }
 
     public OpenPgpSignatureResult(int signatureStatus, String signatureUserId,
-            boolean signatureOnly, long keyId) {
+                                  boolean signatureOnly, long keyId) {
         this.status = signatureStatus;
         this.signatureOnly = signatureOnly;
         this.userId = signatureUserId;
