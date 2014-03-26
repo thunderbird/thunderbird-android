@@ -266,7 +266,7 @@ public class Account implements BaseAccount {
         TEXT, HTML, AUTO
     }
 
-    protected Account(Context context) {
+    public Account(Context context) {
         mUuid = UUID.randomUUID().toString();
         mLocalStorageProviderId = StorageManager.getInstance(K9.app).getDefaultProviderId();
         mAutomaticCheckIntervalMinutes = -1;

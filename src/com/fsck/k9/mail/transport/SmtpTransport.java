@@ -2,6 +2,7 @@
 package com.fsck.k9.mail.transport;
 
 import android.util.Log;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.*;
@@ -9,27 +10,18 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
-import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.net.ssl.TrustManagerFactory;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
 
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import javax.net.ssl.TrustManager;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.security.GeneralSecurityException;
-import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-
 import java.util.*;
 
 public class SmtpTransport extends Transport {
@@ -172,9 +164,7 @@ public class SmtpTransport extends Transport {
     String mPassword;
     AuthType mAuthType;
     ConnectionSecurity mConnectionSecurity;
-    Socket mSocket;
-    PeekableInputStream mIn;
-    OutputStream mOut;
+    BaseTransport baseTransport;
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
 
@@ -194,66 +184,29 @@ public class SmtpTransport extends Transport {
         mAuthType = settings.authenticationType;
         mUsername = settings.username;
         mPassword = settings.password;
+
+        setTransport(new MailTransport()
+                    .setInputBufferSize(1024)
+                    .setOutputBufferSize(1024));
+    }
+
+    void setTransport(BaseTransport baseTransport) {
+        this.baseTransport = baseTransport;
     }
 
     @Override
     public void open() throws MessagingException {
+        baseTransport.open();
         try {
-            boolean secureConnection = false;
-            InetAddress[] addresses = InetAddress.getAllByName(mHost);
-            for (int i = 0; i < addresses.length; i++) {
-                try {
-                    SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
-                    if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        SSLContext sslContext = SSLContext.getInstance("TLS");
-                        sslContext.init(null,
-                                new TrustManager[] { TrustManagerFactory.get(
-                                        mHost, mPort) },
-                                new SecureRandom());
-                        mSocket = TrustedSocketFactory.createSocket(sslContext);
-                        mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                        secureConnection = true;
-                    } else {
-                        mSocket = new Socket();
-                        mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                    }
-                } catch (SocketException e) {
-                    if (i < (addresses.length - 1)) {
-                        // there are still other addresses for that host to try
-                        continue;
-                    }
-                    throw new MessagingException("Cannot connect to host", e);
-                }
-                break; // connection success
-            }
+            baseTransport.connect(mHost, mPort, mConnectionSecurity, SOCKET_CONNECT_TIMEOUT);
 
             // RFC 1047
-            mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
-
-            mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), 1024));
-            mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
+            baseTransport.setSoTimeout(SOCKET_READ_TIMEOUT);
 
             // Eat the banner
             executeSimpleCommand(null);
 
-            InetAddress localAddress = mSocket.getLocalAddress();
-            String localHost = localAddress.getCanonicalHostName();
-            String ipAddr = localAddress.getHostAddress();
-
-            if (localHost.equals("") || localHost.equals(ipAddr) || localHost.contains("_")) {
-                // We don't have a FQDN or the hostname contains invalid
-                // characters (see issue 2143), so use IP address.
-                if (!ipAddr.equals("")) {
-                    if (localAddress instanceof Inet6Address) {
-                        localHost = "[IPV6:" + ipAddr + "]";
-                    } else {
-                        localHost = "[" + ipAddr + "]";
-                    }
-                } else {
-                    // If the IP address is no good, set a sane default (see issue 2750).
-                    localHost = "android";
-                }
-            }
+            String localHost = baseTransport.getLocalHost();
 
             HashMap<String,String> extensions = sendHello(localHost);
 
@@ -264,21 +217,13 @@ public class SmtpTransport extends Transport {
                 if (extensions.containsKey("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
-                    SSLContext sslContext = SSLContext.getInstance("TLS");
-                    sslContext.init(null,
-                            new TrustManager[] { TrustManagerFactory.get(mHost,
-                                    mPort) }, new SecureRandom());
-                    mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
-                              mPort, true);
-                    mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
-                                                  1024));
-                    mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
+                    baseTransport.reopenTls(mHost, mPort);
+                    baseTransport.setSoTimeout(SOCKET_READ_TIMEOUT);
                     /*
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
                      * Exim.
                      */
                     extensions = sendHello(localHost);
-                    secureConnection = true;
                 } else {
                     /*
                      * This exception triggers a "Certificate error"
@@ -348,7 +293,7 @@ public class SmtpTransport extends Transport {
                  * version, or it may have been imported.
                  */
                 case AUTOMATIC:
-                    if (secureConnection) {
+                    if (baseTransport.isSecure()) {
                         // try saslAuthPlain first, because it supports UTF-8 explicitly
                         if (authPlainSupported) {
                             saslAuthPlain(mUsername, mPassword);
@@ -477,7 +422,7 @@ public class SmtpTransport extends Transport {
         }
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
-        if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
+        if (mLargestAcceptableMessage > 0 && message.hasAttachments()) {
             if (message.calculateSize() > mLargestAcceptableMessage) {
                 MessagingException me = new MessagingException("Message too large for server");
                 me.setPermanentFailure(possibleSend);
@@ -494,8 +439,9 @@ public class SmtpTransport extends Transport {
             }
             executeSimpleCommand("DATA");
 
-            EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
+            OutputStream msgOut = new EOLConvertingOutputStream(
+                    new LineWrapOutputStream(new SmtpDataStuffing(
+                            baseTransport.getOutputStream()), 1000));
 
             message.writeTo(msgOut);
 
@@ -531,39 +477,12 @@ public class SmtpTransport extends Transport {
         } catch (Exception e) {
 
         }
-        try {
-            mIn.close();
-        } catch (Exception e) {
 
-        }
-        try {
-            mOut.close();
-        } catch (Exception e) {
-
-        }
-        try {
-            mSocket.close();
-        } catch (Exception e) {
-
-        }
-        mIn = null;
-        mOut = null;
-        mSocket = null;
+        baseTransport.close();
     }
 
     private String readLine() throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int d;
-        while ((d = mIn.read()) != -1) {
-            if (((char)d) == '\r') {
-                continue;
-            } else if (((char)d) == '\n') {
-                break;
-            } else {
-                sb.append((char)d);
-            }
-        }
-        String ret = sb.toString();
+        String ret = baseTransport.readLine();
         if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP)
             Log.d(K9.LOG_TAG, "SMTP <<< " + ret);
 
@@ -589,8 +508,7 @@ public class SmtpTransport extends Transport {
          * SMTP servers misbehave if CR and LF arrive in separate pakets.
          * See issue 799.
          */
-        mOut.write(data);
-        mOut.flush();
+        baseTransport.writeLine(data);
     }
 
     private void checkLine(String line) throws MessagingException {

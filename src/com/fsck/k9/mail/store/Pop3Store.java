@@ -8,23 +8,19 @@ import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
-
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.net.ssl.TrustManagerFactory;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.transport.MailTransport;
+import com.fsck.k9.mail.transport.BaseTransport;
 
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import javax.net.ssl.TrustManager;
 
 import java.io.*;
 import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -196,6 +192,7 @@ public class Pop3Store extends Store {
     private String mPassword;
     private AuthType mAuthType;
     private ConnectionSecurity mConnectionSecurity;
+    private BaseTransport baseTransport;
     private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
 
@@ -205,7 +202,6 @@ public class Pop3Store extends Store {
      * already unsuccessfully tried to use the TOP command.
      */
     private boolean mTopNotSupported;
-
 
     public Pop3Store(Account account) throws MessagingException {
         super(account);
@@ -225,6 +221,14 @@ public class Pop3Store extends Store {
         mUsername = settings.username;
         mPassword = settings.password;
         mAuthType = settings.authenticationType;
+
+        setTransport(new MailTransport()
+                    .setInputBufferSize(1024)
+                    .setOutputBufferSize(512));
+    }
+
+    public void setTransport(BaseTransport baseTransport) {
+        this.baseTransport = baseTransport;
     }
 
     @Override
@@ -248,7 +252,7 @@ public class Pop3Store extends Store {
     public void checkSettings() throws MessagingException {
         Pop3Folder folder = new Pop3Folder(mAccount.getInboxFolderName());
         folder.open(Folder.OPEN_MODE_RW);
-        if (!mCapabilities.uidl) {
+        if (mCapabilities != null && !mCapabilities.uidl) {
             /*
              * Run an additional test to see if UIDL is supported on the server. If it's not we
              * can't service this account.
@@ -270,9 +274,6 @@ public class Pop3Store extends Store {
     }
 
     class Pop3Folder extends Folder {
-        private Socket mSocket;
-        private InputStream mIn;
-        private OutputStream mOut;
         private HashMap<String, Pop3Message> mUidToMsgMap = new HashMap<String, Pop3Message>();
         private HashMap<Integer, Pop3Message> mMsgNumToMsgMap = new HashMap<Integer, Pop3Message>();
         private HashMap<String, Integer> mUidToMsgNumMap = new HashMap<String, Integer>();
@@ -293,28 +294,15 @@ public class Pop3Store extends Store {
             if (isOpen()) {
                 return;
             }
+            baseTransport.open();
 
             if (!mName.equalsIgnoreCase(mAccount.getInboxFolderName())) {
                 throw new MessagingException("Folder does not exist");
             }
 
             try {
-                SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
-                if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                    SSLContext sslContext = SSLContext.getInstance("TLS");
-                    sslContext.init(null,
-                            new TrustManager[] { TrustManagerFactory.get(mHost,
-                                    mPort) }, new SecureRandom());
-                    mSocket = TrustedSocketFactory.createSocket(sslContext);
-                } else {
-                    mSocket = new Socket();
-                }
-
-                mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
-                mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
-
-                mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
+                baseTransport.connect2(mHost, mPort, mConnectionSecurity, SOCKET_CONNECT_TIMEOUT);
+                baseTransport.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                 if (!isOpen()) {
                     throw new MessagingException("Unable to connect socket");
                 }
@@ -327,16 +315,8 @@ public class Pop3Store extends Store {
                     if (mCapabilities.stls) {
                         executeSimpleCommand(STLS_COMMAND);
 
-                        SSLContext sslContext = SSLContext.getInstance("TLS");
-                        sslContext.init(null,
-                                new TrustManager[] { TrustManagerFactory.get(
-                                        mHost, mPort) },
-                                new SecureRandom());
-                        mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
-                                mPort, true);
-                        mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
-                        mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
-                        mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
+                        baseTransport.reopenTls(mHost, mPort);
+                        baseTransport.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         if (!isOpen()) {
                             throw new MessagingException("Unable to connect socket");
                         }
@@ -387,8 +367,15 @@ public class Pop3Store extends Store {
 
             String response = executeSimpleCommand(STAT_COMMAND);
             String[] parts = response.split(" ");
-            mMessageCount = Integer.parseInt(parts[1]);
-
+            try {
+                mMessageCount = Integer.parseInt(parts[1]);
+            }
+            catch (NumberFormatException nfe) {
+                throw new MessagingException(String.format("Error while parsing response of STAT command: ", response), nfe);
+            }
+            catch (ArrayIndexOutOfBoundsException aioobe) {
+                throw new MessagingException(String.format("Error while parsing response of STAT command: ", response), aioobe);
+            }
             mUidToMsgMap.clear();
             mMsgNumToMsgMap.clear();
             mUidToMsgNumMap.clear();
@@ -457,8 +444,7 @@ public class Pop3Store extends Store {
 
         @Override
         public boolean isOpen() {
-            return (mIn != null && mOut != null && mSocket != null
-                    && mSocket.isConnected() && !mSocket.isClosed());
+            return baseTransport.isOpen();
         }
 
         @Override
@@ -479,34 +465,7 @@ public class Pop3Store extends Store {
                  */
             }
 
-            closeIO();
-        }
-
-        private void closeIO() {
-            try {
-                mIn.close();
-            } catch (Exception e) {
-                /*
-                 * May fail if the connection is already closed.
-                 */
-            }
-            try {
-                mOut.close();
-            } catch (Exception e) {
-                /*
-                 * May fail if the connection is already closed.
-                 */
-            }
-            try {
-                mSocket.close();
-            } catch (Exception e) {
-                /*
-                 * May fail if the connection is already closed.
-                 */
-            }
-            mIn = null;
-            mOut = null;
-            mSocket = null;
+            baseTransport.close();
         }
 
         @Override
@@ -618,6 +577,17 @@ public class Pop3Store extends Store {
                             Log.e(K9.LOG_TAG, "ERR response: " + response);
                             return;
                         }
+                        Integer msgNumResponse;
+                        try {
+                            msgNumResponse = Integer.valueOf(uidParts[1]);
+                        }
+                        catch (NumberFormatException nfe) {
+                            throw new MessagingException(String.format("Error while parsing response of UIDL command: ", response), nfe);
+                        }
+                        if (msgNum != msgNumResponse) {
+                            throw new MessagingException(String.format("Error while parsing response of UIDL command: ", response));
+                        }
+
                         String msgUid = uidParts[2];
                         message = new Pop3Message(msgUid, this);
                         indexMessage(msgNum, message);
@@ -654,7 +624,13 @@ public class Pop3Store extends Store {
                         uidParts[1] = uidParts[2];
                     }
                     if (uidParts.length >= 2) {
-                        Integer msgNum = Integer.valueOf(uidParts[0]);
+                        Integer msgNum;
+                        try {
+                            msgNum = Integer.valueOf(uidParts[0]);
+                        }
+                        catch (NumberFormatException nfe) {
+                            throw new MessagingException(String.format("Error while parsing response of UIDL command: ", response), nfe);
+                        }
                         String msgUid = uidParts[1];
                         if (msgNum >= start && msgNum <= end) {
                             Pop3Message message = mMsgNumToMsgMap.get(msgNum);
@@ -854,8 +830,14 @@ public class Pop3Store extends Store {
                         break;
                     }
                     String[] listParts = response.split(" ");
-                    int msgNum = Integer.parseInt(listParts[0]);
-                    int msgSize = Integer.parseInt(listParts[1]);
+                    int msgNum, msgSize;
+                    try {
+                        msgNum = Integer.parseInt(listParts[0]);
+                        msgSize = Integer.parseInt(listParts[1]);
+                    }
+                    catch (NumberFormatException nfe) {
+                        throw new MessagingException(String.format("Error while parsing response of LIST command: %s", response), nfe);
+                    }
                     Pop3Message pop3Message = mMsgNumToMsgMap.get(msgNum);
                     if (pop3Message != null && msgUidIndex.contains(pop3Message.getUid())) {
                         if (listener != null) {
@@ -918,7 +900,7 @@ public class Pop3Store extends Store {
             }
 
             try {
-                message.parse(new Pop3ResponseInputStream(mIn));
+                message.parse(new Pop3ResponseInputStream(baseTransport.getInputStream()));
 
                 // TODO: if we've received fewer lines than requested we also have the complete message.
                 if (lines == -1 || !mCapabilities.top) {
@@ -994,21 +976,7 @@ public class Pop3Store extends Store {
         }
 
         private String readLine() throws IOException {
-            StringBuilder sb = new StringBuilder();
-            int d = mIn.read();
-            if (d == -1) {
-                throw new IOException("End of stream reached while trying to read line.");
-            }
-            do {
-                if (((char)d) == '\r') {
-                    continue;
-                } else if (((char)d) == '\n') {
-                    break;
-                } else {
-                    sb.append((char)d);
-                }
-            } while ((d = mIn.read()) != -1);
-            String ret = sb.toString();
+            String ret = baseTransport.readLine();
             if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
                 Log.d(K9.LOG_TAG, "<<< " + ret);
             }
@@ -1016,10 +984,7 @@ public class Pop3Store extends Store {
         }
 
         private void writeLine(String s) throws IOException {
-            mOut.write(s.getBytes());
-            mOut.write('\r');
-            mOut.write('\n');
-            mOut.flush();
+            baseTransport.writeLine(s.getBytes(), true);
         }
 
         private Pop3Capabilities getCapabilities() throws IOException {
@@ -1121,7 +1086,7 @@ public class Pop3Store extends Store {
             } catch (MessagingException me) {
                 throw me;
             } catch (Exception e) {
-                closeIO();
+                baseTransport.close();
                 throw new MessagingException("Unable to execute POP3 command", e);
             }
         }
