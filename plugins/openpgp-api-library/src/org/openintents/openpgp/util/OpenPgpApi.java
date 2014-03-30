@@ -32,7 +32,7 @@ public class OpenPgpApi {
 
     public static final String TAG = "OpenPgp API";
 
-    public static final int API_VERSION = 2;
+    public static final int API_VERSION = 3;
     public static final String SERVICE_INTENT = "org.openintents.openpgp.IOpenPgpService";
     
     /**
