@@ -34,6 +34,19 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.transport.MockTransport;
 
+class FakeAccount extends Account {
+    public FakeAccount(Context context) {
+        super(context);
+    }
+
+    // Avoid failing with the K9.app is often null.
+    @Override
+    protected String getDefaultProviderId() {
+        // return StorageManager.getInstance(K9.app).getDefaultProviderId()
+        return null;
+    }
+}
+
 /**
  * This is a series of unit tests for the POP3 Store class.  These tests must be locally
  * complete - no server(s) required.
@@ -56,7 +69,7 @@ public class Pop3StoreUnitTests extends AndroidTestCase {
         super.setUp();
         mContext = getContext();
 
-        Account testAccount = new Account(mContext);
+        Account testAccount = new FakeAccount(mContext);
         testAccount.setStoreUri("pop3://user:password@server:999");
 
         mStore = new Pop3Store(testAccount);
