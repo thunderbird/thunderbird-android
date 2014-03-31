@@ -268,8 +268,7 @@ public class MessageOpenPgpView extends LinearLayout {
         intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
         // this follows user id format of OpenPGP to allow key generation based on it
         // includes account number to make it unique
-        String accName = mAccount.getName() + " (" + mAccount.getAccountNumber() + ") <"
-                + mAccount.getEmail() + ">";
+        String accName = mAccount.getName() + " <" + mAccount.getEmail() + ">";
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accName);
 
         InputStream is = null;

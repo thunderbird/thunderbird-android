@@ -2005,8 +2005,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
         // this follows user id format of OpenPGP to allow key generation based on it
         // includes account number to make it unique
-        String accName = mAccount.getName() + " (" + mAccount.getAccountNumber() + ") <"
-                + mAccount.getEmail() + ">";
+        String accName = mIdentity.getName() + " <" + mIdentity.getEmail() + ">";
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accName);
 
         final InputStream is = getOpenPgpInputStream();
