@@ -455,7 +455,21 @@
         </if.contrib>
     </target>
 
-    <target name="init" depends="-update-abs, -update-ptr, -update-cl, -update-hcp"
+    <target name="-update-opa">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/openpgp-api-library/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/openpgp-api-library/" />
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
+                    <arg line="update lib-project -p plugins/openpgp-api-library/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+
+    <target name="init" depends="-update-abs, -update-ptr, -update-cl, -update-hcp, -update-opa"
             description="Initialize environment for building" />
 
     <!-- overrides default "debug" target" -->
