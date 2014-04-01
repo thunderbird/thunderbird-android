@@ -67,11 +67,13 @@ import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
+import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -2005,7 +2007,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
         // this follows user id format of OpenPGP to allow key generation based on it
         // includes account number to make it unique
-        String accName = mIdentity.getName() + " <" + mIdentity.getEmail() + ">";
+        String accName = OpenPgpApiHelper.buildAccountName(mIdentity);
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accName);
 
         final InputStream is = getOpenPgpInputStream();
@@ -2988,30 +2990,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         populateUIWithQuotedMessage(mAccount.isDefaultQuotedTextShown());
 
         if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
-            Identity useIdentity = null;
-            for (Address address : message.getRecipients(RecipientType.TO)) {
-                Identity identity = mAccount.findIdentity(address);
-                if (identity != null) {
-                    useIdentity = identity;
-                    break;
-                }
-            }
-            if (useIdentity == null) {
-                if (message.getRecipients(RecipientType.CC).length > 0) {
-                    for (Address address : message.getRecipients(RecipientType.CC)) {
-                        Identity identity = mAccount.findIdentity(address);
-                        if (identity != null) {
-                            useIdentity = identity;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (useIdentity != null) {
-                Identity defaultIdentity = mAccount.getIdentity(0);
-                if (useIdentity != defaultIdentity) {
-                    switchToIdentity(useIdentity);
-                }
+            Identity useIdentity = IdentityHelper.getRecipientIdentityFromMessage(mAccount, message);
+            Identity defaultIdentity = mAccount.getIdentity(0);
+            if (useIdentity != defaultIdentity) {
+                switchToIdentity(useIdentity);
             }
         }
 

@@ -29,10 +29,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.CryptoHelper;
+import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.fragment.MessageViewFragment;
+import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -266,9 +269,9 @@ public class MessageOpenPgpView extends LinearLayout {
     private void decryptVerify(Intent intent) {
         intent.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
         intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-        // this follows user id format of OpenPGP to allow key generation based on it
-        // includes account number to make it unique
-        String accName = mAccount.getName() + " <" + mAccount.getEmail() + ">";
+
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(mAccount, mMessage);
+        String accName = OpenPgpApiHelper.buildAccountName(identity);
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accName);
 
         InputStream is = null;
