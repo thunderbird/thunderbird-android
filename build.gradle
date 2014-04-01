@@ -15,6 +15,7 @@ dependencies {
   compile project(':plugins:Android-PullToRefresh:library')
   compile project(':plugins:ckChangeLog:library')
   compile project(':plugins:HoloColorPicker')
+  compile project(':plugins:openpgp-api-library')
   compile fileTree(dir: 'libs', include: '*.jar')
 }
 
@@ -35,6 +36,12 @@ android {
       java.srcDirs = ['tests/src']
       assets.srcDirs = ['tests/assets']
     }
+  }
+  
+
+  // Do not abort build if lint finds errors
+  lintOptions {
+    abortOnError false
   }
 
   packagingOptions {

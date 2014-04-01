@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Locale;
 
+import org.openintents.openpgp.OpenPgpSignatureResult;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -712,6 +714,21 @@ public class MessageViewFragment extends SherlockFragment implements OnClickList
                     mHandler.networkError();
                 }
             });
+        }
+    }
+    
+    /**
+     * Used by MessageOpenPgpView
+     */
+    public void setMessageWithOpenPgp(String decryptedData, OpenPgpSignatureResult signatureResult) {
+        try {
+            // TODO: get rid of PgpData?
+            PgpData data = new PgpData();
+            data.setDecryptedData(decryptedData);
+            data.setSignatureResult(signatureResult);
+            mMessageView.setMessage(mAccount, (LocalMessage) mMessage, data, mController, mListener);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }
     }
 
