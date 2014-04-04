@@ -1,4 +1,3 @@
-
 package com.fsck.k9.activity;
 
 import java.util.ArrayList;
@@ -121,7 +120,7 @@ public class ChooseFolder extends K9ListActivity {
                 Intent result = new Intent();
                 result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
                 result.putExtra(EXTRA_CUR_FOLDER, mFolder);
-                String destFolderName = (String)((TextView)view).getText();
+                String destFolderName = getTextAsString((TextView) view);
                 if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
                     destFolderName = mHeldInbox;
                 }
@@ -129,6 +128,11 @@ public class ChooseFolder extends K9ListActivity {
                 result.putExtra(EXTRA_MESSAGE, mMessageReference);
                 setResult(RESULT_OK, result);
                 finish();
+            }
+
+            private String getTextAsString(TextView view) {
+                final CharSequence s = view.getText();
+                return new StringBuilder(s.length()).append(s).toString();
             }
         });
     }
