@@ -31,7 +31,7 @@ android {
       assets.srcDirs = ['assets']
     }
 
-    instrumentTest {
+    androidTest {
       manifest.srcFile 'tests/AndroidManifest.xml'
       java.srcDirs = ['tests/src']
       assets.srcDirs = ['tests/assets']
