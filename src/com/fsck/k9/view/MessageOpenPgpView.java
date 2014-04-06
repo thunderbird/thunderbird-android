@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -110,8 +111,12 @@ public class MessageOpenPgpView extends LinearLayout {
             return;
         }
 
+        FragmentActivity activity = mFragment.getActivity();
+        if (activity == null) {
+            return;
+        }
         // bind to service
-        mOpenPgpServiceConnection = new OpenPgpServiceConnection(mFragment.getActivity(),
+        mOpenPgpServiceConnection = new OpenPgpServiceConnection(activity,
                 mOpenPgpProvider);
         mOpenPgpServiceConnection.bindToService();
 
