@@ -111,22 +111,22 @@
         android:title="@string/refile_action">
         <menu>
             <item
-                android:id="@+id/archive"
+                android:id="@+id/refile_archive"
                 android:title="@string/archive_action"/>
 
             <!-- MessageView -->
             <item
-                android:id="@+id/spam"
+                android:id="@+id/refile_spam"
                 android:title="@string/spam_action"/>
 
             <!-- MessageView -->
             <item
-                android:id="@+id/move"
+                android:id="@+id/refile_move"
                 android:title="@string/move_action"/>
 
             <!-- MessageView -->
             <item
-                android:id="@+id/copy"
+                android:id="@+id/refile_copy"
                 android:title="@string/copy_action"/>
         </menu>
     </item>
