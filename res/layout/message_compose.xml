@@ -243,7 +243,7 @@
             <Button
                 android:id="@+id/quoted_text_show"
                 android:text="@string/message_compose_show_quoted_text_action"
-                android:textSize="16dip"
+                android:textSize="16sp"
                 android:padding="0dip"
                 android:layout_gravity="right"
                 android:layout_height="wrap_content"
