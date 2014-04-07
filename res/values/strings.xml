@@ -1155,5 +1155,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_successful_decryption_unknown_signature">Successful decryption but missing public key</string>
     <string name="openpgp_get_key">Lookup missing key</string>
     <string name="openpgp_error">OpenPGP Error:</string>
+    <string name="openpgp_user_id">User Id</string>
 
 </resources>
