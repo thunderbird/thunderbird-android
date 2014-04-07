@@ -137,7 +137,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textStyle="bold"
-                android:layout_marginTop="4px" />
+                android:layout_marginTop="4dp" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/webdav_mailbox_alias_section"
