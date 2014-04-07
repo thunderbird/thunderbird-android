@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.Intent;
@@ -1161,12 +1162,13 @@ public class FolderList extends K9ListActivity {
                 mSearchTerm = searchTerm;
                 FilterResults results = new FilterResults();
 
+                Locale locale = Locale.getDefault();
                 if ((searchTerm == null) || (searchTerm.length() == 0)) {
                     ArrayList<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
                     results.values = list;
                     results.count = list.size();
                 } else {
-                    final String searchTermString = searchTerm.toString().toLowerCase();
+                    final String searchTermString = searchTerm.toString().toLowerCase(locale);
                     final String[] words = searchTermString.split(" ");
                     final int wordCount = words.length;
 
@@ -1176,7 +1178,7 @@ public class FolderList extends K9ListActivity {
                         if (value.displayName == null) {
                             continue;
                         }
-                        final String valueText = value.displayName.toLowerCase();
+                        final String valueText = value.displayName.toLowerCase(locale);
 
                         for (int k = 0; k < wordCount; k++) {
                             if (valueText.contains(words[k])) {

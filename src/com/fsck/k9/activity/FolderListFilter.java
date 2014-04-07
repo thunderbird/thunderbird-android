@@ -2,6 +2,7 @@ package com.fsck.k9.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -59,12 +60,13 @@ public class FolderListFilter<T> extends Filter {
             }
         }
 
+        Locale locale = Locale.getDefault();
         if ((searchTerm == null) || (searchTerm.length() == 0)) {
             ArrayList<T> list = new ArrayList<T>(mOriginalValues);
             results.values = list;
             results.count = list.size();
         } else {
-            final String searchTermString = searchTerm.toString().toLowerCase();
+            final String searchTermString = searchTerm.toString().toLowerCase(locale);
             final String[] words = searchTermString.split(" ");
             final int wordCount = words.length;
 
@@ -73,7 +75,7 @@ public class FolderListFilter<T> extends Filter {
             final ArrayList<T> newValues = new ArrayList<T>();
 
             for (final T value : values) {
-                final String valueText = value.toString().toLowerCase();
+                final String valueText = value.toString().toLowerCase(locale);
 
                 for (int k = 0; k < wordCount; k++) {
                     if (valueText.contains(words[k])) {
