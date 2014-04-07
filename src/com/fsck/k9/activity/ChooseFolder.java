@@ -121,7 +121,7 @@ public class ChooseFolder extends K9ListActivity {
                 Intent result = new Intent();
                 result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
                 result.putExtra(EXTRA_CUR_FOLDER, mFolder);
-                String destFolderName = (String)((TextView)view).getText();
+                String destFolderName = ((TextView)view).getText().toString();
                 if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
                     destFolderName = mHeldInbox;
                 }
