@@ -172,7 +172,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="add_cc_bcc_action">Add Cc/Bcc</string>
     <string name="read_receipt">Read receipt</string>
     <string name="read_receipt_enabled">Will request read receipt</string>
-    <string name="read_receipt_disabled">Will not not request read receipt</string>
+    <string name="read_receipt_disabled">Will not request read receipt</string>
     <string name="add_attachment_action">Add attachment</string>
     <string name="add_attachment_action_image">Add attachment (Image)</string>
     <string name="add_attachment_action_video">Add attachment (Video)</string>
@@ -346,16 +346,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>
     <string name="global_settings_notification_quick_delete_always">Always</string>
     <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>
-
-    <string name="global_settings_batch_buttons">Batch buttons</string>
-    <string name="global_settings_batch_buttons_summary">Configure message list batch buttons</string>
-    <string name="global_settings_mark_read">Mark read/unread</string>
-    <string name="global_settings_delete">Delete</string>
-    <string name="global_settings_archive">Move to archive</string>
-    <string name="global_settings_archive_disabled_reason">No archive folders.</string>
-    <string name="global_settings_move">Move</string>
-    <string name="global_settings_flag">Flag</string>
-    <string name="global_settings_unselect">Unselect</string>
 
     <string name="quiet_time">Quiet Time</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>
@@ -762,12 +752,9 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_clear_dlg_title">Clear Account</string>
 
-    <string name="provider_note_yahoojp">Be sure to enable POP3 on the Yahoo mail settings page.</string>
     <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>
     <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>
     <string name="provider_note_hanmail">Be sure to enable IMAP or POP3 on the Hanmail(Daum) mail settings page.</string>
-    <string name="provider_note_paran">Be sure to enable IMAP or POP3 on the Paran mail settings page.</string>
-    <string name="provider_note_nate">Be sure to enable IMAP or POP3 on the Nate mail settings page.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
@@ -1168,5 +1155,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_successful_decryption_unknown_signature">Successful decryption but missing public key</string>
     <string name="openpgp_get_key">Lookup missing key</string>
     <string name="openpgp_error">OpenPGP Error:</string>
+    <string name="openpgp_user_id">User Id</string>
 
 </resources>

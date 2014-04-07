@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -2167,6 +2168,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * @param mime_type
      *         The MIME type we want our attachment to have.
      */
+    @SuppressLint("InlinedApi")
     private void onAddAttachment2(final String mime_type) {
         if (mAccount.getCryptoProvider().isAvailable(this) || mAccount.getOpenPgpProvider() != null) {
             Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
@@ -4230,7 +4232,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * {@code \r\n} to {@code \n} and back again when setting and getting text.
      *
      */
-    private static class EolConvertingEditText extends EditText {
+    public static class EolConvertingEditText extends EditText {
 
         public EolConvertingEditText(Context context, AttributeSet attrs) {
             super(context, attrs);

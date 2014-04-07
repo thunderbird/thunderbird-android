@@ -62,7 +62,7 @@
                 android:layout_toRightOf="@+id/openpgp_signature_layout_image"
                 android:ellipsize="end"
                 android:paddingLeft="5dip"
-                android:text="User Id"
+                android:text="@string/openpgp_user_id"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="?android:textColorPrimaryInverse" />
         </RelativeLayout>

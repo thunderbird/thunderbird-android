@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="UnreadWidgetContainer">
         <item name="android:paddingTop">2dp</item>
@@ -11,7 +11,7 @@
     </style>
 
     <style name="UnreadWidgetTextView">
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize" tools:ignore="SpUsage">13dp</item>
         <item name="android:background">@drawable/rounded_corners</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:shadowColor">#000000</item>

@@ -29,7 +29,6 @@
         android:id="@+id/account_password"
         android:inputType="textPassword"
         android:hint="@string/account_setup_basics_password_hint"
-        android:password="true"
         android:singleLine="true"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"

@@ -867,19 +867,23 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 mMessageViewFragment.onToggleRead();
                 return true;
             }
-            case R.id.archive: {
+            case R.id.archive:
+            case R.id.refile_archive: {
                 mMessageViewFragment.onArchive();
                 return true;
             }
-            case R.id.spam: {
+            case R.id.spam:
+            case R.id.refile_spam: {
                 mMessageViewFragment.onSpam();
                 return true;
             }
-            case R.id.move: {
+            case R.id.move:
+            case R.id.refile_move: {
                 mMessageViewFragment.onMove();
                 return true;
             }
-            case R.id.copy: {
+            case R.id.copy:
+            case R.id.refile_copy: {
                 mMessageViewFragment.onCopy();
                 return true;
             }
@@ -1035,14 +1039,12 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             /*
              * Set visibility of copy, move, archive, spam in action bar and refile submenu
              */
-            Menu refileSubmenu = menu.findItem(R.id.refile).getSubMenu();
-
             if (mMessageViewFragment.isCopyCapable()) {
                 menu.findItem(R.id.copy).setVisible(K9.isMessageViewCopyActionVisible());
-                refileSubmenu.findItem(R.id.copy).setVisible(true);
+                menu.findItem(R.id.refile_copy).setVisible(true);
             } else {
                 menu.findItem(R.id.copy).setVisible(false);
-                refileSubmenu.findItem(R.id.copy).setVisible(false);
+                menu.findItem(R.id.refile_copy).setVisible(false);
             }
 
             if (mMessageViewFragment.isMoveCapable()) {
@@ -1055,9 +1057,9 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
                 menu.findItem(R.id.spam).setVisible(canMessageBeMovedToSpam &&
                         K9.isMessageViewSpamActionVisible());
 
-                refileSubmenu.findItem(R.id.move).setVisible(true);
-                refileSubmenu.findItem(R.id.archive).setVisible(canMessageBeArchived);
-                refileSubmenu.findItem(R.id.spam).setVisible(canMessageBeMovedToSpam);
+                menu.findItem(R.id.refile_move).setVisible(true);
+                menu.findItem(R.id.refile_archive).setVisible(canMessageBeArchived);
+                menu.findItem(R.id.refile_spam).setVisible(canMessageBeMovedToSpam);
             } else {
                 menu.findItem(R.id.move).setVisible(false);
                 menu.findItem(R.id.archive).setVisible(false);
