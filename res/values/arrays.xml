@@ -559,26 +559,6 @@
         <item>22</item>
     </string-array>
 
-    <string-array name="font_entries_webview">
-        <item>@string/font_size_webview_smaller</item>
-        <item>@string/font_size_webview_small</item>
-        <item>@string/font_size_webview_normal</item>
-        <item>@string/font_size_webview_large</item>
-        <item>@string/font_size_webview_larger</item>
-    </string-array>
-
-    <!--
-        Be sure to also change FontSizes.getMessageViewContentAsInt() and
-        FontSizes.setMessageViewContent() if you change this.
-    -->
-    <string-array name="font_values_webview" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </string-array>
-
     <string-array name="idle_refresh_period_entries">
         <item>@string/idle_refresh_period_1min</item>
         <item>@string/idle_refresh_period_2min</item>
