@@ -4230,7 +4230,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * {@code \r\n} to {@code \n} and back again when setting and getting text.
      *
      */
-    private static class EolConvertingEditText extends EditText {
+    public static class EolConvertingEditText extends EditText {
 
         public EolConvertingEditText(Context context, AttributeSet attrs) {
             super(context, attrs);
