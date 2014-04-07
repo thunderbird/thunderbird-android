@@ -235,10 +235,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:editable="false"
                 android:minLines="0"
-                android:autoText="true"
-                android:capitalize="sentences"
                 android:hint="@string/message_compose_signature_hint"
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -265,8 +262,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:minLines="3"
-                    android:autoText="true"
-                    android:capitalize="sentences"
                     android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -307,10 +302,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:editable="false"
                 android:minLines="0"
-                android:autoText="true"
-                android:capitalize="sentences"
                 android:hint="@string/message_compose_signature_hint"
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:textAppearance="?android:attr/textAppearanceMedium" />

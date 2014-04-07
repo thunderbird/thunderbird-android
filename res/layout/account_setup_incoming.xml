@@ -37,7 +37,6 @@
             android:textColor="?android:attr/textColorPrimary" />
         <EditText
             android:id="@+id/account_password"
-            android:password="true"
             android:inputType="textPassword"
             android:singleLine="true"
             android:layout_height="wrap_content"
