@@ -143,7 +143,7 @@ public class FontSizeSettings extends K9PreferenceActivity {
             }
         );
         mMessageViewContentSlider.getOnPreferenceChangeListener().onPreferenceChange(
-                                  mMessageViewContentSlider, new Float(mMessageViewContentSlider.getValue()));
+                                  mMessageViewContentSlider, mMessageViewContentSlider.getValue());
 
         mMessageComposeInput = setupListPreference(
                 PREFERENCE_MESSAGE_COMPOSE_INPUT_FONT,
