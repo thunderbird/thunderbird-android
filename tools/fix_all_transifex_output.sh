@@ -6,6 +6,6 @@ PROJECTROOT=`dirname $SCRIPTPATH`
 
 cd $PROJECTROOT
 
-find res/values* -name "strings.xml" -type f ! -wholename "res/values-fr-rCA/strings.xml" -exec ./tools/fix_strings.py {} \;
+find res/values-* -name "strings.xml" -type f -exec ./tools/fix_transifex_output.sh {} \;
 
 cd -
