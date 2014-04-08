@@ -111,10 +111,10 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="status_syncing_off">Sinchronizavimas išjungtas</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Kitas</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Ankstesnis</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">Gerai</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Kitas</string>
+    <string name="previous_action">Ankstesnis</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">Gerai</string>
     <string name="cancel_action">Atsisakyti</string>
     <string name="send_action">Siųsti</string>
     <string name="send_again_action">Siųsti iš naujo</string>
@@ -131,7 +131,7 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="refile_action">Refile…</string>
     <string name="continue_action">Tęsti</string>
     <string name="back_action">Atgal</string>
-    <string name="done_action">Atlikta</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Atlikta</string>
     <string name="discard_action">Atmesti</string>
     <string name="save_draft_action">Išsaugoti kaip juodraštį</string>
     <string name="check_mail_action">Ieškoti naujų laiškų</string>
@@ -179,7 +179,8 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="prefs_title">Nustatymai</string>
     <string name="accounts_context_menu_title">Paskyros parinktys</string>
 
-    <string name="general_no_subject">(Nėra temos)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(Nėra temos)</string>
     <string name="general_no_sender">Nėra siuntėjo</string>
     <string name="status_loading">Sekimas</string>
     <string name="status_loading_more">Įkeliami laiškai…</string>
@@ -203,7 +204,7 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
 
     <string name="notification_new_title">Naujas laiškas</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Neskaitytų (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Neskaitytų (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> daugiau <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Atsakyti</string>
@@ -220,13 +221,11 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
 
     <string name="special_mailbox_name_inbox">Gauti laiškai</string>
     <string name="special_mailbox_name_outbox">Siunčiamieji</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Juodraščiai</string>
     <string name="special_mailbox_name_trash">Šiukšliadėžė</string>
     <string name="special_mailbox_name_sent">Išsiųsti</string>
     <string name="special_mailbox_name_archive">Archyvas</string>
     <string name="special_mailbox_name_spam">Brukalas</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Juodraščiai)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Šiukšlės)</string>
@@ -284,7 +283,7 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="message_view_download_remainder">Parsiųsti visą laišką</string>
     <string name="message_view_downloading">Atsiunčiama…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">Nevisos antraštės buvo parsiųstos ar išsaugotos. Norėdami įgalinti šią parinkty, paskyros gaunamųjų serverio nustatymuose, pasirinkite „Išsaugoti visas antraštes įrenginyje“.</string>
     <string name="message_no_additional_headers_available">Visos antraštės parsiųstos, bet nėra ką rodyti.</string>
     <string name="message_additional_headers_retrieval_failed">Gauti papildomų antraščių iš duomenų bazės ar pašto serverio nepavyko.</string>
@@ -340,16 +339,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="global_settings_notification_quick_delete_always">Visada</string>
     <string name="global_settings_notification_quick_delete_description">Pranešimų juostoje rodyti mygtuką kuris leidžia greitai pašalinti laišką</string>
 
-    <string name="global_settings_batch_buttons">Oficialūs mygtukai</string>
-    <string name="global_settings_batch_buttons_summary">Konfigūruoti pranešimų sąrašo mygtukus</string>
-    <string name="global_settings_mark_read">Pažymėti kaip skaitytą/neskaitytą</string>
-    <string name="global_settings_delete">Šalinti</string>
-    <string name="global_settings_archive">Perkelti į archyvą</string>
-    <string name="global_settings_archive_disabled_reason">Nėra archyvo aplankų.</string>
-    <string name="global_settings_move">Perkelti</string>
-    <string name="global_settings_flag">Žymėti</string>
-    <string name="global_settings_unselect">Nežymėti</string>
-
     <string name="quiet_time">Tylos laikas</string>
     <string name="quiet_time_description">Išjungti skambėjimą, pyptelėjimą ir mirgėjimą, nakties metu</string>
     <string name="quiet_time_starts">Tylos laikas prasideda</string>
@@ -360,7 +349,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="account_setup_basics_password_hint">Slaptažodis</string>
     <string name="account_setup_basics_manual_setup_action">Rankinis nustatymas</string>
 
-    <!-- NEW: <string name="account_setup_check_settings_title"/>-->
     <string name="account_setup_check_settings_retr_info_msg">Gaunama paskyros informacija…</string>
     <string name="account_setup_check_settings_check_incoming_msg">Tikrinami gaunamųjų serverio nustatymai…</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Tikrinami siunčiamųjų serverio nustatymai…</string>
@@ -388,7 +376,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="account_setup_incoming_security_label">Saugumas</string>
     <string name="account_setup_incoming_auth_type_label">Tapatumo nustatymas</string>
     <string name="account_setup_incoming_security_none_label">Joks</string>
-
     <string name="account_setup_incoming_delete_policy_label">Kai pašalinu laišką</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nešalinti serveryje</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Pašalinti iš serverio</string>
@@ -447,7 +434,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="recreate_action">Atkurti duomenis (Paskutinė priemonė!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Niekada</string>
     <string name="account_setup_options_mail_check_frequency_1min">Kas minutę</string>
     <string name="account_setup_options_mail_check_frequency_5min">Kas 5 minutes</string>
@@ -478,7 +464,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="account_setup_options_notify_label">Pranešti apie naujus laiškus</string>
     <string name="account_setup_options_notify_sync_label">Pranešti kai tikrinamas paštas</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Rodyti laiškų</string>
     <string name="account_setup_options_mail_display_count_10">10 laiškų</string>
     <string name="account_setup_options_mail_display_count_25">25 laiškai</string>
@@ -492,9 +477,9 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="move_copy_cannot_copy_unsynced_message">Neįmanoma kopijuoti ar perkelti laiškų kurie nesinchronizuoti su serveriu</string>
 
     <string name="account_setup_failed_dlg_title">Nepavyko baigti nustatymo</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Neteisingas naudotojo vardas arba slaptažodis.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Serveris pateikė netinkamą sertifikatą. Kartais tai nutinka dėl neteisingos serverio konfigūracijos. Kartais tai nutinka kai kažkas bando užpulti jus ar jūsų pašto serverį. Jei nesate tikri kame bėda, paspauskite „Atmesti“ ir susisiekite su serverio administracija.\n\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Nepavyko prisijungti prie serverio.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Neteisingas naudotojo vardas arba slaptažodis.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Serveris pateikė netinkamą sertifikatą. Kartais tai nutinka dėl neteisingos serverio konfigūracijos. Kartais tai nutinka kai kažkas bando užpulti jus ar jūsų pašto serverį. Jei nesate tikri kame bėda, paspauskite „Atmesti“ ir susisiekite su serverio administracija.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Nepavyko prisijungti prie serverio.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Keisti detales</string>
     <string name="account_setup_failed_dlg_continue_action">Tęsti</string>
 
@@ -746,12 +731,9 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
 
     <string name="account_clear_dlg_title">Išvalyti paskyrą</string>
 
-    <string name="provider_note_yahoojp">Įsitikinkite jog įjungėte POP3 Yahoo pašto nustatymų puslapyje.</string>
     <string name="provider_note_auonejp">Įsitikinkite jog POP3 ar IMAP įjungtas „au one“ pašto nustatymų puslapyje.</string>
     <string name="provider_note_naver">Įsitikinkite jog POP3 ar IMAP įjungtas „Naver“ pašto nustatymų puslapyje.</string>
     <string name="provider_note_hanmail">Įsitikinkite jog POP3 ar IMAP įjungtas „Hanmail(Daum)“ pašto nustatymų puslapyje.</string>
-    <string name="provider_note_paran">Įsitikinkite jog POP3 ar IMAP įjungtas „Paran“ pašto nustatymų puslapyje.</string>
-    <string name="provider_note_nate">Įsitikinkite jog POP3 ar IMAP įjungtas „Nate“ pašto nustatymų puslapyje.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Neatpažintas sertifikatas</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Priimti raktą</string>
@@ -882,7 +864,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="font_size_message_view_subject">Tema</string>
     <string name="font_size_message_view_date">Laikas ir data</string>
     <string name="font_size_message_view_content">Pagrindinė laiško dalis</string>
-
     <string name="font_size_message_compose">Laiško kūrimas</string>
     <string name="font_size_message_compose_input">Teksto įvesties laukai</string>
 
@@ -894,12 +875,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="font_size_medium">Vidutinis</string>
     <string name="font_size_large">Didelis</string>
     <string name="font_size_larger">Didesnis</string>
-
-    <string name="font_size_webview_smaller">Mažiausias</string>
-    <string name="font_size_webview_small">Mažesnis</string>
-    <string name="font_size_webview_normal">Įprastas</string>
-    <string name="font_size_webview_large">Didesnis</string>
-    <string name="font_size_webview_larger">Didžiausias</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Norėdami pridėti paveikslėlius ir video naudojant Gallery 3D, pažymėkite „Nustatymai“ -&gt; „Naudoti galerijos klaidos apėjimą“</string>
@@ -941,19 +916,8 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="dialog_confirm_delete_title">Patvirtinti šalinimą</string>
     <string name="dialog_confirm_delete_message">Ar tikrai norite pašalinti laišką?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <!-- NEW:
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
     </plurals>
@@ -993,7 +957,7 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="settings_import_global_settings_success">Importuoti globalius nustatymus iš <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importuota <xliff:g id="accounts">%s</xliff:g> iš <xliff:g id="filename">%s</xliff:g></string>
     <!-- NEW:
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
     </plurals>
@@ -1126,4 +1090,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
     <string name="fetching_attachment_dialog_title_send">Siunčiamas laiškas</string>
     <string name="fetching_attachment_dialog_title_save">Išsaugomas juodraštis</string>
     <string name="fetching_attachment_dialog_message">Gaunamas priedas…</string>
+
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>

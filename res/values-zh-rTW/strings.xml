@@ -84,10 +84,10 @@
     <string name="status_syncing_off">同步已停用</string>
 
     <string name="actionbar_selected">%d 已選擇</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">下一步</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">上一步</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">確定</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">下一步</string>
+    <string name="previous_action">上一步</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">確定</string>
     <string name="cancel_action">取消</string>
     <string name="send_action">寄送</string>
     <string name="send_again_action">再次寄送</string>
@@ -101,10 +101,9 @@
     <string name="forward_action">轉寄</string>
     <string name="move_action">移動</string>
     <string name="single_message_options_action">訊息選項…</string>
-    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">繼續</string>
     <string name="back_action">返回</string>
-    <string name="done_action">完成</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">完成</string>
     <string name="discard_action">忽略</string>
     <string name="save_draft_action">儲存為草稿</string>
     <string name="check_mail_action">檢查新郵件</string>
@@ -152,7 +151,8 @@
     <string name="prefs_title">設定</string>
     <string name="accounts_context_menu_title">帳戶選項</string>
 
-    <string name="general_no_subject">（無主題）</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">（無主題）</string>
     <string name="general_no_sender">無寄件人</string>
     <string name="status_loading">正在接收</string>
     <string name="status_loading_more">正在載入郵件…</string>
@@ -176,7 +176,7 @@
 
     <string name="notification_new_title">您有新郵件</string>
     <string name="notification_new_messages_title">%d 新訊息</string>
-    <string name="notification_new_one_account_fmt" formatted="false">您有%d封未讀郵件（%s）</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt" formatted="false">您有%d封未讀郵件（%s）</string>
     <string name="notification_additional_messages" formatted="false">+ 來自%s已超過%d則訊息 </string>
 
     <string name="notification_action_reply">回覆</string>
@@ -193,13 +193,11 @@
 
     <string name="special_mailbox_name_inbox">收件匣</string>
     <string name="special_mailbox_name_outbox">寄件備份</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">草稿</string>
     <string name="special_mailbox_name_trash">垃圾桶</string>
     <string name="special_mailbox_name_sent">寄件備份</string>
     <string name="special_mailbox_name_archive">歸檔</string>
     <string name="special_mailbox_name_spam">垃圾郵件</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt">%s（草稿）</string>
     <string name="special_mailbox_name_trash_fmt">%s（垃圾桶）</string>
@@ -257,7 +255,7 @@
     <string name="message_view_download_remainder">下載完整郵件</string>
     <string name="message_view_downloading">正在下載…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">目前只下載了部分郵件的訊息。如果需要下載全部郵件的訊息，請在帳戶的內送伺服器設定中選擇「在手機上儲存全部郵件的訊息」。</string>
     <string name="message_no_additional_headers_available">全部郵件的訊息都已經下載，沒有其他的郵件訊息可以顯示。</string>
     <string name="message_additional_headers_retrieval_failed">從資料庫或郵件伺服器存取其他的郵件訊息失敗。</string>
@@ -313,16 +311,6 @@
     <string name="global_settings_notification_quick_delete_always">預設</string>
     <string name="global_settings_notification_quick_delete_description">在通知欄顯示訊息快速刪除按鈕</string>
 
-    <string name="global_settings_batch_buttons">批次按鈕</string>
-    <string name="global_settings_batch_buttons_summary">批次配置訊息列表按鈕</string>
-    <string name="global_settings_mark_read">標記已讀/未讀</string>
-    <string name="global_settings_delete">刪除</string>
-    <string name="global_settings_archive">移往歸檔</string>
-    <string name="global_settings_archive_disabled_reason">沒有歸檔資料夾.</string>
-    <string name="global_settings_move">移動</string>
-    <string name="global_settings_flag">標誌</string>
-    <string name="global_settings_unselect">取消所選</string>
-
     <string name="quiet_time">靜音設定</string>
     <string name="quiet_time_description">取消夜間響鈴, 鬧鐘及閃光</string>
     <string name="quiet_time_starts">啟動靜音</string>
@@ -361,7 +349,6 @@
     <string name="account_setup_incoming_security_label">加密類型</string>
     <string name="account_setup_incoming_auth_type_label">身份驗證類型</string>
     <string name="account_setup_incoming_security_none_label">無</string>
-
     <string name="account_setup_incoming_delete_policy_label">當我刪除郵件時</string>
     <string name="account_setup_incoming_delete_policy_never_label">不要從伺服器上刪除</string>
     <string name="account_setup_incoming_delete_policy_delete_label">立刻從伺服器上刪除</string>
@@ -420,7 +407,6 @@
     <string name="recreate_action">重建資料（慎用）</string>
 
     <string name="account_setup_options_mail_check_frequency_label">信件匣檢查頻率</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">不要</string>
     <string name="account_setup_options_mail_check_frequency_1min">每分鐘一次</string>
     <string name="account_setup_options_mail_check_frequency_5min">五分鐘一次</string>
@@ -451,7 +437,6 @@
     <string name="account_setup_options_notify_label">有新郵件時通知我</string>
     <string name="account_setup_options_notify_sync_label">檢查新郵件時通知我</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">郵件顯示數量</string>
     <string name="account_setup_options_mail_display_count_10">10封</string>
     <string name="account_setup_options_mail_display_count_25">25封</string>
@@ -466,11 +451,11 @@
 
     <string name="account_setup_failed_dlg_title">無法完成設定</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">"使用者名稱或密碼錯誤。
-（%s）"</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
+（%s）"</string>
     <string name="account_setup_failed_dlg_certificate_message_fmt">"無法使用指定的加密類型連接到伺服器。
-（%s）"</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+（%s）"</string>
     <string name="account_setup_failed_dlg_server_message_fmt">"無法連接到伺服器。
-（%s）"</string> <!-- Cannot connect to server\n(Connection timed out) -->
+（%s）"</string>
     <string name="account_setup_failed_dlg_edit_details_action">編輯詳細訊息</string>
     <string name="account_setup_failed_dlg_continue_action">繼續</string>
 
@@ -722,12 +707,9 @@
 
     <string name="account_clear_dlg_title">清除帳戶</string>
 
-    <string name="provider_note_yahoojp">要使用此提供者的POP3服務，請先至Yahoo郵箱設定頁面設定POP3使用許可。</string>
     <string name="provider_note_auonejp">要使用此提供者的IMAP或POP3，請先至au one郵箱設定頁面設定允許使用IMAP或POP3。</string>
     <string name="provider_note_naver">要使用此提供者的IMAP或POP3，請先至Naver郵箱設定頁面設定允許使用IMAP或POP3。</string>
     <string name="provider_note_hanmail">要使用此提供者的IMAP或POP3，請先至Hanmail(Daum)郵箱設定頁面設定允許使用IMAP或POP3。</string>
-    <string name="provider_note_paran">要使用此提供者的IMAP或POP3，請先至Paran郵箱設定頁面設定允許使用IMAP或POP3。</string>
-    <string name="provider_note_nate">要使用此提供者的IMAP或POP3，請先至Nate郵箱設定頁面設定允許使用IMAP或POP3。</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">無法識別的授權認證</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">接收金鑰</string>
@@ -874,7 +856,6 @@
     <string name="font_size_message_view_subject">主題</string>
     <string name="font_size_message_view_date">日期</string>
     <string name="font_size_message_view_content">郵件本文內容</string>
-
     <string name="font_size_message_compose">訊息組成結構</string>
     <string name="font_size_message_compose_input">文字輸入欄位</string>
 
@@ -886,12 +867,6 @@
     <string name="font_size_medium">中等</string>
     <string name="font_size_large">大</string>
     <string name="font_size_larger">最大</string>
-
-    <string name="font_size_webview_smaller">最小</string>
-    <string name="font_size_webview_small">較小</string>
-    <string name="font_size_webview_normal">正常</string>
-    <string name="font_size_webview_large">較大</string>
-    <string name="font_size_webview_larger">最大</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">選擇「設定」-&gt;「避免相簿發生錯誤」來啟用3D相簿模式新增附件或影片。</string>
@@ -933,17 +908,6 @@
     <string name="dialog_confirm_delete_title">刪除確認</string>
     <string name="dialog_confirm_delete_message">你確定要刪除這封郵件？</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="other">確定要刪除 %1$d 則訊息?</item>
         <item quantity="one">確定要刪除此訊息?</item>
@@ -1101,14 +1065,5 @@
 
     <string name="mark_all_as_read">標記全部為已讀</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
-
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
-
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>

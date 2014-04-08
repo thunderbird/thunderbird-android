@@ -111,10 +111,10 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="status_syncing_off">Comprovació acabada</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionats</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Següent</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Anterior</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">D\'acord</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Següent</string>
+    <string name="previous_action">Anterior</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">D\'acord</string>
     <string name="cancel_action">Cancel·la</string>
     <string name="send_action">Envia</string>
     <string name="send_again_action">Torna a enviar</string>
@@ -131,7 +131,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="refile_action">Rearxiva…</string>
     <string name="continue_action">Continua</string>
     <string name="back_action">Enrere</string>
-    <string name="done_action">Fet</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Fet</string>
     <string name="discard_action">Descarta</string>
     <string name="save_draft_action">Desa com a esborrany</string>
     <string name="check_mail_action">Comprova el correu</string>
@@ -179,7 +179,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="prefs_title">Configuració</string>
     <string name="accounts_context_menu_title">Opcions del compte</string>
 
-    <string name="general_no_subject">(Sense assumpte)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(Sense assumpte)</string>
     <string name="general_no_sender">Sense remitent</string>
     <string name="status_loading">Comprovant</string>
     <string name="status_loading_more">S\'estan carregant els missatges\u2026</string>
@@ -204,7 +205,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="notification_new_title">Nou correu</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> missatges nous</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> no llegit(s) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> no llegit(s) (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">i <xliff:g id="additional_messages">%d</xliff:g> més a <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Respon</string>
@@ -221,13 +222,11 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="special_mailbox_name_inbox">Bústia d\'entrada</string>
     <string name="special_mailbox_name_outbox">Bústia de sortida</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Esborranys</string>
     <string name="special_mailbox_name_trash">Paperera</string>
     <string name="special_mailbox_name_sent">Enviat</string>
     <string name="special_mailbox_name_archive">Arxiu</string>
     <string name="special_mailbox_name_spam">Brossa</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Esborranys)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Paperera)</string>
@@ -285,7 +284,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="message_view_download_remainder">Descarrega el missatge complet</string>
     <string name="message_view_downloading">S\'està descarregant</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">No s\'han descarregat o desat totes les capçaleres. Seleccioneu \"Desa totes les capçaleres localment\" a la configuració del servidor d\'entrada del compte per habilitar-lo en el futur.</string>
     <string name="message_no_additional_headers_available">S\'han descarregat totes les capçaleres, no hi ha capçaleres addicionals per mostrar.</string>
     <string name="message_additional_headers_retrieval_failed">La recuperació de capçaleres addicionals de la base de dades o del servidor de correu ha fallat.</string>
@@ -341,16 +340,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="global_settings_notification_quick_delete_always">Sempre</string>
     <string name="global_settings_notification_quick_delete_description">Mostra un botó a les notificacions que permet eliminar el missatge ràpidament.</string>
 
-    <string name="global_settings_batch_buttons">Botons d\'acció massiva</string>
-    <string name="global_settings_batch_buttons_summary">Configura els botons d\'acció massiva</string>
-    <string name="global_settings_mark_read">Marca com a (no) llegit</string>
-    <string name="global_settings_delete">Elimina</string>
-    <string name="global_settings_archive">Mou a l\'arxiu</string>
-    <string name="global_settings_archive_disabled_reason">No hi ha carpetes definides com a arxiu.</string>
-    <string name="global_settings_move">Mou</string>
-    <string name="global_settings_flag">Marca</string>
-    <string name="global_settings_unselect">Deselecciona</string>
-
     <string name="quiet_time">Mode silenciós</string>
     <string name="quiet_time_description">Deshabilita so de trucada, brunzit i llums durant la nit</string>
     <string name="quiet_time_starts">Mode silenciós comença</string>
@@ -389,7 +378,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="account_setup_incoming_security_label">Tipus de seguretat</string>
     <string name="account_setup_incoming_auth_type_label">Tipus d\'autenticació</string>
     <string name="account_setup_incoming_security_none_label">Cap</string>
-
     <string name="account_setup_incoming_delete_policy_label">Quan esborro missatges</string>
     <string name="account_setup_incoming_delete_policy_never_label">No els esborris del servidor</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Esborra\'ls servidor</string>
@@ -448,7 +436,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="recreate_action">Reconstrueix les dades (Últim recurs!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Freqüència comprovació</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Mai</string>
     <string name="account_setup_options_mail_check_frequency_1min">Cada minut</string>
     <string name="account_setup_options_mail_check_frequency_5min">Cada 5 minuts</string>
@@ -479,7 +466,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="account_setup_options_notify_label">Avisa\'m quan arribi el correu</string>
     <string name="account_setup_options_notify_sync_label">Avisa\'m mentre s\'està comprovant el correu</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Nombre de missatges a mostrar</string>
     <string name="account_setup_options_mail_display_count_10">10 missatges</string>
     <string name="account_setup_options_mail_display_count_25">25 missatges</string>
@@ -493,9 +479,9 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="move_copy_cannot_copy_unsynced_message">No es pot copiar o moure un missatge que no està sincronitzat amb el servidor</string>
 
     <string name="account_setup_failed_dlg_title">No s\'ha pogut acabar la configuració</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'usuari o contrasenya incorrectes.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">No es pot connectar al servidor de forma segura.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">No es pot connectar al servidor.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'usuari o contrasenya incorrectes.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">No es pot connectar al servidor de forma segura.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">No es pot connectar al servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Edita els detalls</string>
     <string name="account_setup_failed_dlg_continue_action">Continua</string>
 
@@ -747,12 +733,9 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="account_clear_dlg_title">Neteja el compte</string>
 
-    <string name="provider_note_yahoojp">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu de Yahoo.</string>
     <string name="provider_note_auonejp">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu d\'Auone.</string>
     <string name="provider_note_naver">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu de Naver.</string>
     <string name="provider_note_hanmail">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu de Hanmail.</string>
-    <string name="provider_note_paran">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu de Paranl.</string>
-    <string name="provider_note_nate">Si vols utilitzar POP3 per aquest proveïdor, hauries de permetre d\'utilitzar POP3 a la pàgina de configuració del correu de Nate.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat no reconegut</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepta la clau</string>
@@ -907,7 +890,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="font_size_message_view_subject">Assumpte</string>
     <string name="font_size_message_view_date">Hora i Data</string>
     <string name="font_size_message_view_content">Cos del missatge</string>
-
     <string name="font_size_message_compose">Redacció de missatges</string>
     <string name="font_size_message_compose_input">Camps d\'entrada de text</string>
 
@@ -919,12 +901,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="font_size_medium">Mitjà</string>
     <string name="font_size_large">Gran</string>
     <string name="font_size_larger">Més gran</string>
-
-    <string name="font_size_webview_smaller">El més petit</string>
-    <string name="font_size_webview_small">Més petit</string>
-    <string name="font_size_webview_normal">Normal</string>
-    <string name="font_size_webview_large">Gran</string>
-    <string name="font_size_webview_larger">El més gran</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Comprova \"Configuració\" -&gt; \"Utilitza la galeria la Galeria d\'errors\" per poder adjuntar imatges o vídeos utilitzant la Galeria 3D.</string>
@@ -966,17 +942,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
     <string name="dialog_confirm_delete_title">Confirma esborrar</string>
     <string name="dialog_confirm_delete_message">Voleu esborrar aquest missatge?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Voleu eliminar aquest missatge?</item>
         <item quantity="other">Voleu eliminar <xliff:g id="message_count">%1$d</xliff:g> missatges?</item>
@@ -1134,14 +1099,5 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
 
     <string name="mark_all_as_read">Marca\'ls tots com a llegits</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
-
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
-
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>

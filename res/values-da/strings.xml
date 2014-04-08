@@ -9,8 +9,6 @@
     <string name="beta_app_name">K-9 Mail BETA</string>
 
     <string name="shortcuts_title">K-9 Konti</string>
-    <!-- NEW: <string name="unread_widget_label">K-9 Unread</string>-->
-
     <string name="remote_control_label">K-9 Mail fjernkontrol</string>
     <string name="remote_control_desc">Tillad dette program at kontrollere K-9 Mail aktiviteter og indstillinger.</string>
 
@@ -22,7 +20,6 @@
 
 
     <!-- Welcome message -->
-    <!-- NEW: <string name="welcome_message_title">Welcome to K-9 Mail</string>-->
     <string name="accounts_welcome"><![CDATA[
 <p>
 K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
@@ -111,10 +108,10 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="status_syncing_off">synkronisering deaktiveret</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Næste</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Forrige</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Næste</string>
+    <string name="previous_action">Forrige</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">OK</string>
     <string name="cancel_action">Fortryd</string>
     <string name="send_action">Send</string>
     <string name="send_again_action">Send igen</string>
@@ -128,10 +125,9 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="forward_action">Videresend</string>
     <string name="move_action">Flyt</string>
     <string name="single_message_options_action">Send…</string>
-    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">Fortsæt</string>
     <string name="back_action">Tilbage</string>
-    <string name="done_action">Afslut</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Afslut</string>
     <string name="discard_action">Slet</string>
     <string name="save_draft_action">Gem som kladde</string>
     <string name="check_mail_action">Synkroniser mails</string>
@@ -162,7 +158,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
 
     <string name="message_view_theme_action_dark">Skift til mørkt theme</string>
     <string name="message_view_theme_action_light">Skift til lyst theme</string>
-    
+
     <string name="mark_as_unread_action">Marker som ulæst</string>
     <string name="add_cc_bcc_action">Tilføj Cc/Bcc</string>
     <string name="read_receipt">Kvittering for modtagelse</string>
@@ -179,7 +175,8 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="prefs_title">Indstillinger</string>
     <string name="accounts_context_menu_title">Kontoindstillinger</string>
 
-    <string name="general_no_subject">(Intet emne)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(Intet emne)</string>
     <string name="general_no_sender">Ingen afsender</string>
     <string name="status_loading">Synkroniserer</string>
     <string name="status_loading_more">Henter mails\u2026</string>
@@ -204,7 +201,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
 
     <string name="notification_new_title">Ny mail</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nye meddelelser</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> yderligere på <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Svar</string>
@@ -221,13 +218,11 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
 
     <string name="special_mailbox_name_inbox">Indbakke</string>
     <string name="special_mailbox_name_outbox">Udbakke</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Kladder</string>
     <string name="special_mailbox_name_trash">Slettede</string>
     <string name="special_mailbox_name_sent">Sendt</string>
     <string name="special_mailbox_name_archive">Arkiv</string>
     <string name="special_mailbox_name_spam">Spam</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Kladder)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Slettede)</string>
@@ -285,7 +280,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="message_view_download_remainder">Hent hele meddelelsen</string>
     <string name="message_view_downloading">Henter…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">Ikke alle mail headers blev hentet eller gemt. Vælg \"Gem alle headers lokalt\" under kontoens indstillinger for indgående server, for at aktivere denne funktion fremover.</string>
     <string name="message_no_additional_headers_available">Alle mail headers er blevet hentet, og der kan ikke vises yderligere headers.</string>
     <string name="message_additional_headers_retrieval_failed">Hentning af yderligere headers fra database eller mail server mislykkedes.</string>
@@ -302,9 +297,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="global_settings_preview_lines_label">Linier i forhåndsvisning</string>
     <string name="global_settings_show_correspondent_names_label">Vis afsenders navne</string>
     <string name="global_settings_show_correspondent_names_summary">Vis afsendernavn fremfor deres mailaddresse</string>
-
-    <!-- NEW: <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>-->
-    <!-- NEW: <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>-->
 
     <string name="global_settings_show_contact_name_label">Vis kontaktnavne</string>
     <string name="global_settings_show_contact_name_summary">Benyt afsendernavne fra eksisterende kontakter</string>
@@ -340,16 +332,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="global_settings_notification_quick_delete_when_single_msg">For single meddelelse notifikation</string>
     <string name="global_settings_notification_quick_delete_always">Altid</string>
     <string name="global_settings_notification_quick_delete_description">Vis knap i notifikation bjælke som tillader sletning af meddelese</string>
-
-    <string name="global_settings_batch_buttons">Batch håndterings knapper</string>
-    <string name="global_settings_batch_buttons_summary">Konfigurer meddelelses liste batch håndterings knapper</string>
-    <string name="global_settings_mark_read">Marker som læst/ulæst</string>
-    <string name="global_settings_delete">Slet</string>
-    <string name="global_settings_archive">Flyt til arkiv</string>
-    <string name="global_settings_archive_disabled_reason">Ingen arkivmapper.</string>
-    <string name="global_settings_move">Flyt</string>
-    <string name="global_settings_flag">Marker</string>
-    <string name="global_settings_unselect">Fravælg</string>
 
     <string name="quiet_time">Tidsrum med stilhed</string>
     <string name="quiet_time_description">Undlad at ringe, vibrere og blinke i tidsrummet</string>
@@ -389,7 +371,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_setup_incoming_security_label">Sikkerhed</string>
     <string name="account_setup_incoming_auth_type_label">Autentifikations type</string>
     <string name="account_setup_incoming_security_none_label">Ingen</string>
-
     <string name="account_setup_incoming_delete_policy_label">Når jeg sletter en mail</string>
     <string name="account_setup_incoming_delete_policy_never_label">Undlad at slette på server</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Slet på server</string>
@@ -448,7 +429,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="recreate_action">Genskab data (sidste udvej!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Frekvens for hentning af mail</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Aldrig</string>
     <string name="account_setup_options_mail_check_frequency_1min">Hvert minut</string>
     <string name="account_setup_options_mail_check_frequency_5min">Hver 5 minut</string>
@@ -479,7 +459,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="account_setup_options_notify_label">Vis meddelelse når mails ankommer</string>
     <string name="account_setup_options_notify_sync_label">Vis meddelelse når mail hentes</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Antal viste mails</string>
     <string name="account_setup_options_mail_display_count_10">10 mails</string>
     <string name="account_setup_options_mail_display_count_25">25 mails</string>
@@ -493,9 +472,9 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="move_copy_cannot_copy_unsynced_message">Kan ikke kopiere eller flytte mail som ikke er synkroniseret med server</string>
 
     <string name="account_setup_failed_dlg_title">Kunne ikke fuldføre opsætning</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Brugernavn eller password ukorrekt.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Kan ikke oprette sikker forbindelse til server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Kan ikke oprette forbindelse til server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Brugernavn eller password ukorrekt.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Kan ikke oprette sikker forbindelse til server.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Kan ikke oprette forbindelse til server.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Rediger detaljer</string>
     <string name="account_setup_failed_dlg_continue_action">Fortsæt</string>
 
@@ -747,12 +726,9 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
 
     <string name="account_clear_dlg_title">Rens konto</string>
 
-    <string name="provider_note_yahoojp">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade POP3 i Yahoo\'s indstillinger for mail.</string>
     <string name="provider_note_auonejp">Husk at aktiver IMAP eller POP3 i \"au one mail\" indstillings siden.</string>
     <string name="provider_note_naver">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Naver\'s indstillinger for mail.</string>
     <string name="provider_note_hanmail">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Hanmail\'s(Daum)indstillinger for mail.</string>
-    <string name="provider_note_paran">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Paran\'s indstillinger for mail.</string>
-    <string name="provider_note_nate">Hvis du ønsker at benytte POP3 med denne leverandør, skal du vælge at tillade IMAP eller POP3 i Nate\'s indstillinger for mail.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Ukendt certificat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter nøgle</string>
@@ -784,8 +760,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     4 - Vis alle mapper\u000A
     Q - Returner til Konti\u000A
     S - Rediger kontoindstillinger</string>
-
-    <!-- NEW: <string name="folder_list_filter_hint">folder name contains</string>-->
 
     <string name="folder_list_display_mode_label">Mapper</string>
     <string name="folder_list_display_mode_all">Vis alle mapper</string>
@@ -906,7 +880,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="font_size_message_view_subject">Emne</string>
     <string name="font_size_message_view_date">Tid og dato</string>
     <string name="font_size_message_view_content">Indhold</string>
-
     <string name="font_size_message_compose">Meddelelses redigering</string>
     <string name="font_size_message_compose_input">Tekst input felter</string>
 
@@ -918,12 +891,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="font_size_medium">Stor</string>
     <string name="font_size_large">Større</string>
     <string name="font_size_larger">Størst</string>
-
-    <string name="font_size_webview_smaller">Minst</string>
-    <string name="font_size_webview_small">Lillle</string>
-    <string name="font_size_webview_normal">Normal</string>
-    <string name="font_size_webview_large">Større</string>
-    <string name="font_size_webview_larger">Størst</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Kontroller \"Indstillinger\" -&gt; \"Benyt Gallery bug work-around\" for at kunne vedhæfte billeder og videoer med Gallery 3D.</string>
@@ -954,9 +921,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="confirm_discard_draft_message_title">Annuler meddelelse?</string>
     <string name="confirm_discard_draft_message">Er du sikker på at du ønsker at annulere denne meddelelse?</string>
 
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>-->
-    <!-- NEW: <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>-->
-
     <string name="continue_without_public_key_dlg_title">Fortsæt uden offentlig nøgle?</string>
     <string name="continue_without_public_key_instructions_fmt">En eller flere modtagere har ikke en offentlig nøgle. Fortsæt?</string>
 
@@ -965,22 +929,10 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="dialog_confirm_delete_title">Bekræft sletning</string>
     <string name="dialog_confirm_delete_message">Ønsker du at slette denne mail?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Ønsker du virkelig at slette denne meddelelse?</item>
         <item quantity="other">Ønsker du virkelig at slette <xliff:g id="message_count">%1$d</xliff:g> meddelelser?</item>
     </plurals>
-
     <string name="dialog_confirm_delete_confirm_button">Slet</string>
     <string name="dialog_confirm_delete_cancel_button">Slet ikke</string>
 
@@ -1049,16 +1001,18 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="manage_accounts_move_down_action">Flyt ned</string>
     <string name="manage_accounts_moving_message">Flytter konto…</string>
 
-
-    <!-- NEW: Danish translation added-->
     <string name="unread_widget_select_account">Vis antal ulæste for…</string>
+
     <string name="import_dialog_error_title">Manglende File Manager program</string>
     <string name="close">Luk</string>
+
     <string name="webview_empty_message">Ingen tekst</string>
+
     <string name="webview_contextmenu_link_view_action">Åben link</string>
     <string name="webview_contextmenu_link_share_action">Del link</string>
     <string name="webview_contextmenu_link_copy_action">Kopier link til clipboard</string>
     <string name="webview_contextmenu_link_clipboard_label">Link</string>
+
     <string name="webview_contextmenu_image_title">Bilelde</string>
     <string name="webview_contextmenu_image_view_action">Vis billede</string>
     <string name="webview_contextmenu_image_save_action">Gem billede</string>
@@ -1078,6 +1032,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
 
     <string name="image_saved_as">Billed gemt som \"<xliff:g id="filename">%s</xliff:g>\"</string>
     <string name="image_saving_failed">Fejl iforb. med at gemme billede.</string>
+
     <string name="account_settings_remote_search_num_results_entries_all">Alle</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -1141,4 +1096,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
     <string name="fetching_attachment_dialog_title_send">Sender meddelelse</string>
     <string name="fetching_attachment_dialog_title_save">Gemmer kladde</string>
     <string name="fetching_attachment_dialog_message">Henter vedhæftning…</string>
+
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>

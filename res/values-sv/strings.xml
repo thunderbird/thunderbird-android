@@ -111,10 +111,10 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="status_syncing_off">Synk avaktiverat</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valda</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Nästa</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Föregående</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Nästa</string>
+    <string name="previous_action">Föregående</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">OK</string>
     <string name="cancel_action">Avbryt</string>
     <string name="send_action">Skicka</string>
     <string name="send_again_action">Skicka igen</string>
@@ -131,7 +131,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="refile_action">Omarkivera…</string>
     <string name="continue_action">Fortsätt</string>
     <string name="back_action">Tillbaka</string>
-    <string name="done_action">Färdig</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Färdig</string>
     <string name="discard_action">Radera</string>
     <string name="save_draft_action">Spara som utkast</string>
     <string name="check_mail_action">Kontrollera e-post</string>
@@ -179,7 +179,8 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="prefs_title">Inställningar</string>
     <string name="accounts_context_menu_title">Kontoinställningar</string>
 
-    <string name="general_no_subject">(Inget ämne)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(Inget ämne)</string>
     <string name="general_no_sender">Ingen avsändare</string>
     <string name="status_loading">Kontrollerar</string>
     <string name="status_loading_more">Hämtar brev\u2026</string>
@@ -204,7 +205,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="notification_new_title">Ny e-post</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> olästa (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> olästa (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> ytterligare på <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Svara</string>
@@ -221,13 +222,11 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="special_mailbox_name_inbox">Inkorg</string>
     <string name="special_mailbox_name_outbox">Utkorg</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Utkast</string>
     <string name="special_mailbox_name_trash">Papperskorg</string>
     <string name="special_mailbox_name_sent">Skickat</string>
     <string name="special_mailbox_name_archive">Arkiv</string>
     <string name="special_mailbox_name_spam">Skräppost</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Utkast)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Papperskorg)</string>
@@ -285,7 +284,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="message_view_download_remainder">Hämta hem hela brevet</string>
     <string name="message_view_downloading">Hämtar…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">Alla huvuden har inte hämtats eller sparats. Välj \"Spara alla huvuden lokalt\" i inställningarna för kontots inkommande server för att aktivera detta för framtiden.</string>
     <string name="message_no_additional_headers_available">Alla huvuden har hämtats, men det det finns inga ytterligare huvuden att visa.</string>
     <string name="message_additional_headers_retrieval_failed">Hämtningen av ytterligare huvuden från databasen eller e-postservern misslyckades.</string>
@@ -341,16 +340,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="global_settings_notification_quick_delete_always">Alltid</string>
     <string name="global_settings_notification_quick_delete_description">Visa en knapp i notifieringen som möjliggör snabb radering av meddelandet</string>
 
-    <string name="global_settings_batch_buttons">Batch-knappar</string>
-    <string name="global_settings_batch_buttons_summary">Konfigurera batch-knappar för meddelandelista</string>
-    <string name="global_settings_mark_read">Markera som läst/oläst</string>
-    <string name="global_settings_delete">Radera</string>
-    <string name="global_settings_archive">Flytta till arkiv</string>
-    <string name="global_settings_archive_disabled_reason">Inga arkivmappar.</string>
-    <string name="global_settings_move">Flytta</string>
-    <string name="global_settings_flag">Flagga</string>
-    <string name="global_settings_unselect">Avmarkera</string>
-
     <string name="quiet_time">Tyst tid</string>
     <string name="quiet_time_description">Avaktivera ringsignaler, vibration och blinkande på natten</string>
     <string name="quiet_time_starts">Tyst tid börjar</string>
@@ -389,7 +378,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_setup_incoming_security_label">Säkerhetstyp</string>
     <string name="account_setup_incoming_auth_type_label">Autentiseringstyp</string>
     <string name="account_setup_incoming_security_none_label">Ingen</string>
-
     <string name="account_setup_incoming_delete_policy_label">När jag raderar ett brev</string>
     <string name="account_setup_incoming_delete_policy_never_label">Radera inte på servern</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Radera från servern</string>
@@ -448,7 +436,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="recreate_action">Återskapa data (Sista utvägen!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Frekvens för kontroll av mappar</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Aldrig</string>
     <string name="account_setup_options_mail_check_frequency_1min">Varje minut</string>
     <string name="account_setup_options_mail_check_frequency_5min">Var 5:e minut</string>
@@ -479,7 +466,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="account_setup_options_notify_label">Meddela mig vid ny e-post</string>
     <string name="account_setup_options_notify_sync_label">Meddela mig vid kontroll efter ny e-post</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Antal brev att visa</string>
     <string name="account_setup_options_mail_display_count_10">10 brev</string>
     <string name="account_setup_options_mail_display_count_25">25 brev</string>
@@ -493,9 +479,9 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="move_copy_cannot_copy_unsynced_message">Kan inte kopiera eller flytta ett brev som inte är synkroniserat med servern</string>
 
     <string name="account_setup_failed_dlg_title">Kunde inte fullborda konfigurationen</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Felaktigt användarnamn eller lösenord.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Kan inte upprätta säker anslutning till servern.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Kan inte ansluta till servern.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Felaktigt användarnamn eller lösenord.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Kan inte upprätta säker anslutning till servern.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Kan inte ansluta till servern.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Redigera detaljer</string>
     <string name="account_setup_failed_dlg_continue_action">Fortsätt</string>
 
@@ -747,12 +733,9 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="account_clear_dlg_title">Rensa konto</string>
 
-    <string name="provider_note_yahoojp">Om du vill använda POP3 med denna leverantör måste du välja att tillåta POP3 på inställningssidan för Yahoo!.</string>
     <string name="provider_note_auonejp">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för au one.</string>
     <string name="provider_note_naver">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för Naver.</string>
     <string name="provider_note_hanmail">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för Hanmail(Daum).</string>
-    <string name="provider_note_paran">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för Paran.</string>
-    <string name="provider_note_nate">Försäkra dig om att du har aktiverat IMAP eller POP3 på e-postinställningarna för Nate.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt Certifikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
@@ -906,7 +889,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="font_size_message_view_subject">Ämne</string>
     <string name="font_size_message_view_date">Tid och datum</string>
     <string name="font_size_message_view_content">Innehåll</string>
-
     <string name="font_size_message_compose">Skriva meddelanden</string>
     <string name="font_size_message_compose_input">Fält för textinmatning</string>
 
@@ -918,12 +900,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="font_size_medium">Stor</string>
     <string name="font_size_large">Större</string>
     <string name="font_size_larger">Störst</string>
-
-    <string name="font_size_webview_smaller">Minst</string>
-    <string name="font_size_webview_small">Liten</string>
-    <string name="font_size_webview_normal">Normal</string>
-    <string name="font_size_webview_large">Större</string>
-    <string name="font_size_webview_larger">Störst</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Kontrollera \"Inställningar\" -&gt; \"Använd work-adound för bug i Gallery\" för att kunna bifoga bilder och filmer med Gallery 3D.</string>
@@ -965,17 +941,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
     <string name="dialog_confirm_delete_title">Bekräfta radering</string>
     <string name="dialog_confirm_delete_message">Vill du radera detta brev?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Vill du verkligen radera detta meddelande?</item>
         <item quantity="other">Vill du verkligen radera <xliff:g id="message_count">%1$d</xliff:g> meddelanden?</item>
@@ -1131,14 +1096,5 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
 
     <string name="mark_all_as_read">Markera alla som lästa</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
-
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
-
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>

@@ -110,10 +110,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="status_syncing_off">Synchronisation abgeschaltet</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ausgewählt</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Weiter</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Zurück</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Weiter</string>
+    <string name="previous_action">Zurück</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">OK</string>
     <string name="cancel_action">Abbrechen</string>
     <string name="send_action">Senden</string>
     <string name="send_again_action">Erneut senden</string>
@@ -130,7 +130,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="refile_action">Umsortieren…</string>
     <string name="continue_action">Fortfahren</string>
     <string name="back_action">Zurück</string>
-    <string name="done_action">Fertig</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Fertig</string>
     <string name="discard_action">Verwerfen</string>
     <string name="save_draft_action">Speichern</string>
     <string name="check_mail_action">Nachrichten abrufen</string>
@@ -178,7 +178,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="prefs_title">Einstellungen</string>
     <string name="accounts_context_menu_title">Konto-Optionen</string>
 
-    <string name="general_no_subject">(Kein Betreff)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(Kein Betreff)</string>
     <string name="general_no_sender">Kein Absender</string>
     <string name="status_loading">Lade</string>
     <string name="status_loading_more">Nachrichten werden geladen\u2026</string>
@@ -202,7 +203,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="notification_new_title">Neue Nachricht</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> neue Nachrichten</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ungelesen (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ungelesen (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">und <xliff:g id="additional_messages">%d</xliff:g> weitere (<xliff:g id="account">%s</xliff:g>)</string>
 
     <string name="notification_action_reply">Antworten</string>
@@ -219,13 +220,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="special_mailbox_name_inbox">Posteingang</string>
     <string name="special_mailbox_name_outbox">Postausgang</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Entwürfe</string>
     <string name="special_mailbox_name_trash">Papierkorb</string>
     <string name="special_mailbox_name_sent">Gesendet</string>
     <string name="special_mailbox_name_archive">Archiv</string>
     <string name="special_mailbox_name_spam">Spam</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Entwürfe)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Papierkorb)</string>
@@ -283,7 +282,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
     <string name="message_view_downloading">Nachricht wird heruntergeladen…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">Es wurden nicht alle Kopfzeilen heruntergeladen oder gespeichert. Wählen Sie \'Alle Kopfzeilen lokal speichern\' in den Einstellungen für den Posteingangsserver, um dies zukünftig zu ermöglichen.</string>
     <string name="message_no_additional_headers_available">Alle Kopfzeilen wurden heruntergeladen, es sind allerdings keine neuen Kopfzeilen vorhanden.</string>
     <string name="message_additional_headers_retrieval_failed">Die weiteren Kopfzeilen konnten nicht aus der Datenbank oder vom Mailserver geladen werden.</string>
@@ -339,16 +338,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="global_settings_notification_quick_delete_always">Immer</string>
     <string name="global_settings_notification_quick_delete_description">Der Benachrichtigung eine Schaltfläche zum Löschen der Nachrichten hinzufügen</string>
 
-    <string name="global_settings_batch_buttons">Gruppenoperationen-Schaltflächen</string>
-    <string name="global_settings_batch_buttons_summary">Auswahl der Schaltflächen in der Nachrichtenliste</string>
-    <string name="global_settings_mark_read">Als (un)gelesen markieren</string>
-    <string name="global_settings_delete">Löschen</string>
-    <string name="global_settings_archive">Archivieren</string>
-    <string name="global_settings_archive_disabled_reason">Es wurde kein Archiv-Ordner gefunden.</string>
-    <string name="global_settings_move">Verschieben</string>
-    <string name="global_settings_flag">Als wichtig markieren</string>
-    <string name="global_settings_unselect">Alle deselektieren</string>
-
     <string name="quiet_time">Ruhezeit</string>
     <string name="quiet_time_description">Klingeln, Vibrieren und Leuchten in der Nacht deaktivieren</string>
     <string name="quiet_time_starts">Ruhezeit startet</string>
@@ -387,7 +376,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_setup_incoming_security_label">Sicherheitstyp</string>
     <string name="account_setup_incoming_auth_type_label">Authentifizierungstyp</string>
     <string name="account_setup_incoming_security_none_label">Keine Verschlüsselung</string>
-
     <string name="account_setup_incoming_delete_policy_label">Beim Löschen von Nachrichten</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie von Server löschen</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
@@ -446,7 +434,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="recreate_action">Daten neu erstellen (Letzter Ausweg!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">E-Mail-Abfrage</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Nie (nur manuell)</string>
     <string name="account_setup_options_mail_check_frequency_1min">Jede Minute</string>
     <string name="account_setup_options_mail_check_frequency_5min">Alle 5 Minuten</string>
@@ -477,7 +464,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="account_setup_options_notify_label">Benachrichtigen, wenn Nachrichten eingehen</string>
     <string name="account_setup_options_notify_sync_label">Benachrichtigen, wenn Nachrichten synchronisiert werden</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Anzahl sichtbarer Nachrichten</string>
     <string name="account_setup_options_mail_display_count_10">10 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_25">25 Nachrichten</string>
@@ -491,9 +477,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
 
     <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Kennwort fehlerhaft.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Aufbau einer gesicherten Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Kennwort fehlerhaft.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Aufbau einer gesicherten Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
     <string name="account_setup_failed_dlg_continue_action">Weiter</string>
 
@@ -745,12 +731,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 
     <string name="account_clear_dlg_title">Nachrichten löschen</string>
 
-    <string name="provider_note_yahoojp">Wenn Sie für diesen Anbieter POP3 verwenden möchten, sollten Sie in den "Yahoo! Mail"-Einstellungen POP3 aktivieren.</string>
     <string name="provider_note_auonejp">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "AU One"-Einstellungsseite aktivieren.</string>
     <string name="provider_note_naver">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Naver Mail"-Einstellungsseite aktivieren.</string>
     <string name="provider_note_hanmail">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Hanmail(Daum)"-Einstellungsseite aktivieren.</string>
-    <string name="provider_note_paran">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Paran"-Einstellungsseite aktivieren.</string>
-    <string name="provider_note_nate">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Nate Mail"-Einstellungsseite aktivieren.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Ungültiges Zertifikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
@@ -904,7 +887,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="font_size_message_view_subject">Betreff</string>
     <string name="font_size_message_view_date">Uhrzeit und Datum</string>
     <string name="font_size_message_view_content">Nachrichtentext</string>
-
     <string name="font_size_message_compose">Nachricht verfassen</string>
     <string name="font_size_message_compose_input">Texteingabefelder</string>
 
@@ -916,12 +898,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="font_size_medium">Mittel</string>
     <string name="font_size_large">Groß</string>
     <string name="font_size_larger">Größer</string>
-
-    <string name="font_size_webview_smaller">Winzig</string>
-    <string name="font_size_webview_small">Kleiner</string>
-    <string name="font_size_webview_normal">Normal</string>
-    <string name="font_size_webview_large">Größer</string>
-    <string name="font_size_webview_larger">Riesig</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Wählen Sie \'Einstellungen\' -&gt; \'Galerie-Workaround aktivieren\', um Bilder oder Videos mit Hilfe der 3D-Galerie hinzufügen zu können.</string>
@@ -963,17 +939,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="dialog_confirm_delete_title">Löschen bestätigen</string>
     <string name="dialog_confirm_delete_message">Möchten Sie diese Nachricht löschen?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Möchten Sie diese Nachricht wirklich löschen?</item>
         <item quantity="other">Möchten Sie wirklich <xliff:g id="message_count">%1$d</xliff:g> Nachrichten löschen?</item>
@@ -1141,4 +1106,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <string name="fetching_attachment_dialog_title_send">Nachricht senden</string>
     <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
     <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
+
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>

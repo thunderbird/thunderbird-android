@@ -122,10 +122,10 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="status_syncing_off">Synchronizacja wyłączona</string>
 
     <string name="actionbar_selected">Wybrano <xliff:g id="selection_count">%d</xliff:g></string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Dalej</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Cofnij</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Dalej</string>
+    <string name="previous_action">Cofnij</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">OK</string>
     <string name="cancel_action">Anuluj</string>
     <string name="send_action">Wyślij</string>
     <string name="send_again_action">Prześlij ponownie</string>
@@ -142,7 +142,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="refile_action">Operacje…</string>
     <string name="continue_action">Kontynuuj</string>
     <string name="back_action">Cofnij</string>
-    <string name="done_action">Gotowe</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Gotowe</string>
     <string name="discard_action">Usuń</string>
     <string name="save_draft_action">Zapisz jako szkic</string>
     <string name="check_mail_action">Sprawdź pocztę</string>
@@ -190,7 +190,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="prefs_title">Ustawienia</string>
     <string name="accounts_context_menu_title">Ustawienia konta</string>
 
-    <string name="general_no_subject">(Brak tematu)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(Brak tematu)</string>
     <string name="general_no_sender">Brak nadawcy</string>
     <string name="status_loading">Sprawdzanie <xliff:g id="progress">%s</xliff:g></string>
     <string name="status_loading_more">Wczytuję wiadomości…</string>
@@ -214,7 +215,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="notification_new_title">Nowa wiadomość</string>
     <string name="notification_new_messages_title">Nowych wiadomości: <xliff:g id="new_message_count">%d</xliff:g></string>
-    <string name="notification_new_one_account_fmt">Nowe: <xliff:g id="unread_message_count">%d</xliff:g> (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt">Nowe: <xliff:g id="unread_message_count">%d</xliff:g> (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> więcej na <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Odpowiedz</string>
@@ -231,13 +232,11 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="special_mailbox_name_inbox">Odebrane</string>
     <string name="special_mailbox_name_outbox">Wychodzące</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Szablony</string>
     <string name="special_mailbox_name_trash">Kosz</string>
     <string name="special_mailbox_name_sent">Wysłane</string>
     <string name="special_mailbox_name_archive">Archiwizuj</string>
     <string name="special_mailbox_name_spam">Spam</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Szkice)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Usunięte)</string>
@@ -295,7 +294,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="message_view_download_remainder">Pobierz całą wiadomość</string>
     <string name="message_view_downloading">Pobieranie…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">Nie wszystkie nagłówki zostały pobrane lub zapisane. Wybierz \"Zapisuj nagłówki lokalnie\" w ustawieniach serwera poczty przychodzącej, aby tę funcje aktywować</string>
     <string name="message_no_additional_headers_available">Wszystkie nagłówki pobrano, niemniej nie znaleziono żadnych dodatkowych do wyświetlenia.</string>
     <string name="message_additional_headers_retrieval_failed">Pobieranie nagłówkow nie powiodło się.</string>
@@ -351,16 +350,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="global_settings_notification_quick_delete_always">Zawsze</string>
     <string name="global_settings_notification_quick_delete_description">Pokazuj w oknie powiadomień przycisk pozwalający na szybkie usunięcie wiadomości</string>
 
-    <string name="global_settings_batch_buttons">Polecenia wsadowe</string>
-    <string name="global_settings_batch_buttons_summary">Konfiguracja przycisków operacji wsadowych dla listy wiadomości</string>
-    <string name="global_settings_mark_read">Oznacz jako nie/przeczytane</string>
-    <string name="global_settings_delete">Usuń</string>
-    <string name="global_settings_archive">Przenieś do archiwum</string>
-    <string name="global_settings_archive_disabled_reason">Nie wskazano folderu archiwum.</string>
-    <string name="global_settings_move">Przenieś</string>
-    <string name="global_settings_flag">Oznacz</string>
-    <string name="global_settings_unselect">Odznacz</string>
-
     <string name="quiet_time">Okres ciszy</string>
     <string name="quiet_time_description">Wyłącz dzwonienie, wibracje i mruganie w nocy</string>
     <string name="quiet_time_starts">Początek okresu ciszy</string>
@@ -399,7 +388,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_incoming_security_label">Zabezpieczenia</string>
     <string name="account_setup_incoming_auth_type_label">Rodzaj uwierzytelnienia</string>
     <string name="account_setup_incoming_security_none_label">Brak</string>
-
     <string name="account_setup_incoming_delete_policy_label">Gdy skasuję wiadomość</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie usuwaj z serwera</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Usuń ją z serwera</string>
@@ -458,7 +446,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="recreate_action">Odtwórz dane (ostatnia szansa!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Pobieranie wiadomości</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Nigdy</string>
     <string name="account_setup_options_mail_check_frequency_1min">Co 1 minutę</string>
     <string name="account_setup_options_mail_check_frequency_5min">Co 5 minut</string>
@@ -489,7 +476,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="account_setup_options_notify_label">Powiadamiaj o nowej poczcie</string>
     <string name="account_setup_options_notify_sync_label">Powiadamiaj o sprawdzaniu konta</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Wyświetlaj</string>
     <string name="account_setup_options_mail_display_count_10">10 wiadomości</string>
     <string name="account_setup_options_mail_display_count_25">25 wiadomości</string>
@@ -503,9 +489,9 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="move_copy_cannot_copy_unsynced_message">Nie mogę skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
 
     <string name="account_setup_failed_dlg_title">Wystąpił błąd</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Podany identyfikator lub hasło jest nieprawidłowe.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Nie mogę nawiązać bezpiecznego połączenia z serwerem.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Nie mogę połączyć się z serwerem.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Podany identyfikator lub hasło jest nieprawidłowe.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Nie mogę nawiązać bezpiecznego połączenia z serwerem.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Nie mogę połączyć się z serwerem.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Popraw ustawienia</string>
     <string name="account_setup_failed_dlg_continue_action">Kontynuuj</string>
 
@@ -757,12 +743,9 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
 
     <string name="account_clear_dlg_title">Wyczyść konto</string>
 
-    <string name="provider_note_yahoojp">Jeśli chcesz używać POP3 dla tego dostawcy, powinieneś zezwolić na użycie POP3 na stronie ustawień poczty Yahoo.</string>
     <string name="provider_note_auonejp">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Au one.</string>
     <string name="provider_note_naver">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Naver.</string>
     <string name="provider_note_hanmail">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Hanmail(Daum).</string>
-    <string name="provider_note_paran">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień pocztyParan.</string>
-    <string name="provider_note_nate">Jeśli chcesz używać IMAP lub POP3 dla tego dostawcy, powinieneś zezwolić na użycie IMAP lub POP3 na stronie ustawień poczty Nate.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
@@ -916,7 +899,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="font_size_message_view_subject">Temat</string>
     <string name="font_size_message_view_date">Czas i data</string>
     <string name="font_size_message_view_content">Treść wiadomości</string>
-
     <string name="font_size_message_compose">Kompozycja wiadomości</string>
     <string name="font_size_message_compose_input">Pole wprawadzania tekstu</string>
 
@@ -928,12 +910,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="font_size_medium">Średnia</string>
     <string name="font_size_large">Duża</string>
     <string name="font_size_larger">Wielka</string>
-
-    <string name="font_size_webview_smaller">Najmniejsza</string>
-    <string name="font_size_webview_small">Mniejsza</string>
-    <string name="font_size_webview_normal">Normalna</string>
-    <string name="font_size_webview_large">Większa</string>
-    <string name="font_size_webview_larger">Największa</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Włącz \"Obejdź błędy w Galerii\" aby móc załączać zdjęcia oraz filmy używając Galerii 3D.</string>
@@ -975,17 +951,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="dialog_confirm_delete_title">Potwiedź usunięcie</string>
     <string name="dialog_confirm_delete_message">Czy chcesz usunąć tą wiadomość?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Na pewno chcesz usunąć wiadomość?</item>
         <item quantity="other">Na pewno chcesz usunąć <xliff:g id="message_count">%1$d</xliff:g> wiadomości?</item>
@@ -1153,4 +1118,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
     <string name="fetching_attachment_dialog_title_send">Wysyłanie wiadomości</string>
     <string name="fetching_attachment_dialog_title_save">Zapisywanie szkicu</string>
     <string name="fetching_attachment_dialog_message">Pobieranie załącznika…</string>
+
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>

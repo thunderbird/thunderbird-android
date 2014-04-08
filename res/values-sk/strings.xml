@@ -111,10 +111,10 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="status_syncing_off">Synchronizovanie vypnuté</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Ďalej</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Späť</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Ďalej</string>
+    <string name="previous_action">Späť</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">OK</string>
     <string name="cancel_action">Zrušiť</string>
     <string name="send_action">Odoslať</string>
     <string name="send_again_action">Odoslať znovu</string>
@@ -131,7 +131,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="refile_action">Presmerovať…</string>
     <string name="continue_action">Pokračovať</string>
     <string name="back_action">Späť</string>
-    <string name="done_action">Hotovo</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Hotovo</string>
     <string name="discard_action">Zahodiť</string>
     <string name="save_draft_action">Uložiť ako koncept</string>
     <string name="check_mail_action">Skontrolovať poštu</string>
@@ -179,7 +179,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="prefs_title">Nastavenia</string>
     <string name="accounts_context_menu_title">Možnosti účtu</string>
 
-    <string name="general_no_subject">(Žiadny predmet)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(Žiadny predmet)</string>
     <string name="general_no_sender">Žiadny odosielateľ</string>
     <string name="status_loading">Synchronizácia</string>
     <string name="status_loading_more">Načítavanie správ\u2026</string>
@@ -203,7 +204,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
 
     <string name="notification_new_title">Nová správa</string>
     <string name="notification_new_messages_title">Počet nových správ: <xliff:g id="new_message_count">%d</xliff:g></string>
-    <string name="notification_new_one_account_fmt">Počet neprečítaných správ: <xliff:g id="unread_message_count">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt">Počet neprečítaných správ: <xliff:g id="unread_message_count">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_additional_messages">+ ďalších <xliff:g id="additional_messages">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Odpovedať</string>
@@ -220,13 +221,11 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
 
     <string name="special_mailbox_name_inbox">Doručená</string>
     <string name="special_mailbox_name_outbox">Pošta na odoslanie</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Koncepty</string>
     <string name="special_mailbox_name_trash">Kôš</string>
     <string name="special_mailbox_name_sent">Odoslaná</string>
     <string name="special_mailbox_name_archive">Archív</string>
     <string name="special_mailbox_name_spam">Nevyžiadaná</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Koncepty)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Kôš)</string>
@@ -284,7 +283,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="message_view_download_remainder">Stiahnuť kompletnú správu</string>
     <string name="message_view_downloading">Sťahovanie…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">Nie všetky hlavičky boli stiahnuté alebo uložené. Vyberte \"Uložiť všetky hlavičky lokálne\" v nastaveniach servera prichádzajúcej pošty účtu pre povolenie tejto možnosti v budúcnosti.</string>
     <string name="message_no_additional_headers_available">Všetky hlavičky boli stiahnuté, ale nie sú žiadne ďalšie hlavičky na zobrazenie.</string>
     <string name="message_additional_headers_retrieval_failed">Načítanie prídavných hlavičiek z databázy alebo poštového servera zlyhalo.</string>
@@ -340,16 +339,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="global_settings_notification_quick_delete_always">Vždy</string>
     <string name="global_settings_notification_quick_delete_description">Zobraziť tlačidlo v oznámení pre rýchle vymazanie správy</string>
 
-    <string name="global_settings_batch_buttons">Skupina tlačidiel</string>
-    <string name="global_settings_batch_buttons_summary">Nastavenie skupiny tlačidiel v zozname správ</string>
-    <string name="global_settings_mark_read">Označiť ako prečítané/neprečítané</string>
-    <string name="global_settings_delete">Vymazať</string>
-    <string name="global_settings_archive">Presunúť do archívu</string>
-    <string name="global_settings_archive_disabled_reason">Žiadne priečinky v archíve.</string>
-    <string name="global_settings_move">Presunúť</string>
-    <string name="global_settings_flag">Značka</string>
-    <string name="global_settings_unselect">Odznačiť</string>
-
     <string name="quiet_time">Čas ticha</string>
     <string name="quiet_time_description">Zakázať vyzváňanie, bzučanie a blikanie v noci</string>
     <string name="quiet_time_starts">Čas ticha začína o</string>
@@ -388,7 +377,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="account_setup_incoming_security_label">Zabezpečenie</string>
     <string name="account_setup_incoming_auth_type_label">Overenie</string>
     <string name="account_setup_incoming_security_none_label">Žiadne</string>
-
     <string name="account_setup_incoming_delete_policy_label">Akcia po vymazaní správy</string>
     <string name="account_setup_incoming_delete_policy_never_label">Ponechať na serveri</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Vymazať na serveri</string>
@@ -447,7 +435,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="recreate_action">Obnoviť dáta (posledná možnosť)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Nikdy</string>
     <string name="account_setup_options_mail_check_frequency_1min">Každú minútu</string>
     <string name="account_setup_options_mail_check_frequency_5min">Každých 5 minút</string>
@@ -478,7 +465,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="account_setup_options_notify_label">Upozorniť ma, keď príde nová správa</string>
     <string name="account_setup_options_notify_sync_label">Upozorniť ma, keď je pošta kontrolovaná</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Počet správ na zobrazenie</string>
     <string name="account_setup_options_mail_display_count_10">10 správ</string>
     <string name="account_setup_options_mail_display_count_25">25 správ</string>
@@ -492,9 +478,9 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="move_copy_cannot_copy_unsynced_message">Nemožno skopírovať alebo presunúť správu, ktorá nie je synchronizovaná so serverom</string>
 
     <string name="account_setup_failed_dlg_title">Nastavenie nemohlo byť dokončené</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Používateľské meno alebo heslo je nesprávne.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Nemožno sa bezpečne pripojiť k serveru.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Nemožno sa pripojiť k serveru.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Používateľské meno alebo heslo je nesprávne.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Nemožno sa bezpečne pripojiť k serveru.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Nemožno sa pripojiť k serveru.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Upraviť podrobnosti</string>
     <string name="account_setup_failed_dlg_continue_action">Pokračovať</string>
 
@@ -746,12 +732,9 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
 
     <string name="account_clear_dlg_title">Vyčistiť účet</string>
 
-    <string name="provider_note_yahoojp">Uistite sa, že ste povolili POP3 na Yahoo stránke pre nastavenie pošty.</string>
     <string name="provider_note_auonejp">Uistite sa, že ste povolili IMAP alebo POP3 na au one stránke pre nastavenie pošty.</string>
     <string name="provider_note_naver">Uistite sa, že ste povolili IMAP alebo POP3 na Naver stránke pre nastavenie pošty.</string>
     <string name="provider_note_hanmail">Uistite sa, že ste povolili IMAP alebo POP3 na Hanmail(Daum) stránke pre nastavenie pošty.</string>
-    <string name="provider_note_paran">Uistite sa, že ste povolili IMAP alebo POP3 na Paran stránke pre nastavenie pošty.</string>
-    <string name="provider_note_nate">Uistite sa, že ste povolili IMAP alebo POP3 na Nate stránke pre nastavenie pošty.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámy certifikát</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Prijať kľúč</string>
@@ -905,7 +888,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="font_size_message_view_subject">Skrytá kópia</string>
     <string name="font_size_message_view_date">Čas a dátum</string>
     <string name="font_size_message_view_content">Telo správy</string>
-
     <string name="font_size_message_compose">Písanie správy</string>
     <string name="font_size_message_compose_input">Pole na zadávanie textu</string>
 
@@ -917,12 +899,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="font_size_medium">Stredná</string>
     <string name="font_size_large">Veľká</string>
     <string name="font_size_larger">Väčší</string>
-
-    <string name="font_size_webview_smaller">Najmenší</string>
-    <string name="font_size_webview_small">Menší</string>
-    <string name="font_size_webview_normal">Normálny</string>
-    <string name="font_size_webview_large">Väčší</string>
-    <string name="font_size_webview_larger">Najväčší</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Skontrolujte \"Nastavenia\" -&gt; \"Používať riešenie chyby pre Galériu\", aby ste boli schopný pripojiť obrázky alebo videá pomocou Galérie 3D.</string>
@@ -964,17 +940,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="dialog_confirm_delete_title">Potvrdiť vymazanie</string>
     <string name="dialog_confirm_delete_message">Chcete vymazať túto správu?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
     <item quantity="one">Vymazať túto správu?</item>
         <item quantity="few">Vymmazať <xliff:g id="message_count">%1$d</xliff:g> správy?</item>
@@ -1146,4 +1111,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <string name="fetching_attachment_dialog_title_send">Odosielam správu</string>
     <string name="fetching_attachment_dialog_title_save">Ukladám koncept</string>
     <string name="fetching_attachment_dialog_message">Sťahujem prílohu…</string>
+
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>

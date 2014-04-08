@@ -112,10 +112,10 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="status_syncing_off">Synkronointi pois päältä</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Seuraava</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Edellinen</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Seuraava</string>
+    <string name="previous_action">Edellinen</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">OK</string>
     <string name="cancel_action">Peruuta</string>
     <string name="send_action">Lähetä</string>
     <string name="send_again_action">Lähetä uudelleen</string>
@@ -132,7 +132,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="refile_action">Arkistoi…</string>
     <string name="continue_action">Jatka</string>
     <string name="back_action">Takaisin</string>
-    <string name="done_action">Valmis</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Valmis</string>
     <string name="discard_action">Hylkää</string>
     <string name="save_draft_action">Tallenna luonnoksena</string>
     <string name="check_mail_action">Tarkista posti</string>
@@ -180,7 +180,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="prefs_title">Asetukset</string>
     <string name="accounts_context_menu_title">Tilin asetukset</string>
 
-    <string name="general_no_subject">(Ei aihetta)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(Ei aihetta)</string>
     <string name="general_no_sender">Ei lähettäjää</string>
     <string name="status_loading">Ladataan</string>
     <string name="status_loading_more">Ladataan viestejä\u2026</string>
@@ -204,7 +205,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="notification_new_title">Uusi sähköpostiviesti</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> uutta viestiä</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> lukematonta (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> lukematonta (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> viestiä lisää tilillä <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Vastaa</string>
@@ -221,13 +222,11 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="special_mailbox_name_inbox">Saapuneet</string>
     <string name="special_mailbox_name_outbox">Lähtevät</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Luonnokset</string>
     <string name="special_mailbox_name_trash">Roskakori</string>
     <string name="special_mailbox_name_sent">Lähetetyt</string>
     <string name="special_mailbox_name_archive">Arkisto</string>
     <string name="special_mailbox_name_spam">Roskaposti</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Luonnokset)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Roskakori)</string>
@@ -285,7 +284,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="message_view_download_remainder">Lataa koko viesti</string>
     <string name="message_view_downloading">Ladataan…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">Kaikkia otsikkotietoja ei ole ladattu tai tallennettu. Valitse \"Tallenna kaikki otsikkotiedot\" tilin saapuvan postin palvelimen asetuksissa.</string>
     <string name="message_no_additional_headers_available">Kaikki otsikkotiedot on ladattu, mutta näytettäviä ei ole enempää.</string>
     <string name="message_additional_headers_retrieval_failed">Lisäotsikkotietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
@@ -341,16 +340,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="global_settings_notification_quick_delete_always">Aina</string>
     <string name="global_settings_notification_quick_delete_description">Näytä ilmoituksessa painike, joka mahdollistaa nopean viestin poistamisen</string>
 
-    <string name="global_settings_batch_buttons">Ryhmätoimintopainikkeet</string>
-    <string name="global_settings_batch_buttons_summary">Määritä viestilistan ryhmätoimintopainikkeet</string>
-    <string name="global_settings_mark_read">Merkitse luetuksi/lukemattomaksi</string>
-    <string name="global_settings_delete">Poista</string>
-    <string name="global_settings_archive">Siirrä arkistoon</string>
-    <string name="global_settings_archive_disabled_reason">Ei arkistokansioita.</string>
-    <string name="global_settings_move">Siirrä</string>
-    <string name="global_settings_flag">Merkitse</string>
-    <string name="global_settings_unselect">Poista valinta</string>
-
     <string name="quiet_time">Hiljainen aika</string>
     <string name="quiet_time_description">Poista käytöstä soittoäänen pirinä, pärinä ja vilkkuminen yöllä</string>
     <string name="quiet_time_starts">Hiljainen aika alkaa</string>
@@ -389,7 +378,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_setup_incoming_security_label">Suojauksen tyyppi</string>
     <string name="account_setup_incoming_auth_type_label">Todennuksen tyyppi</string>
     <string name="account_setup_incoming_security_none_label">Ei mitään</string>
-
     <string name="account_setup_incoming_delete_policy_label">Kun viesti poistetaan</string>
     <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Poista palvelimelta</string>
@@ -448,7 +436,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="recreate_action">Luo tiedot uudestaan (viimeinen keino!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Viestien tarkistus</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Ei koskaan</string>
     <string name="account_setup_options_mail_check_frequency_1min">Joka minuutti</string>
     <string name="account_setup_options_mail_check_frequency_5min">Joka 15 minuutti</string>
@@ -479,7 +466,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="account_setup_options_notify_label">Ilmoitus postin saapumisesta</string>
     <string name="account_setup_options_notify_sync_label">Ilmoitus postin tarkistamisesta</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Näytettävien viestien lukumäärä</string>
     <string name="account_setup_options_mail_display_count_10">10 kansiota</string>
     <string name="account_setup_options_mail_display_count_25">25 kansiota</string>
@@ -493,9 +479,9 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää, koska sitä ei ole synkronoitu palvelimelle</string>
 
     <string name="account_setup_failed_dlg_title">Asennus ei onnistunut</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana on väärin.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Turvallinen yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana on väärin.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Turvallinen yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Muokkaa tietoja</string>
     <string name="account_setup_failed_dlg_continue_action">Jatka</string>
 
@@ -747,12 +733,9 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="account_clear_dlg_title">Tyhjennä tili</string>
 
-    <string name="provider_note_yahoojp">Jos haluat käyttää POP3:a tällä palveluntarjoajalla, sinun tulee sallia POP3:n käyttäminen Yahoo-sähköpostiasetukset-sivulla.</string>
     <string name="provider_note_auonejp">Jos haluat käyttää IMAP:ia tai POP3:a tällä palveluntarjoajalla, sinun tulee sallia IMAP:in tai POP3:n käyttäminen au one -sähköpostiasetukset-sivulla.</string>
     <string name="provider_note_naver">If you would like to use IMAP or POP3 for this provider, You should permit to use IMAP or POP3 on Naver mail settings page.</string>
     <string name="provider_note_hanmail">Jos haluat käyttää IMAP:ia tai POP3:a tällä palveluntarjoajalla, sinun tulee sallia IMAP:in tai POP3:n käyttäminen Hanmail(Daum) -sähköpostiasetukset-sivulla.</string>
-    <string name="provider_note_paran">Jos haluat käyttää IMAP:ia tai POP3:a tällä palveluntarjoajalla, sinun tulee sallia IMAP:in tai POP3:n käyttö Paran-sähköpostiasetukset-sivulla.</string>
-    <string name="provider_note_nate">Jos haluat käyttää IMAP:ia tai POP3:a tällä palveluntarjoajalla, sinun tulee sallia IMAP:in tai POP3:n käyttö Nate-sähköpostiasetukset-sivulla.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton varmenne</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
@@ -906,7 +889,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="font_size_message_view_subject">Viestin aihe</string>
     <string name="font_size_message_view_date">Aika ja päivämäärä</string>
     <string name="font_size_message_view_content">Viestin sisältö</string>
-
     <string name="font_size_message_compose">Viestin kirjoitus</string>
     <string name="font_size_message_compose_input">Tekstinsyöttökentät</string>
 
@@ -918,12 +900,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="font_size_medium">Keskikoko</string>
     <string name="font_size_large">Suuri</string>
     <string name="font_size_larger">Suurin</string>
-
-    <string name="font_size_webview_smaller">Pienin</string>
-    <string name="font_size_webview_small">Pienempi</string>
-    <string name="font_size_webview_normal">Normaali</string>
-    <string name="font_size_webview_large">Suurempi</string>
-    <string name="font_size_webview_larger">Suurin</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Tarkista Asetukset -&gt; Ota käyttöön Gallery-ohjelmavirheen kierto mahdollistaaksesi kuvien tai videoiden liittämisen Gallery 3D -ohjelmalla.</string>
@@ -965,17 +941,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <string name="dialog_confirm_delete_title">Vahvista poisto</string>
     <string name="dialog_confirm_delete_message">Haluatko poistaa tämän viestin?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Haluatko varmasti poistaa tämän viestin?</item>
         <item quantity="other">Haluatko varmasti poistaa <xliff:g id="message_count">%1$d</xliff:g> viestiä?</item>
@@ -1133,14 +1098,5 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
 
     <string name="mark_all_as_read">Merkitse kaikki luetuiksi</string>
 
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
-    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
-
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
-    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
-
-    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
-    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>

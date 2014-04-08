@@ -111,10 +111,10 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="status_syncing_off">Synchroniseren uitgeschakeld</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> geselecteerd</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Volgende</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Vorige</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Volgende</string>
+    <string name="previous_action">Vorige</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">OK</string>
     <string name="cancel_action">Annuleren</string>
     <string name="send_action">Verzenden</string>
     <string name="send_again_action">Opnieuw Verzenden</string>
@@ -131,7 +131,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="refile_action">Opnieuw opslaan…</string>
     <string name="continue_action">Doorgaan</string>
     <string name="back_action">Terug</string>
-    <string name="done_action">Klaar</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Klaar</string>
     <string name="discard_action">Vergeten</string>
     <string name="save_draft_action">Opslaan als concept</string>
     <string name="check_mail_action">Controleer mail</string>
@@ -179,7 +179,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="prefs_title">Instellingen</string>
     <string name="accounts_context_menu_title">Account opties</string>
 
-    <string name="general_no_subject">(Geen onderwerp)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(Geen onderwerp)</string>
     <string name="general_no_sender">Geen afzender</string>
     <string name="status_loading">Polling</string>
     <string name="status_loading_more">Berichten laden\u2026</string>
@@ -203,7 +204,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="notification_new_title">Nieuwe mail</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nieuwe berichten</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ongelezen (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ongelezen (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> meer op <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Antwoorden</string>
@@ -220,13 +221,11 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="special_mailbox_name_inbox">Postvak in</string>
     <string name="special_mailbox_name_outbox">Postvak uit</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Concepten</string>
     <string name="special_mailbox_name_trash">Prullenbak</string>
     <string name="special_mailbox_name_sent">Verzonden</string>
     <string name="special_mailbox_name_archive">Archief</string>
     <string name="special_mailbox_name_spam">Spam</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Concepten)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Prullenbak)</string>
@@ -284,7 +283,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="message_view_download_remainder">Download compleet bericht</string>
     <string name="message_view_downloading">Downloaden…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">Niet alle headers zijn gedownload of opgeslagen. Selecteer \"Sla alle headers lokaal op\" in de account\'s inkomende server instellingen om dit in te schakelen voor de toekomst.</string>
     <string name="message_no_additional_headers_available">Alle headers zijn gedownload, maar er zijn geen extra headers aan te tonen.</string>
     <string name="message_additional_headers_retrieval_failed">Het ophalen van extra headers uit de database of e-mailserver is mislukt.</string>
@@ -340,16 +339,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="global_settings_notification_quick_delete_always">Altijd</string>
     <string name="global_settings_notification_quick_delete_description">Laat een knop in de notificatie zien om snel te verwijderen</string>
 
-    <string name="global_settings_batch_buttons">Batch knoppen</string>
-    <string name="global_settings_batch_buttons_summary">Knoppen voor meerdere berichten instellen</string>
-    <string name="global_settings_mark_read">Markeer gelezen/ongelezen</string>
-    <string name="global_settings_delete">Verwijder</string>
-    <string name="global_settings_archive">Verplaats naar archief</string>
-    <string name="global_settings_archive_disabled_reason">Geen archief-mappen.</string>
-    <string name="global_settings_move">Verplaats</string>
-    <string name="global_settings_flag">Markeer</string>
-    <string name="global_settings_unselect">On-selecteren</string>
-
     <string name="quiet_time">Stilteperiode</string>
     <string name="quiet_time_description">Schakel beltoon, vibratie en leds uit gedurende de nacht</string>
     <string name="quiet_time_starts">Stilteperiode start</string>
@@ -388,7 +377,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_setup_incoming_security_label">Beveiligings type</string>
     <string name="account_setup_incoming_auth_type_label">Authenticatie type</string>
     <string name="account_setup_incoming_security_none_label">Geen</string>
-
     <string name="account_setup_incoming_delete_policy_label">Wanneer ik een bericht verwijder</string>
     <string name="account_setup_incoming_delete_policy_never_label">Verwijder niet van server</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Verwijder van server</string>
@@ -447,7 +435,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="recreate_action">Recreeren gegevens (Laatste mogelijkheid!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Map poll controleer frequentie</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Nooit</string>
     <string name="account_setup_options_mail_check_frequency_1min">Elke minuut</string>
     <string name="account_setup_options_mail_check_frequency_5min">Elke 5 minuten</string>
@@ -478,7 +465,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="account_setup_options_notify_label">Waarschuw me wanneer nieuwe mail binnenkomt</string>
     <string name="account_setup_options_notify_sync_label">Waarschuw me wanneer er op nieuwe mail wordt gecontroleerd</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Aantal berichten om te laten zien</string>
     <string name="account_setup_options_mail_display_count_10">10 berichten</string>
     <string name="account_setup_options_mail_display_count_25">25 berichten</string>
@@ -492,9 +478,9 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen omdat deze niet gesynchroniseerd is met de server</string>
 
     <string name="account_setup_failed_dlg_title">Setup kon niet afronden</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Kan niet veilig verbinden met server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding maken met server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Kan niet veilig verbinden met server.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding maken met server.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Aanpassen details</string>
     <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
 
@@ -746,12 +732,9 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 
     <string name="account_clear_dlg_title">Clear Account</string>
 
-    <string name="provider_note_yahoojp">Als je POP3 wilt gebruiken, moet je het geebruik van POP3 activeren op de Yahoo mail settings pagina.</string>
     <string name="provider_note_auonejp">Zorg ervoor dat IMAP of POP3 in de au one mail instellingen pagina aan staan.</string>
     <string name="provider_note_naver">Zorg ervoor dat IMAP of POP3 aan staan in de Naver mail instellingen pagina.</string>
     <string name="provider_note_hanmail">Zorg ervoor dat IMAP of POP3 aan staan in de Hanmail(Daum) installingen pagina.</string>
-    <string name="provider_note_paran">Zorg ervoor dat IMAP of POP3 aan staan op de Paran instellingen pagina.</string>
-    <string name="provider_note_nate">Zorg ervoor dat IMAP of POP3 aan staan op de Nate instellingen pagina.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Onbekend Certificaat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
@@ -905,7 +888,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="font_size_message_view_subject">Bericht onderwerp</string>
     <string name="font_size_message_view_date">Bericht tijd en datum</string>
     <string name="font_size_message_view_content">Bericht inhoud</string>
-
     <string name="font_size_message_compose">Bericht opstellen</string>
     <string name="font_size_message_compose_input">Tekst input velden</string>
 
@@ -917,12 +899,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="font_size_medium">Gemiddeld</string>
     <string name="font_size_large">Groot</string>
     <string name="font_size_larger">Groter</string>
-
-    <string name="font_size_webview_smaller">Kleinste</string>
-    <string name="font_size_webview_small">Kleiner</string>
-    <string name="font_size_webview_normal">Normaal</string>
-    <string name="font_size_webview_large">Langer</string>
-    <string name="font_size_webview_larger">Langste</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
     <string name="message_compose_buggy_gallery">Controleer \"Instellingen\" -&gt; \"Use Gallery bug work-around\" to be able to attach images or videos using Gallery 3D.</string>
@@ -964,17 +940,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="dialog_confirm_delete_title">Bevestig verwijderen</string>
     <string name="dialog_confirm_delete_message">Wil je dit bericht verwijderen?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Wil je dit bericht echt verwijderen?</item>
         <item quantity="other">Wil je echt <xliff:g id="message_count">%1$d</xliff:g> berichten verwijderen?</item>
@@ -1142,4 +1107,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <string name="fetching_attachment_dialog_title_send">Bericht wordt verstuurd</string>
     <string name="fetching_attachment_dialog_title_save">Concept wordt opgeslagen</string>
     <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
+
+    <!-- === OpenPGP specific ================================================================== -->
 </resources>
