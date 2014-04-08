@@ -23,8 +23,7 @@
             android:layout_gravity="center"
             android:visibility="visible"
             android:textColor="?android:attr/textColorPrimary"
-            android:baselineAligned="false"
-            android:layout_centerVertical="true">
+            android:baselineAligned="false">
 
         <CheckBox
                 android:id="@+id/selected_checkbox"

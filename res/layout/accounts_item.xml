@@ -60,8 +60,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="2dip"
                 android:layout_marginRight="4dip"
-                android:background="?attr/compatDividerVertical"
-                android:layout_alignParentTop="true"/>
+                android:background="?attr/compatDividerVertical" />
 
         <ImageButton
                 android:id="@+id/folders"

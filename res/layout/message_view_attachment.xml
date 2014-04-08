@@ -79,7 +79,6 @@
         <ImageView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:src="@drawable/ic_email_attachment"
-            android:layout_alignParentLeft="true" />
+            android:src="@drawable/ic_email_attachment" />
     </LinearLayout>
 </com.fsck.k9.view.AttachmentView>
