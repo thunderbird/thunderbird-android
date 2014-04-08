@@ -391,9 +391,12 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_setup_options_mail_display_count_all">alle mails</string>
   <string name="move_copy_cannot_copy_unsynced_message">Kan ikke kopiere eller flytte mail som ikke er synkroniseret med server</string>
   <string name="account_setup_failed_dlg_title">Kunne ikke fuldføre opsætning</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Brugernavn eller password ukorrekt.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Kan ikke oprette sikker forbindelse til server.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Kan ikke oprette forbindelse til server.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Brugernavn eller password ukorrekt.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Kan ikke oprette sikker forbindelse til server.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Kan ikke oprette forbindelse til server.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Rediger detaljer</string>
   <string name="account_setup_failed_dlg_continue_action">Fortsæt</string>
   <string name="account_settings_push_advanced_title">Avanceret</string>
@@ -605,31 +608,8 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ukendt certificat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter nøgle</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Afvis nøgle</string>
-  <string name="message_list_help_key"><!--NEW: V, Z untranslated-->
-    Del (or D) - Slet\n
-    R - Svar\n
-    A - Svar alle\n
-    C - Skriv\n
-    F - Videresend\n
-    M - Flyt\n
-    V - Archive\n
-    Y - Kopier\n
-    Z - Mark (Un)read\n
-    G - Stjerne\n
-    O - Sorteringstype\n
-    I - Sorteringsorden\n
-    Q - Returner til Mapper\n
-    S - Vælg/fravælg\n
-    J or P - Foregående mail\n
-    K or N - Næste mail
-  </string>
-  <string name="folder_list_help_key">
-    1 - Vis kun primære mapper\u000A
-    2 - Vis primære og sekundære mapper\u000A
-    3 - Vis alle pånær sekundære mapper\u000A
-    4 - Vis alle mapper\u000A
-    Q - Returner til Konti\u000A
-    S - Rediger kontoindstillinger</string>
+  <string name="message_list_help_key">Del (or D) - Slet\nR - Svar\nA - Svar alle\nC - Skriv\nF - Videresend\nM - Flyt\nV - Archive\nY - Kopier\nZ - Mark (Un)read\nG - Stjerne\nO - Sorteringstype\nI - Sorteringsorden\nQ - Returner til Mapper\nS - Vælg/fravælg\nJ or P - Foregående mail\nK or N - Næste mail</string>
+  <string name="folder_list_help_key">1 - Vis kun primære mapper\n2 - Vis primære og sekundære mapper\n3 - Vis alle pånær sekundære mapper\n4 - Vis alle mapper\nQ - Returner til Konti\nS - Rediger kontoindstillinger</string>
   <string name="folder_list_display_mode_label">Mapper</string>
   <string name="folder_list_display_mode_all">Vis alle mapper</string>
   <string name="folder_list_display_mode_first_class">Vis kun primære mapper</string>

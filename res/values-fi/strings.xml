@@ -11,8 +11,8 @@
   <string name="remote_control_desc">Antaa sovellukselle luvan käyttää K-9 Mailin toimintoja ja asetuksia.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-  <string name="app_copyright_fmt">Tekijänoikeudet 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions tekijänoikeudet -<xliff:g>%s</xliff:g> Androidin avoimen lähdekoodin hanke.</string>
-  <string name="app_license">Lisensoitu Apache-lisenssillä, versio 2.0.</string>
+  <string name="app_copyright_fmt">Tekijänoikeudet 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Osittaiset tekijänoikeudet -<xliff:g>%s</xliff:g> Androidin avoimen lähdekoodin hanke.</string>
+  <string name="app_license">Lisensoitu Apache-lisenssin 2.0-versiolla.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,7 +54,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="insufficient_apg_permissions">K-9:llä ei ole oikeuksia kaikkien APG:n ominaisuuksien käyttämiseen. Ole hyvä ja asenna K-9 uudelleen.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Tuontitoiminnon käsittelemiseen ei ole sopivaa sovellusta. Asenna Google Play Kaupasta jokin tiedostonhallintasovellus.</string>
-  <string name="open_market">Avaa Play Kauppa</string>
+  <string name="open_market">Avaa Play-kauppa</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Tekijät: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Versiotiedot: <xliff:g id="app_revision_url">%s</xliff:g></string>
@@ -136,7 +136,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="add_cc_bcc_action">Lisää kopio/piilokopio</string>
   <string name="read_receipt">Vastaanottokuittaus</string>
   <string name="read_receipt_enabled">Vastaanottokuittaus pyydetään</string>
-  <string name="read_receipt_disabled">Vastaanottokuittausta ei pyydetä</string>
+  <string name="read_receipt_disabled">Ei pyydä lukukuittausta</string>
   <string name="add_attachment_action">Lisää liite</string>
   <string name="add_attachment_action_image">Lisää liite (Kuva)</string>
   <string name="add_attachment_action_video">Video</string>
@@ -210,6 +210,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="message_compose_quote_header_to">Vastaanottaja:</string>
   <string name="message_compose_quote_header_cc">Kopio:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:</string>
+  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g> <xliff:g id="sender">%2$s</xliff:g> kirjoitti:</string>
   <string name="message_compose_error_no_recipients">Valitse vähintään yksi vastaanottaja.</string>
   <string name="error_contact_address_not_found">Tämän henkilön sähköpostiosoitetta ei löytynyt.</string>
   <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida lähettää edelleen, koska niitä ei ole ladattu.</string>
@@ -303,6 +304,9 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
+  <string name="account_setup_auth_type_normal_password">Tavallinen salasana</string>
+  <string name="account_setup_auth_type_insecure_password">Salasana, välitetään turvattomasti</string>
+  <string name="account_setup_auth_type_encrypted_password">Salattu salasana</string>
   <string name="account_setup_incoming_title">Saapuvan postin palvelimen asetukset</string>
   <string name="account_setup_incoming_username_label">Käyttäjätunnus</string>
   <string name="account_setup_incoming_password_label">Salasana</string>
@@ -313,6 +317,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_incoming_security_label">Suojauksen tyyppi</string>
   <string name="account_setup_incoming_auth_type_label">Todennuksen tyyppi</string>
   <string name="account_setup_incoming_security_none_label">Ei mitään</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Kun viesti poistetaan</string>
   <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Poista palvelimelta</string>
@@ -330,7 +336,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_expunge_policy_on_poll">Tarkistettaessa</string>
   <string name="account_setup_expunge_policy_manual">Vain manuaalisesti</string>
   <string name="account_setup_incoming_autodetect_namespace_label">Tunnista IMAP-nimiavaruus automaattisesti</string>
-  <string name="account_setup_incoming_imap_path_prefix_label">IMAP -polun etuliite</string>
+  <string name="account_setup_incoming_imap_path_prefix_label">IMAP-polun etuliite</string>
   <string name="drafts_folder_label">Luonnokset-kansio</string>
   <string name="sent_folder_label">Lähetetyt-kansio</string>
   <string name="trash_folder_label">Roskakori-kansio</string>
@@ -393,12 +399,18 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_options_mail_display_count_250">250 viestiä</string>
   <string name="account_setup_options_mail_display_count_500">500 viestiä</string>
   <string name="account_setup_options_mail_display_count_1000">1000 viestiä</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 messages</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 viestiä</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 viestiä</string>
   <string name="account_setup_options_mail_display_count_all">Kaikki viestit</string>
   <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää, koska sitä ei ole synkronoitu palvelimelle</string>
   <string name="account_setup_failed_dlg_title">Asennus ei onnistunut</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana on väärin.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Turvallinen yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana on väärin.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Turvallinen yhteys palvelimeen ei onnistu.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Muokkaa tietoja</string>
   <string name="account_setup_failed_dlg_continue_action">Jatka</string>
   <string name="account_settings_push_advanced_title">Lisäasetukset</string>
@@ -468,7 +480,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_settings_autodownload_message_size_32">32 kt</string>
   <string name="account_settings_autodownload_message_size_64">64 kt</string>
   <string name="account_settings_autodownload_message_size_128">128 kt</string>
-  <string name="account_settings_autodownload_message_size_256">252 kt</string>
+  <string name="account_settings_autodownload_message_size_256">256 kt</string>
   <string name="account_settings_autodownload_message_size_512">512 kt</string>
   <string name="account_settings_autodownload_message_size_1024">1 Mt</string>
   <string name="account_settings_autodownload_message_size_2048">2 Mt</string>
@@ -610,31 +622,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton varmenne</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
-  <string name="message_list_help_key">
-    Del (tai D) - Poista\n
-    R - Vastaa\n
-    A - Vastaa kaikille\n
-    C - Kirjoita\n
-    F - Välitä\n
-    M - Siirrä\n
-    V - Arkistoi\n
-    Y - Kopioi\n
-    Z - Merkitse lukemattomaksi/luetuksi\n
-    G - Tähti\n
-    O - Lajittelutyyppi\n
-    I - Lajittelujärjestys\n
-    Q - Palaa kansioihin\n
-    S - Valitse/poista valinta\n
-    J tai P - Edellinen Viesti\n
-    K tai N - Seuraava Viesti
-  </string>
-  <string name="folder_list_help_key">
-        1 - Näytä vain 1. luokan kansiot\u000A
-        2 - Näytä 1. ja 2. luokan kansiot\u000A
-        3 - Näytä kaikki paitsi 2. luokan kansiot\u000A
-        4 - Näytä kaikki kansiot\u000A
-        Q - Palaa tileihin\u000A
-        S - Muokkaa tilin asetuksia</string>
+  <string name="message_list_help_key">Del (tai D) - Poista\nR - Vastaa\nA - Vastaa kaikille\nC - Kirjoita\nF - Välitä\nM - Siirrä\nV - Arkistoi\nY - Kopioi\nZ - Merkitse lukemattomaksi/luetuksi\nG - Tähti\nO - Lajittelutyyppi\nI - Lajittelujärjestys\nQ - Palaa kansioihin\nS - Valitse/poista valinta\nJ tai P - Edellinen Viesti\nK tai N - Seuraava Viesti</string>
+  <string name="folder_list_help_key">1 - Näytä vain 1. luokan kansiot\n2 - Näytä 1. ja 2. luokan kansiot\n3 - Näytä kaikki paitsi 2. luokan kansiot\n4 - Näytä kaikki kansiot\nQ - Palaa tileihin\nS - Muokkaa tilin asetuksia</string>
   <string name="folder_list_filter_hint">kansionimi sisältää</string>
   <string name="folder_list_display_mode_label">Kansiot</string>
   <string name="folder_list_display_mode_all">Näytä kaikki</string>
@@ -731,6 +720,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="font_size_message_view_subject">Viestin aihe</string>
   <string name="font_size_message_view_date">Aika ja päivämäärä</string>
   <string name="font_size_message_view_content">Viestin sisältö</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Viestin kirjoitus</string>
   <string name="font_size_message_compose_input">Tekstinsyöttökentät</string>
   <string name="font_size_default">Oletus</string>
@@ -757,10 +748,10 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="btn_verify">Vahvista</string>
   <string name="unknown_crypto_signature_user_id">&lt;tuntematon&gt;</string>
   <string name="key_id">id: %s</string>
-  <string name="pgp_mime_unsupported">PGP/MIME -viestejä ei vielä tueta.</string>
+  <string name="pgp_mime_unsupported">PGP/MIME-viestejä ei vielä tueta.</string>
   <string name="attachment_encryption_unsupported">Varoitus: Liitteitä ei allekirjoiteta tai salata tässä versiossa.</string>
   <string name="send_aborted">Lähetys keskeytetty.</string>
-  <string name="save_or_discard_draft_message_dlg_title">Tallenna luonnos?</string>
+  <string name="save_or_discard_draft_message_dlg_title">Tallennetaanko luonnos?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Tallennetaanko vai hylätäänkö tämä viesti?</string>
   <string name="confirm_discard_draft_message_title">Hylkää viesti?</string>
   <string name="confirm_discard_draft_message">Haluatko varmasti hylätä tämän viestin?</string>
@@ -900,5 +891,26 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="last_refresh_time_format_with_push">Päivitetty <xliff:g id="time_with_preposition">%s</xliff:g> (push-tilassa)</string>
   <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">Merkitse kaikki luetuiksi</string>
+  <string name="global_settings_colorize_missing_contact_pictures_label">Väritä yhteystietojen kuvat</string>
+  <string name="global_settings_colorize_missing_contact_pictures_summary">Väritä yhteystietojen puuttuvat kuvat</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">Näytettävät viestitoiminnot</string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">Näytä valitut toiminnot viestin Näytä-valikossa</string>
+  <string name="loading_attachment">Ladataan liitettä…</string>
+  <string name="fetching_attachment_dialog_title_send">Lähetetään viestiä</string>
+  <string name="fetching_attachment_dialog_title_save">Tallennetaan luonnosta</string>
+  <string name="fetching_attachment_dialog_message">Noudetaan liitettä…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decrypting_verifying">Puretaan salausta/varmennetaan…</string>
+  <string name="openpgp_successful_decryption">Salauksen purku onnistui</string>
+  <string name="openpgp_signature_valid_certified">Kelvollinen allekirjoitus (varmennettu)</string>
+  <string name="openpgp_signature_valid_uncertified">Kelvollinen, mutta varmentamaton allekirjoitus</string>
+  <string name="openpgp_signature_unknown">Tuntematon allekirjoittaja</string>
+  <string name="openpgp_signature_invalid">Virheellinen allekirjoitus</string>
+  <string name="openpgp_signature_unknown_text">Tämän allekirjoituksen julkinen avain puuttuu</string>
+  <string name="openpgp_successful_decryption_valid_signature_certified">Salauksen purku onnistui ja kelvollinen allekirjoitus (varmennettu)</string>
+  <string name="openpgp_successful_decryption_valid_signature_uncertified">Salauksen purku onnistui ja kelvollinen, mutta varmentamaton allekirjoitus</string>
+  <string name="openpgp_successful_decryption_unknown_signature">Salauksen purku onnistui, mutta julkinen avain puuttuu</string>
+  <string name="openpgp_get_key">Etsi puuttuva avain</string>
+  <string name="openpgp_error">OpenPGP-virhe:</string>
+  <string name="openpgp_user_id">Käyttäjätunniste</string>
 </resources>

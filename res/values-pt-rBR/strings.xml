@@ -394,9 +394,12 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_setup_options_mail_display_count_all">Todas as Mensagens</string>
   <string name="move_copy_cannot_copy_unsynced_message">Não é possível copiar ou mover uma mensagem que não foi sincronizada com o servidor</string>
   <string name="account_setup_failed_dlg_title">A configuração não pode ser concluída</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Usuário ou senha incorretos.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Não é possível conectar com segurança ao servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Não é possível conectar ao servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Usuário ou senha incorretos.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Não é possível conectar com segurança ao servidor.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Não é possível conectar ao servidor.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalhes</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avançado</string>
@@ -605,31 +608,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado desconhecido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Recusar chave</string>
-  <string name="message_list_help_key">
-    Del (or D) - Excluir\n
-    R - Responder\n
-    A - Responder a todos\n
-    C - Escrever\n
-    F - Encaminhar\n
-    M - Mover\n
-    V - Arquivar\n
-    Y - Copiar\n
-    Z - Marcar como não-lida\n
-    G - Favoritar\n
-    O - Tipo de ordenação\n
-    I - Ordernar\n
-    Q - Retornar à pastas\n
-    S - Selecionar/deselecionar\n
-    J, P - Mensagem anterior\n
-    K, N - Próxima mensagem
-  </string>
-  <string name="folder_list_help_key">
-    1 - Mostrar apenas pastas de Primeira Classe\u000A
-    2 - Mostrar pastas de Primeira e Segunda Classe\u000A
-    3 - Mostrar todas exceto as de Segunda Classe\u000A
-    4 - Mostrar todas as pastas\u000A
-    Q - Retornar para contas\u000A
-    S - Editar Configurações de Conta</string>
+  <string name="message_list_help_key">Del (or D) - Excluir\nR - Responder\nA - Responder a todos\nC - Escrever\nF - Encaminhar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar como não-lida\nG - Favoritar\nO - Tipo de ordenação\nI - Ordernar\nQ - Retornar à pastas\nS - Selecionar/deselecionar\nJ, P - Mensagem anterior\nK, N - Próxima mensagem</string>
+  <string name="folder_list_help_key">1 - Mostrar apenas pastas de Primeira Classe\n2 - Mostrar pastas de Primeira e Segunda Classe\n3 - Mostrar todas exceto as de Segunda Classe\n4 - Mostrar todas as pastas\nQ - Retornar para contas\nS - Editar Configurações de Conta</string>
   <string name="folder_list_filter_hint">o nome da pasta contém</string>
   <string name="folder_list_display_mode_label">Pastas</string>
   <string name="folder_list_display_mode_all">Mostrar todas as pastas</string>

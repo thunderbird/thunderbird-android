@@ -208,6 +208,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="message_compose_quote_header_to">An:</string>
   <string name="message_compose_quote_header_cc">CC:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schrieb:</string>
+  <string name="message_compose_reply_header_fmt_with_date">Am <xliff:g id="sent_date">%1$s</xliff:g>, schrieb <xliff:g id="sender">%2$s</xliff:g>:</string>
   <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger wählen.</string>
   <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
   <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
@@ -301,6 +302,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_account_type_pop_action">POP3-Konto</string>
   <string name="account_setup_account_type_imap_action">IMAP-Konto</string>
   <string name="account_setup_account_type_webdav_action">WebDAV(Exchange)-Konto</string>
+  <string name="account_setup_auth_type_normal_password">Passwort, normal</string>
+  <string name="account_setup_auth_type_insecure_password">Passwort, verschlüsselt übermittelt</string>
+  <string name="account_setup_auth_type_encrypted_password">Verschlüsseltes Passwort</string>
   <string name="account_setup_incoming_title">Einstellungen für Posteingangsserver</string>
   <string name="account_setup_incoming_username_label">Benutzername</string>
   <string name="account_setup_incoming_password_label">Passwort</string>
@@ -311,6 +315,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_incoming_security_label">Sicherheitstyp</string>
   <string name="account_setup_incoming_auth_type_label">Authentifizierungstyp</string>
   <string name="account_setup_incoming_security_none_label">Keine Verschlüsselung</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Beim Löschen von Nachrichten</string>
   <string name="account_setup_incoming_delete_policy_never_label">Nie von Server löschen</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
@@ -391,12 +397,18 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_options_mail_display_count_250">250 Nachrichten</string>
   <string name="account_setup_options_mail_display_count_500">500 Nachrichten</string>
   <string name="account_setup_options_mail_display_count_1000">1000 Nachrichten</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 Nachrichten</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 Nachrichten</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 Nachrichten</string>
   <string name="account_setup_options_mail_display_count_all">Alle Nachrichten</string>
   <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
   <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Kennwort fehlerhaft.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Aufbau einer gesicherten Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Kennwort fehlerhaft.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Aufbau einer gesicherten Verbindung zum Server nicht möglich.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
   <string name="account_setup_failed_dlg_continue_action">Weiter</string>
   <string name="account_settings_push_advanced_title">Erweitert</string>
@@ -602,37 +614,14 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_delete_dlg_title">Entfernen</string>
   <string name="account_recreate_dlg_title">Konto neu erstellen</string>
   <string name="account_clear_dlg_title">Nachrichten löschen</string>
-  <string name="provider_note_auonejp">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "AU One"-Einstellungsseite aktivieren.</string>
-  <string name="provider_note_naver">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Naver Mail"-Einstellungsseite aktivieren.</string>
-  <string name="provider_note_hanmail">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der "Hanmail(Daum)"-Einstellungsseite aktivieren.</string>
+  <string name="provider_note_auonejp">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der \"AU One\"-Einstellungsseite aktivieren.</string>
+  <string name="provider_note_naver">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der \"Naver Mail\"-Einstellungsseite aktivieren.</string>
+  <string name="provider_note_hanmail">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der \"Hanmail(Daum)\"-Einstellungsseite aktivieren.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ungültiges Zertifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Zertifikat ablehnen</string>
-  <string name="message_list_help_key">
-    Del (oder D) - Löschen\n
-    R - Antworten\n
-    A - Allen Antworten\n
-    C - Verfassen\n
-    F - Weiterleiten\n
-    M - Verschieben\n
-    V - Archivieren\n
-    Y - Kopieren\n
-    Z - Als (un)gelesen markieren\n
-    G - Markieren\n
-    O - Sortierung\n
-    I - Sortierungsreihenfolge\n
-    Q - Zurück zur Ordnerliste\n
-    S - Auswählen/abwählen
-    J oder P - Vorherige Nachricht\n
-    K oder N - Nächste Nachricht
-  </string>
-  <string name="folder_list_help_key">
-      1 - Nur Hauptordner anzeigen\u000A
-      2 - Haupt- und Nebenordner anzeigen\u000A
-      3 - Alle außer Nebenordner anzeigen\u000A
-      4 - Alle Ordner anzeigen\u000A
-      Q - Zurück zu den Konten\u000A
-      S - Kontoeinstellungen bearbeiten</string>
+  <string name="message_list_help_key">Del (oder D) - Löschen\nR - Antworten\nA - Allen Antworten\nC - Verfassen\nF - Weiterleiten\nM - Verschieben\nV - Archivieren\nY - Kopieren\nZ - Als (un)gelesen markieren\nG - Markieren\nO - Sortierung\nI - Sortierungsreihenfolge\nQ - Zurück zur Ordnerliste\nS - Auswählen/abwählen\nJ oder P - Vorherige Nachricht\nK oder N - Nächste Nachricht</string>
+  <string name="folder_list_help_key">1 - Nur Hauptordner anzeigen\n2 - Haupt- und Nebenordner anzeigen\n3 - Alle außer Nebenordner anzeigen\n4 - Alle Ordner anzeigen\nQ - Zurück zu den Konten\nS - Kontoeinstellungen bearbeiten</string>
   <string name="folder_list_filter_hint">Ordnername enthält</string>
   <string name="folder_list_display_mode_label">Ordner</string>
   <string name="folder_list_display_mode_all">Alle Ordner anzeigen</string>
@@ -729,6 +718,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="font_size_message_view_subject">Betreff</string>
   <string name="font_size_message_view_date">Uhrzeit und Datum</string>
   <string name="font_size_message_view_content">Nachrichtentext</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Nachricht verfassen</string>
   <string name="font_size_message_compose_input">Texteingabefelder</string>
   <string name="font_size_default">Standard</string>
@@ -907,4 +898,17 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
   <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decrypting_verifying">Entschlüssle/Verifiziere...</string>
+  <string name="openpgp_successful_decryption">Erfolgreiche Entschlüsselung</string>
+  <string name="openpgp_signature_valid_certified">Gültige Signatur (beglaubigt)</string>
+  <string name="openpgp_signature_valid_uncertified">Gültige, aber unbeglaubigte Signatur</string>
+  <string name="openpgp_signature_unknown">Unbekannter Unterzeichner</string>
+  <string name="openpgp_signature_invalid">Ungültige Signatur</string>
+  <string name="openpgp_signature_unknown_text">Fehlender öffentlicher Schlüssel für diese Signatur</string>
+  <string name="openpgp_successful_decryption_valid_signature_certified">Erfolgreiche Entschlüsselung und gültige Signatur (beglaubigt)</string>
+  <string name="openpgp_successful_decryption_valid_signature_uncertified">Erfolgreiche Entschlüsselung und gültige, aber nicht beglaubigte Signatur</string>
+  <string name="openpgp_successful_decryption_unknown_signature">Erfolgreiche Entschlüsselung, aber fehlender öffentlicher Schlüssel</string>
+  <string name="openpgp_get_key">Schlage fehlenden Schlüssel nach</string>
+  <string name="openpgp_error">OpenPGP Fehler:</string>
+  <string name="openpgp_user_id">Benutzer-ID</string>
 </resources>

@@ -394,9 +394,12 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_setup_options_mail_display_count_all">모든 메시지</string>
   <string name="move_copy_cannot_copy_unsynced_message">서버와 동기화되지 않은 메시지를 복사하거나 이동할 수 없습니다.</string>
   <string name="account_setup_failed_dlg_title">설정이 완료되지 않았습니다</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">아이디 혹은 비밀번호가 틀림.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">서버에 안전하게 연결할 수 없습니다.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">서버에 연결할 수 없습니다.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">아이디 혹은 비밀번호가 틀림.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">서버에 안전하게 연결할 수 없습니다.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">서버에 연결할 수 없습니다.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">내용 수정</string>
   <string name="account_setup_failed_dlg_continue_action">계속</string>
   <string name="account_settings_push_advanced_title">고급</string>
@@ -608,31 +611,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_setup_failed_dlg_invalid_certificate_title">잘못된 인증 정보</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">키 허용</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">키 거부</string>
-  <string name="message_list_help_key">
-    Del (또는 D) - 삭제\n
-    R - 회신\n
-    A - 전체 회신\n
-    C - 작성\n
-    F - 전달\n
-    M - 이동\n
-    V - 보관\n
-    Y - 복사\n
-    Z - 읽(지 않)은 것으로 표시\n
-    G - 별표(즐겨찾기)\n
-    O - 정렬 방법\n
-    I - 정렬 순서\n
-    Q - 폴더로 돌아가기\n
-    S - 선택/선택해제\n
-    J, P - 이전 메시지\n
-    K, N - 다음 메시지
-  </string>
-  <string name="folder_list_help_key">
-    1 - 제 1종 폴더만 보기\u000A
-    2 - 제 1종 및 2종 폴더 보기\u000A
-    3 - 제 2종 외 폴더 모두 보기\u000A
-    4 - 모든 폴더 보기\u000A
-    Q - 계정 변경\u000A
-    S - 계정 설정 변경</string>
+  <string name="message_list_help_key">Del (또는 D) - 삭제\nR - 회신\nA - 전체 회신\nC - 작성\nF - 전달\nM - 이동\nV - 보관\nY - 복사\nZ - 읽(지 않)은 것으로 표시\nG - 별표(즐겨찾기)\nO - 정렬 방법\nI - 정렬 순서\nQ - 폴더로 돌아가기\nS - 선택/선택해제\nJ, P - 이전 메시지\nK, N - 다음 메시지</string>
+  <string name="folder_list_help_key">1 - 제 1종 폴더만 보기\n2 - 제 1종 및 2종 폴더 보기\n3 - 제 2종 외 폴더 모두 보기\n4 - 모든 폴더 보기\nQ - 계정 변경\nS - 계정 설정 변경</string>
   <string name="folder_list_filter_hint">폴더 이름의 내용</string>
   <string name="folder_list_display_mode_label">폴더</string>
   <string name="folder_list_display_mode_all">모든 폴더 표시</string>
@@ -769,17 +749,9 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="select_text_now">복사할 텍스트 선택</string>
   <string name="dialog_confirm_delete_title">삭제 확인</string>
   <string name="dialog_confirm_delete_message">이 메시지를 삭제하시겠습니까?</string>
-  <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">정말 이 메시지를 삭제하겠습니까?</item>
-    <item quantity="other">정말 <xliff:g id="message_count">%1$d</xliff:g> 통의 메시지를 삭제하겠습니까?</item>
-  </plurals>
   <string name="dialog_confirm_delete_confirm_button">삭제함</string>
   <string name="dialog_confirm_delete_cancel_button">삭제하지 않음</string>
   <string name="dialog_confirm_spam_title">스팸폴더로 이동 확인</string>
-  <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">정말 이 메시지를 스팸폴더로 옮기시겠습니까?</item>
-    <item quantity="other">정말 메시지 <xliff:g id="message_count">%1$d</xliff:g>를 스팸폴더로 옮기시겠습니까?</item>
-  </plurals>
   <string name="dialog_confirm_spam_confirm_button">예</string>
   <string name="dialog_confirm_spam_cancel_button">아니오</string>
   <string name="dialog_attachment_progress_title">첨부 파일 다운로드 중</string>
@@ -801,10 +773,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="settings_export_success">설정을 파일 <xliff:g id="filename">%s</xliff:g>로 내보냄</string>
   <string name="settings_import_global_settings_success">설정을 <xliff:g id="filename">%s</xliff:g>로부터 가져옴</string>
   <string name="settings_import_success"><xliff:g id="filename">%s</xliff:g>에서 <xliff:g id="accounts">%s</xliff:g>를 가져옴</string>
-  <plurals name="settings_import_accounts">
-    <item quantity="one">계정 하나</item>
-    <item quantity="other">계정 <xliff:g id="numAccounts">%s</xliff:g> 개</item>
-  </plurals>
   <string name="settings_export_failure">설정 내보내기 실패</string>
   <string name="settings_import_failure"><xliff:g id="filename">%s</xliff:g>로부터 설정 가져오기 실패</string>
   <string name="settings_export_success_header">내보내기 성공</string>
@@ -813,16 +781,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="settings_import_failed_header">가져오기 실패</string>
   <string name="settings_import_activate_account_header">계정 활성화</string>
   <string name="settings_import_activate_account_intro">계정 \"<xliff:g id="account">%s</xliff:g>\"을 활성화하기 위해 <xliff:g id="server_passwords">%s</xliff:g>를 입력하십시오.</string>
-  <plurals name="settings_import_server_passwords">
-    <item quantity="one">서버 비밀번호</item>
-    <item quantity="other">각 서버의 비밀번호</item>
-  </plurals>
   <string name="settings_import_incoming_server">수신 서버 (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">발신 서버 (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="one">비밀번호 설정 중…</item>
-    <item quantity="other">각 비밀번호 설정 중…</item>
-  </plurals>
   <string name="settings_import_use_incoming_server_password">수신 서버 비밀번호 사용</string>
   <string name="activate_account_action">활성화</string>
   <string name="account_unavailable">\"<xliff:g id="account">%s</xliff:g>\" 계정을 이용할 수 없습니다. 저장장치를 확인하십시오.</string>

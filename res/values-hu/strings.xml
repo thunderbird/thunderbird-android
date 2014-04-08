@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!--Magyarította: Deák Tamás (maya98) és RootRulez-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
@@ -391,9 +390,12 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_setup_options_mail_display_count_all">Minden levél</string>
   <string name="move_copy_cannot_copy_unsynced_message">Ez a levél nem másolható illetve mozgatható máshova, mert nincs szinkronizálva a szerverrel.</string>
   <string name="account_setup_failed_dlg_title">A konfigurálás nem sikerült</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Felhasználónév vagy a jelszó hibás.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Nem lehet biztonságosan kapcsolódni a szerverhez.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Nem lehet kapcsolódni a szerverhez.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Felhasználónév vagy a jelszó hibás.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Nem lehet biztonságosan kapcsolódni a szerverhez.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Nem lehet kapcsolódni a szerverhez.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Módosítás</string>
   <string name="account_setup_failed_dlg_continue_action">Tovább</string>
   <string name="account_settings_push_advanced_title">Haladó</string>
@@ -602,31 +604,8 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_setup_failed_dlg_invalid_certificate_title">Felismerhetetlen tanúsítvány</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kulcs elfogadva</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs elutasítva</string>
-  <string name="message_list_help_key">
-    Del (vagy D) - Törlés\n
-    R - Válasz\n
-    A - Válasz mindenkinek\n
-    C - Írás\n
-    F - Továbbít\n
-    M - Áthelyezés\n
-    V - Archívum\n
-    Y - Másolás\n
-    Z - Olvasottnak vagy olvasatlannak jelöl\n
-    G - Csillagoz\n
-    O - Rendezési típus\n
-    I - Rendezési sorrend\n
-    Q - Vissza a mappákba\n
-    S - Kijelölés/Kijelölés megszüntetése\n
-    J, P - Előző üzenet\n
-    K, N - Következő üzenet
-  </string>
-  <string name="folder_list_help_key">
-    1 - Csak az elsődleges mappák megjelenítése\u000A
-    2 - Elsődleges és másodlagos mappák megjelenítése\u000A
-    3 - Mindet megjeleníti, kivéve a másodlagos mappákat\u000A
-    4 - Minden mappa megjelenítése\u000A
-    Q - Vissza fiókokhoz\u000A
-    S - Fiókbeállítások módosítása</string>
+  <string name="message_list_help_key">Del (vagy D) - Törlés\nR - Válasz\nA - Válasz mindenkinek\nC - Írás\nF - Továbbít\nM - Áthelyezés\nV - Archívum\nY - Másolás\nZ - Olvasottnak vagy olvasatlannak jelöl\nG - Csillagoz\nO - Rendezési típus\nI - Rendezési sorrend\nQ - Vissza a mappákba\nS - Kijelölés/Kijelölés megszüntetése\nJ, P - Előző üzenet\nK, N - Következő üzenet</string>
+  <string name="folder_list_help_key">1 - Csak az elsődleges mappák megjelenítése\n2 - Elsődleges és másodlagos mappák megjelenítése\n3 - Mindet megjeleníti, kivéve a másodlagos mappákat\n4 - Minden mappa megjelenítése\nQ - Vissza fiókokhoz\nS - Fiókbeállítások módosítása</string>
   <string name="folder_list_filter_hint">mappa neve</string>
   <string name="folder_list_display_mode_label">Mappák megjelenítése</string>
   <string name="folder_list_display_mode_all">Minden mappa</string>
@@ -659,8 +638,8 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="background_ops_label">Háttérszinkronizálás</string>
   <string name="background_ops_never">Soha</string>
   <string name="background_ops_always">Mindig</string>
-  <string name="background_ops_enabled">"Ha a 'Háttéradatok' bekapcsolva"</string>
-  <string name="background_ops_auto_sync">"Ha a 'Háttéradatok' és 'Auto-szink' bekapcsolva"</string>
+  <string name="background_ops_enabled">Ha a \'Háttéradatok\' bekapcsolva</string>
+  <string name="background_ops_auto_sync">Ha a \'Háttéradatok\' és \'Auto-szink\' bekapcsolva</string>
   <string name="background_ops_auto_sync_only">Amikor az \'Automatikus szinkronizáció\' be van kapcsolva</string>
   <string name="batch_select_all">Mindent kijelöl</string>
   <string name="account_setup_push_limit_label">Ellenőrizhető mappák száma</string>

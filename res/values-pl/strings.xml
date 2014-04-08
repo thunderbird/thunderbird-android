@@ -1,15 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!--####################################################################################-->
-<!--##                                                                                ##-->
-<!--##         Polska wersja jezykowa: Marcin Orlowski <carlos@wfmh.org.pl>           ##-->
-<!--##                                                                                ##-->
-<!--## Latest update: (YYYY-MM-DD): 2013.10.30                                        ##-->
-<!--## Modified by rabbbit, 2011.03.03                                                ##-->
-<!--## Updated by Błażej Jeżewski, 2012.04.10                                         ##-->
-<!--## Updated by Mirosław Lach, 2013.07.15                                           ##-->
-<!--## Updated by Jacek Sowiński, 2013.10.30                                          ##-->
-<!--##                                                                                ##-->
-<!--####################################################################################-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
@@ -44,7 +33,7 @@ Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
   <li>Skróty klawiszowe</li>
   <li>Lepsza obsługa protokołu IMAP</li>
   <li>Zapisywanie załączników na kartę SD</li>
-  <li>Opróźnianie folderu \"Trash\"</li>
+  <li>Opróźnianie folderu "Trash"</li>
   <li>Sortowanie wiadomości</li>
   <li>… i wiele innych</li>
 </ul>
@@ -406,9 +395,12 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_setup_options_mail_display_count_all">Wszystkie wiadomości</string>
   <string name="move_copy_cannot_copy_unsynced_message">Nie mogę skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
   <string name="account_setup_failed_dlg_title">Wystąpił błąd</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Podany identyfikator lub hasło jest nieprawidłowe.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Nie mogę nawiązać bezpiecznego połączenia z serwerem.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Nie mogę połączyć się z serwerem.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Podany identyfikator lub hasło jest nieprawidłowe.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Nie mogę nawiązać bezpiecznego połączenia z serwerem.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Nie mogę połączyć się z serwerem.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Popraw ustawienia</string>
   <string name="account_setup_failed_dlg_continue_action">Kontynuuj</string>
   <string name="account_settings_push_advanced_title">Zaawansowane</string>
@@ -620,31 +612,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
-  <string name="message_list_help_key">
-        Del lub D - Usuń\n
-        R - Odpowiedz\n
-        A - Odp. wszystkim\n
-        C - Napisz\n
-        F - Przekaż\n
-        M - Przenieś\n
-        V - Archiwizuj\n
-        Y - Skopiuj\n
-        Z - Przełącz przeczytane/nieprzeczytane\n
-        G - Gwiazdka\n
-        O - Typ sortowania\n
-        I - Porządek sortowania\n
-        Q - Widok folderów\n
-        S - Zaznacz/odznacz\n
-        J lub P - Poprzednia wiadomość\n
-        K lub N - Następna wiadomość
-  </string>
-  <string name="folder_list_help_key">
-    1 - Wyśw. tylko foldery 1szej klasy\n
-    2 - Wyśw. foldery 1szej i 2giej klasy\n
-    3 - Wyśw. wszystkie poza folderami 2giej klasy\n
-    4 - Wyświetl wszystkie foldery\n
-    Q - Lista kont\n
-    S - Edytuj ustawienia konta</string>
+  <string name="message_list_help_key">Del lub D - Usuń\nR - Odpowiedz\nA - Odp. wszystkim\nC - Napisz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Skopiuj\nZ - Przełącz przeczytane/nieprzeczytane\nG - Gwiazdka\nO - Typ sortowania\nI - Porządek sortowania\nQ - Widok folderów\nS - Zaznacz/odznacz\nJ lub P - Poprzednia wiadomość\nK lub N - Następna wiadomość</string>
+  <string name="folder_list_help_key">1 - Wyśw. tylko foldery 1szej klasy\n2 - Wyśw. foldery 1szej i 2giej klasy\n3 - Wyśw. wszystkie poza folderami 2giej klasy\n4 - Wyświetl wszystkie foldery\nQ - Lista kont\nS - Edytuj ustawienia konta</string>
   <string name="folder_list_filter_hint">Wpisz nazwę folderu</string>
   <string name="folder_list_display_mode_label">Wyświetlanie folderów</string>
   <string name="folder_list_display_mode_all">Wszystkie</string>
@@ -781,17 +750,9 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="select_text_now">Wybierz tekst do skopiowania.</string>
   <string name="dialog_confirm_delete_title">Potwiedź usunięcie</string>
   <string name="dialog_confirm_delete_message">Czy chcesz usunąć tą wiadomość?</string>
-  <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">Na pewno chcesz usunąć wiadomość?</item>
-    <item quantity="other">Na pewno chcesz usunąć <xliff:g id="message_count">%1$d</xliff:g> wiadomości?</item>
-  </plurals>
   <string name="dialog_confirm_delete_confirm_button">Usuń</string>
   <string name="dialog_confirm_delete_cancel_button">Nie usuwaj</string>
   <string name="dialog_confirm_spam_title">Potwierdź przeniesienie do spamu</string>
-  <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">Na pewno przenieść wiadomość do spamu?</item>
-    <item quantity="other">Na pewno przenieść <xliff:g id="message_count">%1$d</xliff:g> wiadomości do spamu?</item>
-  </plurals>
   <string name="dialog_confirm_spam_confirm_button">Tak</string>
   <string name="dialog_confirm_spam_cancel_button">Nie</string>
   <string name="dialog_attachment_progress_title">Pobieranie załącznika</string>
@@ -813,10 +774,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="settings_export_success">Zapisano ustawienia do <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importowano ustawienia z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importowano <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
-  <plurals name="settings_import_accounts">
-    <item quantity="one">1 konto</item>
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> kont</item>
-  </plurals>
   <string name="settings_export_failure">Błąd eksportu</string>
   <string name="settings_import_failure">Błąd importu z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Eksport udany</string>
@@ -825,16 +782,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="settings_import_failed_header">Import nieudany</string>
   <string name="settings_import_activate_account_header">Aktywuj konto</string>
   <string name="settings_import_activate_account_intro">Żeby użwyać konta \"<xliff:g id="account">%s</xliff:g>\" musisz zapewnić <xliff:g id="server_passwords">%s</xliff:g>.</string>
-  <plurals name="settings_import_server_passwords">
-    <item quantity="one">hasło serwera</item>
-    <item quantity="other">hasła serwera</item>
-  </plurals>
   <string name="settings_import_incoming_server">Serwer przychodzący (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Serwer wychodzący (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Ustawiam hasło…</item>
-    <item quantity="other">Ustawiam hasła…</item>
-  </plurals>
   <string name="settings_import_use_incoming_server_password">Użyj hasła serwera przychodzącego</string>
   <string name="activate_account_action">Aktywuj</string>
   <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" jest niedostępne; sprawdź dostępną pamięć</string>

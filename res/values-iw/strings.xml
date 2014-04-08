@@ -451,7 +451,7 @@
   <string name="account_settings_composition_label">הרכב ברירת המחדל</string>
   <string name="account_settings_composition_summary">הגדר את ברירת המחדל שלך מ, עותק מוסתר וחתימה</string>
   <string name="account_settings_identities_label">ניהול זהויות</string>
-  <string name="account_settings_identities_summary">"הגדרה חלופית \' מ \ 'כתובות וחתימות "</string>
+  <string name="account_settings_identities_summary">"הגדרה חלופית \' מ \ \'כתובות וחתימות "</string>
   <string name="manage_identities_title">נהל זהויות</string>
   <string name="manage_identities_context_menu_title">נהל זהות</string>
   <string name="edit_identity_title">ערוך זהות</string>

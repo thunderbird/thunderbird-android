@@ -1,8 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!--Translator: (c) 2013, Jan Urbánek urbanek.jan.locus(a-t)gmail.com-->
-<!--This file is distributed under the same license as the k9mail project.-->
-<!--Available Plural-Forms: 3-->
-<!--Version: strings up to 4.328-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
@@ -400,9 +396,12 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="account_setup_options_mail_display_count_all">všechny zprávy</string>
   <string name="move_copy_cannot_copy_unsynced_message">Nelze kopírovat nebo přesunovat zprávu, která není synchronizována se serverem</string>
   <string name="account_setup_failed_dlg_title">Konfiguraci nastavení nelze dokončit</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Uživatelské jméno nebo heslo je nesprávné.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Nelze se bezpečně připojit k serveru.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Nelze se připojit k serveru.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Uživatelské jméno nebo heslo je nesprávné.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Nelze se bezpečně připojit k serveru.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Nelze se připojit k serveru.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Upravit podrobnosti</string>
   <string name="account_setup_failed_dlg_continue_action">Pokračovat</string>
   <string name="account_settings_push_advanced_title">Rozšířené</string>
@@ -614,31 +613,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámý certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
-  <string name="message_list_help_key">
-    Del (nebo D) - Smazat\n
-    R - Odpovědět\n
-    A - Odpovědět všem\n
-    C - Nová\n
-    F - Přeposlat\n
-    M - Přesun\n
-    V - Archiv\n
-    Y - Kopie\n
-    Z - Označit (ne)přečteno\n
-    G - Hvězdička\n
-    O - Typ třídění\n
-    I - Pořadí třídění\n
-    Q - Návrat do složek\n
-    S - Vybrat/zrušit výběr\n
-    J nebo P - Předchozí zpráva\n
-    K nebo N - Další zpráva
-  </string>
-  <string name="folder_list_help_key">
-      1 - Zobrazit jen složky 1. třídy\u000A
-      2 - Zobrazit složky 1. a 2. třídy\u000A
-      3 - Zobrazit všechny vyjma složek 2. třídy\u000A
-      4 - Zobrazit všechny složky\u000A
-      Q - Návrat k účtům\u000A
-      S - Upravit nastavení účtu</string>
+  <string name="message_list_help_key">Del (nebo D) - Smazat\nR - Odpovědět\nA - Odpovědět všem\nC - Nová\nF - Přeposlat\nM - Přesun\nV - Archiv\nY - Kopie\nZ - Označit (ne)přečteno\nG - Hvězdička\nO - Typ třídění\nI - Pořadí třídění\nQ - Návrat do složek\nS - Vybrat/zrušit výběr\nJ nebo P - Předchozí zpráva\nK nebo N - Další zpráva</string>
+  <string name="folder_list_help_key">1 - Zobrazit jen složky 1. třídy\n2 - Zobrazit složky 1. a 2. třídy\n3 - Zobrazit všechny vyjma složek 2. třídy\n4 - Zobrazit všechny složky\nQ - Návrat k účtům\nS - Upravit nastavení účtu</string>
   <string name="folder_list_filter_hint">název složky obsahuje</string>
   <string name="folder_list_display_mode_label">Složky</string>
   <string name="folder_list_display_mode_all">Zobrazit všechny složky</string>
@@ -810,8 +786,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="settings_import_global_settings_success">Importovano globální nastaveni z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importováno <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
-    <item quantity="one"><xliff:g id="numAccounts">%s</xliff:g> účet</item><!--added var in place of 1 účet-->
-    <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> účty</item><!--2-4 need to be this and 5- other-->
+    <item quantity="one">1 účet</item>
+    <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> účty</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> účtů</item>
   </plurals>
   <string name="settings_export_failure">Nepodařilo se exportovat nastavení</string>
@@ -824,15 +800,11 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="settings_import_activate_account_intro">Pro používání účtu \"<xliff:g id="account">%s</xliff:g>\" potřebujete zadat <xliff:g id="server_passwords">%s</xliff:g>.</string>
   <plurals name="settings_import_server_passwords">
     <item quantity="one">heslo</item>
-    <item quantity="few">hesla</item><!--2-4 need to be this few and 5- other-->
+    <item quantity="few">hesla</item>
     <item quantity="other">hesel</item>
   </plurals>
   <string name="settings_import_incoming_server">Příchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Odchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Nastavit heslo…</item>
-    <item quantity="other">Nastavit hesla…</item>
-  </plurals>
   <string name="settings_import_use_incoming_server_password">Heslo pro příchozi server</string>
   <string name="activate_account_action">Aktivovat</string>
   <string name="account_unavailable">Účet \"<xliff:g id="account">%s</xliff:g>\" je nedostupný; zkontrolujte úložiště</string>

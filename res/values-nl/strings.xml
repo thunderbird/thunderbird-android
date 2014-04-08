@@ -395,9 +395,12 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_options_mail_display_count_all">alle berichten</string>
   <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen omdat deze niet gesynchroniseerd is met de server</string>
   <string name="account_setup_failed_dlg_title">Setup kon niet afronden</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Kan niet veilig verbinden met server.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding maken met server.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Kan niet veilig verbinden met server.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding maken met server.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Aanpassen details</string>
   <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
   <string name="account_settings_push_advanced_title">Geavanceerd</string>
@@ -609,31 +612,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_failed_dlg_invalid_certificate_title">Onbekend Certificaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
-  <string name="message_list_help_key"><!--NEW: V, Z untranslated-->
-    Del (or D) - Verwijder\n
-    R - Antwoord\n
-    A - Antwoord Alle\n
-    C - Ontwerp\n
-    F - Doorsturen\n
-    M - Verplaats\n
-    V - Archive\n
-    Y - Kopieer\n
-    Z - Mark (Un)read\n
-    G - Ster\n
-    O - Sort type\n
-    I - Sort grootte\n
-    Q - Terug naar Mappen\n
-    S - Selecteer/de-selecteer\n
-    J, V - Vorige Bericht\n
-    K, N - Volgende bericht
-  </string>
-  <string name="folder_list_help_key">
-    1 - Laat alleen 1 klasse mappen zien\u000A
-    2 - Laat 1e en 2e klasse mappen zien\u000A
-    3 - Laat alles zien behalve 2e klasse mappen\u000A
-    4 - Laat alle mappen zien\u000A
-    Q - Terug naar Accounts\u000A
-    S - Aanpassen Account Instellingen</string>
+  <string name="message_list_help_key">Del (or D) - Verwijder\nR - Antwoord\nA - Antwoord Alle\nC - Ontwerp\nF - Doorsturen\nM - Verplaats\nV - Archive\nY - Kopieer\nZ - Mark (Un)read\nG - Ster\nO - Sort type\nI - Sort grootte\nQ - Terug naar Mappen\nS - Selecteer/de-selecteer\nJ, V - Vorige Bericht\nK, N - Volgende bericht</string>
+  <string name="folder_list_help_key">1 - Laat alleen 1 klasse mappen zien\n2 - Laat 1e en 2e klasse mappen zien\n3 - Laat alles zien behalve 2e klasse mappen\n4 - Laat alle mappen zien\nQ - Terug naar Accounts\nS - Aanpassen Account Instellingen</string>
   <string name="folder_list_filter_hint">map naam bevat</string>
   <string name="folder_list_display_mode_label">Mappen</string>
   <string name="folder_list_display_mode_all">Laat alle mappen zien</string>

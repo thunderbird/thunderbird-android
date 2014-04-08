@@ -208,7 +208,8 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="message_compose_quote_header_from">Nuo:</string>
   <string name="message_compose_quote_header_to">Kam:</string>
   <string name="message_compose_quote_header_cc">Cc:</string>
-  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> rašė:\n</string>
+  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> rašė:
+</string>
   <string name="message_compose_error_no_recipients">Turite pridėti bent vieną gavėją.</string>
   <string name="error_contact_address_not_found">Nepavyko rasti šio kontakto el. pašto adreso.</string>
   <string name="message_compose_attachments_skipped_toast">Kai kurių priedų negalima persiųsti, nes jie nebuvo parsiųsti.</string>
@@ -287,6 +288,7 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_setup_basics_email_hint">El. pašto adresas</string>
   <string name="account_setup_basics_password_hint">Slaptažodis</string>
   <string name="account_setup_basics_manual_setup_action">Rankinis nustatymas</string>
+  <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Gaunama paskyros informacija…</string>
   <string name="account_setup_check_settings_check_incoming_msg">Tikrinami gaunamųjų serverio nustatymai…</string>
   <string name="account_setup_check_settings_check_outgoing_msg">Tikrinami siunčiamųjų serverio nustatymai…</string>
@@ -394,9 +396,13 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_setup_options_mail_display_count_all">visi laiškai</string>
   <string name="move_copy_cannot_copy_unsynced_message">Neįmanoma kopijuoti ar perkelti laiškų kurie nesinchronizuoti su serveriu</string>
   <string name="account_setup_failed_dlg_title">Nepavyko baigti nustatymo</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Neteisingas naudotojo vardas arba slaptažodis.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Serveris pateikė netinkamą sertifikatą. Kartais tai nutinka dėl neteisingos serverio konfigūracijos. Kartais tai nutinka kai kažkas bando užpulti jus ar jūsų pašto serverį. Jei nesate tikri kame bėda, paspauskite „Atmesti“ ir susisiekite su serverio administracija.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Nepavyko prisijungti prie serverio.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Neteisingas naudotojo vardas arba slaptažodis.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Serveris pateikė netinkamą sertifikatą. Kartais tai nutinka dėl neteisingos serverio konfigūracijos. Kartais tai nutinka kai kažkas bando užpulti jus ar jūsų pašto serverį. Jei nesate tikri kame bėda, paspauskite „Atmesti“ ir susisiekite su serverio administracija.
+
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Nepavyko prisijungti prie serverio.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Keisti detales</string>
   <string name="account_setup_failed_dlg_continue_action">Tęsti</string>
   <string name="account_settings_push_advanced_title">Išplėstinis</string>
@@ -608,8 +614,8 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neatpažintas sertifikatas</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Priimti raktą</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Atmesti raktą</string>
-  <string name="message_list_help_key">Del (ar D) - Šalinti\n R - Atsakyti\n A - Atsakyti visiems\n C - Kurti\n F - Persiųsti\n M - Perkelti\n V - Archyvas\n Y - Kopijuoti\n Z - Pažymėti (Ne)skaitytą\n G - Žvaigždutė\n O - Rikiavimo tipas\n I - Rikiavimo tvarka\n Q - Grįžti į aplankus\n S - Pasirinkti/nepasirinkti\n J or P - Ankstesnis laiškas\n K or N - Sekantis laiškas\n</string>
-  <string name="folder_list_help_key">1 - Rodyti tik 1 klasės aplankus\n 2 - Rodyti 1 ir 2 klasės aplankus\n 3 - Rodyti visus išskyrus 2 klasės aplankus\n 4 - Rodyti visus aplankus\n Q - Grįžti į paskyras\n S - Keisti paskyros nustatymus</string>
+  <string name="message_list_help_key">Del (ar D) - Šalinti\nR - Atsakyti\nA - Atsakyti visiems\nC - Kurti\nF - Persiųsti\nM - Perkelti\nV - Archyvas\nY - Kopijuoti\nZ - Pažymėti (Ne)skaitytą\nG - Žvaigždutė\nO - Rikiavimo tipas\nI - Rikiavimo tvarka\nQ - Grįžti į aplankus\nS - Pasirinkti/nepasirinkti\nJ or P - Ankstesnis laiškas\nK or N - Sekantis laiškas</string>
+  <string name="folder_list_help_key">1 - Rodyti tik 1 klasės aplankus\n2 - Rodyti 1 ir 2 klasės aplankus\n3 - Rodyti visus išskyrus 2 klasės aplankus\n4 - Rodyti visus aplankus\nQ - Grįžti į paskyras\nS - Keisti paskyros nustatymus</string>
   <string name="folder_list_filter_hint">aplanko varde yra</string>
   <string name="folder_list_display_mode_label">Rodyti aplankus…</string>
   <string name="folder_list_display_mode_all">Visus aplankus</string>
@@ -746,12 +752,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="select_text_now">Pasirinkti tesktą kopijavimui.</string>
   <string name="dialog_confirm_delete_title">Patvirtinti šalinimą</string>
   <string name="dialog_confirm_delete_message">Ar tikrai norite pašalinti laišką?</string>
-  <!--NEW:
-  <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">Do you really want to delete this message?</item>
-    <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-  </plurals>
--->
   <string name="dialog_confirm_delete_confirm_button">Taip</string>
   <string name="dialog_confirm_delete_cancel_button">Ne</string>
   <string name="dialog_confirm_spam_title">Patvirtinti perkėlimą į brukalo aplanką</string>
@@ -781,12 +781,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="settings_export_success">Eksportuoti nustatymai išsaugoti <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importuoti globalius nustatymus iš <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importuota <xliff:g id="accounts">%s</xliff:g> iš <xliff:g id="filename">%s</xliff:g></string>
-  <!--NEW:
-  <plurals name="settings_import_accounts">
-    <item quantity="one">1 account</item>
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
-  </plurals>
--->
   <string name="settings_export_failure">Eksportuoti nustatymų nepavyko</string>
   <string name="settings_import_failure">Nustatymų iš <xliff:g id="filename">%s</xliff:g> importuoti nepavyko</string>
   <string name="settings_export_success_header">Eksportuota sėkmingai</string>

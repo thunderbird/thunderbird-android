@@ -12,7 +12,9 @@
   <!--Used in the about dialog-->
   <string name="app_authors">谷歌以及帮着遛K-9的小朋友们。</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="app_license">根据Apache License 2.0 协议授权。</string>
   <!--Welcome message-->
+  <string name="welcome_message_title">欢迎来到K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
 K-9 Mail是Android下的开源电子邮件客户端，其最初的代码来自Android默认的电子邮件程序。
@@ -64,9 +66,13 @@ K-9改进的功能包括：
   <string name="delete_messages_desc">允许该程序删除邮件。</string>
   <string name="about_title_fmt">关于<xliff:g id="app_name">%s</xliff:g></string>
   <string name="accounts_title">账户</string>
+  <string name="folders_title">文件夹</string>
   <string name="advanced">高级</string>
   <string name="message_list_title"><xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g></string>
   <string name="compose_title_compose">新邮件</string>
+  <string name="compose_title_reply">回复</string>
+  <string name="compose_title_reply_all">回复全部</string>
+  <string name="compose_title_forward">转发</string>
   <string name="choose_folder_title">选择文件夹</string>
   <string name="status_loading_account_folder">\u0020（正在接收<xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>）</string>
   <string name="status_loading_account_folder_headers">\u0020（正在接收邮件信息<xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>）</string>
@@ -75,6 +81,7 @@ K-9改进的功能包括：
   <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
   <string name="status_next_poll">\u0020（下次接收时间：<xliff:g id="nexttime">%s</xliff:g>）</string>
   <string name="status_syncing_off">同步关闭</string>
+  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 个已选择</string>
   <string name="next_action">下一步</string>
   <string name="previous_action">上一步</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
@@ -91,6 +98,8 @@ K-9改进的功能包括：
   <string name="spam_action">标记为垃圾</string>
   <string name="forward_action">转发</string>
   <string name="move_action">移动</string>
+  <string name="single_message_options_action">发送...</string>
+  <string name="refile_action">重新归档...</string>
   <string name="continue_action">继续</string>
   <string name="back_action">返回</string>
   <string name="done_action">完成</string>
@@ -117,6 +126,10 @@ K-9改进的功能包括：
   <string name="unflag_action">移除星标</string>
   <string name="copy_action">拷贝</string>
   <string name="select_text_action">选择文本</string>
+  <string name="show_headers_action">显示邮件头</string>
+  <string name="hide_headers_action">隐藏邮件头</string>
+  <string name="message_view_theme_action_dark">切换到黑色主题</string>
+  <string name="message_view_theme_action_light">切换到明亮主题</string>
   <string name="mark_as_unread_action">标记为未读</string>
   <string name="add_cc_bcc_action">添加抄送/暗送</string>
   <string name="read_receipt">已读回执</string>
@@ -149,7 +162,14 @@ K-9改进的功能包括：
   <string name="clearing_account">正在清理账户“<xliff:g id="account">%s</xliff:g>”</string>
   <string name="recreating_account">正在重建账户“<xliff:g id="account">%s</xliff:g>”</string>
   <string name="notification_new_title">您有新邮件</string>
+  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> 新邮件</string>
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string>
+  <string name="notification_additional_messages">再加载 <xliff:g id="additional_messages">%d</xliff:g> 条信息, 账户 <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_action_reply">回复</string>
+  <string name="notification_action_mark_as_read">标记为已读</string>
+  <string name="notification_action_delete">删除</string>
+  <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> 认证错误</string>
+  <string name="notification_certificate_error_text">请检查您的服务器设置</string>
   <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在检查邮件</string>
   <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
@@ -187,11 +207,11 @@ K-9改进的功能包括：
   <string name="message_compose_quote_header_from">发件人：</string>
   <string name="message_compose_quote_header_to">收件人：</string>
   <string name="message_compose_quote_header_cc">抄送：</string>
-  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>写到：</string>
+  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> 写到：</string>
   <string name="message_compose_error_no_recipients">您必须添加至少一个收件人。</string>
-  <string name="error_contact_address_not_found">没有找到收件地址。</string>
+  <string name="error_contact_address_not_found">没有找到该联系人的邮件地址。</string>
   <string name="message_compose_attachments_skipped_toast">由于一些附件还没有被下载，因此无法转发这些附件。</string>
-  <string name="message_compose_show_quoted_text_action">引用文字</string>
+  <string name="message_compose_show_quoted_text_action">引用消息</string>
   <string name="message_compose_description_add_to">增加收件人（To）</string>
   <string name="message_compose_description_add_cc">增加收件人（CC）</string>
   <string name="message_compose_description_add_bcc">增加收件人（BCC）</string>
@@ -226,13 +246,19 @@ K-9改进的功能包括：
   <string name="global_settings_preview_lines_label">预览行数</string>
   <string name="global_settings_show_correspondent_names_label">显示收件人姓名</string>
   <string name="global_settings_show_correspondent_names_summary">如果可能则使用收件人姓名代替收件地址</string>
+  <string name="global_settings_sender_above_subject_label">联系人在主题上方</string>
+  <string name="global_settings_sender_above_subject_summary">在主题上方显示联系人姓名，而不是下方</string>
   <string name="global_settings_show_contact_name_label">显示联系人姓名</string>
   <string name="global_settings_show_contact_name_summary">如果可能则使用联系人姓名代替收件地址</string>
   <string name="global_settings_registered_name_color_label">使用颜色标记联系人</string>
   <string name="global_settings_registered_name_color_default">不使用颜色标记联系人列表</string>
   <string name="global_settings_registered_name_color_changed">使用颜色标记联系人列表</string>
+  <string name="global_settings_folderlist_wrap_folder_names_label">长文件夹名换行</string>
+  <string name="global_settings_folderlist_wrap_folder_names_summary">使用多行显示长文件夹名</string>
   <string name="global_settings_messageview_fixedwidth_label">定宽字体</string>
   <string name="global_settings_messageview_fixedwidth_summary">使用定宽字体显示纯文本邮件</string>
+  <string name="global_settings_messageview_autofit_width_label">消息自适应</string>
+  <string name="global_settings_messageview_autofit_width_summary">缩小消息以适应屏幕</string>
   <string name="global_settings_messageview_return_to_list_label">删除后回到自动返回到列表</string>
   <string name="global_settings_messageview_return_to_list_summary">邮件删除后自动返回到邮件列表</string>
   <string name="global_settings_messageview_show_next_label">删除后显示下一封邮件</string>
@@ -242,6 +268,16 @@ K-9改进的功能包括：
   <string name="global_settings_confirm_action_delete">删除（仅在邮件视图里）</string>
   <string name="global_settings_confirm_action_delete_starred">删除加星（仅在邮件视图里）</string>
   <string name="global_settings_confirm_action_spam">标记为垃圾</string>
+  <string name="global_settings_confirm_action_delete_notif">删除(来自通知)</string>
+  <string name="global_settings_notification_hide_subject_title">在通知中隐藏主题</string>
+  <string name="global_settings_notification_hide_subject_never">从不</string>
+  <string name="global_settings_notification_hide_subject_when_locked">当设备锁定时</string>
+  <string name="global_settings_notification_hide_subject_always">总是</string>
+  <string name="global_settings_notification_quick_delete_title">显示“删除”按钮</string>
+  <string name="global_settings_notification_quick_delete_never">从不</string>
+  <string name="global_settings_notification_quick_delete_when_single_msg">为单条消息通知</string>
+  <string name="global_settings_notification_quick_delete_always">总是</string>
+  <string name="global_settings_notification_quick_delete_description">在通知区域中显示一个按钮以允许快速删除信息</string>
   <string name="quiet_time">安静时间</string>
   <string name="quiet_time_description">禁止铃声，震动以及闪光</string>
   <string name="quiet_time_starts">安静时间开始</string>
@@ -358,9 +394,12 @@ K-9改进的功能包括：
   <string name="account_setup_options_mail_display_count_all">所有邮件</string>
   <string name="move_copy_cannot_copy_unsynced_message">没有与服务器同步的邮件无法进行拷贝或移动</string>
   <string name="account_setup_failed_dlg_title">无法完成设置</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">用户名或密码错误。\n（<xliff:g id="error">%s</xliff:g>）</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">无法使用加密方法连接到服务器。\n（<xliff:g id="error">%s</xliff:g>）</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">无法连接到服务器。\n（<xliff:g id="error">%s</xliff:g>）</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">用户名或密码错误。
+（<xliff:g id="error">%s</xliff:g>）</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">无法使用加密方法连接到服务器。
+（<xliff:g id="error">%s</xliff:g>）</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">无法连接到服务器。
+（<xliff:g id="error">%s</xliff:g>）</string>
   <string name="account_setup_failed_dlg_edit_details_action">编辑详细信息</string>
   <string name="account_setup_failed_dlg_continue_action">继续</string>
   <string name="account_settings_push_advanced_title">高级</string>
@@ -395,12 +434,14 @@ K-9改进的功能包括：
   <string name="account_settings_message_format_text">纯文本（图片和排版将被删除）</string>
   <string name="account_settings_message_format_html">HTML（图片和排版将被保留）</string>
   <string name="account_settings_message_format_auto">自动（纯文本，除非是在回复HTML邮件）</string>
+  <string name="account_settings_always_show_cc_bcc_label">总是显示抄送/暗送(CC/BCC)</string>
   <string name="account_settings_message_read_receipt_label">已读回执</string>
   <string name="account_settings_message_read_receipt_summary">总是要求已读回执</string>
   <string name="account_settings_quote_style_label">回复时引用格式</string>
   <string name="account_settings_quote_style_prefix">引用前缀（类似Gmail，Pine）</string>
   <string name="account_settings_quote_style_header">引用头（类似Outlook，Yahoo!，Hotmail）</string>
   <string name="account_settings_general_title">一般设置</string>
+  <string name="account_settings_reading_mail">读邮件</string>
   <string name="account_settings_sync">正在接收邮件</string>
   <string name="account_settings_folders">文件夹</string>
   <string name="account_settings_quote_prefix_label">引用文本前缀</string>
@@ -411,6 +452,7 @@ K-9改进的功能包括：
   <string name="account_settings_crypto_auto_signature_summary">使用账户的电子邮件地址自动猜测签名密钥。</string>
   <string name="account_settings_crypto_auto_encrypt">自动加密</string>
   <string name="account_settings_crypto_auto_encrypt_summary">如果找到收件人的公钥，则自动加密。</string>
+  <string name="account_settings_crypto_apg_not_installed">未安装APG加密</string>
   <string name="account_settings_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_settings_storage_title">存储</string>
   <string name="account_settings_color_label">账户颜色</string>
@@ -544,6 +586,8 @@ K-9改进的功能包括：
   <string name="sort_latest_first">优先显示最近的邮件</string>
   <string name="sort_subject_alpha">按主题升序</string>
   <string name="sort_subject_re_alpha">按主题降序</string>
+  <string name="sort_sender_alpha">发件人字母</string>
+  <string name="sort_sender_re_alpha">发件人字母反序</string>
   <string name="sort_flagged_first">优先显示带有星标的邮件</string>
   <string name="sort_flagged_last">优先显示没有星标的邮件</string>
   <string name="sort_unread_first">优先显示未读邮件</string>
@@ -554,42 +598,21 @@ K-9改进的功能包括：
   <string name="sort_by_date">日期</string>
   <string name="sort_by_arrival">到达时间</string>
   <string name="sort_by_subject">主题</string>
+  <string name="sort_by_sender">发件人</string>
   <string name="sort_by_flag">星标</string>
   <string name="sort_by_unread">已读/未读</string>
   <string name="sort_by_attach">附件</string>
   <string name="account_delete_dlg_title">删除账户</string>
   <string name="account_recreate_dlg_title">重建账户</string>
   <string name="account_clear_dlg_title">清除账户</string>
+  <string name="provider_note_auonejp">请确保在 au one邮件设置中开启了IMAP和POP3.</string>
   <string name="provider_note_naver">如果您想使用IMAP或者POP3，请在Naver mail的设置页面设置允许IMAP或者POP3。</string>
   <string name="provider_note_hanmail">如果您想使用IMAP或者POP3，请在Hanmail(Daum) mail的设置页面设置允许IMAP或者POP3。</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">无法识别的证书信息</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
-  <string name="message_list_help_key"><!--NEW: V, Z untranslated-->
-    Del (or D) - 删除\n
-    R - 回复\n
-    A - 全部回复\n
-    C - 新邮件\n
-    F - 转发\n
-    M - 移动\n
-    V - Archive\n
-    Y - 拷贝\n
-    Z - Mark (Un)read\n
-    G - 星标\n
-    O - 排序方式\n
-    I - 升序/降序\n
-    Q - 返回文件夹\n
-    S - 选择/取消选择\n
-    J, P - 上一封邮件\n
-    K, N - 下一封邮件
-  </string>
-  <string name="folder_list_help_key">
-    1 - 只显示初级文件夹\u000A
-    2 - 显示初级和次级文件夹\u000A
-    3 - 仅不显示次级文件夹\u000A
-    4 - 显示全部文件夹\u000A
-    Q - 返回全部账户\u000A
-    S - 编辑账户设置</string>
+  <string name="message_list_help_key">Del (or D) - 删除\nR - 回复\nA - 全部回复\nC - 新邮件\nF - 转发\nM - 移动\nV - Archive\nY - 拷贝\nZ - Mark (Un)read\nG - 星标\nO - 排序方式\nI - 升序/降序\nQ - 返回文件夹\nS - 选择/取消选择\nJ, P - 上一封邮件\nK, N - 下一封邮件</string>
+  <string name="folder_list_help_key">1 - 只显示初级文件夹\n2 - 显示初级和次级文件夹\n3 - 仅不显示次级文件夹\n4 - 显示全部文件夹\nQ - 返回全部账户\nS - 编辑账户设置</string>
   <string name="folder_list_filter_hint">文件夹名字里包含</string>
   <string name="folder_list_display_mode_label">文件夹</string>
   <string name="folder_list_display_mode_all">显示全部文件夹</string>
@@ -599,6 +622,7 @@ K-9改进的功能包括：
   <string name="account_settings_signature__location_label">签名位置</string>
   <string name="account_settings_signature__location_before_quoted_text">在引用的文本之前</string>
   <string name="account_settings_signature__location_after_quoted_text">在引用的文本之后</string>
+  <string name="setting_theme_global">使用应用程序主题</string>
   <string name="setting_theme_dark">灰暗</string>
   <string name="setting_theme_light">明亮</string>
   <string name="display_preferences">显示</string>
@@ -610,8 +634,14 @@ K-9改进的功能包括：
   <string name="accountlist_preferences">账户列表</string>
   <string name="messagelist_preferences">邮件列表</string>
   <string name="messageview_preferences">邮件</string>
+  <string name="folderlist_preferences">文件夹列表</string>
   <string name="settings_theme_label">主题</string>
+  <string name="settings_message_theme_label">消息查看主题</string>
+  <string name="settings_compose_theme_label">编辑器主题</string>
   <string name="settings_language_label">语言</string>
+  <string name="settings_message_theme_selection_label">固定消息主题</string>
+  <string name="settings_message_theme_selection_summary_off">在查看消息时选择消息查看主题</string>
+  <string name="settings_message_theme_selection_summary_on">使用固定消息查看主题</string>
   <string name="settings_messageview_mobile_layout_label">单列布局</string>
   <string name="settings_messageview_mobile_layout_summary">为小屏幕重新布局HTML邮件</string>
   <string name="setting_language_system">系统默认值</string>
@@ -620,6 +650,7 @@ K-9改进的功能包括：
   <string name="background_ops_always">总是</string>
   <string name="background_ops_enabled">当“后台数据”被选中</string>
   <string name="background_ops_auto_sync">当“后台数据”&amp;“自动同步”被选中</string>
+  <string name="background_ops_auto_sync_only">当“自动同步”已选定</string>
   <string name="batch_select_all">选择全部</string>
   <string name="account_setup_push_limit_label">推送时最多检查文件夹数量</string>
   <string name="account_setup_push_limit_10">十个文件夹</string>
@@ -680,6 +711,7 @@ K-9改进的功能包括：
   <string name="font_size_message_view_content">邮件内容</string>
   <string name="font_size_message_compose">撰写邮件</string>
   <string name="font_size_message_compose_input">文本输入框</string>
+  <string name="font_size_default">默认</string>
   <string name="font_size_tiniest">最小</string>
   <string name="font_size_tiny">更小</string>
   <string name="font_size_smaller">小</string>
@@ -717,18 +749,14 @@ K-9改进的功能包括：
   <string name="select_text_now">选择需要拷贝的文本。</string>
   <string name="dialog_confirm_delete_title">删除确认</string>
   <string name="dialog_confirm_delete_message">你确定要删除这封邮件么？</string>
-  <!--NEW:
   <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">Do you really want to delete this message?</item>
-    <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
+    <item quantity="other">您确定要删除 <xliff:g id="message_count">%1$d</xliff:g> 条消息吗?</item>
   </plurals>
--->
   <string name="dialog_confirm_delete_confirm_button">删除</string>
   <string name="dialog_confirm_delete_cancel_button">不要删除</string>
   <string name="dialog_confirm_spam_title">确认移动到垃圾邮件文件夹</string>
   <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">确认移动该邮件到垃圾邮件文件夹？</item>
-    <item quantity="other">确认移动<xliff:g id="message_count">%1$d</xliff:g>邮件到垃圾邮件文件夹？</item>
+    <item quantity="other">您确定要移动 <xliff:g id="message_count">%1$d</xliff:g> 条消息到垃圾箱吗?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">是</string>
   <string name="dialog_confirm_spam_cancel_button">否</string>
@@ -752,8 +780,7 @@ K-9改进的功能包括：
   <string name="settings_import_global_settings_success">全局设置已自<xliff:g id="filename">%s</xliff:g>导入</string>
   <string name="settings_import_success">账户<xliff:g id="accounts">%s</xliff:g>已自<xliff:g id="filename">%s</xliff:g>导入</string>
   <plurals name="settings_import_accounts">
-    <item quantity="one">单个账户</item>
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> 账户</item>
+    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> 个账户</item>
   </plurals>
   <string name="settings_export_failure">导出设置失败</string>
   <string name="settings_import_failure">自<xliff:g id="filename">%s</xliff:g>导入设置失败</string>
@@ -764,14 +791,12 @@ K-9改进的功能包括：
   <string name="settings_import_activate_account_header">激活账户</string>
   <string name="settings_import_activate_account_intro">使用账户\"<xliff:g id="account">%s</xliff:g>\"，您需要提供<xliff:g id="server_passwords">%s</xliff:g></string>
   <plurals name="settings_import_server_passwords">
-    <item quantity="one">服务器密码</item>
     <item quantity="other">服务器密码</item>
   </plurals>
   <string name="settings_import_incoming_server">接收邮件服务器 (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">发送邮件服务器 (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">正在设置密码…</item>
-    <item quantity="other">正在设置密码…</item>
+    <item quantity="other">设置密码...</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">使用接受邮件服务器的密码</string>
   <string name="activate_account_action">激活</string>
@@ -782,7 +807,7 @@ K-9改进的功能包括：
   <string name="manage_accounts_move_up_action">向上移动</string>
   <string name="manage_accounts_move_down_action">向下移动</string>
   <string name="manage_accounts_moving_message">正在移动账户…</string>
-  <string name="unread_widget_select_account">显示未读数</string>
+  <string name="unread_widget_select_account">显示未读数...</string>
   <string name="import_dialog_error_title">没有找到文件管理器</string>
   <string name="close">关闭</string>
   <string name="webview_empty_message">没有文本</string>
@@ -799,12 +824,62 @@ K-9改进的功能包括：
   <string name="webview_contextmenu_phone_call_action">拨打号码</string>
   <string name="webview_contextmenu_phone_save_action">保存号码到通讯录</string>
   <string name="webview_contextmenu_phone_copy_action">复制号码到剪贴板</string>
-  <string name="webview_contextmenu_phone_clipboard_label">号码</string>
+  <string name="webview_contextmenu_phone_clipboard_label">电话号码</string>
   <string name="webview_contextmenu_email_send_action">发送邮件</string>
   <string name="webview_contextmenu_email_save_action">保存到通讯录</string>
   <string name="webview_contextmenu_email_copy_action">复制邮件地址到通讯录</string>
   <string name="webview_contextmenu_email_clipboard_label">邮件地址</string>
   <string name="image_saved_as">保存图片到文件 \"<xliff:g id="filename">%s</xliff:g>\"</string>
   <string name="image_saving_failed">保存图片失败</string>
+  <string name="account_settings_remote_search_num_results_entries_all">全部</string>
+  <string name="account_settings_remote_search_num_results_entries_10">10</string>
+  <string name="account_settings_remote_search_num_results_entries_25">25</string>
+  <string name="account_settings_remote_search_num_results_entries_50">50</string>
+  <string name="account_settings_remote_search_num_results_entries_100">100</string>
+  <string name="account_settings_remote_search_num_results_entries_250">250</string>
+  <string name="account_settings_remote_search_num_results_entries_500">500</string>
+  <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+  <string name="account_settings_remote_search_num_label">服务器查找限制</string>
+  <string name="account_settings_remote_search_num_summary">查找将在找到 <xliff:g id="num_results">%s</xliff:g> 条结果后停止。</string>
+  <string name="account_settings_remote_search_full_text">在服务器搜索中包含邮件正文</string>
+  <string name="account_settings_remote_search_full_text_summary">全文搜索会影响速度。</string>
+  <string name="remote_search_sending_query">正在向服务器发送查询</string>
+  <string name="remote_search_downloading">正在获取 %d 条结果</string>
+  <string name="remote_search_downloading_limited">正在获取 %2$d 个中的 第%1$d 个结果</string>
+  <string name="remote_search_error">远程搜索失败</string>
+  <string name="account_settings_search">搜索</string>
+  <string name="account_settings_remote_search_enabled">启用服务器搜索</string>
+  <string name="account_settings_remote_search_enabled_summary">除了您的设备之外也在服务器上进行搜索</string>
+  <string name="action_remote_search">在服务器上搜索</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">向搜索服务器发送查询...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">从搜索服务器释放查询...</string>
+  <string name="remote_search_unavailable_no_network">服务器搜索需要网络连接。</string>
+  <string name="global_settings_background_as_unread_indicator_label">已读邮件变暗显示</string>
+  <string name="global_settings_background_as_unread_indicator_summary">灰色背景表示消息已读</string>
+  <string name="global_settings_threaded_view_label">按话题显示</string>
+  <string name="global_settings_threaded_view_summary">按照话题对消息进行组合</string>
+  <string name="upgrade_databases_title">更新数据库</string>
+  <string name="upgrade_databases_unspecified">正在更新数据库...</string>
+  <string name="upgrade_database_format">正在更新账户 <xliff:g id="account">%s</xliff:g> 的数据库</string>
+  <string name="message_list_loading">加载中...</string>
+  <string name="global_settings_splitview_mode_label">分屏显示</string>
+  <string name="global_settings_splitview_always">总是</string>
+  <string name="global_settings_splitview_never">从不</string>
+  <string name="global_settings_splitview_when_in_landscape">当以横向显示时</string>
+  <string name="message_view_empty">请在左侧选择消息</string>
+  <string name="global_settings_show_contact_picture_label">显示联系人图片</string>
+  <string name="global_settings_show_contact_picture_summary">在消息列表中显示联系人图片</string>
+  <string name="last_refresh_time_format">上次刷新 <xliff:g id="formatted_time">%s</xliff:g></string>
+  <string name="last_refresh_time_format_with_push">上次刷新时间 <xliff:g id="time_with_preposition">%s</xliff:g> (主动推送)</string>
+  <string name="preposition_for_date">日期 <xliff:g id="date">%s</xliff:g></string>
+  <string name="mark_all_as_read">全部标记为已读</string>
+  <string name="global_settings_colorize_missing_contact_pictures_label">以彩色显示联系人图片</string>
+  <string name="global_settings_colorize_missing_contact_pictures_summary">以彩色显示缺少的联系人图片</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">可见的消息动作</string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">在消息查看菜单显示选定的动作</string>
+  <string name="loading_attachment">附件加载中...</string>
+  <string name="fetching_attachment_dialog_title_send">消息正在发送</string>
+  <string name="fetching_attachment_dialog_title_save">正在保存草稿</string>
+  <string name="fetching_attachment_dialog_message">正在获取附件...</string>
   <!--=== OpenPGP specific ==================================================================-->
 </resources>

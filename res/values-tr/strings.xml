@@ -360,9 +360,12 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_setup_options_mail_display_count_all">Bütün mesajlar</string>
   <string name="move_copy_cannot_copy_unsynced_message">Sunucu ile eşleştirilmemiş bir mesaj kopyalanamaz veya taşınamaz.</string>
   <string name="account_setup_failed_dlg_title">Kurulum bitirilmedi</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Kullanıcı Adı veya şifre doğru değil.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Sunucuya güvenli bağlantı kurulamadı.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Sunucuya bağlanılamadı.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Kullanıcı Adı veya şifre doğru değil.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Sunucuya güvenli bağlantı kurulamadı.
+(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Sunucuya bağlanılamadı.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Ayrıntıları düzenle</string>
   <string name="account_setup_failed_dlg_continue_action">Devam</string>
   <string name="account_settings_push_advanced_title">Gelişmiş</string>
@@ -568,31 +571,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tanınmayan Sertifika</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kabul Tuşu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
-  <string name="message_list_help_key"><!--NEW: V untranslated-->
-    Del (veya D) - Sil\n
-    R - Cevapla\n
-    A - Hepsini cevapla\n
-    C - Oluştur\n
-    F - İlet\n
-    M - Taşı\n
-    V - Archive\n
-    Y - Kopyala\n
-    Z - Geçiş oku/okuma\n
-    G - Yıldız\n
-    O - Sıralama tipi\n
-    I - Sıralama şekli\n
-    Q - Klasörlere dön\n
-    S - Seç/seçme\n
-    J, P - Önceki Mesaj\n
-    K, N - Sonraki Mesaj
-  </string>
-  <string name="folder_list_help_key">
-    1 - Yalnız 1. sınıf klasörleri göster\u000A
-    2 - Yalnız 1. ve 2. sınıf klasörleri göster\u000A
-    3 - 2. Sınıf klasörler hariç hepsini göster\u000A
-    4 - Bütün klasörleri göster\u000A
-    Q - Hesaplara dön\u000A
-    S - Hesap ayarlarını düzenle</string>
+  <string name="message_list_help_key">Del (veya D) - Sil\nR - Cevapla\nA - Hepsini cevapla\nC - Oluştur\nF - İlet\nM - Taşı\nV - Archive\nY - Kopyala\nZ - Geçiş oku/okuma\nG - Yıldız\nO - Sıralama tipi\nI - Sıralama şekli\nQ - Klasörlere dön\nS - Seç/seçme\nJ, P - Önceki Mesaj\nK, N - Sonraki Mesaj</string>
+  <string name="folder_list_help_key">1 - Yalnız 1. sınıf klasörleri göster\n2 - Yalnız 1. ve 2. sınıf klasörleri göster\n3 - 2. Sınıf klasörler hariç hepsini göster\n4 - Bütün klasörleri göster\nQ - Hesaplara dön\nS - Hesap ayarlarını düzenle</string>
   <string name="folder_list_filter_hint">klasör adı şunu içeriyor</string>
   <string name="folder_list_display_mode_label">Klasörler</string>
   <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>
@@ -720,12 +700,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="select_text_now">Kopyalamak için metni seç.</string>
   <string name="dialog_confirm_delete_title">Silmeyi onayla</string>
   <string name="dialog_confirm_delete_message">Bu mesajı silmek istiyor musunuz?</string>
-  <!--NEW:
-  <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">Do you really want to delete this message?</item>
-    <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-  </plurals>
--->
   <string name="dialog_confirm_delete_confirm_button">Sil</string>
   <string name="dialog_confirm_delete_cancel_button">Silme</string>
   <string name="dialog_confirm_spam_title">Spam klasörüne taşımayı onayla</string>
