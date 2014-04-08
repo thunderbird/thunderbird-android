@@ -140,6 +140,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_red));
 
+                    mGetKeyButton.setVisibility(View.GONE);
                     mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
                     mSignatureLayout.setVisibility(View.GONE);
                     break;
@@ -154,6 +155,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_green));
 
+                    mGetKeyButton.setVisibility(View.GONE);
                     mSignatureUserId.setText(signatureResult.getUserId());
                     mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
                     mSignatureLayout.setVisibility(View.VISIBLE);
@@ -167,10 +169,10 @@ public class MessageOpenPgpView extends LinearLayout {
                     else {
                         mText.setText(R.string.openpgp_successful_decryption_unknown_signature);
                     }
-                    mGetKeyButton.setVisibility(View.VISIBLE);
                     MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_orange));
-
+                    
+                    mGetKeyButton.setVisibility(View.VISIBLE);
                     mSignatureUserId.setText(R.string.openpgp_signature_unknown);
                     mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
                     mSignatureLayout.setVisibility(View.VISIBLE);
@@ -187,6 +189,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_orange));
 
+                    mGetKeyButton.setVisibility(View.GONE);
                     mSignatureUserId.setText(signatureResult.getUserId());
                     mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
                     mSignatureLayout.setVisibility(View.VISIBLE);
