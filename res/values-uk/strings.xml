@@ -852,9 +852,9 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="global_settings_threaded_view_label">Режим перегляду</string>
   <string name="global_settings_threaded_view_summary">Групувати повідомлення по розмові</string>
   <string name="upgrade_databases_title">Поновити базу даних</string>
-  <string name="upgrade_databases_unspecified">Поновити базу даних...</string>
+  <string name="upgrade_databases_unspecified">Поновити базу даних…</string>
   <string name="upgrade_database_format">Поновити базу даних з облікового запису \"<xliff:g id="account">%s</xliff:g>\" </string>
-  <string name="message_list_loading">Завантаження...</string>
+  <string name="message_list_loading">Завантаження…</string>
   <string name="global_settings_splitview_mode_label">Перегляд розділеного екрану</string>
   <string name="global_settings_splitview_always">Завжди</string>
   <string name="global_settings_splitview_never">Ніколи</string>
@@ -869,9 +869,9 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="global_settings_colorize_missing_contact_pictures_label">Кольорові зображення контактів</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Видимі дії повідомлення</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Показувати вибрані дії в меню перегляду повідомлень</string>
-  <string name="loading_attachment">Завантаження вкладень...</string>
+  <string name="loading_attachment">Завантаження вкладень…</string>
   <string name="fetching_attachment_dialog_title_send">Збереження повідомлення</string>
   <string name="fetching_attachment_dialog_title_save">Збереження чернетки</string>
-  <string name="fetching_attachment_dialog_message">Отримання вкладення...</string>
+  <string name="fetching_attachment_dialog_message">Отримання вкладення…</string>
   <!--=== OpenPGP specific ==================================================================-->
 </resources>

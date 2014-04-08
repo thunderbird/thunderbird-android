@@ -884,9 +884,9 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="global_settings_colorize_missing_contact_pictures_summary">Colorejar imatges de contactes absents</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Accions de missatge visibles</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Mostrar accions seleccionades en el menu de vista de missatge</string>
-  <string name="loading_attachment">Carregant adjunt...</string>
+  <string name="loading_attachment">Carregant adjunt…</string>
   <string name="fetching_attachment_dialog_title_send">Enviant missatge</string>
   <string name="fetching_attachment_dialog_title_save">Guardant esborrany</string>
-  <string name="fetching_attachment_dialog_message">Recuperant adjunt...</string>
+  <string name="fetching_attachment_dialog_message">Recuperant adjunt…</string>
   <!--=== OpenPGP specific ==================================================================-->
 </resources>

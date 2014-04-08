@@ -624,7 +624,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="message_list_help_key">Suppr (ou D) - Supprimer\nR - Répondre\nA - Répondre à tous\nC - Composer\nF - Transférer\nM - Déplacer\nV - Archive\nY - Copier\nZ - Marquer lu/non lu\nG - Étoile\nO - Type de tri\nI - Ordre de tri\nQ - Retourner aux dossiers\nS - Sélectionner/Dessélectionner\nJ ou P - Message précédent\nK ou N - Prochain message</string>
   <string name="folder_list_help_key">1 - Afficher seulement les dossiers de 1re classe\n2 - Afficher les dossiers de 1re et 2e classe\n3 - Afficher tous les dossiers sauf 2e classe\n4 - Afficher tous les dossiers\nQ - Retourner au comptes\nS - Modifier les paramètres du compte</string>
   <string name="folder_list_filter_hint">le nom de dossier contient</string>
-  <string name="folder_list_display_mode_label">Afficher les dossiers...</string>
+  <string name="folder_list_display_mode_label">Afficher les dossiers…</string>
   <string name="folder_list_display_mode_all">Tous les dossiers</string>
   <string name="folder_list_display_mode_first_class">Les dossiers de 1re classe</string>
   <string name="folder_list_display_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
@@ -789,7 +789,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="settings_import_global_settings">Paramètres globaux</string>
   <string name="settings_exporting">Exportation des paramètres…</string>
   <string name="settings_importing">Importation des paramètres…</string>
-  <string name="settings_import_scanning_file">Analyse du fichier...</string>
+  <string name="settings_import_scanning_file">Analyse du fichier…</string>
   <string name="settings_export_success">Paramètres exportés vers <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Paramètres globaux importés depuis <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importé <xliff:g id="accounts">%s</xliff:g> depuis <xliff:g id="filename">%s</xliff:g></string>
@@ -899,7 +899,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="fetching_attachment_dialog_title_save">Enregistrement du brouillon</string>
   <string name="fetching_attachment_dialog_message">Récupération de la pièce jointe…</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Déchiffrement/vérification...</string>
+  <string name="openpgp_decrypting_verifying">Déchiffrement/vérification…</string>
   <string name="openpgp_successful_decryption">Déchiffrement réussi</string>
   <string name="openpgp_signature_valid_certified">Signature valide (certifiée)</string>
   <string name="openpgp_signature_valid_uncertified">Signature valide mais non certifiée</string>

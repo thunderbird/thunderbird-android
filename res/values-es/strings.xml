@@ -100,7 +100,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="forward_action">Reenviar</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
-  <string name="refile_action">Archivar...</string>
+  <string name="refile_action">Archivar…</string>
   <string name="continue_action">Continuar</string>
   <string name="back_action">Atrás</string>
   <string name="done_action">Terminado</string>
@@ -625,7 +625,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="message_list_help_key">Del (o D) - Borrar\nR - Responder\nA - Responder a todos\nC - Redactar\nF - Reenviar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (No) leído\nG - Estrella\nO - Tipo de ordenación\nI - Orden\nQ - Volver a Carpetas\n S - Seleccionar/Deseleccionar\nJ o P - Mensaje anterior\nK o N - Siguiente mensaje</string>
   <string name="folder_list_help_key">1 - Ver carpetas 1a Clase\n2 - Ver carpetas 1a y 2a Clase\n3 - Ver todas excepto las de 2a Clase\n4 - Ver todas las carpetas\nQ - Volver a cuentas\nS - Editar preferencias cuenta</string>
   <string name="folder_list_filter_hint">nombre carpeta contiene</string>
-  <string name="folder_list_display_mode_label">Mostrar carpetas...</string>
+  <string name="folder_list_display_mode_label">Mostrar carpetas…</string>
   <string name="folder_list_display_mode_all">Ver todas las carpetas</string>
   <string name="folder_list_display_mode_first_class">Ver sólo carpetas de 1a Clase</string>
   <string name="folder_list_display_mode_first_and_second_class">Ver carpetas de 1a y 2a Clase</string>
@@ -814,7 +814,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="settings_import_outgoing_server">Servidor de salida (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
     <item quantity="one">Definir password...</item>
-    <item quantity="other">Estableciendo contraseñas...</item>
+    <item quantity="other">Estableciendo contraseñas…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Usar la contraseña del Servidor de entrada</string>
   <string name="activate_account_action">Activar</string>
@@ -877,9 +877,9 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="global_settings_threaded_view_label">Vista agrupada por conversación</string>
   <string name="global_settings_threaded_view_summary">Contraer mensajes de la misma conversación</string>
   <string name="upgrade_databases_title">Actualizando bases de datos</string>
-  <string name="upgrade_databases_unspecified">Actualizando bases de datos...</string>
+  <string name="upgrade_databases_unspecified">Actualizando bases de datos…</string>
   <string name="upgrade_database_format">Actualizando base de datos de la cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Cargando...</string>
+  <string name="message_list_loading">Cargando…</string>
   <string name="global_settings_splitview_mode_label">Mostrar pantalla dividida</string>
   <string name="global_settings_splitview_always">Siempre</string>
   <string name="global_settings_splitview_never">Nunca</string>
@@ -895,9 +895,9 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="global_settings_colorize_missing_contact_pictures_summary">Colorear las imágenes de contactos no existentes</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Acciones de mensaje visibles</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Mostrar las acciones seleccionadas en el menú de vista de mensaje</string>
-  <string name="loading_attachment">Cargando adjunto...</string>
+  <string name="loading_attachment">Cargando adjunto…</string>
   <string name="fetching_attachment_dialog_title_send">Enviando mensaje</string>
   <string name="fetching_attachment_dialog_title_save">Guardando borrador</string>
-  <string name="fetching_attachment_dialog_message">Recuperando adjunto...</string>
+  <string name="fetching_attachment_dialog_message">Recuperando adjunto…</string>
   <!--=== OpenPGP specific ==================================================================-->
 </resources>

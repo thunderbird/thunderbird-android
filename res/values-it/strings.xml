@@ -117,7 +117,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="preferences_action">Impostazioni</string>
   <string name="account_settings_action">Impostazioni account</string>
   <string name="folder_settings_action">Impostazioni cartella</string>
-  <string name="global_settings_action">Impostazioni generali</string>
+  <string name="global_settings_action">Impostazioni globali</string>
   <string name="remove_account_action">Rimuovi account</string>
   <string name="clear_pending_action">Annulla tutte le azioni in corso (pericolo!)</string>
   <string name="mark_as_read_action">Marca come letto</string>
@@ -217,7 +217,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="message_compose_description_add_to">Aggiungi destinatario (A)</string>
   <string name="message_compose_description_add_cc">Aggiungi destinatario (CC)</string>
   <string name="message_compose_description_add_bcc">Aggiungi destinatario (Ccn)</string>
-  <string name="message_compose_description_delete_quoted_text">Elimina testo citato</string>
+  <string name="message_compose_description_delete_quoted_text">Rimuovi testo citato</string>
   <string name="message_compose_description_edit_quoted_text">Modifica testo citato</string>
   <string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">A:</string>
@@ -257,7 +257,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="global_settings_registered_name_color_changed">Colora i nomi nel tuo elenco dei contatti</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">Manda a capo i nomi lunghi delle cartelle</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Utilizza più righe per mostrare i nomi lunghi delle cartelle</string>
-  <string name="global_settings_messageview_fixedwidth_label">Carattere a larghezza fissa</string>
+  <string name="global_settings_messageview_fixedwidth_label">Caratteri a larghezza fissa</string>
   <string name="global_settings_messageview_fixedwidth_summary">Usa carattere a larghezza fissa quando mostri i messaggi di testo</string>
   <string name="global_settings_messageview_autofit_width_label">Adattamento automatico messaggi</string>
   <string name="global_settings_messageview_autofit_width_summary">Compatta i messaggi per adattarli allo schermo</string>
@@ -267,7 +267,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="global_settings_messageview_show_next_summary">Mostra messaggio successivo</string>
   <string name="global_settings_confirm_actions_title">Conferma azioni</string>
   <string name="global_settings_confirm_actions_summary">Mostra una finestra di dialogo ogni volta che si eseguono le azioni selezionate</string>
-  <string name="global_settings_confirm_action_delete">Elimina (soltanto in visualizzazione messaggi)</string>
+  <string name="global_settings_confirm_action_delete">Elimina (solo messaggi visualizzati)</string>
   <string name="global_settings_confirm_action_delete_starred">Elimina messaggi con la stella (solo messaggi visualizzati)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Elimina (da notifica)</string>
@@ -306,7 +306,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="account_setup_auth_type_normal_password">Password normale</string>
   <string name="account_setup_auth_type_insecure_password">Password, trasmessa in modo non sicuro</string>
   <string name="account_setup_auth_type_encrypted_password">Password cifrata</string>
-  <string name="account_setup_incoming_title">Impostazioni del server della posta in arrivo</string>
+  <string name="account_setup_incoming_title">Impostazioni server della posta in arrivo</string>
   <string name="account_setup_incoming_username_label">Nome utente</string>
   <string name="account_setup_incoming_password_label">Password</string>
   <string name="account_setup_incoming_pop_server_label">Server POP3</string>
@@ -356,7 +356,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="account_setup_outgoing_require_login_label">Richiedi accesso.</string>
   <string name="account_setup_outgoing_username_label">Nome utente</string>
   <string name="account_setup_outgoing_password_label">Password</string>
-  <string name="account_setup_outgoing_authentication_label">Tipo di autenticazione</string>
+  <string name="account_setup_outgoing_authentication_label">Autenticazione</string>
   <string name="account_setup_bad_uri">Configurazione non valida: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Opzioni account</string>
   <string name="compact_action">Compatta account</string>
@@ -625,7 +625,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="message_list_help_key">Canc (o D) - Elimina\nR - Rispondi\nA - Rispondi a tutti\nC - Componi\nF - Inoltra\nM - Sposta\nV - Archive\nY - Copia\nZ - Marca (non) letto\nG - Stella\nO - Tipo ordinamento\nI - Verso ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona\nJ o P - Messaggio precedente\nK o N - Messaggio successivo</string>
   <string name="folder_list_help_key">1 - Visualizza soltanto cartelle di 1a classe\n2 - Visualizza cartelle di 1a e 2a classe\n3 - Visualizza tutte eccetto le cartelle di 2a classe\n4 - Visualizza tutte le cartelle\nQ - Ritorna agli account\nS - Modifica le impostazioni dell\'account</string>
   <string name="folder_list_filter_hint">il nome della cartella contiene</string>
-  <string name="folder_list_display_mode_label">Mostra cartelle...</string>
+  <string name="folder_list_display_mode_label">Mostra cartelle…</string>
   <string name="folder_list_display_mode_all">Tutte le cartelle</string>
   <string name="folder_list_display_mode_first_class">Cartelle di 1a classe</string>
   <string name="folder_list_display_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
@@ -829,25 +829,25 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="import_dialog_error_title">Nessun file manager presente</string>
   <string name="close">Chiudi</string>
   <string name="webview_empty_message">Senza testo</string>
-  <string name="webview_contextmenu_link_view_action">Apri per visualizzare</string>
-  <string name="webview_contextmenu_link_share_action">Condividi link</string>
-  <string name="webview_contextmenu_link_copy_action">Copia link negli appunti</string>
-  <string name="webview_contextmenu_link_clipboard_label">Link</string>
+  <string name="webview_contextmenu_link_view_action">Apri collegamento</string>
+  <string name="webview_contextmenu_link_share_action">Condividi collegamento</string>
+  <string name="webview_contextmenu_link_copy_action">Copia collegamento negli appunti</string>
+  <string name="webview_contextmenu_link_clipboard_label">Collegamento</string>
   <string name="webview_contextmenu_image_title">Immagine</string>
-  <string name="webview_contextmenu_image_view_action">Mostra immagine</string>
+  <string name="webview_contextmenu_image_view_action">Visualizza immagine</string>
   <string name="webview_contextmenu_image_save_action">Salva immagine</string>
   <string name="webview_contextmenu_image_download_action">Scarica immagine</string>
   <string name="webview_contextmenu_image_copy_action">Copia URL immagine negli appunti</string>
   <string name="webview_contextmenu_image_clipboard_label">URL immagine</string>
   <string name="webview_contextmenu_phone_call_action">Chiama numero</string>
   <string name="webview_contextmenu_phone_save_action">Salva nei contatti</string>
-  <string name="webview_contextmenu_phone_copy_action">Copia il numero negli appunti</string>
+  <string name="webview_contextmenu_phone_copy_action">Copia numero negli appunti</string>
   <string name="webview_contextmenu_phone_clipboard_label">Numero di telefono</string>
   <string name="webview_contextmenu_email_send_action">Invia messaggio</string>
   <string name="webview_contextmenu_email_save_action">Salva nei contatti</string>
-  <string name="webview_contextmenu_email_copy_action">Copia l\'indirizzo negli appunti</string>
-  <string name="webview_contextmenu_email_clipboard_label">Indirizzo mail</string>
-  <string name="image_saved_as">Immagine salvata in \"<xliff:g id="filename">%s</xliff:g>\"</string>
+  <string name="webview_contextmenu_email_copy_action">Copia indirizzo negli appunti</string>
+  <string name="webview_contextmenu_email_clipboard_label">Indirizzo email</string>
+  <string name="image_saved_as">Immagine salvata come \"<xliff:g id="filename">%s</xliff:g>\"</string>
   <string name="image_saving_failed">Salvataggio dell\'immagine non riuscito.</string>
   <string name="account_settings_remote_search_num_results_entries_all">Tutti</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
@@ -857,7 +857,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="account_settings_remote_search_num_results_entries_250">250</string>
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-  <string name="account_settings_remote_search_num_label">Limite dei risultati della ricerca sul server</string>
+  <string name="account_settings_remote_search_num_label">Limite risultati di ricerca sul server</string>
   <string name="account_settings_remote_search_num_summary">La ricerca si fermerà dopo aver trovato <xliff:g id="num_results">%s</xliff:g> risultati.</string>
   <string name="account_settings_remote_search_full_text">Includi il testo del corpo nella ricerca sul server</string>
   <string name="account_settings_remote_search_full_text_summary">Le ricerche sull\'intero testo possono risultare lente.</string>
@@ -885,7 +885,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="global_settings_splitview_never">Mai</string>
   <string name="global_settings_splitview_when_in_landscape">Con orientazione orizzontale</string>
   <string name="message_view_empty">Seleziona un messaggio a sinistra</string>
-  <string name="global_settings_show_contact_picture_label">Mostra le immagini dei contatti</string>
+  <string name="global_settings_show_contact_picture_label">Mostra immagini dei contatti</string>
   <string name="global_settings_show_contact_picture_summary">Mostra le immagini dei contatti nell\'elenco dei messaggi</string>
   <string name="last_refresh_time_format">Ultimo aggiornamento <xliff:g id="formatted_time">%s</xliff:g></string>
   <string name="last_refresh_time_format_with_push">Ultimo aggiornamento <xliff:g id="time_with_preposition">%s</xliff:g> (Push attivo)</string>
@@ -895,12 +895,12 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="global_settings_colorize_missing_contact_pictures_summary">Colora le immagini di contatto mancanti</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Azioni del messaggio visibili</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Mostra le azioni selezionate nel menu di visualizzazione messaggio</string>
-  <string name="loading_attachment">Caricamento allegati...</string>
+  <string name="loading_attachment">Caricamento allegati…</string>
   <string name="fetching_attachment_dialog_title_send">Invio messaggio</string>
   <string name="fetching_attachment_dialog_title_save">Salvataggio in bozze</string>
-  <string name="fetching_attachment_dialog_message">Recupero allegati...</string>
+  <string name="fetching_attachment_dialog_message">Recupero allegati…</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Decifratura/Verifica...</string>
+  <string name="openpgp_decrypting_verifying">Decifratura/Verifica…</string>
   <string name="openpgp_successful_decryption">Decifratura avvenuta</string>
   <string name="openpgp_signature_valid_certified">Firma valida (certificata)</string>
   <string name="openpgp_signature_valid_uncertified">Firma valida ma non certificata</string>

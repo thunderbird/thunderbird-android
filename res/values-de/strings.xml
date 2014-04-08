@@ -812,7 +812,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="settings_import_outgoing_server">Postausgangsserver (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
     <item quantity="one">Passwort setzen...</item>
-    <item quantity="other">Passwörter setzen...</item>
+    <item quantity="other">Passwörter setzen…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Passwort des Posteingangsservers verwenden</string>
   <string name="activate_account_action">Aktivieren</string>
@@ -898,7 +898,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
   <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Entschlüssle/Verifiziere...</string>
+  <string name="openpgp_decrypting_verifying">Entschlüssle/Verifiziere…</string>
   <string name="openpgp_successful_decryption">Erfolgreiche Entschlüsselung</string>
   <string name="openpgp_signature_valid_certified">Gültige Signatur (beglaubigt)</string>
   <string name="openpgp_signature_valid_uncertified">Gültige, aber unbeglaubigte Signatur</string>

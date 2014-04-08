@@ -98,8 +98,8 @@ K-9改进的功能包括：
   <string name="spam_action">标记为垃圾</string>
   <string name="forward_action">转发</string>
   <string name="move_action">移动</string>
-  <string name="single_message_options_action">发送...</string>
-  <string name="refile_action">重新归档...</string>
+  <string name="single_message_options_action">发送…</string>
+  <string name="refile_action">重新归档…</string>
   <string name="continue_action">继续</string>
   <string name="back_action">返回</string>
   <string name="done_action">完成</string>
@@ -796,7 +796,7 @@ K-9改进的功能包括：
   <string name="settings_import_incoming_server">接收邮件服务器 (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">发送邮件服务器 (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="other">设置密码...</item>
+    <item quantity="other">设置密码…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">使用接受邮件服务器的密码</string>
   <string name="activate_account_action">激活</string>
@@ -807,7 +807,7 @@ K-9改进的功能包括：
   <string name="manage_accounts_move_up_action">向上移动</string>
   <string name="manage_accounts_move_down_action">向下移动</string>
   <string name="manage_accounts_moving_message">正在移动账户…</string>
-  <string name="unread_widget_select_account">显示未读数...</string>
+  <string name="unread_widget_select_account">显示未读数…</string>
   <string name="import_dialog_error_title">没有找到文件管理器</string>
   <string name="close">关闭</string>
   <string name="webview_empty_message">没有文本</string>
@@ -851,17 +851,17 @@ K-9改进的功能包括：
   <string name="account_settings_remote_search_enabled">启用服务器搜索</string>
   <string name="account_settings_remote_search_enabled_summary">除了您的设备之外也在服务器上进行搜索</string>
   <string name="action_remote_search">在服务器上搜索</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">向搜索服务器发送查询...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">从搜索服务器释放查询...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">向搜索服务器发送查询…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">从搜索服务器释放查询…</string>
   <string name="remote_search_unavailable_no_network">服务器搜索需要网络连接。</string>
   <string name="global_settings_background_as_unread_indicator_label">已读邮件变暗显示</string>
   <string name="global_settings_background_as_unread_indicator_summary">灰色背景表示消息已读</string>
   <string name="global_settings_threaded_view_label">按话题显示</string>
   <string name="global_settings_threaded_view_summary">按照话题对消息进行组合</string>
   <string name="upgrade_databases_title">更新数据库</string>
-  <string name="upgrade_databases_unspecified">正在更新数据库...</string>
+  <string name="upgrade_databases_unspecified">正在更新数据库…</string>
   <string name="upgrade_database_format">正在更新账户 <xliff:g id="account">%s</xliff:g> 的数据库</string>
-  <string name="message_list_loading">加载中...</string>
+  <string name="message_list_loading">加载中…</string>
   <string name="global_settings_splitview_mode_label">分屏显示</string>
   <string name="global_settings_splitview_always">总是</string>
   <string name="global_settings_splitview_never">从不</string>
@@ -877,9 +877,9 @@ K-9改进的功能包括：
   <string name="global_settings_colorize_missing_contact_pictures_summary">以彩色显示缺少的联系人图片</string>
   <string name="global_settings_messageview_visible_refile_actions_title">可见的消息动作</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">在消息查看菜单显示选定的动作</string>
-  <string name="loading_attachment">附件加载中...</string>
+  <string name="loading_attachment">附件加载中…</string>
   <string name="fetching_attachment_dialog_title_send">消息正在发送</string>
   <string name="fetching_attachment_dialog_title_save">正在保存草稿</string>
-  <string name="fetching_attachment_dialog_message">正在获取附件...</string>
+  <string name="fetching_attachment_dialog_message">正在获取附件…</string>
   <!--=== OpenPGP specific ==================================================================-->
 </resources>

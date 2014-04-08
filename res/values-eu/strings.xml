@@ -99,8 +99,8 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="spam_action">Spam</string>
   <string name="forward_action">Berbidali</string>
   <string name="move_action">Mugitu</string>
-  <string name="single_message_options_action">Bidali...</string>
-  <string name="refile_action">Artxibatu...</string>
+  <string name="single_message_options_action">Bidali…</string>
+  <string name="refile_action">Artxibatu…</string>
   <string name="continue_action">Jarraitu</string>
   <string name="back_action">Atzera</string>
   <string name="done_action">Eginda</string>
@@ -228,11 +228,11 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="message_view_show_pictures_action">Irudiak ikusi</string>
   <string name="message_view_show_message_action">Mezua ikusi</string>
   <string name="message_view_show_attachments_action">Eranskinak ikusi</string>
-  <string name="message_view_show_more_attachments_action">Gehiago...</string>
+  <string name="message_view_show_more_attachments_action">Gehiago…</string>
   <string name="message_view_fetching_attachment_toast">Eranskina eskuratzen.</string>
   <string name="message_view_no_viewer">Ez da <xliff:g id="mimetype">%s</xliff:g> ikusteko aplikaziorik topatu.</string>
   <string name="message_view_download_remainder">Mezu osoa deskargatu</string>
-  <string name="message_view_downloading">Deskargatzen...</string>
+  <string name="message_view_downloading">Deskargatzen…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_additional_headers_not_downloaded">Ez dira goiburu guztiak deskargatu edo gorde. Hautatu \"Gorder goiburu guztiak lokalki\" kontuaren sarrerako zerbitzariaren ezarpenetan etorkizunerako hau ahalbidetzeko.</string>
   <string name="message_no_additional_headers_available">Goiburu guztiak deskargatu dira, baina ez dago erakusteko goiburu gehiago.</string>
@@ -596,7 +596,7 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="sort_unread_last">Irakurritako mezuak lehengo</string>
   <string name="sort_attach_first">Eranskindun mezuak lehengo</string>
   <string name="sort_unattached_first">Eranskin gabeko mezuak lehengo</string>
-  <string name="sort_by">Ordena...</string>
+  <string name="sort_by">Ordena…</string>
   <string name="sort_by_date">Data</string>
   <string name="sort_by_arrival">Jasoera</string>
   <string name="sort_by_subject">Gaia</string>
@@ -616,7 +616,7 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="message_list_help_key">Del (edo D) - Ezabatu\nR - Erantzun\nA - Guztiei erantzun\nC - Idatzi\nF - Berbidali\nM - Mugitu\nV - Artxibatu\nY - Kopiatu\nZ - Irakurrita (edo ez) markatu\nG - Izarra\nO - Bilaketa mota\nI - Bilaketa ordena\nQ - Karpetetara itzuli\nS - Hautatu/desautatu\nJ edo P - Aurreko mezua\nK edo N - Hurrengo mezua</string>
   <string name="folder_list_help_key">1 - 1.go mailako karpetak bakarrik ikusi\n2 - 1.go eta 2. mailako karpetak ikusi\n3 - 2. mailakoak ez diren karpetak ikusi\n4 - Karpeta guztiak ikusi\nQ - Kontuetara itzuli\nS - Kontu ezarpenak aldatu</string>
   <string name="folder_list_filter_hint">karpetaren izenak dauka</string>
-  <string name="folder_list_display_mode_label">Karpetak ikusi...</string>
+  <string name="folder_list_display_mode_label">Karpetak ikusi…</string>
   <string name="folder_list_display_mode_all">Karpeta guztiak</string>
   <string name="folder_list_display_mode_first_class">1.go mailako karpetak</string>
   <string name="folder_list_display_mode_first_and_second_class">1.go eta 2. mailako karpetak</string>
@@ -777,9 +777,9 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="settings_import">Inporatzeko ezarpenak</string>
   <string name="settings_import_selection">Hautapena inportatu</string>
   <string name="settings_import_global_settings">Ezarpen orokorrak</string>
-  <string name="settings_exporting">Ezarpenak esportatzen...</string>
-  <string name="settings_importing">Ezarpenak inportatzen...</string>
-  <string name="settings_import_scanning_file">Fitxategia aztertzen...</string>
+  <string name="settings_exporting">Ezarpenak esportatzen…</string>
+  <string name="settings_importing">Ezarpenak inportatzen…</string>
+  <string name="settings_import_scanning_file">Fitxategia aztertzen…</string>
   <string name="settings_export_success">Esportatutako ezarpenak hemen gorde dira: <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Ezarpen orokorran hemendik inportatu dira: <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> inportatuta hemendik: <xliff:g id="filename">%s</xliff:g></string>
@@ -802,19 +802,19 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="settings_import_incoming_server">Jasotzeko zerbitzaria (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Bidaltzeko zerbitzaria (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Pasahitza ezartzen..</item>
-    <item quantity="other">Pasahitzak ezartzen...</item>
+    <item quantity="one">Pasahitza ezartzen…</item>
+    <item quantity="other">Pasahitzak ezartzen…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Sarrerako zerbitzariko pasahitza erabili</string>
   <string name="activate_account_action">Gaitu</string>
   <string name="account_unavailable">\"<xliff:g id="account">%s</xliff:g>\" kontua ez dago eskuragarri; biltegia egiaztatu</string>
-  <string name="settings_attachment_default_path">Eranskinak hemen gorde...</string>
+  <string name="settings_attachment_default_path">Eranskinak hemen gorde…</string>
   <string name="attachment_save_title">Eranskina gorde</string>
   <string name="attachment_save_desc">Fitxategi kudeatzailerik ez da topatu. Non gorde nahi duzu eranskina?</string>
   <string name="manage_accounts_move_up_action">Gora mugitu</string>
   <string name="manage_accounts_move_down_action">Behera mugitu</string>
-  <string name="manage_accounts_moving_message">Kontua mugitzen...</string>
-  <string name="unread_widget_select_account">Honen irakurgabe kopurua ikusi...</string>
+  <string name="manage_accounts_moving_message">Kontua mugitzen…</string>
+  <string name="unread_widget_select_account">Honen irakurgabe kopurua ikusi…</string>
   <string name="import_dialog_error_title">Fitxategi kudeatzailerik ez da topatu</string>
   <string name="close">Itxi</string>
   <string name="webview_empty_message">Testurik ez</string>
@@ -858,17 +858,17 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_remote_search_enabled">Zerbitzarian bilatzea gaitu</string>
   <string name="account_settings_remote_search_enabled_summary">Zure gailuan dauden mezuez gain zerbitzarian daudenak bilatu </string>
   <string name="action_remote_search">Mezuak zerbitzarian bilatu</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tiratu zerbitzarian bilatzeko...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Askatu zerbitzarian bilatzeko...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tiratu zerbitzarian bilatzeko…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Askatu zerbitzarian bilatzeko…</string>
   <string name="remote_search_unavailable_no_network">Zerbitzarian bilatzeko sareko konexioa behar da.</string>
   <string name="global_settings_background_as_unread_indicator_label">Mezuak ilundu irakurri ondoren</string>
   <string name="global_settings_background_as_unread_indicator_summary">Atzeko plano gris batek mezua irakurria izan dela adieraziko du</string>
   <string name="global_settings_threaded_view_label">Harien ikuspegia</string>
   <string name="global_settings_threaded_view_summary">Mezuak elkarrizketen arabera taldekatu</string>
   <string name="upgrade_databases_title">Datubaseak eguneratzen</string>
-  <string name="upgrade_databases_unspecified">Datubaseak eguneratzen...</string>
+  <string name="upgrade_databases_unspecified">Datubaseak eguneratzen…</string>
   <string name="upgrade_database_format">\"<xliff:g id="account">%s</xliff:g>\" kontuaren datubasea eguneratzen</string>
-  <string name="message_list_loading">Kargatzen...</string>
+  <string name="message_list_loading">Kargatzen…</string>
   <string name="global_settings_splitview_mode_label">Pantaila erdibitua ikusi</string>
   <string name="global_settings_splitview_always">Beti</string>
   <string name="global_settings_splitview_never">Inoiz ez</string>
@@ -884,9 +884,9 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_colorize_missing_contact_pictures_summary">Irudirik ez duten kontaktuak koloreztatu</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Mezu ekintzak</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Mezua ikusteko menuan agertuko diren ekintzak</string>
-  <string name="loading_attachment">Eranskina kargatzen...</string>
+  <string name="loading_attachment">Eranskina kargatzen…</string>
   <string name="fetching_attachment_dialog_title_send">Mezua bidaltzen</string>
   <string name="fetching_attachment_dialog_title_save">Zirriborroa gorde</string>
-  <string name="fetching_attachment_dialog_message">Eranskina eskuratzen...</string>
+  <string name="fetching_attachment_dialog_message">Eranskina eskuratzen…</string>
   <!--=== OpenPGP specific ==================================================================-->
 </resources>
