@@ -753,32 +753,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
 
-    <string name="message_list_help_key">
-    Del (or D) - Delete\n
-    R - Reply\n
-    A - Reply All\n
-    C - Compose\n
-    F - Forward\n
-    M - Move\n
-    V - Archive\n
-    Y - Copy\n
-    Z - Mark (Un)read\n
-    G - Star\n
-    O - Sort type\n
-    I - Sort order\n
-    Q - Return to Folders\n
-    S - Select/deselect\n
-    J or P - Previous Message\n
-    K or N - Next Message\n
-    </string>
+    <string name="message_list_help_key">Del (or D) - Delete\nR - Reply\nA - Reply All\nC - Compose\nF - Forward\nM - Move\nV - Archive\nY - Copy\nZ - Mark (Un)read\nG - Star\nO - Sort type\nI - Sort order\nQ - Return to Folders\nS - Select/deselect\nJ or P - Previous Message\nK or N - Next Message</string>
 
-    <string name="folder_list_help_key">
-    1 - Display only 1st Class folders\u000A
-    2 - Display 1st and 2nd Class folders\u000A
-    3 - Display all except 2nd Class folders\u000A
-    4 - Display all folders\u000A
-    Q - Return to Accounts\u000A
-    S - Edit Account Settings</string>
+    <string name="folder_list_help_key">1 - Display only 1st Class folders\n2 - Display 1st and 2nd Class folders\n3 - Display all except 2nd Class folders\n4 - Display all folders\nQ - Return to Accounts\nS - Edit Account Settings</string>
 
     <string name="folder_list_filter_hint">folder name contains</string>
 
