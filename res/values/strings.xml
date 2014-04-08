@@ -1,8 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!--
-     When removing strings from the main file, please cleanup the translations.
-     The script tools/sync_translation.py will get rid of any surplus strings.
--->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -116,10 +112,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="status_syncing_off">Syncing disabled</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
-    <!-- Actions will be used as buttons and in menu items -->
-    <string name="next_action">Next</string> <!-- Used as part of a multi-step process -->
-    <string name="previous_action">Previous</string> <!-- Used as part of a multi-step process -->
-    <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="next_action">Next</string>
+    <string name="previous_action">Previous</string>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">OK</string>
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
     <string name="send_again_action">Send Again</string>
@@ -136,7 +132,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="refile_action">Refile…</string>
     <string name="continue_action">Continue</string>
     <string name="back_action">Back</string>
-    <string name="done_action">Done</string> <!--  Used to complete a multi-step process -->
+    <string name="done_action">Done</string>
     <string name="discard_action">Discard</string>
     <string name="save_draft_action">Save as draft</string>
     <string name="check_mail_action">Check mail</string>
@@ -184,7 +180,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="prefs_title">Settings</string>
     <string name="accounts_context_menu_title">Account options</string>
 
-    <string name="general_no_subject">(No subject)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
+    <string name="general_no_subject">(No subject)</string>
     <string name="general_no_sender">No sender</string>
     <string name="status_loading">Polling</string>
     <string name="status_loading_more">Loading messages\u2026</string>
@@ -209,7 +206,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="notification_new_title">New mail</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>
@@ -226,13 +223,11 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="special_mailbox_name_inbox">Inbox</string>
     <string name="special_mailbox_name_outbox">Outbox</string>
-    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="special_mailbox_name_trash">Trash</string>
     <string name="special_mailbox_name_sent">Sent</string>
     <string name="special_mailbox_name_archive">Archive</string>
     <string name="special_mailbox_name_spam">Spam</string>
-    <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Drafts)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Trash)</string>
@@ -291,7 +286,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_download_remainder">Download complete message</string>
     <string name="message_view_downloading">Downloading…</string>
 
-    <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
+    <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_additional_headers_not_downloaded">Not all headers have been downloaded or saved. Select \"Save all headers locally\" in the account\'s incoming server settings to enable this for the future.</string>
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
     <string name="message_additional_headers_retrieval_failed">The retrieval of additional headers from the database or mail server failed.</string>
@@ -450,7 +445,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="recreate_action">Recreate data (Last Resort!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Folder poll frequency</string>
-    <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
     <string name="account_setup_options_mail_check_frequency_1min">Every minute</string>
     <string name="account_setup_options_mail_check_frequency_5min">Every 5 minutes</string>
@@ -481,7 +475,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_options_notify_label">Notify me when mail arrives</string>
     <string name="account_setup_options_notify_sync_label">Notify me while mail is being checked</string>
 
-    <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Number of messages to display</string>
     <string name="account_setup_options_mail_display_count_10">10 messages</string>
     <string name="account_setup_options_mail_display_count_25">25 messages</string>
@@ -498,9 +491,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronized with the server</string>
 
     <string name="account_setup_failed_dlg_title">Setup could not finish</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">The server presented an invalid SSL certificate. Sometimes, this is because of a server misconfiguration. Sometimes it is because someone is trying to attack you or your mail server. If you\'re not sure what\'s up, click Reject and contact the folks who manage your mail server.\n\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
-    <string name="account_setup_failed_dlg_server_message_fmt">Cannot connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">The server presented an invalid SSL certificate. Sometimes, this is because of a server misconfiguration. Sometimes it is because someone is trying to attack you or your mail server. If you\'re not sure what\'s up, click Reject and contact the folks who manage your mail server.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Cannot connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_edit_details_action">Edit details</string>
     <string name="account_setup_failed_dlg_continue_action">Continue</string>
 
@@ -963,17 +956,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="dialog_confirm_delete_title">Confirm deletion</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
 
-    <!--
-      Translators:
-
-      Please review how to handle pluralization for your language at (1) and ajust
-      the <item> elements accordingly
-
-      Possible values for 'quantity': zero, one, two, few, many, other
-
-      (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-
-    -->
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
