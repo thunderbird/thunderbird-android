@@ -79,7 +79,7 @@ public class MailTransport implements BaseTransport {
 
     @Override
     public void connect(String host, int port, ConnectionSecurity connectionSecurity, int timeoutMilliseconds) throws GeneralSecurityException, IOException, MessagingException {
-        InetAddress[] addresses = getAllByName(host);
+        InetAddress[] addresses = InetAddress.getAllByName(host);
         for (int i = 0; i < addresses.length; i++) {
             try {
                 SocketAddress socketAddress = new InetSocketAddress(addresses[i], port);
@@ -220,10 +220,6 @@ public class MailTransport implements BaseTransport {
             }
         } while ((d = mIn.read()) != -1);
         return sb.toString();
-    }
-
-    private InetAddress[] getAllByName(String host) throws UnknownHostException {
-        return InetAddress.getAllByName(host);
     }
 
     @Override
