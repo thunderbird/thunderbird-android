@@ -1975,6 +1975,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
                 return;
             }
+
+            if (mPgpData.hasEncryptionKeys() || mPgpData.hasSignatureKey()) {
+                if (mPgpData.getEncryptedData() == null) {
+                    String text = buildText(false).getText();
+                    mPreventDraftSaving = true;
+                    crypto.encrypt(this, text, mPgpData);
+                    return;
+                }
+            }
+
         }
         sendMessage();
 
