@@ -61,8 +61,6 @@ public class MockTransport implements BaseTransport {
 
     private static final String SPECIAL_RESPONSE_IOEXCEPTION = "!!!IOEXCEPTION!!!";
 
-    private boolean mTlsStarted = false;
-
     private MockOutputStream mOut;
     private boolean mOpen;
     private boolean mInputOpen;
@@ -439,7 +437,7 @@ public class MockTransport implements BaseTransport {
 
     @Override
     public MockTransport clone() {
-        return new MockTransport();
+        return this;
     }
 
     @Override

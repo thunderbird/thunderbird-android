@@ -259,10 +259,10 @@ public class MailTransport implements BaseTransport {
         OutputStream out;
 
         InflaterInputStream zInputStream = new InflaterInputStream(mSocket.getInputStream(), inf);
-        in = new PeekableInputStream(new BufferedInputStream(zInputStream, 1024));
+        in = new BufferedInputStream(zInputStream, inputBufferSize);
 
         ZOutputStream zOutputStream = new ZOutputStream(mSocket.getOutputStream(), JZlib.Z_BEST_SPEED, true);
-        out = new BufferedOutputStream(zOutputStream, 1024);
+        out = new BufferedOutputStream(zOutputStream, outputBufferSize);
         zOutputStream.setFlushMode(JZlib.Z_PARTIAL_FLUSH);
 
         mIn = in;
