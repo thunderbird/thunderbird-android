@@ -211,6 +211,81 @@
         <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
     </provider>
     
+   <!-- Switzerland -->
+    <!-- MyKolab.com variants -->
+    <provider id="mykolab.com" label="MyKolab.com" domain="mykolab.com">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="attorneymail.ch" label="MyKolab.com" domain="attorneymail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="barmail.ch" label="MyKolab.com" domain="barmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="collaborative.li" label="MyKolab.com" domain="collaborative.li">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="diplomail.ch" label="MyKolab.com" domain="diplomail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="groupoffice.ch" label="MyKolab.com" domain="groupoffice.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="journalistmail.ch" label="MyKolab.com" domain="journalistmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="legalprivilege.ch" label="MyKolab.com" domain="legalprivilege.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="mailatlaw.ch" label="MyKolab.com" domain="mailatlaw.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="medmail.ch" label="MyKolab.com" domain="medmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="mykolab.ch" label="MyKolab.com" domain="mykolab.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="myswissmail.ch" label="MyKolab.com" domain="myswissmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="opengroupware.ch" label="MyKolab.com" domain="opengroupware.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="pressmail.ch" label="MyKolab.com" domain="pressmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="swisscollab.ch" label="MyKolab.com" domain="swisscollab.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="swissgroupware.ch" label="MyKolab.com" domain="swissgroupware.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="switzerlandmail.ch" label="MyKolab.com" domain="switzerlandmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="trusted-legal-mail.ch" label="MyKolab.com" domain="trusted-legal-mail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+
     <!-- Poland -->
     <provider id="interia" label="Interia" domain="interia.pl">
         <incoming uri="pop3+ssl+://poczta.interia.pl" username="$user" />
