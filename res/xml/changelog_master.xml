@@ -8,6 +8,12 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.904" versioncode="21007" >
+        <change>Added support for OpenPGP API v3</change>
+        <change>Fixed problems with IMAP login</change>
+        <change>Updated translations</change>
+        <change>Fixed multiple bugs</change>
+    </release>
     <release version="4.903" versioncode="21006" >
         <change>Offer encrypted connection by default when manually setting up an account</change>
         <change>Simplified options for authentication and security</change>
