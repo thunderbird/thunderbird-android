@@ -261,8 +261,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSecurityTypeView.setAdapter(securityTypesAdapter);
 
+            int index = getSecurityTypePosition(mConnectionSecurityChoices,
+                    settings.connectionSecurity);
+
             // Select currently configured security type
-            mSecurityTypeView.setSelection(settings.connectionSecurity.ordinal(), false);
+            mSecurityTypeView.setSelection(index, false);
 
             /*
              * Updates the port when the user changes the security type. This allows
@@ -468,5 +471,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    private int getSecurityTypePosition(ConnectionSecurity[] haystack, ConnectionSecurity needle) {
+        for (int i = 0; i < haystack.length; i++) {
+            if (haystack[i] == needle) {
+                return i;
+            }
+        }
+        return 0;
     }
 }
