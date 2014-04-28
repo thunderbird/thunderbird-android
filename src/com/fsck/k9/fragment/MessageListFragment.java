@@ -1078,15 +1078,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         // Check if we have connectivity.  Cache the value.
         if (mHasConnectivity == null) {
-            final ConnectivityManager connectivityManager =
-                (ConnectivityManager) getActivity().getApplication().getSystemService(
-                        Context.CONNECTIVITY_SERVICE);
-            final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
-                mHasConnectivity = true;
-            } else {
-                mHasConnectivity = false;
-            }
+            mHasConnectivity = Utility.hasConnectivity(getActivity().getApplication());
         }
 
         mLocalBroadcastManager.registerReceiver(mCacheBroadcastReceiver, mCacheIntentFilter);
