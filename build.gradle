@@ -50,3 +50,8 @@ android {
     exclude 'META-INF/NOTICE'
   }
 }
+
+task testsOnJVM(type :GradleBuild, dependsOn: assemble) {
+  buildFile = 'tests-on-jvm/build.gradle'
+  tasks = ['test']
+}
