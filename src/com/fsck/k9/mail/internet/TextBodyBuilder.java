@@ -13,7 +13,8 @@ public class TextBodyBuilder {
     private boolean mIncludeQuotedText = true;
     private boolean mReplyAfterQuote = false;
     private boolean mSignatureBeforeQuotedText = false;
-    private boolean mDraft = false;
+
+    private boolean mInsertSeparator = false;
     private boolean mAppendSignature = true;
 
     // message parts
@@ -77,14 +78,14 @@ public class TextBodyBuilder {
             if (mReplyAfterQuote) {
                 quotedHtmlContent.setInsertionLocation(
                         InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
-                if (!mDraft) {
+                if (mInsertSeparator) {
                     text = "<br clear=\"all\">" + text;
                 }
             }
             else {
                 quotedHtmlContent.setInsertionLocation(
                         InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
-                if (!mDraft) {
+                if (mInsertSeparator) {
                     text += "<br><br>";
                 }
             }
@@ -227,12 +228,12 @@ public class TextBodyBuilder {
         mIncludeQuotedText = includeQuotedText;
     }
 
-    public boolean isDraft() {
-        return mDraft;
+    public boolean isInsertSeparator() {
+        return mInsertSeparator;
     }
 
-    public void setDraft(boolean draft) {
-        mDraft = draft;
+    public void setInsertSeparator(boolean insertSeparator) {
+        mInsertSeparator = insertSeparator;
     }
 
     public boolean isSignatureBeforeQuotedText() {

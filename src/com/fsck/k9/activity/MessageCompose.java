@@ -1368,13 +1368,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         boolean includeQuotedText = (isDraft || mQuotedTextMode == QuotedTextMode.SHOW);
         textBodyBuilder.setIncludeQuotedText(includeQuotedText);
 
-        if (!isDraft) {
-            textBodyBuilder.setAppendSignature(true);
-        }
-        else {
-            textBodyBuilder.setAppendSignature(false);
-        }
-        textBodyBuilder.setDraft(isDraft);
+        textBodyBuilder.setAppendSignature(!isDraft);
+        textBodyBuilder.setInsertSeparator(!isDraft);
+
         textBodyBuilder.setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText());
 
         if (mQuoteStyle == QuoteStyle.PREFIX && mAccount.isReplyAfterQuote()) {
