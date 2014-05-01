@@ -1352,11 +1352,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      *         original message.
      */
     private TextBody buildText(boolean isDraft, SimpleMessageFormat messageFormat) {
-        TextBodyBuilder textBodyBuilder =
-                new TextBodyBuilder(
-                        mMessageContentView.getText().toString(),
-                        mIdentity.getSignatureUse() ? mSignatureView.getCharacters() : null
-                );
+        String messageText = mMessageContentView.getText().toString();
+        String signatureText = mIdentity.getSignatureUse() ? mSignatureView.getCharacters() : null;
+
+        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(messageText, signatureText);
 
         /*
          * Find out if we need to include the original message as quoted text.
@@ -1366,12 +1365,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
          * That's so the user is able to "un-hide" the quoted text if (s)he
          * opens a saved draft.
          */
-        if (isDraft || mQuotedTextMode == QuotedTextMode.SHOW) {
-            textBodyBuilder.setIncludeQuotedText(true);
-        }
-        else {
-            textBodyBuilder.setIncludeQuotedText(false);
-        }
+        boolean includeQuotedText = (isDraft || mQuotedTextMode == QuotedTextMode.SHOW);
+        textBodyBuilder.setIncludeQuotedText(includeQuotedText);
+
         if (!isDraft) {
             textBodyBuilder.setAppendSignature(true);
         }
