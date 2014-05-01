@@ -29,13 +29,10 @@ class TestingTextBodyBuilder extends TextBodyBuilder {
         else {
             this.setIncludeQuotedText(false);
         }
-        if (!isDraft) {
-            this.setAppendSignature(true);
-        }
-        else {
-            this.setAppendSignature(false);
-        }
-        this.setDraft(isDraft);
+
+        this.setAppendSignature(!isDraft);
+        this.setInsertSeparator(!isDraft);
+
         this.setSignatureBeforeQuotedText(signatureBeforeQuotedText);
 
         if (quoteStyle == QuoteStyle.PREFIX && replyAfterQuote) {
