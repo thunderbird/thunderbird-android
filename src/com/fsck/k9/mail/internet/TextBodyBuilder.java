@@ -218,42 +218,22 @@ public class TextBodyBuilder {
         return HtmlConverter.textToHtmlFragment(text);
     }
 
-    // getter and setter
-
-    public boolean isIncludeQuotedText() {
-        return mIncludeQuotedText;
-    }
+    // setter
 
     public void setIncludeQuotedText(boolean includeQuotedText) {
         mIncludeQuotedText = includeQuotedText;
-    }
-
-    public boolean isInsertSeparator() {
-        return mInsertSeparator;
     }
 
     public void setInsertSeparator(boolean insertSeparator) {
         mInsertSeparator = insertSeparator;
     }
 
-    public boolean isSignatureBeforeQuotedText() {
-        return mSignatureBeforeQuotedText;
-    }
-
     public void setSignatureBeforeQuotedText(boolean signatureBeforeQuotedText) {
         mSignatureBeforeQuotedText = signatureBeforeQuotedText;
     }
 
-    public boolean isReplyAfterQuote() {
-        return mReplyAfterQuote;
-    }
-
     public void setReplyAfterQuote(boolean replyAfterQuote) {
         mReplyAfterQuote = replyAfterQuote;
-    }
-
-    public boolean isAppendSignature() {
-        return mAppendSignature;
     }
 
     public void setAppendSignature(boolean appendSignature) {
