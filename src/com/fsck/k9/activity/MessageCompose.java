@@ -1373,12 +1373,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         textBodyBuilder.setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText());
 
-        if (mQuoteStyle == QuoteStyle.PREFIX && mAccount.isReplyAfterQuote()) {
-            textBodyBuilder.setReplyAfterQuote(true);
-        }
-        else {
-            textBodyBuilder.setReplyAfterQuote(false);
-        }
+        boolean isReplyAfterQuote = (mQuoteStyle == QuoteStyle.PREFIX && mAccount.isReplyAfterQuote());
+        textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
 
         TextBody body;
         if (messageFormat == SimpleMessageFormat.HTML) {
