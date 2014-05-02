@@ -322,7 +322,7 @@
 
     <target name="astyle">
         <exec executable="astyle" failonerror="true">
-            <arg line="--style=java --indent=spaces=4 --indent-switches --max-instatement-indent=4 --brackets=attach --add-brackets --convert-tabs --unpad-paren --pad-header --pad-oper --suffix=none --recursive 'src/com/fsck/k9/*.java' 'tests/src/com/fsck/k9/*.java'" />
+            <arg line="--style=java --indent=spaces=4 --indent-switches --max-instatement-indent=40 --add-brackets --convert-tabs --unpad-paren --pad-header --pad-oper --suffix=none --recursive 'src/com/fsck/k9/*.java' 'tests/src/com/fsck/k9/*.java'" />
         </exec>
     </target>
 
