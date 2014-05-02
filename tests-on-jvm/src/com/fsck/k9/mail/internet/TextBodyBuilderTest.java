@@ -20,8 +20,7 @@ class TestingTextBodyBuilder extends TextBodyBuilder {
             boolean signatureUse,
             String messageContent,
             String signature) {
-        super(messageContent,
-                signatureUse ? signature : null);
+        super(messageContent);
 
         if (isDraft || includeQuotedText) {
             this.setIncludeQuotedText(true);
@@ -40,6 +39,10 @@ class TestingTextBodyBuilder extends TextBodyBuilder {
         }
         else {
             this.setReplyAfterQuote(false);
+        }
+
+        if (signatureUse) {
+            this.setSignature(signature);
         }
     }
 
