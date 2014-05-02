@@ -19,6 +19,8 @@ public class TextBodyBuilder {
     // message parts
     private String mMessageContent;
     private String mSignature;
+    private String mQuotedText;
+    private InsertableHtmlContent mQuotedTextHtml;
 
     public TextBodyBuilder(String messageContent) {
         mMessageContent = messageContent;
@@ -36,7 +38,7 @@ public class TextBodyBuilder {
      * @return {@link TextBody} instance that contains the entered text and
      *         possibly the quoted original message.
      */
-    public TextBody buildTextHtml(InsertableHtmlContent quotedHtmlContent) {
+    public TextBody buildTextHtml() {
         // The length of the formatted version of the user-supplied text/reply
         int composedMessageLength;
 
@@ -47,7 +49,9 @@ public class TextBodyBuilder {
         String text = mMessageContent;
 
         // Do we have to modify an existing message to include our reply?
-        if (mIncludeQuotedText && quotedHtmlContent != null) {
+        if (mIncludeQuotedText) {
+            InsertableHtmlContent quotedHtmlContent = getQuotedTextHtml();
+
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "insertable: " + quotedHtmlContent.toDebugString());
             }
@@ -134,7 +138,7 @@ public class TextBodyBuilder {
      * @return {@link TextBody} instance that contains the entered text and
      *         possibly the quoted original message.
      */
-    public TextBody buildTextPlain(String quotedText) {
+    public TextBody buildTextPlain() {
         // The length of the formatted version of the user-supplied text/reply
         int composedMessageLength;
 
@@ -149,7 +153,8 @@ public class TextBodyBuilder {
         composedMessageOffset = 0;
 
         // Do we have to modify an existing message to include our reply?
-        if (mIncludeQuotedText && !StringUtils.isNullOrEmpty(quotedText)) {
+        if (mIncludeQuotedText) {
+            String quotedText = getQuotedText();
 
             if (mAppendSignature) {
                 // Append signature to the text/reply
@@ -209,6 +214,18 @@ public class TextBodyBuilder {
         return signature;
     }
 
+    private String getQuotedText() {
+        String quotedText = "";
+        if (!StringUtils.isNullOrEmpty(mQuotedText)) {
+            quotedText = mQuotedText;
+        }
+        return quotedText;
+    }
+
+    private InsertableHtmlContent getQuotedTextHtml() {
+        return mQuotedTextHtml;
+    }
+
     public String textToHtmlFragment(String text) {
         return HtmlConverter.textToHtmlFragment(text);
     }
@@ -221,6 +238,14 @@ public class TextBodyBuilder {
 
     public void setIncludeQuotedText(boolean includeQuotedText) {
         mIncludeQuotedText = includeQuotedText;
+    }
+
+    public void setQuotedText(String quotedText) {
+        mQuotedText = quotedText;
+    }
+
+    public void setQuotedTextHtml(InsertableHtmlContent quotedTextHtml) {
+        mQuotedTextHtml = quotedTextHtml;
     }
 
     public void setInsertSeparator(boolean insertSeparator) {

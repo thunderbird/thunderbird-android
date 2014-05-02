@@ -136,7 +136,7 @@ public class TextBodyBuilderTest {
         String messageContent = "message content";
         String signature = "signature";
 
-        TextBody textBody = new TestingTextBodyBuilder(
+        TestingTextBodyBuilder textBodyBuilder = new TestingTextBodyBuilder(
                 includeQuotedText,
                 isDraft,
                 quoteStyle,
@@ -145,7 +145,9 @@ public class TextBodyBuilderTest {
                 isSignatureUse,
                 messageContent,
                 signature
-                ).buildTextPlain(quotedText);
+                );
+        textBodyBuilder.setQuotedText(quotedText);
+        TextBody textBody = textBodyBuilder.buildTextPlain();
 
         assertThat(textBody, instanceOf(TextBody.class));
         assertThat(textBody.getText(), is(expectedText));
@@ -314,7 +316,8 @@ public class TextBodyBuilderTest {
         insertableHtmlContent.setQuotedContent(new StringBuilder(quotedText));
         String messageContent = "message content";
         String signature = "signature";
-        TextBody textBody = new TestingTextBodyBuilder(
+
+        TestingTextBodyBuilder textBodyBuilder = new TestingTextBodyBuilder(
                 includeQuotedText,
                 isDraft,
                 quoteStyle,
@@ -323,7 +326,9 @@ public class TextBodyBuilderTest {
                 isSignatureUse,
                 messageContent,
                 signature
-                ).buildTextHtml(insertableHtmlContent);
+                );
+        textBodyBuilder.setQuotedTextHtml(insertableHtmlContent);
+        TextBody textBody = textBodyBuilder.buildTextHtml();
 
         assertThat(textBody, instanceOf(TextBody.class));
         assertThat(textBody.getText(), is(expectedText));

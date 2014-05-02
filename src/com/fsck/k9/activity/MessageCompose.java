@@ -1382,13 +1382,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             textBodyBuilder.setAppendSignature(false);
         }
 
-
         TextBody body;
         if (messageFormat == SimpleMessageFormat.HTML) {
-            body = textBodyBuilder.buildTextHtml(mQuotedHtmlContent);
+            if (mQuotedHtmlContent == null) {
+                textBodyBuilder.setIncludeQuotedText(false);
+            }
+            else {
+                textBodyBuilder.setQuotedTextHtml(mQuotedHtmlContent);
+            }
+            body = textBodyBuilder.buildTextHtml();
         }
         else {
-            body = textBodyBuilder.buildTextPlain(mQuotedText.getText().toString());
+            textBodyBuilder.setQuotedText(mQuotedText.getText().toString());
+            body = textBodyBuilder.buildTextPlain();
         }
         return body;
     }
