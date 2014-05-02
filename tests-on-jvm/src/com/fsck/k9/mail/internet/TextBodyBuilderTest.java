@@ -11,21 +11,19 @@ import com.fsck.k9.activity.InsertableHtmlContent;
 
 class TestingTextBodyBuilder extends TextBodyBuilder {
 
-    public TestingTextBodyBuilder(
-            boolean includeQuotedText,
-            boolean isDraft,
-            QuoteStyle quoteStyle,
-            boolean replyAfterQuote,
-            boolean signatureBeforeQuotedText,
-            boolean signatureUse,
-            String messageContent,
-            String signature) {
+    public TestingTextBodyBuilder(boolean includeQuotedText,
+                                  boolean isDraft,
+                                  QuoteStyle quoteStyle,
+                                  boolean replyAfterQuote,
+                                  boolean signatureBeforeQuotedText,
+                                  boolean signatureUse,
+                                  String messageContent,
+                                  String signature) {
         super(messageContent);
 
         if (isDraft || includeQuotedText) {
             this.setIncludeQuotedText(true);
-        }
-        else {
+        } else {
             this.setIncludeQuotedText(false);
         }
 
@@ -36,8 +34,7 @@ class TestingTextBodyBuilder extends TextBodyBuilder {
 
         if (quoteStyle == QuoteStyle.PREFIX && replyAfterQuote) {
             this.setReplyAfterQuote(true);
-        }
-        else {
+        } else {
             this.setReplyAfterQuote(false);
         }
 
@@ -64,14 +61,12 @@ public class TextBodyBuilderTest {
     public static QuoteStyle[] QUOTESTYLES = {QuoteStyle.PREFIX, QuoteStyle.HEADER};
 
     @Theory
-    public void testBuildTextPlain(
-            boolean includeQuotedText,
-            QuoteStyle quoteStyle,
-            boolean isReplyAfterQuote,
-            boolean isSignatureUse,
-            boolean isSignatureBeforeQuotedText,
-            boolean isDraft
-            ) {
+    public void testBuildTextPlain(boolean includeQuotedText,
+                                   QuoteStyle quoteStyle,
+                                   boolean isReplyAfterQuote,
+                                   boolean isSignatureUse,
+                                   boolean isSignatureBeforeQuotedText,
+                                   boolean isDraft) {
 
         String expectedText;
         int expectedMessageLength;
@@ -137,15 +132,15 @@ public class TextBodyBuilderTest {
         String signature = "signature";
 
         TestingTextBodyBuilder textBodyBuilder = new TestingTextBodyBuilder(
-                includeQuotedText,
-                isDraft,
-                quoteStyle,
-                isReplyAfterQuote,
-                isSignatureBeforeQuotedText,
-                isSignatureUse,
-                messageContent,
-                signature
-                );
+            includeQuotedText,
+            isDraft,
+            quoteStyle,
+            isReplyAfterQuote,
+            isSignatureBeforeQuotedText,
+            isSignatureUse,
+            messageContent,
+            signature
+        );
         textBodyBuilder.setQuotedText(quotedText);
         TextBody textBody = textBodyBuilder.buildTextPlain();
 
@@ -154,12 +149,12 @@ public class TextBodyBuilderTest {
         assertThat(textBody.getComposedMessageLength(), is(expectedMessageLength));
         assertThat(textBody.getComposedMessageOffset(), is(expectedMessagePosition));
         assertThat(textBody.getText().substring(expectedMessagePosition, expectedMessagePosition + expectedMessageLength),
-                is("message content"));
+                   is("message content"));
     }
 
     /**
      * generate expected HtmlContent debug string
-     * 
+     *
      * @param expectedText
      * @param quotedContent
      * @param footerInsertionPoint
@@ -167,31 +162,29 @@ public class TextBodyBuilderTest {
      * @param userContent
      * @param compiledResult
      * @return expected string
-     * 
+     *
      * @see InsertableHtmlContent#toDebugString()
      */
     public String makeExpectedHtmlContent(String expectedText, String quotedContent, int footerInsertionPoint, boolean isBefore,
-            String userContent, String compiledResult) {
+                                          String userContent, String compiledResult) {
         String expectedHtmlContent = "InsertableHtmlContent{"
-                + "headerInsertionPoint=0,"
-                + " footerInsertionPoint=" + footerInsertionPoint + ","
-                + " insertionLocation=" + (isBefore ? "BEFORE_QUOTE" : "AFTER_QUOTE") + ","
-                + " quotedContent=" + quotedContent + ","
-                + " userContent=" + userContent + ","
-                + " compiledResult=" + compiledResult
-                + "}";
+                                     + "headerInsertionPoint=0,"
+                                     + " footerInsertionPoint=" + footerInsertionPoint + ","
+                                     + " insertionLocation=" + (isBefore ? "BEFORE_QUOTE" : "AFTER_QUOTE") + ","
+                                     + " quotedContent=" + quotedContent + ","
+                                     + " userContent=" + userContent + ","
+                                     + " compiledResult=" + compiledResult
+                                     + "}";
         return expectedHtmlContent;
     }
 
     @Theory
-    public void testBuildTextHtml(
-            boolean includeQuotedText,
-            QuoteStyle quoteStyle,
-            boolean isReplyAfterQuote,
-            boolean isSignatureUse,
-            boolean isSignatureBeforeQuotedText,
-            boolean isDraft
-            ) {
+    public void testBuildTextHtml(boolean includeQuotedText,
+                                  QuoteStyle quoteStyle,
+                                  boolean isReplyAfterQuote,
+                                  boolean isSignatureUse,
+                                  boolean isSignatureBeforeQuotedText,
+                                  boolean isDraft) {
         String expectedText;
         int expectedMessageLength;
         int expectedMessagePosition = 0;
@@ -212,7 +205,7 @@ public class TextBodyBuilderTest {
         // 3.signature
         if (quoteStyle == QuoteStyle.PREFIX && isReplyAfterQuote) {
             expectedText = expectedPrefix
-                    + "<html>message content";
+                           + "<html>message content";
             if (!isDraft && isSignatureUse) {
                 expectedText += "\r\n" + "signature";
             }
@@ -222,18 +215,17 @@ public class TextBodyBuilderTest {
 
             if (isDraft || includeQuotedText) {
                 expectedHtmlContent = makeExpectedHtmlContent(expectedText, quotedContent,
-                        0,
-                        false,
-                        expectedText,
-                        expectedText + quotedContent);
+                                      0,
+                                      false,
+                                      expectedText,
+                                      expectedText + quotedContent);
                 expectedText += quotedContent;
-            }
-            else {
+            } else {
                 expectedHtmlContent = makeExpectedHtmlContent(expectedText, quotedContent,
-                        0,
-                        true,
-                        "",
-                        quotedContent);
+                                      0,
+                                      true,
+                                      "",
+                                      quotedContent);
                 // expectedText += quotedContent;
             }
         }
@@ -242,7 +234,7 @@ public class TextBodyBuilderTest {
         // 3.quoted text
         else if (isSignatureBeforeQuotedText) {
             expectedText = expectedPrefix
-                    + "<html>message content";
+                           + "<html>message content";
             if (!isDraft && isSignatureUse) {
                 expectedText += "\r\n" + "signature";
             }
@@ -254,18 +246,17 @@ public class TextBodyBuilderTest {
 
             if (isDraft || includeQuotedText) {
                 expectedHtmlContent = makeExpectedHtmlContent(expectedText, quotedContent,
-                        0,
-                        true,
-                        expectedText,
-                        expectedText + quotedContent);
+                                      0,
+                                      true,
+                                      expectedText,
+                                      expectedText + quotedContent);
                 expectedText += quotedContent;
-            }
-            else {
+            } else {
                 expectedHtmlContent = makeExpectedHtmlContent(expectedText, quotedContent,
-                        0,
-                        true,
-                        "",
-                        quotedContent);
+                                      0,
+                                      true,
+                                      "",
+                                      quotedContent);
                 // expectedText += quotedContent;
             }
         }
@@ -276,13 +267,12 @@ public class TextBodyBuilderTest {
             String expectedSignature = "";
 
             expectedText = expectedPrefix
-                    + "<html>message content";
+                           + "<html>message content";
 
             if (!isDraft && isSignatureUse) {
                 if (!includeQuotedText) {
                     expectedText += "\r\n" + "signature";
-                }
-                else {
+                } else {
                     expectedSignature = "<html>\r\nsignature</html>";
                 }
             }
@@ -294,18 +284,17 @@ public class TextBodyBuilderTest {
 
             if (isDraft || includeQuotedText) {
                 expectedHtmlContent = makeExpectedHtmlContent(expectedText, expectedSignature + quotedContent,
-                        expectedSignature.length(),
-                        true,
-                        expectedText,
-                        expectedText + expectedSignature + quotedContent);
+                                      expectedSignature.length(),
+                                      true,
+                                      expectedText,
+                                      expectedText + expectedSignature + quotedContent);
                 expectedText += expectedSignature + quotedContent;
-            }
-            else {
+            } else {
                 expectedHtmlContent = makeExpectedHtmlContent(expectedText, quotedContent,
-                        0,
-                        true,
-                        "",
-                        quotedContent);
+                                      0,
+                                      true,
+                                      "",
+                                      quotedContent);
                 // expectedText += quotedContent;
             }
         }
@@ -318,15 +307,15 @@ public class TextBodyBuilderTest {
         String signature = "signature";
 
         TestingTextBodyBuilder textBodyBuilder = new TestingTextBodyBuilder(
-                includeQuotedText,
-                isDraft,
-                quoteStyle,
-                isReplyAfterQuote,
-                isSignatureBeforeQuotedText,
-                isSignatureUse,
-                messageContent,
-                signature
-                );
+            includeQuotedText,
+            isDraft,
+            quoteStyle,
+            isReplyAfterQuote,
+            isSignatureBeforeQuotedText,
+            isSignatureUse,
+            messageContent,
+            signature
+        );
         textBodyBuilder.setQuotedTextHtml(insertableHtmlContent);
         TextBody textBody = textBodyBuilder.buildTextHtml();
 

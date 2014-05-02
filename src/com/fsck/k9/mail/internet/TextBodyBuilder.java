@@ -28,13 +28,13 @@ public class TextBodyBuilder {
 
     /**
      * Build the {@link Body} that will contain the text of the message.
-     * 
+     *
      * <p>
      * Draft messages are treated somewhat differently in that signatures are
      * not appended and HTML separators between composed text and quoted text
      * are not added.
      * </p>
-     * 
+     *
      * @return {@link TextBody} instance that contains the entered text and
      *         possibly the quoted original message.
      */
@@ -76,14 +76,13 @@ public class TextBodyBuilder {
              */
             if (mReplyAfterQuote) {
                 quotedHtmlContent.setInsertionLocation(
-                        InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
+                    InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
                 if (mInsertSeparator) {
                     text = "<br clear=\"all\">" + text;
                 }
-            }
-            else {
+            } else {
                 quotedHtmlContent.setInsertionLocation(
-                        InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
+                    InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
                 if (mInsertSeparator) {
                     text += "<br><br>";
                 }
@@ -103,8 +102,7 @@ public class TextBodyBuilder {
             composedMessageOffset = quotedHtmlContent.getInsertionPoint();
             text = quotedHtmlContent.toString();
 
-        }
-        else {
+        } else {
             // There is no text to quote so simply append the signature if available
             if (mAppendSignature) {
                 text += getSignature();
@@ -128,13 +126,13 @@ public class TextBodyBuilder {
 
     /**
      * Build the {@link Body} that will contain the text of the message.
-     * 
+     *
      * <p>
      * Draft messages are treated somewhat differently in that signatures are
      * not appended and HTML separators between composed text and quoted text
      * are not added.
      * </p>
-     * 
+     *
      * @return {@link TextBody} instance that contains the entered text and
      *         possibly the quoted original message.
      */
@@ -176,8 +174,7 @@ public class TextBodyBuilder {
                     text += getSignature();
                 }
             }
-        }
-        else {
+        } else {
             // There is no text to quote so simply append the signature if available
             if (mAppendSignature) {
                 // Append signature to the text/reply
@@ -203,7 +200,7 @@ public class TextBodyBuilder {
 
     /**
      * Get an HTML version of the signature in the #mSignatureView, if any.
-     * 
+     *
      * @return HTML version of signature.
      */
     private String getSignatureHtml() {
