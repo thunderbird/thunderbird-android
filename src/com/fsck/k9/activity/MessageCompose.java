@@ -1357,7 +1357,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      *         original message.
      */
     private TextBody buildText(boolean isDraft, SimpleMessageFormat messageFormat) {
-        String messageText = mMessageContentView.getText().toString();
+        String messageText = mMessageContentView.getCharacters();
 
         TextBodyBuilder textBodyBuilder = new TextBodyBuilder(messageText);
 
@@ -1379,9 +1379,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 textBodyBuilder.setQuotedTextHtml(mQuotedHtmlContent);
                 textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
             }
-            if (messageFormat == SimpleMessageFormat.TEXT) {
+
+            String quotedText = mQuotedText.getCharacters();
+            if (messageFormat == SimpleMessageFormat.TEXT && quotedText.length() > 0) {
                 textBodyBuilder.setIncludeQuotedText(true);
-                textBodyBuilder.setQuotedText(mQuotedText.getText().toString());
+                textBodyBuilder.setQuotedText(quotedText);
                 textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
             }
         }
