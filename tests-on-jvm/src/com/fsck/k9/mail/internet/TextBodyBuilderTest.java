@@ -16,30 +16,28 @@ class TestingTextBodyBuilder extends TextBodyBuilder {
                                   QuoteStyle quoteStyle,
                                   boolean replyAfterQuote,
                                   boolean signatureBeforeQuotedText,
-                                  boolean signatureUse,
-                                  String messageContent,
-                                  String signature) {
-        super(messageContent);
+                                  boolean useSignature,
+                                  String messageText,
+                                  String signatureText) {
+        super(messageText);
 
-        if (isDraft || includeQuotedText) {
+        includeQuotedText = (isDraft || includeQuotedText);
+        if (includeQuotedText) {
             this.setIncludeQuotedText(true);
+            this.setReplyAfterQuote(quoteStyle == QuoteStyle.PREFIX && replyAfterQuote);
         } else {
             this.setIncludeQuotedText(false);
         }
 
-        this.setAppendSignature(!isDraft);
         this.setInsertSeparator(!isDraft);
 
-        this.setSignatureBeforeQuotedText(signatureBeforeQuotedText);
-
-        if (quoteStyle == QuoteStyle.PREFIX && replyAfterQuote) {
-            this.setReplyAfterQuote(true);
+        useSignature = (!isDraft && useSignature);
+        if (useSignature) {
+            this.setAppendSignature(true);
+            this.setSignature(signatureText);
+            this.setSignatureBeforeQuotedText(signatureBeforeQuotedText);
         } else {
-            this.setReplyAfterQuote(false);
-        }
-
-        if (signatureUse) {
-            this.setSignature(signature);
+            this.setAppendSignature(false);
         }
     }
 
@@ -128,8 +126,8 @@ public class TextBodyBuilderTest {
         }
 
         String quotedText = "quoted text";
-        String messageContent = "message content";
-        String signature = "signature";
+        String messageText = "message content";
+        String signatureText = "signature";
 
         TestingTextBodyBuilder textBodyBuilder = new TestingTextBodyBuilder(
             includeQuotedText,
@@ -138,8 +136,8 @@ public class TextBodyBuilderTest {
             isReplyAfterQuote,
             isSignatureBeforeQuotedText,
             isSignatureUse,
-            messageContent,
-            signature
+            messageText,
+            signatureText
         );
         textBodyBuilder.setQuotedText(quotedText);
         TextBody textBody = textBodyBuilder.buildTextPlain();
@@ -303,8 +301,8 @@ public class TextBodyBuilderTest {
 
         String quotedText = "quoted text";
         insertableHtmlContent.setQuotedContent(new StringBuilder(quotedText));
-        String messageContent = "message content";
-        String signature = "signature";
+        String messageText = "message content";
+        String signatureText = "signature";
 
         TestingTextBodyBuilder textBodyBuilder = new TestingTextBodyBuilder(
             includeQuotedText,
@@ -313,8 +311,8 @@ public class TextBodyBuilderTest {
             isReplyAfterQuote,
             isSignatureBeforeQuotedText,
             isSignatureUse,
-            messageContent,
-            signature
+            messageText,
+            signatureText
         );
         textBodyBuilder.setQuotedTextHtml(insertableHtmlContent);
         TextBody textBody = textBodyBuilder.buildTextHtml();
