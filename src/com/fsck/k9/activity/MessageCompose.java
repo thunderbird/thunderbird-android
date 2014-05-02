@@ -1353,9 +1353,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private TextBody buildText(boolean isDraft, SimpleMessageFormat messageFormat) {
         String messageText = mMessageContentView.getText().toString();
-        String signatureText = mIdentity.getSignatureUse() ? mSignatureView.getCharacters() : null;
 
-        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(messageText, signatureText);
+        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(messageText);
 
         /*
          * Find out if we need to include the original message as quoted text.
@@ -1368,13 +1367,21 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         boolean includeQuotedText = (isDraft || mQuotedTextMode == QuotedTextMode.SHOW);
         textBodyBuilder.setIncludeQuotedText(includeQuotedText);
 
-        textBodyBuilder.setAppendSignature(!isDraft);
         textBodyBuilder.setInsertSeparator(!isDraft);
-
-        textBodyBuilder.setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText());
 
         boolean isReplyAfterQuote = (mQuoteStyle == QuoteStyle.PREFIX && mAccount.isReplyAfterQuote());
         textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
+
+        boolean useSignature = (!isDraft && mIdentity.getSignatureUse());
+        if (useSignature) {
+            textBodyBuilder.setAppendSignature(true);
+            textBodyBuilder.setSignature(mSignatureView.getCharacters());
+            textBodyBuilder.setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText());
+        }
+        else {
+            textBodyBuilder.setAppendSignature(false);
+        }
+
 
         TextBody body;
         if (messageFormat == SimpleMessageFormat.HTML) {

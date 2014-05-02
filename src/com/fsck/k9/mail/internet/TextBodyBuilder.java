@@ -13,7 +13,6 @@ public class TextBodyBuilder {
     private boolean mIncludeQuotedText = true;
     private boolean mReplyAfterQuote = false;
     private boolean mSignatureBeforeQuotedText = false;
-
     private boolean mInsertSeparator = false;
     private boolean mAppendSignature = true;
 
@@ -21,12 +20,8 @@ public class TextBodyBuilder {
     private String mMessageContent;
     private String mSignature;
 
-    public TextBodyBuilder(
-            String messageContent,
-            String signature
-            ) {
+    public TextBodyBuilder(String messageContent) {
         mMessageContent = messageContent;
-        mSignature = signature;
     }
 
     /**
@@ -219,6 +214,10 @@ public class TextBodyBuilder {
     }
 
     // setter
+
+    public void setSignature(String signature) {
+        mSignature = signature;
+    }
 
     public void setIncludeQuotedText(boolean includeQuotedText) {
         mIncludeQuotedText = includeQuotedText;
