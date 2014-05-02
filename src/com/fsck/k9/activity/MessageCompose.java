@@ -1365,12 +1365,23 @@ public class MessageCompose extends K9Activity implements OnClickListener,
          * opens a saved draft.
          */
         boolean includeQuotedText = (isDraft || mQuotedTextMode == QuotedTextMode.SHOW);
-        textBodyBuilder.setIncludeQuotedText(includeQuotedText);
+        boolean isReplyAfterQuote = (mQuoteStyle == QuoteStyle.PREFIX && mAccount.isReplyAfterQuote());
+
+        textBodyBuilder.setIncludeQuotedText(false);
+        if (includeQuotedText) {
+            if (messageFormat == SimpleMessageFormat.HTML && mQuotedHtmlContent != null) {
+                textBodyBuilder.setIncludeQuotedText(true);
+                textBodyBuilder.setQuotedTextHtml(mQuotedHtmlContent);
+                textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
+            }
+            if (messageFormat == SimpleMessageFormat.TEXT) {
+                textBodyBuilder.setIncludeQuotedText(true);
+                textBodyBuilder.setQuotedText(mQuotedText.getText().toString());
+                textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
+            }
+        }
 
         textBodyBuilder.setInsertSeparator(!isDraft);
-
-        boolean isReplyAfterQuote = (mQuoteStyle == QuoteStyle.PREFIX && mAccount.isReplyAfterQuote());
-        textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
 
         boolean useSignature = (!isDraft && mIdentity.getSignatureUse());
         if (useSignature) {
@@ -1384,16 +1395,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         TextBody body;
         if (messageFormat == SimpleMessageFormat.HTML) {
-            if (mQuotedHtmlContent == null) {
-                textBodyBuilder.setIncludeQuotedText(false);
-            }
-            else {
-                textBodyBuilder.setQuotedTextHtml(mQuotedHtmlContent);
-            }
             body = textBodyBuilder.buildTextHtml();
         }
         else {
-            textBodyBuilder.setQuotedText(mQuotedText.getText().toString());
             body = textBodyBuilder.buildTextPlain();
         }
         return body;
