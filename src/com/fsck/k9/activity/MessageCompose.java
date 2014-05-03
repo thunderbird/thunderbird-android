@@ -1934,7 +1934,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
                         executeOpenPgpMethod(intent);
                     } else if (mCryptoSignatureCheckbox.isChecked()) {
-                        String text = buildText(false).getText();
                         Intent intent = new Intent(OpenPgpApi.ACTION_SIGN);
                         executeOpenPgpMethod(intent);
                     } else if (mEncryptCheckbox.isChecked()) {
