@@ -9,14 +9,12 @@ import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Body;
 
 public class TextBodyBuilder {
-    // option
     private boolean mIncludeQuotedText = true;
     private boolean mReplyAfterQuote = false;
     private boolean mSignatureBeforeQuotedText = false;
     private boolean mInsertSeparator = false;
     private boolean mAppendSignature = true;
 
-    // message parts
     private String mMessageContent;
     private String mSignature;
     private String mQuotedText;
@@ -28,12 +26,6 @@ public class TextBodyBuilder {
 
     /**
      * Build the {@link Body} that will contain the text of the message.
-     *
-     * <p>
-     * Draft messages are treated somewhat differently in that signatures are
-     * not appended and HTML separators between composed text and quoted text
-     * are not added.
-     * </p>
      *
      * @return {@link TextBody} instance that contains the entered text and
      *         possibly the quoted original message.
@@ -127,12 +119,6 @@ public class TextBodyBuilder {
     /**
      * Build the {@link Body} that will contain the text of the message.
      *
-     * <p>
-     * Draft messages are treated somewhat differently in that signatures are
-     * not appended and HTML separators between composed text and quoted text
-     * are not added.
-     * </p>
-     *
      * @return {@link TextBody} instance that contains the entered text and
      *         possibly the quoted original message.
      */
@@ -198,11 +184,6 @@ public class TextBodyBuilder {
         return signature;
     }
 
-    /**
-     * Get an HTML version of the signature in the #mSignatureView, if any.
-     *
-     * @return HTML version of signature.
-     */
     private String getSignatureHtml() {
         String signature = "";
         if (!StringUtils.isNullOrEmpty(mSignature)) {
@@ -226,8 +207,6 @@ public class TextBodyBuilder {
     public String textToHtmlFragment(String text) {
         return HtmlConverter.textToHtmlFragment(text);
     }
-
-    // setter
 
     public void setSignature(String signature) {
         mSignature = signature;
