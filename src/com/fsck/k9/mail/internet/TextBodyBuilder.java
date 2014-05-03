@@ -76,13 +76,13 @@ public class TextBodyBuilder {
              */
             if (mReplyAfterQuote) {
                 quotedHtmlContent.setInsertionLocation(
-                    InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
+                        InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
                 if (mInsertSeparator) {
                     text = "<br clear=\"all\">" + text;
                 }
             } else {
                 quotedHtmlContent.setInsertionLocation(
-                    InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
+                        InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
                 if (mInsertSeparator) {
                     text += "<br><br>";
                 }
