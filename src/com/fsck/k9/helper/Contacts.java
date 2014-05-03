@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.content.Intent;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.DataUsageFeedback;
 import android.util.Log;
 
 import com.fsck.k9.K9;

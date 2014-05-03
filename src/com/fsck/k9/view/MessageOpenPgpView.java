@@ -57,7 +57,6 @@ public class MessageOpenPgpView extends LinearLayout {
     private OpenPgpApi mOpenPgpApi;
 
     private String mOpenPgpProvider;
-    private String mDecryptedData;
     private Message mMessage;
 
     private PendingIntent mMissingKeyPI;
@@ -103,7 +102,6 @@ public class MessageOpenPgpView extends LinearLayout {
         // set class variables
         mAccount = account;
         mOpenPgpProvider = mAccount.getOpenPgpProvider();
-        mDecryptedData = decryptedData;
         mMessage = message;
 
         // only use this view if a OpenPGP Provider is set

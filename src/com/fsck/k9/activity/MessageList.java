@@ -53,7 +53,6 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageOpenPgpView;
 import com.fsck.k9.view.MessageTitleView;
-import com.fsck.k9.view.SingleMessageView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 
