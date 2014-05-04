@@ -88,6 +88,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.TextBodyBuilder;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
@@ -111,6 +112,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -194,7 +196,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int CONTACT_PICKER_BCC2 = 9;
 
     private static final Account[] EMPTY_ACCOUNT_ARRAY = new Account[0];
-    
+
     private static final int REQUEST_CODE_SIGN_ENCRYPT = 12;
 
     /**
@@ -318,10 +320,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private PgpData mPgpData = null;
     private boolean mAutoEncrypt = false;
     private boolean mContinueWithoutPublicKey = false;
-    
+
     private String mOpenPgpProvider;
     private OpenPgpServiceConnection mOpenPgpServiceConnection;
-    
+
     private String mReferences;
     private String mInReplyTo;
     private Menu mMenu;
@@ -381,36 +383,36 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
-            case MSG_PROGRESS_ON:
-                setSupportProgressBarIndeterminateVisibility(true);
-                break;
-            case MSG_PROGRESS_OFF:
-                setSupportProgressBarIndeterminateVisibility(false);
-                break;
-            case MSG_SKIPPED_ATTACHMENTS:
-                Toast.makeText(
-                    MessageCompose.this,
-                    getString(R.string.message_compose_attachments_skipped_toast),
-                    Toast.LENGTH_LONG).show();
-                break;
-            case MSG_SAVED_DRAFT:
-                Toast.makeText(
-                    MessageCompose.this,
-                    getString(R.string.message_saved_toast),
-                    Toast.LENGTH_LONG).show();
-                break;
-            case MSG_DISCARDED_DRAFT:
-                Toast.makeText(
-                    MessageCompose.this,
-                    getString(R.string.message_discarded_toast),
-                    Toast.LENGTH_LONG).show();
-                break;
-            case MSG_PERFORM_STALLED_ACTION:
-                performStalledAction();
-                break;
-            default:
-                super.handleMessage(msg);
-                break;
+                case MSG_PROGRESS_ON:
+                    setSupportProgressBarIndeterminateVisibility(true);
+                    break;
+                case MSG_PROGRESS_OFF:
+                    setSupportProgressBarIndeterminateVisibility(false);
+                    break;
+                case MSG_SKIPPED_ATTACHMENTS:
+                    Toast.makeText(
+                        MessageCompose.this,
+                        getString(R.string.message_compose_attachments_skipped_toast),
+                        Toast.LENGTH_LONG).show();
+                    break;
+                case MSG_SAVED_DRAFT:
+                    Toast.makeText(
+                        MessageCompose.this,
+                        getString(R.string.message_saved_toast),
+                        Toast.LENGTH_LONG).show();
+                    break;
+                case MSG_DISCARDED_DRAFT:
+                    Toast.makeText(
+                        MessageCompose.this,
+                        getString(R.string.message_discarded_toast),
+                        Toast.LENGTH_LONG).show();
+                    break;
+                case MSG_PERFORM_STALLED_ACTION:
+                    performStalledAction();
+                    break;
+                default:
+                    super.handleMessage(msg);
+                    break;
             }
         }
     };
@@ -560,8 +562,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
         mSourceMessageBody = intent.getStringExtra(EXTRA_MESSAGE_BODY);
 
-        if (K9.DEBUG && mSourceMessageBody != null)
+        if (K9.DEBUG && mSourceMessageBody != null) {
             Log.d(K9.LOG_TAG, "Composing message with explicitly specified message body.");
+        }
 
         final String accountUuid = (mMessageReference != null) ?
                                    mMessageReference.accountUuid :
@@ -869,7 +872,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         initializeCrypto();
-        
+
         final CryptoProvider crypto = mAccount.getCryptoProvider();
         mOpenPgpProvider = mAccount.getOpenPgpProvider();
         if (mOpenPgpProvider != null) {
@@ -878,7 +881,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // bind to service
             mOpenPgpServiceConnection = new OpenPgpServiceConnection(this, mOpenPgpProvider);
             mOpenPgpServiceConnection.bindToService();
-            
+
             mEncryptLayout.setVisibility(View.VISIBLE);
             mCryptoSignatureCheckbox.setOnClickListener(new OnClickListener() {
                 @Override
@@ -947,7 +950,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         setTitle();
     }
-    
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -1350,136 +1353,56 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      *         original message.
      */
     private TextBody buildText(boolean isDraft, SimpleMessageFormat messageFormat) {
-        // The length of the formatted version of the user-supplied text/reply
-        int composedMessageLength;
+        String messageText = mMessageContentView.getCharacters();
 
-        // The offset of the user-supplied text/reply in the final text body
-        int composedMessageOffset;
+        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(messageText);
 
         /*
          * Find out if we need to include the original message as quoted text.
          *
-         * We include the quoted text in the body if the user didn't choose to hide it. We always
-         * include the quoted text when we're saving a draft. That's so the user is able to
-         * "un-hide" the quoted text if (s)he opens a saved draft.
+         * We include the quoted text in the body if the user didn't choose to
+         * hide it. We always include the quoted text when we're saving a draft.
+         * That's so the user is able to "un-hide" the quoted text if (s)he
+         * opens a saved draft.
          */
-        boolean includeQuotedText = (mQuotedTextMode.equals(QuotedTextMode.SHOW) || isDraft);
+        boolean includeQuotedText = (isDraft || mQuotedTextMode == QuotedTextMode.SHOW);
+        boolean isReplyAfterQuote = (mQuoteStyle == QuoteStyle.PREFIX && mAccount.isReplyAfterQuote());
 
-        // Reply after quote makes no sense for HEADER style replies
-        boolean replyAfterQuote = (mQuoteStyle == QuoteStyle.HEADER) ?
-                false : mAccount.isReplyAfterQuote();
-
-        boolean signatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
-
-        // Get the user-supplied text
-        String text = mMessageContentView.getCharacters();
-
-        // Handle HTML separate from the rest of the text content
-        if (messageFormat == SimpleMessageFormat.HTML) {
-
-            // Do we have to modify an existing message to include our reply?
-            if (includeQuotedText && mQuotedHtmlContent != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "insertable: " + mQuotedHtmlContent.toDebugString());
-                }
-
-                if (!isDraft) {
-                    // Append signature to the reply
-                    if (replyAfterQuote || signatureBeforeQuotedText) {
-                        text = appendSignature(text);
-                    }
-                }
-
-                // Convert the text to HTML
-                text = HtmlConverter.textToHtmlFragment(text);
-
-                /*
-                 * Set the insertion location based upon our reply after quote setting.
-                 * Additionally, add some extra separators between the composed message and quoted
-                 * message depending on the quote location. We only add the extra separators when
-                 * we're sending, that way when we load a draft, we don't have to know the length
-                 * of the separators to remove them before editing.
-                 */
-                if (replyAfterQuote) {
-                    mQuotedHtmlContent.setInsertionLocation(
-                            InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
-                    if (!isDraft) {
-                        text = "<br clear=\"all\">" + text;
-                    }
-                } else {
-                    mQuotedHtmlContent.setInsertionLocation(
-                            InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
-                    if (!isDraft) {
-                        text += "<br><br>";
-                    }
-                }
-
-                if (!isDraft) {
-                    // Place signature immediately after the quoted text
-                    if (!(replyAfterQuote || signatureBeforeQuotedText)) {
-                        mQuotedHtmlContent.insertIntoQuotedFooter(getSignatureHtml());
-                    }
-                }
-
-                mQuotedHtmlContent.setUserContent(text);
-
-                // Save length of the body and its offset.  This is used when thawing drafts.
-                composedMessageLength = text.length();
-                composedMessageOffset = mQuotedHtmlContent.getInsertionPoint();
-                text = mQuotedHtmlContent.toString();
-
-            } else {
-                // There is no text to quote so simply append the signature if available
-                if (!isDraft) {
-                    text = appendSignature(text);
-                }
-
-                // Convert the text to HTML
-                text = HtmlConverter.textToHtmlFragment(text);
-
-                //TODO: Wrap this in proper HTML tags
-
-                composedMessageLength = text.length();
-                composedMessageOffset = 0;
-            }
-
-        } else {
-            // Capture composed message length before we start attaching quoted parts and signatures.
-            composedMessageLength = text.length();
-            composedMessageOffset = 0;
-
-            if (!isDraft) {
-                // Append signature to the text/reply
-                if (replyAfterQuote || signatureBeforeQuotedText) {
-                    text = appendSignature(text);
-                }
+        textBodyBuilder.setIncludeQuotedText(false);
+        if (includeQuotedText) {
+            if (messageFormat == SimpleMessageFormat.HTML && mQuotedHtmlContent != null) {
+                textBodyBuilder.setIncludeQuotedText(true);
+                textBodyBuilder.setQuotedTextHtml(mQuotedHtmlContent);
+                textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
             }
 
             String quotedText = mQuotedText.getCharacters();
-            if (includeQuotedText && quotedText.length() > 0) {
-                if (replyAfterQuote) {
-                    composedMessageOffset = quotedText.length() + "\r\n".length();
-                    text = quotedText + "\r\n" + text;
-                } else {
-                    text += "\r\n\r\n" + quotedText.toString();
-                }
-            }
-
-            if (!isDraft) {
-                // Place signature immediately after the quoted text
-                if (!(replyAfterQuote || signatureBeforeQuotedText)) {
-                    text = appendSignature(text);
-                }
+            if (messageFormat == SimpleMessageFormat.TEXT && quotedText.length() > 0) {
+                textBodyBuilder.setIncludeQuotedText(true);
+                textBodyBuilder.setQuotedText(quotedText);
+                textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
             }
         }
 
-        TextBody body = new TextBody(text);
-        body.setComposedMessageLength(composedMessageLength);
-        body.setComposedMessageOffset(composedMessageOffset);
+        textBodyBuilder.setInsertSeparator(!isDraft);
 
+        boolean useSignature = (!isDraft && mIdentity.getSignatureUse());
+        if (useSignature) {
+            textBodyBuilder.setAppendSignature(true);
+            textBodyBuilder.setSignature(mSignatureView.getCharacters());
+            textBodyBuilder.setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText());
+        } else {
+            textBodyBuilder.setAppendSignature(false);
+        }
+
+        TextBody body;
+        if (messageFormat == SimpleMessageFormat.HTML) {
+            body = textBodyBuilder.buildTextHtml();
+        } else {
+            body = textBodyBuilder.buildTextPlain();
+        }
         return body;
     }
-
     /**
      * Build the final message to be sent (or saved). If there is another message quoted in this one, it will be baked
      * into the final message here.
@@ -1628,8 +1551,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              *  title*3="isn't it!"
              */
             bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
-                             "attachment;\r\n filename=\"%s\";\r\n size=%d",
-                             attachment.name, attachment.size));
+                    "attachment;\r\n filename=\"%s\";\r\n size=%d",
+                    attachment.name, attachment.size));
 
             mp.addBodyPart(bp);
         }
@@ -1762,8 +1685,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Map<IdentityField, String> parseIdentityHeader(final String identityString) {
         Map<IdentityField, String> identity = new HashMap<IdentityField, String>();
 
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "Decoding identity: " + identityString);
+        }
 
         if (identityString == null || identityString.length() < 1) {
             return identity;
@@ -1781,8 +1705,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             }
 
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "Decoded identity: " + identity.toString());
+            }
 
             // Sanity check our Integers so that recipients of this result don't have to.
             for (IdentityField key : IdentityField.getIntegerFields()) {
@@ -1797,8 +1722,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             // Legacy identity
 
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "Got a saved legacy identity: " + identityString);
+            }
             StringTokenizer tokenizer = new StringTokenizer(identityString, ":", false);
 
             // First item is the body length. We use this to separate the composed reply from the quoted text.
@@ -1825,35 +1751,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         return identity;
-    }
-
-
-    private String appendSignature(String originalText) {
-        String text = originalText;
-        if (mIdentity.getSignatureUse()) {
-            String signature = mSignatureView.getCharacters();
-
-            if (signature != null && !signature.contentEquals("")) {
-                text += "\r\n" + signature;
-            }
-        }
-
-        return text;
-    }
-
-    /**
-     * Get an HTML version of the signature in the #mSignatureView, if any.
-     * @return HTML version of signature.
-     */
-    private String getSignatureHtml() {
-        String signature = "";
-        if (mIdentity.getSignatureUse()) {
-            signature = mSignatureView.getCharacters();
-            if(!StringUtils.isNullOrEmpty(signature)) {
-                signature = HtmlConverter.textToHtmlFragment("\r\n" + signature);
-            }
-        }
-        return signature;
     }
 
     private void sendMessage() {
@@ -1911,7 +1808,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void performSend() {
         final CryptoProvider crypto = mAccount.getCryptoProvider();
-        
+
         if (mOpenPgpProvider != null) {
             // OpenPGP Provider API
 
@@ -1929,18 +1826,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     }
                     emailsArray = emails.toArray(new String[emails.size()]);
                 }
-                    if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
-                        Intent intent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
-                        intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
-                        executeOpenPgpMethod(intent);
-                    } else if (mCryptoSignatureCheckbox.isChecked()) {
-                        Intent intent = new Intent(OpenPgpApi.ACTION_SIGN);
-                        executeOpenPgpMethod(intent);
-                    } else if (mEncryptCheckbox.isChecked()) {
-                        Intent intent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
-                        intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
-                        executeOpenPgpMethod(intent);
-                    }
+                if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
+                    Intent intent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
+                    intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
+                    executeOpenPgpMethod(intent);
+                } else if (mCryptoSignatureCheckbox.isChecked()) {
+                    Intent intent = new Intent(OpenPgpApi.ACTION_SIGN);
+                    executeOpenPgpMethod(intent);
+                } else if (mEncryptCheckbox.isChecked()) {
+                    Intent intent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
+                    intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
+                    executeOpenPgpMethod(intent);
+                }
 
                 // onSend() is called again in SignEncryptCallback and with
                 // encryptedData set in pgpData!
@@ -1948,7 +1845,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         } else if (crypto.isAvailable(this)) {
             // Legacy APG API
-            
+
             if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
                 // key selection before encryption
                 StringBuilder emails = new StringBuilder();
@@ -1988,8 +1885,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         sendMessage();
 
         if (mMessageReference != null && mMessageReference.flag != null) {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "Setting referenced message (" + mMessageReference.folderName + ", " + mMessageReference.uid + ") flag to " + mMessageReference.flag);
+            }
 
             final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
             final String folderName = mMessageReference.folderName;
@@ -2000,7 +1898,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mDraftNeedsSaving = false;
         finish();
     }
-    
+
     private InputStream getOpenPgpInputStream() {
         String text = buildText(false).getText();
 
@@ -2012,7 +1910,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
         return is;
     }
-    
+
     private void executeOpenPgpMethod(Intent intent) {
         intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
         // this follows user id format of OpenPGP to allow key generation based on it
@@ -2028,7 +1926,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         OpenPgpApi api = new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
         api.executeApiAsync(intent, is, os, callback);
     }
-    
+
     /**
      * Called on successful encrypt/verify
      */
@@ -2049,8 +1947,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         final String output = os.toString("UTF-8");
 
                         if (K9.DEBUG)
-                            Log.d(OpenPgpApi.TAG, "result: " + os.toByteArray().length
-                                    + " str=" + output);
+                            Log.d(OpenPgpApi.TAG, "result: " + os.toByteArray().length +
+                                    " str=" + output);
 
                         mPgpData.setEncryptedData(output);
                         onSend();
@@ -2078,7 +1976,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         }
     }
-    
+
     private void handleOpenPgpErrors(final OpenPgpError error) {
         runOnUiThread(new Runnable() {
 
@@ -2086,7 +1984,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             public void run() {
                 Log.e(K9.LOG_TAG, "OpenPGP Error ID:" + error.getErrorId());
                 Log.e(K9.LOG_TAG, "OpenPGP Error Message:" + error.getMessage());
-                
+
                 Toast.makeText(MessageCompose.this,
                         getString(R.string.openpgp_error) + " " + error.getMessage(),
                         Toast.LENGTH_LONG).show();
@@ -2364,7 +2262,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if a CryptoSystem activity is returning, then mPreventDraftSaving was set to true
         mPreventDraftSaving = false;
-        
+
         // OpenPGP: try again after user interaction
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SIGN_ENCRYPT) {
             /*
@@ -2382,71 +2280,72 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
-        if (resultCode != RESULT_OK)
+        if (resultCode != RESULT_OK) {
             return;
+        }
         if (data == null) {
             return;
         }
         switch (requestCode) {
-        case ACTIVITY_REQUEST_PICK_ATTACHMENT:
-            addAttachmentsFromResultIntent(data);
-            mDraftNeedsSaving = true;
-            break;
-        case CONTACT_PICKER_TO:
-        case CONTACT_PICKER_CC:
-        case CONTACT_PICKER_BCC:
-            ContactItem contact = mContacts.extractInfoFromContactPickerIntent(data);
-            if (contact == null) {
-                Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
-                return;
-            }
-            if (contact.emailAddresses.size() > 1) {
-                Intent i = new Intent(this, EmailAddressList.class);
-                i.putExtra(EmailAddressList.EXTRA_CONTACT_ITEM, contact);
+            case ACTIVITY_REQUEST_PICK_ATTACHMENT:
+                addAttachmentsFromResultIntent(data);
+                mDraftNeedsSaving = true;
+                break;
+            case CONTACT_PICKER_TO:
+            case CONTACT_PICKER_CC:
+            case CONTACT_PICKER_BCC:
+                ContactItem contact = mContacts.extractInfoFromContactPickerIntent(data);
+                if (contact == null) {
+                    Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (contact.emailAddresses.size() > 1) {
+                    Intent i = new Intent(this, EmailAddressList.class);
+                    i.putExtra(EmailAddressList.EXTRA_CONTACT_ITEM, contact);
 
+                    if (requestCode == CONTACT_PICKER_TO) {
+                        startActivityForResult(i, CONTACT_PICKER_TO2);
+                    } else if (requestCode == CONTACT_PICKER_CC) {
+                        startActivityForResult(i, CONTACT_PICKER_CC2);
+                    } else if (requestCode == CONTACT_PICKER_BCC) {
+                        startActivityForResult(i, CONTACT_PICKER_BCC2);
+                    }
+                    return;
+                }
+                if (K9.DEBUG) {
+                    List<String> emails = contact.emailAddresses;
+                    for (int i = 0; i < emails.size(); i++) {
+                        Log.v(K9.LOG_TAG, "email[" + i + "]: " + emails.get(i));
+                    }
+                }
+
+
+                String email = contact.emailAddresses.get(0);
                 if (requestCode == CONTACT_PICKER_TO) {
-                    startActivityForResult(i, CONTACT_PICKER_TO2);
+                    addAddress(mToView, new Address(email, ""));
                 } else if (requestCode == CONTACT_PICKER_CC) {
-                    startActivityForResult(i, CONTACT_PICKER_CC2);
+                    addAddress(mCcView, new Address(email, ""));
                 } else if (requestCode == CONTACT_PICKER_BCC) {
-                    startActivityForResult(i, CONTACT_PICKER_BCC2);
+                    addAddress(mBccView, new Address(email, ""));
+                } else {
+                    return;
                 }
-                return;
-            }
-            if (K9.DEBUG) {
-                List<String> emails = contact.emailAddresses;
-                for (int i = 0; i < emails.size(); i++) {
-                    Log.v(K9.LOG_TAG, "email[" + i + "]: " + emails.get(i));
+
+
+
+                break;
+            case CONTACT_PICKER_TO2:
+            case CONTACT_PICKER_CC2:
+            case CONTACT_PICKER_BCC2:
+                String emailAddr = data.getStringExtra(EmailAddressList.EXTRA_EMAIL_ADDRESS);
+                if (requestCode == CONTACT_PICKER_TO2) {
+                    addAddress(mToView, new Address(emailAddr, ""));
+                } else if (requestCode == CONTACT_PICKER_CC2) {
+                    addAddress(mCcView, new Address(emailAddr, ""));
+                } else if (requestCode == CONTACT_PICKER_BCC2) {
+                    addAddress(mBccView, new Address(emailAddr, ""));
                 }
-            }
-
-
-            String email = contact.emailAddresses.get(0);
-            if (requestCode == CONTACT_PICKER_TO) {
-                addAddress(mToView, new Address(email, ""));
-            } else if (requestCode == CONTACT_PICKER_CC) {
-                addAddress(mCcView, new Address(email, ""));
-            } else if (requestCode == CONTACT_PICKER_BCC) {
-                addAddress(mBccView, new Address(email, ""));
-            } else {
-                return;
-            }
-
-
-
-            break;
-        case CONTACT_PICKER_TO2:
-        case CONTACT_PICKER_CC2:
-        case CONTACT_PICKER_BCC2:
-            String emailAddr = data.getStringExtra(EmailAddressList.EXTRA_EMAIL_ADDRESS);
-            if (requestCode == CONTACT_PICKER_TO2) {
-                addAddress(mToView, new Address(emailAddr, ""));
-            } else if (requestCode == CONTACT_PICKER_CC2) {
-                addAddress(mCcView, new Address(emailAddr, ""));
-            } else if (requestCode == CONTACT_PICKER_BCC2) {
-                addAddress(mBccView, new Address(emailAddr, ""));
-            }
-            break;
+                break;
         }
     }
 
@@ -2563,39 +2462,39 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-        case R.id.attachment_delete:
-            /*
-             * The view is the delete button, and we have previously set the tag of
-             * the delete button to the view that owns it. We don't use parent because the
-             * view is very complex and could change in the future.
-             */
-            mAttachments.removeView((View) view.getTag());
-            mDraftNeedsSaving = true;
-            break;
-        case R.id.quoted_text_show:
-            showOrHideQuotedText(QuotedTextMode.SHOW);
-            updateMessageFormat();
-            mDraftNeedsSaving = true;
-            break;
-        case R.id.quoted_text_delete:
-            showOrHideQuotedText(QuotedTextMode.HIDE);
-            updateMessageFormat();
-            mDraftNeedsSaving = true;
-            break;
-        case R.id.quoted_text_edit:
-            mForcePlainText = true;
-            if (mMessageReference != null) { // shouldn't happen...
-                // TODO - Should we check if mSourceMessageBody is already present and bypass the MessagingController call?
-                MessagingController.getInstance(getApplication()).addListener(mListener);
-                final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-                final String folderName = mMessageReference.folderName;
-                final String sourceMessageUid = mMessageReference.uid;
-                MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
-            }
-            break;
-        case R.id.identity:
-            showDialog(DIALOG_CHOOSE_IDENTITY);
-            break;
+            case R.id.attachment_delete:
+                /*
+                 * The view is the delete button, and we have previously set the tag of
+                 * the delete button to the view that owns it. We don't use parent because the
+                 * view is very complex and could change in the future.
+                 */
+                mAttachments.removeView((View) view.getTag());
+                mDraftNeedsSaving = true;
+                break;
+            case R.id.quoted_text_show:
+                showOrHideQuotedText(QuotedTextMode.SHOW);
+                updateMessageFormat();
+                mDraftNeedsSaving = true;
+                break;
+            case R.id.quoted_text_delete:
+                showOrHideQuotedText(QuotedTextMode.HIDE);
+                updateMessageFormat();
+                mDraftNeedsSaving = true;
+                break;
+            case R.id.quoted_text_edit:
+                mForcePlainText = true;
+                if (mMessageReference != null) { // shouldn't happen...
+                    // TODO - Should we check if mSourceMessageBody is already present and bypass the MessagingController call?
+                    MessagingController.getInstance(getApplication()).addListener(mListener);
+                    final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+                    final String folderName = mMessageReference.folderName;
+                    final String sourceMessageUid = mMessageReference.uid;
+                    MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
+                }
+                break;
+            case R.id.identity:
+                showDialog(DIALOG_CHOOSE_IDENTITY);
+                break;
         }
     }
 
@@ -2642,36 +2541,36 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.send:
-            mPgpData.setEncryptionKeys(null);
-            onSend();
-            break;
-        case R.id.save:
-            if (mEncryptCheckbox.isChecked()) {
-                showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
-            } else {
-                onSave();
-            }
-            break;
-        case R.id.discard:
-            onDiscard();
-            break;
-        case R.id.add_cc_bcc:
-            onAddCcBcc();
-            break;
-        case R.id.add_attachment:
-            onAddAttachment();
-            break;
-        case R.id.add_attachment_image:
-            onAddAttachment2("image/*");
-            break;
-        case R.id.add_attachment_video:
-            onAddAttachment2("video/*");
-            break;
-        case R.id.read_receipt:
-            onReadReceipt();
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.send:
+                mPgpData.setEncryptionKeys(null);
+                onSend();
+                break;
+            case R.id.save:
+                if (mEncryptCheckbox.isChecked()) {
+                    showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
+                } else {
+                    onSave();
+                }
+                break;
+            case R.id.discard:
+                onDiscard();
+                break;
+            case R.id.add_cc_bcc:
+                onAddCcBcc();
+                break;
+            case R.id.add_attachment:
+                onAddAttachment();
+                break;
+            case R.id.add_attachment_image:
+                onAddAttachment2("image/*");
+                break;
+            case R.id.add_attachment_video:
+                onAddAttachment2("video/*");
+                break;
+            case R.id.read_receipt:
+                onReadReceipt();
+            default:
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }
@@ -2769,94 +2668,94 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public Dialog onCreateDialog(int id) {
         switch (id) {
-        case DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE:
-            return new AlertDialog.Builder(this)
-                   .setTitle(R.string.save_or_discard_draft_message_dlg_title)
-                   .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
-            .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-                    onSave();
-                }
-            })
-            .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-                    onDiscard();
-                }
-            })
-                   .create();
-        case DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED:
-            return new AlertDialog.Builder(this)
-                   .setTitle(R.string.refuse_to_save_draft_marked_encrypted_dlg_title)
-                   .setMessage(R.string.refuse_to_save_draft_marked_encrypted_instructions_fmt)
-            .setNeutralButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dismissDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
-                }
-            })
-                   .create();
-        case DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY:
-            return new AlertDialog.Builder(this)
-                   .setTitle(R.string.continue_without_public_key_dlg_title)
-                   .setMessage(R.string.continue_without_public_key_instructions_fmt)
-            .setPositiveButton(R.string.continue_action, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
-                    mContinueWithoutPublicKey = true;
-                    onSend();
-                }
-            })
-            .setNegativeButton(R.string.back_action, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
-                    mContinueWithoutPublicKey = false;
-                }
-            })
-                   .create();
-        case DIALOG_CONFIRM_DISCARD_ON_BACK:
-            return new AlertDialog.Builder(this)
-                   .setTitle(R.string.confirm_discard_draft_message_title)
-                   .setMessage(R.string.confirm_discard_draft_message)
-            .setPositiveButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
-                }
-            })
-            .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
-                    Toast.makeText(MessageCompose.this,
-                                   getString(R.string.message_discarded_toast),
-                                   Toast.LENGTH_LONG).show();
-                    onDiscard();
-                }
-            })
-            .create();
-        case DIALOG_CHOOSE_IDENTITY:
-            Context context = new ContextThemeWrapper(this,
-                    (K9.getK9Theme() == K9.Theme.LIGHT) ?
-                            R.style.Theme_K9_Dialog_Light :
-                            R.style.Theme_K9_Dialog_Dark);
-            Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(R.string.send_as);
-            final IdentityAdapter adapter = new IdentityAdapter(context);
-            builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    IdentityContainer container = (IdentityContainer) adapter.getItem(which);
-                    onAccountChosen(container.account, container.identity);
-                }
-            });
+            case DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE:
+                return new AlertDialog.Builder(this)
+                       .setTitle(R.string.save_or_discard_draft_message_dlg_title)
+                       .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
+                .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+                        onSave();
+                    }
+                })
+                .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+                        onDiscard();
+                    }
+                })
+                .create();
+            case DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED:
+                return new AlertDialog.Builder(this)
+                       .setTitle(R.string.refuse_to_save_draft_marked_encrypted_dlg_title)
+                       .setMessage(R.string.refuse_to_save_draft_marked_encrypted_instructions_fmt)
+                .setNeutralButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dismissDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
+                    }
+                })
+                .create();
+            case DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY:
+                return new AlertDialog.Builder(this)
+                       .setTitle(R.string.continue_without_public_key_dlg_title)
+                       .setMessage(R.string.continue_without_public_key_instructions_fmt)
+                .setPositiveButton(R.string.continue_action, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
+                        mContinueWithoutPublicKey = true;
+                        onSend();
+                    }
+                })
+                .setNegativeButton(R.string.back_action, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
+                        mContinueWithoutPublicKey = false;
+                    }
+                })
+                .create();
+            case DIALOG_CONFIRM_DISCARD_ON_BACK:
+                return new AlertDialog.Builder(this)
+                       .setTitle(R.string.confirm_discard_draft_message_title)
+                       .setMessage(R.string.confirm_discard_draft_message)
+                .setPositiveButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+                    }
+                })
+                .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+                        Toast.makeText(MessageCompose.this,
+                                       getString(R.string.message_discarded_toast),
+                                       Toast.LENGTH_LONG).show();
+                        onDiscard();
+                    }
+                })
+                .create();
+            case DIALOG_CHOOSE_IDENTITY:
+                Context context = new ContextThemeWrapper(this,
+                        (K9.getK9Theme() == K9.Theme.LIGHT) ?
+                        R.style.Theme_K9_Dialog_Light :
+                        R.style.Theme_K9_Dialog_Dark);
+                Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.send_as);
+                final IdentityAdapter adapter = new IdentityAdapter(context);
+                builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        IdentityContainer container = (IdentityContainer) adapter.getItem(which);
+                        onAccountChosen(container.account, container.identity);
+                    }
+                });
 
-            return builder.create();
+                return builder.create();
         }
         return super.onCreateDialog(id);
     }
@@ -2993,8 +2892,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
         } else {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "could not get Message-ID.");
+            }
         }
 
         // Quote the message and setup the UI.
@@ -3387,10 +3287,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     List<Integer> start = new ArrayList<Integer>();
                     List<Integer> end = new ArrayList<Integer>();
 
-                    while(blockquoteStart.find()) {
+                    while (blockquoteStart.find()) {
                         start.add(blockquoteStart.start());
                     }
-                    while(blockquoteEnd.find()) {
+                    while (blockquoteEnd.find()) {
                         end.add(blockquoteEnd.start());
                     }
                     if (start.size() != end.size()) {
@@ -3405,8 +3305,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         } else {
                             for (int i = 0; i < start.size() - 1; i++) {
                                 // within blockquotes.
-                                if (end.get(i) < start.get(i+1)) {
-                                    dashSignatureHtml.region(end.get(i), start.get(i+1));
+                                if (end.get(i) < start.get(i + 1)) {
+                                    dashSignatureHtml.region(end.get(i), start.get(i + 1));
                                     if (dashSignatureHtml.find()) {
                                         content = content.substring(0, dashSignatureHtml.start());
                                         break;
@@ -3493,30 +3393,34 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // HTML takes precedence, then text.
             part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             if (part != null) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, HTML found.");
+                }
                 return MimeUtility.getTextFromPart(part);
             }
 
             part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
             if (part != null) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, text found.");
+                }
                 return HtmlConverter.textToHtml(MimeUtility.getTextFromPart(part));
             }
         } else if (format == SimpleMessageFormat.TEXT) {
             // Text takes precedence, then html.
             part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
             if (part != null) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, text found.");
+                }
                 return MimeUtility.getTextFromPart(part);
             }
 
             part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             if (part != null) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, HTML found.");
+                }
                 return HtmlConverter.htmlToText(MimeUtility.getTextFromPart(part));
             }
         }
@@ -3583,8 +3487,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             hasBodyTag = true;
         }
 
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "Open: hasHtmlTag:" + hasHtmlTag + " hasHeadTag:" + hasHeadTag + " hasBodyTag:" + hasBodyTag);
+        }
 
         // Given our inspections, let's figure out where to start our content.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just after it.
@@ -3635,8 +3540,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             hasBodyEndTag = true;
         }
 
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "Close: hasHtmlEndTag:" + hasHtmlEndTag + " hasBodyEndTag:" + hasBodyEndTag);
+        }
 
         // Now figure out where to put our footer.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just before it.
