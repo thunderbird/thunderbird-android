@@ -492,6 +492,6 @@
     <!--SharkMail-->
     <provider id="nova.edu" label="SharkMail" domain="nova.edu" >
         <incoming uri="imap+ssl+://imap.outlook.office365.com"  username="$email" />
-        <outgoing uri="smtp+tls+://smtp.office365.com:2525" />
+        <outgoing uri="smtp+tls+://smtp.office365.com" />
     </provider>
 </providers>
