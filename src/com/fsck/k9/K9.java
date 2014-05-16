@@ -244,6 +244,7 @@ public class K9 extends Application {
     private static boolean mChangeContactNameColor = false;
     private static int mContactNameColor = 0xff00008f;
     private static boolean sShowContactPicture = true;
+    private static boolean mMessageViewUsePlainTextOnly = false;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
     private static boolean mMessageViewShowNext = false;
@@ -531,6 +532,7 @@ public class K9 extends Application {
         editor.putBoolean("showContactPicture", sShowContactPicture);
         editor.putBoolean("changeRegisteredNameColor", mChangeContactNameColor);
         editor.putInt("registeredNameColor", mContactNameColor);
+        editor.putBoolean("messageViewUsePlainTextOnly", mMessageViewUsePlainTextOnly);
         editor.putBoolean("messageViewFixedWidthFont", mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
         editor.putBoolean("messageViewShowNext", mMessageViewShowNext);
@@ -741,6 +743,7 @@ public class K9 extends Application {
         sShowContactPicture = sprefs.getBoolean("showContactPicture", true);
         mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
         mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
+        mMessageViewUsePlainTextOnly = sprefs.getBoolean("messageViewUsePlainTextOnly", false);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
         mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
@@ -1134,6 +1137,14 @@ public class K9 extends Application {
 
     public static void setContactNameColor(int contactNameColor) {
         mContactNameColor = contactNameColor;
+    }
+
+    public static boolean messageViewUsePlainTextOnly() {
+        return mMessageViewUsePlainTextOnly;
+    }
+
+    public static void setMessageViewUsePlainTextOnly(boolean plain) {
+        mMessageViewUsePlainTextOnly = plain;
     }
 
     public static boolean messageViewFixedWidthFont() {
