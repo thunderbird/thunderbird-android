@@ -85,7 +85,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
@@ -1313,6 +1312,16 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private void onDelete(List<Message> messages) {
+        if (K9.confirmDelete()) {
+            // remember the message selection for #onCreateDialog(int)
+            mActiveMessages = messages;
+            showDialog(R.id.dialog_confirm_delete);
+        } else {
+            onDeleteConfirmed(messages);
+        }
+    }
+
+    private void onDeleteConfirmed(List<Message> messages) {
         if (mThreadedList) {
             mController.deleteThreads(messages);
         } else {
@@ -1383,6 +1392,21 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
                 String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
                 String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
+
+                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                        confirmText, cancelText);
+                break;
+            }
+            case R.id.dialog_confirm_delete: {
+                String title = getString(R.string.dialog_confirm_delete_title);
+
+                int selectionSize = mActiveMessages.size();
+                String message = getResources().getQuantityString(
+                        R.plurals.dialog_confirm_delete_messages, selectionSize,
+                        Integer.valueOf(selectionSize));
+
+                String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
+                String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
 
                 fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
                         confirmText, cancelText);
@@ -2902,13 +2926,19 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 mActiveMessages = null;
                 break;
             }
+            case R.id.dialog_confirm_delete: {
+                onDeleteConfirmed(mActiveMessages);
+                mActiveMessage = null;
+                break;
+            }
         }
     }
 
     @Override
     public void doNegativeClick(int dialogId) {
         switch (dialogId) {
-            case R.id.dialog_confirm_spam: {
+            case R.id.dialog_confirm_spam:
+            case R.id.dialog_confirm_delete: {
                 // No further need for this reference
                 mActiveMessages = null;
                 break;
