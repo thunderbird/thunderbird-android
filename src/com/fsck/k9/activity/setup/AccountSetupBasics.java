@@ -14,11 +14,25 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.store.ImapStore;
+import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.view.ClientCertificateSpinner;
+import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -34,7 +48,7 @@ import java.util.Locale;
  * AccountSetupAccountType activity.
  */
 public class AccountSetupBasics extends K9Activity
-    implements OnClickListener, TextWatcher {
+    implements OnClickListener, TextWatcher, OnCheckedChangeListener, OnClientCertificateChangedListener {
     private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
@@ -44,6 +58,8 @@ public class AccountSetupBasics extends K9Activity
 
     private EditText mEmailView;
     private EditText mPasswordView;
+    private CheckBox mClientCertificateCheckBox;
+    private ClientCertificateSpinner mClientCertificateSpinner;
     private Button mNextButton;
     private Button mManualSetupButton;
     private Account mAccount;
@@ -63,6 +79,8 @@ public class AccountSetupBasics extends K9Activity
         setContentView(R.layout.account_setup_basics);
         mEmailView = (EditText)findViewById(R.id.account_email);
         mPasswordView = (EditText)findViewById(R.id.account_password);
+        mClientCertificateCheckBox = (CheckBox)findViewById(R.id.account_client_certificate);
+        mClientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
         mNextButton = (Button)findViewById(R.id.next);
         mManualSetupButton = (Button)findViewById(R.id.manual_setup);
 
@@ -71,6 +89,8 @@ public class AccountSetupBasics extends K9Activity
 
         mEmailView.addTextChangedListener(this);
         mPasswordView.addTextChangedListener(this);
+        mClientCertificateCheckBox.setOnCheckedChangeListener(this);
+        mClientCertificateSpinner.setOnClientCertificateChangedListener(this);
     }
 
     @Override
@@ -117,10 +137,46 @@ public class AccountSetupBasics extends K9Activity
     public void onTextChanged(CharSequence s, int start, int before, int count) {
     }
 
+    @Override
+    public void onClientCertificateChanged(String alias) {
+        validateFields();
+    }
+
+    /**
+     * Called when checking the client certificate CheckBox
+     */
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            // clear password field
+            mPasswordView.removeTextChangedListener(this);
+            mPasswordView.setText("");
+            mPasswordView.addTextChangedListener(this);
+
+            // hide password fields, show client certificate spinner
+            mPasswordView.setVisibility(View.GONE);
+            mClientCertificateSpinner.setVisibility(View.VISIBLE);
+        } else {
+            // clear client certificate spinner
+            mClientCertificateSpinner.setOnClientCertificateChangedListener(null);
+            mClientCertificateSpinner.setAlias(null);
+            mClientCertificateSpinner.setOnClientCertificateChangedListener(this);
+
+            // show password fields, hide client certificate spinner
+            mPasswordView.setVisibility(View.VISIBLE);
+            mClientCertificateSpinner.setVisibility(View.GONE);
+        }
+        validateFields();
+    }
+
     private void validateFields() {
+        boolean clientCertificateChecked = mClientCertificateCheckBox.isChecked();
+        String clientCertificateAlias = mClientCertificateSpinner.getAlias();
         String email = mEmailView.getText().toString();
+
         boolean valid = Utility.requiredFieldValid(mEmailView)
-                        && Utility.requiredFieldValid(mPasswordView)
+                        && (Utility.requiredFieldValid(mPasswordView)
+                                || (clientCertificateChecked && clientCertificateAlias != null))
                         && mEmailValidator.isValidAddressOnly(email);
 
         mNextButton.setEnabled(valid);
@@ -297,33 +353,38 @@ public class AccountSetupBasics extends K9Activity
 
     private void onManualSetup() {
         String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
         String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
+
+        String password = null;
+        String clientCertificateAlias = null;
+        AuthType authenticationType = null;
+        if (mClientCertificateCheckBox.isChecked()) {
+            authenticationType = AuthType.EXTERNAL;
+            clientCertificateAlias = mClientCertificateSpinner.getAlias();
+        } else {
+            authenticationType = AuthType.PLAIN;
+            password = mPasswordView.getText().toString();
+        }
 
         if (mAccount == null) {
             mAccount = Preferences.getPreferences(this).newAccount();
         }
         mAccount.setName(getOwnerName());
         mAccount.setEmail(email);
-        try {
-            String userEnc = URLEncoder.encode(user, "UTF-8");
-            String passwordEnc = URLEncoder.encode(password, "UTF-8");
 
-            URI uri = new URI("placeholder", userEnc + ":" + passwordEnc, "mail." + domain, -1, null,
-                              null, null);
-            mAccount.setStoreUri(uri.toString());
-            mAccount.setTransportUri(uri.toString());
-        } catch (UnsupportedEncodingException enc) {
-            // This really shouldn't happen since the encoding is hardcoded to UTF-8
-            Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
-        } catch (URISyntaxException use) {
-            /*
-             * If we can't set up the URL we just continue. It's only for
-             * convenience.
-             */
-        }
+        // set default uris
+        // NOTE: they will be changed again in AccountSetupAccountType!
+        ServerSettings storeServer = new ServerSettings(ImapStore.STORE_TYPE, "mail." + domain, -1,
+                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, user, password, clientCertificateAlias);
+        ServerSettings transportServer = new ServerSettings(SmtpTransport.TRANSPORT_TYPE, "mail." + domain, -1,
+                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, user, password, clientCertificateAlias);
+        String storeUri = Store.createStoreUri(storeServer);
+        String transportUri = Transport.createTransportUri(transportServer);
+        mAccount.setStoreUri(storeUri);
+        mAccount.setTransportUri(transportUri);
+
         mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
         mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
         mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
@@ -430,4 +491,5 @@ public class AccountSetupBasics extends K9Activity
 
         public String note;
     }
+
 }

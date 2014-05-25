@@ -25,7 +25,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.security.GeneralSecurityException;
-import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
@@ -50,9 +49,7 @@ import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import javax.net.ssl.TrustManager;
 
 import org.apache.commons.io.IOUtils;
 
@@ -100,8 +97,7 @@ import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
-import com.fsck.k9.net.ssl.TrustManagerFactory;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
+import com.fsck.k9.net.ssl.SslHelper;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 
@@ -126,6 +122,7 @@ public class ImapStore extends Store {
     private static final String CAPABILITY_IDLE = "IDLE";
     private static final String CAPABILITY_AUTH_CRAM_MD5 = "AUTH=CRAM-MD5";
     private static final String CAPABILITY_AUTH_PLAIN = "AUTH=PLAIN";
+    private static final String CAPABILITY_AUTH_EXTERNAL = "AUTH=EXTERNAL";
     private static final String CAPABILITY_LOGINDISABLED = "LOGINDISABLED";
     private static final String COMMAND_IDLE = "IDLE";
     private static final String CAPABILITY_NAMESPACE = "NAMESPACE";
@@ -158,6 +155,7 @@ public class ImapStore extends Store {
         AuthType authenticationType = null;
         String username = null;
         String password = null;
+        String clientCertificateAlias = null;
         String pathPrefix = null;
         boolean autoDetectNamespace = true;
 
@@ -213,10 +211,15 @@ public class ImapStore extends Store {
                     authenticationType = AuthType.PLAIN;
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else {
+                } else if (userInfoParts.length == 3) {
                     authenticationType = AuthType.valueOf(userInfoParts[0]);
                     username = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[2], "UTF-8");
+
+                    if (AuthType.EXTERNAL.equals(authenticationType)) {
+                        clientCertificateAlias = URLDecoder.decode(userInfoParts[2], "UTF-8");
+                    } else {
+                        password = URLDecoder.decode(userInfoParts[2], "UTF-8");
+                    }
                 }
             } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
@@ -243,7 +246,7 @@ public class ImapStore extends Store {
         }
 
         return new ImapStoreSettings(host, port, connectionSecurity, authenticationType, username,
-                password, autoDetectNamespace, pathPrefix);
+                password, clientCertificateAlias, autoDetectNamespace, pathPrefix);
     }
 
     /**
@@ -260,10 +263,13 @@ public class ImapStore extends Store {
     public static String createUri(ServerSettings server) {
         String userEnc;
         String passwordEnc;
+        String clientCertificateAliasEnc;
         try {
             userEnc = URLEncoder.encode(server.username, "UTF-8");
             passwordEnc = (server.password != null) ?
                     URLEncoder.encode(server.password, "UTF-8") : "";
+            clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
+                    URLEncoder.encode(server.clientCertificateAlias, "UTF-8") : "";
         }
         catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);
@@ -284,8 +290,12 @@ public class ImapStore extends Store {
         }
 
         AuthType authType = server.authenticationType;
-
-        String userInfo = authType.name() + ":" + userEnc + ":" + passwordEnc;
+        String userInfo;
+        if (authType.equals(AuthType.EXTERNAL)) {
+            userInfo = authType.name() + ":" + userEnc + ":" + clientCertificateAliasEnc;
+        } else {
+            userInfo = authType.name() + ":" + userEnc + ":" + passwordEnc;
+        }
         try {
             Map<String, String> extra = server.getExtra();
             String path = null;
@@ -320,10 +330,10 @@ public class ImapStore extends Store {
         public final String pathPrefix;
 
         protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-                AuthType authenticationType, String username, String password,
+                AuthType authenticationType, String username, String password, String clientCertificateAlias,
                 boolean autodetectNamespace, String pathPrefix) {
             super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
-                    password);
+                    password, clientCertificateAlias);
             this.autoDetectNamespace = autodetectNamespace;
             this.pathPrefix = pathPrefix;
         }
@@ -339,7 +349,7 @@ public class ImapStore extends Store {
         @Override
         public ServerSettings newPassword(String newPassword) {
             return new ImapStoreSettings(host, port, connectionSecurity, authenticationType,
-                    username, newPassword, autoDetectNamespace, pathPrefix);
+                    username, newPassword, clientCertificateAlias, autoDetectNamespace, pathPrefix);
         }
     }
 
@@ -348,6 +358,7 @@ public class ImapStore extends Store {
     private int mPort;
     private String mUsername;
     private String mPassword;
+    private String mClientCertificateAlias;
     private ConnectionSecurity mConnectionSecurity;
     private AuthType mAuthType;
     private volatile String mPathPrefix;
@@ -384,6 +395,11 @@ public class ImapStore extends Store {
         @Override
         public String getPassword() {
             return mPassword;
+        }
+
+        @Override
+        public String getClientCertificateAlias() {
+            return mClientCertificateAlias;
         }
 
         @Override
@@ -458,6 +474,7 @@ public class ImapStore extends Store {
         mAuthType = settings.authenticationType;
         mUsername = settings.username;
         mPassword = settings.password;
+        mClientCertificateAlias = settings.clientCertificateAlias;
 
         // Make extra sure mPathPrefix is null if "auto-detect namespace" is configured
         mPathPrefix = (settings.autoDetectNamespace) ? null : settings.pathPrefix;
@@ -2419,14 +2436,8 @@ public class ImapStore extends Store {
                                 mSettings.getPort());
 
                         if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                            SSLContext sslContext = SSLContext.getInstance("TLS");
-                            sslContext
-                                    .init(null,
-                                            new TrustManager[] { TrustManagerFactory.get(
-                                                    mSettings.getHost(),
-                                                    mSettings.getPort()) },
-                                            new SecureRandom());
-                            mSocket = TrustedSocketFactory.createSocket(sslContext);
+                            mSocket = SslHelper.createSslSocket(mSettings.getHost(), 
+                                    mSettings.getPort(), mSettings.getClientCertificateAlias());
                         } else {
                             mSocket = new Socket();
                         }
@@ -2475,14 +2486,9 @@ public class ImapStore extends Store {
                         // STARTTLS
                         executeSimpleCommand("STARTTLS");
 
-                        SSLContext sslContext = SSLContext.getInstance("TLS");
-                        sslContext.init(null,
-                                new TrustManager[] { TrustManagerFactory.get(
-                                        mSettings.getHost(),
-                                        mSettings.getPort()) },
-                                new SecureRandom());
-                        mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket,
-                                mSettings.getHost(), mSettings.getPort(), true);
+                        mSocket = SslHelper.createStartTlsSocket(mSocket, 
+                                mSettings.getHost(), mSettings.getPort(), true, 
+                                mSettings.getClientCertificateAlias());
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new PeekableInputStream(new BufferedInputStream(mSocket
                                                       .getInputStream(), 1024));
@@ -2528,6 +2534,17 @@ public class ImapStore extends Store {
                     } else {
                         throw new MessagingException(
                                 "Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled.");
+                    }
+                    break;
+
+                case EXTERNAL:
+                    if (hasCapability(CAPABILITY_AUTH_EXTERNAL)) {
+                        executeSimpleCommand(
+                                String.format("AUTHENTICATE EXTERNAL %s",
+                                        Utility.base64Encode(mSettings.getUsername())), false);
+                    } else {
+                        throw new MessagingException(
+                                "EXTERNAL authentication not advertised by server");
                     }
                     break;
 
@@ -2629,7 +2646,6 @@ public class ImapStore extends Store {
                         Log.e(K9.LOG_TAG, "Unable to get path delimeter using LIST", e);
                     }
                 }
-
 
             } catch (SSLException e) {
                 throw new CertificateValidationException(e.getMessage(), e);

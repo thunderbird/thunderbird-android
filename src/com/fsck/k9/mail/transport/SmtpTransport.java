@@ -2,6 +2,7 @@
 package com.fsck.k9.mail.transport;
 
 import android.util.Log;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.*;
@@ -13,12 +14,9 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.net.ssl.TrustManagerFactory;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
+import com.fsck.k9.net.ssl.SslHelper;
 
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import javax.net.ssl.TrustManager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -27,9 +25,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.security.GeneralSecurityException;
-import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-
 import java.util.*;
 
 public class SmtpTransport extends Transport {
@@ -37,21 +33,24 @@ public class SmtpTransport extends Transport {
 
     /**
      * Decodes a SmtpTransport URI.
+     * 
+     * NOTE: In contrast to ImapStore and Pop3Store, the authType is appended at the end!
      *
      * <p>Possible forms:</p>
      * <pre>
-     * smtp://user:password@server:port ConnectionSecurity.NONE
-     * smtp+tls+://user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
-     * smtp+ssl+://user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
+     * smtp://user:password:auth@server:port ConnectionSecurity.NONE
+     * smtp+tls+://user:password:auth@server:port ConnectionSecurity.STARTTLS_REQUIRED
+     * smtp+ssl+://user:password:auth@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
     public static ServerSettings decodeUri(String uri) {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        AuthType authType = AuthType.PLAIN;
+        AuthType authType = null;
         String username = null;
         String password = null;
+        String clientCertificateAlias = null;
 
         URI smtpUri;
         try {
@@ -95,14 +94,22 @@ public class SmtpTransport extends Transport {
         if (smtpUri.getUserInfo() != null) {
             try {
                 String[] userInfoParts = smtpUri.getUserInfo().split(":");
-                if (userInfoParts.length > 0) {
+                if (userInfoParts.length == 1) {
+                    authType = AuthType.PLAIN;
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                }
-                if (userInfoParts.length > 1) {
+                } else if (userInfoParts.length == 2) {
+                    authType = AuthType.PLAIN;
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-                if (userInfoParts.length > 2) {
+                } else if (userInfoParts.length == 3) {
+                    // NOTE: In SmptTransport URIs, the authType comes last!
                     authType = AuthType.valueOf(userInfoParts[2]);
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                    if (authType.equals(AuthType.EXTERNAL)) {
+                        clientCertificateAlias = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    } else {
+                        password = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    }
                 }
             } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
@@ -111,7 +118,7 @@ public class SmtpTransport extends Transport {
         }
 
         return new ServerSettings(TRANSPORT_TYPE, host, port, connectionSecurity,
-                authType, username, password);
+                authType, username, password, clientCertificateAlias);
     }
 
     /**
@@ -128,11 +135,14 @@ public class SmtpTransport extends Transport {
     public static String createUri(ServerSettings server) {
         String userEnc;
         String passwordEnc;
+        String clientCertificateAliasEnc;
         try {
             userEnc = (server.username != null) ?
                     URLEncoder.encode(server.username, "UTF-8") : "";
             passwordEnc = (server.password != null) ?
                     URLEncoder.encode(server.password, "UTF-8") : "";
+            clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
+                    URLEncoder.encode(server.clientCertificateAlias, "UTF-8") : "";
         }
         catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);
@@ -152,10 +162,17 @@ public class SmtpTransport extends Transport {
                 break;
         }
 
-        String userInfo = userEnc + ":" + passwordEnc;
+        String userInfo = null;
         AuthType authType = server.authenticationType;
+        // NOTE: authType is append at last item, in contrast to ImapStore and Pop3Store!
         if (authType != null) {
-            userInfo += ":" + authType.name();
+            if (AuthType.EXTERNAL.equals(authType)) {
+                userInfo = userEnc + ":" + clientCertificateAliasEnc + ":" + authType.name();
+            } else {
+                userInfo = userEnc + ":" + passwordEnc + ":" + authType.name();
+            }
+        } else {
+            userInfo = userEnc + ":" + passwordEnc;
         }
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
@@ -170,6 +187,7 @@ public class SmtpTransport extends Transport {
     int mPort;
     String mUsername;
     String mPassword;
+    String mClientCertificateAlias;
     AuthType mAuthType;
     ConnectionSecurity mConnectionSecurity;
     Socket mSocket;
@@ -194,6 +212,7 @@ public class SmtpTransport extends Transport {
         mAuthType = settings.authenticationType;
         mUsername = settings.username;
         mPassword = settings.password;
+        mClientCertificateAlias = settings.clientCertificateAlias;
     }
 
     @Override
@@ -205,12 +224,7 @@ public class SmtpTransport extends Transport {
                 try {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
                     if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        SSLContext sslContext = SSLContext.getInstance("TLS");
-                        sslContext.init(null,
-                                new TrustManager[] { TrustManagerFactory.get(
-                                        mHost, mPort) },
-                                new SecureRandom());
-                        mSocket = TrustedSocketFactory.createSocket(sslContext);
+                        mSocket = SslHelper.createSslSocket(mHost, mPort, mClientCertificateAlias);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                         secureConnection = true;
                     } else {
@@ -264,12 +278,9 @@ public class SmtpTransport extends Transport {
                 if (extensions.containsKey("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
-                    SSLContext sslContext = SSLContext.getInstance("TLS");
-                    sslContext.init(null,
-                            new TrustManager[] { TrustManagerFactory.get(mHost,
-                                    mPort) }, new SecureRandom());
-                    mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
-                              mPort, true);
+                    mSocket = SslHelper.createStartTlsSocket(mSocket, mHost, mPort, true,
+                            mClientCertificateAlias);
+
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                                   1024));
                     mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);

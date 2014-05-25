@@ -30,6 +30,7 @@
             android:layout_width="fill_parent"
             android:contentDescription="@string/account_setup_incoming_username_label" />
         <TextView
+            android:id="@+id/account_password_label"
             android:text="@string/account_setup_incoming_password_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
@@ -41,6 +42,19 @@
             android:singleLine="true"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
+        <TextView
+            android:id="@+id/account_client_certificate_label"
+            android:text="@string/account_setup_incoming_client_certificate_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary"
+            android:visibility="gone" />
+        <com.fsck.k9.view.ClientCertificateSpinner
+            android:id="@+id/account_client_certificate_spinner"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:visibility="gone" />
         <!-- This text may be changed in code if the server is IMAP, etc. -->
         <TextView
             android:id="@+id/account_server_label"

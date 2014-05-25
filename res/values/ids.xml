@@ -4,5 +4,7 @@
     <item type="id" name="dialog_confirm_delete"/>
     <item type="id" name="dialog_confirm_spam"/>
     <item type="id" name="dialog_attachment_progress"/>
+    <item type="id" name="dialog_client_certificate_not_supported"/>
+    <item type="id" name="dialog_account_setup_error"/>
 
 </resources>

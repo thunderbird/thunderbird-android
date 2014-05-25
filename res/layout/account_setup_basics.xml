@@ -34,6 +34,17 @@
         android:layout_width="fill_parent"
         android:nextFocusDown="@+id/next"
         />
+    <com.fsck.k9.view.ClientCertificateSpinner
+        android:id="@+id/account_client_certificate_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
+    <CheckBox
+        android:id="@+id/account_client_certificate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/account_setup_basics_client_certificate" />
     <View
         android:layout_width="fill_parent"
         android:layout_height="0dip"

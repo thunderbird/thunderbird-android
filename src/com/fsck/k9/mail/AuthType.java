@@ -33,6 +33,8 @@ public enum AuthType {
 
     CRAM_MD5(R.string.account_setup_auth_type_encrypted_password),
 
+    EXTERNAL(R.string.account_setup_auth_type_tls_client_certificate),
+
     /*
      * The following are obsolete authentication settings that were used with
      * SMTP. They are no longer presented to the user as options, but they may
@@ -43,8 +45,13 @@ public enum AuthType {
 
     LOGIN(0);
 
-    static public ArrayAdapter<AuthType> getArrayAdapter(Context context) {
-        AuthType[] authTypes = {PLAIN, CRAM_MD5};
+    static public ArrayAdapter<AuthType> getArrayAdapter(Context context, boolean includeExternal) {
+        AuthType[] authTypes;
+        if (includeExternal) {
+            authTypes = new AuthType[]{PLAIN, CRAM_MD5, EXTERNAL};
+        } else {
+            authTypes = new AuthType[]{PLAIN, CRAM_MD5};
+        }
         ArrayAdapter<AuthType> authTypesAdapter = new ArrayAdapter<AuthType>(context,
                 android.R.layout.simple_spinner_item, authTypes);
         authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

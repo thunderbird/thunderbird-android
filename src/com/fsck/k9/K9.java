@@ -2,6 +2,7 @@
 package com.fsck.k9;
 
 import java.io.File;
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1414,4 +1415,14 @@ public class K9 extends Application {
             editor.commit();
         }
     }
+
+    /**
+     * Holding a reference to PrivateKey selected for client certificate
+     * authentication. We need to keep reference to this key so it won't get
+     * garbage collected. If it will then the whole app will crash 
+     * on Android <= 4.2 with "Fatal signal 11 code=1".
+     * 
+     * see https://code.google.com/p/android/issues/detail?id=62319
+     */
+    public static ArrayList<PrivateKey> sClientCertificateReferenceWorkaround = new ArrayList<PrivateKey>();
 }

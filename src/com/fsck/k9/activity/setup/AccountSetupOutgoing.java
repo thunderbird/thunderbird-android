@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
@@ -22,6 +23,9 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.net.ssl.SslHelper;
+import com.fsck.k9.view.ClientCertificateSpinner;
+import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,6 +41,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     private EditText mUsernameView;
     private EditText mPasswordView;
+    private ClientCertificateSpinner mClientCertificateSpinner;
+    private TextView mClientCertificateLabelView;
+    private TextView mPasswordLabelView;
     private EditText mServerView;
     private EditText mPortView;
     private CheckBox mRequireLoginView;
@@ -87,6 +94,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         mUsernameView = (EditText)findViewById(R.id.account_username);
         mPasswordView = (EditText)findViewById(R.id.account_password);
+        mClientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
+        mClientCertificateLabelView = (TextView)findViewById(R.id.account_client_certificate_label);
+        mPasswordLabelView = (TextView)findViewById(R.id.account_password_label);
         mServerView = (EditText)findViewById(R.id.account_server);
         mPortView = (EditText)findViewById(R.id.account_port);
         mRequireLoginView = (CheckBox)findViewById(R.id.account_require_login);
@@ -98,33 +108,27 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mNextButton.setOnClickListener(this);
         mRequireLoginView.setOnCheckedChangeListener(this);
 
-        ArrayAdapter<ConnectionSecurity> securityTypesAdapter = new ArrayAdapter<ConnectionSecurity>(this,
-                android.R.layout.simple_spinner_item, ConnectionSecurity.values());
-        securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSecurityTypeView.setAdapter(securityTypesAdapter);
+        mSecurityTypeView.setAdapter(ConnectionSecurity.getArrayAdapter(this));
 
-        mAuthTypeAdapter = AuthType.getArrayAdapter(this);
+        mAuthTypeAdapter = AuthType.getArrayAdapter(this, SslHelper.isClientCertificateSupportAvailable());
         mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
-        /*
-         * Calls validateFields() which enables or disables the Next button
-         * based on the fields' validity.
-         */
-        TextWatcher validationTextWatcher = new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                validateFields();
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-        };
         mUsernameView.addTextChangedListener(validationTextWatcher);
         mPasswordView.addTextChangedListener(validationTextWatcher);
         mServerView.addTextChangedListener(validationTextWatcher);
         mPortView.addTextChangedListener(validationTextWatcher);
+        mClientCertificateSpinner.setOnClientCertificateChangedListener(clientCertificateChangedListener);
+
+        mAuthTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position,
+                    long id) {
+                updateViewFromAuthType();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
+        });
 
         /*
          * Only allow digits in the port field.
@@ -147,17 +151,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         try {
             ServerSettings settings = Transport.decodeTransportUri(mAccount.getTransportUri());
-            String username = settings.username;
-            String password = settings.password;
-
-            if (username != null) {
-                mUsernameView.setText(username);
-                mRequireLoginView.setChecked(true);
-            }
-
-            if (password != null) {
-                mPasswordView.setText(password);
-            }
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
@@ -167,6 +160,19 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
             // Select currently configured security type
             mSecurityTypeView.setSelection(settings.connectionSecurity.ordinal(), false);
+
+            if (settings.username != null) {
+                mUsernameView.setText(settings.username);
+                mRequireLoginView.setChecked(true);
+            }
+
+            if (settings.password != null) {
+                mPasswordView.setText(settings.password);
+            }
+
+            if (settings.clientCertificateAlias != null) {
+                mClientCertificateSpinner.setAlias(settings.clientCertificateAlias);
+            }
 
             /*
              * Updates the port when the user changes the security type. This allows
@@ -181,6 +187,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position,
                         long id) {
+                    // this indirectly triggers validateFields because the port text is watched
                     updatePortFromSecurityType();
                 }
 
@@ -214,14 +221,57 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
     }
 
+    /**
+     * Shows/hides password field and client certificate spinner
+     */
+    private void updateViewFromAuthType() {
+        AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
+        boolean isAuthTypeExternal = AuthType.EXTERNAL.equals(authType);
+
+        // if user wants to user external authentication only, then we need to
+        // hide password field, since it won't be used
+        if (isAuthTypeExternal) {
+            // clear password field
+            mPasswordView.removeTextChangedListener(validationTextWatcher);
+            mPasswordView.setText("");
+            mPasswordView.addTextChangedListener(validationTextWatcher);
+
+            // hide password fields, show client certificate fields
+            mPasswordView.setVisibility(View.GONE);
+            mPasswordLabelView.setVisibility(View.GONE);
+            mClientCertificateLabelView.setVisibility(View.VISIBLE);
+            mClientCertificateSpinner.setVisibility(View.VISIBLE);
+        } else {
+            // clear client certificate
+            mClientCertificateSpinner.setOnClientCertificateChangedListener(null);
+            mClientCertificateSpinner.setAlias(null);
+            mClientCertificateSpinner.setOnClientCertificateChangedListener(clientCertificateChangedListener);
+
+            // show password fields, hide client certificate fields
+            mPasswordView.setVisibility(View.VISIBLE);
+            mPasswordLabelView.setVisibility(View.VISIBLE);
+            mClientCertificateLabelView.setVisibility(View.GONE);
+            mClientCertificateSpinner.setVisibility(View.GONE);
+        }
+        validateFields();
+    }
+
     private void validateFields() {
+        AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
+        boolean isAuthTypeExternal = AuthType.EXTERNAL.equals(authType);
+
+        ConnectionSecurity connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+        boolean hasConnectionSecurity = (!connectionSecurity.equals(ConnectionSecurity.NONE));
+
         mNextButton
-        .setEnabled(
-            Utility.domainFieldValid(mServerView) &&
-            Utility.requiredFieldValid(mPortView) &&
-            (!mRequireLoginView.isChecked() ||
-             (Utility.requiredFieldValid(mUsernameView) &&
-              Utility.requiredFieldValid(mPasswordView))));
+        .setEnabled(Utility.domainFieldValid(mServerView)
+                    && Utility.requiredFieldValid(mPortView)
+                    && (!mRequireLoginView.isChecked()
+                       || (Utility.requiredFieldValid(mUsernameView) && Utility.requiredFieldValid(mPasswordView))
+                       || (Utility.requiredFieldValid(mUsernameView) && isAuthTypeExternal)
+                       )
+                    && (!isAuthTypeExternal || hasConnectionSecurity)
+                   );
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -276,17 +326,23 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         String uri;
         String username = null;
         String password = null;
+        String clientCertificateAlias = null;
         AuthType authType = null;
         if (mRequireLoginView.isChecked()) {
             username = mUsernameView.getText().toString();
-            password = mPasswordView.getText().toString();
+
             authType = (AuthType) mAuthTypeView.getSelectedItem();
+            if (AuthType.EXTERNAL.equals(authType)) {
+                clientCertificateAlias = mClientCertificateSpinner.getAlias();
+            } else {
+                password = mPasswordView.getText().toString();
+            }
         }
 
         String newHost = mServerView.getText().toString();
         int newPort = Integer.parseInt(mPortView.getText().toString());
         String type = SmtpTransport.TRANSPORT_TYPE;
-        ServerSettings server = new ServerSettings(type, newHost, newPort, securityType, authType, username, password);
+        ServerSettings server = new ServerSettings(type, newHost, newPort, securityType, authType, username, password, clientCertificateAlias);
         uri = Transport.createTransportUri(server);
         mAccount.deleteCertificate(newHost, newPort, CheckDirection.OUTGOING);
         mAccount.setTransportUri(uri);
@@ -312,4 +368,27 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
         toast.show();
     }
+
+    /*
+     * Calls validateFields() which enables or disables the Next button
+     * based on the fields' validity.
+     */
+    TextWatcher validationTextWatcher = new TextWatcher() {
+        public void afterTextChanged(Editable s) {
+            validateFields();
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+    };
+
+    OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
+        @Override
+        public void onClientCertificateChanged(String alias) {
+            validateFields();
+        }
+    };
 }

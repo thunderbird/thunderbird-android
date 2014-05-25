@@ -1090,7 +1090,8 @@ public class SettingsImporter {
         public ImportedServerSettings(ImportedServer server) {
             super(server.type, server.host, convertPort(server.port),
                     convertConnectionSecurity(server.connectionSecurity),
-                    server.authenticationType, server.username, server.password);
+                    server.authenticationType, server.username, server.password,
+                    server.clientCertificateAlias);
             mImportedServer = server;
         }
 
@@ -1155,6 +1156,7 @@ public class SettingsImporter {
         public AuthType authenticationType;
         public String username;
         public String password;
+        public String clientCertificateAlias;
         public ImportedSettings extras;
     }
 
