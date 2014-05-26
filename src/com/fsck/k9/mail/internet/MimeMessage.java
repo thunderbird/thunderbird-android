@@ -313,7 +313,22 @@ public class MimeMessage extends Message {
     }
 
     private String generateMessageId() {
-        return "<" + UUID.randomUUID().toString() + "@email.android.com>";
+        String hostname = null;
+        if (mFrom != null) {
+            int hostIdx = mFrom[0].getAddress().lastIndexOf("@");
+            hostname = mFrom[0].getAddress().substring(hostIdx);
+        }
+
+        if (hostname == null && mReplyTo != null) {
+            int hostIdx = mReplyTo[0].getAddress().lastIndexOf("@");
+            hostname = mReplyTo[0].getAddress().substring(hostIdx);
+        }
+
+        if (hostname != null) {
+            return "<" + UUID.randomUUID().toString() + hostname + ">";
+        } else {
+            return "<" + UUID.randomUUID().toString() + "@email.android.com>";
+        }
     }
 
     public void setMessageId(String messageId) throws UnavailableStorageException {
