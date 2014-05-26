@@ -378,6 +378,11 @@
             android:entryValues="@array/global_settings_notification_hide_subject_values"
             android:title="@string/global_settings_notification_hide_subject_title"/>
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="privacy_hide_useragent"
+            android:title="@string/global_settings_privacy_hide_useragent"/>
+
     </PreferenceScreen>
 
     <PreferenceScreen
