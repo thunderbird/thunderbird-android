@@ -258,7 +258,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_setup_check_settings_check_outgoing_msg">Giden sunucu ayarları kontrol ediliyor\u2026</string>
   <string name="account_setup_check_settings_authenticate">Kimlik Doğrulaması\u2026</string>
   <string name="account_setup_check_settings_fetch">Hesap ayarları alınıyor\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">İptal ediliyor\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">İptal ediliyor\u2026</string>
   <string name="account_setup_names_title">Hemen hemen tamam!</string>
   <string name="account_setup_names_account_name_label">Bu hesaba bir isim verin (isteğe bağlı):</string>
   <string name="account_setup_names_user_name_label">İsminizi yazın (Giden mesajlarda görüntülenir):</string>

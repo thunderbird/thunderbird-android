@@ -293,7 +293,7 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_check_settings_check_outgoing_msg">Irteerako zerbitzariaren ezarpenak egiaztatzen\u2026</string>
   <string name="account_setup_check_settings_authenticate">Kautotzen\u2026</string>
   <string name="account_setup_check_settings_fetch">Kontuaren ezarpenak eskuratzen\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Ezeztatzen\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Ezeztatzen\u2026</string>
   <string name="account_setup_names_title">Ia bukatu duzu!</string>
   <string name="account_setup_names_account_name_label">Kontu honi izena eman (aukerazkoa):</string>
   <string name="account_setup_names_user_name_label">Zure izena (bidalitako mezuetan ikusiko da):</string>

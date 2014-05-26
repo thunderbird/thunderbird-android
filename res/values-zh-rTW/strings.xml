@@ -264,7 +264,7 @@
   <string name="account_setup_check_settings_check_outgoing_msg">正在檢查外寄伺服器設定…</string>
   <string name="account_setup_check_settings_authenticate">驗證…</string>
   <string name="account_setup_check_settings_fetch">取回帳戶設定…</string>
-  <string name="account_setup_check_settings_canceling_msg">正在取消…</string>
+  <string name="account_setup_check_settings_cancelling_msg">正在取消…</string>
   <string name="account_setup_names_title">快要完成了！</string>
   <string name="account_setup_names_account_name_label">為這個帳戶選擇一個名稱（非必填）：</string>
   <string name="account_setup_names_user_name_label">輸入你的名字（將顯示在發出的郵件中）：</string>

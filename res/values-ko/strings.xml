@@ -292,7 +292,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_setup_check_settings_check_outgoing_msg">발신 서버 설정 확인 중\u2026</string>
   <string name="account_setup_check_settings_authenticate">인증 중\u2026</string>
   <string name="account_setup_check_settings_fetch">계정 설정 가져 오기\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">취소 중\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">취소 중\u2026</string>
   <string name="account_setup_names_title">설정이 거의 완료되었습니다!</string>
   <string name="account_setup_names_account_name_label">이 계정의 이름을 입력 (옵션):</string>
   <string name="account_setup_names_user_name_label">이름 입력 (보내는 메시지에 표시 될 이름):</string>

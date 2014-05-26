@@ -293,7 +293,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_check_settings_check_outgoing_msg">Einstellungen des Ausgangsservers werden überprüft\u2026</string>
   <string name="account_setup_check_settings_authenticate">Authentifizierung\u2026</string>
   <string name="account_setup_check_settings_fetch">Kontoeinstellungen werden geladen\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Aktion wird abgebrochen\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Aktion wird abgebrochen\u2026</string>
   <string name="account_setup_names_title">Fast fertig!</string>
   <string name="account_setup_names_account_name_label">Kontoname (optional):</string>
   <string name="account_setup_names_user_name_label">Ihr Name (Anzeige bei ausgehenden Nachrichten):</string>

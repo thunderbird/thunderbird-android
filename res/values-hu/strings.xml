@@ -288,7 +288,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_setup_check_settings_check_outgoing_msg">Kimenő szerver tesztelése…</string>
   <string name="account_setup_check_settings_authenticate">Hitelesítés…</string>
   <string name="account_setup_check_settings_fetch">Fiók adatainak letöltése…</string>
-  <string name="account_setup_check_settings_canceling_msg">Megszakítás…</string>
+  <string name="account_setup_check_settings_cancelling_msg">Megszakítás…</string>
   <string name="account_setup_names_title">Majdnem kész!</string>
   <string name="account_setup_names_account_name_label">Adjon a fióknak nevet (nem kötelező):</string>
   <string name="account_setup_names_user_name_label">Adja meg a nevét (elküldött leveleknél ez jelenik meg):</string>

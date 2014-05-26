@@ -1241,7 +1241,7 @@ public class ValueAnimator extends Animator {
     }
 
     /**
-     * Clear all animations on this thread, without canceling or ending them.
+     * Clear all animations on this thread, without cancelling or ending them.
      * This should be used with caution.
      *
      * @hide

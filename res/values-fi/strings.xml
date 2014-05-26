@@ -295,7 +295,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_check_settings_check_outgoing_msg">Tarkistetaan lähtevän postin palvelimen asetuksia\u2026</string>
   <string name="account_setup_check_settings_authenticate">Varmistetaan\u2026</string>
   <string name="account_setup_check_settings_fetch">Haetaan tilin asetuksia\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Peruutetaan\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Peruutetaan\u2026</string>
   <string name="account_setup_names_title">Melkein valmista!</string>
   <string name="account_setup_names_account_name_label">Anna tilin nimi (ei pakollinen):</string>
   <string name="account_setup_names_user_name_label">Anna nimesi (näkyy lähtevissä viesteissä):</string>

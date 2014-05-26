@@ -294,7 +294,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_setup_check_settings_check_outgoing_msg">S\'està comprovant la configuració del servidor de sortida\u2026</string>
   <string name="account_setup_check_settings_authenticate">S\'està autenticant\u2026</string>
   <string name="account_setup_check_settings_fetch">Recollint la configuració del compte\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">S\'està cancel·lant\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">S\'està cancel·lant\u2026</string>
   <string name="account_setup_names_title">Ja està gairebé fet!</string>
   <string name="account_setup_names_account_name_label">Dóna un nom a aquest compte (opcional):</string>
   <string name="account_setup_names_user_name_label">Escriu el teu nom (és el que es mostrarà en els missatges sortints):</string>

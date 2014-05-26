@@ -294,7 +294,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_check_settings_check_outgoing_msg">Kontrola nastavení servera odchádzajúcej pošty\u2026</string>
   <string name="account_setup_check_settings_authenticate">Overovanie\u2026</string>
   <string name="account_setup_check_settings_fetch">Načítavanie nastavení účtu\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Rušenie\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Rušenie\u2026</string>
   <string name="account_setup_names_title">Takmer hotovo!</string>
   <string name="account_setup_names_account_name_label">Pomenovať tento účet (voliteľné):</string>
   <string name="account_setup_names_user_name_label">Zadajte vaše meno (zobrazí sa v odchádzajúcich správach):</string>

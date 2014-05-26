@@ -236,7 +236,7 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
   <string name="account_setup_check_settings_check_outgoing_msg">Comprobando Configuración do servidor de saída\u2026</string>
   <string name="account_setup_check_settings_authenticate">Autentificando\u2026</string>
   <string name="account_setup_check_settings_fetch">Obtendo Configuración da conta\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Cancelando\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Cancelando\u2026</string>
   <string name="account_setup_names_title">Feito!</string>
   <string name="account_setup_names_account_name_label">Dalle un nome a esta conta (opcional):</string>
   <string name="account_setup_names_user_name_label">Introduce o teu nome (visualizarase na mensaxe de saída):</string>
