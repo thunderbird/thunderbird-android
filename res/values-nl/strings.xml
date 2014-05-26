@@ -293,7 +293,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_check_settings_check_outgoing_msg">Controleren van uitgaande serverinstellingen\u2026</string>
   <string name="account_setup_check_settings_authenticate">Authenticatie\u2026</string>
   <string name="account_setup_check_settings_fetch">Accountinstellingen worden opgehaald\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Annuleren\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Annuleren\u2026</string>
   <string name="account_setup_names_title">Bijna klaar!</string>
   <string name="account_setup_names_account_name_label">Geef deze account een naam (optioneel):</string>
   <string name="account_setup_names_user_name_label">Typ je naam (zichtbaar bij uitgaande berichten):</string>

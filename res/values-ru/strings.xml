@@ -294,7 +294,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_check_settings_check_outgoing_msg">Проверка сервера исходящей почты\u2026</string>
   <string name="account_setup_check_settings_authenticate">Аутентификация\u2026</string>
   <string name="account_setup_check_settings_fetch">Получение настроек\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Отмена\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Отмена\u2026</string>
   <string name="account_setup_names_title">Всё почти готово!</string>
   <string name="account_setup_names_account_name_label">имя ящика (опция)</string>
   <string name="account_setup_names_user_name_label">Ваше имя (видно адресату)</string>

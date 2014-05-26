@@ -2975,7 +2975,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         if (isRemoteSearch() && mRemoteSearchFuture != null) {
             try {
                 Log.i(K9.LOG_TAG, "Remote search in progress, attempting to abort...");
-                // Canceling the future stops any message fetches in progress.
+                // cancelling the future stops any message fetches in progress.
                 final boolean cancelSuccess = mRemoteSearchFuture.cancel(true);   // mayInterruptIfRunning = true
                 if (!cancelSuccess) {
                     Log.e(K9.LOG_TAG, "Could not cancel remote search future.");

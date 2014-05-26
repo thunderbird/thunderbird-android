@@ -276,7 +276,7 @@ public final class AnimatorSet extends Animator {
     /**
      * {@inheritDoc}
      *
-     * <p>Note that canceling a <code>AnimatorSet</code> also cancels all of the animations that it
+     * <p>Note that cancelling a <code>AnimatorSet</code> also cancels all of the animations that it
      * is responsible for.</p>
      */
     @Override
@@ -713,7 +713,7 @@ public final class AnimatorSet extends Animator {
 
         public void onAnimationCancel(Animator animation) {
             if (!mTerminated) {
-                // Listeners are already notified of the AnimatorSet canceling in cancel().
+                // Listeners are already notified of the AnimatorSet cancelling in cancel().
                 // The logic below only kicks in when animations end normally
                 if (mPlayingSet.size() == 0) {
                     if (mListeners != null) {

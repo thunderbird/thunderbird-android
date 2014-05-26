@@ -103,7 +103,7 @@ public class Throttle {
 
     public void cancelScheduledCallback() {
         if (mRunningTimerTask != null) {
-            if (DEBUG) debugLog("Canceling scheduled callback");
+            if (DEBUG) debugLog("cancelling scheduled callback");
             mRunningTimerTask.cancel();
             mRunningTimerTask = null;
         }

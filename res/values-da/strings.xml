@@ -289,7 +289,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_setup_check_settings_check_outgoing_msg">Kontrollerer indstillinger for udgående server\u2026</string>
   <string name="account_setup_check_settings_authenticate">Autentiserer\u2026</string>
   <string name="account_setup_check_settings_fetch">Henter kontoindstillinger\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Afbryder\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Afbryder\u2026</string>
   <string name="account_setup_names_title">Næsten færdig!</string>
   <string name="account_setup_names_account_name_label">Giv denne konto et navn (frivilligt):</string>
   <string name="account_setup_names_user_name_label">Indtast dit navn (vises på udgående mails):</string>

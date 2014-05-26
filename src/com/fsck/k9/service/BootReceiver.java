@@ -73,7 +73,7 @@ public class BootReceiver extends CoreReceiver {
         } else if (CANCEL_INTENT.equals(action)) {
             Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
             if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "BootReceiver Canceling alarmedIntent " + alarmedIntent);
+                Log.i(K9.LOG_TAG, "BootReceiver cancelling alarmedIntent " + alarmedIntent);
 
             PendingIntent pi = buildPendingIntent(context, intent);
 

@@ -292,7 +292,7 @@ K-9改进的功能包括：
   <string name="account_setup_check_settings_check_outgoing_msg">正在检查发件服务器设置\u2026</string>
   <string name="account_setup_check_settings_authenticate">正在验证用户\u2026</string>
   <string name="account_setup_check_settings_fetch">正在获取账户设置\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">正在取消\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">正在取消\u2026</string>
   <string name="account_setup_names_title">快要完成了！</string>
   <string name="account_setup_names_account_name_label">为这个账户选择一个名称（可选项）：</string>
   <string name="account_setup_names_user_name_label">输入你的名字（将显示在发出的邮件中）：</string>

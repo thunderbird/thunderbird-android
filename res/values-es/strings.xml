@@ -294,7 +294,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_setup_check_settings_check_outgoing_msg">Comprobando configuración del servidor de salida\u2026</string>
   <string name="account_setup_check_settings_authenticate">Autentificando\u2026</string>
   <string name="account_setup_check_settings_fetch">Obteniendo configuración de la cuenta\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Cancelando\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Cancelando\u2026</string>
   <string name="account_setup_names_title">¡Terminado!</string>
   <string name="account_setup_names_account_name_label">Elija un nombre para esta cuenta (opcional):</string>
   <string name="account_setup_names_user_name_label">Introduzca su nombre (se verá en los mensajes salientes):</string>

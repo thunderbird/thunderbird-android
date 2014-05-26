@@ -235,7 +235,7 @@
   <string name="account_setup_check_settings_check_outgoing_msg">בדיקת הגדרות שרת הדואר היוצא …</string>
   <string name="account_setup_check_settings_authenticate">מאמת …</string>
   <string name="account_setup_check_settings_fetch">מייבא הגדרות החשבון …</string>
-  <string name="account_setup_check_settings_canceling_msg">מבטל…</string>
+  <string name="account_setup_check_settings_cancelling_msg">מבטל…</string>
   <string name="account_setup_names_title">כמעט מוכן!</string>
   <string name="account_setup_names_account_name_label">תן שם לחשבון זה (לא חובה):</string>
   <string name="account_setup_names_user_name_label">הקלד את שמך (מוצג בהודעות יוצאות):</string>

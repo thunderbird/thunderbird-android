@@ -294,7 +294,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
   <string name="account_setup_check_settings_check_outgoing_msg">Kontrollerar inställningar för utgående server\u2026</string>
   <string name="account_setup_check_settings_authenticate">Authentiserar\u2026</string>
   <string name="account_setup_check_settings_fetch">Hämtar kontoinställningar\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Avbryter\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Avbryter\u2026</string>
   <string name="account_setup_names_title">Nästan färdig!</string>
   <string name="account_setup_names_account_name_label">Ge detta konto ett namn (frivilligt):</string>
   <string name="account_setup_names_user_name_label">Ange ditt namn (visas på utgående e-post):</string>

@@ -242,7 +242,7 @@ public class MailService extends CoreService {
 
         if (!(hasConnectivity && doBackground)) {
             if (K9.DEBUG) {
-                Log.i(K9.LOG_TAG, "No connectivity, canceling check for " +
+                Log.i(K9.LOG_TAG, "No connectivity, cancelling check for " +
                         getApplication().getPackageName());
             }
 

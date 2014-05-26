@@ -292,7 +292,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_setup_check_settings_check_outgoing_msg">Перевірка налаштувань вихідного сервера\u2026</string>
   <string name="account_setup_check_settings_authenticate">Автентифікація\u2026</string>
   <string name="account_setup_check_settings_fetch">Отримання налаштувань облікового запису\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Скасування\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Скасування\u2026</string>
   <string name="account_setup_names_title">Вже готово!</string>
   <string name="account_setup_names_account_name_label">Дайте ім’я цьому обліковому запису (необов’язково):</string>
   <string name="account_setup_names_user_name_label">Введіть ваше ім’я (відображається у вихідних повідомленнях):</string>

@@ -294,7 +294,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="account_setup_check_settings_check_outgoing_msg">Verifica delle impostazioni del server della posta in uscita in corso\u2026</string>
   <string name="account_setup_check_settings_authenticate">Autenticazione in corso\u2026</string>
   <string name="account_setup_check_settings_fetch">Recupero delle impostazioni dell\'account in corso\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Annullamento delle operazioni in corso\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Annullamento delle operazioni in corso\u2026</string>
   <string name="account_setup_names_title">Hai quasi fatto!</string>
   <string name="account_setup_names_account_name_label">Assegna un nome all\'account (facoltativo):</string>
   <string name="account_setup_names_user_name_label">Scrivi il tuo nome (visualizzato nei messaggi in uscita):</string>

@@ -294,7 +294,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_check_settings_check_outgoing_msg">送信メールサーバを確認中\u2026</string>
   <string name="account_setup_check_settings_authenticate">認証中\u2026</string>
   <string name="account_setup_check_settings_fetch">アカウント設定を取得中\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">中断\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">中断\u2026</string>
   <string name="account_setup_names_title">電子メールセットアップ</string>
   <string name="account_setup_names_account_name_label">アカウントの名前を付けます (オプション):</string>
   <string name="account_setup_names_user_name_label">名前を入力します (送信メールの表示名):</string>

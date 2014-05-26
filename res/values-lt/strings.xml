@@ -294,7 +294,7 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_setup_check_settings_check_outgoing_msg">Tikrinami siunčiamųjų serverio nustatymai…</string>
   <string name="account_setup_check_settings_authenticate">Patvirtinama tapatybė…</string>
   <string name="account_setup_check_settings_fetch">Gaunami paskyros nustatymai…</string>
-  <string name="account_setup_check_settings_canceling_msg">Atšaukiama…</string>
+  <string name="account_setup_check_settings_cancelling_msg">Atšaukiama…</string>
   <string name="account_setup_names_title">Beveik baigėte!</string>
   <string name="account_setup_names_account_name_label">Pavadinkite šią paskyrą (nebūtina):</string>
   <string name="account_setup_names_user_name_label">Įrašykite savo vardą (rodoma siunčiamuose pranešimuose):</string>

@@ -293,7 +293,7 @@
   <string name="account_setup_check_settings_check_outgoing_msg">Έλεγχος ρυθμίσεων εξερχόμενης αλληλογραφίας\u2026</string>
   <string name="account_setup_check_settings_authenticate">Διακρίβωση στοιχείων\u2026</string>
   <string name="account_setup_check_settings_fetch">Ανάσυρση πληροφοριών λογαριασμού\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Ακύρωση\u2026</string>
+  <string name="account_setup_check_settings_cancelling_msg">Ακύρωση\u2026</string>
   <string name="account_setup_names_title">Σχεδόν έτοιμο!</string>
   <string name="account_setup_names_account_name_label">Ονομασία λογαριασμού (Προαιρετικό):</string>
   <string name="account_setup_names_user_name_label">Όνομα αποστολέα (προβάλλεται στα εξερχόμενα μηνύματα):</string>
