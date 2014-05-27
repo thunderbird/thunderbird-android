@@ -86,6 +86,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
     private static final String PREFERENCE_NOTIF_QUICK_DELETE = "notification_quick_delete";
     private static final String PREFERENCE_HIDE_USERAGENT = "privacy_hide_useragent";
+    private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
 
     private static final String PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT = "messageview_mobile_layout";
     private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
@@ -142,6 +143,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference mHideUserAgent;
+    private CheckBoxPreference mHideTimeZone;
     private CheckBoxPreference mWrapFolderNames;
     private CheckBoxListPreference mVisibleRefileActions;
 
@@ -385,10 +387,12 @@ public class Prefs extends K9PreferenceActivity {
         mDebugLogging = (CheckBoxPreference)findPreference(PREFERENCE_DEBUG_LOGGING);
         mSensitiveLogging = (CheckBoxPreference)findPreference(PREFERENCE_SENSITIVE_LOGGING);
         mHideUserAgent = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_USERAGENT);
+        mHideTimeZone = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_TIMEZONE);
 
         mDebugLogging.setChecked(K9.DEBUG);
         mSensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
         mHideUserAgent.setChecked(K9.hideUserAgent());
+        mHideTimeZone.setChecked(K9.hideTimeZone());
 
         mAttachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
         mAttachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
@@ -537,6 +541,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.DEBUG = mDebugLogging.isChecked();
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         K9.setHideUserAgent(mHideUserAgent.isChecked());
+        K9.setHideTimeZone(mHideTimeZone.isChecked());
 
         Editor editor = preferences.edit();
         K9.save(editor);

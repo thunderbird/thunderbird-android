@@ -383,6 +383,11 @@
             android:key="privacy_hide_useragent"
             android:title="@string/global_settings_privacy_hide_useragent"/>
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="privacy_hide_timezone"
+            android:title="@string/global_settings_privacy_hide_timezone"/>
+
     </PreferenceScreen>
 
     <PreferenceScreen

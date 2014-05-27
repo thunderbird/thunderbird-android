@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
@@ -33,6 +34,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.store.UnavailableStorageException;
+import com.fsck.k9.K9;
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and
@@ -150,6 +152,11 @@ public class MimeMessage extends Message {
         if (mDateFormat == null) {
             mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         }
+
+        if (K9.hideTimeZone()) {
+            mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        }
+
         addHeader("Date", mDateFormat.format(sentDate));
         setInternalSentDate(sentDate);
     }
