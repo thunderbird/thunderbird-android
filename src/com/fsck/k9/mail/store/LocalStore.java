@@ -3427,7 +3427,7 @@ public class LocalStore extends Store implements Serializable {
 
     public static class LocalTextBody extends TextBody {
         /**
-         * This is an HTML-ified version of the message for display purposes.
+         * This is a possibly HTML-ified version of the message for display purposes.
          */
         private String mBodyForDisplay;
 
@@ -3534,23 +3534,37 @@ public class LocalStore extends Store implements Serializable {
         }
 
         /**
-         * Fetch the message text for display. This always returns an HTML-ified version of the
-         * message, even if it was originally a text-only message.
+         * Fetch the message text for display. 
+         * Reads user preferences to determine whether to prefer plain text or to
+         * force coercion to plain text
+         *
          * @return HTML version of message for display purposes or null.
          * @throws MessagingException
          */
         public String getTextForDisplay() throws MessagingException {
-            String text = null;    // First try and fetch an HTML part.
-            Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
-            if (part == null) {
-                // If that fails, try and get a text part.
+            String text = null;
+            Part part = null;
+            if(K9.messageViewUsePlainTextOnly()){
                 part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
-                if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
-                    text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
+                if (part != null) {
+                    text = ((LocalStore.LocalTextBody) part.getBody()).getText();
+                     // text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
+                } else if(part == null) { // no text part, try html and coerce to plain
+                    part = MimeUtility.findFirstPartByMimeType(this, "text/html");
+                    text = HtmlConverter.htmlToText(MimeUtility.getTextFromPart(part));
                 }
             } else {
-                // We successfully found an HTML part; do the necessary character set decoding.
-                text = MimeUtility.getTextFromPart(part);
+                part = MimeUtility.findFirstPartByMimeType(this, "text/html");
+                if (part == null) {
+                    // If that fails, try and get a text part.
+                    part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
+                    if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
+                        text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
+                    }
+                } else {
+                    // We successfully found an HTML part; do the necessary character set decoding.
+                    text = MimeUtility.getTextFromPart(part);
+                }
             }
             return text;
         }

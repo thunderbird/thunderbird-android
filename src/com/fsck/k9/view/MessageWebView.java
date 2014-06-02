@@ -146,15 +146,14 @@ public class MessageWebView extends RigidWebView {
      * </p>
      *
      * @param text
-     *      The message body to display.  Assumed to be MIME type text/html.
-     *      Now reads pref to assume MIME type to text/plain when requested.
+     *      The message body to display.  
      */
     public void setText(String text) {
      // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
         String content, mime;
 
         if(K9.messageViewUsePlainTextOnly()){ 
-          content = HtmlConverter.htmlToText(text);
+          content = text;
           mime = "text/plain";
         } else {
           content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";

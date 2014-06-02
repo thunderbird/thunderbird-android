@@ -76,6 +76,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE = "messagelist_show_contact_picture";
     private static final String PREFERENCE_MESSAGELIST_COLORIZE_MISSING_CONTACT_PICTURES =
             "messagelist_colorize_missing_contact_pictures";
+    private static final String PREFERENCE_MESSAGEVIEW_ALWAYSPLAIN= "messageview_always_use_plaintext";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
     private static final String PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS = "messageview_visible_refile_actions";
 
@@ -131,6 +132,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mChangeContactNameColor;
     private CheckBoxPreference mShowContactPicture;
     private CheckBoxPreference mColorizeMissingContactPictures;
+    private CheckBoxPreference mAlwaysPlain;
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
@@ -294,6 +296,9 @@ public class Prefs extends K9PreferenceActivity {
                 return false;
             }
         });
+
+        mAlwaysPlain = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGEVIEW_ALWAYSPLAIN);
+        mAlwaysPlain.setChecked(K9.messageViewUsePlainTextOnly());
 
         mFixedWidth = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGEVIEW_FIXEDWIDTH);
         mFixedWidth.setChecked(K9.messageViewFixedWidthFont());
@@ -499,6 +504,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setUseBackgroundAsUnreadIndicator(mBackgroundAsUnreadIndicator.isChecked());
         K9.setThreadedViewEnabled(mThreadedView.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
+        K9.setMessageViewUsePlainTextOnly(mAlwaysPlain.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
         K9.setMessageViewShowNext(mShowNext.isChecked());
