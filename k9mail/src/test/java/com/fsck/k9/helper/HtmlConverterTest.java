@@ -207,4 +207,28 @@ public class HtmlConverterTest {
                 "http://example.com/" +
                 "</a>", outputBuffer.toString());
     }
+
+    @Test
+    public void testReplaceHorizontalRules() {
+        // check in between text
+        String text = "hello\n--- --- --- --- --- --- --- --- ---\nfoo bar";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\">hello<hr />foo bar</pre>", result);
+
+        // check beginning of text
+        text = "---------------------------\nfoo bar";
+        result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><hr />foo bar</pre>",
+                    result);
+
+        // check end of text
+        text = "hello\n__________________________________";
+        result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\">hello<hr /></pre>", result);
+
+        // check scissors
+        text = "hello\n-- %< -------------- >8 --\nworld\n";
+        result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\">hello<hr />world<br /></pre>",result);
+    }
 }
