@@ -528,7 +528,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="folder_settings_folder_push_mode_label">Classe da pasta push</string>
   <string name="folder_settings_folder_push_mode_normal">Nenhuma</string>
   <string name="folder_settings_folder_push_mode_first_class">Primeira Classe</string>
-  <string name="folder_settings_folder_push_mode_second_class">Segunda Class</string>
+  <string name="folder_settings_folder_push_mode_second_class">Segunda Classe</string>
   <string name="folder_settings_folder_push_mode_inherited">Igual a pasta de sinc</string>
   <string name="account_settings_incoming_label">Servidor de entrada</string>
   <string name="account_settings_incoming_summary">Configure o servidor de e-mails recebidos</string>
