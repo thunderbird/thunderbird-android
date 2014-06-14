@@ -321,21 +321,21 @@ public class MimeMessage extends Message {
 
     private String generateMessageId() {
         String hostname = null;
-        if (mFrom != null) {
-            int hostIdx = mFrom[0].getAddress().lastIndexOf("@");
-            hostname = mFrom[0].getAddress().substring(hostIdx);
+
+        if (mFrom != null && mFrom.length >= 1) {
+            hostname = mFrom[0].getHostname();
         }
 
-        if (hostname == null && mReplyTo != null) {
-            int hostIdx = mReplyTo[0].getAddress().lastIndexOf("@");
-            hostname = mReplyTo[0].getAddress().substring(hostIdx);
+        if (hostname == null && mReplyTo != null && mReplyTo.length >= 1) {
+            hostname = mReplyTo[0].getHostname();
         }
 
-        if (hostname != null) {
-            return "<" + UUID.randomUUID().toString() + hostname + ">";
-        } else {
-            return "<" + UUID.randomUUID().toString() + "@email.android.com>";
+        if (hostname == null) {
+            hostname = "email.android.com";
         }
+
+        /* We use upper case here to match Apple Mail Message-ID format (for privacy) */
+        return "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
     }
 
     public void setMessageId(String messageId) throws UnavailableStorageException {
