@@ -1425,7 +1425,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             message.setHeader("X-Confirm-Reading-To", from.toEncodedString());
             message.setHeader("Return-Receipt-To", from.toEncodedString());
         }
-        message.setHeader("User-Agent", getString(R.string.message_header_mua));
+
+        if (!K9.hideUserAgent()) {
+            message.setHeader("User-Agent", getString(R.string.message_header_mua));
+        }
 
         final String replyTo = mIdentity.getReplyTo();
         if (replyTo != null) {
