@@ -381,7 +381,11 @@ public class MessageOpenPgpView extends LinearLayout {
     }
 
     private void handleError(final OpenPgpError error) {
-        mFragment.getActivity().runOnUiThread(new Runnable() {
+        Activity activity = mFragment.getActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
