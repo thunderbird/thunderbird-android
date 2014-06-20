@@ -8,6 +8,16 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="4.804" versioncode="20005" >
+        <change>Fixed a bug with IMAP Push that could cause excessive battery drain</change>
+        <change>Exclude error folder from unread/starred count</change>
+        <change>Avoid adding the same recipient twice when using "reply to all"</change>
+        <change>Improved compatibility with IMAP (proxy) servers</change>
+        <change>Improved support for non-standard conform "share" functionality used by some apps</change>
+        <change>Another attempt at working around the display bug on Asus Transformer devices</change>
+        <change>Added mailbox.org to the list of providers﻿</change>
+        <change>More bug fixes</change>
+    </release>
     <release version="4.803" versioncode="20004" >
         <change>Removed the work-around for the display bug on Asus Transformer devices introduced in v4.802 because it was causing problems</change>
         <change>K-9 Mail now uses a locale-specific date in the header of a quoted message</change>
