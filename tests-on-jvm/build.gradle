@@ -17,8 +17,8 @@ sourceSets {
     }
 
     test {
-        compileClasspath += files(['../build/classes/release', '../build/classes/debug'])
-        runtimeClasspath += files(['../build/classes/release', '../build/classes/debug'])
+        compileClasspath += files(['../build/intermediates/classes/release', '../build/intermediates/classes/debug'])
+        runtimeClasspath += files(['../build/intermediates/classes/release', '../build/intermediates/classes/debug'])
         java {
             srcDirs = ['src']
         }
