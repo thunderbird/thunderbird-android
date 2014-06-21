@@ -1,17 +1,38 @@
 package com.fsck.k9.activity;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.app.LoaderManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.content.Loader;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -19,24 +40,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AutoCompleteTextView.Validator;
@@ -88,10 +105,10 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.TextBodyBuilder;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mail.internet.TextBodyBuilder;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileMessageBody;
@@ -106,26 +123,6 @@ import org.htmlcleaner.TagNode;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MessageCompose extends K9Activity implements OnClickListener,
         ProgressDialogFragment.CancelListener {
@@ -384,10 +381,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MSG_PROGRESS_ON:
-                    setSupportProgressBarIndeterminateVisibility(true);
+                    setProgressBarIndeterminateVisibility(true);
                     break;
                 case MSG_PROGRESS_OFF:
-                    setSupportProgressBarIndeterminateVisibility(false);
+                    setProgressBarIndeterminateVisibility(false);
                     break;
                 case MSG_SKIPPED_ATTACHMENTS:
                     Toast.makeText(
@@ -518,16 +515,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         i.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
         i.setAction(ACTION_EDIT_DRAFT);
         context.startActivity(i);
-    }
-
-    /*
-     * This is a workaround for an annoying ( temporarly? ) issue:
-     * https://github.com/JakeWharton/ActionBarSherlock/issues/449
-     */
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        setSupportProgressBarIndeterminateVisibility(false);
     }
 
     @Override
@@ -2108,14 +2095,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void initAttachmentInfoLoader(Attachment attachment) {
-        LoaderManager loaderManager = getSupportLoaderManager();
+        LoaderManager loaderManager = getLoaderManager();
         Bundle bundle = new Bundle();
         bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment);
         loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentInfoLoaderCallback);
     }
 
     private void initAttachmentContentLoader(Attachment attachment) {
-        LoaderManager loaderManager = getSupportLoaderManager();
+        LoaderManager loaderManager = getLoaderManager();
         Bundle bundle = new Bundle();
         bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment);
         loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentContentLoaderCallback);
@@ -2183,7 +2170,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onFetchAttachmentFinished();
             }
 
-            getSupportLoaderManager().destroyLoader(loaderId);
+            getLoaderManager().destroyLoader(loaderId);
         }
 
         @Override
@@ -2218,7 +2205,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             onFetchAttachmentFinished();
 
-            getSupportLoaderManager().destroyLoader(loaderId);
+            getLoaderManager().destroyLoader(loaderId);
         }
 
         @Override
@@ -2581,7 +2568,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getSupportMenuInflater().inflate(R.menu.message_compose_option, menu);
+        getMenuInflater().inflate(R.menu.message_compose_option, menu);
 
         mMenu = menu;
 
@@ -2648,7 +2635,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         ProgressDialogFragment fragment = ProgressDialogFragment.newInstance(title,
                 getString(R.string.fetching_attachment_dialog_message));
-        fragment.show(getSupportFragmentManager(), FRAGMENT_WAITING_FOR_ATTACHMENT);
+        fragment.show(getFragmentManager(), FRAGMENT_WAITING_FOR_ATTACHMENT);
     }
 
     public void onCancel(ProgressDialogFragment fragment) {
@@ -2661,7 +2648,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void dismissWaitingForAttachmentDialog() {
         ProgressDialogFragment fragment = (ProgressDialogFragment)
-                getSupportFragmentManager().findFragmentByTag(FRAGMENT_WAITING_FOR_ATTACHMENT);
+                getFragmentManager().findFragmentByTag(FRAGMENT_WAITING_FOR_ATTACHMENT);
 
         if (fragment != null) {
             fragment.dismiss();

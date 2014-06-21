@@ -10,7 +10,7 @@
         android:icon="?attr/iconActionSearchFolder"
         android:showAsAction="always|collapseActionView"
         android:title="@string/filter_folders_action"
-        android:actionViewClass="com.actionbarsherlock.widget.SearchView"/>
+        android:actionViewClass="android.widget.SearchView"/>
     <item
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"

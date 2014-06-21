@@ -12,12 +12,11 @@ LOCAL_STATIC_JAVA_LIBRARIES += android-support-v4
 LOCAL_MODULE_TAGS := eng
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
-LOCAL_SRC_FILES += $(call all-java-files-under, plugins/ActionBarSherlock/library/src)
 LOCAL_SRC_FILES += $(call all-java-files-under, plugins/Android-PullToRefresh/library/src)
 LOCAL_SRC_FILES += $(call all-java-files-under, plugins/ckChangeLog/library/src)
 LOCAL_SRC_FILES += $(call all-java-files-under, plugins/HoloColorPicker/src)
 
-res_dir := res plugins/ActionBarSherlock/library/res plugins/Android-PullToRefresh/library/res plugins/ckChangeLog/library/res plugins/HoloColorPicker/res
+res_dir := res plugins/Android-PullToRefresh/library/res plugins/ckChangeLog/library/res plugins/HoloColorPicker/res
 LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, $(res_dir))
 
 LOCAL_SDK_VERSION := current
@@ -28,7 +27,6 @@ LOCAL_AAPT_INCLUDE_ALL_RESOURCES := true
 LOCAL_AAPT_FLAGS := --auto-add-overlay
 LOCAL_AAPT_FLAGS += --extra-packages de.cketti.library.changelog
 LOCAL_AAPT_FLAGS += --extra-packages android.support.v4.app
-LOCAL_AAPT_FLAGS += --extra-packages com.actionbarsherlock
 LOCAL_AAPT_FLAGS += --extra-packages com.handmark.pulltorefresh.library
 LOCAL_AAPT_FLAGS += --extra-packages com.larswerkman.colorpicker
 

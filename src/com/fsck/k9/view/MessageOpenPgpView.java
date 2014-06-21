@@ -6,18 +6,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.openintents.openpgp.OpenPgpError;
-import org.openintents.openpgp.OpenPgpSignatureResult;
-import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpServiceConnection;
-
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +35,11 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
+
+import org.openintents.openpgp.OpenPgpError;
+import org.openintents.openpgp.OpenPgpSignatureResult;
+import org.openintents.openpgp.util.OpenPgpApi;
+import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 public class MessageOpenPgpView extends LinearLayout {
 
@@ -109,7 +108,7 @@ public class MessageOpenPgpView extends LinearLayout {
             return;
         }
 
-        FragmentActivity activity = mFragment.getActivity();
+        Activity activity = mFragment.getActivity();
         if (activity == null) {
             return;
         }

@@ -1,18 +1,18 @@
 package com.fsck.k9.activity;
 
+import android.app.ListActivity;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.os.Bundle;
 
-import com.actionbarsherlock.app.SherlockListActivity;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 
 
-public class K9ListActivity extends SherlockListActivity implements K9ActivityMagic {
+public class K9ListActivity extends ListActivity implements K9ActivityMagic {
 
     private K9ActivityCommon mBase;
 

@@ -11,11 +11,11 @@ buildscript {
 apply plugin: 'android'
 
 dependencies {
-  compile project(':plugins:ActionBarSherlock:library')
   compile project(':plugins:Android-PullToRefresh:library')
   compile project(':plugins:ckChangeLog:library')
   compile project(':plugins:HoloColorPicker')
   compile project(':plugins:openpgp-api-library')
+  compile 'com.android.support:support-v13:19.1.0'
   compile fileTree(dir: 'libs', include: '*.jar')
 }
 

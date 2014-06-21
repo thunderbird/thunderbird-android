@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.K9.Startup" parent="Theme.Sherlock.NoActionBar">
+    <style name="Theme.K9.Startup" parent="@android:style/Theme.Holo.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
