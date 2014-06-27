@@ -22,7 +22,6 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.StringUtils;
-import com.fsck.k9.helper.Utility;
 
 
 public class Address {
@@ -199,7 +198,7 @@ public class Address {
     @Override
     public String toString() {
         if (!StringUtils.isNullOrEmpty(mPersonal)) {
-            return Utility.quoteAtoms(mPersonal) + " <" + mAddress + ">";
+            return StringUtils.quoteIfNotAtom(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
         }

@@ -8,6 +8,8 @@ import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
@@ -50,6 +52,7 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.FileUtils;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -62,8 +65,6 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
-
-import org.apache.commons.io.IOUtils;
 
 
 public class SingleMessageView extends LinearLayout implements OnClickListener,
@@ -906,10 +907,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                         filename += "." + extension;
                     }
 
-                    String sanitized = Utility.sanitizeFilename(filename);
+                    String sanitized = FileUtils.sanitizeFilename(filename);
 
                     File directory = new File(K9.getAttachmentDefaultPath());
-                    File file = Utility.createUniqueFile(directory, sanitized);
+                    File file = FileUtils.createUniqueFile(directory, sanitized);
                     FileOutputStream out = new FileOutputStream(file);
                     try {
                         IOUtils.copy(in, out);

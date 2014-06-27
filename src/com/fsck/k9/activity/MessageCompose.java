@@ -20,6 +20,16 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.james.mime4j.codec.EncoderUtil;
+import org.apache.james.mime4j.util.MimeUtil;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.SimpleHtmlSerializer;
+import org.htmlcleaner.TagNode;
+import org.openintents.openpgp.OpenPgpError;
+import org.openintents.openpgp.util.OpenPgpApi;
+import org.openintents.openpgp.util.OpenPgpServiceConnection;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -113,16 +123,6 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileMessageBody;
 import com.fsck.k9.view.MessageWebView;
-
-import org.apache.james.mime4j.codec.EncoderUtil;
-import org.apache.james.mime4j.util.MimeUtil;
-import org.htmlcleaner.CleanerProperties;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.SimpleHtmlSerializer;
-import org.htmlcleaner.TagNode;
-import org.openintents.openpgp.OpenPgpError;
-import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 public class MessageCompose extends K9Activity implements OnClickListener,
         ProgressDialogFragment.CancelListener {
@@ -1719,7 +1719,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             // First item is the body length. We use this to separate the composed reply from the quoted text.
             if (tokenizer.hasMoreTokens()) {
-                String bodyLengthS = Utility.base64Decode(tokenizer.nextToken());
+                String bodyLengthS = StringUtils.base64Decode(tokenizer.nextToken());
                 try {
                     identity.put(IdentityField.LENGTH, Integer.valueOf(bodyLengthS).toString());
                 } catch (Exception e) {
@@ -1727,16 +1727,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             }
             if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.SIGNATURE, Utility.base64Decode(tokenizer.nextToken()));
+                identity.put(IdentityField.SIGNATURE, StringUtils.base64Decode(tokenizer.nextToken()));
             }
             if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.NAME, Utility.base64Decode(tokenizer.nextToken()));
+                identity.put(IdentityField.NAME, StringUtils.base64Decode(tokenizer.nextToken()));
             }
             if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.EMAIL, Utility.base64Decode(tokenizer.nextToken()));
+                identity.put(IdentityField.EMAIL, StringUtils.base64Decode(tokenizer.nextToken()));
             }
             if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.QUOTED_TEXT_MODE, Utility.base64Decode(tokenizer.nextToken()));
+                identity.put(IdentityField.QUOTED_TEXT_MODE, StringUtils.base64Decode(tokenizer.nextToken()));
             }
         }
 
@@ -3824,7 +3824,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             final String prefix = mAccount.getQuotePrefix();
-            final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
+            final String wrappedText = StringUtils.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
 
             // "$" and "\" in the quote prefix have to be escaped for
             // the replaceAll() invocation.

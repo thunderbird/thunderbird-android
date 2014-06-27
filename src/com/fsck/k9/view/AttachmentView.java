@@ -32,9 +32,9 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.FileUtils;
 import com.fsck.k9.helper.MediaScannerNotifier;
 import com.fsck.k9.helper.SizeFormatter;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -249,8 +249,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      */
     public void writeFile(File directory) {
         try {
-            String filename = Utility.sanitizeFilename(name);
-            File file = Utility.createUniqueFile(directory, filename);
+            String filename = FileUtils.sanitizeFilename(name);
+            File file = FileUtils.createUniqueFile(directory, filename);
             Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
             InputStream in = mContext.getContentResolver().openInputStream(uri);
             OutputStream out = new FileOutputStream(file);

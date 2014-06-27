@@ -5,11 +5,11 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
-import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.*;
-
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
@@ -36,6 +36,7 @@ import javax.net.ssl.SSLException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -353,7 +354,7 @@ public class WebDavStore extends Store {
         // The inbox path would look like: "https://mail.domain.com/Exchange/alias/Inbox".
         mUrl = getRoot() + mPath + mMailboxPath;
 
-        mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
+        mAuthString = "Basic " + StringUtils.base64Encode(mUsername + ":" + mPassword);
     }
 
     private String getRoot() {

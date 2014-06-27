@@ -8,7 +8,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -49,9 +49,9 @@ public class MessageReference implements Parcelable {
             // Split the identity, stripping away the first two characters representing the version and delimiter.
             StringTokenizer tokens = new StringTokenizer(identity.substring(2), IDENTITY_SEPARATOR, false);
             if (tokens.countTokens() >= 3) {
-                accountUuid = Utility.base64Decode(tokens.nextToken());
-                folderName = Utility.base64Decode(tokens.nextToken());
-                uid = Utility.base64Decode(tokens.nextToken());
+                accountUuid = StringUtils.base64Decode(tokens.nextToken());
+                folderName = StringUtils.base64Decode(tokens.nextToken());
+                uid = StringUtils.base64Decode(tokens.nextToken());
 
                 if (tokens.hasMoreTokens()) {
                     final String flagString = tokens.nextToken();
@@ -80,11 +80,11 @@ public class MessageReference implements Parcelable {
 
         refString.append(IDENTITY_VERSION_1);
         refString.append(IDENTITY_SEPARATOR);
-        refString.append(Utility.base64Encode(accountUuid));
+        refString.append(StringUtils.base64Encode(accountUuid));
         refString.append(IDENTITY_SEPARATOR);
-        refString.append(Utility.base64Encode(folderName));
+        refString.append(StringUtils.base64Encode(folderName));
         refString.append(IDENTITY_SEPARATOR);
-        refString.append(Utility.base64Encode(uid));
+        refString.append(StringUtils.base64Encode(uid));
         if (flag != null) {
             refString.append(IDENTITY_SEPARATOR);
             refString.append(flag.name());

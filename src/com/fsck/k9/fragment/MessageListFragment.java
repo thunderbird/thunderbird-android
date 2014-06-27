@@ -150,7 +150,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private static final int FOLDER_NAME_COLUMN = 17;
     private static final int THREAD_COUNT_COLUMN = 18;
 
-    private static final String[] PROJECTION = Utility.copyOf(THREADED_PROJECTION,
+    private static final String[] PROJECTION = StringUtils.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
 
 

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 
 import java.net.URI;
@@ -51,8 +52,8 @@ public class Storage implements SharedPreferences {
                 String[] uuids = accountUuids.split(",");
                 for (String uuid : uuids) {
                     try {
-                        String storeUriStr = Utility.base64Decode(readValue(mDb, uuid + ".storeUri"));
-                        String transportUriStr = Utility.base64Decode(readValue(mDb, uuid + ".transportUri"));
+                        String storeUriStr = StringUtils.base64Decode(readValue(mDb, uuid + ".storeUri"));
+                        String transportUriStr = StringUtils.base64Decode(readValue(mDb, uuid + ".transportUri"));
 
                         URI uri = new URI(transportUriStr);
                         String newUserInfo = null;
@@ -74,7 +75,7 @@ public class Storage implements SharedPreferences {
 
                         if (newUserInfo != null) {
                             URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
-                            String newTransportUriStr = Utility.base64Encode(newUri.toString());
+                            String newTransportUriStr = StringUtils.base64Encode(newUri.toString());
                             writeValue(mDb, uuid + ".transportUri", newTransportUriStr);
                         }
 
@@ -118,7 +119,7 @@ public class Storage implements SharedPreferences {
 
                         if (newUserInfo != null) {
                             URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
-                            String newStoreUriStr = Utility.base64Encode(newUri.toString());
+                            String newStoreUriStr = StringUtils.base64Encode(newUri.toString());
                             writeValue(mDb, uuid + ".storeUri", newStoreUriStr);
                         }
                     } catch (Exception e) {

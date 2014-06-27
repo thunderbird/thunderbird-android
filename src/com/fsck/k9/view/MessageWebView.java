@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.helper.HtmlConverter;
 
 public class MessageWebView extends RigidWebView {
 
@@ -150,16 +149,23 @@ public class MessageWebView extends RigidWebView {
      */
     public void setText(String text) {
      // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
-        String content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><head><meta name=\"viewport\" content=\"width=device-width\"/>");
+        
         if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
-            content += "<style type=\"text/css\">" +
-                   "* { background: black ! important; color: #F3F3F3 !important }" +
-                   ":link, :link * { color: #CCFF33 !important }" +
-                   ":visited, :visited * { color: #551A8B !important }</style> ";
+            sb.append("<style type=\"text/css\">");
+            sb.append("* { background: black ! important; color: #F3F3F3 !important }");
+            sb.append(":link, :link * { color: #CCFF33 !important }");
+            sb.append(":visited, :visited * { color: #551A8B !important }</style> ");
         }
-        content += HtmlConverter.cssStylePre();
-        content += "</head><body>" + text + "</body></html>";
-        loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
+
+        sb.append("<style type=\"text/css\"> pre.").append(K9.CSS_CLASS);
+        sb.append(" {white-space: pre-wrap; word-wrap:break-word; ");
+        sb.append("font-family: ").append(K9.messageViewFixedWidthFont() ? "monospace" : "sans-serif");
+        sb.append("; margin-top: 0px}</style>");
+        
+        sb.append("</head><body>").append(text).append("</body></html>");
+        loadDataWithBaseURL("http://", sb.toString(), "text/html", "utf-8", null);
         resumeTimers();
     }
 

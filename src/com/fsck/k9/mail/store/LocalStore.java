@@ -1043,7 +1043,7 @@ public class LocalStore extends Store implements Serializable {
                         String arguments = cursor.getString(2);
                         command.arguments = arguments.split(",");
                         for (int i = 0; i < command.arguments.length; i++) {
-                            command.arguments[i] = Utility.fastUrlDecode(command.arguments[i]);
+                            command.arguments[i] = StringUtils.fastUrlDecode(command.arguments[i]);
                         }
                         commands.add(command);
                     }
@@ -1062,7 +1062,7 @@ public class LocalStore extends Store implements Serializable {
             }
             final ContentValues cv = new ContentValues();
             cv.put("command", command.command);
-            cv.put("arguments", Utility.combine(command.arguments, ','));
+            cv.put("arguments", StringUtils.combine(command.arguments, ','));
             database.execute(false, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
@@ -1323,7 +1323,7 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        return Utility.combine(extraFlags.toArray(EMPTY_FLAG_ARRAY), ',').toUpperCase(Locale.US);
+        return StringUtils.combine(extraFlags.toArray(EMPTY_FLAG_ARRAY), ',').toUpperCase(Locale.US);
     }
 
     public class LocalFolder extends Folder implements Serializable {
@@ -2822,7 +2822,7 @@ public class LocalStore extends Store implements Serializable {
                             }
 
                             String storeData =
-                                Utility.combine(attachment.getHeader(
+                                StringUtils.combine(attachment.getHeader(
                                                     MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA), ',');
 
                             String name = MimeUtility.getHeaderParameter(attachment.getContentType(), "name");
