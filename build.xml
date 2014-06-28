@@ -399,20 +399,6 @@
         <delete dir="${javadoc-dir}" verbose="${verbose}" />
     </target>
 
-    <target name="-update-abs">
-        <if.contrib>
-            <resourceexists>
-                <file file="plugins/ActionBarSherlock/library/build.xml" />
-            </resourceexists>
-            <else>
-                <echo message="android update lib-project -p plugins/ActionBarSherlock/library/" />
-                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
-                    <arg line="update lib-project -p plugins/ActionBarSherlock/library/" />
-                </exec>
-            </else>
-        </if.contrib>
-    </target>
-
     <target name="-update-ptr">
         <if.contrib>
             <resourceexists>
@@ -469,7 +455,7 @@
         </if.contrib>
     </target>
 
-    <target name="init" depends="-update-abs, -update-ptr, -update-cl, -update-hcp, -update-opa"
+    <target name="init" depends="-update-ptr, -update-cl, -update-hcp, -update-opa"
             description="Initialize environment for building" />
 
     <!-- overrides default "debug" target" -->

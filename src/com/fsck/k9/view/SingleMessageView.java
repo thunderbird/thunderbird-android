@@ -1,6 +1,15 @@
 package com.fsck.k9.view;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.util.List;
+
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -12,7 +21,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,7 +32,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
-import android.view.View.*;
+import android.view.View.OnClickListener;
+import android.view.View.OnCreateContextMenuListener;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.widget.Button;
@@ -43,21 +52,18 @@ import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
 import org.apache.commons.io.IOUtils;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.util.List;
 
 
 public class SingleMessageView extends LinearLayout implements OnClickListener,

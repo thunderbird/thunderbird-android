@@ -3,7 +3,7 @@ package com.fsck.k9.crypto;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
 import com.fsck.k9.mail.Message;
 

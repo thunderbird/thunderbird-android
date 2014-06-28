@@ -4,9 +4,17 @@ package com.fsck.k9.activity;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
@@ -28,20 +36,21 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -50,9 +59,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
@@ -75,11 +81,6 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.WebDavStore;
-import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchAccount;
-import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
-import com.fsck.k9.view.ColorChip;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
 import com.fsck.k9.preferences.SettingsImporter;
@@ -87,6 +88,11 @@ import com.fsck.k9.preferences.SettingsImporter.AccountDescription;
 import com.fsck.k9.preferences.SettingsImporter.AccountDescriptionPair;
 import com.fsck.k9.preferences.SettingsImporter.ImportContents;
 import com.fsck.k9.preferences.SettingsImporter.ImportResults;
+import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchAccount;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.view.ColorChip;
 
 import de.cketti.library.changelog.ChangeLog;
 
@@ -420,7 +426,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         requestWindowFeature(Window.FEATURE_PROGRESS);
-        mActionBar = getSupportActionBar();
+        mActionBar = getActionBar();
         initializeActionBar();
         setContentView(R.layout.accounts);
         ListView listView = getListView();
@@ -1235,7 +1241,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         new String[] {"Commons IO", "http://commons.apache.org/io/"},
         new String[] {"Mime4j", "http://james.apache.org/mime4j/"},
         new String[] {"HtmlCleaner", "http://htmlcleaner.sourceforge.net/"},
-        new String[] {"ActionBarSherlock", "http://actionbarsherlock.com/"},
         new String[] {"Android-PullToRefresh", "https://github.com/chrisbanes/Android-PullToRefresh"},
         new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"},
         new String[] {"HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker"}
@@ -1327,7 +1332,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getSupportMenuInflater().inflate(R.menu.accounts_option, menu);
+        getMenuInflater().inflate(R.menu.accounts_option, menu);
         mRefreshMenuItem = menu.findItem(R.id.check_mail);
         return true;
     }
