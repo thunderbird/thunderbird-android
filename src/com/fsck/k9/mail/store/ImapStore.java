@@ -1,67 +1,11 @@
 
 package com.fsck.k9.mail.store;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.ConnectException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CodingErrorAction;
-import java.security.GeneralSecurityException;
-import java.security.SecureRandom;
-import java.security.Security;
-import java.security.cert.CertificateException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
-import java.util.zip.Inflater;
-import java.util.zip.InflaterInputStream;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.TrustManager;
-
-import org.apache.commons.io.IOUtils;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.PowerManager;
 import android.util.Log;
-
 import com.beetstra.jutf7.CharsetProvider;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -71,39 +15,40 @@ import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.Authentication;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.PushReceiver;
-import com.fsck.k9.mail.Pusher;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
-import com.fsck.k9.mail.internet.MimeBodyPart;
-import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.MimeMultipart;
-import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.*;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapUtility;
+import com.fsck.k9.mail.transport.BaseTransport;
+import com.fsck.k9.mail.transport.MailTransport;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
-import com.fsck.k9.net.ssl.TrustManagerFactory;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
-import com.jcraft.jzlib.JZlib;
-import com.jcraft.jzlib.ZOutputStream;
+
+import javax.net.ssl.SSLException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
+import java.security.GeneralSecurityException;
+import java.security.Security;
+import java.security.cert.CertificateException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * <pre>
@@ -349,6 +294,7 @@ public class ImapStore extends Store {
     private String mUsername;
     private String mPassword;
     private ConnectionSecurity mConnectionSecurity;
+    private BaseTransport mTransport;
     private AuthType mAuthType;
     private volatile String mPathPrefix;
     private volatile String mCombinedPrefix = null;
@@ -463,6 +409,13 @@ public class ImapStore extends Store {
         mPathPrefix = (settings.autoDetectNamespace) ? null : settings.pathPrefix;
 
         mModifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
+        setTransport(new MailTransport()
+                .setInputBufferSize(1024)
+                .setOutputBufferSize(1024));
+    }
+
+    public void setTransport(BaseTransport transport) {
+        this.mTransport = transport;
     }
 
     @Override
@@ -682,7 +635,7 @@ public class ImapStore extends Store {
     @Override
     public void checkSettings() throws MessagingException {
         try {
-            ImapConnection connection = new ImapConnection(new StoreImapSettings());
+            ImapConnection connection = new ImapConnection(mTransport, new StoreImapSettings());
             connection.open();
             autoconfigureFolders(connection);
             connection.close();
@@ -707,7 +660,7 @@ public class ImapStore extends Store {
                 }
             }
             if (connection == null) {
-                connection = new ImapConnection(new StoreImapSettings());
+                connection = new ImapConnection(mTransport, new StoreImapSettings());
             }
             return connection;
         }
@@ -1995,7 +1948,7 @@ public class ImapStore extends Store {
                         response = mConnection.readResponse();
                         handleUntaggedResponse(response);
                         if (response.mCommandContinuationRequested) {
-                            EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(mConnection.mOut);
+                            EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(mConnection.baseTransport.getOutputStream());
                             message.writeTo(eolOut);
                             eolOut.write('\r');
                             eolOut.write('\n');
@@ -2329,16 +2282,15 @@ public class ImapStore extends Store {
      * A cacheable class that stores the details for a single IMAP connection.
      */
     public static class ImapConnection {
-        protected Socket mSocket;
-        protected PeekableInputStream mIn;
-        protected OutputStream mOut;
+        protected BaseTransport baseTransport;
         protected ImapResponseParser mParser;
         protected int mNextCommandTag;
         protected Set<String> capabilities = new HashSet<String>();
 
         private ImapSettings mSettings;
 
-        public ImapConnection(final ImapSettings settings) {
+        public ImapConnection(BaseTransport transport, final ImapSettings settings) {
+            baseTransport = transport.clone();
             this.mSettings = settings;
         }
 
@@ -2403,53 +2355,14 @@ public class ImapStore extends Store {
                 Log.w(K9.LOG_TAG, "Could not set DNS negative ttl to 0 for " + getLogId(), e);
             }
 
+            baseTransport.open();
             try {
                 ConnectionSecurity connectionSecurity = mSettings.getConnectionSecurity();
 
-                // Try all IPv4 and IPv6 addresses of the host
-                InetAddress[] addresses = InetAddress.getAllByName(mSettings.getHost());
-                for (int i = 0; i < addresses.length; i++) {
-                    try {
-                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP) {
-                            Log.d(K9.LOG_TAG, "Connecting to " + mSettings.getHost() + " as " +
-                                    addresses[i]);
-                        }
+                baseTransport.connect(mSettings.getHost(), mSettings.getPort(), connectionSecurity, SOCKET_CONNECT_TIMEOUT);
+                baseTransport.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
 
-                        SocketAddress socketAddress = new InetSocketAddress(addresses[i],
-                                mSettings.getPort());
-
-                        if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                            SSLContext sslContext = SSLContext.getInstance("TLS");
-                            sslContext
-                                    .init(null,
-                                            new TrustManager[] { TrustManagerFactory.get(
-                                                    mSettings.getHost(),
-                                                    mSettings.getPort()) },
-                                            new SecureRandom());
-                            mSocket = TrustedSocketFactory.createSocket(sslContext);
-                        } else {
-                            mSocket = new Socket();
-                        }
-
-                        mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-
-                        // Successfully connected to the server; don't try any other addresses
-                        break;
-                    } catch (SocketException e) {
-                        if (i < (addresses.length - 1)) {
-                            // There are still other addresses for that host to try
-                            continue;
-                        }
-                        throw new MessagingException("Cannot connect to host", e);
-                    }
-                }
-
-                setReadTimeout(Store.SOCKET_READ_TIMEOUT);
-
-                mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
-                                              1024));
-                mParser = new ImapResponseParser(mIn);
-                mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
+                mParser = new ImapResponseParser(new PeekableInputStream(baseTransport.getInputStream()));
 
                 capabilities.clear();
                 ImapResponse nullResponse = mParser.readResponse();
@@ -2475,19 +2388,10 @@ public class ImapStore extends Store {
                         // STARTTLS
                         executeSimpleCommand("STARTTLS");
 
-                        SSLContext sslContext = SSLContext.getInstance("TLS");
-                        sslContext.init(null,
-                                new TrustManager[] { TrustManagerFactory.get(
-                                        mSettings.getHost(),
-                                        mSettings.getPort()) },
-                                new SecureRandom());
-                        mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket,
-                                mSettings.getHost(), mSettings.getPort(), true);
-                        mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
-                        mIn = new PeekableInputStream(new BufferedInputStream(mSocket
-                                                      .getInputStream(), 1024));
-                        mParser = new ImapResponseParser(mIn);
-                        mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
+                        baseTransport.reopenTls(mSettings.getHost(), mSettings.getPort());
+                        baseTransport.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
+
+                        mParser = new ImapResponseParser(new PeekableInputStream(baseTransport.getInputStream()));
                         // Per RFC 2595 (3.1):  Once TLS has been started, reissue CAPABILITY command
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "Updating capabilities after STARTTLS for " + getLogId());
@@ -2556,13 +2460,11 @@ public class ImapStore extends Store {
                     if (useCompression) {
                         try {
                             executeSimpleCommand(COMMAND_COMPRESS_DEFLATE);
-                            Inflater inf = new Inflater(true);
-                            InflaterInputStream zInputStream = new InflaterInputStream(mSocket.getInputStream(), inf);
-                            mIn = new PeekableInputStream(new BufferedInputStream(zInputStream, 1024));
-                            mParser = new ImapResponseParser(mIn);
-                            ZOutputStream zOutputStream = new ZOutputStream(mSocket.getOutputStream(), JZlib.Z_BEST_SPEED, true);
-                            mOut = new BufferedOutputStream(zOutputStream, 1024);
-                            zOutputStream.setFlushMode(JZlib.Z_PARTIAL_FLUSH);
+
+                            baseTransport.useCompression();
+
+                            mParser = new ImapResponseParser(new PeekableInputStream(baseTransport.getInputStream()));
+
                             if (K9.DEBUG) {
                                 Log.i(K9.LOG_TAG, "Compression enabled for " + getLogId());
                             }
@@ -2686,10 +2588,7 @@ public class ImapStore extends Store {
             byte[] b64CRAM = Authentication.computeCramMd5Bytes(
                     mSettings.getUsername(), mSettings.getPassword(), b64Nonce);
 
-            mOut.write(b64CRAM);
-            mOut.write('\r');
-            mOut.write('\n');
-            mOut.flush();
+            baseTransport.writeLine(b64CRAM, true);
             try {
                 receiveCapabilities(readStatusResponse(tag, command, null));
             } catch (MessagingException e) {
@@ -2701,11 +2600,9 @@ public class ImapStore extends Store {
             String command = "AUTHENTICATE PLAIN";
             String tag = sendCommand(command, false);
             readContinuationResponse(tag);
-            mOut.write(Base64.encodeBase64(("\000" + mSettings.getUsername()
-                    + "\000" + mSettings.getPassword()).getBytes()));
-            mOut.write('\r');
-            mOut.write('\n');
-            mOut.flush();
+            baseTransport.writeLine(Base64.encodeBase64(("\000" + mSettings.getUsername()
+                    + "\000" + mSettings.getPassword()).getBytes()),
+                    true);
             try {
                 receiveCapabilities(readStatusResponse(tag, command, null));
             } catch (MessagingException e) {
@@ -2767,10 +2664,7 @@ public class ImapStore extends Store {
         }
 
         protected void setReadTimeout(int millis) throws SocketException {
-            Socket sock = mSocket;
-            if (sock != null) {
-                sock.setSoTimeout(millis);
-            }
+            baseTransport.setSoTimeout(millis);
         }
 
         protected boolean isIdleCapable() {
@@ -2785,7 +2679,7 @@ public class ImapStore extends Store {
         }
 
         public boolean isOpen() {
-            return (mIn != null && mOut != null && mSocket != null && mSocket.isConnected() && !mSocket.isClosed());
+            return baseTransport.isOpen();
         }
 
         public void close() {
@@ -2796,12 +2690,7 @@ public class ImapStore extends Store {
 //
 //                }
 //            }
-            IOUtils.closeQuietly(mIn);
-            IOUtils.closeQuietly(mOut);
-            IOUtils.closeQuietly(mSocket);
-            mIn = null;
-            mOut = null;
-            mSocket = null;
+            baseTransport.close();
         }
 
         public ImapResponse readResponse() throws IOException, MessagingException {
@@ -2822,11 +2711,7 @@ public class ImapStore extends Store {
         }
 
         public void sendContinuation(String continuation) throws IOException {
-            mOut.write(continuation.getBytes());
-            mOut.write('\r');
-            mOut.write('\n');
-            mOut.flush();
-
+            baseTransport.writeLine(continuation.getBytes(), true);
             if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
                 Log.v(K9.LOG_TAG, getLogId() + ">>> " + continuation);
 
@@ -2838,8 +2723,7 @@ public class ImapStore extends Store {
                 open();
                 String tag = Integer.toString(mNextCommandTag++);
                 String commandToSend = tag + " " + command + "\r\n";
-                mOut.write(commandToSend.getBytes());
-                mOut.flush();
+                baseTransport.writeLine(commandToSend.getBytes(), false);
 
                 if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP) {
                     if (sensitive && !K9.DEBUG_SENSITIVE) {

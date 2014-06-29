@@ -266,9 +266,13 @@ public class Account implements BaseAccount {
         TEXT, HTML, AUTO
     }
 
-    protected Account(Context context) {
+    protected String getDefaultProviderId() {
+        return StorageManager.getInstance(K9.app).getDefaultProviderId();
+    }
+
+    public Account(Context context) {
         mUuid = UUID.randomUUID().toString();
-        mLocalStorageProviderId = StorageManager.getInstance(K9.app).getDefaultProviderId();
+        mLocalStorageProviderId = getDefaultProviderId();
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
         mPushPollOnConnect = true;
