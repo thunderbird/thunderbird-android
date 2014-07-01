@@ -144,7 +144,7 @@ public class HtmlConverterTest extends TestCase {
         assertEquals("<pre class=\"k9mail\">"
                 + "foo<br />"
                 + " bar<br />"
-                + "  baz<br />"
+                + "  baz"
                 + "</pre>", result);
     }
 
@@ -163,22 +163,20 @@ public class HtmlConverterTest extends TestCase {
                 + "    <br />"
                 + "   &lt;<br />"
                 + "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
-                + " <br />"
+                + " "
                 + "</blockquote>"
                 + "</pre>", result);
     }
 
     public void testLinkifyBitcoinAndHttpUri() {
-        String text = "bitcoin:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU http://example.com/";
+        String text = "bitcoin:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU http://example.com/?q=1&z=2";
 
-        StringBuffer outputBuffer = new StringBuffer();
-        HtmlConverter.linkifyText(text, outputBuffer);
-
+        String html = HtmlConverter.textToHtmlFragment(text);
         assertEquals("<a href=\"bitcoin:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU\">" +
                 "bitcoin:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU" +
                 "</a> " +
-                "<a href=\"http://example.com/\">" +
-                "http://example.com/" +
-                "</a>", outputBuffer.toString());
+                "<a href=\"http://example.com/?q=1&z=2\">" +
+                "http://example.com/?q=1&amp;z=2" +
+                "</a>", html);
     }
 }
