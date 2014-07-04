@@ -3,7 +3,6 @@
 	<name>k9mail</name>
 	<comment></comment>
 	<projects>
-		<project>k9mail-ActionBarSherlock</project>
 		<project>k9mail-Android-PullToRefresh</project>
 		<project>k9mail-ckChangeLog</project>
 		<project>k9mail-HoloColorPicker</project>

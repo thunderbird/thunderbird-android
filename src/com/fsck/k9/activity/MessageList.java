@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 import java.util.Collection;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -11,11 +12,13 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
+import android.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +27,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
@@ -39,8 +39,8 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageListFragment;
-import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
+import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.fragment.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.StorageManager;
@@ -48,8 +48,8 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageOpenPgpView;
 import com.fsck.k9.view.MessageTitleView;
@@ -238,7 +238,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         setIntent(intent);
 
         if (mFirstBackStackId >= 0) {
-            getSupportFragmentManager().popBackStackImmediate(mFirstBackStackId,
+            getFragmentManager().popBackStackImmediate(mFirstBackStackId,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
             mFirstBackStackId = -1;
         }
@@ -262,7 +262,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
      * Get references to existing fragments if the activity was restarted.
      */
     private void findFragments() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         mMessageListFragment = (MessageListFragment) fragmentManager.findFragmentById(
                 R.id.message_list_container);
         mMessageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(
@@ -275,7 +275,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
      * @see #findFragments()
      */
     private void initializeFragments() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.addOnBackStackChangedListener(this);
 
         boolean hasMessageListFragment = (mMessageListFragment != null);
@@ -518,7 +518,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void initializeActionBar() {
-        mActionBar = getSupportActionBar();
+        mActionBar = getActionBar();
 
         mActionBar.setDisplayShowCustomEnabled(true);
         mActionBar.setCustomView(R.layout.actionbar_custom);
@@ -927,7 +927,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.message_list_option, menu);
+        getMenuInflater().inflate(R.menu.message_list_option, menu);
         mMenu = menu;
         mMenuButtonCheckMail= menu.findItem(R.id.check_mail);
         return true;
@@ -1162,7 +1162,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void setMessageListProgress(int progress) {
-        setSupportProgress(progress);
+        setProgress(progress);
     }
 
     @Override
@@ -1181,7 +1181,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             }
 
             MessageViewFragment fragment = MessageViewFragment.newInstance(messageReference);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.message_view_container, fragment);
             mMessageViewFragment = fragment;
             ft.commit();
@@ -1273,7 +1273,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void addMessageListFragment(MessageListFragment fragment, boolean addToBackStack) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         ft.replace(R.id.message_list_container, fragment);
         if (addToBackStack)
@@ -1332,7 +1332,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
      */
     private void removeMessageViewFragment() {
         if (mMessageViewFragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.remove(mMessageViewFragment);
             mMessageViewFragment = null;
             ft.commit();
@@ -1342,7 +1342,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     private void removeMessageListFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.remove(mMessageListFragment);
         mMessageListFragment = null;
         ft.commit();
@@ -1356,7 +1356,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void goBack() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
             showMessageList();
         } else if (fragmentManager.getBackStackEntryCount() > 0) {
@@ -1460,7 +1460,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void setProgress(boolean enable) {
-        setSupportProgressBarIndeterminateVisibility(enable);
+        setProgressBarIndeterminateVisibility(enable);
     }
 
     @Override

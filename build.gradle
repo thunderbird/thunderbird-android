@@ -4,24 +4,24 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.9.+'
+    classpath 'com.android.tools.build:gradle:0.11.+'
   }
 }
 
 apply plugin: 'android'
 
 dependencies {
-  compile project(':plugins:ActionBarSherlock:library')
   compile project(':plugins:Android-PullToRefresh:library')
   compile project(':plugins:ckChangeLog:library')
   compile project(':plugins:HoloColorPicker')
   compile project(':plugins:openpgp-api-library')
+  compile 'com.android.support:support-v13:19.1.0'
   compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 android {
   compileSdkVersion 19
-  buildToolsVersion '19.0.3'
+  buildToolsVersion '19.1.0'
 
   sourceSets {
     main {

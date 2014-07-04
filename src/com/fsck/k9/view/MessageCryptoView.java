@@ -1,7 +1,7 @@
 package com.fsck.k9.view;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;

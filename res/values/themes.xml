@@ -3,7 +3,7 @@
 
     <style name="Theme.K9.Startup" parent="Theme.K9.Dark" />
 
-    <style name="Theme.K9.Light.Base" parent="Theme.Sherlock.Light">
+    <style name="Theme.K9.Light.Base" parent="@android:style/Theme.Holo.Light">
         <item name="iconFolder">@drawable/folder_light</item>
         <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_light</item>
         <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
@@ -55,7 +55,7 @@
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
     </style>
 
-    <style name="Theme.K9.Dark.Base" parent="Theme.Sherlock">
+    <style name="Theme.K9.Dark.Base" parent="@android:style/Theme.Holo">
         <item name="iconFolder">@drawable/folder_dark</item>
         <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_dark</item>
         <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
@@ -127,7 +127,7 @@
     <!-- Prior to Honeycomb we always use the light theme for dialogs -->
     <style name="Theme.K9.Dialog.Dark" parent="Theme.K9.Dialog.Light" />
 
-    <style name="Theme.K9.Dialog.Translucent.Dark" parent="Theme.Sherlock.Dialog">
+    <style name="Theme.K9.Dialog.Translucent.Dark" parent="@android:style/Theme.Holo.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -136,7 +136,7 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
     </style>
 
-    <style name="Theme.K9.Dialog.Translucent.Light" parent="Theme.Sherlock.Light.Dialog">
+    <style name="Theme.K9.Dialog.Translucent.Light" parent="@android:style/Theme.Holo.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>

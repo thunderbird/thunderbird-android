@@ -1,15 +1,14 @@
 package com.fsck.k9.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
 
-public class ProgressDialogFragment extends SherlockDialogFragment {
+public class ProgressDialogFragment extends DialogFragment {
     protected static final String ARG_TITLE = "title";
     protected static final String ARG_MESSAGE = "message";
 
@@ -41,7 +40,7 @@ public class ProgressDialogFragment extends SherlockDialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        FragmentActivity activity = getActivity();
+        Activity activity = getActivity();
         if (activity != null && activity instanceof CancelListener) {
             CancelListener listener = (CancelListener) activity;
             listener.onCancel(this);

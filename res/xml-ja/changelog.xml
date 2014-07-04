@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="4.904" versioncode="21007" >
+        <change>OpenPGP API v3サポートを追加しました</change>
+        <change>IMAPログインの問題を修正しました</change>
+        <change>翻訳を更新しました</change>
+        <change>複数のバグを修正しました</change>
+    </release>
+    <release version="4.903" versioncode="21006" >
+        <change>アカウントを手動設定するとき暗号化接続をデフォルトにしました</change>
+        <change>認証とセキュリティの設定を単純化しました</change>
+        <change>暗号化接続をサポートしないプロバイダの自動設定を削除しました</change>
+        <change>IMAP(プロクシ)サーバとの互換性を改善しました</change>
+        <change>その他細かな修正と改善を行いました</change>
+    </release>
+    <release version="4.902" versioncode="21005" >
+        <change>"全員に返信"のときに同じ宛先が二度追加されないようにしました</change>
+        <change>bitcoin URIのバグを修正しました</change>
+        <change>プロバイダの一覧に mailbox.org を追加しました</change>
+    </release>
+    <release version="4.901" versioncode="21004" >
+        <change>設定でメッセージボディのフォントサイズを選択するスライダ(40%から250%)を追加しました</change>
+        <change>一度に複数のファイルを添付することを可能にするKitKatのストーレジアクセスフレームワークをサポートしました</change>
+        <change>Androidの'共有'機能を正しく使っていないアプリをサポートしました</change>
+        <change>IMAPプッシュでの過度のバッテリー消費を起こすバグを修正しました</change>
+        <change>Asus Transformerデバイスの表示バグ回避を再度試しました</change>
+        <change>返信の間端末の向きを変更するときに引用メッセージのフォーマットを失わないようにしました</change>
+        <change>リモート検索が許可されていない検索画面でpull-to-refreshを無効にしました</change>
+        <change>多くのバグを修正しました</change>
+        <change>日本語の翻訳を更新しました</change>
+    </release>
     <release version="4.900" versioncode="21000" >
         <change>issue 6064: KitKatで(絵文字などの)インライン画像が表示されなくなる問題を修正しました</change>
         <change>ドイツのインターネットプロバイダのリストを更新しました</change>
