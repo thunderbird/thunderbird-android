@@ -245,7 +245,7 @@ public class SmtpTransport extends Transport {
                 // characters (see issue 2143), so use IP address.
                 if (!ipAddr.equals("")) {
                     if (localAddress instanceof Inet6Address) {
-                        localHost = "[IPV6:" + ipAddr + "]";
+                        localHost = "[IPv6:" + ipAddr + "]";
                     } else {
                         localHost = "[" + ipAddr + "]";
                     }
