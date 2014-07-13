@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
@@ -46,10 +47,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private TextView mPasswordLabelView;
     private EditText mServerView;
     private EditText mPortView;
+    private String mCurrentPortViewSetting;
     private CheckBox mRequireLoginView;
     private ViewGroup mRequireLoginSettingsView;
     private Spinner mSecurityTypeView;
+    private int mCurrentSecurityTypeViewPosition;
     private Spinner mAuthTypeView;
+    private int mCurrentAuthTypeViewPosition;
     private ArrayAdapter<AuthType> mAuthTypeAdapter;
     private Button mNextButton;
     private Account mAccount;
@@ -106,29 +110,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mNextButton = (Button)findViewById(R.id.next);
 
         mNextButton.setOnClickListener(this);
-        mRequireLoginView.setOnCheckedChangeListener(this);
 
         mSecurityTypeView.setAdapter(ConnectionSecurity.getArrayAdapter(this));
 
         mAuthTypeAdapter = AuthType.getArrayAdapter(this, SslHelper.isClientCertificateSupportAvailable());
         mAuthTypeView.setAdapter(mAuthTypeAdapter);
-
-        mUsernameView.addTextChangedListener(validationTextWatcher);
-        mPasswordView.addTextChangedListener(validationTextWatcher);
-        mServerView.addTextChangedListener(validationTextWatcher);
-        mPortView.addTextChangedListener(validationTextWatcher);
-        mClientCertificateSpinner.setOnClientCertificateChangedListener(clientCertificateChangedListener);
-
-        mAuthTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position,
-                    long id) {
-                updateViewFromAuthType();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
-        });
 
         /*
          * Only allow digits in the port field.
@@ -155,15 +141,18 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
             // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
-            int position = mAuthTypeAdapter.getPosition(settings.authenticationType);
-            mAuthTypeView.setSelection(position, false);
+            mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getPosition(settings.authenticationType);
+            mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
+            updateViewFromAuthType();
 
             // Select currently configured security type
-            mSecurityTypeView.setSelection(settings.connectionSecurity.ordinal(), false);
+            mCurrentSecurityTypeViewPosition = settings.connectionSecurity.ordinal();
+            mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
 
             if (settings.username != null) {
                 mUsernameView.setText(settings.username);
                 mRequireLoginView.setChecked(true);
+                mRequireLoginSettingsView.setVisibility(View.VISIBLE);
             }
 
             if (settings.password != null) {
@@ -174,27 +163,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 mClientCertificateSpinner.setAlias(settings.clientCertificateAlias);
             }
 
-            /*
-             * Updates the port when the user changes the security type. This allows
-             * us to show a reasonable default which the user can change.
-             *
-             * Note: It's important that we set the listener *after* an initial option has been
-             *       selected by the code above. Otherwise the listener might be called after
-             *       onCreate() has been processed and the current port value set later in this
-             *       method is overridden with the default port for the selected security type.
-             */
-            mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position,
-                        long id) {
-                    // this indirectly triggers validateFields because the port text is watched
-                    updatePortFromSecurityType();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
-            });
-
             if (settings.host != null) {
                 mServerView.setText(settings.host);
             }
@@ -204,6 +172,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             } else {
                 updatePortFromSecurityType();
             }
+            mCurrentPortViewSetting = mPortView.getText().toString();
+
+            initializeViewListeners();
 
             validateFields();
         } catch (Exception e) {
@@ -213,6 +184,56 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             failure(e);
         }
 
+    }
+
+    /**
+     * Called at the end of {@code onCreate()}, after the views have been
+     * initialized, so that the listeners are not triggered during the view
+     * initialization. This avoids needless calls to {@code validateFields()}
+     * which is called at the end of {@code onCreate()}.
+     */
+    private void initializeViewListeners() {
+
+        /*
+         * Updates the port when the user changes the security type. This allows
+         * us to show a reasonable default which the user can change.
+         *
+         * Note: It's important that we set this listener *after* an initial
+         * mSecurityTypeView option has been selected by the code in onCreate().
+         * Otherwise the listener might be called after onCreate() is finished
+         * which would wipe out the initial port value set in onCreate(),
+         * replacing it with the default port for the selected security type.
+         */
+        mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position,
+                    long id) {
+                // this indirectly triggers validateFields because the port text is watched
+                updatePortFromSecurityType();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
+        });
+
+        mAuthTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position,
+                    long id) {
+                updateViewFromAuthType();
+                validateFields();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { /* unused */ }
+        });
+
+        mRequireLoginView.setOnCheckedChangeListener(this);
+        mClientCertificateSpinner.setOnClientCertificateChangedListener(clientCertificateChangedListener);
+        mUsernameView.addTextChangedListener(validationTextWatcher);
+        mPasswordView.addTextChangedListener(validationTextWatcher);
+        mServerView.addTextChangedListener(validationTextWatcher);
+        mPortView.addTextChangedListener(validationTextWatcher);
     }
 
     @Override
@@ -243,7 +264,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             mClientCertificateLabelView.setVisibility(View.GONE);
             mClientCertificateSpinner.setVisibility(View.GONE);
         }
-        validateFields();
     }
 
     private void validateFields() {
@@ -252,6 +272,45 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         ConnectionSecurity connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
         boolean hasConnectionSecurity = (!connectionSecurity.equals(ConnectionSecurity.NONE));
+
+        if (isAuthTypeExternal && !hasConnectionSecurity) {
+
+            // Notify user of an invalid combination of AuthType.EXTERNAL & ConnectionSecurity.NONE
+            String toastText = getString(R.string.account_setup_outgoing_invalid_setting_combo_notice,
+                    getString(R.string.account_setup_incoming_auth_type_label),
+                    AuthType.EXTERNAL.toString(),
+                    getString(R.string.account_setup_incoming_security_label),
+                    ConnectionSecurity.NONE.toString());
+            Toast.makeText(this, toastText, Toast.LENGTH_LONG).show();
+
+            // Reset the views back to their previous settings without recursing through here again
+            OnItemSelectedListener onItemSelectedListener = mAuthTypeView.getOnItemSelectedListener();
+            mAuthTypeView.setOnItemSelectedListener(null);
+            mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
+            mAuthTypeView.setOnItemSelectedListener(onItemSelectedListener);
+            updateViewFromAuthType();
+
+            onItemSelectedListener = mSecurityTypeView.getOnItemSelectedListener();
+            mSecurityTypeView.setOnItemSelectedListener(null);
+            mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
+            mSecurityTypeView.setOnItemSelectedListener(onItemSelectedListener);
+            updateAuthPlainTextFromSecurityType((ConnectionSecurity) mSecurityTypeView.getSelectedItem());
+
+            mPortView.removeTextChangedListener(validationTextWatcher);
+            mPortView.setText(mCurrentPortViewSetting);
+            mPortView.addTextChangedListener(validationTextWatcher);
+
+            authType = (AuthType) mAuthTypeView.getSelectedItem();
+            isAuthTypeExternal = AuthType.EXTERNAL.equals(authType);
+
+            connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+            hasConnectionSecurity = (!connectionSecurity.equals(ConnectionSecurity.NONE));
+        } else {
+            mCurrentAuthTypeViewPosition = mAuthTypeView.getSelectedItemPosition();
+            mCurrentSecurityTypeViewPosition = mSecurityTypeView.getSelectedItemPosition();
+            mCurrentPortViewSetting = mPortView.getText().toString();
+        }
+
         boolean hasValidCertificateAlias = mClientCertificateSpinner.getAlias() != null;
         boolean hasValidUserName = Utility.requiredFieldValid(mUsernameView);
 

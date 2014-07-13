@@ -390,6 +390,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_incoming_security_none_label">None</string>
     <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
     <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" is not valid with \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
 
     <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
     <string name="account_setup_incoming_delete_policy_never_label">Do not delete on server</string>
@@ -439,6 +440,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_outgoing_username_label">Username</string>
     <string name="account_setup_outgoing_password_label">Password</string>
     <string name="account_setup_outgoing_authentication_label">Authentication</string>
+    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" is not valid with \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
 
     <string name="account_setup_bad_uri">Invalid setup: <xliff:g id="err_mess">%s</xliff:g></string>
 
