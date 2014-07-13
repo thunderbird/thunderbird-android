@@ -976,6 +976,8 @@ public class SettingsImporter {
                     server.authenticationType = AuthType.valueOf(text);
                 } else if (SettingsExporter.USERNAME_ELEMENT.equals(element)) {
                     server.username = getText(xpp);
+                } else if (SettingsExporter.CLIENT_CERTIFICATE_ALIAS_ELEMENT.equals(element)) {
+                    server.clientCertificateAlias = getText(xpp);
                 } else if (SettingsExporter.PASSWORD_ELEMENT.equals(element)) {
                     server.password = getText(xpp);
                 } else if (SettingsExporter.EXTRA_ELEMENT.equals(element)) {

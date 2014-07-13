@@ -61,6 +61,7 @@ public class SettingsExporter {
     public static final String CONNECTION_SECURITY_ELEMENT = "connection-security";
     public static final String AUTHENTICATION_TYPE_ELEMENT = "authentication-type";
     public static final String USERNAME_ELEMENT = "username";
+    public static final String CLIENT_CERTIFICATE_ALIAS_ELEMENT = "client-cert-alias";
     public static final String PASSWORD_ELEMENT = "password";
     public static final String EXTRA_ELEMENT = "extra";
     public static final String IDENTITIES_ELEMENT = "identities";
@@ -232,6 +233,7 @@ public class SettingsExporter {
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType.name());
         writeElement(serializer, USERNAME_ELEMENT, incoming.username);
+        writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, incoming.clientCertificateAlias);
         // XXX For now we don't export the password
         //writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
 
@@ -259,6 +261,7 @@ public class SettingsExporter {
         writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType.name());
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
+        writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, outgoing.clientCertificateAlias);
         // XXX For now we don't export the password
         //writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
 
