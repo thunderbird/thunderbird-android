@@ -228,13 +228,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
         boolean isAuthTypeExternal = AuthType.EXTERNAL.equals(authType);
 
-        // if user wants to user external authentication only, then we need to
-        // hide password field, since it won't be used
         if (isAuthTypeExternal) {
-            // clear password field
-            mPasswordView.removeTextChangedListener(validationTextWatcher);
-            mPasswordView.setText("");
-            mPasswordView.addTextChangedListener(validationTextWatcher);
 
             // hide password fields, show client certificate fields
             mPasswordView.setVisibility(View.GONE);
@@ -242,10 +236,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             mClientCertificateLabelView.setVisibility(View.VISIBLE);
             mClientCertificateSpinner.setVisibility(View.VISIBLE);
         } else {
-            // clear client certificate
-            mClientCertificateSpinner.setOnClientCertificateChangedListener(null);
-            mClientCertificateSpinner.setAlias(null);
-            mClientCertificateSpinner.setOnClientCertificateChangedListener(clientCertificateChangedListener);
 
             // show password fields, hide client certificate fields
             mPasswordView.setVisibility(View.VISIBLE);
@@ -262,16 +252,23 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         ConnectionSecurity connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
         boolean hasConnectionSecurity = (!connectionSecurity.equals(ConnectionSecurity.NONE));
+        boolean hasValidCertificateAlias = mClientCertificateSpinner.getAlias() != null;
+        boolean hasValidUserName = Utility.requiredFieldValid(mUsernameView);
+
+        boolean hasValidPasswordSettings = hasValidUserName
+                && !isAuthTypeExternal
+                && Utility.requiredFieldValid(mPasswordView);
+
+        boolean hasValidExternalAuthSettings = hasValidUserName
+                && isAuthTypeExternal
+                && hasConnectionSecurity
+                && hasValidCertificateAlias;
 
         mNextButton
-        .setEnabled(Utility.domainFieldValid(mServerView)
-                    && Utility.requiredFieldValid(mPortView)
-                    && (!mRequireLoginView.isChecked()
-                       || (Utility.requiredFieldValid(mUsernameView) && Utility.requiredFieldValid(mPasswordView))
-                       || (Utility.requiredFieldValid(mUsernameView) && isAuthTypeExternal)
-                       )
-                    && (!isAuthTypeExternal || hasConnectionSecurity)
-                   );
+                .setEnabled(Utility.domainFieldValid(mServerView)
+                        && Utility.requiredFieldValid(mPortView)
+                        && (!mRequireLoginView.isChecked()
+                                || hasValidPasswordSettings || hasValidExternalAuthSettings));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
