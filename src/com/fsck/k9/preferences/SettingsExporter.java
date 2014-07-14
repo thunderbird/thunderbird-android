@@ -230,8 +230,12 @@ public class SettingsExporter {
         if (incoming.port != -1) {
             writeElement(serializer, PORT_ELEMENT, Integer.toString(incoming.port));
         }
-        writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
-        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType.name());
+        if (incoming.connectionSecurity != null) {
+            writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name());
+        }
+        if (incoming.authenticationType != null) {
+            writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType.name());
+        }
         writeElement(serializer, USERNAME_ELEMENT, incoming.username);
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, incoming.clientCertificateAlias);
         // XXX For now we don't export the password
@@ -258,8 +262,12 @@ public class SettingsExporter {
         if (outgoing.port != -1) {
             writeElement(serializer, PORT_ELEMENT, Integer.toString(outgoing.port));
         }
-        writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
-        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType.name());
+        if (outgoing.connectionSecurity != null) {
+            writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name());
+        }
+        if (outgoing.authenticationType != null) {
+            writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType.name());
+        }
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username);
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, outgoing.clientCertificateAlias);
         // XXX For now we don't export the password
