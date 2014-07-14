@@ -89,7 +89,23 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     private void onWebDav() {
         try {
             URI uri = new URI(mAccount.getStoreUri());
-            uri = new URI("webdav+ssl+", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
+
+            /*
+             * The user info we have been given from
+             * AccountSetupBasics.onManualSetup() is encoded as an IMAP store
+             * URI: AuthType:UserName:Password (no fields should be empty).
+             * However, AuthType is not applicable to WebDAV nor to its store
+             * URI. Re-encode without it, using just the UserName and Password.
+             */
+            String userPass = "";
+            String[] userInfo = uri.getUserInfo().split(":");
+            if (userInfo.length > 1) {
+                userPass = userInfo[1];
+            }
+            if (userInfo.length > 2) {
+                userPass = userPass + ":" + userInfo[2];
+            }
+            uri = new URI("webdav+ssl+", userPass, uri.getHost(), uri.getPort(), null, null, null);
             mAccount.setStoreUri(uri.toString());
             AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
             finish();
