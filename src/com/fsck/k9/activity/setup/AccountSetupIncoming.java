@@ -164,16 +164,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         try {
             ServerSettings settings = Store.decodeStoreUri(mAccount.getStoreUri());
 
-            ArrayAdapter<ConnectionSecurity> securityTypesAdapter = 
-                    ConnectionSecurity.getArrayAdapter(this, mConnectionSecurityChoices);
-            mSecurityTypeView.setAdapter(securityTypesAdapter);
-
-            // Select currently configured security type
-            mCurrentSecurityTypeViewPosition = securityTypesAdapter.getPosition(settings.connectionSecurity);
-            mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
-
-            updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
-
             // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
             mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getPosition(settings.authenticationType);
             mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
@@ -259,6 +249,17 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
+
+            // Note that mConnectionSecurityChoices is configured above based on server type
+            ArrayAdapter<ConnectionSecurity> securityTypesAdapter =
+                    ConnectionSecurity.getArrayAdapter(this, mConnectionSecurityChoices);
+            mSecurityTypeView.setAdapter(securityTypesAdapter);
+
+            // Select currently configured security type
+            mCurrentSecurityTypeViewPosition = securityTypesAdapter.getPosition(settings.connectionSecurity);
+            mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
+
+            updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
             mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
             mCompressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
