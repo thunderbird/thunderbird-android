@@ -379,9 +379,11 @@ public class SettingsImporter {
         String storeUri = Store.createStoreUri(incoming);
         putString(editor, accountKeyPrefix + Account.STORE_URI_KEY, Utility.base64Encode(storeUri));
 
-        // Mark account as disabled if the settings file didn't contain a password
-        boolean createAccountDisabled = (incoming.password == null ||
-                incoming.password.isEmpty());
+        // Mark account as disabled if the AuthType isn't EXTERNAL and the
+        // settings file didn't contain a password
+        boolean createAccountDisabled = !AuthType.EXTERNAL
+                .equals(incoming.authenticationType)
+                && (incoming.password == null || incoming.password.isEmpty());
 
         if (account.outgoing == null && !WebDavStore.STORE_TYPE.equals(account.incoming.type)) {
             // All account types except WebDAV need to provide outgoing server settings
@@ -394,8 +396,19 @@ public class SettingsImporter {
             String transportUri = Transport.createTransportUri(outgoing);
             putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
 
-            // Mark account as disabled if the settings file didn't contain a password
-            if (outgoing.password == null || outgoing.password.isEmpty()) {
+            /*
+             * Mark account as disabled if the settings file contained a
+             * username but no password. However, no password is required for
+             * the outgoing server for WebDAV accounts, because incoming and
+             * outgoing servers are identical for this account type. Nor is a
+             * password required if the AuthType is EXTERNAL.
+             */
+            if (!AuthType.EXTERNAL.equals(outgoing.authenticationType)
+                    && !WebDavStore.STORE_TYPE.equals(outgoing.type)
+                    && outgoing.username != null
+                    && !outgoing.username.isEmpty()
+                    && (outgoing.password == null || outgoing.password
+                            .isEmpty())) {
                 createAccountDisabled = true;
             }
         }
