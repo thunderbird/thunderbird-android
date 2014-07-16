@@ -208,8 +208,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position,
                     long id) {
-                // this indirectly triggers validateFields because the port text is watched
                 updatePortFromSecurityType();
+                validateFields();
             }
 
             @Override
@@ -266,6 +266,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
     }
 
+    /**
+     * This is invoked only when the user makes changes to a widget, not when
+     * widgets are changed programmatically.  (The logic is simpler when you know
+     * that this is the last thing called after an input change.)
+     */
     private void validateFields() {
         AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
         boolean isAuthTypeExternal = AuthType.EXTERNAL.equals(authType);
@@ -333,8 +338,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     private void updatePortFromSecurityType() {
         ConnectionSecurity securityType = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
-        mPortView.setText(getDefaultSmtpPort(securityType));
         updateAuthPlainTextFromSecurityType(securityType);
+
+        // Remove listener so as not to trigger validateFields() which is called
+        // elsewhere as a result of user interaction.
+        mPortView.removeTextChangedListener(validationTextWatcher);
+        mPortView.setText(getDefaultSmtpPort(securityType));
+        mPortView.addTextChangedListener(validationTextWatcher);
     }
 
     private String getDefaultSmtpPort(ConnectionSecurity securityType) {
