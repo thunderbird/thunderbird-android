@@ -148,20 +148,10 @@ public class AccountSetupBasics extends K9Activity
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            // clear password field
-            mPasswordView.removeTextChangedListener(this);
-            mPasswordView.setText("");
-            mPasswordView.addTextChangedListener(this);
-
             // hide password fields, show client certificate spinner
             mPasswordView.setVisibility(View.GONE);
             mClientCertificateSpinner.setVisibility(View.VISIBLE);
         } else {
-            // clear client certificate spinner
-            mClientCertificateSpinner.setOnClientCertificateChangedListener(null);
-            mClientCertificateSpinner.setAlias(null);
-            mClientCertificateSpinner.setOnClientCertificateChangedListener(this);
-
             // show password fields, hide client certificate spinner
             mPasswordView.setVisibility(View.VISIBLE);
             mClientCertificateSpinner.setVisibility(View.GONE);
@@ -175,9 +165,9 @@ public class AccountSetupBasics extends K9Activity
         String email = mEmailView.getText().toString();
 
         boolean valid = Utility.requiredFieldValid(mEmailView)
-                        && (Utility.requiredFieldValid(mPasswordView)
-                                || (clientCertificateChecked && clientCertificateAlias != null))
-                        && mEmailValidator.isValidAddressOnly(email);
+                && ((!clientCertificateChecked && Utility.requiredFieldValid(mPasswordView))
+                        || (clientCertificateChecked && clientCertificateAlias != null))
+                && mEmailValidator.isValidAddressOnly(email);
 
         mNextButton.setEnabled(valid);
         mManualSetupButton.setEnabled(valid);
