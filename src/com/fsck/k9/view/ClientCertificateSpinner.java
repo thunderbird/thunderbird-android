@@ -47,8 +47,7 @@ public class ClientCertificateSpinner extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.client_certificate_spinner, this, true);
 
-        mSelection = (Button) getChildAt(0);
-        updateView();
+        mSelection = (Button) findViewById(R.id.client_certificate_spinner_button);
         mSelection.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,17 +55,13 @@ public class ClientCertificateSpinner extends LinearLayout {
             }
         });
 
-        mDeleteButton = (ImageButton) getChildAt(1);
+        mDeleteButton = (ImageButton) findViewById(R.id.client_certificate_spinner_delete);
         mDeleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDelete();
             }
         });
-    }
-
-    public ClientCertificateSpinner(Context context) {
-        this(context, null);
     }
 
     public void setAlias(String alias) {
@@ -80,16 +75,21 @@ public class ClientCertificateSpinner extends LinearLayout {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                updateView();
                 if (mListener != null) {
                     mListener.onClientCertificateChanged(mAlias);
                 }
-                updateView();
             }
         });
     }
 
     public String getAlias() {
-        return mAlias;
+        String alias = mSelection.getText().toString();
+        if (alias.equals(mActivity.getString(R.string.client_certificate_spinner_empty))) {
+            return null;
+        } else {
+            return alias;
+        }
     }
 
     private void onDelete() {

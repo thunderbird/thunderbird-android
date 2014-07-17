@@ -174,9 +174,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             }
             mCurrentPortViewSetting = mPortView.getText().toString();
 
-            initializeViewListeners();
-
-            validateFields();
+            if (savedInstanceState == null) {
+                initializeViewListeners();
+                validateFields();
+            }
         } catch (Exception e) {
             /*
              * We should always be able to parse our own settings.
@@ -187,10 +188,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     /**
-     * Called at the end of {@code onCreate()}, after the views have been
-     * initialized, so that the listeners are not triggered during the view
-     * initialization. This avoids needless calls to {@code validateFields()}
-     * which is called at the end of {@code onCreate()}.
+     * Called at the end of either {@code onCreate()} or
+     * {@code onRestoreInstanceState()}, after the views have been initialized,
+     * so that the listeners are not triggered during the view initialization.
+     * This avoids needless calls to {@code validateFields()} which is called
+     * immediately after this is called.
      */
     private void initializeViewListeners() {
 
@@ -240,6 +242,19 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        /*
+         * We didn't want the listeners active while the state was being restored
+         * because they could overwrite the restored port with a default port when
+         * the security type was restored.
+         */
+        initializeViewListeners();
+        validateFields();
     }
 
     /**
