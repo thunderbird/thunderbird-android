@@ -296,6 +296,24 @@
             android:title="@string/archive_folder_label"
             android:dialogTitle="@string/archive_folder_label" />
 
+        <PreferenceScreen
+            android:title="@string/account_settings_folders_archive"
+            android:key="archive_options">
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="use_folder_structure_when_archive"
+                android:title="@string/account_settings_use_folder_structure_when_archive"
+                android:defaultValue="false" />
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="mark_as_read_when_archive"
+                android:title="@string/account_settings_mark_as_read_when_archive"
+                android:defaultValue="false" />
+        
+        </PreferenceScreen>
+
         <ListPreference
             android:persistent="false"
             android:key="drafts_folder"

@@ -123,6 +123,9 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
+    private static final String PREFERENCE_ARCHIVE_OPTIONS="archive_options";
+    private static final String PREFERENCE_MARK_AS_READ_WHEN_ARCHIVE = "mark_as_read_when_archive";
+    private static final String PREFERENCE_USE_FOLDER_STRUCTURE_WHEN_ARCHIVE = "use_folder_structure_when_archive";
 
 
     private Account mAccount;
@@ -196,6 +199,10 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mTrashFolder;
     private CheckBoxPreference mAlwaysShowCcBcc;
 
+    private PreferenceScreen mArchiveOptions;
+    private CheckBoxPreference mUseFolderStructureWhenArchive;
+    private CheckBoxPreference mMarkAsReadWhenArchive;
+
 
     public static void actionSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSettings.class);
@@ -254,6 +261,13 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAlwaysShowCcBcc = (CheckBoxPreference) findPreference(PREFERENCE_ALWAYS_SHOW_CC_BCC);
         mAlwaysShowCcBcc.setChecked(mAccount.isAlwaysShowCcBcc());
+
+        mArchiveOptions = (PreferenceScreen) findPreference(PREFERENCE_ARCHIVE_OPTIONS);
+        mMarkAsReadWhenArchive = (CheckBoxPreference) findPreference(PREFERENCE_MARK_AS_READ_WHEN_ARCHIVE);
+        mMarkAsReadWhenArchive.setChecked(mAccount.isMarkAsReadWhenArchive());
+
+        mUseFolderStructureWhenArchive = (CheckBoxPreference) findPreference(PREFERENCE_USE_FOLDER_STRUCTURE_WHEN_ARCHIVE);
+        mUseFolderStructureWhenArchive.setChecked(mAccount.isUseFolderStructureWhenArchive());
 
         mMessageReadReceipt = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGE_READ_RECEIPT);
         mMessageReadReceipt.setChecked(mAccount.isMessageReadReceiptAlways());
@@ -830,6 +844,9 @@ public class AccountSettings extends K9PreferenceActivity {
             mAccount.setRemoteSearchNumResults(Integer.parseInt(mRemoteSearchNumResults.getValue()));
             //mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
         }
+
+        mAccount.setMarkAsReadWhenArchive(mMarkAsReadWhenArchive.isChecked());
+        mAccount.setUseFolderStructureWhenArchive(mMarkAsReadWhenArchive.isChecked());
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
