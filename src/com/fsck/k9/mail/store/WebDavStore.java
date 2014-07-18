@@ -290,7 +290,6 @@ public class WebDavStore extends Store {
     private String mUsername; /* Stores the username for authentications */
     private String mAlias; /* Stores the alias for the user's mailbox */
     private String mPassword; /* Stores the password for authentications */
-    private String mClientCertificateAlias;
     private String mUrl; /* Stores the base URL for the server */
     private String mHost; /* Stores the host name for the server */
     private int mPort;
@@ -326,7 +325,6 @@ public class WebDavStore extends Store {
 
         mUsername = settings.username;
         mPassword = settings.password;
-        mClientCertificateAlias = settings.clientCertificateAlias;
         mAlias = settings.alias;
 
         mPath = settings.path;

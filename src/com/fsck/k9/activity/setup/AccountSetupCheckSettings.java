@@ -72,8 +72,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     private Account mAccount;
 
-    private boolean mIsClientCertSet;
-
     private CheckDirection mDirection;
 
     private boolean mCanceled;
@@ -122,9 +120,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             mAccount, mDirection);
 
                     if (mDirection.equals(CheckDirection.INCOMING)) {
-                        // refresh URI that stores settings in order to include
-                        // client certificate set by user
-                        store = mAccount.getRemoteStore(mIsClientCertSet);
+                        store = mAccount.getRemoteStore();
 
                         if (store instanceof WebDavStore) {
                             setMessage(R.string.account_setup_check_settings_authenticate);
