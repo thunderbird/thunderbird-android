@@ -153,7 +153,7 @@
         <incoming uri="imap+ssl+://imap.mail.mac.com" username="$user" />
         <outgoing uri="smtp+tls+://smtp.mail.mac.com" username="$user" />
     </provider>
-    <provider id="me-com" label="MobileMe" domain="me.com">
+    <provider id="mobileme" label="MobileMe" domain="me.com">
         <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
         <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$user" />
     </provider>
