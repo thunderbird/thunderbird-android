@@ -105,10 +105,6 @@
         <incoming uri="pop3+ssl+://pop.east.cox.net" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.east.cox.net" username="$user" />
     </provider> 
-    <provider id="dotmac" label=".Mac" domain="mac.com">
-        <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
-        <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$email" />
-    </provider>
     <provider id="live" label="Windows Live Hotmail" domain="live.com">
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
@@ -124,10 +120,6 @@
     <provider id="msn" label="MSN" domain="msn.com">
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
-    </provider>
-    <provider id="mobileme" label="MobileMe" domain="me.com">
-        <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
-        <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$email" />
     </provider>
     <provider id="montclair.edu" label="MSU" domain="montclair.edu">
         <incoming uri="imap+ssl+://mail.montclair.edu" username="$user" />
@@ -157,11 +149,11 @@
         <incoming uri="imap+ssl+://imap.mail.apple.com" username="$user" />
         <outgoing uri="smtp+tls+://smtp.mail.apple.com" username="$user" />
     </provider>
-    <provider id="mac" label="Mac" domain="mac.com">
+    <provider id="dotmac" label=".Mac" domain="mac.com">
         <incoming uri="imap+ssl+://imap.mail.mac.com" username="$user" />
         <outgoing uri="smtp+tls+://smtp.mail.mac.com" username="$user" />
     </provider>
-    <provider id="me-com" label="Me" domain="me.com">
+    <provider id="me-com" label="MobileMe" domain="me.com">
         <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
         <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$user" />
     </provider>
