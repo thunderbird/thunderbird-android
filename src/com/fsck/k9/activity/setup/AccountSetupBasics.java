@@ -303,6 +303,13 @@ public class AccountSetupBasics extends K9Activity
     }
 
     protected void onNext() {
+        if (mClientCertificateCheckBox.isChecked()) {
+
+            // Auto-setup doesn't support client certificates.
+            onManualSetup();
+            return;
+        }
+
         String email = mEmailView.getText().toString();
         String[] emailParts = splitEmail(email);
         String domain = emailParts[1];
