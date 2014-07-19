@@ -17,6 +17,6 @@
         android:background="?android:attr/selectableItemBackground"
         android:contentDescription="@string/client_certificate_spinner_delete"
         android:padding="8dp"
-        android:src="@drawable/ic_action_cancel_light" />
+        android:src="?attr/iconActionCancel" />
 
 </merge>
