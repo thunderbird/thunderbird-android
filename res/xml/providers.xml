@@ -151,6 +151,24 @@
         <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
     </provider>
+    
+        <!-- Apple -->
+    <provider id="apple" label="Apple" domain="apple.com">
+        <incoming uri="imap+ssl+://imap.mail.apple.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.apple.com" username="$user" />
+    </provider>
+    <provider id="mac" label="Mac" domain="mac.com">
+        <incoming uri="imap+ssl+://imap.mail.mac.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.mac.com" username="$user" />
+    </provider>
+    <provider id="me-com" label="Me" domain="me.com">
+        <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$user" />
+    </provider>
+    <provider id="icloud" label="iCloud" domain="icloud.com">
+        <incoming uri="imap+ssl+://imap.mail.icloud.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.icloud.com" username="$user" />
+    </provider>
 
     <!-- Australia -->
     <provider id="fastmail-fm" label="Fastmail" domain="fastmail.fm">
