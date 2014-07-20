@@ -7,7 +7,6 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import javax.net.ssl.X509ExtendedKeyManager;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.security.KeyChain;
@@ -24,7 +23,6 @@ import com.fsck.k9.mail.ClientCertificateRequiredException;
  * selection is requested, we harvest the parameters during the handshake and
  * abort with a custom (runtime) ClientCertificateRequiredException.
  */
-@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class KeyChainKeyManager extends X509ExtendedKeyManager {
 
     private static PrivateKey sClientCertificateReferenceWorkaround;

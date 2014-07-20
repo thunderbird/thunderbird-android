@@ -11,8 +11,6 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -25,23 +23,8 @@ import com.fsck.k9.security.KeyChainKeyManager;
  */
 public class SslHelper {
 
-    /**
-     * KeyChain API available on Android >= 4.0
-     * 
-     * @return true if API is available
-     */
-    public static boolean isClientCertificateSupportAvailable() {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH);
-    }
-
-    @SuppressLint("TrulyRandom")
     private static SSLContext createSslContext(String host, int port, String clientCertificateAlias)
             throws NoSuchAlgorithmException, KeyManagementException, MessagingException {
-        if (clientCertificateAlias != null && !isClientCertificateSupportAvailable()) {
-            throw new MessagingException(
-                    "Client certificate support is only availble on Android >= 4.0", true);
-        }
-
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "createSslContext: Client certificate alias: "
                     + clientCertificateAlias);

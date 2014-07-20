@@ -31,7 +31,6 @@ import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.store.ImapStore.ImapStoreSettings;
 import com.fsck.k9.mail.store.WebDavStore.WebDavStoreSettings;
 import com.fsck.k9.mail.transport.SmtpTransport;
-import com.fsck.k9.net.ssl.SslHelper;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
@@ -140,7 +139,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
         });
 
-        mAuthTypeAdapter = AuthType.getArrayAdapter(this, SslHelper.isClientCertificateSupportAvailable());
+        mAuthTypeAdapter = AuthType.getArrayAdapter(this);
         mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         /*

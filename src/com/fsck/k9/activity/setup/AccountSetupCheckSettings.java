@@ -31,7 +31,6 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
-import com.fsck.k9.net.ssl.SslHelper;
 import com.fsck.k9.security.KeyChainKeyManager;
 
 import java.security.cert.CertificateException;
@@ -200,21 +199,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     private void handleClientCertificateRequiredException(ClientCertificateRequiredException ccr) {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "Client certificate alias required: " + ccr.getMessage());
-
-        /* 
-         * If the KeyChain API is not available on this Android
-         * version, inform user and abort
-         */
-        if (!SslHelper.isClientCertificateSupportAvailable()) {
-            mHandler.post(new Runnable() {
-                public void run() {
-                    showDialogFragment(R.id.dialog_client_certificate_not_supported);
-                }
-            });
-
-            // abort
-            return;
-        }
 
         String alias = null;
         if (CheckDirection.INCOMING.equals(mDirection)) {
@@ -486,10 +470,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         });
     }
 
-    private void showDialogFragment(int dialogId) {
-        showDialogFragment(dialogId, null);
-    }
-
     private void showDialogFragment(int dialogId, String customMessage) {
         if (mDestroyed) {
             return;
@@ -504,14 +484,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         customMessage,
                         getString(R.string.account_setup_failed_dlg_edit_details_action),
                         getString(R.string.account_setup_failed_dlg_continue_action)
-                );
-                break;
-            }
-            case R.id.dialog_client_certificate_not_supported: {
-                fragment = ConfirmationDialogFragment.newInstance(dialogId,
-                        getString(R.string.dialog_client_certificate_title),
-                        getString(R.string.dialog_client_certificate_not_supported),
-                        getString(android.R.string.ok)
                 );
                 break;
             }
@@ -546,8 +518,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     @Override
     public void doNegativeClick(int dialogId) {
         switch (dialogId) {
-            case R.id.dialog_account_setup_error:
-            case R.id.dialog_client_certificate_not_supported: {
+            case R.id.dialog_account_setup_error: {
                 mCanceled = false;
                 setResult(RESULT_OK);
                 finish();

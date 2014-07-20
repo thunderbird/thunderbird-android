@@ -45,13 +45,8 @@ public enum AuthType {
 
     LOGIN(0);
 
-    static public ArrayAdapter<AuthType> getArrayAdapter(Context context, boolean includeExternal) {
-        AuthType[] authTypes;
-        if (includeExternal) {
-            authTypes = new AuthType[]{PLAIN, CRAM_MD5, EXTERNAL};
-        } else {
-            authTypes = new AuthType[]{PLAIN, CRAM_MD5};
-        }
+    static public ArrayAdapter<AuthType> getArrayAdapter(Context context) {
+        AuthType[] authTypes = new AuthType[]{PLAIN, CRAM_MD5, EXTERNAL};
         ArrayAdapter<AuthType> authTypesAdapter = new ArrayAdapter<AuthType>(context,
                 android.R.layout.simple_spinner_item, authTypes);
         authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

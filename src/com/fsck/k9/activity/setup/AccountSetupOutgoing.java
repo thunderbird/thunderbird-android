@@ -24,7 +24,6 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.transport.SmtpTransport;
-import com.fsck.k9.net.ssl.SslHelper;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
@@ -113,7 +112,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         mSecurityTypeView.setAdapter(ConnectionSecurity.getArrayAdapter(this));
 
-        mAuthTypeAdapter = AuthType.getArrayAdapter(this, SslHelper.isClientCertificateSupportAvailable());
+        mAuthTypeAdapter = AuthType.getArrayAdapter(this);
         mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         /*
