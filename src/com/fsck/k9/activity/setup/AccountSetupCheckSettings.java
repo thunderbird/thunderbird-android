@@ -25,14 +25,10 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.ClientCertificateRequiredException;
-import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
-import com.fsck.k9.security.KeyChainKeyManager;
-
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -166,8 +162,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         afe.getMessage() == null ? "" : afe.getMessage());
                 } catch (final CertificateValidationException cve) {
                     handleCertificateValidationException(cve);
-                } catch (final ClientCertificateRequiredException ccr) {
-                    handleClientCertificateRequiredException(ccr);
                 } catch (final Throwable t) {
                     Log.e(K9.LOG_TAG, "Error while testing settings", t);
                     showErrorDialog(
@@ -193,70 +187,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             showErrorDialog(
                     R.string.account_setup_failed_dlg_server_message_fmt,
                     (cve.getMessage() == null ? "" : cve.getMessage()));
-        }
-    }
-
-    private void handleClientCertificateRequiredException(ClientCertificateRequiredException ccr) {
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Client certificate alias required: " + ccr.getMessage());
-
-        String alias = null;
-        if (CheckDirection.INCOMING.equals(mDirection)) {
-            ServerSettings storeSettings = Store.decodeStoreUri(mAccount.getStoreUri());
-            alias = storeSettings.clientCertificateAlias;
-        } else if (CheckDirection.OUTGOING.equals(mDirection)) {
-            ServerSettings transportSettings = Transport.decodeTransportUri(mAccount.getTransportUri());
-            alias = transportSettings.clientCertificateAlias;
-        }
-
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Client certificate alias is: " + alias);
-
-        alias = KeyChainKeyManager.interactivelyChooseClientCertificateAlias(
-                AccountSetupCheckSettings.this,
-                ccr.getKeyTypes(),
-                ccr.getIssuers(),
-                ccr.getHostName(),
-                ccr.getPort(),
-                alias);
-
-        // Note: KeyChainKeyManager gives back "" on cancel
-        if (alias != null && alias.equals("")) {
-            alias = null;
-        }
-
-        // save client certificate alias
-        if (alias != null) {
-            if (CheckDirection.INCOMING.equals(mDirection)) {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Setting store client certificate alias to: " + alias);
-
-                // Set incoming server client certificate alias
-                String storeUri = mAccount.getStoreUri();
-                ServerSettings incoming = Store.decodeStoreUri(storeUri);
-                ServerSettings newIncoming = incoming.newClientCertificateAlias(alias);
-                String newStoreUri = Store.createStoreUri(newIncoming);
-                mAccount.setStoreUri(newStoreUri);
-            } else if (CheckDirection.OUTGOING.equals(mDirection)) {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Setting transport client certificate alias to: " + alias);
-
-                // Set outgoing server client certificate alias
-                String transportUri = mAccount.getTransportUri();
-                ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
-                ServerSettings newOutgoing = outgoing.newClientCertificateAlias(alias);
-                String newTransportUri = Transport.createTransportUri(newOutgoing);
-                mAccount.setTransportUri(newTransportUri);
-            }
-
-            // Save the account settings
-            mAccount.save(Preferences.getPreferences(AccountSetupCheckSettings.this));
-
-            // try again
-            AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
-                    mDirection);
-        } else {
-            showErrorDialog(R.string.dialog_client_certificate_required);
         }
     }
 

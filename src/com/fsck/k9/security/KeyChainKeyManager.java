@@ -5,23 +5,19 @@ import java.net.Socket;
 import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+
 import javax.net.ssl.X509ExtendedKeyManager;
 
-import android.app.Activity;
 import android.os.Build;
 import android.security.KeyChain;
-import android.security.KeyChainAliasCallback;
 import android.security.KeyChainException;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.mail.ClientCertificateRequiredException;
 
 /**
  * For client certificate authentication! Provide private keys and certificates
- * during the TLS handshake using the Android 4.0 KeyChain API. If interactive
- * selection is requested, we harvest the parameters during the handshake and
- * abort with a custom (runtime) ClientCertificateRequiredException.
+ * during the TLS handshake using the Android 4.0 KeyChain API.
  */
 public class KeyChainKeyManager extends X509ExtendedKeyManager {
 
@@ -29,34 +25,16 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
 
     private String mAlias;
 
-    public KeyChainKeyManager() {
-        mAlias = null;
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "KeyChainKeyManager set to interactive prompting required");
-    }
-
     public KeyChainKeyManager(String alias) {
         if (alias == null || "".equals(alias)) {
-            throw new IllegalArgumentException(
-                    "KeyChainKeyManager: The provided alias is null or empty!");
+            mAlias = null;
+        } else {
+            mAlias = alias;
         }
-
-        mAlias = alias;
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "KeyChainKeyManager set up with for auto-selected alias " + alias);
     }
 
     @Override
     public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
-        if (mAlias == null) {
-            throw new ClientCertificateRequiredException(keyTypes, issuers,
-                    socket.getInetAddress().getHostName(), socket.getPort());
-        }
-
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "KeyChainKeyManager.chooseClientAlias returning preselected alias "
-                    + mAlias);
-
         return mAlias;
     }
 
@@ -69,7 +47,7 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
             X509Certificate[] chain = KeyChain.getCertificateChain(K9.app, alias);
 
             if (chain == null || chain.length == 0) {
-                throw new IllegalStateException("No certificate chain found for: " + alias);
+                Log.w(K9.LOG_TAG, "No certificate chain found for: " + alias);
             }
 
             return chain;
@@ -103,7 +81,7 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
             }
 
             if (key == null) {
-                throw new IllegalStateException("No private key found for: " + alias);
+                Log.w(K9.LOG_TAG, "No private key found for: " + alias);
             }
             return key;
         } catch (KeyChainException e) {
@@ -139,47 +117,5 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
     public String[] getServerAliases(String keyType, Principal[] issuers) {
         // not valid for client side
         throw new UnsupportedOperationException();
-    }
-
-    public static String interactivelyChooseClientCertificateAlias(Activity activity,
-            String[] keyTypes, Principal[] issuers, String hostName, int port,
-            String preSelectedAlias) {
-        // defined as array to be able to set it inside the callback
-        final String[] selectedAlias = new String[1];
-
-        KeyChain.choosePrivateKeyAlias(activity, new KeyChainAliasCallback() {
-            @Override
-            public void alias(String alias) {
-                synchronized (selectedAlias) {
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "User has selected client certificate alias:" + alias);
-
-                    // see below. not null is condition for breaking out of loop
-                    if (alias == null) {
-                        alias = "";
-                    }
-                    selectedAlias[0] = alias;
-                    selectedAlias.notifyAll();
-                }
-
-            }
-        }, keyTypes, issuers, hostName, port, preSelectedAlias);
-
-        synchronized (selectedAlias) {
-            while (selectedAlias[0] == null) {
-                try {
-                    selectedAlias.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-
-            if ("".equals(selectedAlias[0])) {
-                selectedAlias[0] = null;
-            }
-        }
-
-        return selectedAlias[0];
     }
 }

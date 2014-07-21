@@ -1124,7 +1124,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
-    <string name="dialog_client_certificate_required">This server requires a valid client certificate to be selected.</string>
     <string name="client_certificate_spinner_empty">No client certificate</string>
     <string name="client_certificate_spinner_delete">Remove client certificate selection</string>
 </resources>
