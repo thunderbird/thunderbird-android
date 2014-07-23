@@ -223,6 +223,16 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                     long id) {
                 updateViewFromAuthType();
                 validateFields();
+                AuthType selection = (AuthType) mAuthTypeView.getSelectedItem();
+
+                // Have the user select (or confirm) the client certificate
+                if (AuthType.EXTERNAL.equals(selection)) {
+
+                    // This may again invoke validateFields()
+                    mClientCertificateSpinner.chooseCertificate();
+                } else {
+                    mPasswordView.requestFocus();
+                }
             }
 
             @Override

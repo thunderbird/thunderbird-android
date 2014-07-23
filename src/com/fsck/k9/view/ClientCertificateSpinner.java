@@ -51,7 +51,7 @@ public class ClientCertificateSpinner extends LinearLayout {
         mSelection.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSelect();
+                chooseCertificate();
             }
         });
 
@@ -96,7 +96,7 @@ public class ClientCertificateSpinner extends LinearLayout {
         setAlias(null);
     }
 
-    private void onSelect() {
+    public void chooseCertificate() {
         // NOTE: keyTypes, issuers, hosts, port are not known before we actually
         // open a connection, thus we cannot set them here!
         KeyChain.choosePrivateKeyAlias(mActivity, new KeyChainAliasCallback() {
