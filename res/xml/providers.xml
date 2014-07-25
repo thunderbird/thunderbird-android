@@ -479,6 +479,10 @@
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
     </provider>
+    <provider id="zoznam.sk" label="Zoznam.sk" domain="zoznam.sk">
+        <incoming uri="imap://imap.zoznam.sk" username="$email" />
+        <outgoing uri="smtp://smtp.zoznam.sk" username="$email" />
+    </provider>
 
     <!-- Developers' vanity providers -->
     <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
