@@ -29,8 +29,13 @@ public class SslHelper {
             Log.d(K9.LOG_TAG, "createSslContext: Client certificate alias: "
                     + clientCertificateAlias);
 
-        KeyManager[] keyManagers = new KeyManager[] { new KeyChainKeyManager(
-                clientCertificateAlias) };
+        KeyManager[] keyManagers;
+        if (clientCertificateAlias == null  || clientCertificateAlias.isEmpty()) {
+            keyManagers = null;
+        } else {
+            keyManagers = new KeyManager[] { new KeyChainKeyManager(
+                    clientCertificateAlias) };
+        }
 
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(keyManagers,

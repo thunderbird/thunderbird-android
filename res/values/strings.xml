@@ -1126,4 +1126,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
     <string name="client_certificate_spinner_empty">No client certificate</string>
     <string name="client_certificate_spinner_delete">Remove client certificate selection</string>
+    <string name="client_certificate_retrieval_failure">"Failed to retrieve client certificate for alias <xliff:g id="alias">%s</xliff:g>"</string>
 </resources>

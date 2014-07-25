@@ -14,6 +14,9 @@ import android.security.KeyChainException;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.MessagingException;
 
 /**
  * For client certificate authentication! Provide private keys and certificates
@@ -25,11 +28,24 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
 
     private String mAlias;
 
-    public KeyChainKeyManager(String alias) {
-        if (alias == null || "".equals(alias)) {
-            mAlias = null;
-        } else {
-            mAlias = alias;
+    /**
+     * @param alias  Must not be null nor empty
+     * @throws MessagingException
+     *          Indicates an error in retrieving the certificate for the alias
+     *          (likely because the alias is invalid or the certificate was deleted)
+     */
+    public KeyChainKeyManager(String alias) throws MessagingException {
+        mAlias = alias;
+
+        // Check for invalid alias (the user may have deleted the certificate)
+        try {
+            KeyChain.getCertificateChain(K9.app, alias);
+        } catch (KeyChainException e) {
+            throw new CertificateValidationException(K9.app.getString(
+                    R.string.client_certificate_retrieval_failure, alias), e);
+        } catch (InterruptedException e) {
+            throw new MessagingException(K9.app.getString(
+                    R.string.client_certificate_retrieval_failure, alias), e);
         }
     }
 
