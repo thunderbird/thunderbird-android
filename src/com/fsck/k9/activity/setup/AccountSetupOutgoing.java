@@ -210,6 +210,30 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             public void onItemSelected(AdapterView<?> parent, View view, int position,
                     long id) {
                 updatePortFromSecurityType();
+
+                boolean isInsecure = ConnectionSecurity.NONE.equals(mSecurityTypeView.getSelectedItem());
+                boolean isAuthExternal = AuthType.EXTERNAL.equals(mAuthTypeView.getSelectedItem());
+                boolean loginNotRequired = !mRequireLoginView.isChecked();
+
+                /*
+                 * If the user selects ConnectionSecurity.NONE, a
+                 * warning would normally pop up if the authentication
+                 * is AuthType.EXTERNAL (i.e., using client
+                 * certificates). But such a warning is irrelevant if
+                 * login is not required. So to avoid such a warning
+                 * (generated in validateFields()) under those
+                 * conditions, we change the (irrelevant) authentication
+                 * method to PLAIN.
+                 */
+                if (isInsecure && isAuthExternal && loginNotRequired) {
+                    OnItemSelectedListener onItemSelectedListener = mAuthTypeView.getOnItemSelectedListener();
+                    mAuthTypeView.setOnItemSelectedListener(null);
+                    mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getPosition(AuthType.PLAIN);
+                    mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
+                    mAuthTypeView.setOnItemSelectedListener(onItemSelectedListener);
+                    updateViewFromAuthType();
+                }
+
                 validateFields();
             }
 
