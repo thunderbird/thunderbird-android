@@ -144,7 +144,7 @@
         <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
     </provider>
     
-        <!-- Apple -->
+    <!-- Apple -->
     <provider id="apple" label="Apple" domain="apple.com">
         <incoming uri="imap+ssl+://imap.mail.apple.com" username="$user" />
         <outgoing uri="smtp+tls+://smtp.mail.apple.com" username="$user" />
