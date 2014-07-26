@@ -379,7 +379,7 @@ public class Pop3Store extends Store {
                 case EXTERNAL:
                     if (mCapabilities.external) {
                             executeSimpleCommand(
-                                    String.format("AUTHENTICATE EXTERNAL %s",
+                                    String.format("AUTH EXTERNAL %s",
                                             Utility.base64Encode(mUsername)), false);
                         } else {
                             throw new MessagingException(
