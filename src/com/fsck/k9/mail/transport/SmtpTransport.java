@@ -5,9 +5,10 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -307,11 +308,13 @@ public class SmtpTransport extends Transport {
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
+            boolean authExternalSupported = false;
             if (extensions.containsKey("AUTH")) {
                 List<String> saslMech = Arrays.asList(extensions.get("AUTH").split(" "));
                 authLoginSupported = saslMech.contains("LOGIN");
                 authPlainSupported = saslMech.contains("PLAIN");
                 authCramMD5Supported = saslMech.contains("CRAM-MD5");
+                authExternalSupported = saslMech.contains("EXTERNAL");
             }
             if (extensions.containsKey("SIZE")) {
                 try {
@@ -323,8 +326,10 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            if (mUsername != null && mUsername.length() > 0 &&
-                    mPassword != null && mPassword.length() > 0) {
+            if (mUsername != null
+                    && mUsername.length() > 0
+                    && (mPassword != null && mPassword.length() > 0 || AuthType.EXTERNAL
+                            .equals(mAuthType))) {
 
                 switch (mAuthType) {
 
@@ -350,6 +355,24 @@ public class SmtpTransport extends Transport {
                         saslAuthCramMD5(mUsername, mPassword);
                     } else {
                         throw new MessagingException("Authentication method CRAM-MD5 is unavailable.");
+                    }
+                    break;
+
+                case EXTERNAL:
+                    if (authExternalSupported) {
+                        saslAuthExternal(mUsername);
+                    } else {
+                        /*
+                         * Some SMTP servers are known to provide no error
+                         * indication when a client certificate fails to
+                         * validate, other than to not offer the AUTH EXTERNAL
+                         * capability.
+                         *
+                         * So, we treat it is an error to not offer AUTH
+                         * EXTERNAL when using client certificates. That way, the
+                         * user can be notified of a problem during account setup.
+                         */
+                        throw new MessagingException(K9.app.getString(R.string.auth_external_error));
                     }
                     break;
 
@@ -688,8 +711,8 @@ public class SmtpTransport extends Transport {
         AuthenticationFailedException, IOException {
         try {
             executeSimpleCommand("AUTH LOGIN");
-            executeSimpleCommand(new String(Base64.encodeBase64(username.getBytes())), true);
-            executeSimpleCommand(new String(Base64.encodeBase64(password.getBytes())), true);
+            executeSimpleCommand(Utility.base64Encode(username), true);
+            executeSimpleCommand(Utility.base64Encode(password), true);
         } catch (MessagingException me) {
             if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
                 throw new AuthenticationFailedException("AUTH LOGIN failed (" + me.getMessage()
@@ -701,10 +724,9 @@ public class SmtpTransport extends Transport {
 
     private void saslAuthPlain(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
-        byte[] data = ("\000" + username + "\000" + password).getBytes();
-        data = new Base64().encode(data);
+        String data = Utility.base64Encode("\000" + username + "\000" + password);
         try {
-            executeSimpleCommand("AUTH PLAIN " + new String(data), true);
+            executeSimpleCommand("AUTH PLAIN " + data, true);
         } catch (MessagingException me) {
             if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
                 throw new AuthenticationFailedException("AUTH PLAIN failed (" + me.getMessage()
@@ -730,6 +752,12 @@ public class SmtpTransport extends Transport {
         } catch (NegativeSmtpReplyException exception) {
             throw new AuthenticationFailedException(exception.getMessage(), exception);
         }
+    }
+
+    private void saslAuthExternal(String username) throws MessagingException, IOException {
+        executeSimpleCommand(
+                String.format("AUTH EXTERNAL %s",
+                        Utility.base64Encode(username)), false);
     }
 
     /**
