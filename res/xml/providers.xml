@@ -105,10 +105,6 @@
         <incoming uri="pop3+ssl+://pop.east.cox.net" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.east.cox.net" username="$user" />
     </provider> 
-    <provider id="dotmac" label=".Mac" domain="mac.com">
-        <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
-        <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$email" />
-    </provider>
     <provider id="live" label="Windows Live Hotmail" domain="live.com">
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
@@ -124,10 +120,6 @@
     <provider id="msn" label="MSN" domain="msn.com">
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
-    </provider>
-    <provider id="mobileme" label="MobileMe" domain="me.com">
-        <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
-        <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$email" />
     </provider>
     <provider id="montclair.edu" label="MSU" domain="montclair.edu">
         <incoming uri="imap+ssl+://mail.montclair.edu" username="$user" />
@@ -150,6 +142,24 @@
     <provider id="rocketmail" label="Rocketmail" domain="rocketmail.com">
         <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
+    </provider>
+    
+    <!-- Apple -->
+    <provider id="apple" label="Apple" domain="apple.com">
+        <incoming uri="imap+ssl+://imap.mail.apple.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.apple.com" username="$user" />
+    </provider>
+    <provider id="dotmac" label=".Mac" domain="mac.com">
+        <incoming uri="imap+ssl+://imap.mail.mac.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.mac.com" username="$user" />
+    </provider>
+    <provider id="mobileme" label="MobileMe" domain="me.com">
+        <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$user" />
+    </provider>
+    <provider id="icloud" label="iCloud" domain="icloud.com">
+        <incoming uri="imap+ssl+://imap.mail.icloud.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.icloud.com" username="$user" />
     </provider>
 
     <!-- Australia -->
