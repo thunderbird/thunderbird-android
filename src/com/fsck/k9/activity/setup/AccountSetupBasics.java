@@ -87,16 +87,17 @@ public class AccountSetupBasics extends K9Activity
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);
 
+        if (savedInstanceState == null) {
+            initializeViewListeners();
+            validateFields();
+        }
+    }
+
+    private void initializeViewListeners() {
         mEmailView.addTextChangedListener(this);
         mPasswordView.addTextChangedListener(this);
         mClientCertificateCheckBox.setOnCheckedChangeListener(this);
         mClientCertificateSpinner.setOnClientCertificateChangedListener(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        validateFields();
     }
 
     @Override
@@ -125,6 +126,18 @@ public class AccountSetupBasics extends K9Activity
         }
 
         mCheckedIncoming = savedInstanceState.getBoolean(STATE_KEY_CHECKED_INCOMING);
+
+        updateViewVisibility(mClientCertificateCheckBox.isChecked());
+
+        /*
+         * We wait until now to initialize the listeners because we didn't want
+         * the OnCheckedChangeListener active while the
+         * mClientCertificateCheckBox state was being restored because it could
+         * trigger the pop-up of a ClientCertificateSpinner.chooseCertificate()
+         * dialog.
+         */
+        initializeViewListeners();
+        validateFields();
     }
 
     public void afterTextChanged(Editable s) {
@@ -147,7 +160,17 @@ public class AccountSetupBasics extends K9Activity
      */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        updateViewVisibility(isChecked);
+        validateFields();
+
+        // Have the user select (or confirm) the client certificate
         if (isChecked) {
+            mClientCertificateSpinner.chooseCertificate();
+        }
+    }
+
+    private void updateViewVisibility(boolean usingCertificates) {
+        if (usingCertificates) {
             // hide password fields, show client certificate spinner
             mPasswordView.setVisibility(View.GONE);
             mClientCertificateSpinner.setVisibility(View.VISIBLE);
@@ -156,7 +179,6 @@ public class AccountSetupBasics extends K9Activity
             mPasswordView.setVisibility(View.VISIBLE);
             mClientCertificateSpinner.setVisibility(View.GONE);
         }
-        validateFields();
     }
 
     private void validateFields() {
