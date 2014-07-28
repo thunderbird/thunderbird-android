@@ -36,6 +36,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
+    private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
     private static final String SMTP_PORT = "587";
     private static final String SMTP_SSL_PORT = "465";
@@ -140,8 +141,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
-            // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
-            mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getPosition(settings.authenticationType);
+            if (savedInstanceState == null) {
+                // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
+                mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getPosition(settings.authenticationType);
+            } else {
+                mCurrentAuthTypeViewPosition = savedInstanceState.getInt(STATE_AUTH_TYPE_POSITION);
+            }
             mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
             updateViewFromAuthType();
 
@@ -264,6 +269,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position,
                     long id) {
+                if (mCurrentAuthTypeViewPosition == position) {
+                    return;
+                }
+
                 updateViewFromAuthType();
                 validateFields();
                 AuthType selection = (AuthType) mAuthTypeView.getSelectedItem();
@@ -295,6 +304,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
         outState.putInt(STATE_SECURITY_TYPE_POSITION, mCurrentSecurityTypeViewPosition);
+        outState.putInt(STATE_AUTH_TYPE_POSITION, mCurrentAuthTypeViewPosition);
     }
 
     @Override

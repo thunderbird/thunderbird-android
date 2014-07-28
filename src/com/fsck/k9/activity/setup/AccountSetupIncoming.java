@@ -44,6 +44,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
+    private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
     private static final String POP3_PORT = "110";
     private static final String POP3_SSL_PORT = "995";
@@ -164,8 +165,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         try {
             ServerSettings settings = Store.decodeStoreUri(mAccount.getStoreUri());
 
-            // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
-            mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getPosition(settings.authenticationType);
+            if (savedInstanceState == null) {
+                // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
+                mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getPosition(settings.authenticationType);
+            } else {
+                mCurrentAuthTypeViewPosition = savedInstanceState.getInt(STATE_AUTH_TYPE_POSITION);
+            }
             mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
             updateViewFromAuthType();
 
@@ -340,6 +345,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position,
                     long id) {
+                if (mCurrentAuthTypeViewPosition == position) {
+                    return;
+                }
+
                 updateViewFromAuthType();
                 validateFields();
                 AuthType selection = (AuthType) mAuthTypeView.getSelectedItem();
@@ -370,6 +379,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
         outState.putInt(STATE_SECURITY_TYPE_POSITION, mCurrentSecurityTypeViewPosition);
+        outState.putInt(STATE_AUTH_TYPE_POSITION, mCurrentAuthTypeViewPosition);
     }
 
     @Override
