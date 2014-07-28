@@ -43,6 +43,7 @@ import java.util.Map;
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
+    private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
 
     private static final String POP3_PORT = "110";
     private static final String POP3_SSL_PORT = "995";
@@ -255,7 +256,20 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mSecurityTypeView.setAdapter(securityTypesAdapter);
 
             // Select currently configured security type
-            mCurrentSecurityTypeViewPosition = securityTypesAdapter.getPosition(settings.connectionSecurity);
+            if (savedInstanceState == null) {
+                mCurrentSecurityTypeViewPosition = securityTypesAdapter.getPosition(settings.connectionSecurity);
+            } else {
+
+                /*
+                 * Restore the spinner state now, before calling
+                 * setOnItemSelectedListener(), thus avoiding a call to
+                 * onItemSelected(). Then, when the system restores the state
+                 * (again) in onRestoreInstanceState(), The system will see that
+                 * the new state is the same as the current state (set here), so
+                 * once again onItemSelected() will not be called.
+                 */
+                mCurrentSecurityTypeViewPosition = savedInstanceState.getInt(STATE_SECURITY_TYPE_POSITION);
+            }
             mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
@@ -298,19 +312,24 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         /*
          * Updates the port when the user changes the security type. This allows
          * us to show a reasonable default which the user can change.
-         *
-         * Note: It's important that we set this listener *after* an initial
-         * mSecurityTypeView option has been selected by the code in onCreate().
-         * Otherwise the listener might be called after onCreate() is finished
-         * which would wipe out the initial port value set in onCreate(),
-         * replacing it with the default port for the selected security type.
          */
         mSecurityTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position,
                     long id) {
-                updatePortFromSecurityType();
-                validateFields();
+
+                /*
+                 * We keep our own record of the spinner state so we
+                 * know for sure that onItemSelected() was called
+                 * because of user input, not because of spinner
+                 * state initialization. This assures that the port
+                 * will not be replaced with a default value except
+                 * on user input.
+                 */
+                if (mCurrentSecurityTypeViewPosition != position) {
+                    updatePortFromSecurityType();
+                    validateFields();
+                }
             }
 
             @Override
@@ -350,6 +369,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
+        outState.putInt(STATE_SECURITY_TYPE_POSITION, mCurrentSecurityTypeViewPosition);
     }
 
     @Override
