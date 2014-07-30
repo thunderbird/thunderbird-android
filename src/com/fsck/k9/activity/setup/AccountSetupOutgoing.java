@@ -311,6 +311,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
+        if (mRequireLoginView.isChecked()) {
+            mRequireLoginSettingsView.setVisibility(View.VISIBLE);
+        } else {
+            mRequireLoginSettingsView.setVisibility(View.GONE);
+        }
+
         /*
          * We didn't want the listeners active while the state was being restored
          * because they could overwrite the restored port with a default port when
