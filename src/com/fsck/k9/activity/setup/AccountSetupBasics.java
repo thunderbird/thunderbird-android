@@ -71,17 +71,17 @@ public class AccountSetupBasics extends K9Activity
         mManualSetupButton = (Button)findViewById(R.id.manual_setup);
         mShowPassword = (CheckBox) findViewById(R.id.show_password);
 		
-		mShowPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override 
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { 
-				if (isChecked) { 			
-					mPasswordView.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-				}
-				else {
-					mPasswordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-				}
-			} 	
-	    });
+	mShowPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+	    @Override 
+	    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { 
+	        if (isChecked) { 			
+		    mPasswordView.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		}
+		else {
+		    mPasswordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		}
+	    } 	
+	});
 
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);
