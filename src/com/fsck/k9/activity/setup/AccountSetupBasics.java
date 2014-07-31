@@ -25,6 +25,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Locale;
+import android.widget.*;
+import android.text.*;
+import android.widget.CompoundButton.*;
 
 /**
  * Prompts the user for the email address and password.
@@ -48,6 +51,7 @@ public class AccountSetupBasics extends K9Activity
     private Button mManualSetupButton;
     private Account mAccount;
     private Provider mProvider;
+    private CheckBox mShowPassword;
 
     private EmailAddressValidator mEmailValidator = new EmailAddressValidator();
     private boolean mCheckedIncoming = false;
@@ -65,6 +69,19 @@ public class AccountSetupBasics extends K9Activity
         mPasswordView = (EditText)findViewById(R.id.account_password);
         mNextButton = (Button)findViewById(R.id.next);
         mManualSetupButton = (Button)findViewById(R.id.manual_setup);
+        mShowPassword = (CheckBox) findViewById(R.id.show_password);
+		
+		mShowPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override 
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { 
+				if (isChecked) { 			
+					mPasswordView.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				}
+				else {
+					mPasswordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				}
+			} 	
+	    });
 
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);
