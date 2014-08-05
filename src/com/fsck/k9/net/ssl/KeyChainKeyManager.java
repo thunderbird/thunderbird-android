@@ -1,5 +1,5 @@
 
-package com.fsck.k9.security;
+package com.fsck.k9.net.ssl;
 
 import java.net.Socket;
 import java.security.Principal;

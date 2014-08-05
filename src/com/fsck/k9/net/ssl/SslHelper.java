@@ -15,7 +15,6 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.security.KeyChainKeyManager;
 
 /**
  * Helper class to create SSL sockets with support for client certificate
