@@ -58,6 +58,14 @@
             android:entryValues="@array/folder_settings_folder_push_mode_values"
             android:dialogTitle="@string/folder_settings_folder_push_mode_label" />
 
+        <ListPreference
+            android:persistent="false"
+            android:key="folder_settings_folder_notify_mode"
+            android:title="@string/folder_settings_folder_notify_mode_label"
+            android:entries="@array/folder_settings_folder_notify_mode_entries"
+            android:entryValues="@array/folder_settings_folder_notify_mode_values"
+            android:dialogTitle="@string/folder_settings_folder_notify_mode_label" />
+
         <CheckBoxPreference
             android:persistent="false"
             android:key="folder_settings_include_in_integrated_inbox"

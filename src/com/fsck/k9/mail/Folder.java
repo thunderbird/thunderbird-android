@@ -222,6 +222,9 @@ public abstract class Folder {
     public FolderClass getPushClass() {
         return getSyncClass();
     }
+    public FolderClass getNotifyClass() {
+        return getPushClass();
+    }
 
     public void refresh(Preferences preferences) throws MessagingException {
 

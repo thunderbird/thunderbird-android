@@ -343,6 +343,15 @@
             android:defaultValue="true"
             android:summary="@string/account_settings_notify_summary" />
 
+        <ListPreference
+            android:persistent="false"
+            android:key="folder_notify_new_mail_mode"
+            android:dependency="account_notify"
+            android:title="@string/account_settings_folder_notify_new_mail_mode_label"
+            android:entries="@array/account_settings_folder_notify_new_mail_mode_entries"
+            android:entryValues="@array/account_settings_folder_notify_new_mail_mode_values"
+            android:dialogTitle="@string/account_settings_folder_notify_new_mail_mode_label" />
+
         <CheckBoxPreference
             android:persistent="false"
             android:key="account_notify_self"

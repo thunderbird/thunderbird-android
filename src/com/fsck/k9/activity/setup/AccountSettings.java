@@ -73,6 +73,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
     private static final String PREFERENCE_NOTIFY = "account_notify";
+    private static final String PREFERENCE_NOTIFY_NEW_MAIL_MODE = "folder_notify_new_mail_mode";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
@@ -142,6 +143,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMessageSize;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
+    private ListPreference mAccountNotifyNewMailMode;
     private CheckBoxPreference mAccountNotifySelf;
     private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountNotifySync;
@@ -573,6 +575,19 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
         mAccountNotify.setChecked(mAccount.isNotifyNewMail());
 
+        mAccountNotifyNewMailMode = (ListPreference) findPreference(PREFERENCE_NOTIFY_NEW_MAIL_MODE);
+        mAccountNotifyNewMailMode.setValue(mAccount.getFolderNotifyNewMailMode().name());
+        mAccountNotifyNewMailMode.setSummary(mAccountNotifyNewMailMode.getEntry());
+        mAccountNotifyNewMailMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mAccountNotifyNewMailMode.findIndexOfValue(summary);
+                mAccountNotifyNewMailMode.setSummary(mAccountNotifyNewMailMode.getEntries()[index]);
+                mAccountNotifyNewMailMode.setValue(summary);
+                return false;
+            }
+        });
+
         mAccountNotifySelf = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_SELF);
         mAccountNotifySelf.setChecked(mAccount.isNotifySelfNewMail());
 
@@ -769,6 +784,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setMarkMessageAsReadOnView(mMarkMessageAsReadOnView.isChecked());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
+        mAccount.setFolderNotifyNewMailMode(Account.FolderMode.valueOf(mAccountNotifyNewMailMode.getValue()));
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));

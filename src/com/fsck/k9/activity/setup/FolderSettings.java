@@ -29,6 +29,7 @@ public class FolderSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_DISPLAY_CLASS = "folder_settings_folder_display_mode";
     private static final String PREFERENCE_SYNC_CLASS = "folder_settings_folder_sync_mode";
     private static final String PREFERENCE_PUSH_CLASS = "folder_settings_folder_push_mode";
+    private static final String PREFERENCE_NOTIFY_CLASS = "folder_settings_folder_notify_mode";
     private static final String PREFERENCE_IN_TOP_GROUP = "folder_settings_in_top_group";
     private static final String PREFERENCE_INTEGRATE = "folder_settings_include_in_integrated_inbox";
 
@@ -39,6 +40,7 @@ public class FolderSettings extends K9PreferenceActivity {
     private ListPreference mDisplayClass;
     private ListPreference mSyncClass;
     private ListPreference mPushClass;
+    private ListPreference mNotifyClass;
 
     public static void actionSettings(Context context, Account account, String folderName) {
         Intent i = new Intent(context, FolderSettings.class);
@@ -124,6 +126,19 @@ public class FolderSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+
+        mNotifyClass = (ListPreference) findPreference(PREFERENCE_NOTIFY_CLASS);
+        mNotifyClass.setValue(mFolder.getRawNotifyClass().name());
+        mNotifyClass.setSummary(mNotifyClass.getEntry());
+        mNotifyClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mNotifyClass.findIndexOfValue(summary);
+                mNotifyClass.setSummary(mNotifyClass.getEntries()[index]);
+                mNotifyClass.setValue(summary);
+                return false;
+            }
+        });
     }
 
     private void saveSettings() throws MessagingException {
@@ -135,6 +150,7 @@ public class FolderSettings extends K9PreferenceActivity {
         mFolder.setDisplayClass(FolderClass.valueOf(mDisplayClass.getValue()));
         mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
         mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
+        mFolder.setNotifyClass(FolderClass.valueOf(mNotifyClass.getValue()));
 
         mFolder.save();
 

@@ -164,6 +164,7 @@ public class Account implements BaseAccount {
     private long mLastAutomaticCheckTime;
     private long mLatestOldMessageSeenTime;
     private boolean mNotifyNewMail;
+    private FolderMode mFolderNotifyNewMailMode;
     private boolean mNotifySelfNewMail;
     private String mInboxFolderName;
     private String mDraftsFolderName;
@@ -275,6 +276,7 @@ public class Account implements BaseAccount {
         mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         mAccountNumber = -1;
         mNotifyNewMail = true;
+        mFolderNotifyNewMailMode = FolderMode.ALL;
         mNotifySync = true;
         mNotifySelfNewMail = true;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
@@ -384,6 +386,12 @@ public class Account implements BaseAccount {
         mLastAutomaticCheckTime = prefs.getLong(mUuid + ".lastAutomaticCheckTime", 0);
         mLatestOldMessageSeenTime = prefs.getLong(mUuid + ".latestOldMessageSeenTime", 0);
         mNotifyNewMail = prefs.getBoolean(mUuid + ".notifyNewMail", false);
+        try {
+            mFolderNotifyNewMailMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderNotifyNewMailMode",
+                                                 FolderMode.ALL.name()));
+        } catch (Exception e) {
+            mFolderNotifyNewMailMode = FolderMode.ALL;
+        }
         mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
         mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
         mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
@@ -707,6 +715,7 @@ public class Account implements BaseAccount {
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putLong(mUuid + ".latestOldMessageSeenTime", mLatestOldMessageSeenTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
+        editor.putString(mUuid + ".folderNotifyNewMailMode", mFolderNotifyNewMailMode.name());
         editor.putBoolean(mUuid + ".notifySelfNewMail", mNotifySelfNewMail);
         editor.putBoolean(mUuid + ".notifyMailCheck", mNotifySync);
         editor.putInt(mUuid + ".deletePolicy", mDeletePolicy);
@@ -1060,6 +1069,14 @@ public class Account implements BaseAccount {
 
     public synchronized void setNotifyNewMail(boolean notifyNewMail) {
         this.mNotifyNewMail = notifyNewMail;
+    }
+
+    public synchronized FolderMode getFolderNotifyNewMailMode() {
+        return mFolderNotifyNewMailMode;
+    }
+
+    public synchronized void setFolderNotifyNewMailMode(FolderMode folderNotifyNewMailMode) {
+        this.mFolderNotifyNewMailMode = folderNotifyNewMailMode;
     }
 
     public synchronized int getDeletePolicy() {
