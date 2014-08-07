@@ -16,7 +16,11 @@ public class CertificateValidationException extends MessagingException {
 
     public CertificateValidationException(String message) {
         super(message);
-        scanForCause();
+        /*
+         * Instances created without a Throwable parameter as a cause are
+         * presumed to need user attention.
+         */
+        mNeedsUserAttention = true;
     }
 
     public CertificateValidationException(final String message, Throwable throwable) {
@@ -45,10 +49,9 @@ public class CertificateValidationException extends MessagingException {
          *
          * The various mail protocol handlers (IMAP, POP3, ...) will catch an
          * SSLException and throw a CertificateValidationException (this class)
-         * with the SSLException as the cause. They may also throw a
-         * CertificateValidationException with a new CertificateException as the
-         * cause when STARTTLS is not available, just for the purpose of
-         * triggering a user notification.
+         * with the SSLException as the cause. (They may also throw a
+         * CertificateValidationException when STARTTLS is not available, just
+         * for the purpose of triggering a user notification.)
          *
          * SSLHandshakeException is also known to occur if the *client*
          * certificate was not accepted by the server (unknown CA, certificate

@@ -26,7 +26,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.security.GeneralSecurityException;
-import java.security.cert.CertificateException;
 import java.util.*;
 
 public class SmtpTransport extends Transport {
@@ -300,8 +299,7 @@ public class SmtpTransport extends Transport {
                      * "STARTTLS (if available)" setting.
                      */
                     throw new CertificateValidationException(
-                            "STARTTLS connection security not available",
-                            new CertificateException());
+                            "STARTTLS connection security not available");
                 }
             }
 

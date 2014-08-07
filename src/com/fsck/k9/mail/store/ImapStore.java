@@ -26,7 +26,6 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.security.GeneralSecurityException;
 import java.security.Security;
-import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2511,8 +2510,7 @@ public class ImapStore extends Store {
                          * "STARTTLS (if available)" setting.
                          */
                         throw new CertificateValidationException(
-                                "STARTTLS connection security not available",
-                                new CertificateException());
+                                "STARTTLS connection security not available");
                     }
                 }
 
@@ -2539,12 +2537,10 @@ public class ImapStore extends Store {
 
                 case EXTERNAL:
                     if (hasCapability(CAPABILITY_AUTH_EXTERNAL)) {
-                        executeSimpleCommand(
-                                String.format("AUTHENTICATE EXTERNAL %s",
-                                        Utility.base64Encode(mSettings.getUsername())), false);
+                        saslAuthExternal();
                     } else {
-                        throw new MessagingException(
-                                "EXTERNAL authentication not advertised by server");
+                        // Provide notification to user of a problem authenticating using client certificates
+                        throw new CertificateValidationException(K9.app.getString(R.string.auth_external_error));
                     }
                     break;
 
@@ -2726,6 +2722,23 @@ public class ImapStore extends Store {
                 receiveCapabilities(readStatusResponse(tag, command, null));
             } catch (MessagingException e) {
                 throw new AuthenticationFailedException(e.getMessage());
+            }
+        }
+
+        private void saslAuthExternal() throws IOException, MessagingException {
+            try {
+                receiveCapabilities(executeSimpleCommand(
+                        String.format("AUTHENTICATE EXTERNAL %s",
+                                Utility.base64Encode(mSettings.getUsername())), false));
+            } catch (ImapException e) {
+                /*
+                 * Provide notification to the user of a problem authenticating
+                 * using client certificates. We don't use an
+                 * AuthenticationFailedException because that would trigger a
+                 * "Username or password incorrect" notification in
+                 * AccountSetupCheckSettings.
+                 */
+                throw new CertificateValidationException(e.getMessage());
             }
         }
 

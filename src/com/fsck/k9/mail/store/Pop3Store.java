@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
@@ -20,7 +21,6 @@ import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -354,8 +354,7 @@ public class Pop3Store extends Store {
                          * "STARTTLS (if available)" setting.
                          */
                         throw new CertificateValidationException(
-                                "STARTTLS connection security not available",
-                                new CertificateException());
+                                "STARTTLS connection security not available");
                     }
                 }
 
@@ -378,13 +377,11 @@ public class Pop3Store extends Store {
 
                 case EXTERNAL:
                     if (mCapabilities.external) {
-                            executeSimpleCommand(
-                                    String.format("AUTH EXTERNAL %s",
-                                            Utility.base64Encode(mUsername)), false);
-                        } else {
-                            throw new MessagingException(
-                                    "EXTERNAL authentication not advertised by server");
-                        }
+                        authExternal();
+                    } else {
+                        // Provide notification to user of a problem authenticating using client certificates
+                        throw new CertificateValidationException(K9.app.getString(R.string.auth_external_error));
+                    }
                     break;
 
                 default:
@@ -467,6 +464,24 @@ public class Pop3Store extends Store {
                 throw new AuthenticationFailedException(
                         "POP3 CRAM-MD5 authentication failed: "
                                 + e.getMessage(), e);
+            }
+        }
+
+        private void authExternal() throws MessagingException {
+            try {
+                executeSimpleCommand(
+                        String.format("AUTH EXTERNAL %s",
+                                Utility.base64Encode(mUsername)), false);
+            } catch (Pop3ErrorResponse e) {
+                /*
+                 * Provide notification to the user of a problem authenticating
+                 * using client certificates. We don't use an
+                 * AuthenticationFailedException because that would trigger a
+                 * "Username or password incorrect" notification in
+                 * AccountSetupCheckSettings.
+                 */
+                throw new CertificateValidationException(
+                        "POP3 client certificate authentication failed: " + e.getMessage(), e);
             }
         }
 
