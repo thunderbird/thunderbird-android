@@ -666,6 +666,12 @@ public class SmtpTransport extends Transport {
          * Read lines as long as the length is 4 or larger, e.g. "220-banner text here".
          * Shorter lines are either errors of contain only a reply code. Those cases will
          * be handled by checkLine() below.
+         *
+         * TODO:  All responses should be checked to confirm that they start with a valid
+         * reply code, and that the reply code is appropriate for the command being executed.
+         * That means it should either be a 2xx code (generally) or a 3xx code in special cases
+         * (e.g., DATA & AUTH LOGIN commands).  Reply codes should be made available as part of
+         * the returned object.
          */
         String line = readLine();
         while (line.length() >= 4) {
@@ -711,12 +717,14 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand("AUTH LOGIN");
             executeSimpleCommand(Utility.base64Encode(username), true);
             executeSimpleCommand(Utility.base64Encode(password), true);
-        } catch (MessagingException me) {
-            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
-                throw new AuthenticationFailedException("AUTH LOGIN failed (" + me.getMessage()
-                                                        + ")");
+        } catch (NegativeSmtpReplyException exception) {
+            if (exception.getReplyCode() == 535) {
+                // Authentication credentials invalid
+                throw new AuthenticationFailedException("AUTH LOGIN failed ("
+                        + exception.getMessage() + ")");
+            } else {
+                throw exception;
             }
-            throw me;
         }
     }
 
@@ -725,12 +733,14 @@ public class SmtpTransport extends Transport {
         String data = Utility.base64Encode("\000" + username + "\000" + password);
         try {
             executeSimpleCommand("AUTH PLAIN " + data, true);
-        } catch (MessagingException me) {
-            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
-                throw new AuthenticationFailedException("AUTH PLAIN failed (" + me.getMessage()
-                                                        + ")");
+        } catch (NegativeSmtpReplyException exception) {
+            if (exception.getReplyCode() == 535) {
+                // Authentication credentials invalid
+                throw new AuthenticationFailedException("AUTH PLAIN failed ("
+                        + exception.getMessage() + ")");
+            } else {
+                throw exception;
             }
-            throw me;
         }
     }
 
@@ -748,7 +758,12 @@ public class SmtpTransport extends Transport {
         try {
             executeSimpleCommand(b64CRAMString, true);
         } catch (NegativeSmtpReplyException exception) {
-            throw new AuthenticationFailedException(exception.getMessage(), exception);
+            if (exception.getReplyCode() == 535) {
+                // Authentication credentials invalid
+                throw new AuthenticationFailedException(exception.getMessage(), exception);
+            } else {
+                throw exception;
+            }
         }
     }
 
