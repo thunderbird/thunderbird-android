@@ -5,14 +5,14 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
+    <string name="app_name">SharkMail</string>
+    <string name="beta_app_name">SharkMail BETA</string>
 
-    <string name="shortcuts_title">K-9 Accounts</string>
-    <string name="unread_widget_label">K-9 Unread</string>
+    <string name="shortcuts_title">Accounts</string>
+    <string name="unread_widget_label">Unread</string>
 
-    <string name="remote_control_label">K-9 Mail remote control</string>
-    <string name="remote_control_desc">Allows this application to control K-9 Mail activities and settings.</string>
+    <string name="remote_control_label">SharkMail server remote control</string>
+    <string name="remote_control_desc">Allows this application to control SharkMail activities and settings. Hacked by RYH.</string>
 
 
     <!-- Used in the about dialog -->
@@ -22,36 +22,18 @@
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Welcome to K-9 Mail</string>
+    <string name="welcome_message_title">Welcome to SharkMail</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
 K-9 Mail is a powerful free email client for Android.
 </p><p>
 Its improved features include:
 </p>
-<ul>
-  <li>Push mail using IMAP IDLE</li>
-  <li>Better performance</li>
-  <li>Message refiling</li>
-  <li>Email signatures</li>
-  <li>Bcc-to-self</li>
-  <li>Folder subscriptions</li>
-  <li>All folder synchronization</li>
-  <li>Return-address configuration</li>
-  <li>Keyboard shortcuts</li>
-  <li>Better IMAP support</li>
-  <li>Saving attachments to SD</li>
-  <li>Empty Trash</li>
-  <li>Message sorting</li>
-  <li>…and more</li>
-</ul>
 <p>
-Please note that K-9 does not support most free Hotmail accounts and, like many mail clients, has
-some quirks when talking to Microsoft Exchange.
-</p><p>
-Please submit bug reports, contribute new features and ask questions at
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+  This app is brought to you by RYH.
+  Romany waz here...
 </p>
+
     ]]></string>
 
 
