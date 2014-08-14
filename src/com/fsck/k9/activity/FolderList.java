@@ -99,8 +99,6 @@ public class FolderList extends K9ListActivity {
     private TextView mActionBarSubTitle;
     private TextView mActionBarUnread;
 
-    private boolean mIsFinished = false;
-
     class FolderListHandler extends Handler {
 
         public void refreshTitle() {
@@ -282,7 +280,7 @@ public class FolderList extends K9ListActivity {
         context = this;
 
         onNewIntent(getIntent());
-        if (mIsFinished) {
+        if (isFinishing()) {
             /*
              * onNewIntent() may call finish(), but execution will still continue here.
              * We return now because we don't want to display the changelog which can
@@ -323,7 +321,6 @@ public class FolderList extends K9ListActivity {
              * account, and then the account is deleted or data is wiped, and
              * then the shortcut is used.
              */
-            mIsFinished = true;
             finish();
             return;
         }
@@ -331,7 +328,6 @@ public class FolderList extends K9ListActivity {
         if (intent.getBooleanExtra(EXTRA_FROM_SHORTCUT, false) &&
                    !K9.FOLDER_NONE.equals(mAccount.getAutoExpandFolderName())) {
             onOpenFolder(mAccount.getAutoExpandFolderName());
-            mIsFinished = true;
             finish();
         } else {
             initializeActivityView();
