@@ -18,6 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.net.IDN;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -1578,6 +1579,19 @@ public class ImapStore extends Store {
                                     // This shouldn't happen
                                     throw new MessagingException("Got FETCH response with bogus parameters");
                                 }
+                                
+                                // ASCII -> Unicode (IDN)
+                                Address[] fromAddrs = message.getFrom();
+                                Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
+                                Address[] ccAddrs = message.getRecipients(Message.RecipientType.CC);
+
+                                for (Address from : fromAddrs)
+                                    message.setFrom(IDN.toUnicode(fromAddrs))
+                                for (Address to : toAddrs)
+                                    message.setRecipients(Message.RecipientType.TO, IDN.toUnicode(toAddrs))
+                                for (Address cc : ccAddrs)
+                                    message.setRecipients(Message.RecipientType.CC, IDN.toUnicode(ccAddrs))
+                                
                             }
 
                             if (listener != null) {
