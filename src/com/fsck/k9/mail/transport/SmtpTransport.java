@@ -494,10 +494,10 @@ public class SmtpTransport extends Transport {
 
         Address[] from = message.getFrom();
         try {
-            executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
+            executeSimpleCommand("MAIL FROM:" + "<" + IDN.toASCII(from[0].getAddress()) + ">"
                     + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""));
             for (String address : addresses) {
-                executeSimpleCommand("RCPT TO:" + "<" + address + ">");
+                executeSimpleCommand("RCPT TO:" + "<" + IDN.toASCII(address) + ">");
             }
             executeSimpleCommand("DATA");
 
@@ -507,7 +507,7 @@ public class SmtpTransport extends Transport {
 
             message.writeTo(msgOut);
 
-            // We use BufferedOutputStream. So make sure to call flush() !
+            // We use BufferedOutputStream. So make sure to call flush()! 
             msgOut.flush();
 
             possibleSend = true; // After the "\r\n." is attempted, we may have sent the message
