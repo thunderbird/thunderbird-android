@@ -756,6 +756,20 @@ public class Pop3Store extends Store {
                          */
                         pop3Message.setBody(null);
                     }
+                    
+                    // ASCII -> Unicode (IDN)
+                    Address[] fromAddrs = message.getFrom();
+                    Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
+                    Address[] ccAddrs = message.getRecipients(Message.RecipientType.CC);
+
+                    for (Address from : fromAddrs)
+                        message.setFrom(IDN.toUnicode(fromAddrs))
+                    for (Address to : toAddrs)
+                        message.setRecipients(Message.RecipientType.TO, IDN.toUnicode(toAddrs))
+                    for (Address cc : ccAddrs)
+                        message.setRecipients(Message.RecipientType.CC, IDN.toUnicode(ccAddrs))
+                    
+                    
                     if (listener != null && !(fp.contains(FetchProfile.Item.ENVELOPE) && fp.size() == 1)) {
                         listener.messageFinished(message, i, count);
                     }
