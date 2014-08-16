@@ -426,8 +426,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="account_settings_notify_self_summary">Mostra una notifica per i messaggi che ho inviato</string>
   <string name="account_settings_notification_opens_unread_label">Notifica apre i messaggi non letti</string>
   <string name="account_settings_notification_opens_unread_summary">Ricerca non letti quando Notifiche è aperto</string>
-  <string name="account_settings_notification_unread_count_label">Mostra numero messaggi non letti</string>
-  <string name="account_settings_notification_unread_count_summary">Mostra il numero dei messaggi non letti nella barra di notifica.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca messaggio come letto all\'apertura</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca un messaggio come letto quando viene aperto per la visualizzazione</string>
   <string name="account_settings_show_pictures_label">Mostra sempre le immagini</string>

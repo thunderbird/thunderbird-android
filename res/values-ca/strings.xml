@@ -417,8 +417,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_settings_notify_self_summary">Mostra una notificació per als missatges que enviïs</string>
   <string name="account_settings_notification_opens_unread_label">Notificació obre missatges no llegits</string>
   <string name="account_settings_notification_opens_unread_summary">Cerca de missatges no llegits quan s\'ha obert la notificació.</string>
-  <string name="account_settings_notification_unread_count_label">Mostra correu no llegit</string>
-  <string name="account_settings_notification_unread_count_summary">Mostra el nombre de missatges no llegits a la barra de notificació.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca el missatge obert com a llegit</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca el missatge com a llegit després d\'haver-lo obert.</string>
   <string name="account_settings_show_pictures_label">Sempre mostra imatges</string>

@@ -415,8 +415,6 @@ K-9改进的功能包括：
   <string name="account_settings_notify_self_summary">发送邮件时显示通知</string>
   <string name="account_settings_notification_opens_unread_label">点击通知后打开未读邮件</string>
   <string name="account_settings_notification_opens_unread_summary">点击通知后搜索未读邮件</string>
-  <string name="account_settings_notification_unread_count_label">显示未读邮件数量</string>
-  <string name="account_settings_notification_unread_count_summary">在通知栏显示未读邮件数量</string>
   <string name="account_settings_mark_message_as_read_on_view_label">邮件打开时标记为已读</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">当邮件打开时标记为已读</string>
   <string name="account_settings_show_pictures_label">显示图片</string>

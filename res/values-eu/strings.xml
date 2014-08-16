@@ -417,8 +417,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_notify_self_summary">Bidaltzen ditudan mezuetarako jakinarazpena ikusi</string>
   <string name="account_settings_notification_opens_unread_label">Jakinarazpenak irakurgabeko mezuak irekitzen ditu</string>
   <string name="account_settings_notification_opens_unread_summary">Jakinarazpena irekitzean irakurri gabeko mezuak bilatu</string>
-  <string name="account_settings_notification_unread_count_label">Irakurgabeko kopurua ikusi</string>
-  <string name="account_settings_notification_unread_count_summary">Irakurgabeko mezu kopurua ikusi jakinarazpen barran.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Irekitzean irakurrita markatu</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Mezu bat irekitzerakoan irakurri bezala markatu</string>
   <string name="account_settings_show_pictures_label">Irudiak beti ikusi</string>

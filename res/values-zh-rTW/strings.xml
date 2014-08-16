@@ -387,8 +387,6 @@
   <string name="account_settings_notify_self_summary">寄送郵件時顯示通知</string>
   <string name="account_settings_notification_opens_unread_label">點擊通知後打開未讀郵件</string>
   <string name="account_settings_notification_opens_unread_summary">點擊通知後搜尋未讀郵件</string>
-  <string name="account_settings_notification_unread_count_label">顯示未讀郵件數</string>
-  <string name="account_settings_notification_unread_count_summary">在通知欄上顯示未讀郵件數</string>
   <string name="account_settings_mark_message_as_read_on_view_label">開啟自動標記已讀</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">開啟檢視郵件內容時自動標記為已讀</string>
   <string name="account_settings_show_pictures_label">顯示圖片</string>

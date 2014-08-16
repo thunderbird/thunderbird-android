@@ -424,8 +424,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine Ihrer eigenen E-Mail-Adressen als Absender tragen</string>
   <string name="account_settings_notification_opens_unread_label">Ungelesene Nachrichten öffnen</string>
   <string name="account_settings_notification_opens_unread_summary">Beim Öffnen einer Benachrichtigung Liste der ungelesenen Nachrichten anzeigen</string>
-  <string name="account_settings_notification_unread_count_label">Anzahl anzeigen</string>
-  <string name="account_settings_notification_unread_count_summary">Anzahl der ungelesenen Nachrichten in der Statuszeile anzeigen</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Beim Öffnen als gelesen markieren</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Nachricht als gelesen markieren, sobald sie zum Betrachten geöffnet wird</string>
   <string name="account_settings_show_pictures_label">Bilder automatisch anzeigen</string>

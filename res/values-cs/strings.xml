@@ -417,8 +417,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="account_settings_notify_self_summary">Oznamovat i v případě odeslání pošty s identitou účtu</string>
   <string name="account_settings_notification_opens_unread_label">Oznámení otevírá nepřečtené zprávy</string>
   <string name="account_settings_notification_opens_unread_summary">Vyhledává nepřečtené zprávy, je-li otevřeno oznámení</string>
-  <string name="account_settings_notification_unread_count_label">Zobrazit počet nepřečtených</string>
-  <string name="account_settings_notification_unread_count_summary">Zobrazit počet nepřečtených zpráv v řádky upozornení.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Označit jako přečtenou po otevření</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Označit zprávu jako přečtenou po otevření</string>
   <string name="account_settings_show_pictures_label">Vždy zobrazovat obrázky</string>

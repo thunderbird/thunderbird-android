@@ -187,7 +187,6 @@ public class Account implements BaseAccount {
     private int mMaxPushFolders;
     private int mIdleRefreshMinutes;
     private boolean goToUnreadMessageSearch;
-    private boolean mNotificationShowsUnreadCount;
     private final Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
@@ -291,7 +290,6 @@ public class Account implements BaseAccount {
         mMaxPushFolders = 10;
         mChipColor = pickColor(context);
         goToUnreadMessageSearch = false;
-        mNotificationShowsUnreadCount = true;
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
@@ -398,7 +396,6 @@ public class Account implements BaseAccount {
 
         mMaxPushFolders = prefs.getInt(mUuid + ".maxPushFolders", 10);
         goToUnreadMessageSearch = prefs.getBoolean(mUuid + ".goToUnreadMessageSearch", false);
-        mNotificationShowsUnreadCount = prefs.getBoolean(mUuid + ".notificationUnreadCount", true);
         subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly", false);
         maximumPolledMessageAge = prefs.getInt(mUuid + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid + ".maximumAutoDownloadMessageSize", 32768);
@@ -566,7 +563,6 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".led");
         editor.remove(mUuid + ".ledColor");
         editor.remove(mUuid + ".goToUnreadMessageSearch");
-        editor.remove(mUuid + ".notificationUnreadCount");
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
         editor.remove(mUuid + ".maximumAutoDownloadMessageSize");
@@ -732,7 +728,6 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".searchableFolders", searchableFolders.name());
         editor.putInt(mUuid + ".chipColor", mChipColor);
         editor.putBoolean(mUuid + ".goToUnreadMessageSearch", goToUnreadMessageSearch);
-        editor.putBoolean(mUuid + ".notificationUnreadCount", mNotificationShowsUnreadCount);
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
@@ -1522,14 +1517,6 @@ public class Account implements BaseAccount {
 
     public synchronized void setGoToUnreadMessageSearch(boolean goToUnreadMessageSearch) {
         this.goToUnreadMessageSearch = goToUnreadMessageSearch;
-    }
-
-    public boolean isNotificationShowsUnreadCount() {
-        return mNotificationShowsUnreadCount;
-    }
-
-    public void setNotificationShowsUnreadCount(boolean notificationShowsUnreadCount) {
-        this.mNotificationShowsUnreadCount = notificationShowsUnreadCount;
     }
 
     public synchronized boolean subscribedFoldersOnly() {

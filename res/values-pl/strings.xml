@@ -416,8 +416,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_settings_notify_self_summary">Powiadamiaj również o wiadomościach, które sam wysłałem</string>
   <string name="account_settings_notification_opens_unread_label">Nowe nieprzeczytane</string>
   <string name="account_settings_notification_opens_unread_summary">Powiadomienie o nieprzeczytanych wiadomościach</string>
-  <string name="account_settings_notification_unread_count_label">Liczba nieprzeczytanych</string>
-  <string name="account_settings_notification_unread_count_summary">Pokaż liczbę nieprzeczytanych wiadomości w pasku powiadomień</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Oznacz jako przeczytane</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Oznacz wiadomość jako przeczytaną przy otwieraniu</string>
   <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazki</string>

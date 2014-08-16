@@ -426,8 +426,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_notify_self_summary">このアカウントからのメールも通知する</string>
   <string name="account_settings_notification_opens_unread_label">未読メール通知の動作</string>
   <string name="account_settings_notification_opens_unread_summary">通知を開いた際に未読メールを検索する</string>
-  <string name="account_settings_notification_unread_count_label">未読件数の表示</string>
-  <string name="account_settings_notification_unread_count_summary">通知バーに未読メッセージの件数を表示する</string>
   <string name="account_settings_mark_message_as_read_on_view_label">開くと同時に既読にする</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを参照したときに既読にする</string>
   <string name="account_settings_show_pictures_label">画像を自動で表示</string>

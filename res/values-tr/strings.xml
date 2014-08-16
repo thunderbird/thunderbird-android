@@ -381,8 +381,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_settings_notify_self_summary">Gönderdiğim mesajlar için bir bildirim göster</string>
   <string name="account_settings_notification_opens_unread_label">Okunmamış mesaj bildirimi açık</string>
   <string name="account_settings_notification_opens_unread_summary">Bildirim açık olduğunda okunmamış mesajlar için arama yap</string>
-  <string name="account_settings_notification_unread_count_label">Okunmamış sayısını göster</string>
-  <string name="account_settings_notification_unread_count_summary">Bildirim çubuğunda okunmamış mesaj numarasını göster.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Mesaj açılırken okundu işaretle</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Mesaj okunmak üzere açıldığında okundu olarak işaretle</string>
   <string name="account_settings_show_pictures_label">Daima resimleri göster</string>

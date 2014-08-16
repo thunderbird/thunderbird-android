@@ -411,8 +411,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_settings_notify_self_summary">Mutassa az állapotsoron ha a küldés sikeres volt</string>
   <string name="account_settings_notification_opens_unread_label">Értesítés megnyitása</string>
   <string name="account_settings_notification_opens_unread_summary">Értesítésre kattintva megnyitja az olvasatlan üzeneteket</string>
-  <string name="account_settings_notification_unread_count_label">Olvasatlanok kijelzése</string>
-  <string name="account_settings_notification_unread_count_summary">Olvasatlan levelek száma az állapotsoron.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Üzenet megjelölése olvasottnak megnyitáskor</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Olvasottnak jelöli az üzenetet, ha megnézik</string>
   <string name="account_settings_show_pictures_label">Képek megjelenítése</string>

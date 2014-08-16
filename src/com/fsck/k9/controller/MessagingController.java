@@ -4770,12 +4770,6 @@ public class MessagingController implements Runnable {
         return summary;
     }
 
-    private static final boolean platformShowsNumberInNotification() {
-        // Honeycomb and newer don't show the number as overlay on the notification icon.
-        // However, the number will appear in the detailed notification view.
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-    }
-
     public static final boolean platformSupportsExtendedNotifications() {
         // supported in Jellybean
         // TODO: use constant once target SDK is set to >= 16
@@ -4851,9 +4845,7 @@ public class MessagingController implements Runnable {
         final int newMessages = data.getNewMessageCount();
         final int unreadCount = data.unreadBeforeNotification + newMessages;
 
-        if (account.isNotificationShowsUnreadCount() || platformShowsNumberInNotification()) {
-            builder.setNumber(unreadCount);
-        }
+        builder.setNumber(unreadCount);
 
         String accountDescr = (account.getDescription() != null) ?
                 account.getDescription() : account.getEmail();

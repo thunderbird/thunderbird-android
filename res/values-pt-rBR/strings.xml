@@ -415,8 +415,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_settings_notify_self_summary">Mostrar avisos para mensagens que eu envio</string>
   <string name="account_settings_notification_opens_unread_label">Avisos abrem mensagens não lidas</string>
   <string name="account_settings_notification_opens_unread_summary">Procurar por mensagens não lidas quando o aviso for aberto</string>
-  <string name="account_settings_notification_unread_count_label">Mostrar contagem de não lidas</string>
-  <string name="account_settings_notification_unread_count_summary">Mostrar o número de mensagens não lidas na barra de notificação.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensagem como lida ao abrir</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida ao abrir e visualizar</string>
   <string name="account_settings_show_pictures_label">Sempre mostrar imagens</string>

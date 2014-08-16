@@ -425,8 +425,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_notify_self_summary">Показать уведомление при отправке почты</string>
   <string name="account_settings_notification_opens_unread_label">Перейти в непрочитанные</string>
   <string name="account_settings_notification_opens_unread_summary">Перейти к непрочитанным сообщениям при нажатии на уведомление</string>
-  <string name="account_settings_notification_unread_count_label">Счётчик непрочитанных</string>
-  <string name="account_settings_notification_unread_count_summary">Показать количество непрочитанных в панели уведомлений</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Открытое прочитано</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
   <string name="account_settings_show_pictures_label">Показать изображения</string>

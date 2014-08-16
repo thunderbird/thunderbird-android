@@ -425,8 +425,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_notify_self_summary">Zobraziť oznámenie pre odoslané správy</string>
   <string name="account_settings_notification_opens_unread_label">Oznámenie otvorí neprečítané správy</string>
   <string name="account_settings_notification_opens_unread_summary">Po otvorení oznámenia zobraziť neprečítané správy</string>
-  <string name="account_settings_notification_unread_count_label">Zobraziť počet neprečítaných</string>
-  <string name="account_settings_notification_unread_count_summary">Zobraziť počet neprečítaných správ v notifikačnej lište</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Po otvorení označiť ako prečítané</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Označiť správu ako prečítanú po jej otvorení na zobrazenie</string>
   <string name="account_settings_show_pictures_label">Vždy zobraziť obrázky</string>

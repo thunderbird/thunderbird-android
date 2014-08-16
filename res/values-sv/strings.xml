@@ -417,8 +417,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
   <string name="account_settings_notify_self_summary">Notifiera även för e-post som jag själv har skickat</string>
   <string name="account_settings_notification_opens_unread_label">Notifieringar öppnar oläst e-post</string>
   <string name="account_settings_notification_opens_unread_summary">Letar efter oläst e-post när notifieringen öppnas</string>
-  <string name="account_settings_notification_unread_count_label">Visa antal olästa</string>
-  <string name="account_settings_notification_unread_count_summary">Visar antalet olästa brev i notifieringsytan.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst vid visning</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markera ett meddelande som läst när det visas</string>
   <string name="account_settings_show_pictures_label">Visa bilder automatiskt</string>

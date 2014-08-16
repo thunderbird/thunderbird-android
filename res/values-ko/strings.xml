@@ -415,8 +415,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_settings_notify_self_summary">내가 보낸 메시지에 대해 알림 보기</string>
   <string name="account_settings_notification_opens_unread_label">읽지 않은 메일에 대해 알림</string>
   <string name="account_settings_notification_opens_unread_summary">알림을 열 때 읽지 않은 메일을 찾습니다</string>
-  <string name="account_settings_notification_unread_count_label">읽지 않은 메일 수 세기</string>
-  <string name="account_settings_notification_unread_count_summary">읽지 않은 메시지의 수를 상태바에 보여 줍니다</string>
   <string name="account_settings_mark_message_as_read_on_view_label">열어서 메시지를 읽은 것으로 표시</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">메시지를 열면 읽은 것으로 표시합니다</string>
   <string name="account_settings_show_pictures_label">항상 그림 보기</string>

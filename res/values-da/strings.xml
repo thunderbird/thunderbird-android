@@ -412,8 +412,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_settings_notify_self_summary">Vis besked for mails sendt af mig</string>
   <string name="account_settings_notification_opens_unread_label">Klik på besked, viser ulæste mails</string>
   <string name="account_settings_notification_opens_unread_summary">Søger efter ulæste mails når besked vises</string>
-  <string name="account_settings_notification_unread_count_label">Vis antal ulæste mails</string>
-  <string name="account_settings_notification_unread_count_summary">Vis antallet af ulæste mails i statusbar.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marker som læst ved åbning</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marker som læst når meddelses åbnes for læsning</string>
   <string name="account_settings_show_pictures_label">Vis altid billeder</string>

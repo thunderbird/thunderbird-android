@@ -350,8 +350,6 @@
   <string name="account_settings_notify_self_summary">הצג התראה להודעות ששלחתי</string>
   <string name="account_settings_notification_opens_unread_label">ההתראה פותחת הודעות שלא נקראו</string>
   <string name="account_settings_notification_opens_unread_summary">חיפוש אחר הודעות שלא נקראו כאשר ההתראה נפתחת</string>
-  <string name="account_settings_notification_unread_count_label">הצג מספר שלא נקראו</string>
-  <string name="account_settings_notification_unread_count_summary">הצג את מספר ההודעות שלא נקראו בשורת ההתראות.</string>
   <string name="account_settings_show_pictures_label">תמיד הצג תמונות</string>
   <string name="account_settings_show_pictures_never">לא</string>
   <string name="account_settings_show_pictures_only_from_contacts">מאנשי הקשר</string>

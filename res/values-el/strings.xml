@@ -416,8 +416,6 @@
   <string name="account_settings_notify_self_summary">Προβολή ειδοποίησης για μηνύματα που απέστειλα</string>
   <string name="account_settings_notification_opens_unread_label">Η ειδοποίηση ανοίγει μη αναγνωσμένα μηνύματα</string>
   <string name="account_settings_notification_opens_unread_summary">Αναζητά μη αναγνωσμένα μηνύματα όταν ανοίγεται η ειδοποίηση</string>
-  <string name="account_settings_notification_unread_count_label">Προβολή πλήθους μη αναγνωσμένων</string>
-  <string name="account_settings_notification_unread_count_summary">Προβολή πλήθους μη αναγνωσμένων μηνυμάτων στη γραμμή κατάστασης.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Σημείωση ως αναγνωσμένου με την ανάγνωση</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
   <string name="account_settings_show_pictures_label">Προβολή εικόνων πάντα</string>

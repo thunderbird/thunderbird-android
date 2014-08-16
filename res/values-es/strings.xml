@@ -426,8 +426,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_settings_notify_self_summary">Mostrar notificaciones durante el envío de correo</string>
   <string name="account_settings_notification_opens_unread_label">Abrir correo no leído</string>
   <string name="account_settings_notification_opens_unread_summary">Abrir correo no leído desde la notificación</string>
-  <string name="account_settings_notification_unread_count_label">Mostrar número de mensajes no leídos</string>
-  <string name="account_settings_notification_unread_count_summary">Mostrar número de mensajes no leídos en barra de notificaciones.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensaje como leído al abrirlo</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar mensaje como leído cuando se abre para verlo</string>
   <string name="account_settings_show_pictures_label">Mostrar imágenes siempre</string>

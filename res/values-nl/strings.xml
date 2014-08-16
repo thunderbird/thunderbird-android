@@ -416,8 +416,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_settings_notify_self_summary">Notificatie ook voor mail verzonden vanaf een identiteit</string>
   <string name="account_settings_notification_opens_unread_label">Notificatie opent ongelezen berichten</string>
   <string name="account_settings_notification_opens_unread_summary">Zoekt voor ongelezen berichten wanneer Notificatie is geopend</string>
-  <string name="account_settings_notification_unread_count_label">Toon aantal ongelezen</string>
-  <string name="account_settings_notification_unread_count_summary">Toon het aantal ongelezen berichten in de \'notification bar\'.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markeer als gelezen als geopend</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markeer als gelezen wanneer ingezien</string>
   <string name="account_settings_show_pictures_label">Laat afbeeldingen automatisch zien</string>
