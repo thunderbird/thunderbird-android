@@ -18,7 +18,6 @@ import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.search.SqlQueryBuilder;
 
-import android.annotation.TargetApi;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -797,7 +796,6 @@ public class EmailProvider extends ContentProvider {
             return super.getString(realColumnIndex);
         }
 
-        @TargetApi(11)
         @Override
         public int getType(int columnIndex) {
             int realColumnIndex = mColumnMapping[columnIndex];

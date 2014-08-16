@@ -1,13 +1,11 @@
 
 package com.fsck.k9.helper;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
@@ -24,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -696,19 +693,6 @@ public class Utility {
         }
 
         return null;
-    }
-
-    @SuppressLint("NewApi")
-    public static String[] copyOf(String[] original, int newLength) {
-        if (Build.VERSION.SDK_INT >= 9) {
-            return Arrays.copyOf(original, newLength);
-        }
-
-        String[] newArray = new String[newLength];
-        int copyLength = (original.length >= newLength) ? newLength : original.length;
-        System.arraycopy(original, 0, newArray, 0, copyLength);
-
-        return newArray;
     }
 
     /**

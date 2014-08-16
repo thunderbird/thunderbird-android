@@ -19,7 +19,6 @@ package com.fsck.k9.helper;
 
 import java.util.Comparator;
 
-import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
@@ -204,7 +203,6 @@ public class MergeCursor implements Cursor {
         return mActiveCursor.getString(columnIndex);
     }
 
-    @TargetApi(11)
     @Override
     public int getType(int columnIndex) {
         return mActiveCursor.getType(columnIndex);

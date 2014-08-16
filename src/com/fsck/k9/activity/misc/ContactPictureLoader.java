@@ -9,7 +9,6 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -23,7 +22,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.v4.util.LruCache;
 import android.widget.QuickContactBadge;
 import com.fsck.k9.helper.Contacts;
@@ -103,15 +101,10 @@ public class ContactPictureLoader {
         final int cacheSize = 1024 * 1024 * memClass / 16;
 
         mBitmapCache = new LruCache<Address, Bitmap>(cacheSize) {
-            @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
             @Override
             protected int sizeOf(Address key, Bitmap bitmap) {
                 // The cache size will be measured in bytes rather than number of items.
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-                    return bitmap.getByteCount();
-                }
-
-                return bitmap.getRowBytes() * bitmap.getHeight();
+                return bitmap.getByteCount();
             }
         };
     }
@@ -148,7 +141,7 @@ public class ContactPictureLoader {
                     calculateFallbackBitmap(address), task);
             badge.setImageDrawable(asyncDrawable);
             try {
-                task.exec();
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             } catch (RejectedExecutionException e) {
                 // We flooded the thread pool queue... use a fallback picture
                 badge.setImageBitmap(calculateFallbackBitmap(address));
@@ -273,15 +266,6 @@ public class ContactPictureLoader {
         ContactPictureRetrievalTask(QuickContactBadge badge, Address address) {
             mQuickContactBadgeReference = new WeakReference<QuickContactBadge>(badge);
             mAddress = new Address(address);
-        }
-
-        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-        public void exec(Void... args) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, args);
-            } else {
-                execute(args);
-            }
         }
 
         public Address getAddress() {

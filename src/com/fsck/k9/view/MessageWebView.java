@@ -1,9 +1,7 @@
 package com.fsck.k9.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -83,7 +81,7 @@ public class MessageWebView extends RigidWebView {
         // TODO:  Review alternatives.  NARROW_COLUMNS is deprecated on KITKAT
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
 
-        disableOverscrolling();
+        setOverScrollMode(OVER_SCROLL_NEVER);
 
         webSettings.setTextZoom(K9.getFontSizes().getMessageViewContentAsPercent());
 
@@ -94,23 +92,13 @@ public class MessageWebView extends RigidWebView {
     /**
      * Disable on-screen zoom controls on devices that support zooming via pinch-to-zoom.
      */
-    @TargetApi(11)
     private void disableDisplayZoomControls() {
-        if (Build.VERSION.SDK_INT >= 11) {
-            PackageManager pm = getContext().getPackageManager();
-            boolean supportsMultiTouch =
-                    pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
-                    pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
+        PackageManager pm = getContext().getPackageManager();
+        boolean supportsMultiTouch =
+                pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
+                pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
 
-            getSettings().setDisplayZoomControls(!supportsMultiTouch);
-        }
-    }
-
-    @TargetApi(9)
-    private void disableOverscrolling() {
-        if (Build.VERSION.SDK_INT >= 9) {
-            setOverScrollMode(OVER_SCROLL_NEVER);
-        }
+        getSettings().setDisplayZoomControls(!supportsMultiTouch);
     }
 
     /**
