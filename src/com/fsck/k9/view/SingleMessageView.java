@@ -6,19 +6,15 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -91,11 +87,9 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private static final int DISPLAY_NAME_INDEX = 1;
 
 
-    private boolean mScreenReaderEnabled;
     private MessageCryptoView mCryptoView;
     private MessageOpenPgpView mOpenPgpView;
     private MessageWebView mMessageContentView;
-    private AccessibleWebView mAccessibleMessageContentView;
     private MessageHeader mHeaderContainer;
     private LinearLayout mAttachments;
     private Button mShowHiddenAttachments;
@@ -118,7 +112,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     public void initialize(Fragment fragment) {
         Activity activity = fragment.getActivity();
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
-        mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
         mMessageContentView.configure();
         activity.registerForContextMenu(mMessageContentView);
         mMessageContentView.setOnCreateContextMenuListener(this);
@@ -151,25 +144,15 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);
         mAttachmentsContainer.setVisibility(View.GONE);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-                isScreenReaderActive(activity)) {
-            // Only use the special screen reader mode on pre-ICS devices with active screen reader
-            mAccessibleMessageContentView.setVisibility(View.VISIBLE);
-            mMessageContentView.setVisibility(View.GONE);
-            mScreenReaderEnabled = true;
-        } else {
-            mAccessibleMessageContentView.setVisibility(View.GONE);
-            mMessageContentView.setVisibility(View.VISIBLE);
-            mScreenReaderEnabled = false;
+        mMessageContentView.setVisibility(View.VISIBLE);
 
-            // the HTC version of WebView tries to force the background of the
-            // titlebar, which is really unfair.
-            TypedValue outValue = new TypedValue();
-            getContext().getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
-            mHeaderContainer.setBackgroundColor(outValue.data);
-            // also set background of the whole view (including the attachments view)
-            setBackgroundColor(outValue.data);
-        }
+        // the HTC version of WebView tries to force the background of the
+        // titlebar, which is really unfair.
+        TypedValue outValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+        mHeaderContainer.setBackgroundColor(outValue.data);
+        // also set background of the whole view (including the attachments view)
+        setBackgroundColor(outValue.data);
 
         mShowHiddenAttachments.setOnClickListener(this);
         mShowMessageAction.setOnClickListener(this);
@@ -443,43 +426,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     }
 
 
-    private boolean isScreenReaderActive(Activity activity) {
-        final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
-        final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
-        // Restrict the set of intents to only accessibility services that have
-        // the category FEEDBACK_SPOKEN (aka, screen readers).
-        Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
-        screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
-        List<ResolveInfo> screenReaders = activity.getPackageManager().queryIntentServices(
-                                              screenReaderIntent, 0);
-        ContentResolver cr = activity.getContentResolver();
-        Cursor cursor = null;
-        int status = 0;
-        for (ResolveInfo screenReader : screenReaders) {
-            // All screen readers are expected to implement a content provider
-            // that responds to
-            // content://<nameofpackage>.providers.StatusProvider
-            cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
-                                        + ".providers.StatusProvider"), null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    // These content providers use a special cursor that only has
-                    // one element,
-                    // an integer that is 1 if the screen reader is running.
-                    status = cursor.getInt(0);
-                    if (status == 1) {
-                        return true;
-                    }
-                }
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
-        }
-        return false;
-    }
-
     public boolean showPictures() {
         return mShowPictures;
     }
@@ -640,12 +586,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     }
 
     private void loadBodyFromText(String emailText) {
-        if (mScreenReaderEnabled) {
-            mAccessibleMessageContentView.setText(emailText);
-        } else {
-            mMessageContentView.setText(emailText);
-        }
-
+        mMessageContentView.setText(emailText);
     }
 
     public void updateCryptoLayout(CryptoProvider cp, PgpData pgpData, Message message) {
@@ -710,14 +651,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     }
 
     public void zoom(KeyEvent event) {
-        if (mScreenReaderEnabled) {
-            mAccessibleMessageContentView.zoomIn();
+        if (event.isShiftPressed()) {
+            mMessageContentView.zoomIn();
         } else {
-            if (event.isShiftPressed()) {
-                mMessageContentView.zoomIn();
-            } else {
-                mMessageContentView.zoomOut();
-            }
+            mMessageContentView.zoomOut();
         }
     }
 
