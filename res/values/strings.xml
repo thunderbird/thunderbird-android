@@ -1103,6 +1103,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="fetching_attachment_dialog_title_save">Saving draft</string>
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
     
+    <string name="show_password">Show password</string>
+    
     <!-- === OpenPGP specific ================================================================== -->
     <string name="openpgp_decrypting_verifying">Decrypting/Verifying…</string>
     <string name="openpgp_successful_decryption">Successful decryption</string>
