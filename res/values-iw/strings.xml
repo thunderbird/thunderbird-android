@@ -541,8 +541,6 @@
   <string name="messageview_preferences">הודעות</string>
   <string name="settings_theme_label">ערכת נושא</string>
   <string name="settings_language_label">שפה</string>
-  <string name="settings_messageview_mobile_layout_label">פריסת עמודה יחידה</string>
-  <string name="settings_messageview_mobile_layout_summary">אתחל הודעות HTML ותתאים אותם למסכים קטנים.</string>
   <string name="setting_language_system">ברירות מחדל מערכת</string>
   <string name="background_ops_label">סנכרון ברקע</string>
   <string name="background_ops_never">אף פעם</string>

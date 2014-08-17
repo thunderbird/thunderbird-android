@@ -154,9 +154,6 @@ public class GlobalSettings {
         s.put("messageViewShowNext", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
-        s.put("mobileOptimizedLayout", Settings.versions(
-                new V(1, new BooleanSetting(false))
-            ));
         s.put("quietTimeEnabled", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));

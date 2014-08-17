@@ -649,8 +649,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="settings_message_theme_selection_label">Festes Nachrichten-Design</string>
   <string name="settings_message_theme_selection_summary_off">Nachrichten-Design während des Ansehens der Nachricht auswählen</string>
   <string name="settings_message_theme_selection_summary_on">Immer das ausgewählte Nachrichten-Design verwenden</string>
-  <string name="settings_messageview_mobile_layout_label">Einfaches Layout</string>
-  <string name="settings_messageview_mobile_layout_summary">HTML-Nachrichten für kleine Displays optimieren</string>
   <string name="setting_language_system">Systemvorgabe</string>
   <string name="background_ops_label">Hintergrund-Synchronisierung</string>
   <string name="background_ops_never">Nie</string>

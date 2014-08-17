@@ -238,12 +238,6 @@
 
             <CheckBoxPreference
                 android:persistent="false"
-                android:key="messageview_mobile_layout"
-                android:title="@string/settings_messageview_mobile_layout_label"
-                android:summary="@string/settings_messageview_mobile_layout_summary" />
-
-            <CheckBoxPreference
-                android:persistent="false"
                 android:key="messageview_autofit_width"
                 android:title="@string/global_settings_messageview_autofit_width_label"
                 android:summary="@string/global_settings_messageview_autofit_width_summary"/>

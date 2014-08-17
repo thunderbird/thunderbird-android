@@ -574,8 +574,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
   <string name="messageview_preferences">mensaxes</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_language_label">Idioma</string>
-  <string name="settings_messageview_mobile_layout_label">Columna única</string>
-  <string name="settings_messageview_mobile_layout_summary">Reformatea mensaxes HTML para pantallas pequenas</string>
   <string name="setting_language_system">Configurado no sistema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>

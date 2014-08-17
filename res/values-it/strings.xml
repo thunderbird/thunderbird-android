@@ -651,8 +651,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="settings_message_theme_selection_label">Tema fisso del messaggio</string>
   <string name="settings_message_theme_selection_summary_off">Seleziona il tema della vista dei messaggi durante la visualizzazione del messaggio</string>
   <string name="settings_message_theme_selection_summary_on">Usa un tema fisso nella vista dei messaggi</string>
-  <string name="settings_messageview_mobile_layout_label">Disposizione a colonna singola</string>
-  <string name="settings_messageview_mobile_layout_summary">Riformatta i messaggi HTML per schermi più piccoli</string>
   <string name="setting_language_system">Impostazioni predefinite di sistema</string>
   <string name="background_ops_label">Sincronizzazione in background</string>
   <string name="background_ops_never">Mai</string>

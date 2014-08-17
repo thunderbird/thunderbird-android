@@ -593,8 +593,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="messageview_preferences">Mesajlar</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_language_label">Dil</string>
-  <string name="settings_messageview_mobile_layout_label">Tek sütun düzeni</string>
-  <string name="settings_messageview_mobile_layout_summary">Daha küçük ekranlar için HTML mesajları yeniden biçimlendir</string>
   <string name="setting_language_system">Sistem Varsayılanları</string>
   <string name="background_ops_label">Arkaplan senkronizasyonu</string>
   <string name="background_ops_never">Asla</string>

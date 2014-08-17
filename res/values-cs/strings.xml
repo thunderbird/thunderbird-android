@@ -642,8 +642,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="settings_message_theme_selection_label">Neměnné téma zpráv</string>
   <string name="settings_message_theme_selection_summary_off">Lze vybrat téma při prohlížení zprávy</string>
   <string name="settings_message_theme_selection_summary_on">Použíj neměnné téma při prohlížení zprávy</string>
-  <string name="settings_messageview_mobile_layout_label">Jednosloupcové uspořádání</string>
-  <string name="settings_messageview_mobile_layout_summary">Přeformátovat HTML zprávy pro menší obrazovky</string>
   <string name="setting_language_system">Systémový výchozí</string>
   <string name="background_ops_label">Synchronizace na pozadí</string>
   <string name="background_ops_never">Nikdy</string>

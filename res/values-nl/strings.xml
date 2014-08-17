@@ -641,8 +641,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="settings_message_theme_selection_label">Vast berichten thema</string>
   <string name="settings_message_theme_selection_summary_off">Kies het thema tijdens het bekijken van het bericht</string>
   <string name="settings_message_theme_selection_summary_on">Gebruik een vast thema om het bericht te bekijken</string>
-  <string name="settings_messageview_mobile_layout_label">1-kolom layout</string>
-  <string name="settings_messageview_mobile_layout_summary">Herschik HTML berichten voor kleinere schermen</string>
   <string name="setting_language_system">Volgens systeem</string>
   <string name="background_ops_label">Achtergrond sync</string>
   <string name="background_ops_never">Nooit</string>

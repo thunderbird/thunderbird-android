@@ -255,7 +255,6 @@ public class K9 extends Application {
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
     private static boolean mHideSpecialAccounts = false;
-    private static boolean mMobileOptimizedLayout = false;
     private static boolean mAutofitWidth;
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
@@ -514,7 +513,6 @@ public class K9 extends Application {
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
-        editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
         editor.putBoolean("autofitWidth", mAutofitWidth);
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
@@ -733,7 +731,6 @@ public class K9 extends Application {
         mMessageListStars = sprefs.getBoolean("messageListStars", true);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
-        mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
         mAutofitWidth = sprefs.getBoolean("autofitWidth", true);
 
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
@@ -978,14 +975,6 @@ public class K9 extends Application {
 
     public static void setUseVolumeKeysForListNavigation(boolean enabled) {
         mUseVolumeKeysForListNavigation = enabled;
-    }
-
-    public static boolean mobileOptimizedLayout() {
-        return mMobileOptimizedLayout;
-    }
-
-    public static void setMobileOptimizedLayout(boolean mobileOptimizedLayout) {
-        mMobileOptimizedLayout = mobileOptimizedLayout;
     }
 
     public static boolean autofitWidth() {

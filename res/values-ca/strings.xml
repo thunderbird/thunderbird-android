@@ -642,8 +642,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="settings_message_theme_selection_label">Tema de missatge fix</string>
   <string name="settings_message_theme_selection_summary_off">Selecciona el tema de la vista de missatge al mostrar-lo.</string>
   <string name="settings_message_theme_selection_summary_on">Utilitza un tema fix per a tots els missatges.</string>
-  <string name="settings_messageview_mobile_layout_label">Disposició sola columna</string>
-  <string name="settings_messageview_mobile_layout_summary">Reformata missatges HTML missatges per a pantalles petites</string>
   <string name="setting_language_system">Per defecte del sistema</string>
   <string name="background_ops_label">Sincronització 2n pla</string>
   <string name="background_ops_never">Mai</string>

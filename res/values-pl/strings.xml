@@ -641,8 +641,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="settings_message_theme_selection_label">Stała kolorystyka widoku wiadomości</string>
   <string name="settings_message_theme_selection_summary_off">Wybierz kolorystykę z poziomu widoku wiadomości</string>
   <string name="settings_message_theme_selection_summary_on">Użyj kolorystyki wskazanej w konfiguracji</string>
-  <string name="settings_messageview_mobile_layout_label">Ułożenie z 1 kolumną</string>
-  <string name="settings_messageview_mobile_layout_summary">Przeformatuj wiadomości HTML dla mniejszych ekranów</string>
   <string name="setting_language_system">Domyślny systemowy</string>
   <string name="background_ops_label">Synchronizacja w tle</string>
   <string name="background_ops_never">Nigdy</string>

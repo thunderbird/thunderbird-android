@@ -640,8 +640,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="settings_message_theme_selection_label">별도의 메시지 보기 테마</string>
   <string name="settings_message_theme_selection_summary_off">메시지 보기에 별도의 테마를 사용</string>
   <string name="settings_message_theme_selection_summary_on">고정 테마 사용</string>
-  <string name="settings_messageview_mobile_layout_label">한 칸에 표시</string>
-  <string name="settings_messageview_mobile_layout_summary">작은 화면에서 HTML 메시지를 재구성</string>
   <string name="setting_language_system">시스템 기본값</string>
   <string name="background_ops_label">백그라운드 동기화</string>
   <string name="background_ops_never">하지 않음</string>

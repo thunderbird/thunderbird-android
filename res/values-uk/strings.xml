@@ -639,8 +639,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="settings_language_label">Мова</string>
   <string name="settings_message_theme_selection_label">Встановити тему повідомлення</string>
   <string name="settings_message_theme_selection_summary_off">Виберіть перегляд теми повідомлення під час перегляду повідомлення</string>
-  <string name="settings_messageview_mobile_layout_label">режим одного стовпця</string>
-  <string name="settings_messageview_mobile_layout_summary">Форматування HTML повідомлення для маленького екрану</string>
   <string name="setting_language_system">Системна по замовчуванню</string>
   <string name="background_ops_label">Фонова синхронізація</string>
   <string name="background_ops_never">Ніколи</string>

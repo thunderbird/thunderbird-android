@@ -641,8 +641,6 @@
   <string name="settings_message_theme_selection_label">Θέμα σταθερού μηνύματος</string>
   <string name="settings_message_theme_selection_summary_off">Επιλογή του θέματος προβολής μηνύματος κατά την προβολή του μηνύματος</string>
   <string name="settings_message_theme_selection_summary_on">Χρήση θέματος σταθερού μηνύματος</string>
-  <string name="settings_messageview_mobile_layout_label">Μονόστηλη διάταξη</string>
-  <string name="settings_messageview_mobile_layout_summary">Μηνύματα HTML για μικρότερες οθόνες</string>
   <string name="setting_language_system">Εξ ορισμού του συστήματος</string>
   <string name="background_ops_label">Συγχρονισμός στο παρασκήνιο</string>
   <string name="background_ops_never">Ποτέ</string>

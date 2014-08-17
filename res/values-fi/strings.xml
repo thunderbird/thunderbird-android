@@ -651,8 +651,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="settings_message_theme_selection_label">Kiinteä viestiteema</string>
   <string name="settings_message_theme_selection_summary_off">Valitse viestinäkymän teema viestiä luettaessa</string>
   <string name="settings_message_theme_selection_summary_on">Käytä kiinteää viestinäkymän teemaa</string>
-  <string name="settings_messageview_mobile_layout_label">Yhden sarakkeen asettelu</string>
-  <string name="settings_messageview_mobile_layout_summary">Uudelleenmuotoile HTML-viestit pienemälle näytölle</string>
   <string name="setting_language_system">Järjestelmän oletus</string>
   <string name="background_ops_label">Synkronointi taustalla</string>
   <string name="background_ops_never">Ei koskaan</string>

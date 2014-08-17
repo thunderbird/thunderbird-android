@@ -630,8 +630,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="settings_message_theme_label">Üzenetmegjelenítés témája</string>
   <string name="settings_compose_theme_label">Üzenetírás témája</string>
   <string name="settings_language_label">Nyelv</string>
-  <string name="settings_messageview_mobile_layout_label">Egy oszlopos elrendezés</string>
-  <string name="settings_messageview_mobile_layout_summary">HTML üzenetek újraformázása a kisebb kijelzőkhöz.</string>
   <string name="setting_language_system">Alapértelmezett</string>
   <string name="background_ops_label">Háttérszinkronizálás</string>
   <string name="background_ops_never">Soha</string>

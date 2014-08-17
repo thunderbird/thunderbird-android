@@ -651,8 +651,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="settings_message_theme_selection_label">メッセージ表示画面のテーマを固定する</string>
   <string name="settings_message_theme_selection_summary_off">メッセージを表示するテーマを選択する</string>
   <string name="settings_message_theme_selection_summary_on">メッセージを表示するテーマを固定する</string>
-  <string name="settings_messageview_mobile_layout_label">凝縮レイアウト</string>
-  <string name="settings_messageview_mobile_layout_summary">小さい画面用にHTMLメッセージを再構成</string>
   <string name="setting_language_system">システム設定</string>
   <string name="background_ops_label">バックグラウンド同期</string>
   <string name="background_ops_never">使用しない</string>

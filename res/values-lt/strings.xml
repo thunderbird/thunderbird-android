@@ -643,8 +643,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="settings_message_theme_selection_label">Numatyta laiško tema</string>
   <string name="settings_message_theme_selection_summary_off">Peržiūrint laišką, pasirinkti laiško peržiūros temą</string>
   <string name="settings_message_theme_selection_summary_on">Naudoti numatytą laiškų peržiūros temą</string>
-  <string name="settings_messageview_mobile_layout_label">Glaudus išdėstymas</string>
-  <string name="settings_messageview_mobile_layout_summary">Performatuoti HTML laiškus mažesniems ekranams</string>
   <string name="setting_language_system">Sistemos numatyta</string>
   <string name="background_ops_label">Sinchronizuoti fone</string>
   <string name="background_ops_never">Niekada</string>

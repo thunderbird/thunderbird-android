@@ -642,8 +642,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
   <string name="settings_message_theme_selection_label">Fast meddelandetema</string>
   <string name="settings_message_theme_selection_summary_off">Välj tema för meddelandevyn medan meddelandet visas</string>
   <string name="settings_message_theme_selection_summary_on">Använd ett fast tema för meddelandevyn</string>
-  <string name="settings_messageview_mobile_layout_label">En-kolumns-layout</string>
-  <string name="settings_messageview_mobile_layout_summary">Formatera om HTML-brev för mindre skärmar</string>
   <string name="setting_language_system">Systemstandard</string>
   <string name="background_ops_label">Bakgrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
