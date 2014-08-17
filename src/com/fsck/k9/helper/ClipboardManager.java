@@ -1,38 +1,21 @@
 package com.fsck.k9.helper;
 
+import android.content.ClipData;
 import android.content.Context;
-import android.os.Build;
 
 
 /**
- * Helper class to access the system clipboard
- *
- * @see ClipboardManagerApi1
- * @see ClipboardManagerApi11
+ * Access the system clipboard using the new {@link ClipboardManager} introduced with API 11
  */
-public abstract class ClipboardManager {
-    /**
-     * Instance of the API-specific class that interfaces with the clipboard API.
-     */
+public class ClipboardManager {
+
     private static ClipboardManager sInstance = null;
 
-    /**
-     * Get API-specific instance of the {@code ClipboardManager} class
-     *
-     * @param context
-     *         A {@link Context} instance.
-     *
-     * @return Appropriate {@link ClipboardManager} instance for this device.
-     */
     public static ClipboardManager getInstance(Context context) {
         Context appContext = context.getApplicationContext();
 
         if (sInstance == null) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                sInstance = new ClipboardManagerApi1(appContext);
-            } else {
-                sInstance = new ClipboardManagerApi11(appContext);
-            }
+            sInstance = new ClipboardManager(appContext);
         }
 
         return sInstance;
@@ -59,5 +42,10 @@ public abstract class ClipboardManager {
      * @param text
      *         The actual text to be copied to the clipboard.
      */
-    public abstract void setText(String label, String text);
+    public void setText(String label, String text) {
+        android.content.ClipboardManager clipboardManager =
+                (android.content.ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        clipboardManager.setPrimaryClip(clip);
+    }
 }
