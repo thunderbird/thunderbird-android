@@ -38,7 +38,7 @@
         android:id="@+id/show_password"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:text="@string/show_password"
+        android:text="@string/account_setup_basics_show_password"
         />
     <com.fsck.k9.view.ClientCertificateSpinner
         android:id="@+id/account_client_certificate_spinner"
