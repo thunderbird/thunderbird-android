@@ -13,6 +13,7 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedKeyManager;
 import javax.security.auth.x500.X500Principal;
 
+import android.content.Context;
 import android.os.Build;
 import android.security.KeyChain;
 import android.security.KeyChainException;
@@ -31,11 +32,18 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
 
     private static PrivateKey sClientCertificateReferenceWorkaround;
 
+
+    private static synchronized void savePrivateKeyReference(PrivateKey privateKey) {
+        if (sClientCertificateReferenceWorkaround == null) {
+            sClientCertificateReferenceWorkaround = privateKey;
+        }
+    }
+
+
     private String mAlias;
-
     private X509Certificate[] mChain;
-
     private PrivateKey mPrivateKey;
+
 
     /**
      * @param alias  Must not be null nor empty
@@ -46,28 +54,10 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
     public KeyChainKeyManager(String alias) throws MessagingException {
         mAlias = alias;
 
+        Context context = K9.app;
         try {
-            mChain = KeyChain.getCertificateChain(K9.app, alias);
-            if (mChain == null || mChain.length == 0) {
-                throw new MessagingException("No certificate chain found for: " + alias);
-            }
-
-            /*
-             * We need to keep reference to the first private key retrieved so
-             * it won't get garbage collected. If it will then the whole app
-             * will crash on Android < 4.2 with "Fatal signal 11 code=1". See
-             * https://code.google.com/p/android/issues/detail?id=62319
-             */
-            if (sClientCertificateReferenceWorkaround == null
-                    && Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                mPrivateKey = retrieveFirstPrivateKey(alias);
-            } else {
-                mPrivateKey = KeyChain.getPrivateKey(K9.app, alias);
-            }
-
-            if (mPrivateKey == null) {
-                throw new MessagingException("No private key found for: " + alias);
-            }
+            mChain = fetchCertificateChain(context, alias);
+            mPrivateKey = fetchPrivateKey(context, alias);
         } catch (KeyChainException e) {
             // The certificate was possibly deleted.  Notify user of error.
             throw new CertificateValidationException(K9.app.getString(
@@ -76,6 +66,38 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
             throw new MessagingException(K9.app.getString(
                     R.string.client_certificate_retrieval_failure, alias), e);
         }
+    }
+
+    private X509Certificate[] fetchCertificateChain(Context context, String alias)
+            throws KeyChainException, InterruptedException, MessagingException {
+
+        X509Certificate[] chain = KeyChain.getCertificateChain(context, alias);
+        if (chain == null || chain.length == 0) {
+            throw new MessagingException("No certificate chain found for: " + alias);
+        }
+
+        return chain;
+    }
+
+    private PrivateKey fetchPrivateKey(Context context, String alias) throws KeyChainException,
+            InterruptedException, MessagingException {
+
+        PrivateKey privateKey = KeyChain.getPrivateKey(context, alias);
+        if (privateKey == null) {
+            throw new MessagingException("No private key found for: " + alias);
+        }
+
+        /*
+         * We need to keep reference to the first private key retrieved so
+         * it won't get garbage collected. If it will then the whole app
+         * will crash on Android < 4.2 with "Fatal signal 11 code=1". See
+         * https://code.google.com/p/android/issues/detail?id=62319
+         */
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            savePrivateKeyReference(privateKey);
+        }
+
+        return privateKey;
     }
 
     @Override
@@ -91,15 +113,6 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
     @Override
     public PrivateKey getPrivateKey(String alias) {
         return (mAlias.equals(alias) ? mPrivateKey : null);
-    }
-
-    private synchronized PrivateKey retrieveFirstPrivateKey(String alias)
-            throws KeyChainException, InterruptedException {
-        PrivateKey key = KeyChain.getPrivateKey(K9.app, alias);
-        if (sClientCertificateReferenceWorkaround == null) {
-            sClientCertificateReferenceWorkaround = key;
-        }
-        return key;
     }
 
     @Override
