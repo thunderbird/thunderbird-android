@@ -114,7 +114,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
                             mAccount, mDirection);
 
-                    if (mDirection.equals(CheckDirection.INCOMING)) {
+                    if (mDirection == CheckDirection.INCOMING) {
                         store = mAccount.getRemoteStore();
 
                         if (store instanceof WebDavStore) {
@@ -137,7 +137,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         finish();
                         return;
                     }
-                    if (mDirection.equals(CheckDirection.OUTGOING)) {
+                    if (mDirection == CheckDirection.OUTGOING) {
                         if (!(mAccount.getRemoteStore() instanceof WebDavStore)) {
                             setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
                         }

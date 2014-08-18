@@ -779,16 +779,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
              * this account type. Also don't ask when the username is missing.
              * Also don't ask when the AuthType is EXTERNAL.
              */
-            boolean configureOutgoingServer = !AuthType.EXTERNAL
-                    .equals(outgoing.authenticationType)
+            boolean configureOutgoingServer = AuthType.EXTERNAL != outgoing.authenticationType
                     && !WebDavStore.STORE_TYPE.equals(outgoing.type)
                     && outgoing.username != null
                     && !outgoing.username.isEmpty()
                     && (outgoing.password == null || outgoing.password
                             .isEmpty());
 
-            boolean configureIncomingServer = !AuthType.EXTERNAL
-                    .equals(incoming.authenticationType)
+            boolean configureIncomingServer = AuthType.EXTERNAL != incoming.authenticationType
                     && (incoming.password == null || incoming.password
                             .isEmpty());
 

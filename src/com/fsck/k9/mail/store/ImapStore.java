@@ -214,7 +214,7 @@ public class ImapStore extends Store {
                     authenticationType = AuthType.valueOf(userInfoParts[0]);
                     username = URLDecoder.decode(userInfoParts[1], "UTF-8");
 
-                    if (AuthType.EXTERNAL.equals(authenticationType)) {
+                    if (AuthType.EXTERNAL == authenticationType) {
                         clientCertificateAlias = URLDecoder.decode(userInfoParts[2], "UTF-8");
                     } else {
                         password = URLDecoder.decode(userInfoParts[2], "UTF-8");
@@ -290,7 +290,7 @@ public class ImapStore extends Store {
 
         AuthType authType = server.authenticationType;
         String userInfo;
-        if (authType.equals(AuthType.EXTERNAL)) {
+        if (authType == AuthType.EXTERNAL) {
             userInfo = authType.name() + ":" + userEnc + ":" + clientCertificateAliasEnc;
         } else {
             userInfo = authType.name() + ":" + userEnc + ":" + passwordEnc;

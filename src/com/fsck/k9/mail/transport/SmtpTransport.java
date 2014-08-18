@@ -105,7 +105,7 @@ public class SmtpTransport extends Transport {
                     // NOTE: In SmptTransport URIs, the authType comes last!
                     authType = AuthType.valueOf(userInfoParts[2]);
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    if (authType.equals(AuthType.EXTERNAL)) {
+                    if (authType == AuthType.EXTERNAL) {
                         clientCertificateAlias = URLDecoder.decode(userInfoParts[1], "UTF-8");
                     } else {
                         password = URLDecoder.decode(userInfoParts[1], "UTF-8");
@@ -166,7 +166,7 @@ public class SmtpTransport extends Transport {
         AuthType authType = server.authenticationType;
         // NOTE: authType is append at last item, in contrast to ImapStore and Pop3Store!
         if (authType != null) {
-            if (AuthType.EXTERNAL.equals(authType)) {
+            if (AuthType.EXTERNAL == authType) {
                 userInfo = userEnc + ":" + clientCertificateAliasEnc + ":" + authType.name();
             } else {
                 userInfo = userEnc + ":" + passwordEnc + ":" + authType.name();
@@ -326,8 +326,7 @@ public class SmtpTransport extends Transport {
 
             if (mUsername != null
                     && mUsername.length() > 0
-                    && (mPassword != null && mPassword.length() > 0 || AuthType.EXTERNAL
-                            .equals(mAuthType))) {
+                    && (mPassword != null && mPassword.length() > 0 || AuthType.EXTERNAL == mAuthType)) {
 
                 switch (mAuthType) {
 

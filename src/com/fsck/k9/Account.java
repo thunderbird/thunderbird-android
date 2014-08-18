@@ -1892,7 +1892,7 @@ public class Account implements BaseAccount {
     public void addCertificate(CheckDirection direction,
             X509Certificate certificate) throws CertificateException {
         Uri uri;
-        if (direction.equals(CheckDirection.INCOMING)) {
+        if (direction == CheckDirection.INCOMING) {
             uri = Uri.parse(getStoreUri());
         } else {
             uri = Uri.parse(getTransportUri());
@@ -1909,7 +1909,7 @@ public class Account implements BaseAccount {
     public void deleteCertificate(String newHost, int newPort,
             CheckDirection direction) {
         Uri uri;
-        if (direction.equals(CheckDirection.INCOMING)) {
+        if (direction == CheckDirection.INCOMING) {
             uri = Uri.parse(getStoreUri());
         } else {
             uri = Uri.parse(getTransportUri());

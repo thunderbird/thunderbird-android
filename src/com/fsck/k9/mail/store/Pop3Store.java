@@ -128,7 +128,7 @@ public class Pop3Store extends Store {
                 }
                 username = URLDecoder.decode(userInfoParts[userIndex], "UTF-8");
                 if (userInfoParts.length > passwordIndex) {
-                    if (authType.equals(AuthType.EXTERNAL)) {
+                    if (authType == AuthType.EXTERNAL) {
                         clientCertificateAlias = URLDecoder.decode(userInfoParts[passwordIndex], "UTF-8");
                     } else {
                         password = URLDecoder.decode(userInfoParts[passwordIndex], "UTF-8");
@@ -186,7 +186,7 @@ public class Pop3Store extends Store {
 
         AuthType authType = server.authenticationType;
         String userInfo;
-        if (AuthType.EXTERNAL.equals(authType)) {
+        if (AuthType.EXTERNAL == authType) {
             userInfo = authType.name() + ":" + userEnc + ":" + clientCertificateAliasEnc;
         } else {
             userInfo = authType.name() + ":" + userEnc + ":" + passwordEnc;

@@ -234,8 +234,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 if (mCurrentSecurityTypeViewPosition != position) {
                     updatePortFromSecurityType();
 
-                    boolean isInsecure = ConnectionSecurity.NONE.equals(mSecurityTypeView.getSelectedItem());
-                    boolean isAuthExternal = AuthType.EXTERNAL.equals(mAuthTypeView.getSelectedItem());
+                    boolean isInsecure = (ConnectionSecurity.NONE == mSecurityTypeView.getSelectedItem());
+                    boolean isAuthExternal = (AuthType.EXTERNAL == mAuthTypeView.getSelectedItem());
                     boolean loginNotRequired = !mRequireLoginView.isChecked();
 
                     /*
@@ -278,7 +278,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 AuthType selection = (AuthType) mAuthTypeView.getSelectedItem();
 
                 // Have the user select (or confirm) the client certificate
-                if (AuthType.EXTERNAL.equals(selection)) {
+                if (AuthType.EXTERNAL == selection) {
 
                     // This may again invoke validateFields()
                     mClientCertificateSpinner.chooseCertificate();
@@ -331,7 +331,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
      */
     private void updateViewFromAuthType() {
         AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
-        boolean isAuthTypeExternal = AuthType.EXTERNAL.equals(authType);
+        boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
         if (isAuthTypeExternal) {
 
@@ -357,10 +357,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
      */
     private void validateFields() {
         AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
-        boolean isAuthTypeExternal = AuthType.EXTERNAL.equals(authType);
+        boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
         ConnectionSecurity connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
-        boolean hasConnectionSecurity = (!connectionSecurity.equals(ConnectionSecurity.NONE));
+        boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
 
         if (isAuthTypeExternal && !hasConnectionSecurity) {
 
@@ -390,10 +390,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             mPortView.addTextChangedListener(validationTextWatcher);
 
             authType = (AuthType) mAuthTypeView.getSelectedItem();
-            isAuthTypeExternal = AuthType.EXTERNAL.equals(authType);
+            isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
             connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
-            hasConnectionSecurity = (!connectionSecurity.equals(ConnectionSecurity.NONE));
+            hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
         } else {
             mCurrentAuthTypeViewPosition = mAuthTypeView.getSelectedItemPosition();
             mCurrentSecurityTypeViewPosition = mSecurityTypeView.getSelectedItemPosition();
@@ -482,7 +482,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             username = mUsernameView.getText().toString();
 
             authType = (AuthType) mAuthTypeView.getSelectedItem();
-            if (AuthType.EXTERNAL.equals(authType)) {
+            if (AuthType.EXTERNAL == authType) {
                 clientCertificateAlias = mClientCertificateSpinner.getAlias();
             } else {
                 password = mPasswordView.getText().toString();
