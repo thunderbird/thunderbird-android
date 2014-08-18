@@ -40,9 +40,9 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
     }
 
 
-    private String mAlias;
-    private X509Certificate[] mChain;
-    private PrivateKey mPrivateKey;
+    private final String mAlias;
+    private final X509Certificate[] mChain;
+    private final PrivateKey mPrivateKey;
 
 
     /**
