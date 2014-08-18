@@ -51,20 +51,21 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
      *          Indicates an error in retrieving the certificate for the alias
      *          (likely because the alias is invalid or the certificate was deleted)
      */
-    public KeyChainKeyManager(String alias) throws MessagingException {
+    public KeyChainKeyManager(Context context, String alias) throws MessagingException {
         mAlias = alias;
 
-        Context context = K9.app;
         try {
             mChain = fetchCertificateChain(context, alias);
             mPrivateKey = fetchPrivateKey(context, alias);
         } catch (KeyChainException e) {
             // The certificate was possibly deleted.  Notify user of error.
-            throw new CertificateValidationException(K9.app.getString(
-                    R.string.client_certificate_retrieval_failure, alias), e);
+            final String message = context.getString(
+                    R.string.client_certificate_retrieval_failure, alias);
+            throw new CertificateValidationException(message, e);
         } catch (InterruptedException e) {
-            throw new MessagingException(K9.app.getString(
-                    R.string.client_certificate_retrieval_failure, alias), e);
+            final String message = context.getString(
+                    R.string.client_certificate_retrieval_failure, alias);
+            throw new MessagingException(message, e);
         }
     }
 

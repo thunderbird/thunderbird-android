@@ -32,8 +32,7 @@ public class SslHelper {
         if (clientCertificateAlias == null  || clientCertificateAlias.isEmpty()) {
             keyManagers = null;
         } else {
-            keyManagers = new KeyManager[] { new KeyChainKeyManager(
-                    clientCertificateAlias) };
+            keyManagers = new KeyManager[] { new KeyChainKeyManager(K9.app, clientCertificateAlias) };
         }
 
         SSLContext sslContext = SSLContext.getInstance("TLS");
