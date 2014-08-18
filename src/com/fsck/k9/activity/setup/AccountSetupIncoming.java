@@ -295,11 +295,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mCurrentPortViewSetting = mPortView.getText().toString();
 
             mSubscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
-
-            if (savedInstanceState == null) {
-                initializeViewListeners();
-                validateFields();
-            }
         } catch (Exception e) {
             failure(e);
         }
@@ -383,8 +378,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         /*
          * We didn't want the listeners active while the state was being restored

@@ -86,11 +86,6 @@ public class AccountSetupBasics extends K9Activity
 
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);
-
-        if (savedInstanceState == null) {
-            initializeViewListeners();
-            validateFields();
-        }
     }
 
     private void initializeViewListeners() {
@@ -128,6 +123,12 @@ public class AccountSetupBasics extends K9Activity
         mCheckedIncoming = savedInstanceState.getBoolean(STATE_KEY_CHECKED_INCOMING);
 
         updateViewVisibility(mClientCertificateCheckBox.isChecked());
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         /*
          * We wait until now to initialize the listeners because we didn't want

@@ -191,11 +191,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 updatePortFromSecurityType();
             }
             mCurrentPortViewSetting = mPortView.getText().toString();
-
-            if (savedInstanceState == null) {
-                initializeViewListeners();
-                validateFields();
-            }
         } catch (Exception e) {
             /*
              * We should always be able to parse our own settings.
@@ -316,6 +311,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         } else {
             mRequireLoginSettingsView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         /*
          * We didn't want the listeners active while the state was being restored
