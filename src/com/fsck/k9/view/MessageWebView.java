@@ -146,20 +146,29 @@ public class MessageWebView extends RigidWebView {
      * </p>
      *
      * @param text
-     *      The message body to display.  Assumed to be MIME type text/html.
+     *      The message body to display.  
      */
     public void setText(String text) {
      // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
-        String content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
-        if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
-            content += "<style type=\"text/css\">" +
-                   "* { background: black ! important; color: #F3F3F3 !important }" +
-                   ":link, :link * { color: #CCFF33 !important }" +
-                   ":visited, :visited * { color: #551A8B !important }</style> ";
+        String content, mime;
+
+        if(K9.messageViewUsePlainTextOnly()){ 
+          content = text;
+          mime = "text/plain";
+        } else {
+          content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
+          if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
+              content += "<style type=\"text/css\">" +
+                     "* { background: black ! important; color: #F3F3F3 !important }" +
+                     ":link, :link * { color: #CCFF33 !important }" +
+                     ":visited, :visited * { color: #551A8B !important }</style> ";
+          }
+          content += HtmlConverter.cssStylePre();
+          content += "</head><body>" + text + "</body></html>";
+          mime = "text/html";
         }
-        content += HtmlConverter.cssStylePre();
-        content += "</head><body>" + text + "</body></html>";
-        loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
+
+        loadDataWithBaseURL("http://", content, mime, "utf-8", null);
         resumeTimers();
     }
 

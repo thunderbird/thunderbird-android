@@ -223,6 +223,12 @@
 
             <CheckBoxPreference
                 android:persistent="false"
+                android:key="messageview_always_use_plaintext"
+                android:title="@string/global_settings_messageview_alwaysplain_label"
+                android:summary="@string/global_settings_messageview_alwaysplain_summary" />
+
+            <CheckBoxPreference
+                android:persistent="false"
                 android:key="messageview_fixedwidth_font"
                 android:title="@string/global_settings_messageview_fixedwidth_label"
                 android:summary="@string/global_settings_messageview_fixedwidth_summary" />
