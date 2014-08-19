@@ -1,6 +1,14 @@
 
 package com.fsck.k9.activity.setup;
 
+
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.Locale;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +17,7 @@ import android.content.Intent;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +28,11 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
-import com.fsck.k9.*;
+import com.fsck.k9.Account;
+import com.fsck.k9.EmailAddressValidator;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
@@ -32,13 +45,6 @@ import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.transport.SmtpTransport;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
-
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.util.Locale;
 
 /**
  * Prompts the user for the email address and password.
@@ -83,6 +89,17 @@ public class AccountSetupBasics extends K9Activity
         mClientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
         mNextButton = (Button)findViewById(R.id.next);
         mManualSetupButton = (Button)findViewById(R.id.manual_setup);
+        CheckBox showPassword = (CheckBox) findViewById(R.id.show_password);
+        showPassword.setOnCheckedChangeListener (new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { 
+                if (isChecked) {
+                    mPasswordView.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                } else {
+                    mPasswordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
 
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);

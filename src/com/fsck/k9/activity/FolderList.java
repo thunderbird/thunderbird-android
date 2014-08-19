@@ -277,9 +277,17 @@ public class FolderList extends K9ListActivity {
 
         mInflater = getLayoutInflater();
 
-        onNewIntent(getIntent());
-
         context = this;
+
+        onNewIntent(getIntent());
+        if (isFinishing()) {
+            /*
+             * onNewIntent() may call finish(), but execution will still continue here.
+             * We return now because we don't want to display the changelog which can
+             * result in a leaked window error.
+             */
+            return;
+        }
 
         ChangeLog cl = new ChangeLog(this);
         if (cl.isFirstRun()) {
@@ -308,7 +316,11 @@ public class FolderList extends K9ListActivity {
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         if (mAccount == null) {
-            // This shouldn't normally happen. But apparently it does. See issue 2261.
+            /*
+             * This can happen when a launcher shortcut is created for an
+             * account, and then the account is deleted or data is wiped, and
+             * then the shortcut is used.
+             */
             finish();
             return;
         }
