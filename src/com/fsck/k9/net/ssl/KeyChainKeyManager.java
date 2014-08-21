@@ -198,10 +198,10 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
                     return mAlias;
                 }
             }
-            Log.w(K9.LOG_TAG, "Client certificate" + mAlias + "not issued by any of the requested issuers");
+            Log.w(K9.LOG_TAG, "Client certificate " + mAlias + " not issued by any of the requested issuers");
             return null;
         }
-        Log.w(K9.LOG_TAG, "Client certificate" + mAlias + "does not match any of the requested key types");
+        Log.w(K9.LOG_TAG, "Client certificate " + mAlias + " does not match any of the requested key types");
         return null;
     }
 }

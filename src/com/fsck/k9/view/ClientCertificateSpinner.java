@@ -103,7 +103,7 @@ public class ClientCertificateSpinner extends LinearLayout {
             @Override
             public void alias(String alias) {
                 if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "User has selected client certificate alias:" + alias);
+                    Log.d(K9.LOG_TAG, "User has selected client certificate alias: " + alias);
 
                 setAlias(alias);
             }
