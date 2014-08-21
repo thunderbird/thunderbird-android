@@ -3,14 +3,21 @@ package com.fsck.k9.net.ssl;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.mail.MessagingException;
 
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+
 import java.io.IOException;
 import java.net.Socket;
-import java.security.SecureRandom;
-import java.util.*;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -71,7 +78,7 @@ public class TrustedSocketFactory {
 
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, null, new SecureRandom());
+            sslContext.init(null, null, null);
             SSLSocketFactory sf = sslContext.getSocketFactory();
             SSLSocket sock = (SSLSocket) sf.createSocket();
             enabledCiphers = sock.getEnabledCipherSuites();
@@ -114,19 +121,32 @@ public class TrustedSocketFactory {
         return result.toArray(new String[result.size()]);
     }
 
-    public static Socket createSocket(SSLContext sslContext) throws IOException {
-        SSLSocket socket = (SSLSocket) sslContext.getSocketFactory().createSocket();
-        hardenSocket(socket);
+    public static Socket createSocket(String host, int port, String clientCertificateAlias)
+            throws IOException, MessagingException, KeyManagementException, NoSuchAlgorithmException {
 
-        return socket;
+        return createSocket(null, host, port, clientCertificateAlias);
     }
 
-    public static Socket createSocket(SSLContext sslContext, Socket s, String host, int port,
-            boolean autoClose) throws IOException {
-        SSLSocket socket = (SSLSocket) sslContext.getSocketFactory().createSocket(s, host, port, autoClose);
-        hardenSocket(socket);
+    public static Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
+            throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
 
-        return socket;
+        TrustManager[] trustManagers = new TrustManager[] { TrustManagerFactory.get(host, port) };
+        KeyManager[] keyManagers = null;
+        if (clientCertificateAlias != null && !clientCertificateAlias.isEmpty()) {
+            keyManagers = new KeyManager[] { new KeyChainKeyManager(K9.app, clientCertificateAlias) };
+        }
+
+        SSLContext context = SSLContext.getInstance("TLS");
+        context.init(keyManagers, trustManagers, null);
+        SSLSocketFactory socketFactory = context.getSocketFactory();
+        Socket trustedSocket;
+        if (socket == null) {
+            trustedSocket = socketFactory.createSocket();
+        } else {
+            trustedSocket = socketFactory.createSocket(socket, host, port, true);
+        }
+        hardenSocket((SSLSocket) trustedSocket);
+        return trustedSocket;
     }
 
     private static void hardenSocket(SSLSocket sock) {

@@ -15,7 +15,7 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.net.ssl.SslHelper;
+import com.fsck.k9.net.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLException;
 
@@ -224,7 +224,7 @@ public class SmtpTransport extends Transport {
                 try {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
                     if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        mSocket = SslHelper.createSslSocket(mHost, mPort, mClientCertificateAlias);
+                        mSocket = TrustedSocketFactory.createSocket(mHost, mPort, mClientCertificateAlias);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                         secureConnection = true;
                     } else {
@@ -278,7 +278,7 @@ public class SmtpTransport extends Transport {
                 if (extensions.containsKey("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
-                    mSocket = SslHelper.createStartTlsSocket(mSocket, mHost, mPort, true,
+                    mSocket = TrustedSocketFactory.createSocket(mSocket, mHost, mPort,
                             mClientCertificateAlias);
 
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),

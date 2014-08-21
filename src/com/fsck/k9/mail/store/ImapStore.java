@@ -96,7 +96,7 @@ import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
-import com.fsck.k9.net.ssl.SslHelper;
+import com.fsck.k9.net.ssl.TrustedSocketFactory;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 
@@ -2435,7 +2435,7 @@ public class ImapStore extends Store {
                                 mSettings.getPort());
 
                         if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                            mSocket = SslHelper.createSslSocket(mSettings.getHost(), 
+                            mSocket = TrustedSocketFactory.createSocket(mSettings.getHost(),
                                     mSettings.getPort(), mSettings.getClientCertificateAlias());
                         } else {
                             mSocket = new Socket();
@@ -2485,8 +2485,8 @@ public class ImapStore extends Store {
                         // STARTTLS
                         executeSimpleCommand("STARTTLS");
 
-                        mSocket = SslHelper.createStartTlsSocket(mSocket, 
-                                mSettings.getHost(), mSettings.getPort(), true, 
+                        mSocket = TrustedSocketFactory.createSocket(mSocket,
+                                mSettings.getHost(), mSettings.getPort(),
                                 mSettings.getClientCertificateAlias());
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new PeekableInputStream(new BufferedInputStream(mSocket
