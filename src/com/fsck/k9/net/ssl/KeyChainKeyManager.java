@@ -4,6 +4,7 @@ package com.fsck.k9.net.ssl;
 import java.net.Socket;
 import java.security.Principal;
 import java.security.PrivateKey;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +76,14 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
         X509Certificate[] chain = KeyChain.getCertificateChain(context, alias);
         if (chain == null || chain.length == 0) {
             throw new MessagingException("No certificate chain found for: " + alias);
+        }
+        try {
+            for (X509Certificate certificate : chain) {
+                certificate.checkValidity();
+            }
+        } catch (CertificateException e) {
+            // Client certificate has expired or is not yet valid
+            throw new CertificateValidationException(context.getString(R.string.client_certificate_expired, alias, e.toString()));
         }
 
         return chain;
