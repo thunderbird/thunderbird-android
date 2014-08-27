@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
@@ -46,11 +47,17 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         />
-    <CheckBox
-        android:id="@+id/account_client_certificate"
-        android:layout_width="fill_parent"
+    <com.fsck.k9.view.FoldableLinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/account_setup_basics_client_certificate" />
+        custom:foldedLabel="@string/client_certificate_advanced_options"
+        custom:unFoldedLabel="@string/client_certificate_advanced_options">
+        <CheckBox
+            android:id="@+id/account_client_certificate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account_setup_basics_client_certificate" />
+    </com.fsck.k9.view.FoldableLinearLayout>
     <View
         android:layout_width="fill_parent"
         android:layout_height="0dip"

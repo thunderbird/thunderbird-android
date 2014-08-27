@@ -9,24 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
  * Class representing a LinearLayout that can fold and hide it's content when
  * pressed To use just add the following to your xml layout
- * <org.sufficientlysecure.keychain.ui.widget.FoldableLinearLayout
+ * <com.fsck.k9.view.FoldableLinearLayout
  * android:layout_width="wrap_content" android:layout_height="wrap_content"
  * custom:foldedLabel="@string/TEXT_TO_DISPLAY_WHEN_FOLDED"
- * custom:unFoldedLabel="@string/TEXT_TO_DISPLAY_WHEN_UNFOLDED"
- * custom:foldedIcon="ICON_NAME_FROM_FontAwesomeText_TO_USE_WHEN_FOLDED"
- * custom:unFoldedIcon="ICON_NAME_FROM_FontAwesomeText_TO_USE_WHEN_UNFOLDED">
+ * custom:unFoldedLabel="@string/TEXT_TO_DISPLAY_WHEN_UNFOLDED">
  * <include layout="@layout/ELEMENTS_TO_BE_FOLDED"/>
- * </org.sufficientlysecure.keychain.ui.widget.FoldableLinearLayout>
+ * </com.fsck.k9.view.FoldableLinearLayout>
  */
 public class FoldableLinearLayout extends LinearLayout {
-    private ImageButton mFoldableIcon;
+    private ImageView mFoldableIcon;
     private boolean mFolded;
     private boolean mHasMigrated = false;
     private Integer mShortAnimationDuration = null;
@@ -108,7 +106,7 @@ public class FoldableLinearLayout extends LinearLayout {
     }
 
     private void initialiseInnerViews() {
-        mFoldableIcon = (ImageButton) mFoldableLayout.findViewById(R.id.foldableIcon);
+        mFoldableIcon = (ImageView) mFoldableLayout.findViewById(R.id.foldableIcon);
         mFoldableIcon.setImageResource(R.drawable.ic_action_expand);
         mFoldableTextView = (TextView) mFoldableLayout.findViewById(R.id.foldableText);
         mFoldableTextView.setText(mFoldedLabel);
