@@ -58,5 +58,12 @@
     <declare-styleable name="SliderPreference">
         <attr name="android:summary" />
     </declare-styleable>
+    
+    <declare-styleable name="FoldableLinearLayout">
+        <attr name="foldedLabel" format="string" />
+        <attr name="unFoldedLabel" format="string" />
+        <attr name="foldedIcon" format="string" />
+        <attr name="unFoldedIcon" format="string" />
+    </declare-styleable>
 
 </resources>
