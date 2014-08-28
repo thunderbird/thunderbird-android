@@ -213,6 +213,8 @@ public class Account implements BaseAccount {
     private boolean mAllowRemoteSearch;
     private boolean mRemoteSearchFullText;
     private int mRemoteSearchNumResults;
+    private boolean mMarkAsReadWhenArchive;
+    private boolean mUseFolderStructureWhenArchive;
 
     private CryptoProvider mCryptoProvider = null;
 
@@ -313,6 +315,8 @@ public class Account implements BaseAccount {
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
         mAlwaysShowCcBcc = false;
+        mMarkAsReadWhenArchive = false;
+        mUseFolderStructureWhenArchive = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -499,6 +503,9 @@ public class Account implements BaseAccount {
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
         mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
 
+        mMarkAsReadWhenArchive = prefs.getBoolean(mUuid + ".markAsReadWhenArchive",false);
+        mUseFolderStructureWhenArchive = prefs.getBoolean(mUuid + ".useFolderStructureWhenArchive",false);
+
         cacheChips();
 
         // Use email address as account description if necessary
@@ -594,6 +601,8 @@ public class Account implements BaseAccount {
         editor.remove(mUuid + ".messageFormat");
         editor.remove(mUuid + ".messageReadReceipt");
         editor.remove(mUuid + ".notifyMailCheck");
+        editor.remove(mUuid + ".mMarkAsReadWhenArchive");
+        editor.remove(mUuid + ".mUseFolderStructureWhenArchive");
         for (String type : networkTypes) {
             editor.remove(mUuid + ".useCompression." + type);
         }
@@ -769,6 +778,8 @@ public class Account implements BaseAccount {
         editor.putString(mUuid + ".ringtone", mNotificationSetting.getRingtone());
         editor.putBoolean(mUuid + ".led", mNotificationSetting.isLed());
         editor.putInt(mUuid + ".ledColor", mNotificationSetting.getLedColor());
+        editor.putBoolean(mUuid + ".mMarkAsReadWhenArchive",mMarkAsReadWhenArchive);
+        editor.putBoolean(mUuid + ".mUseFolderStructureWhenArchive",mUseFolderStructureWhenArchive);
 
         for (String type : networkTypes) {
             Boolean useCompression = compressionMap.get(type);
@@ -1773,6 +1784,20 @@ public class Account implements BaseAccount {
 
     public void setRemoteSearchFullText(boolean val) {
         mRemoteSearchFullText = val;
+    }
+
+    public boolean isMarkAsReadWhenArchive() {
+        return mMarkAsReadWhenArchive;
+    }
+    public void setMarkAsReadWhenArchive(boolean val) {
+        mMarkAsReadWhenArchive = val;
+    }
+
+    public boolean isUseFolderStructureWhenArchive() {
+        return mUseFolderStructureWhenArchive;
+    }
+    public void setUseFolderStructureWhenArchive(boolean val) {
+        mUseFolderStructureWhenArchive = val;
     }
 
     /**

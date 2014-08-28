@@ -225,6 +225,12 @@ public class AccountSettings {
         s.put("remoteSearchFullText", Settings.versions(
                 new V(18, new BooleanSetting(false))
             ));
+        s.put("markAsReadWhenArchive", Settings.versions(
+                new V(32, new BooleanSetting(false))
+            ));
+        s.put("useFolderStructureWhenArchive", Settings.versions(
+                new V(32, new BooleanSetting(false))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

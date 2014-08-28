@@ -404,7 +404,19 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     }
 
     public void onArchive() {
-        onRefile(mAccount.getArchiveFolderName());
+        if (mMessage != null) {
+            if (mAccount.isMarkAsReadWhenArchive()) {
+                if (! mMessage.isSet(Flag.SEEN)) {
+                    onToggleRead();
+                }
+            }
+            if (mAccount.isUseFolderStructureWhenArchive()) {
+                String archiveFolder = mAccount.getArchiveFolderName() + "." + mMessage.getFolder().getName();
+                onRefile(archiveFolder);
+            } else {
+                onRefile(mAccount.getArchiveFolderName());
+            }
+        }
     }
 
     public void onSpam() {
