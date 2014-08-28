@@ -1,11 +1,6 @@
 package com.fsck.k9.helper;
 
-import android.text.*;
-import android.text.Html.TagHandler;
-import android.util.Log;
-import com.fsck.k9.K9;
-import org.xml.sax.XMLReader;
-
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collections;
@@ -13,6 +8,18 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.xml.sax.XMLReader;
+
+import android.text.Annotation;
+import android.text.Editable;
+import android.text.Html;
+import android.text.Html.TagHandler;
+import android.text.Spannable;
+import android.text.Spanned;
+
+import com.fsck.k9.K9;
 
 /**
  * Contains common routines to convert html to text and vice versa.
@@ -32,9 +39,6 @@ public class HtmlConverter {
      */
     private static final char NBSP_CHARACTER = (char)0x00a0;    // utf-8 non-breaking space
     private static final char NBSP_REPLACEMENT = (char)0x20;    // space
-
-    // Number of extra bytes to allocate in a string buffer for htmlification.
-    private static final int TEXT_TO_HTML_EXTRA_BUFFER_LENGTH = 512;
 
     /**
      * Convert an HTML string to a plain text string.
@@ -124,70 +128,56 @@ public class HtmlConverter {
         }
     }
 
-    private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
-
     /**
-     * Naively convert a text string into an HTML document.
+     * Convert HTML to a {@link Spanned} that can be used in a {@link android.widget.TextView}.
      *
-     * <p>
-     * This method avoids using regular expressions on the entire message body to save memory.
-     * </p>
-     * <p>
-     * No HTML headers or footers are added to the result.  Headers and footers
-     * are added at display time in
-     * {@link com.fsck.k9.view#MessageWebView.setText(String) MessageWebView.setText()}
-     * </p>
+     * @param html
+     *         The HTML fragment to be converted.
      *
-     * @param text
-     *         Plain text string.
-     * @return HTML string.
+     * @return A {@link Spanned} containing the text in {@code html} formatted using spans.
      */
-    private static String simpleTextToHtml(String text) {
-        // Encode HTML entities to make sure we don't display something evil.
-        text = TextUtils.htmlEncode(text);
-
-        StringReader reader = new StringReader(text);
-        StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-
-        buff.append(htmlifyMessageHeader());
-
-        int c;
-        try {
-            while ((c = reader.read()) != -1) {
-                switch (c) {
-                case '\n':
-                    // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
-                    // doublespaced.
-                    buff.append("<br />");
-                    break;
-                case '\r':
-                    break;
-                default:
-                    buff.append((char)c);
-                }//switch
-            }
-        } catch (IOException e) {
-            //Should never happen
-            Log.e(K9.LOG_TAG, "Could not read string to convert text to HTML:", e);
-        }
-
-        buff.append(htmlifyMessageFooter());
-
-        return buff.toString();
+    public static Spanned htmlToSpanned(String html) {
+        return Html.fromHtml(html, null, new ListTagHandler());
     }
 
-    private static final String HTML_BLOCKQUOTE_COLOR_TOKEN = "$$COLOR$$";
-    private static final String HTML_BLOCKQUOTE_START = "<blockquote class=\"gmail_quote\" " +
-            "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid $$COLOR$$; padding-left: 1ex;\">";
-    private static final String HTML_BLOCKQUOTE_END = "</blockquote>";
-    private static final String HTML_NEWLINE = "<br />";
+    /**
+     * {@link TagHandler} that supports unordered lists.
+     *
+     * @see HtmlConverter#htmlToSpanned(String)
+     */
+    public static class ListTagHandler implements TagHandler {
+        @Override
+        public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
+            if (tag.equals("ul")) {
+                if (opening) {
+                    char lastChar = 0;
+                    if (output.length() > 0) {
+                        lastChar = output.charAt(output.length() - 1);
+                    }
+                    if (lastChar != '\n') {
+                        output.append("\r\n");
+                    }
+                } else {
+                    output.append("\r\n");
+                }
+            }
+
+            if (tag.equals("li")) {
+                if (opening) {
+                    output.append("\t•  ");
+                } else {
+                    output.append("\r\n");
+                }
+            }
+        }
+    }
+
+    private static final String HTML_MESSAGE_HEADER = "<pre class=\"" + K9.CSS_CLASS + "\">";
+    private static final String HTML_MESSAGE_FOOTER = "</pre>";
 
     /**
      * Convert a text string into an HTML document.
      *
-     * <p>
-     * Attempts to do smart replacement for large documents to prevent OOM
-     * errors.
      * <p>
      * No HTML headers or footers are added to the result.  Headers and footers
      * are added at display time in
@@ -201,157 +191,235 @@ public class HtmlConverter {
      *         Plain text string.
      * @return HTML string.
      */
-    public static String textToHtml(String text) {
-        // Our HTMLification code is somewhat memory intensive
-        // and was causing lots of OOM errors on the market
-        // if the message is big and plain text, just do
-        // a trivial htmlification
-        if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH) {
-            return simpleTextToHtml(text);
-        }
-        StringReader reader = new StringReader(text);
-        StringBuilder buff = new StringBuilder(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-        boolean isStartOfLine = true;  // Are we currently at the start of a line?
-        int spaces = 0;
-        int quoteDepth = 0; // Number of DIVs deep we are.
-        int quotesThisLine = 0; // How deep we should be quoting for this line.
-        try {
-            int c;
-            while ((c = reader.read()) != -1) {
-                if (isStartOfLine) {
-                    switch (c) {
-                    case ' ':
-                        spaces++;
-                        break;
-                    case '>':
-                        quotesThisLine++;
-                        spaces = 0;
-                        break;
-                    case '\n':
-                        appendbq(buff, quotesThisLine, quoteDepth);
-                        quoteDepth = quotesThisLine;
-
-                        appendsp(buff, spaces);
-                        spaces = 0;
-
-                        appendchar(buff, c);
-                        isStartOfLine = true;
-                        quotesThisLine = 0;
-                        break;
-                    default:
-                        isStartOfLine = false;
-
-                        appendbq(buff, quotesThisLine, quoteDepth);
-                        quoteDepth = quotesThisLine;
-
-                        appendsp(buff, spaces);
-                        spaces = 0;
-
-                        appendchar(buff, c);
-                        isStartOfLine = false;
-                        break;
-                    }
-                }
-                else {
-                    appendchar(buff, c);
-                    if (c == '\n') {
-                        isStartOfLine = true;
-                        quotesThisLine = 0;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            //Should never happen
-            Log.e(K9.LOG_TAG, "Could not read string to convert text to HTML:", e);
-        }
-        // Close off any quotes we may have opened.
-        if (quoteDepth > 0) {
-            for (int i = quoteDepth; i > 0; i--) {
-                buff.append(HTML_BLOCKQUOTE_END);
-            }
-        }
-        text = buff.toString();
-
-        // Make newlines at the end of blockquotes nicer by putting newlines beyond the first one outside of the
-        // blockquote.
-        text = text.replaceAll(
-                   "\\Q" + HTML_NEWLINE + "\\E((\\Q" + HTML_NEWLINE + "\\E)+?)\\Q" + HTML_BLOCKQUOTE_END + "\\E",
-                   HTML_BLOCKQUOTE_END + "$1"
-               );
-
-        // Replace lines of -,= or _ with horizontal rules
-        text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
-
-        StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-
-        sb.append(htmlifyMessageHeader());
-        linkifyText(text, sb);
-        sb.append(htmlifyMessageFooter());
-
-        text = sb.toString();
-
-        // Above we replaced > with <gt>, now make it &gt;
-        text = text.replaceAll("<gt>", "&gt;");
-
-        return text;
+    public static String textToHtml(String text)
+    {
+    	StringBuilder sb = new StringBuilder(text.length() << 1);
+    	sb.append(HTML_MESSAGE_HEADER);
+    	textToHtml(text, sb);
+    	sb.append(HTML_MESSAGE_FOOTER);
+    	return sb.toString();
     }
 
-    private static void appendchar(StringBuilder buff, int c) {
-        switch (c) {
-        case '&':
-            buff.append("&amp;");
-            break;
-        case '<':
-            buff.append("&lt;");
-            break;
-        case '>':
-            // We use a token here which can't occur in htmlified text because &gt; is valid
-            // within links (where > is not), and linkifying links will include it if we
-            // do it here. We'll make another pass and change this back to &gt; after
-            // the linkification is done.
-            buff.append("<gt>");
-            break;
-        case '\r':
-            break;
-        case '\n':
-            // pine treats <br> as two newlines, but <br/> as one newline.  Use <br/> so our messages aren't
-            // doublespaced.
-            buff.append(HTML_NEWLINE);
-            break;
-        default:
-            buff.append((char)c);
-            break;
-        }
+    public static String textToHtmlFragment(String text)
+    {
+    	StringBuilder sb = new StringBuilder(text.length() << 1);
+    	textToHtml(text, sb);
+    	return sb.toString();
     }
 
-    private static void appendsp(StringBuilder buff, int spaces) {
-        while (spaces > 0) {
-            buff.append(' ');
-            spaces--;
+    private static final String HTML_BLOCKQUOTE_COLOR_TOKEN = "$$COLOR$$";
+    private static final String HTML_BLOCKQUOTE_START = "<blockquote class=\"gmail_quote\" " +
+            "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid $$COLOR$$; padding-left: 1ex;\">";
+    private static final String HTML_BLOCKQUOTE_END = "</blockquote>";
+    private static final String HTML_NEWLINE = "<br />";
+    private static final String HTML_HORIZONTAL_LINE = "<hr />";
+
+    private static final Pattern TEXT_LINE_PATTERN = Pattern.compile("\\s*([-=_]{30,}+)\\s*");
+    private static final Pattern BITCOIN_URI_PATTERN = Pattern.compile(
+            "bitcoin:[1-9a-km-zA-HJ-NP-Z]{27,34}(\\?[a-zA-Z0-9$\\-_.+!*'(),%:@&=]*)?"
+    );
+
+    /**
+     * Goegular expression to match all IANA top-level domains for WEB_URL.
+     *  List accurate as of 2011/01/12.  List taken from:
+     *  http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+     *  This pattern is auto-generated by frameworks/base/common/tools/make-iana-tld-pattern.py
+     */
+    private static final String TOP_LEVEL_DOMAIN_STR_FOR_WEB_URL =
+        "(?:"
+        + "(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])"
+        + "|(?:biz|b[abdefghijmnorstvwyz])"
+        + "|(?:cat|com|coop|c[acdfghiklmnoruvxyz])"
+        + "|d[ejkmoz]"
+        + "|(?:edu|e[cegrstu])"
+        + "|f[ijkmor]"
+        + "|(?:gov|g[abdefghilmnpqrstuwy])"
+        + "|h[kmnrtu]"
+        + "|(?:info|int|i[delmnoqrst])"
+        + "|(?:jobs|j[emop])"
+        + "|k[eghimnprwyz]"
+        + "|l[abcikrstuvy]"
+        + "|(?:mil|mobi|museum|m[acdeghklmnopqrstuvwxyz])"
+        + "|(?:name|net|n[acefgilopruz])"
+        + "|(?:org|om)"
+        + "|(?:pro|p[aefghklmnrstwy])"
+        + "|qa"
+        + "|r[eosuw]"
+        + "|s[abcdeghijklmnortuvyz]"
+        + "|(?:tel|travel|t[cdfghjklmnoprtvwz])"
+        + "|u[agksyz]"
+        + "|v[aceginu]"
+        + "|w[fs]"
+        + "|(?:xn\\-\\-0zwm56d|xn\\-\\-11b5bs3a9aj6g|xn\\-\\-80akhbyknj4f|xn\\-\\-9t4b11yi5a|xn\\-\\-deba0ad|xn\\-\\-fiqs8s|xn\\-\\-fiqz9s|xn\\-\\-fzc2c9e2c|xn\\-\\-g6w251d|xn\\-\\-hgbk6aj7f53bba|xn\\-\\-hlcj6aya9esc7a|xn\\-\\-j6w193g|xn\\-\\-jxalpdlp|xn\\-\\-kgbechtv|xn\\-\\-kprw13d|xn\\-\\-kpry57d|xn\\-\\-mgbaam7a8h|xn\\-\\-mgbayh7gpa|xn\\-\\-mgberp4a5d4ar|xn\\-\\-o3cw4h|xn\\-\\-p1ai|xn\\-\\-pgbs0dh|xn\\-\\-wgbh1c|xn\\-\\-wgbl6a|xn\\-\\-xkc2al3hye2a|xn\\-\\-ygbi2ammx|xn\\-\\-zckzah)"
+        + "|y[et]"
+        + "|z[amw]))";
+
+    /* This comprises most common used Unicode characters allowed in IRI
+    * as detailed in RFC 3987.
+    * Specifically, those two byte Unicode characters are not included.
+    */
+    private static final String GOOD_IRI_CHAR =
+        "a-zA-Z0-9\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF";
+
+    /**
+     *  Regular expression pattern to match most part of RFC 3987
+     *  Internationalized URLs, aka IRIs.  Commonly used Unicode characters are
+     *  added.
+     */
+    private static final Pattern WEB_URL_PATTERN = Pattern.compile(
+                "((?:(http|https|Http|Https|rtsp|Rtsp):\\/\\/(?:(?:[a-zA-Z0-9\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)"
+                + "\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,64}(?:\\:(?:[a-zA-Z0-9\\$\\-\\_"
+                + "\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,25})?\\@)?)?"
+                + "((?:(?:[" + GOOD_IRI_CHAR + "][" + GOOD_IRI_CHAR + "\\-]{0,64}\\.)+"   // named host
+                + TOP_LEVEL_DOMAIN_STR_FOR_WEB_URL
+                + "|(?:(?:25[0-5]|2[0-4]" // or ip address
+                + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(?:25[0-5]|2[0-4][0-9]"
+                + "|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(?:25[0-5]|2[0-4][0-9]|[0-1]"
+                + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
+                + "|[1-9][0-9]|[0-9])))"
+                + "(?:\\:\\d{1,5})?)" // plus option port number
+                + "(\\/(?:(?:[" + GOOD_IRI_CHAR + "\\;\\/\\?\\:\\@\\&\\=\\#\\~"  // plus option query params
+                + "\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])|(?:\\%[a-fA-F0-9]{2}))*)?"
+                + "(?:\\b|$)"); // and finally, a word boundary or end of
+    // input.  This is to stop foo.sure from
+    // matching as foo.su
+
+    private static CharSequence textToHtml(String text, StringBuilder sb)
+    {
+    	BufferedReader reader = new BufferedReader(new StringReader(text));
+    	try {
+    		String line;
+    		int blockQuoteLevel = 0;
+    		boolean firstLine = true;
+
+    		while ((line = reader.readLine()) != null) {
+    			TextMessageLine msgLine = parseTextMessageLine(line);
+
+    			if (!firstLine) {
+    				sb.append(HTML_NEWLINE);
+    			} else {
+    				firstLine = false;
+    			}
+    			
+    			if (blockQuoteLevel > msgLine.blockquoteLevel) {
+    				while (blockQuoteLevel > msgLine.blockquoteLevel) {
+    					blockQuoteLevel--;
+    					sb.append(HTML_BLOCKQUOTE_END);
+    				}
+    			}
+
+    			if (blockQuoteLevel < msgLine.blockquoteLevel) {
+    				while (blockQuoteLevel < msgLine.blockquoteLevel) {
+    					blockQuoteLevel++;
+    					sb.append(HTML_BLOCKQUOTE_START.replace(HTML_BLOCKQUOTE_COLOR_TOKEN, getQuoteColor(blockQuoteLevel)));
+    				}
+    			}
+    			
+    			while (msgLine.precedingSpaces > 0) {
+    				msgLine.precedingSpaces--;
+    				sb.append(' ');
+    			}
+    			
+    			CharSequence cs = markOccurences(markOccurences(msgLine.text, BITCOIN_URI_PATTERN), WEB_URL_PATTERN);
+    			cs = convertMarksToLinks(replaceAll(StringUtils.htmlEncode(cs), TEXT_LINE_PATTERN, HTML_HORIZONTAL_LINE));
+    			sb.append(cs);
+    		}
+    		
+    		while (blockQuoteLevel > 0) {
+    			blockQuoteLevel--;
+    			sb.append(HTML_BLOCKQUOTE_END);
+    		}
+    	} catch (IOException e) {
+    		// cannot happen
+    	}
+    	
+    	return sb;
+    }
+    
+    private static class TextMessageLine
+    {
+    	public String text;
+    	public int precedingSpaces = 0;
+    	public int blockquoteLevel = 0;
+    }
+    
+    private static TextMessageLine parseTextMessageLine(String line)
+    {
+    	int i = 0;
+    	TextMessageLine result = new TextMessageLine();
+
+    	while (i < line.length()) {
+    		final char c = line.charAt(i);
+    		if (c == ' ') {
+    			result.precedingSpaces++;
+    		} else if (c == '>') {
+    			result.precedingSpaces = 0;
+    			result.blockquoteLevel++;
+    		} else {
+    			break;
+    		}
+    		i++;
+    	}
+    	
+    	result.text = line.substring(i);
+    	return result;
+    }
+    
+    private static final String TEXT_LINK_MARKER_END = "°~#°~#";
+    private static final String TEXT_LINK_MARKER_START = "#~°#~°";
+    private static final String TEXT_LINK_MARKER_REPLACEMENT = TEXT_LINK_MARKER_START + "$0" + TEXT_LINK_MARKER_END;
+    private static final Pattern TEXT_LINK_MARKER_PATTERN = Pattern.compile(TEXT_LINK_MARKER_START + "(.+?)" + TEXT_LINK_MARKER_END);
+
+    private static CharSequence replaceAll(CharSequence text, Pattern pattern, String replacement)
+    {
+    	Matcher m = pattern.matcher(text);
+        StringBuffer sb = new StringBuffer(text.length() << 1);
+        while (m.find()) {
+            m.appendReplacement(sb, replacement);
         }
+        return m.appendTail(sb);
+    }
+    
+    private static CharSequence markOccurences(CharSequence text, Pattern pattern)
+    {
+    	return replaceAll(text, pattern, TEXT_LINK_MARKER_REPLACEMENT);
     }
 
-    private static void appendbq(StringBuilder buff, int quotesThisLine, int quoteDepth) {
-        // Add/remove blockquotes by comparing this line's quotes to the previous line's quotes.
-        if (quotesThisLine > quoteDepth) {
-            for (int i = quoteDepth; i < quotesThisLine; i++) {
-                buff.append(HTML_BLOCKQUOTE_START.replace(HTML_BLOCKQUOTE_COLOR_TOKEN, getQuoteColor(i + 1)));
+    private static CharSequence convertMarksToLinks(CharSequence text)
+    {
+    	StringBuffer sb = new StringBuffer(text.length() << 1);
+    	
+    	int lastPosition = 0;
+    	Matcher m = TEXT_LINK_MARKER_PATTERN.matcher(text);
+        while (m.find()) {
+
+        	int start = m.start();
+            sb.append(text.subSequence(lastPosition, start));
+            
+            if (start == 0 || text.charAt(start - 1) != '@') {	// don't link E-Mail addresses
+            	String url = Html.fromHtml(m.group(1)).toString();
+            	if (m.group(1).indexOf(':') > 0) {				// With no URI-schema we may get "http:/" links with the second / missing
+            		sb.append("<a href=\"").append(url).append("\">").append(m.group(1)).append("</a>");
+            	} else {
+            		sb.append("<a href=\"http://").append(url).append("\">").append(m.group(1)).append("</a>");
+            	}
+            } else {
+            	sb.append(m.group(1));
             }
-        } else if (quotesThisLine < quoteDepth) {
-            for (int i = quoteDepth; i > quotesThisLine; i--) {
-                buff.append(HTML_BLOCKQUOTE_END);
-            }
+            
+            lastPosition = m.end();
         }
-    }
 
+        return sb.append(text.subSequence(lastPosition, text.length()));
+    }
+    
     protected static final String QUOTE_COLOR_DEFAULT = "#ccc";
     protected static final String QUOTE_COLOR_LEVEL_1 = "#729fcf";
     protected static final String QUOTE_COLOR_LEVEL_2 = "#ad7fa8";
     protected static final String QUOTE_COLOR_LEVEL_3 = "#8ae234";
     protected static final String QUOTE_COLOR_LEVEL_4 = "#fcaf3e";
     protected static final String QUOTE_COLOR_LEVEL_5 = "#e9b96e";
-    private static final String K9MAIL_CSS_CLASS = "k9mail";
-
+    
     /**
      * Return an HTML hex color string for a given quote level.
      * @param level Quote level
@@ -372,32 +440,6 @@ public class HtmlConverter {
             default:
                 return QUOTE_COLOR_DEFAULT;
         }
-    }
-
-    /**
-     * Searches for link-like text in a string and turn it into a link. Append the result to
-     * <tt>outputBuffer</tt>. <tt>text</tt> is not modified.
-     * @param text Plain text to be linkified.
-     * @param outputBuffer Buffer to append linked text to.
-     */
-    protected static void linkifyText(final String text, final StringBuffer outputBuffer) {
-        String prepared = text.replaceAll(Regex.BITCOIN_URI_PATTERN, "<a href=\"$0\">$0</a>");
-
-        Matcher m = Regex.WEB_URL_PATTERN.matcher(prepared);
-        while (m.find()) {
-            int start = m.start();
-            if (start == 0 || (start != 0 && prepared.charAt(start - 1) != '@')) {
-                if (m.group().indexOf(':') > 0) { // With no URI-schema we may get "http:/" links with the second / missing
-                    m.appendReplacement(outputBuffer, "<a href=\"$0\">$0</a>");
-                } else {
-                    m.appendReplacement(outputBuffer, "<a href=\"http://$0\">$0</a>");
-                }
-            } else {
-                m.appendReplacement(outputBuffer, "$0");
-            }
-        }
-
-        m.appendTail(outputBuffer);
     }
 
     /*
@@ -1262,99 +1304,6 @@ public class HtmlConverter {
             return "movie";
         default:
             return null;
-        }
-    }
-
-    private static String htmlifyMessageHeader() {
-        return "<pre class=\"" + K9MAIL_CSS_CLASS + "\">";
-    }
-
-    private static String htmlifyMessageFooter() {
-        return "</pre>";
-    }
-
-    /**
-     * Dynamically generate a CSS style for {@code <pre>} elements.
-     *
-     *  <p>
-     *  The style incorporates the user's current preference
-     *  setting for the font family used for plain text messages.
-     *  </p>
-     *
-     * @return
-     *      A {@code <style>} element that can be dynamically included in the HTML
-     *      {@code <head>} element when messages are displayed.
-     */
-    public static String cssStylePre() {
-        final String font = K9.messageViewFixedWidthFont()
-                ? "monospace"
-                : "sans-serif";
-        return "<style type=\"text/css\"> pre." + K9MAIL_CSS_CLASS +
-                " {white-space: pre-wrap; word-wrap:break-word; " +
-                "font-family: " + font + "; margin-top: 0px}</style>";
-    }
-
-    /**
-     * Convert a plain text string into an HTML fragment.
-     * @param text Plain text.
-     * @return HTML fragment.
-     */
-    public static String textToHtmlFragment(final String text) {
-        // Escape the entities and add newlines.
-        String htmlified = TextUtils.htmlEncode(text);
-
-        // Linkify the message.
-        StringBuffer linkified = new StringBuffer(htmlified.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
-        linkifyText(htmlified, linkified);
-
-        // Add newlines and unescaping.
-        //
-        // For some reason, TextUtils.htmlEncode escapes ' into &apos;, which is technically part of the XHTML 1.0
-        // standard, but Gmail doesn't recognize it as an HTML entity. We unescape that here.
-        return linkified.toString().replaceAll("\r?\n", "<br>\r\n").replace("&apos;", "&#39;");
-    }
-
-    /**
-     * Convert HTML to a {@link Spanned} that can be used in a {@link android.widget.TextView}.
-     *
-     * @param html
-     *         The HTML fragment to be converted.
-     *
-     * @return A {@link Spanned} containing the text in {@code html} formatted using spans.
-     */
-    public static Spanned htmlToSpanned(String html) {
-        return Html.fromHtml(html, null, new ListTagHandler());
-    }
-
-    /**
-     * {@link TagHandler} that supports unordered lists.
-     *
-     * @see HtmlConverter#htmlToSpanned(String)
-     */
-    public static class ListTagHandler implements TagHandler {
-        @Override
-        public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-            if (tag.equals("ul")) {
-                if (opening) {
-                    char lastChar = 0;
-                    if (output.length() > 0) {
-                        lastChar = output.charAt(output.length() - 1);
-                    }
-                    if (lastChar != '\n') {
-                        output.append("\r\n");
-                    }
-                } else {
-                    output.append("\r\n");
-                }
-            }
-
-            if (tag.equals("li")) {
-                if (opening) {
-                    output.append("\t•  ");
-                } else {
-                    output.append("\r\n");
-                }
-            }
         }
     }
 }

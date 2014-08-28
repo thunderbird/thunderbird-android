@@ -110,6 +110,7 @@ public class K9 extends Application {
     private static Theme messageViewTheme = Theme.USE_GLOBAL;
     private static Theme composerTheme = Theme.USE_GLOBAL;
     private static boolean useFixedMessageTheme = true;
+    public static final String CSS_CLASS = "k9mail";
 
     private static final FontSizes fontSizes = new FontSizes();
 

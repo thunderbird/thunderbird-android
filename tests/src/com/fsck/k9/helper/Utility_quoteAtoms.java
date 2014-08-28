@@ -53,10 +53,10 @@ public class Utility_quoteAtoms extends TestCase
     }
 
     private void noQuote(final String s) {
-        assertEquals(s, Utility.quoteAtoms(s));
+        assertEquals(s, StringUtils.quoteIfNotAtom(s));
     }
 
     private String quote(final String s) {
-        return Utility.quoteAtoms(s);
+        return StringUtils.quoteIfNotAtom(s);
     }
 }

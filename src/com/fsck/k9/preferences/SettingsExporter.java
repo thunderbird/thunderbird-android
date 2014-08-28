@@ -9,9 +9,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Map.Entry;
+
 import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
@@ -23,9 +24,9 @@ import android.util.Xml;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.helper.FileUtils;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
@@ -86,7 +87,7 @@ public class SettingsExporter {
             File dir = new File(Environment.getExternalStorageDirectory() + File.separator
                                 + context.getPackageName());
             dir.mkdirs();
-            File file = Utility.createUniqueFile(dir, EXPORT_FILENAME);
+            File file = FileUtils.createUniqueFile(dir, EXPORT_FILENAME);
             filename = file.getAbsolutePath();
             os = new FileOutputStream(filename);
 

@@ -68,7 +68,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.StringUtils;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.AuthType;
@@ -1142,7 +1141,7 @@ public class ImapStore extends Store {
 
                 //TODO: Split this into multiple commands if the command exceeds a certain length.
                 List<ImapResponse> responses = executeSimpleCommand(String.format("UID COPY %s %s",
-                                                      Utility.combine(uids, ','),
+                                                      StringUtils.combine(uids, ','),
                                                       remoteDestName));
 
                 // Get the tagged response for the UID COPY command
@@ -1346,7 +1345,7 @@ public class ImapStore extends Store {
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH %s%s", Utility.combine(mesgSeqs.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
+                    return executeSimpleCommand(String.format("UID SEARCH %s%s", StringUtils.combine(mesgSeqs.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener).toArray(EMPTY_MESSAGE_ARRAY);
@@ -1356,7 +1355,7 @@ public class ImapStore extends Store {
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH UID %s%s", Utility.combine(mesgUids.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
+                    return executeSimpleCommand(String.format("UID SEARCH UID %s%s", StringUtils.combine(mesgUids.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener).toArray(EMPTY_MESSAGE_ARRAY);
@@ -1496,8 +1495,8 @@ public class ImapStore extends Store {
 
                 try {
                     mConnection.sendCommand(String.format("UID FETCH %s (%s)",
-                                                          Utility.combine(uidWindow.toArray(new String[uidWindow.size()]), ','),
-                                                          Utility.combine(fetchFields.toArray(new String[fetchFields.size()]), ' ')
+                                                          StringUtils.combine(uidWindow.toArray(new String[uidWindow.size()]), ','),
+                                                          StringUtils.combine(fetchFields.toArray(new String[fetchFields.size()]), ' ')
                                                          ), false);
                     ImapResponse response;
                     int messageNumber = 0;
@@ -2118,7 +2117,7 @@ public class ImapStore extends Store {
                 }
 
             }
-            return Utility.combine(flagNames.toArray(new String[flagNames.size()]), ' ');
+            return StringUtils.combine(flagNames.toArray(new String[flagNames.size()]), ' ');
         }
 
 
@@ -2168,7 +2167,7 @@ public class ImapStore extends Store {
             }
             try {
                 executeSimpleCommand(String.format("UID STORE %s %sFLAGS.SILENT (%s)",
-                                                   Utility.combine(uids, ','),
+                                                   StringUtils.combine(uids, ','),
                                                    value ? "+" : "-",
                                                    combineFlags(flags)));
             } catch (IOException ioe) {

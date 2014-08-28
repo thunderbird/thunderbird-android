@@ -26,7 +26,7 @@ import android.util.Log;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
-import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
@@ -369,9 +369,9 @@ public class Account implements BaseAccount {
 
         SharedPreferences prefs = preferences.getPreferences();
 
-        mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
+        mStoreUri = StringUtils.base64Decode(prefs.getString(mUuid + ".storeUri", null));
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
-        mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
+        mTransportUri = StringUtils.base64Decode(prefs.getString(mUuid + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
@@ -523,7 +523,7 @@ public class Account implements BaseAccount {
 
         // Only change the 'accountUuids' value if this account's UUID was listed before
         if (newUuids.size() < uuids.length) {
-            String accountUuids = Utility.combine(newUuids.toArray(), ',');
+            String accountUuids = StringUtils.combine(newUuids.toArray(), ',');
             editor.putString("accountUuids", accountUuids);
         }
 
@@ -655,7 +655,7 @@ public class Account implements BaseAccount {
                 }
             }
         }
-        String accountUuids = Utility.combine(newUuids, ',');
+        String accountUuids = StringUtils.combine(newUuids, ',');
         editor.putString("accountUuids", accountUuids);
         editor.commit();
         preferences.loadAccounts();
@@ -695,9 +695,9 @@ public class Account implements BaseAccount {
             editor.putString("accountUuids", accountUuids);
         }
 
-        editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
+        editor.putString(mUuid + ".storeUri", StringUtils.base64Encode(mStoreUri));
         editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
-        editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
+        editor.putString(mUuid + ".transportUri", StringUtils.base64Encode(mTransportUri));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
