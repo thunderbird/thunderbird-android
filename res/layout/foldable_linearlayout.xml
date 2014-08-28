@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
-            android:src="@drawable/ic_action_expand" />
+            android:src="?attr/iconActionExpand" />
 
         <TextView
             android:id="@+id/foldableText"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text=""
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="?android:attr/textColorTertiary" />
     </LinearLayout>
 
     <LinearLayout

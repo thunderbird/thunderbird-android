@@ -35,6 +35,8 @@
         <attr name="iconActionSave" format="reference" />
         <attr name="iconActionCancel" format="reference" />
         <attr name="iconActionRequestReadReceipt" format="reference" />
+        <attr name="iconActionExpand" format="reference" />
+        <attr name="iconActionCollapse" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />

@@ -3,8 +3,10 @@ package com.fsck.k9.view;
 import com.fsck.k9.R;
 
 import android.content.Context;
+import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -24,8 +26,11 @@ import android.widget.TextView;
  * </com.fsck.k9.view.FoldableLinearLayout>
  */
 public class FoldableLinearLayout extends LinearLayout {
+
     private ImageView mFoldableIcon;
-    private boolean mFolded;
+
+    // Start with the view folded
+    private boolean mIsFolded = true;
     private boolean mHasMigrated = false;
     private Integer mShortAnimationDuration = null;
     private TextView mFoldableTextView = null;
@@ -33,6 +38,8 @@ public class FoldableLinearLayout extends LinearLayout {
     private View mFoldableLayout = null;
     private String mFoldedLabel;
     private String mUnFoldedLabel;
+    private int mIconActionCollapseId;
+    private int mIconActionExpandId;
 
     public FoldableLinearLayout(Context context) {
         super(context);
@@ -56,6 +63,16 @@ public class FoldableLinearLayout extends LinearLayout {
      * @param attrs
      */
     private void processAttributes(Context context, AttributeSet attrs) {
+        Theme theme = context.getTheme();
+        TypedValue outValue = new TypedValue();
+        boolean found = theme.resolveAttribute(R.attr.iconActionCollapse, outValue, true);
+        if (found) {
+            mIconActionCollapseId = outValue.resourceId;
+        }
+        found = theme.resolveAttribute(R.attr.iconActionExpand, outValue, true);
+        if (found) {
+            mIconActionExpandId = outValue.resourceId;
+        }
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs,
                     R.styleable.FoldableLinearLayout, 0, 0);
@@ -107,7 +124,6 @@ public class FoldableLinearLayout extends LinearLayout {
 
     private void initialiseInnerViews() {
         mFoldableIcon = (ImageView) mFoldableLayout.findViewById(R.id.foldableIcon);
-        mFoldableIcon.setImageResource(R.drawable.ic_action_expand);
         mFoldableTextView = (TextView) mFoldableLayout.findViewById(R.id.foldableText);
         mFoldableTextView.setText(mFoldedLabel);
         // retrieve and cache the system's short animation time
@@ -117,39 +133,49 @@ public class FoldableLinearLayout extends LinearLayout {
         foldableControl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFolded = !mFolded;
-                if (mFolded) {
-                    mFoldableIcon.setImageResource(R.drawable.ic_action_collapse);
-                    mFoldableContainer.setVisibility(View.VISIBLE);
-                    AlphaAnimation animation = new AlphaAnimation(0f, 1f);
-                    animation.setDuration(mShortAnimationDuration);
-                    mFoldableContainer.startAnimation(animation);
-                    mFoldableTextView.setText(mUnFoldedLabel);
-                } else {
-                    mFoldableIcon.setImageResource(R.drawable.ic_action_expand);
-                    AlphaAnimation animation = new AlphaAnimation(1f, 0f);
-                    animation.setDuration(mShortAnimationDuration);
-                    animation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            // making sure that at the end the container is
-                            // completely removed from view
-                            mFoldableContainer.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
-                    mFoldableContainer.startAnimation(animation);
-                    mFoldableTextView.setText(mFoldedLabel);
-                }
+                mIsFolded = !mIsFolded;
+                updateFoldedState(mIsFolded, true);
             }
         });
+    }
+
+    protected void updateFoldedState(boolean newStateIsFolded, boolean animate) {
+        if (newStateIsFolded) {
+            mFoldableIcon.setImageResource(mIconActionExpandId);
+            if (animate) {
+                AlphaAnimation animation = new AlphaAnimation(1f, 0f);
+                animation.setDuration(mShortAnimationDuration);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // making sure that at the end the container is
+                        // completely removed from view
+                        mFoldableContainer.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
+                mFoldableContainer.startAnimation(animation);
+            } else {
+                mFoldableContainer.setVisibility(View.GONE);
+            }
+            mFoldableTextView.setText(mFoldedLabel);
+        } else {
+            mFoldableIcon.setImageResource(mIconActionCollapseId);
+            mFoldableContainer.setVisibility(View.VISIBLE);
+            if (animate) {
+                AlphaAnimation animation = new AlphaAnimation(0f, 1f);
+                animation.setDuration(mShortAnimationDuration);
+                mFoldableContainer.startAnimation(animation);
+            }
+            mFoldableTextView.setText(mUnFoldedLabel);
+        }
     }
 
     /**
