@@ -425,8 +425,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_notify_self_summary">Показать уведомление при отправке почты</string>
   <string name="account_settings_notification_opens_unread_label">Перейти в непрочитанные</string>
   <string name="account_settings_notification_opens_unread_summary">Перейти к непрочитанным сообщениям при нажатии на уведомление</string>
-  <string name="account_settings_notification_unread_count_label">Счётчик непрочитанных</string>
-  <string name="account_settings_notification_unread_count_summary">Показать количество непрочитанных в панели уведомлений</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Открытое прочитано</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
   <string name="account_settings_show_pictures_label">Показать изображения</string>
@@ -652,14 +650,10 @@ K-9 Mail — почтовый клиент для Android.
   <string name="settings_message_theme_selection_label">Фиксированный просмотр</string>
   <string name="settings_message_theme_selection_summary_off">Разрешить выбор темы при чтении сообщения</string>
   <string name="settings_message_theme_selection_summary_on">Отключить выбор темы при чтении сообщения</string>
-  <string name="settings_messageview_mobile_layout_label">Компактный вид</string>
-  <string name="settings_messageview_mobile_layout_summary">Перекомпоновка HTML-сообщений на небольших экранах</string>
   <string name="setting_language_system">По умолчанию</string>
   <string name="background_ops_label">Фоновая синхронизация</string>
   <string name="background_ops_never">Никогда</string>
   <string name="background_ops_always">Всегда</string>
-  <string name="background_ops_enabled">Фоновые данные вкл.</string>
-  <string name="background_ops_auto_sync">Фоновые данные и Автосинхронизация вкл.</string>
   <string name="background_ops_auto_sync_only">Автосинхронизация вкл.</string>
   <string name="batch_select_all">Выбрать все</string>
   <string name="account_setup_push_limit_label">Лимит push-проверки</string>

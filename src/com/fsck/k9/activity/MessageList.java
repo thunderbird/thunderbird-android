@@ -1391,20 +1391,6 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
         }
     }
 
-    private void restartActivity() {
-        // restart the current activity, so that the theme change can be applied
-        if (Build.VERSION.SDK_INT < 11) {
-            Intent intent = getIntent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            finish();
-            overridePendingTransition(0, 0); // disable animations to speed up the switch
-            startActivity(intent);
-            overridePendingTransition(0, 0);
-        } else {
-            recreate();
-        }
-    }
-
     @Override
     public void displayMessageSubject(String subject) {
         if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
@@ -1541,7 +1527,7 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
             }
         }).start();
 
-        restartActivity();
+        recreate();
     }
 
     private void showDefaultTitleView() {

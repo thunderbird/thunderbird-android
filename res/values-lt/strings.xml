@@ -418,8 +418,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_settings_notify_self_summary">Rodyti pranešimą mano išsiųstiems laiškams</string>
   <string name="account_settings_notification_opens_unread_label">Pranešimas atveria neskaitytus laiškus</string>
   <string name="account_settings_notification_opens_unread_summary">Atvėrus pranešimą ieško neskaitytų laiškų</string>
-  <string name="account_settings_notification_unread_count_label">Rodyti neskaitytų skaičių</string>
-  <string name="account_settings_notification_unread_count_summary">Pranešimų juostoje rodyti neskaitytų laiškų skaičių.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Atvėrus pažymėti kaip skaitytą</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Kai laiškas atveriamas peržiūrai pažymėti jį kaip skaitytą</string>
   <string name="account_settings_show_pictures_label">Visada rodyti paveikslėlius</string>
@@ -645,14 +643,10 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="settings_message_theme_selection_label">Numatyta laiško tema</string>
   <string name="settings_message_theme_selection_summary_off">Peržiūrint laišką, pasirinkti laiško peržiūros temą</string>
   <string name="settings_message_theme_selection_summary_on">Naudoti numatytą laiškų peržiūros temą</string>
-  <string name="settings_messageview_mobile_layout_label">Glaudus išdėstymas</string>
-  <string name="settings_messageview_mobile_layout_summary">Performatuoti HTML laiškus mažesniems ekranams</string>
   <string name="setting_language_system">Sistemos numatyta</string>
   <string name="background_ops_label">Sinchronizuoti fone</string>
   <string name="background_ops_never">Niekada</string>
   <string name="background_ops_always">Visada</string>
-  <string name="background_ops_enabled">Kai pažymėta „Fono duomenys“</string>
-  <string name="background_ops_auto_sync">Kai pažymėta „Fono duomenys“ ir „Automatinis sinchronizavimas“</string>
   <string name="background_ops_auto_sync_only">Kai pažymėtas „automatinis sinchronizavimas“</string>
   <string name="batch_select_all">Pasirinkti viską</string>
   <string name="account_setup_push_limit_label">Kiek daugiausia aplankų tikrinti siunčiant</string>

@@ -129,9 +129,6 @@ public class AccountSettings {
         s.put("messageReadReceipt", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT))
             ));
-        s.put("notificationUnreadCount", Settings.versions(
-                new V(1, new BooleanSetting(true))
-            ));
         s.put("notifyMailCheck", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));

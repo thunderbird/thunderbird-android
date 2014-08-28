@@ -350,8 +350,6 @@
   <string name="account_settings_notify_self_summary">הצג התראה להודעות ששלחתי</string>
   <string name="account_settings_notification_opens_unread_label">ההתראה פותחת הודעות שלא נקראו</string>
   <string name="account_settings_notification_opens_unread_summary">חיפוש אחר הודעות שלא נקראו כאשר ההתראה נפתחת</string>
-  <string name="account_settings_notification_unread_count_label">הצג מספר שלא נקראו</string>
-  <string name="account_settings_notification_unread_count_summary">הצג את מספר ההודעות שלא נקראו בשורת ההתראות.</string>
   <string name="account_settings_show_pictures_label">תמיד הצג תמונות</string>
   <string name="account_settings_show_pictures_never">לא</string>
   <string name="account_settings_show_pictures_only_from_contacts">מאנשי הקשר</string>
@@ -543,14 +541,10 @@
   <string name="messageview_preferences">הודעות</string>
   <string name="settings_theme_label">ערכת נושא</string>
   <string name="settings_language_label">שפה</string>
-  <string name="settings_messageview_mobile_layout_label">פריסת עמודה יחידה</string>
-  <string name="settings_messageview_mobile_layout_summary">אתחל הודעות HTML ותתאים אותם למסכים קטנים.</string>
   <string name="setting_language_system">ברירות מחדל מערכת</string>
   <string name="background_ops_label">סנכרון ברקע</string>
   <string name="background_ops_never">אף פעם</string>
   <string name="background_ops_always">תמיד</string>
-  <string name="background_ops_enabled">"מתי ש\'נתונים ברקע\' מסומן "</string>
-  <string name="background_ops_auto_sync">"מתי ש\'נתונים ברקע\' ו\'סינכרון אוטומטי\' מסומנים "</string>
   <string name="batch_select_all">בחר הכל</string>
   <string name="account_setup_push_limit_label">מקסימום תיקיות כדי לבדוק עם דחיפה</string>
   <string name="account_setup_push_limit_10">10 תיקיות</string>

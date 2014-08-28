@@ -1,9 +1,7 @@
 package com.fsck.k9.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,27 +13,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 
 public class MessageWebView extends RigidWebView {
-
-
-    /**
-     * Check whether the single column layout algorithm can be used on this version of Android.
-     *
-     * <p>
-     * Single column layout was broken on Android < 2.2 (see
-     * <a href="http://code.google.com/p/android/issues/detail?id=5024">issue 5024</a>).
-     * </p>
-     *
-     * <p>
-     * Android versions >= 3.0 have problems with unclickable links when single column layout is
-     * enabled (see
-     * <a href="http://code.google.com/p/android/issues/detail?id=34886">issue 34886</a>
-     * in Android's bug tracker, and
-     * <a href="http://code.google.com/p/k9mail/issues/detail?id=3820">issue 3820</a>
-     * in K-9 Mail's bug tracker).
-     */
-    public static boolean isSingleColumnLayoutSupported() {
-        return (Build.VERSION.SDK_INT > 7 && Build.VERSION.SDK_INT < 11);
-    }
 
 
     public MessageWebView(Context context) {
@@ -101,13 +78,10 @@ public class MessageWebView extends RigidWebView {
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
 
-        if (isSingleColumnLayoutSupported() && K9.mobileOptimizedLayout()) {
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        } else {
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        }
+        // TODO:  Review alternatives.  NARROW_COLUMNS is deprecated on KITKAT
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
 
-        disableOverscrolling();
+        setOverScrollMode(OVER_SCROLL_NEVER);
 
         webSettings.setTextZoom(K9.getFontSizes().getMessageViewContentAsPercent());
 
@@ -118,23 +92,13 @@ public class MessageWebView extends RigidWebView {
     /**
      * Disable on-screen zoom controls on devices that support zooming via pinch-to-zoom.
      */
-    @TargetApi(11)
     private void disableDisplayZoomControls() {
-        if (Build.VERSION.SDK_INT >= 11) {
-            PackageManager pm = getContext().getPackageManager();
-            boolean supportsMultiTouch =
-                    pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
-                    pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
+        PackageManager pm = getContext().getPackageManager();
+        boolean supportsMultiTouch =
+                pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH) ||
+                pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
 
-            getSettings().setDisplayZoomControls(!supportsMultiTouch);
-        }
-    }
-
-    @TargetApi(9)
-    private void disableOverscrolling() {
-        if (Build.VERSION.SDK_INT >= 9) {
-            setOverScrollMode(OVER_SCROLL_NEVER);
-        }
+        getSettings().setDisplayZoomControls(!supportsMultiTouch);
     }
 
     /**

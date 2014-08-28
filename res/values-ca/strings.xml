@@ -417,8 +417,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_settings_notify_self_summary">Mostra una notificació per als missatges que enviïs</string>
   <string name="account_settings_notification_opens_unread_label">Notificació obre missatges no llegits</string>
   <string name="account_settings_notification_opens_unread_summary">Cerca de missatges no llegits quan s\'ha obert la notificació.</string>
-  <string name="account_settings_notification_unread_count_label">Mostra correu no llegit</string>
-  <string name="account_settings_notification_unread_count_summary">Mostra el nombre de missatges no llegits a la barra de notificació.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca el missatge obert com a llegit</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca el missatge com a llegit després d\'haver-lo obert.</string>
   <string name="account_settings_show_pictures_label">Sempre mostra imatges</string>
@@ -644,14 +642,10 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="settings_message_theme_selection_label">Tema de missatge fix</string>
   <string name="settings_message_theme_selection_summary_off">Selecciona el tema de la vista de missatge al mostrar-lo.</string>
   <string name="settings_message_theme_selection_summary_on">Utilitza un tema fix per a tots els missatges.</string>
-  <string name="settings_messageview_mobile_layout_label">Disposició sola columna</string>
-  <string name="settings_messageview_mobile_layout_summary">Reformata missatges HTML missatges per a pantalles petites</string>
   <string name="setting_language_system">Per defecte del sistema</string>
   <string name="background_ops_label">Sincronització 2n pla</string>
   <string name="background_ops_never">Mai</string>
   <string name="background_ops_always">Sempre</string>
-  <string name="background_ops_enabled">Quan s\'està comprovant \'Dades en segon pla\'</string>
-  <string name="background_ops_auto_sync">Quan s\'està comprovant \'Dades en segon pla\' i \'Sincronització Automàtica\'</string>
   <string name="background_ops_auto_sync_only">Quan la Sincronització Automàtica està activada</string>
   <string name="batch_select_all">Selecciona-ho tot</string>
   <string name="account_setup_push_limit_label">Carpetes màximes a comprovar</string>

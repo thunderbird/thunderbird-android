@@ -415,8 +415,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_settings_notify_self_summary">Mostrar avisos para mensagens que eu envio</string>
   <string name="account_settings_notification_opens_unread_label">Avisos abrem mensagens não lidas</string>
   <string name="account_settings_notification_opens_unread_summary">Procurar por mensagens não lidas quando o aviso for aberto</string>
-  <string name="account_settings_notification_unread_count_label">Mostrar contagem de não lidas</string>
-  <string name="account_settings_notification_unread_count_summary">Mostrar o número de mensagens não lidas na barra de notificação.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensagem como lida ao abrir</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida ao abrir e visualizar</string>
   <string name="account_settings_show_pictures_label">Sempre mostrar imagens</string>
@@ -639,14 +637,10 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>
   <string name="settings_message_theme_selection_summary_off">Selecionar o tema de visualização ao visualizar a mensagem</string>
   <string name="settings_message_theme_selection_summary_on">Usar um tema fixo para visualizar mensagens</string>
-  <string name="settings_messageview_mobile_layout_label">Layout de coluna única</string>
-  <string name="settings_messageview_mobile_layout_summary">Formatar o HTML de mensagens para telas pequenas</string>
   <string name="setting_language_system">Padrões de sistema</string>
   <string name="background_ops_label">Sincronização em segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
-  <string name="background_ops_enabled">Quando \'Dados em segundo plano\' estiverem ativados</string>
-  <string name="background_ops_auto_sync">Quando \'Dados de segundo plano\' e \'Auto-sinc\' estiverem ativados</string>
   <string name="background_ops_auto_sync_only">Quando \'Auto-sinc\' estiver ativada</string>
   <string name="batch_select_all">Selecionar todos</string>
   <string name="account_setup_push_limit_label">Máximo de pastas para verificar com push</string>

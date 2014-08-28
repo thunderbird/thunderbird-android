@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.CheckBoxPreference;
@@ -61,7 +60,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SCREEN_COMPOSING = "composing";
     private static final String PREFERENCE_SCREEN_INCOMING = "incoming_prefs";
     private static final String PREFERENCE_SCREEN_PUSH_ADVANCED = "push_advanced";
-    private static final String PREFERENCE_SCREEN_NOTIFICATIONS = "notifications";
     private static final String PREFERENCE_SCREEN_SEARCH = "search";
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
@@ -96,7 +94,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_CHIP_COLOR = "chip_color";
     private static final String PREFERENCE_LED_COLOR = "led_color";
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
-    private static final String PREFERENCE_NOTIFICATION_UNREAD_COUNT = "notification_unread_count";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_MESSAGE_FORMAT = "message_format";
@@ -162,7 +159,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private Preference mLedColor;
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
-    private CheckBoxPreference mNotificationUnreadCount;
     private ListPreference mMessageFormat;
     private CheckBoxPreference mMessageReadReceipt;
     private ListPreference mQuoteStyle;
@@ -624,24 +620,6 @@ public class AccountSettings extends K9PreferenceActivity {
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
 
-        CheckBoxPreference notificationUnreadCount =
-                (CheckBoxPreference) findPreference(PREFERENCE_NOTIFICATION_UNREAD_COUNT);
-
-        /*
-         * Honeycomb and newer don't show the notification number as overlay on the notification
-         * icon in the status bar, so we hide the setting.
-         *
-         * See http://code.google.com/p/android/issues/detail?id=21477
-         */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            PreferenceScreen notificationsPrefs =
-                    (PreferenceScreen) findPreference(PREFERENCE_SCREEN_NOTIFICATIONS);
-            notificationsPrefs.removePreference(notificationUnreadCount);
-        } else {
-            notificationUnreadCount.setChecked(mAccount.isNotificationShowsUnreadCount());
-            mNotificationUnreadCount = notificationUnreadCount;
-        }
-
         new PopulateFolderPrefsTask().execute();
 
         mChipColor = findPreference(PREFERENCE_CHIP_COLOR);
@@ -781,9 +759,6 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
-        if (mNotificationUnreadCount != null) {
-            mAccount.setNotificationShowsUnreadCount(mNotificationUnreadCount.isChecked());
-        }
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         if (mIsExpungeCapable) {

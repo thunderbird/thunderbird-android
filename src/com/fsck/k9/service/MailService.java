@@ -8,7 +8,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -86,14 +85,9 @@ public class MailService extends CoreService {
     public int startService(Intent intent, int startId) {
         long startTime = System.currentTimeMillis();
         boolean oldIsSyncDisabled = isSyncDisabled();
-        ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
         boolean doBackground = true;
-        boolean backgroundData = false;
 
         final boolean hasConnectivity = Utility.hasConnectivity(getApplication());
-        if (connectivityManager != null) {
-            backgroundData = connectivityManager.getBackgroundDataSetting();
-        }
         boolean autoSync = ContentResolver.getMasterSyncAutomatically();
 
         K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
@@ -105,11 +99,8 @@ public class MailService extends CoreService {
             case ALWAYS:
                 doBackground = true;
                 break;
-            case WHEN_CHECKED:
-                doBackground = backgroundData;
-                break;
             case WHEN_CHECKED_AUTO_SYNC:
-                doBackground = backgroundData & autoSync;
+                doBackground = autoSync;
                 break;
         }
 

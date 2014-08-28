@@ -8,10 +8,8 @@ import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -3697,7 +3695,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         public List<String> getQueryParameters(String key) {
             final List<String> params = new ArrayList<String>();
-            for (String paramName : getQueryParameterNames()) {
+            for (String paramName : uri.getQueryParameterNames()) {
                 if (paramName.equalsIgnoreCase(key)) {
                     params.addAll(uri.getQueryParameters(paramName));
                 }
@@ -3705,25 +3703,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return params;
         }
 
-        @TargetApi(11)
-        private Set<String> getQueryParameterNames() {
-            if (Build.VERSION.SDK_INT >= 11) {
-                return uri.getQueryParameterNames();
-            }
-
-            return getQueryParameterNamesPreSdk11();
-        }
-
-        private Set<String> getQueryParameterNamesPreSdk11() {
-            if (mParamNames == null) {
-                String query = uri.getQuery();
-                Set<String> paramNames = new HashSet<String>();
-                Collections.addAll(paramNames, query.split("(=[^&]*(&|$))|&"));
-                mParamNames = paramNames;
-            }
-
-            return mParamNames;
-        }
     }
 
     private class SendMessageTask extends AsyncTask<Void, Void, Void> {

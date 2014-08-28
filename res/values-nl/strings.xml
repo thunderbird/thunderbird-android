@@ -416,8 +416,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_settings_notify_self_summary">Notificatie ook voor mail verzonden vanaf een identiteit</string>
   <string name="account_settings_notification_opens_unread_label">Notificatie opent ongelezen berichten</string>
   <string name="account_settings_notification_opens_unread_summary">Zoekt voor ongelezen berichten wanneer Notificatie is geopend</string>
-  <string name="account_settings_notification_unread_count_label">Toon aantal ongelezen</string>
-  <string name="account_settings_notification_unread_count_summary">Toon het aantal ongelezen berichten in de \'notification bar\'.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markeer als gelezen als geopend</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markeer als gelezen wanneer ingezien</string>
   <string name="account_settings_show_pictures_label">Laat afbeeldingen automatisch zien</string>
@@ -643,14 +641,10 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="settings_message_theme_selection_label">Vast berichten thema</string>
   <string name="settings_message_theme_selection_summary_off">Kies het thema tijdens het bekijken van het bericht</string>
   <string name="settings_message_theme_selection_summary_on">Gebruik een vast thema om het bericht te bekijken</string>
-  <string name="settings_messageview_mobile_layout_label">1-kolom layout</string>
-  <string name="settings_messageview_mobile_layout_summary">Herschik HTML berichten voor kleinere schermen</string>
   <string name="setting_language_system">Volgens systeem</string>
   <string name="background_ops_label">Achtergrond sync</string>
   <string name="background_ops_never">Nooit</string>
   <string name="background_ops_always">Altijd</string>
-  <string name="background_ops_enabled">Wanneer \'Achtergrond data\' is aangevinkt</string>
-  <string name="background_ops_auto_sync">Wanneer \'Achtergrond data\' &amp; \'Auto-sync\' zijn aangevinkt</string>
   <string name="background_ops_auto_sync_only">Als \'Auto-sync\' geselecteerd is</string>
   <string name="batch_select_all">Selecteer alle</string>
   <string name="account_setup_push_limit_label">Max mappen om te controleren met push</string>

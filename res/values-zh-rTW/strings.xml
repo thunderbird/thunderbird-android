@@ -387,8 +387,6 @@
   <string name="account_settings_notify_self_summary">寄送郵件時顯示通知</string>
   <string name="account_settings_notification_opens_unread_label">點擊通知後打開未讀郵件</string>
   <string name="account_settings_notification_opens_unread_summary">點擊通知後搜尋未讀郵件</string>
-  <string name="account_settings_notification_unread_count_label">顯示未讀郵件數</string>
-  <string name="account_settings_notification_unread_count_summary">在通知欄上顯示未讀郵件數</string>
   <string name="account_settings_mark_message_as_read_on_view_label">開啟自動標記已讀</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">開啟檢視郵件內容時自動標記為已讀</string>
   <string name="account_settings_show_pictures_label">顯示圖片</string>
@@ -614,14 +612,10 @@
   <string name="settings_message_theme_selection_label">固定訊息主題</string>
   <string name="settings_message_theme_selection_summary_off">讀取訊息內容時顯示訊息檢視主題</string>
   <string name="settings_message_theme_selection_summary_on">使用固定訊息檢視主題</string>
-  <string name="settings_messageview_mobile_layout_label">單列佈局</string>
-  <string name="settings_messageview_mobile_layout_summary">針對小尺寸螢幕重新排列HTML郵件格式</string>
   <string name="setting_language_system">系統預設值</string>
   <string name="background_ops_label">背景同步</string>
   <string name="background_ops_never">不要</string>
   <string name="background_ops_always">預設</string>
-  <string name="background_ops_enabled">當「背景資料」被勾選</string>
-  <string name="background_ops_auto_sync">當「背景資料」&amp;「自動同步」被勾選</string>
   <string name="background_ops_auto_sync_only">當「自動同步」被勾選</string>
   <string name="batch_select_all">選擇全部</string>
   <string name="account_setup_push_limit_label">推送時檢查信件匣上限數量</string>

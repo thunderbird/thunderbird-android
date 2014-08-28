@@ -415,8 +415,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_settings_notify_self_summary">Показати сповіщення про надіслані мною повідомлення</string>
   <string name="account_settings_notification_opens_unread_label">Сповіщати про відкриття непрочитаних повідомлень</string>
   <string name="account_settings_notification_opens_unread_summary">Шукати непрочитані повідомлення, коли сповіщення відкрито</string>
-  <string name="account_settings_notification_unread_count_label">Показувати кількість непрочитаних</string>
-  <string name="account_settings_notification_unread_count_summary">Показувати кількість непрочитаних повідомлень у рядку сповіщень.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Відмічати повідомлення як прочитане під час відкриття</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Відмічати повідомлення як прочитане під час відкриття для перегляду</string>
   <string name="account_settings_show_pictures_label">Завжди показувати зображення</string>
@@ -641,14 +639,10 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="settings_language_label">Мова</string>
   <string name="settings_message_theme_selection_label">Встановити тему повідомлення</string>
   <string name="settings_message_theme_selection_summary_off">Виберіть перегляд теми повідомлення під час перегляду повідомлення</string>
-  <string name="settings_messageview_mobile_layout_label">режим одного стовпця</string>
-  <string name="settings_messageview_mobile_layout_summary">Форматування HTML повідомлення для маленького екрану</string>
   <string name="setting_language_system">Системна по замовчуванню</string>
   <string name="background_ops_label">Фонова синхронізація</string>
   <string name="background_ops_never">Ніколи</string>
   <string name="background_ops_always">Завжди</string>
-  <string name="background_ops_enabled">Коли \'Фонові дані\' включено</string>
-  <string name="background_ops_auto_sync">Коли \'Фонові дані\' та \'Автосинхронізація\' включено</string>
   <string name="background_ops_auto_sync_only">Коли \"Автосинхронізація\" увімкнена</string>
   <string name="batch_select_all">Вибрати усе</string>
   <string name="account_setup_push_limit_label">Найбільша кількість папок для перевірки з push</string>

@@ -355,8 +355,6 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
   <string name="account_settings_notify_self_summary">Amosar notificacións durante o envío de correo</string>
   <string name="account_settings_notification_opens_unread_label">Abrir correo non lido</string>
   <string name="account_settings_notification_opens_unread_summary">Abrir correo non lido dende a notificación</string>
-  <string name="account_settings_notification_unread_count_label">Amosar número de mensaxes non lidos</string>
-  <string name="account_settings_notification_unread_count_summary">Amosar número de mensaxen non lidos na barra de notificacións.</string>
   <string name="account_settings_show_pictures_label">Amosar imaxes</string>
   <string name="account_settings_show_pictures_never">Nunca</string>
   <string name="account_settings_show_pictures_only_from_contacts">Só dos meuis contactos</string>
@@ -576,14 +574,10 @@ Por favor, envía os erros detectados, contribúe con novas funcionalidas e preg
   <string name="messageview_preferences">mensaxes</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_language_label">Idioma</string>
-  <string name="settings_messageview_mobile_layout_label">Columna única</string>
-  <string name="settings_messageview_mobile_layout_summary">Reformatea mensaxes HTML para pantallas pequenas</string>
   <string name="setting_language_system">Configurado no sistema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
-  <string name="background_ops_enabled">Cando \'Sincronización en segundo plano\' esté activo</string>
-  <string name="background_ops_auto_sync">Cando \'Sincronización en segundo plano\' e \'Sincronización automática\' estén activos</string>
   <string name="batch_select_all">Seleccionar todos</string>
   <string name="account_setup_push_limit_label">Max. subscripcións</string>
   <string name="account_setup_push_limit_10">10 carpetas</string>

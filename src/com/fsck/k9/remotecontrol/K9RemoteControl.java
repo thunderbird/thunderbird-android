@@ -100,10 +100,9 @@ public class K9RemoteControl {
     /**
      * Key for the {@link Intent} Extra to set for controlling K-9's global "Background sync" setting.
      * Acceptable values are K9_BACKGROUND_OPERATIONS_ALWAYS, K9_BACKGROUND_OPERATIONS_NEVER
-     * K9_BACKGROUND_OPERATIONS_WHEN_CHECKED
+     * K9_BACKGROUND_OPERATIONS_WHEN_CHECKED_AUTO_SYNC
      */
     public final static String K9_BACKGROUND_OPERATIONS = "com.fsck.k9.K9RemoteControl.backgroundOperations";
-    public final static String K9_BACKGROUND_OPERATIONS_WHEN_CHECKED = "WHEN_CHECKED";
     public final static String K9_BACKGROUND_OPERATIONS_ALWAYS = "ALWAYS";
     public final static String K9_BACKGROUND_OPERATIONS_NEVER = "NEVER";
     public final static String K9_BACKGROUND_OPERATIONS_WHEN_CHECKED_AUTO_SYNC = "WHEN_CHECKED_AUTO_SYNC";

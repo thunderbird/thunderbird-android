@@ -411,8 +411,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_settings_notify_self_summary">Mutassa az állapotsoron ha a küldés sikeres volt</string>
   <string name="account_settings_notification_opens_unread_label">Értesítés megnyitása</string>
   <string name="account_settings_notification_opens_unread_summary">Értesítésre kattintva megnyitja az olvasatlan üzeneteket</string>
-  <string name="account_settings_notification_unread_count_label">Olvasatlanok kijelzése</string>
-  <string name="account_settings_notification_unread_count_summary">Olvasatlan levelek száma az állapotsoron.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Üzenet megjelölése olvasottnak megnyitáskor</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Olvasottnak jelöli az üzenetet, ha megnézik</string>
   <string name="account_settings_show_pictures_label">Képek megjelenítése</string>
@@ -632,14 +630,10 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="settings_message_theme_label">Üzenetmegjelenítés témája</string>
   <string name="settings_compose_theme_label">Üzenetírás témája</string>
   <string name="settings_language_label">Nyelv</string>
-  <string name="settings_messageview_mobile_layout_label">Egy oszlopos elrendezés</string>
-  <string name="settings_messageview_mobile_layout_summary">HTML üzenetek újraformázása a kisebb kijelzőkhöz.</string>
   <string name="setting_language_system">Alapértelmezett</string>
   <string name="background_ops_label">Háttérszinkronizálás</string>
   <string name="background_ops_never">Soha</string>
   <string name="background_ops_always">Mindig</string>
-  <string name="background_ops_enabled">Ha a \'Háttéradatok\' bekapcsolva</string>
-  <string name="background_ops_auto_sync">Ha a \'Háttéradatok\' és \'Auto-szink\' bekapcsolva</string>
   <string name="background_ops_auto_sync_only">Amikor az \'Automatikus szinkronizáció\' be van kapcsolva</string>
   <string name="batch_select_all">Mindent kijelöl</string>
   <string name="account_setup_push_limit_label">Ellenőrizhető mappák száma</string>

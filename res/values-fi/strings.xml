@@ -426,8 +426,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_settings_notify_self_summary">Näytä ilmoitus lähettämistäni viesteistä</string>
   <string name="account_settings_notification_opens_unread_label">Ilmoitus avaa lukemattomat viestit</string>
   <string name="account_settings_notification_opens_unread_summary">Etsii lukemattomia viestejä, kun ilmoitus avataan</string>
-  <string name="account_settings_notification_unread_count_label">Näytä lukemattomien viestien määrä</string>
-  <string name="account_settings_notification_unread_count_summary">Näytä lukemattomien viestien määrä ilmoituspalkissa.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Merkitse viesti luetuksi avattaessa</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se avataan katseltavaksi</string>
   <string name="account_settings_show_pictures_label">Näytä aina kuvat</string>
@@ -653,14 +651,10 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="settings_message_theme_selection_label">Kiinteä viestiteema</string>
   <string name="settings_message_theme_selection_summary_off">Valitse viestinäkymän teema viestiä luettaessa</string>
   <string name="settings_message_theme_selection_summary_on">Käytä kiinteää viestinäkymän teemaa</string>
-  <string name="settings_messageview_mobile_layout_label">Yhden sarakkeen asettelu</string>
-  <string name="settings_messageview_mobile_layout_summary">Uudelleenmuotoile HTML-viestit pienemälle näytölle</string>
   <string name="setting_language_system">Järjestelmän oletus</string>
   <string name="background_ops_label">Synkronointi taustalla</string>
   <string name="background_ops_never">Ei koskaan</string>
   <string name="background_ops_always">Aina</string>
-  <string name="background_ops_enabled">Kun Taustadata on valittu</string>
-  <string name="background_ops_auto_sync">Kun \'Taustadata\' ja \'Automaattinen synkronointi\' on valittu</string>
   <string name="background_ops_auto_sync_only">Kun Automaattinen synkronointi on valittu</string>
   <string name="batch_select_all">Valitse kaikki</string>
   <string name="account_setup_push_limit_label">Push-tilassa tarkistettavien kansioiden enimmäismäärä</string>

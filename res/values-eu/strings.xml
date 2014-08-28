@@ -417,8 +417,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_notify_self_summary">Bidaltzen ditudan mezuetarako jakinarazpena ikusi</string>
   <string name="account_settings_notification_opens_unread_label">Jakinarazpenak irakurgabeko mezuak irekitzen ditu</string>
   <string name="account_settings_notification_opens_unread_summary">Jakinarazpena irekitzean irakurri gabeko mezuak bilatu</string>
-  <string name="account_settings_notification_unread_count_label">Irakurgabeko kopurua ikusi</string>
-  <string name="account_settings_notification_unread_count_summary">Irakurgabeko mezu kopurua ikusi jakinarazpen barran.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Irekitzean irakurrita markatu</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Mezu bat irekitzerakoan irakurri bezala markatu</string>
   <string name="account_settings_show_pictures_label">Irudiak beti ikusi</string>
@@ -644,14 +642,10 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="settings_message_theme_selection_label">Mezu finkoaren itxura</string>
   <string name="settings_message_theme_selection_summary_off">Mezua ikusten deneran itxura hautatu</string>
   <string name="settings_message_theme_selection_summary_on">Mezua ikusteko itxura finkoa erabili</string>
-  <string name="settings_messageview_mobile_layout_label">Diseinu trinkoa</string>
-  <string name="settings_messageview_mobile_layout_summary">Pantaila txikietarako HTML mezuak moldatu</string>
   <string name="setting_language_system">Sistemako defektuzkoa</string>
   <string name="background_ops_label">Atzeko planoko sinkronizazioa</string>
   <string name="background_ops_never">Inoiz ez</string>
   <string name="background_ops_always">Beti</string>
-  <string name="background_ops_enabled">\'Background data\' gaituta dagoenean</string>
-  <string name="background_ops_auto_sync">\'Background data\' eta \'Auto-sinkronizazioa\' gaituta daudenean</string>
   <string name="background_ops_auto_sync_only">\'Auto-sinkronizazioa\' gaituta dagoenean</string>
   <string name="batch_select_all">Guztia hautatu</string>
   <string name="account_setup_push_limit_label">Push erabiliz egiaztatuko diren karpeta kopuru maximoa</string>

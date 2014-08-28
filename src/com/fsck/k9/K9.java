@@ -102,7 +102,7 @@ public class K9 extends Application {
     private static boolean sInitialized = false;
 
     public enum BACKGROUND_OPS {
-        WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
+        ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
     }
 
     private static String language = "";
@@ -113,7 +113,7 @@ public class K9 extends Application {
 
     private static final FontSizes fontSizes = new FontSizes();
 
-    private static BACKGROUND_OPS backgroundOps = BACKGROUND_OPS.WHEN_CHECKED;
+    private static BACKGROUND_OPS backgroundOps = BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC;
     /**
      * Some log messages can be sent to a file, so that the logs
      * can be read using unprivileged access (eg. Terminal Emulator)
@@ -255,7 +255,6 @@ public class K9 extends Application {
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
     private static boolean mHideSpecialAccounts = false;
-    private static boolean mMobileOptimizedLayout = false;
     private static boolean mAutofitWidth;
     private static boolean mQuietTimeEnabled = false;
     private static String mQuietTimeStarts = null;
@@ -509,12 +508,11 @@ public class K9 extends Application {
     public static void save(SharedPreferences.Editor editor) {
         editor.putBoolean("enableDebugLogging", K9.DEBUG);
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
-        editor.putString("backgroundOperations", K9.backgroundOps.toString());
+        editor.putString("backgroundOperations", K9.backgroundOps.name());
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
-        editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
         editor.putBoolean("autofitWidth", mAutofitWidth);
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
@@ -733,7 +731,6 @@ public class K9 extends Application {
         mMessageListStars = sprefs.getBoolean("messageListStars", true);
         mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
 
-        mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
         mAutofitWidth = sprefs.getBoolean("autofitWidth", true);
 
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
@@ -795,9 +792,11 @@ public class K9 extends Application {
         fontSizes.load(sprefs);
 
         try {
-            setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString("backgroundOperations", "WHEN_CHECKED")));
+            setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString(
+                    "backgroundOperations",
+                    BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC.name())));
         } catch (Exception e) {
-            setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
+            setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC);
         }
 
         sColorizeMissingContactPictures = sprefs.getBoolean("colorizeMissingContactPictures", true);
@@ -976,14 +975,6 @@ public class K9 extends Application {
 
     public static void setUseVolumeKeysForListNavigation(boolean enabled) {
         mUseVolumeKeysForListNavigation = enabled;
-    }
-
-    public static boolean mobileOptimizedLayout() {
-        return mMobileOptimizedLayout;
-    }
-
-    public static void setMobileOptimizedLayout(boolean mobileOptimizedLayout) {
-        mMobileOptimizedLayout = mobileOptimizedLayout;
     }
 
     public static boolean autofitWidth() {

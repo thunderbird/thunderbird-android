@@ -416,8 +416,6 @@
   <string name="account_settings_notify_self_summary">Προβολή ειδοποίησης για μηνύματα που απέστειλα</string>
   <string name="account_settings_notification_opens_unread_label">Η ειδοποίηση ανοίγει μη αναγνωσμένα μηνύματα</string>
   <string name="account_settings_notification_opens_unread_summary">Αναζητά μη αναγνωσμένα μηνύματα όταν ανοίγεται η ειδοποίηση</string>
-  <string name="account_settings_notification_unread_count_label">Προβολή πλήθους μη αναγνωσμένων</string>
-  <string name="account_settings_notification_unread_count_summary">Προβολή πλήθους μη αναγνωσμένων μηνυμάτων στη γραμμή κατάστασης.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Σημείωση ως αναγνωσμένου με την ανάγνωση</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
   <string name="account_settings_show_pictures_label">Προβολή εικόνων πάντα</string>
@@ -643,14 +641,10 @@
   <string name="settings_message_theme_selection_label">Θέμα σταθερού μηνύματος</string>
   <string name="settings_message_theme_selection_summary_off">Επιλογή του θέματος προβολής μηνύματος κατά την προβολή του μηνύματος</string>
   <string name="settings_message_theme_selection_summary_on">Χρήση θέματος σταθερού μηνύματος</string>
-  <string name="settings_messageview_mobile_layout_label">Μονόστηλη διάταξη</string>
-  <string name="settings_messageview_mobile_layout_summary">Μηνύματα HTML για μικρότερες οθόνες</string>
   <string name="setting_language_system">Εξ ορισμού του συστήματος</string>
   <string name="background_ops_label">Συγχρονισμός στο παρασκήνιο</string>
   <string name="background_ops_never">Ποτέ</string>
   <string name="background_ops_always">Πάντοτε</string>
-  <string name="background_ops_enabled">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\'</string>
-  <string name="background_ops_auto_sync">Όταν ελέγχονται \'Δεδομένα παρασκηνίου\' &amp; \'Αυτόματο συγχρονισμός\'</string>
   <string name="background_ops_auto_sync_only">Όταν έχει επιλεγεί \'Auto-sync\'</string>
   <string name="batch_select_all">Επιλογή όλων</string>
   <string name="account_setup_push_limit_label">Μέγιστο φακέλων για σπρώξιμο</string>

@@ -415,8 +415,6 @@ K-9改进的功能包括：
   <string name="account_settings_notify_self_summary">发送邮件时显示通知</string>
   <string name="account_settings_notification_opens_unread_label">点击通知后打开未读邮件</string>
   <string name="account_settings_notification_opens_unread_summary">点击通知后搜索未读邮件</string>
-  <string name="account_settings_notification_unread_count_label">显示未读邮件数量</string>
-  <string name="account_settings_notification_unread_count_summary">在通知栏显示未读邮件数量</string>
   <string name="account_settings_mark_message_as_read_on_view_label">邮件打开时标记为已读</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">当邮件打开时标记为已读</string>
   <string name="account_settings_show_pictures_label">显示图片</string>
@@ -642,14 +640,10 @@ K-9改进的功能包括：
   <string name="settings_message_theme_selection_label">固定消息主题</string>
   <string name="settings_message_theme_selection_summary_off">在查看消息时选择消息查看主题</string>
   <string name="settings_message_theme_selection_summary_on">使用固定消息查看主题</string>
-  <string name="settings_messageview_mobile_layout_label">单列布局</string>
-  <string name="settings_messageview_mobile_layout_summary">为小屏幕重新布局HTML邮件</string>
   <string name="setting_language_system">系统默认值</string>
   <string name="background_ops_label">后台同步</string>
   <string name="background_ops_never">从不</string>
   <string name="background_ops_always">总是</string>
-  <string name="background_ops_enabled">当“后台数据”被选中</string>
-  <string name="background_ops_auto_sync">当“后台数据”&amp;“自动同步”被选中</string>
   <string name="background_ops_auto_sync_only">当“自动同步”已选定</string>
   <string name="batch_select_all">选择全部</string>
   <string name="account_setup_push_limit_label">推送时最多检查文件夹数量</string>

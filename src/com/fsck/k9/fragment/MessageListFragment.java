@@ -2,6 +2,7 @@ package com.fsck.k9.fragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -150,7 +151,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private static final int FOLDER_NAME_COLUMN = 17;
     private static final int THREAD_COUNT_COLUMN = 18;
 
-    private static final String[] PROJECTION = Utility.copyOf(THREADED_PROJECTION,
+    private static final String[] PROJECTION = Arrays.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
 
 

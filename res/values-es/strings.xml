@@ -426,8 +426,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_settings_notify_self_summary">Mostrar notificaciones durante el envío de correo</string>
   <string name="account_settings_notification_opens_unread_label">Abrir correo no leído</string>
   <string name="account_settings_notification_opens_unread_summary">Abrir correo no leído desde la notificación</string>
-  <string name="account_settings_notification_unread_count_label">Mostrar número de mensajes no leídos</string>
-  <string name="account_settings_notification_unread_count_summary">Mostrar número de mensajes no leídos en barra de notificaciones.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensaje como leído al abrirlo</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar mensaje como leído cuando se abre para verlo</string>
   <string name="account_settings_show_pictures_label">Mostrar imágenes siempre</string>
@@ -653,14 +651,10 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="settings_message_theme_selection_label">Tema de mensaje fijo</string>
   <string name="settings_message_theme_selection_summary_off">Seleccionar el tema de vista de mensaje mientras se muestra el mensaje</string>
   <string name="settings_message_theme_selection_summary_on">Usar un tema de vista de mensaje fijo</string>
-  <string name="settings_messageview_mobile_layout_label">Única Columna</string>
-  <string name="settings_messageview_mobile_layout_summary">Ajusta mensajes HTML para pantallas pequeñas</string>
   <string name="setting_language_system">Configurado en el sistema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Siempre</string>
-  <string name="background_ops_enabled">Cuando \'Sincronización en segundo plano\' esté activo</string>
-  <string name="background_ops_auto_sync">Cuando \'Sincronización en segundo plano\' y \'Sincronización automática\' estén activos</string>
   <string name="background_ops_auto_sync_only">Cuando \'sincronización automática\' esté activo</string>
   <string name="batch_select_all">Seleccionar todos</string>
   <string name="account_setup_push_limit_label">Max. carpetas Push</string>

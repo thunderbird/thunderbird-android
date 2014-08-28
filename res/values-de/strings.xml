@@ -424,8 +424,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine Ihrer eigenen E-Mail-Adressen als Absender tragen</string>
   <string name="account_settings_notification_opens_unread_label">Ungelesene Nachrichten öffnen</string>
   <string name="account_settings_notification_opens_unread_summary">Beim Öffnen einer Benachrichtigung Liste der ungelesenen Nachrichten anzeigen</string>
-  <string name="account_settings_notification_unread_count_label">Anzahl anzeigen</string>
-  <string name="account_settings_notification_unread_count_summary">Anzahl der ungelesenen Nachrichten in der Statuszeile anzeigen</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Beim Öffnen als gelesen markieren</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Nachricht als gelesen markieren, sobald sie zum Betrachten geöffnet wird</string>
   <string name="account_settings_show_pictures_label">Bilder automatisch anzeigen</string>
@@ -651,14 +649,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="settings_message_theme_selection_label">Festes Nachrichten-Design</string>
   <string name="settings_message_theme_selection_summary_off">Nachrichten-Design während des Ansehens der Nachricht auswählen</string>
   <string name="settings_message_theme_selection_summary_on">Immer das ausgewählte Nachrichten-Design verwenden</string>
-  <string name="settings_messageview_mobile_layout_label">Einfaches Layout</string>
-  <string name="settings_messageview_mobile_layout_summary">HTML-Nachrichten für kleine Displays optimieren</string>
   <string name="setting_language_system">Systemvorgabe</string>
   <string name="background_ops_label">Hintergrund-Synchronisierung</string>
   <string name="background_ops_never">Nie</string>
   <string name="background_ops_always">Immer</string>
-  <string name="background_ops_enabled">Wenn \'Hintergrunddaten\' aktiviert ist</string>
-  <string name="background_ops_auto_sync">Wenn \'Hintergrunddaten\' &amp; \'Automatische Synchronisation\' aktiviert sind</string>
   <string name="background_ops_auto_sync_only">Wenn \'Automatische Synchronisation\' aktiviert ist</string>
   <string name="batch_select_all">Alle auswählen</string>
   <string name="account_setup_push_limit_label">Maximale Push-Ordner-Anzahl</string>

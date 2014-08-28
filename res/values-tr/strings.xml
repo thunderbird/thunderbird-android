@@ -381,8 +381,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_settings_notify_self_summary">Gönderdiğim mesajlar için bir bildirim göster</string>
   <string name="account_settings_notification_opens_unread_label">Okunmamış mesaj bildirimi açık</string>
   <string name="account_settings_notification_opens_unread_summary">Bildirim açık olduğunda okunmamış mesajlar için arama yap</string>
-  <string name="account_settings_notification_unread_count_label">Okunmamış sayısını göster</string>
-  <string name="account_settings_notification_unread_count_summary">Bildirim çubuğunda okunmamış mesaj numarasını göster.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Mesaj açılırken okundu işaretle</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Mesaj okunmak üzere açıldığında okundu olarak işaretle</string>
   <string name="account_settings_show_pictures_label">Daima resimleri göster</string>
@@ -595,14 +593,10 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="messageview_preferences">Mesajlar</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_language_label">Dil</string>
-  <string name="settings_messageview_mobile_layout_label">Tek sütun düzeni</string>
-  <string name="settings_messageview_mobile_layout_summary">Daha küçük ekranlar için HTML mesajları yeniden biçimlendir</string>
   <string name="setting_language_system">Sistem Varsayılanları</string>
   <string name="background_ops_label">Arkaplan senkronizasyonu</string>
   <string name="background_ops_never">Asla</string>
   <string name="background_ops_always">Daima</string>
-  <string name="background_ops_enabled">\'Arkaplan verisi\' işaretli olduğu zaman</string>
-  <string name="background_ops_auto_sync">\'Arkaplan verisi\' &amp; \'Oto. Senk.\' işaretli olduğu zaman</string>
   <string name="batch_select_all">Hepsini Seç</string>
   <string name="account_setup_push_limit_label">Push ile en fazla kontrol edilecek klasör sayısı</string>
   <string name="account_setup_push_limit_10">10 klasör</string>

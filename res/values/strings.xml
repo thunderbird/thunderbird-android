@@ -512,8 +512,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_notify_self_summary">Show a notification for messages I sent</string>
     <string name="account_settings_notification_opens_unread_label">Notification opens unread messages</string>
     <string name="account_settings_notification_opens_unread_summary">Searches for unread messages when Notification is opened</string>
-    <string name="account_settings_notification_unread_count_label">Show unread count</string>
-    <string name="account_settings_notification_unread_count_summary">Show the number of unread messages in the notification bar.</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>
 
@@ -792,16 +790,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>
     <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>
 
-    <string name="settings_messageview_mobile_layout_label">Condensed layout</string>
-    <string name="settings_messageview_mobile_layout_summary">Reformat HTML messages for smaller screens</string>
 
     <string name="setting_language_system">System default</string>
 
     <string name="background_ops_label">Background sync</string>
     <string name="background_ops_never">Never</string>
     <string name="background_ops_always">Always</string>
-    <string name="background_ops_enabled">When \'Background data\' is checked</string>
-    <string name="background_ops_auto_sync">When \'Background data\' &amp; \'Auto-sync\' are checked</string>
     <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
 
     <string name="batch_select_all">Select all</string>

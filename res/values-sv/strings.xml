@@ -417,8 +417,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
   <string name="account_settings_notify_self_summary">Notifiera även för e-post som jag själv har skickat</string>
   <string name="account_settings_notification_opens_unread_label">Notifieringar öppnar oläst e-post</string>
   <string name="account_settings_notification_opens_unread_summary">Letar efter oläst e-post när notifieringen öppnas</string>
-  <string name="account_settings_notification_unread_count_label">Visa antal olästa</string>
-  <string name="account_settings_notification_unread_count_summary">Visar antalet olästa brev i notifieringsytan.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst vid visning</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markera ett meddelande som läst när det visas</string>
   <string name="account_settings_show_pictures_label">Visa bilder automatiskt</string>
@@ -644,14 +642,10 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
   <string name="settings_message_theme_selection_label">Fast meddelandetema</string>
   <string name="settings_message_theme_selection_summary_off">Välj tema för meddelandevyn medan meddelandet visas</string>
   <string name="settings_message_theme_selection_summary_on">Använd ett fast tema för meddelandevyn</string>
-  <string name="settings_messageview_mobile_layout_label">En-kolumns-layout</string>
-  <string name="settings_messageview_mobile_layout_summary">Formatera om HTML-brev för mindre skärmar</string>
   <string name="setting_language_system">Systemstandard</string>
   <string name="background_ops_label">Bakgrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
   <string name="background_ops_always">Alltid</string>
-  <string name="background_ops_enabled">När \'Bakgrundsdata\' är aktiverad</string>
-  <string name="background_ops_auto_sync">När \'Bakgrundsdata\' &amp; \'Auto-sync\' är aktiverade</string>
   <string name="background_ops_auto_sync_only">Endast när \'Auto-sync\' är aktiverad</string>
   <string name="batch_select_all">Markera alla</string>
   <string name="account_setup_push_limit_label">Max antal mappar att kontrollera med push</string>

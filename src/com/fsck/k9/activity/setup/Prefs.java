@@ -12,13 +12,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -38,7 +36,6 @@ import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.preferences.TimePickerPreference;
 
 import com.fsck.k9.service.MailService;
-import com.fsck.k9.view.MessageWebView;
 
 
 public class Prefs extends K9PreferenceActivity {
@@ -88,7 +85,6 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_HIDE_USERAGENT = "privacy_hide_useragent";
     private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
 
-    private static final String PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT = "messageview_mobile_layout";
     private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
@@ -136,7 +132,6 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
-    private CheckBoxPreference mMobileOptimizedLayout;
     private CheckBoxPreference mAutofitWidth;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mUseGalleryBugWorkaround;
@@ -308,14 +303,6 @@ public class Prefs extends K9PreferenceActivity {
         mShowNext = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_SHOW_NEXT);
         mShowNext.setChecked(K9.messageViewShowNext());
 
-        mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
-        if (!MessageWebView.isSingleColumnLayoutSupported()) {
-            PreferenceCategory prefs = (PreferenceCategory) findPreference("messageview_preferences");
-            prefs.removePreference(mMobileOptimizedLayout);
-        } else {
-            mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
-        }
-
         mAutofitWidth = (CheckBoxPreference) findPreference(PREFERENCE_AUTOFIT_WIDTH);
         mAutofitWidth.setChecked(K9.autofitWidth());
 
@@ -352,34 +339,7 @@ public class Prefs extends K9PreferenceActivity {
             mNotificationQuickDelete = null;
         }
 
-        mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().toString());
-        // In ICS+ there is no 'background data' setting that apps can chose to ignore anymore. So
-        // we hide that option for "Background Sync".
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            CharSequence[] oldEntries = mBackgroundOps.getEntries();
-            CharSequence[] newEntries = new CharSequence[3];
-            // Use "When 'Auto-sync' is checked" instead of "When 'Background data' & 'Auto-sync'
-            // are checked" as description.
-            newEntries[0] = getString(R.string.background_ops_auto_sync_only);
-            newEntries[1] = oldEntries[2];
-            newEntries[2] = oldEntries[3];
-
-            CharSequence[] oldValues = mBackgroundOps.getEntryValues();
-            CharSequence[] newValues = new CharSequence[3];
-            newValues[0] = oldValues[1];
-            newValues[1] = oldValues[2];
-            newValues[2] = oldValues[3];
-
-            mBackgroundOps.setEntries(newEntries);
-            mBackgroundOps.setEntryValues(newValues);
-
-            // Since ConnectivityManager.getBackgroundDataSetting() always returns 'true' on ICS+
-            // we map WHEN_CHECKED to ALWAYS.
-            if (K9.getBackgroundOps() == K9.BACKGROUND_OPS.WHEN_CHECKED) {
-                mBackgroundOps.setValue(K9.BACKGROUND_OPS.ALWAYS.toString());
-                mBackgroundOps.setSummary(mBackgroundOps.getEntry());
-            }
-        }
+        mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().name());
 
         mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
         mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
@@ -510,7 +470,6 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
         K9.setMessageViewShowNext(mShowNext.isChecked());
-        K9.setMobileOptimizedLayout(mMobileOptimizedLayout.isChecked());
         K9.setAutofitWidth(mAutofitWidth.isChecked());
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
 
