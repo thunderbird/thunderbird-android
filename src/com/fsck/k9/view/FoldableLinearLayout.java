@@ -5,6 +5,8 @@ import com.fsck.k9.R;
 import android.content.Context;
 import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -95,6 +97,60 @@ public class FoldableLinearLayout extends LinearLayout {
         }
         initialiseInnerViews();
         super.onFinishInflate();
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(superState);
+        savedState.mFolded = mIsFolded;
+        return savedState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof SavedState) {
+            SavedState savedState = (SavedState) state;
+            super.onRestoreInstanceState(savedState.getSuperState());
+            mIsFolded = savedState.mFolded;
+            updateFoldedState(mIsFolded, false);
+        } else {
+            super.onRestoreInstanceState(state);
+        }
+    }
+
+    static class SavedState extends BaseSavedState {
+
+        static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<FoldableLinearLayout.SavedState>() {
+
+            @Override
+            public SavedState createFromParcel(Parcel source) {
+                return new SavedState(source);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+
+        private boolean mFolded;
+
+        private SavedState(Parcel parcel) {
+            super(parcel);
+            mFolded = (parcel.readInt() == 1);
+        }
+
+        private SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeInt(mFolded ? 1 : 0);
+        }
     }
 
     /**

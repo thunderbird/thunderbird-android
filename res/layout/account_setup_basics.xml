@@ -48,6 +48,7 @@
         android:visibility="gone"
         />
     <com.fsck.k9.view.FoldableLinearLayout
+        android:id="@+id/foldable_advanced_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
