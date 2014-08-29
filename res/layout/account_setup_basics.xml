@@ -50,6 +50,7 @@
     <com.fsck.k9.view.FoldableLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         custom:foldedLabel="@string/client_certificate_advanced_options"
         custom:unFoldedLabel="@string/client_certificate_advanced_options">
         <CheckBox
