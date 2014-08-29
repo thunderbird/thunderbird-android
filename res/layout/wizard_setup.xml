@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerHorizontal" />
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/bottom_bar"
-        android:gravity="bottom|right" >
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/manual_setup"
-            android:layout_width="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:minWidth="@dimen/button_minWidth"
+            android:layout_weight="1"
+            android:background="@drawable/selectable_item_background"
             android:text="@string/account_setup_basics_manual_setup_action" />
 
         <Button
             android:id="@+id/next"
-            android:layout_width="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:drawableRight="@drawable/button_indicator_next"
-            android:minWidth="@dimen/button_minWidth"
+            android:layout_weight="1"
+            android:background="@drawable/selectable_item_background"
             android:text="@string/next_action" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </merge>
