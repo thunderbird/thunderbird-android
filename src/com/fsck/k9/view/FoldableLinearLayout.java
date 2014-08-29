@@ -208,9 +208,14 @@ public class FoldableLinearLayout extends LinearLayout {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        // making sure that at the end the container is
-                        // completely removed from view
-                        mFoldableContainer.setVisibility(View.GONE);
+                        /*
+                         * Make sure that at the end the container is
+                         * completely invisible. GONE is not used in
+                         * order to prevent parent views from jumping
+                         * around as they re-center themselves
+                         * vertically.
+                         */
+                        mFoldableContainer.setVisibility(View.INVISIBLE);
                     }
 
                     @Override
@@ -219,7 +224,7 @@ public class FoldableLinearLayout extends LinearLayout {
                 });
                 mFoldableContainer.startAnimation(animation);
             } else {
-                mFoldableContainer.setVisibility(View.GONE);
+                mFoldableContainer.setVisibility(View.INVISIBLE);
             }
             mFoldableTextView.setText(mFoldedLabel);
         } else {
