@@ -65,6 +65,14 @@ public class ServerSettings {
     public final String password;
 
     /**
+     * The alias to retrieve a client certificate using Android 4.0 KeyChain API
+     * for TLS client certificate authentication with the server.
+     *
+     * {@code null} if not applicable for the store or transport.
+     */
+    public final String clientCertificateAlias;
+
+    /**
      * Store- or transport-specific settings as key/value pair.
      *
      * {@code null} if not applicable for the store or transport.
@@ -89,10 +97,12 @@ public class ServerSettings {
      *         see {@link ServerSettings#username}
      * @param password
      *         see {@link ServerSettings#password}
+     * @param clientCertificateAlias
+     *         see {@link ServerSettings#clientCertificateAlias}
      */
     public ServerSettings(String type, String host, int port,
             ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
-            String password) {
+            String password, String clientCertificateAlias) {
         this.type = type;
         this.host = host;
         this.port = port;
@@ -100,6 +110,7 @@ public class ServerSettings {
         this.authenticationType = authenticationType;
         this.username = username;
         this.password = password;
+        this.clientCertificateAlias = clientCertificateAlias;
         this.extra = null;
     }
 
@@ -120,12 +131,14 @@ public class ServerSettings {
      *         see {@link ServerSettings#username}
      * @param password
      *         see {@link ServerSettings#password}
+     * @param clientCertificateAlias
+     *         see {@link ServerSettings#clientCertificateAlias}
      * @param extra
      *         see {@link ServerSettings#extra}
      */
     public ServerSettings(String type, String host, int port,
             ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
-            String password, Map<String, String> extra) {
+            String password, String clientCertificateAlias, Map<String, String> extra) {
         this.type = type;
         this.host = host;
         this.port = port;
@@ -133,6 +146,7 @@ public class ServerSettings {
         this.authenticationType = authenticationType;
         this.username = username;
         this.password = password;
+        this.clientCertificateAlias = clientCertificateAlias;
         this.extra = (extra != null) ?
                 Collections.unmodifiableMap(new HashMap<String, String>(extra)) : null;
     }
@@ -153,6 +167,7 @@ public class ServerSettings {
         authenticationType = null;
         username = null;
         password = null;
+        clientCertificateAlias = null;
         extra = null;
     }
 
@@ -173,6 +188,11 @@ public class ServerSettings {
 
     public ServerSettings newPassword(String newPassword) {
         return new ServerSettings(type, host, port, connectionSecurity, authenticationType,
-                username, newPassword);
+                username, newPassword, clientCertificateAlias);
+    }
+
+    public ServerSettings newClientCertificateAlias(String newAlias) {
+        return new ServerSettings(type, host, port, connectionSecurity, AuthType.EXTERNAL,
+                username, password, newAlias);
     }
 }

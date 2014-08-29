@@ -2672,7 +2672,7 @@ public class MessagingController implements Runnable {
         final NotificationManager nm = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (direction.equals(CheckDirection.INCOMING)) {
+        if (direction == CheckDirection.INCOMING) {
             nm.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING + account.getAccountNumber());
         } else {
             nm.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING + account.getAccountNumber());

@@ -37,6 +37,8 @@
         <item name="iconActionSave">@drawable/ic_action_save_light</item>
         <item name="iconActionCancel">@drawable/ic_action_cancel_light</item>
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_light</item>
+        <item name="iconActionExpand">@drawable/ic_action_expand_light</item>
+        <item name="iconActionCollapse">@drawable/ic_action_collapse_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -89,6 +91,8 @@
         <item name="iconActionSave">@drawable/ic_action_save_dark</item>
         <item name="iconActionCancel">@drawable/ic_action_cancel_dark</item>
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_dark</item>
+        <item name="iconActionExpand">@drawable/ic_action_expand_dark</item>
+        <item name="iconActionCollapse">@drawable/ic_action_collapse_dark</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>

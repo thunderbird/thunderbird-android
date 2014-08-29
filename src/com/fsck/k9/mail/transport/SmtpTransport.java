@@ -2,23 +2,22 @@
 package com.fsck.k9.mail.transport;
 
 import android.util.Log;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.net.ssl.TrustManagerFactory;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
+import com.fsck.k9.net.ssl.SslHelper;
 
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import javax.net.ssl.TrustManager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -27,9 +26,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.security.GeneralSecurityException;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-
 import java.util.*;
 
 public class SmtpTransport extends Transport {
@@ -37,21 +33,24 @@ public class SmtpTransport extends Transport {
 
     /**
      * Decodes a SmtpTransport URI.
+     * 
+     * NOTE: In contrast to ImapStore and Pop3Store, the authType is appended at the end!
      *
      * <p>Possible forms:</p>
      * <pre>
-     * smtp://user:password@server:port ConnectionSecurity.NONE
-     * smtp+tls+://user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
-     * smtp+ssl+://user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
+     * smtp://user:password:auth@server:port ConnectionSecurity.NONE
+     * smtp+tls+://user:password:auth@server:port ConnectionSecurity.STARTTLS_REQUIRED
+     * smtp+ssl+://user:password:auth@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
     public static ServerSettings decodeUri(String uri) {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        AuthType authType = AuthType.PLAIN;
+        AuthType authType = null;
         String username = null;
         String password = null;
+        String clientCertificateAlias = null;
 
         URI smtpUri;
         try {
@@ -95,14 +94,22 @@ public class SmtpTransport extends Transport {
         if (smtpUri.getUserInfo() != null) {
             try {
                 String[] userInfoParts = smtpUri.getUserInfo().split(":");
-                if (userInfoParts.length > 0) {
+                if (userInfoParts.length == 1) {
+                    authType = AuthType.PLAIN;
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                }
-                if (userInfoParts.length > 1) {
+                } else if (userInfoParts.length == 2) {
+                    authType = AuthType.PLAIN;
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-                if (userInfoParts.length > 2) {
+                } else if (userInfoParts.length == 3) {
+                    // NOTE: In SmptTransport URIs, the authType comes last!
                     authType = AuthType.valueOf(userInfoParts[2]);
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                    if (authType == AuthType.EXTERNAL) {
+                        clientCertificateAlias = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    } else {
+                        password = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    }
                 }
             } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
@@ -111,7 +118,7 @@ public class SmtpTransport extends Transport {
         }
 
         return new ServerSettings(TRANSPORT_TYPE, host, port, connectionSecurity,
-                authType, username, password);
+                authType, username, password, clientCertificateAlias);
     }
 
     /**
@@ -128,11 +135,14 @@ public class SmtpTransport extends Transport {
     public static String createUri(ServerSettings server) {
         String userEnc;
         String passwordEnc;
+        String clientCertificateAliasEnc;
         try {
             userEnc = (server.username != null) ?
                     URLEncoder.encode(server.username, "UTF-8") : "";
             passwordEnc = (server.password != null) ?
                     URLEncoder.encode(server.password, "UTF-8") : "";
+            clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
+                    URLEncoder.encode(server.clientCertificateAlias, "UTF-8") : "";
         }
         catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Could not encode username or password", e);
@@ -152,10 +162,17 @@ public class SmtpTransport extends Transport {
                 break;
         }
 
-        String userInfo = userEnc + ":" + passwordEnc;
+        String userInfo = null;
         AuthType authType = server.authenticationType;
+        // NOTE: authType is append at last item, in contrast to ImapStore and Pop3Store!
         if (authType != null) {
-            userInfo += ":" + authType.name();
+            if (AuthType.EXTERNAL == authType) {
+                userInfo = userEnc + ":" + clientCertificateAliasEnc + ":" + authType.name();
+            } else {
+                userInfo = userEnc + ":" + passwordEnc + ":" + authType.name();
+            }
+        } else {
+            userInfo = userEnc + ":" + passwordEnc;
         }
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
@@ -170,6 +187,7 @@ public class SmtpTransport extends Transport {
     int mPort;
     String mUsername;
     String mPassword;
+    String mClientCertificateAlias;
     AuthType mAuthType;
     ConnectionSecurity mConnectionSecurity;
     Socket mSocket;
@@ -194,6 +212,7 @@ public class SmtpTransport extends Transport {
         mAuthType = settings.authenticationType;
         mUsername = settings.username;
         mPassword = settings.password;
+        mClientCertificateAlias = settings.clientCertificateAlias;
     }
 
     @Override
@@ -205,12 +224,7 @@ public class SmtpTransport extends Transport {
                 try {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
                     if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        SSLContext sslContext = SSLContext.getInstance("TLS");
-                        sslContext.init(null,
-                                new TrustManager[] { TrustManagerFactory.get(
-                                        mHost, mPort) },
-                                new SecureRandom());
-                        mSocket = TrustedSocketFactory.createSocket(sslContext);
+                        mSocket = SslHelper.createSslSocket(mHost, mPort, mClientCertificateAlias);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                         secureConnection = true;
                     } else {
@@ -264,12 +278,9 @@ public class SmtpTransport extends Transport {
                 if (extensions.containsKey("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
-                    SSLContext sslContext = SSLContext.getInstance("TLS");
-                    sslContext.init(null,
-                            new TrustManager[] { TrustManagerFactory.get(mHost,
-                                    mPort) }, new SecureRandom());
-                    mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
-                              mPort, true);
+                    mSocket = SslHelper.createStartTlsSocket(mSocket, mHost, mPort, true,
+                            mClientCertificateAlias);
+
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                                   1024));
                     mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
@@ -288,19 +299,20 @@ public class SmtpTransport extends Transport {
                      * "STARTTLS (if available)" setting.
                      */
                     throw new CertificateValidationException(
-                            "STARTTLS connection security not available",
-                            new CertificateException());
+                            "STARTTLS connection security not available");
                 }
             }
 
             boolean authLoginSupported = false;
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
+            boolean authExternalSupported = false;
             if (extensions.containsKey("AUTH")) {
                 List<String> saslMech = Arrays.asList(extensions.get("AUTH").split(" "));
                 authLoginSupported = saslMech.contains("LOGIN");
                 authPlainSupported = saslMech.contains("PLAIN");
                 authCramMD5Supported = saslMech.contains("CRAM-MD5");
+                authExternalSupported = saslMech.contains("EXTERNAL");
             }
             if (extensions.containsKey("SIZE")) {
                 try {
@@ -312,8 +324,9 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            if (mUsername != null && mUsername.length() > 0 &&
-                    mPassword != null && mPassword.length() > 0) {
+            if (mUsername != null
+                    && mUsername.length() > 0
+                    && (mPassword != null && mPassword.length() > 0 || AuthType.EXTERNAL == mAuthType)) {
 
                 switch (mAuthType) {
 
@@ -339,6 +352,24 @@ public class SmtpTransport extends Transport {
                         saslAuthCramMD5(mUsername, mPassword);
                     } else {
                         throw new MessagingException("Authentication method CRAM-MD5 is unavailable.");
+                    }
+                    break;
+
+                case EXTERNAL:
+                    if (authExternalSupported) {
+                        saslAuthExternal(mUsername);
+                    } else {
+                        /*
+                         * Some SMTP servers are known to provide no error
+                         * indication when a client certificate fails to
+                         * validate, other than to not offer the AUTH EXTERNAL
+                         * capability.
+                         *
+                         * So, we treat it is an error to not offer AUTH
+                         * EXTERNAL when using client certificates. That way, the
+                         * user can be notified of a problem during account setup.
+                         */
+                        throw new MessagingException(K9.app.getString(R.string.auth_external_error));
                     }
                     break;
 
@@ -634,6 +665,12 @@ public class SmtpTransport extends Transport {
          * Read lines as long as the length is 4 or larger, e.g. "220-banner text here".
          * Shorter lines are either errors of contain only a reply code. Those cases will
          * be handled by checkLine() below.
+         *
+         * TODO:  All responses should be checked to confirm that they start with a valid
+         * reply code, and that the reply code is appropriate for the command being executed.
+         * That means it should either be a 2xx code (generally) or a 3xx code in special cases
+         * (e.g., DATA & AUTH LOGIN commands).  Reply codes should be made available as part of
+         * the returned object.
          */
         String line = readLine();
         while (line.length() >= 4) {
@@ -677,29 +714,32 @@ public class SmtpTransport extends Transport {
         AuthenticationFailedException, IOException {
         try {
             executeSimpleCommand("AUTH LOGIN");
-            executeSimpleCommand(new String(Base64.encodeBase64(username.getBytes())), true);
-            executeSimpleCommand(new String(Base64.encodeBase64(password.getBytes())), true);
-        } catch (MessagingException me) {
-            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
-                throw new AuthenticationFailedException("AUTH LOGIN failed (" + me.getMessage()
-                                                        + ")");
+            executeSimpleCommand(Utility.base64Encode(username), true);
+            executeSimpleCommand(Utility.base64Encode(password), true);
+        } catch (NegativeSmtpReplyException exception) {
+            if (exception.getReplyCode() == 535) {
+                // Authentication credentials invalid
+                throw new AuthenticationFailedException("AUTH LOGIN failed ("
+                        + exception.getMessage() + ")");
+            } else {
+                throw exception;
             }
-            throw me;
         }
     }
 
     private void saslAuthPlain(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
-        byte[] data = ("\000" + username + "\000" + password).getBytes();
-        data = new Base64().encode(data);
+        String data = Utility.base64Encode("\000" + username + "\000" + password);
         try {
-            executeSimpleCommand("AUTH PLAIN " + new String(data), true);
-        } catch (MessagingException me) {
-            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
-                throw new AuthenticationFailedException("AUTH PLAIN failed (" + me.getMessage()
-                                                        + ")");
+            executeSimpleCommand("AUTH PLAIN " + data, true);
+        } catch (NegativeSmtpReplyException exception) {
+            if (exception.getReplyCode() == 535) {
+                // Authentication credentials invalid
+                throw new AuthenticationFailedException("AUTH PLAIN failed ("
+                        + exception.getMessage() + ")");
+            } else {
+                throw exception;
             }
-            throw me;
         }
     }
 
@@ -717,8 +757,19 @@ public class SmtpTransport extends Transport {
         try {
             executeSimpleCommand(b64CRAMString, true);
         } catch (NegativeSmtpReplyException exception) {
-            throw new AuthenticationFailedException(exception.getMessage(), exception);
+            if (exception.getReplyCode() == 535) {
+                // Authentication credentials invalid
+                throw new AuthenticationFailedException(exception.getMessage(), exception);
+            } else {
+                throw exception;
+            }
         }
+    }
+
+    private void saslAuthExternal(String username) throws MessagingException, IOException {
+        executeSimpleCommand(
+                String.format("AUTH EXTERNAL %s",
+                        Utility.base64Encode(username)), false);
     }
 
     /**

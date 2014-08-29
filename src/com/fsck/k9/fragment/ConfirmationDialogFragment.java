@@ -1,5 +1,6 @@
 package com.fsck.k9.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -7,10 +8,13 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.fsck.k9.K9;
 
 public class ConfirmationDialogFragment extends DialogFragment implements OnClickListener,
         OnCancelListener {
+    private ConfirmationDialogFragmentListener mListener;
 
     private static final String ARG_DIALOG_ID = "dialog_id";
     private static final String ARG_TITLE = "title";
@@ -34,6 +38,11 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
         return fragment;
     }
 
+    public static ConfirmationDialogFragment newInstance(int dialogId, String title, String message,
+            String cancelText) {
+        return newInstance(dialogId, title, message, null, cancelText);
+    }
+
 
     public interface ConfirmationDialogFragmentListener {
         void doPositiveClick(int dialogId);
@@ -53,8 +62,14 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title);
         builder.setMessage(message);
-        builder.setPositiveButton(confirmText, this);
-        builder.setNegativeButton(cancelText, this);
+        if (confirmText != null && cancelText != null) {
+            builder.setPositiveButton(confirmText, this);
+            builder.setNegativeButton(cancelText, this);
+        } else if (cancelText != null) {
+            builder.setNeutralButton(cancelText, this);
+        } else {
+            throw new RuntimeException("Set at least cancelText!");
+        }
 
         return builder.create();
     }
@@ -67,6 +82,10 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
                 break;
             }
             case DialogInterface.BUTTON_NEGATIVE: {
+                getListener().doNegativeClick(getDialogId());
+                break;
+            }
+            case DialogInterface.BUTTON_NEUTRAL: {
                 getListener().doNegativeClick(getDialogId());
                 break;
             }
@@ -83,7 +102,23 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
         return getArguments().getInt(ARG_DIALOG_ID);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (ConfirmationDialogFragmentListener) activity;
+        } catch (ClassCastException e) {
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, activity.toString() + " did not implement ConfirmationDialogFragmentListener");
+        }
+    }
+
     private ConfirmationDialogFragmentListener getListener() {
+        if (mListener != null) {
+            return mListener;
+        }
+
+        // fallback to getTargetFragment...
         try {
             return (ConfirmationDialogFragmentListener) getTargetFragment();
         } catch (ClassCastException e) {

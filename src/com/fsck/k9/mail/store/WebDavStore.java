@@ -7,9 +7,9 @@ import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
-
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
@@ -36,6 +36,7 @@ import javax.net.ssl.SSLException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -178,7 +179,7 @@ public class WebDavStore extends Store {
         }
 
         return new WebDavStoreSettings(host, port, connectionSecurity, null, username, password,
-                alias, path, authPath, mailboxPath);
+                null, alias, path, authPath, mailboxPath);
     }
 
     /**
@@ -257,10 +258,10 @@ public class WebDavStore extends Store {
         public final String mailboxPath;
 
         protected WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-                AuthType authenticationType, String username, String password, String alias,
+                AuthType authenticationType, String username, String password, String clientCertificateAlias, String alias,
                 String path, String authPath, String mailboxPath) {
             super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
-                    password);
+                    password, clientCertificateAlias);
             this.alias = alias;
             this.path = path;
             this.authPath = authPath;
@@ -280,7 +281,7 @@ public class WebDavStore extends Store {
         @Override
         public ServerSettings newPassword(String newPassword) {
             return new WebDavStoreSettings(host, port, connectionSecurity, authenticationType,
-                    username, newPassword, alias, path, authPath, mailboxPath);
+                    username, newPassword, clientCertificateAlias, alias, path, authPath, mailboxPath);
         }
     }
 

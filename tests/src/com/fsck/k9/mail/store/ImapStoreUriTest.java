@@ -82,7 +82,7 @@ public class ImapStoreUriTest extends TestCase {
         extra.put("pathPrefix", "customPathPrefix");
 
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
-                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", extra);
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
         String uri = Store.createStoreUri(settings);
 
@@ -95,7 +95,7 @@ public class ImapStoreUriTest extends TestCase {
         extra.put("pathPrefix", "");
 
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
-                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", extra);
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
         String uri = Store.createStoreUri(settings);
 
@@ -104,7 +104,7 @@ public class ImapStoreUriTest extends TestCase {
 
     public void testCreateStoreUriImapNoExtra() {
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
-                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass");
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null);
 
         String uri = Store.createStoreUri(settings);
 
@@ -116,7 +116,7 @@ public class ImapStoreUriTest extends TestCase {
         extra.put("autoDetectNamespace", "true");
 
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
-                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", extra);
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
         String uri = Store.createStoreUri(settings);
 

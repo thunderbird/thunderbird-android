@@ -21,6 +21,8 @@ public interface ImapSettings {
 
     String getPassword();
 
+    String getClientCertificateAlias();
+
     boolean useCompression(int type);
 
     String getPathPrefix();

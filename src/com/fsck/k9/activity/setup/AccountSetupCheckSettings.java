@@ -3,6 +3,8 @@ package com.fsck.k9.activity.setup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,16 +17,18 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.fragment.ConfirmationDialogFragment;
+import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
-
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -32,15 +36,17 @@ import java.security.NoSuchAlgorithmException;
 import java.security.MessageDigest;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Checks the given settings to make sure that they can be used to send and
  * receive mail.
- *
+ * 
  * XXX NOTE: The manifest for this app has it ignore config changes, because
  * it doesn't correctly deal with restarting while its thread is running.
  */
-public class AccountSetupCheckSettings extends K9Activity implements OnClickListener {
+public class AccountSetupCheckSettings extends K9Activity implements OnClickListener,
+        ConfirmationDialogFragmentListener{
 
     public static final int ACTIVITY_REQUEST_CODE = 1;
 
@@ -67,7 +73,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     private boolean mDestroyed;
 
-    public static void actionCheckSettings(Activity context, Account account, CheckDirection direction) {
+    public static void actionCheckSettings(Activity context, Account account,
+            CheckDirection direction) {
         Intent i = new Intent(context, AccountSetupCheckSettings.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_CHECK_DIRECTION, direction);
@@ -107,7 +114,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
                             mAccount, mDirection);
 
-                    if (mDirection.equals(CheckDirection.INCOMING)) {
+                    if (mDirection == CheckDirection.INCOMING) {
                         store = mAccount.getRemoteStore();
 
                         if (store instanceof WebDavStore) {
@@ -130,7 +137,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         finish();
                         return;
                     }
-                    if (mDirection.equals(CheckDirection.OUTGOING)) {
+                    if (mDirection == CheckDirection.OUTGOING) {
                         if (!(mAccount.getRemoteStore() instanceof WebDavStore)) {
                             setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
                         }
@@ -154,30 +161,33 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         R.string.account_setup_failed_dlg_auth_message_fmt,
                         afe.getMessage() == null ? "" : afe.getMessage());
                 } catch (final CertificateValidationException cve) {
-                    Log.e(K9.LOG_TAG, "Error while testing settings", cve);
-
-                    X509Certificate[] chain = cve.getCertChain();
-                    // Avoid NullPointerException in acceptKeyDialog()
-                    if (chain != null) {
-                        acceptKeyDialog(
-                                R.string.account_setup_failed_dlg_certificate_message_fmt,
-                                cve);
-                    } else {
-                        showErrorDialog(
-                                R.string.account_setup_failed_dlg_server_message_fmt,
-                                (cve.getMessage() == null ? "" : cve.getMessage()));
-                    }
+                    handleCertificateValidationException(cve);
                 } catch (final Throwable t) {
                     Log.e(K9.LOG_TAG, "Error while testing settings", t);
                     showErrorDialog(
                         R.string.account_setup_failed_dlg_server_message_fmt,
                         (t.getMessage() == null ? "" : t.getMessage()));
-
                 }
             }
 
         }
         .start();
+    }
+
+    private void handleCertificateValidationException(CertificateValidationException cve) {
+        Log.e(K9.LOG_TAG, "Error while testing settings", cve);
+
+        X509Certificate[] chain = cve.getCertChain();
+        // Avoid NullPointerException in acceptKeyDialog()
+        if (chain != null) {
+            acceptKeyDialog(
+                    R.string.account_setup_failed_dlg_certificate_message_fmt,
+                    cve);
+        } else {
+            showErrorDialog(
+                    R.string.account_setup_failed_dlg_server_message_fmt,
+                    (cve.getMessage() == null ? "" : cve.getMessage()));
+        }
     }
 
     @Override
@@ -198,41 +208,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         });
     }
 
-    private void showErrorDialog(final int msgResId, final Object... args) {
-        mHandler.post(new Runnable() {
-            public void run() {
-                if (mDestroyed) {
-                    return;
-                }
-                mProgressBar.setIndeterminate(false);
-                new AlertDialog.Builder(AccountSetupCheckSettings.this)
-                .setTitle(getString(R.string.account_setup_failed_dlg_title))
-                .setMessage(getString(msgResId, args))
-                .setCancelable(true)
-                .setNegativeButton(
-                    getString(R.string.account_setup_failed_dlg_continue_action),
-
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        mCanceled = false;
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-                })
-                .setPositiveButton(
-                    getString(R.string.account_setup_failed_dlg_edit_details_action),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .show();
-            }
-        });
-    }
-
-    private void acceptKeyDialog(final int msgResId,
-            final CertificateValidationException ex) {
+    private void acceptKeyDialog(final int msgResId, final CertificateValidationException ex) {
         mHandler.post(new Runnable() {
             public void run() {
                 if (mDestroyed) {
@@ -351,6 +327,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     }
                 }
 
+                // TODO: refactor with DialogFragment.
+                // This is difficult because we need to pass through chain[0] for onClick()
                 new AlertDialog.Builder(AccountSetupCheckSettings.this)
                 .setTitle(getString(R.string.account_setup_failed_dlg_invalid_certificate_title))
                 //.setMessage(getString(R.string.account_setup_failed_dlg_invalid_certificate)
@@ -362,15 +340,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            mAccount.addCertificate(mDirection, chain[0]);
-                        } catch (CertificateException e) {
-                            showErrorDialog(
-                                R.string.account_setup_failed_dlg_certificate_message_fmt,
-                                e.getMessage() == null ? "" : e.getMessage());
-                        }
-                        AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
-                                mDirection);
+                        acceptCertificate(chain[0]);
                     }
                 })
                 .setNegativeButton(
@@ -385,12 +355,29 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         });
     }
 
+    /**
+     * Permanently accepts a certificate for the INCOMING or OUTGOING direction
+     * by adding it to the local key store.
+     * 
+     * @param certificate
+     */
+    private void acceptCertificate(X509Certificate certificate) {
+        try {
+            mAccount.addCertificate(mDirection, certificate);
+        } catch (CertificateException e) {
+            showErrorDialog(
+                    R.string.account_setup_failed_dlg_certificate_message_fmt,
+                    e.getMessage() == null ? "" : e.getMessage());
+        }
+        AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
+                mDirection);
+    }
+
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent data) {
         setResult(resCode);
         finish();
     }
-
 
     private void onCancel() {
         mCanceled = true;
@@ -403,5 +390,75 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             onCancel();
             break;
         }
+    }
+
+    private void showErrorDialog(final int msgResId, final Object... args) {
+        mHandler.post(new Runnable() {
+            public void run() {
+                showDialogFragment(R.id.dialog_account_setup_error, getString(msgResId, args));
+            }
+        });
+    }
+
+    private void showDialogFragment(int dialogId, String customMessage) {
+        if (mDestroyed) {
+            return;
+        }
+        mProgressBar.setIndeterminate(false);
+
+        DialogFragment fragment;
+        switch (dialogId) {
+            case R.id.dialog_account_setup_error: {
+                fragment = ConfirmationDialogFragment.newInstance(dialogId,
+                        getString(R.string.account_setup_failed_dlg_title),
+                        customMessage,
+                        getString(R.string.account_setup_failed_dlg_edit_details_action),
+                        getString(R.string.account_setup_failed_dlg_continue_action)
+                );
+                break;
+            }
+            default: {
+                throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
+            }
+        }
+
+        FragmentTransaction ta = getFragmentManager().beginTransaction();
+        ta.add(fragment, getDialogTag(dialogId));
+        ta.commitAllowingStateLoss();
+
+        // TODO: commitAllowingStateLoss() is used to prevent https://code.google.com/p/android/issues/detail?id=23761
+        // but is a bad...
+        //fragment.show(ta, getDialogTag(dialogId));
+    }
+
+    private String getDialogTag(int dialogId) {
+        return String.format(Locale.US, "dialog-%d", dialogId);
+    }
+
+    @Override
+    public void doPositiveClick(int dialogId) {
+        switch (dialogId) {
+            case R.id.dialog_account_setup_error: {
+                finish();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void doNegativeClick(int dialogId) {
+        switch (dialogId) {
+            case R.id.dialog_account_setup_error: {
+                mCanceled = false;
+                setResult(RESULT_OK);
+                finish();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void dialogCancelled(int dialogId) {
+        // nothing to do here...
     }
 }
