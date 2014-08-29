@@ -5,10 +5,16 @@ buildscript {
 
   dependencies {
     classpath 'com.android.tools.build:gradle:0.12.2'
+    classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
   }
 }
 
+apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+
+repositories {
+    jcenter()
+}
 
 dependencies {
   compile project(':plugins:Android-PullToRefresh:library')
