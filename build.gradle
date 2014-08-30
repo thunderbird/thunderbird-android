@@ -25,9 +25,24 @@ dependencies {
   compile fileTree(dir: 'libs', include: '*.jar')
 }
 
+project.ext.preDexLibs = !project.hasProperty('disablePreDex')
+
+subprojects {
+  project.plugins.whenPluginAdded { plugin ->
+    if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name) ||
+        "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+      project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+    }
+  }
+}
+
 android {
   compileSdkVersion 19
   buildToolsVersion '20.0.0'
+
+  dexOptions {
+    preDexLibraries = rootProject.ext.preDexLibs
+  }
 
   sourceSets {
     main {
