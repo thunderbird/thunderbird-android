@@ -11,6 +11,7 @@ buildscript {
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'checkstyle'
 
 repositories {
     jcenter()
@@ -70,6 +71,16 @@ android {
     exclude 'META-INF/LICENSE'
     exclude 'META-INF/NOTICE'
   }
+}
+
+check.dependsOn 'checkstyle'
+task checkstyle(type: Checkstyle) {
+    ignoreFailures = true
+    configFile file("config/checkstyle/checkstyle.xml")
+
+    source 'src'
+    include '**/*.java'
+    classpath = files()
 }
 
 task testsOnJVM(type :GradleBuild, dependsOn: assemble) {
