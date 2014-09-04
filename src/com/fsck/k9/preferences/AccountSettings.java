@@ -139,7 +139,7 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("folderNotifyNewMailMode", Settings.versions(
-                new V(33, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.ALL))
+                new V(34, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.ALL))
             ));
         s.put("notifySelfNewMail", Settings.versions(
                 new V(1, new BooleanSetting(true))

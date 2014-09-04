@@ -29,7 +29,7 @@ public class FolderSettings {
                 new V(1, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.NO_CLASS))
             ));
         s.put("notifyMode", Settings.versions(
-                new V(33, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.INHERITED))
+                new V(34, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.INHERITED))
             ));
         s.put("syncMode", Settings.versions(
                 new V(1, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.INHERITED))
