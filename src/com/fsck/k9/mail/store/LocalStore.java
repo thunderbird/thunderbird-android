@@ -701,31 +701,19 @@ public class LocalStore extends Store implements Serializable {
                     }
                     if (db.getVersion() < 50) {
                         try {
-                            db.execSQL("ALTER TABLE folders ADD notify_class TEXT");
+                            db.execSQL("ALTER TABLE folders ADD notify_class TEXT default '" +
+                                    Folder.FolderClass.INHERITED.name() + "'");
                         } catch (SQLiteException e) {
                             if (! e.getMessage().startsWith("duplicate column name:")) {
                                 throw e;
                             }
                         }
 
-                        Cursor cursor = null;
-                        try {
-                            SharedPreferences prefs = getPreferences();
-                            cursor = db.rawQuery("SELECT id, name FROM folders", null);
-                            while (cursor.moveToNext()) {
-                                try {
-                                    int id = cursor.getInt(0);
-                                    String name = cursor.getString(1);
-                                    update50Metadata(db, prefs, id, name);
-                                } catch (Exception e) {
-                                    Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder notify class", e);
-                                }
-                            }
-                        } catch (SQLiteException e) {
-                            Log.e(K9.LOG_TAG, "Exception while upgrading database to v50. folder classes may have vanished", e);
-                        } finally {
-                            Utility.closeQuietly(cursor);
-                        }
+                        ContentValues cv = new ContentValues();
+                        cv.put("notify_class", Folder.FolderClass.FIRST_CLASS.name());
+
+                        db.update("folders", cv, "name = ?",
+                                new String[] { getAccount().getInboxFolderName() });
                     }
                 }
 
@@ -779,29 +767,6 @@ public class LocalStore extends Store implements Serializable {
 
             db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ? WHERE id = ?",
                        new Object[] { integrate, inTopGroup, syncClass, pushClass, displayClass, id });
-
-        }
-
-        private void update50Metadata(final SQLiteDatabase  db, SharedPreferences prefs, int id, String name) {
-
-            Folder.FolderClass notifyClass = Folder.FolderClass.INHERITED;
-
-            if (mAccount.getInboxFolderName().equals(name)) {
-                notifyClass =  Folder.FolderClass.FIRST_CLASS;
-            }
-
-            try {
-                notifyClass = Folder.FolderClass.valueOf(prefs.getString(uUid + "." + name + ".notifyMode", notifyClass.name()));
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, " Throwing away an error while trying to upgrade folder metadata", e);
-            }
-
-            if (notifyClass == Folder.FolderClass.NONE) {
-                notifyClass = Folder.FolderClass.INHERITED;
-            }
-
-            db.execSQL("UPDATE folders SET notify_class=? WHERE id = ?",
-                       new Object[] { notifyClass, id });
 
         }
     }
