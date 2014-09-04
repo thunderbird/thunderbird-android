@@ -1711,7 +1711,6 @@ public class LocalStore extends Store implements Serializable {
             return mSyncClass;
         }
 
-        @Override
         public FolderClass getNotifyClass() {
             return (FolderClass.INHERITED == mNotifyClass) ? getPushClass() : mNotifyClass;
         }
