@@ -425,10 +425,9 @@ public class LocalStore extends Store implements Serializable {
                                 throw e;
                             }
                         }
+
                         Cursor cursor = null;
-
                         try {
-
                             SharedPreferences prefs = getPreferences();
                             cursor = db.rawQuery("SELECT id, name FROM folders", null);
                             while (cursor.moveToNext()) {
@@ -440,12 +439,8 @@ public class LocalStore extends Store implements Serializable {
                                     Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder class", e);
                                 }
                             }
-                        }
-
-
-                        catch (SQLiteException e) {
+                        } catch (SQLiteException e) {
                             Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished", e);
-
                         } finally {
                             Utility.closeQuietly(cursor);
                         }
@@ -712,10 +707,9 @@ public class LocalStore extends Store implements Serializable {
                                 throw e;
                             }
                         }
+
                         Cursor cursor = null;
-
                         try {
-
                             SharedPreferences prefs = getPreferences();
                             cursor = db.rawQuery("SELECT id, name FROM folders", null);
                             while (cursor.moveToNext()) {
@@ -727,12 +721,8 @@ public class LocalStore extends Store implements Serializable {
                                     Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder notify class", e);
                                 }
                             }
-                        }
-
-
-                        catch (SQLiteException e) {
+                        } catch (SQLiteException e) {
                             Log.e(K9.LOG_TAG, "Exception while upgrading database to v50. folder classes may have vanished", e);
-
                         } finally {
                             Utility.closeQuietly(cursor);
                         }
@@ -1741,6 +1731,7 @@ public class LocalStore extends Store implements Serializable {
         public String getPushState() {
             return mPushState;
         }
+
         @Override
         public FolderClass getDisplayClass() {
             return mDisplayClass;
@@ -1783,10 +1774,12 @@ public class LocalStore extends Store implements Serializable {
             mSyncClass = syncClass;
             updateFolderColumn("poll_class", mSyncClass.name());
         }
+
         public void setPushClass(FolderClass pushClass) throws MessagingException {
             mPushClass = pushClass;
             updateFolderColumn("push_class", mPushClass.name());
         }
+
         public void setNotifyClass(FolderClass notifyClass) throws MessagingException {
             mNotifyClass = notifyClass;
             updateFolderColumn("notify_class", mNotifyClass.name());
@@ -1795,6 +1788,7 @@ public class LocalStore extends Store implements Serializable {
         public boolean isIntegrate() {
             return mIntegrate;
         }
+
         public void setIntegrate(boolean integrate) throws MessagingException {
             mIntegrate = integrate;
             updateFolderColumn("integrate", mIntegrate ? 1 : 0);
