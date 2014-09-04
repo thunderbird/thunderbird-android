@@ -4624,21 +4624,11 @@ public class MessagingController implements Runnable {
 
         if (modeMismatch(aDisplayMode, fDisplayClass)) {
             // Never notify a folder that isn't displayed
-            /*
-              if (K9.DEBUG)
-              Log.v(K9.LOG_TAG, "Not notifying folder " + localFolder.getName() +
-              " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
-            */
             return false;
         }
 
         if (modeMismatch(aNotifyMode, fNotifyClass)) {
             // Do not notify folders in the wrong class
-            /*
-              if (K9.DEBUG)
-              Log.v(K9.LOG_TAG, "Not notifying folder " + localFolder.getName() +
-              " which is in notify mode " + fNotifyClass + " while account is in notify mode " + aNotifyMode);
-            */
             return false;
         }
 
