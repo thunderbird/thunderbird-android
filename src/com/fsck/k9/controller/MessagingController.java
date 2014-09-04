@@ -4616,6 +4616,21 @@ public class MessagingController implements Runnable {
             return false;
         }
 
+        Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
+        Account.FolderMode aNotifyMode = account.getFolderNotifyNewMailMode();
+        Folder.FolderClass fDisplayClass = localFolder.getDisplayClass();
+        Folder.FolderClass fNotifyClass = localFolder.getNotifyClass();
+
+        if (modeMismatch(aDisplayMode, fDisplayClass)) {
+            // Never notify a folder that isn't displayed
+            return false;
+        }
+
+        if (modeMismatch(aNotifyMode, fNotifyClass)) {
+            // Do not notify folders in the wrong class
+            return false;
+        }
+
         // If the account is a POP3 account and the message is older than the oldest message we've
         // previously seen, then don't notify about it.
         if (account.getStoreUri().startsWith("pop3") &&

@@ -509,6 +509,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_default_label">Default account</string>
     <string name="account_settings_default_summary">Send mail from this account by default</string>
     <string name="account_settings_notify_label">New mail notifications</string>
+
+    <string name="account_settings_folder_notify_new_mail_mode_label">Notifications folders</string>
+    <string name="account_settings_folder_notify_new_mail_mode_all">All</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_class">Only 1st Class folders</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1st and 2nd Class folders</string>
+    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">All except 2nd Class folders</string>
+    <string name="account_settings_folder_notify_new_mail_mode_none">None</string>
+
     <string name="account_settings_notify_sync_label">Sync notifications</string>
     <string name="account_settings_email_label">Your email address</string>
     <string name="account_settings_notify_summary">Notify in status bar when mail arrives</string>
@@ -657,6 +665,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folder_settings_folder_push_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_push_mode_inherited">Same as sync class</string>
+
+    <string name="folder_settings_folder_notify_mode_label">Folder notification class</string>
+    <string name="folder_settings_folder_notify_mode_normal">None</string>
+    <string name="folder_settings_folder_notify_mode_first_class">1st Class</string>
+    <string name="folder_settings_folder_notify_mode_second_class">2nd Class</string>
+    <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>
 
     <string name="account_settings_incoming_label">Incoming server</string>
     <string name="account_settings_incoming_summary">Configure the incoming mail server</string>
