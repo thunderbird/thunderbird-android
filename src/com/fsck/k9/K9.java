@@ -37,7 +37,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.security.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;

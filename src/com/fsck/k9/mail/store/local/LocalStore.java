@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.local;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -71,7 +71,11 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.MimeUtility.ViewableContainer;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mail.store.LockableDatabase;
+import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
+import com.fsck.k9.mail.store.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;

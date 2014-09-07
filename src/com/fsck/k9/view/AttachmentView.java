@@ -40,7 +40,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
+import com.fsck.k9.mail.store.local.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
 
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {

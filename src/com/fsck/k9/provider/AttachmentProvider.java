@@ -15,8 +15,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.AttachmentInfo;
+import com.fsck.k9.mail.store.local.LocalStore;
+import com.fsck.k9.mail.store.local.LocalStore.AttachmentInfo;
 import com.fsck.k9.mail.store.StorageManager;
 
 import java.io.*;

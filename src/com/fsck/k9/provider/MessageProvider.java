@@ -32,7 +32,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.search.SearchAccount;
 
 import java.lang.ref.WeakReference;
