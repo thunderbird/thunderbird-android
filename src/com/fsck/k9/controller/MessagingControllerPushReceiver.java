@@ -11,8 +11,8 @@ import com.fsck.k9.mail.Folder;
 
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.PushReceiver;
+import com.fsck.k9.mail.store.local.LocalFolder;
 import com.fsck.k9.mail.store.local.LocalStore;
-import com.fsck.k9.mail.store.local.LocalStore.LocalFolder;
 import com.fsck.k9.service.SleepService;
 
 import java.util.List;
