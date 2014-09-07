@@ -1,10 +1,7 @@
 
 package com.fsck.k9.mail.store.local;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +23,6 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 
 import android.app.Application;
@@ -54,7 +50,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -63,7 +58,6 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.filter.Base64OutputStream;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -98,7 +92,7 @@ public class LocalStore extends Store implements Serializable {
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * a String containing the columns getMessages expects to work with
@@ -4057,178 +4051,6 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public String toString() {
             return "" + mAttachmentId;
-        }
-    }
-
-    public abstract static class BinaryAttachmentBody implements Body {
-        protected String mEncoding;
-
-        @Override
-        public abstract InputStream getInputStream() throws MessagingException;
-
-        @Override
-        public void writeTo(OutputStream out) throws IOException, MessagingException {
-            InputStream in = getInputStream();
-            try {
-                boolean closeStream = false;
-                if (MimeUtil.isBase64Encoding(mEncoding)) {
-                    out = new Base64OutputStream(out);
-                    closeStream = true;
-                } else if (MimeUtil.isQuotedPrintableEncoded(mEncoding)){
-                    out = new QuotedPrintableOutputStream(out, false);
-                    closeStream = true;
-                }
-
-                try {
-                    IOUtils.copy(in, out);
-                } finally {
-                    if (closeStream) {
-                        out.close();
-                    }
-                }
-            } finally {
-                in.close();
-            }
-        }
-
-        @Override
-        public void setEncoding(String encoding) throws MessagingException {
-            mEncoding = encoding;
-        }
-
-        public String getEncoding() {
-            return mEncoding;
-        }
-    }
-
-    public static class TempFileBody extends BinaryAttachmentBody {
-        private final File mFile;
-
-        public TempFileBody(String filename) {
-            mFile = new File(filename);
-        }
-
-        @Override
-        public InputStream getInputStream() throws MessagingException {
-            try {
-                return new FileInputStream(mFile);
-            } catch (FileNotFoundException e) {
-                return new ByteArrayInputStream(EMPTY_BYTE_ARRAY);
-            }
-        }
-    }
-
-    public static class LocalAttachmentBody extends BinaryAttachmentBody {
-        private Application mApplication;
-        private Uri mUri;
-
-        public LocalAttachmentBody(Uri uri, Application application) {
-            mApplication = application;
-            mUri = uri;
-        }
-
-        @Override
-        public InputStream getInputStream() throws MessagingException {
-            try {
-                return mApplication.getContentResolver().openInputStream(mUri);
-            } catch (FileNotFoundException fnfe) {
-                /*
-                 * Since it's completely normal for us to try to serve up attachments that
-                 * have been blown away, we just return an empty stream.
-                 */
-                return new ByteArrayInputStream(EMPTY_BYTE_ARRAY);
-            }
-        }
-
-        public Uri getContentUri() {
-            return mUri;
-        }
-    }
-
-    /**
-     * A {@link LocalAttachmentBody} extension containing a message/rfc822 type body
-     *
-     */
-    public static class LocalAttachmentMessageBody extends LocalAttachmentBody implements CompositeBody {
-
-        public LocalAttachmentMessageBody(Uri uri, Application application) {
-            super(uri, application);
-        }
-
-        @Override
-        public void writeTo(OutputStream out) throws IOException, MessagingException {
-            AttachmentMessageBodyUtil.writeTo(this, out);
-        }
-
-        @Override
-        public void setUsing7bitTransport() throws MessagingException {
-            /*
-             * There's nothing to recurse into here, so there's nothing to do.
-             * The enclosing BodyPart already called setEncoding(MimeUtil.ENC_7BIT).  Once
-             * writeTo() is called, the file with the rfc822 body will be opened
-             * for reading and will then be recursed.
-             */
-
-        }
-
-        @Override
-        public void setEncoding(String encoding) throws MessagingException {
-            if (!MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding)
-                    && !MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
-                throw new MessagingException(
-                        "Incompatible content-transfer-encoding applied to a CompositeBody");
-            }
-            mEncoding = encoding;
-        }
-    }
-
-    public static class TempFileMessageBody extends TempFileBody implements CompositeBody {
-
-        public TempFileMessageBody(String filename) {
-            super(filename);
-        }
-
-        @Override
-        public void writeTo(OutputStream out) throws IOException, MessagingException {
-            AttachmentMessageBodyUtil.writeTo(this, out);
-        }
-
-        @Override
-        public void setUsing7bitTransport() throws MessagingException {
-            // see LocalAttachmentMessageBody.setUsing7bitTransport()
-        }
-
-        @Override
-        public void setEncoding(String encoding) throws MessagingException {
-            if (!MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding)
-                    && !MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
-                throw new MessagingException(
-                        "Incompatible content-transfer-encoding applied to a CompositeBody");
-            }
-            mEncoding = encoding;
-        }
-    }
-
-    public static class AttachmentMessageBodyUtil {
-        public static void writeTo(BinaryAttachmentBody body, OutputStream out) throws IOException,
-                MessagingException {
-            InputStream in = body.getInputStream();
-            try {
-                if (MimeUtil.ENC_7BIT.equalsIgnoreCase(body.getEncoding())) {
-                    /*
-                     * If we knew the message was already 7bit clean, then it
-                     * could be sent along without processing. But since we
-                     * don't know, we recursively parse it.
-                     */
-                    MimeMessage message = new MimeMessage(in, true);
-                    message.setUsing7bitTransport();
-                    message.writeTo(out);
-                } else {
-                    IOUtils.copy(in, out);
-                }
-            } finally {
-                in.close();
-            }
         }
     }
 
