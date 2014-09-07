@@ -3473,31 +3473,6 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    public static class LocalTextBody extends TextBody {
-        /**
-         * This is an HTML-ified version of the message for display purposes.
-         */
-        private String mBodyForDisplay;
-
-        public LocalTextBody(String body) {
-            super(body);
-        }
-
-        public LocalTextBody(String body, String bodyForDisplay) {
-            super(body);
-            this.mBodyForDisplay = bodyForDisplay;
-        }
-
-        public String getBodyForDisplay() {
-            return mBodyForDisplay;
-        }
-
-        public void setBodyForDisplay(String mBodyForDisplay) {
-            this.mBodyForDisplay = mBodyForDisplay;
-        }
-
-    }//LocalTextBody
-
     public class LocalMessage extends MimeMessage {
         private long mId;
         private int mAttachmentCount;
@@ -3593,8 +3568,8 @@ public class LocalStore extends Store implements Serializable {
             if (part == null) {
                 // If that fails, try and get a text part.
                 part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
-                if (part != null && part.getBody() instanceof LocalStore.LocalTextBody) {
-                    text = ((LocalStore.LocalTextBody) part.getBody()).getBodyForDisplay();
+                if (part != null && part.getBody() instanceof LocalTextBody) {
+                    text = ((LocalTextBody) part.getBody()).getBodyForDisplay();
                 }
             } else {
                 // We successfully found an HTML part; do the necessary character set decoding.
@@ -4025,32 +4000,6 @@ public class LocalStore extends Store implements Serializable {
 
         public long getRootId() {
             return mRootId;
-        }
-    }
-
-    public static class LocalAttachmentBodyPart extends MimeBodyPart {
-        private long mAttachmentId = -1;
-
-        public LocalAttachmentBodyPart(Body body, long attachmentId) throws MessagingException {
-            super(body);
-            mAttachmentId = attachmentId;
-        }
-
-        /**
-         * Returns the local attachment id of this body, or -1 if it is not stored.
-         * @return
-         */
-        public long getAttachmentId() {
-            return mAttachmentId;
-        }
-
-        public void setAttachmentId(long attachmentId) {
-            mAttachmentId = attachmentId;
-        }
-
-        @Override
-        public String toString() {
-            return "" + mAttachmentId;
         }
     }
 

@@ -55,7 +55,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.local.LocalStore;
+import com.fsck.k9.mail.store.local.LocalAttachmentBodyPart;
 import com.fsck.k9.mail.store.local.LocalStore.LocalMessage;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
@@ -626,7 +626,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             for (int i = 0; i < mp.getCount(); i++) {
                 renderAttachments(mp.getBodyPart(i), depth + 1, message, account, controller, listener);
             }
-        } else if (part instanceof LocalStore.LocalAttachmentBodyPart) {
+        } else if (part instanceof LocalAttachmentBodyPart) {
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);
 
