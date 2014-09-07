@@ -137,8 +137,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="read_receipt_enabled">開封確認を要求</string>
   <string name="read_receipt_disabled">開封確認を要求しない</string>
   <string name="add_attachment_action">添付追加</string>
-  <string name="add_attachment_action_image">添付ファイル追加 (画像)</string>
-  <string name="add_attachment_action_video">添付ファイル追加 (動画)</string>
   <string name="empty_trash_action">ゴミ箱を空に</string>
   <string name="expunge_action">完全削除(Expunge)</string>
   <string name="clear_local_folder_action">ローカルのメッセージをクリア</string>
@@ -726,13 +724,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="font_size_medium">中</string>
   <string name="font_size_large">大</string>
   <string name="font_size_larger">極大</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">ギャラリ3Dを使って画像/動画を添付するには\"設定\" -&gt; \"ギャラリのバグ回避\"をチェックしてください</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">ギャラリ3Dで画像/動画を添付するには\"添付ファイル追加 (画像)\"や\"添付ファイル追加 (動画)\" を使ってください</string>
   <string name="miscellaneous_preferences">その他</string>
-  <string name="misc_preferences_attachment_title">ギャラリのバグ回避</string>
-  <string name="misc_preferences_attachment_description">添付ファイルに画像/動画を追加するボタンを表示する(ギャラリ3Dバグを回避するため)</string>
   <!--APG related-->
   <string name="error_activity_not_found">この操作のためのアプリケーションが見つかりません</string>
   <string name="error_apg_version_not_supported">インストールされているAPGは、サポートされていないバージョンです</string>

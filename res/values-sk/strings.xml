@@ -137,8 +137,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="read_receipt_enabled">Potvrdenie o prečítaní bude vyžadované</string>
   <string name="read_receipt_disabled">Potvrdenie o prečítaní nebude vyžadované</string>
   <string name="add_attachment_action">Pridať prílohu</string>
-  <string name="add_attachment_action_image">Pridať prílohu (obrázok)</string>
-  <string name="add_attachment_action_video">Pridať prílohu (video)</string>
   <string name="empty_trash_action">Vyprázdniť kôš</string>
   <string name="expunge_action">Vymazať</string>
   <string name="clear_local_folder_action">Vymazať správy</string>
@@ -725,13 +723,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="font_size_medium">Stredné</string>
   <string name="font_size_large">Veľké</string>
   <string name="font_size_larger">Väčšie</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Skontrolujte \"Nastavenia\" -&gt; \"Používať riešenie chyby pre Galériu\", aby ste boli schopný pripojiť obrázky alebo videá pomocou Galérie 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Použite \"Pridať prílohu (obrázok)\" alebo \"Pridať prílohu (video)\" pre pridanie obrázkov a videí pomocou Galérie 3D.</string>
   <string name="miscellaneous_preferences">Rôzne</string>
-  <string name="misc_preferences_attachment_title">Používať riešenie chyby pre Galériu</string>
-  <string name="misc_preferences_attachment_description">Zobraziť tlačidlá pre pridanie príloh (obrázky, videá) pre riešenie chyby Galérie 3D</string>
   <!--APG related-->
   <string name="error_activity_not_found">Nebola nájdená žiadna vhodná aplikácia pre túto akciu.</string>
   <string name="error_apg_version_not_supported">Nainštalovaná verzia APG nie je podporovaná.</string>

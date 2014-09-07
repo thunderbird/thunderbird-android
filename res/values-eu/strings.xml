@@ -137,8 +137,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="read_receipt_enabled">Irakurragiria eskatuko da</string>
   <string name="read_receipt_disabled">Ez da irakurragiria eskatuko</string>
   <string name="add_attachment_action">Eranskina gehitu</string>
-  <string name="add_attachment_action_image">Eranskina gehitu (Irudia)</string>
-  <string name="add_attachment_action_video">Eranskina gehitu (Bideoa)</string>
   <string name="empty_trash_action">Zakarrontzia hustu</string>
   <string name="expunge_action">Suntsitu</string>
   <string name="clear_local_folder_action">Mezu lokalak garbitu</string>
@@ -715,13 +713,7 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="font_size_medium">Ertaina</string>
   <string name="font_size_large">Handia</string>
   <string name="font_size_larger">Handiagoa</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">\"Ezarpenak\" -&gt; \"Galeriako arazoa sahiestu\" gaitu 3D galeriako irudi edo bideoak erantsi ahal izateko.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">\"Eranskina gehitu (Irudia)\" edo \"Eranskina gehitu (Video)\" erabili 3D galeriatik irudi edo bideoak eransteko.</string>
   <string name="miscellaneous_preferences">Bestelakoak</string>
-  <string name="misc_preferences_attachment_title">Galeriako arazoa sahiestu</string>
-  <string name="misc_preferences_attachment_description">Irudi/bideoak eransteko botoiak ikusi (3D galeriako arazoa sahiesteko)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Ez da honetarako aplikaziorik topatu.</string>
   <string name="error_apg_version_not_supported">Instalatutako APG bertsioa ezin da erabili.</string>

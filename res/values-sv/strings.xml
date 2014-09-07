@@ -137,8 +137,6 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
   <string name="read_receipt_enabled">Kommer att begära läskvitto</string>
   <string name="read_receipt_disabled">Kommer inte att begära läskvitto</string>
   <string name="add_attachment_action">Lägg till bilaga</string>
-  <string name="add_attachment_action_image">Lägg till bilaga (Bild)</string>
-  <string name="add_attachment_action_video">Lägg till bilaga (Video)</string>
   <string name="empty_trash_action">Töm papperskorg</string>
   <string name="expunge_action">Utplåna</string>
   <string name="clear_local_folder_action">Rensa lokalt lagrade meddelanden</string>
@@ -715,13 +713,7 @@ Vänligen skicka felrapporter, hjälp till med nya funktioner och ställ frågor
   <string name="font_size_medium">Stor</string>
   <string name="font_size_large">Större</string>
   <string name="font_size_larger">Störst</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Kontrollera \"Inställningar\" -&gt; \"Använd work-adound för bug i Gallery\" för att kunna bifoga bilder och filmer med Gallery 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Använd \"Lägg till bilaga (Bild)\" eller \"Lägg till bilaga (Video)\" för att bifoga bilder eller video med Gallery 3D.</string>
   <string name="miscellaneous_preferences">Diverse</string>
-  <string name="misc_preferences_attachment_title">Använd workadound för bug i Gallery</string>
-  <string name="misc_preferences_attachment_description">Visa knappar för att bifoga image/video (to work around a Gallery 3D bug)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Ingen passande applikation för denna åtgärd funnen.</string>
   <string name="error_apg_version_not_supported">Den installerade versionen av APG stöds inte.</string>

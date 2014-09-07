@@ -136,8 +136,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="read_receipt_enabled">Eine Empfangsbestätigung wird angefordert</string>
   <string name="read_receipt_disabled">Es wird keine Empfangsbestätigung angefordert</string>
   <string name="add_attachment_action">Anhang hinzufügen</string>
-  <string name="add_attachment_action_image">Anhang hinzufügen (Bild)</string>
-  <string name="add_attachment_action_video">Anhang hinzufügen (Video)</string>
   <string name="empty_trash_action">Papierkorb leeren</string>
   <string name="expunge_action">Bereinigen (Expunge)</string>
   <string name="clear_local_folder_action">Lokale Nachrichten löschen</string>
@@ -724,13 +722,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="font_size_medium">Mittel</string>
   <string name="font_size_large">Groß</string>
   <string name="font_size_larger">Größer</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Wählen Sie \'Einstellungen\' -&gt; \'Galerie-Workaround aktivieren\', um Bilder oder Videos mit Hilfe der 3D-Galerie hinzufügen zu können.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Verwenden Sie \'Anhang hinzufügen (Bild)\' oder \'Anhang hinzufügen (Video)\', um Bilder oder Videos mit der 3D-Galerie hinzuzufügen.</string>
   <string name="miscellaneous_preferences">Verschiedenes</string>
-  <string name="misc_preferences_attachment_title">Galerie-Workaround</string>
-  <string name="misc_preferences_attachment_description">Schaltflächen zum Hinzufügen von Bild- und Video-Anhängen anzeigen (um Fehler in 3D-Galerie zu umgehen)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Keine geeignete Anwendung für diese Aktion gefunden.</string>
   <string name="error_apg_version_not_supported">Die installierte APG-Version wird nicht unterstützt.</string>

@@ -136,8 +136,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="read_receipt_enabled">읽음 확인을 요청함</string>
   <string name="read_receipt_disabled">읽음 확인을 요청하지 않음</string>
   <string name="add_attachment_action">첨부 추가</string>
-  <string name="add_attachment_action_image">첨부 추가 (이미지)</string>
-  <string name="add_attachment_action_video">첨부 추가 (비디오)</string>
   <string name="empty_trash_action">휴지통 비우기</string>
   <string name="expunge_action">폐기</string>
   <string name="clear_local_folder_action">로컬 메시지 삭제</string>
@@ -713,13 +711,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="font_size_medium">중간</string>
   <string name="font_size_large">크게</string>
   <string name="font_size_larger">더 크게</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">갤러리 3D에서 이미지나 비디오를 첨부하려면 \"설정\" -&gt; \"갤러리 버그 회피\"를 확인하십시오.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">갤러리 3D에서 \"첨부 추가 (이미지)\" 혹은 \"첨부 추가 (비디오)\"를 통해 이미지나 비디오를 첨부할 수 있습니다.</string>
   <string name="miscellaneous_preferences">기타 설정</string>
-  <string name="misc_preferences_attachment_title">갤러리 버그 회피</string>
-  <string name="misc_preferences_attachment_description">이미지/비디오 첨부 파일을 추가하는 버튼을 보여 줍니다 (갤러리 3D 버그를 회피할 수 있음)</string>
   <!--APG related-->
   <string name="error_activity_not_found">이 작동에 대해 적절한 애플리케이션을 찾을 수 없습니다.</string>
   <string name="error_apg_version_not_supported">설치된 APG 버전을 지원하지 않습니다.</string>

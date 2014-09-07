@@ -125,8 +125,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="read_receipt_enabled">Okundu raporu istenecek</string>
   <string name="read_receipt_disabled">Okundu raporu istenmeyecek</string>
   <string name="add_attachment_action">Ekle</string>
-  <string name="add_attachment_action_image">Ekle (Resim)</string>
-  <string name="add_attachment_action_video">Ekle (Video)</string>
   <string name="empty_trash_action">Çöpü Boşalt</string>
   <string name="expunge_action">Silmek</string>
   <string name="clear_local_folder_action">Yerel mesajları temizle</string>
@@ -664,13 +662,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="font_size_medium">Orta</string>
   <string name="font_size_large">Büyük</string>
   <string name="font_size_larger">Daha büyük</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">\"Ayarlar\" -&gt; \"Galeri hata çalışması kullan\" işaretleyerek 3D Galeri kullanarak resimler veya videoları ekleyin.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">\"Ek Ekle (Resim)\" veya \"Ek Ekle (Video)\" kullanarak 3D Galeri ile resimleri ve videoları ekleyin.</string>
   <string name="miscellaneous_preferences">Çeşitli</string>
-  <string name="misc_preferences_attachment_title">Geçici çözüm galeri hatasını kullan</string>
-  <string name="misc_preferences_attachment_description">Resim/Video ekleri ekleme butonlarını göster (Bir galeri 3D hatası geçici çözümüne)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Bu eylem için uygun program bulunamadı.</string>
   <string name="error_apg_version_not_supported">Kurulu APG versiyon desteklenmiyor.</string>

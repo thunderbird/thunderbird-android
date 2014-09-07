@@ -137,8 +137,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="read_receipt_enabled">Запросить уведомление о прочтении</string>
   <string name="read_receipt_disabled">Без уведомления о прочтении</string>
   <string name="add_attachment_action">Вложение</string>
-  <string name="add_attachment_action_image">Изображение</string>
-  <string name="add_attachment_action_video">Видео</string>
   <string name="empty_trash_action">Очистить корзину</string>
   <string name="expunge_action">Стереть</string>
   <string name="clear_local_folder_action">Стереть локальные</string>
@@ -725,13 +723,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="font_size_medium">Большой</string>
   <string name="font_size_large">Огромный</string>
   <string name="font_size_larger">Гигантский</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Включите в настройках \"Обход ошибки Галереи 3D\" для её использования</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Используйте дествия \"Изображение\" или \"Видео\" для вложения с помощью Галереи 3D</string>
   <string name="miscellaneous_preferences">Разное</string>
-  <string name="misc_preferences_attachment_title">Обход ошибки Галереи 3D</string>
-  <string name="misc_preferences_attachment_description">Показать действия вложения изображений и видео</string>
   <!--APG related-->
   <string name="error_activity_not_found">Подходящее приложение не найдено</string>
   <string name="error_apg_version_not_supported">Установленная версия APG не поддерживается</string>

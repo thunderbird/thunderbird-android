@@ -137,8 +137,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="read_receipt_enabled">Żadaj powiadomienia o przeczytaniu</string>
   <string name="read_receipt_disabled">Nie wymagaj powiadomienia o przeczytaniu</string>
   <string name="add_attachment_action">Dodaj załącznik</string>
-  <string name="add_attachment_action_image">Dodaj załącznik (Zdjęcie)</string>
-  <string name="add_attachment_action_video">Dodaj załącznik (Film)</string>
   <string name="empty_trash_action">Opróżnij kosz</string>
   <string name="expunge_action">Wyczyść</string>
   <string name="clear_local_folder_action">Wyczyść wiadomości lokalne</string>
@@ -714,13 +712,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="font_size_medium">Średnia</string>
   <string name="font_size_large">Duża</string>
   <string name="font_size_larger">Wielka</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Włącz \"Obejdź błędy w Galerii\" aby móc załączać zdjęcia oraz filmy używając Galerii 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Użyj \"Dodaj załącznik (Zdjęcie)\" lub \"Dodaj załącznik (Film)\" aby je dodać używając Galerii 3D.</string>
   <string name="miscellaneous_preferences">Różne</string>
-  <string name="misc_preferences_attachment_title">Obejdź błędy w Galerii</string>
-  <string name="misc_preferences_attachment_description">Wyświetla przyciski dodawania zdjęć oraz filmów jako załączników</string>
   <!--APG related-->
   <string name="error_activity_not_found">Nie znaleiono odpowiedniej aplikacji.</string>
   <string name="error_apg_version_not_supported">Zainstalowana wersja APG nie jest wspierana.</string>

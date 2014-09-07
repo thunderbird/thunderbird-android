@@ -136,8 +136,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="read_receipt_enabled">Olvasási jelentés lesz kérve</string>
   <string name="read_receipt_disabled">Nem lesz Olvasási jelentés lesz kérve</string>
   <string name="add_attachment_action">Melléklet</string>
-  <string name="add_attachment_action_image">Kép-melléklet csatolása</string>
-  <string name="add_attachment_action_video">Videó-melléklet csatolása</string>
   <string name="empty_trash_action">Lomtár ürítése</string>
   <string name="expunge_action">Biztonságos törlés</string>
   <string name="clear_local_folder_action">Helyi üzenetek törlése</string>
@@ -703,13 +701,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="font_size_medium">Közepes</string>
   <string name="font_size_large">Nagy</string>
   <string name="font_size_larger">Nagyobb</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Kapcsolja be a \"Beállítások\" -&gt; \"Galéria hiba\" ha 3D galériából akar képet mellékelni.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Használja a \"Kép csatolása\" vagy \"Videó csatolása\" opciót ha 3D galériából szeretne választani.</string>
   <string name="miscellaneous_preferences">Egyéb</string>
-  <string name="misc_preferences_attachment_title">Galéria hiba kikerülése</string>
-  <string name="misc_preferences_attachment_description">Gombok megjelenítése a kép/videó csatoláshoz (a 3D Galéria hiba kikerülése érdekében)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Nincs megfelelő alkalmazás ehhez a művelethez.</string>
   <string name="error_apg_version_not_supported">A telepített APG verzió nem támogatott.</string>

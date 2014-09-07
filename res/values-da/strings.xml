@@ -134,8 +134,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="read_receipt_enabled">Der vil blive anmodet om kvittering for modtagelse</string>
   <string name="read_receipt_disabled">Der vil ikke blive anmodet om kvittering for modtagelse</string>
   <string name="add_attachment_action">Vedhæft fil</string>
-  <string name="add_attachment_action_image">Vedhæft (billede)</string>
-  <string name="add_attachment_action_video">Vedhæft (Video)</string>
   <string name="empty_trash_action">Tøm papirkurv</string>
   <string name="expunge_action">Ryd helt</string>
   <string name="clear_local_folder_action">Fjern lokalt lagrede mails</string>
@@ -709,13 +707,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="font_size_medium">Stor</string>
   <string name="font_size_large">Større</string>
   <string name="font_size_larger">Størst</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Kontroller \"Indstillinger\" -&gt; \"Benyt Gallery bug work-around\" for at kunne vedhæfte billeder og videoer med Gallery 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Benyt \"Tilføj vedhæft (billede)\" eller \"Tilføj vedhæftning (video)\" for at kunne vedhæfte billeder eller videoer med Gallery 3D.</string>
   <string name="miscellaneous_preferences">Diverse</string>
-  <string name="misc_preferences_attachment_title">Benyt Gallery bug work-around</string>
-  <string name="misc_preferences_attachment_description">Vis knapper til vedhæftning af billede/video (måde at omgå fejl i Gallery 3D)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Kunne ikke finde noget program som kan udføre denne handling.</string>
   <string name="error_apg_version_not_supported">Den installerede version af APG understørttes ikke.</string>

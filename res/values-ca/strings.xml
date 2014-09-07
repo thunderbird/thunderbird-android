@@ -137,8 +137,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="read_receipt_enabled">Es farà una petició per la confirmació de lectura</string>
   <string name="read_receipt_disabled">No es faran més peticions per les confirmacions de lectura</string>
   <string name="add_attachment_action">Afegeix adjunt</string>
-  <string name="add_attachment_action_image">Afegeix adjunt (Imatge)</string>
-  <string name="add_attachment_action_video">Afegeix adjunt (Vídeo)</string>
   <string name="empty_trash_action">Buida paperera</string>
   <string name="expunge_action">Elimina</string>
   <string name="clear_local_folder_action">Neteja missatges locals</string>
@@ -715,13 +713,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="font_size_medium">Mitjà</string>
   <string name="font_size_large">Gran</string>
   <string name="font_size_larger">Més gran</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Comprova \"Configuració\" -&gt; \"Utilitza la galeria la Galeria d\'errors\" per poder adjuntar imatges o vídeos utilitzant la Galeria 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Utilitza \"Afegeix adjunt (Imatge)\" or \"Afegeix adjunt (Vídeo)\" per afegir imatges o vídeos amb la Galeria 3D.</string>
   <string name="miscellaneous_preferences">Miscel·lània</string>
-  <string name="misc_preferences_attachment_title">Utilitza la Galeria d\'errors</string>
-  <string name="misc_preferences_attachment_description">Mostra els botons per afegir adjunts d\'imatge/vídeo (per treballar amb els errors de la Galeria 3D)</string>
   <!--APG related-->
   <string name="error_activity_not_found">No s\'ha trobat cap aplicació idònia per a aquesta acció.</string>
   <string name="error_apg_version_not_supported">Versió APG instal·lada no suportada.</string>
