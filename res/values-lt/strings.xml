@@ -41,11 +41,10 @@ Pagerintos galimybės:
 Pastaba: K-9 nepalaiko daugumos Hotmail paskyrų ir kaip dauguma el. pašto klientų turi keblumų bendraujant su Microsoft Exchange.
 </p><p>
 Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus mūsų tinklapyje
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">--\nIšsiųsta iš mano Android įrenginio naudojant „K-9 Mail“.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „K-9 Mail“.</string>
   <string name="account_recreate_dlg_instructions_fmt">Visi vietiniai \"<xliff:g id="account">%s</xliff:g>\" duomenys bus pašalinti. Paskyros nustatymai išliks.</string>
@@ -267,7 +266,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="global_settings_messageview_show_next_summary">Pašalinus laišką, pagal nutylėjimą pereiti prie sekančio</string>
   <string name="global_settings_confirm_actions_title">Patvirtinti veiksmus</string>
   <string name="global_settings_confirm_actions_summary">Atliekant pasirinktus veiksmus rodyti dialogą</string>
-  <string name="global_settings_confirm_action_delete">Pašalinti (pranešimų rodinyje)</string>
   <string name="global_settings_confirm_action_delete_starred">Pašalinti pažymėtus žvaigždute (pranešimų rodinyje)</string>
   <string name="global_settings_confirm_action_spam">Brukalas</string>
   <string name="global_settings_confirm_action_delete_notif">Pašalinti</string>
@@ -396,13 +394,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_setup_options_mail_display_count_all">visi laiškai</string>
   <string name="move_copy_cannot_copy_unsynced_message">Neįmanoma kopijuoti ar perkelti laiškų kurie nesinchronizuoti su serveriu</string>
   <string name="account_setup_failed_dlg_title">Nepavyko baigti nustatymo</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Neteisingas naudotojo vardas arba slaptažodis.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Serveris pateikė netinkamą sertifikatą. Kartais tai nutinka dėl neteisingos serverio konfigūracijos. Kartais tai nutinka kai kažkas bando užpulti jus ar jūsų pašto serverį. Jei nesate tikri kame bėda, paspauskite „Atmesti“ ir susisiekite su serverio administracija.
-
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Nepavyko prisijungti prie serverio.
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Keisti detales</string>
   <string name="account_setup_failed_dlg_continue_action">Tęsti</string>
   <string name="account_settings_push_advanced_title">Išplėstinis</string>
@@ -612,8 +603,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neatpažintas sertifikatas</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Priimti raktą</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Atmesti raktą</string>
-  <string name="message_list_help_key">Del (ar D) - Šalinti\nR - Atsakyti\nA - Atsakyti visiems\nC - Kurti\nF - Persiųsti\nM - Perkelti\nV - Archyvas\nY - Kopijuoti\nZ - Pažymėti (Ne)skaitytą\nG - Žvaigždutė\nO - Rikiavimo tipas\nI - Rikiavimo tvarka\nQ - Grįžti į aplankus\nS - Pasirinkti/nepasirinkti\nJ or P - Ankstesnis laiškas\nK or N - Sekantis laiškas</string>
-  <string name="folder_list_help_key">1 - Rodyti tik 1 klasės aplankus\n2 - Rodyti 1 ir 2 klasės aplankus\n3 - Rodyti visus išskyrus 2 klasės aplankus\n4 - Rodyti visus aplankus\nQ - Grįžti į paskyras\nS - Keisti paskyros nustatymus</string>
   <string name="folder_list_filter_hint">aplanko varde yra</string>
   <string name="folder_list_display_mode_label">Rodyti aplankus…</string>
   <string name="folder_list_display_mode_all">Visus aplankus</string>
@@ -879,4 +868,5 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="fetching_attachment_dialog_title_save">Išsaugomas juodraštis</string>
   <string name="fetching_attachment_dialog_message">Gaunamas priedas…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

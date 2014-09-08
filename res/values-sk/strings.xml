@@ -41,7 +41,7 @@ Jeho vylepšené funkcie zahŕňajú:
 Vezmite, prosím, na vedomie, že K-9 Mail nepodporuje väčšinu bezplatných účtov Hotmail a ako mnoho ďalších e-mailových klientov vykazuje zvláštnosti pri komunikácii s Microsoft Exchange.
 </p><p>
 Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte sa na
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -152,8 +152,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="status_loading_more">Načítavanie správ\u2026</string>
   <string name="status_network_error">Chyba pripojenia</string>
   <string name="status_invalid_id_error">Správa nebola nájdená</string>
-  <string name="status_loading_more_failed">Opakujte načítanie ďalších správ</string>
-  <string name="load_more_messages_fmt">Načítať ďalších <xliff:g id="messages_to_load">%d</xliff:g></string>
+  <string name="status_loading_more_failed">Skúsiť znovu načítať viac správ</string>
+  <string name="load_more_messages_fmt">Načítať ďalších <xliff:g id="messages_to_load">%d</xliff:g> správ</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
   <string name="abbrev_kilobytes">KB</string>
@@ -194,7 +194,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="debug_enable_debug_logging_summary">Zaznamenávať rozšírené diagnostické informácie</string>
   <string name="debug_enable_sensitive_logging_title">Zaznamenávať citlivé informácie</string>
   <string name="debug_enable_sensitive_logging_summary">V záznamoch môžu byť zobrazené heslá</string>
-  <string name="message_list_load_more_messages_action">Načítať viac práv</string>
+  <string name="message_list_load_more_messages_action">Načítať viac správ</string>
   <string name="message_to_fmt">Komu:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_to_hint">Komu</string>
   <string name="message_compose_cc_hint">Kópia</string>
@@ -224,8 +224,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="message_view_cc_label">Kópia:</string>
   <string name="message_view_attachment_view_action">Otvoriť</string>
   <string name="message_view_attachment_download_action">Uložiť</string>
-  <string name="message_view_status_attachment_saved">Príloha bola uložená na SD kartu ako <xliff:g id="filename">%s</xliff:g>.</string>
-  <string name="message_view_status_attachment_not_saved">Nemožno uložiť prílohu na SD kartu.</string>
+  <string name="message_view_status_attachment_saved">Príloha bola uložená na kartu SD ako <xliff:g id="filename">%s</xliff:g>.</string>
+  <string name="message_view_status_attachment_not_saved">Nemožno uložiť prílohu na kartu SD.</string>
   <string name="message_view_show_pictures_action">Zobraziť obrázky</string>
   <string name="message_view_show_message_action">Zobraziť správy</string>
   <string name="message_view_show_attachments_action">Zobraziť prílohy</string>
@@ -267,10 +267,12 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_messageview_show_next_summary">Zobraziť ďalšiu správu automaticky po zmazaní správy</string>
   <string name="global_settings_confirm_actions_title">Potvrdzovanie akcií</string>
   <string name="global_settings_confirm_actions_summary">Zobraziť dialógové okno pri vykonávaní vybraných akcií</string>
-  <string name="global_settings_confirm_action_delete">Vymazať (v zobrazení správ)</string>
+  <string name="global_settings_confirm_action_delete">Vymazať</string>
   <string name="global_settings_confirm_action_delete_starred">Vymazať správy s hviezdičkou (v zobrazení správ)</string>
   <string name="global_settings_confirm_action_spam">Nevyžiadaná pošta</string>
   <string name="global_settings_confirm_action_delete_notif">Vymazať (z oznámenia)</string>
+  <string name="global_settings_privacy_hide_useragent">Odstrániť používateľského agenta K-9 z hlavičiek správ</string>
+  <string name="global_settings_privacy_hide_timezone">Použiť UTC ako časové pásmo v hlavičkách správ</string>
   <string name="global_settings_notification_hide_subject_title">Skryť predmet v oznámení</string>
   <string name="global_settings_notification_hide_subject_never">Nikdy</string>
   <string name="global_settings_notification_hide_subject_when_locked">Pri uzamknutom zariadení</string>
@@ -287,6 +289,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_basics_title">Nastaviť nový účet</string>
   <string name="account_setup_basics_email_hint">E-mailová adresa</string>
   <string name="account_setup_basics_password_hint">Heslo</string>
+  <string name="account_setup_basics_show_password">Zobraziť heslo</string>
   <string name="account_setup_basics_manual_setup_action">Ručné nastavenie</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Načítavanie informácií o účte\u2026</string>
@@ -306,9 +309,11 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_auth_type_normal_password">Normálne heslo</string>
   <string name="account_setup_auth_type_insecure_password">Heslo, prenášané nezabezpečene</string>
   <string name="account_setup_auth_type_encrypted_password">Šifrované heslo</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Klientský certifikát</string>
   <string name="account_setup_incoming_title">Nastavenia servera prichádzajúcej pošty</string>
   <string name="account_setup_incoming_username_label">Používateľské meno</string>
   <string name="account_setup_incoming_password_label">Heslo</string>
+  <string name="account_setup_incoming_client_certificate_label">Klientský certifikát</string>
   <string name="account_setup_incoming_pop_server_label">Server POP3</string>
   <string name="account_setup_incoming_imap_server_label">Server IMAP</string>
   <string name="account_setup_incoming_webdav_server_label">Server Exchange</string>
@@ -318,6 +323,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_incoming_security_none_label">Žiadne</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nie je platné s \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_incoming_delete_policy_label">Akcia po vymazaní správy</string>
   <string name="account_setup_incoming_delete_policy_never_label">Ponechať na serveri</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Vymazať na serveri</string>
@@ -326,15 +332,15 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_incoming_mobile_label">Mobilná</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Iná</string>
-  <string name="local_storage_provider_external_label">Externé úložisko (Karta SD)</string>
-  <string name="local_storage_provider_internal_label">Interné úložisko</string>
-  <string name="local_storage_provider_samsunggalaxy_label">%1$s prídavné interné úložisko</string>
-  <string name="local_storage_provider_label">Umiestnenie úložiska</string>
+  <string name="local_storage_provider_external_label">Externý ukladací priestor (Karta SD)</string>
+  <string name="local_storage_provider_internal_label">Interný ukladací priestor</string>
+  <string name="local_storage_provider_samsunggalaxy_label">%1$s prídavný interný ukladací priestor</string>
+  <string name="local_storage_provider_label">Umiestnenie ukladacieho priestoru</string>
   <string name="account_setup_expunge_policy_label">Odstrániť vymazané správy zo servera</string>
   <string name="account_setup_expunge_policy_immediately">Ihneď</string>
   <string name="account_setup_expunge_policy_on_poll">Pri synchronizovaní</string>
   <string name="account_setup_expunge_policy_manual">Ručne</string>
-  <string name="account_setup_incoming_autodetect_namespace_label">Automaticky detegovať IMAP namespace</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">Automaticky detegovať menný priestor IMAP</string>
   <string name="account_setup_incoming_imap_path_prefix_label">Predpona cesty IMAP</string>
   <string name="drafts_folder_label">Priečinok Koncepty</string>
   <string name="sent_folder_label">Priečinok Odoslaná</string>
@@ -357,6 +363,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_outgoing_username_label">Používateľské meno</string>
   <string name="account_setup_outgoing_password_label">Heslo</string>
   <string name="account_setup_outgoing_authentication_label">Overenie</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nie je platné s \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Neplatné nastavenie: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Možnosti účtu</string>
   <string name="compact_action">Zmenšiť účet</string>
@@ -404,12 +411,9 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_options_mail_display_count_all">Všetky správy</string>
   <string name="move_copy_cannot_copy_unsynced_message">Nemožno skopírovať alebo presunúť správu, ktorá nie je synchronizovaná so serverom</string>
   <string name="account_setup_failed_dlg_title">Nastavenie nemohlo byť dokončené</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Používateľské meno alebo heslo je nesprávne.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Nemožno sa bezpečne pripojiť k serveru. Server predložil neplatný certifikát SSL.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Nemožno sa pripojiť k serveru.
-(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Používateľské meno alebo heslo nie je správne.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Server predložil neplatný SSL certifikát. Niekedy je to kvôli zlej konfigurácii servera, inokedy zas preto, že niekto sa snaží zatočiť na vás alebo váš e-mailový server. Ak si nie ste istý, čo sa deje, kliknite na tlačidlo Odmietnuť a obráťte sa na ľudí, ktorí spravujú váš e-mailový server.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Nie je možné sa pripojiť k serveru.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Upraviť podrobnosti</string>
   <string name="account_setup_failed_dlg_continue_action">Pokračovať</string>
   <string name="account_settings_push_advanced_title">Pokročilé</string>
@@ -462,7 +466,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_crypto_auto_encrypt_summary">Automaticky zašifrovať, ak sa verejný kľúč zhoduje s príjemcom</string>
   <string name="account_settings_crypto_apg_not_installed">APG nie je nainštalované</string>
   <string name="account_settings_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
-  <string name="account_settings_storage_title">Úložisko</string>
+  <string name="account_settings_storage_title">Ukladací priestor</string>
   <string name="account_settings_color_label">Farba účtu</string>
   <string name="account_settings_color_summary">Farba účtu v zozname priečinkov a účtov</string>
   <string name="account_settings_led_color_label">Farba notifikačnej LED</string>
@@ -620,8 +624,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Prijať kľúč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmietnuť kľúč</string>
   <string name="message_list_help_key">Del (alebo D) - Vymazať\nR - Odpovedať\nA - Odpovedať všetkým\nC - Vytvoriť\nF - Preposlať\nM - Presunúť\nV - Archivovať\nY - Kopírovať\nZ - Označiť ako (ne)prečítané\nG - Hviezdička\nO - Typ zoradenia\nI - Poradie zoradenia\nQ - Návrat do priečinkov\nS - Označiť/odznačiť\nJ alebo P - Predchádzajúca správa\nK alebo N - Ďalšia správa</string>
-  <string name="folder_list_help_key">1 - Zobrazí len priečinky 1. triedy\n2 - Zobrazí priečinky 1. a 2. triedy\n3 - Zobrazí všetky okrem priečinkov 2. triedy\n4 - Zobrazí všetky priečinky\nQ - Návrat do účtov\nS - Úprava nastavení účtu</string>
-  <string name="folder_list_filter_hint">názov priečinka obsahuje</string>
+  <string name="folder_list_help_key">1 - Zobraziť len priečinky 1. triedy\n2 - Zobraziť priečinky 1. a 2. triedy\n3 - Zobraziť  všetky okrem priečinkov 2. triedy\n4 - Zobraziť  všetky priečinky\nQ - Návrat do účtov\nS - Upraviť nastavení účtu</string>
+  <string name="folder_list_filter_hint">Názov priečinka obsahuje</string>
   <string name="folder_list_display_mode_label">Zobraziť priečinky…</string>
   <string name="folder_list_display_mode_all">Všetky priečinky</string>
   <string name="folder_list_display_mode_first_class">Priečinky 1. triedy</string>
@@ -816,7 +820,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   </plurals>
   <string name="settings_import_use_incoming_server_password">Použiť heslo pre server prichádzajúcej pošty</string>
   <string name="activate_account_action">Aktivovať</string>
-  <string name="account_unavailable">Účet \"<xliff:g id="account">%s</xliff:g>\" nie je dostupný; skontrolujte úložisko</string>
+  <string name="account_unavailable">Účet \"<xliff:g id="account">%s</xliff:g>\" nie je dostupný; skontrolujte ukladací priestor</string>
   <string name="settings_attachment_default_path">Ukladať prílohy do…</string>
   <string name="attachment_save_title">Uložiť prílohu</string>
   <string name="attachment_save_desc">Nebol nájdený žiadny prehliadač súborov. Kam by ste chceli uložiť túto prílohu?</string>
@@ -897,6 +901,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="fetching_attachment_dialog_title_send">Odosielam správu</string>
   <string name="fetching_attachment_dialog_title_save">Ukladám koncept</string>
   <string name="fetching_attachment_dialog_message">Sťahujem prílohu…</string>
+  <string name="auth_external_error">Nie je možné overiť. Server nenaznačil schopnosť SASL EXTERNAL. To sa mohlo stať kvôli problému s klientským certifikátom (vypršal, neznáma certifikačná autorita), alebo kvôli nejakému inému problému konfigurácie.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">Dešifrovanie/overovanie…</string>
   <string name="openpgp_successful_decryption">Úspešne dešifrované</string>
@@ -910,4 +915,12 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="openpgp_successful_decryption_unknown_signature">Úspešne dešifrované, ale chýbajúci verejný kľúč</string>
   <string name="openpgp_get_key">Vyhľadať chýbajúci kľúč</string>
   <string name="openpgp_error">Chyba OpenPGP:</string>
+  <string name="openpgp_user_id">ID používateľa</string>
+  <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Použiť klientský certifikát</string>
+  <string name="client_certificate_spinner_empty">Žiadny klientský certifikát</string>
+  <string name="client_certificate_spinner_delete">Odstrániť výber klientského certifikátu</string>
+  <string name="client_certificate_retrieval_failure">Nepodarilo sa získať klientský certifikát pre identitu \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_advanced_options">Pokročilé možnosti</string>
+  <string name="client_certificate_expired">Klientský certifikát \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" vypršal alebo nie je zatiaľ platný (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

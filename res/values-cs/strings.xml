@@ -41,19 +41,19 @@ Vylepšené funkce K-9 zahrnují:
 Všimněte si prosím, že K-9 nepodporuje většinu zdarma účtů Hotmail a jako mnoho poštovních klientů vykazuje zvláštnosti při komunikaci s Microsoft Exchange.
 </p><p>
 Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte se na
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nOdesláno z mého telefonu s Androidem pomocí pošty K-9 Mail. Omluvte prosím moji stručnost.</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z pošty K-9 Mail.</string>
-  <string name="account_recreate_dlg_instructions_fmt">Všechna data účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněna, ale nastavení účtu bude zachováno.</string>
-  <string name="account_clear_dlg_instructions_fmt">Všechny zprávy v účtu \"<xliff:g id="account">%s</xliff:g>\" budou z pošty K-9 Mail odstraněny, ale nastavení účtu bude zachováno.</string>
+  <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z K-9 Mail.</string>
+  <string name="account_recreate_dlg_instructions_fmt">Všechna místní data účtu \"<xliff:g id="account">%s</xliff:g>\" budou z K-9 Mail odstraněna, ale nastavení účtu bude zachováno.</string>
+  <string name="account_clear_dlg_instructions_fmt">Místní zprávy v účtu \"<xliff:g id="account">%s</xliff:g>\" budou z K-9 Mail odstraněny, ale nastavení účtu bude zachováno.</string>
   <string name="insufficient_apg_permissions">K-9 nemá oprávnění k plnému přístupu k APG, přeinstalujte prosím pro opravu balíček K-9.</string>
   <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Není žádná vhodní aplikace pro operaci importu. Prosím nainstalujte nějaký file manager z Google Play.</string>
-  <string name="open_market">Otevřít Play Store</string>
+  <string name="import_dialog_error_message">Prosím nainstalujte nějaký file manager pro pokračování v importu.</string>
+  <string name="open_market">Otevřít obchod Google Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autoři: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Informace o revizi: <xliff:g id="app_revision_url">%s</xliff:g></string>
@@ -210,6 +210,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="message_compose_quote_header_to">Komu:</string>
   <string name="message_compose_quote_header_cc">Kopie:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napsal(a):</string>
+  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> napsal:</string>
   <string name="message_compose_error_no_recipients">Musíte přidat alespoň jednoho příjemce.</string>
   <string name="error_contact_address_not_found">Nemohla být nalezena adresa.</string>
   <string name="message_compose_attachments_skipped_toast">Některé přílohy nelze přeposlat, protože ještě nebyly staženy.</string>
@@ -267,10 +268,12 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="global_settings_messageview_show_next_summary">Zobraz další zprávu automaticky po smazání</string>
   <string name="global_settings_confirm_actions_title">Potvrzování akcí</string>
   <string name="global_settings_confirm_actions_summary">Zobrazit dialog, když provádíte zvolené akce</string>
-  <string name="global_settings_confirm_action_delete">Mazání (jen v zobrazení zpráv)</string>
+  <string name="global_settings_confirm_action_delete">Smazat</string>
   <string name="global_settings_confirm_action_delete_starred">Smaž zprávy s hvězdickou (message view only)</string>
   <string name="global_settings_confirm_action_spam">Nevyžádaná</string>
   <string name="global_settings_confirm_action_delete_notif">Smazat (z oznámení)</string>
+  <string name="global_settings_privacy_hide_useragent">Odstraň K-9 Agenta z hlaviček emalů</string>
+  <string name="global_settings_privacy_hide_timezone">Použíj čas UTC v hlavičkách emailů </string>
   <string name="global_settings_notification_hide_subject_title">Schovej předmet v upozorněních</string>
   <string name="global_settings_notification_hide_subject_never">Nikdy</string>
   <string name="global_settings_notification_hide_subject_when_locked">Když je telefon uzamčený</string>
@@ -303,6 +306,9 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+  <string name="account_setup_auth_type_normal_password">Normální heslo</string>
+  <string name="account_setup_auth_type_insecure_password">Heslo přenášeno bez zabezpečení</string>
+  <string name="account_setup_auth_type_encrypted_password">Zašifrované heslo</string>
   <string name="account_setup_incoming_title">Nastavení serveru příchozí pošty</string>
   <string name="account_setup_incoming_username_label">Uživatelské jméno</string>
   <string name="account_setup_incoming_password_label">Heslo</string>
@@ -313,6 +319,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="account_setup_incoming_security_label">Typ zabezpečení</string>
   <string name="account_setup_incoming_auth_type_label">Typ ověření</string>
   <string name="account_setup_incoming_security_none_label">Žádné</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Když smažu zprávu</string>
   <string name="account_setup_incoming_delete_policy_never_label">Nemazat ji na serveru</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Smazat na serveru</string>
@@ -393,15 +401,15 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="account_setup_options_mail_display_count_250">250 zpráv</string>
   <string name="account_setup_options_mail_display_count_500">500 zpráv</string>
   <string name="account_setup_options_mail_display_count_1000">1000 zpráv</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 zpráv</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 zpráv</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 zpráv</string>
   <string name="account_setup_options_mail_display_count_all">všechny zprávy</string>
   <string name="move_copy_cannot_copy_unsynced_message">Nelze kopírovat nebo přesunovat zprávu, která není synchronizována se serverem</string>
   <string name="account_setup_failed_dlg_title">Konfiguraci nastavení nelze dokončit</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Uživatelské jméno nebo heslo je nesprávné.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Nelze se bezpečně připojit k serveru.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Nelze se připojit k serveru.
-(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Uživatelské jméno nebo heslo není správné.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Server nabízí špatný SSL certifikát. Někdy může jít o chybu konfigurace, někdy o pokus útoku na Vás nebo mailový server. Pokud nevíte o co jde, zmáčkněte Odmítnout a kontaktujte lidi kteří spravují Váš mailový server.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Nelze se připojit k serveru. (<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Upravit podrobnosti</string>
   <string name="account_setup_failed_dlg_continue_action">Pokračovat</string>
   <string name="account_settings_push_advanced_title">Rozšířené</string>
@@ -611,7 +619,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámý certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
-  <string name="message_list_help_key">Del (nebo D) - Smazat\nR - Odpovědět\nA - Odpovědět všem\nC - Nová\nF - Přeposlat\nM - Přesun\nV - Archiv\nY - Kopie\nZ - Označit (ne)přečteno\nG - Hvězdička\nO - Typ třídění\nI - Pořadí třídění\nQ - Návrat do složek\nS - Vybrat/zrušit výběr\nJ nebo P - Předchozí zpráva\nK nebo N - Další zpráva</string>
+  <string name="message_list_help_key">Del (or D) - Smazat\nR - Odpovědět\nA - Odpovědět všem\nC - Vytvořit\nF - Předat\nM - Přesunout\nV - Archivovat\nY - Kopirovat\nZ - Označit (Ne)přečtené\nG - Hvězdička\nO - Uspořádat podle typu\nI - Uspořádat podle pořadí\nQ - Zpět k složkám\nS - Označit/odznačit\nJ or P - Předešlá zpráva\nK or N - Další zpráva</string>
   <string name="folder_list_help_key">1 - Zobrazit jen složky 1. třídy\n2 - Zobrazit složky 1. a 2. třídy\n3 - Zobrazit všechny vyjma složek 2. třídy\n4 - Zobrazit všechny složky\nQ - Návrat k účtům\nS - Upravit nastavení účtu</string>
   <string name="folder_list_filter_hint">název složky obsahuje</string>
   <string name="folder_list_display_mode_label">Složky</string>
@@ -632,7 +640,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="network_preferences">Síť</string>
   <string name="interaction_preferences">Ovládání</string>
   <string name="accountlist_preferences">Seznam účtů</string>
-  <string name="messagelist_preferences">Zprávy</string>
+  <string name="messagelist_preferences">Seznam zpráv</string>
   <string name="messageview_preferences">Zprávy</string>
   <string name="folderlist_preferences">Seznam složek</string>
   <string name="settings_theme_label">Téma</string>
@@ -705,6 +713,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="font_size_message_view_subject">Předmět zprávy</string>
   <string name="font_size_message_view_date">Datum a čas zprávy</string>
   <string name="font_size_message_view_content">Tělo zprávy</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Psaní zprávy</string>
   <string name="font_size_message_compose_input">Pole zadávaní textu</string>
   <string name="font_size_default">Standardní</string>
@@ -750,8 +760,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <item quantity="few">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zprávy?</item>
     <item quantity="other">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zpráv?</item>
   </plurals>
-  <string name="dialog_confirm_delete_confirm_button">Smazat</string>
-  <string name="dialog_confirm_delete_cancel_button">Nemazat</string>
+  <string name="dialog_confirm_delete_confirm_button">Ano</string>
+  <string name="dialog_confirm_delete_cancel_button">Ne</string>
   <string name="dialog_confirm_spam_title">Potvrzení přesunu do nevyžádané pošty</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Opravdu chcete přesunout tuto zprávy do nevyžádané pošty?</item>
@@ -799,6 +809,11 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   </plurals>
   <string name="settings_import_incoming_server">Příchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Odchozí server (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <plurals name="settings_import_setting_passwords">
+    <item quantity="one">Nastavuji heslo…</item>
+    <item quantity="few">Nastavuji hesla…</item>
+    <item quantity="other">Nastavuji hesla…</item>
+  </plurals>
   <string name="settings_import_use_incoming_server_password">Heslo pro příchozi server</string>
   <string name="activate_account_action">Aktivovat</string>
   <string name="account_unavailable">Účet \"<xliff:g id="account">%s</xliff:g>\" je nedostupný; zkontrolujte úložiště</string>
@@ -830,7 +845,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="webview_contextmenu_email_save_action">Uložit do kontaktů</string>
   <string name="webview_contextmenu_email_copy_action">Zkopírovat e-mailovou aderesu do schránky</string>
   <string name="webview_contextmenu_email_clipboard_label">E-mailová adresa</string>
-  <string name="image_saved_as">Obrázek uložen do \"<xliff:g id="filename">%s</xliff:g>\"</string>
+  <string name="image_saved_as">Obrázek uložen jako \"<xliff:g id="filename">%s</xliff:g>\"</string>
   <string name="image_saving_failed">Uložení obrázku se nezdařilo.</string>
   <string name="account_settings_remote_search_num_results_entries_all">Vše</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
@@ -883,4 +898,18 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="fetching_attachment_dialog_title_save">Ukládám koncept</string>
   <string name="fetching_attachment_dialog_message">Stahuji přílohu…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decrypting_verifying">Dešifrování / Ověřování…</string>
+  <string name="openpgp_successful_decryption">Úspěšné dešifrování</string>
+  <string name="openpgp_signature_valid_certified">Platný podpis (certifikován)</string>
+  <string name="openpgp_signature_valid_uncertified">Platný podpis ale bez cerifikátu</string>
+  <string name="openpgp_signature_unknown">Neznámý signatář</string>
+  <string name="openpgp_signature_invalid">Neplatný podpis</string>
+  <string name="openpgp_signature_unknown_text">Chybí veřejný klíč k tomuto podpisu</string>
+  <string name="openpgp_successful_decryption_valid_signature_certified">Úspěšné dešifrování a platný podpis (certifikován)</string>
+  <string name="openpgp_successful_decryption_valid_signature_uncertified">Úspěšné dešifrování a platný podpis ale bez cerifikátu</string>
+  <string name="openpgp_successful_decryption_unknown_signature">Úspěšné dešifrování, ale chybí veřejný klíč</string>
+  <string name="openpgp_get_key">Vyhledávám chybějící klíč</string>
+  <string name="openpgp_error">Chyba OpenPGP:</string>
+  <string name="openpgp_user_id">Id uživatele</string>
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

@@ -41,11 +41,10 @@ El K-9 inclou les característiques millorades de:
 Si us plau, tingueu en compte que el K-9 no funciona amb la majoria de comptes Hotmail gratuïts i, com molts clients de correu, fa coses estranyes quan es comunica amb Microsoft Exchange.
 </p><p>
 Si us plau, envia\'ns els errors, contribueix a millorar-lo a
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nS\'ha enviat des del meu telèfon Android amb K-9 Mail. Si us plau, excusa la meva brevetat.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" serà esborrat de K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Totes les dades de \"<xliff:g id="account">%s</xliff:g>\" seran esborrades de K-9 Mail, però la configuració del compte romandrà.</string>
@@ -267,7 +266,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="global_settings_messageview_show_next_summary">Mostra, per defecte, el proper missatge després d\'eliminar-ne un.</string>
   <string name="global_settings_confirm_actions_title">Confirma accions</string>
   <string name="global_settings_confirm_actions_summary">Mostra un diàleg cada vegada que executis accions seleccionades</string>
-  <string name="global_settings_confirm_action_delete">Esborra (només la vista del missatge)</string>
   <string name="global_settings_confirm_action_delete_starred">Elimina els missatges amb estel (només a la vista de missatges)</string>
   <string name="global_settings_confirm_action_spam">Brossa</string>
   <string name="global_settings_confirm_action_delete_notif">Elimina (des de notificacions)</string>
@@ -396,12 +394,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_setup_options_mail_display_count_all">Tots els missatges</string>
   <string name="move_copy_cannot_copy_unsynced_message">No es pot copiar o moure un missatge que no està sincronitzat amb el servidor</string>
   <string name="account_setup_failed_dlg_title">No s\'ha pogut acabar la configuració</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'usuari o contrasenya incorrectes.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">No es pot connectar al servidor de forma segura.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">No es pot connectar al servidor.
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Edita els detalls</string>
   <string name="account_setup_failed_dlg_continue_action">Continua</string>
   <string name="account_settings_push_advanced_title">Avançat</string>
@@ -611,8 +603,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat no reconegut</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepta la clau</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rebutja la clau</string>
-  <string name="message_list_help_key">Del (or D) - Esborra\nR - Respon\nA - Respon a tothom\nC - Redacta\nF - Reenvia\nM - Mou\nV - Archive\nY - Copia\nV - Arxiva\nZ - Mark (Un)read\nG - Estel\nO - Tipus d\'ordenació\nI - Tipus d\'ordre\nQ - Retorna a les carpetes\nS - Selecciona/desselecciona\nJ o P - Previ Missatge\nK o N - Missatge següent</string>
-  <string name="folder_list_help_key">1 – Mostra només les carpetes de 1a classe\n2 – Mostra les carpetes de 1a i 2a classe\n3 – Mostra-ho tot excepte carpetes de 2a classe\n4 – Mostra totes les carpetes\nQ - Torna als comptes\nS - Edita la configuració del compte</string>
   <string name="folder_list_filter_hint">el nom de la carpeta conté</string>
   <string name="folder_list_display_mode_label">Carpetes</string>
   <string name="folder_list_display_mode_all">Mostra totes les carpetes</string>
@@ -883,4 +873,5 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="fetching_attachment_dialog_title_save">Guardant esborrany</string>
   <string name="fetching_attachment_dialog_message">Recuperant adjunt…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

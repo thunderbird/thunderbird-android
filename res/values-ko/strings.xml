@@ -40,11 +40,10 @@ K-9의 향상된 기능:
 <p>
 K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다른 메일 클라이언트와 마찬가지로 Microsoft Exchange와 연결할 때 다소 문제가 발생할 수 있습니다.
 </p><p>
-버그 리포트, 새로운 기능 그리고 질문에 대한 문의는 <a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a> 로 남겨주시기바랍니다.
+버그 리포트, 새로운 기능 그리고 질문에 대한 문의는 <a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a> 로 남겨주시기바랍니다.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \n나의 안드로이드 폰 K-9 메일에서 보냅니다. 메시지가 짧은 점 양해 부탁드립니다.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
   <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 데이터가 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
@@ -265,7 +264,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="global_settings_messageview_show_next_summary">메시지 삭제 후 다음 메시지를 보도록 기본값으로 설정합니다</string>
   <string name="global_settings_confirm_actions_title">동작시 행동</string>
   <string name="global_settings_confirm_actions_summary">설정한 행동을 할 경우 대화 상자를 보여 줍니다</string>
-  <string name="global_settings_confirm_action_delete">삭제 (메시지 보기에서만)</string>
   <string name="global_settings_confirm_action_delete_starred">별표된 메시지 삭제 (메시지 보기에서만)</string>
   <string name="global_settings_confirm_action_spam">스팸</string>
   <string name="global_settings_confirm_action_delete_notif">삭제 (알림에서)</string>
@@ -394,12 +392,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_setup_options_mail_display_count_all">모든 메시지</string>
   <string name="move_copy_cannot_copy_unsynced_message">서버와 동기화되지 않은 메시지를 복사하거나 이동할 수 없습니다.</string>
   <string name="account_setup_failed_dlg_title">설정이 완료되지 않았습니다</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">아이디 혹은 비밀번호가 틀림.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">서버에 안전하게 연결할 수 없습니다.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">서버에 연결할 수 없습니다.
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">내용 수정</string>
   <string name="account_setup_failed_dlg_continue_action">계속</string>
   <string name="account_settings_push_advanced_title">고급</string>
@@ -609,8 +601,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_setup_failed_dlg_invalid_certificate_title">잘못된 인증 정보</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">키 허용</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">키 거부</string>
-  <string name="message_list_help_key">Del (또는 D) - 삭제\nR - 회신\nA - 전체 회신\nC - 작성\nF - 전달\nM - 이동\nV - 보관\nY - 복사\nZ - 읽(지 않)은 것으로 표시\nG - 별표(즐겨찾기)\nO - 정렬 방법\nI - 정렬 순서\nQ - 폴더로 돌아가기\nS - 선택/선택해제\nJ, P - 이전 메시지\nK, N - 다음 메시지</string>
-  <string name="folder_list_help_key">1 - 제 1종 폴더만 보기\n2 - 제 1종 및 2종 폴더 보기\n3 - 제 2종 외 폴더 모두 보기\n4 - 모든 폴더 보기\nQ - 계정 변경\nS - 계정 설정 변경</string>
   <string name="folder_list_filter_hint">폴더 이름의 내용</string>
   <string name="folder_list_display_mode_label">폴더</string>
   <string name="folder_list_display_mode_all">모든 폴더 표시</string>
@@ -861,4 +851,5 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="fetching_attachment_dialog_title_save">임시 저장</string>
   <string name="fetching_attachment_dialog_message">첨부 파일 부치는 중…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

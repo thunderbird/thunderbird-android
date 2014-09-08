@@ -41,11 +41,10 @@ Toevoegingen en verbeteringen omvatten:
 Houd er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange.
 </p><p>
 Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nVerzonden van mijn Android telefoon met K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alle data voor \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail, maar account instellingen blijven behouden.</string>
@@ -209,6 +208,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="message_compose_quote_header_to">Aan:</string>
   <string name="message_compose_quote_header_cc">CC:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schreef:</string>
+  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sender">%2$s</xliff:g> schreef op <xliff:g id="sent_date">%1$s</xliff:g>:</string>
   <string name="message_compose_error_no_recipients">Minimaal 1 ontvanger kiezen.</string>
   <string name="error_contact_address_not_found">Geen e-mailadres gevonden.</string>
   <string name="message_compose_attachments_skipped_toast">Sommige bijlagen kunnen niet worden doorgestuurd omdat ze niet zijn gedownload.</string>
@@ -266,7 +266,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="global_settings_messageview_show_next_summary">Standaard volgend bericht laten zien na verwijderen</string>
   <string name="global_settings_confirm_actions_title">Bevestig acties</string>
   <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoert</string>
-  <string name="global_settings_confirm_action_delete">Verwijder (alleen berichten bekijken)</string>
   <string name="global_settings_confirm_action_delete_starred">Gemarkeerd verwijderen (in bericht-view)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Verwijder (van notificaties)</string>
@@ -302,6 +301,9 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
+  <string name="account_setup_auth_type_normal_password">Normaal wachtwoord</string>
+  <string name="account_setup_auth_type_insecure_password">Wachtwoord, onveilig verzonden</string>
+  <string name="account_setup_auth_type_encrypted_password">Versleuteld wachtwoord</string>
   <string name="account_setup_incoming_title">Inkomende server instellingen</string>
   <string name="account_setup_incoming_username_label">Gebruikersnaam</string>
   <string name="account_setup_incoming_password_label">Wachtwoord</string>
@@ -312,6 +314,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_incoming_security_label">Beveiligings type</string>
   <string name="account_setup_incoming_auth_type_label">Authenticatie type</string>
   <string name="account_setup_incoming_security_none_label">Geen</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Wanneer ik een bericht verwijder</string>
   <string name="account_setup_incoming_delete_policy_never_label">Verwijder niet van server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Verwijder van server</string>
@@ -392,15 +396,12 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_options_mail_display_count_250">250 berichten</string>
   <string name="account_setup_options_mail_display_count_500">500 berichten</string>
   <string name="account_setup_options_mail_display_count_1000">1000 berichten</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 berichten</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 berichten</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 berichten</string>
   <string name="account_setup_options_mail_display_count_all">alle berichten</string>
   <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen omdat deze niet gesynchroniseerd is met de server</string>
   <string name="account_setup_failed_dlg_title">Setup kon niet afronden</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Kan niet veilig verbinden met server.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding maken met server.
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Aanpassen details</string>
   <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
   <string name="account_settings_push_advanced_title">Geavanceerd</string>
@@ -610,8 +611,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_failed_dlg_invalid_certificate_title">Onbekend Certificaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
-  <string name="message_list_help_key">Del (or D) - Verwijder\nR - Antwoord\nA - Antwoord Alle\nC - Ontwerp\nF - Doorsturen\nM - Verplaats\nV - Archive\nY - Kopieer\nZ - Mark (Un)read\nG - Ster\nO - Sort type\nI - Sort grootte\nQ - Terug naar Mappen\nS - Selecteer/de-selecteer\nJ, V - Vorige Bericht\nK, N - Volgende bericht</string>
-  <string name="folder_list_help_key">1 - Laat alleen 1 klasse mappen zien\n2 - Laat 1e en 2e klasse mappen zien\n3 - Laat alles zien behalve 2e klasse mappen\n4 - Laat alle mappen zien\nQ - Terug naar Accounts\nS - Aanpassen Account Instellingen</string>
   <string name="folder_list_filter_hint">map naam bevat</string>
   <string name="folder_list_display_mode_label">Mappen</string>
   <string name="folder_list_display_mode_all">Laat alle mappen zien</string>
@@ -882,4 +881,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="fetching_attachment_dialog_title_save">Concept wordt opgeslagen</string>
   <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_error">OpenPGP Fout:</string>
+  <string name="openpgp_user_id">Gebruikers-id</string>
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

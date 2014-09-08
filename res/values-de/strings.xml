@@ -11,7 +11,8 @@
   <string name="remote_control_desc">Erlaubt dieser Anwendung den Ablauf und die Einstellungen von K-9 Mail zu kontrollieren.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, das K-9-Team und viele Weitere.</string>
-  <string name="app_copyright_fmt">\u00a9 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers.\nTeile \u00a9 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
+  <string name="app_copyright_fmt">\u00a9 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers.
+Teile \u00a9 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="app_license">Lizenziert unter der Apache License, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
@@ -40,7 +41,7 @@ Verbesserte Funktionen in K-9:
 Bitte beachten Sie, dass K-9, wie viele andere E-Mail-Anwendungen auch, die meisten kostenlosen Hotmail-Accounts nicht unterstützt. Zudem gibt es einige Probleme mit Microsoft Exchange-Servern.
 </p><p>
 Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuchen Sie die Homepage unter
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -65,7 +66,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="delete_messages_label">Nachrichten löschen</string>
   <string name="delete_messages_desc">Der Anwendung erlauben, Ihre Nachrichten zu löschen.</string>
   <string name="about_title_fmt">Über <xliff:g id="app_name">%s</xliff:g></string>
-  <string name="accounts_title">Ihre Konten</string>
+  <string name="accounts_title">Konten</string>
   <string name="folders_title">Ordner</string>
   <string name="advanced">Erweitert</string>
   <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
@@ -143,7 +144,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="clear_local_folder_action">Lokale Nachrichten löschen</string>
   <string name="about_action">Info</string>
   <string name="prefs_title">Einstellungen</string>
-  <string name="accounts_context_menu_title">Konto-Optionen</string>
+  <string name="accounts_context_menu_title">Kontooptionen</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(Kein Betreff)</string>
   <string name="general_no_sender">Kein Absender</string>
@@ -266,10 +267,12 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="global_settings_messageview_show_next_summary">Nach Löschen standardmäßig die nächste Nachricht anzeigen</string>
   <string name="global_settings_confirm_actions_title">Bestätigungsdialog</string>
   <string name="global_settings_confirm_actions_summary">Bestätigung bei gewissen Aktionen erfordern</string>
-  <string name="global_settings_confirm_action_delete">Löschen (nur in Nachrichtenansicht)</string>
+  <string name="global_settings_confirm_action_delete">Löschen</string>
   <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Löschen (aus Benachrichtigung)</string>
+  <string name="global_settings_privacy_hide_useragent">K-9 nicht als Mailprogramm in Kopfzeilen eintragen</string>
+  <string name="global_settings_privacy_hide_timezone">UTC als Zeitzone in Kopfzeilen verwenden</string>
   <string name="global_settings_notification_hide_subject_title">Betreff in Benachrichtigungen verbergen</string>
   <string name="global_settings_notification_hide_subject_never">Niemals</string>
   <string name="global_settings_notification_hide_subject_when_locked">Wenn der Bildschirm gesperrt ist</string>
@@ -286,9 +289,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_basics_title">E-Mail-Konto einrichten</string>
   <string name="account_setup_basics_email_hint">E-Mail-Adresse</string>
   <string name="account_setup_basics_password_hint">Passwort</string>
+  <string name="account_setup_basics_show_password">Passwort anzeigen</string>
   <string name="account_setup_basics_manual_setup_action">Manuelle Einrichtung</string>
   <string name="account_setup_check_settings_title"/>
-  <string name="account_setup_check_settings_retr_info_msg">Konto-Informationen werden abgerufen\u2026</string>
+  <string name="account_setup_check_settings_retr_info_msg">Kontoinformationen werden abgerufen\u2026</string>
   <string name="account_setup_check_settings_check_incoming_msg">Einstellungen des Empfangsservers werden überprüft\u2026</string>
   <string name="account_setup_check_settings_check_outgoing_msg">Einstellungen des Ausgangsservers werden überprüft\u2026</string>
   <string name="account_setup_check_settings_authenticate">Authentifizierung\u2026</string>
@@ -297,7 +301,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_names_title">Fast fertig!</string>
   <string name="account_setup_names_account_name_label">Kontoname (optional):</string>
   <string name="account_setup_names_user_name_label">Ihr Name (Anzeige bei ausgehenden Nachrichten):</string>
-  <string name="account_setup_account_type_title">Neues E-Mail-Konto hinzufügen</string>
+  <string name="account_setup_account_type_title">Kontotyp</string>
   <string name="account_setup_account_type_instructions">Art des Kontos?</string>
   <string name="account_setup_account_type_pop_action">POP3-Konto</string>
   <string name="account_setup_account_type_imap_action">IMAP-Konto</string>
@@ -305,9 +309,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_auth_type_normal_password">Passwort, normal</string>
   <string name="account_setup_auth_type_insecure_password">Passwort, verschlüsselt übermittelt</string>
   <string name="account_setup_auth_type_encrypted_password">Verschlüsseltes Passwort</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Client-Zertifikat</string>
   <string name="account_setup_incoming_title">Einstellungen für Posteingangsserver</string>
   <string name="account_setup_incoming_username_label">Benutzername</string>
   <string name="account_setup_incoming_password_label">Passwort</string>
+  <string name="account_setup_incoming_client_certificate_label">Client-Zertifikat</string>
   <string name="account_setup_incoming_pop_server_label">POP3-Server</string>
   <string name="account_setup_incoming_imap_server_label">IMAP-Server</string>
   <string name="account_setup_incoming_webdav_server_label">WebDAV(Exchange)-Server</string>
@@ -317,6 +323,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_incoming_security_none_label">Keine Verschlüsselung</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ist nicht gültig mit \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_incoming_delete_policy_label">Beim Löschen von Nachrichten</string>
   <string name="account_setup_incoming_delete_policy_never_label">Nie von Server löschen</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
@@ -356,9 +363,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_outgoing_username_label">Benutzername</string>
   <string name="account_setup_outgoing_password_label">Passwort</string>
   <string name="account_setup_outgoing_authentication_label">Authentifizierungsmethode</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ist nicht gültig mit \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Ungültige Einstellung: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Kontoeinstellungen</string>
-  <string name="compact_action">Komprimieren</string>
+  <string name="account_setup_options_title">Kontooptionen</string>
+  <string name="compact_action">Konto komprimieren</string>
   <string name="clear_action">Alle Daten löschen (Vorsicht!)</string>
   <string name="recreate_action">Daten neu erstellen (Letzter Ausweg!)</string>
   <string name="account_setup_options_mail_check_frequency_label">E-Mail-Abfrage</string>
@@ -403,12 +411,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_options_mail_display_count_all">Alle Nachrichten</string>
   <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
   <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Kennwort fehlerhaft.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Aufbau einer gesicherten Verbindung zum Server nicht möglich.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.
-(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Passwort ist falsch.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Kann nicht mit dem Server verbinden.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
   <string name="account_setup_failed_dlg_continue_action">Weiter</string>
   <string name="account_settings_push_advanced_title">Erweitert</string>
@@ -416,6 +420,12 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_default_label">Standardkonto</string>
   <string name="account_settings_default_summary">Standardmäßig Nachrichten von diesem Konto aus senden</string>
   <string name="account_settings_notify_label">Bei neuen Nachrichten</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Benachrichtigungsordner</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Alle</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Nur Hauptordner</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Haupt- und Nebenordner</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Alle außer Nebenordner</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Kein</string>
   <string name="account_settings_notify_sync_label">Benachrichtigung bei Synchronisation</string>
   <string name="account_settings_email_label">Ihre E-Mail-Adresse</string>
   <string name="account_settings_notify_summary">Benachrichtigung in der Statuszeile anzeigen, wenn eine neue Nachricht empfangen wird</string>
@@ -462,7 +472,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_crypto_apg_not_installed">APG ist nicht installiert</string>
   <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
   <string name="account_settings_storage_title">Speicher</string>
-  <string name="account_settings_color_label">Konto-Farbe</string>
+  <string name="account_settings_color_label">Kontofarbe</string>
   <string name="account_settings_color_summary">Farbe, in der das Konto in der Konten- und Ordnerliste dargestellt wird</string>
   <string name="account_settings_led_color_label">LED-Farbe</string>
   <string name="account_settings_led_color_summary">Farbe, die für die Benachrichtigungs-LED bei Benachrichtigungen für dieses Konto verwendet wird</string>
@@ -537,6 +547,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="folder_settings_folder_push_mode_first_class">Hauptordner</string>
   <string name="folder_settings_folder_push_mode_second_class">Nebenordner</string>
   <string name="folder_settings_folder_push_mode_inherited">Wie Synchronisationsklasse</string>
+  <string name="folder_settings_folder_notify_mode_label">Ordnerbenachrichtigungsklasse</string>
+  <string name="folder_settings_folder_notify_mode_normal">Kein</string>
+  <string name="folder_settings_folder_notify_mode_first_class">Hauptordner</string>
+  <string name="folder_settings_folder_notify_mode_second_class">Nebenordner</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Wie Push-Klasse</string>
   <string name="account_settings_incoming_label">Posteingangs-Einstellungen</string>
   <string name="account_settings_incoming_summary">Einstellungen für Posteingangsserver bearbeiten</string>
   <string name="account_settings_outgoing_label">Postausgangs-Einstellungen</string>
@@ -609,7 +624,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="sort_by_flag">Wichtigkeit</string>
   <string name="sort_by_unread">Gelesen/Ungelesen</string>
   <string name="sort_by_attach">Anhang</string>
-  <string name="account_delete_dlg_title">Entfernen</string>
+  <string name="account_delete_dlg_title">Konto entfernen</string>
   <string name="account_recreate_dlg_title">Konto neu erstellen</string>
   <string name="account_clear_dlg_title">Nachrichten löschen</string>
   <string name="provider_note_auonejp">Wenn Sie für diesen Anbieter IMAP oder POP3 verwenden möchten, sollten Sie dies auf der \"AU One\"-Einstellungsseite aktivieren.</string>
@@ -671,7 +686,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="volume_navigation_message">Nachrichtenansicht</string>
   <string name="volume_navigation_list">Diverse Listenansichten</string>
   <string name="start_integrated_inbox_title">Gemeins. Posteingang bei Start</string>
-  <string name="measure_accounts_title">Konto-Größe anzeigen</string>
+  <string name="measure_accounts_title">Kontogröße anzeigen</string>
   <string name="measure_accounts_summary">Für schnellere Anzeige deaktivieren</string>
   <string name="count_search_title">Suchergebnisse zählen</string>
   <string name="count_search_summary">Für schnellere Anzeige deaktivieren</string>
@@ -693,9 +708,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_searchable_none">Keine</string>
   <string name="font_size_settings_title">Schriftgröße</string>
   <string name="font_size_settings_description">Schriftgrößen festlegen</string>
-  <string name="font_size_account_list">Konten-Liste</string>
-  <string name="font_size_account_name">Konto-Name</string>
-  <string name="font_size_account_description">Konto-Beschreibung</string>
+  <string name="font_size_account_list">Kontenliste</string>
+  <string name="font_size_account_name">Kontoname</string>
+  <string name="font_size_account_description">Kontobeschreibung</string>
   <string name="font_size_folder_list">Ordner-Liste</string>
   <string name="font_size_folder_name">Ordner-Name</string>
   <string name="font_size_folder_status">Ordner-Status</string>
@@ -774,7 +789,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="error_unable_to_connect">Verbindungsfehler</string>
   <string name="import_export_action">Einstellungen im- &amp; exportieren</string>
   <string name="settings_export_account">Kontoeinstellungen exportieren</string>
-  <string name="settings_export_all">Einstellungen exportieren</string>
+  <string name="settings_export_all">Einstellungen und Konten exportieren</string>
   <string name="settings_import_dialog_title">Importieren</string>
   <string name="settings_export_dialog_title">Export</string>
   <string name="settings_import">Einstellungen importieren</string>
@@ -905,4 +920,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="openpgp_get_key">Schlage fehlenden Schlüssel nach</string>
   <string name="openpgp_error">OpenPGP Fehler:</string>
   <string name="openpgp_user_id">Benutzer-ID</string>
+  <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Client-Zertifikat verwenden</string>
+  <string name="client_certificate_spinner_empty">Kein Client-Zertifikat</string>
+  <string name="client_certificate_spinner_delete">Client-Zertifikatsauswahl entfernen</string>
+  <string name="client_certificate_advanced_options">Erweiterte Optionen</string>
+  <string name="client_certificate_expired">Client-Zertifikat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ist abgelaufen oder noch nicht gültig (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

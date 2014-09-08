@@ -41,11 +41,11 @@ K-9 Mail — почтовый клиент для Android.
 Отметим, что K-9 Mail не полностью совместим с MS Exchange и не поддерживает бесплатные ящики Hotmail
 </p><p>
 Вопросы, сообщения об ошибках и участие в разработке на
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">--\nПростите за краткость,\nсоздано в K-9 Mail</string>
+  <string name="default_signature">-- \nПростите за краткость, создано в K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Ящик \"<xliff:g id="account">%s</xliff:g>\" будет удалён из приложения</string>
   <string name="account_recreate_dlg_instructions_fmt">Все данные ящика \"<xliff:g id="account">%s</xliff:g>\" будут удалены, настройки сохранятся</string>
@@ -267,10 +267,12 @@ K-9 Mail — почтовый клиент для Android.
   <string name="global_settings_messageview_show_next_summary">Открыть следующее сообщение после удаления сообщения</string>
   <string name="global_settings_confirm_actions_title">Подтверждать действия</string>
   <string name="global_settings_confirm_actions_summary">Запросить подтверждение действий</string>
-  <string name="global_settings_confirm_action_delete">Удаление (в просмотре)</string>
+  <string name="global_settings_confirm_action_delete">Удалить</string>
   <string name="global_settings_confirm_action_delete_starred">Удаление важного (в просмотре)</string>
   <string name="global_settings_confirm_action_spam">Перемещение в спам</string>
   <string name="global_settings_confirm_action_delete_notif">Удаление (в уведомлении)</string>
+  <string name="global_settings_privacy_hide_useragent">Убрать K-9 User-Agent из заголовков</string>
+  <string name="global_settings_privacy_hide_timezone">Временная зона UTC в заголовках</string>
   <string name="global_settings_notification_hide_subject_title">Скрыть тему в уведомлении</string>
   <string name="global_settings_notification_hide_subject_never">Никогда</string>
   <string name="global_settings_notification_hide_subject_when_locked">При блокировке</string>
@@ -287,6 +289,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_basics_title">Новый ящик</string>
   <string name="account_setup_basics_email_hint">адрес email</string>
   <string name="account_setup_basics_password_hint">пароль</string>
+  <string name="account_setup_basics_show_password">Показать пароль</string>
   <string name="account_setup_basics_manual_setup_action">Вручную</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Получение сведений\u2026</string>
@@ -306,9 +309,11 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_auth_type_normal_password">Обычный пароль</string>
   <string name="account_setup_auth_type_insecure_password">Небезопасный пароль</string>
   <string name="account_setup_auth_type_encrypted_password">Безопасный пароль</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Сертификат клиента</string>
   <string name="account_setup_incoming_title">Сервер входящей почты</string>
   <string name="account_setup_incoming_username_label">Логин</string>
   <string name="account_setup_incoming_password_label">Пароль</string>
+  <string name="account_setup_incoming_client_certificate_label">Сертификат клиента</string>
   <string name="account_setup_incoming_pop_server_label">Сервер POP3</string>
   <string name="account_setup_incoming_imap_server_label">Сервер IMAP</string>
   <string name="account_setup_incoming_webdav_server_label">Сервер Exchange</string>
@@ -318,6 +323,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_incoming_security_none_label">Нет</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" недействителен для \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_incoming_delete_policy_label">Удалённое, на сервере</string>
   <string name="account_setup_incoming_delete_policy_never_label">Оставить</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Удалить</string>
@@ -328,7 +334,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_incoming_other_label">Прочие</string>
   <string name="local_storage_provider_external_label">Карта памяти</string>
   <string name="local_storage_provider_internal_label">Внутренняя память</string>
-  <string name="local_storage_provider_samsunggalaxy_label">%1$s доп. внутренняя память</string>
+  <string name="local_storage_provider_samsunggalaxy_label">%1$s дополнительная память</string>
   <string name="local_storage_provider_label">Расположение данных</string>
   <string name="account_setup_expunge_policy_label">Стирать удалённые с сервера</string>
   <string name="account_setup_expunge_policy_immediately">Немедленно</string>
@@ -357,6 +363,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_outgoing_username_label">Логин</string>
   <string name="account_setup_outgoing_password_label">Пароль</string>
   <string name="account_setup_outgoing_authentication_label">Аутентификация</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" недействителен для \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Неверная настройка: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Настройки ящика</string>
   <string name="compact_action">Сжать ящик</string>
@@ -404,12 +411,9 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_options_mail_display_count_all">Все</string>
   <string name="move_copy_cannot_copy_unsynced_message">Нельзя скопировать или переместить сообщение, не синхронизированное с сервером</string>
   <string name="account_setup_failed_dlg_title">Настройка не завершена</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Неверные логин или пароль.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Сбой безопасного подключения к серверу.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Сбой подключения к серверу.
-(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Неверные логин или пароль.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Сервер предоставляет неверный сертификат SSL. Иногда это обусловлено неправильной настройкой. Или кто-то пытается атаковать Ваш почтовый сервер или Ваш компьютер. Если Вы не уверены в причинах, нажмите Отклонить и свяжитесь с персоналом, обслуживающим почтовый сервер.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Не удаётся подключиться к серверу.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Правка</string>
   <string name="account_setup_failed_dlg_continue_action">Продолжить</string>
   <string name="account_settings_push_advanced_title">Дополнительно</string>
@@ -619,8 +623,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_failed_dlg_invalid_certificate_title">Неверный сертификат сервера</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Принять</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отклонить</string>
-  <string name="message_list_help_key">Del, D - Удалить\nR - Ответить\nA - Ответить всем\nC - Новое\nF - Переслать\nM - Переместить\nV - В архив\nY - Копия\nZ - Прочитано\nG - Важность\nO - Признак сортировки\nI - Порядок сортировки\nQ - Папки\nS - Выделение\nJ, P - Назад\nK, N - Далее</string>
-  <string name="folder_list_help_key">1 - Папки 1 класса\n2 - Папки 1 и 2 классов\n3 - Все папки, кроме 2 класса\n4 - Все папки\nQ - К списку ящиков\nS - Настройки ящика</string>
+  <string name="message_list_help_key">Del (или D) - Удалить\nR - Ответить\nA - Ответить всем\nC - Новое\nF - Переслать\nM - Переместить\nV - В архив\nY - Копия\nZ - Прочитано\nG - Важность\nO - Признак сортировки\nI - Порядок сортировки\nQ - Папки\nS - Выделение\nJ или P - Назад\nK или N - Далее</string>
+  <string name="folder_list_help_key">1 - 1 класс папок\n2 - 1 и 2 классы папок\n3 - все, кроме 2 класса\n4 - видны все папки\nQ - список ящиков\nS - настройки ящика</string>
   <string name="folder_list_filter_hint">Поиск папки</string>
   <string name="folder_list_display_mode_label">Видимость папок</string>
   <string name="folder_list_display_mode_all">Все папки</string>
@@ -897,6 +901,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="fetching_attachment_dialog_title_send">Отправка сообщения</string>
   <string name="fetching_attachment_dialog_title_save">Сохранение черновика</string>
   <string name="fetching_attachment_dialog_message">Получение вложений…</string>
+  <string name="auth_external_error">Аутентификация не удалась. Сервер не сообщает о совместимости с SASL EXTERNAL. Причиной может служить неверный сертификат клиента (просрочен, неизвестен издатель) или какие-либо проблемы с настройками.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">Дешифрование или проверка…</string>
   <string name="openpgp_successful_decryption">Дешифрование выполнено</string>
@@ -911,4 +916,11 @@ K-9 Mail — почтовый клиент для Android.
   <string name="openpgp_get_key">Поиск отсутствующего ключа</string>
   <string name="openpgp_error">Ошибка OpenPGP:</string>
   <string name="openpgp_user_id">ID пользователя</string>
+  <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Использовать сертификат клиента</string>
+  <string name="client_certificate_spinner_empty">Не использовать сертификат клиента</string>
+  <string name="client_certificate_spinner_delete">Отключить выбор сертификата клиента</string>
+  <string name="client_certificate_retrieval_failure">Не найден сертификат клиента для алиаса \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_advanced_options">Дополнительно</string>
+  <string name="client_certificate_expired">Срок действия сертификата клиента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" истёк или ещё не наступил (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

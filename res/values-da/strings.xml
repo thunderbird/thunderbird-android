@@ -39,11 +39,10 @@ K-9\'s forbedrede funktioner inkluderer:
 Bemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
 </p><p>
 Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nSendt fra min Android telefon med K-9 Mail. Undskyld hvis jeg er lidt kortfattet.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alle mails, vedhæftede filer, mapper og mappe-indstillinger for \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail, men kontoindstillinger vil blive husket.</string>
@@ -262,7 +261,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="global_settings_messageview_show_next_summary">Vis som standard næste mail efter sletning af mail</string>
   <string name="global_settings_confirm_actions_title">Bekræft handlinger</string>
   <string name="global_settings_confirm_actions_summary">Vis dialogvindue når du udfører valgte handlinger</string>
-  <string name="global_settings_confirm_action_delete">Slet mail (kun i forb. med visning af mails)</string>
   <string name="global_settings_confirm_action_delete_starred">Slet stjernemarkeringer (kun i forb. med visning af mails)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Slet (fra notifikation)</string>
@@ -391,12 +389,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_setup_options_mail_display_count_all">alle mails</string>
   <string name="move_copy_cannot_copy_unsynced_message">Kan ikke kopiere eller flytte mail som ikke er synkroniseret med server</string>
   <string name="account_setup_failed_dlg_title">Kunne ikke fuldføre opsætning</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Brugernavn eller password ukorrekt.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Kan ikke oprette sikker forbindelse til server.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Kan ikke oprette forbindelse til server.
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Rediger detaljer</string>
   <string name="account_setup_failed_dlg_continue_action">Fortsæt</string>
   <string name="account_settings_push_advanced_title">Avanceret</string>
@@ -606,8 +598,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ukendt certificat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter nøgle</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Afvis nøgle</string>
-  <string name="message_list_help_key">Del (or D) - Slet\nR - Svar\nA - Svar alle\nC - Skriv\nF - Videresend\nM - Flyt\nV - Archive\nY - Kopier\nZ - Mark (Un)read\nG - Stjerne\nO - Sorteringstype\nI - Sorteringsorden\nQ - Returner til Mapper\nS - Vælg/fravælg\nJ or P - Foregående mail\nK or N - Næste mail</string>
-  <string name="folder_list_help_key">1 - Vis kun primære mapper\n2 - Vis primære og sekundære mapper\n3 - Vis alle pånær sekundære mapper\n4 - Vis alle mapper\nQ - Returner til Konti\nS - Rediger kontoindstillinger</string>
   <string name="folder_list_display_mode_label">Mapper</string>
   <string name="folder_list_display_mode_all">Vis alle mapper</string>
   <string name="folder_list_display_mode_first_class">Vis kun primære mapper</string>
@@ -875,4 +865,5 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="fetching_attachment_dialog_title_save">Gemmer kladde</string>
   <string name="fetching_attachment_dialog_message">Henter vedhæftning…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

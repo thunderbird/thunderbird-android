@@ -33,7 +33,7 @@ Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
   <li>Skróty klawiszowe</li>
   <li>Lepsza obsługa protokołu IMAP</li>
   <li>Zapisywanie załączników na kartę SD</li>
-  <li>Opróźnianie folderu "Trash"</li>
+  <li>Opróźnianie folderu \"Trash\"</li>
   <li>Sortowanie wiadomości</li>
   <li>… i wiele innych</li>
 </ul>
@@ -41,11 +41,10 @@ Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
 K-9 nie obsługuje darmowych kont Hotmail oraz, jak wiele innych programów pocztowych może być kapryśny przy połączeniach z serwerem Microsoft Exchange.
 </p><p>
 Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać za pośrednictwem strony projektu:
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nWysłane za pomocą K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9.</string>
   <string name="account_recreate_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie dane zostaną usunięte z bazy programu.</string>
@@ -209,6 +208,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="message_compose_quote_header_to">Do:</string>
   <string name="message_compose_quote_header_cc">DW:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napisał:</string>
+  <string name="message_compose_reply_header_fmt_with_date">Dnia <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> napisał(a):</string>
   <string name="message_compose_error_no_recipients">Musisz dodać co najmniej jednego odbiorcę.</string>
   <string name="error_contact_address_not_found">Żaden adres email nie został znaleziony.</string>
   <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą być przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>
@@ -266,7 +266,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="global_settings_messageview_show_next_summary">Pokaż domyślnie następną wiadomość po usunięciu</string>
   <string name="global_settings_confirm_actions_title">Potwierdź akcje</string>
   <string name="global_settings_confirm_actions_summary">Pokaż potwierdzające okno dialogowe, gdy wykonujesz wybrane akcje</string>
-  <string name="global_settings_confirm_action_delete">Usuń (tylko widok wiadomości)</string>
+  <string name="global_settings_confirm_action_delete">Usuń</string>
   <string name="global_settings_confirm_action_delete_starred">Usuń oznacz. gwiazkdą (tylko widok wiadomości)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Usuń (powiadomienie)</string>
@@ -302,6 +302,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
+  <string name="account_setup_auth_type_normal_password">Normalne hasło</string>
   <string name="account_setup_incoming_title">Poczta przychodząca</string>
   <string name="account_setup_incoming_username_label">Identyfikator</string>
   <string name="account_setup_incoming_password_label">Hasło</string>
@@ -312,6 +313,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_setup_incoming_security_label">Zabezpieczenia</string>
   <string name="account_setup_incoming_auth_type_label">Rodzaj uwierzytelnienia</string>
   <string name="account_setup_incoming_security_none_label">Brak</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Gdy skasuję wiadomość</string>
   <string name="account_setup_incoming_delete_policy_never_label">Nie usuwaj z serwera</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Usuń ją z serwera</string>
@@ -392,15 +395,12 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_setup_options_mail_display_count_250">250 wiadomości</string>
   <string name="account_setup_options_mail_display_count_500">500 wiadomości</string>
   <string name="account_setup_options_mail_display_count_1000">1000 wiadomości</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 wiadomości</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 wiadomości</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 wiadomości</string>
   <string name="account_setup_options_mail_display_count_all">Wszystkie wiadomości</string>
   <string name="move_copy_cannot_copy_unsynced_message">Nie mogę skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
   <string name="account_setup_failed_dlg_title">Wystąpił błąd</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Podany identyfikator lub hasło jest nieprawidłowe.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Nie mogę nawiązać bezpiecznego połączenia z serwerem.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Nie mogę połączyć się z serwerem.
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Popraw ustawienia</string>
   <string name="account_setup_failed_dlg_continue_action">Kontynuuj</string>
   <string name="account_settings_push_advanced_title">Zaawansowane</string>
@@ -610,8 +610,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
-  <string name="message_list_help_key">Del lub D - Usuń\nR - Odpowiedz\nA - Odp. wszystkim\nC - Napisz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Skopiuj\nZ - Przełącz przeczytane/nieprzeczytane\nG - Gwiazdka\nO - Typ sortowania\nI - Porządek sortowania\nQ - Widok folderów\nS - Zaznacz/odznacz\nJ lub P - Poprzednia wiadomość\nK lub N - Następna wiadomość</string>
-  <string name="folder_list_help_key">1 - Wyśw. tylko foldery 1szej klasy\n2 - Wyśw. foldery 1szej i 2giej klasy\n3 - Wyśw. wszystkie poza folderami 2giej klasy\n4 - Wyświetl wszystkie foldery\nQ - Lista kont\nS - Edytuj ustawienia konta</string>
   <string name="folder_list_filter_hint">Wpisz nazwę folderu</string>
   <string name="folder_list_display_mode_label">Wyświetlanie folderów</string>
   <string name="folder_list_display_mode_all">Wszystkie</string>
@@ -704,6 +702,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="font_size_message_view_subject">Temat</string>
   <string name="font_size_message_view_date">Czas i data</string>
   <string name="font_size_message_view_content">Treść wiadomości</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Kompozycja wiadomości</string>
   <string name="font_size_message_compose_input">Pole wprawadzania tekstu</string>
   <string name="font_size_default">Standardowa</string>
@@ -744,9 +744,19 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="select_text_now">Wybierz tekst do skopiowania.</string>
   <string name="dialog_confirm_delete_title">Potwiedź usunięcie</string>
   <string name="dialog_confirm_delete_message">Czy chcesz usunąć tą wiadomość?</string>
+  <plurals name="dialog_confirm_delete_messages">
+    <item quantity="one">Czy chcesz usunąć tę wiadomość?</item>
+    <item quantity="few">Czy chcesz usunąć <xliff:g id="message_count">%1$d</xliff:g> wiadomości?</item>
+    <item quantity="other">Czy chcesz usunąć <xliff:g id="message_count">%1$d</xliff:g> wiadomości?</item>
+  </plurals>
   <string name="dialog_confirm_delete_confirm_button">Usuń</string>
   <string name="dialog_confirm_delete_cancel_button">Nie usuwaj</string>
   <string name="dialog_confirm_spam_title">Potwierdź przeniesienie do spamu</string>
+  <plurals name="dialog_confirm_spam_message">
+    <item quantity="one">Czy chcesz przenieść tę wiadomość to folderu ze spamem?</item>
+    <item quantity="few">Czy chcesz przenieść <xliff:g id="message_count">%1$d</xliff:g> wiadomości do folderu ze spamem?</item>
+    <item quantity="other">Czy chcesz przenieść <xliff:g id="message_count">%1$d</xliff:g> wiadomości do folderu ze spamem?</item>
+  </plurals>
   <string name="dialog_confirm_spam_confirm_button">Tak</string>
   <string name="dialog_confirm_spam_cancel_button">Nie</string>
   <string name="dialog_attachment_progress_title">Pobieranie załącznika</string>
@@ -768,6 +778,11 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="settings_export_success">Zapisano ustawienia do <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importowano ustawienia z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importowano <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
+  <plurals name="settings_import_accounts">
+    <item quantity="one">1 konto</item>
+    <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> konta</item>
+    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> kont</item>
+  </plurals>
   <string name="settings_export_failure">Błąd eksportu</string>
   <string name="settings_import_failure">Błąd importu z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Eksport udany</string>
@@ -862,4 +877,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="fetching_attachment_dialog_title_save">Zapisywanie szkicu</string>
   <string name="fetching_attachment_dialog_message">Pobieranie załącznika…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_error">Błąd OpenPGP:</string>
+  <string name="openpgp_user_id">ID użytkownika</string>
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

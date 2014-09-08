@@ -41,11 +41,10 @@ K-9 implementa estas características:
 Conviene señalar que K-9 no soporta la mayoría de las cuentas de Hotmail y que, como muchos otros clientes de correo, tiene ciertas peculiaridades cuando se comunica con Microsoft Exchange.
 </p><p>
 Por favor, envía los errores detectados, contribuye con nuevas funcionalidades y pregunta en
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nEnviado desde mi teléfono Android con K-9 Mail. Por favor disculpa mi brevedad.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Los datos de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero se mantendrá su configuración.</string>
@@ -267,7 +266,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="global_settings_messageview_show_next_summary">Mostrar de manera predeterminada el siguiente mensaje después de borrar</string>
   <string name="global_settings_confirm_actions_title">Confirmar acciones</string>
   <string name="global_settings_confirm_actions_summary">Mostrar un diálogo cuando se realice una de estas acciones</string>
-  <string name="global_settings_confirm_action_delete">Borrar (en vista de mensajes)</string>
   <string name="global_settings_confirm_action_delete_starred">Borrar destacados (sólo en vista de mensajes)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Borrar (de notificaciones)</string>
@@ -404,13 +402,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_setup_options_mail_display_count_all">Todos los mensajes</string>
   <string name="move_copy_cannot_copy_unsynced_message">No se puede copiar/mover un mensaje no sincronizado con el servidor</string>
   <string name="account_setup_failed_dlg_title">No se ha podido finalizar la Configuración</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Usuario o contraseña incorrectos.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">El servidor ha presentado un certificado SSL no válido. A veces, esto es debido a una configuración no correcta en el servidor. A veces es porque alguien está intentando atacarle o atacar el servidor de correo. Si no está seguro de lo que ocurre, pulse en Rechazar y contacte con los administradores de su servidor de correo.
-
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">No se puede conectar con el servidor.
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalles</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avanzado</string>
@@ -620,8 +611,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado desconocido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar clave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rechazar clave</string>
-  <string name="message_list_help_key">Del (o D) - Borrar\nR - Responder\nA - Responder a todos\nC - Redactar\nF - Reenviar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (No) leído\nG - Estrella\nO - Tipo de ordenación\nI - Orden\nQ - Volver a Carpetas\n S - Seleccionar/Deseleccionar\nJ o P - Mensaje anterior\nK o N - Siguiente mensaje</string>
-  <string name="folder_list_help_key">1 - Ver carpetas 1a Clase\n2 - Ver carpetas 1a y 2a Clase\n3 - Ver todas excepto las de 2a Clase\n4 - Ver todas las carpetas\nQ - Volver a cuentas\nS - Editar preferencias cuenta</string>
   <string name="folder_list_filter_hint">nombre carpeta contiene</string>
   <string name="folder_list_display_mode_label">Mostrar carpetas…</string>
   <string name="folder_list_display_mode_all">Ver todas las carpetas</string>
@@ -894,4 +883,18 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="fetching_attachment_dialog_title_save">Guardando borrador</string>
   <string name="fetching_attachment_dialog_message">Recuperando adjunto…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decrypting_verifying">Descifrando/Verificando…</string>
+  <string name="openpgp_successful_decryption">Descifrado correctamente</string>
+  <string name="openpgp_signature_valid_certified">Firma válida (certificada)</string>
+  <string name="openpgp_signature_valid_uncertified">Firma válida pero sin certificar</string>
+  <string name="openpgp_signature_unknown">Firmante desconocido</string>
+  <string name="openpgp_signature_invalid">Firma no válida</string>
+  <string name="openpgp_signature_unknown_text">No se encuentra la clave pública de esta firma</string>
+  <string name="openpgp_successful_decryption_valid_signature_certified">Descifrado correctamente y firma válida (certificada)</string>
+  <string name="openpgp_successful_decryption_valid_signature_uncertified">Descifrado correctamente y firma válida pero sin certificar</string>
+  <string name="openpgp_successful_decryption_unknown_signature">Descifrado correctamente pero no se encuentra la clave pública</string>
+  <string name="openpgp_get_key">Buscar la clave no encontrada</string>
+  <string name="openpgp_error">Error OpenPGP:</string>
+  <string name="openpgp_user_id">Id de usuario</string>
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

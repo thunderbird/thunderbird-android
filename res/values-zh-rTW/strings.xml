@@ -17,7 +17,6 @@
   <string name="welcome_message_title">歡迎使用K-9 Mail</string>
   <string name="accounts_welcome">&lt;p&gt; K-9 Mail是Android系統的開放原始碼的電子郵件客戶端，原始程式碼來自Android內建的電子郵件程式。 &lt;/p&gt;&lt;p&gt; K-9改良的功能包括： &lt;/p&gt; &lt;ul&gt; &lt;li&gt;利用IMAP IDEL進行Push mail&lt;/li&gt; &lt;li&gt;更好的執行效率&lt;/li&gt; &lt;li&gt;重新發送郵件&lt;/li&gt; &lt;li&gt;郵件簽名&lt;/li&gt; &lt;li&gt;密件副本給自己&lt;/li&gt; &lt;li&gt;信件匣訂閱&lt;/li&gt; &lt;li&gt;同步全部信件匣&lt;/li&gt; &lt;li&gt;可以編輯回信收件人地址&lt;/li&gt; &lt;li&gt;鍵盤捷徑鍵&lt;/li&gt; &lt;li&gt;更完整支援IMAP&lt;/li&gt; &lt;li&gt;儲存附件到記憶卡&lt;/li&gt; &lt;li&gt;清空垃圾桶&lt;/li&gt; &lt;li&gt;郵件排序&lt;/li&gt; &lt;li&gt;以及其他很多功能～&lt;/li&gt; &lt;/ul&gt; &lt;p&gt; 請注意：K-9不支援絕大多數免費Hotmail帳戶。跟其他的電子郵件客戶端一樣，在和Microsoft Exchange伺服器溝通的時候存在一些詭異的問題。 &lt;/p&gt;&lt;p&gt; 請到&lt;a href=http://k9mail.googlecode.com/&gt;http://k9mail.googlecode.com/&lt;/a&gt;提交錯誤報告、建議新功能或提出您的問題。 &lt;/p&gt;</string>
   <!--Default signature-->
-  <string name="default_signature">--\n抱歉暫時無法詳細說明。這份郵件是由安裝有K-9 Mail的Android手持設備寄送的。</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」將從K-9 Mail中刪除。</string>
   <string name="account_recreate_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有相關資料將從K-9 Mail中刪除，僅保留帳戶設定。</string>
@@ -237,7 +236,6 @@
   <string name="global_settings_messageview_show_next_summary">刪除郵件後自動顯示下一郵件</string>
   <string name="global_settings_confirm_actions_title">確認操作</string>
   <string name="global_settings_confirm_actions_summary">進行選擇操作時總是顯示一個對話框進行確認</string>
-  <string name="global_settings_confirm_action_delete">刪除（僅檢視郵件時）</string>
   <string name="global_settings_confirm_action_delete_starred">移除星號 (僅檢視郵件時)</string>
   <string name="global_settings_confirm_action_spam">標記為垃圾</string>
   <string name="global_settings_confirm_action_delete_notif">刪除 (從通知欄)</string>
@@ -366,12 +364,6 @@
   <string name="account_setup_options_mail_display_count_all">全部郵件</string>
   <string name="move_copy_cannot_copy_unsynced_message">沒有與伺服器同步的郵件無法進行複製或移動</string>
   <string name="account_setup_failed_dlg_title">無法完成設定</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">使用者名稱或密碼錯誤。
-（<xliff:g id="error">%s</xliff:g>）</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">無法使用指定的加密類型連接到伺服器。
-（<xliff:g id="error">%s</xliff:g>）</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">無法連接到伺服器。
-（<xliff:g id="error">%s</xliff:g>）</string>
   <string name="account_setup_failed_dlg_edit_details_action">編輯詳細訊息</string>
   <string name="account_setup_failed_dlg_continue_action">繼續</string>
   <string name="account_settings_push_advanced_title">進階</string>
@@ -581,8 +573,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">無法識別的授權認證</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">接收金鑰</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒絕金鑰</string>
-  <string name="message_list_help_key">Del (or D) - 刪除\nR - 回覆\nA - 全部回覆\nC - 新郵件\nF - 轉寄\nM - 移動\nV - Archive\nY - 複製\nZ - Mark (Un)read\nG - 星號\nO - 排序方式\nI - 升冪/降冪\nQ - 返回信件匣\nS - 選擇/取消選擇\nJ or P - Previous Message\nK or N - Next Message</string>
-  <string name="folder_list_help_key">1 - 只顯示上層信件匣\n2 - 顯示上層和下層信件匣\n3 - 不包括下層信件匣\n4 - 顯示全部信件匣\nQ - 返回全部帳戶\nS - 編輯帳戶設定</string>
   <string name="folder_list_filter_hint">信件匣名稱包括</string>
   <string name="folder_list_display_mode_label">信件匣</string>
   <string name="folder_list_display_mode_all">顯示全部信件匣</string>
@@ -840,4 +830,5 @@
   <string name="preposition_for_date">於 <xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">標記全部為已讀</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

@@ -23,7 +23,7 @@
   <li>דחוף דואר באמצעות IMAP IDLE</li>
   <li>ביצועים טובים יותר</li>
   <li>הודעה refiling</li>
-  <li>חתימות דוא"ל</li>
+  <li>חתימות דוא\"ל</li>
   <li>עותק מוסתר אל עצמי</li>
   <li>תיקיות מנויים</li>
   <li>כל התיקיות מסונכרנות</li>
@@ -39,22 +39,21 @@
 לידיעתך, K-9 אינו תומך ברוב חשבונות Hotmail החינמיים, כמו תוכנות דואר רבות, יש כמה מוזרויות כאשר מדברים על Microsoft Exchange.
 </p><p>
 נא לשלוח דיווחי באגים, לתרום תכונות חדשות ולשאול שאלות על
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nSent from my Android phone with K-9 Mail. Please excuse my brevity.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
   <string name="account_recreate_dlg_instructions_fmt">על הנתונים עבור \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
   <string name="account_clear_dlg_instructions_fmt">כל ההודעות ב \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
-  <string name="insufficient_apg_permissions">"ל-K-9 אין הרשאה לגשת ל APG באופן מלא, התקן מחדש את K-9 כדי לתקן את זה."</string>
+  <string name="insufficient_apg_permissions">ל-K-9 אין הרשאה לגשת ל APG באופן מלא, התקן מחדש את K-9 כדי לתקן את זה.</string>
   <!--=== App Store-specific strings =======================================================-->
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">מפתחים: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_libraries">אנחנו משתמשים בספריות הבאות של ספקים חיצוניים: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="read_attachment_label">קרא הקבצים המצורפים לדוא"ל</string>
-  <string name="read_attachment_desc">אפשר ליישום זה לקרוא את קבצים המצורפים לדוא"ל שלך.</string>
+  <string name="read_attachment_label">קרא הקבצים המצורפים לדוא\"ל</string>
+  <string name="read_attachment_desc">אפשר ליישום זה לקרוא את קבצים המצורפים לדוא\"ל שלך.</string>
   <string name="read_messages_label">קרא אימיילים</string>
   <string name="read_messages_desc">אפשר ליישום זה לקרוא את האימיילים שלכם.</string>
   <string name="delete_messages_label">מחק אימיילים</string>
@@ -133,16 +132,14 @@
   <string name="abbrev_megabytes">MB</string>
   <string name="abbrev_kilobytes">KB</string>
   <string name="abbrev_bytes">B</string>
-  <string name="account_size_changed"><!--NEW: Note: part of 'account_size_changed' is untranslated-->
-    חשבון \"<xliff:g id="account">%s</xliff:g>\" נדחס ל <xliff:g id="oldSize">%s</xliff:g> to <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">דחיסת חשבון</string>
   <string name="clearing_account">מנקה חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">יוצר מחדש חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">מייל חדש</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> לא נקראו (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_bg_sync_ticker">בודק דוא\"ל: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">בודק דוא"ל: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">בודק דוא\"ל</string>
-  <string name="notification_bg_send_ticker">שולח דוא\"ל: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_bg_send_ticker">שולח דוא"ל: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">שולח דוא\"ל</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="special_mailbox_name_inbox">דואר נכנס</string>
@@ -193,7 +190,7 @@
   <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">לא כל הכותרות הורדו או נשמרו. בחר \" שמור את כל הכותרות המקומיות \ "בהגדרות של שרת חשבון הודעות נכנסות כדי לאפשר את זה בעתיד.</string>
+  <string name="message_additional_headers_not_downloaded">לא כל הכותרות הורדו או נשמרו. בחר \" שמור את כל הכותרות המקומיות \"בהגדרות של שרת חשבון הודעות נכנסות כדי לאפשר את זה בעתיד.</string>
   <string name="message_no_additional_headers_available">כל הכותרות הורדו, אבל אין כותרות נוספות להצגה.</string>
   <string name="message_additional_headers_retrieval_failed">שליפה של כותרות נוספות מהשרת של מסד הנתונים או מהדואר נכשל.</string>
   <string name="from_same_sender">עוד מהשולח הזה</string>
@@ -209,7 +206,7 @@
   <string name="global_settings_show_contact_name_label">הצג שמות אנשי קשר</string>
   <string name="global_settings_show_contact_name_summary">השתמש בשמות נמענים מתוך אנשי הקשר שלך כאשר זמין</string>
   <string name="global_settings_registered_name_color_label">לצבוע את אנשי הקשר</string>
-  <string name="global_settings_registered_name_color_default">"אל תצבע שמות ברשימת אנשי הקשר שלך"</string>
+  <string name="global_settings_registered_name_color_default">אל תצבע שמות ברשימת אנשי הקשר שלך</string>
   <string name="global_settings_registered_name_color_changed">צבע שמות ברשימת אנשי הקשר שלך</string>
   <string name="global_settings_messageview_fixedwidth_label">גופנים ברוחב קבוע</string>
   <string name="global_settings_messageview_fixedwidth_summary">השתמש בגופן ברוחב קבוע בעת הצגת הודעות טקסט רגילות</string>
@@ -219,7 +216,6 @@
   <string name="global_settings_messageview_show_next_summary">הצג את הודעה הבאה כברירת מחדל לאחר מחיקת הודעה</string>
   <string name="global_settings_confirm_actions_title">אישור פעולות</string>
   <string name="global_settings_confirm_actions_summary">הצג דו שיח בכל פעם שאתה מבצע את פעולות הנבחרות</string>
-  <string name="global_settings_confirm_action_delete">מחק (צפה בהודעה בלבד)</string>
   <string name="global_settings_confirm_action_spam">דואר זבל</string>
   <string name="quiet_time">שעות שקט</string>
   <string name="quiet_time_description">השבת צלצול, זמזום והבהוב בלילה</string>
@@ -332,9 +328,6 @@
   <string name="account_setup_options_mail_display_count_all">כל ההודעות</string>
   <string name="move_copy_cannot_copy_unsynced_message">לא ניתן להעתיק או להעביר הודעה שלא מסונכרנת עם השרת</string>
   <string name="account_setup_failed_dlg_title">ההגדרה לא הסתיימה</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">שם משתמש או סיסמה שגויה.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">לא ניתן להתחבר לשרת באופן בטוח.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">לא יכול להתחבר לשרת.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">ערוך פרטים</string>
   <string name="account_setup_failed_dlg_continue_action">המשך</string>
   <string name="account_settings_push_advanced_title">מתקדם</string>
@@ -449,7 +442,7 @@
   <string name="account_settings_composition_label">הרכב ברירת המחדל</string>
   <string name="account_settings_composition_summary">הגדר את ברירת המחדל שלך מ, עותק מוסתר וחתימה</string>
   <string name="account_settings_identities_label">ניהול זהויות</string>
-  <string name="account_settings_identities_summary">"הגדרה חלופית \' מ \ \'כתובות וחתימות "</string>
+  <string name="account_settings_identities_summary">הגדרה חלופית \' מ  \'כתובות וחתימות </string>
   <string name="manage_identities_title">נהל זהויות</string>
   <string name="manage_identities_context_menu_title">נהל זהות</string>
   <string name="edit_identity_title">ערוך זהות</string>
@@ -475,8 +468,8 @@
   <string name="default_identity_description">הזהות הראשונית</string>
   <string name="choose_identity_title">בחר זהות</string>
   <string name="send_as">שלח כ</string>
-  <string name="no_removable_identity">"לא ניתן להסיר את הזהות היחידה שלך"</string>
-  <string name="identity_has_no_email">"אתה לא יכול להשתמש בזהות ללא כתובת דואר אלקטרוני"</string>
+  <string name="no_removable_identity">לא ניתן להסיר את הזהות היחידה שלך</string>
+  <string name="identity_has_no_email">אתה לא יכול להשתמש בזהות ללא כתובת דואר אלקטרוני</string>
   <string name="sort_earliest_first">הודעות קודמות ראשונות</string>
   <string name="sort_latest_first">הודעות אחרונות ראשונות</string>
   <string name="sort_subject_alpha">נושא אלפביתי</string>
@@ -501,29 +494,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">תעודה לא מזוהה</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">קבל מפתח</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">דחה מפתח</string>
-  <string name="message_list_help_key"><!--NEW: V, Z untranslated-->Del (or D) - מחק
-\nR - השב
-\nA - השב לכולם
-\nC - לחבר
-\nF - קדימה
-\nM - העבר
-\nV - Archive
-\nY - העתק
-\nZ - Mark (Un)read
-\nG - כוכב
-\nO - סוג מיון
-\nI - סדר מיון
-\nQ - חזור לתיקיות
-\nS - בחר / בטל בחירה
-\nJ, P - הודעה קודמת
-\nK, N - הודעה הבאה
-  </string>
-  <string name="folder_list_help_key"><!--NEW: Note: only partly translated-->1 - Display only 1st Class folders
- \n2 - Display 1st and 2nd Class folders
- \n3 - Display all except 2nd Class folders
- \n4 - הצג את כל התיקיות
- \nQ - חזור לחשבונות
- \nS - ערוך הגדרות חשבון</string>
   <string name="folder_list_display_mode_label">תיקיות</string>
   <string name="folder_list_display_mode_all">הצג את כל התיקיות</string>
   <string name="account_settings_signature__location_label">מיקום חתימה</string>
@@ -613,7 +583,7 @@
   <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
   <string name="message_compose_buggy_gallery">סמן \"הגדרות\" -&gt; \"השתמש בעקיפת באג הגלריה\" כדי שתוכל לצרף תמונות או קטעי וידאו לגלריית 3D.</string>
   <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">השתמש ב \ "הוסף קובץ מצורף (תמונה) \" או \ "הוסף קובץ מצורף (וידאו) \" כדי לצרף תמונות או קטעי וידאו באמצעות גלריית 3D.</string>
+  <string name="message_compose_use_workaround">השתמש ב \"הוסף קובץ מצורף (תמונה) \" או \"הוסף קובץ מצורף (וידאו) \" כדי לצרף תמונות או קטעי וידאו באמצעות גלריית 3D.</string>
   <string name="miscellaneous_preferences">שונות</string>
   <string name="misc_preferences_attachment_title">השתמש בעקיפת באג הגלריה</string>
   <string name="misc_preferences_attachment_description">הצג כפתורים כדי להוסיף קבצי תמונה / וידאו (כדי לעקוף את באג גלריית 3D)</string>
@@ -632,12 +602,6 @@
   <string name="select_text_now">בחר טקסט כדי להעתיק.</string>
   <string name="dialog_confirm_delete_title">אשר מחיקה</string>
   <string name="dialog_confirm_delete_message">אתה בטוח שאתה רוצה למחוק את ההודעה הזאת?</string>
-  <!--NEW:
-  <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">Do you really want to delete this message?</item>
-    <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
-  </plurals>
--->
   <string name="dialog_confirm_delete_confirm_button">מחק</string>
   <string name="dialog_confirm_delete_cancel_button">אל תמחק!</string>
   <string name="dialog_confirm_spam_title">אשר העברה לתיקיית דואר זבל</string>
@@ -682,9 +646,6 @@
     <item quantity="one">סיסמת שרת</item>
     <item quantity="other">סיסמת שרת</item>
   </plurals>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="other">מגדיר סיסמא…</item>
-  </plurals>
   <string name="activate_account_action">הפעל</string>
   <string name="account_unavailable">החשבון \"<xliff:g id="account">%s</xliff:g>\" לא זמין; בדוק אחסון</string>
   <string name="settings_attachment_default_path">שמור קובץ מצורף ל…</string>
@@ -694,4 +655,5 @@
   <string name="manage_accounts_move_down_action">העבר למטה</string>
   <string name="manage_accounts_moving_message">מעביר חשבון…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

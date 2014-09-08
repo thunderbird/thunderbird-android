@@ -38,15 +38,15 @@ K-9:n parannettuja ominaisuuksia ovat mm.:
   <li>…ja paljon muuta</li>
 </ul>
 <p>
-K-9 ei valitettavasti sisällä tukea yleisimmille ilmaisille web-sähköposteille (esim. hotmail). Lisäksi Microsoft Exchange -toimivuudessa on
-ongelmia, kuten monissa muissakin sähköpostiasiakasohjelmissa.
+K-9 ei valitettavasti tue suurinta osaa ilmaisista Hotmail-tileistä. Lisäksi Microsoft Exchange -toimivuudessa on
+ongelmia, kuten useissa muissakin sähköpostiohjelmissa.
 </p><p>
 Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nLähetetty Android-laitteesta K-9 Mail -ohjelmalla</string>
+  <string name="default_signature">-- \nLähetetty Android-laitteestani K-9 Maililla. Pahoittelut vähäsanaisuudestani.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta.</string>
   <string name="account_recreate_dlg_instructions_fmt">Kaikki tilin \"<xliff:g id="account">%s</xliff:g>\" paikalliset tiedot poistetaan, mutta tilin asetukset säilyvät.</string>
@@ -268,10 +268,12 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="global_settings_messageview_show_next_summary">Näytä viestin poiston jälkeen oletusarvoisesti seuraava viesti</string>
   <string name="global_settings_confirm_actions_title">Vahvista toiminnot</string>
   <string name="global_settings_confirm_actions_summary">Näytä valintaikkuna valitun toiminnon suorittamisesta</string>
-  <string name="global_settings_confirm_action_delete">Poista (viestinäkymässä)</string>
+  <string name="global_settings_confirm_action_delete">Poista</string>
   <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (viestinäkymässä)</string>
   <string name="global_settings_confirm_action_spam">Roskaposti</string>
   <string name="global_settings_confirm_action_delete_notif">Poista (ilmoituksessa)</string>
+  <string name="global_settings_privacy_hide_useragent">Poista K-9-käyttötietue sähköpostin otsikoista</string>
+  <string name="global_settings_privacy_hide_timezone">Käytä UTC:tä aikavyöhykkeenä sähköpostin otsikoissa</string>
   <string name="global_settings_notification_hide_subject_title">Piilota aihe ilmoituksissa</string>
   <string name="global_settings_notification_hide_subject_never">Ei koskaan</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kun laite on lukittu</string>
@@ -288,6 +290,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_basics_title">Lisää uusi tili</string>
   <string name="account_setup_basics_email_hint">Sähköpostiosoite</string>
   <string name="account_setup_basics_password_hint">Salasana</string>
+  <string name="account_setup_basics_show_password">Näytä salasana</string>
   <string name="account_setup_basics_manual_setup_action">Määritä asetukset käsin</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Haetaan tilin tietoja\u2026</string>
@@ -307,9 +310,11 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_auth_type_normal_password">Tavallinen salasana</string>
   <string name="account_setup_auth_type_insecure_password">Salasana, välitetään turvattomasti</string>
   <string name="account_setup_auth_type_encrypted_password">Salattu salasana</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Asiakasvarmenne</string>
   <string name="account_setup_incoming_title">Saapuvan postin palvelimen asetukset</string>
   <string name="account_setup_incoming_username_label">Käyttäjätunnus</string>
   <string name="account_setup_incoming_password_label">Salasana</string>
+  <string name="account_setup_incoming_client_certificate_label">Asiakasvarmenne</string>
   <string name="account_setup_incoming_pop_server_label">POP3-palvelin</string>
   <string name="account_setup_incoming_imap_server_label">IMAP-palvelin</string>
   <string name="account_setup_incoming_webdav_server_label">Exchange (WebDAV) -palvelin</string>
@@ -319,6 +324,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_incoming_security_none_label">Ei mitään</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei ole kelvollinen asetuksen \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" kanssa</string>
   <string name="account_setup_incoming_delete_policy_label">Kun viesti poistetaan</string>
   <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Poista palvelimelta</string>
@@ -358,6 +364,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_outgoing_username_label">Käyttäjätunnus</string>
   <string name="account_setup_outgoing_password_label">Salasana</string>
   <string name="account_setup_outgoing_authentication_label">Todennustapa</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei ole kelvollinen asetuksen \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" kanssa</string>
   <string name="account_setup_bad_uri">Virheellinen asetus: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Tilin asetukset</string>
   <string name="compact_action">Tiivistä</string>
@@ -405,12 +412,9 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_options_mail_display_count_all">Kaikki viestit</string>
   <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää, koska sitä ei ole synkronoitu palvelimelle</string>
   <string name="account_setup_failed_dlg_title">Asennus ei onnistunut</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana on väärin.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Turvallinen yhteys palvelimeen ei onnistu.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.
-(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana väärin.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Palvelin esitti virheellisen SSL-varmenteen. Joskus tämä johtuu palvelimen vääristä asetuksista. Toisinaan syynä on se, että joku koettaa hyökätä sinua tai sähköpostipalvelinta vastaan. Jos et ole varma mistä on kyse, napsauta Hylkää ja ole yhteydessä sähköpostipalvelinta hallinoivaan tahoon.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Muokkaa tietoja</string>
   <string name="account_setup_failed_dlg_continue_action">Jatka</string>
   <string name="account_settings_push_advanced_title">Lisäasetukset</string>
@@ -418,6 +422,12 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_settings_default_label">Oletustili</string>
   <string name="account_settings_default_summary">Lähetä postit oletusarvoisesti tältä tililtä</string>
   <string name="account_settings_notify_label">Saapuneiden viestien ilmoitukset</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Ilmoitukset kansioista</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Kaikki</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Vain 1. luokan kansiot</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Ei mitään</string>
   <string name="account_settings_notify_sync_label">Synkronointi-ilmoitukset</string>
   <string name="account_settings_email_label">Sähköpostiosoite</string>
   <string name="account_settings_notify_summary">Näytä tilapalkissa ilmoitus uusista viesteistä</string>
@@ -539,6 +549,11 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="folder_settings_folder_push_mode_first_class">1. Luokka</string>
   <string name="folder_settings_folder_push_mode_second_class">2. Luokka</string>
   <string name="folder_settings_folder_push_mode_inherited">Sama kuin synkronointiluokka</string>
+  <string name="folder_settings_folder_notify_mode_label">Kansion ilmoitusluokka</string>
+  <string name="folder_settings_folder_notify_mode_normal">Ei mitään</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1. luokka</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2. luokka</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Sama kuin push-luokka</string>
   <string name="account_settings_incoming_label">Saapuvan postin palvelin</string>
   <string name="account_settings_incoming_summary">Määritä saapuvan postin palvelin</string>
   <string name="account_settings_outgoing_label">Lähtevän postin palvelin</string>
@@ -620,7 +635,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton varmenne</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
-  <string name="message_list_help_key">Del (tai D) - Poista\nR - Vastaa\nA - Vastaa kaikille\nC - Kirjoita\nF - Välitä\nM - Siirrä\nV - Arkistoi\nY - Kopioi\nZ - Merkitse lukemattomaksi/luetuksi\nG - Tähti\nO - Lajittelutyyppi\nI - Lajittelujärjestys\nQ - Palaa kansioihin\nS - Valitse/poista valinta\nJ tai P - Edellinen Viesti\nK tai N - Seuraava Viesti</string>
+  <string name="message_list_help_key">Del (tai D) - Poista\nR - Vastaa\nA - Vastaa kaikille\nC - Kirjoita\nF - Välitä\nM - Siirrä\nV - Arkistoi\nY - Kopioi\nZ - Merkitse luetuksi/lukemattomaksi\nG - Merkitse tähdellä\nO - Lajittelun tyyppi\nI - Lajittelujärjestys\nQ - Palaa kansioihin\nS - Valitse/poista valinta\nJ tai P - Edellinen viesti\nK tai N - Seuraava viesti</string>
   <string name="folder_list_help_key">1 - Näytä vain 1. luokan kansiot\n2 - Näytä 1. ja 2. luokan kansiot\n3 - Näytä kaikki paitsi 2. luokan kansiot\n4 - Näytä kaikki kansiot\nQ - Palaa tileihin\nS - Muokkaa tilin asetuksia</string>
   <string name="folder_list_filter_hint">kansionimi sisältää</string>
   <string name="folder_list_display_mode_label">Kansiot</string>
@@ -893,6 +908,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="fetching_attachment_dialog_title_send">Lähetetään viestiä</string>
   <string name="fetching_attachment_dialog_title_save">Tallennetaan luonnosta</string>
   <string name="fetching_attachment_dialog_message">Noudetaan liitettä…</string>
+  <string name="auth_external_error">Autentikointi ei onnistu.  Palvelin ei ilmoita SASL EXTERNAL -kelpoisuudesta.  Tämä saattaa johtua vanhentuneesta asiakasvarmenteesta, tuntemattomasta varmentajasta tai jostakin muusta asetusongelmasta.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">Puretaan salausta/varmennetaan…</string>
   <string name="openpgp_successful_decryption">Salauksen purku onnistui</string>
@@ -907,4 +923,11 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="openpgp_get_key">Etsi puuttuva avain</string>
   <string name="openpgp_error">OpenPGP-virhe:</string>
   <string name="openpgp_user_id">Käyttäjätunniste</string>
+  <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Käytä asiakasvarmennetta</string>
+  <string name="client_certificate_spinner_empty">Ei asiakasvarmennetta</string>
+  <string name="client_certificate_spinner_delete">Poista asiakasvarmenteen valinta</string>
+  <string name="client_certificate_retrieval_failure">Asiakasvarmenteen noutaminen epäonnistui aliakselle \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_advanced_options">Lisäasetukset</string>
+  <string name="client_certificate_expired">Asiakasvarmenne \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" on vanhentunut tai ei ole vielä voimassa (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

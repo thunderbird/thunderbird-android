@@ -41,11 +41,10 @@ Ezaugarri nagusienak:
 Mesedez kontutan hartu K-9 ezin dituela Hotmail kontu gehienak erabili, eta eposta bezero asko bezala, arazoak dituela Microsoft Exchangerekin komunikatzean.
 </p><p>
 Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko 
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a> erabili.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a> erabili.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nK-9 Mail erabiliz nire Android gailutik bidalita. Mesedez, barkatu laburtasuna.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik ezabatuko da.</string>
   <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontuaren datu guztiak ezabatuko dira, Kontuaren ezarpenak mantenduko dira.</string>
@@ -266,7 +265,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_messageview_show_next_summary">Mezuak ezabatzerakoan defektuz hurrengo mezua ikusi</string>
   <string name="global_settings_confirm_actions_title">Baieztatzeko ekintzak</string>
   <string name="global_settings_confirm_actions_summary">Hautatutako ekintzak egiterakoan elkarrizketa koadroa ikusi</string>
-  <string name="global_settings_confirm_action_delete">Ezabatu (mezu ikuspegian)</string>
   <string name="global_settings_confirm_action_delete_starred">Izarduna ezabatu (mezu ikuspegian)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Ezabatu (Jakinarazpenetatik)</string>
@@ -395,13 +393,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_options_mail_display_count_all">mezu guztiak</string>
   <string name="move_copy_cannot_copy_unsynced_message">Zerbitzariarekin sinkronizatuta ez dauden mezuak ezin dira kopiatu edo mugitu</string>
   <string name="account_setup_failed_dlg_title">Konfigurazioak ezin izan du bukatu</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Erabiltzaile edo pasahitz okerra.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Zerbitzariak baliogabeko SSL ziurtagiria eman du. Batzutan zerbitzariaren konfigurazio oker bat da. Batzutan baten batek zure posta zerbitzaria erasotzen dagoela da. Ziur ez bazaude Baztertu sakatu eta eposta zerbitzaria kudeatzen dutenekin hitzegin.
-
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Ezin da zerbitzarira konektatu.
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Xehetasunak editatu</string>
   <string name="account_setup_failed_dlg_continue_action">Jarraitu</string>
   <string name="account_settings_push_advanced_title">Aurreratua</string>
@@ -611,8 +602,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ziurtagiri ezezaguna</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Gakoa onartu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Gakoa baztertu</string>
-  <string name="message_list_help_key">Del (edo D) - Ezabatu\nR - Erantzun\nA - Guztiei erantzun\nC - Idatzi\nF - Berbidali\nM - Mugitu\nV - Artxibatu\nY - Kopiatu\nZ - Irakurrita (edo ez) markatu\nG - Izarra\nO - Bilaketa mota\nI - Bilaketa ordena\nQ - Karpetetara itzuli\nS - Hautatu/desautatu\nJ edo P - Aurreko mezua\nK edo N - Hurrengo mezua</string>
-  <string name="folder_list_help_key">1 - 1.go mailako karpetak bakarrik ikusi\n2 - 1.go eta 2. mailako karpetak ikusi\n3 - 2. mailakoak ez diren karpetak ikusi\n4 - Karpeta guztiak ikusi\nQ - Kontuetara itzuli\nS - Kontu ezarpenak aldatu</string>
   <string name="folder_list_filter_hint">karpetaren izenak dauka</string>
   <string name="folder_list_display_mode_label">Karpetak ikusi…</string>
   <string name="folder_list_display_mode_all">Karpeta guztiak</string>
@@ -883,4 +872,5 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="fetching_attachment_dialog_title_save">Zirriborroa gorde</string>
   <string name="fetching_attachment_dialog_message">Eranskina eskuratzen…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

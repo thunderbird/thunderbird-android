@@ -40,11 +40,10 @@
 Το K-9 δεν υποστηρίζει τους περισσότερους δωρεάν λογαριασμούς Hotmail και, όπως οι περισσότεροι email clients, έχει θεματάκια όταν μιλάει με το Microsoft Exchange.
 </p><p>
 Αναφέρετε προβλήματα, προτείνετε νέα χαρακτηριστικά και υποβάλετε ερωτήματα στο
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nΑποστολή με K-9 Mail από το Android κινητό μου. Συγχωρήστε τη συντομία.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
@@ -209,6 +208,7 @@
   <string name="message_compose_quote_header_to">Προς:</string>
   <string name="message_compose_quote_header_cc">Κοιν:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> έγραψε:</string>
+  <string name="message_compose_reply_header_fmt_with_date">Στις <xliff:g id="sent_date">%1$s</xliff:g>, ο/η <xliff:g id="sender">%2$s</xliff:g> έγραψε:</string>
   <string name="message_compose_error_no_recipients">Πρέπει να συμπεριλάβετε τουλάχιστον έναν παραλήπτη.</string>
   <string name="error_contact_address_not_found">Δεν βρέθηκαν διευθύνσεις ηλεκτρονικού ταχυδρομείου.</string>
   <string name="message_compose_attachments_skipped_toast">Μερικά συνημμένα δεν μπορούν να προωθηθούν γιατί δεν έχουν κατεβεί.</string>
@@ -266,7 +266,7 @@
   <string name="global_settings_messageview_show_next_summary">Προβολή επόμενου μηνύματος μετά τη διαγραφή ενός μηνύματος</string>
   <string name="global_settings_confirm_actions_title">Επιβεβαίωση ενεργειών</string>
   <string name="global_settings_confirm_actions_summary">Προβολή διαλόγου όποτε εκτελούνται επιλεγμένες ενέργειες</string>
-  <string name="global_settings_confirm_action_delete">Διαγραφή (προβολή μηνύματος μόνον)</string>
+  <string name="global_settings_confirm_action_delete">Διαγραφή</string>
   <string name="global_settings_confirm_action_delete_starred">Διαγραφή με αστέρι (προβολή μηνύματος μόνον)</string>
   <string name="global_settings_confirm_action_spam">Σκουπίδια</string>
   <string name="global_settings_confirm_action_delete_notif">Διαγραφή (από ειδιοποίηση)</string>
@@ -302,6 +302,9 @@
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+  <string name="account_setup_auth_type_normal_password">Απλό συνθηματικό</string>
+  <string name="account_setup_auth_type_insecure_password">Συνθηματικό, μεταβιβασμένο χωρίς ασφάλεια</string>
+  <string name="account_setup_auth_type_encrypted_password">Κρυπτογραφημένο συνθηματικό</string>
   <string name="account_setup_incoming_title">Ρυθμίσεις εισερχόμενης αλληλογραφίας</string>
   <string name="account_setup_incoming_username_label">Όνομα χρήστη</string>
   <string name="account_setup_incoming_password_label">Συνθηματικό</string>
@@ -312,6 +315,8 @@
   <string name="account_setup_incoming_security_label">Ασφάλεια</string>
   <string name="account_setup_incoming_auth_type_label">Πιστοποίηση</string>
   <string name="account_setup_incoming_security_none_label">Καμιά</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Κατά τη διαγραφή μηνύματος</string>
   <string name="account_setup_incoming_delete_policy_never_label">Να μη διαγράφεται στο server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Να διαγράφεται άμεσα στο server</string>
@@ -392,15 +397,12 @@
   <string name="account_setup_options_mail_display_count_250">250 μηνύματα</string>
   <string name="account_setup_options_mail_display_count_500">500 μηνύματα</string>
   <string name="account_setup_options_mail_display_count_1000">1000 μηνύματα</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 μηνύματα</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 μηνύματα</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 μηνύματα</string>
   <string name="account_setup_options_mail_display_count_all">Όλα τα μηνύματα</string>
   <string name="move_copy_cannot_copy_unsynced_message">Αδύνατη η αντιγραφή ή μετακίνηση μηνύματος που δεν έχει συγχρονιστεί με τον εξυπηρέτη</string>
   <string name="account_setup_failed_dlg_title">Οι ρυθμίσεις δεν μπόρεσαν να ολοκληρωθούν.</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Εσφαλμένο όνομα χρήστη ή συνθηματικό
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Αδύνατη η ασφαλής σύνδεση με τον εξυπηρέτη
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Αδύνατη η σύνδεση με τον εξυπηρέτη
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Διόρθωση λεπτομερειών</string>
   <string name="account_setup_failed_dlg_continue_action">Συνέχεια</string>
   <string name="account_settings_push_advanced_title">Προχωρημένα</string>
@@ -610,8 +612,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Άγνωστο πιστοποιητικό</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Αποδοχή κλειδιού</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Απόρριψη κλειδιού</string>
-  <string name="message_list_help_key">Del (ή D) - Διαγραφή\nR - Απάντηση\nA - Απάντηση σε όλους\nC - Σύνθεση\nF - Προώθηση\nM - Μετακίνηση\nV - Αρχειοθέτηση\nY - Αντιγραφή\nZ - (Μη) αναγνωσμένο\nG - Αστέρι\nO - Ταξινόμηση\nI - Σειρά ταξινόμησης\nQ - Επιστροφή στους φακέλους\nS - Επιλογή/Αποεπιλογή\nJ ή P - Προηγούμενο μήνυμα\nK ή N - Επόμενο μήνυμα</string>
-  <string name="folder_list_help_key">1 - Προβολή φακέλων πρώτου επιπέδου\n2 - Προβολή φακέλων 1ου και 2ου επιπέδου\n3 - Προβολή όλων εκτός από 2ου επιπέδου\n4 - Προβολή όλων\nQ - Επιστροφή στους λογαριασμούς\nS - Διόρθωση ρυθμίσεων λογαριασμού</string>
   <string name="folder_list_filter_hint">το όνομα του φακέλου περιέχει</string>
   <string name="folder_list_display_mode_label">Φάκελοι</string>
   <string name="folder_list_display_mode_all">Προβολή όλων</string>
@@ -704,6 +704,8 @@
   <string name="font_size_message_view_subject">Θέμα</string>
   <string name="font_size_message_view_date">Ώρα και Ημερομηνία</string>
   <string name="font_size_message_view_content">Σώμα μηνύματος</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Σύνθεση μηνύματος</string>
   <string name="font_size_message_compose_input">Κείμενο πεδίων εισόδου</string>
   <string name="font_size_default">Εξ ορισμού</string>
@@ -882,4 +884,18 @@
   <string name="fetching_attachment_dialog_title_save">Αποθήκευση πρόχειρου</string>
   <string name="fetching_attachment_dialog_message">Ανάκληση συνημμένων…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decrypting_verifying">Αποκρυπτογράφηση/Επαλήθευση…</string>
+  <string name="openpgp_successful_decryption">Επιτυχής αποκρυπτογράφηση</string>
+  <string name="openpgp_signature_valid_certified">Έγκυρη υπογραφή (πιστοποιημένη)</string>
+  <string name="openpgp_signature_valid_uncertified">Έγκυρη υπογραφή αλλά μη πιστοποιημένη</string>
+  <string name="openpgp_signature_unknown">Άγνωστη υπογραφή</string>
+  <string name="openpgp_signature_invalid">Άκυρη υπογραφή</string>
+  <string name="openpgp_signature_unknown_text">Ελλειπές δημόσιο κλειδί για την υπογραφή αυτή</string>
+  <string name="openpgp_successful_decryption_valid_signature_certified">Επιτυχής αποκρυπτογράφηση και έγκυρη υπογραφή (πιστοποιημένη)</string>
+  <string name="openpgp_successful_decryption_valid_signature_uncertified">Επιτυχής αποκρυπτογράφηση και έγκυρη υπογραφή αλλά χωρίς πιστοποίηση</string>
+  <string name="openpgp_successful_decryption_unknown_signature">Επιτυχής αποκρυπτογράφηση αλλά απόν δημόσιο κλειδί</string>
+  <string name="openpgp_get_key">Εύρεση κλειδιού που λείπει</string>
+  <string name="openpgp_error">Σφάλμα OpenPGP:</string>
+  <string name="openpgp_user_id">Ταυτότητα χρήστη</string>
+  <!--=== Client certificates specific ==================================================================-->
 </resources>

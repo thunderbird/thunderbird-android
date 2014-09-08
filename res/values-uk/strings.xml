@@ -41,11 +41,10 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
 Зауважимо, що K-9 не підтримує більшіть безкоштовних облікових записів hotmail та, як і інші поштові програми, має деякі дивацтва при роботі з Microsoft Exchange.
 </p><p>
 Будь ласка, надсилайте звіти про помилки, запити про розробку нових функцій та задавайте питання на
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nНадіслано з мого Android телефону програмою K-9 Mail. Будь ласка, вибачте за стислість.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Усі дані \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
@@ -265,7 +264,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="global_settings_messageview_show_next_summary">За замовчуванням показувати наступне повідомлення після вилучення</string>
   <string name="global_settings_confirm_actions_title">Підтвердження дій</string>
   <string name="global_settings_confirm_actions_summary">Показати діалогове вікно щоразу, коли ви виконуєте вибрані дії</string>
-  <string name="global_settings_confirm_action_delete">Вилучити (лише перегляд повідомлення)</string>
   <string name="global_settings_confirm_action_delete_starred">Вилучити позначені зірочкою (лише перегляд повідомлень)</string>
   <string name="global_settings_confirm_action_spam">Спам</string>
   <string name="global_settings_confirm_action_delete_notif">Видалити (з сповіщення)</string>
@@ -394,12 +392,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_setup_options_mail_display_count_all">усі повідомлення</string>
   <string name="move_copy_cannot_copy_unsynced_message">Не можна копіювати чи переміщувати повідомлення, яке не синхронізоване з сервером</string>
   <string name="account_setup_failed_dlg_title">Налаштування не завершено</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Ім’я користувача або пароль неправильні.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Не можна безпечно з’єднатися з сервером.
-(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Не можна з’єднатися з сервером.
-(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Змінити дані</string>
   <string name="account_setup_failed_dlg_continue_action">Продовжити</string>
   <string name="account_settings_push_advanced_title">Додатково</string>
@@ -609,8 +601,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_setup_failed_dlg_invalid_certificate_title">Сертифікат невизнано</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Прийняти сертифікат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Відхилити сертифікат</string>
-  <string name="message_list_help_key">Del (або D) - Видалити\nR - Відповісти\nA - Відповісти усім\nC - Написати\nF - Переслати\nM - Перемістити\nV - Archive\nY - Копіювати\nZ - Mark (Un)read\nG - Зірочка\nO - Тип упорядкування\nI - Порядок упорядкування\nQ - Повернутися до папок\nS - Виділити/зняти виділення\nJ або P - Попереднє Повідомлення\nK або N - Наступне повідомлення</string>
-  <string name="folder_list_help_key">1 - Відображати тільки папки 1-го класу\n2 - Відображати папки 1-го  і 2-го класу\n3 - Відображати усе, крім папок 2-го класу\n4 - Відображати усі папки\nQ - Повернутися до облікових записів\nS - Редагувати налаштування облікового запису</string>
   <string name="folder_list_filter_hint">ім’я папки містить</string>
   <string name="folder_list_display_mode_label">Папки</string>
   <string name="folder_list_display_mode_all">Відображати усі папки</string>
@@ -868,4 +858,5 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="fetching_attachment_dialog_title_save">Збереження чернетки</string>
   <string name="fetching_attachment_dialog_message">Отримання вкладення…</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <!--=== Client certificates specific ==================================================================-->
 </resources>
