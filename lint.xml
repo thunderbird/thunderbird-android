@@ -4,12 +4,10 @@
 
     <!-- Transifex and Lint disagree on what quantities are necessary -->
     <issue id="UnusedQuantity" severity="warning">
-        <ignore path="res/values-tr/strings.xml" />
-        <ignore path="res/values-hu/strings.xml" />
+        <ignore path="res/values-*/strings.xml" />
     </issue>
     <issue id="MissingQuantity" severity="warning">
-        <ignore path="res/values-ru/strings.xml" />
-        <ignore path="res/values-uk/strings.xml" />
+        <ignore path="res/values-*/strings.xml" />
     </issue>
 
     <!-- Remove this when we have separate Transifex resources for plugins -->
