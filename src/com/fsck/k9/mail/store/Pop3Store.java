@@ -12,7 +12,7 @@ import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.net.ssl.SslHelper;
+import com.fsck.k9.net.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLException;
 
@@ -314,7 +314,7 @@ public class Pop3Store extends Store {
             try {
                 SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
                 if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                    mSocket = SslHelper.createSslSocket(mHost, mPort, mClientCertificateAlias);
+                    mSocket = TrustedSocketFactory.createSocket(mHost, mPort, mClientCertificateAlias);
                 } else {
                     mSocket = new Socket();
                 }
@@ -336,7 +336,7 @@ public class Pop3Store extends Store {
                     if (mCapabilities.stls) {
                         executeSimpleCommand(STLS_COMMAND);
 
-                        mSocket = SslHelper.createStartTlsSocket(mSocket, mHost, mPort, true,
+                        mSocket = TrustedSocketFactory.createSocket(mSocket, mHost, mPort,
                                 mClientCertificateAlias);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
