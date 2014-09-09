@@ -128,8 +128,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="mark_as_unread_action">Marcar Non Lido</string>
   <string name="add_cc_bcc_action">Engadir Cc/Bcc</string>
   <string name="add_attachment_action">Engadir adxunto</string>
-  <string name="add_attachment_action_image">Engadir adxunto (Imaxe)</string>
-  <string name="add_attachment_action_video">Engadir adxunto (Vídeo)</string>
   <string name="empty_trash_action">Valeirar Papelera</string>
   <string name="expunge_action">Erradicar</string>
   <string name="clear_local_folder_action">Borrar mensaxes locais</string>
@@ -641,13 +639,7 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="font_size_medium">Mediana</string>
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Moi Grande</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Comprobar \"Configuración\" -&gt; \"Usar Galería\" para poder adxuntar imaxes e videos usando a Galería 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Usar \"Engadir adxunto (Imaxe)\" oo \"Engadir adxunto (Vídeo)\" para Engadir imaxes ou Vídeos con Galería 3D</string>
   <string name="miscellaneous_preferences">Varios</string>
-  <string name="misc_preferences_attachment_title">Usar galería</string>
-  <string name="misc_preferences_attachment_description">Amosar botóns para Engadir adxuntos de imaxe/vídeo</string>
   <!--APG related-->
   <string name="error_activity_not_found">Non existe aplicación para executar esta acción</string>
   <string name="error_apg_version_not_supported">Non se soporta esta versión de APG</string>

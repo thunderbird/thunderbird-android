@@ -348,12 +348,6 @@
         android:title="@string/miscellaneous_preferences"
         android:key="misc_preferences">
 
-        <CheckBoxPreference
-            android:persistent="false"
-            android:key="use_gallery_bug_workaround"
-            android:title="@string/misc_preferences_attachment_title"
-            android:summary="@string/misc_preferences_attachment_description" />
-
         <Preference
             android:persistent="false"
             android:title="@string/settings_attachment_default_path"

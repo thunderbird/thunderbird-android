@@ -107,8 +107,6 @@
   <string name="read_receipt_enabled">要求讀取回條</string>
   <string name="read_receipt_disabled">取消讀取回條</string>
   <string name="add_attachment_action">新增附件</string>
-  <string name="add_attachment_action_image">新增圖片附件</string>
-  <string name="add_attachment_action_video">新增影片附件</string>
   <string name="empty_trash_action">清空垃圾桶</string>
   <string name="expunge_action">刪除</string>
   <string name="clear_local_folder_action">清除本地郵件</string>
@@ -675,13 +673,7 @@
   <string name="font_size_medium">中等</string>
   <string name="font_size_large">大</string>
   <string name="font_size_larger">最大</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">選擇「設定」-&gt;「避免相簿發生錯誤」來啟用3D相簿模式新增附件或影片。</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">利用「新增附件（圖片）」或「新增附件（影片）」來使用3D相簿新增圖片或影片。</string>
   <string name="miscellaneous_preferences">偏好設定</string>
-  <string name="misc_preferences_attachment_title">避免相簿發生錯誤</string>
-  <string name="misc_preferences_attachment_description">顯示按鈕來新增圖片/影片為附件（以避免3D相簿發生錯誤）</string>
   <!--APG related-->
   <string name="error_activity_not_found">沒有找到可以用於此操作的程式。</string>
   <string name="error_apg_version_not_supported">尚未支援所安裝的APG版本。</string>

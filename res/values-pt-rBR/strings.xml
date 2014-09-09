@@ -135,8 +135,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="read_receipt_enabled">Confirmação de leitura será requisitada</string>
   <string name="read_receipt_disabled">Confirmação de leitura não será requisitada</string>
   <string name="add_attachment_action">Incluir anexo</string>
-  <string name="add_attachment_action_image">Incluir anexo (Imagem)</string>
-  <string name="add_attachment_action_video">Incluir anexo (Video)</string>
   <string name="empty_trash_action">Esvaziar Lixeira</string>
   <string name="expunge_action">Expurgar</string>
   <string name="clear_local_folder_action">Limpar mensagens locais</string>
@@ -714,13 +712,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="font_size_medium">Médio</string>
   <string name="font_size_large">Maior</string>
   <string name="font_size_larger">Grande</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Ativar em \"Configurações\" a opção \"Solução do bug da Galeria\" para poder anexar imagens ou vídeos utilizando a Galeria 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Usar \"Incluir anexo (Imagem)\" ou \"Incluir anexo (Video)\" para anexar imagens ou videos da Galeria 3D.</string>
   <string name="miscellaneous_preferences">Diversos</string>
-  <string name="misc_preferences_attachment_title">Solução do bug da Galeria</string>
-  <string name="misc_preferences_attachment_description">Mostrar botões para incluir anexos de imagem/video (para contornar problemas utilizando Gallery 3D)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Nenhum aplicativo adequado para esta ação foi encontrado.</string>
   <string name="error_apg_version_not_supported"> A versão da APG instalada não é suportada.</string>

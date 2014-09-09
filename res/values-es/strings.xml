@@ -136,8 +136,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="read_receipt_enabled">Se solicitará confirmación de lectura</string>
   <string name="read_receipt_disabled">No se solicitará confirmación de lectura</string>
   <string name="add_attachment_action">Añadir adjunto</string>
-  <string name="add_attachment_action_image">Añadir adjunto (imagen)</string>
-  <string name="add_attachment_action_video">Añadir adjunto (vídeo)</string>
   <string name="empty_trash_action">Vaciar Papelera</string>
   <string name="expunge_action">Purgar</string>
   <string name="clear_local_folder_action">Borrar mensajes locales</string>
@@ -715,13 +713,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="font_size_medium">Mediana</string>
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Muy Grande</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Comprobar \"Configuración\" -&gt; \"Usar Galería\" para poder adjuntar imágenes y vídeos utilizando la Galería 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Usar \"Añadir adjunto (Imagen)\" o \"Añadir adjunto (Vídeo)\" para Añadir imágenes o Vídeos con Galería 3D</string>
   <string name="miscellaneous_preferences">Varios</string>
-  <string name="misc_preferences_attachment_title">Usar galería</string>
-  <string name="misc_preferences_attachment_description">Mostrar botones para Añadir adjuntos de imagen/vídeo</string>
   <!--APG related-->
   <string name="error_activity_not_found">No existe aplicación para realizar esta acción.</string>
   <string name="error_apg_version_not_supported">No se admite esta versión de APG.</string>

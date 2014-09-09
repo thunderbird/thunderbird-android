@@ -135,8 +135,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="read_receipt_enabled">Включити запит повідомлень про прочитання</string>
   <string name="read_receipt_disabled">Вимкнути запит повідомлень про прочитання</string>
   <string name="add_attachment_action">Додати вкладення</string>
-  <string name="add_attachment_action_image">Додати вкладення (зображення)</string>
-  <string name="add_attachment_action_video">Додати вкладення (Відео)</string>
   <string name="empty_trash_action">Очистити Кошик</string>
   <string name="expunge_action">Витерти</string>
   <string name="clear_local_folder_action">Видалити локальні повідомлення</string>
@@ -702,13 +700,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="font_size_medium">Середній</string>
   <string name="font_size_large">Великий</string>
   <string name="font_size_larger">Найбільший</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Виберіть \"Налаштування\" -&gt; \"Використовувати обхід помилок Галереї\" для вкладень зображень та відео з допомогою Gallery 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Виберіть \"Додати вкладення (зображення)\" або \"Додати вкладення (відео)\" для вкладень зображень та відео з допомогою Gallery 3D.</string>
   <string name="miscellaneous_preferences">Різне</string>
-  <string name="misc_preferences_attachment_title">Використовувати обхід помилок Галереї</string>
-  <string name="misc_preferences_attachment_description">Показувати кнопки для додавання зображень та відео вкладень (щоб обійти проблему з Gallery 3D)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Відсутня програма для цієї дії.</string>
   <string name="error_apg_version_not_supported">Встановлена версія APG не підтримується.</string>

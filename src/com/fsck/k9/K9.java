@@ -16,9 +16,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Debug;
 import android.os.Environment;
@@ -263,9 +261,6 @@ public class K9 extends Application {
     private static boolean mWrapFolderNames = false;
     private static boolean mHideUserAgent = false;
     private static boolean mHideTimeZone = false;
-
-    private static boolean useGalleryBugWorkaround = false;
-    private static boolean galleryBuggy;
 
     private static SortType mSortType;
     private static HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
@@ -543,7 +538,6 @@ public class K9 extends Application {
         editor.putInt("messageViewTheme", messageViewTheme.ordinal());
         editor.putInt("messageComposeTheme", composerTheme.ordinal());
         editor.putBoolean("fixedMessageViewTheme", useFixedMessageTheme);
-        editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
         editor.putBoolean("confirmDelete", mConfirmDelete);
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
@@ -581,8 +575,6 @@ public class K9 extends Application {
 
         super.onCreate();
         app = this;
-
-        galleryBuggy = checkForBuggyGallery();
 
         sIsDebuggable = ((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
 
@@ -748,8 +740,6 @@ public class K9 extends Application {
         mWrapFolderNames = sprefs.getBoolean("wrapFolderNames", false);
         mHideUserAgent = sprefs.getBoolean("hideUserAgent", false);
         mHideTimeZone = sprefs.getBoolean("hideTimeZone", false);
-
-        useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
         mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
@@ -1185,18 +1175,6 @@ public class K9 extends Application {
         mHideSpecialAccounts = hideSpecialAccounts;
     }
 
-    public static boolean useGalleryBugWorkaround() {
-        return useGalleryBugWorkaround;
-    }
-
-    public static void setUseGalleryBugWorkaround(boolean useGalleryBugWorkaround) {
-        K9.useGalleryBugWorkaround = useGalleryBugWorkaround;
-    }
-
-    public static boolean isGalleryBuggy() {
-        return galleryBuggy;
-    }
-
     public static boolean confirmDelete() {
         return mConfirmDelete;
     }
@@ -1243,25 +1221,6 @@ public class K9 extends Application {
 
     public static void setNotificationQuickDeleteBehaviour(final NotificationQuickDelete mode) {
         sNotificationQuickDelete = mode;
-    }
-
-    /**
-     * Check if this system contains a buggy Gallery 3D package.
-     *
-     * We have to work around the fact that those Gallery versions won't show
-     * any images or videos when the pick intent is used with a MIME type other
-     * than image/* or video/*. See issue 1186.
-     *
-     * @return true, if a buggy Gallery 3D package was found. False, otherwise.
-     */
-    private boolean checkForBuggyGallery() {
-        try {
-            PackageInfo pi = getPackageManager().getPackageInfo("com.cooliris.media", 0);
-
-            return (pi.versionCode == 30682);
-        } catch (NameNotFoundException e) {
-            return false;
-        }
     }
 
     public static boolean wrapFolderNames() {

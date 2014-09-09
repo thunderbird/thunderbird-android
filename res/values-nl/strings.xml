@@ -136,8 +136,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="read_receipt_enabled">Lees rapport vragen</string>
   <string name="read_receipt_disabled">Geen lees rapport vragen</string>
   <string name="add_attachment_action">Voeg bijlage toe</string>
-  <string name="add_attachment_action_image">Voeg bijlage toe (Afbeelding)</string>
-  <string name="add_attachment_action_video">Voeg bijlage toe (Video)</string>
   <string name="empty_trash_action">Prullenbak legen</string>
   <string name="expunge_action">Wissen</string>
   <string name="clear_local_folder_action">Lokale berichten wissen</string>
@@ -713,13 +711,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="font_size_medium">Gemiddeld</string>
   <string name="font_size_large">Groot</string>
   <string name="font_size_larger">Groter</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Controleer \"Instellingen\" -&gt; \"Use Gallery bug work-around\" to be able to attach images or videos using Gallery 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Gebruik \"Bijlage toevoegen (Afbeelding)\" of \"Bijlage toevoegen (Video)\" to attach images or videos with Gallery 3D.</string>
   <string name="miscellaneous_preferences">Diversen</string>
-  <string name="misc_preferences_attachment_title">Gebruik Gallery bug work-around</string>
-  <string name="misc_preferences_attachment_description">Laat knoppen zien om afbeelding/video bijlage toe te voegen (to work around a Gallery 3D bug)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Geen geschikte applicatie gevonden voor deze aktie.</string>
   <string name="error_apg_version_not_supported">De geïnstalleerde APG versie wordt niet ondersteund.</string>

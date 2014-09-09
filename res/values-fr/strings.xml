@@ -135,8 +135,6 @@ Veuillez envoyer les rapports de bogues, suggérer de nouvelles fonctions et pos
   <string name="read_receipt_enabled">Un accusé de lecture sera demandé</string>
   <string name="read_receipt_disabled">Un accusé de lecture ne sera pas demandé</string>
   <string name="add_attachment_action">Ajouter une pièce jointe</string>
-  <string name="add_attachment_action_image">Joindre une image</string>
-  <string name="add_attachment_action_video">Joindre une vidéo</string>
   <string name="empty_trash_action">Vider la corbeille</string>
   <string name="expunge_action">Supprimer</string>
   <string name="clear_local_folder_action">Effacer les messages locaux</string>
@@ -739,13 +737,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="font_size_medium">Moyen</string>
   <string name="font_size_large">Grand</string>
   <string name="font_size_larger">Plus grand</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Cochez «\u00A0Paramètres\u00A0» &gt; «\u00A0Utiliser le contournement du bogue de la Galerie\u00A0» pour être capable d\'attacher des images ou des vidéos en utilisant Galerie 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Utiliser «\u00A0Joindre une image\u00A0» ou «\u00A0Joindre une vidéo\u00A0» pour joindre des images ou vidéos avec Galerie 3D</string>
   <string name="miscellaneous_preferences">Divers</string>
-  <string name="misc_preferences_attachment_title">Utiliser le contournement du bogue de la Galerie</string>
-  <string name="misc_preferences_attachment_description">Afficher les boutons pour joindre des images ou des vidéos (pour contourner le bogue de la Galerie 3D)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Aucune application adéquate n\'a été trouvée pour cette action.</string>
   <string name="error_apg_version_not_supported">La version installée d\'APG n\'est pas prise en charge.</string>
