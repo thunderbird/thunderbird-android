@@ -8,70 +8,62 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
-    <release version="4.905" versioncode="21008">
-        <change>Dropped support for Android versions older than 4.0.3</change>
+    <release version="5.000 RC1" versioncode="21901" >
+        <change>K-9 Mail now requires at least Android 4.0.3</change>
+        <change>Added support for OpenPGP API v3 (get OpenKeychain)</change>
         <change>Added ability to use client certificates for authentication</change>
         <change>Enabled support for TLSv1.1 and TLSv1.2</change>
         <change>Added SSL/TLS session caching</change>
-        <change>Finer grained control for notifications</change>
-        <change>Added support for delete confirmations in the message list</change>
-        <change>Added the option to show the password when setting up new accounts</change>
-        <change>Added privacy setting to omit the User-Agent header</change>
-        <change>Added privacy setting to use UTC as timezone in mail headers</change>
-        <change>Added auto configuration settings for various providers</change>
-        <change>Fixed HELO/EHLO with IPv6 address literals</change>
-        <change>Various bug fixes</change>
-        <change>Added translations: Latvian, Estonian, Norwegian Bokmål, Galician (Spain)</change>
-    </release>
-    <release version="4.904" versioncode="21007" >
-        <change>Added support for OpenPGP API v3</change>
-        <change>Fixed problems with IMAP login</change>
-        <change>Updated translations</change>
-        <change>Fixed multiple bugs</change>
-    </release>
-    <release version="4.903" versioncode="21006" >
         <change>Offer encrypted connection by default when manually setting up an account</change>
         <change>Simplified options for authentication and security</change>
         <change>Removed auto-configuration settings for all providers that didn't support encrypted connections</change>
-        <change>Improved compatibility with IMAP (proxy) servers</change>
-        <change>More small fixes and improvements</change>
-    </release>
-    <release version="4.902" versioncode="21005" >
-        <change>Avoid adding the same recipient twice when using "reply to all"</change>
-        <change>Fixed a bug with bitcoin URIs</change>
-        <change>Added mailbox.org to the list of providers</change>
-    </release>
-    <release version="4.901" versioncode="21004" >
+        <change>Added privacy setting to omit the User-Agent header</change>
+        <change>Added privacy setting to use UTC as timezone in mail headers</change>
+        <change>Finer grained control for notifications</change>
+        <change>Added support for delete confirmations in the message list</change>
+        <change>Added the option to show the password when setting up new accounts</change>
         <change>Added a slider to allow picking a font size for the message body (40% to 250%) in settings</change>
         <change>Added support for KitKat's Storage Access Framework that allows you to attach multiple files at once</change>
-        <change>Added support for apps that don't know how to properly use Android's 'share' functionality</change>
-        <change>Fixed a bug with IMAP Push that could cause excessive battery drain</change>
-        <change>Another attempt at working around the display bug on Asus Transformer devices</change>
-        <change>Don't lose formatting of the quoted message when changing orientation while replying</change>
-        <change>Disabled pull-to-refresh in search views where remote search isn't allowed</change>
-        <change>More bug fixes</change>
-        <change>Updated Japanese translation</change>
+        <change>Multiple bug fixes</change>
+        <change>Updated translations</change>
     </release>
-    <release version="4.900" versioncode="21003" >
-        <change>Fix issue 6064: Inline images don't display on KitKat</change>
-        <change>Update list of German Internet providers</change>
-        <change>Add provider Outlook.sk and Azet.sk to provider list</change>
-        <change>Update Brazilian Portuguese, Czech, Danish, Dutch, French, Greek, Hungarian, Polish, Russian, Slovak, Spanish, and Ukrainian translations</change>
-        <change>Fix POP3 STLS command</change>
-        <change>Use a locale-specific date in the header of a quoted message</change>
-        <change>Account preferences clean-up</change>
-        <change>Make IMAP autoconfig recognize "Draft" as drafts folder</change>
-        <change>Add posteo.de to providers.xml</change>
-        <change>Return proper error message when certificate couldn't be verified against global key store</change>
-        <change>Add support for bitcoin URIs</change>
-        <change>Change the way we harden SSL/TLS sockets Blacklist a couple of weak ciphers, bring known ones in a defined order and sort unknown ciphers at the end. Also re-enable SSLv3 because it's still used a lot.</change>
-        <change>Implement pruning of old certificates from LocalKeyStore. Certificates are deleted whenever server settings are changed or an account is deleted.</change>
-        <change>Fix inadequate certificate validation. Proper host name validation was not being performed for certificates kept in the local keystore.  If an attacker could convince a user to accept and store an attacker's certificate, then that certificate could be used for MITM attacks, giving the attacker access to all connections to all servers in all accounts in K-9.</change>
-        <change>Users can now use different certificates for different servers on the same host (listening to different ports).</change>
-        <change>The above changes mean that users might have to re-accept certificates that they had previously accepted and are still using (but only if the certificate's Subject doesn't match the host that they are connecting to).</change>
-        <change>Make sure to return different colors for senders with different name, but the same mail address (e.g. mails sent by certain issue tracking systems).</change>
-        <change>With the new webview scrollview combo we've got loadinoverviewmode seems to behave better.</change>
-        <change>Fix file selection for import Using FLAG_ACTIVITY_NO_HISTORY will cause the file selection to fail when KitKat's "Open from" activity opens a third-party activity.</change>
+    <release version="4.804" versioncode="20005" >
+        <change>Fixed a bug with IMAP Push that could cause excessive battery drain</change>
+        <change>Exclude error folder from unread/starred count</change>
+        <change>Avoid adding the same recipient twice when using "reply to all"</change>
+        <change>Improved compatibility with IMAP (proxy) servers</change>
+        <change>Improved support for non-standard conform "share" functionality used by some apps</change>
+        <change>Another attempt at working around the display bug on Asus Transformer devices</change>
+        <change>Added mailbox.org to the list of providers﻿</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="4.803" versioncode="20004" >
+        <change>Removed the work-around for the display bug on Asus Transformer devices introduced in v4.802 because it was causing problems</change>
+        <change>K-9 Mail now uses a locale-specific date in the header of a quoted message</change>
+        <change>Fixed bug where inline images where not showing in KitKat</change>
+        <change>Fixed POP3 STLS command</change>
+        <change>Added auto-configuration settings for some providers</change>
+        <change>Updated Dutch, Spanish, Danish, Slovak, Russian translation</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="4.802" versioncode="20003" >
+        <change>Added work-around for a display bug on Asus Transformer devices</change>
+        <change>Improved certificate validation. If you had to manually accept a certificate before you will have to do it again after this update.</change>
+        <change>Re-added support for SSLv3; fixed SSL-related problems with Android 2.2</change>
+        <change>Also use SSL/TLS hardening for STARTTLS connections</change>
+        <change>Added support for Bitcoin-URIs</change>
+        <change>Added higher resolution app icon</change>
+        <change>Added support for non-standard conforming servers when looking for "Drafts" folder</change>
+        <change>Added auto-configuration settings for some providers</change>
+        <change>Fixed color generation for contact picture placeholders</change>
+        <change>Updated Japanese, Polish, Czech, Russian, Greek, Hungarian, Dutch, Ukrainian, Brazilian Portuguese, French translations</change>
+    </release>
+    <release version="4.801" versioncode="20002" >
+        <change>Further bugfixes for importing settings on KitKat</change>
+        <change>First pass at a fix for blank messages showing up when the 'Auto-fit messages' option is checked</change>
+    </release>
+    <release version="4.800" versioncode="20001" >
+        <change>This release should behave better on KitKat devices. A version of 4.8 that runs on older devices should appear shortly.</change>
     </release>
     <release version="4.701" versioncode="19002" >
         <change>Overhauled how we do message view scrolling to fix a KitKat issue. Thanks to Joe Steele!</change>
