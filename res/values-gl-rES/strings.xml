@@ -134,8 +134,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="read_receipt_enabled">Pedirase confirmación de lectura</string>
   <string name="read_receipt_disabled">Non se pedirá confirmación de lectura</string>
   <string name="add_attachment_action">Engadir anexo</string>
-  <string name="add_attachment_action_image">Engadir anexo (imaxe)</string>
-  <string name="add_attachment_action_video">Engadir anexo (vídeo)</string>
   <string name="empty_trash_action">Baleirar papeleira</string>
   <string name="expunge_action">Purgar</string>
   <string name="clear_local_folder_action">Limpar mensaxes locais</string>
@@ -695,11 +693,7 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="font_size_medium">Mediana</string>
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Moi grande</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Usar \"Engadir anexo (imaxe)\" ou \"Engadir anexo (vídeo)\" para anexar imaxes ou vídeos con Galería 3D.</string>
   <string name="miscellaneous_preferences">Miscelánea</string>
-  <string name="misc_preferences_attachment_description">Mostrar botóns para engadir anexos de imaxe e vídeo</string>
   <!--APG related-->
   <string name="error_activity_not_found">Non hai un aplicativo para executar esta acción.</string>
   <string name="error_apg_version_not_supported">Non se admite a versión instalada de APG.</string>

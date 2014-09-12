@@ -137,8 +137,6 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål hos
   <string name="read_receipt_enabled">Kommer til å be om lesekvittering</string>
   <string name="read_receipt_disabled">Kommer ikke til å be om lesekvittering</string>
   <string name="add_attachment_action">Legg til vedlegg</string>
-  <string name="add_attachment_action_image">Legg til vedlegg (bilde)</string>
-  <string name="add_attachment_action_video">Legg til vedlegg (video)</string>
   <string name="empty_trash_action">Tøm søppeldunk</string>
   <string name="expunge_action">Tilintetgjør</string>
   <string name="clear_local_folder_action">Fjern lokale meldinger</string>
@@ -661,8 +659,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="font_size_medium">Medium</string>
   <string name="font_size_large">Stor</string>
   <string name="font_size_larger">Større</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
   <string name="miscellaneous_preferences">Diverse</string>
   <!--APG related-->
   <string name="error_activity_not_found">Ingen egnede program ble funnet for denne handlingen.</string>
