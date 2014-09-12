@@ -12,7 +12,6 @@ public class ColorChip {
     public static final Path RIGHT_POINTING = new Path();
     public static final Path RIGHT_NOTCH = new Path();
     public static final Path STAR = new Path();
-    public static final Path CHECKMARK = new Path();
 
 
     static {
@@ -47,12 +46,6 @@ public class ColorChip {
         STAR.lineTo(110f,110f);
         STAR.lineTo(140f,60f);
         STAR.close();
-
-
-        CHECKMARK.moveTo(10f,160f);
-        CHECKMARK.lineTo(120f,280f);
-        CHECKMARK.lineTo(300f,40f);
-
     }
 
     private ShapeDrawable mDrawable;
@@ -66,11 +59,7 @@ public class ColorChip {
         } else {
             mDrawable = new ShapeDrawable(new PathShape(shape, 320f, 320f));
         }
-        if (shape.equals(CHECKMARK)) {
-            mDrawable.getPaint().setStrokeWidth(50);
-        } else {
-            mDrawable.getPaint().setStrokeWidth(20);
-        }
+
         if (messageRead) {
             // Read messages get an outlined circle
             mDrawable.getPaint().setStyle(Paint.Style.STROKE);
@@ -79,9 +68,9 @@ public class ColorChip {
             mDrawable.getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
 
         }
+
+        mDrawable.getPaint().setStrokeWidth(20);
         mDrawable.getPaint().setColor(color);
-
-
     }
 
     public ShapeDrawable drawable() {
