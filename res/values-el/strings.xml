@@ -135,8 +135,6 @@
   <string name="read_receipt_enabled">Θα ζητηθεί απόδειξη ανάγνωσης</string>
   <string name="read_receipt_disabled">Δεν θα ζητηθεί απόδειξη ανάγνωσης</string>
   <string name="add_attachment_action">Προσθήκη συνημμένου</string>
-  <string name="add_attachment_action_image">Προσθήκη συνημμένης εικόνας</string>
-  <string name="add_attachment_action_video">Προσθήκη συνημμένου βίντεο</string>
   <string name="empty_trash_action">Άδειασμα σκουπιδιών</string>
   <string name="expunge_action">Εξάλειψη</string>
   <string name="clear_local_folder_action">Καθαρισμός τοπικών μηνυμάτων</string>
@@ -716,13 +714,7 @@
   <string name="font_size_medium">Μεσαίο</string>
   <string name="font_size_large">Μεγάλο</string>
   <string name="font_size_larger">Μεγαλύτερο</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Ελέγξτε \'Ρυθμίσεις\' -&gt; \'Παράκαμψη σφάλματος πινακοθήκης\' για να μπορείτε να συνάψετε εικόνες ή βίντεο με το Gallery 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Χρήση \'Προσθήκη συνημμένου (Εικόνα)\' ή \'Προσθήκη συνημμένου (Βίντεο)\' για να συνάψετε εικόνες ή βίντεο με το Gallery 3D.</string>
   <string name="miscellaneous_preferences">Διάφορα</string>
-  <string name="misc_preferences_attachment_title">Παράκαμψη σφάλματος πινακοθήκης</string>
-  <string name="misc_preferences_attachment_description">Προβολή πλήκτρων για προσθήκη συνημμένων εικόνας/βίντεο (παράκαμψη του σφάλματος Gallery 3D)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Δεν βρέθηκε κατάλληλη εφαρμογή για αυτή την ενέργεια.</string>
   <string name="error_apg_version_not_supported">Η εγκατεστημένη έκδοση APG δεν υποστηρίζεται.</string>

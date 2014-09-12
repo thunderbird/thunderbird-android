@@ -221,7 +221,6 @@ public class Account implements BaseAccount {
 
     private ColorChip mFlaggedUnreadColorChip;
     private ColorChip mFlaggedReadColorChip;
-    private ColorChip mCheckmarkChip;
 
 
     /**
@@ -862,11 +861,6 @@ public class Account implements BaseAccount {
         mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
         mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
         mFlaggedUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.STAR);
-        mCheckmarkChip = new ColorChip(mChipColor, true, ColorChip.CHECKMARK);
-    }
-
-    public ColorChip getCheckmarkChip() {
-        return mCheckmarkChip;
     }
 
     public synchronized int getChipColor() {
@@ -893,10 +887,6 @@ public class Account implements BaseAccount {
         }
 
         return chip;
-    }
-
-    public ColorChip generateColorChip() {
-        return new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
     }
 
     @Override

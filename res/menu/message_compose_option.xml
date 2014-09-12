@@ -39,16 +39,4 @@
         android:title="@string/read_receipt"
         android:icon="?attr/iconActionRequestReadReceipt"
     />
-    <item
-        android:id="@+id/add_attachment_image"
-        android:title="@string/add_attachment_action_image"
-        android:icon="?attr/iconActionAddAttachment"
-        android:visible="false"
-    />
-    <item
-        android:id="@+id/add_attachment_video"
-        android:title="@string/add_attachment_action_video"
-        android:icon="?attr/iconActionAddAttachment"
-        android:visible="false"
-    />
 </menu>

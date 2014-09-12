@@ -170,8 +170,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="read_receipt_enabled">Will request read receipt</string>
     <string name="read_receipt_disabled">Will not request read receipt</string>
     <string name="add_attachment_action">Add attachment</string>
-    <string name="add_attachment_action_image">Add attachment (Image)</string>
-    <string name="add_attachment_action_video">Add attachment (Video)</string>
     <string name="empty_trash_action">Empty Trash</string>
     <string name="expunge_action">Expunge</string>
     <string name="clear_local_folder_action">Clear local messages</string>
@@ -908,15 +906,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_large">Large</string>
     <string name="font_size_larger">Larger</string>
 
-    <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
-    <string name="message_compose_buggy_gallery">Check \"Settings\" -&gt; \"Use Gallery bug work-around\" to be able to attach images or videos using Gallery 3D.</string>
-
-    <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
-    <string name="message_compose_use_workaround">Use \"Add attachment (Image)\" or \"Add attachment (Video)\" to attach images or videos with Gallery 3D.</string>
-
     <string name="miscellaneous_preferences">Miscellaneous</string>
-    <string name="misc_preferences_attachment_title">Use Gallery bug work-around</string>
-    <string name="misc_preferences_attachment_description">Show buttons to add image/video attachments (to work around a Gallery 3D bug)</string>
 
     <!-- APG related -->
     <string name="error_activity_not_found">No suitable application for this action found.</string>

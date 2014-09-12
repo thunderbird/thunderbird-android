@@ -3,14 +3,21 @@ package com.fsck.k9.net.ssl;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.mail.MessagingException;
 
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+
 import java.io.IOException;
 import java.net.Socket;
-import java.security.SecureRandom;
-import java.util.*;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -67,15 +74,21 @@ public class TrustedSocketFactory {
 
     static {
         String[] enabledCiphers = null;
-        String[] enabledProtocols = null;
+        String[] supportedProtocols = null;
 
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, null, new SecureRandom());
+            sslContext.init(null, null, null);
             SSLSocketFactory sf = sslContext.getSocketFactory();
             SSLSocket sock = (SSLSocket) sf.createSocket();
             enabledCiphers = sock.getEnabledCipherSuites();
-            enabledProtocols = sock.getEnabledProtocols();
+
+            /*
+             * Retrieve all supported protocols, not just the (default) enabled
+             * ones. TLSv1.1 & TLSv1.2 are supported on API levels 16+, but are
+             * only enabled by default on API levels 20+.
+             */
+            supportedProtocols = sock.getSupportedProtocols();
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Error getting information about available SSL/TLS ciphers and " +
                     "protocols", e);
@@ -84,8 +97,8 @@ public class TrustedSocketFactory {
         ENABLED_CIPHERS = (enabledCiphers == null) ? null :
                 reorder(enabledCiphers, ORDERED_KNOWN_CIPHERS, BLACKLISTED_CIPHERS);
 
-        ENABLED_PROTOCOLS = (enabledProtocols == null) ? null :
-            reorder(enabledProtocols, ORDERED_KNOWN_PROTOCOLS, null);
+        ENABLED_PROTOCOLS = (supportedProtocols == null) ? null :
+            reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, null);
     }
 
     protected static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
@@ -114,19 +127,33 @@ public class TrustedSocketFactory {
         return result.toArray(new String[result.size()]);
     }
 
-    public static Socket createSocket(SSLContext sslContext) throws IOException {
-        SSLSocket socket = (SSLSocket) sslContext.getSocketFactory().createSocket();
-        hardenSocket(socket);
+    public static Socket createSocket(String host, int port, String clientCertificateAlias)
+            throws IOException, MessagingException, KeyManagementException, NoSuchAlgorithmException {
 
-        return socket;
+        return createSocket(null, host, port, clientCertificateAlias);
     }
 
-    public static Socket createSocket(SSLContext sslContext, Socket s, String host, int port,
-            boolean autoClose) throws IOException {
-        SSLSocket socket = (SSLSocket) sslContext.getSocketFactory().createSocket(s, host, port, autoClose);
-        hardenSocket(socket);
+    public static Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
+            throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
 
-        return socket;
+        TrustManager[] trustManagers = new TrustManager[] { TrustManagerFactory.get(host, port) };
+        KeyManager[] keyManagers = null;
+        if (clientCertificateAlias != null && !clientCertificateAlias.isEmpty()) {
+            keyManagers = new KeyManager[] { new KeyChainKeyManager(K9.app, clientCertificateAlias) };
+        }
+
+        SSLContext context = SSLContext.getInstance("TLS");
+        context.init(keyManagers, trustManagers, null);
+        SslSessionCacheHelper.setPersistentCache(context);
+        SSLSocketFactory socketFactory = context.getSocketFactory();
+        Socket trustedSocket;
+        if (socket == null) {
+            trustedSocket = socketFactory.createSocket();
+        } else {
+            trustedSocket = socketFactory.createSocket(socket, host, port, true);
+        }
+        hardenSocket((SSLSocket) trustedSocket);
+        return trustedSocket;
     }
 
     private static void hardenSocket(SSLSocket sock) {

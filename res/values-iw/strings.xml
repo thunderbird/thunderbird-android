@@ -113,8 +113,6 @@
   <string name="read_receipt_enabled">נדרש אישור לקריאה</string>
   <string name="read_receipt_disabled">לא נדרש אישור קריאה</string>
   <string name="add_attachment_action">צרף קובץ</string>
-  <string name="add_attachment_action_image">הוסף קובץ (תמונה)</string>
-  <string name="add_attachment_action_video">הוסף קובת (וידאו)</string>
   <string name="empty_trash_action">רוקן אשפה</string>
   <string name="expunge_action">רוקן</string>
   <string name="clear_local_folder_action">נקה הודעות מקומיות</string>
@@ -580,13 +578,7 @@
   <string name="font_size_medium">בינוני</string>
   <string name="font_size_large">גדול</string>
   <string name="font_size_larger">ענק</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">סמן \"הגדרות\" -&gt; \"השתמש בעקיפת באג הגלריה\" כדי שתוכל לצרף תמונות או קטעי וידאו לגלריית 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">השתמש ב \"הוסף קובץ מצורף (תמונה) \" או \"הוסף קובץ מצורף (וידאו) \" כדי לצרף תמונות או קטעי וידאו באמצעות גלריית 3D.</string>
   <string name="miscellaneous_preferences">שונות</string>
-  <string name="misc_preferences_attachment_title">השתמש בעקיפת באג הגלריה</string>
-  <string name="misc_preferences_attachment_description">הצג כפתורים כדי להוסיף קבצי תמונה / וידאו (כדי לעקוף את באג גלריית 3D)</string>
   <!--APG related-->
   <string name="error_activity_not_found">לא נמצא ישום שיכול לבצע פעולה זו.</string>
   <string name="error_apg_version_not_supported">גרסת APG המותקנת אינה נתמכת.</string>

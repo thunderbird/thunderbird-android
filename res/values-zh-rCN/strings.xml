@@ -135,8 +135,6 @@ K-9改进的功能包括：
   <string name="read_receipt_enabled">将会请求已读回执</string>
   <string name="read_receipt_disabled">将不会请求已读回执</string>
   <string name="add_attachment_action">添加附件</string>
-  <string name="add_attachment_action_image">添加图片附件</string>
-  <string name="add_attachment_action_video">添加视频附件</string>
   <string name="empty_trash_action">清空垃圾箱</string>
   <string name="expunge_action">擦除</string>
   <string name="clear_local_folder_action">清空本地邮件</string>
@@ -717,13 +715,7 @@ K-9改进的功能包括：
   <string name="font_size_medium">中等</string>
   <string name="font_size_large">大</string>
   <string name="font_size_larger">更大</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">选择“设置”-&gt;“避免画册发生错误”来启用使用3D画册模式添加附件或视频。</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">利用“添加附件（图片）”或“添加附件（视频）”来使用3D画册添加图片或视频。</string>
   <string name="miscellaneous_preferences">杂项</string>
-  <string name="misc_preferences_attachment_title">避免画册发生错误</string>
-  <string name="misc_preferences_attachment_description">显示按钮来添加图片/视频附件（以避免3D画册发生错误）</string>
   <!--APG related-->
   <string name="error_activity_not_found">没有找到可以用于这一操作的程序。</string>
   <string name="error_apg_version_not_supported">不支持所安装版本的APG。</string>

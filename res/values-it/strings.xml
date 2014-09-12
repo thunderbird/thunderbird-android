@@ -137,8 +137,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="read_receipt_enabled">Notifica di lettura attiva</string>
   <string name="read_receipt_disabled">Non richiederà la notifica di lettura</string>
   <string name="add_attachment_action">Aggiungi allegato</string>
-  <string name="add_attachment_action_image">Aggiungi allegato (Immagine)</string>
-  <string name="add_attachment_action_video">Aggiungi allegato (Video)</string>
   <string name="empty_trash_action">Svuota cestino</string>
   <string name="expunge_action">Rimuovi messaggi eliminati</string>
   <string name="clear_local_folder_action">Cancella messaggi locali</string>
@@ -740,13 +738,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="font_size_medium">Medio</string>
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Più grande</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Controlla \"Impostazioni\" -&gt; \"Aggira bug Galleria immagini\" per allegare immagini o video usando Galleria 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Utilizza \"Aggiungi allegato (Immagini)\" o \"Aggiungi allegato (Video)\" per allegare immagini o video con Galleria 3D.</string>
   <string name="miscellaneous_preferences">Varie</string>
-  <string name="misc_preferences_attachment_title">Aggira bug della Galleria immagini</string>
-  <string name="misc_preferences_attachment_description">Visualizza i pulsanti per allegare immagini/video (evita bug della Galleria 3D)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Nessuna applicazione trovata per questa azione.</string>
   <string name="error_apg_version_not_supported">La versione di APG installata non è supportata.</string>

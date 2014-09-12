@@ -138,8 +138,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="read_receipt_enabled">Vastaanottokuittaus pyydetään</string>
   <string name="read_receipt_disabled">Ei pyydä lukukuittausta</string>
   <string name="add_attachment_action">Lisää liite</string>
-  <string name="add_attachment_action_image">Lisää liite (Kuva)</string>
-  <string name="add_attachment_action_video">Video</string>
   <string name="empty_trash_action">Tyhjennä roskakori</string>
   <string name="expunge_action">Poista</string>
   <string name="clear_local_folder_action">Poista paikalliset viestit</string>
@@ -741,13 +739,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="font_size_medium">Keskikoko</string>
   <string name="font_size_large">Suuri</string>
   <string name="font_size_larger">Suurin</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Tarkista Asetukset -&gt; Ota käyttöön Gallery-ohjelmavirheen kierto mahdollistaaksesi kuvien tai videoiden liittämisen Gallery 3D -ohjelmalla.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Käytä Lisää liite (kuva)- tai Lisää liite (video) -toimintoa Gallery 3D:n kuvan tai videon liittämiseksi.</string>
   <string name="miscellaneous_preferences">Muut</string>
-  <string name="misc_preferences_attachment_title">Ota käyttöön Gallery -ohjelmavirheen kierto</string>
-  <string name="misc_preferences_attachment_description">Näytä painikkeet liitteen (video/kuva) lisäämiseksi (Gallery 3D -ohjelmavirheen kiertäminen)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Toiminnolle ei löytynyt sopivaa ohjelmaa.</string>
   <string name="error_apg_version_not_supported">Asennettua APG-versiota ei tueta.</string>

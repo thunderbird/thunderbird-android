@@ -137,8 +137,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="read_receipt_enabled">Potvrzení o přečtení bude vyžadováno</string>
   <string name="read_receipt_disabled">Potvrzení o přečtení nebude vyžadováno</string>
   <string name="add_attachment_action">Přidat přílohu</string>
-  <string name="add_attachment_action_image">Přidat přílohu (obrázek)</string>
-  <string name="add_attachment_action_video">Přidat přílohu (video)</string>
   <string name="empty_trash_action">Vysypat koš</string>
   <string name="expunge_action">Vymazat</string>
   <string name="clear_local_folder_action">Vyčistit místní zprávy</string>
@@ -725,13 +723,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="font_size_medium">Střední</string>
   <string name="font_size_large">Velký</string>
   <string name="font_size_larger">Největší</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Zaškrtněte \"Možnosti\" -&gt; \"Obejít chybu Galerie\", abyste byli schopni připojit obrázky nebo video pomocí Galerie 3D.</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Použijte \"Přidat přílohu (obrázek)\" nebo \"Přidat přílohu (video)\" k připojení obrázků a videa pomocí Galerie 3D.</string>
   <string name="miscellaneous_preferences">Různé</string>
-  <string name="misc_preferences_attachment_title">Obejít chybu Galerie</string>
-  <string name="misc_preferences_attachment_description">Zobrazit tlačítka k připojení obrázku/videa jako přílohy (kvůli chybě v Galerie 3D)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Pro tuto akci nebyla nalezena žádná vhodná aplikace.</string>
   <string name="error_apg_version_not_supported">Nainstalovaná verze APG není podporována.</string>

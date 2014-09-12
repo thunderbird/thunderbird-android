@@ -2042,18 +2042,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
      */
     private void onAddAttachment() {
-        if (K9.isGalleryBuggy()) {
-            if (K9.useGalleryBugWorkaround()) {
-                Toast.makeText(MessageCompose.this,
-                               getString(R.string.message_compose_use_workaround),
-                               Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(MessageCompose.this,
-                               getString(R.string.message_compose_buggy_gallery),
-                               Toast.LENGTH_LONG).show();
-            }
-        }
-
         onAddAttachment2("*/*");
     }
 
@@ -2549,12 +2537,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             case R.id.add_attachment:
                 onAddAttachment();
                 break;
-            case R.id.add_attachment_image:
-                onAddAttachment2("image/*");
-                break;
-            case R.id.add_attachment_video:
-                onAddAttachment2("video/*");
-                break;
             case R.id.read_receipt:
                 onReadReceipt();
             default:
@@ -2574,13 +2556,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (!mAccount.hasDraftsFolder()) {
             menu.findItem(R.id.save).setEnabled(false);
         }
-
-        /*
-         * Show the menu items "Add attachment (Image)" and "Add attachment (Video)"
-         * if the work-around for the Gallery bug is enabled (see Issue 1186).
-         */
-        menu.findItem(R.id.add_attachment_image).setVisible(K9.useGalleryBugWorkaround());
-        menu.findItem(R.id.add_attachment_video).setVisible(K9.useGalleryBugWorkaround());
 
         return true;
     }

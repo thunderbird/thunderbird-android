@@ -188,9 +188,6 @@ public class GlobalSettings {
                 new V(16, new ThemeSetting(K9.Theme.LIGHT)),
                 new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
             ));
-        s.put("useGalleryBugWorkaround", Settings.versions(
-                new V(1, new GalleryBugWorkaroundSetting())
-            ));
         s.put("useVolumeKeysForListNavigation", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
@@ -369,27 +366,6 @@ public class GlobalSettings {
                     return 100;
                 }
             }
-        }
-    }
-
-    /**
-     * The gallery bug work-around setting.
-     *
-     * <p>
-     * The default value varies depending on whether you have a version of Gallery 3D installed
-     * that contains the bug we work around.
-     * </p>
-     *
-     * @see K9#isGalleryBuggy()
-     */
-    public static class GalleryBugWorkaroundSetting extends BooleanSetting {
-        public GalleryBugWorkaroundSetting() {
-            super(false);
-        }
-
-        @Override
-        public Object getDefaultValue() {
-            return K9.isGalleryBuggy();
         }
     }
 

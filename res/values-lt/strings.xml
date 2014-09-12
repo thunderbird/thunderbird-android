@@ -136,8 +136,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="read_receipt_enabled">Prašys perskaitymo patvirtinimo</string>
   <string name="read_receipt_disabled">Neprašys perskaitymo patvirtinimo</string>
   <string name="add_attachment_action">Priedo priedą</string>
-  <string name="add_attachment_action_image">Pridėti priedą (paveikslėlis)</string>
-  <string name="add_attachment_action_video">Pridėti priedą (Video)</string>
   <string name="empty_trash_action">Išvalyti šiukšliadėžę</string>
   <string name="expunge_action">Išvalyti</string>
   <string name="clear_local_folder_action">Išvalyti vietinius laiškus</string>
@@ -705,13 +703,7 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="font_size_medium">Vidutinis</string>
   <string name="font_size_large">Didelis</string>
   <string name="font_size_larger">Didesnis</string>
-  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
-  <string name="message_compose_buggy_gallery">Norėdami pridėti paveikslėlius ir video naudojant Gallery 3D, pažymėkite „Nustatymai“ -&gt; „Naudoti galerijos klaidos apėjimą“</string>
-  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
-  <string name="message_compose_use_workaround">Norėdami pridėti paveikslėlius ir video naudojant Gallery 3D naudokite „Pridėti priedą (paveikslėlis)“ ar „Pridėti priedą (Video)“.</string>
   <string name="miscellaneous_preferences">Kita</string>
-  <string name="misc_preferences_attachment_title">Naudoti galerijos klaidos apėjimą</string>
-  <string name="misc_preferences_attachment_description">Rodyti mygtukus kurie prideda vaizdo/video priedus (Gallery 3D klaidos apėjimas)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Šiai programai nerasta tinkamo veiksmo.</string>
   <string name="error_apg_version_not_supported">Įdiegta APG versija nepalaikoma.</string>
