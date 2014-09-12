@@ -32,7 +32,8 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.local.LocalMessage;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.search.SearchAccount;
 
 import java.lang.ref.WeakReference;
@@ -152,9 +153,9 @@ public class MessageProvider extends ContentProvider {
     }
 
     /**
-     * Extracts the {@link LocalStore.LocalMessage#getId() ID} from the given
+     * Extracts the {@link LocalMessage#getId() ID} from the given
      * {@link MessageInfoHolder}. The underlying {@link Message} is expected to
-     * be a {@link LocalStore.LocalMessage}.
+     * be a {@link LocalMessage}.
      */
     public static class IdExtractor implements FieldExtractor<MessageInfoHolder, Long> {
         @Override

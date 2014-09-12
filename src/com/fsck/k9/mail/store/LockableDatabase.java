@@ -376,30 +376,29 @@ public class LockableDatabase {
         try {
             final File databaseFile = prepareStorage(mStorageProviderId);
             try {
-                if (StorageManager.InternalStorageProvider.ID.equals(mStorageProviderId)) {
-                    // internal storage
-                    mDb = application.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE, null);
-                } else {
-                    // external storage
-                    mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
-                }
+                doOpenOrCreateDb(application, databaseFile);
             } catch (SQLiteException e) {
                 // try to gracefully handle DB corruption - see issue 2537
                 Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
                 databaseFile.delete();
-                if (StorageManager.InternalStorageProvider.ID.equals(mStorageProviderId)) {
-                    // internal storage
-                    mDb = application.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE, null);
-                } else {
-                    // external storage
-                    mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
-                }
+                doOpenOrCreateDb(application, databaseFile);
             }
             if (mDb.getVersion() != mSchemaDefinition.getVersion()) {
                 mSchemaDefinition.doDbUpgrade(mDb);
             }
         } finally {
             unlockWrite();
+        }
+    }
+
+    private void doOpenOrCreateDb(final Application application, final File databaseFile) {
+        if (StorageManager.InternalStorageProvider.ID.equals(mStorageProviderId)) {
+            // internal storage
+            mDb = application.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE,
+                    null);
+        } else {
+            // external storage
+            mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
         }
     }
 
@@ -412,10 +411,8 @@ public class LockableDatabase {
     protected File prepareStorage(final String providerId) throws UnavailableStorageException {
         final StorageManager storageManager = getStorageManager();
 
-        final File databaseFile;
-        final File databaseParentDir;
-        databaseFile = storageManager.getDatabase(uUid, providerId);
-        databaseParentDir = databaseFile.getParentFile();
+        final File databaseFile = storageManager.getDatabase(uUid, providerId);
+        final File databaseParentDir = databaseFile.getParentFile();
         if (databaseParentDir.isFile()) {
             // should be safe to unconditionally delete clashing file: user is not supposed to mess with our directory
             databaseParentDir.delete();
@@ -428,11 +425,8 @@ public class LockableDatabase {
             Utility.touchFile(databaseParentDir, ".nomedia");
         }
 
-        final File attachmentDir;
-        final File attachmentParentDir;
-        attachmentDir = storageManager
-                        .getAttachmentDirectory(uUid, providerId);
-        attachmentParentDir = attachmentDir.getParentFile();
+        final File attachmentDir = storageManager.getAttachmentDirectory(uUid, providerId);
+        final File attachmentParentDir = attachmentDir.getParentFile();
         if (!attachmentParentDir.exists()) {
             attachmentParentDir.mkdirs();
             Utility.touchFile(attachmentParentDir, ".nomedia");
@@ -467,7 +461,8 @@ public class LockableDatabase {
             try {
                 mDb.close();
             } catch (Exception e) {
-
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "Exception caught in DB close: " + e.getMessage());
             }
             final StorageManager storageManager = getStorageManager();
             try {
@@ -482,6 +477,8 @@ public class LockableDatabase {
                     attachmentDirectory.delete();
                 }
             } catch (Exception e) {
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "Exception caught in clearing attachments: " + e.getMessage());
             }
             try {
                 deleteDatabase(storageManager.getDatabase(uUid, mStorageProviderId));

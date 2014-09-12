@@ -11,8 +11,8 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.mail.store.local.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.provider.EmailProvider;
 
 /**

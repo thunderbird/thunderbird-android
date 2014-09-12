@@ -12,9 +12,9 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.store.ImapStore;
-import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.mail.store.WebDavStore;
 
