@@ -955,13 +955,13 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
 		accounts_view = inflater.inflate(R.layout.accounts_list, null);
 
-		portals_view = inflater.inflate(R.layout.portal_list, null);
+		
 
 		folders_view = inflater.inflate(R.layout.folders_list, null);
 
 		header_folders = inflater.inflate(R.layout.header_folders, null);
 
-		header_drawer = inflater.inflate(R.layout.header_drawer, null);
+		
 
 		initializeActionBar();
 
@@ -1113,8 +1113,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 		LayoutInflater inflater = getLayoutInflater();
 
 		header_folders = inflater.inflate(R.layout.header_folders, null);
-
-		header_drawer = inflater.inflate(R.layout.header_drawer, null);
 
 		header_inbox = inflater.inflate(R.layout.header_inbox, null);
 

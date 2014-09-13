@@ -51,37 +51,7 @@
     android:clickable="true">
     
  
-    <ListView
-        android:id="@+id/listview_inbox"
-       android:layout_weight="1"
-        android:layout_height="wrap_content" 
-        android:layout_width="320dp"
-    android:orientation="vertical"
-    android:layout_gravity="start"
-    android:background="#ffffff"
-        android:minHeight="64dip"
-       android:layout_alignBottom="@+id/Person"
-        android:choiceMode="singleChoice"
-        android:dividerHeight="0dp"
-		android:divider="@null"      
-        android:listSelector="@drawable/list_selector"
-        />
     
-    <ListView
-        android:id="@+id/listview_drawer"
-       android:layout_weight="1"
-        android:layout_height="wrap_content" 
-        android:layout_width="320dp"
-    android:orientation="vertical"
-    android:layout_gravity="start"
-    android:background="#ffffff"
-        android:minHeight="64dip"
-       android:layout_alignBottom="@+id/Person"
-        android:choiceMode="singleChoice"
-        android:dividerHeight="0dp"
-		android:divider="@null" 
-        android:listSelector="@drawable/list_selector"
-        />
     
     <ListView
         android:id="@android:id/list"

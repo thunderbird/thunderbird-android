@@ -38,13 +38,11 @@
         <item name="iconActionSelectAll">@drawable/ic_action_select_all_light</item>
         <item name="iconActionSave">@drawable/ic_action_save_light</item>
         <item name="iconActionCancel">@drawable/ic_action_cancel_light</item>
-        <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_light</item>
-        <item name="iconActionExpand">@drawable/ic_action_expand_light</item>
-        <item name="iconActionCollapse">@drawable/ic_action_collapse_light</item>
+          <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
-        <item name="messageListReadItemBackgroundColor">#c0cdcdcd</item>
+        <item name="messageListReadItemBackgroundColor">#ffeeeeee</item>
         <item name="messageListUnreadItemBackgroundColor">#00ffffff</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_light</item>
@@ -57,6 +55,8 @@
         <item name="compatDividerVertical">?attr/messageListDividerColor</item>
         <item name="compatSelectableItemBackground">@android:color/transparent</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
+         <item name="android:textColor">#58585b</item>
+    	  <item name="android:textColorPrimary">#58585b</item>
     </style>
 
     <style name="Theme.K9.Dark.Base" parent="@android:style/Theme.Holo">

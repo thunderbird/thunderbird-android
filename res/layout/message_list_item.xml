@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="88dp"
               android:orientation="horizontal"
               android:layout_gravity="center_vertical"
         >
+    
 
-    <View
-            android:id="@+id/chip"
-            android:adjustViewBounds="false"
-            android:layout_height="match_parent"
-            android:layout_width="8dip"
-            android:layout_marginRight="4dp"
-            />
-
-    <LinearLayout
+    
+    
+ <LinearLayout
             android:id="@+id/selected_checkbox_wrapper"
             android:layout_width="wrap_content"
 
@@ -22,7 +17,7 @@
             android:orientation="vertical"
             android:layout_gravity="center"
             android:visibility="visible"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/black_text"
             android:baselineAligned="false">
 
         <CheckBox
@@ -39,32 +34,40 @@
 
     </LinearLayout>
 
+  
+ 
     <QuickContactBadge
             android:id="@+id/contact_badge"
-            android:layout_marginRight="8dip"
+            android:layout_marginRight="16dip"
+            android:layout_marginLeft="16dip"
             android:layout_marginTop="4dip"
-            android:layout_marginBottom="3dip"
+            android:layout_marginBottom="8dip"
             android:layout_height="40dip"
             android:layout_width="40dip"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="4dp"
+            
             android:src="@drawable/ic_contact_picture"
             style="?android:attr/quickContactBadgeStyleWindowLarge"
             android:background="@android:color/transparent"/>
 
+    
 
+     
+         
     <RelativeLayout
             android:id="@+id/list_item_inner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="72dp"
             android:paddingTop="5dip"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_gravity="center_vertical"
             android:paddingBottom="6dp">
-
+        
         <TextView
+            
+            
                 android:id="@+id/preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,10 +76,11 @@
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="3dip"
                 android:bufferType="spannable"
+                
                 android:layout_below="@+id/subject_wrapper"
                 android:singleLine="false"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="@color/black_text"
                 android:longClickable="false"
                 android:layout_alignWithParentIfMissing="false"
                 android:gravity="top"
@@ -98,12 +102,13 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="0.3"
+                    
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:layout_marginBottom="1dip"
                     android:layout_marginLeft="1dip"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"
+                    
                     />
 
             <TextView
@@ -113,16 +118,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dip"
                     android:layout_marginLeft="1dip"
+                   
                     android:ellipsize="marquee"
                     android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="18sp"
+                    android:textColor="@color/black_text"
                     />
 
             <TextView
                     android:id="@+id/thread_count"
-                    android:textColor="?attr/messageListThreadCountForegroundColor"
-                    android:background="?attr/messageListThreadCountBackground"
+                    
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dip"
@@ -131,9 +136,15 @@
                     android:paddingBottom="1dip"
                     android:paddingLeft="4dip"
                     android:focusable="false"
+                    
                     />
+        
+        
+        
         </LinearLayout>
 
+        
+        
         <CheckBox
                 android:id="@+id/flagged_center_right"
                 style="?android:attr/starStyle"
@@ -160,11 +171,11 @@
                 android:paddingRight="8dip"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorSecondary"/>
+               android:textColor="@color/black_text"/>
 
         <CheckBox
                 android:id="@+id/flagged_bottom_right"
-                style="?android:attr/starStyle"
+                android:button="@drawable/btn_star"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_below="@+id/date"
@@ -176,8 +187,22 @@
                 android:visibility="visible"
                 android:gravity="center_vertical"/>
 
-
+            <View
+            android:id="@+id/chip"
+            android:layout_width="45dip"
+            android:layout_height="6dp"
+            android:layout_marginTop="-5dip"
+            android:background="#ff336699"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true" />
+        
     </RelativeLayout>
 
 
+    
+
+    
+   
+  
+     
 </LinearLayout>
