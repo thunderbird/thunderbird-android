@@ -2043,7 +2043,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 						.findViewById(R.id.new_message_count_icon);
 				holder.flaggedMessageCountIcon = view
 						.findViewById(R.id.flagged_message_count_icon);
-
+				holder.chip = view.findViewById(R.id.chip);
 				holder.folderStatus = (TextView) view
 						.findViewById(R.id.folder_status);
 				holder.activeIcons = (RelativeLayout) view
@@ -2157,6 +2157,8 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 				}
 			});
 
+			holder.chip.setBackgroundColor(mAccount.getChipColor());
+			
 			mFontSizes.setViewTextSize(holder.folderName,
 					mFontSizes.getFolderName());
 
@@ -2315,7 +2317,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 		public View flaggedMessageCountIcon;
 		public View newMessageCountWrapper;
 		public View flaggedMessageCountWrapper;
-
+		public View chip;
 		public RelativeLayout activeIcons;
 		public String rawFolderName;
 
@@ -4181,7 +4183,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 						.findViewById(R.id.flagged_message_count_icon);
 				holder.activeIcons = (RelativeLayout) view
 						.findViewById(R.id.active_icons);
-
+				holder.chip = view.findViewById(R.id.chip);
 				holder.folders = (ImageButton) view.findViewById(R.id.folders);
 				holder.accountsItemLayout = (LinearLayout) view
 						.findViewById(R.id.accounts_item_layout);
@@ -4313,6 +4315,15 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 				});
 			}
 
+			if (account instanceof Account) {
+				Account realAccount = (Account) account;
+				holder.chip.setBackgroundColor(realAccount.getChipColor());
+			} else {
+				holder.chip.setBackgroundColor(0xff999999);
+			}
+
+			holder.chip.getBackground().setAlpha(255);
+			
 			return view;
 		}
 
@@ -4356,6 +4367,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 			public View flaggedMessageCountIcon;
 			public View newMessageCountWrapper;
 			public View flaggedMessageCountWrapper;
+			public View chip;
 			public RelativeLayout activeIcons;
 
 			public ImageButton folders;
@@ -5338,7 +5350,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 						.findViewById(R.id.flagged_message_count_icon);
 				holder.activeIcons = (RelativeLayout) view
 						.findViewById(R.id.active_icons);
-
+				holder.chip = view.findViewById(R.id.chip);
 				holder.folders = (ImageButton) view.findViewById(R.id.folders);
 				holder.accountsItemLayout = (LinearLayout) view
 						.findViewById(R.id.accounts_item_layout);
@@ -5431,6 +5443,16 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 				});
 			}
 
+			
+			if (account instanceof Account) {
+				Account realAccount = (Account) account;
+				holder.chip.setBackgroundColor(realAccount.getChipColor());
+			} else {
+				holder.chip.setBackgroundColor(0xff999999);
+			}
+
+			holder.chip.getBackground().setAlpha(255);
+			
 			return view;
 		}
 
@@ -5474,6 +5496,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 			public View flaggedMessageCountIcon;
 			public View newMessageCountWrapper;
 			public View flaggedMessageCountWrapper;
+			public View chip;
 			public RelativeLayout activeIcons;
 
 			public ImageButton folders;

@@ -189,8 +189,8 @@
 
             <View
             android:id="@+id/chip"
-            android:layout_width="0dip"
-            android:layout_height="0dp"
+            android:layout_width="45dip"
+            android:layout_height="6dp"
             android:layout_marginTop="-5dip"
             android:background="#ff336699"
             android:layout_alignParentRight="true"
