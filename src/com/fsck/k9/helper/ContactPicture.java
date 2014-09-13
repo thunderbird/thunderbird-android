@@ -9,17 +9,18 @@ import com.fsck.k9.activity.misc.ContactPictureLoader;
 
 public class ContactPicture {
 
-    public static ContactPictureLoader getContactPictureLoader(Context context) {
-        final int defaultBgColor;
-        if (!K9.isColorizeMissingContactPictures()) {
-            TypedValue outValue = new TypedValue();
-            context.getTheme().resolveAttribute(R.attr.contactPictureFallbackDefaultBackgroundColor,
-                    outValue, true);
-            defaultBgColor = outValue.data;
-        } else {
-            defaultBgColor = 0;
-        }
+	public static ContactPictureLoader getContactPictureLoader(Context context) {
+		final int defaultBgColor;
+		if (!K9.isColorizeMissingContactPictures()) {
+			TypedValue outValue = new TypedValue();
+			context.getTheme().resolveAttribute(
+					R.attr.contactPictureFallbackDefaultBackgroundColor,
+					outValue, true);
+			defaultBgColor = outValue.data;
+		} else {
+			defaultBgColor = 0;
+		}
 
-        return new ContactPictureLoader(context, defaultBgColor);
-    }
+		return new ContactPictureLoader(context, defaultBgColor);
+	}
 }

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package com.fsck.k9.view;
 
 import android.content.Context;
@@ -29,74 +28,81 @@ import com.fsck.k9.helper.Utility;
 
 /**
  * A custom WebView that is robust to rapid resize events in sequence.
- *
- * This is useful for a WebView which needs to have a layout of {@code WRAP_CONTENT}, since any
- * contents with percent-based height will force the WebView to infinitely expand (or shrink).
+ * 
+ * This is useful for a WebView which needs to have a layout of
+ * {@code WRAP_CONTENT}, since any contents with percent-based height will force
+ * the WebView to infinitely expand (or shrink).
  */
 public class RigidWebView extends WebView {
 
-    public RigidWebView(Context context) {
-        super(context);
-    }
-    public RigidWebView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-    public RigidWebView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+	public RigidWebView(Context context) {
+		super(context);
+	}
 
-    private static final int MIN_RESIZE_INTERVAL = 200;
-    private static final int MAX_RESIZE_INTERVAL = 300;
-    private final Clock mClock = Clock.INSTANCE;
+	public RigidWebView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
 
-    private final Throttle mThrottle = new Throttle(getClass().getName(),
-            new Runnable() {
-                @Override public void run() {
-                    performSizeChangeDelayed();
-                }
-            }, Utility.getMainThreadHandler(),
-            MIN_RESIZE_INTERVAL, MAX_RESIZE_INTERVAL);
+	public RigidWebView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
 
-    private int mRealWidth;
-    private int mRealHeight;
-    private boolean mIgnoreNext;
-    private long mLastSizeChangeTime = -1;
+	private static final int MIN_RESIZE_INTERVAL = 200;
+	private static final int MAX_RESIZE_INTERVAL = 300;
+	private final Clock mClock = Clock.INSTANCE;
 
-    @Override
-    protected void onSizeChanged(int w, int h, int ow, int oh) {
-        mRealWidth = w;
-        mRealHeight = h;
-        long now = mClock.getTime();
-        boolean recentlySized = (now - mLastSizeChangeTime < MIN_RESIZE_INTERVAL);
+	private final Throttle mThrottle = new Throttle(getClass().getName(),
+			new Runnable() {
+				@Override
+				public void run() {
+					performSizeChangeDelayed();
+				}
+			}, Utility.getMainThreadHandler(), MIN_RESIZE_INTERVAL,
+			MAX_RESIZE_INTERVAL);
 
-        // It's known that the previous resize event may cause a resize event immediately. If
-        // this happens sufficiently close to the last resize event, drop it on the floor.
-        if (mIgnoreNext) {
-            mIgnoreNext = false;
-            if (recentlySized) {
-                if (K9.DEBUG) {
-                    Log.w(K9.LOG_TAG, "Supressing size change in RigidWebView");
-                }
-                return;
-            }
-        }
+	private int mRealWidth;
+	private int mRealHeight;
+	private boolean mIgnoreNext;
+	private long mLastSizeChangeTime = -1;
 
-        if (recentlySized) {
-            mThrottle.onEvent();
-        } else {
-            // It's been a sufficiently long time - just perform the resize as normal. This should
-            // be the normal code path.
-            performSizeChange(ow, oh);
-        }
-    }
+	@Override
+	protected void onSizeChanged(int w, int h, int ow, int oh) {
+		mRealWidth = w;
+		mRealHeight = h;
+		long now = mClock.getTime();
+		boolean recentlySized = (now - mLastSizeChangeTime < MIN_RESIZE_INTERVAL);
 
-    private void performSizeChange(int ow, int oh) {
-        super.onSizeChanged(mRealWidth, mRealHeight, ow, oh);
-        mLastSizeChangeTime = mClock.getTime();
-    }
+		// It's known that the previous resize event may cause a resize event
+		// immediately. If
+		// this happens sufficiently close to the last resize event, drop it on
+		// the floor.
+		if (mIgnoreNext) {
+			mIgnoreNext = false;
+			if (recentlySized) {
+				if (K9.DEBUG) {
+					Log.w(K9.LOG_TAG, "Supressing size change in RigidWebView");
+				}
+				return;
+			}
+		}
 
-    private void performSizeChangeDelayed() {
-        mIgnoreNext = true;
-        performSizeChange(getWidth(), getHeight());
-    }
+		if (recentlySized) {
+			mThrottle.onEvent();
+		} else {
+			// It's been a sufficiently long time - just perform the resize as
+			// normal. This should
+			// be the normal code path.
+			performSizeChange(ow, oh);
+		}
+	}
+
+	private void performSizeChange(int ow, int oh) {
+		super.onSizeChanged(mRealWidth, mRealHeight, ow, oh);
+		mLastSizeChangeTime = mClock.getTime();
+	}
+
+	private void performSizeChangeDelayed() {
+		mIgnoreNext = true;
+		performSizeChange(getWidth(), getHeight());
+	}
 }

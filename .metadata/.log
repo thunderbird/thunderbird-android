@@ -1,0 +1,13 @@
+!SESSION 2014-09-13 14:22:06.715 -----------------------------------------------
+eclipse.buildId=M20130204-1200
+java.version=1.6.0_65
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.adtproduct -keyring /Users/lincoln/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product com.android.ide.eclipse.adt.package.adtproduct -keyring /Users/lincoln/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2014-09-13 14:22:16.778
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.ui 2 2 2014-09-13 14:22:38.404
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)

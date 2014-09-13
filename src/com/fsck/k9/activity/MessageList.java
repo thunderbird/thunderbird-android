@@ -38,13 +38,11 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -52,12 +50,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.text.TextUtils.TruncateAt;
+import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -77,11 +74,11 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -95,21 +92,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fsck.k9.R;
-
 import com.commonsware.cwac.merge.MergeAdapter;
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.BaseAccount;
-
-import com.fsck.k9.FontSizes;
-
-import com.fsck.k9.K9;
-
-import com.fsck.k9.Preferences;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.AccountStats;
+import com.fsck.k9.BaseAccount;
+import com.fsck.k9.FontSizes;
+import com.fsck.k9.K9;
 import com.fsck.k9.K9.SplitViewMode;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
@@ -122,8 +115,8 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageListFragment;
-import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
+import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.fragment.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.helper.power.TracingPowerManager;
@@ -134,9 +127,9 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.WebDavStore;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
 import com.fsck.k9.preferences.SettingsImporter;
@@ -955,13 +948,9 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
 		accounts_view = inflater.inflate(R.layout.accounts_list, null);
 
-		
-
 		folders_view = inflater.inflate(R.layout.folders_list, null);
 
 		header_folders = inflater.inflate(R.layout.header_folders, null);
-
-		
 
 		initializeActionBar();
 
@@ -1432,12 +1421,25 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
 					folder = (FolderInfoHolder) mAdapter
 							.getItem(menuInfo.position
-									- (mAdapter_Accounts.getCount()+2)); //2 seems to be the lucky number, tested with a number of email configurations
+									- (mAdapter_Accounts.getCount() + 2)); // 2
+																			// seems
+																			// to
+																			// be
+																			// the
+																			// lucky
+																			// number,
+																			// tested
+																			// with
+																			// a
+																			// number
+																			// of
+																			// email
+																			// configurations
 
 				} else {
 					folder = (FolderInfoHolder) mAdapter
 							.getItem(menuInfo.position
-									- (mAdapter_Accounts.getCount()+2));
+									- (mAdapter_Accounts.getCount() + 2));
 
 				}
 

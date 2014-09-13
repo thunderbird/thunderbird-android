@@ -5,87 +5,87 @@ import java.io.Serializable;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
 public class PgpData implements Serializable {
-    private static final long serialVersionUID = 6314045536470848410L;
-    protected long mEncryptionKeyIds[] = null;
-    protected long mSignatureKeyId = 0;
-    protected String mSignatureUserId = null;
-    protected boolean mSignatureSuccess = false;
-    protected boolean mSignatureUnknown = false;
-    protected String mDecryptedData = null;
-    protected String mEncryptedData = null;
-    
-    // new API
-    protected OpenPgpSignatureResult mSignatureResult;
+	private static final long serialVersionUID = 6314045536470848410L;
+	protected long mEncryptionKeyIds[] = null;
+	protected long mSignatureKeyId = 0;
+	protected String mSignatureUserId = null;
+	protected boolean mSignatureSuccess = false;
+	protected boolean mSignatureUnknown = false;
+	protected String mDecryptedData = null;
+	protected String mEncryptedData = null;
 
-    public OpenPgpSignatureResult getSignatureResult() {
-        return mSignatureResult;
-    }
+	// new API
+	protected OpenPgpSignatureResult mSignatureResult;
 
-    public void setSignatureResult(OpenPgpSignatureResult signatureResult) {
-        this.mSignatureResult = signatureResult;
-    }
+	public OpenPgpSignatureResult getSignatureResult() {
+		return mSignatureResult;
+	}
 
-    public void setSignatureKeyId(long keyId) {
-        mSignatureKeyId = keyId;
-    }
+	public void setSignatureResult(OpenPgpSignatureResult signatureResult) {
+		this.mSignatureResult = signatureResult;
+	}
 
-    public long getSignatureKeyId() {
-        return mSignatureKeyId;
-    }
+	public void setSignatureKeyId(long keyId) {
+		mSignatureKeyId = keyId;
+	}
 
-    public void setEncryptionKeys(long keyIds[]) {
-        mEncryptionKeyIds = keyIds;
-    }
+	public long getSignatureKeyId() {
+		return mSignatureKeyId;
+	}
 
-    public long[] getEncryptionKeys() {
-        return mEncryptionKeyIds;
-    }
+	public void setEncryptionKeys(long keyIds[]) {
+		mEncryptionKeyIds = keyIds;
+	}
 
-    public boolean hasSignatureKey() {
-        return mSignatureKeyId != 0;
-    }
+	public long[] getEncryptionKeys() {
+		return mEncryptionKeyIds;
+	}
 
-    public boolean hasEncryptionKeys() {
-        return (mEncryptionKeyIds != null) && (mEncryptionKeyIds.length > 0);
-    }
+	public boolean hasSignatureKey() {
+		return mSignatureKeyId != 0;
+	}
 
-    public String getEncryptedData() {
-        return mEncryptedData;
-    }
+	public boolean hasEncryptionKeys() {
+		return (mEncryptionKeyIds != null) && (mEncryptionKeyIds.length > 0);
+	}
 
-    public void setEncryptedData(String data) {
-        mEncryptedData = data;
-    }
+	public String getEncryptedData() {
+		return mEncryptedData;
+	}
 
-    public String getDecryptedData() {
-        return mDecryptedData;
-    }
+	public void setEncryptedData(String data) {
+		mEncryptedData = data;
+	}
 
-    public void setDecryptedData(String data) {
-        mDecryptedData = data;
-    }
+	public String getDecryptedData() {
+		return mDecryptedData;
+	}
 
-    public void setSignatureUserId(String userId) {
-        mSignatureUserId = userId;
-    }
+	public void setDecryptedData(String data) {
+		mDecryptedData = data;
+	}
 
-    public String getSignatureUserId() {
-        return mSignatureUserId;
-    }
+	public void setSignatureUserId(String userId) {
+		mSignatureUserId = userId;
+	}
 
-    public boolean getSignatureSuccess() {
-        return mSignatureSuccess;
-    }
+	public String getSignatureUserId() {
+		return mSignatureUserId;
+	}
 
-    public void setSignatureSuccess(boolean success) {
-        mSignatureSuccess = success;
-    }
+	public boolean getSignatureSuccess() {
+		return mSignatureSuccess;
+	}
 
-    public boolean getSignatureUnknown() {
-        return mSignatureUnknown;
-    }
+	public void setSignatureSuccess(boolean success) {
+		mSignatureSuccess = success;
+	}
 
-    public void setSignatureUnknown(boolean unknown) {
-        mSignatureUnknown = unknown;
-    }
+	public boolean getSignatureUnknown() {
+		return mSignatureUnknown;
+	}
+
+	public void setSignatureUnknown(boolean unknown) {
+		mSignatureUnknown = unknown;
+	}
 }
