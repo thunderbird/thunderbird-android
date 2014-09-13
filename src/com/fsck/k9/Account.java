@@ -99,11 +99,11 @@ public class Account implements BaseAccount {
 	 * matter, it's the order in which they will be picked.
 	 */
 	public static final Integer[] PREDEFINED_COLORS = new Integer[] {
-			Color.parseColor("#0099CC"), // blue
-			Color.parseColor("#669900"), // green
-			Color.parseColor("#FF8800"), // orange
-			Color.parseColor("#CC0000"), // red
-			Color.parseColor("#9933CC") // purple
+			Color.parseColor("#2093cd"), // blue
+			Color.parseColor("#67bf74"), // green
+			Color.parseColor("#f58559"), // orange
+			Color.parseColor("#f16364"), // red
+			Color.parseColor("#ad62a7") // purple
 	};
 
 	public enum SortType {
