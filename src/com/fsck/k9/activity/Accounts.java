@@ -561,7 +561,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
 
-    private void refresh() {
+    void refresh() {
         accounts = Preferences.getPreferences(this).getAccounts();
 
         // see if we should show the welcome message
@@ -699,7 +699,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      *         {@code null}.
      *         <p><strong>Note:</strong> Calling this method will modify the supplied list.</p>
      */
-    private void promptForServerPasswords(final List<Account> disabledAccounts) {
+    void promptForServerPasswords(final List<Account> disabledAccounts) {
         Account account = disabledAccounts.remove(0);
         PasswordPromptDialog dialog = new PasswordPromptDialog(account, disabledAccounts);
         setNonConfigurationInstance(dialog);
@@ -1416,7 +1416,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
     }
 
-    private void onImport() {
+    void onImport() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("*/*");
@@ -1730,7 +1730,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      *         The {@link NonConfigurationInstance} that should be retained when
      *         {@link Accounts#onRetainNonConfigurationInstance()} is called.
      */
-    private void setNonConfigurationInstance(NonConfigurationInstance inst) {
+    void setNonConfigurationInstance(NonConfigurationInstance inst) {
         mNonConfigurationInstance = inst;
     }
 

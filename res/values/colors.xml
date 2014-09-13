@@ -2,6 +2,18 @@
 <resources>
     <color name="message_list_item_footer_background">#eeeeee</color>
     
+    <color name="list_item_title">#fff</color>
+    <color name="list_background">#303030</color>
+    <color name="list_background_pressed">#992416</color>
+    <color name="list_divider">#272727</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="black_text">#58585b</color>
+    <color name="black_text_secondairy">#262626</color>
+    <color name="grey_text">#777777</color>
+    
     <color name="openpgp_red">#CC0000</color>
     <color name="openpgp_orange">#FF8800</color>
     <color name="openpgp_green">#669900</color>
