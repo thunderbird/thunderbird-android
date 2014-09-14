@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#ffffff"
+            
             android:paddingTop="15dp"
                 android:paddingBottom="15dp">
 
@@ -39,7 +39,7 @@
                 android:maxLines="3"
                 android:ellipsize="end"
                 
-                android:textColor="@color/black_text"
+               
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/general_no_subject"
                 android:padding="8dp" />
@@ -112,7 +112,7 @@
                         android:paddingRight="6dip"
                         android:singleLine="true"
                         android:ellipsize="end"
-                       android:textColor="@color/black_text"
+                       
                         android:textSize="14sp"
                         
                         android:text="@string/general_no_sender" />
@@ -129,7 +129,7 @@
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:paddingTop="2dp"
-                        android:textColor="@color/black_text"
+                       
                         android:textSize="12sp" />
                     
                     <!-- CC -->
@@ -144,7 +144,7 @@
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:paddingTop="2dp"
-                       android:textColor="@color/black_text"
+                     
                         android:textSize="12sp" />
                     
                     <!-- Date -->
@@ -169,7 +169,7 @@
                         android:paddingTop="2dp"
                         android:text="@string/message_view_cc_label"
                        android:textSize="12sp"
-                        android:textColor="@color/black_text" />
+                     />
 
                     <TextView
                         android:id="@+id/to_label"
@@ -179,7 +179,7 @@
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
                         android:text="@string/message_to_label"
-                        android:textColor="@color/black_text"
+                       
                         android:textSize="12sp" />
 
                     <TextView
@@ -193,7 +193,7 @@
                         android:singleLine="true"
                         android:text="date"
                         android:textSize="12sp"
-                        android:textColor="@color/black_text" />
+                   />
 
                 </RelativeLayout>
 
@@ -209,7 +209,7 @@
                 android:layout_marginRight="6dip"
                 android:singleLine="false"
                 android:ellipsize="none"
-                android:textColor="@color/black_text"
+       
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textIsSelectable="true" />
 
@@ -221,7 +221,7 @@
         android:paddingRight="6dip"
         android:paddingTop="4dip"
         android:baselineAligned="false"
-        android:background="#ffffff" >
+         >
         
         <Button
             android:id="@+id/show_pictures"

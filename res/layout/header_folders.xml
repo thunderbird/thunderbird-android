@@ -12,6 +12,6 @@
        android:paddingTop="23dp"
         android:textSize="14sp"
         android:text="ALL FOLDERS"
-        android:textColor="@color/black_text"/>
+        />
 
 </LinearLayout>

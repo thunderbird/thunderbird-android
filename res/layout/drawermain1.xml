@@ -1,79 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff" >
- 
+    android:background="?messageViewHeaderBackgroundColor"
+     >
+
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" 
-         android:background="@color/white"
-        >
-		<com.fsck.k9.view.ViewSwitcher 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-     
-        android:background="@color/white">
+        android:layout_height="match_parent"
+        android:background="?messageViewHeaderBackgroundColor"
+         >
 
-    <FrameLayout
-        android:id="@+id/message_list_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
-       android:clickable="true"
-        android:background="@color/white"/>
+        <com.fsck.k9.view.ViewSwitcher
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+           android:background="?messageViewHeaderBackgroundColor"
+            >
 
-    <FrameLayout
-        android:id="@+id/message_view_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
-        android:clickable="true"
-        android:background="@color/white"/>
+            <FrameLayout
+                android:id="@+id/message_list_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+               android:background="?messageViewHeaderBackgroundColor"
+                android:clickable="true" />
 
-</com.fsck.k9.view.ViewSwitcher>
-        
+            <FrameLayout
+                android:id="@+id/message_view_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="?messageViewHeaderBackgroundColor"
+                android:clickable="true" />
+        </com.fsck.k9.view.ViewSwitcher>
     </FrameLayout>
- 
-    
-  
- 
-    <LinearLayout
-    android:id="@+id/left_drawer"
-    android:layout_height="match_parent"
-    android:layout_width="320dp"
-    android:orientation="vertical"
-    android:layout_gravity="start"
-    android:background="#ffffff" 
-    android:clickable="true">
-    
- 
-    
-    
-    <ListView
-        android:id="@android:id/list"
-       android:layout_weight="1"
-        android:layout_height="wrap_content" 
-        android:layout_width="320dp"
-    android:orientation="vertical"
-    android:layout_gravity="start"
-    android:background="#ffffff"
-        android:minHeight="64dip"
-       
-        android:choiceMode="singleChoice"
-        android:dividerHeight="1px"
-	android:divider="#d0d0d0"     
-        android:listSelector="@drawable/list_selector"
-        />
- 
-    
-     
-    
-   </LinearLayout>
 
-  
-    
+    <LinearLayout
+        android:id="@+id/left_drawer"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="?messageViewHeaderBackgroundColor"
+        android:clickable="true"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:background="?messageViewHeaderBackgroundColor"
+            android:choiceMode="singleChoice"
+            android:divider="#d0d0d0"
+            android:dividerHeight="1px"
+            android:listSelector="@drawable/list_selector"
+            android:minHeight="64dip"
+            android:orientation="vertical" />
+    </LinearLayout>
+
 </android.support.v4.widget.DrawerLayout>
