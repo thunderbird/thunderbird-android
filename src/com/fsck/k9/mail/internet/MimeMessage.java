@@ -25,6 +25,7 @@ import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.util.MimeUtil;
 
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -64,20 +65,6 @@ public class MimeMessage extends Message {
 
     /**
      * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
-     * Nested messages will not be recursively parsed.
-     *
-     * @param in
-     * @throws IOException
-     * @throws MessagingException
-     *
-     * @see #MimeMessage(InputStream in, boolean recurse)
-     */
-    public MimeMessage(InputStream in) throws IOException, MessagingException {
-        parse(in);
-    }
-
-    /**
-     * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
      *
      * @param in
      * @param recurse A boolean indicating to recurse through all nested MimeMessage subparts.
@@ -88,11 +75,15 @@ public class MimeMessage extends Message {
         parse(in, recurse);
     }
 
-     protected void parse(InputStream in) throws IOException, MessagingException {
+    /**
+     * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
+     * Does not recurse through nested bodyparts.
+     */
+    public final void parse(InputStream in) throws IOException, MessagingException {
         parse(in, false);
     }
 
-    protected void parse(InputStream in, boolean recurse) throws IOException, MessagingException {
+    private void parse(InputStream in, boolean recurse) throws IOException, MessagingException {
         mHeader.clear();
         mFrom = null;
         mTo = null;
@@ -121,8 +112,8 @@ public class MimeMessage extends Message {
         try {
             parser.parse(new EOLConvertingInputStream(in));
         } catch (MimeException me) {
+            //TODO wouldn't a MessagingException be better?
             throw new Error(me);
-
         }
     }
 
@@ -482,7 +473,7 @@ public class MimeMessage extends Message {
         }
     }
 
-    class MimeMessageBuilder implements ContentHandler {
+    private class MimeMessageBuilder implements ContentHandler {
         private final LinkedList<Object> stack = new LinkedList<Object>();
 
         public MimeMessageBuilder() {
@@ -518,9 +509,6 @@ public class MimeMessage extends Message {
         public void startHeader() {
             expect(Part.class);
         }
-
-
-
 
         public void endHeader() {
             expect(Part.class);
@@ -571,16 +559,6 @@ public class MimeMessage extends Message {
             stack.removeFirst();
         }
 
-        public void epilogue(InputStream is) throws IOException {
-            expect(MimeMultipart.class);
-            StringBuilder sb = new StringBuilder();
-            int b;
-            while ((b = is.read()) != -1) {
-                sb.append((char)b);
-            }
-            // ((Multipart) stack.peek()).setEpilogue(sb.toString());
-        }
-
         public void preamble(InputStream is) throws IOException {
             expect(MimeMultipart.class);
             StringBuilder sb = new StringBuilder();
@@ -589,7 +567,9 @@ public class MimeMessage extends Message {
                 sb.append((char)b);
             }
             ((MimeMultipart)stack.peek()).setPreamble(sb.toString());
+        }
 
+        public void epilogue(InputStream is) throws IOException {
         }
 
         public void raw(InputStream is) throws IOException {
