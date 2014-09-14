@@ -20,9 +20,8 @@ import org.apache.james.mime4j.util.MimeUtil;
  * Message.
  */
 public class MimeBodyPart extends BodyPart {
-    protected MimeHeader mHeader = new MimeHeader();
+    protected final MimeHeader mHeader = new MimeHeader();
     protected Body mBody;
-    protected int mSize;
 
     public MimeBodyPart() throws MessagingException {
         this(null);
@@ -123,10 +122,6 @@ public class MimeBodyPart extends BodyPart {
 
     public boolean isMimeType(String mimeType) throws MessagingException {
         return getMimeType().equalsIgnoreCase(mimeType);
-    }
-
-    public int getSize() {
-        return mSize;
     }
 
     /**

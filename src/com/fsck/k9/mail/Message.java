@@ -45,6 +45,7 @@ public abstract class Message implements Part, CompositeBody {
         }
         return false;
     }
+    
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Message)) {
@@ -143,6 +144,8 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract String getPreview();
     public abstract boolean hasAttachments();
+
+    public abstract int getSize();
 
     /*
      * calculateContentPreview

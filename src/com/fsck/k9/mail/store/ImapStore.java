@@ -1834,7 +1834,7 @@ public class ImapStore extends Store {
                          * For each part in the message we're going to add a new BodyPart and parse
                          * into it.
                          */
-                        ImapBodyPart bp = new ImapBodyPart();
+                        MimeBodyPart bp = new MimeBodyPart();
                         if (id.equalsIgnoreCase("TEXT")) {
                             parseBodyStructure(bs.getList(i), bp, Integer.toString(i + 1));
                         } else {
@@ -1970,10 +1970,6 @@ public class ImapStore extends Store {
 
                 if (part instanceof ImapMessage) {
                     ((ImapMessage) part).setSize(size);
-                } else if (part instanceof ImapBodyPart) {
-                    ((ImapBodyPart) part).setSize(size);
-                } else {
-                    throw new MessagingException("Unknown part type " + part.toString());
                 }
                 part.setHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA, id);
             }
@@ -2931,11 +2927,6 @@ public class ImapStore extends Store {
             this.mSize = size;
         }
 
-        @Override
-        public void parse(InputStream in) throws IOException, MessagingException {
-            super.parse(in);
-        }
-
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
         }
@@ -2950,16 +2941,6 @@ public class ImapStore extends Store {
         @Override
         public void delete(String trashFolderName) throws MessagingException {
             getFolder().delete(new Message[] { this }, trashFolderName);
-        }
-    }
-
-    static class ImapBodyPart extends MimeBodyPart {
-        public ImapBodyPart() throws MessagingException {
-            super();
-        }
-
-        public void setSize(int size) {
-            this.mSize = size;
         }
     }
 
