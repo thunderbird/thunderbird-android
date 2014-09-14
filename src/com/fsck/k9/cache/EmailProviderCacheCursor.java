@@ -3,145 +3,142 @@ package com.fsck.k9.cache;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fsck.k9.provider.EmailProvider.MessageColumns;
+import com.fsck.k9.provider.EmailProvider.ThreadColumns;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorWrapper;
-
-import com.fsck.k9.provider.EmailProvider.MessageColumns;
-import com.fsck.k9.provider.EmailProvider.ThreadColumns;
 
 /**
  * A {@link CursorWrapper} that utilizes {@link EmailProviderCache}.
  */
 public class EmailProviderCacheCursor extends CursorWrapper {
-	private EmailProviderCache mCache;
-	private List<Integer> mHiddenRows = new ArrayList<Integer>();
-	private int mMessageIdColumn;
-	private int mFolderIdColumn;
-	private int mThreadRootColumn;
+    private EmailProviderCache mCache;
+    private List<Integer> mHiddenRows = new ArrayList<Integer>();
+    private int mMessageIdColumn;
+    private int mFolderIdColumn;
+    private int mThreadRootColumn;
 
-	/**
-	 * The cursor's current position.
-	 * 
-	 * Note: This is only used when {@link #mHiddenRows} isn't empty.
-	 */
-	private int mPosition;
+    /**
+     * The cursor's current position.
+     *
+     * Note: This is only used when {@link #mHiddenRows} isn't empty.
+     */
+    private int mPosition;
 
-	public EmailProviderCacheCursor(String accountUuid, Cursor cursor,
-			Context context) {
-		super(cursor);
 
-		mCache = EmailProviderCache.getCache(accountUuid, context);
+    public EmailProviderCacheCursor(String accountUuid, Cursor cursor, Context context) {
+        super(cursor);
 
-		mMessageIdColumn = cursor.getColumnIndex(MessageColumns.ID);
-		mFolderIdColumn = cursor.getColumnIndex(MessageColumns.FOLDER_ID);
-		mThreadRootColumn = cursor.getColumnIndex(ThreadColumns.ROOT);
+        mCache = EmailProviderCache.getCache(accountUuid, context);
 
-		if (mMessageIdColumn == -1 || mFolderIdColumn == -1
-				|| mThreadRootColumn == -1) {
-			throw new IllegalArgumentException(
-					"The supplied cursor needs to contain the "
-							+ "following columns: " + MessageColumns.ID + ", "
-							+ MessageColumns.FOLDER_ID + ", "
-							+ ThreadColumns.ROOT);
-		}
+        mMessageIdColumn = cursor.getColumnIndex(MessageColumns.ID);
+        mFolderIdColumn = cursor.getColumnIndex(MessageColumns.FOLDER_ID);
+        mThreadRootColumn = cursor.getColumnIndex(ThreadColumns.ROOT);
 
-		while (cursor.moveToNext()) {
-			long messageId = cursor.getLong(mMessageIdColumn);
-			long folderId = cursor.getLong(mFolderIdColumn);
-			if (mCache.isMessageHidden(messageId, folderId)) {
-				mHiddenRows.add(cursor.getPosition());
-			}
-		}
+        if (mMessageIdColumn == -1 || mFolderIdColumn == -1 || mThreadRootColumn == -1) {
+            throw new IllegalArgumentException("The supplied cursor needs to contain the " +
+                    "following columns: " + MessageColumns.ID + ", " + MessageColumns.FOLDER_ID +
+                    ", " + ThreadColumns.ROOT);
+        }
 
-		// Reset the cursor position
-		cursor.moveToFirst();
-		cursor.moveToPrevious();
-	}
+        while (cursor.moveToNext()) {
+            long messageId = cursor.getLong(mMessageIdColumn);
+            long folderId = cursor.getLong(mFolderIdColumn);
+            if (mCache.isMessageHidden(messageId, folderId)) {
+                mHiddenRows.add(cursor.getPosition());
+            }
+        }
 
-	@Override
-	public int getInt(int columnIndex) {
-		long messageId = getLong(mMessageIdColumn);
-		long threadRootId = getLong(mThreadRootColumn);
+        // Reset the cursor position
+        cursor.moveToFirst();
+        cursor.moveToPrevious();
+    }
 
-		String columnName = getColumnName(columnIndex);
-		String value = mCache.getValueForMessage(messageId, columnName);
+    @Override
+    public int getInt(int columnIndex) {
+        long messageId = getLong(mMessageIdColumn);
+        long threadRootId = getLong(mThreadRootColumn);
 
-		if (value != null) {
-			return Integer.valueOf(value);
-		}
+        String columnName = getColumnName(columnIndex);
+        String value = mCache.getValueForMessage(messageId, columnName);
 
-		value = mCache.getValueForThread(threadRootId, columnName);
-		if (value != null) {
-			return Integer.valueOf(value);
-		}
+        if (value != null) {
+            return Integer.valueOf(value);
+        }
 
-		return super.getInt(columnIndex);
-	}
+        value = mCache.getValueForThread(threadRootId, columnName);
+        if (value != null) {
+            return Integer.valueOf(value);
+        }
 
-	@Override
-	public int getCount() {
-		return super.getCount() - mHiddenRows.size();
-	}
+        return super.getInt(columnIndex);
+    }
 
-	@Override
-	public boolean moveToFirst() {
-		return moveToPosition(0);
-	}
+    @Override
+    public int getCount() {
+        return super.getCount() - mHiddenRows.size();
+    }
 
-	@Override
-	public boolean moveToLast() {
-		return moveToPosition(getCount());
-	}
+    @Override
+    public boolean moveToFirst() {
+        return moveToPosition(0);
+    }
 
-	@Override
-	public boolean moveToNext() {
-		return moveToPosition(getPosition() + 1);
-	}
+    @Override
+    public boolean moveToLast() {
+        return moveToPosition(getCount());
+    }
 
-	@Override
-	public boolean moveToPrevious() {
-		return moveToPosition(getPosition() - 1);
-	}
+    @Override
+    public boolean moveToNext() {
+        return moveToPosition(getPosition() + 1);
+    }
 
-	@Override
-	public boolean move(int offset) {
-		return moveToPosition(getPosition() + offset);
-	}
+    @Override
+    public boolean moveToPrevious() {
+        return moveToPosition(getPosition() - 1);
+    }
 
-	@Override
-	public boolean moveToPosition(int position) {
-		if (mHiddenRows.size() == 0) {
-			return super.moveToPosition(position);
-		}
+    @Override
+    public boolean move(int offset) {
+        return moveToPosition(getPosition() + offset);
+    }
 
-		mPosition = position;
-		int newPosition = position;
-		for (int hiddenRow : mHiddenRows) {
-			if (hiddenRow > newPosition) {
-				break;
-			}
-			newPosition++;
-		}
+    @Override
+    public boolean moveToPosition(int position) {
+        if (mHiddenRows.size() == 0) {
+            return super.moveToPosition(position);
+        }
 
-		return super.moveToPosition(newPosition);
-	}
+        mPosition = position;
+        int newPosition = position;
+        for (int hiddenRow : mHiddenRows) {
+            if (hiddenRow > newPosition) {
+                break;
+            }
+            newPosition++;
+        }
 
-	@Override
-	public int getPosition() {
-		if (mHiddenRows.size() == 0) {
-			return super.getPosition();
-		}
+        return super.moveToPosition(newPosition);
+    }
 
-		return mPosition;
-	}
+    @Override
+    public int getPosition() {
+        if (mHiddenRows.size() == 0) {
+            return super.getPosition();
+        }
 
-	@Override
-	public boolean isLast() {
-		if (mHiddenRows.isEmpty()) {
-			return super.isLast();
-		}
+        return mPosition;
+    }
 
-		return (mPosition == getCount() - 1);
-	}
+    @Override
+    public boolean isLast() {
+        if (mHiddenRows.isEmpty()) {
+            return super.isLast();
+        }
+
+        return (mPosition == getCount() - 1);
+    }
 }

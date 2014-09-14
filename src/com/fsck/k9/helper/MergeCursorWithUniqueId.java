@@ -4,83 +4,80 @@ import java.util.Comparator;
 
 import android.database.Cursor;
 
+
 public class MergeCursorWithUniqueId extends MergeCursor {
-	private static final int SHIFT = 48;
-	private static final long MAX_ID = (1L << SHIFT) - 1;
-	private static final long MAX_CURSORS = 1L << (63 - SHIFT);
+    private static final int SHIFT = 48;
+    private static final long MAX_ID = (1L << SHIFT) - 1;
+    private static final long MAX_CURSORS = 1L << (63 - SHIFT);
 
-	private int mColumnCount = -1;
-	private int mIdColumnIndex = -1;
+    private int mColumnCount = -1;
+    private int mIdColumnIndex = -1;
 
-	public MergeCursorWithUniqueId(Cursor[] cursors,
-			Comparator<Cursor> comparator) {
-		super(cursors, comparator);
 
-		if (cursors.length > MAX_CURSORS) {
-			throw new IllegalArgumentException(
-					"This class only supports up to " + MAX_CURSORS
-							+ " cursors");
-		}
-	}
+    public MergeCursorWithUniqueId(Cursor[] cursors, Comparator<Cursor> comparator) {
+        super(cursors, comparator);
 
-	@Override
-	public int getColumnCount() {
-		if (mColumnCount == -1) {
-			mColumnCount = super.getColumnCount();
-		}
+        if (cursors.length > MAX_CURSORS) {
+            throw new IllegalArgumentException("This class only supports up to " +
+                    MAX_CURSORS + " cursors");
+        }
+    }
 
-		return mColumnCount + 1;
-	}
+    @Override
+    public int getColumnCount() {
+        if (mColumnCount == -1) {
+            mColumnCount = super.getColumnCount();
+        }
 
-	@Override
-	public int getColumnIndex(String columnName) {
-		if ("_id".equals(columnName)) {
-			return getUniqueIdColumnIndex();
-		}
+        return mColumnCount + 1;
+    }
 
-		return super.getColumnIndexOrThrow(columnName);
-	}
+    @Override
+    public int getColumnIndex(String columnName) {
+        if ("_id".equals(columnName)) {
+            return getUniqueIdColumnIndex();
+        }
 
-	@Override
-	public int getColumnIndexOrThrow(String columnName)
-			throws IllegalArgumentException {
-		if ("_id".equals(columnName)) {
-			return getUniqueIdColumnIndex();
-		}
+        return super.getColumnIndexOrThrow(columnName);
+    }
 
-		return super.getColumnIndexOrThrow(columnName);
-	}
+    @Override
+    public int getColumnIndexOrThrow(String columnName) throws IllegalArgumentException {
+        if ("_id".equals(columnName)) {
+            return getUniqueIdColumnIndex();
+        }
 
-	@Override
-	public long getLong(int columnIndex) {
-		if (columnIndex == getUniqueIdColumnIndex()) {
-			long id = getPerCursorId();
-			if (id > MAX_ID) {
-				throw new RuntimeException("Sorry, "
-						+ this.getClass().getName()
-						+ " can only handle '_id' values up to " + SHIFT
-						+ " bits.");
-			}
+        return super.getColumnIndexOrThrow(columnName);
+    }
 
-			return (((long) mActiveCursorIndex) << SHIFT) + id;
-		}
+    @Override
+    public long getLong(int columnIndex) {
+        if (columnIndex == getUniqueIdColumnIndex()) {
+            long id = getPerCursorId();
+            if (id > MAX_ID) {
+                throw new RuntimeException("Sorry, " + this.getClass().getName() +
+                        " can only handle '_id' values up to " + SHIFT + " bits.");
+            }
 
-		return super.getLong(columnIndex);
-	}
+            return (((long) mActiveCursorIndex) << SHIFT) + id;
+        }
 
-	protected int getUniqueIdColumnIndex() {
-		if (mColumnCount == -1) {
-			mColumnCount = super.getColumnCount();
-		}
+        return super.getLong(columnIndex);
+    }
 
-		return mColumnCount;
-	}
+    protected int getUniqueIdColumnIndex() {
+        if (mColumnCount == -1) {
+            mColumnCount = super.getColumnCount();
+        }
 
-	protected long getPerCursorId() {
-		if (mIdColumnIndex == -1) {
-			mIdColumnIndex = super.getColumnIndexOrThrow("_id");
-		}
+        return mColumnCount;
+    }
 
-		return super.getLong(mIdColumnIndex);
-	}
+    protected long getPerCursorId() {
+        if (mIdColumnIndex == -1) {
+            mIdColumnIndex = super.getColumnIndexOrThrow("_id");
+        }
+
+        return super.getLong(mIdColumnIndex);
+    }
 }

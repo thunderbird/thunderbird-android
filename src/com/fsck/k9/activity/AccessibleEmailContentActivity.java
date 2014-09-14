@@ -17,7 +17,6 @@
 package com.fsck.k9.activity;
 
 import java.util.ArrayList;
-
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -25,54 +24,53 @@ import android.text.Spanned;
 import android.widget.ArrayAdapter;
 
 public class AccessibleEmailContentActivity extends ListActivity {
-	/**
-	 * Immutable empty String array
-	 */
-	private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    /**
+     * Immutable empty String array
+     */
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-	/**
-	 * Called when the activity is first created.
-	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    /**
+     * Called when the activity is first created.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		String htmlSource = getIntent().getStringExtra("content");
-		Spanned parsedHtml = Html.fromHtml(htmlSource, null, null);
-		String[] rawListItems = parsedHtml.toString().split("\n");
+        String htmlSource = getIntent().getStringExtra("content");
+        Spanned parsedHtml = Html.fromHtml(htmlSource, null, null);
+        String[] rawListItems = parsedHtml.toString().split("\n");
 
-		ArrayList<String> cleanedList = new ArrayList<String>();
-		for (String rawListItem : rawListItems) {
-			if (rawListItem.trim().length() > 0) {
-				addToCleanedList(cleanedList, rawListItem);
-			}
-		}
+        ArrayList<String> cleanedList = new ArrayList<String>();
+        for (String rawListItem : rawListItems) {
+            if (rawListItem.trim().length() > 0) {
+                addToCleanedList(cleanedList, rawListItem);
+            }
+        }
 
-		String[] listItems = cleanedList.toArray(EMPTY_STRING_ARRAY);
+        String[] listItems = cleanedList.toArray(EMPTY_STRING_ARRAY);
 
-		setContentView(com.fsck.k9.R.layout.accessible_email_content);
-		setListAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, listItems));
-	}
+        setContentView(com.fsck.k9.R.layout.accessible_email_content);
+        setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems));
+    }
 
-	private void addToCleanedList(ArrayList<String> cleanedList, String line) {
-		if (line.length() < 80) {
-			cleanedList.add(line);
-		} else {
-			while (line.length() > 80) {
-				int cutPoint = line.indexOf(" ", 80);
-				if ((cutPoint > 0) && (cutPoint < line.length())) {
-					cleanedList.add(line.substring(0, cutPoint));
-					line = line.substring(cutPoint).trim();
-				} else {
-					cleanedList.add(line);
-					line = "";
-				}
-			}
-			if (line.length() > 0) {
-				cleanedList.add(line);
-			}
-		}
-	}
+    private void addToCleanedList(ArrayList<String> cleanedList, String line) {
+        if (line.length() < 80) {
+            cleanedList.add(line);
+        } else {
+            while (line.length() > 80) {
+                int cutPoint = line.indexOf(" ", 80);
+                if ((cutPoint > 0) && (cutPoint < line.length())) {
+                    cleanedList.add(line.substring(0, cutPoint));
+                    line = line.substring(cutPoint).trim();
+                } else {
+                    cleanedList.add(line);
+                    line = "";
+                }
+            }
+            if (line.length() > 0) {
+                cleanedList.add(line);
+            }
+        }
+    }
 
 }

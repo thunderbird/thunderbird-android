@@ -19,220 +19,212 @@ import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 
 /**
- * Service used to upgrade the accounts' databases and/or track the progress of
- * the upgrade.
- * 
+ * Service used to upgrade the accounts' databases and/or track the progress of the upgrade.
+ *
  * <p>
- * See {@link UpgradeDatabases} for a detailed explanation of the database
- * upgrade process.
+ * See {@link UpgradeDatabases} for a detailed explanation of the database upgrade process.
  * </p>
  */
 public class DatabaseUpgradeService extends Service {
-	/**
-	 * Broadcast intent reporting the current progress of the database upgrade.
-	 * 
-	 * <p>
-	 * Extras:
-	 * </p>
-	 * <ul>
-	 * <li>{@link #EXTRA_ACCOUNT_UUID}</li>
-	 * <li>{@link #EXTRA_PROGRESS}</li>
-	 * <li>{@link #EXTRA_PROGRESS_END}</li>
-	 * </ul>
-	 */
-	public static final String ACTION_UPGRADE_PROGRESS = "DatabaseUpgradeService.upgradeProgress";
+    /**
+     * Broadcast intent reporting the current progress of the database upgrade.
+     *
+     * <p>Extras:</p>
+     * <ul>
+     * <li>{@link #EXTRA_ACCOUNT_UUID}</li>
+     * <li>{@link #EXTRA_PROGRESS}</li>
+     * <li>{@link #EXTRA_PROGRESS_END}</li>
+     * </ul>
+     */
+    public static final String ACTION_UPGRADE_PROGRESS = "DatabaseUpgradeService.upgradeProgress";
 
-	/**
-	 * Broadcast intent sent when the upgrade has been completed.
-	 */
-	public static final String ACTION_UPGRADE_COMPLETE = "DatabaseUpgradeService.upgradeComplete";
+    /**
+     * Broadcast intent sent when the upgrade has been completed.
+     */
+    public static final String ACTION_UPGRADE_COMPLETE = "DatabaseUpgradeService.upgradeComplete";
 
-	/**
-	 * UUID of the account whose database is currently being upgraded.
-	 */
-	public static final String EXTRA_ACCOUNT_UUID = "account_uuid";
+    /**
+     * UUID of the account whose database is currently being upgraded.
+     */
+    public static final String EXTRA_ACCOUNT_UUID = "account_uuid";
 
-	/**
-	 * The current progress.
-	 * 
-	 * <p>
-	 * Integer from {@code 0} (inclusive) to the value in
-	 * {@link #EXTRA_PROGRESS_END} (exclusive).
-	 * </p>
-	 */
-	public static final String EXTRA_PROGRESS = "progress";
+    /**
+     * The current progress.
+     *
+     * <p>Integer from {@code 0} (inclusive) to the value in {@link #EXTRA_PROGRESS_END}
+     * (exclusive).</p>
+     */
+    public static final String EXTRA_PROGRESS = "progress";
 
-	/**
-	 * Number of items that will be upgraded.
-	 * 
-	 * <p>
-	 * Currently this is the number of accounts.
-	 * </p>
-	 */
-	public static final String EXTRA_PROGRESS_END = "progress_end";
+    /**
+     * Number of items that will be upgraded.
+     *
+     * <p>Currently this is the number of accounts.</p>
+     */
+    public static final String EXTRA_PROGRESS_END = "progress_end";
 
-	/**
-	 * Action used to start this service.
-	 */
-	private static final String ACTION_START_SERVICE = "com.fsck.k9.service.DatabaseUpgradeService.startService";
 
-	private static final String WAKELOCK_TAG = "DatabaseUpgradeService";
-	private static final long WAKELOCK_TIMEOUT = 10 * 60 * 1000; // 10 minutes
+    /**
+     * Action used to start this service.
+     */
+    private static final String ACTION_START_SERVICE =
+            "com.fsck.k9.service.DatabaseUpgradeService.startService";
 
-	/**
-	 * Start {@link DatabaseUpgradeService}.
-	 * 
-	 * @param context
-	 *            The {@link Context} used to start this service.
-	 */
-	public static void startService(Context context) {
-		Intent i = new Intent();
-		i.setClass(context, DatabaseUpgradeService.class);
-		i.setAction(DatabaseUpgradeService.ACTION_START_SERVICE);
-		context.startService(i);
-	}
+    private static final String WAKELOCK_TAG = "DatabaseUpgradeService";
+    private static final long WAKELOCK_TIMEOUT = 10 * 60 * 1000;    // 10 minutes
 
-	/**
-	 * Stores whether or not this service was already running when
-	 * {@link #onStartCommand(Intent, int, int)} is executed.
-	 */
-	private AtomicBoolean mRunning = new AtomicBoolean(false);
 
-	private LocalBroadcastManager mLocalBroadcastManager;
+    /**
+     * Start {@link DatabaseUpgradeService}.
+     *
+     * @param context
+     *         The {@link Context} used to start this service.
+     */
+    public static void startService(Context context) {
+        Intent i = new Intent();
+        i.setClass(context, DatabaseUpgradeService.class);
+        i.setAction(DatabaseUpgradeService.ACTION_START_SERVICE);
+        context.startService(i);
+    }
 
-	private String mAccountUuid;
-	private int mProgress;
-	private int mProgressEnd;
 
-	private TracingWakeLock mWakeLock;
+    /**
+     * Stores whether or not this service was already running when
+     * {@link #onStartCommand(Intent, int, int)} is executed.
+     */
+    private AtomicBoolean mRunning = new AtomicBoolean(false);
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		// unused
-		return null;
-	}
+    private LocalBroadcastManager mLocalBroadcastManager;
 
-	@Override
-	public void onCreate() {
-		mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
-	}
+    private String mAccountUuid;
+    private int mProgress;
+    private int mProgressEnd;
 
-	@Override
-	public final int onStartCommand(Intent intent, int flags, int startId) {
-		boolean success = mRunning.compareAndSet(false, true);
-		if (success) {
-			// The service wasn't running yet.
+    private TracingWakeLock mWakeLock;
 
-			if (K9.DEBUG) {
-				Log.i(K9.LOG_TAG, "DatabaseUpgradeService started");
-			}
 
-			acquireWakelock();
+    @Override
+    public IBinder onBind(Intent intent) {
+        // unused
+        return null;
+    }
 
-			startUpgradeInBackground();
-		} else {
-			// We're already running, so don't start the upgrade process again.
-			// But send the current
-			// progress via broadcast.
-			sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);
-		}
+    @Override
+    public void onCreate() {
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
+    }
 
-		return START_STICKY;
-	}
+    @Override
+    public final int onStartCommand(Intent intent, int flags, int startId) {
+        boolean success = mRunning.compareAndSet(false, true);
+        if (success) {
+            // The service wasn't running yet.
 
-	/**
-	 * Acquire a partial wake lock so the CPU won't go to sleep when the screen
-	 * is turned off.
-	 */
-	private void acquireWakelock() {
-		TracingPowerManager pm = TracingPowerManager.getPowerManager(this);
-		mWakeLock = pm
-				.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG);
-		mWakeLock.setReferenceCounted(false);
-		mWakeLock.acquire(WAKELOCK_TIMEOUT);
-	}
+            if (K9.DEBUG) {
+                Log.i(K9.LOG_TAG, "DatabaseUpgradeService started");
+            }
 
-	/**
-	 * Release the wake lock.
-	 */
-	private void releaseWakelock() {
-		mWakeLock.release();
-	}
+            acquireWakelock();
 
-	/**
-	 * Stop this service.
-	 */
-	private void stopService() {
-		stopSelf();
+            startUpgradeInBackground();
+        } else {
+            // We're already running, so don't start the upgrade process again. But send the current
+            // progress via broadcast.
+            sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);
+        }
 
-		if (K9.DEBUG) {
-			Log.i(K9.LOG_TAG, "DatabaseUpgradeService stopped");
-		}
+        return START_STICKY;
+    }
 
-		releaseWakelock();
-		mRunning.set(false);
-	}
+    /**
+     * Acquire a partial wake lock so the CPU won't go to sleep when the screen is turned off.
+     */
+    private void acquireWakelock() {
+        TracingPowerManager pm = TracingPowerManager.getPowerManager(this);
+        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG);
+        mWakeLock.setReferenceCounted(false);
+        mWakeLock.acquire(WAKELOCK_TIMEOUT);
+    }
 
-	/**
-	 * Start a background thread for upgrading the databases.
-	 */
-	private void startUpgradeInBackground() {
-		new Thread("DatabaseUpgradeService") {
-			@Override
-			public void run() {
-				upgradeDatabases();
-				stopService();
-			}
-		}.start();
-	}
+    /**
+     * Release the wake lock.
+     */
+    private void releaseWakelock() {
+        mWakeLock.release();
+    }
 
-	/**
-	 * Upgrade the accounts' databases.
-	 */
-	private void upgradeDatabases() {
-		Preferences preferences = Preferences.getPreferences(this);
+    /**
+     * Stop this service.
+     */
+    private void stopService() {
+        stopSelf();
 
-		Account[] accounts = preferences.getAccounts();
-		mProgressEnd = accounts.length;
-		mProgress = 0;
+        if (K9.DEBUG) {
+            Log.i(K9.LOG_TAG, "DatabaseUpgradeService stopped");
+        }
 
-		for (Account account : accounts) {
-			mAccountUuid = account.getUuid();
+        releaseWakelock();
+        mRunning.set(false);
+    }
 
-			sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);
+    /**
+     * Start a background thread for upgrading the databases.
+     */
+    private void startUpgradeInBackground() {
+        new Thread("DatabaseUpgradeService") {
+            @Override
+            public void run() {
+                upgradeDatabases();
+                stopService();
+            }
+        }.start();
+    }
 
-			try {
-				// Account.getLocalStore() is blocking and will upgrade the
-				// database if necessary
-				account.getLocalStore();
-			} catch (UnavailableStorageException e) {
-				Log.e(K9.LOG_TAG, "Database unavailable");
-			} catch (Exception e) {
-				Log.e(K9.LOG_TAG, "Error while upgrading database", e);
-			}
+    /**
+     * Upgrade the accounts' databases.
+     */
+    private void upgradeDatabases() {
+        Preferences preferences = Preferences.getPreferences(this);
 
-			mProgress++;
-		}
+        Account[] accounts = preferences.getAccounts();
+        mProgressEnd = accounts.length;
+        mProgress = 0;
 
-		K9.setDatabasesUpToDate(true);
-		sendUpgradeCompleteBroadcast();
-	}
+        for (Account account : accounts) {
+            mAccountUuid = account.getUuid();
 
-	private void sendProgressBroadcast(String accountUuid, int progress,
-			int progressEnd) {
-		Intent intent = new Intent();
-		intent.setAction(ACTION_UPGRADE_PROGRESS);
-		intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
-		intent.putExtra(EXTRA_PROGRESS, progress);
-		intent.putExtra(EXTRA_PROGRESS_END, progressEnd);
+            sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);
 
-		mLocalBroadcastManager.sendBroadcast(intent);
-	}
+            try {
+                // Account.getLocalStore() is blocking and will upgrade the database if necessary
+                account.getLocalStore();
+            } catch (UnavailableStorageException e) {
+                Log.e(K9.LOG_TAG, "Database unavailable");
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Error while upgrading database", e);
+            }
 
-	private void sendUpgradeCompleteBroadcast() {
-		Intent intent = new Intent();
-		intent.setAction(ACTION_UPGRADE_COMPLETE);
+            mProgress++;
+        }
 
-		mLocalBroadcastManager.sendBroadcast(intent);
-	}
+        K9.setDatabasesUpToDate(true);
+        sendUpgradeCompleteBroadcast();
+    }
+
+    private void sendProgressBroadcast(String accountUuid, int progress, int progressEnd) {
+        Intent intent = new Intent();
+        intent.setAction(ACTION_UPGRADE_PROGRESS);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
+        intent.putExtra(EXTRA_PROGRESS, progress);
+        intent.putExtra(EXTRA_PROGRESS_END, progressEnd);
+
+        mLocalBroadcastManager.sendBroadcast(intent);
+    }
+
+    private void sendUpgradeCompleteBroadcast() {
+        Intent intent = new Intent();
+        intent.setAction(ACTION_UPGRADE_COMPLETE);
+
+        mLocalBroadcastManager.sendBroadcast(intent);
+    }
 }

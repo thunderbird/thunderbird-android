@@ -1,5 +1,12 @@
 package com.fsck.k9.activity;
 
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.service.DatabaseUpgradeService;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,229 +17,206 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.widget.TextView;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.service.DatabaseUpgradeService;
 
 /**
- * This activity triggers a database upgrade if necessary and displays the
- * current upgrade progress.
- * 
+ * This activity triggers a database upgrade if necessary and displays the current upgrade progress.
+ *
  * <p>
  * The current upgrade process works as follows:
  * <ol>
  * <li>Activities that access an account's database call
- * {@link #actionUpgradeDatabases(Context, Intent)} in their
- * {@link Activity#onCreate(Bundle)} method.</li>
- * <li>{@link #actionUpgradeDatabases(Context, Intent)} will call
- * {@link K9#areDatabasesUpToDate()} to check if we already know whether the
- * databases have been upgraded.</li>
- * <li>{@link K9#areDatabasesUpToDate()} will compare the last known database
- * version stored in a {@link SharedPreferences} file to
- * {@link com.fsck.k9.mail.store.LocalStore#DB_VERSION}. This is done as an
- * optimization because it's faster than opening all of the accounts' databases
- * one by one.</li>
- * <li>If there was an error reading the cached database version or if it shows
- * the databases need upgrading this activity ({@code UpgradeDatabases}) is
- * started.</li>
+ *     {@link #actionUpgradeDatabases(Context, Intent)} in their {@link Activity#onCreate(Bundle)}
+ *     method.</li>
+ * <li>{@link #actionUpgradeDatabases(Context, Intent)} will call {@link K9#areDatabasesUpToDate()}
+ *     to check if we already know whether the databases have been upgraded.</li>
+ * <li>{@link K9#areDatabasesUpToDate()} will compare the last known database version stored in a
+ *     {@link SharedPreferences} file to {@link com.fsck.k9.mail.store.LocalStore#DB_VERSION}. This
+ *     is done as an optimization because it's faster than opening all of the accounts' databases
+ *     one by one.</li>
+ * <li>If there was an error reading the cached database version or if it shows the databases need
+ *     upgrading this activity ({@code UpgradeDatabases}) is started.</li>
  * <li>This activity will display a spinning progress indicator and start
- * {@link DatabaseUpgradeService}.</li>
- * <li>{@link DatabaseUpgradeService} will acquire a partial wake lock (with a
- * 10 minute timeout), start a background thread to perform the database
- * upgrades, and report the progress using {@link LocalBroadcastManager} to this
- * activity which will update the UI accordingly.</li>
- * <li>Once the upgrade is complete {@link DatabaseUpgradeService} will notify
- * this activity, release the wake lock, and stop itself.</li>
- * <li>This activity will start the original activity using the intent supplied
- * when calling {@link #actionUpgradeDatabases(Context, Intent)}.</li>
+ *     {@link DatabaseUpgradeService}.</li>
+ * <li>{@link DatabaseUpgradeService} will acquire a partial wake lock (with a 10 minute timeout),
+ *     start a background thread to perform the database upgrades, and report the progress using
+ *     {@link LocalBroadcastManager} to this activity which will update the UI accordingly.</li>
+ * <li>Once the upgrade is complete {@link DatabaseUpgradeService} will notify this activity,
+ *     release the wake lock, and stop itself.</li>
+ * <li>This activity will start the original activity using the intent supplied when calling
+ *     {@link #actionUpgradeDatabases(Context, Intent)}.</li>
  * </ol>
- * </p>
- * <p>
- * Currently we make no attempts to stop the background code (e.g.
- * {@link MessagingController}) from opening the accounts' databases. If this
- * happens the upgrade is performed in one of the background threads and not by
- * {@link DatabaseUpgradeService}. But this is not a problem. Due to the locking
- * in {@link Store#getLocalInstance(Account, android.app.Application)} the
- * upgrade service will block in the {@link Account#getLocalStore()} call and
- * from the outside (especially for this activity) it will appear as if
- * {@link DatabaseUpgradeService} is performing the upgrade.
+ * </p><p>
+ * Currently we make no attempts to stop the background code (e.g. {@link MessagingController}) from
+ * opening the accounts' databases. If this happens the upgrade is performed in one of the
+ * background threads and not by {@link DatabaseUpgradeService}. But this is not a problem. Due to
+ * the locking in {@link Store#getLocalInstance(Account, android.app.Application)} the upgrade
+ * service will block in the {@link Account#getLocalStore()} call and from the outside (especially
+ * for this activity) it will appear as if {@link DatabaseUpgradeService} is performing the upgrade.
  * </p>
  */
 public class UpgradeDatabases extends K9Activity {
-	private static final String ACTION_UPGRADE_DATABASES = "upgrade_databases";
-	private static final String EXTRA_START_INTENT = "start_intent";
+    private static final String ACTION_UPGRADE_DATABASES = "upgrade_databases";
+    private static final String EXTRA_START_INTENT = "start_intent";
 
-	/**
-	 * Start the {@link UpgradeDatabases} activity if necessary.
-	 * 
-	 * @param context
-	 *            The {@link Context} used to start the activity.
-	 * @param startIntent
-	 *            After the database upgrade is complete an activity is started
-	 *            using this intent. Usually this is the intent that was used to
-	 *            start the calling activity. Never {@code null}.
-	 * 
-	 * @return {@code true}, if the {@code UpgradeDatabases} activity was
-	 *         started. In this case the calling activity is expected to finish
-	 *         itself.<br>
-	 *         {@code false}, if the account databases don't need upgrading.
-	 */
-	public static boolean actionUpgradeDatabases(Context context,
-			Intent startIntent) {
-		if (K9.areDatabasesUpToDate()) {
-			return false;
-		}
 
-		Intent intent = new Intent(context, UpgradeDatabases.class);
-		intent.setAction(ACTION_UPGRADE_DATABASES);
-		intent.putExtra(EXTRA_START_INTENT, startIntent);
+    /**
+     * Start the {@link UpgradeDatabases} activity if necessary.
+     *
+     * @param context
+     *         The {@link Context} used to start the activity.
+     * @param startIntent
+     *         After the database upgrade is complete an activity is started using this intent.
+     *         Usually this is the intent that was used to start the calling activity.
+     *         Never {@code null}.
+     *
+     * @return {@code true}, if the {@code UpgradeDatabases} activity was started. In this case the
+     *         calling activity is expected to finish itself.<br>
+     *         {@code false}, if the account databases don't need upgrading.
+     */
+    public static boolean actionUpgradeDatabases(Context context, Intent startIntent) {
+        if (K9.areDatabasesUpToDate()) {
+            return false;
+        }
 
-		// Make sure this activity is only running once
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent intent = new Intent(context, UpgradeDatabases.class);
+        intent.setAction(ACTION_UPGRADE_DATABASES);
+        intent.putExtra(EXTRA_START_INTENT, startIntent);
 
-		context.startActivity(intent);
-		return true;
-	}
+        // Make sure this activity is only running once
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-	private Intent mStartIntent;
+        context.startActivity(intent);
+        return true;
+    }
 
-	private TextView mUpgradeText;
 
-	private LocalBroadcastManager mLocalBroadcastManager;
-	private UpgradeDatabaseBroadcastReceiver mBroadcastReceiver;
-	private IntentFilter mIntentFilter;
-	private Preferences mPreferences;
+    private Intent mStartIntent;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    private TextView mUpgradeText;
 
-		// If the databases have already been upgraded there's no point in
-		// displaying this activity.
-		if (K9.areDatabasesUpToDate()) {
-			launchOriginalActivity();
-			return;
-		}
+    private LocalBroadcastManager mLocalBroadcastManager;
+    private UpgradeDatabaseBroadcastReceiver mBroadcastReceiver;
+    private IntentFilter mIntentFilter;
+    private Preferences mPreferences;
 
-		mPreferences = Preferences.getPreferences(getApplicationContext());
 
-		initializeLayout();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		decodeExtras();
+        // If the databases have already been upgraded there's no point in displaying this activity.
+        if (K9.areDatabasesUpToDate()) {
+            launchOriginalActivity();
+            return;
+        }
 
-		setupBroadcastReceiver();
-	}
+        mPreferences = Preferences.getPreferences(getApplicationContext());
 
-	/**
-	 * Initialize the activity's layout
-	 */
-	private void initializeLayout() {
-		setContentView(R.layout.upgrade_databases);
+        initializeLayout();
 
-		mUpgradeText = (TextView) findViewById(R.id.databaseUpgradeText);
-	}
+        decodeExtras();
 
-	/**
-	 * Decode extras in the intent used to start this activity.
-	 */
-	private void decodeExtras() {
-		Intent intent = getIntent();
-		mStartIntent = intent.getParcelableExtra(EXTRA_START_INTENT);
-	}
+        setupBroadcastReceiver();
+    }
 
-	/**
-	 * Setup the broadcast receiver used to receive progress updates from
-	 * {@link DatabaseUpgradeService}.
-	 */
-	private void setupBroadcastReceiver() {
-		mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
-		mBroadcastReceiver = new UpgradeDatabaseBroadcastReceiver();
+    /**
+     * Initialize the activity's layout
+     */
+    private void initializeLayout() {
+        setContentView(R.layout.upgrade_databases);
 
-		mIntentFilter = new IntentFilter(
-				DatabaseUpgradeService.ACTION_UPGRADE_PROGRESS);
-		mIntentFilter.addAction(DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE);
-	}
+        mUpgradeText = (TextView) findViewById(R.id.databaseUpgradeText);
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
+    /**
+     * Decode extras in the intent used to start this activity.
+     */
+    private void decodeExtras() {
+        Intent intent = getIntent();
+        mStartIntent = intent.getParcelableExtra(EXTRA_START_INTENT);
+    }
 
-		// Check if the upgrade was completed while the activity was paused.
-		if (K9.areDatabasesUpToDate()) {
-			launchOriginalActivity();
-			return;
-		}
+    /**
+     * Setup the broadcast receiver used to receive progress updates from
+     * {@link DatabaseUpgradeService}.
+     */
+    private void setupBroadcastReceiver() {
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
+        mBroadcastReceiver = new UpgradeDatabaseBroadcastReceiver();
 
-		// Register the broadcast receiver to listen for progress reports from
-		// DatabaseUpgradeService.
-		mLocalBroadcastManager.registerReceiver(mBroadcastReceiver,
-				mIntentFilter);
+        mIntentFilter = new IntentFilter(DatabaseUpgradeService.ACTION_UPGRADE_PROGRESS);
+        mIntentFilter.addAction(DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE);
+    }
 
-		// Now that the broadcast receiver was registered start
-		// DatabaseUpgradeService.
-		DatabaseUpgradeService.startService(this);
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
 
-	@Override
-	public void onPause() {
-		// The activity is being paused, so there's no point in listening to the
-		// progress of the
-		// database upgrade service.
-		mLocalBroadcastManager.unregisterReceiver(mBroadcastReceiver);
+        // Check if the upgrade was completed while the activity was paused.
+        if (K9.areDatabasesUpToDate()) {
+            launchOriginalActivity();
+            return;
+        }
 
-		super.onPause();
-	}
+        // Register the broadcast receiver to listen for progress reports from
+        // DatabaseUpgradeService.
+        mLocalBroadcastManager.registerReceiver(mBroadcastReceiver, mIntentFilter);
 
-	/**
-	 * Finish this activity and launch the original activity using the supplied
-	 * intent.
-	 */
-	private void launchOriginalActivity() {
-		finish();
-		if (mStartIntent != null) {
-			startActivity(mStartIntent);
-		}
-	}
+        // Now that the broadcast receiver was registered start DatabaseUpgradeService.
+        DatabaseUpgradeService.startService(this);
+    }
 
-	/**
-	 * Receiver for broadcasts send by {@link DatabaseUpgradeService}.
-	 */
-	class UpgradeDatabaseBroadcastReceiver extends BroadcastReceiver {
+    @Override
+    public void onPause() {
+        // The activity is being paused, so there's no point in listening to the progress of the
+        // database upgrade service.
+        mLocalBroadcastManager.unregisterReceiver(mBroadcastReceiver);
 
-		@Override
-		public void onReceive(Context context, final Intent intent) {
-			String action = intent.getAction();
+        super.onPause();
+    }
 
-			if (DatabaseUpgradeService.ACTION_UPGRADE_PROGRESS.equals(action)) {
-				/*
-				 * Information on the current upgrade progress
-				 */
+    /**
+     * Finish this activity and launch the original activity using the supplied intent.
+     */
+    private void launchOriginalActivity() {
+        finish();
+        if (mStartIntent != null) {
+            startActivity(mStartIntent);
+        }
+    }
 
-				String accountUuid = intent
-						.getStringExtra(DatabaseUpgradeService.EXTRA_ACCOUNT_UUID);
+    /**
+     * Receiver for broadcasts send by {@link DatabaseUpgradeService}.
+     */
+    class UpgradeDatabaseBroadcastReceiver extends BroadcastReceiver {
 
-				Account account = mPreferences.getAccount(accountUuid);
+        @Override
+        public void onReceive(Context context, final Intent intent) {
+            String action = intent.getAction();
 
-				if (account != null) {
-					String formatString = getString(R.string.upgrade_database_format);
-					String upgradeStatus = String.format(formatString,
-							account.getDescription());
-					mUpgradeText.setText(upgradeStatus);
-				}
+            if (DatabaseUpgradeService.ACTION_UPGRADE_PROGRESS.equals(action)) {
+                /*
+                 * Information on the current upgrade progress
+                 */
 
-			} else if (DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE
-					.equals(action)) {
-				/*
-				 * Upgrade complete
-				 */
+                String accountUuid = intent.getStringExtra(
+                        DatabaseUpgradeService.EXTRA_ACCOUNT_UUID);
 
-				launchOriginalActivity();
-			}
-		}
-	}
+                Account account = mPreferences.getAccount(accountUuid);
+
+                if (account != null) {
+                    String formatString = getString(R.string.upgrade_database_format);
+                    String upgradeStatus = String.format(formatString, account.getDescription());
+                    mUpgradeText.setText(upgradeStatus);
+                }
+
+            } else if (DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE.equals(action)) {
+                /*
+                 * Upgrade complete
+                 */
+
+                launchOriginalActivity();
+            }
+        }
+    }
 }

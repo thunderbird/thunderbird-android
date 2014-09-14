@@ -9,240 +9,234 @@ import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Body;
 
 public class TextBodyBuilder {
-	private boolean mIncludeQuotedText = true;
-	private boolean mReplyAfterQuote = false;
-	private boolean mSignatureBeforeQuotedText = false;
-	private boolean mInsertSeparator = false;
-	private boolean mAppendSignature = true;
+    private boolean mIncludeQuotedText = true;
+    private boolean mReplyAfterQuote = false;
+    private boolean mSignatureBeforeQuotedText = false;
+    private boolean mInsertSeparator = false;
+    private boolean mAppendSignature = true;
 
-	private String mMessageContent;
-	private String mSignature;
-	private String mQuotedText;
-	private InsertableHtmlContent mQuotedTextHtml;
+    private String mMessageContent;
+    private String mSignature;
+    private String mQuotedText;
+    private InsertableHtmlContent mQuotedTextHtml;
 
-	public TextBodyBuilder(String messageContent) {
-		mMessageContent = messageContent;
-	}
+    public TextBodyBuilder(String messageContent) {
+        mMessageContent = messageContent;
+    }
 
-	/**
-	 * Build the {@link Body} that will contain the text of the message.
-	 * 
-	 * @return {@link TextBody} instance that contains the entered text and
-	 *         possibly the quoted original message.
-	 */
-	public TextBody buildTextHtml() {
-		// The length of the formatted version of the user-supplied text/reply
-		int composedMessageLength;
+    /**
+     * Build the {@link Body} that will contain the text of the message.
+     *
+     * @return {@link TextBody} instance that contains the entered text and
+     *         possibly the quoted original message.
+     */
+    public TextBody buildTextHtml() {
+        // The length of the formatted version of the user-supplied text/reply
+        int composedMessageLength;
 
-		// The offset of the user-supplied text/reply in the final text body
-		int composedMessageOffset;
+        // The offset of the user-supplied text/reply in the final text body
+        int composedMessageOffset;
 
-		// Get the user-supplied text
-		String text = mMessageContent;
+        // Get the user-supplied text
+        String text = mMessageContent;
 
-		// Do we have to modify an existing message to include our reply?
-		if (mIncludeQuotedText) {
-			InsertableHtmlContent quotedHtmlContent = getQuotedTextHtml();
+        // Do we have to modify an existing message to include our reply?
+        if (mIncludeQuotedText) {
+            InsertableHtmlContent quotedHtmlContent = getQuotedTextHtml();
 
-			if (K9.DEBUG) {
-				Log.d(K9.LOG_TAG,
-						"insertable: " + quotedHtmlContent.toDebugString());
-			}
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "insertable: " + quotedHtmlContent.toDebugString());
+            }
 
-			if (mAppendSignature) {
-				// Append signature to the reply
-				if (mReplyAfterQuote || mSignatureBeforeQuotedText) {
-					text += getSignature();
-				}
-			}
+            if (mAppendSignature) {
+                // Append signature to the reply
+                if (mReplyAfterQuote || mSignatureBeforeQuotedText) {
+                    text += getSignature();
+                }
+            }
 
-			// Convert the text to HTML
-			text = textToHtmlFragment(text);
+            // Convert the text to HTML
+            text = textToHtmlFragment(text);
 
-			/*
-			 * Set the insertion location based upon our reply after quote
-			 * setting. Additionally, add some extra separators between the
-			 * composed message and quoted message depending on the quote
-			 * location. We only add the extra separators when we're sending,
-			 * that way when we load a draft, we don't have to know the length
-			 * of the separators to remove them before editing.
-			 */
-			if (mReplyAfterQuote) {
-				quotedHtmlContent
-						.setInsertionLocation(InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
-				if (mInsertSeparator) {
-					text = "<br clear=\"all\">" + text;
-				}
-			} else {
-				quotedHtmlContent
-						.setInsertionLocation(InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
-				if (mInsertSeparator) {
-					text += "<br><br>";
-				}
-			}
+            /*
+             * Set the insertion location based upon our reply after quote
+             * setting. Additionally, add some extra separators between the
+             * composed message and quoted message depending on the quote
+             * location. We only add the extra separators when we're
+             * sending, that way when we load a draft, we don't have to know
+             * the length of the separators to remove them before editing.
+             */
+            if (mReplyAfterQuote) {
+                quotedHtmlContent.setInsertionLocation(
+                        InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
+                if (mInsertSeparator) {
+                    text = "<br clear=\"all\">" + text;
+                }
+            } else {
+                quotedHtmlContent.setInsertionLocation(
+                        InsertableHtmlContent.InsertionLocation.BEFORE_QUOTE);
+                if (mInsertSeparator) {
+                    text += "<br><br>";
+                }
+            }
 
-			if (mAppendSignature) {
-				// Place signature immediately after the quoted text
-				if (!(mReplyAfterQuote || mSignatureBeforeQuotedText)) {
-					quotedHtmlContent
-							.insertIntoQuotedFooter(getSignatureHtml());
-				}
-			}
+            if (mAppendSignature) {
+                // Place signature immediately after the quoted text
+                if (!(mReplyAfterQuote || mSignatureBeforeQuotedText)) {
+                    quotedHtmlContent.insertIntoQuotedFooter(getSignatureHtml());
+                }
+            }
 
-			quotedHtmlContent.setUserContent(text);
+            quotedHtmlContent.setUserContent(text);
 
-			// Save length of the body and its offset. This is used when thawing
-			// drafts.
-			composedMessageLength = text.length();
-			composedMessageOffset = quotedHtmlContent.getInsertionPoint();
-			text = quotedHtmlContent.toString();
+            // Save length of the body and its offset.  This is used when thawing drafts.
+            composedMessageLength = text.length();
+            composedMessageOffset = quotedHtmlContent.getInsertionPoint();
+            text = quotedHtmlContent.toString();
 
-		} else {
-			// There is no text to quote so simply append the signature if
-			// available
-			if (mAppendSignature) {
-				text += getSignature();
-			}
+        } else {
+            // There is no text to quote so simply append the signature if available
+            if (mAppendSignature) {
+                text += getSignature();
+            }
 
-			// Convert the text to HTML
-			text = textToHtmlFragment(text);
+            // Convert the text to HTML
+            text = textToHtmlFragment(text);
 
-			// TODO: Wrap this in proper HTML tags
+            //TODO: Wrap this in proper HTML tags
 
-			composedMessageLength = text.length();
-			composedMessageOffset = 0;
-		}
+            composedMessageLength = text.length();
+            composedMessageOffset = 0;
+        }
 
-		TextBody body = new TextBody(text);
-		body.setComposedMessageLength(composedMessageLength);
-		body.setComposedMessageOffset(composedMessageOffset);
+        TextBody body = new TextBody(text);
+        body.setComposedMessageLength(composedMessageLength);
+        body.setComposedMessageOffset(composedMessageOffset);
 
-		return body;
-	}
+        return body;
+    }
 
-	/**
-	 * Build the {@link Body} that will contain the text of the message.
-	 * 
-	 * @return {@link TextBody} instance that contains the entered text and
-	 *         possibly the quoted original message.
-	 */
-	public TextBody buildTextPlain() {
-		// The length of the formatted version of the user-supplied text/reply
-		int composedMessageLength;
+    /**
+     * Build the {@link Body} that will contain the text of the message.
+     *
+     * @return {@link TextBody} instance that contains the entered text and
+     *         possibly the quoted original message.
+     */
+    public TextBody buildTextPlain() {
+        // The length of the formatted version of the user-supplied text/reply
+        int composedMessageLength;
 
-		// The offset of the user-supplied text/reply in the final text body
-		int composedMessageOffset;
+        // The offset of the user-supplied text/reply in the final text body
+        int composedMessageOffset;
 
-		// Get the user-supplied text
-		String text = mMessageContent;
+        // Get the user-supplied text
+        String text = mMessageContent;
 
-		// Capture composed message length before we start attaching quoted
-		// parts and signatures.
-		composedMessageLength = text.length();
-		composedMessageOffset = 0;
+        // Capture composed message length before we start attaching quoted parts and signatures.
+        composedMessageLength = text.length();
+        composedMessageOffset = 0;
 
-		// Do we have to modify an existing message to include our reply?
-		if (mIncludeQuotedText) {
-			String quotedText = getQuotedText();
+        // Do we have to modify an existing message to include our reply?
+        if (mIncludeQuotedText) {
+            String quotedText = getQuotedText();
 
-			if (mAppendSignature) {
-				// Append signature to the text/reply
-				if (mReplyAfterQuote || mSignatureBeforeQuotedText) {
-					text += getSignature();
-				}
-			}
+            if (mAppendSignature) {
+                // Append signature to the text/reply
+                if (mReplyAfterQuote || mSignatureBeforeQuotedText) {
+                    text += getSignature();
+                }
+            }
 
-			if (mReplyAfterQuote) {
-				composedMessageOffset = quotedText.length() + "\r\n".length();
-				text = quotedText + "\r\n" + text;
-			} else {
-				text += "\r\n\r\n" + quotedText;
-			}
+            if (mReplyAfterQuote) {
+                composedMessageOffset = quotedText.length() + "\r\n".length();
+                text = quotedText + "\r\n" + text;
+            } else {
+                text += "\r\n\r\n" + quotedText;
+            }
 
-			if (mAppendSignature) {
-				// Place signature immediately after the quoted text
-				if (!(mReplyAfterQuote || mSignatureBeforeQuotedText)) {
-					text += getSignature();
-				}
-			}
-		} else {
-			// There is no text to quote so simply append the signature if
-			// available
-			if (mAppendSignature) {
-				// Append signature to the text/reply
-				text += getSignature();
-			}
-		}
+            if (mAppendSignature) {
+                // Place signature immediately after the quoted text
+                if (!(mReplyAfterQuote || mSignatureBeforeQuotedText)) {
+                    text += getSignature();
+                }
+            }
+        } else {
+            // There is no text to quote so simply append the signature if available
+            if (mAppendSignature) {
+                // Append signature to the text/reply
+                text += getSignature();
+            }
+        }
 
-		TextBody body = new TextBody(text);
-		body.setComposedMessageLength(composedMessageLength);
-		body.setComposedMessageOffset(composedMessageOffset);
+        TextBody body = new TextBody(text);
+        body.setComposedMessageLength(composedMessageLength);
+        body.setComposedMessageOffset(composedMessageOffset);
 
-		return body;
-	}
+        return body;
+    }
 
-	private String getSignature() {
-		String signature = "";
-		if (!StringUtils.isNullOrEmpty(mSignature)) {
-			signature = "\r\n" + mSignature;
-		}
+    private String getSignature() {
+        String signature = "";
+        if (!StringUtils.isNullOrEmpty(mSignature)) {
+            signature = "\r\n" + mSignature;
+        }
 
-		return signature;
-	}
+        return signature;
+    }
 
-	private String getSignatureHtml() {
-		String signature = "";
-		if (!StringUtils.isNullOrEmpty(mSignature)) {
-			signature = textToHtmlFragment("\r\n" + mSignature);
-		}
-		return signature;
-	}
+    private String getSignatureHtml() {
+        String signature = "";
+        if (!StringUtils.isNullOrEmpty(mSignature)) {
+            signature = textToHtmlFragment("\r\n" + mSignature);
+        }
+        return signature;
+    }
 
-	private String getQuotedText() {
-		String quotedText = "";
-		if (!StringUtils.isNullOrEmpty(mQuotedText)) {
-			quotedText = mQuotedText;
-		}
-		return quotedText;
-	}
+    private String getQuotedText() {
+        String quotedText = "";
+        if (!StringUtils.isNullOrEmpty(mQuotedText)) {
+            quotedText = mQuotedText;
+        }
+        return quotedText;
+    }
 
-	private InsertableHtmlContent getQuotedTextHtml() {
-		return mQuotedTextHtml;
-	}
+    private InsertableHtmlContent getQuotedTextHtml() {
+        return mQuotedTextHtml;
+    }
 
-	public String textToHtmlFragment(String text) {
-		return HtmlConverter.textToHtmlFragment(text);
-	}
+    public String textToHtmlFragment(String text) {
+        return HtmlConverter.textToHtmlFragment(text);
+    }
 
-	public void setSignature(String signature) {
-		mSignature = signature;
-	}
+    public void setSignature(String signature) {
+        mSignature = signature;
+    }
 
-	public void setIncludeQuotedText(boolean includeQuotedText) {
-		mIncludeQuotedText = includeQuotedText;
-	}
+    public void setIncludeQuotedText(boolean includeQuotedText) {
+        mIncludeQuotedText = includeQuotedText;
+    }
 
-	public void setQuotedText(String quotedText) {
-		mQuotedText = quotedText;
-	}
+    public void setQuotedText(String quotedText) {
+        mQuotedText = quotedText;
+    }
 
-	public void setQuotedTextHtml(InsertableHtmlContent quotedTextHtml) {
-		mQuotedTextHtml = quotedTextHtml;
-	}
+    public void setQuotedTextHtml(InsertableHtmlContent quotedTextHtml) {
+        mQuotedTextHtml = quotedTextHtml;
+    }
 
-	public void setInsertSeparator(boolean insertSeparator) {
-		mInsertSeparator = insertSeparator;
-	}
+    public void setInsertSeparator(boolean insertSeparator) {
+        mInsertSeparator = insertSeparator;
+    }
 
-	public void setSignatureBeforeQuotedText(boolean signatureBeforeQuotedText) {
-		mSignatureBeforeQuotedText = signatureBeforeQuotedText;
-	}
+    public void setSignatureBeforeQuotedText(boolean signatureBeforeQuotedText) {
+        mSignatureBeforeQuotedText = signatureBeforeQuotedText;
+    }
 
-	public void setReplyAfterQuote(boolean replyAfterQuote) {
-		mReplyAfterQuote = replyAfterQuote;
-	}
+    public void setReplyAfterQuote(boolean replyAfterQuote) {
+        mReplyAfterQuote = replyAfterQuote;
+    }
 
-	public void setAppendSignature(boolean appendSignature) {
-		mAppendSignature = appendSignature;
-	}
+    public void setAppendSignature(boolean appendSignature) {
+        mAppendSignature = appendSignature;
+    }
 }

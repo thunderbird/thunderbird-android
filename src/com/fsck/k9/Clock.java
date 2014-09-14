@@ -21,12 +21,12 @@ package com.fsck.k9;
  * It's intended to be mocked out for unit tests.
  */
 public class Clock {
-	public static final Clock INSTANCE = new Clock();
+    public static final Clock INSTANCE = new Clock();
 
-	protected Clock() {
-	}
+    protected Clock() {
+    }
 
-	public long getTime() {
-		return System.currentTimeMillis();
-	}
+    public long getTime() {
+        return System.currentTimeMillis();
+    }
 }

@@ -12,119 +12,118 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 
-public class ConfirmationDialogFragment extends DialogFragment implements
-		OnClickListener, OnCancelListener {
-	private ConfirmationDialogFragmentListener mListener;
+public class ConfirmationDialogFragment extends DialogFragment implements OnClickListener,
+        OnCancelListener {
+    private ConfirmationDialogFragmentListener mListener;
 
-	private static final String ARG_DIALOG_ID = "dialog_id";
-	private static final String ARG_TITLE = "title";
-	private static final String ARG_MESSAGE = "message";
-	private static final String ARG_CONFIRM_TEXT = "confirm";
-	private static final String ARG_CANCEL_TEXT = "cancel";
+    private static final String ARG_DIALOG_ID = "dialog_id";
+    private static final String ARG_TITLE = "title";
+    private static final String ARG_MESSAGE = "message";
+    private static final String ARG_CONFIRM_TEXT = "confirm";
+    private static final String ARG_CANCEL_TEXT = "cancel";
 
-	public static ConfirmationDialogFragment newInstance(int dialogId,
-			String title, String message, String confirmText, String cancelText) {
-		ConfirmationDialogFragment fragment = new ConfirmationDialogFragment();
 
-		Bundle args = new Bundle();
-		args.putInt(ARG_DIALOG_ID, dialogId);
-		args.putString(ARG_TITLE, title);
-		args.putString(ARG_MESSAGE, message);
-		args.putString(ARG_CONFIRM_TEXT, confirmText);
-		args.putString(ARG_CANCEL_TEXT, cancelText);
-		fragment.setArguments(args);
+    public static ConfirmationDialogFragment newInstance(int dialogId, String title, String message,
+            String confirmText, String cancelText) {
+        ConfirmationDialogFragment fragment = new ConfirmationDialogFragment();
 
-		return fragment;
-	}
+        Bundle args = new Bundle();
+        args.putInt(ARG_DIALOG_ID, dialogId);
+        args.putString(ARG_TITLE, title);
+        args.putString(ARG_MESSAGE, message);
+        args.putString(ARG_CONFIRM_TEXT, confirmText);
+        args.putString(ARG_CANCEL_TEXT, cancelText);
+        fragment.setArguments(args);
 
-	public static ConfirmationDialogFragment newInstance(int dialogId,
-			String title, String message, String cancelText) {
-		return newInstance(dialogId, title, message, null, cancelText);
-	}
+        return fragment;
+    }
 
-	public interface ConfirmationDialogFragmentListener {
-		void doPositiveClick(int dialogId);
+    public static ConfirmationDialogFragment newInstance(int dialogId, String title, String message,
+            String cancelText) {
+        return newInstance(dialogId, title, message, null, cancelText);
+    }
 
-		void doNegativeClick(int dialogId);
 
-		void dialogCancelled(int dialogId);
-	}
+    public interface ConfirmationDialogFragmentListener {
+        void doPositiveClick(int dialogId);
+        void doNegativeClick(int dialogId);
+        void dialogCancelled(int dialogId);
+    }
 
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		Bundle args = getArguments();
-		String title = args.getString(ARG_TITLE);
-		String message = args.getString(ARG_MESSAGE);
-		String confirmText = args.getString(ARG_CONFIRM_TEXT);
-		String cancelText = args.getString(ARG_CANCEL_TEXT);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(title);
-		builder.setMessage(message);
-		if (confirmText != null && cancelText != null) {
-			builder.setPositiveButton(confirmText, this);
-			builder.setNegativeButton(cancelText, this);
-		} else if (cancelText != null) {
-			builder.setNeutralButton(cancelText, this);
-		} else {
-			throw new RuntimeException("Set at least cancelText!");
-		}
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Bundle args = getArguments();
+        String title = args.getString(ARG_TITLE);
+        String message = args.getString(ARG_MESSAGE);
+        String confirmText = args.getString(ARG_CONFIRM_TEXT);
+        String cancelText = args.getString(ARG_CANCEL_TEXT);
 
-		return builder.create();
-	}
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(title);
+        builder.setMessage(message);
+        if (confirmText != null && cancelText != null) {
+            builder.setPositiveButton(confirmText, this);
+            builder.setNegativeButton(cancelText, this);
+        } else if (cancelText != null) {
+            builder.setNeutralButton(cancelText, this);
+        } else {
+            throw new RuntimeException("Set at least cancelText!");
+        }
 
-	@Override
-	public void onClick(DialogInterface dialog, int which) {
-		switch (which) {
-		case DialogInterface.BUTTON_POSITIVE: {
-			getListener().doPositiveClick(getDialogId());
-			break;
-		}
-		case DialogInterface.BUTTON_NEGATIVE: {
-			getListener().doNegativeClick(getDialogId());
-			break;
-		}
-		case DialogInterface.BUTTON_NEUTRAL: {
-			getListener().doNegativeClick(getDialogId());
-			break;
-		}
-		}
-	}
+        return builder.create();
+    }
 
-	@Override
-	public void onCancel(DialogInterface dialog) {
-		super.onCancel(dialog);
-		getListener().dialogCancelled(getDialogId());
-	}
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE: {
+                getListener().doPositiveClick(getDialogId());
+                break;
+            }
+            case DialogInterface.BUTTON_NEGATIVE: {
+                getListener().doNegativeClick(getDialogId());
+                break;
+            }
+            case DialogInterface.BUTTON_NEUTRAL: {
+                getListener().doNegativeClick(getDialogId());
+                break;
+            }
+        }
+    }
 
-	private int getDialogId() {
-		return getArguments().getInt(ARG_DIALOG_ID);
-	}
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        getListener().dialogCancelled(getDialogId());
+    }
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			mListener = (ConfirmationDialogFragmentListener) activity;
-		} catch (ClassCastException e) {
-			if (K9.DEBUG)
-				Log.d(K9.LOG_TAG,
-						activity.toString()
-								+ " did not implement ConfirmationDialogFragmentListener");
-		}
-	}
+    private int getDialogId() {
+        return getArguments().getInt(ARG_DIALOG_ID);
+    }
 
-	private ConfirmationDialogFragmentListener getListener() {
-		if (mListener != null) {
-			return mListener;
-		}
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (ConfirmationDialogFragmentListener) activity;
+        } catch (ClassCastException e) {
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, activity.toString() + " did not implement ConfirmationDialogFragmentListener");
+        }
+    }
 
-		// fallback to getTargetFragment...
-		try {
-			return (ConfirmationDialogFragmentListener) getTargetFragment();
-		} catch (ClassCastException e) {
-			throw new ClassCastException(getTargetFragment().getClass()
-					+ " must implement ConfirmationDialogFragmentListener");
-		}
-	}
+    private ConfirmationDialogFragmentListener getListener() {
+        if (mListener != null) {
+            return mListener;
+        }
+
+        // fallback to getTargetFragment...
+        try {
+            return (ConfirmationDialogFragmentListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getTargetFragment().getClass() +
+                    " must implement ConfirmationDialogFragmentListener");
+        }
+    }
 }
