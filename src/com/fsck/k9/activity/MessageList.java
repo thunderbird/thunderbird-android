@@ -3843,7 +3843,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
 		}
 
-		if (position > mAdapter_Accounts.getCount() + 5) {
+		if (position > mAdapter_Accounts.getCount() + 1) {
 
 			progress = ProgressDialog.show(this, "", "", true);
 
