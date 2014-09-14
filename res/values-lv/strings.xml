@@ -138,6 +138,8 @@ Lūdzu sūtiet kļūdu ziņojumus, iesakiet uzlabojumus un uzdodiet jautājumus
   <string name="read_receipt_enabled">Pieprasīt izlasīšanas atskaiti</string>
   <string name="read_receipt_disabled">Neprasīt izlasīšanas atskaiti</string>
   <string name="add_attachment_action">Pievienot pielikumu</string>
+  <string name="add_attachment_action_image">Pievienot pielikumu (bildi)</string>
+  <string name="add_attachment_action_video">Pievienot pielikumu (video)</string>
   <string name="empty_trash_action">Iztukšot miskasti</string>
   <string name="expunge_action">Izmest</string>
   <string name="clear_local_folder_action">Izdzēst ierīcē esošās vēstules</string>
@@ -729,7 +731,13 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="font_size_medium">Vidējs</string>
   <string name="font_size_large">Liels</string>
   <string name="font_size_larger">Lielāks</string>
+  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
+  <string name="message_compose_buggy_gallery">Pārbaudiet \"Iestatījumi\" -&gt; \"Izmantot galerijas kļūdu apvedceļu\", lai varētu pievienotu bildes vai video, izmantojot Gallery 3D.</string>
+  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
+  <string name="message_compose_use_workaround">Izmantot \"Pievienot pielikumu (bildi)\" vai \"Pievienot pielikumu (video)\", lai pievienotu bildes vai videoklipus ar Gallery 3D.</string>
   <string name="miscellaneous_preferences">Dažādi</string>
+  <string name="misc_preferences_attachment_title">Izmantot galerijas kļūdu apvedceļu</string>
+  <string name="misc_preferences_attachment_description">Rādīt pogas, lai pievienotu bildi/video kā pielikumus (izmantojot Gallery 3D kļūdu apvedceļu)</string>
   <!--APG related-->
   <string name="error_activity_not_found">Šai darbībai nav atrasta atbilstoša aplikācija.</string>
   <string name="error_apg_version_not_supported">Instalētā APG versija netiek atbalstīta.</string>

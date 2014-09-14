@@ -10,21 +10,28 @@
     <com.fsck.k9.view.NonLockingScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#eeeeee">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-	        android:layout_height="fill_parent">
+	        android:layout_height="fill_parent"
+	        android:padding="8dp"
+        >
 
 	        <!-- Header area -->
 	        <include layout="@layout/message_view_header"/>
 	
+	      
+	        
 	        <!-- Content area -->
 	        <com.fsck.k9.view.MessageWebView
 	            android:id="@+id/message_content"
 	            android:layout_height="wrap_content"
-	            android:layout_width="fill_parent"/>
+	            android:layout_width="fill_parent"
+	            
+	            />
 	
 	        <!-- Attachments area -->
 	
@@ -32,7 +39,9 @@
 	            android:id="@+id/attachments_container"
 	            android:orientation="vertical"
 	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content">
+	            android:layout_height="wrap_content"
+	           
+	            >
 	
 	            <LinearLayout
 	                android:id="@+id/attachments"

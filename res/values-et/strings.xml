@@ -137,6 +137,8 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="read_receipt_enabled">Taotleb lugemise kinnitust</string>
   <string name="read_receipt_disabled">Ei taotle lugemise kinnitust</string>
   <string name="add_attachment_action">Lisa manus</string>
+  <string name="add_attachment_action_image">Lisa manus (pilt)</string>
+  <string name="add_attachment_action_video">Lisa manus (video)</string>
   <string name="empty_trash_action">Tühjenda prügikast</string>
   <string name="expunge_action">Pühi ära</string>
   <string name="clear_local_folder_action">Puhasta kohalikud sõnumid</string>
@@ -702,6 +704,8 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="font_size_medium">Keskmine</string>
   <string name="font_size_large">Suur</string>
   <string name="font_size_larger">Suurem</string>
+  <!--Note: Contains references to preferences_action and misc_preferences_attachment_title-->
+  <!--Note: Contains references to add_attachment_action_image and add_attachment_action_video-->
   <string name="miscellaneous_preferences">Muu</string>
   <!--APG related-->
   <string name="error_apg_version_not_supported">Installitud APG versioon ei ole toetatud.</string>
