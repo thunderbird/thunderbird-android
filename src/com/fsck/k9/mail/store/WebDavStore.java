@@ -2029,11 +2029,6 @@ public class WebDavStore extends Store {
             this.mSize = size;
         }
 
-        @Override
-        public void parse(InputStream in) throws IOException, MessagingException {
-            super.parse(in);
-        }
-
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
         }

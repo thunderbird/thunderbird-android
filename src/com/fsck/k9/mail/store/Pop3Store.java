@@ -1195,11 +1195,6 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        protected void parse(InputStream in) throws IOException, MessagingException {
-            super.parse(in);
-        }
-
-        @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
             mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
