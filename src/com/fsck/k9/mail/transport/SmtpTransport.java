@@ -511,6 +511,7 @@ public class SmtpTransport extends Transport {
         if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
             if (message.calculateSize() > mLargestAcceptableMessage) {
                 MessagingException me = new MessagingException("Message too large for server");
+                //TODO this looks rather suspicious... shouldn't it be true?
                 me.setPermanentFailure(possibleSend);
                 throw me;
             }
@@ -545,13 +546,12 @@ public class SmtpTransport extends Transport {
                 possibleSend = false;
             }
 
+            //TODO this looks rather suspicious... why is possibleSend used, and why are 5xx NOT permanent (in contrast to the log text)
             me.setPermanentFailure(possibleSend);
             throw me;
         } finally {
             close();
         }
-
-
 
     }
 
