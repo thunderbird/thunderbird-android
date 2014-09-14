@@ -993,8 +993,7 @@ public class MimeUtility {
     throws MessagingException {
         if (part.getBody() instanceof Multipart) {
             Multipart multipart = (Multipart)part.getBody();
-            for (int i = 0, count = multipart.getCount(); i < count; i++) {
-                BodyPart bodyPart = multipart.getBodyPart(i);
+            for (BodyPart bodyPart : multipart.getBodyParts()) {
                 Part ret = findFirstPartByMimeType(bodyPart, mimeType);
                 if (ret != null) {
                     return ret;
@@ -1009,8 +1008,7 @@ public class MimeUtility {
     public static Part findPartByContentId(Part part, String contentId) throws Exception {
         if (part.getBody() instanceof Multipart) {
             Multipart multipart = (Multipart)part.getBody();
-            for (int i = 0, count = multipart.getCount(); i < count; i++) {
-                BodyPart bodyPart = multipart.getBodyPart(i);
+            for (BodyPart bodyPart : multipart.getBodyParts()) {
                 Part ret = findPartByContentId(bodyPart, contentId);
                 if (ret != null) {
                     return ret;
@@ -1490,9 +1488,7 @@ public class MimeUtility {
                 }
             } else {
                 // For all other multipart parts we recurse to grab all viewable children.
-                int childCount = multipart.getCount();
-                for (int i = 0; i < childCount; i++) {
-                    Part bodyPart = multipart.getBodyPart(i);
+                for (Part bodyPart : multipart.getBodyParts()) {
                     viewables.addAll(getViewables(bodyPart, attachments));
                 }
             }
@@ -1547,9 +1543,7 @@ public class MimeUtility {
             throws MessagingException {
         List<Viewable> viewables = new ArrayList<Viewable>();
 
-        int childCount = multipart.getCount();
-        for (int i = 0; i < childCount; i++) {
-            Part part = multipart.getBodyPart(i);
+        for (Part part : multipart.getBodyParts()) {
             Body body = part.getBody();
             if (body instanceof Multipart) {
                 Multipart innerMultipart = (Multipart) body;
@@ -1612,9 +1606,7 @@ public class MimeUtility {
         List<Viewable> viewables = new ArrayList<Viewable>();
 
         boolean partFound = false;
-        int childCount = multipart.getCount();
-        for (int i = 0; i < childCount; i++) {
-            Part part = multipart.getBodyPart(i);
+        for (Part part : multipart.getBodyParts()) {
             Body body = part.getBody();
             if (body instanceof Multipart) {
                 Multipart innerMultipart = (Multipart) body;
@@ -1698,9 +1690,7 @@ public class MimeUtility {
      */
     private static void findAttachments(Multipart multipart, Set<Part> knownTextParts,
             List<Part> attachments) {
-        int childCount = multipart.getCount();
-        for (int i = 0; i < childCount; i++) {
-            Part part = multipart.getBodyPart(i);
+        for (Part part : multipart.getBodyParts()) {
             Body body = part.getBody();
             if (body instanceof Multipart) {
                 Multipart innerMultipart = (Multipart) body;
@@ -3422,8 +3412,7 @@ public class MimeUtility {
         } else if (part.isMimeType("multipart/alternative") &&
                 firstBody instanceof MimeMultipart) {
             MimeMultipart multipart = (MimeMultipart) firstBody;
-            for (int i = 0, count = multipart.getCount(); i < count; i++) {
-                BodyPart bodyPart = multipart.getBodyPart(i);
+            for (BodyPart bodyPart : multipart.getBodyParts()) {
                 String bodyText = getTextFromPart(bodyPart);
                 if (bodyText != null) {
                     if (text.isEmpty() && bodyPart.isMimeType("text/plain")) {
