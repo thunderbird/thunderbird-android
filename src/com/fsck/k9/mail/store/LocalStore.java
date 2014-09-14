@@ -4063,7 +4063,7 @@ public class LocalStore extends Store implements Serializable {
 
 			if (this.mFolder == null) {
 				LocalFolder f = new LocalFolder(cursor.getInt(13));
-				f.open(LocalFolder.OPEN_MODE_RW);
+				f.open(Folder.OPEN_MODE_RW);
 				this.mFolder = f;
 			}
 

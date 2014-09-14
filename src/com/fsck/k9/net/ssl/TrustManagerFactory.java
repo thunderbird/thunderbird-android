@@ -51,11 +51,13 @@ public final class TrustManagerFactory {
 			return trustManager;
 		}
 
+		@Override
 		public void checkClientTrusted(X509Certificate[] chain, String authType)
 				throws CertificateException {
 			defaultTrustManager.checkClientTrusted(chain, authType);
 		}
 
+		@Override
 		public void checkServerTrusted(X509Certificate[] chain, String authType)
 				throws CertificateException {
 			String message = null;
@@ -81,6 +83,7 @@ public final class TrustManagerFactory {
 			}
 		}
 
+		@Override
 		public X509Certificate[] getAcceptedIssuers() {
 			return defaultTrustManager.getAcceptedIssuers();
 		}

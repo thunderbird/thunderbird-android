@@ -28,6 +28,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
 		return name.hashCode();
 	}
 
+	@Override
 	public int compareTo(FolderInfoHolder o) {
 		String s1 = this.name;
 		String s2 = o.name;

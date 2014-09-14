@@ -171,6 +171,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
 		public void refreshTitle() {
 			runOnUiThread(new Runnable() {
+				@Override
 				public void run() {
 					setViewTitle();
 				}
@@ -179,6 +180,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
 		public void dataChanged() {
 			runOnUiThread(new Runnable() {
+				@Override
 				public void run() {
 					if (mAdapter != null) {
 						mAdapter.notifyDataSetChanged();
@@ -189,6 +191,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
 		public void workingAccount(final Account account, final int res) {
 			runOnUiThread(new Runnable() {
+				@Override
 				public void run() {
 					String toastText = getString(res, account.getDescription());
 
@@ -202,6 +205,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 		public void accountSizeChanged(final Account account,
 				final long oldSize, final long newSize) {
 			runOnUiThread(new Runnable() {
+				@Override
 				public void run() {
 					AccountStats stats = accountStats.get(account.getUuid());
 					if (newSize != -1 && stats != null && K9.measureAccounts()) {
@@ -231,6 +235,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 			}
 
 			runOnUiThread(new Runnable() {
+				@Override
 				public void run() {
 					if (progress) {
 						mRefreshMenuItem
@@ -245,6 +250,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
 		public void progress(final int progress) {
 			runOnUiThread(new Runnable() {
+				@Override
 				public void run() {
 					getWindow()
 							.setFeatureInt(Window.FEATURE_PROGRESS, progress);
@@ -1351,6 +1357,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 		asyncTask.execute();
 	}
 
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		BaseAccount account = (BaseAccount) parent.getItemAtPosition(position);
@@ -1462,12 +1469,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 				.setCancelable(true)
 				.setPositiveButton(R.string.okay_action,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface d, int c) {
 								d.dismiss();
 							}
 						})
 				.setNeutralButton(R.string.changelog_full_title,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface d, int c) {
 								new ChangeLog(Accounts.this).getFullLogDialog()
 										.show();
@@ -1911,13 +1920,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 						.findViewById(R.id.new_message_count);
 				holder.flaggedMessageCount = (TextView) view
 						.findViewById(R.id.flagged_message_count);
-				holder.newMessageCountWrapper = (View) view
+				holder.newMessageCountWrapper = view
 						.findViewById(R.id.new_message_count_wrapper);
-				holder.flaggedMessageCountWrapper = (View) view
+				holder.flaggedMessageCountWrapper = view
 						.findViewById(R.id.flagged_message_count_wrapper);
-				holder.newMessageCountIcon = (View) view
+				holder.newMessageCountIcon = view
 						.findViewById(R.id.new_message_count_icon);
-				holder.flaggedMessageCountIcon = (View) view
+				holder.flaggedMessageCountIcon = view
 						.findViewById(R.id.flagged_message_count_icon);
 				holder.activeIcons = (RelativeLayout) view
 						.findViewById(R.id.active_icons);
@@ -1973,6 +1982,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 						.setOnClickListener(createUnreadSearchListener(account));
 
 				holder.activeIcons.setOnClickListener(new OnClickListener() {
+					@Override
 					public void onClick(View v) {
 						Toast toast = Toast.makeText(getApplication(),
 								getString(R.string.tap_hint),
@@ -2016,6 +2026,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 			} else {
 				holder.folders.setVisibility(View.VISIBLE);
 				holder.folders.setOnClickListener(new OnClickListener() {
+					@Override
 					public void onClick(View v) {
 						FolderList.actionHandleAccount(Accounts.this,
 								(Account) account);

@@ -98,6 +98,7 @@ public class FolderSettings extends K9PreferenceActivity {
 		mDisplayClass.setSummary(mDisplayClass.getEntry());
 		mDisplayClass
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -113,6 +114,7 @@ public class FolderSettings extends K9PreferenceActivity {
 		mSyncClass.setSummary(mSyncClass.getEntry());
 		mSyncClass
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -129,6 +131,7 @@ public class FolderSettings extends K9PreferenceActivity {
 		mPushClass.setSummary(mPushClass.getEntry());
 		mPushClass
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -144,6 +147,7 @@ public class FolderSettings extends K9PreferenceActivity {
 		mNotifyClass.setSummary(mNotifyClass.getEntry());
 		mNotifyClass
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();

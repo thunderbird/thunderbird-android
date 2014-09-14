@@ -126,6 +126,7 @@ public class AccountSetupAccountType extends K9Activity implements
 
 	}
 
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.pop:

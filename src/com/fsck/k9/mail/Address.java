@@ -12,6 +12,7 @@ import org.apache.james.mime4j.field.address.AddressBuilder;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.util.Rfc822Token;
@@ -275,7 +276,7 @@ public class Address {
 					coloredName.setSpan(
 							new ForegroundColorSpan(K9.getContactNameColor()),
 							0, coloredName.length(),
-							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+							Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 					return coloredName;
 				} else {
 					return name;

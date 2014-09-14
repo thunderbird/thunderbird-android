@@ -33,6 +33,7 @@ public class TextBody implements Body {
 		this.mBody = body;
 	}
 
+	@Override
 	public void writeTo(OutputStream out) throws IOException,
 			MessagingException {
 		if (mBody != null) {
@@ -61,6 +62,7 @@ public class TextBody implements Body {
 	/**
 	 * Returns an InputStream that reads this body's text.
 	 */
+	@Override
 	public InputStream getInputStream() throws MessagingException {
 		try {
 			byte[] b;
@@ -75,6 +77,7 @@ public class TextBody implements Body {
 		}
 	}
 
+	@Override
 	public void setEncoding(String encoding) {
 		mEncoding = encoding;
 	}

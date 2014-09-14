@@ -208,6 +208,7 @@ public class AccountSetupCheckSettings extends K9Activity implements
 
 	private void setMessage(final int resId) {
 		mHandler.post(new Runnable() {
+			@Override
 			public void run() {
 				if (mDestroyed) {
 					return;
@@ -220,6 +221,7 @@ public class AccountSetupCheckSettings extends K9Activity implements
 	private void acceptKeyDialog(final int msgResId,
 			final CertificateValidationException ex) {
 		mHandler.post(new Runnable() {
+			@Override
 			public void run() {
 				if (mDestroyed) {
 					return;
@@ -378,6 +380,7 @@ public class AccountSetupCheckSettings extends K9Activity implements
 						.setPositiveButton(
 								getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
 								new DialogInterface.OnClickListener() {
+									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
 										acceptCertificate(chain[0]);
@@ -386,6 +389,7 @@ public class AccountSetupCheckSettings extends K9Activity implements
 						.setNegativeButton(
 								getString(R.string.account_setup_failed_dlg_invalid_certificate_reject),
 								new DialogInterface.OnClickListener() {
+									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
 										finish();
@@ -424,6 +428,7 @@ public class AccountSetupCheckSettings extends K9Activity implements
 		setMessage(R.string.account_setup_check_settings_canceling_msg);
 	}
 
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.cancel:
@@ -434,6 +439,7 @@ public class AccountSetupCheckSettings extends K9Activity implements
 
 	private void showErrorDialog(final int msgResId, final Object... args) {
 		mHandler.post(new Runnable() {
+			@Override
 			public void run() {
 				showDialogFragment(R.id.dialog_account_setup_error,
 						getString(msgResId, args));

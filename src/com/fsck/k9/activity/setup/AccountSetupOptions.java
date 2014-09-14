@@ -180,6 +180,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 		finish();
 	}
 
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.next:

@@ -29,18 +29,22 @@ public class MessagingControllerPushReceiver implements PushReceiver {
 		mApplication = nApplication;
 	}
 
+	@Override
 	public void messagesFlagsChanged(Folder folder, List<Message> messages) {
 		controller.messagesArrived(account, folder, messages, true);
 	}
 
+	@Override
 	public void messagesArrived(Folder folder, List<Message> messages) {
 		controller.messagesArrived(account, folder, messages, false);
 	}
 
+	@Override
 	public void messagesRemoved(Folder folder, List<Message> messages) {
 		controller.messagesArrived(account, folder, messages, true);
 	}
 
+	@Override
 	public void syncFolder(Folder folder) {
 		if (K9.DEBUG)
 			Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ")");
@@ -80,6 +84,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
 				K9.PUSH_WAKE_LOCK_TIMEOUT);
 	}
 
+	@Override
 	public void pushError(String errorMessage, Exception e) {
 		String errMess = errorMessage;
 
@@ -91,6 +96,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
 		controller.addErrorMessage(account, errMess, e);
 	}
 
+	@Override
 	public String getPushState(String folderName) {
 		LocalFolder localFolder = null;
 		try {
@@ -109,6 +115,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
 		}
 	}
 
+	@Override
 	public void setPushActive(String folderName, boolean enabled) {
 		for (MessagingListener l : controller.getListeners()) {
 			l.setPushActive(account, folderName, enabled);

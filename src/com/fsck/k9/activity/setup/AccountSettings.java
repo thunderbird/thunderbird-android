@@ -37,6 +37,7 @@ import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.Apg;
+import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
@@ -222,6 +223,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mAccountDescription.setText(mAccount.getDescription());
 		mAccountDescription
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -240,6 +242,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mMessageFormat.setSummary(mMessageFormat.getEntry());
 		mMessageFormat
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -317,6 +320,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mCheckFrequency.setSummary(mCheckFrequency.getEntry());
 		mCheckFrequency
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -332,6 +336,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mDisplayMode.setSummary(mDisplayMode.getEntry());
 		mDisplayMode
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -347,6 +352,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mSyncMode.setSummary(mSyncMode.getEntry());
 		mSyncMode
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -362,6 +368,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mTargetMode.setSummary(mTargetMode.getEntry());
 		mTargetMode
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -381,6 +388,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mDeletePolicy.setSummary(mDeletePolicy.getEntry());
 		mDeletePolicy
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -397,6 +405,7 @@ public class AccountSettings extends K9PreferenceActivity {
 			mExpungePolicy.setSummary(mExpungePolicy.getEntry());
 			mExpungePolicy
 					.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+						@Override
 						public boolean onPreferenceChange(
 								Preference preference, Object newValue) {
 							final String summary = newValue.toString();
@@ -421,6 +430,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mSearchableFolders.setSummary(mSearchableFolders.getEntry());
 		mSearchableFolders
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -438,6 +448,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mDisplayCount.setSummary(mDisplayCount.getEntry());
 		mDisplayCount
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -459,6 +470,7 @@ public class AccountSettings extends K9PreferenceActivity {
 			mMessageAge.setSummary(mMessageAge.getEntry());
 			mMessageAge
 					.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+						@Override
 						public boolean onPreferenceChange(
 								Preference preference, Object newValue) {
 							final String summary = newValue.toString();
@@ -477,6 +489,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mMessageSize.setSummary(mMessageSize.getEntry());
 		mMessageSize
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -496,6 +509,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mAccountShowPictures.setSummary(mAccountShowPictures.getEntry());
 		mAccountShowPictures
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -530,6 +544,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
 			mLocalStorageProvider
 					.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+						@Override
 						public boolean onPreferenceChange(
 								Preference preference, Object newValue) {
 							mLocalStorageProvider.setSummary(providers
@@ -547,6 +562,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mRemoteSearchNumResults = (ListPreference) findPreference(PREFERENCE_REMOTE_SEARCH_NUM_RESULTS);
 		mRemoteSearchNumResults
 				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference pref,
 							Object newVal) {
 						updateRemoteSearchLimit((String) newVal);
@@ -574,6 +590,7 @@ public class AccountSettings extends K9PreferenceActivity {
 			mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());
 			mIdleRefreshPeriod
 					.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+						@Override
 						public boolean onPreferenceChange(
 								Preference preference, Object newValue) {
 							final String summary = newValue.toString();
@@ -591,6 +608,7 @@ public class AccountSettings extends K9PreferenceActivity {
 			mMaxPushFolders.setSummary(mMaxPushFolders.getEntry());
 			mMaxPushFolders
 					.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+						@Override
 						public boolean onPreferenceChange(
 								Preference preference, Object newValue) {
 							final String summary = newValue.toString();
@@ -607,6 +625,7 @@ public class AccountSettings extends K9PreferenceActivity {
 			mPushMode.setSummary(mPushMode.getEntry());
 			mPushMode
 					.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+						@Override
 						public boolean onPreferenceChange(
 								Preference preference, Object newValue) {
 							final String summary = newValue.toString();
@@ -619,9 +638,9 @@ public class AccountSettings extends K9PreferenceActivity {
 		} else {
 			PreferenceScreen incomingPrefs = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_INCOMING);
 			incomingPrefs
-					.removePreference((PreferenceScreen) findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
+					.removePreference(findPreference(PREFERENCE_SCREEN_PUSH_ADVANCED));
 			incomingPrefs
-					.removePreference((ListPreference) findPreference(PREFERENCE_PUSH_MODE));
+					.removePreference(findPreference(PREFERENCE_PUSH_MODE));
 			mMainScreen.removePreference(mSearchScreen);
 		}
 
@@ -635,6 +654,7 @@ public class AccountSettings extends K9PreferenceActivity {
 				.getEntry());
 		mAccountNotifyNewMailMode
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -676,6 +696,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mAccountVibratePattern.setSummary(mAccountVibratePattern.getEntry());
 		mAccountVibratePattern
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 						final String summary = newValue.toString();
@@ -718,6 +739,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mChipColor = findPreference(PREFERENCE_CHIP_COLOR);
 		mChipColor
 				.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+					@Override
 					public boolean onPreferenceClick(Preference preference) {
 						onChooseChipColor();
 						return false;
@@ -727,6 +749,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		mLedColor = findPreference(PREFERENCE_LED_COLOR);
 		mLedColor
 				.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+					@Override
 					public boolean onPreferenceClick(Preference preference) {
 						onChooseLedColor();
 						return false;
@@ -735,6 +758,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
 		findPreference(PREFERENCE_COMPOSITION).setOnPreferenceClickListener(
 				new Preference.OnPreferenceClickListener() {
+					@Override
 					public boolean onPreferenceClick(Preference preference) {
 						onCompositionSettings();
 						return true;
@@ -744,6 +768,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		findPreference(PREFERENCE_MANAGE_IDENTITIES)
 				.setOnPreferenceClickListener(
 						new Preference.OnPreferenceClickListener() {
+							@Override
 							public boolean onPreferenceClick(
 									Preference preference) {
 								onManageIdentities();
@@ -753,6 +778,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
 		findPreference(PREFERENCE_INCOMING).setOnPreferenceClickListener(
 				new Preference.OnPreferenceClickListener() {
+					@Override
 					public boolean onPreferenceClick(Preference preference) {
 						mIncomingChanged = true;
 						onIncomingSettings();
@@ -762,6 +788,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
 		findPreference(PREFERENCE_OUTGOING).setOnPreferenceClickListener(
 				new Preference.OnPreferenceClickListener() {
+					@Override
 					public boolean onPreferenceClick(Preference preference) {
 						onOutgoingSettings();
 						return true;
@@ -782,6 +809,7 @@ public class AccountSettings extends K9PreferenceActivity {
 			mCryptoApp.setSummary(mCryptoApp.getEntry());
 			mCryptoApp
 					.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+						@Override
 						public boolean onPreferenceChange(
 								Preference preference, Object newValue) {
 							String value = newValue.toString();
@@ -790,7 +818,7 @@ public class AccountSettings extends K9PreferenceActivity {
 							mCryptoApp.setValue(value);
 							handleCryptoAppDependencies();
 							if (Apg.NAME.equals(value)) {
-								Apg.createInstance(null).test(
+								CryptoProvider.createInstance(null).test(
 										AccountSettings.this);
 							}
 							return false;
@@ -1026,6 +1054,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		case DIALOG_COLOR_PICKER_ACCOUNT: {
 			dialog = new ColorPickerDialog(this,
 					new ColorPickerDialog.OnColorChangedListener() {
+						@Override
 						public void colorChanged(int color) {
 							mAccount.setChipColor(color);
 						}
@@ -1036,6 +1065,7 @@ public class AccountSettings extends K9PreferenceActivity {
 		case DIALOG_COLOR_PICKER_LED: {
 			dialog = new ColorPickerDialog(this,
 					new ColorPickerDialog.OnColorChangedListener() {
+						@Override
 						public void colorChanged(int color) {
 							mAccount.getNotificationSetting()
 									.setLedColor(color);

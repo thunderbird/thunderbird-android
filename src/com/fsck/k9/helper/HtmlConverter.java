@@ -112,7 +112,7 @@ public class HtmlConverter {
 			if (opening) {
 				output.setSpan(new Annotation(IGNORED_ANNOTATION_KEY,
 						IGNORED_ANNOTATION_VALUE), len, len,
-						Spannable.SPAN_MARK_MARK);
+						Spanned.SPAN_MARK_MARK);
 			} else {
 				Object start = getOpeningAnnotation(output);
 				if (start != null) {
@@ -140,7 +140,7 @@ public class HtmlConverter {
 					Annotation.class);
 			for (int i = objs.length - 1; i >= 0; i--) {
 				Annotation span = (Annotation) objs[i];
-				if (output.getSpanFlags(objs[i]) == Spannable.SPAN_MARK_MARK
+				if (output.getSpanFlags(objs[i]) == Spanned.SPAN_MARK_MARK
 						&& span.getKey().equals(IGNORED_ANNOTATION_KEY)
 						&& span.getValue().equals(IGNORED_ANNOTATION_VALUE)) {
 					return objs[i];

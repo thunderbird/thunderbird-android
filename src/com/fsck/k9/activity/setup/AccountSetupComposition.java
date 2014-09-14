@@ -73,6 +73,7 @@ public class AccountSetupComposition extends K9Activity {
 		mAccountSignatureUse.setChecked(useSignature);
 		mAccountSignatureUse
 				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
 						if (isChecked) {

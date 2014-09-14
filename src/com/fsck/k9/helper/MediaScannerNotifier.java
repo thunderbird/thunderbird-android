@@ -21,10 +21,12 @@ public class MediaScannerNotifier implements MediaScannerConnectionClient {
 
 	}
 
+	@Override
 	public void onMediaScannerConnected() {
 		mConnection.scanFile(mFile.getAbsolutePath(), null);
 	}
 
+	@Override
 	public void onScanCompleted(String path, Uri uri) {
 		try {
 			if (uri != null) {

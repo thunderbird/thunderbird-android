@@ -706,6 +706,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
 	}
 
+	@Override
 	public void onClick(View v) {
 		try {
 			switch (v.getId()) {
@@ -733,15 +734,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 	 * the fields' validity.
 	 */
 	TextWatcher validationTextWatcher = new TextWatcher() {
+		@Override
 		public void afterTextChanged(Editable s) {
 			validateFields();
 		}
 
+		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
 			/* unused */
 		}
 
+		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
 			/* unused */

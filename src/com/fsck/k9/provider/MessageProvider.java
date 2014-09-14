@@ -46,6 +46,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.search.SearchAccount;
 
@@ -408,9 +409,9 @@ public class MessageProvider extends ContentProvider {
 				if (extractors.containsKey(field)) {
 					continue;
 				}
-				if (MessageColumns._ID.equals(field)) {
+				if (BaseColumns._ID.equals(field)) {
 					extractors.put(field, new IdExtractor());
-				} else if (MessageColumns._COUNT.equals(field)) {
+				} else if (BaseColumns._COUNT.equals(field)) {
 					extractors.put(field,
 							new CountExtractor<MessageInfoHolder>(count));
 				} else if (MessageColumns.SUBJECT.equals(field)) {
@@ -1128,7 +1129,7 @@ public class MessageProvider extends ContentProvider {
 		// get localstore parameter
 		Message msg = null;
 		try {
-			Folder lf = LocalStore.getLocalInstance(myAccount, K9.app)
+			Folder lf = Store.getLocalInstance(myAccount, K9.app)
 					.getFolder(folderName);
 			int msgCount = lf.getMessageCount();
 			if (K9.DEBUG) {

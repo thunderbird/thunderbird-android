@@ -34,6 +34,7 @@ public class BinaryTempFileBody implements Body {
 		mTempDirectory = tempDirectory;
 	}
 
+	@Override
 	public void setEncoding(String encoding) throws MessagingException {
 		mEncoding = encoding;
 	}
@@ -51,6 +52,7 @@ public class BinaryTempFileBody implements Body {
 		return new FileOutputStream(mFile);
 	}
 
+	@Override
 	public InputStream getInputStream() throws MessagingException {
 		try {
 			return new BinaryTempFileBodyInputStream(new FileInputStream(mFile));
@@ -59,6 +61,7 @@ public class BinaryTempFileBody implements Body {
 		}
 	}
 
+	@Override
 	public void writeTo(OutputStream out) throws IOException,
 			MessagingException {
 		InputStream in = getInputStream();

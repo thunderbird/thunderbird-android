@@ -221,6 +221,7 @@ public class MailService extends CoreService {
 			final boolean considerLastCheckEnd) {
 
 		execute(getApplication(), new Runnable() {
+			@Override
 			public void run() {
 				reschedulePoll(hasConnectivity, doBackground,
 						considerLastCheckEnd);
@@ -232,6 +233,7 @@ public class MailService extends CoreService {
 			final boolean doBackground, Integer startId) {
 
 		execute(getApplication(), new Runnable() {
+			@Override
 			public void run() {
 				reschedulePushers(hasConnectivity, doBackground);
 			}
@@ -243,6 +245,7 @@ public class MailService extends CoreService {
 
 		if (hasConnectivity && doBackground) {
 			execute(getApplication(), new Runnable() {
+				@Override
 				public void run() {
 					refreshPushers();
 					schedulePushers();

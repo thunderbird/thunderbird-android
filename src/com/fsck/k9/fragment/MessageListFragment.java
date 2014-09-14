@@ -38,6 +38,7 @@ import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
@@ -2136,7 +2137,7 @@ public class MessageListFragment extends Fragment implements
 
 			AbsoluteSizeSpan span = new AbsoluteSizeSpan(fontSize, true);
 			str.setSpan(span, 0, beforePreviewText.length() + sigil.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 			// TODO: make this part of the theme
 			int color = (K9.getK9Theme() == K9.Theme.LIGHT) ? Color.rgb(105,
@@ -2145,7 +2146,7 @@ public class MessageListFragment extends Fragment implements
 			// Set span (color) for preview message
 			str.setSpan(new ForegroundColorSpan(color),
 					beforePreviewText.length() + sigil.length(), str.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 			Drawable statusHolder = null;
 			if (forwarded && answered) {
@@ -3363,7 +3364,7 @@ public class MessageListFragment extends Fragment implements
 
 	private void onToggleFlag(Flag flag, int flagColumn) {
 		int adapterPosition = getAdapterPositionForSelectedMessage();
-		if (adapterPosition == ListView.INVALID_POSITION) {
+		if (adapterPosition == AdapterView.INVALID_POSITION) {
 			return;
 		}
 

@@ -189,11 +189,13 @@ public class AttachmentView extends FrameLayout implements OnClickListener,
 		attachmentName.setText(name);
 		attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
 		new AsyncTask<Void, Void, Bitmap>() {
+			@Override
 			protected Bitmap doInBackground(Void... asyncTaskArgs) {
 				Bitmap previewIcon = getPreviewIcon();
 				return previewIcon;
 			}
 
+			@Override
 			protected void onPostExecute(Bitmap previewIcon) {
 				if (previewIcon != null) {
 					attachmentIcon.setImageBitmap(previewIcon);

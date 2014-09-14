@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -34,7 +35,7 @@ public class ChooseIdentity extends K9ListActivity {
 
 		getListView().setTextFilterEnabled(true);
 		getListView().setItemsCanFocus(false);
-		getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
+		getListView().setChoiceMode(AbsListView.CHOICE_MODE_NONE);
 		Intent intent = getIntent();
 		String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
 		mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -72,6 +73,7 @@ public class ChooseIdentity extends K9ListActivity {
 	protected void setupClickListeners() {
 		this.getListView().setOnItemClickListener(
 				new AdapterView.OnItemClickListener() {
+					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						Identity identity = mAccount.getIdentity(position);

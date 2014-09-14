@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
@@ -74,7 +75,7 @@ public class ChooseFolder extends K9ListActivity {
 
 		getListView().setFastScrollEnabled(true);
 		getListView().setItemsCanFocus(false);
-		getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
+		getListView().setChoiceMode(AbsListView.CHOICE_MODE_NONE);
 		Intent intent = getIntent();
 		String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
 		mAccount = Preferences.getPreferences(this).getAccount(accountUuid);

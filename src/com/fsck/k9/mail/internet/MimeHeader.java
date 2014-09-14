@@ -155,6 +155,7 @@ public class MimeHeader {
 		mCharset = charset;
 	}
 
+	@Override
 	public MimeHeader clone() {
 		MimeHeader header = new MimeHeader();
 		header.mCharset = mCharset;

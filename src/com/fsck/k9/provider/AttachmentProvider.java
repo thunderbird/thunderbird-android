@@ -23,6 +23,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.AttachmentInfo;
@@ -226,7 +227,7 @@ public class AttachmentProvider extends ContentProvider {
 		try {
 			final Account account = Preferences.getPreferences(getContext())
 					.getAccount(dbName);
-			attachmentInfo = LocalStore.getLocalInstance(account, K9.app)
+			attachmentInfo = Store.getLocalInstance(account, K9.app)
 					.getAttachmentInfo(id);
 		} catch (MessagingException e) {
 			Log.e(K9.LOG_TAG,
@@ -285,7 +286,7 @@ public class AttachmentProvider extends ContentProvider {
 					.getAccount(dbName);
 
 			try {
-				final LocalStore localStore = LocalStore.getLocalInstance(
+				final LocalStore localStore = Store.getLocalInstance(
 						account, K9.app);
 
 				AttachmentInfo attachmentInfo = localStore

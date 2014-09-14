@@ -555,6 +555,7 @@ public class AccountSetupOutgoing extends K9Activity implements
 				CheckDirection.OUTGOING);
 	}
 
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.next:
@@ -563,6 +564,7 @@ public class AccountSetupOutgoing extends K9Activity implements
 		}
 	}
 
+	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		mRequireLoginSettingsView.setVisibility(isChecked ? View.VISIBLE
 				: View.GONE);
@@ -584,14 +586,17 @@ public class AccountSetupOutgoing extends K9Activity implements
 	 * the fields' validity.
 	 */
 	TextWatcher validationTextWatcher = new TextWatcher() {
+		@Override
 		public void afterTextChanged(Editable s) {
 			validateFields();
 		}
 
+		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
 		}
 
+		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
 		}

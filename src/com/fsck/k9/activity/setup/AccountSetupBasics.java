@@ -7,6 +7,8 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Locale;
 
+import org.xmlpull.v1.XmlPullParser;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -157,14 +159,17 @@ public class AccountSetupBasics extends K9Activity implements OnClickListener,
 		validateFields();
 	}
 
+	@Override
 	public void afterTextChanged(Editable s) {
 		validateFields();
 	}
 
+	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
 	}
 
+	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	}
 
@@ -263,6 +268,7 @@ public class AccountSetupBasics extends K9Activity implements OnClickListener,
 						.setMessage(mProvider.note)
 						.setPositiveButton(getString(R.string.okay_action),
 								new DialogInterface.OnClickListener() {
+									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
 										finishAutoSetup();
@@ -459,6 +465,7 @@ public class AccountSetupBasics extends K9Activity implements OnClickListener,
 		finish();
 	}
 
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.next:
@@ -492,8 +499,8 @@ public class AccountSetupBasics extends K9Activity implements OnClickListener,
 			XmlResourceParser xml = getResources().getXml(R.xml.providers);
 			int xmlEventType;
 			Provider provider = null;
-			while ((xmlEventType = xml.next()) != XmlResourceParser.END_DOCUMENT) {
-				if (xmlEventType == XmlResourceParser.START_TAG
+			while ((xmlEventType = xml.next()) != XmlPullParser.END_DOCUMENT) {
+				if (xmlEventType == XmlPullParser.START_TAG
 						&& "provider".equals(xml.getName())
 						&& domain.equalsIgnoreCase(getXmlAttribute(xml,
 								"domain"))) {
@@ -502,19 +509,19 @@ public class AccountSetupBasics extends K9Activity implements OnClickListener,
 					provider.label = getXmlAttribute(xml, "label");
 					provider.domain = getXmlAttribute(xml, "domain");
 					provider.note = getXmlAttribute(xml, "note");
-				} else if (xmlEventType == XmlResourceParser.START_TAG
+				} else if (xmlEventType == XmlPullParser.START_TAG
 						&& "incoming".equals(xml.getName()) && provider != null) {
 					provider.incomingUriTemplate = new URI(getXmlAttribute(xml,
 							"uri"));
 					provider.incomingUsernameTemplate = getXmlAttribute(xml,
 							"username");
-				} else if (xmlEventType == XmlResourceParser.START_TAG
+				} else if (xmlEventType == XmlPullParser.START_TAG
 						&& "outgoing".equals(xml.getName()) && provider != null) {
 					provider.outgoingUriTemplate = new URI(getXmlAttribute(xml,
 							"uri"));
 					provider.outgoingUsernameTemplate = getXmlAttribute(xml,
 							"username");
-				} else if (xmlEventType == XmlResourceParser.END_TAG
+				} else if (xmlEventType == XmlPullParser.END_TAG
 						&& "provider".equals(xml.getName()) && provider != null) {
 					return provider;
 				}

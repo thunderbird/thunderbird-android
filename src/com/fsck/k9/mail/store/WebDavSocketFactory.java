@@ -40,6 +40,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
 				.setHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 	}
 
+	@Override
 	public Socket connectSocket(Socket sock, String host, int port,
 			InetAddress localAddress, int localPort, HttpParams params)
 			throws IOException, UnknownHostException, ConnectTimeoutException {
@@ -47,14 +48,17 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
 				localAddress, localPort, params);
 	}
 
+	@Override
 	public Socket createSocket() throws IOException {
 		return mSocketFactory.createSocket();
 	}
 
+	@Override
 	public boolean isSecure(Socket sock) throws IllegalArgumentException {
 		return mSchemeSocketFactory.isSecure(sock);
 	}
 
+	@Override
 	public Socket createSocket(final Socket socket, final String host,
 			final int port, final boolean autoClose) throws IOException,
 			UnknownHostException {

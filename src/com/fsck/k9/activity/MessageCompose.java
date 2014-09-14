@@ -2795,6 +2795,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 		fragment.show(getFragmentManager(), FRAGMENT_WAITING_FOR_ATTACHMENT);
 	}
 
+	@Override
 	public void onCancel(ProgressDialogFragment fragment) {
 		attachmentProgressDialogCancelled();
 	}

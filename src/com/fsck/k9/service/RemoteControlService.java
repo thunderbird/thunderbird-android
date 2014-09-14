@@ -65,6 +65,7 @@ public class RemoteControlService extends CoreService {
 						"RemoteControlService got request to change settings");
 			execute(getApplication(),
 					new Runnable() {
+						@Override
 						public void run() {
 							try {
 								boolean needsReschedule = false;
