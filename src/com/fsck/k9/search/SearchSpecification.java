@@ -58,8 +58,8 @@ public interface SearchSpecification extends Parcelable {
      * By result, only the fields in here are searchable.
      *
      * Fields not in here at this moment ( and by effect not searchable ):
-     * 		id, html_content, internal_date, message_id,
-     * 		preview, mime_type
+     *      id, html_content, internal_date, message_id,
+     *      preview, mime_type
      *
      */
     public enum Searchfield {
@@ -92,9 +92,9 @@ public interface SearchSpecification extends Parcelable {
     /**
      * This class represents 1 value for a certain search field. One
      * value consists of three things:
-     * 		an attribute: equals, starts with, contains,...
-     * 		a searchfield: date, flags, sender, subject,...
-     * 		a value: "apple", "jesse",..
+     *      an attribute: equals, starts with, contains,...
+     *      a searchfield: date, flags, sender, subject,...
+     *      a value: "apple", "jesse",..
      *
      * @author dzan
      */
