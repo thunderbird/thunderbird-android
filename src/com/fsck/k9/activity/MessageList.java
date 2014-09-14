@@ -2158,7 +2158,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 			});
 
 			holder.chip.setBackgroundColor(mAccount.getChipColor());
-			
+
 			mFontSizes.setViewTextSize(holder.folderName,
 					mFontSizes.getFolderName());
 
@@ -4323,7 +4323,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 			}
 
 			holder.chip.getBackground().setAlpha(255);
-			
+
 			return view;
 		}
 
@@ -5443,7 +5443,6 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 				});
 			}
 
-			
 			if (account instanceof Account) {
 				Account realAccount = (Account) account;
 				holder.chip.setBackgroundColor(realAccount.getChipColor());
@@ -5452,7 +5451,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 			}
 
 			holder.chip.getBackground().setAlpha(255);
-			
+
 			return view;
 		}
 

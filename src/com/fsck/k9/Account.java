@@ -96,7 +96,8 @@ public class Account implements BaseAccount {
 
 	/*
 	 * http://developer.android.com/design/style/color.html Note: Order does
-	 * matter, it's the order in which they will be picked(changed to google contact icon colors). 
+	 * matter, it's the order in which they will be picked(changed to google
+	 * contact icon colors).
 	 */
 	public static final Integer[] PREDEFINED_COLORS = new Integer[] {
 			Color.parseColor("#2093cd"), // blue

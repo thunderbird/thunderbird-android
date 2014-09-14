@@ -47,64 +47,29 @@
        android:layout_gravity="start"
        > 
     
-    <LinearLayout
-    android:id="@+id/left_drawer"
-    android:layout_height="match_parent"
-    android:layout_width="320dp"
-    android:orientation="vertical"
-    android:layout_gravity="start"
-    android:background="#ffffff" 
-    android:clickable="true">
-    
-<ListView
-        android:id="@+id/listview_inbox"
-       android:layout_weight="1"
-        android:layout_height="wrap_content" 
+  <LinearLayout
+        android:id="@+id/left_drawer"
         android:layout_width="320dp"
-    android:orientation="vertical"
-    android:layout_gravity="start"
-    android:background="#ffffff"
-        android:minHeight="64dip"
-       android:layout_alignBottom="@+id/Person"
-        android:choiceMode="singleChoice"
-        android:dividerHeight="0dp"
-		android:divider="@null"      
-        android:listSelector="@drawable/list_selector"
-        />
-    
-    <ListView
-        android:id="@+id/listview_drawer"
-       android:layout_weight="1"
-        android:layout_height="wrap_content" 
-        android:layout_width="320dp"
-    android:orientation="vertical"
-    android:layout_gravity="start"
-    android:background="#ffffff"
-        android:minHeight="64dip"
-       android:layout_alignBottom="@+id/Person"
-        android:choiceMode="singleChoice"
-        android:dividerHeight="0dp"
-		android:divider="@null" 
-        android:listSelector="@drawable/list_selector"
-        />
-    
-    <ListView
-        android:id="@android:id/list"
-       android:layout_weight="1"
-        android:layout_height="wrap_content" 
-        android:layout_width="320dp"
-    android:orientation="vertical"
-    android:layout_gravity="start"
-    android:background="#ffffff"
-        android:minHeight="64dip"
-       android:layout_alignBottom="@+id/Person"
-        android:choiceMode="singleChoice"
-        android:dividerHeight="0dp"
-	android:divider="@null"     
-        android:listSelector="@drawable/list_selector"
-        />
- 
-   </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="?navigationDrawerBackgroundColor"
+        android:clickable="true"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:background="?navigationDrawerBackgroundColor"
+            android:choiceMode="singleChoice"
+            android:divider="#d0d0d0"
+            android:dividerHeight="1px"
+            android:listSelector="@drawable/list_selector"
+            android:minHeight="64dip"
+            android:orientation="vertical" />
+    </LinearLayout>
     
     
     </ScrollView>

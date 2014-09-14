@@ -3,14 +3,14 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?messageViewHeaderBackgroundColor"
+    android:background="?navigationDrawerBackgroundColor"
      >
 
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="?messageViewHeaderBackgroundColor"
+        android:background="?navigationDrawerBackgroundColor"
          >
 
         <com.fsck.k9.view.ViewSwitcher
@@ -18,21 +18,21 @@
             android:id="@+id/container"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-           android:background="?messageViewHeaderBackgroundColor"
+          android:background="?navigationDrawerBackgroundColor"
             >
 
             <FrameLayout
                 android:id="@+id/message_list_container"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-               android:background="?messageViewHeaderBackgroundColor"
+              	android:background="?navigationDrawerBackgroundColor"
                 android:clickable="true" />
 
             <FrameLayout
                 android:id="@+id/message_view_container"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="?messageViewHeaderBackgroundColor"
+                android:background="?navigationDrawerBackgroundColor"
                 android:clickable="true" />
         </com.fsck.k9.view.ViewSwitcher>
     </FrameLayout>
@@ -42,7 +42,7 @@
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="?messageViewHeaderBackgroundColor"
+        android:background="?navigationDrawerBackgroundColor"
         android:clickable="true"
         android:orientation="vertical" >
 
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_weight="1"
-            android:background="?messageViewHeaderBackgroundColor"
+            android:background="?navigationDrawerBackgroundColor"
             android:choiceMode="singleChoice"
             android:divider="#d0d0d0"
             android:dividerHeight="1px"
