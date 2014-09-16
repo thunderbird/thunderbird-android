@@ -18,6 +18,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -182,24 +183,33 @@ public class ContactPictureLoader {
 
         Canvas canvas = new Canvas(result);
 
-        int rgb = calcUnknownContactColor(address);
-        result.eraseColor(rgb);
+		int rgb = calcUnknownContactColor(address);
+		result.eraseColor(rgb);
 
-        String letter = calcUnknownContactLetter(address);
+		String letter = calcUnknownContactLetter(address);
 
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setARGB(255, 255, 255, 255);
-        paint.setTextSize(mPictureSizeInPx * 3 / 4); // just scale this down a bit
-        Rect rect = new Rect();
-        paint.getTextBounds(letter, 0, 1, rect);
-        float width = paint.measureText(letter);
-        canvas.drawText(letter,
-                (mPictureSizeInPx / 2f) - (width / 2f),
-                (mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
+		Typeface tf = Typeface.create("sans-serif-light", Typeface.NORMAL);
 
-        return result;
+		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+
+		Paint paint = new Paint();
+		paint.setAntiAlias(true);
+		paint.setStyle(Paint.Style.FILL);
+		paint.setARGB(255, 255, 255, 255);
+		paint.setTextSize(mPictureSizeInPx * 3 / 4);
+		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+			//if buildversion is JellyBean or above, 
+			//set font in contact pictures to Roboto Light
+			paint.setTypeface(tf);
+		}
+		// just scale this down a bit
+		Rect rect = new Rect();
+		paint.getTextBounds(letter, 0, 1, rect);
+		float width = paint.measureText(letter);
+		canvas.drawText(letter, (mPictureSizeInPx / 2f) - (width / 2f),
+				(mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
+
+		return result;
     }
 
     private void addBitmapToCache(Address key, Bitmap bitmap) {
