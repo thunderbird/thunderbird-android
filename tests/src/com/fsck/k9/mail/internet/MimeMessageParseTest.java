@@ -44,7 +44,7 @@ public class MimeMessageParseTest extends AndroidTestCase {
         assertEquals(expected.length, actual.length);
     }
 
-    private static String printStream(InputStream stream) throws Exception {
+    private static String streamToString(InputStream stream) throws Exception {
         return IOUtils.toString(stream, "ISO-8859-1");
     }
 
@@ -63,7 +63,7 @@ public class MimeMessageParseTest extends AndroidTestCase {
     private static void checkLeafParts(MimeMessage msg, String... expectedParts) throws Exception {
         List<String> actual = new ArrayList<String>();
         for (Body leaf : getLeafParts(msg.getBody())) {
-            actual.add(printStream(leaf.getInputStream()));
+            actual.add(streamToString(leaf.getInputStream()));
         }
         assertEquals(Arrays.asList(expectedParts), actual);
     }
@@ -83,7 +83,7 @@ public class MimeMessageParseTest extends AndroidTestCase {
         checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
         assertEquals("Testmail", msg.getSubject());
         assertEquals("text/plain", msg.getContentType());
-        assertEquals("this is some test text.", printStream(msg.getBody().getInputStream()));
+        assertEquals("this is some test text.", streamToString(msg.getBody().getInputStream()));
     }
 
     public static void testSinglePart8BitRecurse() throws Exception {
@@ -101,7 +101,7 @@ public class MimeMessageParseTest extends AndroidTestCase {
         checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
         assertEquals("Testmail", msg.getSubject());
         assertEquals("text/plain; encoding=ISO-8859-1", msg.getContentType());
-        assertEquals("gefährliche Umlaute", printStream(msg.getBody().getInputStream()));
+        assertEquals("gefährliche Umlaute", streamToString(msg.getBody().getInputStream()));
     }
 
     public static void testSinglePartBase64NoRecurse() throws Exception {
@@ -119,7 +119,7 @@ public class MimeMessageParseTest extends AndroidTestCase {
         checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
         assertEquals("Testmail", msg.getSubject());
         assertEquals("text/plain", msg.getContentType());
-        assertEquals("this is some more test text.", printStream(msg.getBody().getInputStream()));
+        assertEquals("this is some more test text.", streamToString(msg.getBody().getInputStream()));
     }
 
     public static void testMultipartSingleLayerNoRecurse() throws Exception {
