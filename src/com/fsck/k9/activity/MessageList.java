@@ -3826,7 +3826,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
 	private void selectItem(int position) {
 
-		if (position < mAdapter_Accounts.getCount() + 1) {
+		if (position < mAdapter_Accounts.getCount() + 1 && position > 0) {
 			Log.d("Accounts", "clicked");
 
 			progress = ProgressDialog.show(this, "", "", true);
@@ -4091,11 +4091,11 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
 		getListView().invalidate();
 
-		mergeadapter.addView(header_inbox);
+		mergeadapter.addView(header_inbox, true);
 
 		mergeadapter.addAdapter(adapter);
 
-		mergeadapter.addView(header_folders);
+		mergeadapter.addView(header_folders, true);
 
 		mergeadapter.addAdapter(mAdapter);
 

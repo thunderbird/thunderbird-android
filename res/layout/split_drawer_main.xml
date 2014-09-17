@@ -52,7 +52,7 @@
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="?navigationDrawerBackgroundColor"
+        android:background="?attr/navigationDrawerBackgroundColor"
         android:clickable="true"
         android:orientation="vertical" >
 
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_weight="1"
-            android:background="?navigationDrawerBackgroundColor"
+            android:background="?attr/navigationDrawerBackgroundColor"
             android:choiceMode="singleChoice"
             android:divider="#d0d0d0"
             android:dividerHeight="1px"

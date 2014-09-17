@@ -2,6 +2,9 @@
 <resources>
     <color name="message_list_item_footer_background">#eeeeee</color>
     
+    <color name="header_light">#e0e0e0</color>
+    <color name="header_dark">#c05a5a5a</color>
+    
     <color name="list_item_title">#fff</color>
     <color name="list_background">#303030</color>
     <color name="list_background_pressed">#992416</color>
