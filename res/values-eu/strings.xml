@@ -49,7 +49,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik ezabatuko da.</string>
   <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontuaren datu guztiak ezabatuko dira, Kontuaren ezarpenak mantenduko dira.</string>
   <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"  kontuaren mezuen kopia lokalak ezabatuko dira. Kontuaren ezarpenak mantenduko dira.</string>
-  <string name="insufficient_apg_permissions">K-9k ez du APG erabiltzeko baimen osoa, K-9 berrinstalatu konpontzeko.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Inportazioarekin jarraitzeko instalatu fitxategi kudeatzeaile bat, mesedez.</string>
   <string name="open_market">Play Store-a ireki</string>
@@ -100,8 +99,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="move_action">Mugitu</string>
   <string name="single_message_options_action">Bidali…</string>
   <string name="refile_action">Artxibatu…</string>
-  <string name="continue_action">Jarraitu</string>
-  <string name="back_action">Atzera</string>
   <string name="done_action">Eginda</string>
   <string name="discard_action">Baztertu</string>
   <string name="save_draft_action">Zirriborroetan gorde</string>
@@ -436,12 +433,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_quote_prefix_label">Aipamen testuaren aurrizkia</string>
   <string name="account_settings_crypto">Kriptografia</string>
   <string name="account_settings_crypto_app">OpenPGP hornitzailea</string>
-  <string name="account_settings_crypto_app_none">Batez</string>
-  <string name="account_settings_crypto_auto_signature">Sinadura automatikoa</string>
-  <string name="account_settings_crypto_auto_signature_summary">Kontuaren eposta helbidea erabili sinatzeko gakoa asmatzeko.</string>
-  <string name="account_settings_crypto_auto_encrypt">Zifraketa automatikoa</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Jasotzailearen gako publikoa badago automatikoki zifratu.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG ez dago instalatuta</string>
   <string name="account_settings_mail_check_frequency_label">Karpeta aztertzeko maiztasuna</string>
   <string name="account_settings_storage_title">Biltegia</string>
   <string name="account_settings_color_label">Kontuaren kolorea</string>
@@ -703,15 +694,10 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="font_size_large">Handia</string>
   <string name="font_size_larger">Handiagoa</string>
   <string name="miscellaneous_preferences">Bestelakoak</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Ez da honetarako aplikaziorik topatu.</string>
-  <string name="error_apg_version_not_supported">Instalatutako APG bertsioa ezin da erabili.</string>
   <string name="btn_crypto_sign">Sinatu</string>
   <string name="btn_encrypt">Zifratu</string>
-  <string name="btn_decrypt">Dezifratu</string>
-  <string name="btn_verify">Egiaztatu</string>
   <string name="unknown_crypto_signature_user_id">&lt;ezezaguna&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME mezurik oraindik ez.</string>
   <string name="attachment_encryption_unsupported">Kontuz: oraindik ez dira eranskinak zinatzen edo zifratzen.</string>
   <string name="send_aborted">Bidalketa ezeztatua.</string>
@@ -721,8 +707,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="confirm_discard_draft_message">Ziur mezu hau baztertu nahi duzula?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Zirriborroa gordetzea ukatu.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Zifratuko diren zirriborroak gordetzea ukatu.</string>
-  <string name="continue_without_public_key_dlg_title">Gako publikorik gabe jarraitu?</string>
-  <string name="continue_without_public_key_instructions_fmt">Jasotzaile bat edo gehiago ez dute gako publikorik. Jarraitu?</string>
   <string name="select_text_now">Kopiatuko den testua hautatu</string>
   <string name="dialog_confirm_delete_title">Ezabatzea baieztatu</string>
   <string name="dialog_confirm_delete_message">Mezu hau ezabatu nahi duzu?</string>

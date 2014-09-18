@@ -63,7 +63,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
     <string name="account_recreate_dlg_instructions_fmt">All local data for \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
     <string name="account_clear_dlg_instructions_fmt">Local copies of messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
-    <string name="insufficient_apg_permissions">K-9 doesn\'t have permission to access APG fully, please reinstall K-9 to fix that.</string>
 
 
 
@@ -130,8 +129,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="move_action">Move</string>
     <string name="single_message_options_action">Send…</string>
     <string name="refile_action">Refile…</string>
-    <string name="continue_action">Continue</string>
-    <string name="back_action">Back</string>
     <string name="done_action">Done</string>
     <string name="discard_action">Discard</string>
     <string name="save_draft_action">Save as draft</string>
@@ -563,12 +560,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
     <string name="account_settings_crypto">Cryptography</string>
     <string name="account_settings_crypto_app">OpenPGP Provider</string>
-    <string name="account_settings_crypto_app_none">None</string>
-    <string name="account_settings_crypto_auto_signature">Auto-sign</string>
-    <string name="account_settings_crypto_auto_signature_summary">Use the account\'s email address to guess the signature key.</string>
-    <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>
-    <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>
-    <string name="account_settings_crypto_apg_not_installed">APG not installed</string>
     <string name="account_settings_no_openpgp_provider_installed">No OpenPGP Provider installed</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
@@ -909,15 +900,10 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="miscellaneous_preferences">Miscellaneous</string>
 
-    <!-- APG related -->
     <string name="error_activity_not_found">No suitable application for this action found.</string>
-    <string name="error_apg_version_not_supported">The installed APG version is not supported.</string>
     <string name="btn_crypto_sign">Sign</string>
     <string name="btn_encrypt">Encrypt</string>
-    <string name="btn_decrypt">Decrypt</string>
-    <string name="btn_verify">Verify</string>
     <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
-    <string name="key_id">id: %s</string>
     <string name="pgp_mime_unsupported">PGP/MIME messages are not supported yet.</string>
     <string name="attachment_encryption_unsupported">Warning: attachments are NOT signed or encrypted yet.</string>
     <string name="send_aborted">Send aborted.</string>
@@ -930,9 +916,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>
     <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>
-
-    <string name="continue_without_public_key_dlg_title">Continue without public key?</string>
-    <string name="continue_without_public_key_instructions_fmt">One or more recipients do not have a saved public key. Continue?</string>
 
     <string name="select_text_now">Select text to copy.</string>
 

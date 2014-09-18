@@ -50,7 +50,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird gelöscht.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alle Daten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von K-9 Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
   <string name="account_clear_dlg_instructions_fmt">Alle Nachrichten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von K-9 Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
-  <string name="insufficient_apg_permissions">K-9 hat keinen Vollzugriff auf APG, bitte dafür K-9 neu installieren.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Es wurde keine geeignete Anwendung gefunden, um den Import durchzuführen. Bitte installieren Sie einen Dateimanager aus dem Play Store.</string>
   <string name="open_market">Play Store öffnen</string>
@@ -101,8 +100,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="move_action">Verschieben</string>
   <string name="single_message_options_action">Aktionen…</string>
   <string name="refile_action">Umsortieren…</string>
-  <string name="continue_action">Fortfahren</string>
-  <string name="back_action">Zurück</string>
   <string name="done_action">Fertig</string>
   <string name="discard_action">Verwerfen</string>
   <string name="save_draft_action">Speichern</string>
@@ -462,12 +459,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_quote_prefix_label">Zitat-Präfix</string>
   <string name="account_settings_crypto">Kryptographie</string>
   <string name="account_settings_crypto_app">OpenPGP-Provider</string>
-  <string name="account_settings_crypto_app_none">Keiner</string>
-  <string name="account_settings_crypto_auto_signature">Automatisches Signieren</string>
-  <string name="account_settings_crypto_auto_signature_summary">E-Mail-Adresse des Kontos verwenden, um den Signaturschlüssel zu finden</string>
-  <string name="account_settings_crypto_auto_encrypt">Automatische Verschlüsselung</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Automatisch verschlüsseln, falls für den Empfänger ein öffentlicher Schlüssel vorhanden ist</string>
-  <string name="account_settings_crypto_apg_not_installed">APG ist nicht installiert</string>
   <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
   <string name="account_settings_storage_title">Speicher</string>
   <string name="account_settings_color_label">Kontofarbe</string>
@@ -738,15 +729,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="font_size_large">Groß</string>
   <string name="font_size_larger">Größer</string>
   <string name="miscellaneous_preferences">Verschiedenes</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Keine geeignete Anwendung für diese Aktion gefunden.</string>
-  <string name="error_apg_version_not_supported">Die installierte APG-Version wird nicht unterstützt.</string>
   <string name="btn_crypto_sign">Signieren</string>
   <string name="btn_encrypt">Verschlüsseln</string>
-  <string name="btn_decrypt">Entschlüsseln</string>
-  <string name="btn_verify">Verifizieren</string>
   <string name="unknown_crypto_signature_user_id">&lt;unbekannt&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME-Nachrichten werden noch nicht unterstützt.</string>
   <string name="attachment_encryption_unsupported">Achtung: Anhänge werden zur Zeit weder signiert noch verschlüsselt.</string>
   <string name="send_aborted">Senden abgebrochen.</string>
@@ -756,8 +742,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="confirm_discard_draft_message">Sind Sie sicher, dass Sie die Nachricht verwerfen möchten?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Speichern des Entwurfs verweigern</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Die Speicherung von als verschlüsselt markierten Entwürfen verweigern.</string>
-  <string name="continue_without_public_key_dlg_title">Ohne öffentlichen Schlüssel fortfahren?</string>
-  <string name="continue_without_public_key_instructions_fmt">Einer oder mehrere Empfänger besitzen keinen abgespeicherten öffentlichen Schlüssel. Fortfahren?</string>
   <string name="select_text_now">Text auswählen, um ihn zu kopieren.</string>
   <string name="dialog_confirm_delete_title">Löschen bestätigen</string>
   <string name="dialog_confirm_delete_message">Möchten Sie diese Nachricht löschen?</string>

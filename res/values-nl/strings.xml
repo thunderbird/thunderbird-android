@@ -49,7 +49,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alle data voor \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail, maar account instellingen blijven behouden.</string>
   <string name="account_clear_dlg_instructions_fmt">Alle berichten in \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van  K-9 Mail, maar account instellingen blijven behouden.</string>
-  <string name="insufficient_apg_permissions">K-9 heeft geen volledige toegang tot APG, installeer K-9 opnieuw om dit te verhelpen.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Installeer een bestandsbeheer-app om verder te gaan met deze import.</string>
   <string name="open_market">Open Play Store</string>
@@ -100,8 +99,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="move_action">Verplaatsen</string>
   <string name="single_message_options_action">Verzend…</string>
   <string name="refile_action">Opnieuw opslaan…</string>
-  <string name="continue_action">Doorgaan</string>
-  <string name="back_action">Terug</string>
   <string name="done_action">Klaar</string>
   <string name="discard_action">Vergeten</string>
   <string name="save_draft_action">Opslaan als concept</string>
@@ -445,12 +442,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_settings_quote_prefix_label">Quote voorvoegsel</string>
   <string name="account_settings_crypto">Cryptografie</string>
   <string name="account_settings_crypto_app">OpenPGP Provider</string>
-  <string name="account_settings_crypto_app_none">Geen</string>
-  <string name="account_settings_crypto_auto_signature">Auto-ondertekenen</string>
-  <string name="account_settings_crypto_auto_signature_summary">Gebruik het e-mailadres van je account om de digitale sleutel te raden.</string>
-  <string name="account_settings_crypto_auto_encrypt">Auto-versleutelen</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Automatisch verslutelen aanzetten als een publieke sleutel overeenkomt met een ontvanger.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG niet geinstalleerd</string>
   <string name="account_settings_mail_check_frequency_label">Mappen poll controleer frequentie</string>
   <string name="account_settings_storage_title">Opslag</string>
   <string name="account_settings_color_label">Account kleur</string>
@@ -712,15 +703,10 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="font_size_large">Groot</string>
   <string name="font_size_larger">Groter</string>
   <string name="miscellaneous_preferences">Diversen</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Geen geschikte applicatie gevonden voor deze aktie.</string>
-  <string name="error_apg_version_not_supported">De geïnstalleerde APG versie wordt niet ondersteund.</string>
   <string name="btn_crypto_sign">Teken</string>
   <string name="btn_encrypt">Versleutelen</string>
-  <string name="btn_decrypt">Decoderen</string>
-  <string name="btn_verify">Bevestig</string>
   <string name="unknown_crypto_signature_user_id">&lt;onbekend&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME berichten zijn nog niet ondersteund.</string>
   <string name="attachment_encryption_unsupported">Waarschuwing: bijlage zijn nog niet ondertekend of versleuteld.</string>
   <string name="send_aborted">Verzenden geannuleerd.</string>
@@ -730,8 +716,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="confirm_discard_draft_message">Weet je zeker dat je dit bericht wilt afbreken?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Weiger klad-bericht op te slaan.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Weiger klad-bericht op te slaan als het versleuteld is.</string>
-  <string name="continue_without_public_key_dlg_title">Doorgaan zonder publieke sleutel?</string>
-  <string name="continue_without_public_key_instructions_fmt">Een of meerdere ontvangers hebben geen opgeslagen publieke sleutels. Doorgaan?</string>
   <string name="select_text_now">Selecteer tekst om te kopieren.</string>
   <string name="dialog_confirm_delete_title">Bevestig verwijderen</string>
   <string name="dialog_confirm_delete_message">Wil je dit bericht verwijderen?</string>

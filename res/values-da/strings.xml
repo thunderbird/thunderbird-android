@@ -47,7 +47,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alle mails, vedhæftede filer, mapper og mappe-indstillinger for \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail, men kontoindstillinger vil blive husket.</string>
   <string name="account_clear_dlg_instructions_fmt">Alle mails i \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet, men kontoindstillinger vil blive husket.</string>
-  <string name="insufficient_apg_permissions">K-9 har ikke tilstrækkelig tilladelse til at benytte APG, geninstaller K-9 for at give fuld adgang.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Du skal have en filemanager installeret for at kunne importere.</string>
   <string name="open_market">Åben Play Store</string>
@@ -97,8 +96,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="forward_action">Videresend</string>
   <string name="move_action">Flyt</string>
   <string name="single_message_options_action">Send…</string>
-  <string name="continue_action">Fortsæt</string>
-  <string name="back_action">Tilbage</string>
   <string name="done_action">Afslut</string>
   <string name="discard_action">Slet</string>
   <string name="save_draft_action">Gem som kladde</string>
@@ -432,12 +429,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_settings_quote_prefix_label">Citeret tekst prefix</string>
   <string name="account_settings_crypto">Kryptering</string>
   <string name="account_settings_crypto_app">OpenPGP leverandør</string>
-  <string name="account_settings_crypto_app_none">Ingen</string>
-  <string name="account_settings_crypto_auto_signature">Auto signering</string>
-  <string name="account_settings_crypto_auto_signature_summary">Benyt kontoens mail addresse til at gætte signaturnøgle.</string>
-  <string name="account_settings_crypto_auto_encrypt">Auto kryptering</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Automatisk kryptering hvis offentlig nøgle matcher en modtager.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG ikke installeret</string>
   <string name="account_settings_mail_check_frequency_label">Frekvens for hentning af mails</string>
   <string name="account_settings_storage_title">Lagring</string>
   <string name="account_settings_color_label">Kontofarve</string>
@@ -698,15 +689,10 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="font_size_large">Større</string>
   <string name="font_size_larger">Størst</string>
   <string name="miscellaneous_preferences">Diverse</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Kunne ikke finde noget program som kan udføre denne handling.</string>
-  <string name="error_apg_version_not_supported">Den installerede version af APG understørttes ikke.</string>
   <string name="btn_crypto_sign">Signer</string>
   <string name="btn_encrypt">Krypter</string>
-  <string name="btn_decrypt">Dekrypter</string>
-  <string name="btn_verify">Verificer</string>
   <string name="unknown_crypto_signature_user_id">&lt;ukendt&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME meddelelser er ikke understøttet endnu.</string>
   <string name="attachment_encryption_unsupported">Advarsel: vedhæftninger er IKKE signerede eller krypterede endnu.</string>
   <string name="send_aborted">Send afbrudt.</string>
@@ -714,8 +700,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="save_or_discard_draft_message_instructions_fmt">Gem eller fortryd denne meddelelse?</string>
   <string name="confirm_discard_draft_message_title">Annuler meddelelse?</string>
   <string name="confirm_discard_draft_message">Er du sikker på at du ønsker at annulere denne meddelelse?</string>
-  <string name="continue_without_public_key_dlg_title">Fortsæt uden offentlig nøgle?</string>
-  <string name="continue_without_public_key_instructions_fmt">En eller flere modtagere har ikke en offentlig nøgle. Fortsæt?</string>
   <string name="select_text_now">Vælg tekst som skal kopieres.</string>
   <string name="dialog_confirm_delete_title">Bekræft sletning</string>
   <string name="dialog_confirm_delete_message">Ønsker du at slette denne mail?</string>

@@ -48,7 +48,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada do K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Todos os datos locais de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados. Os axustes da conta manteranse.</string>
   <string name="account_clear_dlg_instructions_fmt">As copias locais das mensaxes de \"<xliff:g id="account">%s</xliff:g>\" serán eliminadas. Manteranse os axustes da conta.</string>
-  <string name="insufficient_apg_permissions">K-9 non ten permiso para acceder por completo a APG; por favor, volve instalar K-9 para amañalo.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Por favor, selecciona un xestor de ficheiros para continuar con esta importación.</string>
   <string name="open_market">Abrir Play Store</string>
@@ -98,8 +97,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="forward_action">Reenviar</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
-  <string name="continue_action">Continuar</string>
-  <string name="back_action">Volver</string>
   <string name="done_action">Feito</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Gardar como borrador</string>
@@ -440,12 +437,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="account_settings_quote_prefix_label">Prefixo da cita</string>
   <string name="account_settings_crypto">Cifraxe</string>
   <string name="account_settings_crypto_app">Provedor OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Ningunha</string>
-  <string name="account_settings_crypto_auto_signature">Asinar automaticamente</string>
-  <string name="account_settings_crypto_auto_signature_summary">Usar o enderezo electrónico para adiviñar a sinatura.</string>
-  <string name="account_settings_crypto_auto_encrypt">Cifraxe automática</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Cifrar automaticamente cando a chave pública coincida cun destinatario.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG non instalado</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -694,15 +685,10 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Moi grande</string>
   <string name="miscellaneous_preferences">Miscelánea</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Non hai un aplicativo para executar esta acción.</string>
-  <string name="error_apg_version_not_supported">Non se admite a versión instalada de APG.</string>
   <string name="btn_crypto_sign">Asinar</string>
   <string name="btn_encrypt">Cifrar</string>
-  <string name="btn_decrypt">Descifrar</string>
-  <string name="btn_verify">Verificar</string>
   <string name="unknown_crypto_signature_user_id">&lt;descoñecido&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">As mensaxes PGP/MIME non se admiten aínda.</string>
   <string name="attachment_encryption_unsupported">Aviso: os anexos AÍNDA NON son asinados nin cifrados.</string>
   <string name="send_aborted">Envío cancelado.</string>
@@ -712,8 +698,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="confirm_discard_draft_message">Tes a certeza de querer descartar esta mensaxe?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Rexeitar gardar o borrador da mensaxe.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Rexeitar gardar o borrador dunha mensaxe marcada como cifrada.</string>
-  <string name="continue_without_public_key_dlg_title">Continuar sen chave pública?</string>
-  <string name="continue_without_public_key_instructions_fmt">Un ou máis destinatarios non teñen unha chave pública gardada. Desexas continuar?</string>
   <string name="select_text_now">Seleccionar texto para copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar borrado</string>
   <string name="dialog_confirm_delete_message">Queres eliminar esta mensaxe?</string>

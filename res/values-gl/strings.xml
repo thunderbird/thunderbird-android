@@ -48,7 +48,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Os datos de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero manterase a súa Configuración</string>
   <string name="account_clear_dlg_instructions_fmt">Todas as mensaxes en \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero a Configuración da conta manterase</string>
-  <string name="insufficient_apg_permissions">K-9 non ten permiso para acceder totalmente a APG, por favor, instala K-9 otra vez ou arránxao</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Por favor, instala un xestor de ficheiros para continuar coa importación.</string>
   <string name="open_market">Abrir Play Store</string>
@@ -97,7 +96,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="forward_action">Reenviar</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
-  <string name="continue_action">Continuar</string>
   <string name="done_action">Feito</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Gardar coma borrador</string>
@@ -393,9 +391,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="account_settings_quote_prefix_label">Prefixo de cita</string>
   <string name="account_settings_crypto">Cifrado</string>
   <string name="account_settings_crypto_app">OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Ningunha</string>
-  <string name="account_settings_crypto_auto_signature">Asinar automáticamente</string>
-  <string name="account_settings_crypto_auto_signature_summary">Usar o correo para adiviñar a chave de sinatura</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -640,15 +635,10 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Moi Grande</string>
   <string name="miscellaneous_preferences">Varios</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Non existe aplicación para executar esta acción</string>
-  <string name="error_apg_version_not_supported">Non se soporta esta versión de APG</string>
   <string name="btn_crypto_sign">Asinar</string>
   <string name="btn_encrypt">Cifrar</string>
-  <string name="btn_decrypt">Descifrar</string>
-  <string name="btn_verify">Verificar</string>
   <string name="unknown_crypto_signature_user_id">&lt;descoñecido&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">O formato PGP/MIME non está soportado ainda</string>
   <string name="attachment_encryption_unsupported">Advertencia: os adxuntos non estan asinados ou cifrados</string>
   <string name="send_aborted">Envío cancelado.</string>

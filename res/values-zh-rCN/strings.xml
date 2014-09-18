@@ -48,7 +48,6 @@ K-9改进的功能包括：
   <string name="account_delete_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”将从K-9 Mail中删除。</string>
   <string name="account_recreate_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”的全部数据将从K-9 Mail中删除，但是账户设置将保留。</string>
   <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”中的全部邮件将从K-9 Mail中删除，但是账户设置将保留。</string>
-  <string name="insufficient_apg_permissions">K-9没有被允许完全访问APG，请重新安装K-9以便修复这一问题。</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">要继续导入，请先安装一款文件管理器。</string>
   <string name="open_market">打开 Play Store</string>
@@ -99,8 +98,6 @@ K-9改进的功能包括：
   <string name="move_action">移动</string>
   <string name="single_message_options_action">发送…</string>
   <string name="refile_action">重新归档…</string>
-  <string name="continue_action">继续</string>
-  <string name="back_action">返回</string>
   <string name="done_action">完成</string>
   <string name="discard_action">忽略</string>
   <string name="save_draft_action">保存为草稿</string>
@@ -447,12 +444,6 @@ K-9改进的功能包括：
   <string name="account_settings_quote_prefix_label">引用文本前缀</string>
   <string name="account_settings_crypto">加密</string>
   <string name="account_settings_crypto_app">OpenPGP 提供者</string>
-  <string name="account_settings_crypto_app_none">无</string>
-  <string name="account_settings_crypto_auto_signature">自动签名</string>
-  <string name="account_settings_crypto_auto_signature_summary">使用账户的电子邮件地址自动猜测签名密钥。</string>
-  <string name="account_settings_crypto_auto_encrypt">自动加密</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">如果找到收件人的公钥，则自动加密。</string>
-  <string name="account_settings_crypto_apg_not_installed">未安装 APG</string>
   <string name="account_settings_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_settings_storage_title">存储</string>
   <string name="account_settings_color_label">账户颜色</string>
@@ -716,15 +707,10 @@ K-9改进的功能包括：
   <string name="font_size_large">大</string>
   <string name="font_size_larger">更大</string>
   <string name="miscellaneous_preferences">杂项</string>
-  <!--APG related-->
   <string name="error_activity_not_found">没有找到可以用于这一操作的程序。</string>
-  <string name="error_apg_version_not_supported">不支持所安装版本的APG。</string>
   <string name="btn_crypto_sign">签名</string>
   <string name="btn_encrypt">加密</string>
-  <string name="btn_decrypt">解密</string>
-  <string name="btn_verify">验证</string>
   <string name="unknown_crypto_signature_user_id">&lt;未知&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">暂时还不支持PGP/MIME邮件。</string>
   <string name="attachment_encryption_unsupported">警告：附件还 *没有* 被签名或者加密。</string>
   <string name="send_aborted">发送操作已经取消。</string>
@@ -734,8 +720,6 @@ K-9改进的功能包括：
   <string name="confirm_discard_draft_message">确定舍弃该邮件？</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">拒绝保存草稿</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">拒绝保存标记为已加密的草稿</string>
-  <string name="continue_without_public_key_dlg_title">没有公钥，继续？</string>
-  <string name="continue_without_public_key_instructions_fmt">某些收件人没有保存的公钥，继续？</string>
   <string name="select_text_now">选择需要拷贝的文本。</string>
   <string name="dialog_confirm_delete_title">删除确认</string>
   <string name="dialog_confirm_delete_message">你确定要删除这封邮件么？</string>

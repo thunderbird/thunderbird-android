@@ -49,7 +49,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_delete_dlg_instructions_fmt">A \"<xliff:g id="account">%s</xliff:g>\" fiók törölve a K9 Mail-ból.</string>
   <string name="account_recreate_dlg_instructions_fmt">Az összes üzenet, melléklet, mappa és beállításai törlődni fognak a \"<xliff:g id="account">%s</xliff:g>\" fiókból. A fiók beállításai megmaradnak.</string>
   <string name="account_clear_dlg_instructions_fmt">Minden levél törlődni fog a \"<xliff:g id="account">%s</xliff:g>\" fiókból, de a beállítások megmaradnak.</string>
-  <string name="insufficient_apg_permissions">A K-9-nek nincs hozzáférési joga az APG-hez. Kérem telepítse újra a K-9 Mail.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Az importálás folytatásához, telepítsen egy fájlkezelőt.</string>
   <string name="open_market">Play áruház megnyitása</string>
@@ -99,8 +98,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="forward_action">Továbbítás</string>
   <string name="move_action">Áthelyez</string>
   <string name="single_message_options_action">Küldés…</string>
-  <string name="continue_action">Folytatás</string>
-  <string name="back_action">Vissza</string>
   <string name="done_action">Rendben</string>
   <string name="discard_action">Mégsem</string>
   <string name="save_draft_action">Piszkozat</string>
@@ -429,11 +426,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_settings_quote_prefix_label">Idézett szöveg előtagja</string>
   <string name="account_settings_crypto">Titkosítás</string>
   <string name="account_settings_crypto_app">OpenPGP Provider</string>
-  <string name="account_settings_crypto_app_none">Nincs</string>
-  <string name="account_settings_crypto_auto_signature">Automatikus aláírás</string>
-  <string name="account_settings_crypto_auto_signature_summary">Használja az email címet a titkosítási kulcshoz</string>
-  <string name="account_settings_crypto_auto_encrypt">Automatikusan titkosított</string>
-  <string name="account_settings_crypto_apg_not_installed">Az APG nincs telepítve</string>
   <string name="account_settings_mail_check_frequency_label">Frissítés gyakorisága</string>
   <string name="account_settings_storage_title">Tárolás</string>
   <string name="account_settings_color_label">Fiók színe</string>
@@ -692,15 +684,10 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="font_size_large">Nagy</string>
   <string name="font_size_larger">Nagyobb</string>
   <string name="miscellaneous_preferences">Egyéb</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Nincs megfelelő alkalmazás ehhez a művelethez.</string>
-  <string name="error_apg_version_not_supported">A telepített APG verzió nem támogatott.</string>
   <string name="btn_crypto_sign">Aláírás</string>
   <string name="btn_encrypt">Titkosítás</string>
-  <string name="btn_decrypt">Dekódolás</string>
-  <string name="btn_verify">Ellenőrzés</string>
   <string name="unknown_crypto_signature_user_id">&lt;ismeretlen&gt;</string>
-  <string name="key_id">azonosító: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME üzenetek még nem támogatottak.</string>
   <string name="attachment_encryption_unsupported">Figyelem: a mellékletek nincsenek aláírva vagy nem titkosítottak.</string>
   <string name="send_aborted">Küldés megszakítva.</string>
@@ -710,8 +697,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="confirm_discard_draft_message">Valóban elveti az üzenetet?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Piszkozat mentésének elutasítása.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Titkosított piszkozatok mentésének elutasítása.</string>
-  <string name="continue_without_public_key_dlg_title">Folytatás nyilvános kulcs nélkül?</string>
-  <string name="continue_without_public_key_instructions_fmt">Egy vagy több címzettnek nincs elmentett nyilvános kulcsa. Folytatás?</string>
   <string name="select_text_now">Szöveg kijelölése.</string>
   <string name="dialog_confirm_delete_title">Törlés megerősítése</string>
   <string name="dialog_confirm_delete_message">Biztos hogy törli ezt a levelet?</string>

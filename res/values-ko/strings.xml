@@ -48,7 +48,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
   <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 데이터가 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
   <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 메일이 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
-  <string name="insufficient_apg_permissions">K-9은 APG에 대한 완전한 접근 권한이 없습니다. 이를 고치려면 K-9를 재설치하십시오.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">가져오기에 적합한 애플리케이션이 없습니다. 구글 플레이 스토어에서 파일 관리자를 설치하십시오.</string>
   <string name="open_market">플레이 스토어 열기</string>
@@ -99,8 +98,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="move_action">이동</string>
   <string name="single_message_options_action">메시지 옵션…</string>
   <string name="refile_action">관리…</string>
-  <string name="continue_action">계속</string>
-  <string name="back_action">뒤로</string>
   <string name="done_action">완료</string>
   <string name="discard_action">버리기</string>
   <string name="save_draft_action">임시 보관함에 저장</string>
@@ -435,12 +432,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_settings_quote_prefix_label">본문 인용 앞 표시</string>
   <string name="account_settings_crypto">암호화 방법</string>
   <string name="account_settings_crypto_app">OpenPGP 제공자</string>
-  <string name="account_settings_crypto_app_none">없음</string>
-  <string name="account_settings_crypto_auto_signature">자동 서명</string>
-  <string name="account_settings_crypto_auto_signature_summary">계정의 이메일 주소를 통해 서명키를 추측합니다</string>
-  <string name="account_settings_crypto_auto_encrypt">자동 암호화</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">공용 키가 수신자와 일치하면 자동으로 암호화합니다</string>
-  <string name="account_settings_crypto_apg_not_installed">APG가 설치되지 않음</string>
   <string name="account_settings_mail_check_frequency_label">폴더 수신 빈도</string>
   <string name="account_settings_storage_title">저장 장치</string>
   <string name="account_settings_color_label">계정 색깔</string>
@@ -702,15 +693,10 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="font_size_large">크게</string>
   <string name="font_size_larger">더 크게</string>
   <string name="miscellaneous_preferences">기타 설정</string>
-  <!--APG related-->
   <string name="error_activity_not_found">이 작동에 대해 적절한 애플리케이션을 찾을 수 없습니다.</string>
-  <string name="error_apg_version_not_supported">설치된 APG 버전을 지원하지 않습니다.</string>
   <string name="btn_crypto_sign">서명</string>
   <string name="btn_encrypt">암호화</string>
-  <string name="btn_decrypt">복호화</string>
-  <string name="btn_verify">인증</string>
   <string name="unknown_crypto_signature_user_id">&lt;알 수 없음&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME 메시지는 아직 지원하지 않습니다.</string>
   <string name="attachment_encryption_unsupported">경고: 첨부 파일이 아직 암호화되지 않았습니다</string>
   <string name="send_aborted">보내기 실패.</string>
@@ -720,8 +706,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="confirm_discard_draft_message">메시지 작성을 취소하고 버리겠습니까?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">메시지를 저장할 수 없음</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">작성 중인 메시지가 암호화 표시되어 저장할 수 없습니다.</string>
-  <string name="continue_without_public_key_dlg_title">공용 암호 키 없이 계속</string>
-  <string name="continue_without_public_key_instructions_fmt">수신자 일부에게 공용 키가 없습니다. 계속하시겠습니까?</string>
   <string name="select_text_now">복사할 텍스트 선택</string>
   <string name="dialog_confirm_delete_title">삭제 확인</string>
   <string name="dialog_confirm_delete_message">이 메시지를 삭제하시겠습니까?</string>
