@@ -319,9 +319,6 @@
             <intent-filter>
                 <action android:name="com.android.sync.SYNC_CONN_STATUS_CHANGED"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="com.fsck.k9.service.BroadcastReceiver.scheduleIntent"/>
-            </intent-filter>
         </receiver>
 
         <receiver
