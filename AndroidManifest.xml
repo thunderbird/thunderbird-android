@@ -282,9 +282,6 @@
         </activity>
 
         <activity
-            android:name=".activity.AccessibleEmailContentActivity"/>
-
-        <activity
             android:name=".activity.EmailAddressList"
             android:configChanges="locale"/>
 
