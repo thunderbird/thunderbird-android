@@ -569,6 +569,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_auto_encrypt">Auto-encrypt</string>
     <string name="account_settings_crypto_auto_encrypt_summary">Automatically set encrypt if a public key matches a recipient.</string>
     <string name="account_settings_crypto_apg_not_installed">APG not installed</string>
+    <string name="account_settings_no_openpgp_provider_installed">No OpenPGP Provider installed</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 

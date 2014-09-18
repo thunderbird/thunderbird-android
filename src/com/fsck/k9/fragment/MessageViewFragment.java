@@ -30,7 +30,6 @@ import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.CryptoProvider.CryptoDecryptCallback;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.helper.FileBrowserHelper;
@@ -49,7 +48,7 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
 public class MessageViewFragment extends Fragment implements OnClickListener,
-        CryptoDecryptCallback, ConfirmationDialogFragmentListener {
+        ConfirmationDialogFragmentListener {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -427,10 +426,6 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mAccount.getCryptoProvider().onDecryptActivityResult(this, requestCode, resultCode, data, mPgpData)) {
-            return;
-        }
-
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
@@ -727,20 +722,6 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
             data.setDecryptedData(decryptedData);
             data.setSignatureResult(signatureResult);
             mMessageView.setMessage(mAccount, (LocalMessage) mMessage, data, mController, mListener);
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
-        }
-    }
-
-    // This REALLY should be in MessageCryptoView
-    @Override
-    public void onDecryptDone(PgpData pgpData) {
-        Account account = mAccount;
-        LocalMessage message = (LocalMessage) mMessage;
-        MessagingController controller = mController;
-        Listener listener = mListener;
-        try {
-            mMessageView.setMessage(account, message, pgpData, controller, listener);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }

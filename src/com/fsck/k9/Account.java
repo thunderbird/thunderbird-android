@@ -24,8 +24,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
-import com.fsck.k9.crypto.Apg;
-import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
@@ -135,6 +133,7 @@ public class Account implements BaseAccount {
 
     public static final SortType DEFAULT_SORT_TYPE = SortType.SORT_DATE;
     public static final boolean DEFAULT_SORT_ASCENDING = false;
+    public static final String NO_OPENPGP_PROVIDER = "";
 
 
     /**
@@ -206,15 +205,11 @@ public class Account implements BaseAccount {
     private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
-    private boolean mCryptoAutoSignature;
-    private boolean mCryptoAutoEncrypt;
     private boolean mMarkMessageAsReadOnView;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
     private boolean mRemoteSearchFullText;
     private int mRemoteSearchNumResults;
-
-    private CryptoProvider mCryptoProvider = null;
 
     private ColorChip mUnreadColorChip;
     private ColorChip mReadColorChip;
@@ -303,9 +298,7 @@ public class Account implements BaseAccount {
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
-        mCryptoApp = Apg.NAME;
-        mCryptoAutoSignature = false;
-        mCryptoAutoEncrypt = false;
+        mCryptoApp = NO_OPENPGP_PROVIDER;
         mAllowRemoteSearch = false;
         mRemoteSearchFullText = false;
         mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
@@ -492,9 +485,7 @@ public class Account implements BaseAccount {
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
 
-        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
-        mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
-        mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
+        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", NO_OPENPGP_PROVIDER);
         mAllowRemoteSearch = prefs.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = prefs.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = prefs.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -756,8 +747,6 @@ public class Account implements BaseAccount {
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
-        editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
-        editor.putBoolean(mUuid + ".cryptoAutoEncrypt", mCryptoAutoEncrypt);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1646,24 +1635,6 @@ public class Account implements BaseAccount {
 
     public void setCryptoApp(String cryptoApp) {
         mCryptoApp = cryptoApp;
-        // invalidate the provider
-        mCryptoProvider = null;
-    }
-
-    public boolean getCryptoAutoSignature() {
-        return mCryptoAutoSignature;
-    }
-
-    public void setCryptoAutoSignature(boolean cryptoAutoSignature) {
-        mCryptoAutoSignature = cryptoAutoSignature;
-    }
-
-    public boolean isCryptoAutoEncrypt() {
-        return mCryptoAutoEncrypt;
-    }
-
-    public void setCryptoAutoEncrypt(boolean cryptoAutoEncrypt) {
-        mCryptoAutoEncrypt = cryptoAutoEncrypt;
     }
 
     public boolean allowRemoteSearch() {
@@ -1706,13 +1677,6 @@ public class Account implements BaseAccount {
         lastSelectedFolderName = folderName;
     }
 
-    public synchronized CryptoProvider getCryptoProvider() {
-        if (mCryptoProvider == null) {
-            mCryptoProvider = CryptoProvider.createInstance(getCryptoApp());
-        }
-        return mCryptoProvider;
-    }
-    
     public synchronized String getOpenPgpProvider() {
         // return null if set to "APG" or "None"
         if (getCryptoApp().equals("apg") || getCryptoApp().equals("")) {

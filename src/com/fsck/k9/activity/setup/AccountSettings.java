@@ -697,7 +697,7 @@ public class AccountSettings extends K9PreferenceActivity {
         } else {
             final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
             mCryptoMenu.setEnabled(false);
-            mCryptoMenu.setSummary(R.string.account_settings_crypto_apg_not_installed);
+            mCryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_installed);
         }
     }
 
