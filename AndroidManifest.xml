@@ -338,11 +338,7 @@
 
         <receiver
             android:name=".service.CoreReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="com.fsck.k9.service.CoreReceiver.wakeLockRelease"/>
-            </intent-filter>
-        </receiver>
+            android:exported="false"/>
 
         <receiver
             android:name=".service.StorageReceiver"
