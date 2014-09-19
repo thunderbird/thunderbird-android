@@ -316,9 +316,6 @@
             <intent-filter>
                 <action android:name="com.android.sync.SYNC_CONN_STATUS_CHANGED"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="com.fsck.k9.service.BroadcastReceiver.scheduleIntent"/>
-            </intent-filter>
         </receiver>
 
         <receiver
@@ -335,11 +332,7 @@
 
         <receiver
             android:name=".service.CoreReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="com.fsck.k9.service.CoreReceiver.wakeLockRelease"/>
-            </intent-filter>
-        </receiver>
+            android:exported="false"/>
 
         <receiver
             android:name=".service.StorageReceiver"
