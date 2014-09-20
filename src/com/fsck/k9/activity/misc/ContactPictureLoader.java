@@ -45,7 +45,7 @@ public class ContactPictureLoader {
      */
     private static final String FALLBACK_CONTACT_LETTER = "?";
 
-
+    private Typeface tf;
     private ContentResolver mContentResolver;
     private Resources mResources;
     private Contacts mContactsHelper;
@@ -183,15 +183,19 @@ public class ContactPictureLoader {
 
         Canvas canvas = new Canvas(result);
 
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        
 		int rgb = calcUnknownContactColor(address);
 		result.eraseColor(rgb);
 
 		String letter = calcUnknownContactLetter(address);
 
-		Typeface tf = Typeface.create("sans-serif-light", Typeface.NORMAL);
+		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+		
+		tf = Typeface.create("sans-serif-light", Typeface.NORMAL);
 
-		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-
+		}
+		
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setStyle(Paint.Style.FILL);

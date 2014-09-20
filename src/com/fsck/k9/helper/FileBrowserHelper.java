@@ -14,6 +14,8 @@ import android.widget.EditText;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.setup.Prefs;
+import com.fsck.k9.fragment.MessageViewFragment;
 
 public class FileBrowserHelper {
     /**
@@ -60,7 +62,7 @@ public class FileBrowserHelper {
     /**
      * tries to open known filebrowsers.
      * If no filebrowser is found and fallback textdialog is shown
-     * @param c the context as activity
+     * @param prefs the context as activity
      * @param startPath: the default value, where the filebrowser will start.
      *      if startPath = null => the default path is used
      * @param requestcode: the int you will get as requestcode in onActivityResult
@@ -73,7 +75,7 @@ public class FileBrowserHelper {
      *
      *
      */
-    public boolean showFileBrowserActivity(Activity c, File startPath, int requestcode, FileBrowserFailOverCallback callback) {
+    public boolean showFileBrowserActivity(Prefs prefs, File startPath, int requestcode, FileBrowserFailOverCallback callback) {
         boolean success = false;
 
         if (startPath == null) {
@@ -88,7 +90,7 @@ public class FileBrowserHelper {
             intent.setData(Uri.parse(uriPrefix + startPath.getPath()));
 
             try {
-                c.startActivityForResult(intent, requestcode);
+                prefs.startActivityForResult(intent, requestcode);
                 success = true;
             } catch (ActivityNotFoundException e) {
                 // Try the next intent in the list
@@ -98,7 +100,7 @@ public class FileBrowserHelper {
 
         if (listIndex == PICK_DIRECTORY_INTENTS.length) {
             //No Filebrowser is installed => show a fallback textdialog
-            showPathTextInput(c, startPath, callback);
+            showPathTextInput(prefs, startPath, callback);
             success = false;
         }
 

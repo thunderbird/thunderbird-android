@@ -2370,7 +2370,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 			FragmentTransaction ft = fragmentManager.beginTransaction();
 			mMessageListFragment = MessageListFragment.newInstance(mSearch,
 					false, (K9.isThreadedViewEnabled() && !mNoThreading));
-			ft.remove(mMessageListFragment);
+			//ft.remove(mMessageListFragment);
 			ft.commit();
 
 			Log.d("removed fragment?", "yes");
@@ -4442,7 +4442,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
 	}
 
-	void onClearCommands(Account account) {
+	private void onClearCommands(Account account) {
 		MessagingController.getInstance(getApplication()).clearAllPending(
 				account);
 	}
