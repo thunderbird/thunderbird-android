@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+   
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal|bottom"
+             >
+    
+<ListView
+        android:id="@+id/listview_drawer"
+       android:layout_weight="1"
+        android:layout_height="wrap_content" 
+        android:layout_width="320dp"
+    android:orientation="vertical"
+    android:layout_gravity="start"
+    android:background="#ffffff"
+        android:minHeight="64dip"
+       android:layout_alignBottom="@+id/Person"
+        android:choiceMode="singleChoice"
+        android:divider="#ECF0F1"
+        android:dividerHeight="1dp"       
+        android:listSelector="@drawable/list_selector"
+        />
+    
+    
+</LinearLayout>
