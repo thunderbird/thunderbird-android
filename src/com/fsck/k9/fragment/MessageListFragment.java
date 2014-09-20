@@ -73,6 +73,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.FolderInfoHolder;
+import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -812,6 +813,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         createCacheBroadcastReceiver(appContext);
 
         mInitialized = true;
+        
+        MessageList.mDrawerToggle.setDrawerIndicatorEnabled(true);
     }
 
     @Override

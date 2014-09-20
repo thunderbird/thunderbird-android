@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
+import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
@@ -189,6 +191,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
         mController = MessagingController.getInstance(getActivity().getApplication());
         mInitialized = true;
+        
+        MessageList.mDrawerToggle.setDrawerIndicatorEnabled(false);
     }
 
     @Override
@@ -889,4 +893,20 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     public LayoutInflater getFragmentLayoutInflater() {
         return mLayoutInflater;
     }
+
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {   
+	    // Get item selected and deal with it
+	    switch (item.getItemId()) {
+	        case android.R.id.home:
+	            //called when the up affordance/carat in actionbar is pressed
+	            getActivity().onBackPressed();
+	         
+	            
+	       
+	    }
+		return true;
+	}
+
+
 }
