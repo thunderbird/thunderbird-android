@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.EditText;
@@ -22,7 +24,6 @@ import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,6 +66,8 @@ public class Utility {
      */
     private static final Pattern TAG_PATTERN = Pattern.compile("\\[[-_a-z0-9]+\\] ",
             Pattern.CASE_INSENSITIVE);
+
+    private static Handler sMainThreadHandler;
 
     public static boolean arrayContains(Object[] a, Object o) {
         for (Object element : a) {
@@ -283,7 +286,7 @@ public class Utility {
         StringBuilder result = new StringBuilder();
         for (String piece : str.split(NEWLINE_REGEX)) {
             result.append(wrap(piece, wrapLength, null, false));
-            result.append("\n");
+            result.append("\r\n");
         }
         return result.toString();
     }
@@ -331,7 +334,7 @@ public class Utility {
             return null;
         }
         if (newLineStr == null) {
-            newLineStr = "\n";
+            newLineStr = "\r\n";
         }
         if (wrapLength < 1) {
             wrapLength = 1;
@@ -714,5 +717,17 @@ public class Utility {
         System.arraycopy(original, 0, newArray, 0, copyLength);
 
         return newArray;
+    }
+
+    /**
+     * @return a {@link Handler} tied to the main thread.
+     */
+    public static Handler getMainThreadHandler() {
+        if (sMainThreadHandler == null) {
+            // No need to synchronize -- it's okay to create an extra Handler, which will be used
+            // only once and then thrown away.
+            sMainThreadHandler = new Handler(Looper.getMainLooper());
+        }
+        return sMainThreadHandler;
     }
 }

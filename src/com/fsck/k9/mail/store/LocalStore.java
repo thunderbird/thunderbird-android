@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,6 +26,8 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
+import org.apache.james.mime4j.util.MimeUtil;
 
 import android.app.Application;
 import android.content.ContentResolver;
@@ -51,6 +54,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -90,6 +94,7 @@ public class LocalStore extends Store implements Serializable {
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
     private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * a String containing the columns getMessages expects to work with
@@ -767,9 +772,11 @@ public class LocalStore extends Store implements Serializable {
             public Long doDbWork(final SQLiteDatabase db) {
                 final File[] files = attachmentDirectory.listFiles();
                 long attachmentLength = 0;
-                for (File file : files) {
-                    if (file.exists()) {
-                        attachmentLength += file.length();
+                if (files != null) {
+                    for (File file : files) {
+                        if (file.exists()) {
+                            attachmentLength += file.length();
+                        }
                     }
                 }
 
@@ -1362,9 +1369,9 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
-        public void open(final OpenMode mode) throws MessagingException {
+        public void open(final int mode) throws MessagingException {
 
-            if (isOpen() && (getMode() == mode || mode == OpenMode.READ_ONLY)) {
+            if (isOpen() && (getMode() == mode || mode == OPEN_MODE_RO)) {
                 return;
             } else if (isOpen()) {
                 //previously opened in READ_ONLY and now requesting READ_WRITE
@@ -1436,8 +1443,8 @@ public class LocalStore extends Store implements Serializable {
         }
 
         @Override
-        public OpenMode getMode() {
-            return OpenMode.READ_WRITE;
+        public int getMode() {
+            return OPEN_MODE_RW;
         }
 
         @Override
@@ -1506,13 +1513,13 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                         try {
-                            open(OpenMode.READ_WRITE);
+                            open(OPEN_MODE_RW);
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
                         }
                         Cursor cursor = null;
                         try {
-                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE (empty IS NULL OR empty != 1) AND deleted = 0 and folder_id = ?",
+                            cursor = db.rawQuery("SELECT COUNT(id) FROM messages WHERE (empty IS NULL OR empty != 1) AND deleted = 0 and folder_id = ?",
                                                  new String[] {
                                                      Long.toString(mFolderId)
                                                  });
@@ -1531,7 +1538,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public int getUnreadMessageCount() throws MessagingException {
             if (mFolderId == -1) {
-                open(OpenMode.READ_WRITE);
+                open(OPEN_MODE_RW);
             }
 
             try {
@@ -1539,8 +1546,8 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                         int unreadMessageCount = 0;
-                        Cursor cursor = db.query("messages", new String[] { "SUM(read=0)" },
-                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                        Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0 AND read=0",
                                 new String[] { Long.toString(mFolderId) }, null, null, null);
 
                         try {
@@ -1562,7 +1569,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public int getFlaggedMessageCount() throws MessagingException {
             if (mFolderId == -1) {
-                open(OpenMode.READ_WRITE);
+                open(OPEN_MODE_RW);
             }
 
             try {
@@ -1570,8 +1577,8 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                         int flaggedMessageCount = 0;
-                        Cursor cursor = db.query("messages", new String[] { "SUM(flagged)" },
-                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0",
+                        Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
+                                "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0 AND flagged = 1",
                                 new String[] { Long.toString(mFolderId) }, null, null, null);
 
                         try {
@@ -1593,7 +1600,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public void setLastChecked(final long lastChecked) throws MessagingException {
             try {
-                open(OpenMode.READ_WRITE);
+                open(OPEN_MODE_RW);
                 LocalFolder.super.setLastChecked(lastChecked);
             } catch (MessagingException e) {
                 throw new WrappedException(e);
@@ -1604,7 +1611,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public void setLastPush(final long lastChecked) throws MessagingException {
             try {
-                open(OpenMode.READ_WRITE);
+                open(OPEN_MODE_RW);
                 LocalFolder.super.setLastPush(lastChecked);
             } catch (MessagingException e) {
                 throw new WrappedException(e);
@@ -1613,7 +1620,7 @@ public class LocalStore extends Store implements Serializable {
         }
 
         public int getVisibleLimit() throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             return mVisibleLimit;
         }
 
@@ -1623,7 +1630,7 @@ public class LocalStore extends Store implements Serializable {
                 if (mVisibleLimit == 0) {
                     return ;
                 }
-                open(OpenMode.READ_WRITE);
+                open(OPEN_MODE_RW);
                 Message[] messages = getMessages(null, false);
                 for (int i = mVisibleLimit; i < messages.length; i++) {
                     if (listener != null) {
@@ -1655,7 +1662,7 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                         try {
-                            open(OpenMode.READ_WRITE);
+                            open(OPEN_MODE_RW);
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
                         }
@@ -1726,7 +1733,7 @@ public class LocalStore extends Store implements Serializable {
         }
 
         private String getPrefId() throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             return getPrefId(mName);
 
         }
@@ -1826,7 +1833,7 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                         try {
-                            open(OpenMode.READ_WRITE);
+                            open(OPEN_MODE_RW);
                             if (fp.contains(FetchProfile.Item.BODY)) {
                                 for (Message message : messages) {
                                     LocalMessage localMessage = (LocalMessage)message;
@@ -1936,6 +1943,7 @@ public class LocalStore extends Store implements Serializable {
                                             String contentUri = cursor.getString(5);
                                             String contentId = cursor.getString(6);
                                             String contentDisposition = cursor.getString(7);
+                                            String encoding = MimeUtility.getEncodingforType(type);
                                             Body body = null;
 
                                             if (contentDisposition == null) {
@@ -1943,25 +1951,33 @@ public class LocalStore extends Store implements Serializable {
                                             }
 
                                             if (contentUri != null) {
-                                                body = new LocalAttachmentBody(Uri.parse(contentUri), mApplication);
+                                                if (MimeUtil.isMessage(type)) {
+                                                    body = new LocalAttachmentMessageBody(
+                                                            Uri.parse(contentUri),
+                                                            mApplication);
+                                                } else {
+                                                    body = new LocalAttachmentBody(
+                                                            Uri.parse(contentUri),
+                                                            mApplication);
+                                                }
                                             }
 
                                             MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
+                                            bp.setEncoding(encoding);
                                             if (name != null) {
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                                                             String.format("%s;\n name=\"%s\"",
+                                                             String.format("%s;\r\n name=\"%s\"",
                                                                            type,
                                                                            name));
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                             String.format("%s;\n filename=\"%s\";\n size=%d",
+                                                             String.format("%s;\r\n filename=\"%s\";\r\n size=%d",
                                                                            contentDisposition,
                                                                            name, // TODO: Should use encoded word defined in RFC 2231.
                                                                            size));
                                             } else {
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
                                                 bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                        String.format("%s;\n size=%d",
+                                                        String.format("%s;\r\n size=%d",
                                                                       contentDisposition,
                                                                       size));
                                             }
@@ -2013,7 +2029,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             throw new MessagingException(
                 "LocalStore.getMessages(int, int, MessageRetrievalListener) not yet implemented");
         }
@@ -2077,7 +2093,7 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public String doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                         try {
-                            open(OpenMode.READ_WRITE);
+                            open(OPEN_MODE_RW);
                             Cursor cursor = null;
 
                             try {
@@ -2111,7 +2127,7 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                         try {
-                            open(OpenMode.READ_WRITE);
+                            open(OPEN_MODE_RW);
                             LocalMessage message = new LocalMessage(uid, LocalFolder.this);
                             Cursor cursor = null;
 
@@ -2155,7 +2171,7 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Message[] doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                         try {
-                            open(OpenMode.READ_WRITE);
+                            open(OPEN_MODE_RW);
                             return LocalStore.this.getMessages(
                                        listener,
                                        LocalFolder.this,
@@ -2180,7 +2196,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
         throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             if (uids == null) {
                 return getMessages(listener);
             }
@@ -2217,7 +2233,7 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                         try {
-                            lDestFolder.open(OpenMode.READ_WRITE);
+                            lDestFolder.open(OPEN_MODE_RW);
                             for (Message message : msgs) {
                                 LocalMessage lMessage = (LocalMessage)message;
 
@@ -2274,7 +2290,7 @@ public class LocalStore extends Store implements Serializable {
                                  */
 
                                 // We need to open this folder to get the folder id
-                                open(OpenMode.READ_WRITE);
+                                open(OPEN_MODE_RW);
 
                                 cv.clear();
                                 cv.put("uid", oldUID);
@@ -2435,7 +2451,7 @@ public class LocalStore extends Store implements Serializable {
          * @return Map<String, String> uidMap of srcUids -> destUids
          */
         private Map<String, String> appendMessages(final Message[] messages, final boolean copy) throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             try {
                 final Map<String, String> uidMap = new HashMap<String, String>();
                 database.execute(true, new DbCallback<Void>() {
@@ -2604,7 +2620,7 @@ public class LocalStore extends Store implements Serializable {
          * @throws MessagingException
          */
         public void updateMessage(final LocalMessage message) throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             try {
                 database.execute(false, new DbCallback<Void>() {
                     @Override
@@ -2852,7 +2868,13 @@ public class LocalStore extends Store implements Serializable {
                                 contentUri = AttachmentProvider.getAttachmentUri(
                                                  mAccount,
                                                  attachmentId);
-                                attachment.setBody(new LocalAttachmentBody(contentUri, mApplication));
+                                if (MimeUtil.isMessage(attachment.getMimeType())) {
+                                    attachment.setBody(new LocalAttachmentMessageBody(
+                                            contentUri, mApplication));
+                                } else {
+                                    attachment.setBody(new LocalAttachmentBody(
+                                            contentUri, mApplication));
+                                }
                                 ContentValues cv = new ContentValues();
                                 cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
                                 db.update("attachments", cv, "id = ?", new String[]
@@ -2912,7 +2934,7 @@ public class LocalStore extends Store implements Serializable {
          * @throws com.fsck.k9.mail.MessagingException
          */
         public void changeUid(final LocalMessage message) throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             final ContentValues cv = new ContentValues();
             cv.put("uid", message.getUid());
             database.execute(false, new DbCallback<Void>() {
@@ -2931,7 +2953,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public void setFlags(final Message[] messages, final Flag[] flags, final boolean value)
         throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
 
             // Use one transaction to set all flags
             try {
@@ -2959,7 +2981,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public void setFlags(Flag[] flags, boolean value)
         throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             for (Message message : getMessages(null)) {
                 message.setFlags(flags, value);
             }
@@ -2971,7 +2993,7 @@ public class LocalStore extends Store implements Serializable {
         }
 
         public void clearMessagesOlderThan(long cutoff) throws MessagingException {
-            open(OpenMode.READ_ONLY);
+            open(OPEN_MODE_RO);
 
             Message[] messages  = LocalStore.this.getMessages(
                                       null,
@@ -2995,7 +3017,7 @@ public class LocalStore extends Store implements Serializable {
         public void clearAllMessages() throws MessagingException {
             final String[] folderIdArg = new String[] { Long.toString(mFolderId) };
 
-            open(OpenMode.READ_ONLY);
+            open(OPEN_MODE_RO);
 
             try {
                 database.execute(false, new DbCallback<Void>() {
@@ -3047,7 +3069,7 @@ public class LocalStore extends Store implements Serializable {
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                         try {
                             // We need to open the folder first to make sure we've got it's id
-                            open(OpenMode.READ_ONLY);
+                            open(OPEN_MODE_RO);
                             Message[] messages = getMessages(null);
                             for (Message message : messages) {
                                 deleteAttachments(message.getUid());
@@ -3079,7 +3101,7 @@ public class LocalStore extends Store implements Serializable {
         }
 
         private void deleteAttachments(final long messageId) throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             database.execute(false, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
@@ -3122,7 +3144,7 @@ public class LocalStore extends Store implements Serializable {
         }
 
         private void deleteAttachments(final String uid) throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(OPEN_MODE_RW);
             try {
                 database.execute(false, new DbCallback<Void>() {
                     @Override
@@ -3186,7 +3208,7 @@ public class LocalStore extends Store implements Serializable {
                 public Integer doDbWork(final SQLiteDatabase db) {
                     Cursor cursor = null;
                     try {
-                        open(OpenMode.READ_ONLY);
+                        open(OPEN_MODE_RO);
                         cursor = db.rawQuery("SELECT MAX(uid) FROM messages WHERE folder_id=?", new String[] { Long.toString(mFolderId) });
                         if (cursor.getCount() > 0) {
                             cursor.moveToFirst();
@@ -3211,7 +3233,7 @@ public class LocalStore extends Store implements Serializable {
                 public Long doDbWork(final SQLiteDatabase db) {
                     Cursor cursor = null;
                     try {
-                        open(OpenMode.READ_ONLY);
+                        open(OPEN_MODE_RO);
                         cursor = db.rawQuery("SELECT MIN(date) FROM messages WHERE folder_id=?", new String[] { Long.toString(mFolderId) });
                         if (cursor.getCount() > 0) {
                             cursor.moveToFirst();
@@ -3338,7 +3360,7 @@ public class LocalStore extends Store implements Serializable {
                     @Override
                     public List<Message> doDbWork(final SQLiteDatabase db) throws WrappedException {
                         try {
-                            open(OpenMode.READ_WRITE);
+                            open(OPEN_MODE_RW);
                         } catch (MessagingException e) {
                             throw new WrappedException(e);
                         }
@@ -3491,7 +3513,7 @@ public class LocalStore extends Store implements Serializable {
 
             if (this.mFolder == null) {
                 LocalFolder f = new LocalFolder(cursor.getInt(13));
-                f.open(LocalFolder.OpenMode.READ_WRITE);
+                f.open(LocalFolder.OPEN_MODE_RW);
                 this.mFolder = f;
             }
 
@@ -3984,8 +4006,65 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    public static class LocalAttachmentBody implements Body {
-        private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    public abstract static class BinaryAttachmentBody implements Body {
+        protected String mEncoding;
+
+        @Override
+        public abstract InputStream getInputStream() throws MessagingException;
+
+        @Override
+        public void writeTo(OutputStream out) throws IOException, MessagingException {
+            InputStream in = getInputStream();
+            try {
+                boolean closeStream = false;
+                if (MimeUtil.isBase64Encoding(mEncoding)) {
+                    out = new Base64OutputStream(out);
+                    closeStream = true;
+                } else if (MimeUtil.isQuotedPrintableEncoded(mEncoding)){
+                    out = new QuotedPrintableOutputStream(out, false);
+                    closeStream = true;
+                }
+
+                try {
+                    IOUtils.copy(in, out);
+                } finally {
+                    if (closeStream) {
+                        out.close();
+                    }
+                }
+            } finally {
+                in.close();
+            }
+        }
+
+        @Override
+        public void setEncoding(String encoding) throws MessagingException {
+            mEncoding = encoding;
+        }
+
+        public String getEncoding() {
+            return mEncoding;
+        }
+    }
+
+    public static class TempFileBody extends BinaryAttachmentBody {
+        private final File mFile;
+
+        public TempFileBody(String filename) {
+            mFile = new File(filename);
+        }
+
+        @Override
+        public InputStream getInputStream() throws MessagingException {
+            try {
+                return new FileInputStream(mFile);
+            } catch (FileNotFoundException e) {
+                return new ByteArrayInputStream(EMPTY_BYTE_ARRAY);
+            }
+        }
+    }
+
+    public static class LocalAttachmentBody extends BinaryAttachmentBody {
         private Application mApplication;
         private Uri mUri;
 
@@ -4007,19 +4086,95 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        @Override
-        public void writeTo(OutputStream out) throws IOException, MessagingException {
-            InputStream in = getInputStream();
-            Base64OutputStream base64Out = new Base64OutputStream(out);
-            try {
-                IOUtils.copy(in, base64Out);
-            } finally {
-                base64Out.close();
-            }
-        }
-
         public Uri getContentUri() {
             return mUri;
+        }
+    }
+
+    /**
+     * A {@link LocalAttachmentBody} extension containing a message/rfc822 type body
+     *
+     */
+    public static class LocalAttachmentMessageBody extends LocalAttachmentBody implements CompositeBody {
+
+        public LocalAttachmentMessageBody(Uri uri, Application application) {
+            super(uri, application);
+        }
+
+        @Override
+        public void writeTo(OutputStream out) throws IOException, MessagingException {
+            AttachmentMessageBodyUtil.writeTo(this, out);
+        }
+
+        @Override
+        public void setUsing7bitTransport() throws MessagingException {
+            /*
+             * There's nothing to recurse into here, so there's nothing to do.
+             * The enclosing BodyPart already called setEncoding(MimeUtil.ENC_7BIT).  Once
+             * writeTo() is called, the file with the rfc822 body will be opened
+             * for reading and will then be recursed.
+             */
+
+        }
+
+        @Override
+        public void setEncoding(String encoding) throws MessagingException {
+            if (!MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding)
+                    && !MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
+                throw new MessagingException(
+                        "Incompatible content-transfer-encoding applied to a CompositeBody");
+            }
+            mEncoding = encoding;
+        }
+    }
+
+    public static class TempFileMessageBody extends TempFileBody implements CompositeBody {
+
+        public TempFileMessageBody(String filename) {
+            super(filename);
+        }
+
+        @Override
+        public void writeTo(OutputStream out) throws IOException, MessagingException {
+            AttachmentMessageBodyUtil.writeTo(this, out);
+        }
+
+        @Override
+        public void setUsing7bitTransport() throws MessagingException {
+            // see LocalAttachmentMessageBody.setUsing7bitTransport()
+        }
+
+        @Override
+        public void setEncoding(String encoding) throws MessagingException {
+            if (!MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding)
+                    && !MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
+                throw new MessagingException(
+                        "Incompatible content-transfer-encoding applied to a CompositeBody");
+            }
+            mEncoding = encoding;
+        }
+    }
+
+    public static class AttachmentMessageBodyUtil {
+        public static void writeTo(BinaryAttachmentBody body, OutputStream out) throws IOException,
+                MessagingException {
+            InputStream in = body.getInputStream();
+            try {
+                if (MimeUtil.ENC_7BIT.equalsIgnoreCase(body.getEncoding())) {
+                    /*
+                     * If we knew the message was already 7bit clean, then it
+                     * could be sent along without processing. But since we
+                     * don't know, we recursively parse it.
+                     */
+                    MimeMessage message = new MimeMessage(in, true);
+                    message.setUsing7bitTransport();
+                    message.writeTo(out);
+                } else {
+                    IOUtils.copy(in, out);
+                }
+            } finally {
+                in.close();
+            }
         }
     }
 

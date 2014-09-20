@@ -21,6 +21,7 @@
     <item
         android:id="@+id/add_new_account"
         android:icon="?attr/iconActionAdd"
+        android:showAsAction="ifRoom"
         android:title="@string/add_account_action"/>
     <item
         android:id="@+id/about"

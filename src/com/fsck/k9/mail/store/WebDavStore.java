@@ -7,10 +7,9 @@ import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.Folder.OpenMode;
+
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.transport.TrustedSocketFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
@@ -1080,7 +1079,7 @@ public class WebDavStore extends Store {
 
             SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
             try {
-                Scheme s = new Scheme("https", new TrustedSocketFactory(mHost, mSecure), 443);
+                Scheme s = new Scheme("https", new WebDavSocketFactory(mHost, 443, mSecure), 443);
                 reg.register(s);
             } catch (NoSuchAlgorithmException nsa) {
                 Log.e(K9.LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
@@ -1257,7 +1256,7 @@ public class WebDavStore extends Store {
     public void sendMessages(Message[] messages) throws MessagingException {
         WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(mAccount.getDraftsFolderName());
         try {
-            tmpFolder.open(OpenMode.READ_WRITE);
+            tmpFolder.open(Folder.OPEN_MODE_RW);
             Message[] retMessages = tmpFolder.appendWebDavMessages(messages);
 
             tmpFolder.moveMessages(retMessages, getSendSpoolFolder());
@@ -1325,7 +1324,7 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void open(OpenMode mode) throws MessagingException {
+        public void open(int mode) throws MessagingException {
             getHttpClient();
 
             this.mIsOpen = true;
@@ -1406,14 +1405,14 @@ public class WebDavStore extends Store {
 
         @Override
         public int getMessageCount() throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(Folder.OPEN_MODE_RW);
             this.mMessageCount = getMessageCount(true);
             return this.mMessageCount;
         }
 
         @Override
         public int getUnreadMessageCount() throws MessagingException {
-            open(OpenMode.READ_WRITE);
+            open(Folder.OPEN_MODE_RW);
             this.mUnreadMessageCount = getMessageCount(false);
             return this.mUnreadMessageCount;
         }
@@ -1429,8 +1428,8 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public OpenMode getMode() {
-            return OpenMode.READ_WRITE;
+        public int getMode() {
+            return Folder.OPEN_MODE_RW;
         }
 
         @Override
@@ -1932,7 +1931,7 @@ public class WebDavStore extends Store {
 
                     out = new ByteArrayOutputStream(message.getSize());
 
-                    open(OpenMode.READ_WRITE);
+                    open(Folder.OPEN_MODE_RW);
                     EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                         new BufferedOutputStream(out, 1024));
                     message.writeTo(msgOut);

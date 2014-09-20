@@ -8,8 +8,10 @@ import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.Folder.OpenMode;
+
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.net.ssl.TrustManagerFactory;
+import com.fsck.k9.net.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
@@ -270,7 +272,7 @@ public class Pop3Store extends Store {
     @Override
     public void checkSettings() throws MessagingException {
         Pop3Folder folder = new Pop3Folder(mAccount.getInboxFolderName());
-        folder.open(OpenMode.READ_WRITE);
+        folder.open(Folder.OPEN_MODE_RW);
         if (!mCapabilities.uidl) {
             /*
              * Run an additional test to see if UIDL is supported on the server. If it's not we
@@ -312,7 +314,7 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public synchronized void open(OpenMode mode) throws MessagingException {
+        public synchronized void open(int mode) throws MessagingException {
             if (isOpen()) {
                 return;
             }
@@ -327,10 +329,10 @@ public class Pop3Store extends Store {
                         mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
                     SSLContext sslContext = SSLContext.getInstance("TLS");
                     final boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                    sslContext.init(null, new TrustManager[] {
-                                        TrustManagerFactory.get(mHost, secure)
-                                    }, new SecureRandom());
-                    mSocket = sslContext.getSocketFactory().createSocket();
+                    sslContext.init(null,
+                            new TrustManager[] { TrustManagerFactory.get(mHost,
+                                    mPort, secure) }, new SecureRandom());
+                    mSocket = TrustedSocketFactory.createSocket(sslContext);
                 } else {
                     mSocket = new Socket();
                 }
@@ -352,15 +354,16 @@ public class Pop3Store extends Store {
                     mCapabilities = getCapabilities();
 
                     if (mCapabilities.stls) {
-                        writeLine(STLS_COMMAND);
+                        executeSimpleCommand(STLS_COMMAND);
 
                         SSLContext sslContext = SSLContext.getInstance("TLS");
                         boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
-                        sslContext.init(null, new TrustManager[] {
-                                            TrustManagerFactory.get(mHost, secure)
-                                        }, new SecureRandom());
-                        mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
-                                  true);
+                        sslContext.init(null,
+                                new TrustManager[] { TrustManagerFactory.get(
+                                        mHost, mPort, secure) },
+                                new SecureRandom());
+                        mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
+                                mPort, true);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
                         mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
@@ -417,8 +420,8 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public OpenMode getMode() {
-            return OpenMode.READ_WRITE;
+        public int getMode() {
+            return Folder.OPEN_MODE_RW;
         }
 
         @Override
@@ -1020,7 +1023,7 @@ public class Pop3Store extends Store {
 
         private String executeSimpleCommand(String command, boolean sensitive) throws MessagingException {
             try {
-                open(OpenMode.READ_WRITE);
+                open(Folder.OPEN_MODE_RW);
 
                 if (command != null) {
                     if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {

@@ -12,8 +12,9 @@ import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.TrustManagerFactory;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.net.ssl.TrustManagerFactory;
+import com.fsck.k9.net.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
@@ -241,10 +242,11 @@ public class SmtpTransport extends Transport {
                             mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
                         SSLContext sslContext = SSLContext.getInstance("TLS");
                         boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                        sslContext.init(null, new TrustManager[] {
-                                            TrustManagerFactory.get(mHost, secure)
-                                        }, new SecureRandom());
-                        mSocket = sslContext.getSocketFactory().createSocket();
+                        sslContext.init(null,
+                                new TrustManager[] { TrustManagerFactory.get(
+                                        mHost, mPort, secure) },
+                                new SecureRandom());
+                        mSocket = TrustedSocketFactory.createSocket(sslContext);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                     } else {
                         mSocket = new Socket();
@@ -300,11 +302,11 @@ public class SmtpTransport extends Transport {
 
                     SSLContext sslContext = SSLContext.getInstance("TLS");
                     boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
-                    sslContext.init(null, new TrustManager[] {
-                                        TrustManagerFactory.get(mHost, secure)
-                                    }, new SecureRandom());
-                    mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
-                              true);
+                    sslContext.init(null,
+                            new TrustManager[] { TrustManagerFactory.get(mHost,
+                                    mPort, secure) }, new SecureRandom());
+                    mSocket = TrustedSocketFactory.createSocket(sslContext, mSocket, mHost,
+                              mPort, true);
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                                   1024));
                     mOut = mSocket.getOutputStream();
@@ -477,7 +479,9 @@ public class SmtpTransport extends Transport {
         close();
         open();
 
-        message.setEncoding(m8bitEncodingAllowed ? "8bit" : null);
+        if (!m8bitEncodingAllowed) {
+            message.setUsing7bitTransport();
+        }
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
         if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
@@ -490,18 +494,16 @@ public class SmtpTransport extends Transport {
 
         Address[] from = message.getFrom();
         try {
-            //TODO: Add BODY=8BITMIME parameter if appropriate?
-            executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">");
+            executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
+                    + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""));
             for (String address : addresses) {
                 executeSimpleCommand("RCPT TO:" + "<" + address + ">");
             }
             executeSimpleCommand("DATA");
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                new SmtpDataStuffing(
-                    new LineWrapOutputStream(
-                        new BufferedOutputStream(mOut, 1024),
-                        1000)));
+                    new LineWrapOutputStream(new SmtpDataStuffing(
+                            new BufferedOutputStream(mOut, 1024)), 1000));
 
             message.writeTo(msgOut);
 

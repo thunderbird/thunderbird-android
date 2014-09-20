@@ -10,7 +10,8 @@
         <attr name="iconActionArchive" format="reference" />
         <attr name="iconActionCompose" format="reference" />
         <attr name="iconActionDelete" format="reference" />
-        <attr name="iconActionMoveOrCopy" format="reference" />
+        <attr name="iconActionMove" format="reference" />
+        <attr name="iconActionCopy" format="reference" />
         <attr name="iconActionNextMessage" format="reference" />
         <attr name="iconActionPreviousMessage" format="reference" />
         <attr name="iconActionRefresh" format="reference" />
@@ -51,6 +52,7 @@
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="compatDividerVertical" format="reference"/>
         <attr name="compatSelectableItemBackground" format="reference"/>
+        <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
     </declare-styleable>
 
 </resources>

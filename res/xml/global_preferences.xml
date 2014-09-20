@@ -137,6 +137,14 @@
                 android:entryValues="@array/settings_preview_lines_values"
                 android:dialogTitle="@string/global_settings_preview_lines_label"
                 />
+
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messagelist_stars"
+                android:title="@string/global_settings_flag_label"
+                android:summary="@string/global_settings_flag_summary" />
+
             <CheckBoxPreference
                 android:persistent="false"
                 android:key="messagelist_checkboxes"
@@ -180,6 +188,14 @@
 
             <CheckBoxPreference
                 android:persistent="false"
+                android:key="messagelist_colorize_missing_contact_pictures"
+                android:title="@string/global_settings_colorize_missing_contact_pictures_label"
+                android:summary="@string/global_settings_colorize_missing_contact_pictures_summary"
+                android:dependency="messagelist_show_contact_picture"
+                />
+
+            <CheckBoxPreference
+                android:persistent="false"
                 android:key="messagelist_background_as_unread_indicator"
                 android:title="@string/global_settings_background_as_unread_indicator_label"
                 android:summary="@string/global_settings_background_as_unread_indicator_summary"
@@ -210,6 +226,15 @@
                 android:key="messageview_fixedwidth_font"
                 android:title="@string/global_settings_messageview_fixedwidth_label"
                 android:summary="@string/global_settings_messageview_fixedwidth_summary" />
+
+            <com.fsck.k9.preferences.CheckBoxListPreference
+                android:persistent="false"
+                android:key="messageview_visible_refile_actions"
+                android:title="@string/global_settings_messageview_visible_refile_actions_title"
+                android:summary="@string/global_settings_messageview_visible_refile_actions_summary"
+                android:dialogTitle="@string/global_settings_messageview_visible_refile_actions_title"
+                android:positiveButtonText="@android:string/ok"
+                android:negativeButtonText="@android:string/cancel" />
 
             <CheckBoxPreference
                 android:persistent="false"

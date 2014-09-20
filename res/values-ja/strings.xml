@@ -118,6 +118,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="cancel_action">キャンセル</string>
     <string name="send_action">送信</string>
     <string name="send_again_action">再編集</string>
+    <string name="select_action">選択</string>
+    <string name="deselect_action">選択解除</string>
     <string name="reply_action">返信</string>
     <string name="reply_all_action">全員に返信</string>
     <string name="delete_action">削除</string>
@@ -125,8 +127,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="spam_action">迷惑メールとみなす</string>
     <string name="forward_action">転送</string>
     <string name="move_action">移動</string>
-    <string name="single_message_options_action">メッセージ操作</string>
-    <string name="refile_action">整理</string>
+    <string name="single_message_options_action">メッセージ操作…</string>
+    <string name="refile_action">整理…</string>
     <string name="continue_action">継続</string>
     <string name="back_action">戻る</string>
     <string name="done_action">完了</string> <!--  Used to complete a multi-step process -->
@@ -193,12 +195,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    アカウント \"<xliff:g id="account">%s</xliff:g>\" 現在
-    <xliff:g id="oldSize">%s</xliff:g>
-    から
-    <xliff:g id="newSize">%s</xliff:g> へ
-    </string>
+    <string name="account_size_changed">アカウント \"<xliff:g id="account">%s</xliff:g>\" 現在 <xliff:g id="oldSize">%s</xliff:g> から <xliff:g id="newSize">%s</xliff:g> へ</string>
 
     <string name="compacting_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" を最適化しています</string>
     <string name="clearing_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" をクリアしています</string>
@@ -210,7 +207,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">返信</string>
-    <string name="notification_action_read">既読</string>
+    <string name="notification_action_mark_as_read">既読</string>
     <string name="notification_action_delete">削除</string>
     <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>の証明書エラー</string>
     <string name="notification_certificate_error_text">サーバの設定を確認してください</string>
@@ -260,7 +257,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="message_compose_quote_header_from">送信者:</string>
     <string name="message_compose_quote_header_to">宛先:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:</string>
     <string name="message_compose_error_no_recipients">少なくとも1つの受信者を追加する必要があります</string>
     <string name="error_contact_address_not_found">メールアドレスが登録されていません</string>
     <string name="message_compose_attachments_skipped_toast">ダウンロードしていないため、一部の添付ファイルを転送することはできません。</string>
@@ -297,6 +294,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="message_discarded_toast">メールを破棄しました</string>
     <string name="message_saved_toast">下書きに保存しました</string>
 
+    <string name="global_settings_flag_label">スターを表示</string>
+    <string name="global_settings_flag_summary">スターは印の付いたメッセージを示す</string>
     <string name="global_settings_checkbox_label">複数選択チェックボックス</string>
     <string name="global_settings_checkbox_summary">複数選択チェックボックス常時表示</string>
     <string name="global_settings_preview_lines_label">メッセージプレビューの行数</string>
@@ -498,7 +497,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="account_setup_failed_dlg_title">設定エラー</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">アカウント名またはパスワード設定にエラーがあります\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
-    <string name="account_setup_failed_dlg_certificate_message_fmt">サーバに安全な接続ができません\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
+    <string name="account_setup_failed_dlg_certificate_message_fmt">サーバが無効なSSL証明書を発行しました。これはサーバの設定ミスが原因で起こることがあります。あるいは誰かがあなたやあなたのメールサーバに攻撃を試みることによって起こることもあります。何が起こっているのかがよくわからないのであれば、「拒否」をクリックし、メールサーバを管理している人たちに連絡をとってください。\n\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
     <string name="account_setup_failed_dlg_server_message_fmt">サーバに接続できません\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">詳細再編集</string>
     <string name="account_setup_failed_dlg_continue_action">続行</string>
@@ -751,7 +750,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
 
     <string name="account_clear_dlg_title">アカウントクリア</string>
 
-    <string name="provider_note_live">このプログラムでPOPアクセスが許可されているのは一部の「Plus」アカウントだけです。有料の「Plus」アカウントがなければ、正しいメールアドレスとパスワードを入力してもログインできません。これらのアカウントにはブラウザからアクセスしてください。</string>
     <string name="provider_note_yahoojp">Yahoo! JapanでPOP3アクセスを行う場合は、Yahoo!メールサイトの「メールの設定」にてPOPアクセスが許可されていることを確認してください。</string>
     <string name="provider_note_auonejp">au oneでIMAPアクセスを行う場合は、au oneポータルサイトの「メール」→「設定」ページにて「IMAPを有効にする」をチェックしてください。</string>
     <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>
@@ -980,7 +978,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">本当にこのメッセージを削除しますか？</item>
         <item quantity="other">本当に<xliff:g id="message_count">%1$d</xliff:g>件のメッセージを削除しますか？</item>
     </plurals>
@@ -1017,7 +1015,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="settings_export_success">設定を <xliff:g id="filename">%s</xliff:g> に保存しました。</string>
     <string name="settings_import_global_settings_success">グローバル設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
     <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> の設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 アカウント</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> アカウント</item>
     </plurals>
@@ -1136,4 +1134,15 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">すべて既読にする</string>
+
+    <string name="global_settings_colorize_missing_contact_pictures_label">頭文字の画像に色を付ける</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">連絡先に写真がない場合に頭文字の画像に色を付ける</string>
+
+    <string name="global_settings_messageview_visible_refile_actions_title">表示するアクションの選択</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">メッセージビューのメニューに選択したアクションを表示する</string>
+
+    <string name="loading_attachment">添付ファイル読み込み中…</string>
+    <string name="fetching_attachment_dialog_title_send">メッセージ送信</string>
+    <string name="fetching_attachment_dialog_title_save">下書き保存</string>
+    <string name="fetching_attachment_dialog_message">添付ファイル取得中…</string>
 </resources>

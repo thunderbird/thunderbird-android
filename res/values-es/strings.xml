@@ -118,6 +118,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
     <string name="send_again_action">Reenviar al remitente</string>
+    <string name="select_action">Seleccionar</string>
+    <string name="deselect_action">Deseleccionar</string>
     <string name="reply_action">Responder</string>
     <string name="reply_all_action">Responder a todos</string>
     <string name="delete_action">Borrar</string>
@@ -125,8 +127,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="spam_action">Spam</string>
     <string name="forward_action">Reenviar</string>
     <string name="move_action">Mover</string>
-    <string name="single_message_options_action">Opciones del mensaje</string>
-    <!-- NEW: <string name="refile_action">Refile</string>-->
+    <string name="single_message_options_action">Opciones del mensaje…</string>
+    <!-- NEW: <string name="refile_action">Refile…</string>-->
     <string name="continue_action">Continuar</string>
     <string name="back_action">Atrás</string>
     <string name="done_action">Terminado</string> <!--  Used to complete a multi-step process -->
@@ -193,12 +195,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Cuenta \"<xliff:g id="account">%s</xliff:g>\" reducida desde
-    <xliff:g id="oldSize">%s</xliff:g>
-    a
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Cuenta \"<xliff:g id="account">%s</xliff:g>\" reducida desde <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compactando cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Limpiando cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -210,7 +207,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <!-- NEW: <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="notification_action_reply">Reply</string>-->
-    <!-- NEW: <string name="notification_action_read">Mark Read</string>-->
+    <!-- NEW: <string name="notification_action_mark_as_read">Mark Read</string>-->
     <!-- NEW: <string name="notification_action_delete">Delete</string>-->
     <!-- NEW: <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>-->
     <!-- NEW: <string name="notification_certificate_error_text">Check your server settings</string>-->
@@ -260,7 +257,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="message_compose_quote_header_from">De:</string>
     <string name="message_compose_quote_header_to">Para:</string>
     <string name="message_compose_quote_header_cc">CC:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribió:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribió:</string>
     <string name="message_compose_error_no_recipients">Debe añadir al menos un destinatario</string>
     <string name="error_contact_address_not_found">Dirección e-mail no encontrada.</string>
     <string name="message_compose_attachments_skipped_toast">Algunos adjuntos no pueden reenviarse porque no han sido descargados.</string>
@@ -297,6 +294,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="message_discarded_toast">Mensaje descartado</string>
     <string name="message_saved_toast">Mensaje guardado como borrador</string>
 
+    <string name="global_settings_flag_label">Ver estrellas</string>
+    <string name="global_settings_flag_summary">Las estrellas indican un mensaje destacado</string>
     <string name="global_settings_checkbox_label">Casillas de selección múltiple</string>
     <string name="global_settings_checkbox_summary">Mostrar casillas de selección múltiple</string>
     <string name="global_settings_preview_lines_label">Previsualizar lineas</string>
@@ -751,9 +750,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
 
     <string name="account_clear_dlg_title">Limpiar cuenta</string>
 
-    <string name="provider_note_live">Sólo algunas cuentas \"Plus\" pueden utilizar acceso POP
-        Si no puede acceder con su contraseña y usuario y no tiene una cuenta de pago.
-        Es posible que pueda acceder sólo via web.</string>
     <string name="provider_note_yahoojp">Si quiere utilizar el correo POP3 para este proveedor debe activar este acceso en la Configuración de Yahoo.</string>
     <string name="provider_note_auonejp">Si quiere usar IMAP o POP3 con este proveedor debe autorizar el uso de IMAP o POP3 en la página de configuración de correo au one.</string>
     <string name="provider_note_naver">Si quiere usar IMAP o POP3 con este proveedor debe autorizar el uso de IMAP o POP3 en la página de configuración de correo Naver.</string>
@@ -857,7 +853,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="volume_navigation_message">Vista de mensaje</string>
     <string name="volume_navigation_list">Listas de mensajes</string>
 
-    <string name="start_integrated_inbox_title">Usar Bandeja inificada</string>
+    <string name="start_integrated_inbox_title">Usar Bandeja unificada</string>
 
     <string name="measure_accounts_title">Tamaño cuenta</string>
     <string name="measure_accounts_summary">Desactivar para mejorar rendimiento</string>
@@ -1022,7 +1018,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <string name="settings_export_success">Ajustes guardados en <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Ajustes globales importados desde <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> desde <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 cuenta</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> cuentas</item>
     </plurals>
@@ -1141,4 +1137,15 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
     <!-- NEW: <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>-->
 
     <!-- NEW: <string name="mark_all_as_read">Mark all as read</string>-->
+
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>-->
+    <!-- NEW: <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>-->
+
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>-->
+    <!-- NEW: <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>-->
+
+    <!-- NEW: <string name="loading_attachment">Loading attachment…</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_send">Sending message</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_title_save">Saving draft</string>-->
+    <!-- NEW: <string name="fetching_attachment_dialog_message">Fetching attachment…</string>-->
 </resources>

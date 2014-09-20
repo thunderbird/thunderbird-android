@@ -68,11 +68,15 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
     private static final String PREFERENCE_MESSAGELIST_PREVIEW_LINES = "messagelist_preview_lines";
     private static final String PREFERENCE_MESSAGELIST_SENDER_ABOVE_SUBJECT = "messagelist_sender_above_subject";
+    private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES = "messagelist_show_correspondent_names";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
     private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE = "messagelist_show_contact_picture";
+    private static final String PREFERENCE_MESSAGELIST_COLORIZE_MISSING_CONTACT_PICTURES =
+            "messagelist_colorize_missing_contact_pictures";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
+    private static final String PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS = "messageview_visible_refile_actions";
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
     private static final String PREFERENCE_MESSAGEVIEW_SHOW_NEXT = "messageview_show_next";
@@ -96,6 +100,12 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
+    // Named indices for the mVisibleRefileActions field
+    private static final int VISIBLE_REFILE_ACTIONS_DELETE = 0;
+    private static final int VISIBLE_REFILE_ACTIONS_ARCHIVE = 1;
+    private static final int VISIBLE_REFILE_ACTIONS_MOVE = 2;
+    private static final int VISIBLE_REFILE_ACTIONS_COPY = 3;
+    private static final int VISIBLE_REFILE_ACTIONS_SPAM = 4;
 
     private ListPreference mLanguage;
     private ListPreference mTheme;
@@ -114,10 +124,12 @@ public class Prefs extends K9PreferenceActivity {
     private ListPreference mPreviewLines;
     private CheckBoxPreference mSenderAboveSubject;
     private CheckBoxPreference mCheckboxes;
+    private CheckBoxPreference mStars;
     private CheckBoxPreference mShowCorrespondentNames;
     private CheckBoxPreference mShowContactName;
     private CheckBoxPreference mChangeContactNameColor;
     private CheckBoxPreference mShowContactPicture;
+    private CheckBoxPreference mColorizeMissingContactPictures;
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
@@ -128,6 +140,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference mWrapFolderNames;
+    private CheckBoxListPreference mVisibleRefileActions;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
@@ -237,6 +250,8 @@ public class Prefs extends K9PreferenceActivity {
         mCheckboxes = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CHECKBOXES);
         mCheckboxes.setChecked(K9.messageListCheckboxes());
 
+        mStars = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_STARS);
+        mStars.setChecked(K9.messageListStars());
 
         mShowCorrespondentNames = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES);
         mShowCorrespondentNames.setChecked(K9.showCorrespondentNames());
@@ -246,6 +261,10 @@ public class Prefs extends K9PreferenceActivity {
 
         mShowContactPicture = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE);
         mShowContactPicture.setChecked(K9.showContactPicture());
+
+        mColorizeMissingContactPictures = (CheckBoxPreference)findPreference(
+                PREFERENCE_MESSAGELIST_COLORIZE_MISSING_CONTACT_PICTURES);
+        mColorizeMissingContactPictures.setChecked(K9.isColorizeMissingContactPictures());
 
         mBackgroundAsUnreadIndicator = (CheckBoxPreference)findPreference(PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR);
         mBackgroundAsUnreadIndicator.setChecked(K9.useBackgroundAsUnreadIndicator());
@@ -399,6 +418,24 @@ public class Prefs extends K9PreferenceActivity {
         mWrapFolderNames = (CheckBoxPreference)findPreference(PREFERENCE_FOLDERLIST_WRAP_NAME);
         mWrapFolderNames.setChecked(K9.wrapFolderNames());
 
+        mVisibleRefileActions = (CheckBoxListPreference) findPreference(PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS);
+        CharSequence[] visibleRefileActionsEntries = new CharSequence[5];
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_DELETE] = getString(R.string.delete_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_ARCHIVE] = getString(R.string.archive_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_MOVE] = getString(R.string.move_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_COPY] = getString(R.string.copy_action);
+        visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_SPAM] = getString(R.string.spam_action);
+
+        boolean[] visibleRefileActionsValues = new boolean[5];
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_DELETE] = K9.isMessageViewDeleteActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_ARCHIVE] = K9.isMessageViewArchiveActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_MOVE] = K9.isMessageViewMoveActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_COPY] = K9.isMessageViewCopyActionVisible();
+        visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_SPAM] = K9.isMessageViewSpamActionVisible();
+
+        mVisibleRefileActions.setItems(visibleRefileActionsEntries);
+        mVisibleRefileActions.setCheckedItems(visibleRefileActionsValues);
+
         mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
@@ -452,10 +489,12 @@ public class Prefs extends K9PreferenceActivity {
         K9.setHideSpecialAccounts(mHideSpecialAccounts.isChecked());
         K9.setMessageListPreviewLines(Integer.parseInt(mPreviewLines.getValue()));
         K9.setMessageListCheckboxes(mCheckboxes.isChecked());
+        K9.setMessageListStars(mStars.isChecked());
         K9.setShowCorrespondentNames(mShowCorrespondentNames.isChecked());
         K9.setMessageListSenderAboveSubject(mSenderAboveSubject.isChecked());
         K9.setShowContactName(mShowContactName.isChecked());
         K9.setShowContactPicture(mShowContactPicture.isChecked());
+        K9.setColorizeMissingContactPictures(mColorizeMissingContactPictures.isChecked());
         K9.setUseBackgroundAsUnreadIndicator(mBackgroundAsUnreadIndicator.isChecked());
         K9.setThreadedViewEnabled(mThreadedView.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
@@ -465,6 +504,13 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMobileOptimizedLayout(mMobileOptimizedLayout.isChecked());
         K9.setAutofitWidth(mAutofitWidth.isChecked());
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
+
+        boolean[] enabledRefileActions = mVisibleRefileActions.getCheckedItems();
+        K9.setMessageViewDeleteActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_DELETE]);
+        K9.setMessageViewArchiveActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_ARCHIVE]);
+        K9.setMessageViewMoveActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_MOVE]);
+        K9.setMessageViewCopyActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_COPY]);
+        K9.setMessageViewSpamActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_SPAM]);
 
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
         K9.setQuietTimeEnds(mQuietTimeEnds.getTime());

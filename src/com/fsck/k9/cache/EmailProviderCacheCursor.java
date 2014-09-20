@@ -19,6 +19,12 @@ public class EmailProviderCacheCursor extends CursorWrapper {
     private int mMessageIdColumn;
     private int mFolderIdColumn;
     private int mThreadRootColumn;
+
+    /**
+     * The cursor's current position.
+     *
+     * Note: This is only used when {@link #mHiddenRows} isn't empty.
+     */
     private int mPosition;
 
 
@@ -125,5 +131,14 @@ public class EmailProviderCacheCursor extends CursorWrapper {
         }
 
         return mPosition;
+    }
+
+    @Override
+    public boolean isLast() {
+        if (mHiddenRows.isEmpty()) {
+            return super.isLast();
+        }
+
+        return (mPosition == getCount() - 1);
     }
 }

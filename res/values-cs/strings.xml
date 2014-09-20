@@ -122,6 +122,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="cancel_action">Zrušit</string>
     <string name="send_action">Odeslat</string>
     <string name="send_again_action">Odeslat znovu</string>
+    <string name="select_action">Vybrat</string>
+    <string name="deselect_action">Zrušit výběr</string>
     <string name="reply_action">Odpovědět</string>
     <string name="reply_all_action">Odpovědět všem</string>
     <string name="delete_action">Smazat</string>
@@ -129,8 +131,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="spam_action">Nevyžádaná</string>
     <string name="forward_action">Přeposlat</string>
     <string name="move_action">Přesunout</string>
-    <string name="single_message_options_action">Vlastnosti zprávy</string>
-    <string name="refile_action">Přesměrovat</string>
+    <string name="single_message_options_action">Vlastnosti zprávy…</string>
+    <string name="refile_action">Přesměrovat…</string>
     <string name="continue_action">Pokračovat</string>
     <string name="back_action">Zpět</string>
     <string name="done_action">Hotovo</string> <!--  Used to complete a multi-step process -->
@@ -198,12 +200,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="abbrev_kilobytes">KiB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Účet \"<xliff:g id="account">%s</xliff:g>\" byl stlačen z
-    <xliff:g id="oldSize">%s</xliff:g>
-    na
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Účet \"<xliff:g id="account">%s</xliff:g>\" byl stlačen z <xliff:g id="oldSize">%s</xliff:g> na <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Stlačuji účet \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Čistím účet \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -215,7 +212,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> více v <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Odpovědět</string>
-    <string name="notification_action_read">Přečteno</string>
+    <string name="notification_action_mark_as_read">Přečteno</string>
     <string name="notification_action_delete">Smazat</string>
     <string name="notification_certificate_error_title">Chyba certifikátu pro <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
@@ -265,7 +262,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="message_compose_quote_header_from">Odesílatel:</string>
     <string name="message_compose_quote_header_to">Komu:</string>
     <string name="message_compose_quote_header_cc">Kopie:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napsal(a):\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napsal(a):</string>
     <string name="message_compose_error_no_recipients">Musíte přidat alespoň jednoho příjemce.</string>
     <string name="error_contact_address_not_found">Nemohla být nalezena adresa.</string>
     <string name="message_compose_attachments_skipped_toast">Některé přílohy nelze přeposlat, protože ještě nebyly staženy.</string>
@@ -302,6 +299,8 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="message_discarded_toast">Zpráva byla zrušena</string>
     <string name="message_saved_toast">Zpráva byla uložena jako koncept</string>
 
+    <string name="global_settings_flag_label">Zprávy s \u2605</string>
+    <string name="global_settings_flag_summary">Hvězdička indikuje označenou zprávu</string>
     <string name="global_settings_checkbox_label">Výběrová zaškrtávací pole</string>
     <string name="global_settings_checkbox_summary">Vždy zobrazovat výběrová zaškrtávací pole</string>
     <string name="global_settings_preview_lines_label">Počet řádků náhledu</string>
@@ -756,11 +755,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
 
     <string name="account_clear_dlg_title">Vyčistit účet</string>
 
-    <string name="provider_note_live">Jen některé \"Plus\" účty zahrnují POP přístup,
-        který umožňuje tomuto programu se připojit. Pokud nejste schopni se připojit
-        s vaší správnou emailovou adresou a heslem, nemusíte mít placený \"Plus\"
-        účet. Spusťte si prosím webový prohlížeč, kterým na takové účty získáte
-        přístup.</string>
     <string name="provider_note_yahoojp">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Yahoo.</string>
     <string name="provider_note_auonejp">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Au one.</string>
     <string name="provider_note_naver">Pokud chcete používat IMAP nebo POP3 s tímto poskytovatelem, měli byste povolit použití POP3 na stránce Nastavení pošty Naver.</string>
@@ -990,7 +984,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Opravdu si přejete smazat tuto zprávu?</item>
         <item quantity="few">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zprávy?</item>
         <item quantity="other">Opravdu si přejete smazat <xliff:g id="message_count">%1$d</xliff:g> zpráv?</item>
@@ -1029,7 +1023,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="settings_export_success">Export nastavení uložen do <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Importovano globální nastaveni z <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Importováno <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one"><xliff:g id="numAccounts">%s</xliff:g> účet</item><!-- added var in place of 1 účet -->
         <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> účty</item><!-- 2-4 need to be this and 5- other -->
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> účtů</item>
@@ -1150,4 +1144,15 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
     <string name="preposition_for_date">v <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Označ vše jako přečtené</string>
+
+    <string name="global_settings_colorize_missing_contact_pictures_label">Zabarvit chybějcí obrázky kontaktů</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Zabarví chybějcí obrázky u kontaktů</string>
+
+    <string name="global_settings_messageview_visible_refile_actions_title">Zobrazení funkcí zpráv</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Zobrazí vybrané funkce v dolním menu u zpráv</string>
+
+    <string name="loading_attachment">Nahrávám přílohu…</string>
+    <string name="fetching_attachment_dialog_title_send">Odesílám zprávu</string>
+    <string name="fetching_attachment_dialog_title_save">Ukládám koncept</string>
+    <string name="fetching_attachment_dialog_message">Stahuji přílohu…</string>
 </resources>

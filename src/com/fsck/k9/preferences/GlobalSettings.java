@@ -136,11 +136,13 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(true))
             ));
         s.put("messageListCheckboxes", Settings.versions(
-                new V(1, new BooleanSetting(false)),
-                new V(27, new BooleanSetting(true))
+                new V(1, new BooleanSetting(false))
             ));
         s.put("messageListPreviewLines", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 100, 2))
+            ));
+        s.put("messageListStars", Settings.versions(
+                new V(1, new BooleanSetting(true))
             ));
         s.put("messageViewFixedWidthFont", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -224,6 +226,24 @@ public class GlobalSettings {
             ));
         s.put("autofitWidth", Settings.versions(
                 new V(28, new BooleanSetting(true))
+            ));
+        s.put("colorizeMissingContactPictures", Settings.versions(
+                new V(29, new BooleanSetting(true))
+            ));
+        s.put("messageViewDeleteActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(true))
+            ));
+        s.put("messageViewArchiveActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(false))
+            ));
+        s.put("messageViewMoveActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(false))
+            ));
+        s.put("messageViewCopyActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(false))
+            ));
+        s.put("messageViewSpamActionVisible", Settings.versions(
+                new V(30, new BooleanSetting(false))
             ));
 
         SETTINGS = Collections.unmodifiableMap(s);

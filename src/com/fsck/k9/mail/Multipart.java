@@ -3,11 +3,12 @@ package com.fsck.k9.mail;
 
 import java.util.ArrayList;
 
-import com.fsck.k9.mail.internet.MimeHeader;
+import org.apache.james.mime4j.util.MimeUtil;
+
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 
-public abstract class Multipart implements Body {
+public abstract class Multipart implements CompositeBody {
     protected Part mParent;
 
     protected ArrayList<BodyPart> mParts = new ArrayList<BodyPart>();
@@ -54,19 +55,14 @@ public abstract class Multipart implements Body {
         this.mParent = parent;
     }
 
-    public void setEncoding(String encoding) {
-        for (BodyPart part : mParts) {
-            try {
-                Body body = part.getBody();
-                if (body instanceof TextBody) {
-                    part.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
-                    ((TextBody)body).setEncoding(encoding);
-                }
-            } catch (MessagingException e) {
-                // Ignore
-            }
+    public void setEncoding(String encoding) throws MessagingException {
+        if (!MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding)
+                && !MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
+            throw new MessagingException(
+                    "Incompatible content-transfer-encoding applied to a CompositeBody");
         }
 
+        /* Nothing else to do.  Each subpart has its own separate encoding */
     }
 
     public void setCharset(String charset) throws MessagingException {

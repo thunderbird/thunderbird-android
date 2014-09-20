@@ -1,5 +1,6 @@
 package com.fsck.k9.fragment;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,6 +79,7 @@ import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
+import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.StringUtils;
@@ -85,7 +87,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.OpenMode;
+
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
@@ -404,13 +406,14 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mSingleFolderMode;
     private boolean mAllAccounts;
 
-    private MessageListHandler mHandler = new MessageListHandler();
+    private MessageListHandler mHandler = new MessageListHandler(this);
 
     private SortType mSortType = SortType.SORT_DATE;
     private boolean mSortAscending = true;
     private boolean mSortDateAscending = false;
     private boolean mSenderAboveSubject = false;
     private boolean mCheckboxes = true;
+    private boolean mStars = true;
 
     private int mSelectedCount = 0;
     private Set<Long> mSelected = new HashSet<Long>();
@@ -455,7 +458,6 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     private boolean mInitialized = false;
 
     private ContactPictureLoader mContactsPictureLoader;
-    private float mScreenDensity;
 
     private LocalBroadcastManager mLocalBroadcastManager;
     private BroadcastReceiver mCacheBroadcastReceiver;
@@ -483,7 +485,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
      * <p><strong>Note:</strong> If you add a method to this class make sure you don't accidentally
      * perform the operation in the calling thread.</p>
      */
-    class MessageListHandler extends Handler {
+    static class MessageListHandler extends Handler {
         private static final int ACTION_FOLDER_LOADING = 1;
         private static final int ACTION_REFRESH_TITLE = 2;
         private static final int ACTION_PROGRESS = 3;
@@ -492,7 +494,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         private static final int ACTION_RESTORE_LIST_POSITION = 6;
         private static final int ACTION_OPEN_MESSAGE = 7;
 
+        private WeakReference<MessageListFragment> mFragment;
 
+        public MessageListHandler(MessageListFragment fragment) {
+            mFragment = new WeakReference<MessageListFragment>(fragment);
+        }
         public void folderLoading(String folder, boolean loading) {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_FOLDER_LOADING,
                     (loading) ? 1 : 0, 0, folder);
@@ -519,7 +525,10 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             post(new Runnable() {
                 @Override
                 public void run() {
-                    MessageListFragment.this.updateFooter(message);
+                    MessageListFragment fragment = mFragment.get();
+                    if (fragment != null) {
+                        fragment.updateFooter(message);
+                    }
                 }
             });
         }
@@ -530,10 +539,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         public void restoreListPosition() {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION,
-                    mSavedListState);
-            mSavedListState = null;
-            sendMessage(msg);
+            MessageListFragment fragment = mFragment.get();
+            if (fragment != null) {
+                android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION,
+                        fragment.mSavedListState);
+                fragment.mSavedListState = null;
+                sendMessage(msg);
+            }
         }
 
         public void openMessage(MessageReference messageReference) {
@@ -544,16 +556,21 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         @Override
         public void handleMessage(android.os.Message msg) {
+            MessageListFragment fragment = mFragment.get();
+            if (fragment == null) {
+                return;
+            }
+
             // The following messages don't need an attached activity.
             switch (msg.what) {
                 case ACTION_REMOTE_SEARCH_FINISHED: {
-                    MessageListFragment.this.remoteSearchFinished();
+                    fragment.remoteSearchFinished();
                     return;
                 }
             }
 
             // Discard messages if the fragment isn't attached to an activity anymore.
-            Activity activity = getActivity();
+            Activity activity = fragment.getActivity();
             if (activity == null) {
                 return;
             }
@@ -562,29 +579,29 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                 case ACTION_FOLDER_LOADING: {
                     String folder = (String) msg.obj;
                     boolean loading = (msg.arg1 == 1);
-                    MessageListFragment.this.folderLoading(folder, loading);
+                    fragment.folderLoading(folder, loading);
                     break;
                 }
                 case ACTION_REFRESH_TITLE: {
-                    updateTitle();
+                    fragment.updateTitle();
                     break;
                 }
                 case ACTION_PROGRESS: {
                     boolean progress = (msg.arg1 == 1);
-                    MessageListFragment.this.progress(progress);
+                    fragment.progress(progress);
                     break;
                 }
                 case ACTION_GO_BACK: {
-                    mFragmentListener.goBack();
+                    fragment.mFragmentListener.goBack();
                     break;
                 }
                 case ACTION_RESTORE_LIST_POSITION: {
-                    mListView.onRestoreInstanceState((Parcelable) msg.obj);
+                    fragment.mListView.onRestoreInstanceState((Parcelable) msg.obj);
                     break;
                 }
                 case ACTION_OPEN_MESSAGE: {
                     MessageReference messageReference = (MessageReference) msg.obj;
-                    mFragmentListener.openMessage(messageReference);
+                    fragment.mFragmentListener.openMessage(messageReference);
                     break;
                 }
             }
@@ -780,16 +797,15 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
 
         Context appContext = getActivity().getApplicationContext();
 
-        mScreenDensity = appContext.getResources().getDisplayMetrics().density;
         mPreferences = Preferences.getPreferences(appContext);
         mController = MessagingController.getInstance(getActivity().getApplication());
 
         mPreviewLines = K9.messageListPreviewLines();
         mCheckboxes = K9.messageListCheckboxes();
+        mStars = K9.messageListStars();
 
         if (K9.showContactPicture()) {
-            mContactsPictureLoader = new ContactPictureLoader(getActivity(),
-                    R.drawable.ic_contact_picture);
+            mContactsPictureLoader = ContactPicture.getContactPictureLoader(getActivity());
         }
 
         restoreInstanceState(savedInstanceState);
@@ -1024,7 +1040,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         try {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolderById(folderId);
-            localFolder.open(OpenMode.READ_ONLY);
+            localFolder.open(Folder.OPEN_MODE_RO);
             return localFolder;
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "getFolderNameById() failed.", e);
@@ -1118,32 +1134,30 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         View loadingView = inflater.inflate(R.layout.message_list_loading, null);
         mPullToRefreshView.setEmptyView(loadingView);
 
-        if (isCheckMailSupported()) {
-            if (mSearch.isManualSearch() && mSingleAccountMode && mAccount.allowRemoteSearch()) {
-                // "Pull to search server"
-                mPullToRefreshView.setOnRefreshListener(
-                        new PullToRefreshBase.OnRefreshListener<ListView>() {
-                    @Override
-                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                        mPullToRefreshView.onRefreshComplete();
-                        onRemoteSearchRequested();
-                    }
-                });
-                ILoadingLayout proxy = mPullToRefreshView.getLoadingLayoutProxy();
-                proxy.setPullLabel(getString(
-                        R.string.pull_to_refresh_remote_search_from_local_search_pull));
-                proxy.setReleaseLabel(getString(
-                        R.string.pull_to_refresh_remote_search_from_local_search_release));
-            } else {
-                // "Pull to refresh"
-                mPullToRefreshView.setOnRefreshListener(
-                        new PullToRefreshBase.OnRefreshListener<ListView>() {
-                    @Override
-                    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                        checkMail();
-                    }
-                });
-            }
+        if (isRemoteSearchAllowed()) {
+            // "Pull to search server"
+            mPullToRefreshView.setOnRefreshListener(
+                    new PullToRefreshBase.OnRefreshListener<ListView>() {
+                        @Override
+                        public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                            mPullToRefreshView.onRefreshComplete();
+                            onRemoteSearchRequested();
+                        }
+                    });
+            ILoadingLayout proxy = mPullToRefreshView.getLoadingLayoutProxy();
+            proxy.setPullLabel(getString(
+                    R.string.pull_to_refresh_remote_search_from_local_search_pull));
+            proxy.setReleaseLabel(getString(
+                    R.string.pull_to_refresh_remote_search_from_local_search_release));
+        } else if (isCheckMailSupported()) {
+            // "Pull to refresh"
+            mPullToRefreshView.setOnRefreshListener(
+                    new PullToRefreshBase.OnRefreshListener<ListView>() {
+                @Override
+                public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                    checkMail();
+                }
+            });
         }
 
         // Disable pull-to-refresh until the message list has been loaded
@@ -1220,6 +1234,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         mRemoteSearchPerformed = true;
         mRemoteSearchFuture = mController.searchRemoteMessages(searchAccount, searchFolder,
                 queryString, null, null, mListener);
+
+        setPullToRefreshEnabled(false);
 
         mFragmentListener.remoteSearchStarted();
     }
@@ -1392,7 +1408,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     }
 
     private String getDialogTag(int dialogId) {
-        return String.format("dialog-%d", dialogId);
+        return "dialog-" + dialogId;
     }
 
     @Override
@@ -1472,6 +1488,11 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         switch (item.getItemId()) {
+            case R.id.deselect:
+            case R.id.select: {
+                toggleMessageSelectWithAdapterPosition(adapterPosition);
+                break;
+            }
             case R.id.reply: {
                 Message message = getMessageAtPosition(adapterPosition);
                 onReply(message);
@@ -1578,6 +1599,12 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
 
         menu.setHeaderTitle(subject);
+
+        if(  mSelected.contains(mContextMenuUniqueId)) {
+            menu.findItem(R.id.select).setVisible(false);
+        } else {
+            menu.findItem(R.id.deselect).setVisible(false);
+        }
 
         if (read) {
             menu.findItem(R.id.mark_as_read).setVisible(false);
@@ -1710,7 +1737,8 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults) {
             mHandler.progress(true);
             if (account != null &&  account.getRemoteSearchNumResults() != 0 && numResults > account.getRemoteSearchNumResults()) {
-                mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading_limited, account.getRemoteSearchNumResults(), numResults));
+                mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading_limited,
+                        account.getRemoteSearchNumResults(), numResults));
             } else {
                 mHandler.updateFooter(mContext.getString(R.string.remote_search_downloading, numResults));
             }
@@ -1809,16 +1837,22 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             MessageViewHolder holder = new MessageViewHolder();
             holder.date = (TextView) view.findViewById(R.id.date);
             holder.chip = view.findViewById(R.id.chip);
+
+
             if (mPreviewLines == 0 && mContactsPictureLoader == null) {
                 view.findViewById(R.id.preview).setVisibility(View.GONE);
                 holder.preview = (TextView) view.findViewById(R.id.sender_compact);
-                ViewGroup.LayoutParams params = holder.chip.getLayoutParams();
-                params.height=(int) (16.0f * mScreenDensity);
-                params.width=(int) (16.0f * mScreenDensity);
+                holder.flagged = (CheckBox) view.findViewById(R.id.flagged_center_right);
+                view.findViewById(R.id.flagged_bottom_right).setVisibility(View.GONE);
+
+
 
             } else {
                 view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
+                holder.flagged = (CheckBox) view.findViewById(R.id.flagged_bottom_right);
+                view.findViewById(R.id.flagged_center_right).setVisibility(View.GONE);
+
             }
 
             QuickContactBadge contactBadge =
@@ -1846,11 +1880,16 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             holder.preview.setLines(Math.max(mPreviewLines,1));
             mFontSizes.setViewTextSize(holder.preview, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
+            mFontSizes.setViewTextSize(holder.threadCount, mFontSizes.getMessageListSubject()); // thread count is next to subject
+            view.findViewById(R.id.selected_checkbox_wrapper).setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
+
+            holder.flagged.setVisibility(mStars ? View.VISIBLE : View.GONE);
+            holder.flagged.setOnClickListener(holder);
+
 
             holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
-            holder.selected.setVisibility((mCheckboxes) ? View.VISIBLE : View.GONE);
+            holder.selected.setOnClickListener(holder);
 
-            view.findViewById(R.id.chip_wrapper).setOnClickListener(holder);
 
             view.setTag(holder);
 
@@ -1910,21 +1949,21 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
             long uniqueId = cursor.getLong(mUniqueIdColumn);
             boolean selected = mSelected.contains(uniqueId);
 
-            if (!mCheckboxes && selected) {
-                holder.chip.setBackgroundDrawable(account.getCheckmarkChip().drawable());
-            } else {
-                holder.chip.setBackgroundDrawable(account.generateColorChip(read, toMe, ccMe,
-                        fromMe, flagged).drawable());
-            }
+
+            holder.chip.setBackgroundColor(account.getChipColor());
 
             if (mCheckboxes) {
                 holder.selected.setChecked(selected);
             }
+
+            if (mStars) {
+                holder.flagged.setChecked(flagged);
+            }
             holder.position = cursor.getPosition();
 
             if (holder.contactBadge != null) {
-                holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                 if (counterpartyAddress != null) {
+                    holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
                     /*
                      * At least in Android 2.2 a different background + padding is used when no
                      * email address is available. ListView reuses the views but QuickContactBadge
@@ -1933,6 +1972,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
                     holder.contactBadge.setPadding(0, 0, 0, 0);
                     mContactsPictureLoader.loadContactPicture(counterpartyAddress, holder.contactBadge);
                 } else {
+                    holder.contactBadge.assignContactUri(null);
                     holder.contactBadge.setImageResource(R.drawable.ic_contact_picture);
                 }
             }
@@ -2063,14 +2103,23 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         public TextView date;
         public View chip;
         public TextView threadCount;
+        public CheckBox flagged;
         public CheckBox selected;
         public int position = -1;
         public QuickContactBadge contactBadge;
-
         @Override
         public void onClick(View view) {
             if (position != -1) {
-                toggleMessageSelectWithAdapterPosition(position);
+
+                switch (view.getId()) {
+                    case R.id.selected_checkbox:
+                        toggleMessageSelectWithAdapterPosition(position);
+                        break;
+                    case R.id.flagged_bottom_right:
+                    case R.id.flagged_center_right:
+                        toggleMessageFlagWithAdapterPosition(position);
+                        break;
+                }
             }
         }
     }
@@ -2184,6 +2233,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         }
 
         toggleMessageSelectWithAdapterPosition(adapterPosition);
+    }
+
+    private void toggleMessageFlagWithAdapterPosition(int adapterPosition) {
+        Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
+        boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
+
+        setFlag(adapterPosition,Flag.FLAGGED, !flagged);
     }
 
     private void toggleMessageSelectWithAdapterPosition(int adapterPosition) {
@@ -3353,10 +3409,7 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
         // Remove the "Loading..." view
         mPullToRefreshView.setEmptyView(null);
 
-        // Enable pull-to-refresh if allowed
-        if (isCheckMailSupported()) {
-            setPullToRefreshEnabled(true);
-        }
+        setPullToRefreshEnabled(isPullToRefreshAllowed());
 
         final int loaderId = loader.getId();
         mCursors[loaderId] = data;
@@ -3564,5 +3617,13 @@ public class MessageListFragment extends SherlockFragment implements OnItemClick
     public boolean isCheckMailSupported() {
         return (mAllAccounts || !isSingleAccountMode() || !isSingleFolderMode() ||
                 isRemoteFolder());
+    }
+
+    private boolean isCheckMailAllowed() {
+        return (!isManualSearch() && isCheckMailSupported());
+    }
+
+    private boolean isPullToRefreshAllowed() {
+        return (isRemoteSearchAllowed() || isCheckMailAllowed());
     }
 }

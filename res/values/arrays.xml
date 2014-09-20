@@ -326,7 +326,7 @@
         <item>Kirundi</item>
         <item>Kiswahili</item>
         <item>Latviešu</item>
-        <item>Lietuviškai</item>
+        <item>Lietuvių</item>
         <item>Magyar</item>
         <item>Malti</item>
         <item>Nederlands</item>
@@ -491,6 +491,7 @@
         <item>ja</item>
         <item>ko</item>
         <item>sk</item>
+        <item>lt</item>
     </string-array>
 
     <string-array name="settings_theme_entries">

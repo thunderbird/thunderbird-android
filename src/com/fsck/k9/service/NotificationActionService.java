@@ -77,8 +77,8 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
 
-                ArrayList<MessageReference> refs = (ArrayList<MessageReference>)
-                        intent.getSerializableExtra(EXTRA_MESSAGE_LIST);
+                ArrayList<MessageReference> refs =
+                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
                 for (MessageReference ref : refs) {
                     controller.setFlag(account, ref.folderName, ref.uid, Flag.SEEN, true);
                 }
@@ -86,8 +86,8 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService deleting messages");
 
-                ArrayList<MessageReference> refs = (ArrayList<MessageReference>)
-                        intent.getSerializableExtra(EXTRA_MESSAGE_LIST);
+                ArrayList<MessageReference> refs =
+                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
                 ArrayList<Message> messages = new ArrayList<Message>();
 
                 for (MessageReference ref : refs) {

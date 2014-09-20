@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
      When removing strings from the main file, please cleanup the translations.
      The script tools/sync_translation.py will get rid of any surplus strings.
@@ -123,6 +123,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
     <string name="send_again_action">Send Again</string>
+    <string name="select_action">Select</string>
+    <string name="deselect_action">Deselect</string>
     <string name="reply_action">Reply</string>
     <string name="reply_all_action">Reply all</string>
     <string name="delete_action">Delete</string>
@@ -130,8 +132,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="spam_action">Spam</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
-    <string name="single_message_options_action">Send</string>
-    <string name="refile_action">Refile</string>
+    <string name="single_message_options_action">Send…</string>
+    <string name="refile_action">Refile…</string>
     <string name="continue_action">Continue</string>
     <string name="back_action">Back</string>
     <string name="done_action">Done</string> <!--  Used to complete a multi-step process -->
@@ -199,12 +201,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="abbrev_kilobytes">KB</string>
     <string name="abbrev_bytes">B</string>
 
-    <string name="account_size_changed">
-    Account \"<xliff:g id="account">%s</xliff:g>\" shrunk from
-    <xliff:g id="oldSize">%s</xliff:g>
-    to
-    <xliff:g id="newSize">%s</xliff:g>
-    </string>
+    <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" shrunk from <xliff:g id="oldSize">%s</xliff:g> to <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compacting account \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Clearing account \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -216,7 +213,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>
-    <string name="notification_action_read">Mark Read</string>
+    <string name="notification_action_mark_as_read">Mark Read</string>
     <string name="notification_action_delete">Delete</string>
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
@@ -266,7 +263,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_compose_quote_header_from">From:</string>
     <string name="message_compose_quote_header_to">To:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:</string>
+    <string name="message_compose_reply_header_fmt_with_date">On <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> wrote:</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
@@ -287,7 +285,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_show_pictures_action">Show pictures</string>
     <string name="message_view_show_message_action">Show message</string>
     <string name="message_view_show_attachments_action">Show attachments</string>
-    <string name="message_view_show_more_attachments_action">More&#8230;</string>
+    <string name="message_view_show_more_attachments_action">More…</string>
     <string name="message_view_fetching_attachment_toast">Fetching attachment.</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>
@@ -303,6 +301,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_discarded_toast">Message discarded</string>
     <string name="message_saved_toast">Message saved as draft</string>
 
+    <string name="global_settings_flag_label">Show stars</string>
+    <string name="global_settings_flag_summary">Stars indicate flagged messages</string>
     <string name="global_settings_checkbox_label">Multi-select checkboxes</string>
     <string name="global_settings_checkbox_summary">Always show multi-select checkboxes</string>
     <string name="global_settings_preview_lines_label">Preview lines</string>
@@ -367,7 +367,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_basics_password_hint">Password</string>
     <string name="account_setup_basics_manual_setup_action">Manual setup</string>
 
-    <string name="account_setup_check_settings_title"></string>
+    <string name="account_setup_check_settings_title"/>
     <string name="account_setup_check_settings_retr_info_msg">Retrieving account information\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Checking incoming server settings\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Checking outgoing server settings\u2026</string>
@@ -757,11 +757,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_clear_dlg_title">Clear Account</string>
 
-    <string name="provider_note_live">Only some \"Plus\" accounts include POP access
-        allowing this program to connect. If you are not able to sign in with
-        your correct email address and password, you may not have a paid
-        \"Plus\" account. Please launch the Web browser to gain access to
-        these mail accounts.</string>
     <string name="provider_note_yahoojp">Be sure to enable POP3 on the Yahoo mail settings page.</string>
     <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>
     <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>
@@ -991,7 +986,7 @@ Please submit bug reports, contribute new features and ask questions at
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
     </plurals>
@@ -1028,7 +1023,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
     </plurals>
@@ -1152,4 +1147,15 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="forget_session_pwds">Forget session passwords</string>
 
     <string name="mark_all_as_read">Mark all as read</string>
+
+    <string name="global_settings_colorize_missing_contact_pictures_label">Colorize contact pictures</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>
+
+    <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>
+
+    <string name="loading_attachment">Loading attachment…</string>
+    <string name="fetching_attachment_dialog_title_send">Sending message</string>
+    <string name="fetching_attachment_dialog_title_save">Saving draft</string>
+    <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
 </resources>

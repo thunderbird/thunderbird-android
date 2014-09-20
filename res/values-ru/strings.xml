@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Translation of RU version (06.07.2013): Igor Nedoboy (k9russian<AT>gmail<DOT>com) -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
@@ -77,7 +76,7 @@ K-9 Mail — почтовый клиент для Android.
     <!-- === General strings ================================================================== -->
 
     <string name="app_authors_fmt">Авторы: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_fmt">Новое в версии: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_revision_fmt">Изменения: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">Сторонние компоненты: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Значки настроения: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
@@ -88,7 +87,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="delete_messages_label">Удаление почты</string>
     <string name="delete_messages_desc">Разрешить программе удаление почты</string>
 
-    <string name="about_title_fmt">K-9 Mail <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_title_fmt">K-9 Mail Team <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Ящики</string>
     <string name="folders_title">Папки</string>
     <string name="advanced">Дополнительно</string>
@@ -119,11 +118,13 @@ K-9 Mail — почтовый клиент для Android.
     <string name="cancel_action">Отмена</string>
     <string name="send_action">Отправить</string>
     <string name="send_again_action">Редактировать</string>
+    <string name="select_action">Выбрать</string>
+    <string name="deselect_action">Снять выбор</string>
     <string name="reply_action">Ответить</string>
     <string name="reply_all_action">Ответить всем</string>
     <string name="delete_action">Удалить</string>
-    <string name="archive_action">Архив</string>
-    <string name="spam_action">Спам</string>
+    <string name="archive_action">В архив</string>
+    <string name="spam_action">В спам</string>
     <string name="forward_action">Переслать</string>
     <string name="move_action">Переместить</string>
     <string name="single_message_options_action">Отправить</string>
@@ -135,7 +136,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="save_draft_action">Черновик</string>
     <string name="check_mail_action">Обновить</string>
     <string name="send_messages_action">Отправить почту</string>
-    <string name="refresh_folders_action">Обновить список</string>
+    <string name="refresh_folders_action">Перестроить список</string>
     <string name="filter_folders_action">Поиск папки</string>
     <string name="add_account_action">Добавить</string>
     <string name="compose_action">Создать</string>
@@ -170,7 +171,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="add_attachment_action">Вложение</string>
     <string name="add_attachment_action_image">Изображение</string>
     <string name="add_attachment_action_video">Видео</string>
-    <string name="empty_trash_action">Очистить Корзину</string>
+    <string name="empty_trash_action">Очистить корзину</string>
     <string name="expunge_action">Стереть</string>
     <string name="clear_local_folder_action">Стереть локальные</string>
     <string name="about_action">О программе</string>
@@ -198,7 +199,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="compacting_account">Сжатие ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Очистка ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="recreating_account">Пересоздание ящика\"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="recreating_account">Пересоздание ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Новая почта</string>
     <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> новых</string>
@@ -206,14 +207,14 @@ K-9 Mail — почтовый клиент для Android.
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> в <xliff:g id="account">%s</xliff:g></string>
 
     <string name="notification_action_reply">Ответить</string>
-    <string name="notification_action_read">Открыть</string>
+    <string name="notification_action_mark_as_read">Открыть</string>
     <string name="notification_action_delete">Удалить</string>
     <string name="notification_certificate_error_title">Ошибка сертификата <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
 
-    <string name="notification_bg_sync_ticker">Проверка: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Проверка <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
-    <string name="notification_bg_send_ticker">Отправка: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Отправка почты</string>
     <string name="notification_bg_title_separator">:</string>
 
@@ -256,7 +257,8 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_compose_quote_header_from">От:</string>
     <string name="message_compose_quote_header_to">Кому:</string>
     <string name="message_compose_quote_header_cc">Копия:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:</string>
+    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> пишет:</string>
     <string name="message_compose_error_no_recipients">Укажите адресата</string>
     <string name="error_contact_address_not_found">Контакт не содержит сведений о email</string>
     <string name="message_compose_attachments_skipped_toast">Некоторые вложения не были загружены и не могут быть отправлены</string>
@@ -293,6 +295,8 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_discarded_toast">Сообщение отменено</string>
     <string name="message_saved_toast">Черновик сохранён</string>
 
+    <string name="global_settings_flag_label">Показать звёзды</string>
+    <string name="global_settings_flag_summary">Для управления важностью сообщений</string>
     <string name="global_settings_checkbox_label">Выбор элементов</string>
     <string name="global_settings_checkbox_summary">Показать поля выбора элементов</string>
     <string name="global_settings_preview_lines_label">Строки предпросмотра</string>
@@ -320,10 +324,10 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_messageview_show_next_summary">Открыть следующее сообщение после удаления сообщения</string>
 
     <string name="global_settings_confirm_actions_title">Подтверждать действия</string>
-    <string name="global_settings_confirm_actions_summary">Запросить подтверждение указанных действий</string>
+    <string name="global_settings_confirm_actions_summary">Запросить подтверждение действий</string>
     <string name="global_settings_confirm_action_delete">Удаление (в просмотре)</string>
     <string name="global_settings_confirm_action_delete_starred">Удаление важного (в просмотре)</string>
-    <string name="global_settings_confirm_action_spam">Перемещение в Спам</string>
+    <string name="global_settings_confirm_action_spam">Перемещение в спам</string>
     <string name="global_settings_confirm_action_delete_notif">Удаление (в уведомлении)</string>
 
     <string name="global_settings_notification_hide_subject_title">Скрыть тему в уведомлении</string>
@@ -341,11 +345,11 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_batch_buttons_summary">Настройка кнопок пакетных операций</string>
     <string name="global_settings_mark_read">Прочитано</string>
     <string name="global_settings_delete">Удалить</string>
-    <string name="global_settings_archive">Архив</string>
+    <string name="global_settings_archive">В архив</string>
     <string name="global_settings_archive_disabled_reason">Нет архивной папки</string>
     <string name="global_settings_move">Перенести</string>
-    <string name="global_settings_flag">Метка</string>
-    <string name="global_settings_unselect">Убрать</string>
+    <string name="global_settings_flag">Важное</string>
+    <string name="global_settings_unselect">Снять выбор</string>
 
     <string name="quiet_time">Период тишины</string>
     <string name="quiet_time_description">Отключить мелодию, вибрацию и индикатор на ночь</string>
@@ -569,7 +573,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_settings_color_summary">Метка в списке ящиков и папок</string>
 
     <string name="account_settings_led_color_label">Цвет LED-индикатора</string>
-    <string name="account_settings_led_color_summary">Цвет LED-индикатора устройства для оповещений этого ящика</string>
+    <string name="account_settings_led_color_summary">Цвет LED-индикатора для оповещений этого ящика</string>
 
     <string name="account_settings_mail_display_count_label">Отображать сообщений</string>
 
@@ -604,7 +608,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="account_settings_message_age_6_months">6 месяцев</string>
     <string name="account_settings_message_age_1_year">1 год</string>
 
-    <string name="account_settings_folder_display_mode_label">Видимость</string>
+    <string name="account_settings_folder_display_mode_label">Видимость папок</string>
     <string name="account_settings_folder_display_mode_all">Все</string>
     <string name="account_settings_folder_display_mode_first_class">1 класс</string>
     <string name="account_settings_folder_display_mode_first_and_second_class">1 и 2 классы</string>
@@ -747,10 +751,6 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="account_clear_dlg_title">Очистка ящика</string>
 
-    <string name="provider_note_live">Доступ по POP-протоколу доступен только для \"Plus\"-аккаунтов.
-        Если подключение с правильными настройками не удаётся, требуется
-        переход на версию \"Plus\". Воспользуйтесь мобильной версией
-        Yahoo! Mail или зайдите в аккаунт через браузер</string>
     <string name="provider_note_yahoojp">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта Yahoo</string>
     <string name="provider_note_auonejp">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта au one</string>
     <string name="provider_note_naver">Убедитесь, что разрешён доступ по IMAP или POP3 в настройках аккаунта Naver</string>
@@ -765,14 +765,14 @@ K-9 Mail — почтовый клиент для Android.
     <string name="message_list_help_key">
     Del, D - Удалить\n
     R - Ответить\n
-    A - Ответить Всем\n
+    A - Ответить всем\n
     C - Новое\n
     F - Переслать\n
     M - Переместить\n
-    V - Архив\n
+    V - В архив\n
     Y - Копия\n
     Z - Прочитано\n
-    G - Важное\n
+    G - Важность\n
     O - Признак сортировки\n
     I - Порядок сортировки\n
     Q - Папки\n
@@ -791,7 +791,7 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="folder_list_filter_hint">Поиск папки</string>
 
-    <string name="folder_list_display_mode_label">Видимость</string>
+    <string name="folder_list_display_mode_label">Видимость папок</string>
     <string name="folder_list_display_mode_all">Все папки</string>
     <string name="folder_list_display_mode_first_class">1 класс</string>
     <string name="folder_list_display_mode_first_and_second_class">1 и 2 класс</string>
@@ -854,7 +854,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="volume_navigation_message">В сообщении</string>
     <string name="volume_navigation_list">В списке</string>
 
-    <string name="start_integrated_inbox_title">Во \"Входящие\" при запуске</string>
+    <string name="start_integrated_inbox_title">Запуск в общих \"Входящих\"</string>
 
     <string name="measure_accounts_title">Размер ящика</string>
     <string name="measure_accounts_summary">Отключите для ускорения работы</string>
@@ -875,10 +875,10 @@ K-9 Mail — почтовый клиент для Android.
     <string name="integrated_inbox_title">Входящие</string>
     <string name="integrated_inbox_detail">из всех ящиков</string>
 
-    <string name="tap_hint">Нажмите звёздочку или кружок для отображения только важных или непрочитанных</string>
+    <string name="tap_hint">Нажмите звезду или кружок для фильтрации важных или непрочитанных</string>
 
-    <string name="folder_settings_include_in_integrated_inbox_label">Общие Входящие</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Показать почту в общих Входящих</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">Общие \"Входящие\"</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Показать почту в общих \"Входящих\"</string>
 
     <string name="account_settings_searchable_label">Папки для поиска</string>
     <string name="account_settings_searchable_all">Все</string>
@@ -980,7 +980,7 @@ K-9 Mail — почтовый клиент для Android.
       (1) http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 
     -->
-    <plurals name="dialog_confirm_delete_message">
+    <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Сообщение будет удалено. Продолжить?</item>
         <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>
     </plurals>
@@ -1017,7 +1017,7 @@ K-9 Mail — почтовый клиент для Android.
     <string name="settings_export_success">Настройки сохранены в <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_global_settings_success">Настройки K-9 импортированы из <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Импортировано: <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
-    <plurals name="settings_import_success">
+    <plurals name="settings_import_accounts">
         <item quantity="one">1 ящик</item>
         <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> ящика</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> ящиков</item>
@@ -1114,8 +1114,8 @@ K-9 Mail — почтовый клиент для Android.
     <string name="global_settings_background_as_unread_indicator_label">Затемнить прочитанные</string>
     <string name="global_settings_background_as_unread_indicator_summary">Выделять прочитанные сообщения менее ярким фоном</string>
 
-    <string name="global_settings_threaded_view_label">Сообщения в беседы</string>
-    <string name="global_settings_threaded_view_summary">Объединить, показав счётчик</string>
+    <string name="global_settings_threaded_view_label">Цепочки сообщений</string>
+    <string name="global_settings_threaded_view_summary">Объединить сообщения, показав счётчик</string>
 
     <string name="upgrade_databases_title">Обновление данных</string>
     <string name="upgrade_databases_unspecified">Обновление данных…</string>
@@ -1130,12 +1130,23 @@ K-9 Mail — почтовый клиент для Android.
 
     <string name="message_view_empty">Выберите сообщение</string>
 
-    <string name="global_settings_show_contact_picture_label">Изображения контактов</string>
-    <string name="global_settings_show_contact_picture_summary">Показать изображения контактов в списке сообщений</string>
+    <string name="global_settings_show_contact_picture_label">Фото контактов</string>
+    <string name="global_settings_show_contact_picture_summary">Показать фото контактов в списке сообщений</string>
 
     <string name="last_refresh_time_format">обновлено <xliff:g id="formatted_time">%s</xliff:g></string>
     <string name="last_refresh_time_format_with_push">обновлено <xliff:g id="time_with_preposition">%s</xliff:g>, push вкл.</string>
     <string name="preposition_for_date">в <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Прочитаны все</string>
+
+    <string name="global_settings_colorize_missing_contact_pictures_label">Цветные места для фото</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Инициалы контактов на цветном фоне при отсутствии фото</string>
+
+    <string name="global_settings_messageview_visible_refile_actions_title">Действия для сообщения</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Видимость действий для открытого сообщения</string>
+
+    <string name="loading_attachment">Загрузка вложений…</string>
+    <string name="fetching_attachment_dialog_title_send">Отправка сообщения</string>
+    <string name="fetching_attachment_dialog_title_save">Сохранение черновика</string>
+    <string name="fetching_attachment_dialog_message">Получение вложений…</string>
 </resources>
