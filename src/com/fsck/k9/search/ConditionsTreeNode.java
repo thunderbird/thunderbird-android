@@ -54,7 +54,7 @@ public class ConditionsTreeNode implements Parcelable {
      * should point to rows representing the nodes of the tree.
      *
      * @param cursor Cursor pointing to the first of a bunch or rows. Each rows
-     * 	should contains 1 tree node.
+     *  should contains 1 tree node.
      * @return A condition tree.
      */
     public static ConditionsTreeNode buildTreeFromDB(Cursor cursor) {

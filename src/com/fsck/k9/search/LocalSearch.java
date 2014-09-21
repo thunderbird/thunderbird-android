@@ -240,8 +240,8 @@ public class LocalSearch implements SearchSpecification {
     public void addAllowedFolder(String name) {
         /*
          *  TODO find folder sub-tree
-         *  		- do and on root of it & rest of search
-         *  		- do or between folder nodes
+         *          - do and on root of it & rest of search
+         *          - do or between folder nodes
          */
         mConditions = and(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, name));
     }

@@ -21,8 +21,6 @@ public interface Part {
 
     public String[] getHeader(String name) throws MessagingException;
 
-    public int getSize();
-
     public boolean isMimeType(String mimeType) throws MessagingException;
 
     public String getMimeType() throws MessagingException;
@@ -42,5 +40,6 @@ public interface Part {
      * @throws MessagingException
      *
      */
+    //TODO perhaps it would be clearer to use a flag "force7bit" in writeTo
     public abstract void setUsing7bitTransport() throws MessagingException;
 }

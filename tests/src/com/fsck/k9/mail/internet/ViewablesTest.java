@@ -100,7 +100,7 @@ public class ViewablesTest extends AndroidTestCase {
     }
 
     public void testTextPlusRfc822Message() throws MessagingException {
-    	K9ActivityCommon.setLanguage(getContext(), "en");
+        K9ActivityCommon.setLanguage(getContext(), "en");
         Locale.setDefault(Locale.US);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"));
 
