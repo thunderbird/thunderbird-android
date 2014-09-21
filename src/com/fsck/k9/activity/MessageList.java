@@ -1472,6 +1472,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 			checkMail(folder);
 			break;
 		case R.id.folder_settings:
+			mDrawerLayout.closeDrawer(Gravity.LEFT);
 			FolderSettings.actionSettings(this, mAccount, folder.name);
 			break;
 		case R.id.delete_account:
@@ -1479,6 +1480,7 @@ public class MessageList extends K9ListActivity implements OnItemClickListener,
 
 			break;
 		case R.id.account_settings:
+			mDrawerLayout.closeDrawer(Gravity.LEFT);
 			onEditAccount();
 
 			break;
