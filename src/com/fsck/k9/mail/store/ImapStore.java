@@ -1302,6 +1302,7 @@ public class ImapStore extends Store {
         protected long getHighestUid() {
             try {
                 ImapSearcher searcher = new ImapSearcher() {
+                    @Override
                     public List<ImapResponse> search() throws IOException, MessagingException {
                         return executeSimpleCommand("UID SEARCH *:*");
                     }
@@ -1351,6 +1352,7 @@ public class ImapStore extends Store {
 
 
             ImapSearcher searcher = new ImapSearcher() {
+                @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
                     return executeSimpleCommand(String.format(Locale.US, "UID SEARCH %d:%d%s%s", start, end, dateSearchString, includeDeleted ? "" : " NOT DELETED"));
                 }
@@ -1361,6 +1363,7 @@ public class ImapStore extends Store {
         protected Message[] getMessages(final List<Long> mesgSeqs, final boolean includeDeleted, final MessageRetrievalListener listener)
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
+                @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
                     return executeSimpleCommand(String.format("UID SEARCH %s%s", Utility.combine(mesgSeqs.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
@@ -1371,6 +1374,7 @@ public class ImapStore extends Store {
         protected Message[] getMessagesFromUids(final List<String> mesgUids, final boolean includeDeleted, final MessageRetrievalListener listener)
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
+                @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
                     return executeSimpleCommand(String.format("UID SEARCH UID %s%s", Utility.combine(mesgUids.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
@@ -2246,6 +2250,7 @@ public class ImapStore extends Store {
 
             // Setup the searcher
             final ImapSearcher searcher = new ImapSearcher() {
+                @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
                     String imapQuery = "UID SEARCH ";
                     if (requiredFlags != null) {
@@ -2341,12 +2346,12 @@ public class ImapStore extends Store {
      * A cacheable class that stores the details for a single IMAP connection.
      */
     public static class ImapConnection {
-        protected Socket mSocket;
-        protected PeekableInputStream mIn;
-        protected OutputStream mOut;
-        protected ImapResponseParser mParser;
-        protected int mNextCommandTag;
-        protected Set<String> capabilities = new HashSet<String>();
+        private Socket mSocket;
+        private PeekableInputStream mIn;
+        private OutputStream mOut;
+        private ImapResponseParser mParser;
+        private int mNextCommandTag;
+        private Set<String> capabilities = new HashSet<String>();
 
         private ImapSettings mSettings;
 
@@ -2946,7 +2951,7 @@ public class ImapStore extends Store {
 
     static class ImapException extends MessagingException {
         private static final long serialVersionUID = 3725007182205882394L;
-        String mAlertText;
+        private final String mAlertText;
 
         public ImapException(String message, String alertText) {
             super(message, true);
@@ -2957,22 +2962,19 @@ public class ImapStore extends Store {
             return mAlertText;
         }
 
-        public void setAlertText(String alertText) {
-            mAlertText = alertText;
-        }
     }
 
     public class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
-        final PushReceiver receiver;
-        Thread listeningThread = null;
-        final AtomicBoolean stop = new AtomicBoolean(false);
-        final AtomicBoolean idling = new AtomicBoolean(false);
-        final AtomicBoolean doneSent = new AtomicBoolean(false);
-        final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
-        final AtomicInteger idleFailureCount = new AtomicInteger(0);
-        final AtomicBoolean needsPoll = new AtomicBoolean(false);
-        List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
-        TracingWakeLock wakeLock = null;
+        private final PushReceiver receiver;
+        private Thread listeningThread = null;
+        private final AtomicBoolean stop = new AtomicBoolean(false);
+        private final AtomicBoolean idling = new AtomicBoolean(false);
+        private final AtomicBoolean doneSent = new AtomicBoolean(false);
+        private final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
+        private final AtomicInteger idleFailureCount = new AtomicInteger(0);
+        private final AtomicBoolean needsPoll = new AtomicBoolean(false);
+        private List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
+        private TracingWakeLock wakeLock = null;
 
         public ImapFolderPusher(ImapStore store, String name, PushReceiver nReceiver) {
             super(store, name);
@@ -3010,6 +3012,7 @@ public class ImapStore extends Store {
 
         public void start() {
             Runnable runner = new Runnable() {
+                @Override
                 public void run() {
                     wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
                     if (K9.DEBUG)
@@ -3409,6 +3412,7 @@ public class ImapStore extends Store {
             }
         }
 
+        @Override
         public void handleAsyncUntaggedResponse(ImapResponse response) {
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "Got async response: " + response);
@@ -3459,7 +3463,7 @@ public class ImapStore extends Store {
     }
 
     public class ImapPusher implements Pusher {
-        final ImapStore mStore;
+        private final ImapStore mStore;
         final PushReceiver mReceiver;
         private long lastRefresh = -1;
 
@@ -3470,6 +3474,7 @@ public class ImapStore extends Store {
             mReceiver = receiver;
         }
 
+        @Override
         public void start(List<String> folderNames) {
             stop();
             synchronized (folderPushers) {
@@ -3485,6 +3490,7 @@ public class ImapStore extends Store {
             }
         }
 
+        @Override
         public void refresh() {
             synchronized (folderPushers) {
                 for (ImapFolderPusher folderPusher : folderPushers.values()) {
@@ -3497,6 +3503,7 @@ public class ImapStore extends Store {
             }
         }
 
+        @Override
         public void stop() {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Requested stop of IMAP pusher");
@@ -3515,14 +3522,17 @@ public class ImapStore extends Store {
             }
         }
 
+        @Override
         public int getRefreshInterval() {
             return (getAccount().getIdleRefreshMinutes() * 60 * 1000);
         }
 
+        @Override
         public long getLastRefresh() {
             return lastRefresh;
         }
 
+        @Override
         public void setLastRefresh(long lastRefresh) {
             this.lastRefresh = lastRefresh;
         }

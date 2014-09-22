@@ -44,9 +44,9 @@ public class Address {
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
 
-    String mAddress;
+    private String mAddress;
 
-    String mPersonal;
+    private String mPersonal;
 
 
     public Address(Address address) {

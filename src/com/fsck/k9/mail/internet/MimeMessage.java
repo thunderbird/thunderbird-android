@@ -25,7 +25,6 @@ import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.util.MimeUtil;
 
-import com.fsck.k9.BuildConfig;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -42,7 +41,7 @@ import com.fsck.k9.K9;
  * RFC 2045 style headers.
  */
 public class MimeMessage extends Message {
-    protected MimeHeader mHeader = new MimeHeader();
+    private MimeHeader mHeader = new MimeHeader();
     protected Address[] mFrom;
     protected Address[] mTo;
     protected Address[] mCc;
@@ -50,13 +49,13 @@ public class MimeMessage extends Message {
     protected Address[] mReplyTo;
 
     protected String mMessageId;
-    protected String[] mReferences;
-    protected String[] mInReplyTo;
+    private String[] mReferences;
+    private String[] mInReplyTo;
 
-    protected Date mSentDate;
-    protected SimpleDateFormat mDateFormat;
+    private Date mSentDate;
+    private SimpleDateFormat mDateFormat;
 
-    protected Body mBody;
+    private Body mBody;
     protected int mSize;
 
     public MimeMessage() {
@@ -168,20 +167,25 @@ public class MimeMessage extends Message {
         return (contentType == null) ? "text/plain" : contentType;
     }
 
+    @Override
     public String getDisposition() throws MessagingException {
         return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
+    @Override
     public String getContentId() throws MessagingException {
         return null;
     }
+    @Override
     public String getMimeType() throws MessagingException {
         return MimeUtility.getHeaderParameter(getContentType(), null);
     }
 
+    @Override
     public boolean isMimeType(String mimeType) throws MessagingException {
         return getMimeType().equalsIgnoreCase(mimeType);
     }
 
+    @Override
     public int getSize() {
         return mSize;
     }
@@ -410,7 +414,7 @@ public class MimeMessage extends Message {
         }
     }
 
-    protected String getFirstHeader(String name) {
+    private String getFirstHeader(String name) {
         return mHeader.getFirstHeader(name);
     }
 
@@ -439,6 +443,7 @@ public class MimeMessage extends Message {
         return mHeader.getHeaderNames();
     }
 
+    @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
 
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
@@ -450,6 +455,7 @@ public class MimeMessage extends Message {
         }
     }
 
+    @Override
     public InputStream getInputStream() throws MessagingException {
         return null;
     }
@@ -486,6 +492,7 @@ public class MimeMessage extends Message {
             }
         }
 
+        @Override
         public void startMessage() {
             if (stack.isEmpty()) {
                 stack.addFirst(MimeMessage.this);
@@ -501,19 +508,23 @@ public class MimeMessage extends Message {
             }
         }
 
+        @Override
         public void endMessage() {
             expect(MimeMessage.class);
             stack.removeFirst();
         }
 
+        @Override
         public void startHeader() {
             expect(Part.class);
         }
 
+        @Override
         public void endHeader() {
             expect(Part.class);
         }
 
+        @Override
         public void startMultipart(BodyDescriptor bd) {
             expect(Part.class);
 
@@ -527,6 +538,7 @@ public class MimeMessage extends Message {
             }
         }
 
+        @Override
         public void body(BodyDescriptor bd, InputStream in) throws IOException {
             expect(Part.class);
             try {
@@ -538,10 +550,12 @@ public class MimeMessage extends Message {
             }
         }
 
+        @Override
         public void endMultipart() {
             stack.removeFirst();
         }
 
+        @Override
         public void startBodyPart() {
             expect(MimeMultipart.class);
 
@@ -554,11 +568,13 @@ public class MimeMessage extends Message {
             }
         }
 
+        @Override
         public void endBodyPart() {
             expect(BodyPart.class);
             stack.removeFirst();
         }
 
+        @Override
         public void preamble(InputStream is) throws IOException {
             expect(MimeMultipart.class);
             StringBuilder sb = new StringBuilder();
@@ -569,9 +585,11 @@ public class MimeMessage extends Message {
             ((MimeMultipart)stack.peek()).setPreamble(sb.toString());
         }
 
+        @Override
         public void epilogue(InputStream is) throws IOException {
         }
 
+        @Override
         public void raw(InputStream is) throws IOException {
             throw new UnsupportedOperationException("Not supported");
         }
@@ -621,14 +639,17 @@ public class MimeMessage extends Message {
         return message;
     }
 
+    @Override
     public long getId() {
         return Long.parseLong(mUid); //or maybe .mMessageId?
     }
 
+    @Override
     public String getPreview() {
         return "";
     }
 
+    @Override
     public boolean hasAttachments() {
         return false;
     }

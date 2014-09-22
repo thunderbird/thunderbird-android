@@ -39,7 +39,7 @@ public class LocalMessage extends MimeMessage {
     private long mThreadId;
     private long mRootId;
 
-    public LocalMessage(LocalStore localStore) {
+    private LocalMessage(LocalStore localStore) {
         this.localStore = localStore;
     }
 

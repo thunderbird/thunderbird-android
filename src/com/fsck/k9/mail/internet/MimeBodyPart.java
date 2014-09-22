@@ -20,8 +20,8 @@ import org.apache.james.mime4j.util.MimeUtil;
  * Message.
  */
 public class MimeBodyPart extends BodyPart {
-    protected final MimeHeader mHeader = new MimeHeader();
-    protected Body mBody;
+    private final MimeHeader mHeader = new MimeHeader();
+    private Body mBody;
 
     public MimeBodyPart() throws MessagingException {
         this(null);
@@ -38,30 +38,36 @@ public class MimeBodyPart extends BodyPart {
         setBody(body);
     }
 
-    protected String getFirstHeader(String name) {
+    private String getFirstHeader(String name) {
         return mHeader.getFirstHeader(name);
     }
 
+    @Override
     public void addHeader(String name, String value) throws MessagingException {
         mHeader.addHeader(name, value);
     }
 
+    @Override
     public void setHeader(String name, String value) {
         mHeader.setHeader(name, value);
     }
 
+    @Override
     public String[] getHeader(String name) throws MessagingException {
         return mHeader.getHeader(name);
     }
 
+    @Override
     public void removeHeader(String name) throws MessagingException {
         mHeader.removeHeader(name);
     }
 
+    @Override
     public Body getBody() {
         return mBody;
     }
 
+    @Override
     public void setBody(Body body) throws MessagingException {
         this.mBody = body;
         if (body instanceof Multipart) {
@@ -93,15 +99,18 @@ public class MimeBodyPart extends BodyPart {
         setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
     }
 
+    @Override
     public String getContentType() throws MessagingException {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
         return (contentType == null) ? "text/plain" : contentType;
     }
 
+    @Override
     public String getDisposition() throws MessagingException {
         return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
 
+    @Override
     public String getContentId() throws MessagingException {
         String contentId = getFirstHeader(MimeHeader.HEADER_CONTENT_ID);
         if (contentId == null) {
@@ -116,10 +125,12 @@ public class MimeBodyPart extends BodyPart {
                contentId;
     }
 
+    @Override
     public String getMimeType() throws MessagingException {
         return MimeUtility.getHeaderParameter(getContentType(), null);
     }
 
+    @Override
     public boolean isMimeType(String mimeType) throws MessagingException {
         return getMimeType().equalsIgnoreCase(mimeType);
     }
@@ -127,6 +138,7 @@ public class MimeBodyPart extends BodyPart {
     /**
      * Write the MimeMessage out in MIME format.
      */
+    @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         mHeader.writeTo(out);

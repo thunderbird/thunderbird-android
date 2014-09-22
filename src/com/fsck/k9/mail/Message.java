@@ -26,9 +26,9 @@ public abstract class Message implements Part, CompositeBody {
 
     protected String mUid;
 
-    protected Set<Flag> mFlags = new HashSet<Flag>();
+    private Set<Flag> mFlags = new HashSet<Flag>();
 
-    protected Date mInternalDate;
+    private Date mInternalDate;
 
     protected Folder mFolder;
 
@@ -45,7 +45,7 @@ public abstract class Message implements Part, CompositeBody {
         }
         return false;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Message)) {
@@ -124,20 +124,27 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract void setReferences(String references) throws MessagingException;
 
+    @Override
     public abstract Body getBody();
 
+    @Override
     public abstract String getContentType() throws MessagingException;
 
+    @Override
     public abstract void addHeader(String name, String value) throws MessagingException;
 
+    @Override
     public abstract void setHeader(String name, String value) throws MessagingException;
 
+    @Override
     public abstract String[] getHeader(String name) throws MessagingException;
 
     public abstract Set<String> getHeaderNames() throws UnavailableStorageException;
 
+    @Override
     public abstract void removeHeader(String name) throws MessagingException;
 
+    @Override
     public abstract void setBody(Body body) throws MessagingException;
 
     public abstract long getId();
@@ -239,6 +246,7 @@ public abstract class Message implements Part, CompositeBody {
 
     public void destroy() throws MessagingException {}
 
+    @Override
     public abstract void setEncoding(String encoding) throws UnavailableStorageException, MessagingException;
 
     public abstract void setCharset(String charset) throws MessagingException;
@@ -296,6 +304,8 @@ public abstract class Message implements Part, CompositeBody {
      * for more information.
      * </p>
      */
+    @Override
     public abstract Message clone();
+    @Override
     public abstract void setUsing7bitTransport() throws MessagingException;
 }

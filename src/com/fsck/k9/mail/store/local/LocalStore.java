@@ -38,7 +38,6 @@ import com.fsck.k9.mail.store.LockableDatabase;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
-import com.fsck.k9.mail.store.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.EmailProvider;
@@ -348,15 +347,12 @@ public class LocalStore extends Store implements Serializable {
         database.recreate();
     }
 
-    public void pruneCachedAttachments() throws MessagingException {
-        pruneCachedAttachments(false);
-    }
-
     /**
      * Deletes all cached attachments for the entire store.
      * @param force
      * @throws com.fsck.k9.mail.MessagingException
      */
+    //TODO this method seems to be only called with force=true, simplify accordingly
     private void pruneCachedAttachments(final boolean force) throws MessagingException {
         database.execute(false, new DbCallback<Void>() {
             @Override
@@ -416,10 +412,6 @@ public class LocalStore extends Store implements Serializable {
                 return null;
             }
         });
-    }
-
-    public void resetVisibleLimits() throws UnavailableStorageException {
-        resetVisibleLimits(mAccount.getDisplayCount());
     }
 
     public void resetVisibleLimits(int visibleLimit) throws UnavailableStorageException {

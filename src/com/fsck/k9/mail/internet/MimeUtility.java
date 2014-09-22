@@ -927,11 +927,7 @@ public class MimeUtility {
         return s.replaceAll("\r|\n", "");
     }
 
-    public static String decode(String s) {
-        return decode(s, null);
-    }
-
-    public static String decode(String s, Message message) {
+    private static String decode(String s, Message message) {
         if (s == null) {
             return null;
         }
@@ -1001,27 +997,6 @@ public class MimeUtility {
             }
         } else if (part.getMimeType().equalsIgnoreCase(mimeType)) {
             return part;
-        }
-        return null;
-    }
-
-    public static Part findPartByContentId(Part part, String contentId) throws Exception {
-        if (part.getBody() instanceof Multipart) {
-            Multipart multipart = (Multipart)part.getBody();
-            for (BodyPart bodyPart : multipart.getBodyParts()) {
-                Part ret = findPartByContentId(bodyPart, contentId);
-                if (ret != null) {
-                    return ret;
-                }
-            }
-        }
-        String[] header = part.getHeader(MimeHeader.HEADER_CONTENT_ID);
-        if (header != null) {
-            for (String s : header) {
-                if (s.equals(contentId)) {
-                    return part;
-                }
-            }
         }
         return null;
     }
@@ -1466,7 +1441,7 @@ public class MimeUtility {
      * @throws MessagingException
      *          In case of an error.
      */
-    public static List<Viewable> getViewables(Part part, List<Part> attachments) throws MessagingException {
+    private static List<Viewable> getViewables(Part part, List<Part> attachments) throws MessagingException {
         List<Viewable> viewables = new ArrayList<Viewable>();
 
         Body body = part.getBody();
@@ -2039,7 +2014,7 @@ public class MimeUtility {
         return null;
     }
 
-    public static Boolean isPartTextualBody(Part part) throws MessagingException {
+    private static Boolean isPartTextualBody(Part part) throws MessagingException {
         String disposition = part.getDisposition();
         String dispositionType = null;
         String dispositionFilename = null;
@@ -2127,7 +2102,7 @@ public class MimeUtility {
      *
      * @see #MIME_TYPE_REPLACEMENT_MAP
      */
-    public static String canonicalizeMimeType(String mimeType) {
+    private static String canonicalizeMimeType(String mimeType) {
         String lowerCaseMimeType = mimeType.toLowerCase(Locale.US);
         for (String[] mimeTypeMapEntry : MIME_TYPE_REPLACEMENT_MAP) {
             if (mimeTypeMapEntry[0].equals(lowerCaseMimeType)) {
