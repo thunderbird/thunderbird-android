@@ -71,20 +71,19 @@ public class MimeMultipart extends Multipart {
             writer.write("\r\n");
         }
 
-        if (mParts.isEmpty()) {
+        if (getBodyParts().isEmpty()) {
             writer.write("--");
             writer.write(mBoundary);
             writer.write("\r\n");
-        }
-
-        for (int i = 0, count = mParts.size(); i < count; i++) {
-            BodyPart bodyPart = mParts.get(i);
-            writer.write("--");
-            writer.write(mBoundary);
-            writer.write("\r\n");
-            writer.flush();
-            bodyPart.writeTo(out);
-            writer.write("\r\n");
+        } else {
+            for (BodyPart bodyPart : getBodyParts()) {
+                writer.write("--");
+                writer.write(mBoundary);
+                writer.write("\r\n");
+                writer.flush();
+                bodyPart.writeTo(out);
+                writer.write("\r\n");
+            }
         }
 
         writer.write("--");
@@ -100,7 +99,7 @@ public class MimeMultipart extends Multipart {
 
     @Override
     public void setUsing7bitTransport() throws MessagingException {
-        for (BodyPart part : mParts) {
+        for (BodyPart part : getBodyParts()) {
             part.setUsing7bitTransport();
         }
     }
