@@ -8,6 +8,9 @@ import java.io.InputStream;
 
 import com.fsck.k9.mail.MessagingException;
 
+/**
+ * An attachment whose contents are contained in a file.
+ */
 public class TempFileBody extends BinaryAttachmentBody {
     private final File mFile;
 

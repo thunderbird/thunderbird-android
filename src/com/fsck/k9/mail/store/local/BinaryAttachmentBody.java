@@ -12,6 +12,10 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64OutputStream;
 
+/**
+ * Superclass for attachments that contain binary data.
+ * The source for the data differs for the subclasses.
+ */
 public abstract class BinaryAttachmentBody implements Body {
     protected String mEncoding;
 
