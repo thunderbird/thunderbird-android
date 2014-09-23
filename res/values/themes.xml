@@ -51,7 +51,6 @@
         <item name="messageListDividerColor">#ffcccccc</item>
         <item name="messageListCheckbox">@drawable/btn_check_message_list_light</item>
         <item name="messageViewHeaderBackgroundColor">#ffffffff</item>
-        <item name="navigationDrawerBackgroundColor">#ffffffff</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_light</item>
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_light</item>
         <item name="compatDividerVertical">?attr/messageListDividerColor</item>
@@ -103,7 +102,6 @@
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
         <item name="messageListReadItemBackgroundColor">#00000000</item>
-        <item name="navigationDrawerBackgroundColor">#ff000000</item>
         <item name="messageListUnreadItemBackgroundColor">#c05a5a5a</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_dark</item>
