@@ -139,18 +139,18 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <CheckBox
-            android:id="@+id/flagged_bottom_right"
+           	android:id="@+id/flagged_bottom_right"
+            android:button="@drawable/btn_star"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/date"
-            android:button="@drawable/btn_star"
-            android:focusable="false"
-            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:paddingTop="5dip"
             android:paddingLeft="2dip"
             android:paddingRight="4dip"
-            android:paddingTop="5dip"
-            android:visibility="visible" />
+            android:focusable="false"
+            android:visibility="visible"
+            android:gravity="center_vertical"/>
 
         <View
             android:id="@+id/chip"

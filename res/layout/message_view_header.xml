@@ -4,33 +4,27 @@
     android:id="@+id/header_container"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="wrap_content"
-   
-    >
+    android:layout_height="wrap_content" >
 
-            <!-- Color chip -->
-    
+    <!-- Color chip -->
    <View
-            android:id="@+id/chip"
-            android:layout_width="45dip"
-            android:layout_height="6dp"
-            android:layout_marginRight="8dip"
-            android:background="#ff336699" />
+      android:id="@+id/chip"
+      android:layout_width="45dip"
+      android:layout_height="6dp"
+      android:layout_marginRight="8dip"
+      android:background="#ff336699" />
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
-        android:orientation="horizontal"
-         >
+        android:orientation="horizontal" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            
             android:paddingTop="15dp"
-                android:paddingBottom="15dp">
+            android:paddingBottom="15dp">
 
             <TextView
                 android:id="@+id/subject"
@@ -38,8 +32,6 @@
                 android:layout_height="wrap_content"
                 android:maxLines="3"
                 android:ellipsize="end"
-                
-               
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/general_no_subject"
                 android:padding="8dp" />
@@ -47,9 +39,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                 >
-
+                android:orientation="horizontal" >
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -87,8 +77,6 @@
                             android:layout_height="22sp"
                             android:paddingRight="4dip"
                             android:background="@drawable/ic_email_forwarded_small" />
-                        
-                       
 
                     </LinearLayout>
 
@@ -112,9 +100,7 @@
                         android:paddingRight="6dip"
                         android:singleLine="true"
                         android:ellipsize="end"
-                       
                         android:textSize="14sp"
-                        
                         android:text="@string/general_no_sender" />
                     
                     <!-- To -->
@@ -129,7 +115,6 @@
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:paddingTop="2dp"
-                       
                         android:textSize="12sp" />
                     
                     <!-- CC -->
@@ -168,8 +153,7 @@
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
                         android:text="@string/message_view_cc_label"
-                       android:textSize="12sp"
-                     />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/to_label"
@@ -179,7 +163,6 @@
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
                         android:text="@string/message_to_label"
-                       
                         android:textSize="12sp" />
 
                     <TextView
@@ -189,16 +172,12 @@
                         android:layout_below="@+id/from"
                         android:layout_alignLeft="@+id/from"
                         android:ellipsize="none"
-                        
                         android:singleLine="true"
                         android:text="date"
-                        android:textSize="12sp"
-                   />
+                        android:textSize="12sp" />
 
                 </RelativeLayout>
 
-                
-                
             </LinearLayout>
 
             <TextView
@@ -209,19 +188,17 @@
                 android:layout_marginRight="6dip"
                 android:singleLine="false"
                 android:ellipsize="none"
-       
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textIsSelectable="true" />
 
-               <LinearLayout
+      <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
         android:paddingLeft="6dip"
         android:paddingRight="6dip"
         android:paddingTop="4dip"
-        android:baselineAligned="false"
-         >
+        android:baselineAligned="false" >
         
         <Button
             android:id="@+id/show_pictures"
@@ -257,18 +234,12 @@
             
         </LinearLayout>
 
-     
-        
     </LinearLayout>
 
     <!-- Button area -->
     
-
-
     <include layout="@layout/message_view_crypto_layout" />
     
     <include layout="@layout/message_view_openpgp_layout"/>
 
-   
-    
 </com.fsck.k9.view.MessageHeader>

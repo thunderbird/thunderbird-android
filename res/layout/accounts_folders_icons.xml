@@ -26,13 +26,13 @@
 
         <TextView
             android:id="@+id/flagged_message_count"
-      android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/counter_bg"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
-        android:textColor="#ffffff" />
+      		android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:background="@drawable/counter_bg"
+        	android:layout_alignParentRight="true"
+        	android:layout_centerVertical="true"
+        	android:layout_marginRight="8dp"
+        	android:textColor="#ffffff" />
 
     </LinearLayout>
 
@@ -54,13 +54,13 @@
 
         <TextView
             android:id="@+id/new_message_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/counter_bg"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
-        android:textColor="#ffffff"/>
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:background="@drawable/counter_bg"
+        	android:layout_alignParentRight="true"
+        	android:layout_centerVertical="true"
+        	android:layout_marginRight="8dp"
+        	android:textColor="#ffffff"/>
 
     </LinearLayout>
 
