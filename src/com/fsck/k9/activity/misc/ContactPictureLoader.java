@@ -50,7 +50,8 @@ public class ContactPictureLoader {
     private Resources mResources;
     private Contacts mContactsHelper;
     private int mPictureSizeInPx;
-    private Typeface tf;
+    private static Typeface sLightFont;
+    private static int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 
     private int mDefaultBackgroundColor;
 
@@ -60,7 +61,7 @@ public class ContactPictureLoader {
     private final LruCache<Address, Bitmap> mBitmapCache;
 
     /**
-     * @see <a href="http://developer.android.com/design/style/color.html">Color palette used</a>
+     * @see <a href="http://forum.xda-developers.com/showthread.php?t=2493035">Color's from these icons, aka Google contact icons</a>
      */
     private final static int CONTACT_DUMMY_COLORS_ARGB[] = {
     	0xffe4c62e,
@@ -92,7 +93,14 @@ public class ContactPictureLoader {
 
         float scale = mResources.getDisplayMetrics().density;
         mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
-
+		
+		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+		
+			//if buildversion is JellyBean or above, set font in contact pictures to Roboto Light
+			
+			sLightFont = Typeface.create("sans-serif-light", Typeface.NORMAL);
+		}
+        
         mDefaultBackgroundColor = defaultBackgroundColor;
 
         ActivityManager activityManager =
@@ -186,16 +194,8 @@ public class ContactPictureLoader {
 
 		int rgb = calcUnknownContactColor(address);
 		result.eraseColor(rgb);
-
-		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 		
 		String letter = calcUnknownContactLetter(address);
-		
-		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-		
-			tf = Typeface.create("sans-serif-light", Typeface.NORMAL);
-		
-		}
 
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
@@ -203,9 +203,7 @@ public class ContactPictureLoader {
 		paint.setARGB(255, 255, 255, 255);
 		paint.setTextSize(mPictureSizeInPx * 3 / 4);
 		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-			//if buildversion is JellyBean or above, 
-			//set font in contact pictures to Roboto Light
-			paint.setTypeface(tf);
+			paint.setTypeface(sLightFont);
 		}
 		// just scale this down a bit
 		Rect rect = new Rect();

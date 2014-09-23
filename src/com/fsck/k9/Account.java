@@ -94,7 +94,7 @@ public class Account implements BaseAccount {
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
     /*
-     * http://developer.android.com/design/style/color.html
+     * Color Source: These Icons (http://forum.xda-developers.com/showthread.php?t=2493035)
      * Note: Order does matter, it's the order in which they will be picked.
      */
     public static final Integer[] PREDEFINED_COLORS = new Integer[] {

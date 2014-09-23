@@ -25,15 +25,6 @@
         android:paddingBottom="2dip"
         android:paddingLeft="6dip" >
 
-      
-        
-        <View
-            android:id="@+id/chip"
-            android:layout_width="0dip"
-            android:layout_height="0dp"
-            android:layout_marginRight="8dip"
-            android:background="#ff336699" />
-
         <TextView
             android:id="@+id/folder_name"
             android:layout_width="fill_parent"
