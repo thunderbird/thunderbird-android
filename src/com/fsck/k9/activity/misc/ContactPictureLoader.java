@@ -64,16 +64,16 @@ public class ContactPictureLoader {
      * @see <a href="http://forum.xda-developers.com/showthread.php?t=2493035">Color's from these icons, aka Google contact icons</a>
      */
     private final static int CONTACT_DUMMY_COLORS_ARGB[] = {
-    	0xffe4c62e,
-    	0xffad62a7,
-    	0xfff16364,
-    	0xfff58559,
-    	0xfff9a43e,
-    	0xff59a2be,
-    	0xff67bf74,
-    	0xff2093cd,
-    	0xff00bcd4,
-    	0xff607d8b
+     0xffe4c62e,
+     0xffad62a7,
+     0xfff16364,
+     0xfff58559,
+     0xfff9a43e,
+     0xff59a2be,
+     0xff67bf74,
+     0xff2093cd,
+     0xff00bcd4,
+     0xff607d8b
     };
 
     /**
