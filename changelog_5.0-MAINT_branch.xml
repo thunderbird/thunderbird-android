@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.000" versioncode="22000" >
+        <change>Updated version to 5.000</change>
+    </release>
     <release version="5.000 RC1" versioncode="21901" >
         <change>K-9 Mail now requires at least Android 4.0.3</change>
         <change>Added support for OpenPGP API v3 (get OpenKeychain)</change>
