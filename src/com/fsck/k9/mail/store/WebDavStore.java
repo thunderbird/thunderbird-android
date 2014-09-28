@@ -5,6 +5,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -139,22 +140,17 @@ public class WebDavStore extends Store {
 
         String userInfo = webDavUri.getUserInfo();
         if (userInfo != null) {
-            try {
-                String[] userInfoParts = userInfo.split(":");
-                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                String userParts[] = username.split("\\\\", 2);
+            String[] userInfoParts = userInfo.split(":");
+            username = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+            String userParts[] = username.split("\\\\", 2);
 
-                if (userParts.length > 1) {
-                    alias = userParts[1];
-                } else {
-                    alias = username;
-                }
-                if (userInfoParts.length > 1) {
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
+            if (userParts.length > 1) {
+                alias = userParts[1];
+            } else {
+                alias = username;
+            }
+            if (userInfoParts.length > 1) {
+                password = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
             }
         }
 
@@ -194,16 +190,9 @@ public class WebDavStore extends Store {
      * @see WebDavStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc;
-        String passwordEnc;
-        try {
-            userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Could not encode username or password", e);
-        }
+        String userEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.username);
+        String passwordEnc = (server.password != null) ?
+                com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.password) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -479,7 +468,6 @@ public class WebDavStore extends Store {
         }
 
         if (folderSlash > 0) {
-            String folderName;
             String fullPathName;
 
             // Removes the final slash if present
@@ -489,17 +477,8 @@ public class WebDavStore extends Store {
                 fullPathName = folderUrl.substring(folderSlash + 1);
 
             // Decodes the url-encoded folder name (i.e. "My%20folder" => "My Folder"
-            try {
-                folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
-            } catch (UnsupportedEncodingException uee) {
-                /**
-                 * If we don't support UTF-8 there's a problem, don't decode
-                 * it then
-                 */
-                folderName = fullPathName;
-            }
 
-            return folderName;
+            return UrlEncodingHelper.decodeUtf8(fullPathName);
         }
 
         return null;
@@ -1258,21 +1237,16 @@ public class WebDavStore extends Store {
             this.mName = name;
 
             String encodedName = "";
-            try {
-                String[] urlParts = name.split("/");
-                String url = "";
-                for (int i = 0, count = urlParts.length; i < count; i++) {
-                    if (i != 0) {
-                        url = url + "/" + java.net.URLEncoder.encode(urlParts[i], "UTF-8");
-                    } else {
-                        url = java.net.URLEncoder.encode(urlParts[i], "UTF-8");
-                    }
+            String[] urlParts = name.split("/");
+            String url = "";
+            for (int i = 0, count = urlParts.length; i < count; i++) {
+                if (i != 0) {
+                    url = url + "/" + com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(urlParts[i]);
+                } else {
+                    url = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(urlParts[i]);
                 }
-                encodedName = url;
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException URLEncoding folder name, skipping encoded");
-                encodedName = name;
             }
+            encodedName = url;
 
             encodedName = encodedName.replaceAll("\\+", "%20");
 
@@ -1910,7 +1884,7 @@ public class WebDavStore extends Store {
                     if (!messageURL.endsWith("/")) {
                         messageURL += "/";
                     }
-                    messageURL += URLEncoder.encode(message.getUid() + ":" + System.currentTimeMillis() + ".eml", "UTF-8");
+                    messageURL += com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
 
                     Log.i(K9.LOG_TAG, "Uploading message as " + messageURL);
 
@@ -1997,12 +1971,9 @@ public class WebDavStore extends Store {
              * We have to decode, then encode the URL because Exchange likes to not properly encode all characters
              */
             try {
-                end = java.net.URLDecoder.decode(end, "UTF-8");
-                end = java.net.URLEncoder.encode(end, "UTF-8");
+                end = UrlEncodingHelper.decodeUtf8(end);
+                end = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(end);
                 end = end.replaceAll("\\+", "%20");
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in setUrl: " + uee + "\nTrace: "
-                      + processException(uee));
             } catch (IllegalArgumentException iae) {
                 Log.e(K9.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
                       + processException(iae));
@@ -2405,13 +2376,10 @@ public class WebDavStore extends Store {
              */
             try {
                 if (length > 3) {
-                    end = java.net.URLDecoder.decode(end, "UTF-8");
-                    end = java.net.URLEncoder.encode(end, "UTF-8");
+                    end = UrlEncodingHelper.decodeUtf8(end);
+                    end = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(end);
                     end = end.replaceAll("\\+", "%20");
                 }
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri): " + uee
-                      + "\nTrace: " + processException(uee));
             } catch (IllegalArgumentException iae) {
                 Log.e(K9.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri): " + iae + "\nTrace: "
                       + processException(iae));

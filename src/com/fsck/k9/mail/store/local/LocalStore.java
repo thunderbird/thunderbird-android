@@ -3,8 +3,6 @@ package com.fsck.k9.mail.store.local;
 
 import java.io.File;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -468,23 +466,19 @@ public class LocalStore extends Store implements Serializable {
     }
 
     public void addPendingCommand(PendingCommand command) throws UnavailableStorageException {
-        try {
-            for (int i = 0; i < command.arguments.length; i++) {
-                command.arguments[i] = URLEncoder.encode(command.arguments[i], "UTF-8");
-            }
-            final ContentValues cv = new ContentValues();
-            cv.put("command", command.command);
-            cv.put("arguments", Utility.combine(command.arguments, ','));
-            database.execute(false, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    db.insert("pending_commands", "command", cv);
-                    return null;
-                }
-            });
-        } catch (UnsupportedEncodingException uee) {
-            throw new Error("Aparently UTF-8 has been lost to the annals of history.");
+        for (int i = 0; i < command.arguments.length; i++) {
+            command.arguments[i] = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(command.arguments[i]);
         }
+        final ContentValues cv = new ContentValues();
+        cv.put("command", command.command);
+        cv.put("arguments", Utility.combine(command.arguments, ','));
+        database.execute(false, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+                db.insert("pending_commands", "command", cv);
+                return null;
+            }
+        });
     }
 
     public void removePendingCommand(final PendingCommand command) throws UnavailableStorageException {

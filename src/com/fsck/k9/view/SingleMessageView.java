@@ -790,7 +790,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                         // Try to get the filename from the URL
                         int start = path.lastIndexOf("/");
                         if (start != -1 && start + 1 < path.length()) {
-                            filename = URLDecoder.decode(path.substring(start + 1), "UTF-8");
+                            filename = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(path.substring(start + 1));
                         } else {
                             // Use a dummy filename if necessary
                             filename = "saved_image";

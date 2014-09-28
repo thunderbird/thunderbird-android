@@ -7,7 +7,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -16,8 +15,6 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -199,31 +196,26 @@ public class ImapStore extends Store {
         }
 
         if (imapUri.getUserInfo() != null) {
-            try {
-                String userinfo = imapUri.getUserInfo();
-                String[] userInfoParts = userinfo.split(":");
+            String userinfo = imapUri.getUserInfo();
+            String[] userInfoParts = userinfo.split(":");
 
-                if (userinfo.endsWith(":")) {
-                    // Password is empty. This can only happen after an account was imported.
-                    authenticationType = AuthType.valueOf(userInfoParts[0]);
-                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 2) {
-                    authenticationType = AuthType.PLAIN;
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 3) {
-                    authenticationType = AuthType.valueOf(userInfoParts[0]);
-                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
+            if (userinfo.endsWith(":")) {
+                // Password is empty. This can only happen after an account was imported.
+                authenticationType = AuthType.valueOf(userInfoParts[0]);
+                username = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+            } else if (userInfoParts.length == 2) {
+                authenticationType = AuthType.PLAIN;
+                username = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                password = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+            } else if (userInfoParts.length == 3) {
+                authenticationType = AuthType.valueOf(userInfoParts[0]);
+                username = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
 
-                    if (AuthType.EXTERNAL == authenticationType) {
-                        clientCertificateAlias = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                    } else {
-                        password = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                    }
+                if (AuthType.EXTERNAL == authenticationType) {
+                    clientCertificateAlias = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
+                } else {
+                    password = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
                 }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
             }
         }
 
@@ -261,19 +253,11 @@ public class ImapStore extends Store {
      * @see ImapStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc;
-        String passwordEnc;
-        String clientCertificateAliasEnc;
-        try {
-            userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-            clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    URLEncoder.encode(server.clientCertificateAlias, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Could not encode username or password", e);
-        }
+        String userEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.username);
+        String passwordEnc = (server.password != null) ?
+                    com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.password) : "";
+        String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
+                    com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
