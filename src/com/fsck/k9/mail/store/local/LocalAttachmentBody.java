@@ -9,6 +9,9 @@ import android.net.Uri;
 
 import com.fsck.k9.mail.MessagingException;
 
+/**
+ * An attachment whose contents are loaded from an URI.
+ */
 public class LocalAttachmentBody extends BinaryAttachmentBody {
     private Application mApplication;
     private Uri mUri;

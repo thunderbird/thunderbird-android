@@ -11,11 +11,11 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 
 public abstract class Multipart implements CompositeBody {
-    protected Part mParent;
+    private Part mParent;
 
-    protected ArrayList<BodyPart> mParts = new ArrayList<BodyPart>();
+    private final ArrayList<BodyPart> mParts = new ArrayList<BodyPart>();
 
-    protected String mContentType;
+    private String mContentType;
 
     public void addBodyPart(BodyPart part) {
         mParts.add(part);

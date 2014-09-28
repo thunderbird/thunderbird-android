@@ -1235,9 +1235,9 @@ public class Pop3Store extends Store {
     }
 
     static class Pop3ResponseInputStream extends InputStream {
-        InputStream mIn;
-        boolean mStartOfLine = true;
-        boolean mFinished;
+        private InputStream mIn;
+        private boolean mStartOfLine = true;
+        private boolean mFinished;
 
         public Pop3ResponseInputStream(InputStream in) {
             mIn = in;

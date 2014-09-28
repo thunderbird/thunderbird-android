@@ -8,6 +8,10 @@ import org.apache.james.mime4j.util.MimeUtil;
 import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.MessagingException;
 
+/**
+ * An attachment containing a body of type message/rfc822
+ * whose contents are contained in a file.
+ */
 public class TempFileMessageBody extends TempFileBody implements CompositeBody {
 
     public TempFileMessageBody(String filename) {

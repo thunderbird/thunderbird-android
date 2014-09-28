@@ -33,7 +33,7 @@ public class SmtpTransport extends Transport {
 
     /**
      * Decodes a SmtpTransport URI.
-     * 
+     *
      * NOTE: In contrast to ImapStore and Pop3Store, the authType is appended at the end!
      *
      * <p>Possible forms:</p>
@@ -183,16 +183,16 @@ public class SmtpTransport extends Transport {
     }
 
 
-    String mHost;
-    int mPort;
-    String mUsername;
-    String mPassword;
-    String mClientCertificateAlias;
-    AuthType mAuthType;
-    ConnectionSecurity mConnectionSecurity;
-    Socket mSocket;
-    PeekableInputStream mIn;
-    OutputStream mOut;
+    private String mHost;
+    private int mPort;
+    private String mUsername;
+    private String mPassword;
+    private String mClientCertificateAlias;
+    private AuthType mAuthType;
+    private ConnectionSecurity mConnectionSecurity;
+    private Socket mSocket;
+    private PeekableInputStream mIn;
+    private OutputStream mOut;
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
 

@@ -176,12 +176,12 @@ public class StorageManager {
         /**
          * The root of the denoted storage. Used for mount points checking.
          */
-        protected File mRoot;
+        private File mRoot;
 
         /**
          * Choosen base directory
          */
-        protected File mApplicationDir;
+        private File mApplicationDir;
 
         @Override
         public void init(final Context context) {
@@ -258,7 +258,7 @@ public class StorageManager {
 
         public static final String ID = "InternalStorage";
 
-        protected File mRoot;
+        private File mRoot;
 
         @Override
         public String getId() {
@@ -328,13 +328,14 @@ public class StorageManager {
         /**
          * Root of the denoted storage.
          */
-        protected File mRoot;
+        private File mRoot;
 
         /**
          * Choosen base directory.
          */
-        protected File mApplicationDirectory;
+        private File mApplicationDirectory;
 
+        @Override
         public String getId() {
             return ID;
         }
@@ -392,6 +393,7 @@ public class StorageManager {
 
         public static final String ID = "HtcIncredibleStorage";
 
+        @Override
         public String getId() {
             return ID;
         }
@@ -428,6 +430,7 @@ public class StorageManager {
 
         public static final String ID = "SamsungGalaxySStorage";
 
+        @Override
         public String getId() {
             return ID;
         }
