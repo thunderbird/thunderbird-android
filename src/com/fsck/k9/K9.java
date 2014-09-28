@@ -88,7 +88,7 @@ public class K9 extends Application {
      *
      * @see ApplicationAware
      */
-    private static List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
+    private static final List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
 
     /**
      * This will be {@code true} once the initialization is complete and {@link #notifyObservers()}

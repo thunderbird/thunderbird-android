@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -439,7 +440,7 @@ public class ImapStore extends Store {
 
     private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
 
-    private LinkedList<ImapConnection> mConnections =
+    private final Deque<ImapConnection> mConnections =
         new LinkedList<ImapConnection>();
 
     /**
@@ -453,7 +454,7 @@ public class ImapStore extends Store {
      * requests. This cache lets us make sure we always reuse, if possible, for a given
      * folder name.
      */
-    private HashMap<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
+    private final Map<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
 
     public ImapStore(Account account) throws MessagingException {
         super(account);
@@ -3463,7 +3464,7 @@ public class ImapStore extends Store {
         final PushReceiver mReceiver;
         private long lastRefresh = -1;
 
-        HashMap<String, ImapFolderPusher> folderPushers = new HashMap<String, ImapFolderPusher>();
+        final Map<String, ImapFolderPusher> folderPushers = new HashMap<String, ImapFolderPusher>();
 
         public ImapPusher(ImapStore store, PushReceiver receiver) {
             mStore = store;
