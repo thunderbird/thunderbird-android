@@ -20,7 +20,7 @@ import com.fsck.k9.mail.filter.Base64;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -189,8 +189,8 @@ public class Utility {
      * hundreds of times in places that slow down the UI, so it helps.
      */
     public static String fastUrlDecode(String s) {
-        try {
-            byte[] bytes = s.getBytes("UTF-8");
+
+            byte[] bytes = s.getBytes(Charset.forName("UTF-8"));
             byte ch;
             int length = 0;
             for (int i = 0, count = bytes.length; i < count; i++) {
@@ -213,10 +213,8 @@ public class Utility {
                 }
                 length++;
             }
-            return new String(bytes, 0, length, "UTF-8");
-        } catch (UnsupportedEncodingException uee) {
-            return null;
-        }
+            return new String(bytes, 0, length, Charset.forName("UTF-8"));
+
     }
 
     /*

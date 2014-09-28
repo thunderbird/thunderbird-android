@@ -757,18 +757,10 @@ public class ImapStore extends Store {
     }
 
     private String encodeFolderName(String name) {
-        try {
-            ByteBuffer bb = mModifiedUtf7Charset.encode(name);
-            byte[] b = new byte[bb.limit()];
-            bb.get(b);
-            return new String(b, "US-ASCII");
-        } catch (UnsupportedEncodingException uee) {
-            /*
-             * The only thing that can throw this is getBytes("US-ASCII") and if US-ASCII doesn't
-             * exist we're totally screwed.
-             */
-            throw new RuntimeException("Unable to encode folder name: " + name, uee);
-        }
+        ByteBuffer bb = mModifiedUtf7Charset.encode(name);
+        byte[] b = new byte[bb.limit()];
+        bb.get(b);
+        return new String(b, Charset.forName("US-ASCII"));
     }
 
     private String decodeFolderName(String name) throws CharacterCodingException {
@@ -776,18 +768,11 @@ public class ImapStore extends Store {
          * Convert the encoded name to US-ASCII, then pass it through the modified UTF-7
          * decoder and return the Unicode String.
          */
-        try {
-            // Make sure the decoder throws an exception if it encounters an invalid encoding.
-            CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
-            CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes("US-ASCII")));
-            return cb.toString();
-        } catch (UnsupportedEncodingException uee) {
-            /*
-             * The only thing that can throw this is getBytes("US-ASCII") and if US-ASCII doesn't
-             * exist we're totally screwed.
-             */
-            throw new RuntimeException("Unable to decode folder name: " + name, uee);
-        }
+        // Make sure the decoder throws an exception if it encounters an invalid encoding.
+        CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
+        CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes(Charset.forName("US-ASCII"))));
+        return cb.toString();
+
     }
 
     @Override
