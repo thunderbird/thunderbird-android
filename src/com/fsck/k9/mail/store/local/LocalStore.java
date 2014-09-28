@@ -100,7 +100,7 @@ public class LocalStore extends Store implements Serializable {
     /**
      * Maximum number of messages to perform flag updates on at once.
      *
-     * @see #setFlag(List, Flag, boolean, boolean)
+     * @see #setFlag(List, Flag, boolean)
      */
     private static final int FLAG_UPDATE_BATCH_SIZE = 500;
 
