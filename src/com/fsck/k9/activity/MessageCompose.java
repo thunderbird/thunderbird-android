@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1890,13 +1891,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private InputStream getOpenPgpInputStream() {
         String text = buildText(false).getText();
 
-        InputStream is = null;
-        try {
-            is = new ByteArrayInputStream(text.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            Log.e(K9.LOG_TAG, "UnsupportedEncodingException.", e);
-        }
-        return is;
+        return new ByteArrayInputStream(text.getBytes(Charset.forName("UTF-8")));
     }
 
     private void executeOpenPgpMethod(Intent intent) {

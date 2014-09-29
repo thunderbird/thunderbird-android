@@ -7,6 +7,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
@@ -115,28 +116,23 @@ public class Pop3Store extends Store {
 
         AuthType authType = AuthType.PLAIN;
         if (pop3Uri.getUserInfo() != null) {
-            try {
-                int userIndex = 0, passwordIndex = 1;
-                String userinfo = pop3Uri.getUserInfo();
-                String[] userInfoParts = userinfo.split(":");
-                if (userInfoParts.length > 2 || userinfo.endsWith(":") ) {
-                    // If 'userinfo' ends with ":" the password is empty. This can only happen
-                    // after an account was imported (so authType and username are present).
-                    userIndex++;
-                    passwordIndex++;
-                    authType = AuthType.valueOf(userInfoParts[0]);
+            int userIndex = 0, passwordIndex = 1;
+            String userinfo = pop3Uri.getUserInfo();
+            String[] userInfoParts = userinfo.split(":");
+            if (userInfoParts.length > 2 || userinfo.endsWith(":") ) {
+                // If 'userinfo' ends with ":" the password is empty. This can only happen
+                // after an account was imported (so authType and username are present).
+                userIndex++;
+                passwordIndex++;
+                authType = AuthType.valueOf(userInfoParts[0]);
+            }
+            username = UrlEncodingHelper.decodeUtf8(userInfoParts[userIndex]);
+            if (userInfoParts.length > passwordIndex) {
+                if (authType == AuthType.EXTERNAL) {
+                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[passwordIndex]);
+                } else {
+                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[passwordIndex]);
                 }
-                username = URLDecoder.decode(userInfoParts[userIndex], "UTF-8");
-                if (userInfoParts.length > passwordIndex) {
-                    if (authType == AuthType.EXTERNAL) {
-                        clientCertificateAlias = URLDecoder.decode(userInfoParts[passwordIndex], "UTF-8");
-                    } else {
-                        password = URLDecoder.decode(userInfoParts[passwordIndex], "UTF-8");
-                    }
-                }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
             }
         }
 
@@ -156,19 +152,11 @@ public class Pop3Store extends Store {
      * @see Pop3Store#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc;
-        String passwordEnc;
-        String clientCertificateAliasEnc;
-        try {
-            userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-            clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    URLEncoder.encode(server.clientCertificateAlias, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Could not encode username or password", e);
-        }
+        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
+        String passwordEnc = (server.password != null) ?
+                    UrlEncodingHelper.encodeUtf8(server.password) : "";
+        String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
+                    UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {

@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -279,12 +280,7 @@ public class MessageOpenPgpView extends LinearLayout {
         String accName = OpenPgpApiHelper.buildAccountName(identity);
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accName);
 
-        InputStream is = null;
-        try {
-            is = new ByteArrayInputStream(mData.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            Log.e(K9.LOG_TAG, "UnsupportedEncodingException.", e);
-        }
+        InputStream is = new ByteArrayInputStream(mData.getBytes(Charset.forName("UTF-8")));
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
 
         DecryptVerifyCallback callback = new DecryptVerifyCallback(os, REQUEST_CODE_DECRYPT_VERIFY);

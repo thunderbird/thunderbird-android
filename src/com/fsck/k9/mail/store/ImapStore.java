@@ -7,7 +7,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -16,8 +15,6 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -31,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -64,6 +62,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.StringUtils;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -198,31 +197,26 @@ public class ImapStore extends Store {
         }
 
         if (imapUri.getUserInfo() != null) {
-            try {
-                String userinfo = imapUri.getUserInfo();
-                String[] userInfoParts = userinfo.split(":");
+            String userinfo = imapUri.getUserInfo();
+            String[] userInfoParts = userinfo.split(":");
 
-                if (userinfo.endsWith(":")) {
-                    // Password is empty. This can only happen after an account was imported.
-                    authenticationType = AuthType.valueOf(userInfoParts[0]);
-                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 2) {
-                    authenticationType = AuthType.PLAIN;
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 3) {
-                    authenticationType = AuthType.valueOf(userInfoParts[0]);
-                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
+            if (userinfo.endsWith(":")) {
+                // Password is empty. This can only happen after an account was imported.
+                authenticationType = AuthType.valueOf(userInfoParts[0]);
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+            } else if (userInfoParts.length == 2) {
+                authenticationType = AuthType.PLAIN;
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+            } else if (userInfoParts.length == 3) {
+                authenticationType = AuthType.valueOf(userInfoParts[0]);
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
 
-                    if (AuthType.EXTERNAL == authenticationType) {
-                        clientCertificateAlias = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                    } else {
-                        password = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                    }
+                if (AuthType.EXTERNAL == authenticationType) {
+                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
+                } else {
+                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
                 }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
             }
         }
 
@@ -260,19 +254,11 @@ public class ImapStore extends Store {
      * @see ImapStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc;
-        String passwordEnc;
-        String clientCertificateAliasEnc;
-        try {
-            userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-            clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    URLEncoder.encode(server.clientCertificateAlias, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Could not encode username or password", e);
-        }
+        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
+        String passwordEnc = (server.password != null) ?
+                    UrlEncodingHelper.encodeUtf8(server.password) : "";
+        String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
+                    UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -439,7 +425,7 @@ public class ImapStore extends Store {
 
     private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
 
-    private LinkedList<ImapConnection> mConnections =
+    private final Deque<ImapConnection> mConnections =
         new LinkedList<ImapConnection>();
 
     /**
@@ -453,7 +439,7 @@ public class ImapStore extends Store {
      * requests. This cache lets us make sure we always reuse, if possible, for a given
      * folder name.
      */
-    private HashMap<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
+    private final Map<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
 
     public ImapStore(Account account) throws MessagingException {
         super(account);
@@ -756,18 +742,10 @@ public class ImapStore extends Store {
     }
 
     private String encodeFolderName(String name) {
-        try {
-            ByteBuffer bb = mModifiedUtf7Charset.encode(name);
-            byte[] b = new byte[bb.limit()];
-            bb.get(b);
-            return new String(b, "US-ASCII");
-        } catch (UnsupportedEncodingException uee) {
-            /*
-             * The only thing that can throw this is getBytes("US-ASCII") and if US-ASCII doesn't
-             * exist we're totally screwed.
-             */
-            throw new RuntimeException("Unable to encode folder name: " + name, uee);
-        }
+        ByteBuffer bb = mModifiedUtf7Charset.encode(name);
+        byte[] b = new byte[bb.limit()];
+        bb.get(b);
+        return new String(b, Charset.forName("US-ASCII"));
     }
 
     private String decodeFolderName(String name) throws CharacterCodingException {
@@ -775,18 +753,11 @@ public class ImapStore extends Store {
          * Convert the encoded name to US-ASCII, then pass it through the modified UTF-7
          * decoder and return the Unicode String.
          */
-        try {
-            // Make sure the decoder throws an exception if it encounters an invalid encoding.
-            CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
-            CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes("US-ASCII")));
-            return cb.toString();
-        } catch (UnsupportedEncodingException uee) {
-            /*
-             * The only thing that can throw this is getBytes("US-ASCII") and if US-ASCII doesn't
-             * exist we're totally screwed.
-             */
-            throw new RuntimeException("Unable to decode folder name: " + name, uee);
-        }
+        // Make sure the decoder throws an exception if it encounters an invalid encoding.
+        CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
+        CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes(Charset.forName("US-ASCII"))));
+        return cb.toString();
+
     }
 
     @Override
@@ -3467,7 +3438,7 @@ public class ImapStore extends Store {
         final PushReceiver mReceiver;
         private long lastRefresh = -1;
 
-        HashMap<String, ImapFolderPusher> folderPushers = new HashMap<String, ImapFolderPusher>();
+        final Map<String, ImapFolderPusher> folderPushers = new HashMap<String, ImapFolderPusher>();
 
         public ImapPusher(ImapStore store, PushReceiver receiver) {
             mStore = store;

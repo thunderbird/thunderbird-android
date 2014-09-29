@@ -319,7 +319,7 @@ public class MessagingController implements Runnable {
     };
 
     // Key is accountNumber
-    private ConcurrentHashMap<Integer, NotificationData> notificationData = new ConcurrentHashMap<Integer, NotificationData>();
+    private final ConcurrentMap<Integer, NotificationData> notificationData = new ConcurrentHashMap<Integer, NotificationData>();
 
     private static final Flag[] SYNC_FLAGS = new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED };
 

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -23,7 +24,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.security.GeneralSecurityException;
 import java.util.*;
@@ -92,28 +92,23 @@ public class SmtpTransport extends Transport {
         }
 
         if (smtpUri.getUserInfo() != null) {
-            try {
-                String[] userInfoParts = smtpUri.getUserInfo().split(":");
-                if (userInfoParts.length == 1) {
-                    authType = AuthType.PLAIN;
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                } else if (userInfoParts.length == 2) {
-                    authType = AuthType.PLAIN;
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 3) {
-                    // NOTE: In SmptTransport URIs, the authType comes last!
-                    authType = AuthType.valueOf(userInfoParts[2]);
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    if (authType == AuthType.EXTERNAL) {
-                        clientCertificateAlias = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                    } else {
-                        password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                    }
+            String[] userInfoParts = smtpUri.getUserInfo().split(":");
+            if (userInfoParts.length == 1) {
+                authType = AuthType.PLAIN;
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+            } else if (userInfoParts.length == 2) {
+                authType = AuthType.PLAIN;
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+            } else if (userInfoParts.length == 3) {
+                // NOTE: In SmptTransport URIs, the authType comes last!
+                authType = AuthType.valueOf(userInfoParts[2]);
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                if (authType == AuthType.EXTERNAL) {
+                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                } else {
+                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
                 }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
             }
         }
 
@@ -133,20 +128,12 @@ public class SmtpTransport extends Transport {
      * @see SmtpTransport#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc;
-        String passwordEnc;
-        String clientCertificateAliasEnc;
-        try {
-            userEnc = (server.username != null) ?
-                    URLEncoder.encode(server.username, "UTF-8") : "";
-            passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-            clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    URLEncoder.encode(server.clientCertificateAlias, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Could not encode username or password", e);
-        }
+        String userEnc = (server.username != null) ?
+                UrlEncodingHelper.encodeUtf8(server.username) : "";
+        String passwordEnc = (server.password != null) ?
+                UrlEncodingHelper.encodeUtf8(server.password) : "";
+        String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
+                UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
