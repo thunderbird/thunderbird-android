@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 
 import java.net.URI;
@@ -59,11 +60,11 @@ public class Storage implements SharedPreferences {
                         if (transportUriStr != null) {
                             String[] userInfoParts = uri.getUserInfo().split(":");
 
-                            String usernameEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
+                            String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
                             String passwordEnc = "";
                             String authType = "";
                             if (userInfoParts.length > 1) {
-                                passwordEnc = ":" + com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
+                                passwordEnc = ":" + UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
                             }
                             if (userInfoParts.length > 2) {
                                 authType = ":" + userInfoParts[2];
@@ -83,34 +84,34 @@ public class Storage implements SharedPreferences {
                         if (storeUriStr.startsWith("imap")) {
                             String[] userInfoParts = uri.getUserInfo().split(":");
                             if (userInfoParts.length == 2) {
-                                String usernameEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
-                                String passwordEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
+                                String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
+                                String passwordEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
 
                                 newUserInfo = usernameEnc + ":" + passwordEnc;
                             } else {
                                 String authType = userInfoParts[0];
-                                String usernameEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
-                                String passwordEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[2]);
+                                String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
+                                String passwordEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[2]);
 
                                 newUserInfo = authType + ":" + usernameEnc + ":" + passwordEnc;
                             }
                         } else if (storeUriStr.startsWith("pop3")) {
                             String[] userInfoParts = uri.getUserInfo().split(":", 2);
-                            String usernameEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
+                            String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
 
                             String passwordEnc = "";
                             if (userInfoParts.length > 1) {
-                                passwordEnc = ":" + com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
+                                passwordEnc = ":" + UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
                             }
 
                             newUserInfo = usernameEnc + passwordEnc;
                         } else if (storeUriStr.startsWith("webdav")) {
                             String[] userInfoParts = uri.getUserInfo().split(":", 2);
-                            String usernameEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
+                            String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
 
                             String passwordEnc = "";
                             if (userInfoParts.length > 1) {
-                                passwordEnc = ":" + com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
+                                passwordEnc = ":" + UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
                             }
 
                             newUserInfo = usernameEnc + passwordEnc;

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
+
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
@@ -41,8 +42,6 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -141,7 +140,7 @@ public class WebDavStore extends Store {
         String userInfo = webDavUri.getUserInfo();
         if (userInfo != null) {
             String[] userInfoParts = userInfo.split(":");
-            username = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+            username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
             String userParts[] = username.split("\\\\", 2);
 
             if (userParts.length > 1) {
@@ -150,7 +149,7 @@ public class WebDavStore extends Store {
                 alias = username;
             }
             if (userInfoParts.length > 1) {
-                password = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
             }
         }
 
@@ -190,9 +189,9 @@ public class WebDavStore extends Store {
      * @see WebDavStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.username);
+        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
         String passwordEnc = (server.password != null) ?
-                com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.password) : "";
+                UrlEncodingHelper.encodeUtf8(server.password) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -1241,9 +1240,9 @@ public class WebDavStore extends Store {
             String url = "";
             for (int i = 0, count = urlParts.length; i < count; i++) {
                 if (i != 0) {
-                    url = url + "/" + com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(urlParts[i]);
+                    url = url + "/" + UrlEncodingHelper.encodeUtf8(urlParts[i]);
                 } else {
-                    url = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(urlParts[i]);
+                    url = UrlEncodingHelper.encodeUtf8(urlParts[i]);
                 }
             }
             encodedName = url;
@@ -1884,7 +1883,7 @@ public class WebDavStore extends Store {
                     if (!messageURL.endsWith("/")) {
                         messageURL += "/";
                     }
-                    messageURL += com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
+                    messageURL += UrlEncodingHelper.encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
 
                     Log.i(K9.LOG_TAG, "Uploading message as " + messageURL);
 
@@ -1972,7 +1971,7 @@ public class WebDavStore extends Store {
              */
             try {
                 end = UrlEncodingHelper.decodeUtf8(end);
-                end = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(end);
+                end = UrlEncodingHelper.encodeUtf8(end);
                 end = end.replaceAll("\\+", "%20");
             } catch (IllegalArgumentException iae) {
                 Log.e(K9.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
@@ -2377,7 +2376,7 @@ public class WebDavStore extends Store {
             try {
                 if (length > 3) {
                     end = UrlEncodingHelper.decodeUtf8(end);
-                    end = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(end);
+                    end = UrlEncodingHelper.encodeUtf8(end);
                     end = end.replaceAll("\\+", "%20");
                 }
             } catch (IllegalArgumentException iae) {

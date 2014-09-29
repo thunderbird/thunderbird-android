@@ -26,6 +26,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.StringUtils;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -467,7 +468,7 @@ public class LocalStore extends Store implements Serializable {
 
     public void addPendingCommand(PendingCommand command) throws UnavailableStorageException {
         for (int i = 0; i < command.arguments.length; i++) {
-            command.arguments[i] = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(command.arguments[i]);
+            command.arguments[i] = UrlEncodingHelper.encodeUtf8(command.arguments[i]);
         }
         final ContentValues cv = new ContentValues();
         cv.put("command", command.command);

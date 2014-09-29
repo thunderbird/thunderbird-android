@@ -33,6 +33,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -279,8 +280,8 @@ public class AccountSetupBasics extends K9Activity
         URI incomingUri = null;
         URI outgoingUri = null;
         try {
-            String userEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(user);
-            String passwordEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(password);
+            String userEnc = UrlEncodingHelper.encodeUtf8(user);
+            String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
 
             String incomingUsername = mProvider.incomingUsernameTemplate;
             incomingUsername = incomingUsername.replaceAll("\\$email", email);

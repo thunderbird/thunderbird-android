@@ -62,6 +62,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.StringUtils;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -202,19 +203,19 @@ public class ImapStore extends Store {
             if (userinfo.endsWith(":")) {
                 // Password is empty. This can only happen after an account was imported.
                 authenticationType = AuthType.valueOf(userInfoParts[0]);
-                username = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
             } else if (userInfoParts.length == 2) {
                 authenticationType = AuthType.PLAIN;
-                username = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
-                password = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
             } else if (userInfoParts.length == 3) {
                 authenticationType = AuthType.valueOf(userInfoParts[0]);
-                username = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
 
                 if (AuthType.EXTERNAL == authenticationType) {
-                    clientCertificateAlias = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
+                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
                 } else {
-                    password = com.fsck.k9.helper.UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
+                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
                 }
             }
         }
@@ -253,11 +254,11 @@ public class ImapStore extends Store {
      * @see ImapStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc = com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.username);
+        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
         String passwordEnc = (server.password != null) ?
-                    com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.password) : "";
+                    UrlEncodingHelper.encodeUtf8(server.password) : "";
         String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    com.fsck.k9.helper.UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
+                    UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
