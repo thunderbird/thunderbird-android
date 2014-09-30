@@ -1,14 +1,5 @@
 package com.fsck.k9.activity.misc;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.util.Locale;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -25,8 +16,22 @@ import android.os.AsyncTask;
 import android.support.v4.util.LruCache;
 import android.widget.QuickContactBadge;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ContactPictureLoader {
     /**
@@ -89,12 +94,12 @@ public class ContactPictureLoader {
         mContactsHelper = Contacts.getInstance(appContext);
 
         float scale = mResources.getDisplayMetrics().density;
-        mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
+        mPictureSizeInPx = (int)(PICTURE_SIZE * scale);
 
         mDefaultBackgroundColor = defaultBackgroundColor;
 
         ActivityManager activityManager =
-                (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
+            (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
         int memClass = activityManager.getMemoryClass();
 
         // Use 1/16th of the available memory for this memory cache.
@@ -160,46 +165,82 @@ public class ContactPictureLoader {
     }
 
     private String calcUnknownContactLetter(Address address) {
-        String letter = null;
-        String personal = address.getPersonal();
-        String str = (personal != null) ? personal : address.getAddress();
+        final String personal = address.getPersonal();
+        final String str = (personal != null) ? personal : address.getAddress();
 
-        Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
+        final Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
         if (m.find()) {
-            letter = m.group(0).toUpperCase(Locale.US);
+            final String letter = m.group(0).toUpperCase(Locale.US);
+            return letter.substring(0, 1);
         }
 
-        return (StringUtils.isNullOrEmpty(letter)) ?
-                FALLBACK_CONTACT_LETTER : letter.substring(0, 1);
+        return FALLBACK_CONTACT_LETTER;
+    }
+
+    /**
+     * Calculates a bitmap with a color and a capital letter for contacts without picture.
+     */
+    private Bitmap getGravatarImage(Address address) {
+        final OkHttpClient client = new OkHttpClient();
+
+        final String url = "http://www.gravatar.com/avatar/" + getMD5String(address.getAddress()) + "?d=404";
+        final Request request = new Request.Builder().url(url).build();
+
+        try {
+            final Response response = client.newCall(request).execute();
+            if (response.code() == 200) {
+                return BitmapFactory.decodeStream(response.body().byteStream());
+            }
+        } catch (IOException e) {
+        }
+        return null;
     }
 
     /**
      * Calculates a bitmap with a color and a capital letter for contacts without picture.
      */
     private Bitmap calculateFallbackBitmap(Address address) {
-        Bitmap result = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx,
-                Bitmap.Config.ARGB_8888);
+        final Bitmap result = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx,
+                              Bitmap.Config.ARGB_8888);
 
-        Canvas canvas = new Canvas(result);
+        final Canvas canvas = new Canvas(result);
 
-        int rgb = calcUnknownContactColor(address);
+        final int rgb = calcUnknownContactColor(address);
         result.eraseColor(rgb);
 
-        String letter = calcUnknownContactLetter(address);
+        final String letter = calcUnknownContactLetter(address);
 
-        Paint paint = new Paint();
+        final Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         paint.setARGB(255, 255, 255, 255);
         paint.setTextSize(mPictureSizeInPx * 3 / 4); // just scale this down a bit
-        Rect rect = new Rect();
+        final Rect rect = new Rect();
         paint.getTextBounds(letter, 0, 1, rect);
-        float width = paint.measureText(letter);
+        final float width = paint.measureText(letter);
         canvas.drawText(letter,
-                (mPictureSizeInPx / 2f) - (width / 2f),
-                (mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
+                        (mPictureSizeInPx / 2f) - (width / 2f),
+                        (mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
 
         return result;
+    }
+
+
+    public static String getMD5String(String from) {
+        try {
+            final MessageDigest mdEnc = MessageDigest.getInstance("MD5");
+            mdEnc.update(from.getBytes(), 0, from.length());
+            String md5 = new BigInteger(1, mdEnc.digest()).toString(16);
+            while (md5.length() < 32) {
+                md5 = "0" + md5;
+            }
+            return md5;
+
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Exception while encrypting to md5");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void addBitmapToCache(Address key, Bitmap bitmap) {
@@ -245,11 +286,11 @@ public class ContactPictureLoader {
 
     private ContactPictureRetrievalTask getContactPictureRetrievalTask(QuickContactBadge badge) {
         if (badge != null) {
-           Drawable drawable = badge.getDrawable();
-           if (drawable instanceof AsyncDrawable) {
-               AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-               return asyncDrawable.getContactPictureRetrievalTask();
-           }
+            Drawable drawable = badge.getDrawable();
+            if (drawable instanceof AsyncDrawable) {
+                AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+                return asyncDrawable.getContactPictureRetrievalTask();
+            }
         }
 
         return null;
@@ -285,19 +326,27 @@ public class ContactPictureLoader {
                             Bitmap tempBitmap = BitmapFactory.decodeStream(stream);
                             if (tempBitmap != null) {
                                 bitmap = Bitmap.createScaledBitmap(tempBitmap, mPictureSizeInPx,
-                                        mPictureSizeInPx, true);
+                                                                   mPictureSizeInPx, true);
                                 if (tempBitmap != bitmap) {
                                     tempBitmap.recycle();
                                 }
                             }
                         } finally {
-                            try { stream.close(); } catch (IOException e) { /* ignore */ }
+                            try {
+                                stream.close();
+                            } catch (IOException e) {
+                                /* ignore */
+                            }
                         }
                     }
                 } catch (FileNotFoundException e) {
                     /* ignore */
                 }
 
+            }
+
+            if (bitmap == null) {
+                bitmap = getGravatarImage(mAddress);
             }
 
             if (bitmap == null) {
