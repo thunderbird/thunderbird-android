@@ -74,7 +74,7 @@ public class TrustedSocketFactory {
 
     static {
         String[] enabledCiphers = null;
-        String[] supportedProtocols = null;
+        String[] enabledProtocols = null;
 
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -82,13 +82,7 @@ public class TrustedSocketFactory {
             SSLSocketFactory sf = sslContext.getSocketFactory();
             SSLSocket sock = (SSLSocket) sf.createSocket();
             enabledCiphers = sock.getEnabledCipherSuites();
-
-            /*
-             * Retrieve all supported protocols, not just the (default) enabled
-             * ones. TLSv1.1 & TLSv1.2 are supported on API levels 16+, but are
-             * only enabled by default on API levels 20+.
-             */
-            supportedProtocols = sock.getSupportedProtocols();
+            enabledProtocols = sock.getEnabledProtocols();
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Error getting information about available SSL/TLS ciphers and " +
                     "protocols", e);
@@ -97,8 +91,8 @@ public class TrustedSocketFactory {
         ENABLED_CIPHERS = (enabledCiphers == null) ? null :
                 reorder(enabledCiphers, ORDERED_KNOWN_CIPHERS, BLACKLISTED_CIPHERS);
 
-        ENABLED_PROTOCOLS = (supportedProtocols == null) ? null :
-            reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, null);
+        ENABLED_PROTOCOLS = (enabledProtocols == null) ? null :
+            reorder(enabledProtocols, ORDERED_KNOWN_PROTOCOLS, null);
     }
 
     protected static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
