@@ -9,6 +9,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.os.Build;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -51,8 +52,6 @@ public class ContactPictureLoader {
     private Contacts mContactsHelper;
     private int mPictureSizeInPx;
     private static Typeface sLightFont;
-    private static int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-
     private int mDefaultBackgroundColor;
 
     /**
@@ -94,7 +93,7 @@ public class ContactPictureLoader {
         float scale = mResources.getDisplayMetrics().density;
         mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
 		
-		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+		if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN && sLightFont == null) {
 		
 			//if buildversion is JellyBean or above, set font in contact pictures to Roboto Light
 			
@@ -202,7 +201,7 @@ public class ContactPictureLoader {
 		paint.setStyle(Paint.Style.FILL);
 		paint.setARGB(255, 255, 255, 255);
 		paint.setTextSize(mPictureSizeInPx * 3 / 4);
-		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+		if (sLightFont != null) {
 			paint.setTypeface(sLightFont);
 		}
 		// just scale this down a bit
