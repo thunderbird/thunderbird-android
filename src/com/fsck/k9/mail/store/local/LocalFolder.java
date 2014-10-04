@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -370,12 +372,12 @@ public class LocalFolder extends Folder implements Serializable {
                 return ;
             }
             open(OPEN_MODE_RW);
-            Message[] messages = getMessages(null, false);
-            for (int i = mVisibleLimit; i < messages.length; i++) {
+            List<? extends Message> messages = getMessages(null, false);
+            for (int i = mVisibleLimit; i < messages.size(); i++) {
                 if (listener != null) {
-                    listener.messageRemoved(messages[i]);
+                    listener.messageRemoved(messages.get(i));
                 }
-                messages[i].destroy();
+                messages.get(i).destroy();
             }
         }
     }
@@ -597,7 +599,7 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public void fetch(final Message[] messages, final FetchProfile fp, final MessageRetrievalListener listener)
+    public void fetch(final List<? extends Message> messages, final FetchProfile fp, final MessageRetrievalListener listener)
     throws MessagingException {
         try {
             this.localStore.database.execute(false, new DbCallback<Void>() {
@@ -798,7 +800,7 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
+    public List<? extends Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
     throws MessagingException {
         open(OPEN_MODE_RW);
         throw new MessagingException(
@@ -813,7 +815,7 @@ public class LocalFolder extends Folder implements Serializable {
      *            The messages whose headers should be loaded.
      * @throws UnavailableStorageException
      */
-    void populateHeaders(final List<LocalMessage> messages) throws UnavailableStorageException {
+    void populateHeaders(final List<? extends Message> messages) throws UnavailableStorageException {
         this.localStore.database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
@@ -831,7 +833,7 @@ public class LocalFolder extends Folder implements Serializable {
                             questions.append(", ");
                         }
                         questions.append("?");
-                        LocalMessage message = messages.get(i);
+                        LocalMessage message = (LocalMessage)messages.get(i);
                         Long id = message.getId();
                         ids.add(Long.toString(id));
                         popMessages.put(id, message);
@@ -931,16 +933,16 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
+    public List<? extends Message> getMessages(MessageRetrievalListener listener) throws MessagingException {
         return getMessages(listener, true);
     }
 
     @Override
-    public Message[] getMessages(final MessageRetrievalListener listener, final boolean includeDeleted) throws MessagingException {
+    public List<? extends Message> getMessages(final MessageRetrievalListener listener, final boolean includeDeleted) throws MessagingException {
         try {
-            return this.localStore.database.execute(false, new DbCallback<Message[]>() {
+            return this.localStore.database.execute(false, new DbCallback<List<? extends Message>>() {
                 @Override
-                public Message[] doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                public List<? extends Message> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
                         open(OPEN_MODE_RW);
                         return LocalFolder.this.localStore.getMessages(
@@ -965,7 +967,7 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
+    public List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener)
     throws MessagingException {
         open(OPEN_MODE_RW);
         if (uids == null) {
@@ -978,11 +980,11 @@ public class LocalFolder extends Folder implements Serializable {
                 messages.add(message);
             }
         }
-        return messages.toArray(LocalStore.EMPTY_MESSAGE_ARRAY);
+        return messages;
     }
 
     @Override
-    public Map<String, String> copyMessages(Message[] msgs, Folder folder) throws MessagingException {
+    public Map<String, String> copyMessages(List<? extends Message> msgs, Folder folder) throws MessagingException {
         if (!(folder instanceof LocalFolder)) {
             throw new MessagingException("copyMessages called with incorrect Folder");
         }
@@ -990,7 +992,7 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public Map<String, String> moveMessages(final Message[] msgs, final Folder destFolder) throws MessagingException {
+    public Map<String, String> moveMessages(final List<? extends Message> msgs, final Folder destFolder) throws MessagingException {
         if (!(destFolder instanceof LocalFolder)) {
             throw new MessagingException("moveMessages called with non-LocalFolder");
         }
@@ -1128,7 +1130,7 @@ public class LocalFolder extends Folder implements Serializable {
             @Override
             public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 try {
-                    appendMessages(new Message[] { message });
+                    appendMessages(Collections.singletonList(message));
                     final String uid = message.getUid();
                     final Message result = getMessage(uid);
                     runnable.run();
@@ -1154,11 +1156,11 @@ public class LocalFolder extends Folder implements Serializable {
      * message, retrieve the appropriate local message instance first (if it already exists).
      */
     @Override
-    public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
+    public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
         return appendMessages(messages, false);
     }
 
-    public void destroyMessages(final Message[] messages) {
+    public void destroyMessages(final List<? extends Message> messages) {
         try {
             this.localStore.database.execute(true, new DbCallback<Void>() {
                 @Override
@@ -1221,7 +1223,7 @@ public class LocalFolder extends Folder implements Serializable {
      * @param copy
      * @return Map<String, String> uidMap of srcUids -> destUids
      */
-    private Map<String, String> appendMessages(final Message[] messages, final boolean copy) throws MessagingException {
+    private Map<String, String> appendMessages(final List<? extends Message> messages, final boolean copy) throws MessagingException {
         open(OPEN_MODE_RW);
         try {
             final Map<String, String> uidMap = new HashMap<String, String>();
@@ -1490,12 +1492,12 @@ public class LocalFolder extends Folder implements Serializable {
                 // Remember that all headers for this message have been saved, so it is
                 // not necessary to download them again in case the user wants to see all headers.
                 List<Flag> appendedFlags = new ArrayList<Flag>();
-                appendedFlags.addAll(Arrays.asList(message.getFlags()));
+                appendedFlags.addAll(message.getFlags());
                 appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
 
                 db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
                            new Object[]
-                           { LocalFolder.this.localStore.serializeFlags(appendedFlags.toArray(LocalStore.EMPTY_FLAG_ARRAY)), id });
+                           { LocalFolder.this.localStore.serializeFlags(appendedFlags), id });
 
                 return null;
             }
@@ -1722,7 +1724,7 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public void setFlags(final Message[] messages, final Flag[] flags, final boolean value)
+    public void setFlags(final List<? extends Message> messages, final Collection<Flag> flags, final boolean value)
     throws MessagingException {
         open(OPEN_MODE_RW);
 
@@ -1750,7 +1752,7 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public void setFlags(Flag[] flags, boolean value)
+    public void setFlags(final Collection<Flag> flags, boolean value)
     throws MessagingException {
         open(OPEN_MODE_RW);
         for (Message message : getMessages(null)) {
@@ -1766,7 +1768,7 @@ public class LocalFolder extends Folder implements Serializable {
     public void clearMessagesOlderThan(long cutoff) throws MessagingException {
         open(OPEN_MODE_RO);
 
-        Message[] messages  = this.localStore.getMessages(
+        List<? extends Message> messages  = this.localStore.getMessages(
                                   null,
                                   this,
                                   "SELECT " + LocalStore.GET_MESSAGES_COLS +
@@ -1841,7 +1843,7 @@ public class LocalFolder extends Folder implements Serializable {
                     try {
                         // We need to open the folder first to make sure we've got it's id
                         open(OPEN_MODE_RO);
-                        Message[] messages = getMessages(null);
+                        List<? extends Message> messages = getMessages(null);
                         for (Message message : messages) {
                             deleteAttachments(message.getUid());
                         }

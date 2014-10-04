@@ -4,6 +4,7 @@ package com.fsck.k9.mail.store.local;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,9 +56,7 @@ public class LocalStore extends Store implements Serializable {
 
     private static final long serialVersionUID = -5142141896809423072L;
 
-    static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
     static final String[] EMPTY_STRING_ARRAY = new String[0];
-    static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
     static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
@@ -523,7 +522,7 @@ public class LocalStore extends Store implements Serializable {
         return true;
     }
 
-    public Message[] searchForMessages(MessageRetrievalListener retrievalListener,
+    public List<LocalMessage> searchForMessages(MessageRetrievalListener retrievalListener,
                                         LocalSearch search) throws MessagingException {
 
         StringBuilder query = new StringBuilder();
@@ -554,7 +553,7 @@ public class LocalStore extends Store implements Serializable {
      * Given a query string, actually do the query for the messages and
      * call the MessageRetrievalListener for each one
      */
-    Message[] getMessages(
+    List<LocalMessage> getMessages(
         final MessageRetrievalListener listener,
         final LocalFolder folder,
         final String queryString, final String[] placeHolders
@@ -603,11 +602,11 @@ public class LocalStore extends Store implements Serializable {
             listener.messagesFinished(j);
         }
 
-        return messages.toArray(EMPTY_MESSAGE_ARRAY);
+        return Collections.unmodifiableList(messages);
 
     }
 
-    public Message[] getMessagesInThread(final long rootId) throws MessagingException {
+    public List<LocalMessage> getMessagesInThread(final long rootId) throws MessagingException {
         String rootIdString = Long.toString(rootId);
 
         LocalSearch search = new LocalSearch();
@@ -706,7 +705,7 @@ public class LocalStore extends Store implements Serializable {
     }
 
 
-    String serializeFlags(Flag[] flags) {
+    String serializeFlags(Iterable<Flag> flags) {
         List<Flag> extraFlags = new ArrayList<Flag>();
 
         for (Flag flag : flags) {
@@ -724,7 +723,7 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        return Utility.combine(extraFlags.toArray(EMPTY_FLAG_ARRAY), ',').toUpperCase(Locale.US);
+        return Utility.combine(extraFlags, ',').toUpperCase(Locale.US);
     }
 
     public LockableDatabase getDatabase() {

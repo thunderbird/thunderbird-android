@@ -132,7 +132,7 @@ public class SettingsExporter {
 
             Set<String> exportAccounts;
             if (accountUuids == null) {
-                Account[] accounts = preferences.getAccounts();
+                List<Account> accounts = preferences.getAccounts();
                 exportAccounts = new HashSet<String>();
                 for (Account account : accounts) {
                     exportAccounts.add(account.getUuid());

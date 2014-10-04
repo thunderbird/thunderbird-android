@@ -65,8 +65,6 @@ public class WebDavStore extends Store {
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
-
     // These are the ids used from Exchange server to identify the special folders
     // http://social.technet.microsoft.com/Forums/en/exchangesvrdevelopment/thread/1cd2e98c-8a12-44bd-a3e3-9c5ee9e4e14d
     private static final String DAV_MAIL_INBOX_FOLDER = "inbox";
@@ -1197,11 +1195,11 @@ public class WebDavStore extends Store {
     }
 
     @Override
-    public void sendMessages(Message[] messages) throws MessagingException {
+    public void sendMessages(List<? extends Message> messages) throws MessagingException {
         WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(mAccount.getDraftsFolderName());
         try {
             tmpFolder.open(Folder.OPEN_MODE_RW);
-            Message[] retMessages = tmpFolder.appendWebDavMessages(messages);
+            List<? extends Message> retMessages = tmpFolder.appendWebDavMessages(messages);
 
             tmpFolder.moveMessages(retMessages, getSendSpoolFolder());
         } finally {
@@ -1270,28 +1268,28 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public Map<String, String> copyMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> copyMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
             moveOrCopyMessages(messages, folder.getName(), false);
             return null;
         }
 
         @Override
-        public Map<String, String> moveMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> moveMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
             moveOrCopyMessages(messages, folder.getName(), true);
             return null;
         }
 
         @Override
-        public void delete(Message[] msgs, String trashFolderName) throws MessagingException {
+        public void delete(List<? extends Message> msgs, String trashFolderName) throws MessagingException {
             moveOrCopyMessages(msgs, trashFolderName, true);
         }
 
-        private void moveOrCopyMessages(Message[] messages, String folderName, boolean isMove)
+        private void moveOrCopyMessages(List<? extends Message> messages, String folderName, boolean isMove)
         throws MessagingException {
-            String[] uids = new String[messages.length];
+            String[] uids = new String[messages.size()];
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
             String messageBody = "";
             Map<String, String> headers = new HashMap<String, String>();
@@ -1300,8 +1298,8 @@ public class WebDavStore extends Store {
 
             for (int i = 0, count = uids.length; i < count; i++) {
                 urls[i] = uidToUrl.get(uids[i]);
-                if (urls[i] == null && messages[i] instanceof WebDavMessage) {
-                    WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                if (urls[i] == null && messages.get(i) instanceof WebDavMessage) {
+                    WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
                     urls[i] = wdMessage.getUrl();
                 }
             }
@@ -1312,7 +1310,7 @@ public class WebDavStore extends Store {
             headers.put("Brief", "t");
             headers.put("If-Match", "*");
             String action = (isMove ? "BMOVE" : "BCOPY");
-            Log.i(K9.LOG_TAG, "Moving " + messages.length + " messages to " + destFolder.mFolderUrl);
+            Log.i(K9.LOG_TAG, "Moving " + messages.size() + " messages to " + destFolder.mFolderUrl);
 
             processRequest(mFolderUrl, action, messageBody, headers, false);
         }
@@ -1404,7 +1402,7 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
+        public List<? extends Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
             List<Message> messages = new ArrayList<Message>();
             String[] uids;
@@ -1450,22 +1448,22 @@ public class WebDavStore extends Store {
                 }
             }
 
-            return messages.toArray(EMPTY_MESSAGE_ARRAY);
+            return messages;
         }
 
         @Override
-        public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
+        public List<? extends Message> getMessages(MessageRetrievalListener listener) throws MessagingException {
             return getMessages(null, listener);
         }
 
         @Override
-        public Message[] getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
+        public List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
             List<Message> messageList = new ArrayList<Message>();
-            Message[] messages;
+            List<? extends Message> messages;
 
             if (uids == null ||
                     uids.length == 0) {
-                return messageList.toArray(EMPTY_MESSAGE_ARRAY);
+                return messageList;
             }
 
             for (int i = 0, count = uids.length; i < count; i++) {
@@ -1480,7 +1478,7 @@ public class WebDavStore extends Store {
                     listener.messageFinished(message, i, count);
                 }
             }
-            messages = messageList.toArray(EMPTY_MESSAGE_ARRAY);
+            messages = messageList;
 
             return messages;
         }
@@ -1500,10 +1498,10 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
+        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException {
             if (messages == null ||
-                    messages.length == 0) {
+                    messages.size() == 0) {
                 return;
             }
 
@@ -1535,7 +1533,7 @@ public class WebDavStore extends Store {
         /**
          * Fetches the full messages or up to lines lines and passes them to the message parser.
          */
-        private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines)
+        private void fetchMessages(List<? extends Message> messages, MessageRetrievalListener listener, int lines)
         throws MessagingException {
             WebDavHttpClient httpclient;
             httpclient = getHttpClient();
@@ -1543,15 +1541,15 @@ public class WebDavStore extends Store {
             /**
              * We can't hand off to processRequest() since we need the stream to parse.
              */
-            for (int i = 0, count = messages.length; i < count; i++) {
+            for (int i = 0, count = messages.size(); i < count; i++) {
                 WebDavMessage wdMessage;
                 int statusCode = 0;
 
-                if (!(messages[i] instanceof WebDavMessage)) {
+                if (!(messages.get(i) instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
 
-                wdMessage = (WebDavMessage) messages[i];
+                wdMessage = (WebDavMessage) messages.get(i);
 
                 if (listener != null) {
                     listener.messageStarted(wdMessage.getUid(), i, count);
@@ -1649,36 +1647,36 @@ public class WebDavStore extends Store {
          * Fetches and sets the message flags for the supplied messages. The idea is to have this be recursive so that
          * we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          */
-        private void fetchFlags(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
-            Map<String, String> headers = new HashMap<String, String>();
+        private void fetchFlags(List<? extends Message> startMessages, MessageRetrievalListener listener) throws MessagingException {
+            HashMap<String, String> headers = new HashMap<String, String>();
             String messageBody = "";
-            Message[] messages = new Message[20];
+            List<Message> messages = new ArrayList<Message>(20);
             String[] uids;
 
             if (startMessages == null ||
-                    startMessages.length == 0) {
+                    startMessages.size() == 0) {
                 return;
             }
 
-            if (startMessages.length > 20) {
-                Message[] newMessages = new Message[startMessages.length - 20];
-                for (int i = 0, count = startMessages.length; i < count; i++) {
+            if (startMessages.size() > 20) {
+                List<Message> newMessages = new ArrayList<Message>(startMessages.size() - 20);
+                for (int i = 0, count = startMessages.size(); i < count; i++) {
                     if (i < 20) {
-                        messages[i] = startMessages[i];
+                        messages.set(i,  startMessages.get(i));
                     } else {
-                        newMessages[i - 20] = startMessages[i];
+                        newMessages.set(i - 20, startMessages.get(i));
                     }
                 }
 
                 fetchFlags(newMessages, listener);
             } else {
-                messages = startMessages;
+                messages.addAll(startMessages);
             }
 
-            uids = new String[messages.length];
+            uids = new String[messages.size()];
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
 
             messageBody = getMessageFlagsXml(uids);
@@ -1691,11 +1689,11 @@ public class WebDavStore extends Store {
 
             Map<String, Boolean> uidToReadStatus = dataset.getUidToRead();
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                if (!(messages[i] instanceof WebDavMessage)) {
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                if (!(messages.get(i) instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
-                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
 
                 if (listener != null) {
                     listener.messageStarted(wdMessage.getUid(), i, count);
@@ -1718,37 +1716,37 @@ public class WebDavStore extends Store {
          * that we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          * Call it a happy balance
          */
-        private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener)
+        private void fetchEnvelope(List<? extends Message> startMessages, MessageRetrievalListener listener)
         throws MessagingException {
             Map<String, String> headers = new HashMap<String, String>();
             String messageBody = "";
             String[] uids;
-            Message[] messages = new Message[10];
+            List<Message> messages = new ArrayList<Message>(10);
 
             if (startMessages == null ||
-                    startMessages.length == 0) {
+                    startMessages.size() == 0) {
                 return;
             }
 
-            if (startMessages.length > 10) {
-                Message[] newMessages = new Message[startMessages.length - 10];
-                for (int i = 0, count = startMessages.length; i < count; i++) {
+            if (startMessages.size() > 10) {
+                List<Message> newMessages =  new ArrayList<Message>(startMessages.size() - 10);
+                for (int i = 0, count = startMessages.size(); i < count; i++) {
                     if (i < 10) {
-                        messages[i] = startMessages[i];
+                        messages.set(i, startMessages.get(i));
                     } else {
-                        newMessages[i - 10] = startMessages[i];
+                        newMessages.set(i - 10,startMessages.get(i));
                     }
                 }
 
                 fetchEnvelope(newMessages, listener);
             } else {
-                messages = startMessages;
+                messages.addAll(startMessages);
             }
 
-            uids = new String[messages.length];
+            uids = new String[messages.size()];
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
 
             messageBody = getMessageEnvelopeXml(uids);
@@ -1757,15 +1755,15 @@ public class WebDavStore extends Store {
 
             Map<String, ParsedMessageEnvelope> envelopes = dataset.getMessageEnvelopes();
 
-            int count = messages.length;
-            for (int i = messages.length - 1; i >= 0; i--) {
-                if (!(messages[i] instanceof WebDavMessage)) {
+            int count = messages.size();
+            for (int i = messages.size() - 1; i >= 0; i--) {
+                if (!(messages.get(i) instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
-                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
 
                 if (listener != null) {
-                    listener.messageStarted(messages[i].getUid(), i, count);
+                    listener.messageStarted(messages.get(i).getUid(), i, count);
                 }
 
                 ParsedMessageEnvelope envelope = envelopes.get(wdMessage.getUid());
@@ -1777,18 +1775,18 @@ public class WebDavStore extends Store {
                 }
 
                 if (listener != null) {
-                    listener.messageFinished(messages[i], i, count);
+                    listener.messageFinished(messages.get(i), i, count);
                 }
             }
         }
 
         @Override
-        public void setFlags(Message[] messages, Flag[] flags, boolean value)
+        public void setFlags(List<? extends Message> messages, final Collection<Flag> flags, boolean value)
         throws MessagingException {
-            String[] uids = new String[messages.length];
+            String[] uids = new String[messages.size()];
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
 
             for (Flag flag : flags) {
@@ -1848,13 +1846,13 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
+        public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
             appendWebDavMessages(messages);
             return null;
         }
 
-        public Message[] appendWebDavMessages(Message[] messages) throws MessagingException {
-            Message[] retMessages = new Message[messages.length];
+        public List<? extends Message> appendWebDavMessages(List<? extends Message> messages) throws MessagingException {
+            List<Message> retMessages = new ArrayList<Message>(messages.size());
             int ind = 0;
 
             WebDavHttpClient httpclient = getHttpClient();
@@ -1909,7 +1907,7 @@ public class WebDavStore extends Store {
                     WebDavMessage retMessage = new WebDavMessage(message.getUid(), this);
 
                     retMessage.setUrl(messageURL);
-                    retMessages[ind++] = retMessage;
+                    retMessages.set(ind++, retMessage);
                 } catch (Exception e) {
                     throw new MessagingException("Unable to append", e);
                 }
@@ -1931,9 +1929,9 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void setFlags(Flag[] flags, boolean value) throws MessagingException {
+        public void setFlags(final Collection<Flag> flags, boolean value) throws MessagingException {
             Log.e(K9.LOG_TAG,
-                  "Unimplemented method setFlags(Flag[], boolean) breaks markAllMessagesAsRead and EmptyTrash");
+                  "Unimplemented method setFlags(Collection<Flag>, boolean) breaks markAllMessagesAsRead and EmptyTrash");
             // Try to make this efficient by not retrieving all of the messages
         }
     }
@@ -2025,13 +2023,13 @@ public class WebDavStore extends Store {
         public void delete(String trashFolderName) throws MessagingException {
             WebDavFolder wdFolder = (WebDavFolder) getFolder();
             Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
-            wdFolder.moveMessages(new Message[] { this }, wdFolder.getStore().getFolder(trashFolderName));
+            wdFolder.moveMessages(Collections.singletonList(this), wdFolder.getStore().getFolder(trashFolderName));
         }
 
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
-            mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
+            mFolder.setFlags(Collections.singletonList(this), Collections.singletonList(flag), set);
         }
     }
 

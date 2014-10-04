@@ -33,7 +33,7 @@ public class MessagingListener {
 
     public void listFoldersStarted(Account account) {}
 
-    public void listFolders(Account account, Folder[] folders) {}
+    public void listFolders(Account account, List<? extends Folder> folders) {}
 
     public void listFoldersFinished(Account account) {}
 

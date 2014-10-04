@@ -740,7 +740,7 @@ public class FolderList extends K9ListActivity {
             }
 
             @Override
-            public void listFolders(Account account, Folder[] folders) {
+            public void listFolders(Account account, List<? extends Folder> folders) {
                 if (account.equals(mAccount)) {
 
                     List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();

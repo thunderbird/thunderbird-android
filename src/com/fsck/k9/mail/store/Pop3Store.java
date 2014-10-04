@@ -24,6 +24,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.HashMap;
@@ -566,7 +568,7 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
+        public List<? extends Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
             if (start < 1 || end < 1 || end < start) {
                 throw new MessagingException(String.format(Locale.US, "Invalid message set %d %d",
@@ -599,7 +601,7 @@ public class Pop3Store extends Store {
                     listener.messageFinished(message, i++, (end - start) + 1);
                 }
             }
-            return messages.toArray(new Message[messages.size()]);
+            return messages;
         }
 
         /**
@@ -741,12 +743,12 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
+        public List<? extends Message> getMessages(MessageRetrievalListener listener) throws MessagingException {
             throw new UnsupportedOperationException("Pop3: No getMessages");
         }
 
         @Override
-        public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
+        public List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener)
         throws MessagingException {
             throw new UnsupportedOperationException("Pop3: No getMessages by uids");
         }
@@ -759,9 +761,9 @@ public class Pop3Store extends Store {
          * @throws MessagingException
          */
         @Override
-        public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
+        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException {
-            if (messages == null || messages.length == 0) {
+            if (messages == null || messages.size() == 0) {
                 return;
             }
             List<String> uids = new ArrayList<String>();
@@ -786,8 +788,8 @@ public class Pop3Store extends Store {
             } catch (IOException ioe) {
                 throw new MessagingException("fetch", ioe);
             }
-            for (int i = 0, count = messages.length; i < count; i++) {
-                Message message = messages[i];
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                Message message = messages.get(i);
                 if (!(message instanceof Pop3Message)) {
                     throw new MessagingException("Pop3Store.fetch called with non-Pop3 Message");
                 }
@@ -825,7 +827,7 @@ public class Pop3Store extends Store {
             }
         }
 
-        private void fetchEnvelope(Message[] messages,
+        private void fetchEnvelope(List<? extends Message> messages,
                                    MessageRetrievalListener listener)  throws IOException, MessagingException {
             int unsizedMessages = 0;
             for (Message message : messages) {
@@ -841,8 +843,8 @@ public class Pop3Store extends Store {
                  * In extreme cases we'll do a command per message instead of a bulk request
                  * to hopefully save some time and bandwidth.
                  */
-                for (int i = 0, count = messages.length; i < count; i++) {
-                    Message message = messages[i];
+                for (int i = 0, count = messages.size(); i < count; i++) {
+                    Message message = messages.get(i);
                     if (!(message instanceof Pop3Message)) {
                         throw new MessagingException("Pop3Store.fetch called with non-Pop3 Message");
                     }
@@ -865,7 +867,7 @@ public class Pop3Store extends Store {
                 for (Message message : messages) {
                     msgUidIndex.add(message.getUid());
                 }
-                int i = 0, count = messages.length;
+                int i = 0, count = messages.size();
                 String response = executeSimpleCommand(LIST_COMMAND);
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
@@ -956,7 +958,7 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
+        public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
             return null;
         }
 
@@ -965,8 +967,8 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public void delete(Message[] msgs, String trashFolderName) throws MessagingException {
-            setFlags(msgs, new Flag[] { Flag.DELETED }, true);
+        public void delete(List<? extends Message> msgs, String trashFolderName) throws MessagingException {
+            setFlags(msgs, Collections.singleton(Flag.DELETED), true);
         }
 
         @Override
@@ -975,14 +977,14 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public void setFlags(Flag[] flags, boolean value) throws MessagingException {
-            throw new UnsupportedOperationException("POP3: No setFlags(Flag[],boolean)");
+        public void setFlags(final Collection<Flag> flags, boolean value) throws MessagingException {
+            throw new UnsupportedOperationException("POP3: No setFlags(Collection<Flag>,boolean)");
         }
 
         @Override
-        public void setFlags(Message[] messages, Flag[] flags, boolean value)
+        public void setFlags(List<? extends Message> messages, final Collection<Flag> flags, boolean value)
         throws MessagingException {
-            if (!value || !Utility.arrayContains(flags, Flag.DELETED)) {
+            if (!value || !flags.contains(Flag.DELETED)) {
                 /*
                  * The only flagging we support is setting the Deleted flag.
                  */
@@ -1185,7 +1187,7 @@ public class Pop3Store extends Store {
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
-            mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
+            mFolder.setFlags(Collections.singletonList(this), Collections.singletonList(flag), set);
         }
 
         @Override

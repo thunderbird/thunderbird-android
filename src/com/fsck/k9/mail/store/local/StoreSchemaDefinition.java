@@ -309,9 +309,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         LocalFolder obsoleteOutbox = new LocalFolder(this.localStore, localizedOutbox);
                         if (obsoleteOutbox.exists()) {
                             // Get all messages from the localized outbox ...
-                            Message[] messages = obsoleteOutbox.getMessages(null, false);
+                            List<? extends Message> messages = obsoleteOutbox.getMessages(null, false);
 
-                            if (messages.length > 0) {
+                            if (messages.size() > 0) {
                                 // ... and move them to the drafts folder (we don't want to
                                 // surprise the user by sending potentially very old messages)
                                 LocalFolder drafts = new LocalFolder(this.localStore, this.localStore.getAccount().getDraftsFolderName());
@@ -424,7 +424,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                             }
 
 
-                            cv.put("flags", this.localStore.serializeFlags(extraFlags.toArray(LocalStore.EMPTY_FLAG_ARRAY)));
+                            cv.put("flags", this.localStore.serializeFlags(extraFlags));
                             cv.put("read", read);
                             cv.put("flagged", flagged);
                             cv.put("answered", answered);

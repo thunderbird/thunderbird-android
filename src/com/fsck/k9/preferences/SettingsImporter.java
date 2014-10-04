@@ -340,7 +340,7 @@ public class SettingsImporter {
         AccountDescription original = new AccountDescription(account.name, account.uuid);
 
         Preferences prefs = Preferences.getPreferences(context);
-        Account[] accounts = prefs.getAccounts();
+        List<Account> accounts = prefs.getAccounts();
 
         String uuid = account.uuid;
         Account existingAccount = prefs.getAccount(uuid);
@@ -357,7 +357,7 @@ public class SettingsImporter {
         if (isAccountNameUsed(accountName, accounts)) {
             // Account name is already in use. So generate a new one by appending " (x)", where x
             // is the first number >= 1 that results in an unused account name.
-            for (int i = 1; i <= accounts.length; i++) {
+            for (int i = 1; i <= accounts.size(); i++) {
                 accountName = account.name + " (" + i + ")";
                 if (!isAccountNameUsed(accountName, accounts)) {
                     break;
@@ -605,7 +605,7 @@ public class SettingsImporter {
         }
     }
 
-    private static boolean isAccountNameUsed(String name, Account[] accounts) {
+    private static boolean isAccountNameUsed(String name, List<Account> accounts) {
         for (Account account : accounts) {
             if (account == null) {
                 continue;

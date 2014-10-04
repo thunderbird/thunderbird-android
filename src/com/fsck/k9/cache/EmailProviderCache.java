@@ -143,7 +143,7 @@ public class EmailProviderCache {
         }
     }
 
-    public void unhideMessages(Message[] messages) {
+    public void unhideMessages(List<? extends Message> messages) {
         synchronized (mHiddenMessageCache) {
             for (Message message : messages) {
                 LocalMessage localMessage = (LocalMessage) message;

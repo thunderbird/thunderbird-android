@@ -451,10 +451,10 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
         String[] accountUuids = mSearch.getAccountUuids();
         if (mSearch.searchAllAccounts()) {
-            Account[] accounts = prefs.getAccounts();
-            mSingleAccountMode = (accounts.length == 1);
+            List<Account> accounts = prefs.getAccounts();
+            mSingleAccountMode = (accounts.size() == 1);
             if (mSingleAccountMode) {
-                mAccount = accounts[0];
+                mAccount = accounts.get(0);
             }
         } else {
             mSingleAccountMode = (accountUuids.length == 1);

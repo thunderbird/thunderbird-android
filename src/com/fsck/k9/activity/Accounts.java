@@ -103,11 +103,6 @@ import de.cketti.library.changelog.ChangeLog;
 public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     /**
-     * Immutable empty {@link BaseAccount} array
-     */
-    private static final BaseAccount[] EMPTY_BASE_ACCOUNT_ARRAY = new BaseAccount[0];
-
-    /**
      * URL used to open Android Market application
      */
     private static final String ANDROID_MARKET_URL = "https://play.google.com/store/apps/details?id=org.openintents.filemanager";
@@ -400,14 +395,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             createSpecialAccounts();
         }
 
-        Account[] accounts = Preferences.getPreferences(this).getAccounts();
+        List<Account> accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
         //onNewIntent(intent);
 
         // see if we should show the welcome message
         if (ACTION_IMPORT_SETTINGS.equals(intent.getAction())) {
             onImport();
-        } else if (accounts.length < 1) {
+        } else if (accounts.size() < 1) {
             WelcomeMessage.showWelcomeMessage(this);
             finish();
             return;
@@ -423,7 +418,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             onOpenAccount(mUnifiedInboxAccount);
             finish();
             return;
-        } else if (startup && accounts.length == 1 && onOpenAccount(accounts[0])) {
+        } else if (startup && accounts.size() == 1 && onOpenAccount(accounts.get(0))) {
             finish();
             return;
         }
@@ -543,18 +538,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         return retain;
     }
 
-    private BaseAccount[] accounts = new BaseAccount[0];
+    private List<BaseAccount> accounts = new ArrayList<BaseAccount>();
     private enum ACCOUNT_LOCATION {
         TOP, MIDDLE, BOTTOM;
     }
     private EnumSet<ACCOUNT_LOCATION> accountLocation(BaseAccount account) {
         EnumSet<ACCOUNT_LOCATION> accountLocation = EnumSet.of(ACCOUNT_LOCATION.MIDDLE);
-        if (accounts.length > 0) {
-            if (accounts[0].equals(account)) {
+        if (accounts.size() > 0) {
+            if (accounts.get(0).equals(account)) {
                 accountLocation.remove(ACCOUNT_LOCATION.MIDDLE);
                 accountLocation.add(ACCOUNT_LOCATION.TOP);
             }
-            if (accounts[accounts.length - 1].equals(account)) {
+            if (accounts.get(accounts.size() - 1).equals(account)) {
                 accountLocation.remove(ACCOUNT_LOCATION.MIDDLE);
                 accountLocation.add(ACCOUNT_LOCATION.BOTTOM);
             }
@@ -564,7 +559,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
 
     private void refresh() {
-        accounts = Preferences.getPreferences(this).getAccounts();
+        accounts.clear();
+        accounts.addAll(Preferences.getPreferences(this).getAccounts());
 
         // see if we should show the welcome message
 //        if (accounts.length < 1) {
@@ -573,22 +569,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 //        }
 
         List<BaseAccount> newAccounts;
-        if (!K9.isHideSpecialAccounts() && accounts.length > 0) {
+        if (!K9.isHideSpecialAccounts() && accounts.size() > 0) {
             if (mUnifiedInboxAccount == null || mAllMessagesAccount == null) {
                 createSpecialAccounts();
             }
 
-            newAccounts = new ArrayList<BaseAccount>(accounts.length +
+            newAccounts = new ArrayList<BaseAccount>(accounts.size() +
                     SPECIAL_ACCOUNTS_COUNT);
             newAccounts.add(mUnifiedInboxAccount);
             newAccounts.add(mAllMessagesAccount);
         } else {
-            newAccounts = new ArrayList<BaseAccount>(accounts.length);
+            newAccounts = new ArrayList<BaseAccount>(accounts.size());
         }
 
-        newAccounts.addAll(Arrays.asList(accounts));
+        newAccounts.addAll(accounts);
 
-        mAdapter = new AccountsAdapter(newAccounts.toArray(EMPTY_BASE_ACCOUNT_ARRAY));
+        mAdapter = new AccountsAdapter(newAccounts);
         getListView().setAdapter(mAdapter);
         if (!newAccounts.isEmpty()) {
             mHandler.progress(Window.PROGRESS_START);
@@ -1737,7 +1733,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     class AccountsAdapter extends ArrayAdapter<BaseAccount> {
-        public AccountsAdapter(BaseAccount[] accounts) {
+        public AccountsAdapter(List<BaseAccount> accounts) {
             super(Accounts.this, 0, accounts);
         }
 

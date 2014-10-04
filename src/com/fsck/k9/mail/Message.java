@@ -2,6 +2,8 @@
 package com.fsck.k9.mail;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +18,6 @@ import com.fsck.k9.mail.store.UnavailableStorageException;
 
 
 public abstract class Message implements Part, CompositeBody {
-    private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
 
     private MessageReference mReference = null;
 
@@ -208,8 +209,8 @@ public abstract class Message implements Part, CompositeBody {
     /*
      * TODO Refactor Flags at some point to be able to store user defined flags.
      */
-    public Flag[] getFlags() {
-        return mFlags.toArray(EMPTY_FLAG_ARRAY);
+    public Collection<Flag> getFlags() {
+        return Collections.unmodifiableCollection(mFlags);
     }
 
     /**
@@ -233,7 +234,7 @@ public abstract class Message implements Part, CompositeBody {
      * @param flags
      * @param set
      */
-    public void setFlags(Flag[] flags, boolean set) throws MessagingException {
+    public void setFlags(final Collection<Flag> flags, boolean set) throws MessagingException {
         for (Flag flag : flags) {
             setFlag(flag, set);
         }
