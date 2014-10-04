@@ -256,7 +256,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @return List of all nodes in subtree in preorder.
      */
     public List<ConditionsTreeNode> preorder() {
-        ArrayList<ConditionsTreeNode> result = new ArrayList<ConditionsTreeNode>();
+        List<ConditionsTreeNode> result = new ArrayList<ConditionsTreeNode>();
         Stack<ConditionsTreeNode> stack = new Stack<ConditionsTreeNode>();
         stack.push(this);
 

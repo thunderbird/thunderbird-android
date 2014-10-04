@@ -12,6 +12,7 @@ import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class PollService extends CoreService {
     private static String START_SERVICE = "com.fsck.k9.service.PollService.startService";
@@ -77,7 +78,7 @@ public class PollService extends CoreService {
     }
 
     class Listener extends MessagingListener {
-        HashMap<String, Integer> accountsChecked = new HashMap<String, Integer>();
+        Map<String, Integer> accountsChecked = new HashMap<String, Integer>();
         private TracingWakeLock wakeLock = null;
         private int startId = -1;
 

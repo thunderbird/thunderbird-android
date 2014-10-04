@@ -1,6 +1,7 @@
 package com.fsck.k9.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -8,6 +9,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 
@@ -36,12 +38,12 @@ public class NotificationActionService extends CoreService {
     }
 
     public static PendingIntent getReadAllMessagesIntent(Context context, final Account account,
-            final ArrayList<MessageReference> refs) {
+            final List<MessageReference> refs) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_LIST, refs);
+        i.putExtra(EXTRA_MESSAGE_LIST, Utility.toSerializableList(refs));
         i.setAction(READ_ALL_ACTION);
-        
+
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -54,10 +56,10 @@ public class NotificationActionService extends CoreService {
     }
 
     public static Intent getDeleteAllMessagesIntent(Context context, final Account account,
-            final ArrayList<MessageReference> refs) {
+            final List<MessageReference> refs) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_LIST, refs);
+        i.putExtra(EXTRA_MESSAGE_LIST, Utility.toSerializableList(refs));
         i.setAction(DELETE_ALL_ACTION);
 
         return i;
@@ -77,7 +79,7 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
 
-                ArrayList<MessageReference> refs =
+                List<MessageReference> refs =
                         intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
                 for (MessageReference ref : refs) {
                     controller.setFlag(account, ref.folderName, ref.uid, Flag.SEEN, true);
@@ -86,9 +88,9 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService deleting messages");
 
-                ArrayList<MessageReference> refs =
+                List<MessageReference> refs =
                         intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
-                ArrayList<Message> messages = new ArrayList<Message>();
+                List<Message> messages = new ArrayList<Message>();
 
                 for (MessageReference ref : refs) {
                     Message m = ref.restoreToLocalMessage(this);
@@ -121,7 +123,7 @@ public class NotificationActionService extends CoreService {
         } else {
             Log.w(K9.LOG_TAG, "Could not find account for notification action.");
         }
-        
+
         return START_NOT_STICKY;
     }
 }

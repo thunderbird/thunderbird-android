@@ -2995,8 +2995,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         super.onStop();
     }
 
-    public ArrayList<MessageReference> getMessageReferences() {
-        ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
+    public List<MessageReference> getMessageReferences() {
+        List<MessageReference> messageRefs = new ArrayList<MessageReference>();
 
         for (int i = 0, len = mAdapter.getCount(); i < len; i++) {
             Cursor cursor = (Cursor) mAdapter.getItem(i);

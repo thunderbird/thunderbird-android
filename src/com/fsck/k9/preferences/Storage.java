@@ -15,16 +15,18 @@ import com.fsck.k9.helper.Utility;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Storage implements SharedPreferences {
-    private static ConcurrentHashMap<Context, Storage> storages =
+    private static ConcurrentMap<Context, Storage> storages =
         new ConcurrentHashMap<Context, Storage>();
 
-    private volatile ConcurrentHashMap<String, String> storage = new ConcurrentHashMap<String, String>();
+    private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<String, String>();
 
     private CopyOnWriteArrayList<OnSharedPreferenceChangeListener> listeners =
         new CopyOnWriteArrayList<OnSharedPreferenceChangeListener>();
@@ -32,11 +34,11 @@ public class Storage implements SharedPreferences {
     private int DB_VERSION = 2;
     private String DB_NAME = "preferences_storage";
 
-    private ThreadLocal<ConcurrentHashMap<String, String>> workingStorage
-    = new ThreadLocal<ConcurrentHashMap<String, String>>();
+    private ThreadLocal<ConcurrentMap<String, String>> workingStorage
+    = new ThreadLocal<ConcurrentMap<String, String>>();
     private ThreadLocal<SQLiteDatabase> workingDB =
         new ThreadLocal<SQLiteDatabase>();
-    private ThreadLocal<ArrayList<String>> workingChangedKeys = new ThreadLocal<ArrayList<String>>();
+    private ThreadLocal<List<String>> workingChangedKeys = new ThreadLocal<List<String>>();
 
 
     private Context context = null;
@@ -202,7 +204,7 @@ public class Storage implements SharedPreferences {
     }
 
     private void keyChange(String key) {
-        ArrayList<String> changedKeys = workingChangedKeys.get();
+        List<String> changedKeys = workingChangedKeys.get();
         if (!changedKeys.contains(key)) {
             changedKeys.add(key);
         }
@@ -259,14 +261,14 @@ public class Storage implements SharedPreferences {
     }
 
     protected void doInTransaction(Runnable dbWork) {
-        ConcurrentHashMap<String, String> newStorage = new ConcurrentHashMap<String, String>();
+        ConcurrentMap<String, String> newStorage = new ConcurrentHashMap<String, String>();
         newStorage.putAll(storage);
         workingStorage.set(newStorage);
 
         SQLiteDatabase mDb = openDB();
         workingDB.set(mDb);
 
-        ArrayList<String> changedKeys = new ArrayList<String>();
+        List<String> changedKeys = new ArrayList<String>();
         workingChangedKeys.set(changedKeys);
 
         mDb.beginTransaction();
@@ -294,7 +296,11 @@ public class Storage implements SharedPreferences {
 
     //@Override
     public boolean contains(String key) {
-        return storage.contains(key);
+        // TODO this used to be ConcurrentHashMap#contains which is
+        // actually containsValue. But looking at the usage of this method,
+        // it's clear that containsKey is what's intended. Investigate if this
+        // was a bug previously. Looks like it was only used once, when upgrading
+        return storage.containsKey(key);
     }
 
     //@Override

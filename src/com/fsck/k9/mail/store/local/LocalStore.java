@@ -425,10 +425,10 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
-    public ArrayList<PendingCommand> getPendingCommands() throws UnavailableStorageException {
-        return database.execute(false, new DbCallback<ArrayList<PendingCommand>>() {
+    public List<PendingCommand> getPendingCommands() throws UnavailableStorageException {
+        return database.execute(false, new DbCallback<List<PendingCommand>>() {
             @Override
-            public ArrayList<PendingCommand> doDbWork(final SQLiteDatabase db) throws WrappedException {
+            public List<PendingCommand> doDbWork(final SQLiteDatabase db) throws WrappedException {
                 Cursor cursor = null;
                 try {
                     cursor = db.query("pending_commands",
@@ -438,7 +438,7 @@ public class LocalStore extends Store implements Serializable {
                                       null,
                                       null,
                                       "id ASC");
-                    ArrayList<PendingCommand> commands = new ArrayList<PendingCommand>();
+                    List<PendingCommand> commands = new ArrayList<PendingCommand>();
                     while (cursor.moveToNext()) {
                         PendingCommand command = new PendingCommand();
                         command.mId = cursor.getLong(0);
@@ -559,7 +559,7 @@ public class LocalStore extends Store implements Serializable {
         final LocalFolder folder,
         final String queryString, final String[] placeHolders
     ) throws MessagingException {
-        final ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
+        final List<LocalMessage> messages = new ArrayList<LocalMessage>();
         final int j = database.execute(false, new DbCallback<Integer>() {
             @Override
             public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {

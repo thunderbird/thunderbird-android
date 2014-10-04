@@ -315,7 +315,7 @@ public class Address {
         if (addressList == null) {
             return new Address[] { };
         }
-        ArrayList<Address> addresses = new ArrayList<Address>();
+        List<Address> addresses = new ArrayList<Address>();
         int length = addressList.length();
         int pairStartIndex = 0;
         int pairEndIndex = 0;

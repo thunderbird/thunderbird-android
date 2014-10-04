@@ -3,7 +3,9 @@ package com.fsck.k9.mail;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import android.app.Application;
 import android.content.Context;
@@ -33,19 +35,19 @@ public abstract class Store {
     /**
      * Remote stores indexed by Uri.
      */
-    private static HashMap<String, Store> sStores = new HashMap<String, Store>();
+    private static Map<String, Store> sStores = new HashMap<String, Store>();
 
     /**
      * Local stores indexed by UUID because the Uri may change due to migration to/from SD-card.
      */
-    private static ConcurrentHashMap<String, Store> sLocalStores = new ConcurrentHashMap<String, Store>();
+    private static ConcurrentMap<String, Store> sLocalStores = new ConcurrentHashMap<String, Store>();
 
     /**
      * Lock objects indexed by account UUID.
      *
      * @see #getLocalInstance(Account, Application)
      */
-    private static ConcurrentHashMap<String, Object> sAccountLocks = new ConcurrentHashMap<String, Object>();
+    private static ConcurrentMap<String, Object> sAccountLocks = new ConcurrentHashMap<String, Object>();
 
     /**
      * Get an instance of a remote mail store.

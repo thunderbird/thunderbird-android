@@ -29,7 +29,7 @@ public class FolderListFilter<T> extends Filter {
     /**
      * All folders.
      */
-    private ArrayList<T> mOriginalValues = null;
+    private List<T> mOriginalValues = null;
 
     /**
      * Create a filter for a list of folders.
@@ -62,7 +62,7 @@ public class FolderListFilter<T> extends Filter {
 
         Locale locale = Locale.getDefault();
         if ((searchTerm == null) || (searchTerm.length() == 0)) {
-            ArrayList<T> list = new ArrayList<T>(mOriginalValues);
+            List<T> list = new ArrayList<T>(mOriginalValues);
             results.values = list;
             results.count = list.size();
         } else {
@@ -70,9 +70,9 @@ public class FolderListFilter<T> extends Filter {
             final String[] words = searchTermString.split(" ");
             final int wordCount = words.length;
 
-            final ArrayList<T> values = mOriginalValues;
+            final List<T> values = mOriginalValues;
 
-            final ArrayList<T> newValues = new ArrayList<T>();
+            final List<T> newValues = new ArrayList<T>();
 
             for (final T value : values) {
                 final String valueText = value.toString().toLowerCase(locale);

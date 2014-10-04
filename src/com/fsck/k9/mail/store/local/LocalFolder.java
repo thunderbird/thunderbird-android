@@ -971,7 +971,7 @@ public class LocalFolder extends Folder implements Serializable {
         if (uids == null) {
             return getMessages(listener);
         }
-        ArrayList<Message> messages = new ArrayList<Message>();
+        List<Message> messages = new ArrayList<Message>();
         for (String uid : uids) {
             Message message = getMessage(uid);
             if (message != null) {

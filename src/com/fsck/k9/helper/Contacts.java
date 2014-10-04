@@ -13,6 +13,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.mail.Address;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Helper class to access the contacts stored on the device.
@@ -276,7 +277,7 @@ public class Contacts {
      */
     public ContactItem extractInfoFromContactPickerIntent(final Intent intent) {
         Cursor cursor = null;
-        ArrayList<String> email = new ArrayList<String>();
+        List<String> email = new ArrayList<String>();
 
         try {
             Uri result = intent.getData();

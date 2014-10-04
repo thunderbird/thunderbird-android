@@ -20,10 +20,13 @@ import com.fsck.k9.mail.filter.Base64;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -703,5 +706,24 @@ public class Utility {
             sMainThreadHandler = new Handler(Looper.getMainLooper());
         }
         return sMainThreadHandler;
+    }
+
+    public static <T> Serializable toSerializableList(List<T> list) {
+        return list instanceof Serializable ?
+                (Serializable) list :
+                new ArrayList<T>(list);
+    }
+
+    public static <T> ArrayList<T> toArrayList(List<T> list) {
+        return list instanceof ArrayList ?
+                (ArrayList<T>) list :
+                new ArrayList<T>(list);
+    }
+
+
+    public static <T,U> Serializable toSerializableConcurrentMap(ConcurrentMap<T,U> list) {
+        return list instanceof ConcurrentHashMap ?
+                (ConcurrentHashMap<T,U>) list :
+                new ConcurrentHashMap<T,U>(list);
     }
 }

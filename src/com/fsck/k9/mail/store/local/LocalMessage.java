@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import android.content.ContentValues;
@@ -492,7 +493,7 @@ public class LocalMessage extends MimeMessage {
     }
 
     private void loadHeaders() throws UnavailableStorageException {
-        ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
+        List<LocalMessage> messages = new ArrayList<LocalMessage>();
         messages.add(this);
         mHeadersLoaded = true; // set true before calling populate headers to stop recursion
         ((LocalFolder) mFolder).populateHeaders(messages);

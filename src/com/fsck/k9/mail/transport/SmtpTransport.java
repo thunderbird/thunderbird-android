@@ -256,7 +256,7 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            HashMap<String,String> extensions = sendHello(localHost);
+            Map<String,String> extensions = sendHello(localHost);
 
             m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
 
@@ -419,7 +419,7 @@ public class SmtpTransport extends Transport {
      * @param host
      *         The EHLO/HELO parameter as defined by the RFC.
      *
-     * @return A (possibly empty) {@code HashMap<String,String>} of extensions (upper case) and
+     * @return A (possibly empty) {@code Map<String,String>} of extensions (upper case) and
      * their parameters (possibly 0 length) as returned by the EHLO command
      *
      * @throws IOException
@@ -427,8 +427,8 @@ public class SmtpTransport extends Transport {
      * @throws MessagingException
      *          In case of a malformed response.
      */
-    private HashMap<String,String> sendHello(String host) throws IOException, MessagingException {
-        HashMap<String, String> extensions = new HashMap<String, String>();
+    private Map<String,String> sendHello(String host) throws IOException, MessagingException {
+        Map<String, String> extensions = new HashMap<String, String>();
         try {
             List<String> results = executeSimpleCommand("EHLO " + host);
             // Remove the EHLO greeting response
@@ -453,7 +453,7 @@ public class SmtpTransport extends Transport {
 
     @Override
     public void sendMessage(Message message) throws MessagingException {
-        ArrayList<Address> addresses = new ArrayList<Address>();
+        List<Address> addresses = new ArrayList<Address>();
         {
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.TO)));
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.CC)));
@@ -461,12 +461,12 @@ public class SmtpTransport extends Transport {
         }
         message.setRecipients(RecipientType.BCC, null);
 
-        HashMap<String, ArrayList<String>> charsetAddressesMap =
-            new HashMap<String, ArrayList<String>>();
+        Map<String, List<String>> charsetAddressesMap =
+            new HashMap<String, List<String>>();
         for (Address address : addresses) {
             String addressString = address.getAddress();
             String charset = MimeUtility.getCharsetFromAddress(addressString);
-            ArrayList<String> addressesOfCharset = charsetAddressesMap.get(charset);
+            List<String> addressesOfCharset = charsetAddressesMap.get(charset);
             if (addressesOfCharset == null) {
                 addressesOfCharset = new ArrayList<String>();
                 charsetAddressesMap.put(charset, addressesOfCharset);
@@ -474,16 +474,16 @@ public class SmtpTransport extends Transport {
             addressesOfCharset.add(addressString);
         }
 
-        for (Map.Entry<String, ArrayList<String>> charsetAddressesMapEntry :
+        for (Map.Entry<String, List<String>> charsetAddressesMapEntry :
                 charsetAddressesMap.entrySet()) {
             String charset = charsetAddressesMapEntry.getKey();
-            ArrayList<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
+            List<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
             message.setCharset(charset);
             sendMessageTo(addressesOfCharset, message);
         }
     }
 
-    private void sendMessageTo(ArrayList<String> addresses, Message message)
+    private void sendMessageTo(List<String> addresses, Message message)
     throws MessagingException {
         boolean possibleSend = false;
 

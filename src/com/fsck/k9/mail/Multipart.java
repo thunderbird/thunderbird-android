@@ -13,7 +13,7 @@ import com.fsck.k9.mail.internet.TextBody;
 public abstract class Multipart implements CompositeBody {
     private Part mParent;
 
-    private final ArrayList<BodyPart> mParts = new ArrayList<BodyPart>();
+    private final List<BodyPart> mParts = new ArrayList<BodyPart>();
 
     private String mContentType;
 

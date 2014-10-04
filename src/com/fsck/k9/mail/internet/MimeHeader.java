@@ -36,7 +36,7 @@ public class MimeHeader {
         HEADER_ANDROID_ATTACHMENT_STORE_DATA
     };
 
-    private ArrayList<Field> mFields = new ArrayList<Field>();
+    private List<Field> mFields = new ArrayList<Field>();
     private String mCharset = null;
 
     public void clear() {
@@ -72,7 +72,7 @@ public class MimeHeader {
     }
 
     public String[] getHeader(String name) {
-        ArrayList<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<String>();
         for (Field field : mFields) {
             if (field.name.equalsIgnoreCase(name)) {
                 values.add(field.value);
@@ -85,7 +85,7 @@ public class MimeHeader {
     }
 
     public void removeHeader(String name) {
-        ArrayList<Field> removeFields = new ArrayList<Field>();
+        List<Field> removeFields = new ArrayList<Field>();
         for (Field field : mFields) {
             if (field.name.equalsIgnoreCase(name)) {
                 removeFields.add(field);

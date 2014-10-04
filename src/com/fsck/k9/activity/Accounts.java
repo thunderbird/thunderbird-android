@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -75,6 +76,7 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.WelcomeMessage;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.SizeFormatter;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
@@ -120,9 +122,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
     private static final int DIALOG_NO_FILE_MANAGER = 4;
 
-    private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
+    private ConcurrentMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
 
-    private ConcurrentHashMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
+    private ConcurrentMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
 
     private BaseAccount mSelectedContextAccount;
     private int mUnreadMessageCount = 0;
@@ -495,7 +497,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             outState.putString(SELECTED_CONTEXT_ACCOUNT, mSelectedContextAccount.getUuid());
         }
         outState.putSerializable(STATE_UNREAD_COUNT, mUnreadMessageCount);
-        outState.putSerializable(ACCOUNT_STATS, accountStats);
+        outState.putSerializable(ACCOUNT_STATS, Utility.toSerializableConcurrentMap(accountStats));
     }
 
     private StorageManager.StorageListener storageListener = new StorageManager.StorageListener() {
