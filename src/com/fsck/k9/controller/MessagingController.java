@@ -2712,9 +2712,7 @@ public class MessagingController implements Runnable {
 
             Store localStore = account.getLocalStore();
             LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
-            List<Message> messages = new ArrayList<Message>();
             MimeMessage message = new MimeMessage();
-
 
             message.setBody(new TextBody(body));
             message.setFlag(Flag.X_DOWNLOADED_FULL, true);
@@ -2725,9 +2723,8 @@ public class MessagingController implements Runnable {
             message.setInternalDate(nowDate);
             message.addSentDate(nowDate);
             message.setFrom(new Address(account.getEmail(), "K9mail internal"));
-            messages.set(0, message);
 
-            localFolder.appendMessages(messages);
+            localFolder.appendMessages(Collections.singletonList(message));
 
             localFolder.clearMessagesOlderThan(nowTime - (15 * 60 * 1000));
 
