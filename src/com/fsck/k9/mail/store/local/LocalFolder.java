@@ -815,7 +815,7 @@ public class LocalFolder extends Folder implements Serializable {
      *            The messages whose headers should be loaded.
      * @throws UnavailableStorageException
      */
-    void populateHeaders(final List<? extends Message> messages) throws UnavailableStorageException {
+    void populateHeaders(final List<LocalMessage> messages) throws UnavailableStorageException {
         this.localStore.database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
@@ -833,7 +833,7 @@ public class LocalFolder extends Folder implements Serializable {
                             questions.append(", ");
                         }
                         questions.append("?");
-                        LocalMessage message = (LocalMessage)messages.get(i);
+                        LocalMessage message = messages.get(i);
                         Long id = message.getId();
                         ids.add(Long.toString(id));
                         popMessages.put(id, message);
