@@ -98,7 +98,7 @@ public class Account implements BaseAccount {
      * Note: Order does matter, it's the order in which they will be picked.
      */
     public static final Integer[] PREDEFINED_COLORS = new Integer[] {
-    	 Color.parseColor("#2093cd"),    // blue
+         Color.parseColor("#2093cd"),    // blue
          Color.parseColor("#67bf74"),    // green
          Color.parseColor("#f58559"),    // orange
          Color.parseColor("#f16364"),    // red

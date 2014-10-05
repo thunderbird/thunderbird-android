@@ -94,12 +94,12 @@ public class ContactPictureLoader {
         float scale = mResources.getDisplayMetrics().density;
         mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
 		
-		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
 		
 			//if buildversion is JellyBean or above, set font in contact pictures to Roboto Light
 			
 			sLightFont = Typeface.create("sans-serif-light", Typeface.NORMAL);
-		}
+			}
         
         mDefaultBackgroundColor = defaultBackgroundColor;
 
