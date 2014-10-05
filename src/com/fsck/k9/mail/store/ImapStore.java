@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -116,7 +117,7 @@ public class ImapStore extends Store {
 
     private static int FETCH_WINDOW_SIZE = 100;
 
-    private Set<Flag> mPermanentFlagsIndex = new HashSet<Flag>();
+    private Set<Flag> mPermanentFlagsIndex = EnumSet.noneOf(Flag.class);
 
     private static final String CAPABILITY_IDLE = "IDLE";
     private static final String CAPABILITY_AUTH_CRAM_MD5 = "AUTH=CRAM-MD5";

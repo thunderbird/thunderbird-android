@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public abstract class Message implements Part, CompositeBody {
 
     protected String mUid;
 
-    private Set<Flag> mFlags = new HashSet<Flag>();
+    private Set<Flag> mFlags = EnumSet.noneOf(Flag.class);
 
     private Date mInternalDate;
 
@@ -291,7 +292,7 @@ public abstract class Message implements Part, CompositeBody {
         destination.mReference = mReference;
 
         // mFlags contents can change during the object lifetime, so copy the Set
-        destination.mFlags = new HashSet<Flag>(mFlags);
+        destination.mFlags = EnumSet.copyOf(mFlags);
     }
 
     /**
