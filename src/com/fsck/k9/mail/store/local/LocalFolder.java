@@ -1724,7 +1724,7 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public void setFlags(final List<? extends Message> messages, final Collection<Flag> flags, final boolean value)
+    public void setFlags(final List<? extends Message> messages, final Set<Flag> flags, final boolean value)
     throws MessagingException {
         open(OPEN_MODE_RW);
 
@@ -1752,7 +1752,7 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public void setFlags(final Collection<Flag> flags, boolean value)
+    public void setFlags(final Set<Flag> flags, boolean value)
     throws MessagingException {
         open(OPEN_MODE_RW);
         for (Message message : getMessages(null)) {

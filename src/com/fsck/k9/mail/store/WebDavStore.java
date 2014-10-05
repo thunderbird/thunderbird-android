@@ -1781,7 +1781,7 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void setFlags(List<? extends Message> messages, final Collection<Flag> flags, boolean value)
+        public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
         throws MessagingException {
             String[] uids = new String[messages.size()];
 
@@ -1929,9 +1929,9 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void setFlags(final Collection<Flag> flags, boolean value) throws MessagingException {
+        public void setFlags(final Set<Flag> flags, boolean value) throws MessagingException {
             Log.e(K9.LOG_TAG,
-                  "Unimplemented method setFlags(Collection<Flag>, boolean) breaks markAllMessagesAsRead and EmptyTrash");
+                  "Unimplemented method setFlags(Set<Flag>, boolean) breaks markAllMessagesAsRead and EmptyTrash");
             // Try to make this efficient by not retrieving all of the messages
         }
     }
@@ -2029,7 +2029,7 @@ public class WebDavStore extends Store {
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
-            mFolder.setFlags(Collections.singletonList(this), Collections.singletonList(flag), set);
+            mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
         }
     }
 

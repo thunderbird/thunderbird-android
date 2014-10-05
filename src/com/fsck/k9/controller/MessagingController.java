@@ -2410,7 +2410,7 @@ public class MessagingController implements Runnable {
             if (messages.isEmpty()) {
                 return;
             }
-            remoteFolder.setFlags(messages, Collections.singletonList(flag), newState);
+            remoteFolder.setFlags(messages, Collections.singleton(flag), newState);
         } finally {
             closeFolder(remoteFolder);
         }
@@ -2602,7 +2602,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            remoteFolder.setFlags(Collections.singletonList(Flag.SEEN), true);
+            remoteFolder.setFlags(Collections.singleton(Flag.SEEN), true);
             remoteFolder.close();
         } catch (UnsupportedOperationException uoe) {
             Log.w(K9.LOG_TAG, "Could not mark all server-side as read because store doesn't support operation", uoe);
@@ -2878,7 +2878,7 @@ public class MessagingController implements Runnable {
             }
 
             // Update the messages in the local store
-            localFolder.setFlags(messages, Collections.singletonList(flag), newState);
+            localFolder.setFlags(messages, Collections.singleton(flag), newState);
 
             int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : getListeners()) {

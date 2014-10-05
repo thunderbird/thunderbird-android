@@ -977,12 +977,12 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public void setFlags(final Collection<Flag> flags, boolean value) throws MessagingException {
-            throw new UnsupportedOperationException("POP3: No setFlags(Collection<Flag>,boolean)");
+        public void setFlags(final Set<Flag> flags, boolean value) throws MessagingException {
+            throw new UnsupportedOperationException("POP3: No setFlags(Set<Flag>,boolean)");
         }
 
         @Override
-        public void setFlags(List<? extends Message> messages, final Collection<Flag> flags, boolean value)
+        public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
         throws MessagingException {
             if (!value || !flags.contains(Flag.DELETED)) {
                 /*
@@ -1187,7 +1187,7 @@ public class Pop3Store extends Store {
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
-            mFolder.setFlags(Collections.singletonList(this), Collections.singletonList(flag), set);
+            mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
         }
 
         @Override

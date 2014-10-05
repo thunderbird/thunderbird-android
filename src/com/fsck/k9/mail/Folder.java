@@ -130,10 +130,10 @@ public abstract class Folder {
         }
     }
 
-    public abstract void setFlags(List<? extends Message> messages, Collection<Flag> flags, boolean value)
+    public abstract void setFlags(List<? extends Message> messages, Set<Flag> flags, boolean value)
     throws MessagingException;
 
-    public abstract void setFlags(Collection<Flag> flags, boolean value) throws MessagingException;
+    public abstract void setFlags(Set<Flag> flags, boolean value) throws MessagingException;
 
     public abstract String getUidFromMessageId(Message message) throws MessagingException;
 

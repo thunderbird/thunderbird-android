@@ -210,8 +210,8 @@ public abstract class Message implements Part, CompositeBody {
     /*
      * TODO Refactor Flags at some point to be able to store user defined flags.
      */
-    public Collection<Flag> getFlags() {
-        return Collections.unmodifiableCollection(mFlags);
+    public Set<Flag> getFlags() {
+        return Collections.unmodifiableSet(mFlags);
     }
 
     /**
@@ -235,7 +235,7 @@ public abstract class Message implements Part, CompositeBody {
      * @param flags
      * @param set
      */
-    public void setFlags(final Collection<Flag> flags, boolean set) throws MessagingException {
+    public void setFlags(final Set<Flag> flags, boolean set) throws MessagingException {
         for (Flag flag : flags) {
             setFlag(flag, set);
         }

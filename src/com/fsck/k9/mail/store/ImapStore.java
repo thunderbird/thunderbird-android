@@ -2110,7 +2110,7 @@ public class ImapStore extends Store {
 
 
         @Override
-        public void setFlags(Collection<Flag> flags, boolean value)
+        public void setFlags(Set<Flag> flags, boolean value)
         throws MessagingException {
             open(OPEN_MODE_RW);
             checkOpen();
@@ -2145,7 +2145,7 @@ public class ImapStore extends Store {
 
 
         @Override
-        public void setFlags(List<? extends Message> messages, final Collection<Flag> flags, boolean value)
+        public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
         throws MessagingException {
             open(OPEN_MODE_RW);
             checkOpen();
@@ -2911,7 +2911,7 @@ public class ImapStore extends Store {
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
-            mFolder.setFlags(Collections.singletonList(this), Collections.singletonList(flag), set);
+            mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
         }
 
         @Override
