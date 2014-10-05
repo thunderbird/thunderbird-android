@@ -1056,7 +1056,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private boolean addRecipients(TextView view, List<String> recipients) {
-        if (recipients == null || recipients.size() == 0) {
+        if (recipients == null || recipients.isEmpty()) {
             return false;
         }
 

@@ -763,7 +763,7 @@ public class Pop3Store extends Store {
         @Override
         public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException {
-            if (messages == null || messages.size() == 0) {
+            if (messages == null || messages.isEmpty()) {
                 return;
             }
             List<String> uids = new ArrayList<String>();

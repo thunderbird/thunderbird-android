@@ -51,7 +51,7 @@ public class Settings {
             SortedMap<Integer, SettingsDescription> headMap = versions.headMap(version + 1);
 
             // Skip this setting if it was introduced after 'version'
-            if (headMap.size() == 0) {
+            if (headMap.isEmpty()) {
                 continue;
             }
 

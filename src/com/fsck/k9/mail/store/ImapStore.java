@@ -1097,7 +1097,7 @@ public class ImapStore extends Store {
                 throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
             }
 
-            if (messages.size() == 0) {
+            if (messages.isEmpty()) {
                 return null;
             }
 
@@ -1193,7 +1193,7 @@ public class ImapStore extends Store {
 
         @Override
         public Map<String, String> moveMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
-            if (messages.size() == 0)
+            if (messages.isEmpty())
                 return null;
             Map<String, String> uidMap = copyMessages(messages, folder);
             setFlags(messages, Collections.singleton(Flag.DELETED), true);
@@ -1202,7 +1202,7 @@ public class ImapStore extends Store {
 
         @Override
         public void delete(List<? extends Message> messages, String trashFolderName) throws MessagingException {
-            if (messages.size() == 0)
+            if (messages.isEmpty())
                 return;
 
             if (trashFolderName == null || getName().equalsIgnoreCase(trashFolderName)) {
@@ -1435,7 +1435,7 @@ public class ImapStore extends Store {
         @Override
         public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException {
-            if (messages == null || messages.size() == 0) {
+            if (messages == null || messages.isEmpty()) {
                 return;
             }
             checkOpen(); //only need READ access
@@ -2036,7 +2036,7 @@ public class ImapStore extends Store {
                  * with the behavior of other similar methods (copyMessages, moveMessages) which
                  * return null.
                  */
-                return (uidMap.size() == 0) ? null : uidMap;
+                return (uidMap.isEmpty()) ? null : uidMap;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }

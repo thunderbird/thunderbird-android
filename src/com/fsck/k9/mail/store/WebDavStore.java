@@ -1501,7 +1501,7 @@ public class WebDavStore extends Store {
         public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException {
             if (messages == null ||
-                    messages.size() == 0) {
+                    messages.isEmpty()) {
                 return;
             }
 
@@ -1654,7 +1654,7 @@ public class WebDavStore extends Store {
             String[] uids;
 
             if (startMessages == null ||
-                    startMessages.size() == 0) {
+                    startMessages.isEmpty()) {
                 return;
             }
 
@@ -1724,7 +1724,7 @@ public class WebDavStore extends Store {
             List<Message> messages = new ArrayList<Message>(10);
 
             if (startMessages == null ||
-                    startMessages.size() == 0) {
+                    startMessages.isEmpty()) {
                 return;
             }
 

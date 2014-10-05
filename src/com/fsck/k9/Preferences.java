@@ -39,7 +39,7 @@ public class Preferences {
     private Preferences(Context context) {
         mStorage = Storage.getStorage(context);
         mContext = context;
-        if (mStorage.size() == 0) {
+        if (mStorage.isEmpty()) {
             Log.i(K9.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
             Editor editor = mStorage.edit();
             editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));

@@ -108,7 +108,7 @@ public class EmailProviderCacheCursor extends CursorWrapper {
 
     @Override
     public boolean moveToPosition(int position) {
-        if (mHiddenRows.size() == 0) {
+        if (mHiddenRows.isEmpty()) {
             return super.moveToPosition(position);
         }
 
@@ -126,7 +126,7 @@ public class EmailProviderCacheCursor extends CursorWrapper {
 
     @Override
     public int getPosition() {
-        if (mHiddenRows.size() == 0) {
+        if (mHiddenRows.isEmpty()) {
             return super.getPosition();
         }
 

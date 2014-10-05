@@ -302,7 +302,7 @@ public class Contacts {
                 }
 
                 // Return 'null' if no email addresses have been found
-                if (email.size() == 0) {
+                if (email.isEmpty()) {
                     return null;
                 }
 

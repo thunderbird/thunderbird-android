@@ -1814,7 +1814,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
 
             List<String> folderNames = mSearch.getFolderNames();
-            return (folderNames.size() == 0 || folderNames.contains(folder));
+            return (folderNames.isEmpty() || folderNames.contains(folder));
         }
     }
 
@@ -2362,7 +2362,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void setFlagForSelected(final Flag flag, final boolean newState) {
-        if (mSelected.size() == 0) {
+        if (mSelected.isEmpty()) {
             return;
         }
 
@@ -2586,7 +2586,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private boolean checkCopyOrMovePossible(final List<Message> messages,
             final FolderOperation operation) {
 
-        if (messages.size() == 0) {
+        if (messages.isEmpty()) {
             return false;
         }
 
@@ -3515,7 +3515,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void cleanupSelected(Cursor cursor) {
-        if (mSelected.size() == 0) {
+        if (mSelected.isEmpty()) {
             return;
         }
 
@@ -3534,7 +3534,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * Starts or finishes the action mode when necessary.
      */
     private void resetActionMode() {
-        if (mSelected.size() == 0) {
+        if (mSelected.isEmpty()) {
             if (mActionMode != null) {
                 mActionMode.finish();
             }
