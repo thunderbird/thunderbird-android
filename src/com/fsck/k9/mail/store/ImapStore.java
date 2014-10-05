@@ -3208,9 +3208,9 @@ public class ImapStore extends Store {
                 Log.e(K9.LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
             }
 
-            List<? extends Message> messageArray = getMessages(end, end, null, true, null);
-            if (messageArray != null && messageArray.size() > 0) {
-                long newUid = Long.parseLong(messageArray.get(0).getUid());
+            List<? extends Message> messageList = getMessages(end, end, null, true, null);
+            if (messageList != null && messageList.size() > 0) {
+                long newUid = Long.parseLong(messageList.get(0).getUid());
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "Got newUid " + newUid + " for message " + end + " on " + getLogId());
                 long startUid = oldUidNext;
@@ -3238,10 +3238,10 @@ public class ImapStore extends Store {
 
         private void syncMessages(List<Long> flagSyncMsgSeqs) {
             try {
-                List<? extends Message> messageArray = getMessages(flagSyncMsgSeqs, true, null);
+                List<? extends Message> messageList = getMessages(flagSyncMsgSeqs, true, null);
 
                 List<Message> messages = new ArrayList<Message>();
-                messages.addAll(messageArray);
+                messages.addAll(messageList);
                 pushMessages(messages, false);
 
             } catch (Exception e) {

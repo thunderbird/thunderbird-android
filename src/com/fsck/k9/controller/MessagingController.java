@@ -564,15 +564,13 @@ public class MessagingController implements Runnable {
                 Store localStore = account.getLocalStore();
                 localFolders = localStore.getPersonalNamespaces(false);
 
-                List<? extends Folder> folderArray = localFolders;
-
                 if (refreshRemote || localFolders.isEmpty()) {
                     doRefreshRemote(account, listener);
                     return;
                 }
 
                 for (MessagingListener l : getListeners(listener)) {
-                    l.listFolders(account, folderArray);
+                    l.listFolders(account, localFolders);
                 }
             } catch (Exception e) {
                 for (MessagingListener l : getListeners(listener)) {
@@ -644,10 +642,9 @@ public class MessagingController implements Runnable {
                     }
 
                     localFolders = localStore.getPersonalNamespaces(false);
-                    List<? extends Folder> folderArray = localFolders;
 
                     for (MessagingListener l : getListeners(listener)) {
-                        l.listFolders(account, folderArray);
+                        l.listFolders(account, localFolders);
                     }
                     for (MessagingListener l : getListeners(listener)) {
                         l.listFoldersFinished(account);
