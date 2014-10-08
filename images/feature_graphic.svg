@@ -643,15 +643,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70615234"
-     inkscape:cx="625.90617"
-     inkscape:cy="143.38201"
+     inkscape:zoom="0.50547819"
+     inkscape:cx="258.65116"
+     inkscape:cy="87.51217"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g4975"
      showgrid="false"
-     inkscape:window-width="1863"
-     inkscape:window-height="1176"
-     inkscape:window-x="1657"
+     inkscape:window-width="1543"
+     inkscape:window-height="876"
+     inkscape:window-x="57"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
   <metadata
@@ -1443,32 +1443,37 @@
       <text
          sodipodi:linespacing="125%"
          id="text4525"
-         y="799.81116"
+         y="761.07953"
          x="450.51819"
          style="font-size:114.50419617px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Roboto;-inkscape-font-specification:Roboto"
-           y="799.81116"
+           y="761.07953"
            x="450.51819"
            id="tspan4527"
            sodipodi:role="line">K-9 Mail</tspan><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Roboto;-inkscape-font-specification:Roboto"
            id="tspan4529"
-           y="942.94141"
+           y="904.20978"
            x="450.51819"
            sodipodi:role="line" /></text>
       <text
          sodipodi:linespacing="125%"
          id="text4531"
-         y="879.44202"
-         x="452.26846"
-         style="font-size:58.27551651px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         y="858.75409"
+         x="669.15448"
+         style="font-size:57.21923065000000008px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#333333;fill-opacity:1;stroke:none;font-family:Sans"
          xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-family:Roboto;-inkscape-font-specification:Roboto Condensed"
-           y="879.44202"
-           x="452.26846"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:center;text-anchor:middle;font-family:Roboto;-inkscape-font-specification:Roboto Condensed;fill:#333333"
+           y="858.75409"
+           x="669.15448"
            id="tspan4533"
-           sodipodi:role="line">Advanced Emailing</tspan></text>
+           sodipodi:role="line">Advanced Email</tspan><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:center;text-anchor:middle;font-family:Roboto;-inkscape-font-specification:Roboto Condensed;fill:#333333"
+           y="930.27814"
+           x="669.15448"
+           sodipodi:role="line"
+           id="tspan3295">for Android</tspan></text>
     </g>
   </g>
 </svg>
