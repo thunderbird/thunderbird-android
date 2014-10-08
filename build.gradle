@@ -60,6 +60,16 @@ android {
         }
     }
 
+    signingConfigs {
+        release
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
     // Do not abort build if lint finds errors
     lintOptions {
         abortOnError false
@@ -85,4 +95,17 @@ task checkstyle(type: Checkstyle) {
 task testsOnJVM(type: GradleBuild, dependsOn: assemble) {
     buildFile = 'tests-on-jvm/build.gradle'
     tasks = ['test']
+}
+
+if (project.hasProperty('keyAlias')) {
+    android.signingConfigs.release.keyAlias = keyAlias
+}
+if (project.hasProperty('keyPassword')) {
+    android.signingConfigs.release.keyPassword = keyPassword
+}
+if (project.hasProperty('storeFile')) {
+    android.signingConfigs.release.storeFile = file(storeFile)
+}
+if (project.hasProperty('storePassword')) {
+    android.signingConfigs.release.storePassword = storePassword
 }
