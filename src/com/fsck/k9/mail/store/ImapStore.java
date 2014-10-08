@@ -1356,9 +1356,9 @@ public class ImapStore extends Store {
         private List<Message> search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException {
 
             checkOpen(); //only need READ access
-            ArrayList<Message> messages = new ArrayList<Message>();
+            List<Message> messages = new ArrayList<Message>();
             try {
-                ArrayList<Long> uids = new ArrayList<Long>();
+                List<Long> uids = new ArrayList<Long>();
                 List<ImapResponse> responses = searcher.search(); //
                 for (ImapResponse response : responses) {
                     if (response.mTag == null) {
@@ -1403,11 +1403,11 @@ public class ImapStore extends Store {
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
         throws MessagingException {
             checkOpen(); //only need READ access
-            ArrayList<Message> messages = new ArrayList<Message>();
+            List<Message> messages = new ArrayList<Message>();
             try {
                 if (uids == null) {
                     List<ImapResponse> responses = executeSimpleCommand("UID SEARCH 1:* NOT DELETED");
-                    ArrayList<String> tempUids = new ArrayList<String>();
+                    List<String> tempUids = new ArrayList<String>();
                     for (ImapResponse response : responses) {
                         if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
                             for (int i = 1, count = response.size(); i < count; i++) {
@@ -1441,7 +1441,7 @@ public class ImapStore extends Store {
             }
             checkOpen(); //only need READ access
             List<String> uids = new ArrayList<String>(messages.length);
-            HashMap<String, Message> messageMap = new HashMap<String, Message>();
+            Map<String, Message> messageMap = new HashMap<String, Message>();
             for (Message msg : messages) {
                 String uid = msg.getUid();
                 uids.add(uid);
@@ -2089,7 +2089,7 @@ public class ImapStore extends Store {
         }
 
         private String combineFlags(Flag[] flags) {
-            ArrayList<String> flagNames = new ArrayList<String>();
+            List<String> flagNames = new ArrayList<String>();
             for (Flag flag : flags) {
                 if (flag == Flag.SEEN) {
                     flagNames.add("\\Seen");
@@ -2733,10 +2733,10 @@ public class ImapStore extends Store {
             return response;
         }
 
-        protected ArrayList<ImapResponse> readStatusResponse(String tag,
+        protected List<ImapResponse> readStatusResponse(String tag,
                 String commandToLog, UntaggedHandler untaggedHandler)
                 throws IOException, MessagingException {
-            ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
+            List<ImapResponse> responses = new ArrayList<ImapResponse>();
             ImapResponse response;
             do {
                 response = mParser.readResponse();
@@ -3552,9 +3552,9 @@ public class ImapStore extends Store {
     }
 
     private static class FetchBodyCallback implements ImapResponseParser.IImapResponseCallback {
-        private HashMap<String, Message> mMessageMap;
+        private Map<String, Message> mMessageMap;
 
-        FetchBodyCallback(HashMap<String, Message> mesageMap) {
+        FetchBodyCallback(Map<String, Message> mesageMap) {
             mMessageMap = mesageMap;
         }
 

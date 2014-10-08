@@ -48,7 +48,7 @@ public class ImapUtility {
      *         list is returned.
      */
     public static List<String> getImapSequenceValues(String set) {
-        ArrayList<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<String>();
         if (set != null) {
             String[] setItems = set.split(",");
             for (String item : setItems) {
@@ -83,7 +83,7 @@ public class ImapUtility {
      *         is returned.
      */
     public static List<String> getImapRangeValues(String range) {
-        ArrayList<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<String>();
         try {
             if (range != null) {
                 int colonPos = range.indexOf(':');

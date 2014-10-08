@@ -181,7 +181,7 @@ public class Account implements BaseAccount {
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
     private SortType mSortType;
-    private HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
+    private Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
     private ShowPictures mShowPictures;
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;

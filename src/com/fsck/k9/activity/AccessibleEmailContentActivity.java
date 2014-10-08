@@ -17,6 +17,8 @@
 package com.fsck.k9.activity;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -40,7 +42,7 @@ public class AccessibleEmailContentActivity extends ListActivity {
         Spanned parsedHtml = Html.fromHtml(htmlSource, null, null);
         String[] rawListItems = parsedHtml.toString().split("\n");
 
-        ArrayList<String> cleanedList = new ArrayList<String>();
+        List<String> cleanedList = new ArrayList<String>();
         for (String rawListItem : rawListItems) {
             if (rawListItem.trim().length() > 0) {
                 addToCleanedList(cleanedList, rawListItem);
@@ -53,7 +55,7 @@ public class AccessibleEmailContentActivity extends ListActivity {
         setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems));
     }
 
-    private void addToCleanedList(ArrayList<String> cleanedList, String line) {
+    private void addToCleanedList(List<String> cleanedList, String line) {
         if (line.length() < 80) {
             cleanedList.add(line);
         } else {

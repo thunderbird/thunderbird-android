@@ -660,7 +660,7 @@ public class FolderList extends K9ListActivity {
     }
 
     class FolderListAdapter extends BaseAdapter implements Filterable {
-        private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
+        private List<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter();
 
@@ -1176,7 +1176,7 @@ public class FolderList extends K9ListActivity {
 
                 Locale locale = Locale.getDefault();
                 if ((searchTerm == null) || (searchTerm.length() == 0)) {
-                    ArrayList<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
+                    List<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
                     results.values = list;
                     results.count = list.size();
                 } else {
@@ -1184,7 +1184,7 @@ public class FolderList extends K9ListActivity {
                     final String[] words = searchTermString.split(" ");
                     final int wordCount = words.length;
 
-                    final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
+                    final List<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
 
                     for (final FolderInfoHolder value : mFolders) {
                         if (value.displayName == null) {

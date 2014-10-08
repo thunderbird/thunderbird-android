@@ -299,8 +299,8 @@ public class MessagingController implements Runnable {
          *
          * @return Message reference list
          */
-        public ArrayList<MessageReference> getAllMessageRefs() {
-            ArrayList<MessageReference> refs = new ArrayList<MessageReference>();
+        public List<MessageReference> getAllMessageRefs() {
+            List<MessageReference> refs = new ArrayList<MessageReference>();
             for (Message m : messages) {
                 refs.add(m.makeMessageReference());
             }
@@ -993,7 +993,7 @@ public class MessagingController implements Runnable {
             localFolder.open(Folder.OPEN_MODE_RW);
             localFolder.updateLastUid();
             Message[] localMessages = localFolder.getMessages(null);
-            HashMap<String, Message> localUidMap = new HashMap<String, Message>();
+            Map<String, Message> localUidMap = new HashMap<String, Message>();
             for (Message message : localMessages) {
                 localUidMap.put(message.getUid(), message);
             }
@@ -1059,8 +1059,8 @@ public class MessagingController implements Runnable {
             }
 
             Message[] remoteMessageArray = EMPTY_MESSAGE_ARRAY;
-            final ArrayList<Message> remoteMessages = new ArrayList<Message>();
-            HashMap<String, Message> remoteUidMap = new HashMap<String, Message>();
+            final List<Message> remoteMessages = new ArrayList<Message>();
+            Map<String, Message> remoteUidMap = new HashMap<String, Message>();
 
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " + remoteMessageCount);
@@ -1117,7 +1117,7 @@ public class MessagingController implements Runnable {
              * Remove any messages that are in the local store but no longer on the remote store or are too old
              */
             if (account.syncRemoteDeletions()) {
-                ArrayList<Message> destroyMessages = new ArrayList<Message>();
+                List<Message> destroyMessages = new ArrayList<Message>();
                 for (Message localMessage : localMessages) {
                     if (remoteUidMap.get(localMessage.getUid()) == null) {
                         destroyMessages.add(localMessage);
@@ -1280,7 +1280,7 @@ public class MessagingController implements Runnable {
             Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
         }
 
-        ArrayList<Message> syncFlagMessages = new ArrayList<Message>();
+        List<Message> syncFlagMessages = new ArrayList<Message>();
         List<Message> unsyncedMessages = new ArrayList<Message>();
         final AtomicInteger newMessages = new AtomicInteger(0);
 
@@ -1300,8 +1300,8 @@ public class MessagingController implements Runnable {
             Log.d(K9.LOG_TAG, "SYNC: Have " + unsyncedMessages.size() + " unsynced messages");
 
         messages.clear();
-        final ArrayList<Message> largeMessages = new ArrayList<Message>();
-        final ArrayList<Message> smallMessages = new ArrayList<Message>();
+        final List<Message> largeMessages = new ArrayList<Message>();
+        final List<Message> smallMessages = new ArrayList<Message>();
         if (!unsyncedMessages.isEmpty()) {
 
             /*
@@ -1416,7 +1416,7 @@ public class MessagingController implements Runnable {
                                             final Folder remoteFolder,
                                             final Account account,
                                             final List<Message> unsyncedMessages,
-                                            final ArrayList<Message> syncFlagMessages,
+                                            final List<Message> syncFlagMessages,
                                             boolean flagSyncOnly) throws MessagingException {
         if (message.isSet(Flag.DELETED)) {
             syncFlagMessages.add(message);
@@ -1475,8 +1475,8 @@ public class MessagingController implements Runnable {
     private void fetchUnsyncedMessages(final Account account, final Folder remoteFolder,
                                        final LocalFolder localFolder,
                                        List<Message> unsyncedMessages,
-                                       final ArrayList<Message> smallMessages,
-                                       final ArrayList<Message> largeMessages,
+                                       final List<Message> smallMessages,
+                                       final List<Message> largeMessages,
                                        final AtomicInteger progress,
                                        final int todo,
                                        FetchProfile fp) throws MessagingException {
@@ -1611,7 +1611,7 @@ public class MessagingController implements Runnable {
 
     private void downloadSmallMessages(final Account account, final Folder remoteFolder,
                                        final LocalFolder localFolder,
-                                       ArrayList<Message> smallMessages,
+                                       List<Message> smallMessages,
                                        final AtomicInteger progress,
                                        final int unreadBeforeStart,
                                        final AtomicInteger newMessages,
@@ -1690,7 +1690,7 @@ public class MessagingController implements Runnable {
 
     private void downloadLargeMessages(final Account account, final Folder remoteFolder,
                                        final LocalFolder localFolder,
-                                       ArrayList<Message> largeMessages,
+                                       List<Message> largeMessages,
                                        final AtomicInteger progress,
                                        final int unreadBeforeStart,
                                        final AtomicInteger newMessages,
@@ -1815,7 +1815,7 @@ public class MessagingController implements Runnable {
 
     private void refreshLocalMessageFlags(final Account account, final Folder remoteFolder,
                                           final LocalFolder localFolder,
-                                          ArrayList<Message> syncFlagMessages,
+                                          List<Message> syncFlagMessages,
                                           final AtomicInteger progress,
                                           final int todo
                                          ) throws MessagingException {
@@ -1952,7 +1952,7 @@ public class MessagingController implements Runnable {
 
     private void processPendingCommandsSynchronous(Account account) throws MessagingException {
         LocalStore localStore = account.getLocalStore();
-        ArrayList<PendingCommand> commands = localStore.getPendingCommands();
+        List<PendingCommand> commands = localStore.getPendingCommands();
 
         int progress = 0;
         int todo = commands.size();
@@ -4863,7 +4863,7 @@ public class MessagingController implements Runnable {
 
         String accountDescr = (account.getDescription() != null) ?
                 account.getDescription() : account.getEmail();
-        final ArrayList<MessageReference> allRefs = data.getAllMessageRefs();
+        final List<MessageReference> allRefs = data.getAllMessageRefs();
 
         if (platformSupportsExtendedNotifications() && !privacyModeEnabled) {
             if (newMessages > 1) {
@@ -5424,7 +5424,7 @@ public class MessagingController implements Runnable {
         return taccount.getDescription() + ":" + tfolderName;
     }
     static class MemorizingListener extends MessagingListener {
-        HashMap<String, Memory> memories = new HashMap<String, Memory>(31);
+        Map<String, Memory> memories = new HashMap<String, Memory>(31);
 
         Memory getMemory(Account account, String folderName) {
             Memory memory = memories.get(getMemoryKey(account, folderName));

@@ -5,14 +5,15 @@ import com.fsck.k9.K9;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 public class Editor implements android.content.SharedPreferences.Editor {
     private Storage storage;
-    private HashMap<String, String> changes = new HashMap<String, String>();
-    private ArrayList<String> removals = new ArrayList<String>();
+    private Map<String, String> changes = new HashMap<String, String>();
+    private List<String> removals = new ArrayList<String>();
     private boolean removeAll = false;
 
     Map<String, String> snapshot = new HashMap<String, String>();

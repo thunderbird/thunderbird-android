@@ -293,7 +293,7 @@ public class WebDavStore extends Store {
     private String mCachedLoginUrl;
 
     private Folder mSendFolder = null;
-    private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
+    private Map<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
 
     public WebDavStore(Account account) throws MessagingException {
@@ -363,7 +363,7 @@ public class WebDavStore extends Store {
 
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
-        LinkedList<Folder> folderList = new LinkedList<Folder>();
+        List<Folder> folderList = new LinkedList<Folder>();
         /**
          * We have to check authentication here so we have the proper URL stored
          */
@@ -373,13 +373,13 @@ public class WebDavStore extends Store {
          *  Firstly we get the "special" folders list (inbox, outbox, etc)
          *  and setup the account accordingly
          */
-        HashMap<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<String, String>();
         DataSet dataset = new DataSet();
         headers.put("Depth", "0");
         headers.put("Brief", "t");
         dataset = processRequest(this.mUrl, "PROPFIND", getSpecialFoldersList(), headers);
 
-        HashMap<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
+        Map<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
         String folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_INBOX_FOLDER));
         if (folderName != null) {
             mAccount.setAutoExpandFolderName(folderName);
@@ -825,7 +825,7 @@ public class WebDavStore extends Store {
         request.setMethod("POST");
 
         // Build the POST data.
-        ArrayList<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
         pairs.add(new BasicNameValuePair("destination", mUrl));
         pairs.add(new BasicNameValuePair("username", mUsername));
         pairs.add(new BasicNameValuePair("password", mPassword));
@@ -1037,7 +1037,7 @@ public class WebDavStore extends Store {
     }
 
     private InputStream sendRequest(String url, String method, StringEntity messageBody,
-                                    HashMap<String, String> headers, boolean tryAuth)
+                                    Map<String, String> headers, boolean tryAuth)
     throws MessagingException {
         InputStream istream = null;
 
@@ -1115,12 +1115,12 @@ public class WebDavStore extends Store {
      * not all requests will need them. There are two signatures to support calls that don't require parsing of the
      * response.
      */
-    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers)
+    private DataSet processRequest(String url, String method, String messageBody, Map<String, String> headers)
     throws MessagingException {
         return processRequest(url, method, messageBody, headers, true);
     }
 
-    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers,
+    private DataSet processRequest(String url, String method, String messageBody, Map<String, String> headers,
                                    boolean needsParsing)
     throws MessagingException {
         DataSet dataset = new DataSet();
@@ -1294,8 +1294,8 @@ public class WebDavStore extends Store {
                 uids[i] = messages[i].getUid();
             }
             String messageBody = "";
-            HashMap<String, String> headers = new HashMap<String, String>();
-            HashMap<String, String> uidToUrl = getMessageUrls(uids);
+            Map<String, String> headers = new HashMap<String, String>();
+            Map<String, String> uidToUrl = getMessageUrls(uids);
             String[] urls = new String[uids.length];
 
             for (int i = 0, count = uids.length; i < count; i++) {
@@ -1320,7 +1320,7 @@ public class WebDavStore extends Store {
         private int getMessageCount(boolean read) throws MessagingException {
             String isRead;
             int messageCount = 0;
-            HashMap<String, String> headers = new HashMap<String, String>();
+            Map<String, String> headers = new HashMap<String, String>();
             String messageBody;
 
             if (read) {
@@ -1406,9 +1406,9 @@ public class WebDavStore extends Store {
         @Override
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
-            ArrayList<Message> messages = new ArrayList<Message>();
+            List<Message> messages = new ArrayList<Message>();
             String[] uids;
-            HashMap<String, String> headers = new HashMap<String, String>();
+            Map<String, String> headers = new HashMap<String, String>();
             int uidsLength = -1;
 
             String messageBody;
@@ -1434,7 +1434,7 @@ public class WebDavStore extends Store {
             DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
             uids = dataset.getUids();
-            HashMap<String, String> uidToUrl = dataset.getUidToUrl();
+            Map<String, String> uidToUrl = dataset.getUidToUrl();
             uidsLength = uids.length;
 
             for (int i = 0; i < uidsLength; i++) {
@@ -1460,7 +1460,7 @@ public class WebDavStore extends Store {
 
         @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
-            ArrayList<Message> messageList = new ArrayList<Message>();
+            List<Message> messageList = new ArrayList<Message>();
             Message[] messages;
 
             if (uids == null ||
@@ -1485,8 +1485,8 @@ public class WebDavStore extends Store {
             return messages;
         }
 
-        private HashMap<String, String> getMessageUrls(String[] uids) throws MessagingException {
-            HashMap<String, String> headers = new HashMap<String, String>();
+        private Map<String, String> getMessageUrls(String[] uids) throws MessagingException {
+            Map<String, String> headers = new HashMap<String, String>();
             String messageBody;
 
             /** Retrieve and parse the XML entity for our messages */
@@ -1494,7 +1494,7 @@ public class WebDavStore extends Store {
             headers.put("Brief", "t");
 
             DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-            HashMap<String, String> uidToUrl = dataset.getUidToUrl();
+            Map<String, String> uidToUrl = dataset.getUidToUrl();
 
             return uidToUrl;
         }
@@ -1650,7 +1650,7 @@ public class WebDavStore extends Store {
          * we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          */
         private void fetchFlags(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
-            HashMap<String, String> headers = new HashMap<String, String>();
+            Map<String, String> headers = new HashMap<String, String>();
             String messageBody = "";
             Message[] messages = new Message[20];
             String[] uids;
@@ -1689,7 +1689,7 @@ public class WebDavStore extends Store {
                 throw new MessagingException("Data Set from request was null");
             }
 
-            HashMap<String, Boolean> uidToReadStatus = dataset.getUidToRead();
+            Map<String, Boolean> uidToReadStatus = dataset.getUidToRead();
 
             for (int i = 0, count = messages.length; i < count; i++) {
                 if (!(messages[i] instanceof WebDavMessage)) {
@@ -1720,7 +1720,7 @@ public class WebDavStore extends Store {
          */
         private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener)
         throws MessagingException {
-            HashMap<String, String> headers = new HashMap<String, String>();
+            Map<String, String> headers = new HashMap<String, String>();
             String messageBody = "";
             String[] uids;
             Message[] messages = new Message[10];
@@ -1802,8 +1802,8 @@ public class WebDavStore extends Store {
 
         private void markServerMessagesRead(String[] uids, boolean read) throws MessagingException {
             String messageBody = "";
-            HashMap<String, String> headers = new HashMap<String, String>();
-            HashMap<String, String> uidToUrl = getMessageUrls(uids);
+            Map<String, String> headers = new HashMap<String, String>();
+            Map<String, String> uidToUrl = getMessageUrls(uids);
             String[] urls = new String[uids.length];
 
             for (int i = 0, count = uids.length; i < count; i++) {
@@ -1818,10 +1818,10 @@ public class WebDavStore extends Store {
         }
 
         private void deleteServerMessages(String[] uids) throws MessagingException {
-            HashMap<String, String> uidToUrl = getMessageUrls(uids);
+            Map<String, String> uidToUrl = getMessageUrls(uids);
 
             for (String uid : uids) {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                Map<String, String> headers = new HashMap<String, String>();
                 String url = uidToUrl.get(uid);
                 String destinationUrl = generateDeleteUrl(url);
 
@@ -2005,7 +2005,7 @@ public class WebDavStore extends Store {
 
         public void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
             String[] headers = envelope.getHeaderList();
-            HashMap<String, String> messageHeaders = envelope.getMessageHeaders();
+            Map<String, String> messageHeaders = envelope.getMessageHeaders();
 
             for (String header : headers) {
                 String headerValue = messageHeaders.get(header);
@@ -2107,8 +2107,8 @@ public class WebDavStore extends Store {
 
         private boolean mReadStatus = false;
         private String mUid = "";
-        private HashMap<String, String> mMessageHeaders = new HashMap<String, String>();
-        private ArrayList<String> mHeaders = new ArrayList<String>();
+        private Map<String, String> mMessageHeaders = new HashMap<String, String>();
+        private List<String> mHeaders = new ArrayList<String>();
 
         public void addHeader(String field, String value) {
             String headerName = HEADER_MAPPINGS.get(field);
@@ -2119,7 +2119,7 @@ public class WebDavStore extends Store {
             }
         }
 
-        public HashMap<String, String> getMessageHeaders() {
+        public Map<String, String> getMessageHeaders() {
             return this.mMessageHeaders;
         }
 
@@ -2151,9 +2151,9 @@ public class WebDavStore extends Store {
      * depending on the accessor calls made.
      */
     public class DataSet {
-        private HashMap<String, HashMap<String, String>> mData = new HashMap<String, HashMap<String, String>>();
+        private Map<String, Map<String, String>> mData = new HashMap<String, Map<String, String>>();
         private StringBuilder mUid = new StringBuilder();
-        private HashMap<String, String> mTempData = new HashMap<String, String>();
+        private Map<String, String> mTempData = new HashMap<String, String>();
 
         public void addValue(String value, String tagName) {
             if (tagName.equals("uid")) {
@@ -2185,9 +2185,9 @@ public class WebDavStore extends Store {
         /**
          * Returns a hashmap of special folder name => special folder url
          */
-        public HashMap<String, String> getSpecialFolderToUrl() {
+        public Map<String, String> getSpecialFolderToUrl() {
             // We return the first (and only) map
-            for (HashMap<String, String> folderMap : mData.values()) {
+            for (Map<String, String> folderMap : mData.values()) {
                 return folderMap;
             }
             return new HashMap<String, String>();
@@ -2196,11 +2196,11 @@ public class WebDavStore extends Store {
         /**
          * Returns a hashmap of Message UID => Message Url
          */
-        public HashMap<String, String> getUidToUrl() {
-            HashMap<String, String> uidToUrl = new HashMap<String, String>();
+        public Map<String, String> getUidToUrl() {
+            Map<String, String> uidToUrl = new HashMap<String, String>();
 
             for (String uid : mData.keySet()) {
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
                 String value = data.get("href");
                 if (value != null &&
                         !value.equals("")) {
@@ -2214,11 +2214,11 @@ public class WebDavStore extends Store {
         /**
          * Returns a hashmap of Message UID => Read Status
          */
-        public HashMap<String, Boolean> getUidToRead() {
-            HashMap<String, Boolean> uidToRead = new HashMap<String, Boolean>();
+        public Map<String, Boolean> getUidToRead() {
+            Map<String, Boolean> uidToRead = new HashMap<String, Boolean>();
 
             for (String uid : mData.keySet()) {
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
                 String readStatus = data.get("read");
                 if (readStatus != null && !readStatus.equals("")) {
                     Boolean value = !readStatus.equals("0");
@@ -2238,10 +2238,10 @@ public class WebDavStore extends Store {
          * Returns an array of all hrefs (urls) that were received
          */
         public String[] getHrefs() {
-            ArrayList<String> hrefs = new ArrayList<String>();
+            List<String> hrefs = new ArrayList<String>();
 
             for (String uid : mData.keySet()) {
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
                 String href = data.get("href");
                 hrefs.add(href);
             }
@@ -2253,7 +2253,7 @@ public class WebDavStore extends Store {
          * Return an array of all Message UIDs that were received
          */
         public String[] getUids() {
-            ArrayList<String> uids = new ArrayList<String>();
+            List<String> uids = new ArrayList<String>();
 
             for (String uid : mData.keySet()) {
                 uids.add(uid);
@@ -2274,7 +2274,7 @@ public class WebDavStore extends Store {
             int messageCount = 0;
 
             for (String uid : mData.keySet()) {
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
                 String count = data.get("visiblecount");
 
                 if (count != null &&
@@ -2288,14 +2288,14 @@ public class WebDavStore extends Store {
         }
 
         /**
-         * Returns a HashMap of message UID => ParsedMessageEnvelope
+         * Returns a Map of message UID => ParsedMessageEnvelope
          */
-        public HashMap<String, ParsedMessageEnvelope> getMessageEnvelopes() {
-            HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
+        public Map<String, ParsedMessageEnvelope> getMessageEnvelopes() {
+            Map<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
 
             for (String uid : mData.keySet()) {
                 ParsedMessageEnvelope envelope = new ParsedMessageEnvelope();
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
 
                 if (data != null) {
                     for (Map.Entry<String, String> entry : data.entrySet()) {

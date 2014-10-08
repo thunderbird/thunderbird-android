@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
@@ -263,7 +264,7 @@ public class K9 extends Application {
     private static boolean mHideTimeZone = false;
 
     private static SortType mSortType;
-    private static HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
+    private static Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
 
     private static boolean sUseBackgroundAsUnreadIndicator = true;
     private static boolean sThreadedViewEnabled = true;

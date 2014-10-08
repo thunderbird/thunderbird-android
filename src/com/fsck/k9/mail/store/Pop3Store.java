@@ -196,7 +196,7 @@ public class Pop3Store extends Store {
     private String mClientCertificateAlias;
     private AuthType mAuthType;
     private ConnectionSecurity mConnectionSecurity;
-    private HashMap<String, Folder> mFolders = new HashMap<String, Folder>();
+    private Map<String, Folder> mFolders = new HashMap<String, Folder>();
     private Pop3Capabilities mCapabilities;
 
     /**
@@ -274,9 +274,9 @@ public class Pop3Store extends Store {
         private Socket mSocket;
         private InputStream mIn;
         private OutputStream mOut;
-        private HashMap<String, Pop3Message> mUidToMsgMap = new HashMap<String, Pop3Message>();
-        private HashMap<Integer, Pop3Message> mMsgNumToMsgMap = new HashMap<Integer, Pop3Message>();
-        private HashMap<String, Integer> mUidToMsgNumMap = new HashMap<String, Integer>();
+        private Map<String, Pop3Message> mUidToMsgMap = new HashMap<String, Pop3Message>();
+        private Map<Integer, Pop3Message> mMsgNumToMsgMap = new HashMap<Integer, Pop3Message>();
+        private Map<String, Integer> mUidToMsgNumMap = new HashMap<String, Integer>();
         private String mName;
         private int mMessageCount;
 
@@ -577,7 +577,7 @@ public class Pop3Store extends Store {
             } catch (IOException ioe) {
                 throw new MessagingException("getMessages", ioe);
             }
-            ArrayList<Message> messages = new ArrayList<Message>();
+            List<Message> messages = new ArrayList<Message>();
             int i = 0;
             for (int msgNum = start; msgNum <= end; msgNum++) {
                 Pop3Message message = mMsgNumToMsgMap.get(msgNum);
@@ -686,7 +686,7 @@ public class Pop3Store extends Store {
             }
         }
 
-        private void indexUids(ArrayList<String> uids)
+        private void indexUids(List<String> uids)
         throws MessagingException, IOException {
             Set<String> unindexedUids = new HashSet<String>();
             for (String uid : uids) {
@@ -764,7 +764,7 @@ public class Pop3Store extends Store {
             if (messages == null || messages.length == 0) {
                 return;
             }
-            ArrayList<String> uids = new ArrayList<String>();
+            List<String> uids = new ArrayList<String>();
             for (Message message : messages) {
                 uids.add(message.getUid());
             }
@@ -988,7 +988,7 @@ public class Pop3Store extends Store {
                  */
                 return;
             }
-            ArrayList<String> uids = new ArrayList<String>();
+            List<String> uids = new ArrayList<String>();
             try {
                 for (Message message : messages) {
                     uids.add(message.getUid());
