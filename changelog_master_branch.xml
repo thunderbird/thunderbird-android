@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.100" versioncode="23000">
+        <change>Removed SSL/TLS session caching because it was causing problems</change>
+    </release>
     <release version="4.905" versioncode="21008">
         <change>Dropped support for Android versions older than 4.0.3</change>
         <change>Added ability to use client certificates for authentication</change>
