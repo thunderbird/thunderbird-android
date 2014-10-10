@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.001" versioncode="22001" >
+        <change>Removed SSL/TLS session caching because it was causing problems</change>
+    </release>
     <release version="5.000" versioncode="22000" >
         <change>Updated version to 5.000</change>
     </release>
