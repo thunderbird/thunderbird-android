@@ -41,6 +41,11 @@ android {
     compileSdkVersion 19
     buildToolsVersion '20.0.0'
 
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 17
+    }
+
     dexOptions {
         preDexLibraries = rootProject.ext.preDexLibs
     }
