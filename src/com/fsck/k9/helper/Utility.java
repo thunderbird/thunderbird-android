@@ -708,34 +708,17 @@ public class Utility {
         return sMainThreadHandler;
     }
 
+    /**
+     * @return the supplied list casted to Serializable.
+     *
+     * See https://github.com/k9mail/k9mail_pgp_mime/pull/12#issuecomment-58767082
+     */
     public static <T> Serializable toSerializableList(List<T> list) {
-        return isExpectedCollectionClass(Serializable.class, list) ?
-                (Serializable) list :
-                new ArrayList<T>(list);
-    }
-
-    public static <T> ArrayList<T> toArrayList(List<T> list) {
-        return isExpectedCollectionClass(ArrayList.class, list) ?
-                (ArrayList<T>) list :
-                new ArrayList<T>(list);
+        return (Serializable) list;
     }
 
     public static <T, U> Serializable toSerializableConcurrentMap(ConcurrentMap<T, U> map) {
-        return isExpectedCollectionClass(ConcurrentHashMap.class, map) ?
-                (ConcurrentHashMap<T, U>) map :
-                new ConcurrentHashMap<T, U>(map);
-    }
-
-    private static boolean isExpectedCollectionClass(Class<?> expected, Object instance) {
-//        Objects.requireNonNull(instance); // uncomment when project moves to API level 19
-        if (!expected.isInstance(instance)) {
-            Log.w(K9.LOG_TAG, "Instance class [" + instance.getClass().getName()
-                    + "] would be better as [" + expected.getName()
-                    + "] for performance, to prevent collection copying");
-            return false;
-        } else {
-            return true;
-        }
+        return (ConcurrentHashMap<T, U>) map;
     }
 
 }

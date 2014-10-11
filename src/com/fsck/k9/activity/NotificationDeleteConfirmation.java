@@ -27,6 +27,9 @@ public class NotificationDeleteConfirmation extends Activity {
     private Account mAccount;
     private List<MessageReference> mMessageRefs;
 
+    /**
+     * @param refs must be Serializable
+     */
     public static PendingIntent getIntent(Context context, final Account account, final List<MessageReference> refs) {
         Intent i = new Intent(context, NotificationDeleteConfirmation.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());

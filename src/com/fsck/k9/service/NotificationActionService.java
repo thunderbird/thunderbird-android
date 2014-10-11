@@ -37,6 +37,9 @@ public class NotificationActionService extends CoreService {
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    /**
+     * @param refs must be Serializable
+     */
     public static PendingIntent getReadAllMessagesIntent(Context context, final Account account,
             final List<MessageReference> refs) {
         Intent i = new Intent(context, NotificationActionService.class);
@@ -55,6 +58,9 @@ public class NotificationActionService extends CoreService {
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    /**
+     * @param refs must be Serializable
+     */
     public static Intent getDeleteAllMessagesIntent(Context context, final Account account,
             final List<MessageReference> refs) {
         Intent i = new Intent(context, NotificationActionService.class);

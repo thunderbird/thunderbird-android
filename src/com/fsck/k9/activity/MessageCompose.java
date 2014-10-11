@@ -1155,7 +1155,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        List<Attachment> attachments = new ArrayList<Attachment>();
+        ArrayList<Attachment> attachments = new ArrayList<Attachment>();
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
             View view = mAttachments.getChildAt(i);
             Attachment attachment = (Attachment) view.getTag();
@@ -1164,7 +1164,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         outState.putInt(STATE_KEY_NUM_ATTACHMENTS_LOADING, mNumAttachmentsLoading);
         outState.putString(STATE_KEY_WAITING_FOR_ATTACHMENTS, mWaitingForAttachments.name());
-        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, Utility.toArrayList(attachments));
+        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, attachments);
         outState.putBoolean(STATE_KEY_CC_SHOWN, mCcWrapper.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccWrapper.getVisibility() == View.VISIBLE);
         outState.putSerializable(STATE_KEY_QUOTED_TEXT_MODE, mQuotedTextMode);
