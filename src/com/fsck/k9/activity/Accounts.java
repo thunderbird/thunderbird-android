@@ -122,7 +122,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
     private static final int DIALOG_NO_FILE_MANAGER = 4;
 
-    private ConcurrentMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
+    /*
+     * Must be serializable hence implementation class used for declaration.
+     */
+    private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
 
     private ConcurrentMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
 
@@ -497,7 +500,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             outState.putString(SELECTED_CONTEXT_ACCOUNT, mSelectedContextAccount.getUuid());
         }
         outState.putSerializable(STATE_UNREAD_COUNT, mUnreadMessageCount);
-        outState.putSerializable(ACCOUNT_STATS, Utility.toSerializableConcurrentMap(accountStats));
+        outState.putSerializable(ACCOUNT_STATS, accountStats);
     }
 
     private StorageManager.StorageListener storageListener = new StorageManager.StorageListener() {

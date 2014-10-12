@@ -708,17 +708,4 @@ public class Utility {
         return sMainThreadHandler;
     }
 
-    /**
-     * @return the supplied list casted to Serializable.
-     *
-     * See https://github.com/k9mail/k9mail_pgp_mime/pull/12#issuecomment-58767082
-     */
-    public static <T> Serializable toSerializableList(List<T> list) {
-        return (Serializable) list;
-    }
-
-    public static <T, U> Serializable toSerializableConcurrentMap(ConcurrentMap<T, U> map) {
-        return (ConcurrentHashMap<T, U>) map;
-    }
-
 }

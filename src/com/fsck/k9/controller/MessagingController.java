@@ -2,6 +2,7 @@ package com.fsck.k9.controller;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -295,17 +296,14 @@ public class MessagingController implements Runnable {
         }
 
         /**
-         * Gets a list of references for all pending messages for the notification.
-         *
-         * @return Message reference list
+         * Adds a list of references for all pending messages for the notification to the supplied
+         * List.
          */
-        public List<MessageReference> getAllMessageRefs() {
-            List<MessageReference> refs = new ArrayList<MessageReference>();
+        public void supplyAllMessageRefs(List<MessageReference> refs) {
             for (Message m : messages) {
                 refs.add(m.makeMessageReference());
             }
             refs.addAll(droppedMessages);
-            return refs;
         }
 
         /**
@@ -4863,7 +4861,8 @@ public class MessagingController implements Runnable {
 
         String accountDescr = (account.getDescription() != null) ?
                 account.getDescription() : account.getEmail();
-        final List<MessageReference> allRefs = data.getAllMessageRefs();
+        final ArrayList<MessageReference> allRefs = new ArrayList<MessageReference>();
+        data.supplyAllMessageRefs(allRefs);
 
         if (platformSupportsExtendedNotifications() && !privacyModeEnabled) {
             if (newMessages > 1) {

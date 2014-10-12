@@ -1,5 +1,6 @@
 package com.fsck.k9.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,14 +38,11 @@ public class NotificationActionService extends CoreService {
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    /**
-     * @param refs must be Serializable
-     */
-    public static PendingIntent getReadAllMessagesIntent(Context context, final Account account,
-            final List<MessageReference> refs) {
+    public static <T extends List<MessageReference> & Serializable> PendingIntent getReadAllMessagesIntent(Context context, final Account account,
+            final T refs) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_LIST, Utility.toSerializableList(refs));
+        i.putExtra(EXTRA_MESSAGE_LIST, refs);
         i.setAction(READ_ALL_ACTION);
 
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -58,14 +56,11 @@ public class NotificationActionService extends CoreService {
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    /**
-     * @param refs must be Serializable
-     */
-    public static Intent getDeleteAllMessagesIntent(Context context, final Account account,
-            final List<MessageReference> refs) {
+    public static <T extends List<MessageReference> & Serializable> Intent getDeleteAllMessagesIntent(Context context, final Account account,
+            final T refs) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_LIST, Utility.toSerializableList(refs));
+        i.putExtra(EXTRA_MESSAGE_LIST, refs);
         i.setAction(DELETE_ALL_ACTION);
 
         return i;
