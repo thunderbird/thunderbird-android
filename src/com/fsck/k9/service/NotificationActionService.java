@@ -38,8 +38,7 @@ public class NotificationActionService extends CoreService {
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    public static <T extends List<MessageReference> & Serializable> PendingIntent getReadAllMessagesIntent(Context context, final Account account,
-            final T refs) {
+    public static PendingIntent getReadAllMessagesIntent(Context context, final Account account, final Serializable refs) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
@@ -56,8 +55,7 @@ public class NotificationActionService extends CoreService {
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    public static <T extends List<MessageReference> & Serializable> Intent getDeleteAllMessagesIntent(Context context, final Account account,
-            final T refs) {
+    public static Intent getDeleteAllMessagesIntent(Context context, final Account account, final Serializable refs) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
