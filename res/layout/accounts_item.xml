@@ -12,19 +12,26 @@
     <View
             android:id="@+id/chip"
             android:layout_height="match_parent"
-            android:layout_width="8dip"
+            android:layout_width="6dip"
             android:background="#ff336699"
             android:layout_marginRight="8dip"
             />
 
 
-    <LinearLayout
+   <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center_vertical"
-            android:paddingLeft="1dip">
+            android:paddingLeft="15dip">
+
+        <View
+            android:id="@+id/chip"
+            android:layout_width="0dip"
+            android:layout_height="0dp"
+            android:layout_marginRight="8dip"
+            android:background="#ff336699" />
 
         <TextView
                 android:id="@+id/description"
@@ -49,32 +56,30 @@
     <include layout="@layout/accounts_folders_icons"/>
 
     <LinearLayout
-            android:id="@+id/folder_button_wrapper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+        android:id="@+id/folder_button_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dip"
-                android:layout_marginRight="4dip"
-                android:background="?attr/compatDividerVertical" />
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dip"
+            android:layout_marginRight="4dip"
+            android:background="?attr/compatDividerVertical" />
 
         <ImageButton
-                android:id="@+id/folders"
-                android:gravity="center_vertical"
-                android:focusable="false"
-                android:layout_marginRight="3dip"
-                android:src="?attr/iconFolder"
-                android:background="?attr/compatSelectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:padding="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                />
-
+            android:id="@+id/folders"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="3dip"
+            android:background="?attr/compatSelectableItemBackground"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="?attr/iconFolder" />
     </LinearLayout>
+
 </LinearLayout>
