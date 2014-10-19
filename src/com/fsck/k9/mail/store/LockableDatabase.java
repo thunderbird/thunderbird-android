@@ -99,7 +99,7 @@ public class LockableDatabase {
             }
 
             try {
-                openOrCreateDataspace(mApplication);
+                openOrCreateDataspace();
             } catch (UnavailableStorageException e) {
                 Log.e(K9.LOG_TAG, "Unable to open DB on mount", e);
             }
@@ -346,7 +346,7 @@ public class LockableDatabase {
                 mStorageProviderId = newProviderId;
 
                 // re-initialize this class with the new Uri
-                openOrCreateDataspace(mApplication);
+                openOrCreateDataspace();
             } finally {
                 unlockWrite(newProviderId);
             }
@@ -358,7 +358,7 @@ public class LockableDatabase {
     public void open() throws UnavailableStorageException {
         lockWrite();
         try {
-            openOrCreateDataspace(mApplication);
+            openOrCreateDataspace();
         } finally {
             unlockWrite();
         }
@@ -367,21 +367,20 @@ public class LockableDatabase {
 
     /**
      *
-     * @param application
      * @throws UnavailableStorageException
      */
-    protected void openOrCreateDataspace(final Application application) throws UnavailableStorageException {
+    private void openOrCreateDataspace() throws UnavailableStorageException {
 
         lockWrite();
         try {
             final File databaseFile = prepareStorage(mStorageProviderId);
             try {
-                doOpenOrCreateDb(application, databaseFile);
+                doOpenOrCreateDb(databaseFile);
             } catch (SQLiteException e) {
                 // try to gracefully handle DB corruption - see issue 2537
                 Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
                 databaseFile.delete();
-                doOpenOrCreateDb(application, databaseFile);
+                doOpenOrCreateDb(databaseFile);
             }
             if (mDb.getVersion() != mSchemaDefinition.getVersion()) {
                 mSchemaDefinition.doDbUpgrade(mDb);
@@ -391,10 +390,10 @@ public class LockableDatabase {
         }
     }
 
-    private void doOpenOrCreateDb(final Application application, final File databaseFile) {
+    private void doOpenOrCreateDb(final File databaseFile) {
         if (StorageManager.InternalStorageProvider.ID.equals(mStorageProviderId)) {
             // internal storage
-            mDb = application.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE,
+            mDb = mApplication.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE,
                     null);
         } else {
             // external storage
@@ -487,7 +486,7 @@ public class LockableDatabase {
             }
 
             if (recreate) {
-                openOrCreateDataspace(mApplication);
+                openOrCreateDataspace();
             } else {
                 // stop waiting for mount/unmount events
                 getStorageManager().removeListener(mStorageListener);
