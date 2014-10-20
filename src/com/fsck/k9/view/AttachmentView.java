@@ -287,9 +287,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
              * Abort early if there's no place to save the attachment. We don't want to spend
              * the time downloading it and then abort.
              */
-            Toast.makeText(mContext,
-                    mContext.getString(R.string.message_view_status_attachment_not_saved),
-                    Toast.LENGTH_SHORT).show();
+            String message = mContext.getString(R.string.message_view_status_attachment_not_saved);
+            displayMessageToUser(message);
             return;
         }
         if (mMessage != null) {
@@ -309,22 +308,24 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             mContext.startActivity(intent);
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Could not display attachment of type " + contentType, e);
-            Toast toast = Toast.makeText(mContext, mContext.getString(R.string.message_view_no_viewer, contentType),
-                    Toast.LENGTH_LONG);
-            toast.show();
+
+            String message = mContext.getString(R.string.message_view_no_viewer, contentType);
+            displayMessageToUser(message);
         }
     }
 
     public void attachmentSaved(final String filename) {
-        Toast.makeText(mContext, String.format(
-                        mContext.getString(R.string.message_view_status_attachment_saved), filename),
-                Toast.LENGTH_LONG).show();
+        String message = mContext.getString(R.string.message_view_status_attachment_saved, filename);
+        displayMessageToUser(message);
     }
 
     public void attachmentNotSaved() {
-        Toast.makeText(mContext,
-                mContext.getString(R.string.message_view_status_attachment_not_saved),
-                Toast.LENGTH_LONG).show();
+        String message = mContext.getString(R.string.message_view_status_attachment_not_saved);
+        displayMessageToUser(message);
+    }
+
+    private void displayMessageToUser(String message) {
+        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
     }
 
     public void setCallback(AttachmentFileDownloadCallback callback) {
