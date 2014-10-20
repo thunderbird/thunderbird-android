@@ -10,7 +10,6 @@ import org.apache.commons.io.IOUtils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -55,7 +54,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     public String name;
     public String contentType;
     public long size;
-    public ImageView iconView;
 
     private AttachmentFileDownloadCallback callback;
 
@@ -310,37 +308,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
     }
 
-    /**
-     * Check the {@link PackageManager} if the phone has an application
-     * installed to view this type of attachment.
-     * If not, {@link #viewButton} is disabled.
-     * This should be done in any place where
-     * attachment.viewButton.setEnabled(enabled); is called.
-     * This method is safe to be called from the UI-thread.
-     */
-    public void checkViewable() {
-        if (viewButton.getVisibility() == View.GONE) {
-            // nothing to do
-            return;
-        }
-        if (!viewButton.isEnabled()) {
-            // nothing to do
-            return;
-        }
-        try {
-            Uri uri = AttachmentProvider.getAttachmentUriForViewing(mAccount, part.getAttachmentId());
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(uri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            if (intent.resolveActivity(mContext.getPackageManager()) == null) {
-                viewButton.setEnabled(false);
-            }
-            // currently we do not cache re result.
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Cannot resolve activity to determine if we shall show the 'view'-button for an attachment", e);
-        }
-    }
-
     public void attachmentSaved(final String filename) {
         Toast.makeText(mContext, String.format(
                            mContext.getString(R.string.message_view_status_attachment_saved), filename),
@@ -352,9 +319,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
                        mContext.getString(R.string.message_view_status_attachment_not_saved),
                        Toast.LENGTH_LONG).show();
     }
-    public AttachmentFileDownloadCallback getCallback() {
-        return callback;
-    }
+
     public void setCallback(AttachmentFileDownloadCallback callback) {
         this.callback = callback;
     }
