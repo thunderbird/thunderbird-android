@@ -1,5 +1,6 @@
 package com.fsck.k9.view;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,6 +43,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
 
+
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
     private Context mContext;
     public Button viewButton;
@@ -61,10 +63,12 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         super(context, attrs, defStyle);
         mContext = context;
     }
+
     public AttachmentView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
     }
+
     public AttachmentView(Context context) {
         super(context);
         mContext = context;
@@ -79,6 +83,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
          * and save the reference to the attachment view for later.
          * in his onActivityResult he can get the saved reference and
          * call the saveFile method of AttachmentView
+         *
          * @param view
          */
         public void showFileBrowser(AttachmentView caller);
@@ -86,7 +91,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     /**
      * Populates this view with information about the attachment.
-     *
      * <p>
      * This method also decides which attachments are displayed when the "show attachments" button
      * is pressed, and which attachments are only displayed after the "show more attachments"
@@ -103,7 +107,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      * @return {@code true} for a regular attachment. {@code false}, otherwise.
      *
      * @throws MessagingException
-     *          In case of an error
+     *         In case of an error
      */
     public boolean populateFromPart(Part inputPart, Message message, Account account,
             MessagingController controller, MessagingListener listener) throws MessagingException {
@@ -216,10 +220,10 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         Bitmap icon = null;
         try {
             InputStream input = mContext.getContentResolver().openInputStream(
-                           AttachmentProvider.getAttachmentThumbnailUri(mAccount,
-                                   part.getAttachmentId(),
-                                   62,
-                                   62));
+                    AttachmentProvider.getAttachmentThumbnailUri(mAccount,
+                            part.getAttachmentId(),
+                            62,
+                            62));
             icon = BitmapFactory.decodeStream(input);
             input.close();
         } catch (Exception e) {
@@ -232,7 +236,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     private void onViewButtonClicked() {
         if (mMessage != null) {
-            mController.loadAttachment(mAccount, mMessage, part, new Object[] { false, this }, mListener);
+            mController.loadAttachment(mAccount, mMessage, part, new Object[] {false, this}, mListener);
         }
     }
 
@@ -243,7 +247,9 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     /**
      * Writes the attachment onto the given path
-     * @param directory: the base dir where the file should be saved.
+     *
+     * @param directory
+     *         the base dir where the file should be saved.
      */
     public void writeFile(File directory) {
         try {
@@ -282,8 +288,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
              * the time downloading it and then abort.
              */
             Toast.makeText(mContext,
-                           mContext.getString(R.string.message_view_status_attachment_not_saved),
-                           Toast.LENGTH_SHORT).show();
+                    mContext.getString(R.string.message_view_status_attachment_not_saved),
+                    Toast.LENGTH_SHORT).show();
             return;
         }
         if (mMessage != null) {
@@ -303,25 +309,25 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             mContext.startActivity(intent);
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Could not display attachment of type " + contentType, e);
-            Toast toast = Toast.makeText(mContext, mContext.getString(R.string.message_view_no_viewer, contentType), Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(mContext, mContext.getString(R.string.message_view_no_viewer, contentType),
+                    Toast.LENGTH_LONG);
             toast.show();
         }
     }
 
     public void attachmentSaved(final String filename) {
         Toast.makeText(mContext, String.format(
-                           mContext.getString(R.string.message_view_status_attachment_saved), filename),
-                       Toast.LENGTH_LONG).show();
+                        mContext.getString(R.string.message_view_status_attachment_saved), filename),
+                Toast.LENGTH_LONG).show();
     }
 
     public void attachmentNotSaved() {
         Toast.makeText(mContext,
-                       mContext.getString(R.string.message_view_status_attachment_not_saved),
-                       Toast.LENGTH_LONG).show();
+                mContext.getString(R.string.message_view_status_attachment_not_saved),
+                Toast.LENGTH_LONG).show();
     }
 
     public void setCallback(AttachmentFileDownloadCallback callback) {
         this.callback = callback;
     }
-
 }
