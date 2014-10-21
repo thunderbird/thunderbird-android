@@ -45,18 +45,20 @@ import org.apache.commons.io.IOUtils;
 
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
     private Context context;
-    private Button viewButton;
-    private Button downloadButton;
-    private LocalAttachmentBodyPart part;
     private Message message;
+    private LocalAttachmentBodyPart part;
     private Account account;
     private MessagingController controller;
     private MessagingListener listener;
+    private AttachmentFileDownloadCallback callback;
+
+    private Button viewButton;
+    private Button downloadButton;
+
     private String name;
     private String contentType;
     private long size;
 
-    private AttachmentFileDownloadCallback callback;
 
     public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -71,17 +73,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     public AttachmentView(Context context) {
         super(context);
         this.context = context;
-    }
-
-
-    public interface AttachmentFileDownloadCallback {
-        /**
-         * This method is called to ask the user to pick a directory to save the attachment to.
-         * <p/>
-         * After the user has selected a directory, the implementation of this interface has to call
-         * {@link #writeFile(File)} on the object supplied as argument in order for the attachment to be saved.
-         */
-        public void pickDirectoryToSaveAttachmentTo(AttachmentView caller);
     }
 
     public void setButtonsEnabled(boolean enabled) {
@@ -214,7 +205,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
     }
 
-
     private void onSaveButtonClicked() {
         boolean isExternalStorageMounted = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
         if (!isExternalStorageMounted) {
@@ -226,6 +216,10 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         if (message != null) {
             controller.loadAttachment(account, message, part, new Object[] {true, this}, listener);
         }
+    }
+
+    public void writeFile() {
+        writeFile(new File(K9.getAttachmentDefaultPath()));
     }
 
     /**
@@ -250,10 +244,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             }
             attachmentNotSaved();
         }
-    }
-
-    public void writeFile() {
-        writeFile(new File(K9.getAttachmentDefaultPath()));
     }
 
     public void showFile() {
@@ -291,6 +281,18 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     public void setCallback(AttachmentFileDownloadCallback callback) {
         this.callback = callback;
     }
+
+
+    public interface AttachmentFileDownloadCallback {
+        /**
+         * This method is called to ask the user to pick a directory to save the attachment to.
+         * <p/>
+         * After the user has selected a directory, the implementation of this interface has to call
+         * {@link #writeFile(File)} on the object supplied as argument in order for the attachment to be saved.
+         */
+        public void pickDirectoryToSaveAttachmentTo(AttachmentView caller);
+    }
+
 
     private class LoadAndDisplayThumbnailAsyncTask extends AsyncTask<Void, Void, Bitmap> {
         private final ImageView thumbnail;
