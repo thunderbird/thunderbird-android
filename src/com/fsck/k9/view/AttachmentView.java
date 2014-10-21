@@ -152,7 +152,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         contentType = MimeUtility.getMimeTypeForViewing(part.getMimeType(), name);
         TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
         TextView attachmentInfo = (TextView) findViewById(R.id.attachment_info);
-        final ImageView attachmentIcon = (ImageView) findViewById(R.id.attachment_icon);
         viewButton = (Button) findViewById(R.id.view);
         downloadButton = (Button) findViewById(R.id.download);
         if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
@@ -174,20 +173,9 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
         attachmentName.setText(name);
         attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
-        new AsyncTask<Void, Void, Bitmap>() {
-            protected Bitmap doInBackground(Void... asyncTaskArgs) {
-                Bitmap previewIcon = getPreviewIcon();
-                return previewIcon;
-            }
 
-            protected void onPostExecute(Bitmap previewIcon) {
-                if (previewIcon != null) {
-                    attachmentIcon.setImageBitmap(previewIcon);
-                } else {
-                    attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
-                }
-            }
-        }.execute();
+        ImageView thumbnail = (ImageView) findViewById(R.id.attachment_icon);
+        new LoadAndDisplayThumbnailAsyncTask(thumbnail).execute();
 
         return firstClassAttachment;
     }
@@ -214,24 +202,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
 
         return false;
-    }
-
-    private Bitmap getPreviewIcon() {
-        Bitmap icon = null;
-        try {
-            InputStream input = mContext.getContentResolver().openInputStream(
-                    AttachmentProvider.getAttachmentThumbnailUri(mAccount,
-                            part.getAttachmentId(),
-                            62,
-                            62));
-            icon = BitmapFactory.decodeStream(input);
-            input.close();
-        } catch (Exception e) {
-            /*
-             * We don't care what happened, we just return null for the preview icon.
-             */
-        }
-        return icon;
     }
 
     private void onViewButtonClicked() {
@@ -330,5 +300,42 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     public void setCallback(AttachmentFileDownloadCallback callback) {
         this.callback = callback;
+    }
+
+    private class LoadAndDisplayThumbnailAsyncTask extends AsyncTask<Void, Void, Bitmap> {
+        private final ImageView thumbnail;
+
+        public LoadAndDisplayThumbnailAsyncTask(ImageView thumbnail) {
+            this.thumbnail = thumbnail;
+        }
+
+        protected Bitmap doInBackground(Void... asyncTaskArgs) {
+            return getPreviewIcon();
+        }
+
+        private Bitmap getPreviewIcon() {
+            Bitmap icon = null;
+            try {
+                InputStream input = mContext.getContentResolver().openInputStream(
+                        AttachmentProvider.getAttachmentThumbnailUri(mAccount,
+                                part.getAttachmentId(),
+                                62,
+                                62));
+                icon = BitmapFactory.decodeStream(input);
+                input.close();
+            } catch (Exception e) {
+                // We don't care what happened, we just return null for the preview icon.
+            }
+
+            return icon;
+        }
+
+        protected void onPostExecute(Bitmap previewIcon) {
+            if (previewIcon != null) {
+                thumbnail.setImageBitmap(previewIcon);
+            } else {
+                thumbnail.setImageResource(R.drawable.attached_image_placeholder);
+            }
+        }
     }
 }
