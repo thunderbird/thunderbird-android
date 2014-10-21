@@ -607,8 +607,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     public void setAttachmentsEnabled(boolean enabled) {
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
             AttachmentView attachment = (AttachmentView) mAttachments.getChildAt(i);
-            attachment.viewButton.setEnabled(enabled);
-            attachment.downloadButton.setEnabled(enabled);
+            attachment.setButtonsEnabled(enabled);
         }
     }
 

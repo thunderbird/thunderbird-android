@@ -46,16 +46,16 @@ import com.fsck.k9.provider.AttachmentProvider;
 
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
     private Context mContext;
-    public Button viewButton;
-    public Button downloadButton;
-    public LocalAttachmentBodyPart part;
+    private Button viewButton;
+    private Button downloadButton;
+    private LocalAttachmentBodyPart part;
     private Message mMessage;
     private Account mAccount;
     private MessagingController mController;
     private MessagingListener mListener;
-    public String name;
-    public String contentType;
-    public long size;
+    private String name;
+    private String contentType;
+    private long size;
 
     private AttachmentFileDownloadCallback callback;
 
@@ -87,6 +87,11 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
          * @param view
          */
         public void showFileBrowser(AttachmentView caller);
+    }
+
+    public void setButtonsEnabled(boolean enabled) {
+        viewButton.setEnabled(enabled);
+        downloadButton.setEnabled(enabled);
     }
 
     /**
