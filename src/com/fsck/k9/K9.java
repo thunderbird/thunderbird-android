@@ -282,33 +282,6 @@ public class K9 extends Application {
      */
     private static boolean sDatabasesUpToDate = false;
 
-
-    /**
-     * The MIME type(s) of attachments we're willing to view.
-     */
-    public static final String[] ACCEPTABLE_ATTACHMENT_VIEW_TYPES = new String[] {
-        "*/*",
-    };
-
-    /**
-     * The MIME type(s) of attachments we're not willing to view.
-     */
-    public static final String[] UNACCEPTABLE_ATTACHMENT_VIEW_TYPES = new String[] {
-    };
-
-    /**
-     * The MIME type(s) of attachments we're willing to download to SD.
-     */
-    public static final String[] ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
-        "*/*",
-    };
-
-    /**
-     * The MIME type(s) of attachments we're not willing to download to SD.
-     */
-    public static final String[] UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
-    };
-
     /**
      * For use when displaying that no folder is selected
      */
