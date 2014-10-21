@@ -111,8 +111,23 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      */
     public boolean populateFromPart(Part inputPart, Message message, Account account,
             MessagingController controller, MessagingListener listener) throws MessagingException {
-        boolean firstClassAttachment = true;
+
         part = (LocalAttachmentBodyPart) inputPart;
+        mMessage = message;
+        mAccount = account;
+        mController = controller;
+        mListener = listener;
+
+        boolean firstClassAttachment = extractAttachmentInformation(part);
+
+        displayAttachmentInformation();
+
+        return firstClassAttachment;
+    }
+
+    //TODO: extract this code to a helper class
+    private boolean extractAttachmentInformation(Part part) throws MessagingException {
+        boolean firstClassAttachment = true;
 
         contentType = MimeUtility.unfoldAndDecode(part.getContentType());
         String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
@@ -137,11 +152,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             firstClassAttachment = false;
         }
 
-        mAccount = account;
-        mMessage = message;
-        mController = controller;
-        mListener = listener;
-
         String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
         if (sizeParam != null) {
             try {
@@ -150,10 +160,15 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
 
         contentType = MimeUtility.getMimeTypeForViewing(part.getMimeType(), name);
+        return firstClassAttachment;
+    }
+
+    private void displayAttachmentInformation() {
         TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
         TextView attachmentInfo = (TextView) findViewById(R.id.attachment_info);
         viewButton = (Button) findViewById(R.id.view);
         downloadButton = (Button) findViewById(R.id.download);
+
         if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
                 || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES))) {
             viewButton.setVisibility(View.GONE);
@@ -176,8 +191,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
         ImageView thumbnail = (ImageView) findViewById(R.id.attachment_icon);
         new LoadAndDisplayThumbnailAsyncTask(thumbnail).execute();
-
-        return firstClassAttachment;
     }
 
     @Override
