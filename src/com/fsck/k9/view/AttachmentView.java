@@ -98,16 +98,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      * Inline attachments with content ID and unnamed attachments fall into the second category.
      * </p>
      *
-     * @param inputPart
-     * @param message
-     * @param account
-     * @param controller
-     * @param listener
-     *
-     * @return {@code true} for a regular attachment. {@code false}, otherwise.
-     *
-     * @throws MessagingException
-     *         In case of an error
+     * @return {@code true} for a regular attachment. {@code false} for attachments that should be initially hidden.
      */
     public boolean populateFromPart(Part inputPart, Message message, Account account,
             MessagingController controller, MessagingListener listener) throws MessagingException {
@@ -229,10 +220,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     /**
-     * Writes the attachment onto the given path
-     *
-     * @param directory
-     *         the base dir where the file should be saved.
+     * Saves the attachment as file in the given directory
      */
     public void writeFile(File directory) {
         try {
@@ -255,10 +243,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
     }
 
-    /**
-     * saves the file to the defaultpath setting in the config, or if the config
-     * is not set => to the Environment
-     */
     public void writeFile() {
         writeFile(new File(K9.getAttachmentDefaultPath()));
     }
@@ -283,7 +267,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     public void showFile() {
         Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId());
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        // We explicitly set the ContentType in addition to the URI because some attachment viewers (such as Polaris office 3.0.x) choke on documents without a mime type
+        // We explicitly set the content type in addition to the URI because some attachment viewers
+        // (such as Polaris office 3.0.x) choke on documents without a MIME type.
         intent.setDataAndType(uri, contentType);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 
