@@ -44,14 +44,14 @@ import org.apache.commons.io.IOUtils;
 
 
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
-    private Context mContext;
+    private Context context;
     private Button viewButton;
     private Button downloadButton;
     private LocalAttachmentBodyPart part;
-    private Message mMessage;
-    private Account mAccount;
-    private MessagingController mController;
-    private MessagingListener mListener;
+    private Message message;
+    private Account account;
+    private MessagingController controller;
+    private MessagingListener listener;
     private String name;
     private String contentType;
     private long size;
@@ -60,17 +60,17 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mContext = context;
+        this.context = context;
     }
 
     public AttachmentView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
+        this.context = context;
     }
 
     public AttachmentView(Context context) {
         super(context);
-        mContext = context;
+        this.context = context;
     }
 
 
@@ -113,10 +113,10 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             MessagingController controller, MessagingListener listener) throws MessagingException {
 
         part = (LocalAttachmentBodyPart) inputPart;
-        mMessage = message;
-        mAccount = account;
-        mController = controller;
-        mListener = listener;
+        this.message = message;
+        this.account = account;
+        this.controller = controller;
+        this.listener = listener;
 
         boolean firstClassAttachment = extractAttachmentInformation(part);
 
@@ -187,7 +187,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         downloadButton.setOnLongClickListener(this);
 
         attachmentName.setText(name);
-        attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
+        attachmentInfo.setText(SizeFormatter.formatSize(context, size));
 
         ImageView thumbnail = (ImageView) findViewById(R.id.attachment_icon);
         new LoadAndDisplayThumbnailAsyncTask(thumbnail).execute();
@@ -218,8 +218,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     private void onViewButtonClicked() {
-        if (mMessage != null) {
-            mController.loadAttachment(mAccount, mMessage, part, new Object[] {false, this}, mListener);
+        if (message != null) {
+            controller.loadAttachment(account, message, part, new Object[] {false, this}, listener);
         }
     }
 
@@ -238,15 +238,15 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         try {
             String filename = Utility.sanitizeFilename(name);
             File file = Utility.createUniqueFile(directory, filename);
-            Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
-            InputStream in = mContext.getContentResolver().openInputStream(uri);
+            Uri uri = AttachmentProvider.getAttachmentUri(account, part.getAttachmentId());
+            InputStream in = context.getContentResolver().openInputStream(uri);
             OutputStream out = new FileOutputStream(file);
             IOUtils.copy(in, out);
             out.flush();
             out.close();
             in.close();
             attachmentSaved(file.toString());
-            new MediaScannerNotifier(mContext, file);
+            new MediaScannerNotifier(context, file);
         } catch (IOException ioe) {
             if (K9.DEBUG) {
                 Log.e(K9.LOG_TAG, "Error saving attachment", ioe);
@@ -270,45 +270,45 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
              * Abort early if there's no place to save the attachment. We don't want to spend
              * the time downloading it and then abort.
              */
-            String message = mContext.getString(R.string.message_view_status_attachment_not_saved);
+            String message = context.getString(R.string.message_view_status_attachment_not_saved);
             displayMessageToUser(message);
             return;
         }
-        if (mMessage != null) {
-            mController.loadAttachment(mAccount, mMessage, part, new Object[] {true, this}, mListener);
+        if (message != null) {
+            controller.loadAttachment(account, message, part, new Object[] {true, this}, listener);
         }
     }
 
 
     public void showFile() {
-        Uri uri = AttachmentProvider.getAttachmentUriForViewing(mAccount, part.getAttachmentId());
+        Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId());
         Intent intent = new Intent(Intent.ACTION_VIEW);
         // We explicitly set the ContentType in addition to the URI because some attachment viewers (such as Polaris office 3.0.x) choke on documents without a mime type
         intent.setDataAndType(uri, contentType);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 
         try {
-            mContext.startActivity(intent);
+            context.startActivity(intent);
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Could not display attachment of type " + contentType, e);
 
-            String message = mContext.getString(R.string.message_view_no_viewer, contentType);
+            String message = context.getString(R.string.message_view_no_viewer, contentType);
             displayMessageToUser(message);
         }
     }
 
     public void attachmentSaved(final String filename) {
-        String message = mContext.getString(R.string.message_view_status_attachment_saved, filename);
+        String message = context.getString(R.string.message_view_status_attachment_saved, filename);
         displayMessageToUser(message);
     }
 
     public void attachmentNotSaved() {
-        String message = mContext.getString(R.string.message_view_status_attachment_not_saved);
+        String message = context.getString(R.string.message_view_status_attachment_not_saved);
         displayMessageToUser(message);
     }
 
     private void displayMessageToUser(String message) {
-        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
     public void setCallback(AttachmentFileDownloadCallback callback) {
@@ -329,8 +329,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         private Bitmap getPreviewIcon() {
             Bitmap icon = null;
             try {
-                InputStream input = mContext.getContentResolver().openInputStream(
-                        AttachmentProvider.getAttachmentThumbnailUri(mAccount,
+                InputStream input = context.getContentResolver().openInputStream(
+                        AttachmentProvider.getAttachmentThumbnailUri(account,
                                 part.getAttachmentId(),
                                 62,
                                 62));
