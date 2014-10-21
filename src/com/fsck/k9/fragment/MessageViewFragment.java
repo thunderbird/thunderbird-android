@@ -207,7 +207,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         mMessageView.setAttachmentCallback(new AttachmentFileDownloadCallback() {
 
             @Override
-            public void showFileBrowser(final AttachmentView caller) {
+            public void pickDirectoryToSaveAttachmentTo(final AttachmentView caller) {
                 FileBrowserHelper.getInstance()
                 .showFileBrowserActivity(MessageViewFragment.this,
                                          null,

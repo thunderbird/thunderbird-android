@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.commons.io.IOUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -42,6 +40,7 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
+import org.apache.commons.io.IOUtils;
 
 
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
@@ -77,16 +76,12 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     public interface AttachmentFileDownloadCallback {
         /**
-         * this method i called by the attachmentview when
-         * he wants to show a filebrowser
-         * the provider should show the filebrowser activity
-         * and save the reference to the attachment view for later.
-         * in his onActivityResult he can get the saved reference and
-         * call the saveFile method of AttachmentView
-         *
-         * @param view
+         * This method is called to ask the user to pick a directory to save the attachment to.
+         * <p/>
+         * After the user has selected a directory, the implementation of this interface has to call
+         * {@link #writeFile(File)} on the object supplied as argument in order for the attachment to be saved.
          */
-        public void showFileBrowser(AttachmentView caller);
+        public void pickDirectoryToSaveAttachmentTo(AttachmentView caller);
     }
 
     public void setButtonsEnabled(boolean enabled) {
@@ -214,7 +209,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     @Override
     public boolean onLongClick(View view) {
         if (view.getId() == R.id.download) {
-            callback.showFileBrowser(this);
+            callback.pickDirectoryToSaveAttachmentTo(this);
             return true;
         }
 
