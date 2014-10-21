@@ -503,15 +503,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.download: {
-                ((AttachmentView)view).saveFile();
-                break;
-            }
-            case R.id.download_remainder: {
-                onDownloadRemainder();
-                break;
-            }
+        if (view.getId() == R.id.download_remainder) {
+            onDownloadRemainder();
         }
     }
 
