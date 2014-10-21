@@ -216,7 +216,16 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
 
     private void onSaveButtonClicked() {
-        saveFile();
+        boolean isExternalStorageMounted = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+        if (!isExternalStorageMounted) {
+            String message = context.getString(R.string.message_view_status_attachment_not_saved);
+            displayMessageToUser(message);
+            return;
+        }
+
+        if (message != null) {
+            controller.loadAttachment(account, message, part, new Object[] {true, this}, listener);
+        }
     }
 
     /**
@@ -246,23 +255,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     public void writeFile() {
         writeFile(new File(K9.getAttachmentDefaultPath()));
     }
-
-    public void saveFile() {
-        //TODO: Can the user save attachments on the internal filesystem or sd card only?
-        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            /*
-             * Abort early if there's no place to save the attachment. We don't want to spend
-             * the time downloading it and then abort.
-             */
-            String message = context.getString(R.string.message_view_status_attachment_not_saved);
-            displayMessageToUser(message);
-            return;
-        }
-        if (message != null) {
-            controller.loadAttachment(account, message, part, new Object[] {true, this}, listener);
-        }
-    }
-
 
     public void showFile() {
         Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId());
