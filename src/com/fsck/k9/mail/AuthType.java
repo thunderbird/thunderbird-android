@@ -33,8 +33,21 @@ public enum AuthType {
 
     CRAM_MD5(R.string.account_setup_auth_type_encrypted_password),
 
-    EXTERNAL(R.string.account_setup_auth_type_tls_client_certificate),
+    EXTERNAL(R.string.account_setup_auth_type_normal_external){
 
+        @Override
+        public void useInsecureText(boolean insecure, ArrayAdapter<AuthType> authTypesAdapter) {
+            if (insecure) {
+                mResourceId = R.string.account_setup_auth_type_insecure_external;
+            } else {
+                mResourceId = R.string.account_setup_auth_type_normal_external;
+            }
+            authTypesAdapter.notifyDataSetChanged();
+        }
+    },
+    
+    //if no authentication is to take place - e.g. the require sign in checkbox was not clicked
+    NOAUTH(0),
     /*
      * The following are obsolete authentication settings that were used with
      * SMTP. They are no longer presented to the user as options, but they may
