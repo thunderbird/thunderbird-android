@@ -44,7 +44,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private EditText mPasswordView;
     private ClientCertificateSpinner mClientCertificateSpinner;
     private TextView mPasswordLabelView;
-    private TextView mUsernameLabelView;
     private EditText mServerView;
     private EditText mPortView;
     private String mCurrentPortViewSetting;
@@ -102,7 +101,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mPasswordView = (EditText)findViewById(R.id.account_password);
         mClientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
         mPasswordLabelView = (TextView)findViewById(R.id.account_password_label);
-        mUsernameLabelView = (TextView)findViewById(R.id.account_username_label);
         mServerView = (EditText)findViewById(R.id.account_server);
         mPortView = (EditText)findViewById(R.id.account_port);
         mRequireLoginView = (CheckBox)findViewById(R.id.account_require_login);
@@ -266,18 +264,18 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         });
         
         mRequireClientCertificateView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				mRequireClientCertificateSettingsView.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-				
-				if(isChecked) {
-					mClientCertificateSpinner.chooseCertificate();
-				}
-				
-                validateFields();				
-			}
-		});
+            
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mRequireClientCertificateSettingsView.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                
+                if(isChecked) {
+                    mClientCertificateSpinner.chooseCertificate();
+                }
+                
+                validateFields();                
+            }
+        });
         
         mRequireLoginView.setOnCheckedChangeListener(this);
         mClientCertificateSpinner.setOnClientCertificateChangedListener(clientCertificateChangedListener);
@@ -330,15 +328,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         if (isAuthTypeExternal) {
             // hide password fields
-        	mUsernameView.setVisibility(View.VISIBLE);
-        	mUsernameLabelView.setVisibility(View.VISIBLE);
             mPasswordView.setVisibility(View.GONE);
             mPasswordLabelView.setVisibility(View.GONE);
         }
         else {
-            // show password fields
-        	mUsernameView.setVisibility(View.VISIBLE);
-        	mUsernameLabelView.setVisibility(View.VISIBLE);    		
+            // show password fields        
             mPasswordView.setVisibility(View.VISIBLE);
             mPasswordLabelView.setVisibility(View.VISIBLE);
         }
@@ -348,20 +342,20 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
      * Shows/hides client certificate options
      */
     private void updateViewFromConnectionSecurity() {
-    	ConnectionSecurity connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
-    	boolean isConnectionSecure = !(ConnectionSecurity.NONE == connectionSecurity);
-    	
-    	if(isConnectionSecure) {
-    		mRequireClientCertificateView.setVisibility(View.VISIBLE);
-    		if(mRequireClientCertificateView.isChecked()) {
-    			//do not show client certificate options if user does not need a client certificate
-    			mRequireClientCertificateSettingsView.setVisibility(View.VISIBLE);
-    		}
-    	}
-    	else {
-    		mRequireClientCertificateView.setVisibility(View.GONE);
-    		mRequireClientCertificateSettingsView.setVisibility(View.GONE);
-    	}
+        ConnectionSecurity connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+        boolean isConnectionSecure = !(ConnectionSecurity.NONE == connectionSecurity);
+        
+        if(isConnectionSecure) {
+            mRequireClientCertificateView.setVisibility(View.VISIBLE);
+            if(mRequireClientCertificateView.isChecked()) {
+                //do not show client certificate options if user does not need a client certificate
+                mRequireClientCertificateSettingsView.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            mRequireClientCertificateView.setVisibility(View.GONE);
+            mRequireClientCertificateSettingsView.setVisibility(View.GONE);
+        }
     }
     
     /**
@@ -465,14 +459,14 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
             authType = (AuthType) mAuthTypeView.getSelectedItem();
             if (AuthType.EXTERNAL == authType) {
-            	//nothing to do
+                //nothing to do
             } else {
                 password = mPasswordView.getText().toString();
             }
         }
         
         if(mRequireClientCertificateView.isChecked() && ConnectionSecurity.NONE != securityType) {
-        	clientCertificateAlias = mClientCertificateSpinner.getAlias();
+            clientCertificateAlias = mClientCertificateSpinner.getAlias();
         }
 
         String newHost = mServerView.getText().toString();

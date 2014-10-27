@@ -109,12 +109,12 @@ public class SmtpTransport extends Transport {
                         password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                     }
                 } else if (userInfoParts.length == 4) {
-                	authType = AuthType.valueOf(userInfoParts[2]);
-                	username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                	if (authType != AuthType.EXTERNAL) {
-                		password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                	}
-                	clientCertificateAlias = URLDecoder.decode(userInfoParts[3], "UTF-8");
+                    authType = AuthType.valueOf(userInfoParts[2]);
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                    if (authType != AuthType.EXTERNAL) {
+                        password = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    }
+                    clientCertificateAlias = URLDecoder.decode(userInfoParts[3], "UTF-8");
                 }
                 
             } catch (UnsupportedEncodingException enc) {
@@ -381,8 +381,8 @@ public class SmtpTransport extends Transport {
                     break;
                     
                 case NOAUTH:
-                	//authentication not needed - nothing to do
-                	break;
+                    //authentication not needed - nothing to do
+                    break;
 
                 /*
                  * AUTOMATIC is an obsolete option which is unavailable to users,

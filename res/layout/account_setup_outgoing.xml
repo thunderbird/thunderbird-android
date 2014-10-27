@@ -75,7 +75,6 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/account_username_label"
                     android:text="@string/account_setup_outgoing_username_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
