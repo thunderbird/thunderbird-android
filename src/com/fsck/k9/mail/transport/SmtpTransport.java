@@ -34,13 +34,11 @@ public class SmtpTransport extends Transport {
     /**
      * Decodes a SmtpTransport URI.
      * 
-     * NOTE: In contrast to ImapStore and Pop3Store, the authType is appended at the end!
-     *
      * <p>Possible forms:</p>
      * <pre>
-     * smtp://user:password:auth@server:port ConnectionSecurity.NONE
-     * smtp+tls+://user:password:auth@server:port ConnectionSecurity.STARTTLS_REQUIRED
-     * smtp+ssl+://user:password:auth@server:port ConnectionSecurity.SSL_TLS_REQUIRED
+     * smtp://user:password:auth:clientcert@server:port ConnectionSecurity.NONE
+     * smtp+tls+://user:password:auth:clientcert@server:port ConnectionSecurity.STARTTLS_REQUIRED
+     * smtp+ssl+://user:password:auth:clientcert@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
     public static ServerSettings decodeUri(String uri) {
@@ -102,7 +100,7 @@ public class SmtpTransport extends Transport {
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                     password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 } else if (userInfoParts.length == 3) {
-                    // NOTE: In SmptTransport URIs, the authType comes last!
+                    // NOTE: In SmtpTransport URIs, the authType comes in the third position!
                     authType = AuthType.valueOf(userInfoParts[2]);
                     username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                     if (authType == AuthType.EXTERNAL) {
@@ -110,7 +108,15 @@ public class SmtpTransport extends Transport {
                     } else {
                         password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                     }
+                } else if (userInfoParts.length == 4) {
+                    authType = AuthType.valueOf(userInfoParts[2]);
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                    if (authType != AuthType.EXTERNAL) {
+                        password = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    }
+                    clientCertificateAlias = URLDecoder.decode(userInfoParts[3], "UTF-8");
                 }
+                
             } catch (UnsupportedEncodingException enc) {
                 // This shouldn't happen since the encoding is hardcoded to UTF-8
                 throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
@@ -167,12 +173,12 @@ public class SmtpTransport extends Transport {
         // NOTE: authType is append at last item, in contrast to ImapStore and Pop3Store!
         if (authType != null) {
             if (AuthType.EXTERNAL == authType) {
-                userInfo = userEnc + ":" + clientCertificateAliasEnc + ":" + authType.name();
+                userInfo = userEnc + "::" + authType.name() + clientCertificateAliasEnc;
             } else {
-                userInfo = userEnc + ":" + passwordEnc + ":" + authType.name();
+                userInfo = userEnc + ":" + passwordEnc + ":" + authType.name() + clientCertificateAliasEnc;
             }
         } else {
-            userInfo = userEnc + ":" + passwordEnc;
+            userInfo = userEnc + ":" + passwordEnc + ":"+ AuthType.NOAUTH.name() +":" + clientCertificateAliasEnc;
         }
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, null,
@@ -324,6 +330,7 @@ public class SmtpTransport extends Transport {
                 }
             }
 
+            //TODO: with the introduction of AuthType.NOAUTH the following if statement might be superfluous
             if (mUsername != null
                     && mUsername.length() > 0
                     && (mPassword != null && mPassword.length() > 0 || AuthType.EXTERNAL == mAuthType)) {
@@ -371,6 +378,10 @@ public class SmtpTransport extends Transport {
                          */
                         throw new MessagingException(K9.app.getString(R.string.auth_external_error));
                     }
+                    break;
+                    
+                case NOAUTH:
+                    //authentication not needed - nothing to do
                     break;
 
                 /*
