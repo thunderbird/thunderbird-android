@@ -96,70 +96,124 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
           + "Dcf5/G8bZe2DnavBQfML1wI5d7NUWE8CWb95SsIvFXI0qZE0oIR+axBVl9u97uaO\n"
           + "-----END CERTIFICATE-----\n";
 
-    private static final String STARFIELD_CERT =
+    private static final String STARTCOM_ORG_CERT =
             "-----BEGIN CERTIFICATE-----\n" +
-            "MIIFBzCCA++gAwIBAgICAgEwDQYJKoZIhvcNAQEFBQAwaDELMAkGA1UEBhMCVVMx\n" +
-            "JTAjBgNVBAoTHFN0YXJmaWVsZCBUZWNobm9sb2dpZXMsIEluYy4xMjAwBgNVBAsT\n" +
-            "KVN0YXJmaWVsZCBDbGFzcyAyIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTA2\n" +
-            "MTExNjAxMTU0MFoXDTI2MTExNjAxMTU0MFowgdwxCzAJBgNVBAYTAlVTMRAwDgYD\n" +
-            "VQQIEwdBcml6b25hMRMwEQYDVQQHEwpTY290dHNkYWxlMSUwIwYDVQQKExxTdGFy\n" +
-            "ZmllbGQgVGVjaG5vbG9naWVzLCBJbmMuMTkwNwYDVQQLEzBodHRwOi8vY2VydGlm\n" +
-            "aWNhdGVzLnN0YXJmaWVsZHRlY2guY29tL3JlcG9zaXRvcnkxMTAvBgNVBAMTKFN0\n" +
-            "YXJmaWVsZCBTZWN1cmUgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkxETAPBgNVBAUT\n" +
-            "CDEwNjg4NDM1MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4qddo+1m\n" +
-            "72ovKzYf3Y3TBQKgyg9eGa44cs8W2lRKy0gK9KFzEWWFQ8lbFwyaK74PmFF6YCkN\n" +
-            "bN7i6OUVTVb/kNGnpgQ/YAdKym+lEOez+FyxvCsq3AF59R019Xoog/KTc4KJrGBt\n" +
-            "y8JIwh3UBkQXPKwBR6s+cIQJC7ggCEAgh6FjGso+g9I3s5iNMj83v6G3W1/eXDOS\n" +
-            "zz4HzrlIS+LwVVAv+HBCidGTlopj2WYN5lhuuW2QvcrchGbyOY5bplhVc8tibBvX\n" +
-            "IBY7LFn1y8hWMkpQJ7pV06gBy3KpdIsMrTrlFbYq32X43or174Q7+edUZQuAvUdF\n" +
-            "pfBE2FM7voDxLwIDAQABo4IBRDCCAUAwHQYDVR0OBBYEFElLUifRG7zyoSFqYntR\n" +
-            "QnqK19VWMB8GA1UdIwQYMBaAFL9ft9HO3R+G9FtVrNzXEMIOqYjnMBIGA1UdEwEB\n" +
-            "/wQIMAYBAf8CAQAwOQYIKwYBBQUHAQEELTArMCkGCCsGAQUFBzABhh1odHRwOi8v\n" +
-            "b2NzcC5zdGFyZmllbGR0ZWNoLmNvbTBMBgNVHR8ERTBDMEGgP6A9hjtodHRwOi8v\n" +
-            "Y2VydGlmaWNhdGVzLnN0YXJmaWVsZHRlY2guY29tL3JlcG9zaXRvcnkvc2Zyb290\n" +
-            "LmNybDBRBgNVHSAESjBIMEYGBFUdIAAwPjA8BggrBgEFBQcCARYwaHR0cDovL2Nl\n" +
-            "cnRpZmljYXRlcy5zdGFyZmllbGR0ZWNoLmNvbS9yZXBvc2l0b3J5MA4GA1UdDwEB\n" +
-            "/wQEAwIBBjANBgkqhkiG9w0BAQUFAAOCAQEAhlK6sx+mXmuQpmQq/EWyrp8+s2Kv\n" +
-            "2x9nxL3KoS/HnA0hV9D4NiHOOiU+eHaz2d283vtshF8Mow0S6xE7cV+AHvEfbQ5f\n" +
-            "wezUpfdlux9MlQETsmqcC+sfnbHn7RkNvIV88xe9WWOupxoFzUfjLZZiUTIKCGhL\n" +
-            "Indf90XcYd70yysiKUQl0p8Ld3qhJnxK1w/C0Ty6DqeVmlsFChD5VV/Bl4t0zF4o\n" +
-            "aRN+0AqNnQ9gVHrEjBs1D3R6cLKCzx214orbKsayUWm/EheSYBeqPVsJ+IdlHaek\n" +
-            "KOUiAgOCRJo0Y577KM/ozS4OUiDtSss4fJ2ubnnXlSyokfOGASGRS7VApA==\n" +
+            "MIIGnzCCBIegAwIBAgIBPTANBgkqhkiG9w0BAQsFADBTMQswCQYDVQQGEwJJTDEW\n" +
+            "MBQGA1UEChMNU3RhcnRDb20gTHRkLjEsMCoGA1UEAxMjU3RhcnRDb20gQ2VydGlm\n" +
+            "aWNhdGlvbiBBdXRob3JpdHkgRzIwHhcNMDYwOTE3MTk0NjM3WhcNMzYwOTE3MTk0\n" +
+            "NjM3WjB9MQswCQYDVQQGEwJJTDEWMBQGA1UEChMNU3RhcnRDb20gTHRkLjErMCkG\n" +
+            "A1UECxMiU2VjdXJlIERpZ2l0YWwgQ2VydGlmaWNhdGUgU2lnbmluZzEpMCcGA1UE\n" +
+            "AxMgU3RhcnRDb20gQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkwggIiMA0GCSqGSIb3\n" +
+            "DQEBAQUAA4ICDwAwggIKAoICAQDBiNsJvGxGfHiflXu1M5DycmLWwTYgIiRezul3\n" +
+            "8kMKogZkpMyONvg45iPwbm2xPN1yo4UcodM9tDMr0y+v/uqwQVlntsQGfQqedIXW\n" +
+            "eUyAN3rfOQVSWff0G0ZDpNKFhdLDcfN1YjS6LIp/Ho/u7TTQEceWzVI9ujPW3U3e\n" +
+            "CztKS5/CJi/6tRYccjV3yjxd5srhJosaNnZcAdt0FCX+7bWgiA/deMotHweXMAEt\n" +
+            "cnn6RtYTKqi5pquDSR3l8u/d5AGOGAqPY1MWhWKpDhk6zLVmpsJrdAfkK+F2PrRt\n" +
+            "2PZE4XNiHzvEvqBTViVsUQn3qqvKv3b9bZvzndu/PWa8DFaqr5hIlTpL36dYUNk4\n" +
+            "dalb6kMMAv+Z6+hsTXBbKWWc3apdzK8BMewM69KN6Oqce+Zu9ydmDBpI125C4z/e\n" +
+            "IT574Q1w+2OqqGwaVLRcJXrJosmLFqa7LH4XXgVNWG4SHQHuEhANxjJ/GP/89PrN\n" +
+            "bpHoNkm+Gkhpi8KWTRoSsmkXwQqQ1vp5Iki/untp+HDH+no32NgN0nZPV/+Qt+OR\n" +
+            "0t3vwmC3Zzrd/qqc8NSLf3Iizsafl7b4r4qgEKjZ+xjGtrVcUjyJthkqcwEKDwOz\n" +
+            "EmDyei+B26Nu/yYwl/WL3YlXtq09s68rxbd2AvCl1iuahhQqcvbjM4xdCUsT37uM\n" +
+            "dBNSSwIDAQABo4IBUjCCAU4wEgYDVR0TAQH/BAgwBgEB/wIBAjAOBgNVHQ8BAf8E\n" +
+            "BAMCAQYwHQYDVR0OBBYEFE4L7xqkQFulF2mHMMo0aEPQQa7yMB8GA1UdIwQYMBaA\n" +
+            "FEvFtEBrrRyzpRxlbkY2iYcFDA62MG8GCCsGAQUFBwEBBGMwYTAqBggrBgEFBQcw\n" +
+            "AYYeaHR0cDovL29jc3Auc3RhcnRzc2wuY29tL2NhLWcyMDMGCCsGAQUFBzAChido\n" +
+            "dHRwOi8vYWlhLnN0YXJ0c3NsLmNvbS9jZXJ0cy9jYS1nMi5jZXIwMgYDVR0fBCsw\n" +
+            "KTAnoCWgI4YhaHR0cDovL2NybC5zdGFydHNzbC5jb20vY2EtZzIuY3JsMEMGA1Ud\n" +
+            "IAQ8MDowOAYEVR0gADAwMC4GCCsGAQUFBwIBFiJodHRwOi8vd3d3LnN0YXJ0c3Ns\n" +
+            "LmNvbS9wb2xpY3kucGRmMA0GCSqGSIb3DQEBCwUAA4ICAQAznlPLrlQsAomwlVYG\n" +
+            "grRHeXCXSA8K0E03a1VfCE8uhgRZg7cK3N2oEojBMoeL4VqLOeuqcd3z+xSq85ux\n" +
+            "nzPc+cABbiRb4guyQvK/dqzWjjmDcEYVk0ozCqWiBk+ec4W4HmgykQHdvhY+8zgJ\n" +
+            "SCQdfqGkhAUc1/U/iE5jAIvc3M77nFeJ6KIe3VanEBDstFzlQhJSo8pSzhL8pEYB\n" +
+            "WpudHanbFogZDJwG+GC6pE8PSnIEAHmLKXwoReSr6xoHpUDrMdwChth00gRYCz45\n" +
+            "AOrkTylIrIl8ElzzXbtjBrCFMKIctmcxXE0sVc2YT9OCCUL+m7/LKPNdXopGbe8D\n" +
+            "WL6HmFUwGLwdt8t5WzXVSxS3xAA7F6DMz05wNT68Jfdf8BlJyQ3HRiTv/T20BbNS\n" +
+            "qSVsOWspIyuaPhLR1/Sv2m4PerB5lJYA6/U/eFZ1ot8ge53XOIoPfD99LG9Sed4n\n" +
+            "F822o/dHSXAZ8X+ootoBX5tiA+9hfGqfV/JusYcv+hc7SqRdzYTbcs6si+EhRs1h\n" +
+            "KWLiufNoQMHP+lcopOUlt3Ip/p6WDZNJOJq46LgvDFj7cQ/WSkMuzA5fp6NPvjQn\n" +
+            "VmojjUTsadpRN4hbnajrO7rjJhOJBN3kcd41za7ZQ9lh429y8y5TbJWYJ4EblH4r\n" +
+            "iQVKEQgyg4mqmCOllyMYS7CGGQ==\n" +
             "-----END CERTIFICATE-----\n";
 
-    private static final String LINUX_COM_CERT =
+    private static final String STARTCOM_INTERMEDIATE_CERT =
             "-----BEGIN CERTIFICATE-----\n" +
-            "MIIFfDCCBGSgAwIBAgIHJ7DOOMo+MDANBgkqhkiG9w0BAQUFADCB3DELMAkGA1UE\n" +
-            "BhMCVVMxEDAOBgNVBAgTB0FyaXpvbmExEzARBgNVBAcTClNjb3R0c2RhbGUxJTAj\n" +
-            "BgNVBAoTHFN0YXJmaWVsZCBUZWNobm9sb2dpZXMsIEluYy4xOTA3BgNVBAsTMGh0\n" +
-            "dHA6Ly9jZXJ0aWZpY2F0ZXMuc3RhcmZpZWxkdGVjaC5jb20vcmVwb3NpdG9yeTEx\n" +
-            "MC8GA1UEAxMoU3RhcmZpZWxkIFNlY3VyZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0\n" +
-            "eTERMA8GA1UEBRMIMTA2ODg0MzUwHhcNMTExMDA1MDI1MTQyWhcNMTQxMDA1MDI1\n" +
-            "MTQyWjBPMRQwEgYDVQQKFAsqLmxpbnV4LmNvbTEhMB8GA1UECxMYRG9tYWluIENv\n" +
-            "bnRyb2wgVmFsaWRhdGVkMRQwEgYDVQQDFAsqLmxpbnV4LmNvbTCCASIwDQYJKoZI\n" +
-            "hvcNAQEBBQADggEPADCCAQoCggEBANoZR/TDp2/8LtA8k9Li55I665ssC7rHX+Wk\n" +
-            "oiGa6xBeCKTvNy9mgaUVzHwrOQlwJ2GbxFI+X0e3W2sWXUDTSxESZSEW2VZnjEn2\n" +
-            "600Qm8XMhZPvqztLRweHH8IuBNNYZHnW4Z2L4DS/Mi03EmjKZt2g3heGQbrv74m4\n" +
-            "v9/g6Jgr5ZOIwES6LUJchSWV2zcL8VYunpxnAtbi2hq1YfA9oYU82ngP40Ds7HEB\n" +
-            "9pUlzcWu9gcasWGzTvbVBZ4nA29pz5zWn1LHYfSYVSmXKU/ggfZb2nXd5/NkbWQX\n" +
-            "7B2SNH9/OVrHtFZldzD1+ddfCt1DQjXfGv7QqpAVsFTdKspPDLMCAwEAAaOCAc0w\n" +
-            "ggHJMA8GA1UdEwEB/wQFMAMBAQAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUF\n" +
-            "BwMCMA4GA1UdDwEB/wQEAwIFoDA5BgNVHR8EMjAwMC6gLKAqhihodHRwOi8vY3Js\n" +
-            "LnN0YXJmaWVsZHRlY2guY29tL3NmczEtMjAuY3JsMFkGA1UdIARSMFAwTgYLYIZI\n" +
-            "AYb9bgEHFwEwPzA9BggrBgEFBQcCARYxaHR0cDovL2NlcnRpZmljYXRlcy5zdGFy\n" +
-            "ZmllbGR0ZWNoLmNvbS9yZXBvc2l0b3J5LzCBjQYIKwYBBQUHAQEEgYAwfjAqBggr\n" +
-            "BgEFBQcwAYYeaHR0cDovL29jc3Auc3RhcmZpZWxkdGVjaC5jb20vMFAGCCsGAQUF\n" +
-            "BzAChkRodHRwOi8vY2VydGlmaWNhdGVzLnN0YXJmaWVsZHRlY2guY29tL3JlcG9z\n" +
-            "aXRvcnkvc2ZfaW50ZXJtZWRpYXRlLmNydDAfBgNVHSMEGDAWgBRJS1In0Ru88qEh\n" +
-            "amJ7UUJ6itfVVjAhBgNVHREEGjAYggsqLmxpbnV4LmNvbYIJbGludXguY29tMB0G\n" +
-            "A1UdDgQWBBQ44sIiZfPIl4PY51fh2TCZkqtToTANBgkqhkiG9w0BAQUFAAOCAQEA\n" +
-            "HFMuDtEZ+hIrIp4hnRJXUiTsc4Vaycxd5X/axDzUx+ooT3y2jBw0rcNnFhgD1T3u\n" +
-            "9zKiOLGXidvy2G/ppy/ymE+gcNqcEzfV1pKggNqStCwpEX1K8GBD46mX5qJ1RxI+\n" +
-            "QoHo/FZe7Vt+dQjHHdGWh27iVWadpBo/FJnHOsTaHewKL8+Aho0M84nxnUolYxzC\n" +
-            "9H3ViEz+mfMISLzvWicxVU71aJ4yI9JmaL1ddRppBovZHOeWshizcMVtFwcza1S0\n" +
-            "ZfajonXj48ZkXMXGWuomWxE2dGro6ZW6DdyIjTpZHCJuIvGC10J3mHIR5XaTj6mv\n" +
-            "zkVBz5DhpshQe97x6OGLOA==\n" +
+            "MIIGNDCCBBygAwIBAgIBGzANBgkqhkiG9w0BAQsFADB9MQswCQYDVQQGEwJJTDEW\n" +
+            "MBQGA1UEChMNU3RhcnRDb20gTHRkLjErMCkGA1UECxMiU2VjdXJlIERpZ2l0YWwg\n" +
+            "Q2VydGlmaWNhdGUgU2lnbmluZzEpMCcGA1UEAxMgU3RhcnRDb20gQ2VydGlmaWNh\n" +
+            "dGlvbiBBdXRob3JpdHkwHhcNMDcxMDI0MjA1NzA5WhcNMTcxMDI0MjA1NzA5WjCB\n" +
+            "jDELMAkGA1UEBhMCSUwxFjAUBgNVBAoTDVN0YXJ0Q29tIEx0ZC4xKzApBgNVBAsT\n" +
+            "IlNlY3VyZSBEaWdpdGFsIENlcnRpZmljYXRlIFNpZ25pbmcxODA2BgNVBAMTL1N0\n" +
+            "YXJ0Q29tIENsYXNzIDIgUHJpbWFyeSBJbnRlcm1lZGlhdGUgU2VydmVyIENBMIIB\n" +
+            "IjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4k85L6GMmoWtCA4IPlfyiAEh\n" +
+            "G5SpbOK426oZGEY6UqH1D/RujOqWjJaHeRNAUS8i8gyLhw9l33F0NENVsTUJm9m8\n" +
+            "H/rrQtCXQHK3Q5Y9upadXVACHJuRjZzArNe7LxfXyz6CnXPrB0KSss1ks3RVG7RL\n" +
+            "hiEs93iHMuAW5Nq9TJXqpAp+tgoNLorPVavD5d1Bik7mb2VsskDPF125w2oLJxGE\n" +
+            "d2H2wnztwI14FBiZgZl1Y7foU9O6YekO+qIw80aiuckfbIBaQKwn7UhHM7BUxkYa\n" +
+            "8zVhwQIpkFR+ZE3EMFICgtffziFuGJHXuKuMJxe18KMBL47SLoc6PbQpZ4rEAwID\n" +
+            "AQABo4IBrTCCAakwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYwHQYD\n" +
+            "VR0OBBYEFBHbI0X9VMxqcW+EigPXvvcBLyaGMB8GA1UdIwQYMBaAFE4L7xqkQFul\n" +
+            "F2mHMMo0aEPQQa7yMGYGCCsGAQUFBwEBBFowWDAnBggrBgEFBQcwAYYbaHR0cDov\n" +
+            "L29jc3Auc3RhcnRzc2wuY29tL2NhMC0GCCsGAQUFBzAChiFodHRwOi8vd3d3LnN0\n" +
+            "YXJ0c3NsLmNvbS9zZnNjYS5jcnQwWwYDVR0fBFQwUjAnoCWgI4YhaHR0cDovL3d3\n" +
+            "dy5zdGFydHNzbC5jb20vc2ZzY2EuY3JsMCegJaAjhiFodHRwOi8vY3JsLnN0YXJ0\n" +
+            "c3NsLmNvbS9zZnNjYS5jcmwwgYAGA1UdIAR5MHcwdQYLKwYBBAGBtTcBAgEwZjAu\n" +
+            "BggrBgEFBQcCARYiaHR0cDovL3d3dy5zdGFydHNzbC5jb20vcG9saWN5LnBkZjA0\n" +
+            "BggrBgEFBQcCARYoaHR0cDovL3d3dy5zdGFydHNzbC5jb20vaW50ZXJtZWRpYXRl\n" +
+            "LnBkZjANBgkqhkiG9w0BAQsFAAOCAgEAbQjxXHkqUPtUY+u8NEFcuKMDITfjvGkl\n" +
+            "LgrTuBW63grW+2AuDAZRo/066eNHs6QV4i5e4ujwPSR2dgggY7mOIIBmiDm2QRjF\n" +
+            "5CROq6zDlIdqlsFZICkuONDNFpFjaPtZRTmuK1n6gywQgCNSIrbzjPcwR/jL/wow\n" +
+            "bfwC9yGme1EeZRqvWy/HzFWacs7UMmWlRk6DTmpfPOPMJo5AxyTZCiCYQQeksV7x\n" +
+            "UAeY0kWa+y/FV+eerOPUl6yy4jRHTk7tCySxrciZwYbd6YNLmeIQoUAdRC3CH3nT\n" +
+            "B2/JYxltcgyGHMiPU3TtafZgLs8fvncv+wIF1YAF/OGqg8qmzoJ3ghM4upGdTMIu\n" +
+            "8vADdmuLC/+dnbzknxX6QEGlWA8zojLUxVhGNfIFoizu/V/DyvSvYuxzzIkPECK5\n" +
+            "gDoMoBTTMI/wnxXwulNPtfgF7/5AtDhA4GNAfB2SddxiNQAF7XkUHtMZ9ff3W6Xk\n" +
+            "FldOG+NlLFqsDBG/KLckyFK36gq+FqNFCbmtmtXBGB5L1fDIeYzcMKG6hFQxhHS0\n" +
+            "oqpdHhp2nWBfLlOnTNqIZNJzOH37OJE6Olk45LNFJtSrqIAZyCCfM6bQgoQvZuIa\n" +
+            "xs9SIp+63ZMk9TxEaQj/KteaOyfaPXI9778U7JElMTz3Bls62mslV2I1C/A73Zyq\n" +
+            "JZWQZ8NU4ds=\n" +
             "-----END CERTIFICATE-----\n";
+
+    private static final String LINUX_FOUNDATION_CERT =
+            "-----BEGIN CERTIFICATE-----\n" +
+            "MIIGrjCCBZagAwIBAgIDAmHEMA0GCSqGSIb3DQEBCwUAMIGMMQswCQYDVQQGEwJJ\n" +
+            "TDEWMBQGA1UEChMNU3RhcnRDb20gTHRkLjErMCkGA1UECxMiU2VjdXJlIERpZ2l0\n" +
+            "YWwgQ2VydGlmaWNhdGUgU2lnbmluZzE4MDYGA1UEAxMvU3RhcnRDb20gQ2xhc3Mg\n" +
+            "MiBQcmltYXJ5IEludGVybWVkaWF0ZSBTZXJ2ZXIgQ0EwHhcNMTQwODEyMDMwNTQx\n" +
+            "WhcNMTYwODEyMTExODUzWjCBqDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlm\n" +
+            "b3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xHTAbBgNVBAoTFFRoZSBMaW51\n" +
+            "eCBGb3VuZGF0aW9uMR4wHAYDVQQDFBUqLmxpbnV4Zm91bmRhdGlvbi5vcmcxLTAr\n" +
+            "BgkqhkiG9w0BCQEWHmhvc3RtYXN0ZXJAbGludXhmb3VuZGF0aW9uLm9yZzCCASIw\n" +
+            "DQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANbsVKDzSgoI186g+CFHjhFSokCm\n" +
+            "QgxuvWpQC3mO/F9bIHTxSVifzKuFJX2yPrHLiZhPfrtbfY7sMnrO5GeM1AEw7KMu\n" +
+            "ztTqh9L8Egukc+MJ5qSjXi8kHvb76nCCtr8IgHNDZikr6KOUS+hjMKe5WzFakMOF\n" +
+            "cmR5/tMEHqIqCcXjuDTofEoUYeLB0dvhEzoEhrokcPouvCRXA5L/euVmF4ZJP2oA\n" +
+            "eYgycjDZ9P9wsA4AXBlEKfOJLGSvcYhPTDIwpo8Rdvx2zrxllNnwZ5MrjCoWHeNW\n" +
+            "Lvm5Zsg4FawaWHTtBHF9wROe1a0z0JncOvv80T4kC130GEmsXDsa57Dcg+cCAwEA\n" +
+            "AaOCAvkwggL1MAkGA1UdEwQCMAAwCwYDVR0PBAQDAgOoMB0GA1UdJQQWMBQGCCsG\n" +
+            "AQUFBwMCBggrBgEFBQcDATAdBgNVHQ4EFgQUUvDaeTHw4aEiKVOBSwgVI3FYXWMw\n" +
+            "HwYDVR0jBBgwFoAUEdsjRf1UzGpxb4SKA9e+9wEvJoYwNQYDVR0RBC4wLIIVKi5s\n" +
+            "aW51eGZvdW5kYXRpb24ub3JnghNsaW51eGZvdW5kYXRpb24ub3JnMIIBVgYDVR0g\n" +
+            "BIIBTTCCAUkwCAYGZ4EMAQICMIIBOwYLKwYBBAGBtTcBAgMwggEqMC4GCCsGAQUF\n" +
+            "BwIBFiJodHRwOi8vd3d3LnN0YXJ0c3NsLmNvbS9wb2xpY3kucGRmMIH3BggrBgEF\n" +
+            "BQcCAjCB6jAnFiBTdGFydENvbSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTADAgEB\n" +
+            "GoG+VGhpcyBjZXJ0aWZpY2F0ZSB3YXMgaXNzdWVkIGFjY29yZGluZyB0byB0aGUg\n" +
+            "Q2xhc3MgMiBWYWxpZGF0aW9uIHJlcXVpcmVtZW50cyBvZiB0aGUgU3RhcnRDb20g\n" +
+            "Q0EgcG9saWN5LCByZWxpYW5jZSBvbmx5IGZvciB0aGUgaW50ZW5kZWQgcHVycG9z\n" +
+            "ZSBpbiBjb21wbGlhbmNlIG9mIHRoZSByZWx5aW5nIHBhcnR5IG9ibGlnYXRpb25z\n" +
+            "LjA1BgNVHR8ELjAsMCqgKKAmhiRodHRwOi8vY3JsLnN0YXJ0c3NsLmNvbS9jcnQy\n" +
+            "LWNybC5jcmwwgY4GCCsGAQUFBwEBBIGBMH8wOQYIKwYBBQUHMAGGLWh0dHA6Ly9v\n" +
+            "Y3NwLnN0YXJ0c3NsLmNvbS9zdWIvY2xhc3MyL3NlcnZlci9jYTBCBggrBgEFBQcw\n" +
+            "AoY2aHR0cDovL2FpYS5zdGFydHNzbC5jb20vY2VydHMvc3ViLmNsYXNzMi5zZXJ2\n" +
+            "ZXIuY2EuY3J0MCMGA1UdEgQcMBqGGGh0dHA6Ly93d3cuc3RhcnRzc2wuY29tLzAN\n" +
+            "BgkqhkiG9w0BAQsFAAOCAQEADPn/peSp2N6IVtkias/dpk7Gju6y5Dg+bYUBShYX\n" +
+            "hZ5Zy767SDzZhQ9F6DpuL88ViqO6WAANf6usiHGmnBR3GFMeLSHrYSPiMcwuxL9J\n" +
+            "Ko3eBT92lnzRuyMc7Z0jzihwEbSromyXZg91N1XmZpQFGgtytM255f6BhzK8sS5k\n" +
+            "49Xv0/wLdONen19eFt/nLmBPUkqwq27YNGinv7Fupe4bw4Xmg2O+/P1s8a+TCXcb\n" +
+            "pDLQAKkLZFPdqwmG9gOqvQylTRALylLrhAuP4sUXddbQ+x3AoQCbD3pY7iCITKaI\n" +
+            "ozuO5qjkS43nZgjXirAMq7H1LkT35MKcS37vv78sn2WUzw==\n" +
+            "-----END CERTIFICATE-----\n";
+
 
     private File mKeyStoreFile;
     private LocalKeyStore mKeyStore;
@@ -167,8 +221,9 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     private X509Certificate mCert2;
     private X509Certificate mCaCert;
     private X509Certificate mCert3;
-    private X509Certificate mStarfieldCert;
-    private X509Certificate mLinuxComCert;
+    private X509Certificate mStartcomCert;
+    private X509Certificate mStartcomIntermediate;
+    private X509Certificate mLinuxFoundationCert;
 
 
     public TrustManagerFactoryTest() throws CertificateException {
@@ -176,8 +231,9 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         mCert2 = loadCert(K9_EXAMPLE_COM_CERT2);
         mCaCert = loadCert(CA_CERT);
         mCert3 = loadCert(CERT3);
-        mStarfieldCert = loadCert(STARFIELD_CERT);
-        mLinuxComCert = loadCert(LINUX_COM_CERT);
+        mStartcomCert = loadCert(STARTCOM_ORG_CERT);
+        mStartcomIntermediate = loadCert(STARTCOM_INTERMEDIATE_CERT);
+        mLinuxFoundationCert = loadCert(LINUX_FOUNDATION_CERT);
     }
 
     private X509Certificate loadCert(String encodedCert) throws CertificateException {
@@ -266,21 +322,21 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
     }
 
     public void testGloballyTrustedCertificateChain() throws Exception {
-        X509TrustManager trustManager = TrustManagerFactory.get("www.linux.com", PORT1);
-        X509Certificate[] certificates = new X509Certificate[] { mLinuxComCert, mStarfieldCert };
+        X509TrustManager trustManager = TrustManagerFactory.get("www.linuxfoundation.org", PORT1);
+        X509Certificate[] certificates = new X509Certificate[] { mLinuxFoundationCert, mStartcomIntermediate, mStartcomCert };
         trustManager.checkServerTrusted(certificates, "authType");
     }
 
     public void testGloballyTrustedCertificateNotMatchingHost() throws Exception {
         X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1);
-        assertCertificateRejection(trustManager, new X509Certificate[] { mLinuxComCert, mStarfieldCert });
+        assertCertificateRejection(trustManager, new X509Certificate[] { mLinuxFoundationCert, mStartcomIntermediate, mStartcomCert });
     }
 
     public void testGloballyTrustedCertificateNotMatchingHostOverride() throws Exception {
-        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mLinuxComCert);
+        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mLinuxFoundationCert);
 
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
-        X509Certificate[] certificates = new X509Certificate[] { mLinuxComCert, mStarfieldCert };
+        X509Certificate[] certificates = new X509Certificate[] { mLinuxFoundationCert, mStartcomIntermediate, mStartcomCert };
         trustManager.checkServerTrusted(certificates, "authType");
     }
 
