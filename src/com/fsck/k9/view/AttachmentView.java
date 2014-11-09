@@ -6,9 +6,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -111,10 +115,11 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     private boolean extractAttachmentInformation(Part part) throws MessagingException {
         boolean firstClassAttachment = true;
 
-        contentType = MimeUtility.unfoldAndDecode(part.getContentType());
+        contentType = part.getMimeType();
+        String contentTypeHeader = MimeUtility.unfoldAndDecode(part.getContentType());
         String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
 
-        name = MimeUtility.getHeaderParameter(contentType, "name");
+        name = MimeUtility.getHeaderParameter(contentTypeHeader, "name");
         if (name == null) {
             name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
         }
@@ -141,7 +146,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             } catch (NumberFormatException e) { /* ignore */ }
         }
 
-        contentType = MimeUtility.getMimeTypeForViewing(part.getMimeType(), name);
         return firstClassAttachment;
     }
 
@@ -239,17 +243,39 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     public void showFile() {
-        Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId());
-        Intent intent = createViewIntentForContentUri(contentType, uri);
-
+        Intent intent = constructViewIntent();
         try {
             context.startActivity(intent);
-        } catch (Exception e) {
+        } catch (ActivityNotFoundException e) {
             Log.e(K9.LOG_TAG, "Could not display attachment of type " + contentType, e);
 
             String message = context.getString(R.string.message_view_no_viewer, contentType);
             displayMessageToUser(message);
         }
+    }
+
+    private Intent constructViewIntent() {
+        Intent intent;
+        Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId());
+
+        Intent originalMimeTypeIntent = createViewIntentForContentUri(contentType, uri);
+        int originalMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(originalMimeTypeIntent);
+
+        String inferredMimeType = MimeUtility.getMimeTypeByExtension(name);
+        if (inferredMimeType.equals(contentType)) {
+            intent = originalMimeTypeIntent;
+        } else {
+            Intent inferredMimeTypeIntent = createViewIntentForContentUri(inferredMimeType, uri);
+            int inferredMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(inferredMimeTypeIntent);
+
+            if (inferredMimeTypeActivitiesCount > originalMimeTypeActivitiesCount) {
+                intent = inferredMimeTypeIntent;
+            } else {
+                intent = originalMimeTypeIntent;
+            }
+        }
+
+        return intent;
     }
 
     private Intent createViewIntentForContentUri(String mimeType, Uri uri) {
@@ -258,6 +284,15 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 
         return intent;
+    }
+
+    private int getResolvedIntentActivitiesCount(Intent intent) {
+        PackageManager packageManager = context.getPackageManager();
+
+        List<ResolveInfo> resolveInfos =
+                packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+        return resolveInfos.size();
     }
 
     private void displayAttachmentSavedMessage(final String filename) {
