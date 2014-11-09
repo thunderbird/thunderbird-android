@@ -240,11 +240,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     public void showFile() {
         Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId());
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        // We explicitly set the content type in addition to the URI because some attachment viewers
-        // (such as Polaris office 3.0.x) choke on documents without a MIME type.
-        intent.setDataAndType(uri, contentType);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        Intent intent = createViewIntentForContentUri(contentType, uri);
 
         try {
             context.startActivity(intent);
@@ -254,6 +250,14 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             String message = context.getString(R.string.message_view_no_viewer, contentType);
             displayMessageToUser(message);
         }
+    }
+
+    private Intent createViewIntentForContentUri(String mimeType, Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, mimeType);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+        return intent;
     }
 
     private void displayAttachmentSavedMessage(final String filename) {
