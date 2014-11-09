@@ -256,16 +256,19 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     private Intent constructViewIntent() {
         Intent intent;
-        Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId());
 
-        Intent originalMimeTypeIntent = createViewIntentForContentUri(contentType, uri);
+        Uri originalMimeTypeUri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(),
+                contentType);
+        Intent originalMimeTypeIntent = createViewIntentForContentUri(contentType, originalMimeTypeUri);
         int originalMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(originalMimeTypeIntent);
 
         String inferredMimeType = MimeUtility.getMimeTypeByExtension(name);
         if (inferredMimeType.equals(contentType)) {
             intent = originalMimeTypeIntent;
         } else {
-            Intent inferredMimeTypeIntent = createViewIntentForContentUri(inferredMimeType, uri);
+            Uri inferredMimeTypeUri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(),
+                    inferredMimeType);
+            Intent inferredMimeTypeIntent = createViewIntentForContentUri(inferredMimeType, inferredMimeTypeUri);
             int inferredMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(inferredMimeTypeIntent);
 
             if (inferredMimeTypeActivitiesCount > originalMimeTypeActivitiesCount) {
