@@ -58,12 +58,13 @@ public class AttachmentProvider extends ContentProvider {
                 .build();
     }
 
-    public static Uri getAttachmentUriForViewing(Account account, long id, String mimeType) {
+    public static Uri getAttachmentUriForViewing(Account account, long id, String mimeType, String filename) {
         return CONTENT_URI.buildUpon()
                 .appendPath(account.getUuid())
                 .appendPath(Long.toString(id))
                 .appendPath(FORMAT_VIEW)
                 .appendPath(mimeType)
+                .appendPath(filename)
                 .build();
     }
 
