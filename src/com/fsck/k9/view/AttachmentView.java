@@ -227,7 +227,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
             displayAttachmentSavedMessage(file.toString());
 
-            new MediaScannerNotifier(context, file);
+            MediaScannerNotifier.notify(context, file);
         } catch (IOException ioe) {
             if (K9.DEBUG) {
                 Log.e(K9.LOG_TAG, "Error saving attachment", ioe);
