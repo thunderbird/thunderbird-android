@@ -223,16 +223,10 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      */
     public void writeFile(File directory) {
         try {
-            String filename = Utility.sanitizeFilename(name);
-            File file = Utility.createUniqueFile(directory, filename);
-            Uri uri = AttachmentProvider.getAttachmentUri(account, part.getAttachmentId());
-            InputStream in = context.getContentResolver().openInputStream(uri);
-            OutputStream out = new FileOutputStream(file);
-            IOUtils.copy(in, out);
-            out.flush();
-            out.close();
-            in.close();
+            File file = writeAttachmentToStorage(directory);
+
             displayAttachmentSavedMessage(file.toString());
+
             new MediaScannerNotifier(context, file);
         } catch (IOException ioe) {
             if (K9.DEBUG) {
@@ -242,20 +236,55 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
     }
 
-    public void showFile() {
-        Intent intent = constructViewIntent();
-        try {
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Log.e(K9.LOG_TAG, "Could not display attachment of type " + contentType, e);
+    private File writeAttachmentToStorage(File directory) throws IOException {
+        String filename = Utility.sanitizeFilename(name);
+        File file = Utility.createUniqueFile(directory, filename);
 
-            String message = context.getString(R.string.message_view_no_viewer, contentType);
-            displayMessageToUser(message);
+        Uri uri = AttachmentProvider.getAttachmentUri(account, part.getAttachmentId());
+        InputStream in = context.getContentResolver().openInputStream(uri);
+        try {
+            OutputStream out = new FileOutputStream(file);
+            try {
+                IOUtils.copy(in, out);
+                out.flush();
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
         }
+
+        return file;
     }
 
-    private Intent constructViewIntent() {
+    public void showFile() {
+        new ViewAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private Intent getBestViewIntentAndSaveFileIfNecessary() {
+        IntentAndResolvedActivitiesCount resultForContentUri = getBestViewIntentForContentUri();
+        if (resultForContentUri.getActivitiesCount() > 0) {
+            return resultForContentUri.getIntent();
+        }
+
+        IntentAndResolvedActivitiesCount resultForFileUri = getBestViewIntentForFileUri();
+        if (resultForFileUri.getActivitiesCount() > 0) {
+            try {
+                File file = writeAttachmentToStorage(new File(K9.getAttachmentDefaultPath()));
+                return createViewIntentForFileUri(resultForFileUri.getMimeType(), Uri.fromFile(file));
+            } catch (IOException e) {
+                if (K9.DEBUG) {
+                    Log.e(K9.LOG_TAG, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent", e);
+                }
+            }
+        }
+
+        return resultForContentUri.getIntent();
+    }
+
+    private IntentAndResolvedActivitiesCount getBestViewIntentForContentUri() {
         Intent intent;
+        int activitiesCount;
 
         Uri originalMimeTypeUri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(),
                 contentType);
@@ -265,6 +294,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         String inferredMimeType = MimeUtility.getMimeTypeByExtension(name);
         if (inferredMimeType.equals(contentType)) {
             intent = originalMimeTypeIntent;
+            activitiesCount = originalMimeTypeActivitiesCount;
         } else {
             Uri inferredMimeTypeUri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(),
                     inferredMimeType);
@@ -273,20 +303,65 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
             if (inferredMimeTypeActivitiesCount > originalMimeTypeActivitiesCount) {
                 intent = inferredMimeTypeIntent;
+                activitiesCount = inferredMimeTypeActivitiesCount;
             } else {
                 intent = originalMimeTypeIntent;
+                activitiesCount = originalMimeTypeActivitiesCount;
             }
         }
 
-        return intent;
+        return new IntentAndResolvedActivitiesCount(intent, activitiesCount);
+    }
+
+    private IntentAndResolvedActivitiesCount getBestViewIntentForFileUri() {
+        Intent intent;
+        int activitiesCount;
+
+        File dummyFile = new File(Utility.sanitizeFilename(name));
+        Uri fileUri = Uri.fromFile(dummyFile);
+
+        Intent originalMimeTypeIntent = createViewIntentForFileUri(contentType, fileUri);
+        int originalMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(originalMimeTypeIntent);
+
+        String inferredMimeType = MimeUtility.getMimeTypeByExtension(name);
+        if (inferredMimeType.equals(contentType)) {
+            intent = originalMimeTypeIntent;
+            activitiesCount = originalMimeTypeActivitiesCount;
+        } else {
+            Intent inferredMimeTypeIntent = createViewIntentForFileUri(inferredMimeType, fileUri);
+            int inferredMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(inferredMimeTypeIntent);
+
+            if (inferredMimeTypeActivitiesCount > originalMimeTypeActivitiesCount) {
+                intent = inferredMimeTypeIntent;
+                activitiesCount = inferredMimeTypeActivitiesCount;
+            } else {
+                intent = originalMimeTypeIntent;
+                activitiesCount = originalMimeTypeActivitiesCount;
+            }
+        }
+
+        return new IntentAndResolvedActivitiesCount(intent, activitiesCount);
     }
 
     private Intent createViewIntentForContentUri(String mimeType, Uri uri) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, mimeType);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        addUiIntentFlags(intent);
 
         return intent;
+    }
+
+    private Intent createViewIntentForFileUri(String mimeType, Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, mimeType);
+        addUiIntentFlags(intent);
+
+        return intent;
+    }
+
+    private void addUiIntentFlags(Intent intent) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
     }
 
     private int getResolvedIntentActivitiesCount(Intent intent) {
@@ -328,6 +403,28 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
 
+    private static class IntentAndResolvedActivitiesCount {
+        private Intent intent;
+        private int activitiesCount;
+
+        IntentAndResolvedActivitiesCount(Intent intent, int activitiesCount) {
+            this.intent = intent;
+            this.activitiesCount = activitiesCount;
+        }
+
+        public Intent getIntent() {
+            return intent;
+        }
+
+        public int getActivitiesCount() {
+            return activitiesCount;
+        }
+
+        public String getMimeType() {
+            return intent.getType();
+        }
+    }
+
     private class LoadAndDisplayThumbnailAsyncTask extends AsyncTask<Void, Void, Bitmap> {
         private final ImageView thumbnail;
 
@@ -361,6 +458,36 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
                 thumbnail.setImageBitmap(previewIcon);
             } else {
                 thumbnail.setImageResource(R.drawable.attached_image_placeholder);
+            }
+        }
+    }
+
+    private class ViewAttachmentAsyncTask extends AsyncTask<Void, Void, Intent> {
+
+        @Override
+        protected void onPreExecute() {
+            viewButton.setEnabled(false);
+        }
+
+        @Override
+        protected Intent doInBackground(Void... params) {
+            return getBestViewIntentAndSaveFileIfNecessary();
+        }
+
+        @Override
+        protected void onPostExecute(Intent intent) {
+            viewAttachment(intent);
+            viewButton.setEnabled(true);
+        }
+
+        private void viewAttachment(Intent intent) {
+            try {
+                context.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Log.e(K9.LOG_TAG, "Could not display attachment of type " + contentType, e);
+
+                String message = context.getString(R.string.message_view_no_viewer, contentType);
+                displayMessageToUser(message);
             }
         }
     }
