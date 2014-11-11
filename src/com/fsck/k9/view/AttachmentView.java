@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.cache.TemporaryAttachmentStore;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.FileHelper;
@@ -223,7 +224,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      */
     public void writeFile(File directory) {
         try {
-            File file = writeAttachmentToStorage(directory);
+            File file = saveAttachmentWithUniqueFileName(directory);
 
             displayAttachmentSavedMessage(file.toString());
 
@@ -236,10 +237,16 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
     }
 
-    private File writeAttachmentToStorage(File directory) throws IOException {
+    private File saveAttachmentWithUniqueFileName(File directory) throws IOException {
         String filename = FileHelper.sanitizeFilename(name);
         File file = FileHelper.createUniqueFile(directory, filename);
 
+        writeAttachmentToStorage(file);
+
+        return file;
+    }
+
+    private void writeAttachmentToStorage(File file) throws IOException {
         Uri uri = AttachmentProvider.getAttachmentUri(account, part.getAttachmentId());
         InputStream in = context.getContentResolver().openInputStream(uri);
         try {
@@ -253,8 +260,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         } finally {
             in.close();
         }
-
-        return file;
     }
 
     public void showFile() {
@@ -270,8 +275,9 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         IntentAndResolvedActivitiesCount resultForFileUri = getBestViewIntentForFileUri();
         if (resultForFileUri.getActivitiesCount() > 0) {
             try {
-                File file = writeAttachmentToStorage(new File(K9.getAttachmentDefaultPath()));
-                return createViewIntentForFileUri(resultForFileUri.getMimeType(), Uri.fromFile(file));
+                File tempFile = TemporaryAttachmentStore.getFile(context, name);
+                writeAttachmentToStorage(tempFile);
+                return createViewIntentForFileUri(resultForFileUri.getMimeType(), Uri.fromFile(tempFile));
             } catch (IOException e) {
                 if (K9.DEBUG) {
                     Log.e(K9.LOG_TAG, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent", e);
