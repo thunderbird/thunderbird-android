@@ -14,11 +14,11 @@ import com.fsck.k9.K9;
 public class FileHelper {
 
     /**
-     * We allow only characters (as defined by Unicode)
+     * We allow only characters and numbers (as defined by Unicode)
      *
      * @see #sanitizeFilename(String)
      */
-    private static final String INVALID_CHARACTERS = "[\\P{IsL}]";
+    private static final String INVALID_CHARACTERS = "[\\P{IsL}&&[\\P{IsN}]]";
 
     /**
      * Invalid characters in a file name are replaced by this character.

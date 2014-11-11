@@ -22,6 +22,10 @@ public class FileHelperTest extends TestCase {
         checkSanitization("_東京__", ".東京?!");
     }
 
+    public void testSanitize5() {
+        checkSanitization("Plan_9", "Plan 9");
+    }
+
     private void checkSanitization(String expected, String actual) {
         assertEquals(expected, FileHelper.sanitizeFilename(actual));
     }
