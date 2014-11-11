@@ -244,7 +244,7 @@ public abstract class Store {
         return true;
     }
 
-    public void sendMessages(Message[] messages) throws MessagingException {
+    public void sendMessages(List<? extends Message> messages) throws MessagingException {
     }
 
     public Pusher getPusher(PushReceiver receiver) {

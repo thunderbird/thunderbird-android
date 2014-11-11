@@ -3,6 +3,7 @@ package com.fsck.k9;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,11 +18,6 @@ import com.fsck.k9.preferences.Editor;
 import com.fsck.k9.preferences.Storage;
 
 public class Preferences {
-
-    /**
-     * Immutable empty {@link Account} array
-     */
-    private static final Account[] EMPTY_ACCOUNT_ARRAY = new Account[0];
 
     private static Preferences preferences;
 
@@ -43,7 +39,7 @@ public class Preferences {
     private Preferences(Context context) {
         mStorage = Storage.getStorage(context);
         mContext = context;
-        if (mStorage.size() == 0) {
+        if (mStorage.isEmpty()) {
             Log.i(K9.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
             Editor editor = mStorage.edit();
             editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
@@ -75,12 +71,12 @@ public class Preferences {
      * registered the method returns an empty array.
      * @return all accounts
      */
-    public synchronized Account[] getAccounts() {
+    public synchronized List<Account> getAccounts() {
         if (accounts == null) {
             loadAccounts();
         }
 
-        return accountsInOrder.toArray(EMPTY_ACCOUNT_ARRAY);
+        return Collections.unmodifiableList(accountsInOrder);
     }
 
     /**
@@ -89,7 +85,7 @@ public class Preferences {
      * @return all accounts with {@link Account#isAvailable(Context)}
      */
     public synchronized Collection<Account> getAvailableAccounts() {
-        Account[] allAccounts = getAccounts();
+        List<Account> allAccounts = getAccounts();
         Collection<Account> retval = new ArrayList<Account>(accounts.size());
         for (Account account : allAccounts) {
             if (account.isEnabled() && account.isAvailable(mContext)) {

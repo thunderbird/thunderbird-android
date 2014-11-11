@@ -101,7 +101,7 @@ public class EmailProviderCache {
                 Map<String, String> map = mMessageCache.get(messageId);
                 if (map != null) {
                     map.remove(columnName);
-                    if (map.size() == 0) {
+                    if (map.isEmpty()) {
                         mMessageCache.remove(messageId);
                     }
                 }
@@ -115,7 +115,7 @@ public class EmailProviderCache {
                 Map<String, String> map = mThreadCache.get(threadRootId);
                 if (map != null) {
                     map.remove(columnName);
-                    if (map.size() == 0) {
+                    if (map.isEmpty()) {
                         mThreadCache.remove(threadRootId);
                     }
                 }
@@ -143,7 +143,7 @@ public class EmailProviderCache {
         }
     }
 
-    public void unhideMessages(Message[] messages) {
+    public void unhideMessages(List<? extends Message> messages) {
         synchronized (mHiddenMessageCache) {
             for (Message message : messages) {
                 LocalMessage localMessage = (LocalMessage) message;

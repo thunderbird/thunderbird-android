@@ -290,8 +290,8 @@ public class Storage implements SharedPreferences {
         }
     }
 
-    public long size() {
-        return storage.size();
+    public boolean isEmpty() {
+        return storage.isEmpty();
     }
 
     //@Override

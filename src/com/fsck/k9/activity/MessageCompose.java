@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -190,8 +191,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int CONTACT_PICKER_TO2 = 7;
     private static final int CONTACT_PICKER_CC2 = 8;
     private static final int CONTACT_PICKER_BCC2 = 9;
-
-    private static final Account[] EMPTY_ACCOUNT_ARRAY = new Account[0];
 
     private static final int REQUEST_CODE_SIGN_ENCRYPT = 12;
 
@@ -1057,7 +1056,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private boolean addRecipients(TextView view, List<String> recipients) {
-        if (recipients == null || recipients.size() == 0) {
+        if (recipients == null || recipients.isEmpty()) {
             return false;
         }
 
@@ -3916,7 +3915,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             List<Object> items = new ArrayList<Object>();
             Preferences prefs = Preferences.getPreferences(context.getApplicationContext());
-            Account[] accounts = prefs.getAvailableAccounts().toArray(EMPTY_ACCOUNT_ARRAY);
+            Collection<Account> accounts = prefs.getAvailableAccounts();
             for (Account account : accounts) {
                 items.add(account);
                 List<Identity> identities = account.getIdentities();

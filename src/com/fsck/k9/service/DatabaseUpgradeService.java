@@ -1,5 +1,6 @@
 package com.fsck.k9.service;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.app.Service;
@@ -186,8 +187,8 @@ public class DatabaseUpgradeService extends Service {
     private void upgradeDatabases() {
         Preferences preferences = Preferences.getPreferences(this);
 
-        Account[] accounts = preferences.getAccounts();
-        mProgressEnd = accounts.length;
+        List<Account> accounts = preferences.getAccounts();
+        mProgressEnd = accounts.size();
         mProgress = 0;
 
         for (Account account : accounts) {

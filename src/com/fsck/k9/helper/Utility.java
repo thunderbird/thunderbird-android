@@ -105,6 +105,22 @@ public class Utility {
         return TextUtils.join(String.valueOf(separator), parts);
     }
 
+    /**
+     * Combines the given Objects into a single String using
+     * each Object's toString() method and the separator character
+     * between each part.
+     *
+     * @param parts
+     * @param separator
+     * @return new String
+     */
+    public static String combine(Iterable<?> parts, char separator) {
+        if (parts == null) {
+            return null;
+        }
+        return TextUtils.join(String.valueOf(separator), parts);
+    }
+
     public static String base64Decode(String encoded) {
         if (encoded == null) {
             return null;

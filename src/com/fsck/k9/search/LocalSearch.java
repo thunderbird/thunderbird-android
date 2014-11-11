@@ -328,7 +328,7 @@ public class LocalSearch implements SearchSpecification {
      */
     @Override
     public String[] getAccountUuids() {
-        if (mAccountUuids.size() == 0) {
+        if (mAccountUuids.isEmpty()) {
             return new String[] { SearchSpecification.ALL_ACCOUNTS };
         }
 
@@ -343,7 +343,7 @@ public class LocalSearch implements SearchSpecification {
      * @return {@code true} if all accounts should be searched.
      */
     public boolean searchAllAccounts() {
-        return (mAccountUuids.size() == 0);
+        return (mAccountUuids.isEmpty());
     }
 
     /**

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -115,16 +116,6 @@ public class MessagingController implements Runnable {
      * Immutable empty {@link String} array
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
-    /**
-     * Immutable empty {@link Message} array
-     */
-    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
-
-    /**
-     * Immutable empty {@link Folder} array
-     */
-    private static final Folder[] EMPTY_FOLDER_ARRAY = new Folder[0];
 
     /**
      * The maximum message size that we'll consider to be "small". A small message is downloaded
@@ -321,8 +312,7 @@ public class MessagingController implements Runnable {
     // Key is accountNumber
     private final ConcurrentMap<Integer, NotificationData> notificationData = new ConcurrentHashMap<Integer, NotificationData>();
 
-    private static final Flag[] SYNC_FLAGS = new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED };
-
+    private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
     private void suppressMessages(Account account, List<Message> messages) {
         EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(),
@@ -330,7 +320,7 @@ public class MessagingController implements Runnable {
         cache.hideMessages(messages);
     }
 
-    private void unsuppressMessages(Account account, Message[] messages) {
+    private void unsuppressMessages(Account account, List<? extends Message> messages) {
         EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(),
                 mApplication.getApplicationContext());
         cache.unhideMessages(messages);
@@ -574,15 +564,13 @@ public class MessagingController implements Runnable {
                 Store localStore = account.getLocalStore();
                 localFolders = localStore.getPersonalNamespaces(false);
 
-                Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
-
                 if (refreshRemote || localFolders.isEmpty()) {
                     doRefreshRemote(account, listener);
                     return;
                 }
 
                 for (MessagingListener l : getListeners(listener)) {
-                    l.listFolders(account, folderArray);
+                    l.listFolders(account, localFolders);
                 }
             } catch (Exception e) {
                 for (MessagingListener l : getListeners(listener)) {
@@ -654,10 +642,9 @@ public class MessagingController implements Runnable {
                     }
 
                     localFolders = localStore.getPersonalNamespaces(false);
-                    Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
 
                     for (MessagingListener l : getListeners(listener)) {
-                        l.listFolders(account, folderArray);
+                        l.listFolders(account, localFolders);
                     }
                     for (MessagingListener l : getListeners(listener)) {
                         l.listFoldersFinished(account);
@@ -694,7 +681,7 @@ public class MessagingController implements Runnable {
     public void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
         final AccountStats stats = new AccountStats();
         final Set<String> uuidSet = new HashSet<String>(Arrays.asList(search.getAccountUuids()));
-        Account[] accounts = Preferences.getPreferences(mApplication.getApplicationContext()).getAccounts();
+        List<Account> accounts = Preferences.getPreferences(mApplication.getApplicationContext()).getAccounts();
         boolean allAccounts = uuidSet.contains(SearchSpecification.ALL_ACCOUNTS);
 
         // for every account we want to search do the query in the localstore
@@ -755,7 +742,7 @@ public class MessagingController implements Runnable {
 
 
     public Future<?> searchRemoteMessages(final String acctUuid, final String folderName, final String query,
-            final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
+            final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags, final MessagingListener listener) {
         if (K9.DEBUG) {
             String msg = "searchRemoteMessages ("
                          + "acct=" + acctUuid
@@ -773,7 +760,7 @@ public class MessagingController implements Runnable {
         });
     }
     public void searchRemoteMessagesSynchronous(final String acctUuid, final String folderName, final String query,
-            final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener) {
+            final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags, final MessagingListener listener) {
         final Account acct = Preferences.getPreferences(mApplication.getApplicationContext()).getAccount(acctUuid);
 
         if (listener != null) {
@@ -885,10 +872,10 @@ public class MessagingController implements Runnable {
             LocalMessage localMsg = localFolder.getMessage(message.getUid());
 
             if (localMsg == null) {
-                remoteFolder.fetch(new Message [] {message}, header, null);
+                remoteFolder.fetch(Collections.singletonList(message), header, null);
                 //fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
-                remoteFolder.fetch(new Message [] {message}, structure, null);
-                localFolder.appendMessages(new Message [] {message});
+                remoteFolder.fetch(Collections.singletonList(message), structure, null);
+                localFolder.appendMessages(Collections.singletonList(message));
                 localMsg = localFolder.getMessage(message.getUid());
             }
 
@@ -992,7 +979,7 @@ public class MessagingController implements Runnable {
             final LocalFolder localFolder = tLocalFolder;
             localFolder.open(Folder.OPEN_MODE_RW);
             localFolder.updateLastUid();
-            Message[] localMessages = localFolder.getMessages(null);
+            List<? extends Message> localMessages = localFolder.getMessages(null);
             Map<String, Message> localUidMap = new HashMap<String, Message>();
             for (Message message : localMessages) {
                 localUidMap.put(message.getUid(), message);
@@ -1058,7 +1045,6 @@ public class MessagingController implements Runnable {
                 visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
             }
 
-            Message[] remoteMessageArray = EMPTY_MESSAGE_ARRAY;
             final List<Message> remoteMessages = new ArrayList<Message>();
             Map<String, Message> remoteUidMap = new HashMap<String, Message>();
 
@@ -1086,9 +1072,9 @@ public class MessagingController implements Runnable {
                 }
 
 
-                remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteEnd, earliestDate, null);
+                List<? extends Message> remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteEnd, earliestDate, null);
 
-                int messageCount = remoteMessageArray.length;
+                int messageCount = remoteMessageArray.size();
 
                 for (Message thisMess : remoteMessageArray) {
                     headerProgress.incrementAndGet();
@@ -1104,7 +1090,6 @@ public class MessagingController implements Runnable {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: Got " + remoteUidMap.size() + " messages for folder " + folder);
 
-                remoteMessageArray = null;
                 for (MessagingListener l : getListeners(listener)) {
                     l.synchronizeMailboxHeadersFinished(account, folder, headerProgress.get(), remoteUidMap.size());
                 }
@@ -1125,7 +1110,7 @@ public class MessagingController implements Runnable {
                 }
 
 
-                localFolder.destroyMessages(destroyMessages.toArray(EMPTY_MESSAGE_ARRAY));
+                localFolder.destroyMessages(destroyMessages);
 
                 for (Message destroyMessage : destroyMessages) {
                     for (MessagingListener l : getListeners(listener)) {
@@ -1437,7 +1422,7 @@ public class MessagingController implements Runnable {
                         Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is partially or fully downloaded");
 
                     // Store the updated message locally
-                    localFolder.appendMessages(new Message[] { message });
+                    localFolder.appendMessages(Collections.singletonList(message));
 
                     localMessage = localFolder.getMessage(message.getUid());
 
@@ -1489,7 +1474,7 @@ public class MessagingController implements Runnable {
          */
         final List<Message> chunk = new ArrayList<Message>(UNSYNC_CHUNK_SIZE);
 
-        remoteFolder.fetch(unsyncedMessages.toArray(EMPTY_MESSAGE_ARRAY), fp,
+        remoteFolder.fetch(unsyncedMessages, fp,
         new MessageRetrievalListener() {
             @Override
             public void messageFinished(Message message, int number, int ofTotal) {
@@ -1578,7 +1563,7 @@ public class MessagingController implements Runnable {
         }
         try {
             // Store the new message locally
-            localFolder.appendMessages(messages.toArray(new Message[messages.size()]));
+            localFolder.appendMessages(messages);
 
             for (final Message message : messages) {
                 final Message localMessage = localFolder.getMessage(message.getUid());
@@ -1624,7 +1609,7 @@ public class MessagingController implements Runnable {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
 
-        remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
+        remoteFolder.fetch(smallMessages,
         fp, new MessageRetrievalListener() {
             @Override
             public void messageFinished(final Message message, int number, int ofTotal) {
@@ -1703,7 +1688,7 @@ public class MessagingController implements Runnable {
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
 
-        remoteFolder.fetch(largeMessages.toArray(new Message[largeMessages.size()]), fp, null);
+        remoteFolder.fetch(largeMessages, fp, null);
         for (Message message : largeMessages) {
 
             if (!shouldImportMessage(account, folder, message, progress, earliestDate)) {
@@ -1726,10 +1711,10 @@ public class MessagingController implements Runnable {
                  *  they equal we can mark this SYNCHRONIZED instead of PARTIALLY_SYNCHRONIZED
                  */
 
-                remoteFolder.fetch(new Message[] { message }, fp, null);
+                remoteFolder.fetch(Collections.singletonList(message), fp, null);
 
                 // Store the updated message locally
-                localFolder.appendMessages(new Message[] { message });
+                localFolder.appendMessages(Collections.singletonList(message));
 
                 Message localMessage = localFolder.getMessage(message.getUid());
 
@@ -1770,7 +1755,7 @@ public class MessagingController implements Runnable {
                     remoteFolder.fetchPart(message, part, null);
                 }
                 // Store the updated message locally
-                localFolder.appendMessages(new Message[] { message });
+                localFolder.appendMessages(Collections.singletonList(message));
 
                 Message localMessage = localFolder.getMessage(message.getUid());
 
@@ -1836,7 +1821,7 @@ public class MessagingController implements Runnable {
                 }
             }
 
-            remoteFolder.fetch(undeletedMessages.toArray(EMPTY_MESSAGE_ARRAY), fp, null);
+            remoteFolder.fetch(undeletedMessages, fp, null);
             for (Message remoteMessage : syncFlagMessages) {
                 Message localMessage = localFolder.getMessage(remoteMessage.getUid());
                 boolean messageChanged = syncFlags(localMessage, remoteMessage);
@@ -2111,10 +2096,10 @@ public class MessagingController implements Runnable {
                  */
                 FetchProfile fp = new FetchProfile();
                 fp.add(FetchProfile.Item.BODY);
-                localFolder.fetch(new Message[] { localMessage } , fp, null);
+                localFolder.fetch(Collections.singletonList(localMessage) , fp, null);
                 String oldUid = localMessage.getUid();
                 localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
-                remoteFolder.appendMessages(new Message[] { localMessage });
+                remoteFolder.appendMessages(Collections.singletonList(localMessage));
 
                 localFolder.changeUid(localMessage);
                 for (MessagingListener l : getListeners()) {
@@ -2129,7 +2114,7 @@ public class MessagingController implements Runnable {
                  */
                 FetchProfile fp = new FetchProfile();
                 fp.add(FetchProfile.Item.ENVELOPE);
-                remoteFolder.fetch(new Message[] { remoteMessage }, fp, null);
+                remoteFolder.fetch(Collections.singletonList(remoteMessage), fp, null);
                 Date localDate = localMessage.getInternalDate();
                 Date remoteDate = remoteMessage.getInternalDate();
                 if (remoteDate != null && remoteDate.compareTo(localDate) > 0) {
@@ -2146,12 +2131,12 @@ public class MessagingController implements Runnable {
                     fp.clear();
                     fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
-                    localFolder.fetch(new Message[] { localMessage }, fp, null);
+                    localFolder.fetch(Collections.singletonList(localMessage), fp, null);
                     String oldUid = localMessage.getUid();
 
                     localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
 
-                    remoteFolder.appendMessages(new Message[] { localMessage });
+                    remoteFolder.appendMessages(Collections.singletonList(localMessage));
                     localFolder.changeUid(localMessage);
                     for (MessagingListener l : getListeners()) {
                         l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
@@ -2325,14 +2310,14 @@ public class MessagingController implements Runnable {
                 if (K9.FOLDER_NONE.equals(destFolderName)) {
                     destFolderName = null;
                 }
-                remoteSrcFolder.delete(messages.toArray(EMPTY_MESSAGE_ARRAY), destFolderName);
+                remoteSrcFolder.delete(messages, destFolderName);
             } else {
                 remoteDestFolder = remoteStore.getFolder(destFolder);
 
                 if (isCopy) {
-                    remoteUidMap = remoteSrcFolder.copyMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
+                    remoteUidMap = remoteSrcFolder.copyMessages(messages, remoteDestFolder);
                 } else {
-                    remoteUidMap = remoteSrcFolder.moveMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
+                    remoteUidMap = remoteSrcFolder.moveMessages(messages, remoteDestFolder);
                 }
             }
             if (!isCopy && Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
@@ -2425,7 +2410,7 @@ public class MessagingController implements Runnable {
             if (messages.isEmpty()) {
                 return;
             }
-            remoteFolder.setFlags(messages.toArray(EMPTY_MESSAGE_ARRAY), new Flag[] { flag }, newState);
+            remoteFolder.setFlags(messages, Collections.singleton(flag), newState);
         } finally {
             closeFolder(remoteFolder);
         }
@@ -2571,9 +2556,9 @@ public class MessagingController implements Runnable {
         }
 
         if (isCopy) {
-            remoteSrcFolder.copyMessages(new Message[] { remoteMessage }, remoteDestFolder);
+            remoteSrcFolder.copyMessages(Collections.singletonList(remoteMessage), remoteDestFolder);
         } else {
-            remoteSrcFolder.moveMessages(new Message[] { remoteMessage }, remoteDestFolder);
+            remoteSrcFolder.moveMessages(Collections.singletonList(remoteMessage), remoteDestFolder);
         }
         remoteSrcFolder.close();
         remoteDestFolder.close();
@@ -2587,7 +2572,7 @@ public class MessagingController implements Runnable {
             Store localStore = account.getLocalStore();
             localFolder = (LocalFolder) localStore.getFolder(folder);
             localFolder.open(Folder.OPEN_MODE_RW);
-            Message[] messages = localFolder.getMessages(null, false);
+            List<? extends Message> messages = localFolder.getMessages(null, false);
             for (Message message : messages) {
                 if (!message.isSet(Flag.SEEN)) {
                     message.setFlag(Flag.SEEN, true);
@@ -2617,7 +2602,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            remoteFolder.setFlags(new Flag[] {Flag.SEEN}, true);
+            remoteFolder.setFlags(Collections.singleton(Flag.SEEN), true);
             remoteFolder.close();
         } catch (UnsupportedOperationException uoe) {
             Log.w(K9.LOG_TAG, "Could not mark all server-side as read because store doesn't support operation", uoe);
@@ -2727,9 +2712,7 @@ public class MessagingController implements Runnable {
 
             Store localStore = account.getLocalStore();
             LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
-            Message[] messages = new Message[1];
             MimeMessage message = new MimeMessage();
-
 
             message.setBody(new TextBody(body));
             message.setFlag(Flag.X_DOWNLOADED_FULL, true);
@@ -2740,9 +2723,8 @@ public class MessagingController implements Runnable {
             message.setInternalDate(nowDate);
             message.addSentDate(nowDate);
             message.setFrom(new Address(account.getEmail(), "K9mail internal"));
-            messages[0] = message;
 
-            localFolder.appendMessages(messages);
+            localFolder.appendMessages(Collections.singletonList(message));
 
             localFolder.clearMessagesOlderThan(nowTime - (15 * 60 * 1000));
 
@@ -2874,7 +2856,7 @@ public class MessagingController implements Runnable {
      * @param newState
      *         {@code true}, if the flag should be set. {@code false} if it should be removed.
      */
-    public void setFlag(Account account, String folderName, Message[] messages, Flag flag,
+    public void setFlag(Account account, String folderName, List<Message> messages, Flag flag,
             boolean newState) {
         // TODO: Put this into the background, but right now some callers depend on the message
         //       objects being modified right after this method returns.
@@ -2896,7 +2878,7 @@ public class MessagingController implements Runnable {
             }
 
             // Update the messages in the local store
-            localFolder.setFlags(messages, new Flag[] {flag}, newState);
+            localFolder.setFlags(messages, Collections.singleton(flag), newState);
 
             int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : getListeners()) {
@@ -2914,9 +2896,9 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            String[] uids = new String[messages.length];
+            String[] uids = new String[messages.size()];
             for (int i = 0, end = uids.length; i < end; i++) {
-                uids[i] = messages[i].getUid();
+                uids[i] = messages.get(i).getUid();
             }
 
             queueSetFlag(account, folderName, Boolean.toString(newState), flag.toString(), uids);
@@ -2953,7 +2935,7 @@ public class MessagingController implements Runnable {
 
             Message message = localFolder.getMessage(uid);
             if (message != null) {
-                setFlag(account, folderName, new Message[] { message }, flag, newState);
+                setFlag(account, folderName, Collections.singletonList(message), flag, newState);
             }
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
@@ -3026,7 +3008,7 @@ public class MessagingController implements Runnable {
                 FetchProfile fp = new FetchProfile();
                 fp.add(FetchProfile.Item.ENVELOPE);
                 fp.add(FetchProfile.Item.BODY);
-                localFolder.fetch(new Message[] { message }, fp, null);
+                localFolder.fetch(Collections.singletonList(message), fp, null);
             } else {
                 /*
                  * At this point the message is not available, so we need to download it
@@ -3042,16 +3024,16 @@ public class MessagingController implements Runnable {
                 FetchProfile fp = new FetchProfile();
                 fp.add(FetchProfile.Item.BODY);
 
-                remoteFolder.fetch(new Message[] { remoteMessage }, fp, null);
+                remoteFolder.fetch(Collections.singletonList(remoteMessage), fp, null);
 
                 // Store the message locally and load the stored message into memory
-                localFolder.appendMessages(new Message[] { remoteMessage });
+                localFolder.appendMessages(Collections.singletonList(remoteMessage));
                 if (loadPartialFromSearch) {
                     fp.add(FetchProfile.Item.BODY);
                 }
                 fp.add(FetchProfile.Item.ENVELOPE);
                 message = localFolder.getMessage(uid);
-                localFolder.fetch(new Message[] { message }, fp, null);
+                localFolder.fetch(Collections.singletonList(message), fp, null);
 
                 // Mark that this message is now fully synched
                 if (account.isMarkMessageAsReadOnView()) {
@@ -3124,9 +3106,7 @@ public class MessagingController implements Runnable {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.ENVELOPE);
                     fp.add(FetchProfile.Item.BODY);
-                    localFolder.fetch(new Message[] {
-                                          message
-                                      }, fp, null);
+                    localFolder.fetch(Collections.singletonList(message), fp, null);
                     localFolder.close();
 
                     for (MessagingListener l : getListeners(listener)) {
@@ -3266,7 +3246,7 @@ public class MessagingController implements Runnable {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderName());
             localFolder.open(Folder.OPEN_MODE_RW);
-            localFolder.appendMessages(new Message[] { message });
+            localFolder.appendMessages(Collections.singletonList(message));
             Message localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
             localFolder.close();
@@ -3504,9 +3484,9 @@ public class MessagingController implements Runnable {
             }
             localFolder.open(Folder.OPEN_MODE_RW);
 
-            Message[] localMessages = localFolder.getMessages(null);
+            List<? extends Message> localMessages = localFolder.getMessages(null);
             int progress = 0;
-            int todo = localMessages.length;
+            int todo = localMessages.size();
             for (MessagingListener l : getListeners()) {
                 l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
             }
@@ -3545,7 +3525,7 @@ public class MessagingController implements Runnable {
 
 
 
-                    localFolder.fetch(new Message[] { message }, fp, null);
+                    localFolder.fetch(Collections.singletonList(message), fp, null);
                     try {
 
 
@@ -3576,7 +3556,7 @@ public class MessagingController implements Runnable {
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
 
-                            localFolder.moveMessages(new Message[] { message }, localSentFolder);
+                            localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
 
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
@@ -3594,7 +3574,7 @@ public class MessagingController implements Runnable {
                         // This is a complete hack, but is worlds better than the previous
                         // "don't even bother" functionality
                         if (getRootCauseMessage(e).startsWith("5")) {
-                            localFolder.moveMessages(new Message[] { message }, (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
+                            localFolder.moveMessages(Collections.singletonList(message), (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
                         }
 
                         notifyUserIfCertificateProblem(mApplication, e, account, false);
@@ -3679,14 +3659,14 @@ public class MessagingController implements Runnable {
 
         // Collect accounts that belong to the search
         String[] accountUuids = search.getAccountUuids();
-        Account[] accounts;
+        List<Account> accounts;
         if (search.searchAllAccounts()) {
             accounts = preferences.getAccounts();
         } else {
-            accounts = new Account[accountUuids.length];
+            accounts = new ArrayList<Account>(accountUuids.length);
             for (int i = 0, len = accountUuids.length; i < len; i++) {
                 String accountUuid = accountUuids[i];
-                accounts[i] = preferences.getAccount(accountUuid);
+                accounts.set(i, preferences.getAccount(accountUuid));
             }
         }
 
@@ -3895,8 +3875,8 @@ public class MessagingController implements Runnable {
                 }
             }
 
-            Message[] messages = localSrcFolder.getMessages(uids.toArray(EMPTY_STRING_ARRAY), null);
-            if (messages.length > 0) {
+            List<? extends Message> messages = localSrcFolder.getMessages(uids.toArray(EMPTY_STRING_ARRAY), null);
+            if (messages.size() > 0) {
                 Map<String, Message> origUidMap = new HashMap<String, Message>();
 
                 for (Message message : messages) {
@@ -3905,7 +3885,7 @@ public class MessagingController implements Runnable {
 
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder
-                          + ", " + messages.length + " messages, " + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
+                          + ", " + messages.size() + " messages, " + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
 
                 if (isCopy) {
                     FetchProfile fp = new FetchProfile();
@@ -4014,7 +3994,7 @@ public class MessagingController implements Runnable {
             List<Message> messagesToDelete = collectMessagesInThreads(account, messages);
 
             deleteMessagesSynchronous(account, folderName,
-                    messagesToDelete.toArray(EMPTY_MESSAGE_ARRAY), null);
+                    messagesToDelete, null);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Something went wrong while deleting threads", e);
         }
@@ -4031,8 +4011,9 @@ public class MessagingController implements Runnable {
             long rootId = localMessage.getRootId();
             long threadId = (rootId == -1) ? localMessage.getThreadId() : rootId;
 
-            Message[] messagesInThread = localStore.getMessagesInThread(threadId);
-            Collections.addAll(messagesInThreads, messagesInThread);
+            List<? extends Message> messagesInThread = localStore.getMessagesInThread(threadId);
+
+            messagesInThreads.addAll(messagesInThread);
         }
 
         return messagesInThreads;
@@ -4050,7 +4031,7 @@ public class MessagingController implements Runnable {
                     @Override
                     public void run() {
                         deleteMessagesSynchronous(account, folder.getName(),
-                                accountMessages.toArray(EMPTY_MESSAGE_ARRAY), listener);
+                                accountMessages, listener);
                     }
                 });
             }
@@ -4059,7 +4040,7 @@ public class MessagingController implements Runnable {
 
     }
 
-    private void deleteMessagesSynchronous(final Account account, final String folder, final Message[] messages,
+    private void deleteMessagesSynchronous(final Account account, final String folder, final List<? extends Message> messages,
                                            MessagingListener listener) {
         Folder localFolder = null;
         Folder localTrashFolder = null;
@@ -4079,7 +4060,7 @@ public class MessagingController implements Runnable {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Deleting messages in trash folder or trash set to -None-, not copying");
 
-                localFolder.setFlags(messages, new Flag[] { Flag.DELETED }, true);
+                localFolder.setFlags(messages, Collections.singleton(Flag.DELETED), true);
             } else {
                 localTrashFolder = localStore.getFolder(account.getTrashFolderName());
                 if (!localTrashFolder.exists()) {
@@ -4147,10 +4128,10 @@ public class MessagingController implements Runnable {
         }
     }
 
-    private String[] getUidsFromMessages(Message[] messages) {
-        String[] uids = new String[messages.length];
-        for (int i = 0; i < messages.length; i++) {
-            uids[i] = messages[i].getUid();
+    private String[] getUidsFromMessages(List <? extends Message> messages) {
+        String[] uids = new String[messages.size()];
+        for (int i = 0; i < messages.size(); i++) {
+            uids[i] = messages.get(i).getUid();
         }
         return uids;
     }
@@ -4162,7 +4143,7 @@ public class MessagingController implements Runnable {
         try {
             if (remoteFolder.exists()) {
                 remoteFolder.open(Folder.OPEN_MODE_RW);
-                remoteFolder.setFlags(new Flag [] { Flag.DELETED }, true);
+                remoteFolder.setFlags(Collections.singleton(Flag.DELETED), true);
                 if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
                     remoteFolder.expunge();
                 }
@@ -4193,7 +4174,7 @@ public class MessagingController implements Runnable {
                     if (isTrashLocalOnly) {
                         localFolder.clearAllMessages();
                     } else {
-                        localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
+                        localFolder.setFlags(Collections.singleton(Flag.DELETED), true);
                     }
 
                     for (MessagingListener l : getListeners()) {
@@ -5030,7 +5011,7 @@ public class MessagingController implements Runnable {
     }
 
     private boolean skipAccountsInBackStack(Context context) {
-        return Preferences.getPreferences(context).getAccounts().length == 1;
+        return Preferences.getPreferences(context).getAccounts().size() == 1;
     }
 
     /**
@@ -5112,9 +5093,7 @@ public class MessagingController implements Runnable {
             }
 
             // Save the message to the store.
-            localFolder.appendMessages(new Message[] {
-                                           message
-                                       });
+            localFolder.appendMessages(Collections.singletonList(message));
             // Fetch the message back from the store.  This is the Message that's returned to the caller.
             localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);

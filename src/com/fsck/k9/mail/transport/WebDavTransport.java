@@ -11,6 +11,8 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.WebDavStore;
 
+import java.util.Collections;
+
 public class WebDavTransport extends Transport {
     public static final String TRANSPORT_TYPE = WebDavStore.STORE_TYPE;
 
@@ -66,6 +68,6 @@ public class WebDavTransport extends Transport {
 
     @Override
     public void sendMessage(Message message) throws MessagingException {
-        store.sendMessages(new Message[] { message });
+        store.sendMessages(Collections.singletonList(message));
     }
 }

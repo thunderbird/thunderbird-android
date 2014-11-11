@@ -1,8 +1,10 @@
 package com.fsck.k9.mail;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import android.util.Log;
 import com.fsck.k9.Account;
@@ -92,7 +94,7 @@ public abstract class Folder {
      * @return List of messages
      * @throws MessagingException
      */
-    public abstract Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener) throws MessagingException;
+    public abstract List<? extends Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener) throws MessagingException;
 
     /**
      * Fetches the given list of messages. The specified listener is notified as
@@ -102,36 +104,36 @@ public abstract class Folder {
      * @param listener Listener to notify as we download messages.
      * @return List of messages
      */
-    public abstract Message[] getMessages(MessageRetrievalListener listener) throws MessagingException;
+    public abstract List<? extends Message> getMessages(MessageRetrievalListener listener) throws MessagingException;
 
-    public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
+    public List<? extends Message> getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
         return getMessages(listener);
     }
 
-    public abstract Message[] getMessages(String[] uids, MessageRetrievalListener listener)
+    public abstract List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener)
     throws MessagingException;
 
-    public abstract Map<String, String> appendMessages(Message[] messages) throws MessagingException;
+    public abstract Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException;
 
-    public Map<String, String> copyMessages(Message[] msgs, Folder folder) throws MessagingException {
+    public Map<String, String> copyMessages(List<? extends Message> msgs, Folder folder) throws MessagingException {
         return null;
     }
 
-    public Map<String, String> moveMessages(Message[] msgs, Folder folder) throws MessagingException {
+    public Map<String, String> moveMessages(List<? extends Message> msgs, Folder folder) throws MessagingException {
         return null;
     }
 
-    public void delete(Message[] msgs, String trashFolderName) throws MessagingException {
+    public void delete(List<? extends Message> msgs, String trashFolderName) throws MessagingException {
         for (Message message : msgs) {
             Message myMessage = getMessage(message.getUid());
             myMessage.delete(trashFolderName);
         }
     }
 
-    public abstract void setFlags(Message[] messages, Flag[] flags, boolean value)
+    public abstract void setFlags(List<? extends Message> messages, Set<Flag> flags, boolean value)
     throws MessagingException;
 
-    public abstract void setFlags(Flag[] flags, boolean value) throws MessagingException;
+    public abstract void setFlags(Set<Flag> flags, boolean value) throws MessagingException;
 
     public abstract String getUidFromMessageId(Message message) throws MessagingException;
 
@@ -146,7 +148,7 @@ public abstract class Folder {
      * @param listener Listener to notify as we fetch messages.
      * @throws MessagingException
      */
-    public abstract void fetch(Message[] messages, FetchProfile fp,
+    public abstract void fetch(List<? extends Message> messages, FetchProfile fp,
                                MessageRetrievalListener listener) throws MessagingException;
 
     public void fetchPart(Message message, Part part,
@@ -243,7 +245,7 @@ public abstract class Folder {
         return mAccount;
     }
 
-    public List<Message> search(String queryString, final Flag[] requiredFlags, final Flag[] forbiddenFlags)
+    public List<Message> search(String queryString, final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags)
         throws MessagingException {
         throw new MessagingException("K-9 does not support searches on this folder type");
     }
