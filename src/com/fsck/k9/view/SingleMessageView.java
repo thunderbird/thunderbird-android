@@ -46,6 +46,7 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -842,10 +843,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                         filename += "." + extension;
                     }
 
-                    String sanitized = Utility.sanitizeFilename(filename);
+                    String sanitized = FileHelper.sanitizeFilename(filename);
 
                     File directory = new File(K9.getAttachmentDefaultPath());
-                    File file = Utility.createUniqueFile(directory, sanitized);
+                    File file = FileHelper.createUniqueFile(directory, sanitized);
                     FileOutputStream out = new FileOutputStream(file);
                     try {
                         IOUtils.copy(in, out);

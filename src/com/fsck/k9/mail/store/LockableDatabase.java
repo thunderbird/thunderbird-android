@@ -14,7 +14,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
 
 public class LockableDatabase {
@@ -337,9 +337,10 @@ public class LockableDatabase {
                 prepareStorage(newProviderId);
 
                 // move all database files
-                Utility.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
+                FileHelper.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
                 // move all attachment files
-                Utility.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId), storageManager.getAttachmentDirectory(uUid, newProviderId));
+                FileHelper.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId),
+                        storageManager.getAttachmentDirectory(uUid, newProviderId));
                 // remove any remaining old journal files
                 deleteDatabase(oldDatabase);
 
@@ -425,7 +426,7 @@ public class LockableDatabase {
                 // Android seems to be unmounting the storage...
                 throw new UnavailableStorageException("Unable to access: " + databaseParentDir);
             }
-            Utility.touchFile(databaseParentDir, ".nomedia");
+            FileHelper.touchFile(databaseParentDir, ".nomedia");
         }
 
         final File attachmentDir;
@@ -435,7 +436,7 @@ public class LockableDatabase {
         attachmentParentDir = attachmentDir.getParentFile();
         if (!attachmentParentDir.exists()) {
             attachmentParentDir.mkdirs();
-            Utility.touchFile(attachmentParentDir, ".nomedia");
+            FileHelper.touchFile(attachmentParentDir, ".nomedia");
         }
         if (!attachmentDir.exists()) {
             attachmentDir.mkdirs();

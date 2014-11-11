@@ -34,9 +34,9 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.MediaScannerNotifier;
 import com.fsck.k9.helper.SizeFormatter;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -237,8 +237,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     private File writeAttachmentToStorage(File directory) throws IOException {
-        String filename = Utility.sanitizeFilename(name);
-        File file = Utility.createUniqueFile(directory, filename);
+        String filename = FileHelper.sanitizeFilename(name);
+        File file = FileHelper.createUniqueFile(directory, filename);
 
         Uri uri = AttachmentProvider.getAttachmentUri(account, part.getAttachmentId());
         InputStream in = context.getContentResolver().openInputStream(uri);
@@ -317,7 +317,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         Intent intent;
         int activitiesCount;
 
-        File dummyFile = new File(Utility.sanitizeFilename(name));
+        File dummyFile = new File(FileHelper.sanitizeFilename(name));
         Uri fileUri = Uri.fromFile(dummyFile);
 
         Intent originalMimeTypeIntent = createViewIntentForFileUri(contentType, fileUri);
