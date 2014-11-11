@@ -1,5 +1,6 @@
 package com.fsck.k9.activity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +26,12 @@ public class NotificationDeleteConfirmation extends Activity {
     private final static int DIALOG_CONFIRM = 1;
 
     private Account mAccount;
-    private List<MessageReference> mMessageRefs;
+    private ArrayList<MessageReference> mMessageRefs;
 
-    public static PendingIntent getIntent(Context context, final Account account, final List<MessageReference> refs) {
+    public static PendingIntent getIntent(Context context, final Account account, final Serializable refs) {
         Intent i = new Intent(context, NotificationDeleteConfirmation.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_LIST, Utility.toSerializableList(refs));
+        i.putExtra(EXTRA_MESSAGE_LIST, refs);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         return PendingIntent.getActivity(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);

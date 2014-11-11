@@ -724,22 +724,4 @@ public class Utility {
         return sMainThreadHandler;
     }
 
-    public static <T> Serializable toSerializableList(List<T> list) {
-        return list instanceof Serializable ?
-                (Serializable) list :
-                new ArrayList<T>(list);
-    }
-
-    public static <T> ArrayList<T> toArrayList(List<T> list) {
-        return list instanceof ArrayList ?
-                (ArrayList<T>) list :
-                new ArrayList<T>(list);
-    }
-
-
-    public static <T,U> Serializable toSerializableConcurrentMap(ConcurrentMap<T,U> list) {
-        return list instanceof ConcurrentHashMap ?
-                (ConcurrentHashMap<T,U>) list :
-                new ConcurrentHashMap<T,U>(list);
-    }
 }
