@@ -12,22 +12,24 @@ import com.fsck.k9.K9;
 
 
 public class FileHelper {
+
     /**
      * Regular expression that represents characters we won't allow in file names.
      *
      * <p>
      * Allowed are:
      * <ul>
-     *   <li>word characters (letters, digits, and underscores): {@code \w}</li>
+     *   <li>letters and numbers (as defined by Unicode)</li>
      *   <li>spaces: {@code " "}</li>
-     *   <li>special characters: {@code !}, {@code #}, {@code $}, {@code %}, {@code &}, {@code '},
+     *   <li>special characters: {@code _}, {@code !}, {@code _}, {@code #}, {@code $}, {@code %}, {@code &}, {@code '},
      *       {@code (}, {@code )}, {@code -}, {@code @}, {@code ^}, {@code `}, <code>&#123;</code>,
      *       <code>&#125;</code>, {@code ~}, {@code .}, {@code ,}</li>
      * </ul></p>
+     * We allow only ,
      *
      * @see #sanitizeFilename(String)
      */
-    private static final String INVALID_CHARACTERS = "[^\\w !#$%&'()\\-@\\^`{}~.,]+";
+    private static final String INVALID_CHARACTERS = "[\\P{IsL}&&[\\P{IsN}&&[^ _!#$%&'()\\-@\\^`{}~.,]]]";
 
     /**
      * Invalid characters in a file name are replaced by this character.
