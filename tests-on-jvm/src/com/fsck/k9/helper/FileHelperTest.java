@@ -7,7 +7,7 @@ import java.lang.String;
 public class FileHelperTest extends TestCase {
 
     public void testSanitize1() {
-        checkSanitization("___bla_", "../bla_");
+        checkSanitization(".._bla_", "../bla_");
     }
 
     public void testSanitize2() {
@@ -19,11 +19,11 @@ public class FileHelperTest extends TestCase {
     }
 
     public void testSanitize4() {
-        checkSanitization("_東京__", ".東京?!");
+        checkSanitization(".東京_!", ".東京?!");
     }
 
     public void testSanitize5() {
-        checkSanitization("Plan_9", "Plan 9");
+        checkSanitization("Plan 9", "Plan 9");
     }
 
     private void checkSanitization(String expected, String actual) {
