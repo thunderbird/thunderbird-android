@@ -129,6 +129,7 @@ public class MessageCryptoView extends LinearLayout {
                 // check for PGP/MIME encryption
                 Part pgp = MimeUtility.findFirstPartByMimeType(message, "application/pgp-encrypted");
                 if (pgp != null) {
+                	//somehow the error message is not displayed when opening an PGP/MIME mail
                     Toast.makeText(mContext, R.string.pgp_mime_unsupported, Toast.LENGTH_LONG).show();
                 }
             } catch (MessagingException e) {
