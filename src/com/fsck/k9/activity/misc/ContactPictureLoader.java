@@ -9,6 +9,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.os.Build;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -49,7 +51,7 @@ public class ContactPictureLoader {
     private Resources mResources;
     private Contacts mContactsHelper;
     private int mPictureSizeInPx;
-
+    private static Typeface sLightFont;
     private int mDefaultBackgroundColor;
 
     /**
@@ -58,19 +60,19 @@ public class ContactPictureLoader {
     private final LruCache<Address, Bitmap> mBitmapCache;
 
     /**
-     * @see <a href="http://developer.android.com/design/style/color.html">Color palette used</a>
+     * @see <a href="http://forum.xda-developers.com/showthread.php?t=2493035">Color's from these icons, aka Google contact icons</a>
      */
     private final static int CONTACT_DUMMY_COLORS_ARGB[] = {
-        0xff33B5E5,
-        0xffAA66CC,
-        0xff99CC00,
-        0xffFFBB33,
-        0xffFF4444,
-        0xff0099CC,
-        0xff9933CC,
-        0xff669900,
-        0xffFF8800,
-        0xffCC0000
+     0xffe4c62e,
+     0xffad62a7,
+     0xfff16364,
+     0xfff58559,
+     0xfff9a43e,
+     0xff59a2be,
+     0xff67bf74,
+     0xff2093cd,
+     0xff00bcd4,
+     0xff607d8b
     };
 
     /**
@@ -90,7 +92,13 @@ public class ContactPictureLoader {
 
         float scale = mResources.getDisplayMetrics().density;
         mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
-
+		
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN && sLightFont == null) {
+		
+            //if buildversion is JellyBean or above, set font in contact pictures to Roboto Light
+            sLightFont = Typeface.create("sans-serif-light", Typeface.NORMAL);
+        }
+        
         mDefaultBackgroundColor = defaultBackgroundColor;
 
         ActivityManager activityManager =
@@ -182,24 +190,27 @@ public class ContactPictureLoader {
 
         Canvas canvas = new Canvas(result);
 
-        int rgb = calcUnknownContactColor(address);
-        result.eraseColor(rgb);
+		int rgb = calcUnknownContactColor(address);
+		result.eraseColor(rgb);
+		
+		String letter = calcUnknownContactLetter(address);
 
-        String letter = calcUnknownContactLetter(address);
+		Paint paint = new Paint();
+		paint.setAntiAlias(true);
+		paint.setStyle(Paint.Style.FILL);
+		paint.setARGB(255, 255, 255, 255);
+		paint.setTextSize(mPictureSizeInPx * 3 / 4);
+		if (sLightFont != null) {
+			paint.setTypeface(sLightFont);
+		}
+		// just scale this down a bit
+		Rect rect = new Rect();
+		paint.getTextBounds(letter, 0, 1, rect);
+		float width = paint.measureText(letter);
+		canvas.drawText(letter, (mPictureSizeInPx / 2f) - (width / 2f),
+				(mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
 
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setARGB(255, 255, 255, 255);
-        paint.setTextSize(mPictureSizeInPx * 3 / 4); // just scale this down a bit
-        Rect rect = new Rect();
-        paint.getTextBounds(letter, 0, 1, rect);
-        float width = paint.measureText(letter);
-        canvas.drawText(letter,
-                (mPictureSizeInPx / 2f) - (width / 2f),
-                (mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
-
-        return result;
+		return result;
     }
 
     private void addBitmapToCache(Address key, Bitmap bitmap) {

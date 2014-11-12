@@ -28,9 +28,11 @@
             android:id="@+id/flagged_message_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:background="@drawable/counter_bg"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 
@@ -54,9 +56,11 @@
             android:id="@+id/new_message_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:background="@drawable/counter_bg"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:textColor="#ffffff"/>
 
     </LinearLayout>
 
