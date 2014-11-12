@@ -23,9 +23,8 @@ dependencies {
     compile project(':plugins:HoloColorPicker')
     compile project(':plugins:openpgp-api-library')
     compile 'com.android.support:support-v13:19.1.0'
-    compile fileTree(dir: 'libs', include: 'jutf*.jar')
 
-    // compile 'com.beetstra.jutf7:jutf7:1.0.1-SNAPSHOT'
+    compile 'com.beetstra.jutf7:jutf7:1.0.0'
 
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
     compile 'org.apache.james:apache-mime4j-core:0.7.2'
