@@ -2,7 +2,10 @@
 package com.fsck.k9.mail;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +19,6 @@ import com.fsck.k9.mail.store.UnavailableStorageException;
 
 
 public abstract class Message implements Part, CompositeBody {
-    private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
 
     private MessageReference mReference = null;
 
@@ -26,9 +28,9 @@ public abstract class Message implements Part, CompositeBody {
 
     protected String mUid;
 
-    protected Set<Flag> mFlags = new HashSet<Flag>();
+    private Set<Flag> mFlags = EnumSet.noneOf(Flag.class);
 
-    protected Date mInternalDate;
+    private Date mInternalDate;
 
     protected Folder mFolder;
 
@@ -45,6 +47,7 @@ public abstract class Message implements Part, CompositeBody {
         }
         return false;
     }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Message)) {
@@ -123,26 +126,35 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract void setReferences(String references) throws MessagingException;
 
+    @Override
     public abstract Body getBody();
 
+    @Override
     public abstract String getContentType() throws MessagingException;
 
+    @Override
     public abstract void addHeader(String name, String value) throws MessagingException;
 
+    @Override
     public abstract void setHeader(String name, String value) throws MessagingException;
 
+    @Override
     public abstract String[] getHeader(String name) throws MessagingException;
 
     public abstract Set<String> getHeaderNames() throws UnavailableStorageException;
 
+    @Override
     public abstract void removeHeader(String name) throws MessagingException;
 
+    @Override
     public abstract void setBody(Body body) throws MessagingException;
 
     public abstract long getId();
 
     public abstract String getPreview();
     public abstract boolean hasAttachments();
+
+    public abstract int getSize();
 
     /*
      * calculateContentPreview
@@ -198,8 +210,8 @@ public abstract class Message implements Part, CompositeBody {
     /*
      * TODO Refactor Flags at some point to be able to store user defined flags.
      */
-    public Flag[] getFlags() {
-        return mFlags.toArray(EMPTY_FLAG_ARRAY);
+    public Set<Flag> getFlags() {
+        return Collections.unmodifiableSet(mFlags);
     }
 
     /**
@@ -223,7 +235,7 @@ public abstract class Message implements Part, CompositeBody {
      * @param flags
      * @param set
      */
-    public void setFlags(Flag[] flags, boolean set) throws MessagingException {
+    public void setFlags(final Set<Flag> flags, boolean set) throws MessagingException {
         for (Flag flag : flags) {
             setFlag(flag, set);
         }
@@ -236,6 +248,7 @@ public abstract class Message implements Part, CompositeBody {
 
     public void destroy() throws MessagingException {}
 
+    @Override
     public abstract void setEncoding(String encoding) throws UnavailableStorageException, MessagingException;
 
     public abstract void setCharset(String charset) throws MessagingException;
@@ -279,7 +292,7 @@ public abstract class Message implements Part, CompositeBody {
         destination.mReference = mReference;
 
         // mFlags contents can change during the object lifetime, so copy the Set
-        destination.mFlags = new HashSet<Flag>(mFlags);
+        destination.mFlags = EnumSet.copyOf(mFlags);
     }
 
     /**
@@ -293,6 +306,8 @@ public abstract class Message implements Part, CompositeBody {
      * for more information.
      * </p>
      */
+    @Override
     public abstract Message clone();
+    @Override
     public abstract void setUsing7bitTransport() throws MessagingException;
 }

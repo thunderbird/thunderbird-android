@@ -3,7 +3,9 @@ package com.fsck.k9.mail;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import android.app.Application;
 import android.content.Context;
@@ -12,9 +14,9 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.store.ImapStore;
-import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.mail.store.WebDavStore;
 
@@ -33,19 +35,19 @@ public abstract class Store {
     /**
      * Remote stores indexed by Uri.
      */
-    private static HashMap<String, Store> sStores = new HashMap<String, Store>();
+    private static Map<String, Store> sStores = new HashMap<String, Store>();
 
     /**
      * Local stores indexed by UUID because the Uri may change due to migration to/from SD-card.
      */
-    private static ConcurrentHashMap<String, Store> sLocalStores = new ConcurrentHashMap<String, Store>();
+    private static ConcurrentMap<String, Store> sLocalStores = new ConcurrentHashMap<String, Store>();
 
     /**
      * Lock objects indexed by account UUID.
      *
      * @see #getLocalInstance(Account, Application)
      */
-    private static ConcurrentHashMap<String, Object> sAccountLocks = new ConcurrentHashMap<String, Object>();
+    private static ConcurrentMap<String, Object> sAccountLocks = new ConcurrentHashMap<String, Object>();
 
     /**
      * Get an instance of a remote mail store.
@@ -242,7 +244,7 @@ public abstract class Store {
         return true;
     }
 
-    public void sendMessages(Message[] messages) throws MessagingException {
+    public void sendMessages(List<? extends Message> messages) throws MessagingException {
     }
 
     public Pusher getPusher(PushReceiver receiver) {

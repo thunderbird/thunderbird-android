@@ -31,9 +31,9 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
-import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.StatsColumns;
 import com.fsck.k9.search.ConditionsTreeNode;
@@ -181,7 +181,7 @@ public class Account implements BaseAccount {
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
     private SortType mSortType;
-    private HashMap<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
+    private Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
     private ShowPictures mShowPictures;
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
@@ -338,7 +338,7 @@ public class Account implements BaseAccount {
      * Pick a nice Android guidelines color if we haven't used them all yet.
      */
     private int pickColor(Context context) {
-        Account[] accounts = Preferences.getPreferences(context).getAccounts();
+        List<Account> accounts = Preferences.getPreferences(context).getAccounts();
 
         List<Integer> availableColors = new ArrayList<Integer>(PREDEFINED_COLORS.length);
         Collections.addAll(availableColors, PREDEFINED_COLORS);
@@ -620,8 +620,8 @@ public class Account implements BaseAccount {
     }
 
     public static List<Integer> getExistingAccountNumbers(Preferences preferences) {
-        Account[] accounts = preferences.getAccounts();
-        List<Integer> accountNumbers = new ArrayList<Integer>(accounts.length);
+        List<Account> accounts = preferences.getAccounts();
+        List<Integer> accountNumbers = new ArrayList<Integer>(accounts.size());
         for (Account a : accounts) {
             accountNumbers.add(a.getAccountNumber());
         }
@@ -679,10 +679,10 @@ public class Account implements BaseAccount {
              *
              * I bet there is a much smarter way to do this. Anyone like to suggest it?
              */
-            Account[] accounts = preferences.getAccounts();
-            int[] accountNumbers = new int[accounts.length];
-            for (int i = 0; i < accounts.length; i++) {
-                accountNumbers[i] = accounts[i].getAccountNumber();
+            List<Account> accounts = preferences.getAccounts();
+            int[] accountNumbers = new int[accounts.size()];
+            for (int i = 0; i < accounts.size(); i++) {
+                accountNumbers[i] = accounts.get(i).getAccountNumber();
             }
             Arrays.sort(accountNumbers);
             for (int accountNumber : accountNumbers) {

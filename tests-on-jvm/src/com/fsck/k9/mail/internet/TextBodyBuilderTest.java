@@ -44,7 +44,7 @@ class TestingTextBodyBuilder extends TextBodyBuilder {
     // HtmlConverter depends on Android.
     // So we use dummy method for tests.
     @Override
-    public String textToHtmlFragment(String text) {
+    protected String textToHtmlFragment(String text) {
         return "<html>" + text + "</html>";
     }
 }

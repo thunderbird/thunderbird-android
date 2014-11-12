@@ -56,7 +56,7 @@ import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalFolder;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
@@ -660,7 +660,7 @@ public class FolderList extends K9ListActivity {
     }
 
     class FolderListAdapter extends BaseAdapter implements Filterable {
-        private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
+        private List<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter();
 
@@ -740,7 +740,7 @@ public class FolderList extends K9ListActivity {
             }
 
             @Override
-            public void listFolders(Account account, Folder[] folders) {
+            public void listFolders(Account account, List<? extends Folder> folders) {
                 if (account.equals(mAccount)) {
 
                     List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
@@ -1176,7 +1176,7 @@ public class FolderList extends K9ListActivity {
 
                 Locale locale = Locale.getDefault();
                 if ((searchTerm == null) || (searchTerm.length() == 0)) {
-                    ArrayList<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
+                    List<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
                     results.values = list;
                     results.count = list.size();
                 } else {
@@ -1184,7 +1184,7 @@ public class FolderList extends K9ListActivity {
                     final String[] words = searchTermString.split(" ");
                     final int wordCount = words.length;
 
-                    final ArrayList<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
+                    final List<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
 
                     for (final FolderInfoHolder value : mFolders) {
                         if (value.displayName == null) {

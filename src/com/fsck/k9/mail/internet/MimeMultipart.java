@@ -10,13 +10,11 @@ import java.util.Locale;
 import java.util.Random;
 
 public class MimeMultipart extends Multipart {
-    protected String mPreamble;
+    private String mPreamble;
 
-    protected String mContentType;
+    private String mContentType;
 
-    protected String mBoundary;
-
-    protected String mSubType;
+    private final String mBoundary;
 
     public MimeMultipart() throws MessagingException {
         mBoundary = generateBoundary();
@@ -26,7 +24,6 @@ public class MimeMultipart extends Multipart {
     public MimeMultipart(String contentType) throws MessagingException {
         this.mContentType = contentType;
         try {
-            mSubType = MimeUtility.getHeaderParameter(contentType, null).split("/")[1];
             mBoundary = MimeUtility.getHeaderParameter(contentType, "boundary");
             if (mBoundary == null) {
                 throw new MessagingException("MultiPart does not contain boundary: " + contentType);
@@ -62,10 +59,10 @@ public class MimeMultipart extends Multipart {
     }
 
     public void setSubType(String subType) {
-        this.mSubType = subType;
         mContentType = String.format("multipart/%s; boundary=\"%s\"", subType, mBoundary);
     }
 
+    @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
 
@@ -74,20 +71,19 @@ public class MimeMultipart extends Multipart {
             writer.write("\r\n");
         }
 
-        if (mParts.isEmpty()) {
+        if (getBodyParts().isEmpty()) {
             writer.write("--");
             writer.write(mBoundary);
             writer.write("\r\n");
-        }
-
-        for (int i = 0, count = mParts.size(); i < count; i++) {
-            BodyPart bodyPart = mParts.get(i);
-            writer.write("--");
-            writer.write(mBoundary);
-            writer.write("\r\n");
-            writer.flush();
-            bodyPart.writeTo(out);
-            writer.write("\r\n");
+        } else {
+            for (BodyPart bodyPart : getBodyParts()) {
+                writer.write("--");
+                writer.write(mBoundary);
+                writer.write("\r\n");
+                writer.flush();
+                bodyPart.writeTo(out);
+                writer.write("\r\n");
+            }
         }
 
         writer.write("--");
@@ -96,13 +92,14 @@ public class MimeMultipart extends Multipart {
         writer.flush();
     }
 
+    @Override
     public InputStream getInputStream() throws MessagingException {
         return null;
     }
 
     @Override
     public void setUsing7bitTransport() throws MessagingException {
-        for (BodyPart part : mParts) {
+        for (BodyPart part : getBodyParts()) {
             part.setUsing7bitTransport();
         }
     }

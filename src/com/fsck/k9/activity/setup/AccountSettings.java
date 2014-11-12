@@ -41,7 +41,7 @@ import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.service.MailService;
 

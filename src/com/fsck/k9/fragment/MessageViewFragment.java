@@ -39,7 +39,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
@@ -369,7 +369,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         if (mMessage != null) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new Message[] { mMessage }, Flag.FLAGGED, newState);
+                    Collections.singletonList(mMessage), Flag.FLAGGED, newState);
             mMessageView.setHeaders(mMessage, mAccount);
         }
     }
@@ -485,7 +485,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     public void onToggleRead() {
         if (mMessage != null) {
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new Message[] { mMessage }, Flag.SEEN, !mMessage.isSet(Flag.SEEN));
+                    Collections.singletonList(mMessage), Flag.SEEN, !mMessage.isSet(Flag.SEEN));
             mMessageView.setHeaders(mMessage, mAccount);
             String subject = mMessage.getSubject();
             displayMessageSubject(subject);

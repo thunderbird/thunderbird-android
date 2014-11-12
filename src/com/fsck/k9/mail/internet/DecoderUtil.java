@@ -7,7 +7,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.CharsetUtil;
@@ -30,12 +31,7 @@ public class DecoderUtil {
      * @return the decoded string.
      */
     private static String decodeB(String encodedWord, String charset) {
-        byte[] bytes;
-        try {
-            bytes = encodedWord.getBytes("US-ASCII");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
+        byte[] bytes = encodedWord.getBytes(Charset.forName("US-ASCII"));
 
         Base64InputStream is = new Base64InputStream(new ByteArrayInputStream(bytes));
         try {
@@ -68,12 +64,7 @@ public class DecoderUtil {
             }
         }
 
-        byte[] bytes;
-        try {
-            bytes = sb.toString().getBytes("US-ASCII");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
+        byte[] bytes = sb.toString().getBytes(Charset.forName("US-ASCII"));
 
         QuotedPrintableInputStream is = new QuotedPrintableInputStream(new ByteArrayInputStream(bytes));
         try {

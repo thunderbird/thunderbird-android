@@ -36,7 +36,7 @@ public class MimeHeader {
         HEADER_ANDROID_ATTACHMENT_STORE_DATA
     };
 
-    protected ArrayList<Field> mFields = new ArrayList<Field>();
+    private List<Field> mFields = new ArrayList<Field>();
     private String mCharset = null;
 
     public void clear() {
@@ -72,7 +72,7 @@ public class MimeHeader {
     }
 
     public String[] getHeader(String name) {
-        ArrayList<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<String>();
         for (Field field : mFields) {
             if (field.name.equalsIgnoreCase(name)) {
                 values.add(field.value);
@@ -85,7 +85,7 @@ public class MimeHeader {
     }
 
     public void removeHeader(String name) {
-        ArrayList<Field> removeFields = new ArrayList<Field>();
+        List<Field> removeFields = new ArrayList<Field>();
         for (Field field : mFields) {
             if (field.name.equalsIgnoreCase(name)) {
                 removeFields.add(field);
@@ -119,7 +119,7 @@ public class MimeHeader {
     }
 
     // encode non printable characters except LF/CR/TAB codes.
-    public boolean hasToBeEncoded(String text) {
+    private boolean hasToBeEncoded(String text) {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
             if ((c < 0x20 || 0x7e < c) && // non printable
@@ -131,10 +131,10 @@ public class MimeHeader {
         return false;
     }
 
-    static class Field {
-        final String name;
+    private static class Field {
+        private final String name;
 
-        final String value;
+        private final String value;
 
         public Field(String name, String value) {
             this.name = name;
@@ -153,6 +153,7 @@ public class MimeHeader {
         mCharset = charset;
     }
 
+    @Override
     public MimeHeader clone() {
         MimeHeader header = new MimeHeader();
         header.mCharset = mCharset;

@@ -88,8 +88,8 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.provider.EmailProvider.SpecialColumns;
@@ -960,16 +960,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     accountUuids[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
                 mAllAccounts = true;
 
-                Account[] accounts = mPreferences.getAccounts();
+                List<Account> accounts = mPreferences.getAccounts();
 
-                mAccountUuids = new String[accounts.length];
-                for (int i = 0, len = accounts.length; i < len; i++) {
-                    mAccountUuids[i] = accounts[i].getUuid();
+                mAccountUuids = new String[accounts.size()];
+                for (int i = 0, len = accounts.size(); i < len; i++) {
+                    mAccountUuids[i] = accounts.get(i).getUuid();
                 }
 
                 if (mAccountUuids.length == 1) {
                     mSingleAccountMode = true;
-                    mAccount = accounts[0];
+                    mAccount = accounts.get(0);
                 }
             } else {
                 mAccountUuids = accountUuids;
@@ -1084,11 +1084,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         mController.addListener(mListener);
 
         //Cancel pending new mail notifications when we open an account
-        Account[] accountsWithNotification;
+        List<Account> accountsWithNotification;
 
         Account account = mAccount;
         if (account != null) {
-            accountsWithNotification = new Account[] { account };
+            accountsWithNotification = Collections.singletonList(account);
         } else {
             accountsWithNotification = mPreferences.getAccounts();
         }
@@ -1814,7 +1814,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
 
             List<String> folderNames = mSearch.getFolderNames();
-            return (folderNames.size() == 0 || folderNames.contains(folder));
+            return (folderNames.isEmpty() || folderNames.contains(folder));
         }
     }
 
@@ -2362,7 +2362,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void setFlagForSelected(final Flag flag, final boolean newState) {
-        if (mSelected.size() == 0) {
+        if (mSelected.isEmpty()) {
             return;
         }
 
@@ -2586,7 +2586,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private boolean checkCopyOrMovePossible(final List<Message> messages,
             final FolderOperation operation) {
 
-        if (messages.size() == 0) {
+        if (messages.isEmpty()) {
             return false;
         }
 
@@ -2995,8 +2995,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         super.onStop();
     }
 
-    public ArrayList<MessageReference> getMessageReferences() {
-        ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
+    public List<MessageReference> getMessageReferences() {
+        List<MessageReference> messageRefs = new ArrayList<MessageReference>();
 
         for (int i = 0, len = mAdapter.getCount(); i < len; i++) {
             Cursor cursor = (Cursor) mAdapter.getItem(i);
@@ -3515,7 +3515,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void cleanupSelected(Cursor cursor) {
-        if (mSelected.size() == 0) {
+        if (mSelected.isEmpty()) {
             return;
         }
 
@@ -3534,7 +3534,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * Starts or finishes the action mode when necessary.
      */
     private void resetActionMode() {
-        if (mSelected.size() == 0) {
+        if (mSelected.isEmpty()) {
             if (mActionMode != null) {
                 mActionMode.finish();
             }

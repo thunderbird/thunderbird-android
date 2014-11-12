@@ -11,6 +11,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
 
+import java.util.List;
+
 import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 
 public class RemoteControlReceiver extends CoreReceiver {
@@ -25,12 +27,12 @@ public class RemoteControlReceiver extends CoreReceiver {
         } else if (K9RemoteControl.K9_REQUEST_ACCOUNTS.equals(intent.getAction())) {
             try {
                 Preferences preferences = Preferences.getPreferences(context);
-                Account[] accounts = preferences.getAccounts();
-                String[] uuids = new String[accounts.length];
-                String[] descriptions = new String[accounts.length];
-                for (int i = 0; i < accounts.length; i++) {
+                List<Account> accounts = preferences.getAccounts();
+                String[] uuids = new String[accounts.size()];
+                String[] descriptions = new String[accounts.size()];
+                for (int i = 0; i < accounts.size(); i++) {
                     //warning: account may not be isAvailable()
-                    Account account = accounts[i];
+                    Account account = accounts.get(i);
 
                     uuids[i] = account.getUuid();
                     descriptions[i] = account.getDescription();

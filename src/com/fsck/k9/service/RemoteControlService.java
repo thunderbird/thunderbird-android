@@ -17,6 +17,8 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class RemoteControlService extends CoreService {
     private final static String RESCHEDULE_ACTION = "com.fsck.k9.service.RemoteControlService.RESCHEDULE_ACTION";
     private final static String PUSH_RESTART_ACTION = "com.fsck.k9.service.RemoteControlService.PUSH_RESTART_ACTION";
@@ -65,7 +67,7 @@ public class RemoteControlService extends CoreService {
                                 Log.i(K9.LOG_TAG, "RemoteControlService changing settings for account with UUID " + uuid);
                             }
                         }
-                        Account[] accounts = preferences.getAccounts();
+                        List<Account> accounts = preferences.getAccounts();
                         for (Account account : accounts) {
                             //warning: account may not be isAvailable()
                             if (allAccounts || account.getUuid().equals(uuid)) {

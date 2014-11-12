@@ -3,10 +3,8 @@ package com.fsck.k9.activity.setup;
 
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.Locale;
 
 import android.app.AlertDialog;
@@ -35,6 +33,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -281,8 +280,8 @@ public class AccountSetupBasics extends K9Activity
         URI incomingUri = null;
         URI outgoingUri = null;
         try {
-            String userEnc = URLEncoder.encode(user, "UTF-8");
-            String passwordEnc = URLEncoder.encode(password, "UTF-8");
+            String userEnc = UrlEncodingHelper.encodeUtf8(user);
+            String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
 
             String incomingUsername = mProvider.incomingUsernameTemplate;
             incomingUsername = incomingUsername.replaceAll("\\$email", email);
@@ -338,9 +337,6 @@ public class AccountSetupBasics extends K9Activity
             }
             // Check incoming here.  Then check outgoing in onActivityResult()
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
-        } catch (UnsupportedEncodingException enc) {
-            // This really shouldn't happen since the encoding is hardcoded to UTF-8
-            Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
         } catch (URISyntaxException use) {
             /*
              * If there is some problem with the URI we give up and go on to

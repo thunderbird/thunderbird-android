@@ -68,7 +68,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
      * @param realAccounts
      *         An array of accounts to display.
      */
-    public void populateListView(Account[] realAccounts) {
+    public void populateListView(List<Account> realAccounts) {
         List<BaseAccount> accounts = new ArrayList<BaseAccount>();
 
         if (displaySpecialAccounts() && !K9.isHideSpecialAccounts()) {
@@ -79,7 +79,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
             accounts.add(allMessagesAccount);
         }
 
-        accounts.addAll(Arrays.asList(realAccounts));
+        accounts.addAll(realAccounts);
         AccountsAdapter adapter = new AccountsAdapter(accounts);
         ListView listView = getListView();
         listView.setAdapter(adapter);
@@ -169,15 +169,15 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
     /**
      * Load accounts in a background thread
      */
-    class LoadAccounts extends AsyncTask<Void, Void, Account[]> {
+    class LoadAccounts extends AsyncTask<Void, Void, List<Account>> {
         @Override
-        protected Account[] doInBackground(Void... params) {
-            Account[] accounts = Preferences.getPreferences(getApplicationContext()).getAccounts();
+        protected List<Account> doInBackground(Void... params) {
+            List<Account> accounts = Preferences.getPreferences(getApplicationContext()).getAccounts();
             return accounts;
         }
 
         @Override
-        protected void onPostExecute(Account[] accounts) {
+        protected void onPostExecute(List<Account> accounts) {
             populateListView(accounts);
         }
     }

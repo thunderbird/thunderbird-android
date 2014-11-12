@@ -28,6 +28,7 @@ import android.webkit.WebView;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A {@link ScrollView} that will never lock scrolling in a particular direction.
@@ -59,7 +60,7 @@ public class NonLockingScrollView extends ScrollView {
     /**
      * The list of children who should always receive touch events, and not have them intercepted.
      */
-    private final ArrayList<View> mChildrenNeedingAllTouches = new ArrayList<View>();
+    private final List<View> mChildrenNeedingAllTouches = new ArrayList<View>();
 
     private boolean mSkipWebViewScroll = true;
 
@@ -122,7 +123,7 @@ public class NonLockingScrollView extends ScrollView {
     }
 
     private final Rect sHitFrame = new Rect();
-    private boolean isEventOverChild(MotionEvent ev, ArrayList<View> children) {
+    private boolean isEventOverChild(MotionEvent ev, List<View> children) {
         final int actionIndex = ev.getActionIndex();
         final float x = ev.getX(actionIndex) + getScrollX();
         final float y = ev.getY(actionIndex) + getScrollY();

@@ -54,7 +54,7 @@ public class ConditionsTreeNode implements Parcelable {
      * should point to rows representing the nodes of the tree.
      *
      * @param cursor Cursor pointing to the first of a bunch or rows. Each rows
-     * 	should contains 1 tree node.
+     *  should contains 1 tree node.
      * @return A condition tree.
      */
     public static ConditionsTreeNode buildTreeFromDB(Cursor cursor) {
@@ -256,7 +256,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @return List of all nodes in subtree in preorder.
      */
     public List<ConditionsTreeNode> preorder() {
-        ArrayList<ConditionsTreeNode> result = new ArrayList<ConditionsTreeNode>();
+        List<ConditionsTreeNode> result = new ArrayList<ConditionsTreeNode>();
         Stack<ConditionsTreeNode> stack = new Stack<ConditionsTreeNode>();
         stack.push(this);
 

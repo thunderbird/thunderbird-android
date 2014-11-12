@@ -240,8 +240,8 @@ public class LocalSearch implements SearchSpecification {
     public void addAllowedFolder(String name) {
         /*
          *  TODO find folder sub-tree
-         *  		- do and on root of it & rest of search
-         *  		- do or between folder nodes
+         *          - do and on root of it & rest of search
+         *          - do or between folder nodes
          */
         mConditions = and(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, name));
     }
@@ -252,7 +252,7 @@ public class LocalSearch implements SearchSpecification {
      * real searches because of possible extra conditions to a folder requirement.
      */
     public List<String> getFolderNames() {
-        ArrayList<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<String>();
         for (ConditionsTreeNode node : mLeafSet) {
             if (node.mCondition.field == Searchfield.FOLDER &&
                     node.mCondition.attribute == Attribute.EQUALS) {
@@ -328,7 +328,7 @@ public class LocalSearch implements SearchSpecification {
      */
     @Override
     public String[] getAccountUuids() {
-        if (mAccountUuids.size() == 0) {
+        if (mAccountUuids.isEmpty()) {
             return new String[] { SearchSpecification.ALL_ACCOUNTS };
         }
 
@@ -343,7 +343,7 @@ public class LocalSearch implements SearchSpecification {
      * @return {@code true} if all accounts should be searched.
      */
     public boolean searchAllAccounts() {
-        return (mAccountUuids.size() == 0);
+        return (mAccountUuids.isEmpty());
     }
 
     /**

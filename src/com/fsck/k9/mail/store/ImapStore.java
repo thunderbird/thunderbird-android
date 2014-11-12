@@ -7,7 +7,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -16,8 +15,6 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -29,8 +26,11 @@ import java.security.Security;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Deque;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -64,6 +64,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.StringUtils;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
@@ -116,7 +117,7 @@ public class ImapStore extends Store {
 
     private static int FETCH_WINDOW_SIZE = 100;
 
-    private Set<Flag> mPermanentFlagsIndex = new HashSet<Flag>();
+    private Set<Flag> mPermanentFlagsIndex = EnumSet.noneOf(Flag.class);
 
     private static final String CAPABILITY_IDLE = "IDLE";
     private static final String CAPABILITY_AUTH_CRAM_MD5 = "AUTH=CRAM-MD5";
@@ -132,8 +133,6 @@ public class ImapStore extends Store {
 
     private static final String CAPABILITY_COMPRESS_DEFLATE = "COMPRESS=DEFLATE";
     private static final String COMMAND_COMPRESS_DEFLATE = "COMPRESS DEFLATE";
-
-    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -198,31 +197,26 @@ public class ImapStore extends Store {
         }
 
         if (imapUri.getUserInfo() != null) {
-            try {
-                String userinfo = imapUri.getUserInfo();
-                String[] userInfoParts = userinfo.split(":");
+            String userinfo = imapUri.getUserInfo();
+            String[] userInfoParts = userinfo.split(":");
 
-                if (userinfo.endsWith(":")) {
-                    // Password is empty. This can only happen after an account was imported.
-                    authenticationType = AuthType.valueOf(userInfoParts[0]);
-                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 2) {
-                    authenticationType = AuthType.PLAIN;
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 3) {
-                    authenticationType = AuthType.valueOf(userInfoParts[0]);
-                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
+            if (userinfo.endsWith(":")) {
+                // Password is empty. This can only happen after an account was imported.
+                authenticationType = AuthType.valueOf(userInfoParts[0]);
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+            } else if (userInfoParts.length == 2) {
+                authenticationType = AuthType.PLAIN;
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+            } else if (userInfoParts.length == 3) {
+                authenticationType = AuthType.valueOf(userInfoParts[0]);
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
 
-                    if (AuthType.EXTERNAL == authenticationType) {
-                        clientCertificateAlias = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                    } else {
-                        password = URLDecoder.decode(userInfoParts[2], "UTF-8");
-                    }
+                if (AuthType.EXTERNAL == authenticationType) {
+                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
+                } else {
+                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
                 }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
             }
         }
 
@@ -260,19 +254,11 @@ public class ImapStore extends Store {
      * @see ImapStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc;
-        String passwordEnc;
-        String clientCertificateAliasEnc;
-        try {
-            userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-            clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    URLEncoder.encode(server.clientCertificateAlias, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Could not encode username or password", e);
-        }
+        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
+        String passwordEnc = (server.password != null) ?
+                    UrlEncodingHelper.encodeUtf8(server.password) : "";
+        String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
+                    UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -439,7 +425,7 @@ public class ImapStore extends Store {
 
     private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
 
-    private LinkedList<ImapConnection> mConnections =
+    private final Deque<ImapConnection> mConnections =
         new LinkedList<ImapConnection>();
 
     /**
@@ -453,7 +439,7 @@ public class ImapStore extends Store {
      * requests. This cache lets us make sure we always reuse, if possible, for a given
      * folder name.
      */
-    private HashMap<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
+    private final Map<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
 
     public ImapStore(Account account) throws MessagingException {
         super(account);
@@ -756,18 +742,10 @@ public class ImapStore extends Store {
     }
 
     private String encodeFolderName(String name) {
-        try {
-            ByteBuffer bb = mModifiedUtf7Charset.encode(name);
-            byte[] b = new byte[bb.limit()];
-            bb.get(b);
-            return new String(b, "US-ASCII");
-        } catch (UnsupportedEncodingException uee) {
-            /*
-             * The only thing that can throw this is getBytes("US-ASCII") and if US-ASCII doesn't
-             * exist we're totally screwed.
-             */
-            throw new RuntimeException("Unable to encode folder name: " + name, uee);
-        }
+        ByteBuffer bb = mModifiedUtf7Charset.encode(name);
+        byte[] b = new byte[bb.limit()];
+        bb.get(b);
+        return new String(b, Charset.forName("US-ASCII"));
     }
 
     private String decodeFolderName(String name) throws CharacterCodingException {
@@ -775,18 +753,11 @@ public class ImapStore extends Store {
          * Convert the encoded name to US-ASCII, then pass it through the modified UTF-7
          * decoder and return the Unicode String.
          */
-        try {
-            // Make sure the decoder throws an exception if it encounters an invalid encoding.
-            CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
-            CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes("US-ASCII")));
-            return cb.toString();
-        } catch (UnsupportedEncodingException uee) {
-            /*
-             * The only thing that can throw this is getBytes("US-ASCII") and if US-ASCII doesn't
-             * exist we're totally screwed.
-             */
-            throw new RuntimeException("Unable to decode folder name: " + name, uee);
-        }
+        // Make sure the decoder throws an exception if it encounters an invalid encoding.
+        CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
+        CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes(Charset.forName("US-ASCII"))));
+        return cb.toString();
+
     }
 
     @Override
@@ -1121,22 +1092,22 @@ public class ImapStore extends Store {
          * @return The mapping of original message UIDs to the new server UIDs.
          */
         @Override
-        public Map<String, String> copyMessages(Message[] messages, Folder folder)
+        public Map<String, String> copyMessages(List<? extends Message> messages, Folder folder)
                 throws MessagingException {
             if (!(folder instanceof ImapFolder)) {
                 throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
             }
 
-            if (messages.length == 0) {
+            if (messages.isEmpty()) {
                 return null;
             }
 
             ImapFolder iFolder = (ImapFolder)folder;
             checkOpen(); //only need READ access
 
-            String[] uids = new String[messages.length];
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            String[] uids = new String[messages.size()];
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
 
             try {
@@ -1222,21 +1193,21 @@ public class ImapStore extends Store {
         }
 
         @Override
-        public Map<String, String> moveMessages(Message[] messages, Folder folder) throws MessagingException {
-            if (messages.length == 0)
+        public Map<String, String> moveMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
+            if (messages.isEmpty())
                 return null;
             Map<String, String> uidMap = copyMessages(messages, folder);
-            setFlags(messages, new Flag[] { Flag.DELETED }, true);
+            setFlags(messages, Collections.singleton(Flag.DELETED), true);
             return uidMap;
         }
 
         @Override
-        public void delete(Message[] messages, String trashFolderName) throws MessagingException {
-            if (messages.length == 0)
+        public void delete(List<? extends Message> messages, String trashFolderName) throws MessagingException {
+            if (messages.isEmpty())
                 return;
 
             if (trashFolderName == null || getName().equalsIgnoreCase(trashFolderName)) {
-                setFlags(messages, new Flag[] { Flag.DELETED }, true);
+                setFlags(messages, Collections.singleton(Flag.DELETED), true);
             } else {
                 ImapFolder remoteTrashFolder = (ImapFolder)getStore().getFolder(trashFolderName);
                 String remoteTrashName = encodeString(encodeFolderName(remoteTrashFolder.getPrefixedName()));
@@ -1252,7 +1223,7 @@ public class ImapStore extends Store {
 
                 if (exists(remoteTrashName)) {
                     if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "IMAPMessage.delete: copying remote " + messages.length + " messages to '" + trashFolderName + "' for " + getLogId());
+                        Log.d(K9.LOG_TAG, "IMAPMessage.delete: copying remote " + messages.size() + " messages to '" + trashFolderName + "' for " + getLogId());
 
                     moveMessages(messages, remoteTrashFolder);
                 } else {
@@ -1302,13 +1273,14 @@ public class ImapStore extends Store {
         protected long getHighestUid() {
             try {
                 ImapSearcher searcher = new ImapSearcher() {
+                    @Override
                     public List<ImapResponse> search() throws IOException, MessagingException {
                         return executeSimpleCommand("UID SEARCH *:*");
                     }
                 };
-                Message[] messages = search(searcher, null).toArray(EMPTY_MESSAGE_ARRAY);
-                if (messages.length > 0) {
-                    return Long.parseLong(messages[0].getUid());
+                List<? extends Message> messages = search(searcher, null);
+                if (messages.size() > 0) {
+                    return Long.parseLong(messages.get(0).getUid());
                 }
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Unable to find highest UID in folder " + getName(), e);
@@ -1329,12 +1301,12 @@ public class ImapStore extends Store {
 
 
         @Override
-        public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
+        public List<? extends Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
             return getMessages(start, end, earliestDate, false, listener);
         }
 
-        protected Message[] getMessages(final int start, final int end, Date earliestDate, final boolean includeDeleted, final MessageRetrievalListener listener)
+        protected List<? extends Message> getMessages(final int start, final int end, Date earliestDate, final boolean includeDeleted, final MessageRetrievalListener listener)
         throws MessagingException {
             if (start < 1 || end < 1 || end < start) {
                 throw new MessagingException(
@@ -1351,39 +1323,42 @@ public class ImapStore extends Store {
 
 
             ImapSearcher searcher = new ImapSearcher() {
+                @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
                     return executeSimpleCommand(String.format(Locale.US, "UID SEARCH %d:%d%s%s", start, end, dateSearchString, includeDeleted ? "" : " NOT DELETED"));
                 }
             };
-            return search(searcher, listener).toArray(EMPTY_MESSAGE_ARRAY);
+            return search(searcher, listener);
 
         }
-        protected Message[] getMessages(final List<Long> mesgSeqs, final boolean includeDeleted, final MessageRetrievalListener listener)
+        protected List<? extends Message> getMessages(final List<Long> mesgSeqs, final boolean includeDeleted, final MessageRetrievalListener listener)
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
+                @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
                     return executeSimpleCommand(String.format("UID SEARCH %s%s", Utility.combine(mesgSeqs.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
-            return search(searcher, listener).toArray(EMPTY_MESSAGE_ARRAY);
+            return search(searcher, listener);
         }
 
-        protected Message[] getMessagesFromUids(final List<String> mesgUids, final boolean includeDeleted, final MessageRetrievalListener listener)
+        protected List<? extends Message> getMessagesFromUids(final List<String> mesgUids, final boolean includeDeleted, final MessageRetrievalListener listener)
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
+                @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
                     return executeSimpleCommand(String.format("UID SEARCH UID %s%s", Utility.combine(mesgUids.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
-            return search(searcher, listener).toArray(EMPTY_MESSAGE_ARRAY);
+            return search(searcher, listener);
         }
 
         private List<Message> search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException {
 
             checkOpen(); //only need READ access
-            ArrayList<Message> messages = new ArrayList<Message>();
+            List<Message> messages = new ArrayList<Message>();
             try {
-                ArrayList<Long> uids = new ArrayList<Long>();
+                List<Long> uids = new ArrayList<Long>();
                 List<ImapResponse> responses = searcher.search(); //
                 for (ImapResponse response : responses) {
                     if (response.mTag == null) {
@@ -1420,19 +1395,19 @@ public class ImapStore extends Store {
 
 
         @Override
-        public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
+        public List<? extends Message> getMessages(MessageRetrievalListener listener) throws MessagingException {
             return getMessages(null, listener);
         }
 
         @Override
-        public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
+        public List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener)
         throws MessagingException {
             checkOpen(); //only need READ access
-            ArrayList<Message> messages = new ArrayList<Message>();
+            List<Message> messages = new ArrayList<Message>();
             try {
                 if (uids == null) {
                     List<ImapResponse> responses = executeSimpleCommand("UID SEARCH 1:* NOT DELETED");
-                    ArrayList<String> tempUids = new ArrayList<String>();
+                    List<String> tempUids = new ArrayList<String>();
                     for (ImapResponse response : responses) {
                         if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
                             for (int i = 1, count = response.size(); i < count; i++) {
@@ -1455,17 +1430,17 @@ public class ImapStore extends Store {
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
-            return messages.toArray(EMPTY_MESSAGE_ARRAY);
+            return messages;
         }
 
         @Override
-        public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
+        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException {
-            if (messages == null || messages.length == 0) {
+            if (messages == null || messages.isEmpty()) {
                 return;
             }
             checkOpen(); //only need READ access
-            List<String> uids = new ArrayList<String>(messages.length);
+            List<String> uids = new ArrayList<String>(messages.size());
             HashMap<String, Message> messageMap = new HashMap<String, Message>();
             for (Message msg : messages) {
                 String uid = msg.getUid();
@@ -1507,8 +1482,8 @@ public class ImapStore extends Store {
 
 
 
-            for (int windowStart = 0; windowStart < messages.length; windowStart += (FETCH_WINDOW_SIZE)) {
-                List<String> uidWindow = uids.subList(windowStart, Math.min((windowStart + FETCH_WINDOW_SIZE), messages.length));
+            for (int windowStart = 0; windowStart < messages.size(); windowStart += (FETCH_WINDOW_SIZE)) {
+                List<String> uidWindow = uids.subList(windowStart, Math.min((windowStart + FETCH_WINDOW_SIZE), messages.size()));
 
                 try {
                     mConnection.sendCommand(String.format("UID FETCH %s (%s)",
@@ -1834,7 +1809,7 @@ public class ImapStore extends Store {
                          * For each part in the message we're going to add a new BodyPart and parse
                          * into it.
                          */
-                        ImapBodyPart bp = new ImapBodyPart();
+                        MimeBodyPart bp = new MimeBodyPart();
                         if (id.equalsIgnoreCase("TEXT")) {
                             parseBodyStructure(bs.getList(i), bp, Integer.toString(i + 1));
                         } else {
@@ -1970,10 +1945,6 @@ public class ImapStore extends Store {
 
                 if (part instanceof ImapMessage) {
                     ((ImapMessage) part).setSize(size);
-                } else if (part instanceof ImapBodyPart) {
-                    ((ImapBodyPart) part).setSize(size);
-                } else {
-                    throw new MessagingException("Unknown part type " + part.toString());
                 }
                 part.setHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA, id);
             }
@@ -1994,7 +1965,7 @@ public class ImapStore extends Store {
          * @return The mapping of original message UIDs to the new server UIDs.
          */
         @Override
-        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
+        public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
             open(OPEN_MODE_RW);
             checkOpen();
             try {
@@ -2066,7 +2037,7 @@ public class ImapStore extends Store {
                  * with the behavior of other similar methods (copyMessages, moveMessages) which
                  * return null.
                  */
-                return (uidMap.size() == 0) ? null : uidMap;
+                return (uidMap.isEmpty()) ? null : uidMap;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
@@ -2117,8 +2088,8 @@ public class ImapStore extends Store {
             }
         }
 
-        private String combineFlags(Flag[] flags) {
-            ArrayList<String> flagNames = new ArrayList<String>();
+        private String combineFlags(Iterable<Flag> flags) {
+            List<String> flagNames = new ArrayList<String>();
             for (Flag flag : flags) {
                 if (flag == Flag.SEEN) {
                     flagNames.add("\\Seen");
@@ -2139,7 +2110,7 @@ public class ImapStore extends Store {
 
 
         @Override
-        public void setFlags(Flag[] flags, boolean value)
+        public void setFlags(Set<Flag> flags, boolean value)
         throws MessagingException {
             open(OPEN_MODE_RW);
             checkOpen();
@@ -2174,13 +2145,13 @@ public class ImapStore extends Store {
 
 
         @Override
-        public void setFlags(Message[] messages, Flag[] flags, boolean value)
+        public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
         throws MessagingException {
             open(OPEN_MODE_RW);
             checkOpen();
-            String[] uids = new String[messages.length];
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            String[] uids = new String[messages.size()];
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
             try {
                 executeSimpleCommand(String.format("UID STORE %s %sFLAGS.SILENT (%s)",
@@ -2241,7 +2212,7 @@ public class ImapStore extends Store {
          * @throws MessagingException On any error.
          */
         @Override
-        public List<Message> search(final String queryString, final Flag[] requiredFlags, final Flag[] forbiddenFlags)
+        public List<Message> search(final String queryString, final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags)
             throws MessagingException {
 
             if (!mAccount.allowRemoteSearch()) {
@@ -2250,6 +2221,7 @@ public class ImapStore extends Store {
 
             // Setup the searcher
             final ImapSearcher searcher = new ImapSearcher() {
+                @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
                     String imapQuery = "UID SEARCH ";
                     if (requiredFlags != null) {
@@ -2345,12 +2317,12 @@ public class ImapStore extends Store {
      * A cacheable class that stores the details for a single IMAP connection.
      */
     public static class ImapConnection {
-        protected Socket mSocket;
-        protected PeekableInputStream mIn;
-        protected OutputStream mOut;
-        protected ImapResponseParser mParser;
-        protected int mNextCommandTag;
-        protected Set<String> capabilities = new HashSet<String>();
+        private Socket mSocket;
+        private PeekableInputStream mIn;
+        private OutputStream mOut;
+        private ImapResponseParser mParser;
+        private int mNextCommandTag;
+        private Set<String> capabilities = new HashSet<String>();
 
         private ImapSettings mSettings;
 
@@ -2761,10 +2733,10 @@ public class ImapStore extends Store {
             return response;
         }
 
-        protected ArrayList<ImapResponse> readStatusResponse(String tag,
+        protected List<ImapResponse> readStatusResponse(String tag,
                 String commandToLog, UntaggedHandler untaggedHandler)
                 throws IOException, MessagingException {
-            ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
+            List<ImapResponse> responses = new ArrayList<ImapResponse>();
             ImapResponse response;
             do {
                 response = mParser.readResponse();
@@ -2931,11 +2903,6 @@ public class ImapStore extends Store {
             this.mSize = size;
         }
 
-        @Override
-        public void parse(InputStream in) throws IOException, MessagingException {
-            super.parse(in);
-        }
-
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
         }
@@ -2944,28 +2911,18 @@ public class ImapStore extends Store {
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
-            mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
+            mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
         }
 
         @Override
         public void delete(String trashFolderName) throws MessagingException {
-            getFolder().delete(new Message[] { this }, trashFolderName);
-        }
-    }
-
-    static class ImapBodyPart extends MimeBodyPart {
-        public ImapBodyPart() throws MessagingException {
-            super();
-        }
-
-        public void setSize(int size) {
-            this.mSize = size;
+            getFolder().delete(Collections.singletonList(this), trashFolderName);
         }
     }
 
     static class ImapException extends MessagingException {
         private static final long serialVersionUID = 3725007182205882394L;
-        String mAlertText;
+        private final String mAlertText;
 
         public ImapException(String message, String alertText) {
             super(message, true);
@@ -2976,22 +2933,19 @@ public class ImapStore extends Store {
             return mAlertText;
         }
 
-        public void setAlertText(String alertText) {
-            mAlertText = alertText;
-        }
     }
 
     public class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
-        final PushReceiver receiver;
-        Thread listeningThread = null;
-        final AtomicBoolean stop = new AtomicBoolean(false);
-        final AtomicBoolean idling = new AtomicBoolean(false);
-        final AtomicBoolean doneSent = new AtomicBoolean(false);
-        final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
-        final AtomicInteger idleFailureCount = new AtomicInteger(0);
-        final AtomicBoolean needsPoll = new AtomicBoolean(false);
-        List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
-        TracingWakeLock wakeLock = null;
+        private final PushReceiver receiver;
+        private Thread listeningThread = null;
+        private final AtomicBoolean stop = new AtomicBoolean(false);
+        private final AtomicBoolean idling = new AtomicBoolean(false);
+        private final AtomicBoolean doneSent = new AtomicBoolean(false);
+        private final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
+        private final AtomicInteger idleFailureCount = new AtomicInteger(0);
+        private final AtomicBoolean needsPoll = new AtomicBoolean(false);
+        private List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
+        private TracingWakeLock wakeLock = null;
 
         public ImapFolderPusher(ImapStore store, String name, PushReceiver nReceiver) {
             super(store, name);
@@ -3029,6 +2983,7 @@ public class ImapStore extends Store {
 
         public void start() {
             Runnable runner = new Runnable() {
+                @Override
                 public void run() {
                     wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
                     if (K9.DEBUG)
@@ -3254,9 +3209,9 @@ public class ImapStore extends Store {
                 Log.e(K9.LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
             }
 
-            Message[] messageArray = getMessages(end, end, null, true, null);
-            if (messageArray != null && messageArray.length > 0) {
-                long newUid = Long.parseLong(messageArray[0].getUid());
+            List<? extends Message> messageList = getMessages(end, end, null, true, null);
+            if (messageList != null && messageList.size() > 0) {
+                long newUid = Long.parseLong(messageList.get(0).getUid());
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "Got newUid " + newUid + " for message " + end + " on " + getLogId());
                 long startUid = oldUidNext;
@@ -3284,12 +3239,10 @@ public class ImapStore extends Store {
 
         private void syncMessages(List<Long> flagSyncMsgSeqs) {
             try {
-                Message[] messageArray = null;
-
-                messageArray = getMessages(flagSyncMsgSeqs, true, null);
+                List<? extends Message> messageList = getMessages(flagSyncMsgSeqs, true, null);
 
                 List<Message> messages = new ArrayList<Message>();
-                messages.addAll(Arrays.asList(messageArray));
+                messages.addAll(messageList);
                 pushMessages(messages, false);
 
             } catch (Exception e) {
@@ -3301,7 +3254,7 @@ public class ImapStore extends Store {
             List<Message> messages = new ArrayList<Message>(removeUids.size());
 
             try {
-                Message[] existingMessages = getMessagesFromUids(removeUids, true, null);
+                List<? extends Message> existingMessages = getMessagesFromUids(removeUids, true, null);
                 for (Message existingMessage : existingMessages) {
                     needsPoll.set(true);
                     msgSeqUidMap.clear();
@@ -3428,6 +3381,7 @@ public class ImapStore extends Store {
             }
         }
 
+        @Override
         public void handleAsyncUntaggedResponse(ImapResponse response) {
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "Got async response: " + response);
@@ -3478,17 +3432,18 @@ public class ImapStore extends Store {
     }
 
     public class ImapPusher implements Pusher {
-        final ImapStore mStore;
+        private final ImapStore mStore;
         final PushReceiver mReceiver;
         private long lastRefresh = -1;
 
-        HashMap<String, ImapFolderPusher> folderPushers = new HashMap<String, ImapFolderPusher>();
+        final Map<String, ImapFolderPusher> folderPushers = new HashMap<String, ImapFolderPusher>();
 
         public ImapPusher(ImapStore store, PushReceiver receiver) {
             mStore = store;
             mReceiver = receiver;
         }
 
+        @Override
         public void start(List<String> folderNames) {
             stop();
             synchronized (folderPushers) {
@@ -3504,6 +3459,7 @@ public class ImapStore extends Store {
             }
         }
 
+        @Override
         public void refresh() {
             synchronized (folderPushers) {
                 for (ImapFolderPusher folderPusher : folderPushers.values()) {
@@ -3516,6 +3472,7 @@ public class ImapStore extends Store {
             }
         }
 
+        @Override
         public void stop() {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Requested stop of IMAP pusher");
@@ -3534,14 +3491,17 @@ public class ImapStore extends Store {
             }
         }
 
+        @Override
         public int getRefreshInterval() {
             return (getAccount().getIdleRefreshMinutes() * 60 * 1000);
         }
 
+        @Override
         public long getLastRefresh() {
             return lastRefresh;
         }
 
+        @Override
         public void setLastRefresh(long lastRefresh) {
             this.lastRefresh = lastRefresh;
         }
@@ -3590,9 +3550,9 @@ public class ImapStore extends Store {
     }
 
     private static class FetchBodyCallback implements ImapResponseParser.IImapResponseCallback {
-        private HashMap<String, Message> mMessageMap;
+        private Map<String, Message> mMessageMap;
 
-        FetchBodyCallback(HashMap<String, Message> mesageMap) {
+        FetchBodyCallback(Map<String, Message> mesageMap) {
             mMessageMap = mesageMap;
         }
 

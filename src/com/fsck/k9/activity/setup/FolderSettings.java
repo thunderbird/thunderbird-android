@@ -16,8 +16,8 @@ import com.fsck.k9.mail.Folder.FolderClass;
 
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.service.MailService;
 
 public class FolderSettings extends K9PreferenceActivity {

@@ -5,9 +5,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -107,9 +109,9 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.TextBodyBuilder;
-import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
-import com.fsck.k9.mail.store.LocalStore.TempFileBody;
-import com.fsck.k9.mail.store.LocalStore.TempFileMessageBody;
+import com.fsck.k9.mail.store.local.LocalAttachmentBody;
+import com.fsck.k9.mail.store.local.TempFileBody;
+import com.fsck.k9.mail.store.local.TempFileMessageBody;
 import com.fsck.k9.view.MessageWebView;
 
 import org.apache.james.mime4j.codec.EncoderUtil;
@@ -189,8 +191,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int CONTACT_PICKER_TO2 = 7;
     private static final int CONTACT_PICKER_CC2 = 8;
     private static final int CONTACT_PICKER_BCC2 = 9;
-
-    private static final Account[] EMPTY_ACCOUNT_ARRAY = new Account[0];
 
     private static final int REQUEST_CODE_SIGN_ENCRYPT = 12;
 
@@ -1012,7 +1012,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     addAttachment(stream, type);
                 }
             } else {
-                ArrayList<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+                List<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
                 if (list != null) {
                     for (Parcelable parcelable : list) {
                         Uri stream = (Uri) parcelable;
@@ -1056,7 +1056,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private boolean addRecipients(TextView view, List<String> recipients) {
-        if (recipients == null || recipients.size() == 0) {
+        if (recipients == null || recipients.isEmpty()) {
             return false;
         }
 
@@ -1198,7 +1198,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     "\" from saved instance state", e);
         }
 
-        ArrayList<Attachment> attachments = savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
+        List<Attachment> attachments = savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
         for (Attachment attachment : attachments) {
             addAttachmentView(attachment);
             if (attachment.loaderId > mMaxLoaderId) {
@@ -1807,7 +1807,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 String[] emailsArray = null;
                 if (mEncryptCheckbox.isChecked()) {
                     // get emails as array
-                    ArrayList<String> emails = new ArrayList<String>();
+                    List<String> emails = new ArrayList<String>();
 
                     for (Address address : getRecipientAddresses()) {
                         emails.add(address.getAddress());
@@ -1890,13 +1890,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private InputStream getOpenPgpInputStream() {
         String text = buildText(false).getText();
 
-        InputStream is = null;
-        try {
-            is = new ByteArrayInputStream(text.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            Log.e(K9.LOG_TAG, "UnsupportedEncodingException.", e);
-        }
-        return is;
+        return new ByteArrayInputStream(text.getBytes(Charset.forName("UTF-8")));
     }
 
     private void executeOpenPgpMethod(Intent intent) {
@@ -3921,7 +3915,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             List<Object> items = new ArrayList<Object>();
             Preferences prefs = Preferences.getPreferences(context.getApplicationContext());
-            Account[] accounts = prefs.getAvailableAccounts().toArray(EMPTY_ACCOUNT_ARRAY);
+            Collection<Account> accounts = prefs.getAvailableAccounts();
             for (Account account : accounts) {
                 items.add(account);
                 List<Identity> identities = account.getIdentities();

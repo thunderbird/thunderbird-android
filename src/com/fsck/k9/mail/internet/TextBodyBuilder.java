@@ -204,7 +204,10 @@ public class TextBodyBuilder {
         return mQuotedTextHtml;
     }
 
-    public String textToHtmlFragment(String text) {
+    /**
+     * protected for unit-test purposes
+     */
+    protected String textToHtmlFragment(String text) {
         return HtmlConverter.textToHtmlFragment(text);
     }
 

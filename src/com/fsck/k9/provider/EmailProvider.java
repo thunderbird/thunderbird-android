@@ -11,10 +11,10 @@ import com.fsck.k9.cache.EmailProviderCacheCursor;
 import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LockableDatabase;
 import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.search.SqlQueryBuilder;
 

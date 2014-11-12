@@ -20,10 +20,13 @@ import com.fsck.k9.mail.filter.Base64;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,6 +99,22 @@ public class Utility {
      * @return new String
      */
     public static String combine(Object[] parts, char separator) {
+        if (parts == null) {
+            return null;
+        }
+        return TextUtils.join(String.valueOf(separator), parts);
+    }
+
+    /**
+     * Combines the given Objects into a single String using
+     * each Object's toString() method and the separator character
+     * between each part.
+     *
+     * @param parts
+     * @param separator
+     * @return new String
+     */
+    public static String combine(Iterable<?> parts, char separator) {
         if (parts == null) {
             return null;
         }
@@ -189,8 +208,8 @@ public class Utility {
      * hundreds of times in places that slow down the UI, so it helps.
      */
     public static String fastUrlDecode(String s) {
-        try {
-            byte[] bytes = s.getBytes("UTF-8");
+
+            byte[] bytes = s.getBytes(Charset.forName("UTF-8"));
             byte ch;
             int length = 0;
             for (int i = 0, count = bytes.length; i < count; i++) {
@@ -213,10 +232,8 @@ public class Utility {
                 }
                 length++;
             }
-            return new String(bytes, 0, length, "UTF-8");
-        } catch (UnsupportedEncodingException uee) {
-            return null;
-        }
+            return new String(bytes, 0, length, Charset.forName("UTF-8"));
+
     }
 
     /*
@@ -706,4 +723,5 @@ public class Utility {
         }
         return sMainThreadHandler;
     }
+
 }

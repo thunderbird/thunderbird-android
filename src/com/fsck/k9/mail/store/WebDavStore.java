@@ -5,6 +5,8 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
+
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -40,8 +42,6 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -64,8 +64,6 @@ public class WebDavStore extends Store {
     private static final short AUTH_TYPE_FORM_BASED = 2;
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
-    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
     // These are the ids used from Exchange server to identify the special folders
     // http://social.technet.microsoft.com/Forums/en/exchangesvrdevelopment/thread/1cd2e98c-8a12-44bd-a3e3-9c5ee9e4e14d
@@ -139,22 +137,17 @@ public class WebDavStore extends Store {
 
         String userInfo = webDavUri.getUserInfo();
         if (userInfo != null) {
-            try {
-                String[] userInfoParts = userInfo.split(":");
-                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                String userParts[] = username.split("\\\\", 2);
+            String[] userInfoParts = userInfo.split(":");
+            username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+            String userParts[] = username.split("\\\\", 2);
 
-                if (userParts.length > 1) {
-                    alias = userParts[1];
-                } else {
-                    alias = username;
-                }
-                if (userInfoParts.length > 1) {
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
+            if (userParts.length > 1) {
+                alias = userParts[1];
+            } else {
+                alias = username;
+            }
+            if (userInfoParts.length > 1) {
+                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
             }
         }
 
@@ -194,16 +187,9 @@ public class WebDavStore extends Store {
      * @see WebDavStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc;
-        String passwordEnc;
-        try {
-            userEnc = URLEncoder.encode(server.username, "UTF-8");
-            passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Could not encode username or password", e);
-        }
+        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
+        String passwordEnc = (server.password != null) ?
+                UrlEncodingHelper.encodeUtf8(server.password) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -305,7 +291,7 @@ public class WebDavStore extends Store {
     private String mCachedLoginUrl;
 
     private Folder mSendFolder = null;
-    private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
+    private Map<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
 
     public WebDavStore(Account account) throws MessagingException {
@@ -375,7 +361,7 @@ public class WebDavStore extends Store {
 
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
-        LinkedList<Folder> folderList = new LinkedList<Folder>();
+        List<Folder> folderList = new LinkedList<Folder>();
         /**
          * We have to check authentication here so we have the proper URL stored
          */
@@ -385,13 +371,13 @@ public class WebDavStore extends Store {
          *  Firstly we get the "special" folders list (inbox, outbox, etc)
          *  and setup the account accordingly
          */
-        HashMap<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<String, String>();
         DataSet dataset = new DataSet();
         headers.put("Depth", "0");
         headers.put("Brief", "t");
         dataset = processRequest(this.mUrl, "PROPFIND", getSpecialFoldersList(), headers);
 
-        HashMap<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
+        Map<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
         String folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_INBOX_FOLDER));
         if (folderName != null) {
             mAccount.setAutoExpandFolderName(folderName);
@@ -479,7 +465,6 @@ public class WebDavStore extends Store {
         }
 
         if (folderSlash > 0) {
-            String folderName;
             String fullPathName;
 
             // Removes the final slash if present
@@ -489,17 +474,8 @@ public class WebDavStore extends Store {
                 fullPathName = folderUrl.substring(folderSlash + 1);
 
             // Decodes the url-encoded folder name (i.e. "My%20folder" => "My Folder"
-            try {
-                folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
-            } catch (UnsupportedEncodingException uee) {
-                /**
-                 * If we don't support UTF-8 there's a problem, don't decode
-                 * it then
-                 */
-                folderName = fullPathName;
-            }
 
-            return folderName;
+            return UrlEncodingHelper.decodeUtf8(fullPathName);
         }
 
         return null;
@@ -847,7 +823,7 @@ public class WebDavStore extends Store {
         request.setMethod("POST");
 
         // Build the POST data.
-        ArrayList<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
         pairs.add(new BasicNameValuePair("destination", mUrl));
         pairs.add(new BasicNameValuePair("username", mUsername));
         pairs.add(new BasicNameValuePair("password", mPassword));
@@ -1059,7 +1035,7 @@ public class WebDavStore extends Store {
     }
 
     private InputStream sendRequest(String url, String method, StringEntity messageBody,
-                                    HashMap<String, String> headers, boolean tryAuth)
+                                    Map<String, String> headers, boolean tryAuth)
     throws MessagingException {
         InputStream istream = null;
 
@@ -1137,12 +1113,12 @@ public class WebDavStore extends Store {
      * not all requests will need them. There are two signatures to support calls that don't require parsing of the
      * response.
      */
-    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers)
+    private DataSet processRequest(String url, String method, String messageBody, Map<String, String> headers)
     throws MessagingException {
         return processRequest(url, method, messageBody, headers, true);
     }
 
-    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers,
+    private DataSet processRequest(String url, String method, String messageBody, Map<String, String> headers,
                                    boolean needsParsing)
     throws MessagingException {
         DataSet dataset = new DataSet();
@@ -1219,11 +1195,11 @@ public class WebDavStore extends Store {
     }
 
     @Override
-    public void sendMessages(Message[] messages) throws MessagingException {
+    public void sendMessages(List<? extends Message> messages) throws MessagingException {
         WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(mAccount.getDraftsFolderName());
         try {
             tmpFolder.open(Folder.OPEN_MODE_RW);
-            Message[] retMessages = tmpFolder.appendWebDavMessages(messages);
+            List<? extends Message> retMessages = tmpFolder.appendWebDavMessages(messages);
 
             tmpFolder.moveMessages(retMessages, getSendSpoolFolder());
         } finally {
@@ -1258,21 +1234,16 @@ public class WebDavStore extends Store {
             this.mName = name;
 
             String encodedName = "";
-            try {
-                String[] urlParts = name.split("/");
-                String url = "";
-                for (int i = 0, count = urlParts.length; i < count; i++) {
-                    if (i != 0) {
-                        url = url + "/" + java.net.URLEncoder.encode(urlParts[i], "UTF-8");
-                    } else {
-                        url = java.net.URLEncoder.encode(urlParts[i], "UTF-8");
-                    }
+            String[] urlParts = name.split("/");
+            String url = "";
+            for (int i = 0, count = urlParts.length; i < count; i++) {
+                if (i != 0) {
+                    url = url + "/" + UrlEncodingHelper.encodeUtf8(urlParts[i]);
+                } else {
+                    url = UrlEncodingHelper.encodeUtf8(urlParts[i]);
                 }
-                encodedName = url;
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException URLEncoding folder name, skipping encoded");
-                encodedName = name;
             }
+            encodedName = url;
 
             encodedName = encodedName.replaceAll("\\+", "%20");
 
@@ -1297,38 +1268,38 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public Map<String, String> copyMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> copyMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
             moveOrCopyMessages(messages, folder.getName(), false);
             return null;
         }
 
         @Override
-        public Map<String, String> moveMessages(Message[] messages, Folder folder) throws MessagingException {
+        public Map<String, String> moveMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
             moveOrCopyMessages(messages, folder.getName(), true);
             return null;
         }
 
         @Override
-        public void delete(Message[] msgs, String trashFolderName) throws MessagingException {
+        public void delete(List<? extends Message> msgs, String trashFolderName) throws MessagingException {
             moveOrCopyMessages(msgs, trashFolderName, true);
         }
 
-        private void moveOrCopyMessages(Message[] messages, String folderName, boolean isMove)
+        private void moveOrCopyMessages(List<? extends Message> messages, String folderName, boolean isMove)
         throws MessagingException {
-            String[] uids = new String[messages.length];
+            String[] uids = new String[messages.size()];
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
             String messageBody = "";
-            HashMap<String, String> headers = new HashMap<String, String>();
-            HashMap<String, String> uidToUrl = getMessageUrls(uids);
+            Map<String, String> headers = new HashMap<String, String>();
+            Map<String, String> uidToUrl = getMessageUrls(uids);
             String[] urls = new String[uids.length];
 
             for (int i = 0, count = uids.length; i < count; i++) {
                 urls[i] = uidToUrl.get(uids[i]);
-                if (urls[i] == null && messages[i] instanceof WebDavMessage) {
-                    WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                if (urls[i] == null && messages.get(i) instanceof WebDavMessage) {
+                    WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
                     urls[i] = wdMessage.getUrl();
                 }
             }
@@ -1339,7 +1310,7 @@ public class WebDavStore extends Store {
             headers.put("Brief", "t");
             headers.put("If-Match", "*");
             String action = (isMove ? "BMOVE" : "BCOPY");
-            Log.i(K9.LOG_TAG, "Moving " + messages.length + " messages to " + destFolder.mFolderUrl);
+            Log.i(K9.LOG_TAG, "Moving " + messages.size() + " messages to " + destFolder.mFolderUrl);
 
             processRequest(mFolderUrl, action, messageBody, headers, false);
         }
@@ -1347,7 +1318,7 @@ public class WebDavStore extends Store {
         private int getMessageCount(boolean read) throws MessagingException {
             String isRead;
             int messageCount = 0;
-            HashMap<String, String> headers = new HashMap<String, String>();
+            Map<String, String> headers = new HashMap<String, String>();
             String messageBody;
 
             if (read) {
@@ -1431,11 +1402,11 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
+        public List<? extends Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException {
-            ArrayList<Message> messages = new ArrayList<Message>();
+            List<Message> messages = new ArrayList<Message>();
             String[] uids;
-            HashMap<String, String> headers = new HashMap<String, String>();
+            Map<String, String> headers = new HashMap<String, String>();
             int uidsLength = -1;
 
             String messageBody;
@@ -1461,7 +1432,7 @@ public class WebDavStore extends Store {
             DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
             uids = dataset.getUids();
-            HashMap<String, String> uidToUrl = dataset.getUidToUrl();
+            Map<String, String> uidToUrl = dataset.getUidToUrl();
             uidsLength = uids.length;
 
             for (int i = 0; i < uidsLength; i++) {
@@ -1477,22 +1448,22 @@ public class WebDavStore extends Store {
                 }
             }
 
-            return messages.toArray(EMPTY_MESSAGE_ARRAY);
+            return messages;
         }
 
         @Override
-        public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
+        public List<? extends Message> getMessages(MessageRetrievalListener listener) throws MessagingException {
             return getMessages(null, listener);
         }
 
         @Override
-        public Message[] getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
-            ArrayList<Message> messageList = new ArrayList<Message>();
-            Message[] messages;
+        public List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
+            List<Message> messageList = new ArrayList<Message>();
+            List<? extends Message> messages;
 
             if (uids == null ||
                     uids.length == 0) {
-                return messageList.toArray(EMPTY_MESSAGE_ARRAY);
+                return messageList;
             }
 
             for (int i = 0, count = uids.length; i < count; i++) {
@@ -1507,13 +1478,13 @@ public class WebDavStore extends Store {
                     listener.messageFinished(message, i, count);
                 }
             }
-            messages = messageList.toArray(EMPTY_MESSAGE_ARRAY);
+            messages = messageList;
 
             return messages;
         }
 
-        private HashMap<String, String> getMessageUrls(String[] uids) throws MessagingException {
-            HashMap<String, String> headers = new HashMap<String, String>();
+        private Map<String, String> getMessageUrls(String[] uids) throws MessagingException {
+            Map<String, String> headers = new HashMap<String, String>();
             String messageBody;
 
             /** Retrieve and parse the XML entity for our messages */
@@ -1521,16 +1492,16 @@ public class WebDavStore extends Store {
             headers.put("Brief", "t");
 
             DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-            HashMap<String, String> uidToUrl = dataset.getUidToUrl();
+            Map<String, String> uidToUrl = dataset.getUidToUrl();
 
             return uidToUrl;
         }
 
         @Override
-        public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
+        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException {
             if (messages == null ||
-                    messages.length == 0) {
+                    messages.isEmpty()) {
                 return;
             }
 
@@ -1562,7 +1533,7 @@ public class WebDavStore extends Store {
         /**
          * Fetches the full messages or up to lines lines and passes them to the message parser.
          */
-        private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines)
+        private void fetchMessages(List<? extends Message> messages, MessageRetrievalListener listener, int lines)
         throws MessagingException {
             WebDavHttpClient httpclient;
             httpclient = getHttpClient();
@@ -1570,15 +1541,15 @@ public class WebDavStore extends Store {
             /**
              * We can't hand off to processRequest() since we need the stream to parse.
              */
-            for (int i = 0, count = messages.length; i < count; i++) {
+            for (int i = 0, count = messages.size(); i < count; i++) {
                 WebDavMessage wdMessage;
                 int statusCode = 0;
 
-                if (!(messages[i] instanceof WebDavMessage)) {
+                if (!(messages.get(i) instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
 
-                wdMessage = (WebDavMessage) messages[i];
+                wdMessage = (WebDavMessage) messages.get(i);
 
                 if (listener != null) {
                     listener.messageStarted(wdMessage.getUid(), i, count);
@@ -1676,36 +1647,36 @@ public class WebDavStore extends Store {
          * Fetches and sets the message flags for the supplied messages. The idea is to have this be recursive so that
          * we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          */
-        private void fetchFlags(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
+        private void fetchFlags(List<? extends Message> startMessages, MessageRetrievalListener listener) throws MessagingException {
             HashMap<String, String> headers = new HashMap<String, String>();
             String messageBody = "";
-            Message[] messages = new Message[20];
+            List<Message> messages = new ArrayList<Message>(20);
             String[] uids;
 
             if (startMessages == null ||
-                    startMessages.length == 0) {
+                    startMessages.isEmpty()) {
                 return;
             }
 
-            if (startMessages.length > 20) {
-                Message[] newMessages = new Message[startMessages.length - 20];
-                for (int i = 0, count = startMessages.length; i < count; i++) {
+            if (startMessages.size() > 20) {
+                List<Message> newMessages = new ArrayList<Message>(startMessages.size() - 20);
+                for (int i = 0, count = startMessages.size(); i < count; i++) {
                     if (i < 20) {
-                        messages[i] = startMessages[i];
+                        messages.set(i,  startMessages.get(i));
                     } else {
-                        newMessages[i - 20] = startMessages[i];
+                        newMessages.set(i - 20, startMessages.get(i));
                     }
                 }
 
                 fetchFlags(newMessages, listener);
             } else {
-                messages = startMessages;
+                messages.addAll(startMessages);
             }
 
-            uids = new String[messages.length];
+            uids = new String[messages.size()];
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
 
             messageBody = getMessageFlagsXml(uids);
@@ -1716,13 +1687,13 @@ public class WebDavStore extends Store {
                 throw new MessagingException("Data Set from request was null");
             }
 
-            HashMap<String, Boolean> uidToReadStatus = dataset.getUidToRead();
+            Map<String, Boolean> uidToReadStatus = dataset.getUidToRead();
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                if (!(messages[i] instanceof WebDavMessage)) {
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                if (!(messages.get(i) instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
-                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
 
                 if (listener != null) {
                     listener.messageStarted(wdMessage.getUid(), i, count);
@@ -1745,37 +1716,37 @@ public class WebDavStore extends Store {
          * that we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          * Call it a happy balance
          */
-        private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener)
+        private void fetchEnvelope(List<? extends Message> startMessages, MessageRetrievalListener listener)
         throws MessagingException {
-            HashMap<String, String> headers = new HashMap<String, String>();
+            Map<String, String> headers = new HashMap<String, String>();
             String messageBody = "";
             String[] uids;
-            Message[] messages = new Message[10];
+            List<Message> messages = new ArrayList<Message>(10);
 
             if (startMessages == null ||
-                    startMessages.length == 0) {
+                    startMessages.isEmpty()) {
                 return;
             }
 
-            if (startMessages.length > 10) {
-                Message[] newMessages = new Message[startMessages.length - 10];
-                for (int i = 0, count = startMessages.length; i < count; i++) {
+            if (startMessages.size() > 10) {
+                List<Message> newMessages =  new ArrayList<Message>(startMessages.size() - 10);
+                for (int i = 0, count = startMessages.size(); i < count; i++) {
                     if (i < 10) {
-                        messages[i] = startMessages[i];
+                        messages.set(i, startMessages.get(i));
                     } else {
-                        newMessages[i - 10] = startMessages[i];
+                        newMessages.set(i - 10,startMessages.get(i));
                     }
                 }
 
                 fetchEnvelope(newMessages, listener);
             } else {
-                messages = startMessages;
+                messages.addAll(startMessages);
             }
 
-            uids = new String[messages.length];
+            uids = new String[messages.size()];
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
 
             messageBody = getMessageEnvelopeXml(uids);
@@ -1784,15 +1755,15 @@ public class WebDavStore extends Store {
 
             Map<String, ParsedMessageEnvelope> envelopes = dataset.getMessageEnvelopes();
 
-            int count = messages.length;
-            for (int i = messages.length - 1; i >= 0; i--) {
-                if (!(messages[i] instanceof WebDavMessage)) {
+            int count = messages.size();
+            for (int i = messages.size() - 1; i >= 0; i--) {
+                if (!(messages.get(i) instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
-                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
 
                 if (listener != null) {
-                    listener.messageStarted(messages[i].getUid(), i, count);
+                    listener.messageStarted(messages.get(i).getUid(), i, count);
                 }
 
                 ParsedMessageEnvelope envelope = envelopes.get(wdMessage.getUid());
@@ -1804,18 +1775,18 @@ public class WebDavStore extends Store {
                 }
 
                 if (listener != null) {
-                    listener.messageFinished(messages[i], i, count);
+                    listener.messageFinished(messages.get(i), i, count);
                 }
             }
         }
 
         @Override
-        public void setFlags(Message[] messages, Flag[] flags, boolean value)
+        public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
         throws MessagingException {
-            String[] uids = new String[messages.length];
+            String[] uids = new String[messages.size()];
 
-            for (int i = 0, count = messages.length; i < count; i++) {
-                uids[i] = messages[i].getUid();
+            for (int i = 0, count = messages.size(); i < count; i++) {
+                uids[i] = messages.get(i).getUid();
             }
 
             for (Flag flag : flags) {
@@ -1829,8 +1800,8 @@ public class WebDavStore extends Store {
 
         private void markServerMessagesRead(String[] uids, boolean read) throws MessagingException {
             String messageBody = "";
-            HashMap<String, String> headers = new HashMap<String, String>();
-            HashMap<String, String> uidToUrl = getMessageUrls(uids);
+            Map<String, String> headers = new HashMap<String, String>();
+            Map<String, String> uidToUrl = getMessageUrls(uids);
             String[] urls = new String[uids.length];
 
             for (int i = 0, count = uids.length; i < count; i++) {
@@ -1845,10 +1816,10 @@ public class WebDavStore extends Store {
         }
 
         private void deleteServerMessages(String[] uids) throws MessagingException {
-            HashMap<String, String> uidToUrl = getMessageUrls(uids);
+            Map<String, String> uidToUrl = getMessageUrls(uids);
 
             for (String uid : uids) {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                Map<String, String> headers = new HashMap<String, String>();
                 String url = uidToUrl.get(uid);
                 String destinationUrl = generateDeleteUrl(url);
 
@@ -1875,13 +1846,13 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public Map<String, String> appendMessages(Message[] messages) throws MessagingException {
+        public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
             appendWebDavMessages(messages);
             return null;
         }
 
-        public Message[] appendWebDavMessages(Message[] messages) throws MessagingException {
-            Message[] retMessages = new Message[messages.length];
+        public List<? extends Message> appendWebDavMessages(List<? extends Message> messages) throws MessagingException {
+            List<Message> retMessages = new ArrayList<Message>(messages.size());
             int ind = 0;
 
             WebDavHttpClient httpclient = getHttpClient();
@@ -1910,7 +1881,7 @@ public class WebDavStore extends Store {
                     if (!messageURL.endsWith("/")) {
                         messageURL += "/";
                     }
-                    messageURL += URLEncoder.encode(message.getUid() + ":" + System.currentTimeMillis() + ".eml", "UTF-8");
+                    messageURL += UrlEncodingHelper.encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
 
                     Log.i(K9.LOG_TAG, "Uploading message as " + messageURL);
 
@@ -1936,7 +1907,7 @@ public class WebDavStore extends Store {
                     WebDavMessage retMessage = new WebDavMessage(message.getUid(), this);
 
                     retMessage.setUrl(messageURL);
-                    retMessages[ind++] = retMessage;
+                    retMessages.set(ind++, retMessage);
                 } catch (Exception e) {
                     throw new MessagingException("Unable to append", e);
                 }
@@ -1958,9 +1929,9 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void setFlags(Flag[] flags, boolean value) throws MessagingException {
+        public void setFlags(final Set<Flag> flags, boolean value) throws MessagingException {
             Log.e(K9.LOG_TAG,
-                  "Unimplemented method setFlags(Flag[], boolean) breaks markAllMessagesAsRead and EmptyTrash");
+                  "Unimplemented method setFlags(Set<Flag>, boolean) breaks markAllMessagesAsRead and EmptyTrash");
             // Try to make this efficient by not retrieving all of the messages
         }
     }
@@ -1997,12 +1968,9 @@ public class WebDavStore extends Store {
              * We have to decode, then encode the URL because Exchange likes to not properly encode all characters
              */
             try {
-                end = java.net.URLDecoder.decode(end, "UTF-8");
-                end = java.net.URLEncoder.encode(end, "UTF-8");
+                end = UrlEncodingHelper.decodeUtf8(end);
+                end = UrlEncodingHelper.encodeUtf8(end);
                 end = end.replaceAll("\\+", "%20");
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in setUrl: " + uee + "\nTrace: "
-                      + processException(uee));
             } catch (IllegalArgumentException iae) {
                 Log.e(K9.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
                       + processException(iae));
@@ -2029,18 +1997,13 @@ public class WebDavStore extends Store {
             this.mSize = size;
         }
 
-        @Override
-        public void parse(InputStream in) throws IOException, MessagingException {
-            super.parse(in);
-        }
-
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
         }
 
         public void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
             String[] headers = envelope.getHeaderList();
-            HashMap<String, String> messageHeaders = envelope.getMessageHeaders();
+            Map<String, String> messageHeaders = envelope.getMessageHeaders();
 
             for (String header : headers) {
                 String headerValue = messageHeaders.get(header);
@@ -2060,13 +2023,13 @@ public class WebDavStore extends Store {
         public void delete(String trashFolderName) throws MessagingException {
             WebDavFolder wdFolder = (WebDavFolder) getFolder();
             Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
-            wdFolder.moveMessages(new Message[] { this }, wdFolder.getStore().getFolder(trashFolderName));
+            wdFolder.moveMessages(Collections.singletonList(this), wdFolder.getStore().getFolder(trashFolderName));
         }
 
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
-            mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
+            mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
         }
     }
 
@@ -2142,8 +2105,8 @@ public class WebDavStore extends Store {
 
         private boolean mReadStatus = false;
         private String mUid = "";
-        private HashMap<String, String> mMessageHeaders = new HashMap<String, String>();
-        private ArrayList<String> mHeaders = new ArrayList<String>();
+        private Map<String, String> mMessageHeaders = new HashMap<String, String>();
+        private List<String> mHeaders = new ArrayList<String>();
 
         public void addHeader(String field, String value) {
             String headerName = HEADER_MAPPINGS.get(field);
@@ -2154,7 +2117,7 @@ public class WebDavStore extends Store {
             }
         }
 
-        public HashMap<String, String> getMessageHeaders() {
+        public Map<String, String> getMessageHeaders() {
             return this.mMessageHeaders;
         }
 
@@ -2186,9 +2149,9 @@ public class WebDavStore extends Store {
      * depending on the accessor calls made.
      */
     public class DataSet {
-        private HashMap<String, HashMap<String, String>> mData = new HashMap<String, HashMap<String, String>>();
+        private Map<String, Map<String, String>> mData = new HashMap<String, Map<String, String>>();
         private StringBuilder mUid = new StringBuilder();
-        private HashMap<String, String> mTempData = new HashMap<String, String>();
+        private Map<String, String> mTempData = new HashMap<String, String>();
 
         public void addValue(String value, String tagName) {
             if (tagName.equals("uid")) {
@@ -2220,9 +2183,9 @@ public class WebDavStore extends Store {
         /**
          * Returns a hashmap of special folder name => special folder url
          */
-        public HashMap<String, String> getSpecialFolderToUrl() {
+        public Map<String, String> getSpecialFolderToUrl() {
             // We return the first (and only) map
-            for (HashMap<String, String> folderMap : mData.values()) {
+            for (Map<String, String> folderMap : mData.values()) {
                 return folderMap;
             }
             return new HashMap<String, String>();
@@ -2231,11 +2194,11 @@ public class WebDavStore extends Store {
         /**
          * Returns a hashmap of Message UID => Message Url
          */
-        public HashMap<String, String> getUidToUrl() {
-            HashMap<String, String> uidToUrl = new HashMap<String, String>();
+        public Map<String, String> getUidToUrl() {
+            Map<String, String> uidToUrl = new HashMap<String, String>();
 
             for (String uid : mData.keySet()) {
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
                 String value = data.get("href");
                 if (value != null &&
                         !value.equals("")) {
@@ -2249,11 +2212,11 @@ public class WebDavStore extends Store {
         /**
          * Returns a hashmap of Message UID => Read Status
          */
-        public HashMap<String, Boolean> getUidToRead() {
-            HashMap<String, Boolean> uidToRead = new HashMap<String, Boolean>();
+        public Map<String, Boolean> getUidToRead() {
+            Map<String, Boolean> uidToRead = new HashMap<String, Boolean>();
 
             for (String uid : mData.keySet()) {
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
                 String readStatus = data.get("read");
                 if (readStatus != null && !readStatus.equals("")) {
                     Boolean value = !readStatus.equals("0");
@@ -2273,10 +2236,10 @@ public class WebDavStore extends Store {
          * Returns an array of all hrefs (urls) that were received
          */
         public String[] getHrefs() {
-            ArrayList<String> hrefs = new ArrayList<String>();
+            List<String> hrefs = new ArrayList<String>();
 
             for (String uid : mData.keySet()) {
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
                 String href = data.get("href");
                 hrefs.add(href);
             }
@@ -2288,7 +2251,7 @@ public class WebDavStore extends Store {
          * Return an array of all Message UIDs that were received
          */
         public String[] getUids() {
-            ArrayList<String> uids = new ArrayList<String>();
+            List<String> uids = new ArrayList<String>();
 
             for (String uid : mData.keySet()) {
                 uids.add(uid);
@@ -2309,7 +2272,7 @@ public class WebDavStore extends Store {
             int messageCount = 0;
 
             for (String uid : mData.keySet()) {
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
                 String count = data.get("visiblecount");
 
                 if (count != null &&
@@ -2323,14 +2286,14 @@ public class WebDavStore extends Store {
         }
 
         /**
-         * Returns a HashMap of message UID => ParsedMessageEnvelope
+         * Returns a Map of message UID => ParsedMessageEnvelope
          */
-        public HashMap<String, ParsedMessageEnvelope> getMessageEnvelopes() {
-            HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
+        public Map<String, ParsedMessageEnvelope> getMessageEnvelopes() {
+            Map<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
 
             for (String uid : mData.keySet()) {
                 ParsedMessageEnvelope envelope = new ParsedMessageEnvelope();
-                HashMap<String, String> data = mData.get(uid);
+                Map<String, String> data = mData.get(uid);
 
                 if (data != null) {
                     for (Map.Entry<String, String> entry : data.entrySet()) {
@@ -2410,13 +2373,10 @@ public class WebDavStore extends Store {
              */
             try {
                 if (length > 3) {
-                    end = java.net.URLDecoder.decode(end, "UTF-8");
-                    end = java.net.URLEncoder.encode(end, "UTF-8");
+                    end = UrlEncodingHelper.decodeUtf8(end);
+                    end = UrlEncodingHelper.encodeUtf8(end);
                     end = end.replaceAll("\\+", "%20");
                 }
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri): " + uee
-                      + "\nTrace: " + processException(uee));
             } catch (IllegalArgumentException iae) {
                 Log.e(K9.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri): " + iae + "\nTrace: "
                       + processException(iae));
