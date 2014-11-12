@@ -84,7 +84,6 @@ import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
@@ -129,9 +128,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
-    private static final int DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY = 3;
-    private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 4;
-    private static final int DIALOG_CHOOSE_IDENTITY = 5;
+    private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 3;
+    private static final int DIALOG_CHOOSE_IDENTITY = 4;
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
 
@@ -313,9 +311,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private ImageButton mAddBccFromContacts;
 
     private PgpData mPgpData = null;
-    private boolean mAutoEncrypt = false;
-    private boolean mContinueWithoutPublicKey = false;
-
     private String mOpenPgpProvider;
     private OpenPgpServiceConnection mOpenPgpServiceConnection;
 
@@ -506,7 +501,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Save will attempt to replace the message in the given folder with the updated version.
      * Discard will delete the message from the given folder.
      * @param context
-     * @param message
+     * @param messageReference
      */
     public static void actionEditDraft(Context context, MessageReference messageReference) {
         Intent i = new Intent(context, MessageCompose.class);
@@ -656,17 +651,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             @Override
             public void afterTextChanged(android.text.Editable s) {
-                final CryptoProvider crypto = mAccount.getCryptoProvider();
-                if (mAutoEncrypt && crypto.isAvailable(getApplicationContext())) {
-                    for (Address address : getRecipientAddresses()) {
-                        if (crypto.hasPublicKeyForEmail(getApplicationContext(),
-                                address.getAddress())) {
-                            mEncryptCheckbox.setChecked(true);
-                            mContinueWithoutPublicKey = false;
-                            break;
-                        }
-                    }
-                }
+                /* do nothing */
             }
         };
 
@@ -858,7 +843,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         initializeCrypto();
 
-        final CryptoProvider crypto = mAccount.getCryptoProvider();
         mOpenPgpProvider = mAccount.getOpenPgpProvider();
         if (mOpenPgpProvider != null) {
             // New OpenPGP Provider API
@@ -878,44 +862,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             });
 
-            if (mAccount.getCryptoAutoSignature()) {
-                // TODO: currently disabled for new openpgp providers (see AccountSettings)
-            }
             updateMessageFormat();
-            // TODO: currently disabled for new openpgp providers (see AccountSettings)
-            mAutoEncrypt = false;
-            //mAutoEncrypt = mAccount.isCryptoAutoEncrypt();
-        } else if (crypto.isAvailable(this)) {
-            mEncryptLayout.setVisibility(View.VISIBLE);
-            mCryptoSignatureCheckbox.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CheckBox checkBox = (CheckBox) v;
-                    if (checkBox.isChecked()) {
-                        mPreventDraftSaving = true;
-                        if (!crypto.selectSecretKey(MessageCompose.this, mPgpData)) {
-                            mPreventDraftSaving = false;
-                        }
-                        checkBox.setChecked(false);
-                    } else {
-                        mPgpData.setSignatureKeyId(0);
-                        updateEncryptLayout();
-                    }
-                }
-            });
-
-            if (mAccount.getCryptoAutoSignature()) {
-                long ids[] = crypto.getSecretKeyIdsFromEmail(this, mIdentity.getEmail());
-                if (ids != null && ids.length > 0) {
-                    mPgpData.setSignatureKeyId(ids[0]);
-                    mPgpData.setSignatureUserId(crypto.getUserId(this, ids[0]));
-                } else {
-                    mPgpData.setSignatureKeyId(0);
-                    mPgpData.setSignatureUserId(null);
-                }
-            }
-            updateEncryptLayout();
-            mAutoEncrypt = mAccount.isCryptoAutoEncrypt();
         } else {
             mEncryptLayout.setVisibility(View.GONE);
         }
@@ -1108,11 +1055,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mCryptoSignatureUserIdRest.setText("");
 
             String userId = mPgpData.getSignatureUserId();
-            if (userId == null) {
-                userId = mAccount.getCryptoProvider().getUserId(this, mPgpData.getSignatureKeyId());
-                mPgpData.setSignatureUserId(userId);
-            }
-
             if (userId != null) {
                 String chunks[] = mPgpData.getSignatureUserId().split(" <", 2);
                 mCryptoSignatureUserId.setText(chunks[0]);
@@ -1795,8 +1737,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void performSend() {
-        final CryptoProvider crypto = mAccount.getCryptoProvider();
-
         if (mOpenPgpProvider != null) {
             // OpenPGP Provider API
 
@@ -1831,44 +1771,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 // encryptedData set in pgpData!
                 return;
             }
-        } else if (crypto.isAvailable(this)) {
-            // Legacy APG API
-
-            if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
-                // key selection before encryption
-                StringBuilder emails = new StringBuilder();
-                for (Address address : getRecipientAddresses()) {
-                    if (emails.length() != 0) {
-                        emails.append(',');
-                    }
-                    emails.append(address.getAddress());
-                    if (!mContinueWithoutPublicKey &&
-                            !crypto.hasPublicKeyForEmail(this, address.getAddress())) {
-                        showDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
-                        return;
-                    }
-                }
-                if (emails.length() != 0) {
-                    emails.append(',');
-                }
-                emails.append(mIdentity.getEmail());
-
-                mPreventDraftSaving = true;
-                if (!crypto.selectEncryptionKeys(MessageCompose.this, emails.toString(), mPgpData)) {
-                    mPreventDraftSaving = false;
-                }
-                return;
-            }
-
-            if (mPgpData.hasEncryptionKeys() || mPgpData.hasSignatureKey()) {
-                if (mPgpData.getEncryptedData() == null) {
-                    String text = buildText(false).getText();
-                    mPreventDraftSaving = true;
-                    crypto.encrypt(this, text, mPgpData);
-                    return;
-                }
-            }
-
         }
         sendMessage();
 
@@ -2047,7 +1949,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     @SuppressLint("InlinedApi")
     private void onAddAttachment2(final String mime_type) {
-        if (mAccount.getCryptoProvider().isAvailable(this) || mAccount.getOpenPgpProvider() != null) {
+        if (mAccount.getOpenPgpProvider() != null) {
             Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
         }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
@@ -2243,10 +2145,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              */
             executeOpenPgpMethod(data);
 
-            return;
-        }
-
-        if (mAccount.getCryptoProvider().onActivityResult(this, requestCode, resultCode, data, mPgpData)) {
             return;
         }
 
@@ -2652,26 +2550,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dismissDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
-                    }
-                })
-                .create();
-            case DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY:
-                return new AlertDialog.Builder(this)
-                       .setTitle(R.string.continue_without_public_key_dlg_title)
-                       .setMessage(R.string.continue_without_public_key_instructions_fmt)
-                .setPositiveButton(R.string.continue_action, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
-                        mContinueWithoutPublicKey = true;
-                        onSend();
-                    }
-                })
-                .setNegativeButton(R.string.back_action, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dismissDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
-                        mContinueWithoutPublicKey = false;
                     }
                 })
                 .create();

@@ -50,7 +50,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Všechna místní data účtu \"<xliff:g id="account">%s</xliff:g>\" budou z K-9 Mail odstraněna, ale nastavení účtu bude zachováno.</string>
   <string name="account_clear_dlg_instructions_fmt">Místní zprávy v účtu \"<xliff:g id="account">%s</xliff:g>\" budou z K-9 Mail odstraněny, ale nastavení účtu bude zachováno.</string>
-  <string name="insufficient_apg_permissions">K-9 nemá oprávnění k plnému přístupu k APG, přeinstalujte prosím pro opravu balíček K-9.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Prosím nainstalujte nějaký file manager pro pokračování v importu.</string>
   <string name="open_market">Otevřít obchod Google Play</string>
@@ -101,8 +100,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="move_action">Přesunout</string>
   <string name="single_message_options_action">Vlastnosti zprávy…</string>
   <string name="refile_action">Přesměrovat…</string>
-  <string name="continue_action">Pokračovat</string>
-  <string name="back_action">Zpět</string>
   <string name="done_action">Hotovo</string>
   <string name="discard_action">Zrušit</string>
   <string name="save_draft_action">Uložit jako koncept</string>
@@ -453,12 +450,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="account_settings_quote_prefix_label">Předpona citovaného textu</string>
   <string name="account_settings_crypto">Šifrování</string>
   <string name="account_settings_crypto_app">Poskytovatel OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Žádný</string>
-  <string name="account_settings_crypto_auto_signature">Automatický podpis</string>
-  <string name="account_settings_crypto_auto_signature_summary">Použít emailovou adresu účtu pro odhadnutí podpisového klíče.</string>
-  <string name="account_settings_crypto_auto_encrypt">Automaticky zašifrovat</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Automaticky zašifrovat jestliže veřejný klíč odpovídá adresátovy.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG není nainstalován</string>
   <string name="account_settings_mail_check_frequency_label">Frekvence dotazování složky</string>
   <string name="account_settings_storage_title">Úložiště</string>
   <string name="account_settings_color_label">Barva účtu</string>
@@ -724,15 +715,10 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="font_size_large">Velký</string>
   <string name="font_size_larger">Největší</string>
   <string name="miscellaneous_preferences">Různé</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Pro tuto akci nebyla nalezena žádná vhodná aplikace.</string>
-  <string name="error_apg_version_not_supported">Nainstalovaná verze APG není podporována.</string>
   <string name="btn_crypto_sign">Podepsat</string>
   <string name="btn_encrypt">Šifrovat</string>
-  <string name="btn_decrypt">Dešifrovat</string>
-  <string name="btn_verify">Ověřit</string>
   <string name="unknown_crypto_signature_user_id">&lt;neznámý&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">Formát zpráv PGP/MIME ještě není podporován.</string>
   <string name="attachment_encryption_unsupported">Upozornění: přílohy ještě NELZE podepsat nebo šifrovat.</string>
   <string name="send_aborted">Odeslání přerušeno.</string>
@@ -742,8 +728,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="confirm_discard_draft_message">Opravdu si přejete smazat tuto zprávu?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Odmítnout uložení konceptu zprávy.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Odmítnout uložení konceptu šifrované zprávy.</string>
-  <string name="continue_without_public_key_dlg_title">Pokračovat bez veřejného klíče?</string>
-  <string name="continue_without_public_key_instructions_fmt">Jeden nebo více adresátů nemá uložen veřejný klíč. Pokračovat?</string>
   <string name="select_text_now">Vyberte text pro kopírování.</string>
   <string name="dialog_confirm_delete_title">Potvrzení mazání</string>
   <string name="dialog_confirm_delete_message">Chcete smazat tuto zprávu?</string>

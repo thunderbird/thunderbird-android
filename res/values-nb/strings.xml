@@ -50,7 +50,6 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål hos
   <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet fra K-9 E-post</string>
   <string name="account_recreate_dlg_instructions_fmt">Alle lokale data for \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet. Kontoinnstillinger vil bli beholdt.</string>
   <string name="account_clear_dlg_instructions_fmt">Lokale kopier av meldinger i \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet. Kontoinnstillinger vil bli beholdt.</string>
-  <string name="insufficient_apg_permissions">K-9 har ikke rettighet til full tilgang til APG, vennligst reinstaller K-9 for å rette på det.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Du må ha installert en filbehandler for å importere.</string>
   <string name="open_market">Åpne Play-butikken</string>
@@ -101,8 +100,6 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål hos
   <string name="move_action">Flytt</string>
   <string name="single_message_options_action">Send…</string>
   <string name="refile_action">Omorganiser …</string>
-  <string name="continue_action">Fortsett</string>
-  <string name="back_action">Tilbake</string>
   <string name="done_action">Ferdig</string>
   <string name="discard_action">Forkast</string>
   <string name="save_draft_action">Lagre som kladd</string>
@@ -433,10 +430,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="account_settings_folders">Mapper</string>
   <string name="account_settings_crypto">Kryptografi</string>
   <string name="account_settings_crypto_app">OpenPGP-leverandør</string>
-  <string name="account_settings_crypto_app_none">Ingen</string>
-  <string name="account_settings_crypto_auto_signature_summary">Benytt kontoens e-postadresse for å gjette signaturnøkkelen.</string>
-  <string name="account_settings_crypto_auto_encrypt">Auto-krypter</string>
-  <string name="account_settings_crypto_apg_not_installed">APG ikke installert</string>
   <string name="account_settings_storage_title">Lagring</string>
   <string name="account_settings_color_label">Kontofarge</string>
   <string name="account_settings_mail_display_count_label">Lokal mappestørrelse</string>
@@ -660,15 +653,10 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="font_size_large">Stor</string>
   <string name="font_size_larger">Større</string>
   <string name="miscellaneous_preferences">Diverse</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Ingen egnede program ble funnet for denne handlingen.</string>
-  <string name="error_apg_version_not_supported">Den installerte APG-versjonen støttes ikke.</string>
   <string name="btn_crypto_sign">Signer</string>
   <string name="btn_encrypt">Krypter</string>
-  <string name="btn_decrypt">Dekrypter</string>
-  <string name="btn_verify">Bekreft</string>
   <string name="unknown_crypto_signature_user_id">&lt;ukjent&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME-meldinger støttes ikke enda.</string>
   <string name="attachment_encryption_unsupported">Advarsel: vedlegg er IKKE signert eller kryptert enda.</string>
   <string name="save_or_discard_draft_message_dlg_title">Lagre utkast?</string>
@@ -677,8 +665,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="confirm_discard_draft_message">Er du sikker på at du vil forkaste denne meldingen?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Nekt å lagre utkast.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Nekt å lagre utkast som er merket kryptert.</string>
-  <string name="continue_without_public_key_dlg_title">Fortsett uten offentlig nøkkel?</string>
-  <string name="continue_without_public_key_instructions_fmt">En eller flere mottakere har ikke en lagret offentlig nøkkel. Fortsett?</string>
   <string name="dialog_confirm_delete_title">Bekreft sletting</string>
   <string name="dialog_confirm_delete_message">Vil du slette denne meldingen?</string>
   <plurals name="dialog_confirm_delete_messages">

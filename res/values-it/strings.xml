@@ -50,7 +50,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Tutti i dati per \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
   <string name="account_clear_dlg_instructions_fmt">Le copie locali dei messaggi in \"<xliff:g id="account">%s</xliff:g>\" saranno rimosse da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
-  <string name="insufficient_apg_permissions">K-9 non ha i permessi per accedere pienamente ad APG, installa di nuovo K-9 per risolvere il problema.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Installa un gestore file per procedere con questa importazione.</string>
   <string name="open_market">Apri il Play Store</string>
@@ -101,8 +100,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="move_action">Sposta</string>
   <string name="single_message_options_action">Opzioni invio…</string>
   <string name="refile_action">Riarchivia…</string>
-  <string name="continue_action">Continua</string>
-  <string name="back_action">Indietro</string>
   <string name="done_action">Fatto</string>
   <string name="discard_action">Ignora</string>
   <string name="save_draft_action">Salva come bozza</string>
@@ -463,12 +460,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="account_settings_quote_prefix_label">Prefisso testo citato</string>
   <string name="account_settings_crypto">Crittografia</string>
   <string name="account_settings_crypto_app">Fornitore OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Nessuno</string>
-  <string name="account_settings_crypto_auto_signature">Firma automatica</string>
-  <string name="account_settings_crypto_auto_signature_summary">Utilizza l\'indirizzo email dell\'account per dedurre la chiave di firma.</string>
-  <string name="account_settings_crypto_auto_encrypt">Cifratura automatica</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Cifra automaticamente se la chiave pubblica corrisponde al destinatario</string>
-  <string name="account_settings_crypto_apg_not_installed">APG non installato</string>
   <string name="account_settings_mail_check_frequency_label">Frequenza verifica cartelle</string>
   <string name="account_settings_storage_title">Archiviazione</string>
   <string name="account_settings_color_label">Colore dell\'account</string>
@@ -739,15 +730,10 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Più grande</string>
   <string name="miscellaneous_preferences">Varie</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Nessuna applicazione trovata per questa azione.</string>
-  <string name="error_apg_version_not_supported">La versione di APG installata non è supportata.</string>
   <string name="btn_crypto_sign">Firma</string>
   <string name="btn_encrypt">Cifra</string>
-  <string name="btn_decrypt">Decifra</string>
-  <string name="btn_verify">Verifica</string>
   <string name="unknown_crypto_signature_user_id">&lt;sconosciuto&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">I messaggi PGP/MIME non sono ancora supportati.</string>
   <string name="attachment_encryption_unsupported">Attenzione: gli allegati NON sono ancora firmati o cifrati.</string>
   <string name="send_aborted">Invio interrotto.</string>
@@ -757,8 +743,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="confirm_discard_draft_message">Sei sicuro di voler eliminare questo messaggio?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Impossibile salvare il messaggio in bozze.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Impossibile salvare il messaggio cifrato in bozze.</string>
-  <string name="continue_without_public_key_dlg_title">Vuoi continuare senza chiave pubblica?</string>
-  <string name="continue_without_public_key_instructions_fmt">Uno o più destinatari non hanno una chiave pubblica salvata. Vuoi continuare?</string>
   <string name="select_text_now">Seleziona il testo da copiare.</string>
   <string name="dialog_confirm_delete_title">Conferma l\'eliminazione</string>
   <string name="dialog_confirm_delete_message">Vuoi eliminare questo messaggio?</string>

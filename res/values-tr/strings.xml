@@ -49,7 +49,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
   <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi \"<xliff:g id="account">%s</xliff:g>\" için K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
   <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar \"<xliff:g id="account">%s</xliff:g>\" içinden ve K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
-  <string name="insufficient_apg_permissions">K-9 tamamiyle APG erişimine izin vermez, lütfen bunu düzeltmek için K-9\'i yeniden kurun.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">İçeri aktarma işlemini gerçekleştirebilecek uygun bir uygulama bulunamadı. Lütfen Google Play Store\'dan bir dosya yönetici uygulaması edinin.</string>
   <string name="open_market">Play Store\'u Aç</string>
@@ -100,8 +99,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="move_action">Taşı</string>
   <string name="single_message_options_action">Gönder…</string>
   <string name="refile_action">Refile…</string>
-  <string name="continue_action">Devam</string>
-  <string name="back_action">Geri</string>
   <string name="done_action">Tamam</string>
   <string name="discard_action">Çıkart</string>
   <string name="save_draft_action">Taslak olarak Kaydet</string>
@@ -448,12 +445,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_settings_quote_prefix_label">Alınan metinden önek</string>
   <string name="account_settings_crypto">Şifreleme</string>
   <string name="account_settings_crypto_app">OpenPGP Sağlayıcı</string>
-  <string name="account_settings_crypto_app_none">Hiçbiri</string>
-  <string name="account_settings_crypto_auto_signature">Otomatik oturum açma</string>
-  <string name="account_settings_crypto_auto_signature_summary">İmza anahtarını tahmin etmek için hesapların e-posta adreslerini kullan.</string>
-  <string name="account_settings_crypto_auto_encrypt">Otomatik şifrele</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Eğer paylaşılan anahtar alıcınınkine eşleşiyorsa otomatik şifrele.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG yüklü değil</string>
   <string name="account_settings_mail_check_frequency_label">Klasör veri toplama sıklığı</string>
   <string name="account_settings_storage_title">Depolama</string>
   <string name="account_settings_color_label">Hesap rengi</string>
@@ -717,15 +708,10 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="font_size_large">Büyük</string>
   <string name="font_size_larger">Daha büyük</string>
   <string name="miscellaneous_preferences">Çeşitli</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Bu eylem için uygun program bulunamadı.</string>
-  <string name="error_apg_version_not_supported">Kurulu APG versiyon desteklenmiyor.</string>
   <string name="btn_crypto_sign">İşaret</string>
   <string name="btn_encrypt">Şifrele</string>
-  <string name="btn_decrypt">Çöz</string>
-  <string name="btn_verify">Doğrula</string>
   <string name="unknown_crypto_signature_user_id">&lt;bilinmiyor&gt;</string>
-  <string name="key_id">no: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME mesajları henüz desteklenmiyor.</string>
   <string name="attachment_encryption_unsupported">Uyarı: Ekler henüz işaretli veya şifreli değil.</string>
   <string name="send_aborted">Gönderme iptal edildi.</string>
@@ -735,8 +721,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="confirm_discard_draft_message">Bu mesajı silmek istediğinizden emin misiniz?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Taslak mesajını kaydetmeyi önle.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Şifreli mesajın taslağını kaydetmeyi önle.</string>
-  <string name="continue_without_public_key_dlg_title">Paylaşılmış anahtarsız devam et?</string>
-  <string name="continue_without_public_key_instructions_fmt">Bir veya daha fazla alıcının paylaşılmış bir anahtarı bulunmuyor. Devam et?</string>
   <string name="select_text_now">Kopyalamak için metni seç.</string>
   <string name="dialog_confirm_delete_title">Silmeyi onayla</string>
   <string name="dialog_confirm_delete_message">Bu mesajı silmek istiyor musunuz?</string>

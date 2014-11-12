@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
@@ -41,7 +42,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.ClipboardManager;
@@ -88,7 +88,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private static final int DISPLAY_NAME_INDEX = 1;
 
 
-    private MessageCryptoView mCryptoView;
     private MessageOpenPgpView mOpenPgpView;
     private MessageWebView mMessageContentView;
     private MessageHeader mHeaderContainer;
@@ -126,9 +125,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mHiddenAttachments.setVisibility(View.GONE);
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
-        mCryptoView = (MessageCryptoView) findViewById(R.id.layout_decrypt);
-        mCryptoView.setFragment(fragment);
-        mCryptoView.setupChildViews();
         mOpenPgpView = (MessageOpenPgpView) findViewById(R.id.layout_decrypt_openpgp);
         mOpenPgpView.setFragment(fragment);
         mOpenPgpView.setupChildViews();
@@ -572,7 +568,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
         if (text != null) {
             loadBodyFromText(text);
-            updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
             mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
                     pgpData.getSignatureResult(), message);
         } else {
@@ -583,15 +578,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     public void showStatusMessage(String status) {
         String text = "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
         loadBodyFromText(text);
-        mCryptoView.hide();
     }
 
     private void loadBodyFromText(String emailText) {
         mMessageContentView.setText(emailText);
-    }
-
-    public void updateCryptoLayout(CryptoProvider cp, PgpData pgpData, Message message) {
-        mCryptoView.updateLayout(cp, pgpData, message);
     }
 
     public void showAttachments(boolean show) {

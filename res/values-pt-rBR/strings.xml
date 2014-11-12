@@ -48,7 +48,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Todos os dados relativos à \"<xliff:g id="account">%s</xliff:g>\" serão removidos do K-9 Mail, mas as configurações da conta serão mantidas.</string>
   <string name="account_clear_dlg_instructions_fmt">Todas as mensagens de \"<xliff:g id="account">%s</xliff:g>\" serão removidas do K-9 Mail, mas as configurações da conta serão mantidas.</string>
-  <string name="insufficient_apg_permissions">K-9 não tem permissão total de acesso ao APG , favor reinstalar o K-9 para resolver.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Não existe um aplicativo adequado para a operação de importação. Instale um gerenciador de arquivos pela Google Play Store.</string>
   <string name="open_market">Abrir a Play Store</string>
@@ -99,8 +98,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Opções de Mensagens…</string>
   <string name="refile_action">Rearquivar…</string>
-  <string name="continue_action">Continuar</string>
-  <string name="back_action">Voltar</string>
   <string name="done_action">Concluído</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Salvar como rascunho</string>
@@ -447,12 +444,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_settings_quote_prefix_label">Prefixo para textos</string>
   <string name="account_settings_crypto">Criptografia</string>
   <string name="account_settings_crypto_app">Provedor OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Nenhum</string>
-  <string name="account_settings_crypto_auto_signature">Auto-login</string>
-  <string name="account_settings_crypto_auto_signature_summary">Use o endereço de e-mail da conta para escolher assinatura.</string>
-  <string name="account_settings_crypto_auto_encrypt">Auto-encriptar</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Definir encriptação automaticamente se uma chave pública corresponder à um destinatário.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG não instalado</string>
   <string name="account_settings_mail_check_frequency_label">Frequência de verificação de e-mail</string>
   <string name="account_settings_storage_title">Armazenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -713,15 +704,10 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="font_size_large">Maior</string>
   <string name="font_size_larger">Grande</string>
   <string name="miscellaneous_preferences">Diversos</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Nenhum aplicativo adequado para esta ação foi encontrado.</string>
-  <string name="error_apg_version_not_supported"> A versão da APG instalada não é suportada.</string>
   <string name="btn_crypto_sign">Entrar</string>
   <string name="btn_encrypt">Encriptar</string>
-  <string name="btn_decrypt">Decriptar</string>
-  <string name="btn_verify">Verificar</string>
   <string name="unknown_crypto_signature_user_id">&lt;desconhecido&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">mensagns PGP/MIME não são suportadas ainda.</string>
   <string name="attachment_encryption_unsupported">Aviso: os anexos não estão assinados ou encriptados ainda.</string>
   <string name="send_aborted">Envio abortado.</string>
@@ -731,8 +717,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="confirm_discard_draft_message">Tem certeza que deseja descartar esta mensagem?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Recusar salvamento de rascunho.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Recusar salvamento de rascunho de mensagem encriptada.</string>
-  <string name="continue_without_public_key_dlg_title">Continuar sem chave pública?</string>
-  <string name="continue_without_public_key_instructions_fmt">Um ou mais destinatários não tem chave pública. Continuar?</string>
   <string name="select_text_now">Selecione o texto para copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar exclusão</string>
   <string name="dialog_confirm_delete_message">Deseja mesmo excluir esta mensagem?</string>

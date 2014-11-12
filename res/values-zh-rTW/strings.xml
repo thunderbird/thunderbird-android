@@ -21,7 +21,6 @@
   <string name="account_delete_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」將從K-9 Mail中刪除。</string>
   <string name="account_recreate_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有相關資料將從K-9 Mail中刪除，僅保留帳戶設定。</string>
   <string name="account_clear_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有郵件將從K-9 Mail中刪除，僅保留帳戶設定。</string>
-  <string name="insufficient_apg_permissions">K-9沒有被允許存取APG，請重新安裝K-9嘗試修復問題。</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">沒有找到合適的應用程式來處理匯入操作。請從GOOGLE PLAY商店下載安裝檔案管理應用程式。</string>
   <string name="open_market">開啟GOOGLE PLAY商店</string>
@@ -71,8 +70,6 @@
   <string name="forward_action">轉寄</string>
   <string name="move_action">移動</string>
   <string name="single_message_options_action">訊息選項…</string>
-  <string name="continue_action">繼續</string>
-  <string name="back_action">返回</string>
   <string name="done_action">完成</string>
   <string name="discard_action">忽略</string>
   <string name="save_draft_action">儲存為草稿</string>
@@ -407,12 +404,6 @@
   <string name="account_settings_quote_prefix_label">引用本文前綴</string>
   <string name="account_settings_crypto">加密</string>
   <string name="account_settings_crypto_app">OpenPGP提供者</string>
-  <string name="account_settings_crypto_app_none">無</string>
-  <string name="account_settings_crypto_auto_signature">自動簽名</string>
-  <string name="account_settings_crypto_auto_signature_summary">使用帳戶電子郵件回覆，則自動檢查比對簽名金鑰。</string>
-  <string name="account_settings_crypto_auto_encrypt">自動加密</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">當檢查比對收件人公鑰符合時，自動進行加密。</string>
-  <string name="account_settings_crypto_apg_not_installed">未安裝APG</string>
   <string name="account_settings_mail_check_frequency_label">上層信件匣檢查頻率</string>
   <string name="account_settings_storage_title">帳戶儲存</string>
   <string name="account_settings_color_label">帳戶顏色</string>
@@ -674,15 +665,10 @@
   <string name="font_size_large">大</string>
   <string name="font_size_larger">最大</string>
   <string name="miscellaneous_preferences">偏好設定</string>
-  <!--APG related-->
   <string name="error_activity_not_found">沒有找到可以用於此操作的程式。</string>
-  <string name="error_apg_version_not_supported">尚未支援所安裝的APG版本。</string>
   <string name="btn_crypto_sign">簽名</string>
   <string name="btn_encrypt">加密</string>
-  <string name="btn_decrypt">解密</string>
-  <string name="btn_verify">驗證</string>
   <string name="unknown_crypto_signature_user_id">&lt;未知&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">暫時還沒有支援PGP/MIME郵件。</string>
   <string name="attachment_encryption_unsupported">警告：附件還 *沒有* 被簽名或者加密。</string>
   <string name="send_aborted">寄送操作已經取消。</string>
@@ -692,8 +678,6 @@
   <string name="confirm_discard_draft_message">是否確定放棄儲存目前的郵件？</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">不要儲存為草稿信件</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">被加密的信件不會儲存到草稿信件匣.</string>
-  <string name="continue_without_public_key_dlg_title">沒有取得公開金鑰，確認繼續執行？</string>
-  <string name="continue_without_public_key_instructions_fmt">某些收件人沒有找到儲存的公開金鑰，是否確認繼續？</string>
   <string name="select_text_now">選擇需要複製的文字內容。</string>
   <string name="dialog_confirm_delete_title">刪除確認</string>
   <string name="dialog_confirm_delete_message">你確定要刪除這封郵件？</string>

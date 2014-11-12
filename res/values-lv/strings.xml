@@ -51,7 +51,6 @@ Lūdzu sūtiet kļūdu ziņojumus, iesakiet uzlabojumus un uzdodiet jautājumus
   <string name="account_delete_dlg_instructions_fmt">Konts \"<xliff:g id="account">%s</xliff:g>\" tiks noņemts no K-9 Pasta.</string>
   <string name="account_recreate_dlg_instructions_fmt">Visi ierīcē saglabātie konta \"<xliff:g id="account">%s</xliff:g>\" dati tiks noņemti. Visi konta iestatījumi tiks saglabāti.</string>
   <string name="account_clear_dlg_instructions_fmt">Ierīcē saglabātās konta \"<xliff:g id="account">%s</xliff:g>\" vēstules tiks izdzēstas. Konta iestatījumi tiks saglabāti.</string>
-  <string name="insufficient_apg_permissions">K-9 nav pilnas pieejas APG. Lūdzu pārinstalējiet K-9, lai to atrisinātu.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Lūdzu, uzinstalējiet failu pārvaldnieku, lai turpinātu importēt datus.</string>
   <string name="open_market">Atvērt Play veikalu</string>
@@ -102,8 +101,6 @@ Lūdzu sūtiet kļūdu ziņojumus, iesakiet uzlabojumus un uzdodiet jautājumus
   <string name="move_action">Pārvietot</string>
   <string name="single_message_options_action">Sūtīt…</string>
   <string name="refile_action">Atkārtoti iearhivēt…</string>
-  <string name="continue_action">Turpināt</string>
-  <string name="back_action">Atpakaļ</string>
   <string name="done_action">Gatavs</string>
   <string name="discard_action">Izmest</string>
   <string name="save_draft_action">Saglabāt kā melnrakstu</string>
@@ -459,12 +456,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_quote_prefix_label">Citētā teksta galvene</string>
   <string name="account_settings_crypto">Šifrēšana</string>
   <string name="account_settings_crypto_app">OpenPGP nodrošinātājs</string>
-  <string name="account_settings_crypto_app_none">Neviens</string>
-  <string name="account_settings_crypto_auto_signature">Automātiska pierakstīšanās</string>
-  <string name="account_settings_crypto_auto_signature_summary">Izmantot šī konta pasta adresi, lai izvēlētos paraksta atslēgu</string>
-  <string name="account_settings_crypto_auto_encrypt">Automātiska šifrēšana</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Automātiski ieslēgt šifrēšanu, ja publiskā atslēga sakrīt ar saņēmēju</string>
-  <string name="account_settings_crypto_apg_not_installed">APG nav instalēts</string>
   <string name="account_settings_mail_check_frequency_label">Mapes pārbaudes biežums</string>
   <string name="account_settings_storage_title">Krātuve</string>
   <string name="account_settings_color_label">Konta krāsa</string>
@@ -730,15 +721,10 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="font_size_large">Liels</string>
   <string name="font_size_larger">Lielāks</string>
   <string name="miscellaneous_preferences">Dažādi</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Šai darbībai nav atrasta atbilstoša aplikācija.</string>
-  <string name="error_apg_version_not_supported">Instalētā APG versija netiek atbalstīta.</string>
   <string name="btn_crypto_sign">Pierakstīties</string>
   <string name="btn_encrypt">Iešifrēt</string>
-  <string name="btn_decrypt">Atšifrēt</string>
-  <string name="btn_verify">Pārbaudīt</string>
   <string name="unknown_crypto_signature_user_id">&lt;nezināms&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME ziņas pagaidām netiek atbalstītas.</string>
   <string name="attachment_encryption_unsupported">Brīdinājums: pielikumi vēl NAV iezīmēti un iešifrēti.</string>
   <string name="send_aborted">Sūtīšana atcelta.</string>
@@ -748,8 +734,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="confirm_discard_draft_message">Vai tiešām izmest šo vēstuli?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Atteikties saglabāt vēstuli melnrakstos.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Atteikties saglabāt vēstuli, kura atzīmēta kā šifrēta, melnrakstos.</string>
-  <string name="continue_without_public_key_dlg_title">Turpināt bez publiskās atslēgas?</string>
-  <string name="continue_without_public_key_instructions_fmt">Vienam vai vairākiem saņēmējiem nav saglabāta publiskā atslēga. Vai turpināt?</string>
   <string name="select_text_now">Iezīmēt tekstu, lai kopētu.</string>
   <string name="dialog_confirm_delete_title">Apstiprināt dzēšanu</string>
   <string name="dialog_confirm_delete_message">Vai gribat izdzēst šo vēstuli?</string>

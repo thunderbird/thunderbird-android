@@ -50,7 +50,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_delete_dlg_instructions_fmt">Ящик \"<xliff:g id="account">%s</xliff:g>\" будет удалён из приложения</string>
   <string name="account_recreate_dlg_instructions_fmt">Все данные ящика \"<xliff:g id="account">%s</xliff:g>\" будут удалены, настройки сохранятся</string>
   <string name="account_clear_dlg_instructions_fmt">Локальные сообщения \"<xliff:g id="account">%s</xliff:g>\" будут удалены, настройки сохранятся</string>
-  <string name="insufficient_apg_permissions">Отсутствует полный доступ к APG. Переустановите K-9 Mail</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Для импорта необходим менеджер файлов</string>
   <string name="open_market">Google Play</string>
@@ -101,8 +100,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="move_action">Переместить</string>
   <string name="single_message_options_action">Отправить</string>
   <string name="refile_action">Смена папки</string>
-  <string name="continue_action">Далее</string>
-  <string name="back_action">Назад</string>
   <string name="done_action">Готово</string>
   <string name="discard_action">Отменить</string>
   <string name="save_draft_action">Черновик</string>
@@ -457,12 +454,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_quote_prefix_label">Префикс цитаты</string>
   <string name="account_settings_crypto">Криптография</string>
   <string name="account_settings_crypto_app">Провайдер OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Нет</string>
-  <string name="account_settings_crypto_auto_signature">Автоподпись</string>
-  <string name="account_settings_crypto_auto_signature_summary">Выбирать закрытый ключ в зависимости от адреса ящика</string>
-  <string name="account_settings_crypto_auto_encrypt">Автошифрование</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Автоматически зашифровать сообщение при совпадении публичного ключа получателя</string>
-  <string name="account_settings_crypto_apg_not_installed">APG не установлен</string>
   <string name="account_settings_mail_check_frequency_label">Интервал проверки</string>
   <string name="account_settings_storage_title">Хранение</string>
   <string name="account_settings_color_label">Цвет</string>
@@ -728,15 +719,10 @@ K-9 Mail — почтовый клиент для Android.
   <string name="font_size_large">Огромный</string>
   <string name="font_size_larger">Гигантский</string>
   <string name="miscellaneous_preferences">Разное</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Подходящее приложение не найдено</string>
-  <string name="error_apg_version_not_supported">Установленная версия APG не поддерживается</string>
   <string name="btn_crypto_sign">Подписать</string>
   <string name="btn_encrypt">Шифровать</string>
-  <string name="btn_decrypt">Дешифр.</string>
-  <string name="btn_verify">Проверка</string>
   <string name="unknown_crypto_signature_user_id">&lt;н/д&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">Сообщения PGP/MIME не поддерживаются</string>
   <string name="attachment_encryption_unsupported">Внимание: вложения НЕ подписываются и НЕ шифруются</string>
   <string name="send_aborted">Отправка отменена</string>
@@ -746,8 +732,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="confirm_discard_draft_message">Сообщение будет удалено. Продолжить?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Сбой сохранения</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Нельзя сохранить черновик зашифрованного сообщения</string>
-  <string name="continue_without_public_key_dlg_title">Нет открытого ключа</string>
-  <string name="continue_without_public_key_instructions_fmt">Один или несколько адресатов не предоставили открытый ключ. Продолжить?</string>
   <string name="select_text_now">Выберите текст длительным нажатием</string>
   <string name="dialog_confirm_delete_title">Удаление</string>
   <string name="dialog_confirm_delete_message">Сообщение будет удалено. Продолжить?</string>

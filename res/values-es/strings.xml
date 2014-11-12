@@ -49,7 +49,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Los datos de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero se mantendrá su configuración.</string>
   <string name="account_clear_dlg_instructions_fmt">Todos los mensajes en \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero la configuración de la cuenta se mantendrá.</string>
-  <string name="insufficient_apg_permissions">K-9 no tiene permiso para acceder totalmente a APG, por favor, instale K-9 otra vez para arreglarlo.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Por favor instale un gestor de archivos para continuar con esta importación.</string>
   <string name="open_market">Abrir Google Play</string>
@@ -100,8 +99,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Archivar…</string>
-  <string name="continue_action">Continuar</string>
-  <string name="back_action">Atrás</string>
   <string name="done_action">Terminado</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Guardar como borrador</string>
@@ -445,12 +442,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_settings_quote_prefix_label">Prefijo de texto citado</string>
   <string name="account_settings_crypto">Cifrado</string>
   <string name="account_settings_crypto_app">Proveedor OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Ninguno</string>
-  <string name="account_settings_crypto_auto_signature">Firmar automáticamente</string>
-  <string name="account_settings_crypto_auto_signature_summary">Utilizar el correo para adivinar la clave de firma.</string>
-  <string name="account_settings_crypto_auto_encrypt">Auto-cifrado</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Cifra automáticamente si la clave pública concuerda con un destinatario.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG no instalado</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamiento</string>
   <string name="account_settings_color_label">Color de la cuenta</string>
@@ -714,15 +705,10 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Muy Grande</string>
   <string name="miscellaneous_preferences">Varios</string>
-  <!--APG related-->
   <string name="error_activity_not_found">No existe aplicación para realizar esta acción.</string>
-  <string name="error_apg_version_not_supported">No se admite esta versión de APG.</string>
   <string name="btn_crypto_sign">Firmar</string>
   <string name="btn_encrypt">Cifrar</string>
-  <string name="btn_decrypt">Descifrar</string>
-  <string name="btn_verify">Verificar</string>
   <string name="unknown_crypto_signature_user_id">&lt;desconocido&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">El formato PGP/MIME no está admitido aún.</string>
   <string name="attachment_encryption_unsupported">Advertencia: los adjuntos no están firmados o cifrados.</string>
   <string name="send_aborted">Envío cancelado.</string>
@@ -732,8 +718,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="confirm_discard_draft_message">¿Está seguro de descartar este mensaje?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Rehusar guardar mensaje borrador.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Rehusar guardar mensaje borrador marcado como cifrado.</string>
-  <string name="continue_without_public_key_dlg_title">¿Continuar sin clave pública?</string>
-  <string name="continue_without_public_key_instructions_fmt">Uno o más destinatarios no tienen clave pública. ¿Continuar?</string>
   <string name="select_text_now">Seleccionar texto a copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar borrado</string>
   <string name="dialog_confirm_delete_message">¿Quiere borrar este mensaje?</string>
