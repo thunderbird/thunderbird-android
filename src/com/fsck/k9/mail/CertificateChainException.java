@@ -13,14 +13,8 @@ public class CertificateChainException extends CertificateException {
     private static final long serialVersionUID = 1103894512106650107L;
     private X509Certificate[] mCertChain;
 
-    public CertificateChainException(String msg, X509Certificate[] chain) {
-        super(msg);
-        setCertChain(chain);
-    }
-
-    public CertificateChainException(CertificateException ce,
-            X509Certificate[] chain) {
-        super.initCause(ce);
+    public CertificateChainException(String msg, X509Certificate[] chain, Throwable cause) {
+        super(msg, cause);
         setCertChain(chain);
     }
 

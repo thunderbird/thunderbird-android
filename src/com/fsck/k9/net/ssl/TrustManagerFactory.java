@@ -63,6 +63,8 @@ public final class TrustManagerFactory {
             String message = null;
             X509Certificate certificate = chain[0];
 
+            Throwable cause = null;
+
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);
                 new StrictHostnameVerifier().verify(mHost, certificate);
@@ -70,15 +72,17 @@ public final class TrustManagerFactory {
             } catch (CertificateException e) {
                 // cert. chain can't be validated
                 message = e.getMessage();
+                cause = e;
             } catch (SSLException e) {
                 // host name doesn't match certificate
                 message = e.getMessage();
+                cause = e;
             }
 
             // Check the local key store if we couldn't verify the certificate using the global
             // key store or if the host name doesn't match the certificate name
             if (!keyStore.isValidCertificate(certificate, mHost, mPort)) {
-                throw new CertificateChainException(message, chain);
+                throw new CertificateChainException(message, chain, cause);
             }
         }
 
