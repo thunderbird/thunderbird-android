@@ -20,10 +20,10 @@ public class ReconstructMessageTest extends AndroidTestCase {
                 "To: to@example.com\r\n" +
                 "Subject: Test Message \r\n" +
                 "Date: Thu, 13 Nov 2014 17:09:38 +0100\r\n" +
-                "MIME-Version: 1.0\r\n" +
                 "Content-Type: multipart/mixed;\r\n" +
                 " boundary=\"----Boundary\"\r\n" +
                 "Content-Transfer-Encoding: 8bit\r\n" +
+                "MIME-Version: 1.0\r\n" +
                 "\r\n" +
                 "This is a multipart MIME message.\r\n" +
                 "------Boundary\r\n" +
