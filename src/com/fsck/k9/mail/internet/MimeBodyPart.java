@@ -35,7 +35,7 @@ public class MimeBodyPart extends BodyPart {
         if (mimeType != null) {
             addHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType);
         }
-        setBody(body);
+        MimeMessageHelper.setBody(this, body);
     }
 
     private String getFirstHeader(String name) {
@@ -75,25 +75,6 @@ public class MimeBodyPart extends BodyPart {
     @Override
     public void setBody(Body body) throws MessagingException {
         this.mBody = body;
-        if (body instanceof Multipart) {
-            Multipart multipart = ((Multipart)body);
-            multipart.setParent(this);
-            String type = multipart.getContentType();
-            setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
-            if ("multipart/signed".equalsIgnoreCase(type)) {
-                setEncoding(MimeUtil.ENC_7BIT);
-            } else {
-                setEncoding(MimeUtil.ENC_8BIT);
-            }
-        } else if (body instanceof TextBody) {
-            String contentType = String.format("%s;\r\n charset=utf-8", getMimeType());
-            String name = MimeUtility.getHeaderParameter(getContentType(), "name");
-            if (name != null) {
-                contentType += String.format(";\r\n name=\"%s\"", name);
-            }
-            setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
-            setEncoding(MimeUtil.ENC_8BIT);
-        }
     }
 
     @Override

@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -774,17 +775,17 @@ public class LocalFolder extends Folder implements Serializable {
                                     // triggering T_MIME_NO_TEXT and T_TVD_MIME_NO_HEADERS
                                     // SpamAssassin rules.
                                     localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
-                                    localMessage.setBody(new TextBody(""));
+                                    MimeMessageHelper.setBody(localMessage, new TextBody(""));
                                 } else if (mp.getCount() == 1 && (mp.getBodyPart(0) instanceof LocalAttachmentBodyPart) == false)
 
                                 {
                                     // If we have only one part, drop the MimeMultipart container.
                                     BodyPart part = mp.getBodyPart(0);
                                     localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, part.getContentType());
-                                    localMessage.setBody(part.getBody());
+                                    MimeMessageHelper.setBody(localMessage, part.getBody());
                                 } else {
                                     // Otherwise, attach the MimeMultipart to the message.
-                                    localMessage.setBody(mp);
+                                    MimeMessageHelper.setBody(localMessage, mp);
                                 }
                             }
                         }
@@ -1642,11 +1643,13 @@ public class LocalFolder extends Folder implements Serializable {
                                              mAccount,
                                              attachmentId);
                             if (MimeUtil.isMessage(attachment.getMimeType())) {
-                                attachment.setBody(new LocalAttachmentMessageBody(
-                                        contentUri, LocalFolder.this.localStore.mApplication));
+                                LocalAttachmentMessageBody body = new LocalAttachmentMessageBody(
+                                        contentUri, LocalFolder.this.localStore.mApplication);
+                                MimeMessageHelper.setBody(attachment, body);
                             } else {
-                                attachment.setBody(new LocalAttachmentBody(
-                                        contentUri, LocalFolder.this.localStore.mApplication));
+                                LocalAttachmentBody body = new LocalAttachmentBody(
+                                        contentUri, LocalFolder.this.localStore.mApplication);
+                                MimeMessageHelper.setBody(attachment, body);
                             }
                             ContentValues cv = new ContentValues();
                             cv.put("content_uri", contentUri != null ? contentUri.toString() : null);

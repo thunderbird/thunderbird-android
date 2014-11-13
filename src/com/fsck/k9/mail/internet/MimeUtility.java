@@ -1067,7 +1067,7 @@ public class MimeUtility {
                         String text = readToString(in, charset);
 
                         // Replace the body with a TextBody that already contains the decoded text
-                        part.setBody(new TextBody(text));
+                        MimeMessageHelper.setBody(part, new TextBody(text));
 
                         return text;
                     } finally {

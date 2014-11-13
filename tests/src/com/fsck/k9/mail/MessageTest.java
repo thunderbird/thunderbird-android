@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -322,7 +324,7 @@ public class MessageTest extends AndroidTestCase {
         multipartBody.addBodyPart(textBodyPart(MimeUtil.ENC_8BIT));
         multipartBody.addBodyPart(textBodyPart(MimeUtil.ENC_QUOTED_PRINTABLE));
         multipartBody.addBodyPart(binaryBodyPart());
-        message.setBody(multipartBody);
+        MimeMessageHelper.setBody(message, multipartBody);
 
         return message;
     }
