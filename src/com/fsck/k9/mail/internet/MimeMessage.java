@@ -424,6 +424,11 @@ public class MimeMessage extends Message {
     }
 
     @Override
+    public void addRawHeader(String name, String raw) {
+        mHeader.addRawHeader(name, raw);
+    }
+
+    @Override
     public void setHeader(String name, String value) throws UnavailableStorageException {
         mHeader.setHeader(name, value);
     }
@@ -598,7 +603,9 @@ public class MimeMessage extends Message {
         public void field(Field parsedField) throws MimeException {
             expect(Part.class);
             try {
-                ((Part)stack.peek()).addHeader(parsedField.getName(), parsedField.getBody().trim());
+                String name = parsedField.getName();
+                String raw = parsedField.getRaw().toString();
+                ((Part) stack.peek()).addRawHeader(name, raw);
             } catch (MessagingException me) {
                 throw new Error(me);
             }

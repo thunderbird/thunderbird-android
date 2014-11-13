@@ -48,6 +48,11 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
+    public void addRawHeader(String name, String raw) {
+        mHeader.addRawHeader(name, raw);
+    }
+
+    @Override
     public void setHeader(String name, String value) {
         mHeader.setHeader(name, value);
     }

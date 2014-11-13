@@ -136,6 +136,9 @@ public abstract class Message implements Part, CompositeBody {
     public abstract void addHeader(String name, String value) throws MessagingException;
 
     @Override
+    public abstract void addRawHeader(String name, String raw) throws MessagingException;
+
+    @Override
     public abstract void setHeader(String name, String value) throws MessagingException;
 
     @Override
