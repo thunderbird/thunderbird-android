@@ -15,7 +15,13 @@ public class TemporaryAttachmentStore {
     private static String TEMPORARY_ATTACHMENT_DIRECTORY = "attachments";
     private static long MAX_FILE_AGE = 12 * 60 * 60 * 1000;   // 12h
 
-    public static File getFile(Context context, String attachmentName) throws IOException {
+    public static File getFile(Context context, String attachmentName) {
+        File directory = getTemporaryAttachmentDirectory(context);
+        String filename = FileHelper.sanitizeFilename(attachmentName);
+        return new File(directory, filename);
+    }
+
+    public static File getFileForWriting(Context context, String attachmentName) throws IOException {
         File directory = createOrCleanAttachmentDirectory(context);
         String filename = FileHelper.sanitizeFilename(attachmentName);
         return new File(directory, filename);

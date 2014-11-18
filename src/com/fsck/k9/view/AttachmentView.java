@@ -286,7 +286,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         Intent viewIntent;
         if (resolvedIntentInfo.hasResolvedActivities() && resolvedIntentInfo.containsFileUri()) {
             try {
-                File tempFile = TemporaryAttachmentStore.getFile(context, name);
+                File tempFile = TemporaryAttachmentStore.getFileForWriting(context, name);
                 writeAttachmentToStorage(tempFile);
                 viewIntent = createViewIntentForFileUri(resolvedIntentInfo.getMimeType(), Uri.fromFile(tempFile));
             } catch (IOException e) {
@@ -310,8 +310,9 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
         }
 
-        Uri dummyFileUri = getDummyFileUri();
-        Intent fileUriIntent = createViewIntentForFileUri(mimeType, dummyFileUri);
+        File tempFile = TemporaryAttachmentStore.getFile(context, name);
+        Uri tempFileUri = Uri.fromFile(tempFile);
+        Intent fileUriIntent = createViewIntentForFileUri(mimeType, tempFileUri);
         int fileUriActivitiesCount = getResolvedIntentActivitiesCount(fileUriIntent);
 
         if (fileUriActivitiesCount > 0) {
@@ -319,11 +320,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
 
         return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
-    }
-
-    private Uri getDummyFileUri() {
-        File dummyFile = new File(FileHelper.sanitizeFilename(name));
-        return Uri.fromFile(dummyFile);
     }
 
     private Intent createViewIntentForAttachmentProviderUri(String mimeType) {
