@@ -267,89 +267,68 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     private Intent getBestViewIntentAndSaveFileIfNecessary() {
-        IntentAndResolvedActivitiesCount resultForContentUri = getBestViewIntentForContentUri();
-        if (resultForContentUri.getActivitiesCount() > 0) {
-            return resultForContentUri.getIntent();
+        String inferredMimeType = MimeUtility.getMimeTypeByExtension(name);
+
+        IntentAndResolvedActivitiesCount resolvedIntentInfo;
+        if (MimeUtility.isDefaultMimeType(contentType)) {
+            resolvedIntentInfo = getBestViewIntentForMimeType(inferredMimeType);
+        } else {
+            resolvedIntentInfo = getBestViewIntentForMimeType(contentType);
+            if (!resolvedIntentInfo.hasResolvedActivities() && !inferredMimeType.equals(contentType)) {
+                resolvedIntentInfo = getBestViewIntentForMimeType(inferredMimeType);
+            }
         }
 
-        IntentAndResolvedActivitiesCount resultForFileUri = getBestViewIntentForFileUri();
-        if (resultForFileUri.getActivitiesCount() > 0) {
+        if (!resolvedIntentInfo.hasResolvedActivities()) {
+            resolvedIntentInfo = getBestViewIntentForMimeType(MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
+        }
+
+        Intent viewIntent;
+        if (resolvedIntentInfo.hasResolvedActivities() && resolvedIntentInfo.containsFileUri()) {
             try {
                 File tempFile = TemporaryAttachmentStore.getFile(context, name);
                 writeAttachmentToStorage(tempFile);
-                return createViewIntentForFileUri(resultForFileUri.getMimeType(), Uri.fromFile(tempFile));
+                viewIntent = createViewIntentForFileUri(resolvedIntentInfo.getMimeType(), Uri.fromFile(tempFile));
             } catch (IOException e) {
                 if (K9.DEBUG) {
                     Log.e(K9.LOG_TAG, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent", e);
                 }
+                viewIntent = createViewIntentForAttachmentProviderUri(MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
             }
-        }
-
-        return resultForContentUri.getIntent();
-    }
-
-    private IntentAndResolvedActivitiesCount getBestViewIntentForContentUri() {
-        Intent intent;
-        int activitiesCount;
-
-        Uri originalMimeTypeUri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(),
-                contentType, name);
-        Intent originalMimeTypeIntent = createViewIntentForContentUri(contentType, originalMimeTypeUri);
-        int originalMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(originalMimeTypeIntent);
-
-        String inferredMimeType = MimeUtility.getMimeTypeByExtension(name);
-        if (inferredMimeType.equals(contentType)) {
-            intent = originalMimeTypeIntent;
-            activitiesCount = originalMimeTypeActivitiesCount;
         } else {
-            Uri inferredMimeTypeUri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(),
-                    inferredMimeType, name);
-            Intent inferredMimeTypeIntent = createViewIntentForContentUri(inferredMimeType, inferredMimeTypeUri);
-            int inferredMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(inferredMimeTypeIntent);
-
-            if (inferredMimeTypeActivitiesCount > originalMimeTypeActivitiesCount) {
-                intent = inferredMimeTypeIntent;
-                activitiesCount = inferredMimeTypeActivitiesCount;
-            } else {
-                intent = originalMimeTypeIntent;
-                activitiesCount = originalMimeTypeActivitiesCount;
-            }
+            viewIntent = resolvedIntentInfo.getIntent();
         }
 
-        return new IntentAndResolvedActivitiesCount(intent, activitiesCount);
+        return viewIntent;
     }
 
-    private IntentAndResolvedActivitiesCount getBestViewIntentForFileUri() {
-        Intent intent;
-        int activitiesCount;
+    private IntentAndResolvedActivitiesCount getBestViewIntentForMimeType(String mimeType) {
+        Intent contentUriIntent = createViewIntentForAttachmentProviderUri(mimeType);
+        int contentUriActivitiesCount = getResolvedIntentActivitiesCount(contentUriIntent);
 
+        if (contentUriActivitiesCount > 0) {
+            return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
+        }
+
+        Uri dummyFileUri = getDummyFileUri();
+        Intent fileUriIntent = createViewIntentForFileUri(mimeType, dummyFileUri);
+        int fileUriActivitiesCount = getResolvedIntentActivitiesCount(fileUriIntent);
+
+        if (fileUriActivitiesCount > 0) {
+            return new IntentAndResolvedActivitiesCount(fileUriIntent, fileUriActivitiesCount);
+        }
+
+        return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
+    }
+
+    private Uri getDummyFileUri() {
         File dummyFile = new File(FileHelper.sanitizeFilename(name));
-        Uri fileUri = Uri.fromFile(dummyFile);
-
-        Intent originalMimeTypeIntent = createViewIntentForFileUri(contentType, fileUri);
-        int originalMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(originalMimeTypeIntent);
-
-        String inferredMimeType = MimeUtility.getMimeTypeByExtension(name);
-        if (inferredMimeType.equals(contentType)) {
-            intent = originalMimeTypeIntent;
-            activitiesCount = originalMimeTypeActivitiesCount;
-        } else {
-            Intent inferredMimeTypeIntent = createViewIntentForFileUri(inferredMimeType, fileUri);
-            int inferredMimeTypeActivitiesCount = getResolvedIntentActivitiesCount(inferredMimeTypeIntent);
-
-            if (inferredMimeTypeActivitiesCount > originalMimeTypeActivitiesCount) {
-                intent = inferredMimeTypeIntent;
-                activitiesCount = inferredMimeTypeActivitiesCount;
-            } else {
-                intent = originalMimeTypeIntent;
-                activitiesCount = originalMimeTypeActivitiesCount;
-            }
-        }
-
-        return new IntentAndResolvedActivitiesCount(intent, activitiesCount);
+        return Uri.fromFile(dummyFile);
     }
 
-    private Intent createViewIntentForContentUri(String mimeType, Uri uri) {
+    private Intent createViewIntentForAttachmentProviderUri(String mimeType) {
+        Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(), mimeType, name);
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, mimeType);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -422,12 +401,16 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             return intent;
         }
 
-        public int getActivitiesCount() {
-            return activitiesCount;
+        public boolean hasResolvedActivities() {
+            return activitiesCount > 0;
         }
 
         public String getMimeType() {
             return intent.getType();
+        }
+
+        public boolean containsFileUri() {
+            return "file".equals(intent.getData().getScheme());
         }
     }
 
