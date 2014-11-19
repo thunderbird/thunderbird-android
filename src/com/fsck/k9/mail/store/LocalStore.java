@@ -4037,40 +4037,10 @@ public class LocalStore extends Store implements Serializable {
             database.execute(false, new DbCallback<Long>() {
                 @Override
                 public Long doDbWork(final SQLiteDatabase db) {
-                    final File[] files = attachmentDirectory.listFiles();
-                    long attachmentLength = 0;
-                    if (files != null) {
-                        for (File file : files) {
-                            if (file.exists()) {
-                            	attachmentLength += file.length();
-                            	//sadly the name is empty
-                            	String name = file.getName();                
-                                Log.i("PGP/MIME Attachments", "Attachment: " + name + attachmentLength);
-                                
-                                //try to write the contents - this results in hanging up
-//                                try {
-//									FileReader fr = new FileReader(file);
-//									 BufferedReader br = new BufferedReader(fr);
-//									String content = br.readLine();
-//									 while (content != null) {
-//									         content += br.readLine();	
-//									    } 
-//									 br.close();
-//									 Log.i("PGP/MIME Attachments", "content: " + content);		                              	 
-//								} catch (FileNotFoundException e) {
-//									// TODO Auto-generated catch block
-//									e.printStackTrace();
-//								} catch (IOException e) {
-//									// TODO Auto-generated catch block
-//									e.printStackTrace();
-//								}
-
-                            }
-                        }
-                    }
-
-                    final File dbFile = storageManager.getDatabase(uUid, database.getStorageProviderId());
-                    return dbFile.length() + attachmentLength;
+                	String[] args = {mUid};
+                	Cursor contents = db.rawQuery("SELECT store_data FROM attachments WHERE message_id=?", args);
+                	Log.i("PGP/MIME Attachments", "columns: " + contents.getColumnCount()+ " rows: " + contents.getCount());
+                 return (long) 0;                           
                 }
             });
         }
