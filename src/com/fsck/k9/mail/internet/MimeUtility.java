@@ -1136,11 +1136,10 @@ public class MimeUtility {
 
         BinaryTempFileBody tempBody;
         if (MimeUtil.isMessage(contentType)) {
-            tempBody = new BinaryTempFileMessageBody();
+            tempBody = new BinaryTempFileMessageBody(contentTransferEncoding);
         } else {
-            tempBody = new BinaryTempFileBody();
+            tempBody = new BinaryTempFileBody(contentTransferEncoding);
         }
-        tempBody.setEncoding(contentTransferEncoding);
 
         OutputStream out = tempBody.getOutputStream();
         try {

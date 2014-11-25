@@ -291,8 +291,7 @@ public class MessageTest extends AndroidTestCase {
 
     private MimeMessage nestedMessage(MimeMessage subMessage)
             throws MessagingException, IOException {
-        BinaryTempFileMessageBody tempMessageBody = new BinaryTempFileMessageBody();
-        tempMessageBody.setEncoding(MimeUtil.ENC_8BIT);
+        BinaryTempFileMessageBody tempMessageBody = new BinaryTempFileMessageBody(MimeUtil.ENC_8BIT);
 
         OutputStream out = tempMessageBody.getOutputStream();
         try {
@@ -334,7 +333,7 @@ public class MessageTest extends AndroidTestCase {
         String encodedTestString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "abcdefghijklmnopqrstuvwxyz0123456789+/\r\n";
 
-        BinaryTempFileBody tempFileBody = new BinaryTempFileBody();
+        BinaryTempFileBody tempFileBody = new BinaryTempFileBody(MimeUtil.ENC_BASE64);
 
         InputStream in = new ByteArrayInputStream(
                 encodedTestString.getBytes("UTF-8"));

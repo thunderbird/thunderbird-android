@@ -2,7 +2,10 @@ package com.fsck.k9.mail.internet;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.filter.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
+import org.apache.james.mime4j.util.MimeUtil;
 
 import java.io.*;
 
@@ -24,13 +27,50 @@ public class BinaryTempFileBody implements Body {
     }
 
     public void setEncoding(String encoding) throws MessagingException {
-        mEncoding = encoding;
+        if (mEncoding != null && mEncoding.equalsIgnoreCase(encoding)) {
+            return;
+        }
+
+        // The encoding changed, so we need to convert the message
+        if (!MimeUtil.ENC_8BIT.equalsIgnoreCase(mEncoding)) {
+            throw new RuntimeException("Can't convert from encoding: " + mEncoding);
+        }
+
+        try {
+            File newFile = File.createTempFile("body", null, mTempDirectory);
+            OutputStream out = new FileOutputStream(newFile);
+            try {
+                if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(encoding)) {
+                    out = new QuotedPrintableOutputStream(out, false);
+                } else if (MimeUtil.ENC_BASE64.equals(encoding)) {
+                    out = new Base64OutputStream(out);
+                } else {
+                    throw new RuntimeException("Target encoding not supported: " + encoding);
+                }
+
+                InputStream in = getInputStream();
+                try {
+                    IOUtils.copy(in, out);
+                } finally {
+                    in.close();
+                }
+            } finally {
+                out.close();
+            }
+
+            mFile = newFile;
+            mEncoding = encoding;
+        } catch (IOException e) {
+            throw new MessagingException("Unable to convert body", e);
+        }
     }
 
-    public BinaryTempFileBody() {
+    public BinaryTempFileBody(String encoding) {
         if (mTempDirectory == null) {
             throw new RuntimeException("setTempDirectory has not been called on BinaryTempFileBody!");
         }
+
+        mEncoding = encoding;
     }
 
     public OutputStream getOutputStream() throws IOException {
