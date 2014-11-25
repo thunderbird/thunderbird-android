@@ -709,7 +709,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="font_size_larger">Daha büyük</string>
   <string name="miscellaneous_preferences">Çeşitli</string>
   <string name="error_activity_not_found">Bu eylem için uygun program bulunamadı.</string>
-  <string name="btn_crypto_sign">İşaret</string>
+  <string name="btn_crypto_sign">İmzala</string>
   <string name="btn_encrypt">Şifrele</string>
   <string name="unknown_crypto_signature_user_id">&lt;bilinmiyor&gt;</string>
   <string name="pgp_mime_unsupported">PGP/MIME mesajları henüz desteklenmiyor.</string>
