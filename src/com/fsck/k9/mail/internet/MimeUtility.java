@@ -1127,24 +1127,11 @@ public class MimeUtility {
         return false;
     }
 
-    /**
-     * Removes any content transfer encoding from the stream and returns a Body.
-     * @throws MessagingException
-     */
-    public static Body decodeBody(InputStream in,
-            String contentTransferEncoding, String contentType)
+    public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
             throws IOException, MessagingException {
-        /*
-         * We'll remove any transfer encoding by wrapping the stream.
-         */
+
         if (contentTransferEncoding != null) {
-            contentTransferEncoding =
-                MimeUtility.getHeaderParameter(contentTransferEncoding, null);
-            if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(contentTransferEncoding)) {
-                in = new QuotedPrintableInputStream(in);
-            } else if (MimeUtil.ENC_BASE64.equalsIgnoreCase(contentTransferEncoding)) {
-                in = new Base64InputStream(in);
-            }
+            contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);
         }
 
         BinaryTempFileBody tempBody;
@@ -1154,12 +1141,14 @@ public class MimeUtility {
             tempBody = new BinaryTempFileBody();
         }
         tempBody.setEncoding(contentTransferEncoding);
+
         OutputStream out = tempBody.getOutputStream();
         try {
             IOUtils.copy(in, out);
         } finally {
             out.close();
         }
+
         return tempBody;
     }
 

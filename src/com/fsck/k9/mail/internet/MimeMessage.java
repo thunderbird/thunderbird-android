@@ -531,8 +531,7 @@ public class MimeMessage extends Message {
         public void body(BodyDescriptor bd, InputStream in) throws IOException {
             expect(Part.class);
             try {
-                Body body = MimeUtility.decodeBody(in,
-                        bd.getTransferEncoding(), bd.getMimeType());
+                Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType());
                 ((Part)stack.peek()).setBody(body);
             } catch (MessagingException me) {
                 throw new Error(me);

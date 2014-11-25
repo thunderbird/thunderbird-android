@@ -332,12 +332,12 @@ public class MessageTest extends AndroidTestCase {
     private MimeBodyPart binaryBodyPart() throws IOException,
             MessagingException {
         String encodedTestString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "abcdefghijklmnopqrstuvwxyz0123456789+/";
+                + "abcdefghijklmnopqrstuvwxyz0123456789+/\r\n";
 
         BinaryTempFileBody tempFileBody = new BinaryTempFileBody();
 
-        InputStream in = new Base64InputStream(new ByteArrayInputStream(
-                encodedTestString.getBytes("UTF-8")));
+        InputStream in = new ByteArrayInputStream(
+                encodedTestString.getBytes("UTF-8"));
 
         OutputStream out = tempFileBody.getOutputStream();
         try {

@@ -37,9 +37,10 @@ public class ReconstructMessageTest extends AndroidTestCase {
                 "\r\n" +
                 "------Boundary\r\n" +
                 "Content-Type: text/plain\r\n" +
-                "Content-Transfer-Encoding: quoted-printable\r\n" +
+                "Content-Transfer-Encoding: base64\r\n" +
                 "\r\n" +
-                "=2E=2E=2E\r\n" +
+                "VGhpcyBpcyBhIHRl\r\n" +
+                "c3QgbWVzc2FnZQ==\r\n" +
                 "\r\n" +
                 "------Boundary--\r\n";
 

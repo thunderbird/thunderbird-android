@@ -25,8 +25,6 @@ import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
@@ -1625,7 +1623,7 @@ public class ImapStore extends Store {
                                         .getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
                                 String contentType = part
                                         .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
-                                MimeMessageHelper.setBody(part, MimeUtility.decodeBody(bodyStream,
+                                MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream,
                                         contentTransferEncoding, contentType));
                             } else {
                                 // This shouldn't happen
@@ -3594,7 +3592,7 @@ public class ImapStore extends Store {
                 String contentType = mPart
                         .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
 
-                return MimeUtility.decodeBody(literal, contentTransferEncoding,
+                return MimeUtility.createBody(literal, contentTransferEncoding,
                         contentType);
             }
             return null;
