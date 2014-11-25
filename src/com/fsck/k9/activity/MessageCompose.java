@@ -3,8 +3,13 @@ package com.fsck.k9.activity;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +42,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -110,6 +116,7 @@ import com.fsck.k9.mail.internet.TextBodyBuilder;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileBody;
 import com.fsck.k9.mail.store.LocalStore.TempFileMessageBody;
+import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.view.MessageWebView;
 
 import org.apache.james.mime4j.codec.EncoderUtil;
@@ -1433,8 +1440,38 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
         if (mPgpData.getEncryptedData() != null) {
-            String text = mPgpData.getEncryptedData();
-            body = new TextBody(text);
+            // TODO korrekt auslesen, ob PGP inline oder MIME gewünscht wird
+            boolean pgpInline = false;
+            if (pgpInline) {
+                String text = mPgpData.getEncryptedData();
+                body = new TextBody(text);
+            } else {
+                body = new TextBody("");
+
+                String encryptedData = mPgpData.getEncryptedData();
+
+                try {
+                    // create cache file on internal storage
+                    File encryptedAsc = File.createTempFile("encrypted", ".asc", getCacheDir());
+                    FileOutputStream outputStream = new FileOutputStream(encryptedAsc);
+                    // write encrypted content to temp file
+                    outputStream.write(mPgpData.getEncryptedData().getBytes());
+                    outputStream.flush();
+                    outputStream.close();
+
+                    // save temp file as attachment
+                    //AttachmentProvider.
+                    Uri uri = Uri.fromFile(encryptedAsc);
+
+                    addAttachment(uri);
+                    // delete temp file
+                    // encryptedAsc.delete();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
         } else {
             body = buildText(isDraft);
         }
@@ -2067,6 +2104,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void addAttachment(Uri uri) {
         addAttachment(uri, null);
     }
+
 
     private void addAttachment(Uri uri, String contentType) {
         Attachment attachment = new Attachment();
