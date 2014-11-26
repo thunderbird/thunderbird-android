@@ -15,7 +15,7 @@ import java.io.*;
  * and writeTo one time. After writeTo is called, or the InputStream returned from
  * getInputStream is closed the file is deleted and the Body should be considered disposed of.
  */
-public class BinaryTempFileBody implements Body {
+public class BinaryTempFileBody implements RawDataBody {
     private static File mTempDirectory;
 
     private File mFile;
@@ -24,6 +24,11 @@ public class BinaryTempFileBody implements Body {
 
     public static void setTempDirectory(File tempDirectory) {
         mTempDirectory = tempDirectory;
+    }
+
+    @Override
+    public String getEncoding() {
+        return mEncoding;
     }
 
     public void setEncoding(String encoding) throws MessagingException {

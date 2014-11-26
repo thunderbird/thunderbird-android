@@ -2,6 +2,7 @@
 package com.fsck.k9.mail.internet;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -10,6 +11,7 @@ import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.BinaryTempFileBody.BinaryTempFileBodyInputStream;
 
+import com.fsck.k9.view.MessageHeader;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
@@ -1026,7 +1028,7 @@ public class MimeUtility {
                      * determine the charset from HTML message.
                      */
                     if (mimeType.equalsIgnoreCase("text/html") && charset == null) {
-                        InputStream in = part.getBody().getInputStream();
+                        InputStream in = MimeUtility.decodeBody(part.getBody());
                         try {
                             byte[] buf = new byte[256];
                             in.read(buf, 0, buf.length);
@@ -1062,7 +1064,7 @@ public class MimeUtility {
                      * Now we read the part into a buffer for further processing. Because
                      * the stream is now wrapped we'll remove any transfer encoding at this point.
                      */
-                    InputStream in = part.getBody().getInputStream();
+                    InputStream in = MimeUtility.decodeBody(part.getBody());
                     try {
                         String text = readToString(in, charset);
 
@@ -1151,6 +1153,49 @@ public class MimeUtility {
         return tempBody;
     }
 
+    /**
+     * Get decoded contents of a body.
+     * <p/>
+     * Right now only some classes retain the original encoding of the body contents. Those classes have to implement
+     * the {@link RawDataBody} interface in order for this method to decode the data delivered by
+     * {@link Body#getInputStream()}.
+     * <p/>
+     * The ultimate goal is to get to a point where all classes retain the original data and {@code RawDataBody} can be
+     * merged into {@link Body}.
+     */
+    public static InputStream decodeBody(Body body) throws MessagingException {
+        InputStream inputStream;
+        if (body instanceof RawDataBody) {
+            RawDataBody rawDataBody = (RawDataBody) body;
+            String encoding = rawDataBody.getEncoding();
+            final InputStream rawInputStream = rawDataBody.getInputStream();
+            if (MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding) || MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
+                inputStream = rawInputStream;
+            } else if (MimeUtil.ENC_BASE64.equalsIgnoreCase(encoding)) {
+                inputStream = new Base64InputStream(rawInputStream, false) {
+                    @Override
+                    public void close() throws IOException {
+                        super.close();
+                        rawInputStream.close();
+                    }
+                };
+            } else if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(encoding)) {
+                inputStream = new QuotedPrintableInputStream(rawInputStream) {
+                    @Override
+                    public void close() throws IOException {
+                        super.close();
+                        rawInputStream.close();
+                    }
+                };
+            } else {
+                throw new RuntimeException("Encoding for RawDataBody not supported: " + encoding);
+            }
+        } else {
+            inputStream = body.getInputStream();
+        }
+
+        return inputStream;
+    }
 
     /**
      * Empty base class for the class hierarchy used by

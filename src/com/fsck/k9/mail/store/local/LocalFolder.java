@@ -1561,7 +1561,7 @@ public class LocalFolder extends Folder implements Serializable {
                                  * If the attachment has a body we're expected to save it into the local store
                                  * so we copy the data into a cached attachment file.
                                  */
-                                InputStream in = attachment.getBody().getInputStream();
+                                InputStream in = MimeUtility.decodeBody(attachment.getBody());
                                 try {
                                     tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
                                     FileOutputStream out = new FileOutputStream(tempAttachmentFile);
