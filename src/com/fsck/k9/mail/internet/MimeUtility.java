@@ -1111,20 +1111,8 @@ public class MimeUtility {
         return p.matcher(mimeType).matches();
     }
 
-    /**
-     * Returns true if the given mimeType matches any of the matchAgainst specifications.
-     * @param mimeType A MIME type to check.
-     * @param matchAgainst An array of MIME types to check against. May include wildcards such
-     * as image/* or * /*.
-     * @return
-     */
-    public static boolean mimeTypeMatches(String mimeType, String[] matchAgainst) {
-        for (String matchType : matchAgainst) {
-            if (mimeTypeMatches(mimeType, matchType)) {
-                return true;
-            }
-        }
-        return false;
+    public static boolean isDefaultMimeType(String mimeType) {
+        return DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(mimeType);
     }
 
     /**

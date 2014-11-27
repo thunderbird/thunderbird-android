@@ -206,7 +206,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         mMessageView.setAttachmentCallback(new AttachmentFileDownloadCallback() {
 
             @Override
-            public void showFileBrowser(final AttachmentView caller) {
+            public void pickDirectoryToSaveAttachmentTo(final AttachmentView caller) {
                 FileBrowserHelper.getInstance()
                 .showFileBrowserActivity(MessageViewFragment.this,
                                          null,
@@ -498,15 +498,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.download: {
-                ((AttachmentView)view).saveFile();
-                break;
-            }
-            case R.id.download_remainder: {
-                onDownloadRemainder();
-                break;
-            }
+        if (view.getId() == R.id.download_remainder) {
+            onDownloadRemainder();
         }
     }
 

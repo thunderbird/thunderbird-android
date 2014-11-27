@@ -226,7 +226,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="message_view_show_attachments_action">Вложения</string>
   <string name="message_view_show_more_attachments_action">Показать вложения</string>
   <string name="message_view_fetching_attachment_toast">Извлечение вложений</string>
-  <string name="message_view_no_viewer">Отсутствует просмотрщик %s <xliff:g id="mimetype">%s</xliff:g></string>
+  <string name="message_view_no_viewer">Отсутствует просмотрщик <xliff:g id="mimetype">%s</xliff:g></string>
   <string name="message_view_download_remainder">Загрузить полностью</string>
   <string name="message_view_downloading">Загрузка…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
