@@ -1448,24 +1448,28 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             } else {
                 body = new TextBody("");
 
-                String encryptedData = mPgpData.getEncryptedData();
-
                 try {
                     // create cache file on internal storage
                     File encryptedAsc = File.createTempFile("encrypted", ".asc", getCacheDir());
+                    encryptedAsc.deleteOnExit();
                     FileOutputStream outputStream = new FileOutputStream(encryptedAsc);
                     // write encrypted content to temp file
                     outputStream.write(mPgpData.getEncryptedData().getBytes());
                     outputStream.flush();
                     outputStream.close();
 
-                    // save temp file as attachment
-                    //AttachmentProvider.
-                    Uri uri = Uri.fromFile(encryptedAsc);
+                    Attachment attachment = new Attachment();
+                    attachment.uri = Uri.fromFile(encryptedAsc);
+                    attachment.name = encryptedAsc.getName();
+                    attachment.size = encryptedAsc.length();
+                    attachment.contentType = getContentResolver().getType(attachment.uri);
+                    //attachment.contentType = MimeUtility.getMimeTypeByExtension(encryptedAsc.getName());
+                    attachment.filename = encryptedAsc.getAbsolutePath();
+                    attachment.state = Attachment.LoadingState.COMPLETE;
 
-                    addAttachment(uri);
-                    // delete temp file
-                    // encryptedAsc.delete();
+                    addAttachmentView(attachment);
+                    //addAttachment(uri);
+                    
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
