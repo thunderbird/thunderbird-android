@@ -1439,9 +1439,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
+        // TODO korrekt auslesen, ob PGP inline oder MIME gewünscht wird
+        boolean pgpInline = false;
         if (mPgpData.getEncryptedData() != null) {
-            // TODO korrekt auslesen, ob PGP inline oder MIME gewünscht wird
-            boolean pgpInline = false;
             if (pgpInline) {
                 String text = mPgpData.getEncryptedData();
                 body = new TextBody(text);
@@ -1458,16 +1458,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     outputStream.flush();
                     outputStream.close();
 
-                    Attachment attachment = new Attachment();
-                    attachment.uri = Uri.fromFile(encryptedAsc);
-                    attachment.name = encryptedAsc.getName();
-                    attachment.size = encryptedAsc.length();
-                    attachment.contentType = getContentResolver().getType(attachment.uri);
-                    //attachment.contentType = MimeUtility.getMimeTypeByExtension(encryptedAsc.getName());
-                    attachment.filename = encryptedAsc.getAbsolutePath();
-                    attachment.state = Attachment.LoadingState.COMPLETE;
+                    MimeMultipart mp = addPGPMIMEAttachment(encryptedAsc);
+                    message.setBody(mp);
 
-                    addAttachmentView(attachment);
+                    //addAttachmentView(attachment);
                     //addAttachment(uri);
                     
                 } catch (IOException e) {
@@ -1483,6 +1477,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // text/plain part when mMessageFormat == MessageFormat.HTML
         TextBody bodyPlain = null;
 
+        if (mPgpData.getEncryptedData() == null || pgpInline) {
+        
         final boolean hasAttachments = mAttachments.getChildCount() > 0;
 
         if (mMessageFormat == SimpleMessageFormat.HTML) {
@@ -1519,6 +1515,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 // No attachments to include, just stick the text body in the message and call it good.
                 message.setBody(body);
             }
+        }
+        
         }
 
         // If this is a draft, add metadata for thawing.
@@ -2105,6 +2103,43 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_ATTACHMENT);
     }
 
+    
+    private MimeMultipart addPGPMIMEAttachment(File encryptedFile) throws MessagingException {
+    	
+    	Attachment attachment = new Attachment();
+        attachment.uri = Uri.fromFile(encryptedFile);
+        attachment.name = encryptedFile.getName();
+        attachment.size = encryptedFile.length();
+        attachment.contentType = "application/octet-stream";
+        //attachment.contentType = getContentResolver().getType(attachment.uri);
+        //attachment.contentType = MimeUtility.getMimeTypeByExtension(encryptedAsc.getName());
+        attachment.filename = encryptedFile.getAbsolutePath();
+        attachment.state = Attachment.LoadingState.COMPLETE;
+        
+        MimeMultipart mp = new MimeMultipart();
+        mp.addBodyPart(new MimeBodyPart(new TextBody(""), "application/pgp-encrypted"));
+
+        Body body = new TempFileBody(attachment.filename);
+        // Body body = new TempFileMessageBody(attachment.filename);
+        MimeBodyPart bp = new MimeBodyPart(body);
+        
+        bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
+                attachment.contentType,
+                EncoderUtil.encodeIfNecessary(attachment.name,
+                        EncoderUtil.Usage.WORD_ENTITY, 7)));
+
+        bp.setEncoding(MimeUtility.getEncodingforType(attachment.contentType));
+   
+        bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
+        		"attachment;\r\n filename=\"%s\";\r\n size=%d",
+        		attachment.name, attachment.size));
+
+        mp.addBodyPart(bp);
+        
+        return mp;
+    }
+    
+    
     private void addAttachment(Uri uri) {
         addAttachment(uri, null);
     }
