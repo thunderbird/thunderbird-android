@@ -2117,7 +2117,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         attachment.state = Attachment.LoadingState.COMPLETE;
         
         MimeMultipart mp = new MimeMultipart();
-        mp.addBodyPart(new MimeBodyPart(new TextBody(""), "application/pgp-encrypted"));
+        mp.setProtocol("application/pgp-encrypted");
+        mp.setSubType("encrypted");
+        mp.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));
+        //mp.addBodyPart(new MimeBodyPart(new TextBody("")));
 
         Body body = new TempFileBody(attachment.filename);
         // Body body = new TempFileMessageBody(attachment.filename);
@@ -2131,7 +2134,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         bp.setEncoding(MimeUtility.getEncodingforType(attachment.contentType));
    
         bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
-        		"attachment;\r\n filename=\"%s\";\r\n size=%d",
+        		"inline;\r\n filename=\"%s\";\r\n size=%d",
         		attachment.name, attachment.size));
 
         mp.addBodyPart(bp);

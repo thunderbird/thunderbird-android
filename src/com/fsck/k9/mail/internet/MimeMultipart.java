@@ -17,6 +17,8 @@ public class MimeMultipart extends Multipart {
     protected String mBoundary;
 
     protected String mSubType;
+    
+    protected String mProtocol;
 
     public MimeMultipart() throws MessagingException {
         mBoundary = generateBoundary();
@@ -63,7 +65,15 @@ public class MimeMultipart extends Multipart {
 
     public void setSubType(String subType) {
         this.mSubType = subType;
-        mContentType = String.format("multipart/%s; boundary=\"%s\"", subType, mBoundary);
+        if (mProtocol == null)
+        	mContentType = String.format("multipart/%s; boundary=\"%s\"", subType, mBoundary);
+        else
+        	mContentType = String.format("multipart/%s; protocol=\"%s\"; boundary=\"%s\"", subType, mProtocol, mBoundary);
+    }
+    
+    public void setProtocol(String protocol) {
+    	this.mProtocol = protocol;
+    	mContentType = String.format("multipart/%s; protocol=\"%s\"; boundary=\"%s\"", mSubType, protocol, mBoundary);
     }
 
     public void writeTo(OutputStream out) throws IOException, MessagingException {
