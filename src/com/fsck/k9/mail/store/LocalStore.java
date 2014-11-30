@@ -2067,6 +2067,8 @@ public class LocalStore extends Store implements Serializable {
 											mp.setSubType(mimeType.toLowerCase(
 													Locale.US).replaceFirst(
 													"^multipart/", ""));
+											// temporary hack
+											// mp.setProtocol("application/pgp-encrypted");
 											if (textContent != null) {
 												LocalTextBody body = new LocalTextBody(
 														textContent,

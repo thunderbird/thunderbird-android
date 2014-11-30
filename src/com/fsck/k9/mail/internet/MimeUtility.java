@@ -2197,7 +2197,8 @@ public class MimeUtility {
         } else if (type.toLowerCase(Locale.US).startsWith("multipart/")) {
             return (MimeUtil.ENC_8BIT);
         } else {
-            return (MimeUtil.ENC_BASE64);
+            //return (MimeUtil.ENC_BASE64);
+        	return (MimeUtil.ENC_8BIT);
         }
     }
 
