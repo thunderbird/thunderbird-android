@@ -39,6 +39,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -4040,8 +4041,30 @@ public class LocalStore extends Store implements Serializable {
                 @Override
                 public Long doDbWork(final SQLiteDatabase db) {
                 	String[] args = {mUid};
-                	Cursor contents = db.rawQuery("SELECT store_data FROM attachments WHERE message_id=?", args);
+                	//Cursor contents = db.rawQuery("SELECT store_data FROM attachments WHERE message_id=?", args);
+                	Cursor contents = db.rawQuery("SELECT store_data, content_uri, name, mime_type, content_id, content_disposition FROM attachments WHERE message_id=?", args);
                 	Log.i("PGP/MIME Attachments", "columns: " + contents.getColumnCount()+ " rows: " + contents.getCount());
+                	String attachmentUri ="";
+                	if(contents.moveToLast()){
+                		Log.i("PGP/MIME Attachments", "store_data: " + contents.getString(0) + " | content_uri: " + contents.getString(1) + " | name: " + contents.getString(2) + " | mime_type: " + contents.getString(3) + " | content_id: " + contents.getString(4) + " | content_disposition: " + contents.getString(5));
+                		attachmentUri = contents.getString(1);
+                	}
+                	if(attachmentUri!=""){
+                		AttachmentProvider ap = new AttachmentProvider();
+                		ap.attachInfo(mApplication.getApplicationContext(), null);
+                		attachmentUri.replace("content://com.fsck.k9.attachmentprovider/", "");
+                		Uri uri = Uri.parse(attachmentUri);
+                		Log.i("PGP/MIME Attachment", "uri is: " + uri );
+                		try {
+                			ParcelFileDescriptor pfd = ap.openFile(uri, "not thumbnail but raw");
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							Log.e("PGP/MIME Attachment", "The file could not be opened.");
+							e.printStackTrace();
+						}
+                		
+                	}
+                	
                  return (long) 0;                           
                 }
             });
