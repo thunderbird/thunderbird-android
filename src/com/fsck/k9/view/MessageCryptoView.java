@@ -103,10 +103,19 @@ public class MessageCryptoView extends LinearLayout {
                     String data = null;
                     Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
                     if (part == null) {
+                        Log.i("PGP/MIME VIEW", "part null");
                         part = MimeUtility.findFirstPartByMimeType(message, "text/html");
                     }
                     if (part != null) {
+                        Log.i("PGP/MIME VIEW", "part found");
                         data = MimeUtility.getTextFromPart(part);
+                    }
+                    //PGP/MIME part
+                    else{
+                    	Log.i("PGP/MIME VIEW", "going pgp");
+                    	Part pgp = MimeUtility.findFirstPartByMimeType(message, "application/pgp-encrypted");
+                    	data = MimeUtility.getTextFromPart(pgp);
+                    	Log.i("PGP/MIME VIEW", "content: " + data);
                     }
                     cryptoProvider.decrypt(mFragment, data, pgpData);
                 } catch (MessagingException me) {
@@ -131,6 +140,7 @@ public class MessageCryptoView extends LinearLayout {
                 if (pgp != null) {
                 	//somehow the error message is not displayed when opening an PGP/MIME mail
                     Toast.makeText(mContext, R.string.pgp_mime_unsupported, Toast.LENGTH_LONG).show();
+                    this.setVisibility(View.VISIBLE);
                 }
             } catch (MessagingException e) {
                 // nothing to do...

@@ -515,6 +515,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
 
         if (text == null) {
+        	Log.i("PGP/MIME View", "here i am set");
             text = message.getTextForDisplay();
         }
 

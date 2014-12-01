@@ -4043,6 +4043,7 @@ public class LocalStore extends Store implements Serializable {
             	@Override
                 public String doDbWork(final SQLiteDatabase db) {
                 	String[] args = {mUid};
+                	Log.i("PGP/MIME Attachments", "ID is: " + mUid);
                 	//get the content from Attachment database
                 	//Cursor contents = db.rawQuery("SELECT store_data FROM attachments WHERE message_id=?", args);
                 	Cursor contents = db.rawQuery("SELECT store_data, content_uri, name, mime_type, content_id, content_disposition FROM attachments WHERE message_id=?", args);
