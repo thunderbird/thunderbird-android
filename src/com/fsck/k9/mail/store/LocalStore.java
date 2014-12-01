@@ -4072,9 +4072,11 @@ public class LocalStore extends Store implements Serializable {
         			BufferedReader r = new BufferedReader(new InputStreamReader(is));
         			StringBuilder total = new StringBuilder();
         			String line;
+        			String lineSep = System.getProperty("line.separator");
         			//Build string containing the content of the file
         			while ((line = r.readLine()) != null) {
         			    total.append(line);
+        			    total.append(lineSep);
         			}
         			returnText= total.toString();
         			r.close();

@@ -25,7 +25,12 @@ public class MessageCryptoView extends LinearLayout {
     private ImageView mCryptoSignatureStatusImage = null;
     private TextView mCryptoSignatureUserId = null;
     private TextView mCryptoSignatureUserIdRest = null;
-
+    private String mPGPMIMEText = null;
+    
+    //workaround for pgp/mime
+    public void setmPGPMIMEText(String text){
+    	this.mPGPMIMEText=text;
+    }
 
     public MessageCryptoView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -114,7 +119,7 @@ public class MessageCryptoView extends LinearLayout {
                     else{
                     	Log.i("PGP/MIME VIEW", "going pgp");
                     	Part pgp = MimeUtility.findFirstPartByMimeType(message, "application/pgp-encrypted");
-                    	data = MimeUtility.getTextFromPart(pgp);
+                    	data = mPGPMIMEText;
                     	Log.i("PGP/MIME VIEW", "content: " + data);
                     }
                     cryptoProvider.decrypt(mFragment, data, pgpData);
