@@ -275,7 +275,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     public void writeFile() {
         writeFile(new File(K9.getAttachmentDefaultPath()));
     }
-
+    //PGP/MIME Possible way to retrieve attachments
     public void saveFile() {
         //TODO: Can the user save attachments on the internal filesystem or sd card only?
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {

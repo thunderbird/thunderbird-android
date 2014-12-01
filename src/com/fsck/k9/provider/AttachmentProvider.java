@@ -150,6 +150,7 @@ public class AttachmentProvider extends ContentProvider {
         return getType(dbName, id, format);
     }
 
+    //PGP/MIME Maybe we need this to open the file after retrieving the attachment uri
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
         File file;
