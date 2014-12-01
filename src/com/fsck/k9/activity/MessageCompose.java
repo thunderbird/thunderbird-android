@@ -1446,29 +1446,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 String text = mPgpData.getEncryptedData();
                 body = new TextBody(text);
             } else {
-                body = new TextBody("");
-
-                try {
-                    // create cache file on internal storage
-                    File encryptedAsc = File.createTempFile("encrypted", ".asc", getCacheDir());
-                    encryptedAsc.deleteOnExit();
-                    FileOutputStream outputStream = new FileOutputStream(encryptedAsc);
-                    // write encrypted content to temp file
-                    outputStream.write(mPgpData.getEncryptedData().getBytes());
-                    outputStream.flush();
-                    outputStream.close();
-
-                    MimeMultipart mp = addPGPMIMEAttachment(encryptedAsc);
-                    message.setBody(mp);
-
-                    //addAttachmentView(attachment);
-                    //addAttachment(uri);
-                    
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
+                MimeMultipart mp = createPGPMIMEMessage();
+                message.setBody(mp);
             }
         } else {
             body = buildText(isDraft);
@@ -2104,47 +2083,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     
-    private MimeMultipart addPGPMIMEAttachment(File encryptedFile) throws MessagingException {
+    private MimeMultipart createPGPMIMEMessage() throws MessagingException {
     	
-    	Attachment attachment = new Attachment();
-        attachment.uri = Uri.fromFile(encryptedFile);
-        attachment.name = encryptedFile.getName();
-        attachment.size = encryptedFile.length();
-        attachment.contentType = "application/octet-stream";
-        //attachment.contentType = getContentResolver().getType(attachment.uri);
-        //attachment.contentType = MimeUtility.getMimeTypeByExtension(encryptedAsc.getName());
-        attachment.filename = encryptedFile.getAbsolutePath();
-        attachment.state = Attachment.LoadingState.COMPLETE;
-        
         MimeMultipart mp = new MimeMultipart();
-        mp.setEncoding(MimeUtil.ENC_8BIT);
         mp.setProtocol("application/pgp-encrypted");
         mp.setSubType("encrypted");
         MimeBodyPart versionBody = new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted");
-        versionBody.setEncoding(MimeUtil.ENC_8BIT);
         mp.addBodyPart(versionBody);
-        //mp.addBodyPart(new MimeBodyPart(new TextBody("")));
 
-        /*
-        Body body = new TempFileBody(attachment.filename);
-        // Body body = new TempFileMessageBody(attachment.filename);
-        MimeBodyPart bp = new MimeBodyPart(body);
-        
-        bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
-                attachment.contentType,
-                EncoderUtil.encodeIfNecessary(attachment.name,
-                        EncoderUtil.Usage.WORD_ENTITY, 7)));
-
-        bp.setEncoding(MimeUtility.getEncodingforType(attachment.contentType));
-   
-        bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
-        		"inline;\r\n filename=\"%s\";\r\n size=%d",
-        		attachment.name, attachment.size));
-
-        mp.addBodyPart(bp);
-       */
         Body body = new TextBody(mPgpData.getEncryptedData());
-        body.setEncoding(MimeUtil.ENC_8BIT);
         MimeBodyPart bp = new MimeBodyPart(body, "application/octet-stream");
         
         bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
@@ -2152,9 +2099,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 EncoderUtil.encodeIfNecessary("encrypted.asc",
                         EncoderUtil.Usage.WORD_ENTITY, 7)));
 
-        //bp.setEncoding(MimeUtility.getEncodingforType("application/octet-stream"));
-        bp.setEncoding(MimeUtil.ENC_8BIT);
-   
         bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
         		"inline;\r\n filename=\"%s\"",
         		"encrypted.asc"));

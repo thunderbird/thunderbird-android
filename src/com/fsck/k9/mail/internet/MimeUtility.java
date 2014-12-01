@@ -2196,9 +2196,10 @@ public class MimeUtility {
             return (MimeUtil.ENC_7BIT);
         } else if (type.toLowerCase(Locale.US).startsWith("multipart/")) {
             return (MimeUtil.ENC_8BIT);
-        } else {
-            //return (MimeUtil.ENC_BASE64);
+        } else if (type.toLowerCase(Locale.US).startsWith("application/pgp-encrypted") || type.toLowerCase(Locale.US).startsWith("application/octet-stream")) {
         	return (MimeUtil.ENC_8BIT);
+        } else {
+            return (MimeUtil.ENC_BASE64);
         }
     }
 
