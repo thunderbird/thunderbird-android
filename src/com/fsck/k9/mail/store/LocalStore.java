@@ -4027,59 +4027,67 @@ public class LocalStore extends Store implements Serializable {
 
 		// This is a test for PGP/MIME
 		/*
-		 * The Table looks this:
+		 * The Table looks this:d
 		 * CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER, store_data TEXT, content_uri TEXT, size INTEGER, name TEXT, mime_type TEXT, content_id TEXT, content_disposition TEXT
 		 * We want to create an SQL statement like: "SELECT store_data FROM attachments WHERE message_id=mUid".
 		 * 
 		 */
-		public void testAttachmentAccess() throws UnavailableStorageException{
+		public String retrieveAttachmentContent() throws UnavailableStorageException{
         	final StorageManager storageManager = StorageManager.getInstance(mApplication);
 
             final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid,
                                              database.getStorageProviderId());
-
-            database.execute(false, new DbCallback<Long>() {
-                @Override
-                public Long doDbWork(final SQLiteDatabase db) {
+            
+            String attachmentUri = database.execute(false, new DbCallback<String>() {
+            	
+            	@Override
+                public String doDbWork(final SQLiteDatabase db) {
                 	String[] args = {mUid};
+                	//get the content from Attachment database
                 	//Cursor contents = db.rawQuery("SELECT store_data FROM attachments WHERE message_id=?", args);
                 	Cursor contents = db.rawQuery("SELECT store_data, content_uri, name, mime_type, content_id, content_disposition FROM attachments WHERE message_id=?", args);
                 	Log.i("PGP/MIME Attachments", "columns: " + contents.getColumnCount()+ " rows: " + contents.getCount());
                 	String attachmentUri ="";
+                	//the second attachment is the encrypted mail
                 	if(contents.moveToLast()){
                 		Log.i("PGP/MIME Attachments", "store_data: " + contents.getString(0) + " | content_uri: " + contents.getString(1) + " | name: " + contents.getString(2) + " | mime_type: " + contents.getString(3) + " | content_id: " + contents.getString(4) + " | content_disposition: " + contents.getString(5));
                 		attachmentUri = contents.getString(1);
-                	}
-                	if(attachmentUri!=""){
-                		AttachmentProvider ap = new AttachmentProvider();
-                		ap.attachInfo(mApplication.getApplicationContext(), null);
-                		attachmentUri.replace("content://com.fsck.k9.attachmentprovider/", "");
-                		Uri uri = Uri.parse(attachmentUri);
-                		Log.i("PGP/MIME Attachment", "uri is: " + uri );
-                		try {
-                			ParcelFileDescriptor pfd = ap.openFile(uri, "not thumbnail but raw");
-                			InputStream is = mApplication.getApplicationContext().getContentResolver().openInputStream(uri);
-                			BufferedReader r = new BufferedReader(new InputStreamReader(is));
-                			StringBuilder total = new StringBuilder();
-                			String line;
-                			while ((line = r.readLine()) != null) {
-                			    total.append(line);
-                			}
-                			Log.i("PGP/MIME Attachment", "content is: " + total );
-                		} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
-							Log.e("PGP/MIME Attachment", "The file could not be opened.");
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-                		
-                	}
-                	
-                 return (long) 0;                           
+                	}                	
+                	contents.close();
+                 return attachmentUri;                           
                 }
             });
+            
+            String returnText = "no text";
+            
+           	//if attachment ist found
+        	if(attachmentUri!=""){
+        		//make sure to remove useless parts to work
+        		attachmentUri.replace("content://com.fsck.k9.attachmentprovider/", "");
+        		Uri uri = Uri.parse(attachmentUri);
+        		Log.i("PGP/MIME Attachment", "uri is: " + uri );
+        		try {
+        			InputStream is = mApplication.getApplicationContext().getContentResolver().openInputStream(uri);
+        			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+        			StringBuilder total = new StringBuilder();
+        			String line;
+        			//Build string containing the content of the file
+        			while ((line = r.readLine()) != null) {
+        			    total.append(line);
+        			}
+        			returnText= total.toString();
+        			r.close();
+        			is.close();
+        			Log.i("PGP/MIME Attachment", "content is: " + total );
+        		} catch (FileNotFoundException e) {
+					Log.e("PGP/MIME Attachment", "The file could not be opened.");
+					e.printStackTrace();
+				} catch (IOException e) {
+					Log.e("PGP/MIME Attachment", "Error reading attachment.");
+					e.printStackTrace();
+				}
+        	}
+			return returnText;
         }
 
 		private void populateFromGetMessageCursor(Cursor cursor)
@@ -4170,7 +4178,7 @@ public class LocalStore extends Store implements Serializable {
 					Log.i("PGP/MIME Attachments", "Number Attachments = " + this.mAttachmentCount);
 					// Write the Attachments to the logcat with inform in case
 					// of pgp/MIME
-					testAttachmentAccess();
+					text = retrieveAttachmentContent();
 				}
 			} else {
 				// We successfully found an HTML part; do the necessary
