@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -4057,9 +4058,20 @@ public class LocalStore extends Store implements Serializable {
                 		Log.i("PGP/MIME Attachment", "uri is: " + uri );
                 		try {
                 			ParcelFileDescriptor pfd = ap.openFile(uri, "not thumbnail but raw");
-						} catch (FileNotFoundException e) {
+                			InputStream is = mApplication.getApplicationContext().getContentResolver().openInputStream(uri);
+                			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+                			StringBuilder total = new StringBuilder();
+                			String line;
+                			while ((line = r.readLine()) != null) {
+                			    total.append(line);
+                			}
+                			Log.i("PGP/MIME Attachment", "content is: " + total );
+                		} catch (FileNotFoundException e) {
 							// TODO Auto-generated catch block
 							Log.e("PGP/MIME Attachment", "The file could not be opened.");
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
                 		
