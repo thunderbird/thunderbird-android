@@ -157,7 +157,9 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="clearing_account">Išvaloma paskyra  \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Iš naujo kuriama paskyra  \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Naujas laiškas</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Neskaitytų (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> daugiau <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Atsakyti</string>

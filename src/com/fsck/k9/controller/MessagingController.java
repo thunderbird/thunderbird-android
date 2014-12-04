@@ -2,7 +2,6 @@ package com.fsck.k9.controller;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,6 +12,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -2633,13 +2633,16 @@ public class MessagingController implements Runnable {
                 R.string.notification_certificate_error_title, account.getDescription());
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.drawable.ic_notify_new_mail);
+        builder.setSmallIcon(platformSupportsLockScreenNotifications()
+            ? R.drawable.ic_notify_new_mail_vector
+            : R.drawable.ic_notify_new_mail);
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
         builder.setTicker(title);
         builder.setContentTitle(title);
         builder.setContentText(context.getString(R.string.notification_certificate_error_text));
         builder.setContentIntent(pi);
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         configureNotification(builder, null, null,
                 K9.NOTIFICATION_LED_FAILURE_COLOR,
@@ -3343,6 +3346,7 @@ public class MessagingController implements Runnable {
         TaskStackBuilder stack = buildMessageListBackStack(mApplication, account,
                 account.getInboxFolderName());
         builder.setContentIntent(stack.getPendingIntent(0, 0));
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         if (K9.NOTIFICATION_LED_WHILE_SYNCING) {
             configureNotification(builder, null, null,
@@ -3377,7 +3381,9 @@ public class MessagingController implements Runnable {
                 (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mApplication);
-        builder.setSmallIcon(R.drawable.ic_notify_new_mail);
+        builder.setSmallIcon(platformSupportsLockScreenNotifications()
+            ? R.drawable.ic_notify_new_mail_vector
+            : R.drawable.ic_notify_new_mail);
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
         builder.setTicker(mApplication.getString(R.string.send_failure_subject));
@@ -3386,6 +3392,7 @@ public class MessagingController implements Runnable {
 
         TaskStackBuilder stack = buildFolderListBackStack(mApplication, account);
         builder.setContentIntent(stack.getPendingIntent(0, 0));
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         configureNotification(builder,  null, null, K9.NOTIFICATION_LED_FAILURE_COLOR,
                 K9.NOTIFICATION_LED_BLINK_FAST, true);
@@ -3424,6 +3431,7 @@ public class MessagingController implements Runnable {
         TaskStackBuilder stack = buildMessageListBackStack(mApplication, account,
                 account.getInboxFolderName());
         builder.setContentIntent(stack.getPendingIntent(0, 0));
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         if (K9.NOTIFICATION_LED_WHILE_SYNCING) {
             configureNotification(builder,  null, null,
@@ -4769,6 +4777,10 @@ public class MessagingController implements Runnable {
         return Build.VERSION.SDK_INT >= 16;
     }
 
+    public static boolean platformSupportsLockScreenNotifications() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
     private Message findNewestMessageForNotificationLocked(Context context,
             Account account, NotificationData data) {
         if (!data.messages.isEmpty()) {
@@ -4792,6 +4804,9 @@ public class MessagingController implements Runnable {
             notifyAccountWithDataLocked(context, account, message, data);
         }
     }
+
+    // Maximum number of senders to display in a lock screen notification.
+    private static final int NUM_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5;
 
     private void notifyAccountWithDataLocked(Context context, Account account,
             Message message, NotificationData data) {
@@ -4858,7 +4873,8 @@ public class MessagingController implements Runnable {
                     style.setSummaryText(context.getString(R.string.notification_additional_messages,
                             data.droppedMessages.size(), accountDescr));
                 }
-                String title = context.getString(R.string.notification_new_messages_title, newMessages);
+                final String title = context.getResources().getQuantityString(
+                    R.plurals.notification_new_messages_title, newMessages, newMessages);
                 style.setBigContentTitle(title);
                 builder.setContentTitle(title);
                 builder.setSubText(accountDescr);
@@ -4875,14 +4891,20 @@ public class MessagingController implements Runnable {
                 builder.setContentTitle(sender);
                 builder.setStyle(style);
 
-                builder.addAction(R.drawable.ic_action_single_message_options_dark,
-                        context.getString(R.string.notification_action_reply),
-                        NotificationActionService.getReplyIntent(context, account, message.makeMessageReference()));
+                builder.addAction(
+                    platformSupportsExtendedNotifications()
+                        ? R.drawable.ic_action_single_message_options_dark_vector
+                        : R.drawable.ic_action_single_message_options_dark,
+                    context.getString(R.string.notification_action_reply),
+                    NotificationActionService.getReplyIntent(context, account, message.makeMessageReference()));
             }
 
-            builder.addAction(R.drawable.ic_action_mark_as_read_dark,
-                    context.getString(R.string.notification_action_mark_as_read),
-                    NotificationActionService.getReadAllMessagesIntent(context, account, allRefs));
+            builder.addAction(
+                platformSupportsLockScreenNotifications()
+                    ? R.drawable.ic_action_mark_as_read_dark_vector
+                    : R.drawable.ic_action_mark_as_read_dark,
+                context.getString(R.string.notification_action_mark_as_read),
+                NotificationActionService.getReadAllMessagesIntent(context, account, allRefs));
 
             NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
             boolean showDeleteAction = deleteOption == NotificationQuickDelete.ALWAYS ||
@@ -4891,9 +4913,12 @@ public class MessagingController implements Runnable {
             if (showDeleteAction) {
                 // we need to pass the action directly to the activity, otherwise the
                 // status bar won't be pulled up and we won't see the confirmation (if used)
-                builder.addAction(R.drawable.ic_action_delete_dark,
-                        context.getString(R.string.notification_action_delete),
-                        NotificationDeleteConfirmation.getIntent(context, account, allRefs));
+                builder.addAction(
+                    platformSupportsLockScreenNotifications()
+                        ? R.drawable.ic_action_delete_dark_vector
+                        : R.drawable.ic_action_delete_dark,
+                    context.getString(R.string.notification_action_delete),
+                    NotificationDeleteConfirmation.getIntent(context, account, allRefs));
             }
         } else {
             String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
@@ -4951,6 +4976,8 @@ public class MessagingController implements Runnable {
         }
 
         NotificationSetting n = account.getNotificationSetting();
+
+        configureLockScreenNotification(builder, context, account, newMessages, unreadCount, accountDescr, sender, data.messages);
 
         configureNotification(
                 builder,
@@ -5061,6 +5088,78 @@ public class MessagingController implements Runnable {
             }
 
             builder.setLights(ledColor, ledOnMS, ledOffMS);
+        }
+    }
+
+    /**
+     * Configure lock screen notifications on platforms that support it
+     *
+     * @param builder Unlocked notification
+     * @param context Context
+     * @param account Account being notified
+     * @param newMessages Number of new messages being notified for
+     * @param unreadCount Total number of unread messages in this account
+     * @param accountDescription Formatted account name for display
+     * @param formattedSender Formatted sender name for display
+     * @param messages List of messages if notifying for multiple messages. Null otherwise.
+     */
+    private void configureLockScreenNotification(NotificationCompat.Builder builder,
+                                                 Context context,
+                                                 Account account,
+                                                 int newMessages,
+                                                 int unreadCount,
+                                                 CharSequence accountDescription,
+                                                 CharSequence formattedSender,
+                                                 List<Message> messages) {
+        if (!platformSupportsLockScreenNotifications()) {
+            return;
+        }
+
+        builder.setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        builder.setColor(account.getChipColor());
+
+        NotificationCompat.Builder publicNotification = new NotificationCompat.Builder(context);
+        publicNotification.setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        publicNotification.setColor(account.getChipColor());
+        publicNotification.setNumber(unreadCount);
+        final String title = context.getResources().getQuantityString(
+            R.plurals.notification_new_messages_title, newMessages, newMessages);
+        publicNotification.setContentTitle(title);
+
+        switch (K9.getLockScreenNotificationVisibility()) {
+            case NOTHING:
+                builder.setVisibility(NotificationCompat.VISIBILITY_SECRET);
+                break;
+            case APP_NAME:
+                // This is the Android default, but we should be explicit in case that changes in the future.
+                builder.setVisibility(NotificationCompat.VISIBILITY_PRIVATE);
+                break;
+            case SENDERS:
+                if (newMessages == 1) {
+                    publicNotification.setContentText(formattedSender);
+                } else {
+                    // Use a LinkedHashSet so that we preserve ordering (newest to oldest), but still remove duplicates
+                    Set<CharSequence> senders = new LinkedHashSet<>(NUM_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
+                    for (Message message : messages) {
+                        senders.add(getMessageSender(context, account, message));
+                        if (senders.size() == NUM_SENDERS_IN_LOCK_SCREEN_NOTIFICATION) {
+                            break;
+                        }
+                    }
+                    publicNotification.setContentText(TextUtils.join(", ", senders));
+                }
+
+                builder.setPublicVersion(publicNotification.build());
+                break;
+            case EVERYTHING:
+                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                break;
+            case MESSAGE_COUNT:
+            default:
+                publicNotification.setContentText(accountDescription);
+
+                builder.setPublicVersion(publicNotification.build());
+                break;
         }
     }
 

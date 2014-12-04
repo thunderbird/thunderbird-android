@@ -156,7 +156,9 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="clearing_account">Fiók takarítása \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">A \"<xliff:g id="account">%s</xliff:g>\" újbóli létrehozása</string>
   <string name="notification_new_title">Új levél</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Olvasatlan (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> érkezett ide: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Válasz</string>

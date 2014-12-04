@@ -23,6 +23,8 @@ import com.fsck.k9.R;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.preferences.Settings.*;
 
+import static com.fsck.k9.K9.LockScreenNotificationVisibility;
+
 public class GlobalSettings {
     public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
     public static final Map<Integer, SettingsUpgrader> UPGRADERS;
@@ -249,6 +251,9 @@ public class GlobalSettings {
         s.put("hideTimeZone", Settings.versions(
                 new V(32, new BooleanSetting(false))
             ));
+        s.put("lockScreenNotificationVisibility", Settings.versions(
+            new V(37, new EnumSetting<>(LockScreenNotificationVisibility.class, LockScreenNotificationVisibility.MESSAGE_COUNT))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

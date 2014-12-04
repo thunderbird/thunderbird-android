@@ -157,7 +157,9 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="clearing_account">Hesap temizleme \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Hesap yenileme \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Yeni posta</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> yeni mesaj</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> yeni mesaj</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Okunmadı (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages"><xliff:g id="additional_messages">%d</xliff:g> daha fazla <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Yanıtla</string>

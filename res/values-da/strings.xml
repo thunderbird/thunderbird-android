@@ -155,7 +155,9 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="clearing_account">Renser konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Genskaber konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny mail</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nye meddelelser</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nye meddelelser</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> yderligere på <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Svar</string>

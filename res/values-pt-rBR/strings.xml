@@ -156,7 +156,9 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="clearing_account">Limpando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Recriando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Novo e-mail</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> mais em <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>

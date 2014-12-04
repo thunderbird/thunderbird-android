@@ -5,10 +5,6 @@
     android:versionCode="23020"
     android:versionName="5.102">
 
-    <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="17"/>
-
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false"/>

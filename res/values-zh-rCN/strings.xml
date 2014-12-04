@@ -156,7 +156,9 @@ K-9改进的功能包括：
   <string name="clearing_account">正在清理账户“<xliff:g id="account">%s</xliff:g>”</string>
   <string name="recreating_account">正在重建账户“<xliff:g id="account">%s</xliff:g>”</string>
   <string name="notification_new_title">您有新邮件</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> 新邮件</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 新邮件</item>
+  </plurals>
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string>
   <string name="notification_additional_messages">再加载 <xliff:g id="additional_messages">%d</xliff:g> 条信息, 账户 <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">回复</string>

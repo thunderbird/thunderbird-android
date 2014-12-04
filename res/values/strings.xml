@@ -200,7 +200,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="recreating_account">Recreating account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">New mail</string>
-    <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> new messages</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> new message</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> new messages</item>
+    </plurals>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
 
@@ -338,6 +341,13 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>
     <string name="global_settings_notification_quick_delete_always">Always</string>
     <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>
+
+    <string name="global_settings_lock_screen_notification_visibility_title">Lock Screen Notifications</string>
+    <string name="global_settings_lock_screen_notification_visibility_nothing">No lock screen notifications</string>
+    <string name="global_settings_lock_screen_notification_visibility_app_name">Application name</string>
+    <string name="global_settings_lock_screen_notification_visibility_message_count">Unread message count</string>
+    <string name="global_settings_lock_screen_notification_visibility_senders">Message count and senders</string>
+    <string name="global_settings_lock_screen_notification_visibility_everything">Same as unlocked notification</string>
 
     <string name="quiet_time">Quiet Time</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>

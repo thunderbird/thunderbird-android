@@ -224,6 +224,17 @@ public class K9 extends Application {
         NEVER
     }
 
+    private static LockScreenNotificationVisibility sLockScreenNotificationVisibility =
+        LockScreenNotificationVisibility.MESSAGE_COUNT;
+
+    public enum LockScreenNotificationVisibility {
+        EVERYTHING,
+        SENDERS,
+        MESSAGE_COUNT,
+        APP_NAME,
+        NOTHING
+    }
+
     /**
      * Controls when to use the message list split view.
      */
@@ -474,6 +485,15 @@ public class K9 extends Application {
         Log.i(K9.LOG_TAG, "Registered: shutdown receiver");
     }
 
+
+    /**
+     * Save settings from our statics into the app database.
+     * <p/>
+     * If you're adding a preference here, odds are you'll need to add it to
+     * {@link com.fsck.k9.preferences.GlobalSettings}, too.
+     *
+     * @param editor Preferences to save into
+     */
     public static void save(SharedPreferences.Editor editor) {
         editor.putBoolean("enableDebugLogging", K9.DEBUG);
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
@@ -523,6 +543,7 @@ public class K9 extends Application {
 
         editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
         editor.putString("notificationQuickDelete", sNotificationQuickDelete.toString());
+        editor.putString("lockScreenNotificationVisibility", sLockScreenNotificationVisibility.toString());
 
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
@@ -675,6 +696,14 @@ public class K9 extends Application {
         }
     }
 
+    /**
+     * Load preferences into our statics.
+     *
+     * If you're adding a preference here, odds are you'll need to add it to
+     * {@link com.fsck.k9.preferences.GlobalSettings}, too.
+     *
+     * @param prefs Preferences to load
+     */
     public static void loadPrefs(Preferences prefs) {
         SharedPreferences sprefs = prefs.getPreferences();
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
@@ -743,6 +772,11 @@ public class K9 extends Application {
         String notificationQuickDelete = sprefs.getString("notificationQuickDelete", null);
         if (notificationQuickDelete != null) {
             sNotificationQuickDelete = NotificationQuickDelete.valueOf(notificationQuickDelete);
+        }
+
+        String lockScreenNotificationVisibility = sprefs.getString("lockScreenNotificationVisibility", null);
+        if(lockScreenNotificationVisibility != null) {
+            sLockScreenNotificationVisibility = LockScreenNotificationVisibility.valueOf(lockScreenNotificationVisibility);
         }
 
         String splitViewMode = sprefs.getString("splitViewMode", null);
@@ -1195,6 +1229,14 @@ public class K9 extends Application {
 
     public static void setNotificationQuickDeleteBehaviour(final NotificationQuickDelete mode) {
         sNotificationQuickDelete = mode;
+    }
+
+    public static LockScreenNotificationVisibility getLockScreenNotificationVisibility() {
+        return sLockScreenNotificationVisibility;
+    }
+
+    public static void setLockScreenNotificationVisibility(final LockScreenNotificationVisibility visibility) {
+        sLockScreenNotificationVisibility = visibility;
     }
 
     public static boolean wrapFolderNames() {
