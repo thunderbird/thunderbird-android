@@ -23,6 +23,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.security.GeneralSecurityException;
 import java.security.Security;
+import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2616,7 +2617,11 @@ public class ImapStore extends Store {
                 }
 
             } catch (SSLException e) {
-                throw new CertificateValidationException(e.getMessage(), e);
+                if (e.getCause() instanceof CertificateException) {
+                    throw new CertificateValidationException(e.getMessage(), e);
+                } else {
+                    throw e;
+                }
             } catch (GeneralSecurityException gse) {
                 throw new MessagingException(
                     "Unable to open connection to IMAP server due to security error.", gse);
