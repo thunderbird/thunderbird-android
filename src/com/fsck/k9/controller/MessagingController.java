@@ -4892,7 +4892,7 @@ public class MessagingController implements Runnable {
                 builder.setStyle(style);
 
                 builder.addAction(
-                    platformSupportsExtendedNotifications()
+                    platformSupportsLockScreenNotifications()
                         ? R.drawable.ic_action_single_message_options_dark_vector
                         : R.drawable.ic_action_single_message_options_dark,
                     context.getString(R.string.notification_action_reply),
