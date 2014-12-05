@@ -158,7 +158,9 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="clearing_account">Rimozione account \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Ricrea account \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nuova posta</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non letti (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> altri su <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Rispondi</string>

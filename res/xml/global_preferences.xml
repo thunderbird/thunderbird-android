@@ -328,6 +328,14 @@
             android:summary="@string/global_settings_notification_quick_delete_description"
             />
 
+        <ListPreference
+            android:key="lock_screen_notification_visibility"
+            android:persistent="false"
+            android:title="@string/global_settings_lock_screen_notification_visibility_title"
+            android:entries="@array/global_settings_lock_screen_notification_visibility_entries"
+            android:entryValues="@array/global_settings_lock_screen_notification_visibility_values"
+            android:dialogTitle="@string/global_settings_lock_screen_notification_visibility_title" />
+
     </PreferenceScreen>
 
     <PreferenceScreen

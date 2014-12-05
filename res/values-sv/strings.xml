@@ -158,7 +158,9 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="clearing_account">Rensar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Återskapar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny e-post</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> olästa (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> ytterligare på <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Svara</string>

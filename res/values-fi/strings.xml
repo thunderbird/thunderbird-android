@@ -159,7 +159,9 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="clearing_account">Tyhjennetään tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Luodaan uudelleen tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Uusi sähköpostiviesti</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> uutta viestiä</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> uutta viestiä</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> lukematonta (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> viestiä lisää tilillä <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Vastaa</string>

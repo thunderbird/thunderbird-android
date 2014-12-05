@@ -158,7 +158,9 @@ K-9 Mail — почтовый клиент для Android.
   <string name="clearing_account">Очистка ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Пересоздание ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Новая почта</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> новых</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> новых</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> новых (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> в <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Ответить</string>

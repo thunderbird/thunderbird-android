@@ -157,7 +157,9 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="clearing_account">Czyszczę konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Odtwarzam konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nowa wiadomość</string>
-  <string name="notification_new_messages_title">Nowych wiadomości: <xliff:g id="new_message_count">%d</xliff:g></string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other">Nowych wiadomości: <xliff:g id="new_message_count">%d</xliff:g></item>
+  </plurals>
   <string name="notification_new_one_account_fmt">Nowe: <xliff:g id="unread_message_count">%d</xliff:g> (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> więcej na <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Odpowiedz</string>
