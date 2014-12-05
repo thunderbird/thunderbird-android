@@ -347,7 +347,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_lock_screen_notification_visibility_app_name">Application name</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Unread message count</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">Message count and senders</string>
-    <string name="global_settings_lock_screen_notification_visibility_everything">Same as unlocked notification</string>
+    <string name="global_settings_lock_screen_notification_visibility_everything">Same as when screen unlocked</string>
 
     <string name="quiet_time">Quiet Time</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>
