@@ -44,6 +44,7 @@ K-9改进的功能包括：
 </p>
     ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \n使用 K-9 Mail 发送自我的Android设备。</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”将从K-9 Mail中删除。</string>
   <string name="account_recreate_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”的全部数据将从K-9 Mail中删除，但是账户设置将保留。</string>
@@ -156,9 +157,6 @@ K-9改进的功能包括：
   <string name="clearing_account">正在清理账户“<xliff:g id="account">%s</xliff:g>”</string>
   <string name="recreating_account">正在重建账户“<xliff:g id="account">%s</xliff:g>”</string>
   <string name="notification_new_title">您有新邮件</string>
-  <plurals name="notification_new_messages_title">
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 新邮件</item>
-  </plurals>
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string>
   <string name="notification_additional_messages">再加载 <xliff:g id="additional_messages">%d</xliff:g> 条信息, 账户 <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">回复</string>
@@ -284,6 +282,7 @@ K-9改进的功能包括：
   <string name="account_setup_basics_title">设置新账户</string>
   <string name="account_setup_basics_email_hint">电子邮件地址</string>
   <string name="account_setup_basics_password_hint">密码</string>
+  <string name="account_setup_basics_show_password">显示密码</string>
   <string name="account_setup_basics_manual_setup_action">手工设置</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">正在获取账户信息\u2026</string>
@@ -303,9 +302,11 @@ K-9改进的功能包括：
   <string name="account_setup_auth_type_normal_password">普通密码</string>
   <string name="account_setup_auth_type_insecure_password">非安全传输的密码</string>
   <string name="account_setup_auth_type_encrypted_password">加密的密码</string>
+  <string name="account_setup_auth_type_tls_client_certificate">客户端证书</string>
   <string name="account_setup_incoming_title">收件服务器设置</string>
   <string name="account_setup_incoming_username_label">用户名</string>
   <string name="account_setup_incoming_password_label">密码</string>
+  <string name="account_setup_incoming_client_certificate_label">客户端证书</string>
   <string name="account_setup_incoming_pop_server_label">POP3服务器</string>
   <string name="account_setup_incoming_imap_server_label">IMAP服务器</string>
   <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange)服务器</string>
@@ -315,6 +316,7 @@ K-9改进的功能包括：
   <string name="account_setup_incoming_security_none_label">无</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" 对于 \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" 无效</string>
   <string name="account_setup_incoming_delete_policy_label">当我删除邮件时</string>
   <string name="account_setup_incoming_delete_policy_never_label">不要从服务器上删除</string>
   <string name="account_setup_incoming_delete_policy_delete_label">立刻从服务器上删除</string>
@@ -354,6 +356,7 @@ K-9改进的功能包括：
   <string name="account_setup_outgoing_username_label">用户名</string>
   <string name="account_setup_outgoing_password_label">密码</string>
   <string name="account_setup_outgoing_authentication_label">身份验证方法</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" 对于 \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" 无效</string>
   <string name="account_setup_bad_uri">无效的设置：<xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">账户选项</string>
   <string name="compact_action">压缩</string>
@@ -401,6 +404,9 @@ K-9改进的功能包括：
   <string name="account_setup_options_mail_display_count_all">所有邮件</string>
   <string name="move_copy_cannot_copy_unsynced_message">没有与服务器同步的邮件无法进行拷贝或移动</string>
   <string name="account_setup_failed_dlg_title">无法完成设置</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">用户名或密码不正确。\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">服务器提供了一个无效的SSL证书。有时候这是由于不正确的服务器配置导致的；有时候这也可能是由于某人正在试图攻击您或者您的邮件服务器。如果您不能确定到底是什么原因，请单击”拒绝“，并联系您的邮件服务器管理人员。\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">无法连接到服务器。\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">编辑详细信息</string>
   <string name="account_setup_failed_dlg_continue_action">继续</string>
   <string name="account_settings_push_advanced_title">高级</string>
@@ -408,6 +414,12 @@ K-9改进的功能包括：
   <string name="account_settings_default_label">默认账户</string>
   <string name="account_settings_default_summary">默认使用这个账户发送邮件</string>
   <string name="account_settings_notify_label">新邮件通知</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">提醒文件夹</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">仅1级文件夹</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1级和2级文件夹</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">除了2级以外的所有文件夹</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">无</string>
   <string name="account_settings_notify_sync_label">同步通知</string>
   <string name="account_settings_email_label">您的电子邮件地址</string>
   <string name="account_settings_notify_summary">新邮件到达时在通知栏中显示通知</string>
@@ -446,6 +458,7 @@ K-9改进的功能包括：
   <string name="account_settings_quote_prefix_label">引用文本前缀</string>
   <string name="account_settings_crypto">加密</string>
   <string name="account_settings_crypto_app">OpenPGP 提供者</string>
+  <string name="account_settings_no_openpgp_provider_installed">未安装OpenPGP提供程序</string>
   <string name="account_settings_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_settings_storage_title">存储</string>
   <string name="account_settings_color_label">账户颜色</string>
@@ -523,6 +536,11 @@ K-9改进的功能包括：
   <string name="folder_settings_folder_push_mode_first_class">初级</string>
   <string name="folder_settings_folder_push_mode_second_class">次级</string>
   <string name="folder_settings_folder_push_mode_inherited">使用与同步级别相同的级别</string>
+  <string name="folder_settings_folder_notify_mode_label">文件夹提醒级别</string>
+  <string name="folder_settings_folder_notify_mode_normal">无</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1级</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2级</string>
+  <string name="folder_settings_folder_notify_mode_inherited">与推送级别相同</string>
   <string name="account_settings_incoming_label">收件服务器</string>
   <string name="account_settings_incoming_summary">配置收件服务器</string>
   <string name="account_settings_outgoing_label">发件服务器</string>
@@ -604,6 +622,8 @@ K-9改进的功能包括：
   <string name="account_setup_failed_dlg_invalid_certificate_title">无法识别的证书信息</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
+  <string name="message_list_help_key">Del (或者 D) - 删除\nR - 回复\nA - 回复所有人\nC - 编写新消息\nF - 转发\nM - 移动\nV - 归档\nY - 复制\nZ - 标记为已读/未读\nG - 加星标\nO - 排序类别\nI - 排序顺序\nQ - 返回文件夹\nS - 选择/取消选择\nJ 或者 P - 上一条消息\nK 或者 N - 下一条消息</string>
+  <string name="folder_list_help_key">1 - 仅显示1级文件夹\n2 - 显示1级和2级文件夹\n3 - 显示除2级以外的所有文件夹\n4 - 显示所有文件夹\nQ - 返回帐户\nS - 编辑帐户设置</string>
   <string name="folder_list_filter_hint">文件夹名字里包含</string>
   <string name="folder_list_display_mode_label">文件夹</string>
   <string name="folder_list_display_mode_all">显示全部文件夹</string>
@@ -857,6 +877,7 @@ K-9改进的功能包括：
   <string name="fetching_attachment_dialog_title_send">消息正在发送</string>
   <string name="fetching_attachment_dialog_title_save">正在保存草稿</string>
   <string name="fetching_attachment_dialog_message">正在获取附件…</string>
+  <string name="auth_external_error">无法认证。服务器未公告SASL EXTERNAL。这可能是由于客户端证书有问题（已过期，或者未知的认证机构），或者是由于其它的配置问题。</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">正在解密/验证…</string>
   <string name="openpgp_successful_decryption">解密成功</string>
@@ -872,4 +893,10 @@ K-9改进的功能包括：
   <string name="openpgp_error">OpenPGP 错误:</string>
   <string name="openpgp_user_id">用户标识</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">使用客户端证书</string>
+  <string name="client_certificate_spinner_empty">无客户端证书</string>
+  <string name="client_certificate_spinner_delete">移客户端证书选择</string>
+  <string name="client_certificate_retrieval_failure">无法获取别名 \"<xliff:g id="alias">%s</xliff:g>\" 的客户端证书</string>
+  <string name="client_certificate_advanced_options">高级选项</string>
+  <string name="client_certificate_expired">客户端证书 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 已经过期，或者尚未开始生效。 (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

@@ -45,6 +45,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
 </p>
     ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \nVerstuurd vanaf mijn Android apparaat met K-9 Mail. Excuseer mijn beknoptheid.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alle data voor \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail, maar account instellingen blijven behouden.</string>
@@ -157,9 +158,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="clearing_account">Account \"<xliff:g id="account">%s</xliff:g>\" wissen</string>
   <string name="recreating_account">Account \"<xliff:g id="account">%s</xliff:g>\" opnieuw instellen</string>
   <string name="notification_new_title">Nieuwe mail</string>
-  <plurals name="notification_new_messages_title">
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nieuwe berichten</item>
-  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ongelezen (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> meer op <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Antwoorden</string>
@@ -263,9 +261,12 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="global_settings_messageview_show_next_summary">Standaard volgend bericht laten zien na verwijderen</string>
   <string name="global_settings_confirm_actions_title">Bevestig acties</string>
   <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoert</string>
+  <string name="global_settings_confirm_action_delete">Verwijder</string>
   <string name="global_settings_confirm_action_delete_starred">Gemarkeerd verwijderen (in bericht-view)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Verwijder (van notificaties)</string>
+  <string name="global_settings_privacy_hide_useragent">Verwijder K-9 User-Agent van de mail headers</string>
+  <string name="global_settings_privacy_hide_timezone">Gebruik UT als tijdzone in mail headers</string>
   <string name="global_settings_notification_hide_subject_title">Verberg onderwerp in notificaties</string>
   <string name="global_settings_notification_hide_subject_never">Nooit</string>
   <string name="global_settings_notification_hide_subject_when_locked">Als toestel gelocked is</string>
@@ -282,6 +283,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_basics_title">Een nieuwe account instellen</string>
   <string name="account_setup_basics_email_hint">E-mailadres</string>
   <string name="account_setup_basics_password_hint">Wachtwoord</string>
+  <string name="account_setup_basics_show_password">Toon wachtwoord</string>
   <string name="account_setup_basics_manual_setup_action">Handmatige setup</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Ophalen account informatie\u2026</string>
@@ -301,9 +303,11 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_auth_type_normal_password">Normaal wachtwoord</string>
   <string name="account_setup_auth_type_insecure_password">Wachtwoord, onveilig verzonden</string>
   <string name="account_setup_auth_type_encrypted_password">Versleuteld wachtwoord</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Cliënt certificaat</string>
   <string name="account_setup_incoming_title">Inkomende server instellingen</string>
   <string name="account_setup_incoming_username_label">Gebruikersnaam</string>
   <string name="account_setup_incoming_password_label">Wachtwoord</string>
+  <string name="account_setup_incoming_client_certificate_label">Cliënt certificaat</string>
   <string name="account_setup_incoming_pop_server_label">POP3 server</string>
   <string name="account_setup_incoming_imap_server_label">IMAP server</string>
   <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange) server</string>
@@ -313,6 +317,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_incoming_security_none_label">Geen</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" is niet geldig met \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_incoming_delete_policy_label">Wanneer ik een bericht verwijder</string>
   <string name="account_setup_incoming_delete_policy_never_label">Verwijder niet van server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Verwijder van server</string>
@@ -352,6 +357,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_outgoing_username_label">Gebruikersnaam</string>
   <string name="account_setup_outgoing_password_label">Wachtwoord</string>
   <string name="account_setup_outgoing_authentication_label">Authenticatie type</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" is niet geldig met \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Ongeldige setup: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Account opties</string>
   <string name="compact_action">Compact</string>
@@ -399,6 +405,9 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_options_mail_display_count_all">alle berichten</string>
   <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen omdat deze niet gesynchroniseerd is met de server</string>
   <string name="account_setup_failed_dlg_title">Setup kon niet afronden</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">De server presenteerde een ongeldig SSL certificaat. Dit kan komen door een verkeerd geconfigureerde server. Dit kan ook komen doordat iemand U of Uw mailserver aan probeert te vallen. Als U niet zeker weet wat er aan de hand is klik dan op Reject en neem contact op met de beheerder van Uw mailserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding met server maken.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Aanpassen details</string>
   <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
   <string name="account_settings_push_advanced_title">Geavanceerd</string>
@@ -406,6 +415,12 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_settings_default_label">Standaard account</string>
   <string name="account_settings_default_summary">Standaard mail verzenden vanaf deze account</string>
   <string name="account_settings_notify_label">Nieuwe mail notificatie</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Notificatie mappen</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Alles</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Alleen 1e klas mappen</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1e en 2e klas mappen</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Alles behalve 2e klas mappen</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Geen</string>
   <string name="account_settings_notify_sync_label">Sync notificatie</string>
   <string name="account_settings_email_label">Je e-mailadres</string>
   <string name="account_settings_notify_summary">Notificatie in statusbalk wanneer nieuwe mail binnenkomt</string>
@@ -444,6 +459,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_settings_quote_prefix_label">Quote voorvoegsel</string>
   <string name="account_settings_crypto">Cryptografie</string>
   <string name="account_settings_crypto_app">OpenPGP Provider</string>
+  <string name="account_settings_no_openpgp_provider_installed">Geen OpenPGP provider geïnstalleerd</string>
   <string name="account_settings_mail_check_frequency_label">Mappen poll controleer frequentie</string>
   <string name="account_settings_storage_title">Opslag</string>
   <string name="account_settings_color_label">Account kleur</string>
@@ -521,6 +537,11 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="folder_settings_folder_push_mode_first_class">1e klasse</string>
   <string name="folder_settings_folder_push_mode_second_class">2e klasse</string>
   <string name="folder_settings_folder_push_mode_inherited">Zelfde als sync klasse</string>
+  <string name="folder_settings_folder_notify_mode_label">Map notificatie klas</string>
+  <string name="folder_settings_folder_notify_mode_normal">Geen</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1e klas</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2e klas</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Zelfde als push klas</string>
   <string name="account_settings_incoming_label">Inkomende server</string>
   <string name="account_settings_incoming_summary">Instellen van de inkomende mail server</string>
   <string name="account_settings_outgoing_label">Uitgaande server</string>
@@ -602,6 +623,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_setup_failed_dlg_invalid_certificate_title">Onbekend Certificaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
+  <string name="message_list_help_key">Del (or D) - Verwijder\nR - Beantwoorden\nA - Alles Beantwoorden\nC - Opstellen\nF - Doorsturen\nM - Verplaatsen\nV - Archiveren\nY - Kopie\nZ - Markeer (niet)gelezen\nG - Ster\nO - Sorteer type\nI - Sorteer volgorde\nQ - Terug naar mappen\nS - Selecteer/deselecteer\nJ or P - Vorig bericht\nK or N - Volgende Bericht</string>
+  <string name="folder_list_help_key">1 - Laat alleen 1e klas mappen zien\n2 - Laat 1e en 2e klas mappen zien\n3 - Laat alles zien behalve 2e klas mappen\n4 - Laat alle mappen zien\nQ - Terug naar Accounts\nS - Aanpassen Account Instellingen</string>
   <string name="folder_list_filter_hint">map naam bevat</string>
   <string name="folder_list_display_mode_label">Mappen</string>
   <string name="folder_list_display_mode_all">Laat alle mappen zien</string>
@@ -694,6 +717,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="font_size_message_view_subject">Bericht onderwerp</string>
   <string name="font_size_message_view_date">Bericht tijd en datum</string>
   <string name="font_size_message_view_content">Bericht inhoud</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Bericht opstellen</string>
   <string name="font_size_message_compose_input">Tekst input velden</string>
   <string name="font_size_default">Standaard</string>
@@ -858,8 +883,20 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="fetching_attachment_dialog_title_send">Bericht wordt verstuurd</string>
   <string name="fetching_attachment_dialog_title_save">Concept wordt opgeslagen</string>
   <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
+  <string name="auth_external_error">Kan niet authenticeren. De server ondersteunt geen SASL EXTERNAL. Dit kan komen door een probleem met het client certificaat (verlopen of onbekende CA) of een ander configuratieprobleem.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decrypting_verifying">Ontsleutelen/verificeren…</string>
+  <string name="openpgp_successful_decryption">Ontsleutelen succesvol</string>
+  <string name="openpgp_signature_valid_certified">Geldige handtekening (gecertificeerd)</string>
+  <string name="openpgp_signature_valid_uncertified">Geldige handtekening ongecertificeerd</string>
+  <string name="openpgp_signature_unknown">Onbekende ondertekenaar</string>
+  <string name="openpgp_signature_invalid">Ongeldige pgp handtekening</string>
+  <string name="openpgp_signature_unknown_text">Geen publieke sleutel voor deze handtekening</string>
+  <string name="openpgp_get_key">Zoek de missende sleutel</string>
   <string name="openpgp_error">OpenPGP Fout:</string>
   <string name="openpgp_user_id">Gebruikers-id</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Gebruik cliënt certificaat</string>
+  <string name="client_certificate_spinner_empty">Geen cliënt certificaat</string>
+  <string name="client_certificate_advanced_options">Geavanceerde opties</string>
 </resources>

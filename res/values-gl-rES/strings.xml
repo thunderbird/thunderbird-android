@@ -156,9 +156,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="clearing_account">A limpar a conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Volvendo crear a conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Correo novo</string>
-  <plurals name="notification_new_messages_title">
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> mensaxes novas</item>
-  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> sen ler (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> máis en <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>

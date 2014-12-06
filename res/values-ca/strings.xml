@@ -158,9 +158,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="clearing_account">S\'està netejant el compte \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">S\'està creant un compte \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nou correu</string>
-  <plurals name="notification_new_messages_title">
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> missatges nous</item>
-  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> no llegit(s) (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">i <xliff:g id="additional_messages">%d</xliff:g> més a <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Respon</string>

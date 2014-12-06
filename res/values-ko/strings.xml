@@ -156,9 +156,6 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="clearing_account">계정 비우기 \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">계정 재생성 \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">새 메일</string>
-  <plurals name="notification_new_messages_title">
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 통의 새 메일</item>
-  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 통의 읽지 않은 메일 (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> 통의 메일 추가됨 (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_action_reply">답장</string>

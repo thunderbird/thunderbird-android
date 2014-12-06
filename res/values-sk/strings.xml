@@ -158,9 +158,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="clearing_account">Čistenie účtu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Obnovovanie účtu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nová správa</string>
-  <plurals name="notification_new_messages_title">
-    <item quantity="other">Počet nových správ: <xliff:g id="new_message_count">%d</xliff:g></item>
-  </plurals>
   <string name="notification_new_one_account_fmt">Počet neprečítaných správ: <xliff:g id="unread_message_count">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_additional_messages">+ ďalších <xliff:g id="additional_messages">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Odpovedať</string>
