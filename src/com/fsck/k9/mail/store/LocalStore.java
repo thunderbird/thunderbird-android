@@ -4046,7 +4046,14 @@ public class LocalStore extends Store implements Serializable {
                 	Log.i("PGP/MIME Attachments", "ID is: " + mUid);
                 	//get the content from Attachment database
                 	//Cursor contents = db.rawQuery("SELECT store_data FROM attachments WHERE message_id=?", args);
-                	Cursor contents = db.rawQuery("SELECT store_data, content_uri, name, mime_type, content_id, content_disposition FROM attachments WHERE message_id=?", args);
+                	//get the correct message id
+                	Cursor contents = db.rawQuery("SELECT id FROM messages where uid=?", args);
+                	contents.moveToFirst();
+                	String messageid = contents.getInt(0) + "";
+                	Log.i("PGP/MIME Attachments", "Messageid is: " + messageid);
+                	String[] args2 = {messageid};
+                	//get the correct attachments;                	
+                	contents = db.rawQuery("SELECT store_data, content_uri, name, mime_type, content_id, content_disposition FROM attachments WHERE message_id=?", args2);
                 	Log.i("PGP/MIME Attachments", "columns: " + contents.getColumnCount()+ " rows: " + contents.getCount());
                 	String attachmentUri ="";
                 	//the second attachment is the encrypted mail
@@ -4058,6 +4065,7 @@ public class LocalStore extends Store implements Serializable {
                  return attachmentUri;                           
                 }
             });
+            
             
             String returnText = "no text";
             
