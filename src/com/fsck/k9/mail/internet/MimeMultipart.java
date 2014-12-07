@@ -11,6 +11,7 @@ import java.util.Random;
 
 public class MimeMultipart extends Multipart {
     private String mPreamble;
+    private byte[] mEpilogue;
 
     private String mContentType;
 
@@ -53,6 +54,10 @@ public class MimeMultipart extends Multipart {
         this.mPreamble = preamble;
     }
 
+    public void setEpilogue(byte[] epilogue) {
+        mEpilogue = epilogue;
+    }
+
     @Override
     public String getContentType() {
         return mContentType;
@@ -90,6 +95,9 @@ public class MimeMultipart extends Multipart {
         writer.write(mBoundary);
         writer.write("--\r\n");
         writer.flush();
+        if (mEpilogue != null) {
+            out.write(mEpilogue);
+        }
     }
 
     @Override

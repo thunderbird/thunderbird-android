@@ -2,6 +2,7 @@
 package com.fsck.k9.mail.internet;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,6 +15,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
 import org.apache.james.mime4j.field.DefaultFieldParser;
@@ -575,6 +577,10 @@ public class MimeMessage extends Message {
 
         @Override
         public void epilogue(InputStream is) throws IOException {
+            expect(MimeMultipart.class);
+            ByteArrayOutputStream epilogue = new ByteArrayOutputStream();
+            IOUtils.copy(is, epilogue);
+            ((MimeMultipart) stack.peek()).setEpilogue(epilogue.toByteArray());
         }
 
         @Override

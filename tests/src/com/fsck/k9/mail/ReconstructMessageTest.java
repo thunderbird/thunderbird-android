@@ -42,7 +42,8 @@ public class ReconstructMessageTest extends AndroidTestCase {
                 "VGhpcyBpcyBhIHRl\r\n" +
                 "c3QgbWVzc2FnZQ==\r\n" +
                 "\r\n" +
-                "------Boundary--\r\n";
+                "------Boundary--\r\n" +
+                "Hi, I'm the epilogue";
 
         BinaryTempFileBody.setTempDirectory(getContext().getCacheDir());
 
