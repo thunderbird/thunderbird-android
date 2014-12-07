@@ -1446,6 +1446,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 String text = mPgpData.getEncryptedData();
                 body = new TextBody(text);
             } else {
+            	MimeMultipart encrypted = new MimeMultipart();
+            	encrypted.addBodyPart(new MimeBodyPart(buildText(isDraft)));
+            	
                 MimeMultipart mp = createPGPMIMEMessage();
                 message.setBody(mp);
             }
@@ -1882,7 +1885,32 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (mPgpData.getEncryptedData() == null) {
                     String text = buildText(false).getText();
                     mPreventDraftSaving = true;
-                    crypto.encrypt(this, text, mPgpData);
+                    boolean pgpInline = false;
+                    if (pgpInline) {
+                    	crypto.encrypt(this, text, mPgpData);
+                    } else {
+                    	try {
+                    		MimeMessage mm = new MimeMessage();
+							MimeMultipart mp = new MimeMultipart();
+							MimeBodyPart bp = new MimeBodyPart();
+							TextBody tb = new TextBody(text);
+							bp.setBody(tb);
+							mp.addBodyPart(bp);
+							mm.setBody(mp);
+							
+							ByteArrayOutputStream out = new ByteArrayOutputStream();
+							mm.writeTo(out);
+							crypto.encrypt(this, out.toString(), mPgpData);
+							out.close();
+						} catch (MessagingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                    	
+                    }
                     return;
                 }
             }
