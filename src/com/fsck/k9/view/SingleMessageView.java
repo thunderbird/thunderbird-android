@@ -506,6 +506,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             MessagingController controller, MessagingListener listener) throws MessagingException {
         resetView();
 
+        Log.i("PGP/MIME Replace", "setMessage in SingleMessageView");
+        
         String text = null;
         if (pgpData != null) {
             text = pgpData.getDecryptedData();
@@ -573,9 +575,15 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
         if (text != null) {
             loadBodyFromText(text);
+            Log.i("PGP/MIME Replace", "call in SingleMessageView");
+            if((pgpData.getDecryptedData()!=null) && (mCryptoView.pIsMime())){
+            	message.replaceBody(pgpData.getDecryptedData());
+            	text = message.getTextForDisplay();
+            }
             updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
             mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
                     pgpData.getSignatureResult(), message);
+
         } else {
             showStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
@@ -592,7 +600,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     }
 
     public void updateCryptoLayout(CryptoProvider cp, PgpData pgpData, Message message) {
-        mCryptoView.updateLayout(cp, pgpData, message);
+        Log.i("PGP/MIME Replace", "updateCryptoLayout in SingleMessageView");
+    	mCryptoView.updateLayout(cp, pgpData, message);
     }
 
     public void showAttachments(boolean show) {

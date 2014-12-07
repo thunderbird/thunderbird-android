@@ -4199,6 +4199,22 @@ public class LocalStore extends Store implements Serializable {
 			return text;
 		}
 
+		/**
+		 * PGP/MIME use to replace the original mail with the decrypted one
+		 * @param text
+		 * @throws MessagingException
+		 */
+		public void replaceBody(String text) throws MessagingException{
+			
+			MimeMultipart mp = new MimeMultipart();
+			MimeBodyPart bp = new MimeBodyPart();
+			TextBody tb = new TextBody(text);
+			bp.setBody(tb);
+			mp.addBodyPart(bp);
+			this.setBody(mp);
+		}
+		
+		
 		/*
 		 * Custom version of writeTo that updates the MIME message based on
 		 * localMessage changes.

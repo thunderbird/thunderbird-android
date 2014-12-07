@@ -26,10 +26,16 @@ public class MessageCryptoView extends LinearLayout {
     private TextView mCryptoSignatureUserId = null;
     private TextView mCryptoSignatureUserIdRest = null;
     private String mPGPMIMEText = null;
+    private boolean isMime = false;  
     
     //workaround for pgp/mime
     public void setmPGPMIMEText(String text){
     	this.mPGPMIMEText=text;
+    }
+    
+  //workaround for pgp/mime
+    public boolean pIsMime(){
+    	return isMime;
     }
 
     public MessageCryptoView(Context context, AttributeSet attrs) {
@@ -61,6 +67,16 @@ public class MessageCryptoView extends LinearLayout {
      * they should be visible.
      */
     public void updateLayout(final CryptoProvider cryptoProvider, final PgpData pgpData, final Message message) {
+
+    	if(pgpData.getDecryptedData()!=null){
+            Log.i("PGP/MIME Replace", "Here°_° ... " + pgpData.getDecryptedData());
+    	}
+    	else{
+
+            Log.i("PGP/MIME Replace", "not yet");
+    	}
+    	
+        Log.i("PGP/MIME Replace", "updateLAyout in MessageCryptoView");
         if (pgpData.getSignatureKeyId() != 0) {
             mCryptoSignatureUserIdRest.setText(
                 mContext.getString(R.string.key_id, Long.toHexString(pgpData.getSignatureKeyId() & 0xffffffffL)));
@@ -96,6 +112,7 @@ public class MessageCryptoView extends LinearLayout {
             } else {
                 // no need to show this after decryption/verification
                 mDecryptButton.setVisibility(View.GONE);
+                
             }
             return;
         }
@@ -143,6 +160,7 @@ public class MessageCryptoView extends LinearLayout {
                 // check for PGP/MIME encryption
                 Part pgp = MimeUtility.findFirstPartByMimeType(message, "application/pgp-encrypted");
                 if (pgp != null) {
+                	isMime=true;
                 	//somehow the error message is not displayed when opening an PGP/MIME mail
                     Toast.makeText(mContext, R.string.pgp_mime_unsupported, Toast.LENGTH_LONG).show();
                     this.setVisibility(View.VISIBLE);
