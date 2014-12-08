@@ -58,6 +58,9 @@ public class AccountSettings {
         s.put("cryptoAutoSignature", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
+        s.put("cryptoPGPMime", Settings.versions(
+                new V(36, new BooleanSetting(false))
+            ));
         s.put("defaultQuotedTextShown", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
             ));
