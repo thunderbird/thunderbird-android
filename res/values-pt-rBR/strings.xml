@@ -156,7 +156,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="clearing_account">Limpando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Recriando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Novo e-mail</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> mais em <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
@@ -282,6 +281,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_setup_basics_title">Configurar uma nova conta</string>
   <string name="account_setup_basics_email_hint">Endereço de e-mail</string>
   <string name="account_setup_basics_password_hint">Senha</string>
+  <string name="account_setup_basics_show_password">Exibir senha</string>
   <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Recuperando informações de conta\u2026</string>
@@ -399,6 +399,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_setup_options_mail_display_count_all">Todas as Mensagens</string>
   <string name="move_copy_cannot_copy_unsynced_message">Não é possível copiar ou mover uma mensagem que não foi sincronizada com o servidor</string>
   <string name="account_setup_failed_dlg_title">A configuração não pode ser concluída</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Usuário ou senha incorretos.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Não é possível conectar-se ao servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalhes</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avançado</string>
@@ -406,6 +408,9 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_settings_default_label">Conta padrão</string>
   <string name="account_settings_default_summary">Usar esta conta como padrão para envio de e-mail</string>
   <string name="account_settings_notify_label">Novas notificações de e-mail</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Pastas de Notificações</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Tudo</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Nenhum</string>
   <string name="account_settings_notify_sync_label">Notificações de sincronização</string>
   <string name="account_settings_email_label">Seu endereço de e-mail</string>
   <string name="account_settings_notify_summary">Mostrar na barra de status quando um e-mail chegar</string>

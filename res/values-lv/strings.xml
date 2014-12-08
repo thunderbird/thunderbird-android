@@ -160,7 +160,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="clearing_account">Iztukšot kontu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Atjaunot kontu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Jauna vēstule</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> jaunas vēstules</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nelasītas (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> vairāk <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Atbildēt</string>
@@ -418,6 +417,12 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_default_label">Konts pēc noklusējuma</string>
   <string name="account_settings_default_summary">Sūtīt pastu no šī konta pēc noklusējuma</string>
   <string name="account_settings_notify_label">Jauna pasta paziņojumi</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Paziņojumu mapes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Visu</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Tikai 1. kategorijas mapes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. un 2. kategorijas mapes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Visu, izņemt 2. kategorijas mapes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Nevienu</string>
   <string name="account_settings_notify_sync_label">Sinhronizācijas paziņojumi</string>
   <string name="account_settings_email_label">Jūsu e-pasta adrese</string>
   <string name="account_settings_notify_summary">Paziņot statusa joslā, kad saņemts jauns pasts</string>
@@ -533,6 +538,11 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="folder_settings_folder_push_mode_first_class">1. kategorija</string>
   <string name="folder_settings_folder_push_mode_second_class">2. kategorija</string>
   <string name="folder_settings_folder_push_mode_inherited">Tāda pati kā sinhronizēšanas kategorija</string>
+  <string name="folder_settings_folder_notify_mode_label">Mapes paziņojumu kategorija</string>
+  <string name="folder_settings_folder_notify_mode_normal">Nevienu</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1. kategorija</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2. kategorija</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Tāda pati, kā lejupielādēšanas kategorija</string>
   <string name="account_settings_incoming_label">Ienākošais serveris</string>
   <string name="account_settings_incoming_summary">Iestatīt ienākošā pasta serveri</string>
   <string name="account_settings_outgoing_label">Izejošais serveris</string>

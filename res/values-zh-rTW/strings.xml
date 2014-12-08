@@ -128,7 +128,6 @@
   <string name="clearing_account">正在清理帳戶「<xliff:g id="account">%s</xliff:g>」</string>
   <string name="recreating_account">正在重建帳戶「<xliff:g id="account">%s</xliff:g>」</string>
   <string name="notification_new_title">您有新郵件</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> 新訊息</string>
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未讀郵件（<xliff:g id="account">%s</xliff:g>）</string>
   <string name="notification_additional_messages">+ 來自<xliff:g id="account">%s</xliff:g>已超過<xliff:g id="additional_messages">%d</xliff:g>則訊息 </string>
   <string name="notification_action_reply">回覆</string>

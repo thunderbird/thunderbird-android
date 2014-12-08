@@ -157,7 +157,6 @@
   <string name="clearing_account">Καθαρισμός λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
   <string name="recreating_account">Ανακατασκευή λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
   <string name="notification_new_title">Νέο μήνυμα</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> νέα μηνύματα</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> μη αναγνωσμένα (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> περισσότερα στον <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Απάντηση</string>

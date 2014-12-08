@@ -156,7 +156,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="clearing_account">Очищення скриньки \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Відновлення облікового запису\"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Нова пошта</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> нові повідомлення</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Непрочитане (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> більше на <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Відповісти</string>
@@ -259,6 +258,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="global_settings_messageview_show_next_summary">За замовчуванням показувати наступне повідомлення після вилучення</string>
   <string name="global_settings_confirm_actions_title">Підтвердження дій</string>
   <string name="global_settings_confirm_actions_summary">Показати діалогове вікно щоразу, коли ви виконуєте вибрані дії</string>
+  <string name="global_settings_confirm_action_delete">Видалити</string>
   <string name="global_settings_confirm_action_delete_starred">Вилучити позначені зірочкою (лише перегляд повідомлень)</string>
   <string name="global_settings_confirm_action_spam">Спам</string>
   <string name="global_settings_confirm_action_delete_notif">Видалити (з сповіщення)</string>
@@ -384,6 +384,9 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_setup_options_mail_display_count_250">250 повідомлень</string>
   <string name="account_setup_options_mail_display_count_500">500 повідомлень</string>
   <string name="account_setup_options_mail_display_count_1000">1000 повідомлень</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 повідомлень</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 повідомлень</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 повідомлень</string>
   <string name="account_setup_options_mail_display_count_all">усі повідомлення</string>
   <string name="move_copy_cannot_copy_unsynced_message">Не можна копіювати чи переміщувати повідомлення, яке не синхронізоване з сервером</string>
   <string name="account_setup_failed_dlg_title">Налаштування не завершено</string>

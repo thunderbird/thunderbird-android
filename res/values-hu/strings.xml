@@ -45,6 +45,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
 </p>
     ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \nEzt a levelet mobiltelefonról küldtem, K-9 Mail-el. Elnézést a levél rövidségéért és az esetleges hibákért.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A \"<xliff:g id="account">%s</xliff:g>\" fiók törölve a K9 Mail-ból.</string>
   <string name="account_recreate_dlg_instructions_fmt">Az összes üzenet, melléklet, mappa és beállításai törlődni fognak a \"<xliff:g id="account">%s</xliff:g>\" fiókból. A fiók beállításai megmaradnak.</string>
@@ -98,6 +99,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="forward_action">Továbbítás</string>
   <string name="move_action">Áthelyez</string>
   <string name="single_message_options_action">Küldés…</string>
+  <string name="refile_action">Újratöltés…</string>
   <string name="done_action">Rendben</string>
   <string name="discard_action">Mégsem</string>
   <string name="save_draft_action">Piszkozat</string>
@@ -156,7 +158,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="clearing_account">Fiók takarítása \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">A \"<xliff:g id="account">%s</xliff:g>\" újbóli létrehozása</string>
   <string name="notification_new_title">Új levél</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Olvasatlan (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> érkezett ide: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Válasz</string>
@@ -202,6 +203,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="message_compose_quote_header_to">Címzett:</string>
   <string name="message_compose_quote_header_cc">Másolat:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> írta:</string>
+  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> írta:</string>
   <string name="message_compose_error_no_recipients">Legalább egy címzetted adjon meg.</string>
   <string name="error_contact_address_not_found">E-mail cím nem található.</string>
   <string name="message_compose_attachments_skipped_toast">Néhány mellékletet nem lehet továbbítani, mert nem lettek letöltve.</string>
@@ -240,6 +242,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="global_settings_preview_lines_label">Előnézeti sorok száma</string>
   <string name="global_settings_show_correspondent_names_label">Nevek mutatása</string>
   <string name="global_settings_show_correspondent_names_summary">Ha a címtárban szerepel az email cím, a hozzá tartozó név megjelenítése</string>
+  <string name="global_settings_sender_above_subject_label">Küldő a tárgy felett</string>
   <string name="global_settings_show_contact_name_label">Névjegyek mutatása</string>
   <string name="global_settings_show_contact_name_summary">Használja a címzettek nevét ha címtárban szerepel</string>
   <string name="global_settings_registered_name_color_label">Névjegyek színe</string>
@@ -257,16 +260,21 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="global_settings_messageview_show_next_summary">A törlés után alapértelmezetten a következő üzenetet mutatja</string>
   <string name="global_settings_confirm_actions_title">Parancsok megerősítése</string>
   <string name="global_settings_confirm_actions_summary">Üzenet megjelenítése a parancs végrehatása előtt</string>
+  <string name="global_settings_confirm_action_delete">Törlés</string>
   <string name="global_settings_confirm_action_delete_starred">Csillagozott törlése (csak olvasható üzenet)</string>
   <string name="global_settings_confirm_action_spam">Levélszemét</string>
   <string name="global_settings_confirm_action_delete_notif">Törlés (az értesítések közül)</string>
+  <string name="global_settings_privacy_hide_useragent">K-9 Ügynök elrejtése a levél fejlécénél</string>
+  <string name="global_settings_privacy_hide_timezone">UTC időzóna használata a levelek fejlécében</string>
   <string name="global_settings_notification_hide_subject_title">Tárgy elrejtése az értesítésekben</string>
   <string name="global_settings_notification_hide_subject_never">Soha</string>
   <string name="global_settings_notification_hide_subject_when_locked">Ha a készülék le van zárva</string>
   <string name="global_settings_notification_hide_subject_always">Mindig</string>
   <string name="global_settings_notification_quick_delete_title">\'Törlés\' gomb megjelenítése</string>
   <string name="global_settings_notification_quick_delete_never">Soha</string>
+  <string name="global_settings_notification_quick_delete_when_single_msg">Egyszerű értesítés új levélnél</string>
   <string name="global_settings_notification_quick_delete_always">Mindig</string>
+  <string name="global_settings_notification_quick_delete_description">Gomb mutatása az értesítések között a gyors üzenettörlés engedélyezéséhez</string>
   <string name="quiet_time">Csendes mód</string>
   <string name="quiet_time_description">Éjszakára kikapcsolja a jelzőhangokat, rezgést, villogást</string>
   <string name="quiet_time_starts">Csendes mód kezdete</string>
@@ -274,6 +282,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_setup_basics_title">Új fiók létrehozása</string>
   <string name="account_setup_basics_email_hint">E-mail cím</string>
   <string name="account_setup_basics_password_hint">Jelszó</string>
+  <string name="account_setup_basics_show_password">Jelszó mutatása</string>
   <string name="account_setup_basics_manual_setup_action">Kézi beállítás</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Fiók adatainak ellenőrzése…</string>
@@ -290,9 +299,14 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+  <string name="account_setup_auth_type_normal_password">Egyszerű jelszó</string>
+  <string name="account_setup_auth_type_insecure_password">Jelszó, nem biztonságos átvitellel</string>
+  <string name="account_setup_auth_type_encrypted_password">Titkosított jelszó</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Ügyfél tanúsítvány</string>
   <string name="account_setup_incoming_title">Bejövő szerver</string>
   <string name="account_setup_incoming_username_label">Felhasználónév</string>
   <string name="account_setup_incoming_password_label">Jelszó</string>
+  <string name="account_setup_incoming_client_certificate_label">Ügyfél tanúsítvány</string>
   <string name="account_setup_incoming_pop_server_label">POP3 szerver</string>
   <string name="account_setup_incoming_imap_server_label">IMAP szerver</string>
   <string name="account_setup_incoming_webdav_server_label">Exchange szerver</string>
@@ -300,6 +314,8 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_setup_incoming_security_label">Kapcsolat biztonsága</string>
   <string name="account_setup_incoming_auth_type_label">Hitelesítés típus</string>
   <string name="account_setup_incoming_security_none_label">Nincs</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Üzenet törlésekor</string>
   <string name="account_setup_incoming_delete_policy_never_label">Ne törlődjön a szerverről</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Törlődjön a szerverről</string>
@@ -380,9 +396,15 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_setup_options_mail_display_count_250">250 levél</string>
   <string name="account_setup_options_mail_display_count_500">500 levél</string>
   <string name="account_setup_options_mail_display_count_1000">1000 levél</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 levél</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 levél</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 levél</string>
   <string name="account_setup_options_mail_display_count_all">Minden levél</string>
   <string name="move_copy_cannot_copy_unsynced_message">Ez a levél nem másolható illetve mozgatható máshova, mert nincs szinkronizálva a szerverrel.</string>
   <string name="account_setup_failed_dlg_title">A konfigurálás nem sikerült</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Felhasználónév vagy a jelszó hibás.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">A szerver érvénytelen SSL tanúsítványt használ. Néha ez a szerver hibás beállításaiból fakadhat, néha azért, mert valaki megtámadta a levelező szervered. Ha nem vagy biztos benne, mi történt, bökj a Visszautasít gombra és vedd fel a kapcsolatot a levelezőszerver üzemeltetőivel.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Nem lehet kapcsolódni a szerverhez.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Módosítás</string>
   <string name="account_setup_failed_dlg_continue_action">Tovább</string>
   <string name="account_settings_push_advanced_title">Haladó</string>
@@ -390,6 +412,10 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_settings_default_label">Alapértelmezett fiók</string>
   <string name="account_settings_default_summary">Levélküldéskor ez a fiók az alapértelmezett</string>
   <string name="account_settings_notify_label">Értesítés új levélnél</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Értesítési mappák</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Összes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Mind, kivéve a 2Másodlagost</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Nincs</string>
   <string name="account_settings_notify_sync_label">Értesítés szinkronizálásnál</string>
   <string name="account_settings_email_label">Az email címe</string>
   <string name="account_settings_notify_summary">Értesítés az állapotsoron ha új levél érkezett</string>
@@ -416,6 +442,8 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_settings_message_format_html">HTML (képekkel és formázással)</string>
   <string name="account_settings_message_format_auto">Automatikus</string>
   <string name="account_settings_always_show_cc_bcc_label">A Cc/Bcc mindig jelenjen meg</string>
+  <string name="account_settings_message_read_receipt_label">Olvasási visszaigazolás</string>
+  <string name="account_settings_message_read_receipt_summary">Mindig kérjen olvasási jelentést</string>
   <string name="account_settings_quote_style_label">Válaszlevél stílusa</string>
   <string name="account_settings_quote_style_prefix">Előtag (pl. Gmail, Pine)</string>
   <string name="account_settings_quote_style_header">Fejléc (pl. Outlook, Yahoo!, Hotmail)</string>
@@ -426,6 +454,7 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_settings_quote_prefix_label">Idézett szöveg előtagja</string>
   <string name="account_settings_crypto">Titkosítás</string>
   <string name="account_settings_crypto_app">OpenPGP Provider</string>
+  <string name="account_settings_no_openpgp_provider_installed">Nincs OpenPGP szolgáltató telepítve</string>
   <string name="account_settings_mail_check_frequency_label">Frissítés gyakorisága</string>
   <string name="account_settings_storage_title">Tárolás</string>
   <string name="account_settings_color_label">Fiók színe</string>
@@ -503,6 +532,10 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="folder_settings_folder_push_mode_first_class">Elsődleges</string>
   <string name="folder_settings_folder_push_mode_second_class">Másodlagos</string>
   <string name="folder_settings_folder_push_mode_inherited">Mint a szinkronizált</string>
+  <string name="folder_settings_folder_notify_mode_label">Értesítési mappa osztály</string>
+  <string name="folder_settings_folder_notify_mode_normal">Nincs</string>
+  <string name="folder_settings_folder_notify_mode_first_class">Elsődleges</string>
+  <string name="folder_settings_folder_notify_mode_second_class">Másodlagos</string>
   <string name="account_settings_incoming_label">Bejövő szerver</string>
   <string name="account_settings_incoming_summary">Beérkező levélszerver konfigurálása</string>
   <string name="account_settings_outgoing_label">Kimenő szerver</string>
@@ -796,6 +829,9 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Kiszolgáló keresési határa</string>
+  <string name="account_settings_remote_search_num_summary">A keresés <xliff:g id="num_results">%s</xliff:g> találat után véget ér.</string>
+  <string name="account_settings_remote_search_full_text_summary">A teljes szöveges keresés lassabb lehet.</string>
+  <string name="remote_search_sending_query">Kérés küldése a szerver felé</string>
   <string name="remote_search_downloading">%d letöltési eredmény</string>
   <string name="remote_search_downloading_limited">%1$d letöltése a(z) %2$d eredményből</string>
   <string name="remote_search_error">A távoli keresés sikertelen</string>
@@ -826,12 +862,33 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">Összes megjelölése olvasottként</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Partnerek képeinek színezése</string>
+  <string name="global_settings_colorize_missing_contact_pictures_summary">Hiányzó partnerképek színezése</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Üzenetműveletek megjelenítése</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Kiválasztott művelet megjelenítése az üzenetnézet menüben</string>
   <string name="loading_attachment">Melléklet betöltése…</string>
   <string name="fetching_attachment_dialog_title_send">Üzenet küldése</string>
   <string name="fetching_attachment_dialog_title_save">Piszkozat mentése</string>
   <string name="fetching_attachment_dialog_message">Melléklet letöltése…</string>
+  <string name="auth_external_error">Hitelesítés sikertelen. A szerver nem támogatja a SASL EXTERNAL lehetőséget. Ezt okozhatja valamilyen gond a kliens tanúsítványával (lejárt, ismeretlen hitelesítő), vagy bármi más beállítási probléma.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decrypting_verifying">Titkosítás feloldása/Ellenőrzés…</string>
+  <string name="openpgp_successful_decryption">Titkosítás sikeresen feloldva</string>
+  <string name="openpgp_signature_valid_certified">Érvényes aláírás (tanúsított)</string>
+  <string name="openpgp_signature_valid_uncertified">Érvényes aláírás, de nem tanúsított</string>
+  <string name="openpgp_signature_unknown">Ismeretlen aláíró</string>
+  <string name="openpgp_signature_invalid">Érvénytelen aláírás</string>
+  <string name="openpgp_signature_unknown_text">Ehhez az aláíráshoz hiányzik a nyilvános kulcs</string>
+  <string name="openpgp_successful_decryption_valid_signature_certified">Titkosítás sikeresen feloldva és érvényes aláírás (tanúsított)</string>
+  <string name="openpgp_successful_decryption_valid_signature_uncertified">Titkosítás sikeresen feloldva és az aláírás érvényes, de nem tanúsított</string>
+  <string name="openpgp_successful_decryption_unknown_signature">Titkosítás sikeresen feloldva, de hiányzik a nyilvános kulcs</string>
+  <string name="openpgp_get_key">Hiányzó kulcs keresése</string>
+  <string name="openpgp_error">OpenPGP hiba:</string>
+  <string name="openpgp_user_id">Felhasználói Id</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Ügyfél tanúsítvány használata</string>
+  <string name="client_certificate_spinner_empty">Ügyfél tanúsítvány nem található</string>
+  <string name="client_certificate_spinner_delete">Ügyfél tanúsítvány kiválasztásának megszüntetése</string>
+  <string name="client_certificate_retrieval_failure">A klienstanúsítvány letöltése sikertelen a következő alias-nak: \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_advanced_options">Haladó beállítások</string>
+  <string name="client_certificate_expired">A kliens tanúsítványa \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" lejárt, vagy még nem érvényes (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

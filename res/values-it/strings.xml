@@ -158,7 +158,10 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="clearing_account">Rimozione account \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Ricrea account \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nuova posta</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nuovo messaggio</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nuovi messaggi</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non letti (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> altri su <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Rispondi</string>
@@ -277,6 +280,9 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="global_settings_notification_quick_delete_when_single_msg">Per la notifica di un singolo messaggio</string>
   <string name="global_settings_notification_quick_delete_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_description">Mostra un pulsante nella notifica che consente l\'eliminazione rapida</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Nome applicazione</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Numero messaggi non letti</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Numero messaggi e mittenti</string>
   <string name="quiet_time">Silenzioso a tempo</string>
   <string name="quiet_time_description">Disabilita chiamata, vibrazione e lampeggi di notte</string>
   <string name="quiet_time_starts">Attiva alle</string>
@@ -460,6 +466,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="account_settings_quote_prefix_label">Prefisso testo citato</string>
   <string name="account_settings_crypto">Crittografia</string>
   <string name="account_settings_crypto_app">Fornitore OpenPGP</string>
+  <string name="account_settings_no_openpgp_provider_installed">Nessun fornitore OpenPGP installato</string>
   <string name="account_settings_mail_check_frequency_label">Frequenza verifica cartelle</string>
   <string name="account_settings_storage_title">Archiviazione</string>
   <string name="account_settings_color_label">Colore dell\'account</string>

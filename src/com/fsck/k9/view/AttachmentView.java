@@ -1,16 +1,18 @@
 package com.fsck.k9.view;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -30,11 +32,12 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.cache.TemporaryAttachmentStore;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.MediaScannerNotifier;
 import com.fsck.k9.helper.SizeFormatter;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -42,53 +45,48 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.local.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
+import org.apache.commons.io.IOUtils;
+
 
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
-    private Context mContext;
-    public Button viewButton;
-    public Button downloadButton;
-    public LocalAttachmentBodyPart part;
-    private Message mMessage;
-    private Account mAccount;
-    private MessagingController mController;
-    private MessagingListener mListener;
-    public String name;
-    public String contentType;
-    public long size;
-    public ImageView iconView;
-
+    private Context context;
+    private Message message;
+    private LocalAttachmentBodyPart part;
+    private Account account;
+    private MessagingController controller;
+    private MessagingListener listener;
     private AttachmentFileDownloadCallback callback;
+
+    private Button viewButton;
+    private Button downloadButton;
+
+    private String name;
+    private String contentType;
+    private long size;
+
 
     public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mContext = context;
+        this.context = context;
     }
+
     public AttachmentView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
+        this.context = context;
     }
+
     public AttachmentView(Context context) {
         super(context);
-        mContext = context;
+        this.context = context;
     }
 
-
-    public interface AttachmentFileDownloadCallback {
-        /**
-         * this method i called by the attachmentview when
-         * he wants to show a filebrowser
-         * the provider should show the filebrowser activity
-         * and save the reference to the attachment view for later.
-         * in his onActivityResult he can get the saved reference and
-         * call the saveFile method of AttachmentView
-         * @param view
-         */
-        public void showFileBrowser(AttachmentView caller);
+    public void setButtonsEnabled(boolean enabled) {
+        viewButton.setEnabled(enabled);
+        downloadButton.setEnabled(enabled);
     }
 
     /**
      * Populates this view with information about the attachment.
-     *
      * <p>
      * This method also decides which attachments are displayed when the "show attachments" button
      * is pressed, and which attachments are only displayed after the "show more attachments"
@@ -96,26 +94,33 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      * Inline attachments with content ID and unnamed attachments fall into the second category.
      * </p>
      *
-     * @param inputPart
-     * @param message
-     * @param account
-     * @param controller
-     * @param listener
-     *
-     * @return {@code true} for a regular attachment. {@code false}, otherwise.
-     *
-     * @throws MessagingException
-     *          In case of an error
+     * @return {@code true} for a regular attachment. {@code false} for attachments that should be initially hidden.
      */
     public boolean populateFromPart(Part inputPart, Message message, Account account,
             MessagingController controller, MessagingListener listener) throws MessagingException {
-        boolean firstClassAttachment = true;
-        part = (LocalAttachmentBodyPart) inputPart;
 
-        contentType = MimeUtility.unfoldAndDecode(part.getContentType());
+        part = (LocalAttachmentBodyPart) inputPart;
+        this.message = message;
+        this.account = account;
+        this.controller = controller;
+        this.listener = listener;
+
+        boolean firstClassAttachment = extractAttachmentInformation(part);
+
+        displayAttachmentInformation();
+
+        return firstClassAttachment;
+    }
+
+    //TODO: extract this code to a helper class
+    private boolean extractAttachmentInformation(Part part) throws MessagingException {
+        boolean firstClassAttachment = true;
+
+        contentType = part.getMimeType();
+        String contentTypeHeader = MimeUtility.unfoldAndDecode(part.getContentType());
         String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
 
-        name = MimeUtility.getHeaderParameter(contentType, "name");
+        name = MimeUtility.getHeaderParameter(contentTypeHeader, "name");
         if (name == null) {
             name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
         }
@@ -135,11 +140,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             firstClassAttachment = false;
         }
 
-        mAccount = account;
-        mMessage = message;
-        mController = controller;
-        mListener = listener;
-
         String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
         if (sizeParam != null) {
             try {
@@ -147,20 +147,15 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
             } catch (NumberFormatException e) { /* ignore */ }
         }
 
-        contentType = MimeUtility.getMimeTypeForViewing(part.getMimeType(), name);
+        return firstClassAttachment;
+    }
+
+    private void displayAttachmentInformation() {
         TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
         TextView attachmentInfo = (TextView) findViewById(R.id.attachment_info);
-        final ImageView attachmentIcon = (ImageView) findViewById(R.id.attachment_icon);
         viewButton = (Button) findViewById(R.id.view);
         downloadButton = (Button) findViewById(R.id.download);
-        if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
-                || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES))) {
-            viewButton.setVisibility(View.GONE);
-        }
-        if ((!MimeUtility.mimeTypeMatches(contentType, K9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
-                || (MimeUtility.mimeTypeMatches(contentType, K9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))) {
-            downloadButton.setVisibility(View.GONE);
-        }
+
         if (size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
             viewButton.setVisibility(View.GONE);
             downloadButton.setVisibility(View.GONE);
@@ -171,23 +166,10 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         downloadButton.setOnLongClickListener(this);
 
         attachmentName.setText(name);
-        attachmentInfo.setText(SizeFormatter.formatSize(mContext, size));
-        new AsyncTask<Void, Void, Bitmap>() {
-            protected Bitmap doInBackground(Void... asyncTaskArgs) {
-                Bitmap previewIcon = getPreviewIcon();
-                return previewIcon;
-            }
+        attachmentInfo.setText(SizeFormatter.formatSize(context, size));
 
-            protected void onPostExecute(Bitmap previewIcon) {
-                if (previewIcon != null) {
-                    attachmentIcon.setImageBitmap(previewIcon);
-                } else {
-                    attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
-                }
-            }
-        }.execute();
-
-        return firstClassAttachment;
+        ImageView thumbnail = (ImageView) findViewById(R.id.attachment_icon);
+        new LoadAndDisplayThumbnailAsyncTask(thumbnail).execute();
     }
 
     @Override
@@ -207,156 +189,291 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     @Override
     public boolean onLongClick(View view) {
         if (view.getId() == R.id.download) {
-            callback.showFileBrowser(this);
+            callback.pickDirectoryToSaveAttachmentTo(this);
             return true;
         }
 
         return false;
     }
 
-    private Bitmap getPreviewIcon() {
-        Bitmap icon = null;
-        try {
-            InputStream input = mContext.getContentResolver().openInputStream(
-                           AttachmentProvider.getAttachmentThumbnailUri(mAccount,
-                                   part.getAttachmentId(),
-                                   62,
-                                   62));
-            icon = BitmapFactory.decodeStream(input);
-            input.close();
-        } catch (Exception e) {
-            /*
-             * We don't care what happened, we just return null for the preview icon.
-             */
-        }
-        return icon;
-    }
-
     private void onViewButtonClicked() {
-        if (mMessage != null) {
-            mController.loadAttachment(mAccount, mMessage, part, new Object[] { false, this }, mListener);
+        if (message != null) {
+            controller.loadAttachment(account, message, part, new Object[] {false, this}, listener);
         }
     }
-
 
     private void onSaveButtonClicked() {
-        saveFile();
-    }
+        boolean isExternalStorageMounted = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+        if (!isExternalStorageMounted) {
+            String message = context.getString(R.string.message_view_status_attachment_not_saved);
+            displayMessageToUser(message);
+            return;
+        }
 
-    /**
-     * Writes the attachment onto the given path
-     * @param directory: the base dir where the file should be saved.
-     */
-    public void writeFile(File directory) {
-        try {
-            String filename = Utility.sanitizeFilename(name);
-            File file = Utility.createUniqueFile(directory, filename);
-            Uri uri = AttachmentProvider.getAttachmentUri(mAccount, part.getAttachmentId());
-            InputStream in = mContext.getContentResolver().openInputStream(uri);
-            OutputStream out = new FileOutputStream(file);
-            IOUtils.copy(in, out);
-            out.flush();
-            out.close();
-            in.close();
-            attachmentSaved(file.toString());
-            new MediaScannerNotifier(mContext, file);
-        } catch (IOException ioe) {
-            if (K9.DEBUG) {
-                Log.e(K9.LOG_TAG, "Error saving attachment", ioe);
-            }
-            attachmentNotSaved();
+        if (message != null) {
+            controller.loadAttachment(account, message, part, new Object[] {true, this}, listener);
         }
     }
 
-    /**
-     * saves the file to the defaultpath setting in the config, or if the config
-     * is not set => to the Environment
-     */
     public void writeFile() {
         writeFile(new File(K9.getAttachmentDefaultPath()));
     }
 
-    public void saveFile() {
-        //TODO: Can the user save attachments on the internal filesystem or sd card only?
-        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            /*
-             * Abort early if there's no place to save the attachment. We don't want to spend
-             * the time downloading it and then abort.
-             */
-            Toast.makeText(mContext,
-                           mContext.getString(R.string.message_view_status_attachment_not_saved),
-                           Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (mMessage != null) {
-            mController.loadAttachment(mAccount, mMessage, part, new Object[] {true, this}, mListener);
+    /**
+     * Saves the attachment as file in the given directory
+     */
+    public void writeFile(File directory) {
+        try {
+            File file = saveAttachmentWithUniqueFileName(directory);
+
+            displayAttachmentSavedMessage(file.toString());
+
+            MediaScannerNotifier.notify(context, file);
+        } catch (IOException ioe) {
+            if (K9.DEBUG) {
+                Log.e(K9.LOG_TAG, "Error saving attachment", ioe);
+            }
+            displayAttachmentNotSavedMessage();
         }
     }
 
+    private File saveAttachmentWithUniqueFileName(File directory) throws IOException {
+        String filename = FileHelper.sanitizeFilename(name);
+        File file = FileHelper.createUniqueFile(directory, filename);
+
+        writeAttachmentToStorage(file);
+
+        return file;
+    }
+
+    private void writeAttachmentToStorage(File file) throws IOException {
+        Uri uri = AttachmentProvider.getAttachmentUri(account, part.getAttachmentId());
+        InputStream in = context.getContentResolver().openInputStream(uri);
+        try {
+            OutputStream out = new FileOutputStream(file);
+            try {
+                IOUtils.copy(in, out);
+                out.flush();
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
+    }
 
     public void showFile() {
-        Uri uri = AttachmentProvider.getAttachmentUriForViewing(mAccount, part.getAttachmentId());
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        // We explicitly set the ContentType in addition to the URI because some attachment viewers (such as Polaris office 3.0.x) choke on documents without a mime type
-        intent.setDataAndType(uri, contentType);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-
-        try {
-            mContext.startActivity(intent);
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not display attachment of type " + contentType, e);
-            Toast toast = Toast.makeText(mContext, mContext.getString(R.string.message_view_no_viewer, contentType), Toast.LENGTH_LONG);
-            toast.show();
-        }
+        new ViewAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    /**
-     * Check the {@link PackageManager} if the phone has an application
-     * installed to view this type of attachment.
-     * If not, {@link #viewButton} is disabled.
-     * This should be done in any place where
-     * attachment.viewButton.setEnabled(enabled); is called.
-     * This method is safe to be called from the UI-thread.
-     */
-    public void checkViewable() {
-        if (viewButton.getVisibility() == View.GONE) {
-            // nothing to do
-            return;
-        }
-        if (!viewButton.isEnabled()) {
-            // nothing to do
-            return;
-        }
-        try {
-            Uri uri = AttachmentProvider.getAttachmentUriForViewing(mAccount, part.getAttachmentId());
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(uri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            if (intent.resolveActivity(mContext.getPackageManager()) == null) {
-                viewButton.setEnabled(false);
+    private Intent getBestViewIntentAndSaveFileIfNecessary() {
+        String inferredMimeType = MimeUtility.getMimeTypeByExtension(name);
+
+        IntentAndResolvedActivitiesCount resolvedIntentInfo;
+        if (MimeUtility.isDefaultMimeType(contentType)) {
+            resolvedIntentInfo = getBestViewIntentForMimeType(inferredMimeType);
+        } else {
+            resolvedIntentInfo = getBestViewIntentForMimeType(contentType);
+            if (!resolvedIntentInfo.hasResolvedActivities() && !inferredMimeType.equals(contentType)) {
+                resolvedIntentInfo = getBestViewIntentForMimeType(inferredMimeType);
             }
-            // currently we do not cache re result.
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Cannot resolve activity to determine if we shall show the 'view'-button for an attachment", e);
         }
+
+        if (!resolvedIntentInfo.hasResolvedActivities()) {
+            resolvedIntentInfo = getBestViewIntentForMimeType(MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
+        }
+
+        Intent viewIntent;
+        if (resolvedIntentInfo.hasResolvedActivities() && resolvedIntentInfo.containsFileUri()) {
+            try {
+                File tempFile = TemporaryAttachmentStore.getFileForWriting(context, name);
+                writeAttachmentToStorage(tempFile);
+                viewIntent = createViewIntentForFileUri(resolvedIntentInfo.getMimeType(), Uri.fromFile(tempFile));
+            } catch (IOException e) {
+                if (K9.DEBUG) {
+                    Log.e(K9.LOG_TAG, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent", e);
+                }
+                viewIntent = createViewIntentForAttachmentProviderUri(MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
+            }
+        } else {
+            viewIntent = resolvedIntentInfo.getIntent();
+        }
+
+        return viewIntent;
     }
 
-    public void attachmentSaved(final String filename) {
-        Toast.makeText(mContext, String.format(
-                           mContext.getString(R.string.message_view_status_attachment_saved), filename),
-                       Toast.LENGTH_LONG).show();
+    private IntentAndResolvedActivitiesCount getBestViewIntentForMimeType(String mimeType) {
+        Intent contentUriIntent = createViewIntentForAttachmentProviderUri(mimeType);
+        int contentUriActivitiesCount = getResolvedIntentActivitiesCount(contentUriIntent);
+
+        if (contentUriActivitiesCount > 0) {
+            return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
+        }
+
+        File tempFile = TemporaryAttachmentStore.getFile(context, name);
+        Uri tempFileUri = Uri.fromFile(tempFile);
+        Intent fileUriIntent = createViewIntentForFileUri(mimeType, tempFileUri);
+        int fileUriActivitiesCount = getResolvedIntentActivitiesCount(fileUriIntent);
+
+        if (fileUriActivitiesCount > 0) {
+            return new IntentAndResolvedActivitiesCount(fileUriIntent, fileUriActivitiesCount);
+        }
+
+        return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
     }
 
-    public void attachmentNotSaved() {
-        Toast.makeText(mContext,
-                       mContext.getString(R.string.message_view_status_attachment_not_saved),
-                       Toast.LENGTH_LONG).show();
+    private Intent createViewIntentForAttachmentProviderUri(String mimeType) {
+        Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(), mimeType, name);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, mimeType);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        addUiIntentFlags(intent);
+
+        return intent;
     }
-    public AttachmentFileDownloadCallback getCallback() {
-        return callback;
+
+    private Intent createViewIntentForFileUri(String mimeType, Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, mimeType);
+        addUiIntentFlags(intent);
+
+        return intent;
     }
+
+    private void addUiIntentFlags(Intent intent) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+    }
+
+    private int getResolvedIntentActivitiesCount(Intent intent) {
+        PackageManager packageManager = context.getPackageManager();
+
+        List<ResolveInfo> resolveInfos =
+                packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+        return resolveInfos.size();
+    }
+
+    private void displayAttachmentSavedMessage(final String filename) {
+        String message = context.getString(R.string.message_view_status_attachment_saved, filename);
+        displayMessageToUser(message);
+    }
+
+    private void displayAttachmentNotSavedMessage() {
+        String message = context.getString(R.string.message_view_status_attachment_not_saved);
+        displayMessageToUser(message);
+    }
+
+    private void displayMessageToUser(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
     public void setCallback(AttachmentFileDownloadCallback callback) {
         this.callback = callback;
     }
 
+
+    public interface AttachmentFileDownloadCallback {
+        /**
+         * This method is called to ask the user to pick a directory to save the attachment to.
+         * <p/>
+         * After the user has selected a directory, the implementation of this interface has to call
+         * {@link #writeFile(File)} on the object supplied as argument in order for the attachment to be saved.
+         */
+        public void pickDirectoryToSaveAttachmentTo(AttachmentView caller);
+    }
+
+
+    private static class IntentAndResolvedActivitiesCount {
+        private Intent intent;
+        private int activitiesCount;
+
+        IntentAndResolvedActivitiesCount(Intent intent, int activitiesCount) {
+            this.intent = intent;
+            this.activitiesCount = activitiesCount;
+        }
+
+        public Intent getIntent() {
+            return intent;
+        }
+
+        public boolean hasResolvedActivities() {
+            return activitiesCount > 0;
+        }
+
+        public String getMimeType() {
+            return intent.getType();
+        }
+
+        public boolean containsFileUri() {
+            return "file".equals(intent.getData().getScheme());
+        }
+    }
+
+    private class LoadAndDisplayThumbnailAsyncTask extends AsyncTask<Void, Void, Bitmap> {
+        private final ImageView thumbnail;
+
+        public LoadAndDisplayThumbnailAsyncTask(ImageView thumbnail) {
+            this.thumbnail = thumbnail;
+        }
+
+        protected Bitmap doInBackground(Void... asyncTaskArgs) {
+            return getPreviewIcon();
+        }
+
+        private Bitmap getPreviewIcon() {
+            Bitmap icon = null;
+            try {
+                InputStream input = context.getContentResolver().openInputStream(
+                        AttachmentProvider.getAttachmentThumbnailUri(account,
+                                part.getAttachmentId(),
+                                62,
+                                62));
+                icon = BitmapFactory.decodeStream(input);
+                input.close();
+            } catch (Exception e) {
+                // We don't care what happened, we just return null for the preview icon.
+            }
+
+            return icon;
+        }
+
+        protected void onPostExecute(Bitmap previewIcon) {
+            if (previewIcon != null) {
+                thumbnail.setImageBitmap(previewIcon);
+            } else {
+                thumbnail.setImageResource(R.drawable.attached_image_placeholder);
+            }
+        }
+    }
+
+    private class ViewAttachmentAsyncTask extends AsyncTask<Void, Void, Intent> {
+
+        @Override
+        protected void onPreExecute() {
+            viewButton.setEnabled(false);
+        }
+
+        @Override
+        protected Intent doInBackground(Void... params) {
+            return getBestViewIntentAndSaveFileIfNecessary();
+        }
+
+        @Override
+        protected void onPostExecute(Intent intent) {
+            viewAttachment(intent);
+            viewButton.setEnabled(true);
+        }
+
+        private void viewAttachment(Intent intent) {
+            try {
+                context.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Log.e(K9.LOG_TAG, "Could not display attachment of type " + contentType, e);
+
+                String message = context.getString(R.string.message_view_no_viewer, contentType);
+                displayMessageToUser(message);
+            }
+        }
+    }
 }

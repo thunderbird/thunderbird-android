@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0-rc4'
+        classpath 'com.android.tools.build:gradle:1.0.0'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
     }
 }
@@ -27,7 +27,8 @@ dependencies {
     compile 'commons-io:commons-io:2.0.1'
     compile 'com.jcraft:jzlib:1.0.7'
     compile 'com.beetstra.jutf7:jutf7:1.0.0'
-    compile 'com.android.support:support-v13:19.1.0'
+    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:support-v13:21.0.2'
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
 
     androidTestCompile ('com.jakewharton.espresso:espresso:1.1-r3' ) {
@@ -62,7 +63,7 @@ subprojects {
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 21
     buildToolsVersion '20.0.0'
 
     defaultConfig {
