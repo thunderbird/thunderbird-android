@@ -567,12 +567,9 @@ public class MimeMessage extends Message {
         @Override
         public void preamble(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuilder sb = new StringBuilder();
-            int b;
-            while ((b = is.read()) != -1) {
-                sb.append((char)b);
-            }
-            ((MimeMultipart)stack.peek()).setPreamble(sb.toString());
+            ByteArrayOutputStream preamble = new ByteArrayOutputStream();
+            IOUtils.copy(is, preamble);
+            ((MimeMultipart)stack.peek()).setPreamble(preamble.toByteArray());
         }
 
         @Override
