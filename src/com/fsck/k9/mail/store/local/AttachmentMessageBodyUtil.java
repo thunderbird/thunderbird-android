@@ -10,7 +10,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 
-public class AttachmentMessageBodyUtil {
+class AttachmentMessageBodyUtil {
     public static void writeTo(BinaryAttachmentBody body, OutputStream out) throws IOException,
             MessagingException {
         InputStream in = body.getInputStream();

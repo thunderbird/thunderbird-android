@@ -2624,7 +2624,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         String name = MimeUtility.getHeaderParameter(contentType, "name");
         if (name != null) {
             Body body = part.getBody();
-            if (body != null && body instanceof LocalAttachmentBody) {
+            if (body instanceof LocalAttachmentBody) {
                 final Uri uri = ((LocalAttachmentBody) body).getContentUri();
                 mHandler.post(new Runnable() {
                     @Override

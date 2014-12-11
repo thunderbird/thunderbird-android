@@ -2,7 +2,7 @@ package com.fsck.k9.mail.store.local;
 
 import com.fsck.k9.mail.internet.TextBody;
 
-public class LocalTextBody extends TextBody {
+class LocalTextBody extends TextBody {
     /**
      * This is an HTML-ified version of the message for display purposes.
      */

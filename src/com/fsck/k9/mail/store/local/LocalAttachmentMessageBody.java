@@ -15,7 +15,7 @@ import com.fsck.k9.mail.MessagingException;
  * A {@link LocalAttachmentBody} extension containing a message/rfc822 type body
  *
  */
-public class LocalAttachmentMessageBody extends LocalAttachmentBody implements CompositeBody {
+class LocalAttachmentMessageBody extends LocalAttachmentBody implements CompositeBody {
 
     public LocalAttachmentMessageBody(Uri uri, Application application) {
         super(uri, application);
