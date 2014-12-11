@@ -9,14 +9,7 @@
         android:descendantFocusability="blocksDescendants"
         android:gravity="center_vertical">
 
-    <View
-            android:id="@+id/chip"
-            android:layout_height="match_parent"
-            android:layout_width="8dip"
-            android:background="#ff336699"
-            android:layout_marginRight="8dip"
-            />
-
+    <include layout="@layout/account_chip"/>
 
     <LinearLayout
             android:layout_width="wrap_content"

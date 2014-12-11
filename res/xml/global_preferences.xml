@@ -86,6 +86,12 @@
                 android:title="@string/animations_title"
                 android:summary="@string/animations_summary" />
 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="showAccountColors"
+                android:title="@string/global_settings_show_account_colors_title"
+                android:summary="@string/global_settings_show_account_colors_summary" />
+
         </PreferenceCategory>
 
         <PreferenceCategory

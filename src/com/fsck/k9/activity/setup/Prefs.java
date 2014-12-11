@@ -97,6 +97,8 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
     private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
 
+    private static final String PREFERENCE_SHOW_ACCOUNT_COLORS = "showAccountColors";
+
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
     // Named indices for the mVisibleRefileActions field
@@ -151,6 +153,8 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mBackgroundAsUnreadIndicator;
     private CheckBoxPreference mThreadedView;
     private ListPreference mSplitViewMode;
+
+    private CheckBoxPreference mShowAccountColors;
 
 
     public static void actionPrefs(Context context) {
@@ -359,6 +363,9 @@ public class Prefs extends K9PreferenceActivity {
         mHideUserAgent.setChecked(K9.hideUserAgent());
         mHideTimeZone.setChecked(K9.hideTimeZone());
 
+        mShowAccountColors = (CheckBoxPreference)findPreference(PREFERENCE_SHOW_ACCOUNT_COLORS);
+        mShowAccountColors.setChecked(K9.showAccountColors());
+
         mAttachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
         mAttachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
         mAttachmentPathPreference
@@ -510,6 +517,8 @@ public class Prefs extends K9PreferenceActivity {
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         K9.setHideUserAgent(mHideUserAgent.isChecked());
         K9.setHideTimeZone(mHideTimeZone.isChecked());
+
+        K9.showAccountColors(mShowAccountColors.isChecked());
 
         Editor editor = preferences.edit();
         K9.save(editor);

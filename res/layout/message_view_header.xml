@@ -12,10 +12,7 @@
         android:orientation="horizontal" >
 
         <!-- Color chip -->
-        <View
-            android:id="@+id/chip"
-            android:layout_width="8dip"
-            android:layout_height="match_parent" />
+        <include layout="@layout/account_chip"/>
 
         <LinearLayout
             android:layout_width="match_parent"

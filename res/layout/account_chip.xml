@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.fsck.k9.view.AccountChip
+        android:id="@+id/chip"
+        android:layout_height="match_parent"
+        android:layout_width="8dip"
+        android:layout_marginRight="4dp" />
+
+</merge>

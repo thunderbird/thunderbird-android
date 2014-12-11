@@ -254,6 +254,9 @@ public class GlobalSettings {
         s.put("lockScreenNotificationVisibility", Settings.versions(
             new V(37, new EnumSetting<>(LockScreenNotificationVisibility.class, LockScreenNotificationVisibility.MESSAGE_COUNT))
         ));
+        s.put("showAccountColors", Settings.versions(
+            new V(38, new BooleanSetting(true))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

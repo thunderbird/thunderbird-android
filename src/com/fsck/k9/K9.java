@@ -288,6 +288,8 @@ public class K9 extends Application {
     private static boolean sMessageViewCopyActionVisible = false;
     private static boolean sMessageViewSpamActionVisible = false;
 
+    private static boolean mShowAccountColors = true;
+
 
     /**
      * @see #areDatabasesUpToDate()
@@ -557,6 +559,8 @@ public class K9 extends Application {
         editor.putBoolean("messageViewCopyActionVisible", sMessageViewCopyActionVisible);
         editor.putBoolean("messageViewSpamActionVisible", sMessageViewSpamActionVisible);
 
+        editor.putBoolean("showAccountColors", mShowAccountColors);
+
         fontSizes.save(editor);
     }
 
@@ -804,6 +808,8 @@ public class K9 extends Application {
         sMessageViewMoveActionVisible = sprefs.getBoolean("messageViewMoveActionVisible", false);
         sMessageViewCopyActionVisible = sprefs.getBoolean("messageViewCopyActionVisible", false);
         sMessageViewSpamActionVisible = sprefs.getBoolean("messageViewSpamActionVisible", false);
+
+        mShowAccountColors = sprefs.getBoolean("showAccountColors", true);
 
 
         K9.setK9Language(sprefs.getString("language", ""));
@@ -1365,6 +1371,14 @@ public class K9 extends Application {
 
     public static void setMessageViewSpamActionVisible(boolean visible) {
         sMessageViewSpamActionVisible = visible;
+    }
+
+    public static boolean showAccountColors() {
+        return mShowAccountColors;
+    }
+
+    public static void showAccountColors(boolean show) {
+        mShowAccountColors = show;
     }
 
     /**
