@@ -2,6 +2,7 @@
 package com.fsck.k9.mail.internet;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,6 +15,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
 import org.apache.james.mime4j.field.DefaultFieldParser;
@@ -396,22 +398,6 @@ public class MimeMessage extends Message {
     @Override
     public void setBody(Body body) throws MessagingException {
         this.mBody = body;
-        setHeader("MIME-Version", "1.0");
-        if (body instanceof Multipart) {
-            Multipart multipart = ((Multipart)body);
-            multipart.setParent(this);
-            String type = multipart.getContentType();
-            setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
-            if ("multipart/signed".equalsIgnoreCase(type)) {
-                setEncoding(MimeUtil.ENC_7BIT);
-            } else {
-                setEncoding(MimeUtil.ENC_8BIT);
-            }
-        } else if (body instanceof TextBody) {
-            setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n charset=utf-8",
-                      getMimeType()));
-            setEncoding(MimeUtil.ENC_8BIT);
-        }
     }
 
     private String getFirstHeader(String name) {
@@ -421,6 +407,11 @@ public class MimeMessage extends Message {
     @Override
     public void addHeader(String name, String value) throws UnavailableStorageException {
         mHeader.addHeader(name, value);
+    }
+
+    @Override
+    public void addRawHeader(String name, String raw) {
+        mHeader.addRawHeader(name, raw);
     }
 
     @Override
@@ -542,8 +533,7 @@ public class MimeMessage extends Message {
         public void body(BodyDescriptor bd, InputStream in) throws IOException {
             expect(Part.class);
             try {
-                Body body = MimeUtility.decodeBody(in,
-                        bd.getTransferEncoding(), bd.getMimeType());
+                Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType());
                 ((Part)stack.peek()).setBody(body);
             } catch (MessagingException me) {
                 throw new Error(me);
@@ -577,16 +567,17 @@ public class MimeMessage extends Message {
         @Override
         public void preamble(InputStream is) throws IOException {
             expect(MimeMultipart.class);
-            StringBuilder sb = new StringBuilder();
-            int b;
-            while ((b = is.read()) != -1) {
-                sb.append((char)b);
-            }
-            ((MimeMultipart)stack.peek()).setPreamble(sb.toString());
+            ByteArrayOutputStream preamble = new ByteArrayOutputStream();
+            IOUtils.copy(is, preamble);
+            ((MimeMultipart)stack.peek()).setPreamble(preamble.toByteArray());
         }
 
         @Override
         public void epilogue(InputStream is) throws IOException {
+            expect(MimeMultipart.class);
+            ByteArrayOutputStream epilogue = new ByteArrayOutputStream();
+            IOUtils.copy(is, epilogue);
+            ((MimeMultipart) stack.peek()).setEpilogue(epilogue.toByteArray());
         }
 
         @Override
@@ -598,7 +589,9 @@ public class MimeMessage extends Message {
         public void field(Field parsedField) throws MimeException {
             expect(Part.class);
             try {
-                ((Part)stack.peek()).addHeader(parsedField.getName(), parsedField.getBody().trim());
+                String name = parsedField.getName();
+                String raw = parsedField.getRaw().toString();
+                ((Part) stack.peek()).addRawHeader(name, raw);
             } catch (MessagingException me) {
                 throw new Error(me);
             }

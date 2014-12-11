@@ -508,6 +508,11 @@ public class LocalMessage extends MimeMessage {
     }
 
     @Override
+    public void addRawHeader(String name, String raw) {
+        throw new RuntimeException("Not supported");
+    }
+
+    @Override
     public void setHeader(String name, String value) throws UnavailableStorageException {
         if (!mHeadersLoaded)
             loadHeaders();

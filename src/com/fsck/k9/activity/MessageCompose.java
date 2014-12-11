@@ -104,6 +104,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
@@ -1404,10 +1405,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 MimeMultipart mp = new MimeMultipart();
                 mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
                 addAttachmentsToMessage(mp);
-                message.setBody(mp);
+                MimeMessageHelper.setBody(message, mp);
             } else {
                 // If no attachments, our multipart/alternative part is the only one we need.
-                message.setBody(composedMimeMessage);
+                MimeMessageHelper.setBody(message, composedMimeMessage);
             }
         } else if (mMessageFormat == SimpleMessageFormat.TEXT) {
             // Text-only message.
@@ -1415,10 +1416,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 MimeMultipart mp = new MimeMultipart();
                 mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
                 addAttachmentsToMessage(mp);
-                message.setBody(mp);
+                MimeMessageHelper.setBody(message, mp);
             } else {
                 // No attachments to include, just stick the text body in the message and call it good.
-                message.setBody(body);
+                MimeMessageHelper.setBody(message, body);
             }
         }
 

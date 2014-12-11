@@ -15,7 +15,7 @@ import java.io.*;
  * and writeTo one time. After writeTo is called, or the InputStream returned from
  * getInputStream is closed the file is deleted and the Body should be considered disposed of.
  */
-public class BinaryTempFileBody implements Body {
+public class BinaryTempFileBody implements RawDataBody {
     private static File mTempDirectory;
 
     private File mFile;
@@ -26,15 +26,56 @@ public class BinaryTempFileBody implements Body {
         mTempDirectory = tempDirectory;
     }
 
-    public void setEncoding(String encoding) throws MessagingException {
-        mEncoding  = encoding;
+    @Override
+    public String getEncoding() {
+        return mEncoding;
     }
 
-    public BinaryTempFileBody() {
-        if (mTempDirectory == null) {
-            throw new
-            RuntimeException("setTempDirectory has not been called on BinaryTempFileBody!");
+    public void setEncoding(String encoding) throws MessagingException {
+        if (mEncoding != null && mEncoding.equalsIgnoreCase(encoding)) {
+            return;
         }
+
+        // The encoding changed, so we need to convert the message
+        if (!MimeUtil.ENC_8BIT.equalsIgnoreCase(mEncoding)) {
+            throw new RuntimeException("Can't convert from encoding: " + mEncoding);
+        }
+
+        try {
+            File newFile = File.createTempFile("body", null, mTempDirectory);
+            OutputStream out = new FileOutputStream(newFile);
+            try {
+                if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(encoding)) {
+                    out = new QuotedPrintableOutputStream(out, false);
+                } else if (MimeUtil.ENC_BASE64.equals(encoding)) {
+                    out = new Base64OutputStream(out);
+                } else {
+                    throw new RuntimeException("Target encoding not supported: " + encoding);
+                }
+
+                InputStream in = getInputStream();
+                try {
+                    IOUtils.copy(in, out);
+                } finally {
+                    in.close();
+                }
+            } finally {
+                out.close();
+            }
+
+            mFile = newFile;
+            mEncoding = encoding;
+        } catch (IOException e) {
+            throw new MessagingException("Unable to convert body", e);
+        }
+    }
+
+    public BinaryTempFileBody(String encoding) {
+        if (mTempDirectory == null) {
+            throw new RuntimeException("setTempDirectory has not been called on BinaryTempFileBody!");
+        }
+
+        mEncoding = encoding;
     }
 
     public OutputStream getOutputStream() throws IOException {
@@ -54,22 +95,7 @@ public class BinaryTempFileBody implements Body {
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         InputStream in = getInputStream();
         try {
-            boolean closeStream = false;
-            if (MimeUtil.isBase64Encoding(mEncoding)) {
-                out = new Base64OutputStream(out);
-                closeStream = true;
-            } else if (MimeUtil.isQuotedPrintableEncoded(mEncoding)){
-                out = new QuotedPrintableOutputStream(out, false);
-                closeStream = true;
-            }
-
-            try {
-                IOUtils.copy(in, out);
-            } finally {
-                if (closeStream) {
-                    out.close();
-                }
-            }
+            IOUtils.copy(in, out);
         } finally {
             in.close();
         }

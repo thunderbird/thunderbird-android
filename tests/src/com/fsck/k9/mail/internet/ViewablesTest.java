@@ -21,7 +21,7 @@ public class ViewablesTest extends AndroidTestCase {
 
         // Create message
         MimeMessage message = new MimeMessage();
-        message.setBody(body);
+        MimeMessageHelper.setBody(message, body);
 
         // Extract text
         ViewableContainer container = MimeUtility.extractTextAndAttachments(getContext(), message);
@@ -45,7 +45,7 @@ public class ViewablesTest extends AndroidTestCase {
         // Create message
         MimeMessage message = new MimeMessage();
         message.setHeader("Content-Type", "text/html");
-        message.setBody(body);
+        MimeMessageHelper.setBody(message, body);
 
         // Extract text
         ViewableContainer container = MimeUtility.extractTextAndAttachments(getContext(), message);
@@ -75,7 +75,7 @@ public class ViewablesTest extends AndroidTestCase {
 
         // Create message
         MimeMessage message = new MimeMessage();
-        message.setBody(multipart);
+        MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
         ViewableContainer container = MimeUtility.extractTextAndAttachments(getContext(), message);
@@ -119,7 +119,7 @@ public class ViewablesTest extends AndroidTestCase {
         innerMessage.setRecipients(RecipientType.TO, new Address[] { new Address("to@example.com") });
         innerMessage.setSubject("Subject");
         innerMessage.setFrom(new Address("from@example.com"));
-        innerMessage.setBody(innerBody);
+        MimeMessageHelper.setBody(innerMessage, innerBody);
 
         // Create multipart/mixed part
         MimeMultipart multipart = new MimeMultipart();
@@ -131,7 +131,7 @@ public class ViewablesTest extends AndroidTestCase {
 
         // Create message
         MimeMessage message = new MimeMessage();
-        message.setBody(multipart);
+        MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
         ViewableContainer container = MimeUtility.extractTextAndAttachments(getContext(), message);

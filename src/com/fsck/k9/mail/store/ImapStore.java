@@ -26,8 +26,6 @@ import java.security.Security;
 import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
@@ -49,6 +47,7 @@ import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import javax.net.ssl.SSLException;
 
 import org.apache.commons.io.IOUtils;
@@ -1616,7 +1615,7 @@ public class ImapStore extends Store {
                         if (literal != null) {
                             if (literal instanceof Body) {
                                 // Most of the work was done in FetchAttchmentCallback.foundLiteral()
-                                part.setBody((Body)literal);
+                                MimeMessageHelper.setBody(part, (Body) literal);
                             } else if (literal instanceof String) {
                                 String bodyString = (String)literal;
                                 InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
@@ -1625,7 +1624,7 @@ public class ImapStore extends Store {
                                         .getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
                                 String contentType = part
                                         .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
-                                part.setBody(MimeUtility.decodeBody(bodyStream,
+                                MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream,
                                         contentTransferEncoding, contentType));
                             } else {
                                 // This shouldn't happen
@@ -3598,7 +3597,7 @@ public class ImapStore extends Store {
                 String contentType = mPart
                         .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
 
-                return MimeUtility.decodeBody(literal, contentTransferEncoding,
+                return MimeUtility.createBody(literal, contentTransferEncoding,
                         contentType);
             }
             return null;
