@@ -91,7 +91,6 @@ import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -1216,7 +1215,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void addAddresses(MultiAutoCompleteTextView view, String addresses) {
-        if (StringUtils.isNullOrEmpty(addresses)) {
+        if (TextUtils.isEmpty(addresses)) {
             return;
         }
         for (String address : addresses.split(",")) {
@@ -2782,7 +2781,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // of the forwarded message in the references and the reply to.  TB
         // only includes ID of the message being forwarded in the reference,
         // even if there are multiple references.
-        if (!StringUtils.isNullOrEmpty(message.getMessageId())) {
+        if (!TextUtils.isEmpty(message.getMessageId())) {
             mInReplyTo = message.getMessageId();
             mReferences = mInReplyTo;
         } else {

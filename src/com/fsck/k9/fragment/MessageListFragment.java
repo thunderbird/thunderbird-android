@@ -15,11 +15,16 @@ import java.util.Set;
 import java.util.concurrent.Future;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Loader;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -30,15 +35,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.app.DialogFragment;
-import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
-import android.widget.CursorAdapter;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
@@ -59,6 +59,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
@@ -81,7 +82,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.MessageHelper;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -100,6 +100,7 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
+
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -1943,7 +1944,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
 
             String subject = cursor.getString(SUBJECT_COLUMN);
-            if (StringUtils.isNullOrEmpty(subject)) {
+            if (TextUtils.isEmpty(subject)) {
                 subject = getString(R.string.general_no_subject);
             } else if (threadCount > 1) {
                 // If this is a thread, strip the RE/FW from the subject.  "Be like Outlook."
@@ -3449,11 +3450,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (mIsThreadDisplay) {
             if (cursor.moveToFirst()) {
                 mTitle = cursor.getString(SUBJECT_COLUMN);
-                if (!StringUtils.isNullOrEmpty(mTitle)) {
+                if (!TextUtils.isEmpty(mTitle)) {
                     mTitle = Utility.stripSubject(mTitle);
                 }
-                if (StringUtils.isNullOrEmpty(mTitle)) {
-                   mTitle = getString(R.string.general_no_subject);
+                if (TextUtils.isEmpty(mTitle)) {
+                    mTitle = getString(R.string.general_no_subject);
                 }
                 updateTitle();
             } else {

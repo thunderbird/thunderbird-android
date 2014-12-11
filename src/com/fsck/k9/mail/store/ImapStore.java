@@ -26,8 +26,6 @@ import java.security.Security;
 import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
@@ -48,23 +46,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
-
 import javax.net.ssl.SSLException;
-
-import org.apache.commons.io.IOUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.PowerManager;
+import android.text.TextUtils;
 import android.util.Log;
 
-import com.beetstra.jutf7.CharsetProvider;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
@@ -99,8 +93,11 @@ import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.fsck.k9.net.ssl.TrustedSocketFactory;
+
+import com.beetstra.jutf7.CharsetProvider;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
+import org.apache.commons.io.IOUtils;
 
 /**
  * <pre>
@@ -2009,7 +2006,7 @@ public class ImapStore extends Store {
 
                                 String newUid = appendList.getString(2);
 
-                                if (!StringUtils.isNullOrEmpty(newUid)) {
+                                if (!TextUtils.isEmpty(newUid)) {
                                     message.setUid(newUid);
                                     uidMap.put(message.getUid(), newUid);
                                     continue;
@@ -2027,7 +2024,7 @@ public class ImapStore extends Store {
                         Log.d(K9.LOG_TAG, "Got UID " + newUid + " for message for " + getLogId());
                     }
 
-                    if (!StringUtils.isNullOrEmpty(newUid)) {
+                    if (!TextUtils.isEmpty(newUid)) {
                         uidMap.put(message.getUid(), newUid);
                         message.setUid(newUid);
                     }

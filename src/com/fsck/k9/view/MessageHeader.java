@@ -1,5 +1,10 @@
 package com.fsck.k9.view;
 
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Parcel;
@@ -9,36 +14,30 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.Account;
 import com.fsck.k9.helper.MessageHelper;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
-
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 public class MessageHeader extends LinearLayout implements OnClickListener {
     private Context mContext;
@@ -260,7 +259,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         }
 
         final String subject = message.getSubject();
-        if (StringUtils.isNullOrEmpty(subject)) {
+        if (TextUtils.isEmpty(subject)) {
             mSubjectView.setText(mContext.getText(R.string.general_no_subject));
         } else {
             mSubjectView.setText(subject);
