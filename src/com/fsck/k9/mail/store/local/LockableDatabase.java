@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.local;
 
 import java.io.File;
 import java.util.concurrent.locks.Lock;
@@ -16,6 +16,8 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.mail.store.UnavailableStorageException;
 
 public class LockableDatabase {
 
@@ -33,7 +35,7 @@ public class LockableDatabase {
          *            <code>null</code>.
          * @return Any relevant data. Can be <code>null</code>.
          * @throws WrappedException
-         * @throws UnavailableStorageException
+         * @throws com.fsck.k9.mail.store.UnavailableStorageException
          */
         T doDbWork(SQLiteDatabase db) throws WrappedException, UnavailableStorageException;
     }

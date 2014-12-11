@@ -21,8 +21,8 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.UnavailableStorageException;
-import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
-import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
+import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
+import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
 
 public class LocalMessage extends MimeMessage {
 

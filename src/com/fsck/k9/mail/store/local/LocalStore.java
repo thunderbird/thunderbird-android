@@ -32,9 +32,8 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.store.LockableDatabase;
-import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
-import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
+import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
+import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.mail.store.UnavailableStorageException;
@@ -724,6 +723,7 @@ public class LocalStore extends Store implements Serializable {
         return Utility.combine(extraFlags, ',').toUpperCase(Locale.US);
     }
 
+    // TODO: database should not be exposed!
     public LockableDatabase getDatabase() {
         return database;
     }

@@ -18,7 +18,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.store.LockableDatabase;
 import com.fsck.k9.provider.AttachmentProvider;
 
 class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {

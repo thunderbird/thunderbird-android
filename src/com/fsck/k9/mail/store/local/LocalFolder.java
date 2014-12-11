@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,8 +54,8 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.MimeUtility.ViewableContainer;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.UnavailableStorageException;
-import com.fsck.k9.mail.store.LockableDatabase.DbCallback;
-import com.fsck.k9.mail.store.LockableDatabase.WrappedException;
+import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
+import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.AttachmentProvider;
 
 public class LocalFolder extends Folder implements Serializable {
