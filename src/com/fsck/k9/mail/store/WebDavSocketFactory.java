@@ -4,7 +4,7 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.scheme.LayeredSocketFactory;
 import org.apache.http.params.HttpParams;
 
-import com.fsck.k9.net.ssl.TrustManagerFactory;
+import com.fsck.k9.mail.ssl.TrustManagerFactory;
 
 import java.io.IOException;
 import java.net.InetAddress;

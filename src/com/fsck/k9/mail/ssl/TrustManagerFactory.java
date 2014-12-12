@@ -1,5 +1,5 @@
 
-package com.fsck.k9.net.ssl;
+package com.fsck.k9.mail.ssl;
 
 import android.util.Log;
 

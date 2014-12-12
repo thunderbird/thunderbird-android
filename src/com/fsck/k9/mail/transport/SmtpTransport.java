@@ -17,7 +17,7 @@ import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.local.LocalMessage;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLException;
 

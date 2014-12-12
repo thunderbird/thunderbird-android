@@ -1,5 +1,5 @@
 
-package com.fsck.k9.net.ssl;
+package com.fsck.k9.mail.ssl;
 
 import java.net.Socket;
 import java.security.Principal;
@@ -29,7 +29,7 @@ import com.fsck.k9.mail.MessagingException;
  * For client certificate authentication! Provide private keys and certificates
  * during the TLS handshake using the Android 4.0 KeyChain API.
  */
-public class KeyChainKeyManager extends X509ExtendedKeyManager {
+class KeyChainKeyManager extends X509ExtendedKeyManager {
 
     private static PrivateKey sClientCertificateReferenceWorkaround;
 

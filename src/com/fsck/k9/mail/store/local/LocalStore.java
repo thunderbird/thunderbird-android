@@ -1,18 +1,6 @@
 
 package com.fsck.k9.mail.store.local;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import android.app.Application;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -23,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -35,18 +22,30 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
-import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.UnavailableStorageException;
+import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
+import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
+
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * <pre>
@@ -209,17 +208,17 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    public static void removeAccount(StoreConfig storeConfig) {
+    public static void removeAccount(Account account) {
         try {
-            RemoteStore.removeInstance(storeConfig);
+            RemoteStore.removeInstance(account);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to reset remote store for account " + storeConfig.getUuid(), e);
+            Log.e(K9.LOG_TAG, "Failed to reset remote store for account " + account.getUuid(), e);
         }
 
         try {
-            removeInstance(storeConfig);
+            removeInstance(account);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to reset local store for account " + storeConfig.getUuid(), e);
+            Log.e(K9.LOG_TAG, "Failed to reset local store for account " + account.getUuid(), e);
         }
     }
 

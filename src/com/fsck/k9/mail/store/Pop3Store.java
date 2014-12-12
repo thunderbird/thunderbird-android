@@ -12,7 +12,7 @@ import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLException;
 
