@@ -601,14 +601,18 @@ public class LocalMessage extends MimeMessage {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        LocalMessage that = (LocalMessage) o;
-        return !(getUid() != null ? !getUid().equals(that.getUid()) : that.getUid() != null);
+        final LocalMessage that = (LocalMessage) o;
+        return !(getAccountUuid() != null ? !getAccountUuid().equals(that.getAccountUuid()) : that.getAccountUuid() != null);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (getUid() != null ? getUid().hashCode() : 0);
+        result = 31 * result + (getAccountUuid() != null ? getAccountUuid().hashCode() : 0);
         return result;
+    }
+
+    private String getAccountUuid() {
+        return getAccount().getUuid();
     }
 }

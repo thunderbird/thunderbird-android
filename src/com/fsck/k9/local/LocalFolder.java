@@ -116,8 +116,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         return getAccount().syncRemoteDeletions();
     }
 
-
-
     @Override
     public void open(final int mode) throws MessagingException {
 

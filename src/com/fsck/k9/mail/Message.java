@@ -47,8 +47,8 @@ public abstract class Message implements Part, CompositeBody {
             return false;
         }
         Message other = (Message)o;
-        return (mUid.equals(other.getUid())
-                && mFolder.getName().equals(other.getFolder().getName()));
+        return (getUid().equals(other.getUid())
+                && getFolder().getName().equals(other.getFolder().getName()));
     }
 
     @Override
