@@ -2,26 +2,20 @@
 package com.fsck.k9.mail;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.store.UnavailableStorageException;
 
 
 public abstract class Message implements Part, CompositeBody {
-    protected MessageReference mReference;
-
-
     public enum RecipientType {
         TO, CC, BCC,
     }
@@ -73,7 +67,6 @@ public abstract class Message implements Part, CompositeBody {
     }
 
     public void setUid(String uid) {
-        this.mReference = null;
         this.mUid = uid;
     }
 
@@ -251,15 +244,6 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract void setCharset(String charset) throws MessagingException;
 
-    public MessageReference makeMessageReference() {
-        if (mReference == null) {
-            mReference = new MessageReference();
-            mReference.folderName  = getFolder().getName();
-            mReference.uid = mUid;
-        }
-        return mReference;
-    }
-
     public long calculateSize() {
         try {
 
@@ -279,14 +263,12 @@ public abstract class Message implements Part, CompositeBody {
     /**
      * Copy the contents of this object into another {@code Message} object.
      *
-     * @param destination
-     *         The {@code Message} object to receive the contents of this instance.
+     * @param destination The {@code Message} object to receive the contents of this instance.
      */
     protected void copy(Message destination) {
         destination.mUid = mUid;
         destination.mInternalDate = mInternalDate;
         destination.mFolder = mFolder;
-        destination.mReference = mReference;
 
         // mFlags contents can change during the object lifetime, so copy the Set
         destination.mFlags = EnumSet.copyOf(mFlags);

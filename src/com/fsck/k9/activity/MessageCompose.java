@@ -442,7 +442,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     public static Intent getActionReplyIntent(
             Context context,
-            Message message,
+            LocalMessage message,
             boolean replyAll,
             String messageBody) {
         Intent i = new Intent(context, MessageCompose.class);
@@ -467,7 +467,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     public static void actionReply(
         Context context,
-        Message message,
+        LocalMessage message,
         boolean replyAll,
         String messageBody) {
         context.startActivity(getActionReplyIntent(context, message, replyAll, messageBody));
@@ -481,7 +481,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     public static void actionForward(
             Context context,
-            Message message,
+            LocalMessage message,
             String messageBody) {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_MESSAGE_BODY, messageBody);

@@ -1190,19 +1190,19 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
     }
 
-    public void onReply(Message message) {
+    public void onReply(LocalMessage message) {
         mFragmentListener.onReply(message);
     }
 
-    public void onReplyAll(Message message) {
+    public void onReplyAll(LocalMessage message) {
         mFragmentListener.onReplyAll(message);
     }
 
-    public void onForward(Message message) {
+    public void onForward(LocalMessage message) {
         mFragmentListener.onForward(message);
     }
 
-    public void onResendMessage(Message message) {
+    public void onResendMessage(LocalMessage message) {
         mFragmentListener.onResendMessage(message);
     }
 
@@ -1510,23 +1510,19 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 break;
             }
             case R.id.reply: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onReply(message);
+                onReply(getMessageAtPosition(adapterPosition));
                 break;
             }
             case R.id.reply_all: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onReplyAll(message);
+                onReplyAll(getMessageAtPosition(adapterPosition));
                 break;
             }
             case R.id.forward: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onForward(message);
+                onForward(getMessageAtPosition(adapterPosition));
                 break;
             }
             case R.id.send_again: {
-                Message message = getMessageAtPosition(adapterPosition);
-                onResendMessage(message);
+                onResendMessage(getMessageAtPosition(adapterPosition));
                 mSelectedCount = 0;
                 break;
             }
@@ -3113,10 +3109,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void setMessageListProgress(int level);
         void showThread(Account account, String folderName, long rootId);
         void showMoreFromSameSender(String senderAddress);
-        void onResendMessage(Message message);
-        void onForward(Message message);
-        void onReply(Message message);
-        void onReplyAll(Message message);
+        void onResendMessage(LocalMessage message);
+        void onForward(LocalMessage message);
+        void onReply(LocalMessage message);
+        void onReplyAll(LocalMessage message);
         void openMessage(MessageReference messageReference);
         void setMessageListTitle(String title);
         void setMessageListSubTitle(String subTitle);

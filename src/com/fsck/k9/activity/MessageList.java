@@ -42,8 +42,8 @@ import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.fragment.MessageViewFragment.MessageViewFragmentListener;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
@@ -1193,22 +1193,22 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     @Override
-    public void onResendMessage(Message message) {
+    public void onResendMessage(LocalMessage message) {
         MessageCompose.actionEditDraft(this, message.makeMessageReference());
     }
 
     @Override
-    public void onForward(Message message) {
+    public void onForward(LocalMessage message) {
         MessageCompose.actionForward(this, message, null);
     }
 
     @Override
-    public void onReply(Message message) {
+    public void onReply(LocalMessage message) {
         MessageCompose.actionReply(this, message, false, null);
     }
 
     @Override
-    public void onReplyAll(Message message) {
+    public void onReplyAll(LocalMessage message) {
         MessageCompose.actionReply(this, message, true, null);
     }
 
@@ -1399,17 +1399,17 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
     }
 
     @Override
-    public void onReply(Message message, PgpData pgpData) {
+    public void onReply(LocalMessage message, PgpData pgpData) {
         MessageCompose.actionReply(this, message, false, pgpData.getDecryptedData());
     }
 
     @Override
-    public void onReplyAll(Message message, PgpData pgpData) {
+    public void onReplyAll(LocalMessage message, PgpData pgpData) {
         MessageCompose.actionReply(this, message, true, pgpData.getDecryptedData());
     }
 
     @Override
-    public void onForward(Message mMessage, PgpData mPgpData) {
+    public void onForward(LocalMessage mMessage, PgpData mPgpData) {
         MessageCompose.actionForward(this, mMessage, mPgpData.getDecryptedData());
     }
 

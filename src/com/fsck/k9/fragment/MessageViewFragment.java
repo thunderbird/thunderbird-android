@@ -846,10 +846,10 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     }
 
     public interface MessageViewFragmentListener {
-        public void onForward(Message mMessage, PgpData mPgpData);
+        public void onForward(LocalMessage mMessage, PgpData mPgpData);
         public void disableDeleteAction();
-        public void onReplyAll(Message mMessage, PgpData mPgpData);
-        public void onReply(Message mMessage, PgpData mPgpData);
+        public void onReplyAll(LocalMessage mMessage, PgpData mPgpData);
+        public void onReply(LocalMessage mMessage, PgpData mPgpData);
         public void displayMessageSubject(String title);
         public void setProgress(boolean b);
         public void showNextMessageOrReturn();

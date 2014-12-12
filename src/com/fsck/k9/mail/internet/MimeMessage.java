@@ -608,28 +608,27 @@ public class MimeMessage extends Message {
     /**
      * Copy the contents of this object into another {@code MimeMessage} object.
      *
-     * @param message
-     *         The {@code MimeMessage} object to receive the contents of this instance.
+     * @param destination The {@code MimeMessage} object to receive the contents of this instance.
      */
-    protected void copy(MimeMessage message) {
-        super.copy(message);
+    protected void copy(MimeMessage destination) {
+        super.copy(destination);
 
-        message.mHeader = mHeader.clone();
+        destination.mHeader = mHeader.clone();
 
-        message.mBody = mBody;
-        message.mMessageId = mMessageId;
-        message.mSentDate = mSentDate;
-        message.mDateFormat = mDateFormat;
-        message.mSize = mSize;
+        destination.mBody = mBody;
+        destination.mMessageId = mMessageId;
+        destination.mSentDate = mSentDate;
+        destination.mDateFormat = mDateFormat;
+        destination.mSize = mSize;
 
         // These arrays are not supposed to be modified, so it's okay to reuse the references
-        message.mFrom = mFrom;
-        message.mTo = mTo;
-        message.mCc = mCc;
-        message.mBcc = mBcc;
-        message.mReplyTo = mReplyTo;
-        message.mReferences = mReferences;
-        message.mInReplyTo = mInReplyTo;
+        destination.mFrom = mFrom;
+        destination.mTo = mTo;
+        destination.mCc = mCc;
+        destination.mBcc = mBcc;
+        destination.mReplyTo = mReplyTo;
+        destination.mReferences = mReferences;
+        destination.mInReplyTo = mInReplyTo;
     }
 
     @Override

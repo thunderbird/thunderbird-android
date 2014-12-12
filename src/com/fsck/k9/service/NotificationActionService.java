@@ -103,8 +103,8 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService initiating reply");
 
-                MessageReference ref = (MessageReference) intent.getParcelableExtra(EXTRA_MESSAGE);
-                Message message = ref.restoreToLocalMessage(this);
+                MessageReference ref = intent.getParcelableExtra(EXTRA_MESSAGE);
+                LocalMessage message = ref.restoreToLocalMessage(this);
                 if (message != null) {
                     Intent i = MessageCompose.getActionReplyIntent(this, message, false, null);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

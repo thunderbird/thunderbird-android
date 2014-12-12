@@ -214,7 +214,7 @@ public class MessagingController implements Runnable {
          * Don't modify this list directly, but use {@link addMessage} and
          * {@link removeMatchingMessage} instead.
          */
-        LinkedList<Message> messages;
+        LinkedList<LocalMessage> messages;
         /**
          * List of references for messages that the user is still to be notified of,
          * but which don't fit into the inbox style anymore. It's sorted from newest
@@ -238,7 +238,7 @@ public class MessagingController implements Runnable {
         public NotificationData(int unread) {
             unreadBeforeNotification = unread;
             droppedMessages = new LinkedList<MessageReference>();
-            messages = new LinkedList<Message>();
+            messages = new LinkedList<LocalMessage>();
         }
 
         /**
@@ -249,9 +249,9 @@ public class MessagingController implements Runnable {
          *
          * @param m The new message to add.
          */
-        public void addMessage(Message m) {
+        public void addMessage(LocalMessage m) {
             while (messages.size() >= MAX_MESSAGES) {
-                Message dropped = messages.removeLast();
+                LocalMessage dropped = messages.removeLast();
                 droppedMessages.addFirst(dropped.makeMessageReference());
             }
             messages.addFirst(m);
@@ -272,10 +272,10 @@ public class MessagingController implements Runnable {
                 }
             }
 
-            for (Message message : messages) {
+            for (LocalMessage message : messages) {
                 if (message.makeMessageReference().equals(ref)) {
                     if (messages.remove(message) && !droppedMessages.isEmpty()) {
-                        Message restoredMessage = droppedMessages.getFirst().restoreToLocalMessage(context);
+                        LocalMessage restoredMessage = droppedMessages.getFirst().restoreToLocalMessage(context);
                         if (restoredMessage != null) {
                             messages.addLast(restoredMessage);
                             droppedMessages.removeFirst();
@@ -293,7 +293,7 @@ public class MessagingController implements Runnable {
          * List.
          */
         public void supplyAllMessageRefs(List<MessageReference> refs) {
-            for (Message m : messages) {
+            for (LocalMessage m : messages) {
                 refs.add(m.makeMessageReference());
             }
             refs.addAll(droppedMessages);
@@ -1621,7 +1621,7 @@ public class MessagingController implements Runnable {
                     }
 
                     // Store the updated message locally
-                    final Message localMessage = localFolder.storeSmallMessage(message, new Runnable() {
+                    final LocalMessage localMessage = localFolder.storeSmallMessage(message, new Runnable() {
                         @Override
                         public void run() {
                             progress.incrementAndGet();
@@ -1769,7 +1769,7 @@ public class MessagingController implements Runnable {
             // Update the listener with what we've found
             progress.incrementAndGet();
             // TODO do we need to re-fetch this here?
-            Message localMessage = localFolder.getMessage(message.getUid());
+            LocalMessage localMessage = localFolder.getMessage(message.getUid());
 
             // Increment the number of "new messages" if the newly downloaded message is
             // not marked as read.
@@ -4781,8 +4781,7 @@ public class MessagingController implements Runnable {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
-    private Message findNewestMessageForNotificationLocked(Context context,
-            Account account, NotificationData data) {
+    private LocalMessage findNewestMessageForNotificationLocked(Context context, NotificationData data) {
         if (!data.messages.isEmpty()) {
             return data.messages.getFirst();
         }
@@ -4798,7 +4797,7 @@ public class MessagingController implements Runnable {
      * Creates a notification of a newly received message.
      */
     private void notifyAccount(Context context, Account account,
-            Message message, int previousUnreadMessageCount) {
+            LocalMessage message, int previousUnreadMessageCount) {
         final NotificationData data = getNotificationData(account, previousUnreadMessageCount);
         synchronized (data) {
             notifyAccountWithDataLocked(context, account, message, data);
@@ -4809,12 +4808,12 @@ public class MessagingController implements Runnable {
     private static final int NUM_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5;
 
     private void notifyAccountWithDataLocked(Context context, Account account,
-            Message message, NotificationData data) {
+            LocalMessage message, NotificationData data) {
         boolean updateSilently = false;
 
         if (message == null) {
             /* this can happen if a message we previously notified for is read or deleted remotely */
-            message = findNewestMessageForNotificationLocked(context, account, data);
+            message = findNewestMessageForNotificationLocked(context, data);
             updateSilently = true;
             if (message == null) {
                 // seemingly both the message list as well as the overflow list is empty;
@@ -5110,7 +5109,7 @@ public class MessagingController implements Runnable {
                                                  int unreadCount,
                                                  CharSequence accountDescription,
                                                  CharSequence formattedSender,
-                                                 List<Message> messages) {
+                                                 List<? extends Message> messages) {
         if (!platformSupportsLockScreenNotifications()) {
             return;
         }

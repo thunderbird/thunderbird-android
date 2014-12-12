@@ -1138,14 +1138,14 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
      * @return The local version of the message. Never <code>null</code>.
      * @throws MessagingException
      */
-    public Message storeSmallMessage(final Message message, final Runnable runnable) throws MessagingException {
-        return this.localStore.database.execute(true, new DbCallback<Message>() {
+    public LocalMessage storeSmallMessage(final Message message, final Runnable runnable) throws MessagingException {
+        return this.localStore.database.execute(true, new DbCallback<LocalMessage>() {
             @Override
-            public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+            public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 try {
                     appendMessages(Collections.singletonList(message));
                     final String uid = message.getUid();
-                    final Message result = getMessage(uid);
+                    final LocalMessage result = getMessage(uid);
                     runnable.run();
                     // Set a flag indicating this message has now be fully downloaded
                     result.setFlag(Flag.X_DOWNLOADED_FULL, true);

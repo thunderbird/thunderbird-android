@@ -27,7 +27,7 @@ import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
 
 public class LocalMessage extends MimeMessage {
-
+    protected MessageReference mReference;
     private final LocalStore localStore;
 
     private long mId;
@@ -52,8 +52,7 @@ public class LocalMessage extends MimeMessage {
         this.mFolder = folder;
     }
 
-    void populateFromGetMessageCursor(Cursor cursor)
-    throws MessagingException {
+    void populateFromGetMessageCursor(Cursor cursor) throws MessagingException {
         final String subject = cursor.getString(0);
         this.setSubject(subject == null ? "" : subject);
 
@@ -189,6 +188,12 @@ public class LocalMessage extends MimeMessage {
     public void setMessageId(String messageId) {
         mMessageId = messageId;
         mMessageDirty = true;
+    }
+
+    @Override
+    public void setUid(String uid) {
+        super.setUid(uid);
+        this.mReference = null;
     }
 
     @Override
@@ -564,13 +569,22 @@ public class LocalMessage extends MimeMessage {
         return localStore.getAccount();
     }
 
-    @Override
     public MessageReference makeMessageReference() {
         if (mReference == null) {
-            mReference = super.makeMessageReference();
+            mReference = new MessageReference();
+            mReference.folderName  = getFolder().getName();
+            mReference.uid = mUid;
             mReference.accountUuid = getFolder().getUuid();
         }
         return mReference;
+    }
+
+    @Override
+    protected void copy(MimeMessage destination) {
+        super.copy(destination);
+        if (destination instanceof LocalMessage) {
+            ((LocalMessage)destination).mReference = mReference;
+        }
     }
 
     @Override
