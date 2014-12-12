@@ -21,7 +21,7 @@ import org.apache.james.mime4j.util.CharsetUtil;
  * decode emoji characters in the Subject headers.  The method to decode emoji depends on the MimeMessage class because
  * it has to be determined with the sender address, the mailer and so on.
  */
-public class DecoderUtil {
+class DecoderUtil {
     /**
      * Decodes an encoded word encoded with the 'B' encoding (described in
      * RFC 2047) found in a header field body.
