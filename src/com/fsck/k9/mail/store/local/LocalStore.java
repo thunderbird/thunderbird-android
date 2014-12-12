@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import android.app.Application;
 import android.content.ContentResolver;
@@ -32,6 +34,8 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
 import com.fsck.k9.mail.store.StorageManager;
@@ -55,6 +59,18 @@ public class LocalStore extends Store implements Serializable {
 
     static final String[] EMPTY_STRING_ARRAY = new String[0];
     static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
+    /**
+     * Lock objects indexed by account UUID.
+     *
+     * @see #getInstance(Account, Application)
+     */
+    private static ConcurrentMap<String, Object> sAccountLocks = new ConcurrentHashMap<String, Object>();
+
+    /**
+     * Local stores indexed by UUID because the Uri may change due to migration to/from SD-card.
+     */
+    private static ConcurrentMap<String, Store> sLocalStores = new ConcurrentHashMap<String, Store>();
 
     /*
      * a String containing the columns getMessages expects to work with
@@ -138,6 +154,7 @@ public class LocalStore extends Store implements Serializable {
     LockableDatabase database;
 
     private ContentResolver mContentResolver;
+    private final Account mAccount;
 
     /**
      * local://localhost/path/to/database/uuid.db
@@ -147,7 +164,7 @@ public class LocalStore extends Store implements Serializable {
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
     public LocalStore(final Account account, final Application application) throws MessagingException {
-        super(account);
+        mAccount = account;
         database = new LockableDatabase(application, account.getUuid(), new StoreSchemaDefinition(this));
 
         mApplication = application;
@@ -158,8 +175,71 @@ public class LocalStore extends Store implements Serializable {
         database.open();
     }
 
+    /**
+     * Get an instance of a local mail store.
+     *
+     * @throws UnavailableStorageException
+     *          if not {@link StorageProvider#isReady(Context)}
+     */
+    public static LocalStore getInstance(Account account, Application application)
+            throws MessagingException {
+
+        String accountUuid = account.getUuid();
+
+        // Create new per-account lock object if necessary
+        sAccountLocks.putIfAbsent(accountUuid, new Object());
+
+        // Get the account's lock object
+        Object lock = sAccountLocks.get(accountUuid);
+
+        // Use per-account locks so DatabaseUpgradeService always knows which account database is
+        // currently upgraded.
+        synchronized (lock) {
+            Store store = sLocalStores.get(accountUuid);
+
+            if (store == null) {
+                // Creating a LocalStore instance will create or upgrade the database if
+                // necessary. This could take some time.
+                store = new LocalStore(account, application);
+
+                sLocalStores.put(accountUuid, store);
+            }
+
+            return (LocalStore) store;
+        }
+    }
+
+    public static void removeAccount(StoreConfig storeConfig) {
+        try {
+            RemoteStore.removeInstance(storeConfig);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Failed to reset remote store for account " + storeConfig.getUuid(), e);
+        }
+
+        try {
+            removeInstance(storeConfig);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Failed to reset local store for account " + storeConfig.getUuid(), e);
+        }
+    }
+
+    /**
+     * Release reference to a local mail store instance.
+     *
+     * @param account
+     *         {@link Account} instance that is used to get the local mail store instance.
+     */
+    private static void removeInstance(StoreConfig account) {
+        String accountUuid = account.getUuid();
+        sLocalStores.remove(accountUuid);
+    }
+
     public void switchLocalStorage(final String newStorageProviderId) throws MessagingException {
         database.switchProvider(newStorageProviderId);
+    }
+
+    protected Account getAccount() {
+        return mAccount;
     }
 
     protected SharedPreferences getPreferences() {

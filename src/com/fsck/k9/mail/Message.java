@@ -19,8 +19,8 @@ import com.fsck.k9.mail.store.UnavailableStorageException;
 
 
 public abstract class Message implements Part, CompositeBody {
+    protected MessageReference mReference;
 
-    private MessageReference mReference = null;
 
     public enum RecipientType {
         TO, CC, BCC,
@@ -55,8 +55,7 @@ public abstract class Message implements Part, CompositeBody {
         }
         Message other = (Message)o;
         return (mUid.equals(other.getUid())
-                && mFolder.getName().equals(other.getFolder().getName())
-                && mFolder.getAccount().getUuid().equals(other.getFolder().getAccount().getUuid()));
+                && mFolder.getName().equals(other.getFolder().getName()));
     }
 
     @Override
@@ -65,7 +64,6 @@ public abstract class Message implements Part, CompositeBody {
 
         int result = 1;
         result = MULTIPLIER * result + mFolder.getName().hashCode();
-        result = MULTIPLIER * result + mFolder.getAccount().getUuid().hashCode();
         result = MULTIPLIER * result + mUid.hashCode();
         return result;
     }
@@ -75,7 +73,7 @@ public abstract class Message implements Part, CompositeBody {
     }
 
     public void setUid(String uid) {
-        mReference = null;
+        this.mReference = null;
         this.mUid = uid;
     }
 
@@ -249,15 +247,14 @@ public abstract class Message implements Part, CompositeBody {
     public void destroy() throws MessagingException {}
 
     @Override
-    public abstract void setEncoding(String encoding) throws UnavailableStorageException, MessagingException;
+    public abstract void setEncoding(String encoding) throws MessagingException;
 
     public abstract void setCharset(String charset) throws MessagingException;
 
     public MessageReference makeMessageReference() {
         if (mReference == null) {
             mReference = new MessageReference();
-            mReference.accountUuid = getFolder().getAccount().getUuid();
-            mReference.folderName = getFolder().getName();
+            mReference.folderName  = getFolder().getName();
             mReference.uid = mUid;
         }
         return mReference;

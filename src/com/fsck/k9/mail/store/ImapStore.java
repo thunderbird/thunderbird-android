@@ -55,7 +55,6 @@ import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
@@ -78,7 +77,6 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
@@ -105,7 +103,7 @@ import org.apache.commons.io.IOUtils;
  * TODO Need a default response handler for things like folder updates
  * </pre>
  */
-public class ImapStore extends Store {
+public class ImapStore extends RemoteStore {
     public static final String STORE_TYPE = "IMAP";
 
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
@@ -113,7 +111,7 @@ public class ImapStore extends Store {
     private static int MAX_DELAY_TIME = 5 * 60 * 1000; // 5 minutes
     private static int NORMAL_DELAY_TIME = 5000;
 
-    private static int FETCH_WINDOW_SIZE = 100;
+    private static final int FETCH_WINDOW_SIZE = 100;
 
     private Set<Flag> mPermanentFlagsIndex = EnumSet.noneOf(Flag.class);
 
@@ -387,7 +385,7 @@ public class ImapStore extends Store {
 
         @Override
         public boolean useCompression(final int type) {
-            return mAccount.useCompression(type);
+            return mStoreConfig.useCompression(type);
         }
 
         @Override
@@ -439,12 +437,12 @@ public class ImapStore extends Store {
      */
     private final Map<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
 
-    public ImapStore(Account account) throws MessagingException {
-        super(account);
+    public ImapStore(StoreConfig storeConfig) throws MessagingException {
+        super(storeConfig);
 
         ImapStoreSettings settings;
         try {
-            settings = decodeUri(mAccount.getStoreUri());
+            settings = decodeUri(storeConfig.getStoreUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding store URI", e);
         }
@@ -502,7 +500,7 @@ public class ImapStore extends Store {
         ImapConnection connection = getConnection();
         try {
             List <? extends Folder > allFolders = listFolders(connection, false);
-            if (forceListAll || !mAccount.subscribedFoldersOnly()) {
+            if (forceListAll || !mStoreConfig.subscribedFoldersOnly()) {
                 return allFolders;
             } else {
                 List<Folder> resultFolders = new LinkedList<Folder>();
@@ -570,9 +568,9 @@ public class ImapStore extends Store {
                     mCombinedPrefix = null;
                 }
 
-                if (folder.equalsIgnoreCase(mAccount.getInboxFolderName())) {
+                if (folder.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
                     continue;
-                } else if (folder.equals(mAccount.getOutboxFolderName())) {
+                } else if (folder.equals(mStoreConfig.getOutboxFolderName())) {
                     /*
                      * There is a folder on the server with the same name as our local
                      * outbox. Until we have a good plan to deal with this situation
@@ -604,7 +602,7 @@ public class ImapStore extends Store {
                 }
             }
         }
-        folders.add(getFolder(mAccount.getInboxFolderName()));
+        folders.add(getFolder(mStoreConfig.getInboxFolderName()));
         return folders;
 
     }
@@ -661,17 +659,17 @@ public class ImapStore extends Store {
                 for (int i = 0, count = attributes.size(); i < count; i++) {
                     String attribute = attributes.getString(i);
                     if (attribute.equals("\\Drafts")) {
-                        mAccount.setDraftsFolderName(decodedFolderName);
+                        mStoreConfig.setDraftsFolderName(decodedFolderName);
                         if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected draft folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Sent")) {
-                        mAccount.setSentFolderName(decodedFolderName);
+                        mStoreConfig.setSentFolderName(decodedFolderName);
                         if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected sent folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Spam") || attribute.equals("\\Junk")) {
                         //rfc6154 just mentions \Junk
-                        mAccount.setSpamFolderName(decodedFolderName);
+                        mStoreConfig.setSpamFolderName(decodedFolderName);
                         if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected spam folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Trash")) {
-                        mAccount.setTrashFolderName(decodedFolderName);
+                        mStoreConfig.setTrashFolderName(decodedFolderName);
                         if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected trash folder: " + decodedFolderName);
                     }
                 }
@@ -777,7 +775,7 @@ public class ImapStore extends Store {
     }
 
 
-    class ImapFolder extends Folder {
+    class ImapFolder extends Folder<ImapMessage> {
         private String mName;
         protected volatile int mMessageCount = -1;
         protected volatile long uidNext = -1L;
@@ -789,14 +787,14 @@ public class ImapStore extends Store {
         private boolean mInSearch = false;
 
         public ImapFolder(ImapStore nStore, String name) {
-            super(nStore.getAccount());
+            super();
             store = nStore;
             this.mName = name;
         }
 
         public String getPrefixedName() throws MessagingException {
             String prefixedName = "";
-            if (!mAccount.getInboxFolderName().equalsIgnoreCase(mName)) {
+            if (!mStoreConfig.getInboxFolderName().equalsIgnoreCase(mName)) {
                 ImapConnection connection = null;
                 synchronized (this) {
                     if (mConnection == null) {
@@ -1293,7 +1291,7 @@ public class ImapStore extends Store {
         }
 
         @Override
-        public Message getMessage(String uid) throws MessagingException {
+        public ImapMessage getMessage(String uid) throws MessagingException {
             return new ImapMessage(uid, this);
         }
 
@@ -1351,7 +1349,7 @@ public class ImapStore extends Store {
             return search(searcher, listener);
         }
 
-        private List<Message> search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException {
+        private List<Message> search(ImapSearcher searcher, MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
 
             checkOpen(); //only need READ access
             List<Message> messages = new ArrayList<Message>();
@@ -1432,7 +1430,7 @@ public class ImapStore extends Store {
         }
 
         @Override
-        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
+        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener<ImapMessage> listener)
         throws MessagingException {
             if (messages == null || messages.isEmpty()) {
                 return;
@@ -1468,8 +1466,8 @@ public class ImapStore extends Store {
             }
             if (fp.contains(FetchProfile.Item.BODY_SANE)) {
                 // If the user wants to download unlimited-size messages, don't go only for the truncated body
-                if (mAccount.getMaximumAutoDownloadMessageSize() > 0) {
-                    fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize()));
+                if (mStoreConfig.getMaximumAutoDownloadMessageSize() > 0) {
+                    fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", mStoreConfig.getMaximumAutoDownloadMessageSize()));
                 } else {
                     fetchFields.add("BODY.PEEK[]");
                 }
@@ -1544,7 +1542,7 @@ public class ImapStore extends Store {
                             }
 
                             if (listener != null) {
-                                listener.messageFinished(message, messageNumber, messageMap.size());
+                                listener.messageFinished(imapMessage, messageNumber, messageMap.size());
                             }
                         } else {
                             handleUntaggedResponse(response);
@@ -1572,7 +1570,7 @@ public class ImapStore extends Store {
             String partId = parts[0];
             if ("TEXT".equalsIgnoreCase(partId)) {
                 fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>",
-                        mAccount.getMaximumAutoDownloadMessageSize());
+                        mStoreConfig.getMaximumAutoDownloadMessageSize());
             } else {
                 fetch = String.format("BODY.PEEK[%s]", partId);
             }
@@ -2194,7 +2192,7 @@ public class ImapStore extends Store {
         }
 
         protected String getLogId() {
-            String id = getAccount().getDescription() + ":" + getName() + "/" + Thread.currentThread().getName();
+            String id = mStoreConfig.toString() + ":" + getName() + "/" + Thread.currentThread().getName();
             if (mConnection != null) {
                 id += "/" + mConnection.getLogId();
             }
@@ -2213,7 +2211,7 @@ public class ImapStore extends Store {
         public List<Message> search(final String queryString, final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags)
             throws MessagingException {
 
-            if (!mAccount.allowRemoteSearch()) {
+            if (!mStoreConfig.allowRemoteSearch()) {
                 throw new MessagingException("Your settings do not allow remote searching of this account");
             }
 
@@ -2287,7 +2285,7 @@ public class ImapStore extends Store {
                         }
                     }
                     final String encodedQry = encodeString(queryString);
-                    if (mAccount.isRemoteSearchFullText()) {
+                    if (mStoreConfig.isRemoteSearchFullText()) {
                         imapQuery += "TEXT " + encodedQry;
                     } else {
                         imapQuery += "OR SUBJECT " + encodedQry + " FROM " + encodedQry;
@@ -2424,7 +2422,7 @@ public class ImapStore extends Store {
                     }
                 }
 
-                setReadTimeout(Store.SOCKET_READ_TIMEOUT);
+                setReadTimeout(SOCKET_READ_TIMEOUT);
 
                 mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                                               1024));
@@ -2458,7 +2456,7 @@ public class ImapStore extends Store {
                         mSocket = TrustedSocketFactory.createSocket(mSocket,
                                 mSettings.getHost(), mSettings.getPort(),
                                 mSettings.getClientCertificateAlias());
-                        mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
+                        mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
                         mIn = new PeekableInputStream(new BufferedInputStream(mSocket
                                                       .getInputStream(), 1024));
                         mParser = new ImapResponseParser(mIn);
@@ -2953,7 +2951,7 @@ public class ImapStore extends Store {
             super(store, name);
             receiver = nReceiver;
             TracingPowerManager pm = TracingPowerManager.getPowerManager(receiver.getContext());
-            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ImapFolderPusher " + store.getAccount().getDescription() + ":" + getName());
+            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ImapFolderPusher " + mStoreConfig.toString() + ":" + getName());
             wakeLock.setReferenceCounted(false);
 
         }
@@ -2968,7 +2966,7 @@ public class ImapStore extends Store {
             if (doneSent.compareAndSet(false, true)) {
                 ImapConnection conn = mConnection;
                 if (conn != null) {
-                    conn.setReadTimeout(Store.SOCKET_READ_TIMEOUT);
+                    conn.setReadTimeout(SOCKET_READ_TIMEOUT);
                     sendContinuation("DONE");
                 }
 
@@ -3030,7 +3028,7 @@ public class ImapStore extends Store {
                                 throw new MessagingException("IMAP server is not IDLE capable:" + conn.toString());
                             }
 
-                            if (!stop.get() && mAccount.isPushPollOnConnect() && (conn != oldConnection || needsPoll.getAndSet(false))) {
+                            if (!stop.get() && mStoreConfig.isPushPollOnConnect() && (conn != oldConnection || needsPoll.getAndSet(false))) {
                                 List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
                                 storedUntaggedResponses.clear();
                                 processUntaggedResponses(untaggedResponses);
@@ -3061,8 +3059,8 @@ public class ImapStore extends Store {
                                 }
                             }
 
-                            if (startUid < newUidNext - mAccount.getDisplayCount()) {
-                                startUid = newUidNext - mAccount.getDisplayCount();
+                            if (startUid < newUidNext - mStoreConfig.getDisplayCount()) {
+                                startUid = newUidNext - mStoreConfig.getDisplayCount();
                             }
                             if (startUid < 1) {
                                 startUid = 1;
@@ -3099,7 +3097,7 @@ public class ImapStore extends Store {
                                 idling.set(true);
                                 doneSent.set(false);
 
-                                conn.setReadTimeout((getAccount().getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
+                                conn.setReadTimeout((mStoreConfig.getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
                                 untaggedResponses = executeSimpleCommand(COMMAND_IDLE, false, ImapFolderPusher.this);
                                 idling.set(false);
                                 delayTime.set(NORMAL_DELAY_TIME);
@@ -3495,7 +3493,7 @@ public class ImapStore extends Store {
 
         @Override
         public int getRefreshInterval() {
-            return (getAccount().getIdleRefreshMinutes() * 60 * 1000);
+            return (mStoreConfig.getIdleRefreshMinutes() * 60 * 1000);
         }
 
         @Override

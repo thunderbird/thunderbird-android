@@ -123,13 +123,11 @@ public class EmailProviderCache {
         }
     }
 
-    public void hideMessages(List<Message> messages) {
+    public void hideMessages(List<LocalMessage> messages) {
         synchronized (mHiddenMessageCache) {
-            for (Message message : messages) {
-                LocalMessage localMessage = (LocalMessage) message;
-                long messageId = localMessage.getId();
-                long folderId = ((LocalFolder) localMessage.getFolder()).getId();
-                mHiddenMessageCache.put(messageId, folderId);
+            for (LocalMessage message : messages) {
+                long messageId = message.getId();
+                mHiddenMessageCache.put(messageId, message.getFolder().getId());
             }
         }
 

@@ -15,6 +15,7 @@ import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.net.ssl.TrustedSocketFactory;
 
@@ -183,7 +184,7 @@ public class SmtpTransport extends Transport {
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
 
-    public SmtpTransport(Account account) throws MessagingException {
+    public SmtpTransport(StoreConfig account) throws MessagingException {
         ServerSettings settings;
         try {
             settings = decodeUri(account.getTransportUri());

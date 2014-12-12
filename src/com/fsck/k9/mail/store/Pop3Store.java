@@ -3,7 +3,6 @@ package com.fsck.k9.mail.store;
 
 import android.util.Log;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
@@ -24,7 +23,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -35,7 +33,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-public class Pop3Store extends Store {
+public class Pop3Store extends RemoteStore {
     public static final String STORE_TYPE = "POP3";
 
     private static final String STLS_COMMAND = "STLS";
@@ -209,12 +207,12 @@ public class Pop3Store extends Store {
     private boolean mTopNotSupported;
 
 
-    public Pop3Store(Account account) throws MessagingException {
-        super(account);
+    public Pop3Store(StoreConfig storeConfig) throws MessagingException {
+        super(storeConfig);
 
         ServerSettings settings;
         try {
-            settings = decodeUri(mAccount.getStoreUri());
+            settings = decodeUri(storeConfig.getStoreUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding store URI", e);
         }
@@ -243,13 +241,13 @@ public class Pop3Store extends Store {
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folders = new LinkedList<Folder>();
-        folders.add(getFolder(mAccount.getInboxFolderName()));
+        folders.add(getFolder(mStoreConfig.getInboxFolderName()));
         return folders;
     }
 
     @Override
     public void checkSettings() throws MessagingException {
-        Pop3Folder folder = new Pop3Folder(mAccount.getInboxFolderName());
+        Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
         folder.open(Folder.OPEN_MODE_RW);
         if (!mCapabilities.uidl) {
             /*
@@ -272,7 +270,7 @@ public class Pop3Store extends Store {
         return false;
     }
 
-    class Pop3Folder extends Folder {
+    class Pop3Folder extends Folder<Pop3Message> {
         private Socket mSocket;
         private InputStream mIn;
         private OutputStream mOut;
@@ -283,11 +281,11 @@ public class Pop3Store extends Store {
         private int mMessageCount;
 
         public Pop3Folder(String name) {
-            super(Pop3Store.this.mAccount);
+            super();
             this.mName = name;
 
-            if (mName.equalsIgnoreCase(mAccount.getInboxFolderName())) {
-                mName = mAccount.getInboxFolderName();
+            if (mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
+                mName = mStoreConfig.getInboxFolderName();
             }
         }
 
@@ -297,7 +295,7 @@ public class Pop3Store extends Store {
                 return;
             }
 
-            if (!mName.equalsIgnoreCase(mAccount.getInboxFolderName())) {
+            if (!mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
                 throw new MessagingException("Folder does not exist");
             }
 
@@ -313,7 +311,7 @@ public class Pop3Store extends Store {
                 mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
                 mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
 
-                mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
+                mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
                 if (!isOpen()) {
                     throw new MessagingException("Unable to connect socket");
                 }
@@ -328,7 +326,7 @@ public class Pop3Store extends Store {
 
                         mSocket = TrustedSocketFactory.createSocket(mSocket, mHost, mPort,
                                 mClientCertificateAlias);
-                        mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
+                        mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
                         mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
                         mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
                         if (!isOpen()) {
@@ -541,7 +539,7 @@ public class Pop3Store extends Store {
 
         @Override
         public boolean exists() throws MessagingException {
-            return mName.equalsIgnoreCase(mAccount.getInboxFolderName());
+            return mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName());
         }
 
         @Override
@@ -559,7 +557,7 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public Message getMessage(String uid) throws MessagingException {
+        public Pop3Message getMessage(String uid) throws MessagingException {
             Pop3Message message = mUidToMsgMap.get(uid);
             if (message == null) {
                 message = new Pop3Message(uid, this);
@@ -761,7 +759,7 @@ public class Pop3Store extends Store {
          * @throws MessagingException
          */
         @Override
-        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
+        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener<Pop3Message> listener)
         throws MessagingException {
             if (messages == null || messages.isEmpty()) {
                 return;
@@ -805,9 +803,9 @@ public class Pop3Store extends Store {
                          * To convert the suggested download size we take the size
                          * divided by the maximum line size (76).
                          */
-                        if (mAccount.getMaximumAutoDownloadMessageSize() > 0) {
+                        if (mStoreConfig.getMaximumAutoDownloadMessageSize() > 0) {
                             fetchBody(pop3Message,
-                                      (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+                                      (mStoreConfig.getMaximumAutoDownloadMessageSize() / 76));
                         } else {
                             fetchBody(pop3Message, -1);
                         }
@@ -819,7 +817,7 @@ public class Pop3Store extends Store {
                         pop3Message.setBody(null);
                     }
                     if (listener != null && !(fp.contains(FetchProfile.Item.ENVELOPE) && fp.size() == 1)) {
-                        listener.messageFinished(message, i, count);
+                        listener.messageFinished(pop3Message, i, count);
                     }
                 } catch (IOException ioe) {
                     throw new MessagingException("Unable to fetch message", ioe);

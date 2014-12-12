@@ -12,7 +12,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -28,7 +30,7 @@ public class LocalMessage extends MimeMessage {
 
     private final LocalStore localStore;
 
-    long mId;
+    private long mId;
     private int mAttachmentCount;
     private String mSubject;
 
@@ -556,5 +558,44 @@ public class LocalMessage extends MimeMessage {
 
     public long getRootId() {
         return mRootId;
+    }
+
+    public Account getAccount() {
+        return localStore.getAccount();
+    }
+
+    @Override
+    public MessageReference makeMessageReference() {
+        if (mReference == null) {
+            mReference = super.makeMessageReference();
+            mReference.accountUuid = getFolder().getUuid();
+        }
+        return mReference;
+    }
+
+    @Override
+    public LocalFolder getFolder() {
+        return (LocalFolder) super.getFolder();
+    }
+
+    public String getUri() {
+        return "email://messages/" +  getAccount().getAccountNumber() + "/" + getFolder().getName() + "/" + getUid();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        LocalMessage that = (LocalMessage) o;
+        return !(getUid() != null ? !getUid().equals(that.getUid()) : that.getUid() != null);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (getUid() != null ? getUid().hashCode() : 0);
+        return result;
     }
 }

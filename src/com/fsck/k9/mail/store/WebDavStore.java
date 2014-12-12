@@ -2,7 +2,6 @@ package com.fsck.k9.mail.store;
 
 import android.util.Log;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageRetrievalListener;
 
@@ -55,7 +54,7 @@ import java.util.zip.GZIPInputStream;
  * and email information.
  * </pre>
  */
-public class WebDavStore extends Store {
+public class WebDavStore extends RemoteStore {
     public static final String STORE_TYPE = "WebDAV";
 
     // Authentication types
@@ -294,12 +293,12 @@ public class WebDavStore extends Store {
     private Map<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
 
-    public WebDavStore(Account account) throws MessagingException {
-        super(account);
+    public WebDavStore(StoreConfig storeConfig) throws MessagingException {
+        super(storeConfig);
 
         WebDavStoreSettings settings;
         try {
-            settings = decodeUri(mAccount.getStoreUri());
+            settings = decodeUri(storeConfig.getStoreUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding store URI", e);
         }
@@ -380,21 +379,21 @@ public class WebDavStore extends Store {
         Map<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
         String folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_INBOX_FOLDER));
         if (folderName != null) {
-            mAccount.setAutoExpandFolderName(folderName);
-            mAccount.setInboxFolderName(folderName);
+            mStoreConfig.setAutoExpandFolderName(folderName);
+            mStoreConfig.setInboxFolderName(folderName);
         }
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_DRAFTS_FOLDER));
         if (folderName != null)
-            mAccount.setDraftsFolderName(folderName);
+            mStoreConfig.setDraftsFolderName(folderName);
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_TRASH_FOLDER));
         if (folderName != null)
-            mAccount.setTrashFolderName(folderName);
+            mStoreConfig.setTrashFolderName(folderName);
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SPAM_FOLDER));
         if (folderName != null)
-            mAccount.setSpamFolderName(folderName);
+            mStoreConfig.setSpamFolderName(folderName);
 
         // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
         /*
@@ -405,7 +404,7 @@ public class WebDavStore extends Store {
 
         folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_SENT_FOLDER));
         if (folderName != null)
-            mAccount.setSentFolderName(folderName);
+            mStoreConfig.setSentFolderName(folderName);
 
         /**
          * Next we get all the folders (including "special" ones)
@@ -1196,7 +1195,7 @@ public class WebDavStore extends Store {
 
     @Override
     public void sendMessages(List<? extends Message> messages) throws MessagingException {
-        WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(mAccount.getDraftsFolderName());
+        WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(mStoreConfig.getDraftsFolderName());
         try {
             tmpFolder.open(Folder.OPEN_MODE_RW);
             List<? extends Message> retMessages = tmpFolder.appendWebDavMessages(messages);
@@ -1216,7 +1215,7 @@ public class WebDavStore extends Store {
     /**
      * A WebDav Folder
      */
-    class WebDavFolder extends Folder {
+    class WebDavFolder extends Folder<WebDavMessage> {
         private String mName;
         private String mFolderUrl;
         private boolean mIsOpen = false;
@@ -1229,7 +1228,7 @@ public class WebDavStore extends Store {
         }
 
         public WebDavFolder(WebDavStore nStore, String name) {
-            super(nStore.getAccount());
+            super();
             store = nStore;
             this.mName = name;
 
@@ -1397,7 +1396,7 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public Message getMessage(String uid) throws MessagingException {
+        public WebDavMessage getMessage(String uid) throws MessagingException {
             return new WebDavMessage(uid, this);
         }
 
@@ -1498,7 +1497,7 @@ public class WebDavStore extends Store {
         }
 
         @Override
-        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
+        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener<WebDavMessage> listener)
         throws MessagingException {
             if (messages == null ||
                     messages.isEmpty()) {
@@ -1519,8 +1518,8 @@ public class WebDavStore extends Store {
             }
 
             if (fp.contains(FetchProfile.Item.BODY_SANE)) {
-                if (mAccount.getMaximumAutoDownloadMessageSize() > 0) {
-                    fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+                if (mStoreConfig.getMaximumAutoDownloadMessageSize() > 0) {
+                    fetchMessages(messages, listener, (mStoreConfig.getMaximumAutoDownloadMessageSize() / 76));
                 } else {
                     fetchMessages(messages, listener, -1);
                 }
@@ -1533,7 +1532,7 @@ public class WebDavStore extends Store {
         /**
          * Fetches the full messages or up to lines lines and passes them to the message parser.
          */
-        private void fetchMessages(List<? extends Message> messages, MessageRetrievalListener listener, int lines)
+        private void fetchMessages(List<? extends Message> messages, MessageRetrievalListener<WebDavMessage> listener, int lines)
         throws MessagingException {
             WebDavHttpClient httpclient;
             httpclient = getHttpClient();
@@ -1594,8 +1593,8 @@ public class WebDavStore extends Store {
                     if (entity != null) {
                         InputStream istream = null;
                         StringBuilder buffer = new StringBuilder();
-                        String tempText = "";
-                        String resultText = "";
+                        String tempText;
+                        String resultText;
                         BufferedReader reader = null;
                         int currentLines = 0;
 

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -76,12 +75,11 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.WelcomeMessage;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.SizeFormatter;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.preferences.SettingsExporter;
@@ -771,7 +769,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         private void show(final Accounts activity, boolean restore) {
-            ServerSettings incoming = Store.decodeStoreUri(mAccount.getStoreUri());
+            ServerSettings incoming = RemoteStore.decodeStoreUri(mAccount.getStoreUri());
             ServerSettings outgoing = Transport.decodeTransportUri(mAccount.getTransportUri());
 
             /*
@@ -992,9 +990,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 if (mIncomingPassword != null) {
                     // Set incoming server password
                     String storeUri = mAccount.getStoreUri();
-                    ServerSettings incoming = Store.decodeStoreUri(storeUri);
+                    ServerSettings incoming = RemoteStore.decodeStoreUri(storeUri);
                     ServerSettings newIncoming = incoming.newPassword(mIncomingPassword);
-                    String newStoreUri = Store.createStoreUri(newIncoming);
+                    String newStoreUri = RemoteStore.createStoreUri(newIncoming);
                     mAccount.setStoreUri(newStoreUri);
                 }
 

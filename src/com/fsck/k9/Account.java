@@ -29,6 +29,8 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.mail.store.local.LocalStore;
@@ -48,7 +50,7 @@ import com.larswerkman.colorpicker.ColorPicker;
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
-public class Account implements BaseAccount {
+public class Account implements BaseAccount, StoreConfig {
     /**
      * Default value for the inbox folder (never changes for POP3 and IMAP)
      */
@@ -1289,11 +1291,11 @@ public class Account implements BaseAccount {
     }
 
     public LocalStore getLocalStore() throws MessagingException {
-        return Store.getLocalInstance(this, K9.app);
+        return LocalStore.getInstance(this, K9.app);
     }
 
     public Store getRemoteStore() throws MessagingException {
-        return Store.getRemoteInstance(this);
+        return RemoteStore.getInstance(this);
     }
 
     // It'd be great if this actually went into the store implementation

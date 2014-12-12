@@ -2,6 +2,7 @@ package com.fsck.k9.activity;
 
 import java.util.Date;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.store.local.LocalMessage;
 
 public class MessageInfoHolder {
     public String date;
@@ -18,7 +19,7 @@ public class MessageInfoHolder {
     public boolean forwarded;
     public boolean flagged;
     public boolean dirty;
-    public Message message;
+    public LocalMessage message;
     public FolderInfoHolder folder;
     public boolean selected;
     public String account;
@@ -31,7 +32,7 @@ public class MessageInfoHolder {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof MessageInfoHolder == false) {
+        if (!(o instanceof MessageInfoHolder)) {
             return false;
         }
         MessageInfoHolder other = (MessageInfoHolder)o;

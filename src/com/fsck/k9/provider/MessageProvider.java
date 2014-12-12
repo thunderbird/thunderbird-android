@@ -32,6 +32,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.local.LocalFolder;
 import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.search.SearchAccount;
@@ -200,9 +201,9 @@ public class MessageProvider extends ContentProvider {
     public static class DeleteUriExtractor implements FieldExtractor<MessageInfoHolder, String> {
         @Override
         public String getField(final MessageInfoHolder source) {
-            final Message message = source.message;
+            final LocalMessage message = source.message;
             return CONTENT_URI + "/delete_message/"
-                   + message.getFolder().getAccount().getAccountNumber() + "/"
+                   + message.getAccount().getAccountNumber() + "/"
                    + message.getFolder().getName() + "/" + message.getUid();
         }
     }
@@ -221,21 +222,21 @@ public class MessageProvider extends ContentProvider {
     public static class AccountExtractor implements FieldExtractor<MessageInfoHolder, String> {
         @Override
         public String getField(final MessageInfoHolder source) {
-            return source.message.getFolder().getAccount().getDescription();
+            return source.message.getAccount().getDescription();
         }
     }
 
     public static class AccountColorExtractor implements FieldExtractor<MessageInfoHolder, Integer> {
         @Override
         public Integer getField(final MessageInfoHolder source) {
-            return source.message.getFolder().getAccount().getChipColor();
+            return source.message.getAccount().getChipColor();
         }
     }
 
     public static class AccountNumberExtractor implements FieldExtractor<MessageInfoHolder, Integer> {
         @Override
         public Integer getField(final MessageInfoHolder source) {
-            return source.message.getFolder().getAccount().getAccountNumber();
+            return source.message.getAccount().getAccountNumber();
         }
     }
 
@@ -910,18 +911,18 @@ public class MessageProvider extends ContentProvider {
 
         @Override
         public void listLocalMessagesAddMessages(final Account account,
-                final String folderName, final List<Message> messages) {
+                final String folderName, final List<LocalMessage> messages) {
             // cache fields into local variables for faster access on JVM without JIT
             final MessageHelper helper = mMessageHelper;
             final List<MessageInfoHolder> holders = mHolders;
 
             final Context context = getContext();
 
-            for (final Message message : messages) {
+            for (final LocalMessage message : messages) {
                 final MessageInfoHolder messageInfoHolder = new MessageInfoHolder();
                 final Folder messageFolder = message.getFolder();
-                final Account messageAccount = messageFolder.getAccount();
 
+                final Account messageAccount = messageInfoHolder.message.getAccount();
                 helper.populate(messageInfoHolder, message, new FolderInfoHolder(context,
                                 messageFolder, messageAccount), messageAccount);
 
@@ -1038,9 +1039,9 @@ public class MessageProvider extends ContentProvider {
         }
 
         // get localstore parameter
-        Message msg = null;
+        LocalMessage msg = null;
         try {
-            Folder lf = LocalStore.getLocalInstance(myAccount, K9.app).getFolder(folderName);
+            LocalFolder lf = LocalStore.getInstance(myAccount, K9.app).getFolder(folderName);
             int msgCount = lf.getMessageCount();
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "folder msg count = " + msgCount);

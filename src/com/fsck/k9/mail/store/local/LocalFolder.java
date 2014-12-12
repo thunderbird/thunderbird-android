@@ -28,6 +28,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.activity.Search;
@@ -58,7 +59,7 @@ import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
 import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.AttachmentProvider;
 
-public class LocalFolder extends Folder implements Serializable {
+public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
     
@@ -80,22 +81,19 @@ public class LocalFolder extends Folder implements Serializable {
     private Integer mLastUid = null;
 
     public LocalFolder(LocalStore localStore, String name) {
-        super(localStore.getAccount());
+        super();
         this.localStore = localStore;
         this.mName = name;
 
-        if (this.localStore.getAccount().getInboxFolderName().equals(getName())) {
-
+        if (getAccount().getInboxFolderName().equals(getName())) {
             mSyncClass =  FolderClass.FIRST_CLASS;
             mPushClass =  FolderClass.FIRST_CLASS;
             mInTopGroup = true;
         }
-
-
     }
 
     public LocalFolder(LocalStore localStore, long id) {
-        super(localStore.getAccount());
+        super();
         this.localStore = localStore;
         this.mFolderId = id;
     }
@@ -103,6 +101,25 @@ public class LocalFolder extends Folder implements Serializable {
     public long getId() {
         return mFolderId;
     }
+
+    public String getUuid()
+    {
+        return getAccount().getUuid();
+    }
+
+    public boolean getSignatureUse() {
+        return getAccount().getSignatureUse();
+    }
+
+    public void setLastSelectedFolderName(String destFolderName) {
+        getAccount().setLastSelectedFolderName(destFolderName);
+    }
+
+    public boolean syncRemoteDeletions() {
+        return getAccount().syncRemoteDeletions();
+    }
+
+
 
     @Override
     public void open(final int mode) throws MessagingException {
@@ -216,7 +233,7 @@ public class LocalFolder extends Folder implements Serializable {
 
     @Override
     public boolean create(FolderType type) throws MessagingException {
-        return create(type, mAccount.getDisplayCount());
+        return create(type, getAccount().getDisplayCount());
     }
 
     @Override
@@ -517,25 +534,25 @@ public class LocalFolder extends Folder implements Serializable {
         String id = getPrefId();
 
         // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-        if (mDisplayClass == FolderClass.NO_CLASS && !mAccount.getInboxFolderName().equals(getName())) {
+        if (mDisplayClass == FolderClass.NO_CLASS && !getAccount().getInboxFolderName().equals(getName())) {
             editor.remove(id + ".displayMode");
         } else {
             editor.putString(id + ".displayMode", mDisplayClass.name());
         }
 
-        if (mSyncClass == FolderClass.INHERITED && !mAccount.getInboxFolderName().equals(getName())) {
+        if (mSyncClass == FolderClass.INHERITED && !getAccount().getInboxFolderName().equals(getName())) {
             editor.remove(id + ".syncMode");
         } else {
             editor.putString(id + ".syncMode", mSyncClass.name());
         }
 
-        if (mNotifyClass == FolderClass.INHERITED && !mAccount.getInboxFolderName().equals(getName())) {
+        if (mNotifyClass == FolderClass.INHERITED && !getAccount().getInboxFolderName().equals(getName())) {
             editor.remove(id + ".notifyMode");
         } else {
             editor.putString(id + ".notifyMode", mNotifyClass.name());
         }
 
-        if (mPushClass == FolderClass.SECOND_CLASS && !mAccount.getInboxFolderName().equals(getName())) {
+        if (mPushClass == FolderClass.SECOND_CLASS && !getAccount().getInboxFolderName().equals(getName())) {
             editor.remove(id + ".pushMode");
         } else {
             editor.putString(id + ".pushMode", mPushClass.name());
@@ -597,7 +614,7 @@ public class LocalFolder extends Folder implements Serializable {
     }
 
     @Override
-    public void fetch(final List<? extends Message> messages, final FetchProfile fp, final MessageRetrievalListener listener)
+    public void fetch(final List<? extends Message> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)
     throws MessagingException {
         try {
             this.localStore.database.execute(false, new DbCallback<Void>() {
@@ -614,7 +631,7 @@ public class LocalFolder extends Folder implements Serializable {
                                 try {
                                     cursor = db.rawQuery("SELECT html_content, text_content, mime_type FROM messages "
                                                          + "WHERE id = ?",
-                                                         new String[] { Long.toString(localMessage.mId) });
+                                                         new String[] { Long.toString(localMessage.getId()) });
                                     cursor.moveToNext();
                                     String htmlContent = cursor.getString(0);
                                     String textContent = cursor.getString(1);
@@ -629,7 +646,7 @@ public class LocalFolder extends Folder implements Serializable {
                                             mp.addBodyPart(bp);
                                         }
 
-                                        if (mAccount.getMessageFormat() != MessageFormat.TEXT) {
+                                        if (getAccount().getMessageFormat() != MessageFormat.TEXT) {
                                             if (htmlContent != null) {
                                                 TextBody body = new TextBody(htmlContent);
                                                 MimeBodyPart bp = new MimeBodyPart(body, "text/html");
@@ -700,7 +717,7 @@ public class LocalFolder extends Folder implements Serializable {
                                                      "content_disposition"
                                                  },
                                                  "message_id = ?",
-                                                 new String[] { Long.toString(localMessage.mId) },
+                                                 new String[] { Long.toString(localMessage.getId()) },
                                                  null,
                                                  null,
                                                  null);
@@ -1439,12 +1456,12 @@ public class LocalFolder extends Folder implements Serializable {
                                            message.isSet(Flag.FLAGGED) ? 1 : 0,
                                            message.isSet(Flag.ANSWERED) ? 1 : 0,
                                            message.isSet(Flag.FORWARDED) ? 1 : 0,
-                                           message.mId
+                                           message.getId()
                                        });
 
                             for (int i = 0, count = attachments.size(); i < count; i++) {
                                 Part attachment = attachments.get(i);
-                                saveAttachment(message.mId, attachment, false);
+                                saveAttachment(message.getId(), attachment, false);
                             }
                             saveHeaders(message.getId(), message);
                         } catch (Exception e) {
@@ -1637,7 +1654,7 @@ public class LocalFolder extends Folder implements Serializable {
                             File attachmentFile = new File(attachmentDirectory, Long.toString(attachmentId));
                             tempAttachmentFile.renameTo(attachmentFile);
                             contentUri = AttachmentProvider.getAttachmentUri(
-                                             mAccount,
+                                             getAccount(),
                                              attachmentId);
                             if (MimeUtil.isMessage(attachment.getMimeType())) {
                                 attachment.setBody(new LocalAttachmentMessageBody(
@@ -1712,7 +1729,7 @@ public class LocalFolder extends Folder implements Serializable {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 db.update("messages", cv, "id = ?", new String[]
-                          { Long.toString(message.mId) });
+                          { Long.toString(message.getId()) });
                 return null;
             }
         });
@@ -1829,7 +1846,7 @@ public class LocalFolder extends Folder implements Serializable {
         setPushState(null);
         setLastPush(0);
         setLastChecked(0);
-        setVisibleLimit(mAccount.getDisplayCount());
+        setVisibleLimit(getAccount().getDisplayCount());
     }
 
     @Override
@@ -1878,7 +1895,7 @@ public class LocalFolder extends Folder implements Serializable {
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 Cursor attachmentsCursor = null;
                 try {
-                    String accountUuid = mAccount.getUuid();
+                    String accountUuid = getUuid();
                     Context context = LocalFolder.this.localStore.mApplication;
 
                     // Get attachment IDs
@@ -2039,7 +2056,7 @@ public class LocalFolder extends Folder implements Serializable {
 
         // Append the first message ID from the "In-Reply-To" header line
         String[] inReplyToArray = message.getHeader("In-Reply-To");
-        String inReplyTo = null;
+        String inReplyTo;
         if (inReplyToArray != null && inReplyToArray.length > 0) {
             inReplyTo = Utility.extractMessageId(inReplyToArray[0]);
             if (inReplyTo != null) {
@@ -2193,5 +2210,9 @@ public class LocalFolder extends Folder implements Serializable {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
+    }
+
+    private Account getAccount() {
+        return localStore.getAccount();
     }
 }

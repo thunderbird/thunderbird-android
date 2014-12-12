@@ -14,6 +14,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.store.local.LocalMessage;
 
 public class MessageHelper {
 
@@ -32,8 +33,10 @@ public class MessageHelper {
         mContext = context;
     }
 
-    public void populate(final MessageInfoHolder target, final Message message,
-                         final FolderInfoHolder folder, final Account account) {
+    public void populate(final MessageInfoHolder target,
+                         final LocalMessage message,
+                         final FolderInfoHolder folder,
+                         Account account) {
         final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
         try {
             target.message = message;
@@ -68,14 +71,9 @@ public class MessageHelper {
                 target.senderAddress = target.compareCounterparty;
             }
 
-
-
-
             target.uid = message.getUid();
-
-            target.account = account.getUuid();
-            target.uri = "email://messages/" + account.getAccountNumber() + "/" + message.getFolder().getName() + "/" + message.getUid();
-
+            target.account = message.getFolder().getUuid();
+            target.uri = message.getUri();
         } catch (MessagingException me) {
             Log.w(K9.LOG_TAG, "Unable to load message info", me);
         }

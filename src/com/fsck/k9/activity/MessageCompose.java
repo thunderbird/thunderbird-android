@@ -108,6 +108,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.TextBodyBuilder;
 import com.fsck.k9.mail.store.local.LocalAttachmentBody;
+import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.mail.store.local.TempFileBody;
 import com.fsck.k9.mail.store.local.TempFileMessageBody;
 import com.fsck.k9.view.MessageWebView;
@@ -435,17 +436,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Get intent for composing a new message as a reply to the given message. If replyAll is true
      * the function is reply all instead of simply reply.
      * @param context
-     * @param account
      * @param message
      * @param replyAll
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
     public static Intent getActionReplyIntent(
-        Context context,
-        Account account,
-        Message message,
-        boolean replyAll,
-        String messageBody) {
+            Context context,
+            Message message,
+            boolean replyAll,
+            String messageBody) {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
@@ -468,25 +467,22 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     public static void actionReply(
         Context context,
-        Account account,
         Message message,
         boolean replyAll,
         String messageBody) {
-        context.startActivity(getActionReplyIntent(context, account, message, replyAll, messageBody));
+        context.startActivity(getActionReplyIntent(context, message, replyAll, messageBody));
     }
 
     /**
      * Compose a new message as a forward of the given message.
      * @param context
-     * @param account
      * @param message
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
     public static void actionForward(
-        Context context,
-        Account account,
-        Message message,
-        String messageBody) {
+            Context context,
+            Message message,
+            String messageBody) {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
@@ -2646,7 +2642,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * @param message
      *         The source message used to populate the various text fields.
      */
-    private void processSourceMessage(Message message) {
+    private void processSourceMessage(LocalMessage message) {
         try {
             switch (mAction) {
                 case REPLY:
@@ -2800,7 +2796,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private void processDraftMessage(Message message) throws MessagingException {
+    private void processDraftMessage(LocalMessage message) throws MessagingException {
         String showQuotedTextMode = "NONE";
 
         mDraftId = MessagingController.getInstance(getApplication()).getId(message);
@@ -2852,7 +2848,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             newIdentity.setSignature(k9identity.get(IdentityField.SIGNATURE));
             mSignatureChanged = true;
         } else {
-            newIdentity.setSignatureUse(message.getFolder().getAccount().getSignatureUse());
+            newIdentity.setSignatureUse(message.getFolder().getSignatureUse());
             newIdentity.setSignature(mIdentity.getSignature());
         }
 
@@ -3437,7 +3433,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         }
                         updateMessageFormat();
                     } else {
-                        processSourceMessage(message);
+                        processSourceMessage((LocalMessage) message);
                         mSourceProcessed = true;
                     }
                 }

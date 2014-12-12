@@ -1199,17 +1199,17 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void onForward(Message message) {
-        MessageCompose.actionForward(this, message.getFolder().getAccount(), message, null);
+        MessageCompose.actionForward(this, message, null);
     }
 
     @Override
     public void onReply(Message message) {
-        MessageCompose.actionReply(this, message.getFolder().getAccount(), message, false, null);
+        MessageCompose.actionReply(this, message, false, null);
     }
 
     @Override
     public void onReplyAll(Message message) {
-        MessageCompose.actionReply(this, message.getFolder().getAccount(), message, true, null);
+        MessageCompose.actionReply(this, message, true, null);
     }
 
     @Override
@@ -1400,17 +1400,17 @@ public class MessageList extends K9FragmentActivity implements MessageListFragme
 
     @Override
     public void onReply(Message message, PgpData pgpData) {
-        MessageCompose.actionReply(this, mAccount, message, false, pgpData.getDecryptedData());
+        MessageCompose.actionReply(this, message, false, pgpData.getDecryptedData());
     }
 
     @Override
     public void onReplyAll(Message message, PgpData pgpData) {
-        MessageCompose.actionReply(this, mAccount, message, true, pgpData.getDecryptedData());
+        MessageCompose.actionReply(this, message, true, pgpData.getDecryptedData());
     }
 
     @Override
     public void onForward(Message mMessage, PgpData mPgpData) {
-        MessageCompose.actionForward(this, mAccount, mMessage, mPgpData.getDecryptedData());
+        MessageCompose.actionForward(this, mMessage, mPgpData.getDecryptedData());
     }
 
     @Override

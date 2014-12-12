@@ -215,7 +215,7 @@ public class AttachmentProvider extends ContentProvider {
         final AttachmentInfo attachmentInfo;
         try {
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
-            attachmentInfo = LocalStore.getLocalInstance(account, K9.app).getAttachmentInfo(id);
+            attachmentInfo = LocalStore.getInstance(account, K9.app).getAttachmentInfo(id);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to retrieve attachment info from local store for ID: " + id, e);
             return null;
@@ -269,7 +269,7 @@ public class AttachmentProvider extends ContentProvider {
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
 
             try {
-                final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
+                final LocalStore localStore = LocalStore.getInstance(account, K9.app);
 
                 AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
                 if (FORMAT_VIEW.equals(format) && mimeType != null) {

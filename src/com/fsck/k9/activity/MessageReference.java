@@ -13,6 +13,8 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.local.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalMessage;
 
 import java.util.StringTokenizer;
 
@@ -128,13 +130,13 @@ public class MessageReference implements Parcelable {
                '}';
     }
 
-    public Message restoreToLocalMessage(Context context) {
+    public LocalMessage restoreToLocalMessage(Context context) {
         try {
             Account account = Preferences.getPreferences(context).getAccount(accountUuid);
             if (account != null) {
-                Folder folder = account.getLocalStore().getFolder(folderName);
+                LocalFolder folder = account.getLocalStore().getFolder(folderName);
                 if (folder != null) {
-                    Message message = folder.getMessage(uid);
+                    LocalMessage message = folder.getMessage(uid);
                     if (message != null) {
                         return message;
                     } else {

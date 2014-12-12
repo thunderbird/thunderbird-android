@@ -1,21 +1,17 @@
 package com.fsck.k9.mail;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import android.util.Log;
-import com.fsck.k9.Account;
+
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
 
-
-public abstract class Folder {
-    protected final Account mAccount;
-
+public abstract class Folder<T extends Message> {
     private String status = null;
     private long lastChecked = 0;
     private long lastPush = 0;
@@ -30,10 +26,6 @@ public abstract class Folder {
 
     public enum FolderType {
         HOLDS_FOLDERS, HOLDS_MESSAGES,
-    }
-
-    protected Folder(Account account) {
-        mAccount = account;
     }
 
     /**
@@ -83,7 +75,7 @@ public abstract class Folder {
     public abstract int getUnreadMessageCount() throws MessagingException;
     public abstract int getFlaggedMessageCount() throws MessagingException;
 
-    public abstract Message getMessage(String uid) throws MessagingException;
+    public abstract T getMessage(String uid) throws MessagingException;
 
     /**
      * Fetch the shells of messages between a range of UIDs and after a given date.
@@ -94,7 +86,7 @@ public abstract class Folder {
      * @return List of messages
      * @throws MessagingException
      */
-    public abstract List<? extends Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener) throws MessagingException;
+    public abstract List<T> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<T> listener) throws MessagingException;
 
     /**
      * Fetches the given list of messages. The specified listener is notified as
@@ -104,13 +96,13 @@ public abstract class Folder {
      * @param listener Listener to notify as we download messages.
      * @return List of messages
      */
-    public abstract List<? extends Message> getMessages(MessageRetrievalListener listener) throws MessagingException;
+    public abstract List<T> getMessages(MessageRetrievalListener<T> listener) throws MessagingException;
 
-    public List<? extends Message> getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
+    public List<T> getMessages(MessageRetrievalListener<T> listener, boolean includeDeleted) throws MessagingException {
         return getMessages(listener);
     }
 
-    public abstract List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener)
+    public abstract List<T> getMessages(String[] uids, MessageRetrievalListener<T> listener)
     throws MessagingException;
 
     public abstract Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException;
@@ -149,10 +141,10 @@ public abstract class Folder {
      * @throws MessagingException
      */
     public abstract void fetch(List<? extends Message> messages, FetchProfile fp,
-                               MessageRetrievalListener listener) throws MessagingException;
+                               MessageRetrievalListener<T> listener) throws MessagingException;
 
     public void fetchPart(Message message, Part part,
-                          MessageRetrievalListener listener) throws MessagingException {
+                          MessageRetrievalListener<T> listener) throws MessagingException {
         // This is causing trouble. Disabled for now. See issue 1733
         //throw new RuntimeException("fetchPart() not implemented.");
 
@@ -239,10 +231,6 @@ public abstract class Folder {
 
     public void setStatus(String status) throws MessagingException {
         this.status = status;
-    }
-
-    public Account getAccount() {
-        return mAccount;
     }
 
     public List<Message> search(String queryString, final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags)
