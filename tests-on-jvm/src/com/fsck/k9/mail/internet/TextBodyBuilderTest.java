@@ -7,7 +7,7 @@ import org.junit.experimental.theories.*;
 import org.junit.runner.RunWith;
 
 import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.activity.InsertableHtmlContent;
+import com.fsck.k9.activity.TextBodyBuilder;
 
 class TestingTextBodyBuilder extends TextBodyBuilder {
 

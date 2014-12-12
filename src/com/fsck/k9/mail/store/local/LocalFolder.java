@@ -32,7 +32,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.activity.Search;
-import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.mail.internet.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;

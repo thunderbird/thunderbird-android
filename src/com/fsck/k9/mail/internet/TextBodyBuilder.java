@@ -4,8 +4,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.activity.InsertableHtmlContent;
-import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.Body;
 
 public class TextBodyBuilder {
@@ -27,7 +25,7 @@ public class TextBodyBuilder {
     /**
      * Build the {@link Body} that will contain the text of the message.
      *
-     * @return {@link TextBody} instance that contains the entered text and
+     * @return {@link com.fsck.k9.mail.internet.TextBody} instance that contains the entered text and
      *         possibly the quoted original message.
      */
     public TextBody buildTextHtml() {

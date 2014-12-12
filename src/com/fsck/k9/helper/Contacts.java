@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Helper class to access the contacts stored on the device.
  */
-public class Contacts {
+public class Contacts implements Address.Lookup {
     /**
      * The order in which the search results are returned by
      * {@link #searchContacts(CharSequence)}.

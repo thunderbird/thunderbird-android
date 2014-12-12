@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.mail.internet;
 
 import java.io.Serializable;
 

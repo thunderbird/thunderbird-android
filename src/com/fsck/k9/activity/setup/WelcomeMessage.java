@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.K9Activity;
-import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.mail.internet.HtmlConverter;
 
 /**
  * Displays a welcome message when no accounts have been created yet.

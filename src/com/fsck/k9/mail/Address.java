@@ -20,11 +20,14 @@ import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 
 
 public class Address {
+    public static interface Lookup {
+        String getNameForAddress(String address);
+    }
+
     /**
      * If the number of addresses exceeds this value the addresses aren't
      * resolved to the names of Android contacts.
@@ -34,7 +37,7 @@ public class Address {
      * performance tests.
      * </p>
      *
-     * @see Address#toFriendly(Address[], Contacts)
+     * @see Address#toFriendly(Address[], com.fsck.k9.mail.Address.Lookup)
      */
     private static final int TOO_MANY_ADDRESSES = 50;
 
@@ -239,7 +242,7 @@ public class Address {
      * @return
      */
     public CharSequence toFriendly() {
-        return toFriendly((Contacts)null);
+        return toFriendly((Lookup)null);
     }
 
     /**
@@ -254,7 +257,7 @@ public class Address {
      * @return
      *         A "friendly" name for this {@link Address}.
      */
-    public CharSequence toFriendly(final Contacts contacts) {
+    public CharSequence toFriendly(final Lookup contacts) {
         if (!K9.showCorrespondentNames()) {
             return mAddress;
 
@@ -281,11 +284,7 @@ public class Address {
         return (!TextUtils.isEmpty(mPersonal)) ? mPersonal : mAddress;
     }
 
-    public static CharSequence toFriendly(Address[] addresses) {
-        return toFriendly(addresses, null);
-    }
-
-    public static CharSequence toFriendly(Address[] addresses, Contacts contacts) {
+    public static CharSequence toFriendly(Address[] addresses, Lookup contacts) {
         if (addresses == null) {
             return null;
         }

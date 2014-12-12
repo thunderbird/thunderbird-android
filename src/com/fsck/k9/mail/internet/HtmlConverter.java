@@ -1,9 +1,11 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.mail.internet;
 
 import android.text.*;
 import android.text.Html.TagHandler;
 import android.util.Log;
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.Regex;
+
 import org.xml.sax.XMLReader;
 
 import java.io.IOException;

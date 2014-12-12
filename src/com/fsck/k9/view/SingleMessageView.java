@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLDecoder;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -47,7 +46,7 @@ import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.FileHelper;
-import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.mail.internet.HtmlConverter;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
