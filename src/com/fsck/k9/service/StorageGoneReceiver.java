@@ -35,9 +35,9 @@ public class StorageGoneReceiver extends BroadcastReceiver {
         final String path = uri.getPath();
 
         if (Intent.ACTION_MEDIA_EJECT.equals(action)) {
-            StorageManager.getInstance(K9.app).onBeforeUnmount(path);
+            StorageManager.getInstance(context).onBeforeUnmount(path);
         } else if (Intent.ACTION_MEDIA_UNMOUNTED.equals(action)) {
-            StorageManager.getInstance(K9.app).onAfterUnmount(path);
+            StorageManager.getInstance(context).onAfterUnmount(path);
         }
     }
 

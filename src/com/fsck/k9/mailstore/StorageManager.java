@@ -496,7 +496,7 @@ public class StorageManager {
 
     public static synchronized StorageManager getInstance(final Context context) {
         if (instance == null) {
-            instance = new StorageManager(context);
+            instance = new StorageManager(context.getApplicationContext());
         }
         return instance;
     }
@@ -661,7 +661,7 @@ public class StorageManager {
         sync.unmounting = false;
         sync.writeLock.unlock();
 
-        K9.setServicesEnabled(K9.app);
+        K9.setServicesEnabled(context);
     }
 
     /**
@@ -687,7 +687,7 @@ public class StorageManager {
         }
 
         // XXX we should reset mail service ONLY if there are accounts using the storage (this is not done in a regular listener because it has to be invoked afterward)
-        K9.setServicesEnabled(K9.app);
+        K9.setServicesEnabled(context);
     }
 
     /**

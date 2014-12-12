@@ -177,7 +177,7 @@ public class LocalStore extends Store implements Serializable {
      * @throws UnavailableStorageException
      *          if not {@link StorageProvider#isReady(Context)}
      */
-    public static LocalStore getInstance(Account account, Application application)
+    public static LocalStore getInstance(Account account, Context context)
             throws MessagingException {
 
         String accountUuid = account.getUuid();
@@ -196,7 +196,7 @@ public class LocalStore extends Store implements Serializable {
             if (store == null) {
                 // Creating a LocalStore instance will create or upgrade the database if
                 // necessary. This could take some time.
-                store = new LocalStore(account, application);
+                store = new LocalStore(account, context);
 
                 sLocalStores.put(accountUuid, store);
             }

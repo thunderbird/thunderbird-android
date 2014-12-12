@@ -365,7 +365,7 @@ public class MessagingController implements Runnable {
 
 
     private MessagingController(Context context) {
-        this.context = context.getApplicationContext();
+        this.context = context;
         mThread = new Thread(this);
         mThread.setName("MessagingController");
         mThread.start();
@@ -376,7 +376,7 @@ public class MessagingController implements Runnable {
 
     public synchronized static MessagingController getInstance(Context context) {
         if (inst == null) {
-            inst = new MessagingController(context);
+            inst = new MessagingController(context.getApplicationContext());
         }
         return inst;
     }
