@@ -70,7 +70,7 @@ public class LocalStore extends Store implements Serializable {
     /**
      * Local stores indexed by UUID because the Uri may change due to migration to/from SD-card.
      */
-    private static ConcurrentMap<String, Store> sLocalStores = new ConcurrentHashMap<String, Store>();
+    private static ConcurrentMap<String, LocalStore> sLocalStores = new ConcurrentHashMap<String, LocalStore>();
 
     /*
      * a String containing the columns getMessages expects to work with
@@ -195,7 +195,7 @@ public class LocalStore extends Store implements Serializable {
         // Use per-account locks so DatabaseUpgradeService always knows which account database is
         // currently upgraded.
         synchronized (lock) {
-            Store store = sLocalStores.get(accountUuid);
+            LocalStore store = sLocalStores.get(accountUuid);
 
             if (store == null) {
                 // Creating a LocalStore instance will create or upgrade the database if
@@ -205,7 +205,7 @@ public class LocalStore extends Store implements Serializable {
                 sLocalStores.put(accountUuid, store);
             }
 
-            return (LocalStore) store;
+            return store;
         }
     }
 
