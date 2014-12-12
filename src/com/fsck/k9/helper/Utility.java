@@ -1,7 +1,6 @@
 
 package com.fsck.k9.helper;
 
-import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -421,12 +420,10 @@ public class Utility {
 
     /**
      * Check to see if we have network connectivity.
-     * @param app Current application (Hint: see if your base class has a getApplication() method.)
-     * @return true if we have connectivity, false otherwise.
      */
-    public static boolean hasConnectivity(final Application app) {
+    public static boolean hasConnectivity(final Context context) {
         final ConnectivityManager connectivityManager =
-            (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
+            (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager == null) {
             return false;
         }

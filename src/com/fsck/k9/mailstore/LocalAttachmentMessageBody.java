@@ -5,7 +5,7 @@ import java.io.OutputStream;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
-import android.app.Application;
+import android.content.Context;
 import android.net.Uri;
 
 import com.fsck.k9.mail.CompositeBody;
@@ -17,8 +17,8 @@ import com.fsck.k9.mail.MessagingException;
  */
 class LocalAttachmentMessageBody extends LocalAttachmentBody implements CompositeBody {
 
-    public LocalAttachmentMessageBody(Uri uri, Application application) {
-        super(uri, application);
+    public LocalAttachmentMessageBody(Uri uri, Context context) {
+        super(uri, context);
     }
 
     @Override

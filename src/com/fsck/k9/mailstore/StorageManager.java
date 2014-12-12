@@ -12,7 +12,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
@@ -486,7 +485,7 @@ public class StorageManager {
      */
     private final Map<StorageProvider, SynchronizationAid> mProviderLocks = new IdentityHashMap<StorageProvider, SynchronizationAid>();
 
-    protected final Application mApplication;
+    protected final Context context;
 
     /**
      * Listener to be notified for storage related events.
@@ -495,9 +494,9 @@ public class StorageManager {
 
     private static transient StorageManager instance;
 
-    public static synchronized StorageManager getInstance(final Application application) {
+    public static synchronized StorageManager getInstance(final Context context) {
         if (instance == null) {
-            instance = new StorageManager(application);
+            instance = new StorageManager(context);
         }
         return instance;
     }
@@ -518,17 +517,17 @@ public class StorageManager {
     }
 
     /**
-     * @param application
+     * @param context
      *            Never <code>null</code>.
      * @throws NullPointerException
-     *             If <tt>application</tt> is <code>null</code>.
+     *             If <tt>context</tt> is <code>null</code>.
      */
-    protected StorageManager(final Application application) throws NullPointerException {
-        if (application == null) {
-            throw new NullPointerException("No application instance given");
+    protected StorageManager(final Context context) throws NullPointerException {
+        if (context == null) {
+            throw new NullPointerException("No Context given");
         }
 
-        mApplication = application;
+        this.context = context;
 
         /*
          * 20101113/fiouzy:
@@ -547,10 +546,10 @@ public class StorageManager {
                 new ExternalStorageProvider());
         for (final StorageProvider provider : allProviders) {
             // check for provider compatibility
-            if (provider.isSupported(mApplication)) {
+            if (provider.isSupported(context)) {
                 // provider is compatible! proceeding
 
-                provider.init(application);
+                provider.init(context);
                 mProviders.put(provider.getId(), provider);
                 mProviderLocks.put(provider, new SynchronizationAid());
             }
@@ -585,7 +584,7 @@ public class StorageManager {
     public File getDatabase(final String dbName, final String providerId) {
         StorageProvider provider = getProvider(providerId);
         // TODO fallback to internal storage if no provider
-        return provider.getDatabase(mApplication, dbName);
+        return provider.getDatabase(context, dbName);
     }
 
     /**
@@ -598,7 +597,7 @@ public class StorageManager {
     public File getAttachmentDirectory(final String dbName, final String providerId) {
         StorageProvider provider = getProvider(providerId);
         // TODO fallback to internal storage if no provider
-        return provider.getAttachmentDirectory(mApplication, dbName);
+        return provider.getAttachmentDirectory(context, dbName);
     }
 
     /**
@@ -612,7 +611,7 @@ public class StorageManager {
             Log.w(K9.LOG_TAG, "Storage-Provider \"" + providerId + "\" does not exist");
             return false;
         }
-        return provider.isReady(mApplication);
+        return provider.isReady(context);
     }
 
     /**
@@ -624,7 +623,7 @@ public class StorageManager {
     public Map<String, String> getAvailableProviders() {
         final Map<String, String> result = new LinkedHashMap<String, String>();
         for (final Map.Entry<String, StorageProvider> entry : mProviders.entrySet()) {
-            result.put(entry.getKey(), entry.getValue().getName(mApplication));
+            result.put(entry.getKey(), entry.getValue().getName(context));
         }
         return result;
     }
@@ -698,7 +697,7 @@ public class StorageManager {
      */
     protected StorageProvider resolveProvider(final String path) {
         for (final StorageProvider provider : mProviders.values()) {
-            if (path.equals(provider.getRoot(mApplication).getAbsolutePath())) {
+            if (path.equals(provider.getRoot(context).getAbsolutePath())) {
                 return provider;
             }
         }
@@ -738,7 +737,7 @@ public class StorageManager {
                 sync.readLock.unlock();
             }
             throw new UnavailableStorageException("StorageProvider is unmounting");
-        } else if (locked && !provider.isReady(mApplication)) {
+        } else if (locked && !provider.isReady(context)) {
             sync.readLock.unlock();
             throw new UnavailableStorageException("StorageProvider not ready");
         }

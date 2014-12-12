@@ -53,7 +53,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         Log.i(K9.LOG_TAG, String.format(Locale.US, "Upgrading database from version %d to version %d",
                                         db.getVersion(), LocalStore.DB_VERSION));
 
-        AttachmentProvider.clear(this.localStore.mApplication);
+        AttachmentProvider.clear(this.localStore.context);
 
         db.beginTransaction();
         try {

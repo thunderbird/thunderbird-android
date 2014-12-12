@@ -6,7 +6,6 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import android.annotation.TargetApi;
-import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -128,7 +127,7 @@ public class LockableDatabase {
 
     private final StorageListener mStorageListener = new StorageListener();
 
-    private Application mApplication;
+    private Context context;
 
     /**
      * {@link ThreadLocal} to check whether a DB transaction is occuring in the
@@ -143,15 +142,15 @@ public class LockableDatabase {
     private String uUid;
 
     /**
-     * @param application
+     * @param context
      *            Never <code>null</code>.
      * @param uUid
      *            Never <code>null</code>.
      * @param schemaDefinition
      *            Never <code>null</code
      */
-    public LockableDatabase(final Application application, final String uUid, final SchemaDefinition schemaDefinition) {
-        this.mApplication = application;
+    public LockableDatabase(final Context context, final String uUid, final SchemaDefinition schemaDefinition) {
+        this.context = context;
         this.uUid = uUid;
         this.mSchemaDefinition = schemaDefinition;
     }
@@ -165,7 +164,7 @@ public class LockableDatabase {
     }
 
     private StorageManager getStorageManager() {
-        return StorageManager.getInstance(mApplication);
+        return StorageManager.getInstance(context);
     }
 
     /**
@@ -364,7 +363,7 @@ public class LockableDatabase {
         } finally {
             unlockWrite();
         }
-        StorageManager.getInstance(mApplication).addListener(mStorageListener);
+        StorageManager.getInstance(context).addListener(mStorageListener);
     }
 
     /**
@@ -395,7 +394,7 @@ public class LockableDatabase {
     private void doOpenOrCreateDb(final File databaseFile) {
         if (StorageManager.InternalStorageProvider.ID.equals(mStorageProviderId)) {
             // internal storage
-            mDb = mApplication.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE,
+            mDb = context.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE,
                     null);
         } else {
             // external storage

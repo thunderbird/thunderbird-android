@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import android.app.Application;
+import android.content.Context;
 import android.net.Uri;
 
 import com.fsck.k9.mail.MessagingException;
@@ -13,18 +13,18 @@ import com.fsck.k9.mail.MessagingException;
  * An attachment whose contents are loaded from an URI.
  */
 public class LocalAttachmentBody extends BinaryAttachmentBody {
-    private Application mApplication;
+    private Context context;
     private Uri mUri;
 
-    public LocalAttachmentBody(Uri uri, Application application) {
-        mApplication = application;
+    public LocalAttachmentBody(Uri uri, Context context) {
+        this.context = context;
         mUri = uri;
     }
 
     @Override
     public InputStream getInputStream() throws MessagingException {
         try {
-            return mApplication.getContentResolver().openInputStream(mUri);
+            return context.getContentResolver().openInputStream(mUri);
         } catch (FileNotFoundException fnfe) {
             /*
              * Since it's completely normal for us to try to serve up attachments that
