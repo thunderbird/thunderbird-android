@@ -43,8 +43,8 @@ public class WebDavTransport extends Transport {
 
     private WebDavStore store;
 
-    public WebDavTransport(StoreConfig configInterface) throws MessagingException {
-        store = new WebDavStore(configInterface);
+    public WebDavTransport(StoreConfig storeConfig) throws MessagingException {
+        store = new WebDavStore(storeConfig);
 
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, ">>> New WebDavTransport creation complete");
