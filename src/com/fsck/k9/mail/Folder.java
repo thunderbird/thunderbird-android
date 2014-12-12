@@ -8,7 +8,6 @@ import java.util.Set;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
 
 public abstract class Folder<T extends Message> {
@@ -215,10 +214,6 @@ public abstract class Folder<T extends Message> {
     }
     public FolderClass getPushClass() {
         return getSyncClass();
-    }
-
-    public void refresh(Preferences preferences) throws MessagingException {
-
     }
 
     public boolean isInTopGroup() {

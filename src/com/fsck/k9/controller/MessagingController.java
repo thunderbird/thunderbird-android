@@ -694,6 +694,7 @@ public class MessagingController implements Runnable {
                 @Override
                 public void messagesFinished(int number) {}
                 @Override
+
                 public void messageFinished(LocalMessage message, int number, int ofTotal) {
                     if (!isMessageSuppressed(message)) {
                         List<LocalMessage> messages = new ArrayList<LocalMessage>();
@@ -4391,7 +4392,6 @@ public class MessagingController implements Runnable {
             Store localStore = account.getLocalStore();
             for (final Folder folder : localStore.getPersonalNamespaces(false)) {
                 folder.open(Folder.OPEN_MODE_RW);
-                folder.refresh(prefs);
 
                 Folder.FolderClass fDisplayClass = folder.getDisplayClass();
                 Folder.FolderClass fSyncClass = folder.getSyncClass();
@@ -5305,7 +5305,6 @@ public class MessagingController implements Runnable {
                     continue;
                 }
                 folder.open(Folder.OPEN_MODE_RW);
-                folder.refresh(prefs);
 
                 Folder.FolderClass fDisplayClass = folder.getDisplayClass();
                 Folder.FolderClass fPushClass = folder.getPushClass();

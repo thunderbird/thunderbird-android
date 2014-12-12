@@ -17,6 +17,7 @@ public interface StoreConfig {
     void setSpamFolderName(String name);
     void setSentFolderName(String name);
     void setAutoExpandFolderName(String name);
+    void setInboxFolderName(String name);
 
     int getMaximumAutoDownloadMessageSize();
 
