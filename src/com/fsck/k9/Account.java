@@ -1078,8 +1078,8 @@ public class Account implements BaseAccount, StoreConfig {
         return mDraftsFolderName;
     }
 
-    public synchronized void setDraftsFolderName(String draftsFolderName) {
-        mDraftsFolderName = draftsFolderName;
+    public synchronized void setDraftsFolderName(String name) {
+        mDraftsFolderName = name;
     }
 
     /**
@@ -1098,8 +1098,8 @@ public class Account implements BaseAccount, StoreConfig {
         return K9.ERROR_FOLDER_NAME;
     }
 
-    public synchronized void setSentFolderName(String sentFolderName) {
-        mSentFolderName = sentFolderName;
+    public synchronized void setSentFolderName(String name) {
+        mSentFolderName = name;
     }
 
     /**
@@ -1115,8 +1115,8 @@ public class Account implements BaseAccount, StoreConfig {
         return mTrashFolderName;
     }
 
-    public synchronized void setTrashFolderName(String trashFolderName) {
-        mTrashFolderName = trashFolderName;
+    public synchronized void setTrashFolderName(String name) {
+        mTrashFolderName = name;
     }
 
     /**
@@ -1147,8 +1147,8 @@ public class Account implements BaseAccount, StoreConfig {
         return mSpamFolderName;
     }
 
-    public synchronized void setSpamFolderName(String spamFolderName) {
-        mSpamFolderName = spamFolderName;
+    public synchronized void setSpamFolderName(String name) {
+        mSpamFolderName = name;
     }
 
     /**
@@ -1167,8 +1167,8 @@ public class Account implements BaseAccount, StoreConfig {
         return mAutoExpandFolderName;
     }
 
-    public synchronized void setAutoExpandFolderName(String autoExpandFolderName) {
-        mAutoExpandFolderName = autoExpandFolderName;
+    public synchronized void setAutoExpandFolderName(String name) {
+        mAutoExpandFolderName = name;
     }
 
     public synchronized int getAccountNumber() {
@@ -1659,8 +1659,8 @@ public class Account implements BaseAccount, StoreConfig {
         return mInboxFolderName;
     }
 
-    public void setInboxFolderName(String mInboxFolderName) {
-        this.mInboxFolderName = mInboxFolderName;
+    public void setInboxFolderName(String name) {
+        this.mInboxFolderName = name;
     }
 
     public synchronized boolean syncRemoteDeletions() {

@@ -12,12 +12,11 @@ public interface StoreConfig {
     String getOutboxFolderName();
     String getDraftsFolderName();
 
-    void setInboxFolderName(String folderName);
-    void setDraftsFolderName(String decodedFolderName);
-    void setTrashFolderName(String decodedFolderName);
-    void setSpamFolderName(String decodedFolderName);
-    void setSentFolderName(String decodedFolderName);
-    void setAutoExpandFolderName(String folderName);
+    void setDraftsFolderName(String name);
+    void setTrashFolderName(String name);
+    void setSpamFolderName(String name);
+    void setSentFolderName(String name);
+    void setAutoExpandFolderName(String name);
 
     int getMaximumAutoDownloadMessageSize();
 
