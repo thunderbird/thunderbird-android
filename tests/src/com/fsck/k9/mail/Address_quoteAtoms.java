@@ -1,8 +1,8 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.mail;
 
 import junit.framework.TestCase;
 
-public class Utility_quoteAtoms extends TestCase
+public class Address_quoteAtoms extends TestCase
 {
     public void testNoQuote() {
         // Alpha
@@ -53,10 +53,10 @@ public class Utility_quoteAtoms extends TestCase
     }
 
     private void noQuote(final String s) {
-        assertEquals(s, Utility.quoteAtoms(s));
+        assertEquals(s, Address.quoteAtoms(s));
     }
 
     private String quote(final String s) {
-        return Utility.quoteAtoms(s);
+        return Address.quoteAtoms(s);
     }
 }

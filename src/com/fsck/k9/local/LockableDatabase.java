@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.local;
+package com.fsck.k9.local;
 
 import java.io.File;
 import java.util.concurrent.locks.Lock;
@@ -16,8 +16,6 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.StorageManager;
-import com.fsck.k9.mail.store.UnavailableStorageException;
 
 public class LockableDatabase {
 
@@ -35,9 +33,10 @@ public class LockableDatabase {
          *            <code>null</code>.
          * @return Any relevant data. Can be <code>null</code>.
          * @throws WrappedException
-         * @throws com.fsck.k9.mail.store.UnavailableStorageException
+         * @throws com.fsck.k9.mail.MessagingException
+         * @throws com.fsck.k9.local.UnavailableStorageException
          */
-        T doDbWork(SQLiteDatabase db) throws WrappedException, UnavailableStorageException;
+        T doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException;
     }
 
     public static interface SchemaDefinition {
@@ -272,7 +271,7 @@ public class LockableDatabase {
      * @return Whatever {@link DbCallback#doDbWork(SQLiteDatabase)} returns.
      * @throws UnavailableStorageException
      */
-    public <T> T execute(final boolean transactional, final DbCallback<T> callback) throws UnavailableStorageException {
+    public <T> T execute(final boolean transactional, final DbCallback<T> callback) throws MessagingException {
         lockRead();
         final boolean doTransaction = transactional && inTransaction.get() == null;
         try {

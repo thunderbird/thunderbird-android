@@ -38,7 +38,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.store.local.LocalMessage;
+import com.fsck.k9.local.LocalMessage;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;

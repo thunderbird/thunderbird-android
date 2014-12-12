@@ -6,13 +6,12 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.local.MessageRetrievalListener;
+import com.fsck.k9.mail.MessageRetrievalListener;
 
 import javax.net.ssl.SSLException;
 
@@ -459,7 +458,7 @@ public class Pop3Store extends RemoteStore {
             try {
                 executeSimpleCommand(
                         String.format("AUTH EXTERNAL %s",
-                                Utility.base64Encode(mUsername)), false);
+                                Base64.encode(mUsername)), false);
             } catch (Pop3ErrorResponse e) {
                 /*
                  * Provide notification to the user of a problem authenticating

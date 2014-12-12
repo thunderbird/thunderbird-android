@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.store.local;
+package com.fsck.k9.local;
 
 import android.app.Application;
 import android.content.ContentResolver;
@@ -18,15 +18,14 @@ import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.StorageManager;
-import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+import com.fsck.k9.local.StorageManager.StorageProvider;
 import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.mail.store.UnavailableStorageException;
-import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
-import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
+import com.fsck.k9.local.LockableDatabase.DbCallback;
+import com.fsck.k9.local.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
@@ -244,7 +243,7 @@ public class LocalStore extends Store implements Serializable {
         return Preferences.getPreferences(mApplication).getPreferences();
     }
 
-    public long getSize() throws UnavailableStorageException {
+    public long getSize() throws MessagingException {
 
         final StorageManager storageManager = StorageManager.getInstance(mApplication);
 
@@ -487,7 +486,7 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
-    public void resetVisibleLimits(int visibleLimit) throws UnavailableStorageException {
+    public void resetVisibleLimits(int visibleLimit) throws MessagingException {
         final ContentValues cv = new ContentValues();
         cv.put("visible_limit", Integer.toString(visibleLimit));
         database.execute(false, new DbCallback<Void>() {
@@ -499,7 +498,7 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
-    public List<PendingCommand> getPendingCommands() throws UnavailableStorageException {
+    public List<PendingCommand> getPendingCommands() throws MessagingException {
         return database.execute(false, new DbCallback<List<PendingCommand>>() {
             @Override
             public List<PendingCommand> doDbWork(final SQLiteDatabase db) throws WrappedException {
@@ -532,7 +531,7 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
-    public void addPendingCommand(PendingCommand command) throws UnavailableStorageException {
+    public void addPendingCommand(PendingCommand command) throws MessagingException {
         for (int i = 0; i < command.arguments.length; i++) {
             command.arguments[i] = UrlEncodingHelper.encodeUtf8(command.arguments[i]);
         }
@@ -548,7 +547,7 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
-    public void removePendingCommand(final PendingCommand command) throws UnavailableStorageException {
+    public void removePendingCommand(final PendingCommand command) throws MessagingException {
         database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
@@ -558,7 +557,7 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
-    public void removePendingCommands() throws UnavailableStorageException {
+    public void removePendingCommands() throws MessagingException {
         database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
@@ -690,7 +689,7 @@ public class LocalStore extends Store implements Serializable {
         return searchForMessages(null, search);
     }
 
-    public AttachmentInfo getAttachmentInfo(final String attachmentId) throws UnavailableStorageException {
+    public AttachmentInfo getAttachmentInfo(final String attachmentId) throws MessagingException {
         return database.execute(false, new DbCallback<AttachmentInfo>() {
             @Override
             public AttachmentInfo doDbWork(final SQLiteDatabase db) throws WrappedException {
@@ -731,7 +730,7 @@ public class LocalStore extends Store implements Serializable {
         public String type;
     }
 
-    public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit) throws UnavailableStorageException {
+    public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit) throws MessagingException {
         database.execute(true, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {

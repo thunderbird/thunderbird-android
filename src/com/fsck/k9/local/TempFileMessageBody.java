@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.local;
+package com.fsck.k9.local;
 
 import java.io.IOException;
 import java.io.OutputStream;

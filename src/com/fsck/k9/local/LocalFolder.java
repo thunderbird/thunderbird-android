@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.local;
+package com.fsck.k9.local;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,6 +32,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.activity.Search;
+import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.internet.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -51,10 +52,8 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.MimeUtility.ViewableContainer;
-import com.fsck.k9.mail.store.StorageManager;
-import com.fsck.k9.mail.store.UnavailableStorageException;
-import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
-import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
+import com.fsck.k9.local.LockableDatabase.DbCallback;
+import com.fsck.k9.local.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.AttachmentProvider;
 
 public class LocalFolder extends Folder<LocalMessage> implements Serializable {
@@ -828,10 +827,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
      *            The messages whose headers should be loaded.
      * @throws UnavailableStorageException
      */
-    void populateHeaders(final List<LocalMessage> messages) throws UnavailableStorageException {
+    void populateHeaders(final List<LocalMessage> messages) throws MessagingException {
         this.localStore.database.execute(false, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
                 Cursor cursor = null;
                 if (messages.isEmpty()) {
                     return null;
@@ -1488,7 +1487,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private void saveHeaders(final long id, final MimeMessage message) throws MessagingException {
         this.localStore.database.execute(true, new DbCallback<Void>() {
             @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
 
                 deleteHeaders(id);
                 for (String name : message.getHeaderNames()) {
@@ -1517,7 +1516,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         });
     }
 
-    void deleteHeaders(final long id) throws UnavailableStorageException {
+    void deleteHeaders(final long id) throws MessagingException {
         this.localStore.database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {

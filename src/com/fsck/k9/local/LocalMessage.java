@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.local;
+package com.fsck.k9.local;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,9 +22,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.UnavailableStorageException;
-import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
-import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
+import com.fsck.k9.local.LockableDatabase.DbCallback;
+import com.fsck.k9.local.LockableDatabase.WrappedException;
 
 public class LocalMessage extends MimeMessage {
     protected MessageReference mReference;
@@ -499,44 +498,44 @@ public class LocalMessage extends MimeMessage {
         db.delete("threads", "message_id = ?", idArg);
     }
 
-    private void loadHeaders() throws UnavailableStorageException {
+    private void loadHeaders() throws MessagingException {
         List<LocalMessage> messages = new ArrayList<LocalMessage>();
         messages.add(this);
         mHeadersLoaded = true; // set true before calling populate headers to stop recursion
-        ((LocalFolder) mFolder).populateHeaders(messages);
+        getFolder().populateHeaders(messages);
 
     }
 
     @Override
-    public void addHeader(String name, String value) throws UnavailableStorageException {
+    public void addHeader(String name, String value) throws MessagingException {
         if (!mHeadersLoaded)
             loadHeaders();
         super.addHeader(name, value);
     }
 
     @Override
-    public void setHeader(String name, String value) throws UnavailableStorageException {
+    public void setHeader(String name, String value) throws MessagingException {
         if (!mHeadersLoaded)
             loadHeaders();
         super.setHeader(name, value);
     }
 
     @Override
-    public String[] getHeader(String name) throws UnavailableStorageException {
+    public String[] getHeader(String name) throws MessagingException {
         if (!mHeadersLoaded)
             loadHeaders();
         return super.getHeader(name);
     }
 
     @Override
-    public void removeHeader(String name) throws UnavailableStorageException {
+    public void removeHeader(String name) throws MessagingException {
         if (!mHeadersLoaded)
             loadHeaders();
         super.removeHeader(name);
     }
 
     @Override
-    public Set<String> getHeaderNames() throws UnavailableStorageException {
+    public Set<String> getHeaderNames() throws MessagingException {
         if (!mHeadersLoaded)
             loadHeaders();
         return super.getHeaderNames();

@@ -3,7 +3,6 @@ package com.fsck.k9.mail;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import com.fsck.k9.Account;
 
 /**
  * This is an abstraction to get rid of the store- and transport-specific URIs.
@@ -13,8 +12,8 @@ import com.fsck.k9.Account;
  * store/transport URIs altogether.
  * </p>
  *
- * @see Account#getStoreUri()
- * @see Account#getTransportUri()
+ * @see com.fsck.k9.mail.store.StoreConfig#getStoreUri()
+ * @see com.fsck.k9.mail.store.StoreConfig#getTransportUri()
  */
 public class ServerSettings {
     /**

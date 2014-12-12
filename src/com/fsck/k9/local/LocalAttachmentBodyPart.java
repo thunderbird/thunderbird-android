@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.local;
+package com.fsck.k9.local;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;

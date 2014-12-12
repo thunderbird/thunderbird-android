@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.local.StorageManager;
 
 /**
  * That BroadcastReceiver is only interested in UNMOUNT events.

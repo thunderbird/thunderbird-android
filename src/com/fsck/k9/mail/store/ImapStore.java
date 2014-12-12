@@ -58,7 +58,6 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.AuthType;
@@ -71,7 +70,7 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.store.local.MessageRetrievalListener;
+import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
@@ -88,7 +87,6 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
-import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
@@ -246,7 +244,7 @@ public class ImapStore extends RemoteStore {
      *
      * @return An ImapStore URI that holds the same information as the {@code server} parameter.
      *
-     * @see Account#getStoreUri()
+     * @see com.fsck.k9.mail.store.StoreConfig#getStoreUri()
      * @see ImapStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
@@ -1125,7 +1123,7 @@ public class ImapStore extends RemoteStore {
 
                 //TODO: Split this into multiple commands if the command exceeds a certain length.
                 List<ImapResponse> responses = executeSimpleCommand(String.format("UID COPY %s %s",
-                                                      Utility.combine(uids, ','),
+                                                      combine(uids, ','),
                                                       remoteDestName));
 
                 // Get the tagged response for the UID COPY command
@@ -1332,7 +1330,7 @@ public class ImapStore extends RemoteStore {
             ImapSearcher searcher = new ImapSearcher() {
                 @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH %s%s", Utility.combine(mesgSeqs.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
+                    return executeSimpleCommand(String.format("UID SEARCH %s%s", combine(mesgSeqs.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener);
@@ -1343,7 +1341,7 @@ public class ImapStore extends RemoteStore {
             ImapSearcher searcher = new ImapSearcher() {
                 @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand(String.format("UID SEARCH UID %s%s", Utility.combine(mesgUids.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
+                    return executeSimpleCommand(String.format("UID SEARCH UID %s%s", combine(mesgUids.toArray(), ','), includeDeleted ? "" : " NOT DELETED"));
                 }
             };
             return search(searcher, listener);
@@ -1483,8 +1481,8 @@ public class ImapStore extends RemoteStore {
 
                 try {
                     mConnection.sendCommand(String.format("UID FETCH %s (%s)",
-                                                          Utility.combine(uidWindow.toArray(new String[uidWindow.size()]), ','),
-                                                          Utility.combine(fetchFields.toArray(new String[fetchFields.size()]), ' ')
+                                                          combine(uidWindow.toArray(new String[uidWindow.size()]), ','),
+                                                          combine(fetchFields.toArray(new String[fetchFields.size()]), ' ')
                                                          ), false);
                     ImapResponse response;
                     int messageNumber = 0;
@@ -2101,7 +2099,7 @@ public class ImapStore extends RemoteStore {
                 }
 
             }
-            return Utility.combine(flagNames.toArray(new String[flagNames.size()]), ' ');
+            return combine(flagNames.toArray(new String[flagNames.size()]), ' ');
         }
 
 
@@ -2151,7 +2149,7 @@ public class ImapStore extends RemoteStore {
             }
             try {
                 executeSimpleCommand(String.format("UID STORE %s %sFLAGS.SILENT (%s)",
-                                                   Utility.combine(uids, ','),
+                                                   combine(uids, ','),
                                                    value ? "+" : "-",
                                                    combineFlags(flags)));
             } catch (IOException ioe) {
@@ -2701,7 +2699,7 @@ public class ImapStore extends RemoteStore {
             try {
                 receiveCapabilities(executeSimpleCommand(
                         String.format("AUTHENTICATE EXTERNAL %s",
-                                Utility.base64Encode(mSettings.getUsername())), false));
+                                Base64.encode(mSettings.getUsername())), false));
             } catch (ImapException e) {
                 /*
                  * Provide notification to the user of a problem authenticating
@@ -3598,5 +3596,12 @@ public class ImapStore extends RemoteStore {
             }
             return null;
         }
+    }
+
+    private static String combine(Object[] parts, char separator) {
+        if (parts == null) {
+            return null;
+        }
+        return TextUtils.join(String.valueOf(separator), parts);
     }
 }

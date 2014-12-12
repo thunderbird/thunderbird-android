@@ -3,6 +3,7 @@ package com.fsck.k9.mail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.codec.EncoderUtil;
@@ -20,13 +21,14 @@ import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.helper.Utility;
 
 
 public class Address {
     public static interface Lookup {
         String getNameForAddress(String address);
     }
+
+    private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
 
     /**
      * If the number of addresses exceeds this value the addresses aren't
@@ -201,7 +203,7 @@ public class Address {
     @Override
     public String toString() {
         if (!TextUtils.isEmpty(mPersonal)) {
-            return Utility.quoteAtoms(mPersonal) + " <" + mAddress + ">";
+            return quoteAtoms(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
         }
@@ -366,5 +368,45 @@ public class Address {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * Quote a string, if necessary, based upon the definition of an "atom," as defined by RFC2822
+     * (http://tools.ietf.org/html/rfc2822#section-3.2.4). Strings that consist purely of atoms are
+     * left unquoted; anything else is returned as a quoted string.
+     * @param text String to quote.
+     * @return Possibly quoted string.
+     */
+    public static String quoteAtoms(final String text) {
+        if (ATOM.matcher(text).matches()) {
+            return text;
+        } else {
+            return quoteString(text);
+        }
+    }
+
+    /**
+     * Ensures that the given string starts and ends with the double quote character. The string is not modified in any way except to add the
+     * double quote character to start and end if it's not already there.
+     * sample -> "sample"
+     * "sample" -> "sample"
+     * ""sample"" -> "sample"
+     * "sample"" -> "sample"
+     * sa"mp"le -> "sa"mp"le"
+     * "sa"mp"le" -> "sa"mp"le"
+     * (empty string) -> ""
+     * " -> ""
+     * @param s
+     * @return
+     */
+    private static String quoteString(String s) {
+        if (s == null) {
+            return null;
+        }
+        if (!s.matches("^\".*\"$")) {
+            return "\"" + s + "\"";
+        } else {
+            return s;
+        }
     }
 }

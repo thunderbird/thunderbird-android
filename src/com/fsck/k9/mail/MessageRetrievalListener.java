@@ -1,7 +1,6 @@
 
-package com.fsck.k9.mail.store.local;
+package com.fsck.k9.mail;
 
-import com.fsck.k9.mail.Message;
 
 public interface MessageRetrievalListener<T extends Message> {
     public void messageStarted(String uid, int number, int ofTotal);

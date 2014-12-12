@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store;
 
 import android.util.Log;
 
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Utility methods for use with IMAP.
  */
-public class ImapUtility {
+class ImapUtility {
     /**
      * Gets all of the values in a sequence set per RFC 3501.
      *

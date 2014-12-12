@@ -1,4 +1,4 @@
-package com.fsck.k9.security;
+package com.fsck.k9.mail.ssl;
 
 import java.io.File;
 import java.io.FileInputStream;

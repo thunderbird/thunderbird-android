@@ -3,20 +3,18 @@ package com.fsck.k9.mail.transport;
 
 import android.util.Log;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLException;
@@ -125,7 +123,7 @@ public class SmtpTransport extends Transport {
      *
      * @return A SmtpTransport URI that holds the same information as the {@code server} parameter.
      *
-     * @see Account#getTransportUri()
+     * @see com.fsck.k9.mail.store.StoreConfig#getTransportUri()
      * @see SmtpTransport#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
@@ -150,7 +148,7 @@ public class SmtpTransport extends Transport {
                 break;
         }
 
-        String userInfo = null;
+        String userInfo;
         AuthType authType = server.authenticationType;
         // NOTE: authType is append at last item, in contrast to ImapStore and Pop3Store!
         if (authType != null) {
@@ -184,10 +182,10 @@ public class SmtpTransport extends Transport {
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
 
-    public SmtpTransport(StoreConfig account) throws MessagingException {
+    public SmtpTransport(StoreConfig storeConfig) throws MessagingException {
         ServerSettings settings;
         try {
-            settings = decodeUri(account.getTransportUri());
+            settings = decodeUri(storeConfig.getTransportUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding transport URI", e);
         }
@@ -496,7 +494,7 @@ public class SmtpTransport extends Transport {
         }
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
-        if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
+        if (mLargestAcceptableMessage > 0 && message.hasAttachments()) {
             if (message.calculateSize() > mLargestAcceptableMessage) {
                 MessagingException me = new MessagingException("Message too large for server");
                 //TODO this looks rather suspicious... shouldn't it be true?
@@ -702,8 +700,8 @@ public class SmtpTransport extends Transport {
         AuthenticationFailedException, IOException {
         try {
             executeSimpleCommand("AUTH LOGIN");
-            executeSimpleCommand(Utility.base64Encode(username), true);
-            executeSimpleCommand(Utility.base64Encode(password), true);
+            executeSimpleCommand(Base64.encode(username), true);
+            executeSimpleCommand(Base64.encode(password), true);
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == 535) {
                 // Authentication credentials invalid
@@ -717,7 +715,7 @@ public class SmtpTransport extends Transport {
 
     private void saslAuthPlain(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
-        String data = Utility.base64Encode("\000" + username + "\000" + password);
+        String data = Base64.encode("\000" + username + "\000" + password);
         try {
             executeSimpleCommand("AUTH PLAIN " + data, true);
         } catch (NegativeSmtpReplyException exception) {
@@ -757,7 +755,7 @@ public class SmtpTransport extends Transport {
     private void saslAuthExternal(String username) throws MessagingException, IOException {
         executeSimpleCommand(
                 String.format("AUTH EXTERNAL %s",
-                        Utility.base64Encode(username)), false);
+                        Base64.encode(username)), false);
     }
 
     /**

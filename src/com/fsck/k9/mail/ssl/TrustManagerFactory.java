@@ -4,7 +4,6 @@ package com.fsck.k9.mail.ssl;
 import android.util.Log;
 
 import com.fsck.k9.mail.CertificateChainException;
-import com.fsck.k9.security.LocalKeyStore;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;

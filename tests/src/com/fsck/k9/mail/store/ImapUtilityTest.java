@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store;
 
 import java.util.List;
 import android.test.MoreAsserts;
+
 import junit.framework.TestCase;
 
 public class ImapUtilityTest extends TestCase {

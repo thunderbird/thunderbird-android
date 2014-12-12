@@ -5,11 +5,11 @@ import android.util.Log;
 import com.fsck.k9.K9;
 
 import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.store.local.MessageRetrievalListener;
+import com.fsck.k9.mail.MessageRetrievalListener;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.*;
@@ -339,7 +339,7 @@ public class WebDavStore extends RemoteStore {
         // The inbox path would look like: "https://mail.domain.com/Exchange/alias/Inbox".
         mUrl = getRoot() + mPath + mMailboxPath;
 
-        mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
+        mAuthString = "Basic " + Base64.encode(mUsername + ":" + mPassword);
     }
 
     private String getRoot() {

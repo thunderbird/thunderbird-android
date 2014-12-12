@@ -36,8 +36,8 @@ import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.store.local.LocalFolder;
-import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.local.LocalFolder;
+import com.fsck.k9.local.StorageManager;
 import com.fsck.k9.service.MailService;
 
 import org.openintents.openpgp.util.OpenPgpListPreference;

@@ -29,11 +29,12 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.mail.store.StorageManager;
-import com.fsck.k9.mail.store.StorageManager.StorageProvider;
-import com.fsck.k9.mail.store.local.LocalStore;
+import com.fsck.k9.local.StorageManager;
+import com.fsck.k9.local.StorageManager.StorageProvider;
+import com.fsck.k9.local.LocalStore;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.StatsColumns;
 import com.fsck.k9.search.ConditionsTreeNode;
@@ -42,7 +43,7 @@ import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
-import com.fsck.k9.security.LocalKeyStore;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
 
@@ -363,9 +364,9 @@ public class Account implements BaseAccount, StoreConfig {
 
         SharedPreferences prefs = preferences.getPreferences();
 
-        mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
+        mStoreUri = Base64.decode(prefs.getString(mUuid + ".storeUri", null));
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
-        mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
+        mTransportUri = Base64.decode(prefs.getString(mUuid + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
@@ -691,9 +692,9 @@ public class Account implements BaseAccount, StoreConfig {
             editor.putString("accountUuids", accountUuids);
         }
 
-        editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
+        editor.putString(mUuid + ".storeUri", Base64.encode(mStoreUri));
         editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
-        editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
+        editor.putString(mUuid + ".transportUri", Base64.encode(mTransportUri));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);

@@ -89,6 +89,7 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.internet.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.Utility;
@@ -108,10 +109,10 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.TextBodyBuilder;
-import com.fsck.k9.mail.store.local.LocalAttachmentBody;
-import com.fsck.k9.mail.store.local.LocalMessage;
-import com.fsck.k9.mail.store.local.TempFileBody;
-import com.fsck.k9.mail.store.local.TempFileMessageBody;
+import com.fsck.k9.local.LocalAttachmentBody;
+import com.fsck.k9.local.LocalMessage;
+import com.fsck.k9.local.TempFileBody;
+import com.fsck.k9.local.TempFileMessageBody;
 import com.fsck.k9.view.MessageWebView;
 
 import org.apache.james.mime4j.codec.EncoderUtil;
@@ -1655,7 +1656,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             // First item is the body length. We use this to separate the composed reply from the quoted text.
             if (tokenizer.hasMoreTokens()) {
-                String bodyLengthS = Utility.base64Decode(tokenizer.nextToken());
+                String bodyLengthS = Base64.decode(tokenizer.nextToken());
                 try {
                     identity.put(IdentityField.LENGTH, Integer.valueOf(bodyLengthS).toString());
                 } catch (Exception e) {
@@ -1663,16 +1664,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             }
             if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.SIGNATURE, Utility.base64Decode(tokenizer.nextToken()));
+                identity.put(IdentityField.SIGNATURE, Base64.decode(tokenizer.nextToken()));
             }
             if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.NAME, Utility.base64Decode(tokenizer.nextToken()));
+                identity.put(IdentityField.NAME, Base64.decode(tokenizer.nextToken()));
             }
             if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.EMAIL, Utility.base64Decode(tokenizer.nextToken()));
+                identity.put(IdentityField.EMAIL, Base64.decode(tokenizer.nextToken()));
             }
             if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.QUOTED_TEXT_MODE, Utility.base64Decode(tokenizer.nextToken()));
+                identity.put(IdentityField.QUOTED_TEXT_MODE, Base64.decode(tokenizer.nextToken()));
             }
         }
 

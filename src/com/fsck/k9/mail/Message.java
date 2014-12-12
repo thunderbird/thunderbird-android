@@ -12,7 +12,6 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
-import com.fsck.k9.mail.store.UnavailableStorageException;
 
 
 public abstract class Message implements Part, CompositeBody {
@@ -117,28 +116,7 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract void setReferences(String references) throws MessagingException;
 
-    @Override
-    public abstract Body getBody();
-
-    @Override
-    public abstract String getContentType() throws MessagingException;
-
-    @Override
-    public abstract void addHeader(String name, String value) throws MessagingException;
-
-    @Override
-    public abstract void setHeader(String name, String value) throws MessagingException;
-
-    @Override
-    public abstract String[] getHeader(String name) throws MessagingException;
-
-    public abstract Set<String> getHeaderNames() throws UnavailableStorageException;
-
-    @Override
-    public abstract void removeHeader(String name) throws MessagingException;
-
-    @Override
-    public abstract void setBody(Body body) throws MessagingException;
+    public abstract Set<String> getHeaderNames() throws MessagingException;
 
     public abstract long getId();
 
@@ -287,6 +265,4 @@ public abstract class Message implements Part, CompositeBody {
      */
     @Override
     public abstract Message clone();
-    @Override
-    public abstract void setUsing7bitTransport() throws MessagingException;
 }

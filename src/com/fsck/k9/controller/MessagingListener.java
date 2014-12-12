@@ -11,7 +11,7 @@ import com.fsck.k9.BaseAccount;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.store.local.LocalMessage;
+import com.fsck.k9.local.LocalMessage;
 
 /**
  * Defines the interface that {@link MessagingController} will use to callback to requesters.

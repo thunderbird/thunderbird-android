@@ -13,7 +13,7 @@ import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.local.StorageManager;
 import com.fsck.k9.preferences.Settings.*;
 
 public class AccountSettings {

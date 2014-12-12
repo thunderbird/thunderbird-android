@@ -33,7 +33,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.K9;
 
 /**
@@ -333,7 +332,7 @@ public class MimeMessage extends Message {
         return "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
     }
 
-    public void setMessageId(String messageId) throws UnavailableStorageException {
+    public void setMessageId(String messageId) throws MessagingException {
         setHeader("Message-ID", messageId);
         mMessageId = messageId;
     }
@@ -419,27 +418,27 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void addHeader(String name, String value) throws UnavailableStorageException {
+    public void addHeader(String name, String value) throws MessagingException {
         mHeader.addHeader(name, value);
     }
 
     @Override
-    public void setHeader(String name, String value) throws UnavailableStorageException {
+    public void setHeader(String name, String value) throws MessagingException {
         mHeader.setHeader(name, value);
     }
 
     @Override
-    public String[] getHeader(String name) throws UnavailableStorageException {
+    public String[] getHeader(String name) throws MessagingException {
         return mHeader.getHeader(name);
     }
 
     @Override
-    public void removeHeader(String name) throws UnavailableStorageException {
+    public void removeHeader(String name) throws MessagingException {
         mHeader.removeHeader(name);
     }
 
     @Override
-    public Set<String> getHeaderNames() throws UnavailableStorageException {
+    public Set<String> getHeaderNames() throws MessagingException {
         return mHeader.getHeaderNames();
     }
 
