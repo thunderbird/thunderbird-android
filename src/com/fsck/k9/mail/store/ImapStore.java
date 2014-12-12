@@ -57,7 +57,6 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
@@ -72,6 +71,7 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.store.local.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;

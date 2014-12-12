@@ -3,13 +3,13 @@ package com.fsck.k9.mail.store;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.controller.MessageRetrievalListener;
 
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.store.local.MessageRetrievalListener;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.*;

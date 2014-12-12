@@ -1,5 +1,5 @@
 
-package com.fsck.k9.controller;
+package com.fsck.k9.mail.store.local;
 
 import com.fsck.k9.mail.Message;
 

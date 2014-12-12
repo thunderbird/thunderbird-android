@@ -8,7 +8,7 @@ import java.util.Set;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.mail.store.local.MessageRetrievalListener;
 
 public abstract class Folder<T extends Message> {
     private String status = null;

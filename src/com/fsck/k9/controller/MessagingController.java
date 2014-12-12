@@ -81,6 +81,8 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mail.store.local.MessageRemovalListener;
+import com.fsck.k9.mail.store.local.MessageRetrievalListener;
 import com.fsck.k9.mail.store.local.LocalFolder;
 import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.mail.store.local.LocalStore;
