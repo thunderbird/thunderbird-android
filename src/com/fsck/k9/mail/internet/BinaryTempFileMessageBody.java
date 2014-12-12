@@ -16,7 +16,7 @@ import com.fsck.k9.mail.MessagingException;
  * {@link LocalAttachmentMessageBody} relates to a {@link LocalAttachmentBody}.
  *
  */
-class BinaryTempFileMessageBody extends BinaryTempFileBody implements CompositeBody {
+public class BinaryTempFileMessageBody extends BinaryTempFileBody implements CompositeBody {
 
     @Override
     public void setEncoding(String encoding) throws MessagingException {
