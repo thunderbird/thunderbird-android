@@ -62,12 +62,10 @@ public abstract class RemoteStore extends Store {
      */
     public static void removeInstance(StoreConfig storeConfig) {
         String uri = storeConfig.getStoreUri();
-
         if (uri.startsWith("local")) {
             throw new RuntimeException("Asked to get non-local Store object but given " +
                     "LocalStore URI");
         }
-
         sStores.remove(uri);
     }
 

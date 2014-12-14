@@ -21,7 +21,6 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
@@ -207,12 +206,6 @@ public class LocalStore extends Store implements Serializable {
     }
 
     public static void removeAccount(Account account) {
-        try {
-            RemoteStore.removeInstance(account);
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to reset remote store for account " + account.getUuid(), e);
-        }
-
         try {
             removeInstance(account);
         } catch (Exception e) {
