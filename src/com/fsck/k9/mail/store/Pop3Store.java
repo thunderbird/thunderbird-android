@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
@@ -125,12 +124,12 @@ public class Pop3Store extends RemoteStore {
                 passwordIndex++;
                 authType = AuthType.valueOf(userInfoParts[0]);
             }
-            username = UrlEncodingHelper.decodeUtf8(userInfoParts[userIndex]);
+            username = decodeUtf8(userInfoParts[userIndex]);
             if (userInfoParts.length > passwordIndex) {
                 if (authType == AuthType.EXTERNAL) {
-                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[passwordIndex]);
+                    clientCertificateAlias = decodeUtf8(userInfoParts[passwordIndex]);
                 } else {
-                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[passwordIndex]);
+                    password = decodeUtf8(userInfoParts[passwordIndex]);
                 }
             }
         }
@@ -151,11 +150,11 @@ public class Pop3Store extends RemoteStore {
      * @see Pop3Store#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
+        String userEnc = encodeUtf8(server.username);
         String passwordEnc = (server.password != null) ?
-                    UrlEncodingHelper.encodeUtf8(server.password) : "";
+                    encodeUtf8(server.password) : "";
         String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
+                    encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {

@@ -57,7 +57,6 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.AuthType;
@@ -197,19 +196,19 @@ public class ImapStore extends RemoteStore {
             if (userinfo.endsWith(":")) {
                 // Password is empty. This can only happen after an account was imported.
                 authenticationType = AuthType.valueOf(userInfoParts[0]);
-                username = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                username = decodeUtf8(userInfoParts[1]);
             } else if (userInfoParts.length == 2) {
                 authenticationType = AuthType.PLAIN;
-                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
-                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                username = decodeUtf8(userInfoParts[0]);
+                password = decodeUtf8(userInfoParts[1]);
             } else if (userInfoParts.length == 3) {
                 authenticationType = AuthType.valueOf(userInfoParts[0]);
-                username = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                username = decodeUtf8(userInfoParts[1]);
 
                 if (AuthType.EXTERNAL == authenticationType) {
-                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
+                    clientCertificateAlias = decodeUtf8(userInfoParts[2]);
                 } else {
-                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[2]);
+                    password = decodeUtf8(userInfoParts[2]);
                 }
             }
         }
@@ -248,11 +247,11 @@ public class ImapStore extends RemoteStore {
      * @see ImapStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
+        String userEnc = encodeUtf8(server.username);
         String passwordEnc = (server.password != null) ?
-                    UrlEncodingHelper.encodeUtf8(server.password) : "";
+                    encodeUtf8(server.password) : "";
         String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
+                    encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {

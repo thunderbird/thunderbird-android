@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 
-import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -137,7 +136,7 @@ public class WebDavStore extends RemoteStore {
         String userInfo = webDavUri.getUserInfo();
         if (userInfo != null) {
             String[] userInfoParts = userInfo.split(":");
-            username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+            username = decodeUtf8(userInfoParts[0]);
             String userParts[] = username.split("\\\\", 2);
 
             if (userParts.length > 1) {
@@ -146,7 +145,7 @@ public class WebDavStore extends RemoteStore {
                 alias = username;
             }
             if (userInfoParts.length > 1) {
-                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                password = decodeUtf8(userInfoParts[1]);
             }
         }
 
@@ -186,9 +185,9 @@ public class WebDavStore extends RemoteStore {
      * @see WebDavStore#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
+        String userEnc = encodeUtf8(server.username);
         String passwordEnc = (server.password != null) ?
-                UrlEncodingHelper.encodeUtf8(server.password) : "";
+                encodeUtf8(server.password) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -474,7 +473,7 @@ public class WebDavStore extends RemoteStore {
 
             // Decodes the url-encoded folder name (i.e. "My%20folder" => "My Folder"
 
-            return UrlEncodingHelper.decodeUtf8(fullPathName);
+            return decodeUtf8(fullPathName);
         }
 
         return null;
@@ -1237,9 +1236,9 @@ public class WebDavStore extends RemoteStore {
             String url = "";
             for (int i = 0, count = urlParts.length; i < count; i++) {
                 if (i != 0) {
-                    url = url + "/" + UrlEncodingHelper.encodeUtf8(urlParts[i]);
+                    url = url + "/" + encodeUtf8(urlParts[i]);
                 } else {
-                    url = UrlEncodingHelper.encodeUtf8(urlParts[i]);
+                    url = encodeUtf8(urlParts[i]);
                 }
             }
             encodedName = url;
@@ -1880,7 +1879,7 @@ public class WebDavStore extends RemoteStore {
                     if (!messageURL.endsWith("/")) {
                         messageURL += "/";
                     }
-                    messageURL += UrlEncodingHelper.encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
+                    messageURL += encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
 
                     Log.i(K9.LOG_TAG, "Uploading message as " + messageURL);
 
@@ -1967,8 +1966,8 @@ public class WebDavStore extends RemoteStore {
              * We have to decode, then encode the URL because Exchange likes to not properly encode all characters
              */
             try {
-                end = UrlEncodingHelper.decodeUtf8(end);
-                end = UrlEncodingHelper.encodeUtf8(end);
+                end = decodeUtf8(end);
+                end = encodeUtf8(end);
                 end = end.replaceAll("\\+", "%20");
             } catch (IllegalArgumentException iae) {
                 Log.e(K9.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
@@ -2372,8 +2371,8 @@ public class WebDavStore extends RemoteStore {
              */
             try {
                 if (length > 3) {
-                    end = UrlEncodingHelper.decodeUtf8(end);
-                    end = UrlEncodingHelper.encodeUtf8(end);
+                    end = decodeUtf8(end);
+                    end = encodeUtf8(end);
                     end = end.replaceAll("\\+", "%20");
                 }
             } catch (IllegalArgumentException iae) {
