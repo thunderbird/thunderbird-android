@@ -4205,7 +4205,7 @@ public class LocalStore extends Store implements Serializable {
 		 * @throws MessagingException
 		 */
 		public void replaceBody(String text) throws MessagingException{
-			
+			MimeMessage m;
 			MimeMultipart mp = new MimeMultipart();
 			MimeBodyPart bp = new MimeBodyPart();
 			TextBody tb = new TextBody(text);

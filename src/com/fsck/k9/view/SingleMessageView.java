@@ -1,7 +1,9 @@
 package com.fsck.k9.view;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -54,6 +56,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
@@ -503,7 +506,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     }
     
     public void setMessage(Account account, LocalMessage message, PgpData pgpData,
-            MessagingController controller, MessagingListener listener) throws MessagingException {
+            MessagingController controller, MessagingListener listener) throws MessagingException{
         resetView();
 
         Log.i("PGP/MIME Replace", "setMessage in SingleMessageView");
@@ -579,6 +582,16 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             if((pgpData.getDecryptedData()!=null) && (mCryptoView.pIsMime())){
             	message.replaceBody(pgpData.getDecryptedData());
             	text = message.getTextForDisplay();
+            	MimeMessage msg = null;
+    			try {
+    				msg = new MimeMessage(new ByteArrayInputStream(text.getBytes()));
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    			//TODO: This cast from MimeMessage to LocalMessage throws an error it needs to be fixed
+                //LocalMessage myLocalMessage = (LocalMessage) msg;
+                //setMessage(account, myLocalMessage, pgpData, controller, listener);
             }
             updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
             mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
