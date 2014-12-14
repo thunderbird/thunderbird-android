@@ -21,7 +21,6 @@ import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
  *
  * @see K9Activity
  * @see K9ListActivity
- * @see K9FragmentActivity
  */
 public class K9ActivityCommon {
     /**

@@ -64,7 +64,7 @@ import de.cketti.library.changelog.ChangeLog;
  * shows a list of messages.
  * From this Activity the user can perform all standard message operations.
  */
-public class MessageList extends K9FragmentActivity implements MessageListFragmentListener,
+public class MessageList extends K9Activity implements MessageListFragmentListener,
         MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
         OnSwitchCompleteListener {
 
