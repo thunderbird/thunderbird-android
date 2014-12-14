@@ -109,10 +109,10 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.TextBodyBuilder;
-import com.fsck.k9.local.LocalAttachmentBody;
-import com.fsck.k9.local.LocalMessage;
-import com.fsck.k9.local.TempFileBody;
-import com.fsck.k9.local.TempFileMessageBody;
+import com.fsck.k9.mailstore.LocalAttachmentBody;
+import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.TempFileBody;
+import com.fsck.k9.mailstore.TempFileMessageBody;
 import com.fsck.k9.view.MessageWebView;
 
 import org.apache.james.mime4j.codec.EncoderUtil;

@@ -10,8 +10,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.local.LocalFolder;
-import com.fsck.k9.local.LocalMessage;
+import com.fsck.k9.mailstore.LocalFolder;
+import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mail.filter.Base64;
 
 import java.util.StringTokenizer;

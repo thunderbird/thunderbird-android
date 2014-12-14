@@ -11,7 +11,7 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.local.LocalMessage;
+import com.fsck.k9.mailstore.LocalMessage;
 
 import android.app.PendingIntent;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.fsck.k9.local;
+package com.fsck.k9.mailstore;
 
 import java.util.ArrayList;
 import java.util.List;

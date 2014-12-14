@@ -10,11 +10,11 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.cache.EmailProviderCacheCursor;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.local.LockableDatabase;
-import com.fsck.k9.local.LockableDatabase.DbCallback;
-import com.fsck.k9.local.LockableDatabase.WrappedException;
-import com.fsck.k9.local.UnavailableStorageException;
-import com.fsck.k9.local.LocalStore;
+import com.fsck.k9.mailstore.LockableDatabase;
+import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
+import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import com.fsck.k9.mailstore.UnavailableStorageException;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.search.SqlQueryBuilder;
 
 import android.content.ContentProvider;

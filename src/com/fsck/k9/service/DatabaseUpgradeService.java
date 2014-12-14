@@ -17,7 +17,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
-import com.fsck.k9.local.UnavailableStorageException;
+import com.fsck.k9.mailstore.UnavailableStorageException;
 
 /**
  * Service used to upgrade the accounts' databases and/or track the progress of the upgrade.

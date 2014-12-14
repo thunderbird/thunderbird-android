@@ -1,5 +1,5 @@
 
-package com.fsck.k9.local;
+package com.fsck.k9.mailstore;
 
 import android.app.Application;
 import android.content.ContentResolver;
@@ -22,10 +22,10 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.local.StorageManager.StorageProvider;
+import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.local.LockableDatabase.DbCallback;
-import com.fsck.k9.local.LockableDatabase.WrappedException;
+import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
+import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;

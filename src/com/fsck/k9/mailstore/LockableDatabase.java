@@ -1,4 +1,4 @@
-package com.fsck.k9.local;
+package com.fsck.k9.mailstore;
 
 import java.io.File;
 import java.util.concurrent.locks.Lock;
@@ -34,7 +34,7 @@ public class LockableDatabase {
          * @return Any relevant data. Can be <code>null</code>.
          * @throws WrappedException
          * @throws com.fsck.k9.mail.MessagingException
-         * @throws com.fsck.k9.local.UnavailableStorageException
+         * @throws com.fsck.k9.mailstore.UnavailableStorageException
          */
         T doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException;
     }

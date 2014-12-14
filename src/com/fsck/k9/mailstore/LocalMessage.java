@@ -1,4 +1,4 @@
-package com.fsck.k9.local;
+package com.fsck.k9.mailstore;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,8 +22,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.local.LockableDatabase.DbCallback;
-import com.fsck.k9.local.LockableDatabase.WrappedException;
+import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
+import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 
 public class LocalMessage extends MimeMessage {
     protected MessageReference mReference;

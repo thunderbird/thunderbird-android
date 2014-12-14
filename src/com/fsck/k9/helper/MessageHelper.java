@@ -13,7 +13,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.local.LocalMessage;
+import com.fsck.k9.mailstore.LocalMessage;
 
 public class MessageHelper {
 

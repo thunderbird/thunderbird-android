@@ -1,4 +1,4 @@
-package com.fsck.k9.local;
+package com.fsck.k9.mailstore;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,8 +52,8 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.MimeUtility.ViewableContainer;
-import com.fsck.k9.local.LockableDatabase.DbCallback;
-import com.fsck.k9.local.LockableDatabase.WrappedException;
+import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
+import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.AttachmentProvider;
 
 public class LocalFolder extends Folder<LocalMessage> implements Serializable {

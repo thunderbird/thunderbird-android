@@ -13,7 +13,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.fsck.k9.local.LocalStore;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Editor;
 import com.fsck.k9.preferences.Storage;
 

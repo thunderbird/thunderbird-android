@@ -43,7 +43,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.local.LocalAttachmentBodyPart;
+import com.fsck.k9.mailstore.LocalAttachmentBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
 import org.apache.commons.io.IOUtils;
 
