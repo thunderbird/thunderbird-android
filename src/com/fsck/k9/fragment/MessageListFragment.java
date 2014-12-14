@@ -2434,7 +2434,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
 
         displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folder,
-                messages.get(0).getFolder().getUuid(), null,
+                messages.get(0).getFolder().getAccountUuid(), null,
                 messages);
     }
 
@@ -2463,7 +2463,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folder,
-                messages.get(0).getFolder().getUuid(),
+                messages.get(0).getFolder().getAccountUuid(),
                 null,
                 messages);
     }

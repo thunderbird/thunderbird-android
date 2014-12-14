@@ -329,7 +329,7 @@ public class MessagingController implements Runnable {
         long messageId = message.getId();
         long folderId = message.getFolder().getId();
 
-        EmailProviderCache cache = EmailProviderCache.getCache(message.getFolder().getUuid(),
+        EmailProviderCache cache = EmailProviderCache.getCache(message.getFolder().getAccountUuid(),
                 mApplication.getApplicationContext());
         return cache.isMessageHidden(messageId, folderId);
     }

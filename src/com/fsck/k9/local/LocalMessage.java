@@ -573,7 +573,7 @@ public class LocalMessage extends MimeMessage {
             mReference = new MessageReference();
             mReference.folderName  = getFolder().getName();
             mReference.uid = mUid;
-            mReference.accountUuid = getFolder().getUuid();
+            mReference.accountUuid = getFolder().getAccountUuid();
         }
         return mReference;
     }

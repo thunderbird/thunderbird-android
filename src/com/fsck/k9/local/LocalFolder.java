@@ -99,7 +99,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         return mFolderId;
     }
 
-    public String getUuid()
+    public String getAccountUuid()
     {
         return getAccount().getUuid();
     }
@@ -1890,7 +1890,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 Cursor attachmentsCursor = null;
                 try {
-                    String accountUuid = getUuid();
+                    String accountUuid = getAccountUuid();
                     Context context = LocalFolder.this.localStore.mApplication;
 
                     // Get attachment IDs

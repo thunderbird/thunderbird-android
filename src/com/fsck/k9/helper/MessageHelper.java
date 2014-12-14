@@ -71,7 +71,7 @@ public class MessageHelper {
             }
 
             target.uid = message.getUid();
-            target.account = message.getFolder().getUuid();
+            target.account = message.getFolder().getAccountUuid();
             target.uri = message.getUri();
         } catch (MessagingException me) {
             Log.w(K9.LOG_TAG, "Unable to load message info", me);
