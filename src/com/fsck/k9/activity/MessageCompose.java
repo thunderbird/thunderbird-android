@@ -1457,6 +1457,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // text/plain part when mMessageFormat == MessageFormat.HTML
         TextBody bodyPlain = null;
 
+        // body for PGP/MIME messages has already been set (no support for PGP/MIME attachments yet)
         if (mPgpData.getEncryptedData() == null || !mAccount.isCryptoPGPMime()) {
         
 	        final boolean hasAttachments = mAttachments.getChildCount() > 0;
@@ -1910,6 +1911,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         finish();
     }
 
+    /**
+     * Create a new multipart Mime message with a text body and return its string representation.
+     * This message can be used for encryption.
+     * @param text Contents of the text body
+     * @return string representation of a multipart Mime message
+     */
     private String createPGPMimeMessageString(String text) {
     	
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -2117,6 +2124,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     
+    /**
+     * Create a Mime multipart for PGP/MIME. This multipart contains two bodies for:
+     * 1. version identification
+     * 2. encrypted content
+     * @return Mime multipart
+     * @throws MessagingException
+     */
     private MimeMultipart createPGPMimeMultipart() throws MessagingException {
     	
         MimeMultipart mp = new MimeMultipart();
