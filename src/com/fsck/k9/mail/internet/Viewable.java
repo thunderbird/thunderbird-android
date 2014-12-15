@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Empty marker class interface the class hierarchy used by
- * {@link com.fsck.k9.mailstore.LocalMessageExtractor#extractTextAndAttachments(android.content.Context, com.fsck.k9.mail.Message)}.
+ * {@link MessageExtractor#getViewables(com.fsck.k9.mail.Part, java.util.List)}
  *
  * @see Viewable.Text
  * @see Viewable.Html
@@ -20,7 +20,7 @@ public interface Viewable {
      *
      * @see com.fsck.k9.mail.internet.MessageExtractor#isPartTextualBody(com.fsck.k9.mail.Part)
      */
-    static abstract class Textual implements Viewable {
+    abstract class Textual implements Viewable {
         private Part mPart;
 
         public Textual(Part part) {
@@ -35,7 +35,7 @@ public interface Viewable {
     /**
      * Class representing a {@code text/plain} part of a message.
      */
-    static class Text extends Textual {
+    class Text extends Textual {
         public Text(Part part) {
             super(part);
         }
@@ -44,7 +44,7 @@ public interface Viewable {
     /**
      * Class representing a {@code text/html} part of a message.
      */
-    static class Html extends Textual {
+    class Html extends Textual {
         public Html(Part part) {
             super(part);
         }
@@ -58,7 +58,7 @@ public interface Viewable {
      * inline.
      * </p>
      */
-    static class MessageHeader implements Viewable {
+    class MessageHeader implements Viewable {
         private Part mContainerPart;
         private Message mMessage;
 
@@ -84,7 +84,7 @@ public interface Viewable {
      * class.
      * </p>
      */
-    static class Alternative implements Viewable {
+    class Alternative implements Viewable {
         private List<Viewable> mText;
         private List<Viewable> mHtml;
 
@@ -101,5 +101,4 @@ public interface Viewable {
             return mHtml;
         }
     }
-
 }

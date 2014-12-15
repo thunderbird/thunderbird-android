@@ -22,6 +22,9 @@ import java.util.regex.Pattern;
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
+import static com.fsck.k9.mail.internet.Viewable.Html;
+import static com.fsck.k9.mail.internet.Viewable.MessageHeader;
+import static com.fsck.k9.mail.internet.Viewable.Text;
 import static com.fsck.k9.mail.internet.Viewable.Textual;
 
 public class MessageExtractor {
@@ -167,7 +170,7 @@ public class MessageExtractor {
             Message message = (Message) body;
 
             // We add the Message object so we can extract the filename later.
-            viewables.add(new Viewable.MessageHeader(part, message));
+            viewables.add(new MessageHeader(part, message));
 
             // Recurse to grab all viewable parts and attachments from that message.
             viewables.addAll(getViewables(message, attachments));
@@ -177,10 +180,10 @@ public class MessageExtractor {
              */
             String mimeType = part.getMimeType();
             if (mimeType.equalsIgnoreCase("text/plain")) {
-                Viewable.Text text = new Viewable.Text(part);
+                Text text = new Text(part);
                 viewables.add(text);
             } else {
-                Viewable.Html html = new Viewable.Html(part);
+                Html html = new Html(part);
                 viewables.add(html);
             }
         } else {
@@ -220,7 +223,7 @@ public class MessageExtractor {
      * @param directChild If {@code true}, this method will return after the first {@code text/plain} was
      *         found.
      *
-     * @return A list of {@link Viewable.Text} viewables.
+     * @return A list of {@link Text} viewables.
      *
      * @throws MessagingException
      *          In case of an error.
@@ -254,7 +257,7 @@ public class MessageExtractor {
                     }
                 }
             } else if (isPartTextualBody(part) && part.getMimeType().equalsIgnoreCase("text/plain")) {
-                Viewable.Text text = new Viewable.Text(part);
+                Text text = new Text(part);
                 viewables.add(text);
                 if (directChild) {
                     break;
@@ -274,7 +277,7 @@ public class MessageExtractor {
      * @param directChild If {@code true}, this method will add all {@code text/html} parts except the first
      *         found to 'attachments'.
      *
-     * @return A list of {@link Viewable.Text} viewables.
+     * @return A list of {@link Text} viewables.
      *
      * @throws MessagingException In case of an error.
      */
@@ -314,7 +317,7 @@ public class MessageExtractor {
                 }
             } else if (!(directChild && partFound) && isPartTextualBody(part) &&
                     part.getMimeType().equalsIgnoreCase("text/html")) {
-                Viewable.Html html = new Viewable.Html(part);
+                Html html = new Html(part);
                 viewables.add(html);
                 partFound = true;
             } else if (!knownTextParts.contains(part)) {
@@ -359,8 +362,8 @@ public class MessageExtractor {
      *
      * @return The set of viewable {@code Part}s.
      *
-     * @see MimeUtility#findHtmlPart(Multipart, Set, List, boolean)
-     * @see MimeUtility#findAttachments(Multipart, Set, List)
+     * @see MessageExtractor#findHtmlPart(Multipart, Set, List, boolean)
+     * @see MessageExtractor#findAttachments(Multipart, Set, List)
      */
     private static Set<Part> getParts(List<Viewable> viewables) {
         Set<Part> parts = new HashSet<Part>();

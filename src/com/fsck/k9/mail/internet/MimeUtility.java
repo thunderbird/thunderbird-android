@@ -991,7 +991,7 @@ public class MimeUtility {
          */
         if (contentTransferEncoding != null) {
             contentTransferEncoding =
-                MimeUtility.getHeaderParameter(contentTransferEncoding, null);
+                getHeaderParameter(contentTransferEncoding, null);
             if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(contentTransferEncoding)) {
                 in = new QuotedPrintableInputStream(in);
             } else if (MimeUtil.ENC_BASE64.equalsIgnoreCase(contentTransferEncoding)) {

@@ -19,6 +19,11 @@ import java.util.Date;
 import java.util.List;
 
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
+import static com.fsck.k9.mail.internet.Viewable.Alternative;
+import static com.fsck.k9.mail.internet.Viewable.Html;
+import static com.fsck.k9.mail.internet.Viewable.MessageHeader;
+import static com.fsck.k9.mail.internet.Viewable.Text;
+import static com.fsck.k9.mail.internet.Viewable.Textual;
 
 class LocalMessageExtractor {
     private static final String TEXT_DIVIDER =
@@ -58,14 +63,14 @@ class LocalMessageExtractor {
             StringBuilder html = new StringBuilder();
 
             for (Viewable viewable : viewables) {
-                if (viewable instanceof Viewable.Textual) {
+                if (viewable instanceof Textual) {
                     // This is either a text/plain or text/html part. Fill the variables 'text' and
                     // 'html', converting between plain text and HTML as necessary.
                     text.append(buildText(viewable, !hideDivider));
                     html.append(buildHtml(viewable, !hideDivider));
                     hideDivider = false;
-                } else if (viewable instanceof Viewable.MessageHeader) {
-                    Viewable.MessageHeader header = (Viewable.MessageHeader) viewable;
+                } else if (viewable instanceof MessageHeader) {
+                    MessageHeader header = (MessageHeader) viewable;
                     Part containerPart = header.getContainerPart();
                     Message innerMessage =  header.getMessage();
 
@@ -76,9 +81,9 @@ class LocalMessageExtractor {
                     addMessageHeaderHtml(context, html, innerMessage);
 
                     hideDivider = true;
-                } else if (viewable instanceof Viewable.Alternative) {
+                } else if (viewable instanceof Alternative) {
                     // Handle multipart/alternative contents
-                    Viewable.Alternative alternative = (Viewable.Alternative) viewable;
+                    Alternative alternative = (Alternative) viewable;
 
                     /*
                      * We made sure at least one of text/plain or text/html is present when
@@ -161,21 +166,21 @@ class LocalMessageExtractor {
     private static StringBuilder buildHtml(Viewable viewable, boolean prependDivider)
     {
         StringBuilder html = new StringBuilder();
-        if (viewable instanceof Viewable.Textual) {
-            Part part = ((Viewable.Textual)viewable).getPart();
+        if (viewable instanceof Textual) {
+            Part part = ((Textual)viewable).getPart();
             addHtmlDivider(html, part, prependDivider);
 
             String t = part.getText();
             if (t == null) {
                 t = "";
-            } else if (viewable instanceof Viewable.Text) {
+            } else if (viewable instanceof Text) {
                 t = HtmlConverter.textToHtml(t);
             }
             html.append(t);
-        } else if (viewable instanceof Viewable.Alternative) {
+        } else if (viewable instanceof Alternative) {
             // That's odd - an Alternative as child of an Alternative; go ahead and try to use the
             // text/html child; fall-back to the text/plain part.
-            Viewable.Alternative alternative = (Viewable.Alternative) viewable;
+            Alternative alternative = (Alternative) viewable;
 
             List<Viewable> htmlAlternative = alternative.getHtml().isEmpty() ?
                     alternative.getText() : alternative.getHtml();
@@ -193,21 +198,21 @@ class LocalMessageExtractor {
     private static StringBuilder buildText(Viewable viewable, boolean prependDivider)
     {
         StringBuilder text = new StringBuilder();
-        if (viewable instanceof Viewable.Textual) {
-            Part part = ((Viewable.Textual)viewable).getPart();
+        if (viewable instanceof Textual) {
+            Part part = ((Textual)viewable).getPart();
             addTextDivider(text, part, prependDivider);
 
             String t = part.getText();
             if (t == null) {
                 t = "";
-            } else if (viewable instanceof Viewable.Html) {
+            } else if (viewable instanceof Html) {
                 t = HtmlConverter.htmlToText(t);
             }
             text.append(t);
-        } else if (viewable instanceof Viewable.Alternative) {
+        } else if (viewable instanceof Alternative) {
             // That's odd - an Alternative as child of an Alternative; go ahead and try to use the
             // text/plain child; fall-back to the text/html part.
-            Viewable.Alternative alternative = (Viewable.Alternative) viewable;
+            Alternative alternative = (Alternative) viewable;
 
             List<Viewable> textAlternative = alternative.getText().isEmpty() ?
                     alternative.getHtml() : alternative.getText();
