@@ -35,7 +35,6 @@ import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeUtility;
 
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
