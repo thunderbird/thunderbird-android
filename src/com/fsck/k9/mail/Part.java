@@ -17,8 +17,6 @@ public interface Part {
 
     String getDisposition() throws MessagingException;
 
-    String getContentDisposition();
-
     String getContentId() throws MessagingException;
 
     String[] getHeader(String name) throws MessagingException;

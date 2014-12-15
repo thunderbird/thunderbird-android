@@ -29,6 +29,7 @@ class LocalMessageExtractor {
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
 
+    private LocalMessageExtractor() {}
     /**
      * Extract the viewable textual parts of a message and return the rest as attachments.
      *

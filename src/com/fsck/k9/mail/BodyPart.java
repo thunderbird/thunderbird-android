@@ -18,17 +18,6 @@ public abstract class BodyPart implements Part {
     public abstract void setEncoding(String encoding) throws MessagingException;
 
     @Override
-    public String getContentDisposition() {
-        try {
-            String disposition = getDisposition();
-            if (disposition != null) {
-                return MimeUtility.getHeaderParameter(disposition, null);
-            }
-        } catch (MessagingException e) { /* ignore */ }
-        return null;
-    }
-
-    @Override
     public String getText() {
         return MessageExtractor.getTextFromPart(this);
     }

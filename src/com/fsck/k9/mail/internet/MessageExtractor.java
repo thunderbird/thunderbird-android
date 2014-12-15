@@ -25,6 +25,8 @@ import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Textual;
 
 public class MessageExtractor {
+    private MessageExtractor() {}
+
     public static String getTextFromPart(Part part) {
         try {
             if ((part != null) && (part.getBody() != null)) {
@@ -157,7 +159,7 @@ public class MessageExtractor {
                 }
             }
         } else if (body instanceof Message &&
-                !("attachment".equalsIgnoreCase(part.getContentDisposition()))) {
+                !("attachment".equalsIgnoreCase(getContentDisposition(part)))) {
             /*
              * We only care about message/rfc822 parts whose Content-Disposition header has a value
              * other than "attachment".
@@ -406,5 +408,17 @@ public class MessageExtractor {
         else {
             return false;
         }
+    }
+
+
+
+    public static String getContentDisposition(Part part) {
+        try {
+            String disposition = part.getDisposition();
+            if (disposition != null) {
+                return MimeUtility.getHeaderParameter(disposition, null);
+            }
+        } catch (MessagingException e) { /* ignore */ }
+        return null;
     }
 }

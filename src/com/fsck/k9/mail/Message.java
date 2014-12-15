@@ -270,21 +270,6 @@ public abstract class Message implements Part, CompositeBody {
     @Override
     public abstract Message clone();
 
-    /**
-     * Get the value of the {@code Content-Disposition} header.
-     * @return The value of the {@code Content-Disposition} header if available. {@code null}, otherwise.
-     */
-    public String getContentDisposition() {
-        try {
-            String disposition = getDisposition();
-            if (disposition != null) {
-                return MimeUtility.getHeaderParameter(disposition, null);
-            }
-        }
-        catch (MessagingException e) { /* ignore */ }
-        return null;
-    }
-
     @Override
     public String getText() {
         return MessageExtractor.getTextFromPart(this);
