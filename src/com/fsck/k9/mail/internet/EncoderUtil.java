@@ -16,7 +16,7 @@ import org.apache.james.mime4j.util.CharsetUtil;
  * encode emoji characters in the Subject headers.  The method to decode emoji depends on the MimeMessage class because
  * it has to be determined with the sender address.
  */
-public class EncoderUtil {
+class EncoderUtil {
     private static final BitSet Q_RESTRICTED_CHARS = initChars("=_?\"#$%&'(),.:;<>@[\\]^`{|}~");
 
     private static final String ENC_WORD_PREFIX = "=?";

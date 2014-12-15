@@ -50,7 +50,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstránený z K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Všetky lokálne údaje pre účet \"<xliff:g id="account">%s</xliff:g>\" budú odstránené. Nastavenia účtu budú zachované.</string>
   <string name="account_clear_dlg_instructions_fmt">Všetky správy pre účet \"<xliff:g id="account">%s</xliff:g>\" budú odstránené. Nastavenia účtu budú však zachované.</string>
-  <string name="insufficient_apg_permissions">K-9 nemá povolenia k plnému prístupu k APG. Prosím, preinštalujte K-9 Mail na opravu tohto problému.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Nainštalujte, prosím, správcu súborov pre pokračovanie v tomto importovaní.</string>
   <string name="open_market">Otvoriť Obchod Play</string>
@@ -101,8 +100,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="move_action">Presunúť</string>
   <string name="single_message_options_action">Odoslať…</string>
   <string name="refile_action">Presmerovať…</string>
-  <string name="continue_action">Pokračovať</string>
-  <string name="back_action">Späť</string>
   <string name="done_action">Hotovo</string>
   <string name="discard_action">Zahodiť</string>
   <string name="save_draft_action">Uložiť ako koncept</string>
@@ -161,7 +158,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="clearing_account">Čistenie účtu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Obnovovanie účtu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nová správa</string>
-  <string name="notification_new_messages_title">Počet nových správ: <xliff:g id="new_message_count">%d</xliff:g></string>
   <string name="notification_new_one_account_fmt">Počet neprečítaných správ: <xliff:g id="unread_message_count">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_additional_messages">+ ďalších <xliff:g id="additional_messages">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Odpovedať</string>
@@ -457,12 +453,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_quote_prefix_label">Predpona citovaného textu</string>
   <string name="account_settings_crypto">Šifrovanie</string>
   <string name="account_settings_crypto_app">Poskytovateľ OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Žiadne</string>
-  <string name="account_settings_crypto_auto_signature">Automaticky podpisovať</string>
-  <string name="account_settings_crypto_auto_signature_summary">Používať e-mailovú adresu účtu pre uhádnutie podpisového kľúča</string>
-  <string name="account_settings_crypto_auto_encrypt">Automaticky šifrovať</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Automaticky zašifrovať, ak sa verejný kľúč zhoduje s príjemcom</string>
-  <string name="account_settings_crypto_apg_not_installed">APG nie je nainštalované</string>
   <string name="account_settings_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
   <string name="account_settings_storage_title">Ukladací priestor</string>
   <string name="account_settings_color_label">Farba účtu</string>
@@ -728,15 +718,10 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="font_size_large">Veľké</string>
   <string name="font_size_larger">Väčšie</string>
   <string name="miscellaneous_preferences">Rôzne</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Nebola nájdená žiadna vhodná aplikácia pre túto akciu.</string>
-  <string name="error_apg_version_not_supported">Nainštalovaná verzia APG nie je podporovaná.</string>
   <string name="btn_crypto_sign">Podpísať</string>
   <string name="btn_encrypt">Šifrovať</string>
-  <string name="btn_decrypt">Dešifrovať</string>
-  <string name="btn_verify">Overiť</string>
   <string name="unknown_crypto_signature_user_id">&lt;neznámy&gt;</string>
-  <string name="key_id">ID: %s</string>
   <string name="pgp_mime_unsupported">Formát správy PGP/MIME nie je zatiať podporovaný.</string>
   <string name="attachment_encryption_unsupported">Varovanie: prílohy zatiaľ nie je možné podpísať či šifrovať.</string>
   <string name="send_aborted">Odosielanie prerušené.</string>
@@ -746,8 +731,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="confirm_discard_draft_message">Ste si istý, že chcete zahodiť túto správu?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Odmietnuť uloženie konceptu správy.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Odmietnuť uloženie konceptu zašifrovanej správy.</string>
-  <string name="continue_without_public_key_dlg_title">Pokračovať bez verejného kľúča?</string>
-  <string name="continue_without_public_key_instructions_fmt">Jeden alebo viacerí príjemcovia nemajú uložený verejný kľúč. Pokračovať?</string>
   <string name="select_text_now">Vyberte text na kopírovanie.</string>
   <string name="dialog_confirm_delete_title">Potvrdiť vymazanie</string>
   <string name="dialog_confirm_delete_message">Chcete vymazať túto správu?</string>

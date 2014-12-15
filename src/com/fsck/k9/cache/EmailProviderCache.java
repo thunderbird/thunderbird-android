@@ -11,8 +11,8 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.mail.store.local.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.provider.EmailProvider;
 
 /**
@@ -42,9 +42,9 @@ public class EmailProviderCache {
 
 
     private String mAccountUuid;
-    private Map<Long, Map<String, String>> mMessageCache = new HashMap<Long, Map<String, String>>();
-    private Map<Long, Map<String, String>> mThreadCache = new HashMap<Long, Map<String, String>>();
-    private Map<Long, Long> mHiddenMessageCache = new HashMap<Long, Long>();
+    private final Map<Long, Map<String, String>> mMessageCache = new HashMap<Long, Map<String, String>>();
+    private final Map<Long, Map<String, String>> mThreadCache = new HashMap<Long, Map<String, String>>();
+    private final Map<Long, Long> mHiddenMessageCache = new HashMap<Long, Long>();
 
 
     private EmailProviderCache(String accountUuid) {
@@ -101,7 +101,7 @@ public class EmailProviderCache {
                 Map<String, String> map = mMessageCache.get(messageId);
                 if (map != null) {
                     map.remove(columnName);
-                    if (map.size() == 0) {
+                    if (map.isEmpty()) {
                         mMessageCache.remove(messageId);
                     }
                 }
@@ -115,7 +115,7 @@ public class EmailProviderCache {
                 Map<String, String> map = mThreadCache.get(threadRootId);
                 if (map != null) {
                     map.remove(columnName);
-                    if (map.size() == 0) {
+                    if (map.isEmpty()) {
                         mThreadCache.remove(threadRootId);
                     }
                 }
@@ -143,7 +143,7 @@ public class EmailProviderCache {
         }
     }
 
-    public void unhideMessages(Message[] messages) {
+    public void unhideMessages(List<? extends Message> messages) {
         synchronized (mHiddenMessageCache) {
             for (Message message : messages) {
                 LocalMessage localMessage = (LocalMessage) message;

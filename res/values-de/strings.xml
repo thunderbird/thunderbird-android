@@ -13,7 +13,7 @@
   <string name="app_authors">Google, das K-9-Team und viele Weitere.</string>
   <string name="app_copyright_fmt">\u00a9 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers.
 Teile \u00a9 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Lizenziert unter der Apache License, Version 2.0.</string>
+  <string name="app_license">Lizenziert unter der Apache-Lizenz, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -45,12 +45,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nDiese Nachricht wurde von meinem Android-Mobiltelefon mit K-9 Mail gesendet.</string>
+  <string name="default_signature">-- \nDiese Nachricht wurde von meinem Android-Gerät mit K-9 Mail gesendet.</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird gelöscht.</string>
-  <string name="account_recreate_dlg_instructions_fmt">Alle Daten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von K-9 Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
-  <string name="account_clear_dlg_instructions_fmt">Alle Nachrichten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden von K-9 Mail entfernt. Kontoeinstellungen werden beibehalten.</string>
-  <string name="insufficient_apg_permissions">K-9 hat keinen Vollzugriff auf APG, bitte dafür K-9 neu installieren.</string>
+  <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird aus K-9 Mail entfernt.</string>
+  <string name="account_recreate_dlg_instructions_fmt">Alle lokalen Daten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden entfernt. Kontoeinstellungen werden beibehalten.</string>
+  <string name="account_clear_dlg_instructions_fmt">Lokale Kopien von Nachrichten in \"<xliff:g id="account">%s</xliff:g>\" werden entfernt. Kontoeinstellungen werden beibehalten.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Es wurde keine geeignete Anwendung gefunden, um den Import durchzuführen. Bitte installieren Sie einen Dateimanager aus dem Play Store.</string>
   <string name="open_market">Play Store öffnen</string>
@@ -59,12 +58,12 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="app_revision_fmt">Versionsinformationen: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Wir verwenden die folgenden externen Bibliotheken: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji-Bilder: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Anhänge der Nachricht lesen</string>
-  <string name="read_attachment_desc">Der Anwendung erlauben, die Anhänge Ihrer Nachrichten zu lesen.</string>
-  <string name="read_messages_label">Nachrichten lesen</string>
-  <string name="read_messages_desc">Der Anwendung erlauben, Ihre Nachrichten zu lesen.</string>
-  <string name="delete_messages_label">Nachrichten löschen</string>
-  <string name="delete_messages_desc">Der Anwendung erlauben, Ihre Nachrichten zu löschen.</string>
+  <string name="read_attachment_label">E-Mail-Anhänge lesen</string>
+  <string name="read_attachment_desc">Der Anwendung erlauben, Ihre E-Mail-Anhänge zu lesen.</string>
+  <string name="read_messages_label">E-Mails lesen</string>
+  <string name="read_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu lesen.</string>
+  <string name="delete_messages_label">E-Mails löschen</string>
+  <string name="delete_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu löschen.</string>
   <string name="about_title_fmt">Über <xliff:g id="app_name">%s</xliff:g></string>
   <string name="accounts_title">Konten</string>
   <string name="folders_title">Ordner</string>
@@ -74,14 +73,14 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="compose_title_reply">Antworten</string>
   <string name="compose_title_reply_all">Allen antworten</string>
   <string name="compose_title_forward">Weiterleiten</string>
-  <string name="choose_folder_title">Ordner wählen</string>
+  <string name="choose_folder_title">Ordner auswählen</string>
   <string name="status_loading_account_folder">Lade <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Lade Kopfzeilen in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Sende <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Verarbeite <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
   <string name="status_next_poll">Nächster Abruf <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_syncing_off">Synchronisation abgeschaltet</string>
+  <string name="status_syncing_off">Synchronisation deaktiviert</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ausgewählt</string>
   <string name="next_action">Weiter</string>
   <string name="previous_action">Zurück</string>
@@ -99,15 +98,13 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="spam_action">Spam</string>
   <string name="forward_action">Weiterleiten</string>
   <string name="move_action">Verschieben</string>
-  <string name="single_message_options_action">Aktionen…</string>
+  <string name="single_message_options_action">Senden…</string>
   <string name="refile_action">Umsortieren…</string>
-  <string name="continue_action">Fortfahren</string>
-  <string name="back_action">Zurück</string>
   <string name="done_action">Fertig</string>
   <string name="discard_action">Verwerfen</string>
-  <string name="save_draft_action">Speichern</string>
-  <string name="check_mail_action">Nachrichten abrufen</string>
-  <string name="send_messages_action">Nachricht senden</string>
+  <string name="save_draft_action">Als Entwurf speichern</string>
+  <string name="check_mail_action">E-Mail abrufen</string>
+  <string name="send_messages_action">Nachrichten senden</string>
   <string name="refresh_folders_action">Ordnerliste aktualisieren</string>
   <string name="filter_folders_action">Ordner suchen</string>
   <string name="add_account_action">Konto hinzufügen</string>
@@ -119,7 +116,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="folder_settings_action">Ordnereinstellungen</string>
   <string name="global_settings_action">Globale Einstellungen</string>
   <string name="remove_account_action">Konto entfernen</string>
-  <string name="clear_pending_action">Ausstehende Aktionen abbrechen (Vorsicht!)</string>
+  <string name="clear_pending_action">Ausstehende Aktionen löschen (Achtung!)</string>
   <string name="mark_as_read_action">Als gelesen markieren</string>
   <string name="send_alternate_action">Teilen</string>
   <string name="send_alternate_chooser_title">Anwendung auswählen</string>
@@ -129,8 +126,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="select_text_action">Text auswählen</string>
   <string name="show_headers_action">Kopfzeilen anzeigen</string>
   <string name="hide_headers_action">Kopfzeilen verbergen</string>
-  <string name="message_view_theme_action_dark">Dunkles Design verwenden</string>
-  <string name="message_view_theme_action_light">Helles Design verwenden</string>
+  <string name="message_view_theme_action_dark">Dunkles Theme verwenden</string>
+  <string name="message_view_theme_action_light">Helles Theme verwenden</string>
   <string name="mark_as_unread_action">Als ungelesen markieren</string>
   <string name="add_cc_bcc_action">CC/BCC hinzufügen</string>
   <string name="read_receipt">Empfangsbestätigung</string>
@@ -138,9 +135,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="read_receipt_disabled">Es wird keine Empfangsbestätigung angefordert</string>
   <string name="add_attachment_action">Anhang hinzufügen</string>
   <string name="empty_trash_action">Papierkorb leeren</string>
-  <string name="expunge_action">Bereinigen (Expunge)</string>
+  <string name="expunge_action">Bereinigen</string>
   <string name="clear_local_folder_action">Lokale Nachrichten löschen</string>
-  <string name="about_action">Info</string>
+  <string name="about_action">Über</string>
   <string name="prefs_title">Einstellungen</string>
   <string name="accounts_context_menu_title">Kontooptionen</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
@@ -149,8 +146,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="status_loading">Lade</string>
   <string name="status_loading_more">Nachrichten werden geladen\u2026</string>
   <string name="status_network_error">Verbindungsfehler</string>
-  <string name="status_invalid_id_error">Nachricht konnte nicht gefunden werden</string>
-  <string name="status_loading_more_failed">Ladevorgang erneut starten</string>
+  <string name="status_invalid_id_error">Nachricht nicht gefunden</string>
+  <string name="status_loading_more_failed">Laden weiterer Nachrichten erneut starten</string>
   <string name="load_more_messages_fmt">Bis zu <xliff:g id="messages_to_load">%d</xliff:g> weitere abrufen</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -159,20 +156,23 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_size_changed">Konto \'<xliff:g id="account">%s</xliff:g>\' von <xliff:g id="oldSize">%s</xliff:g> auf <xliff:g id="newSize">%s</xliff:g> komprimiert</string>
   <string name="compacting_account">Konto \'<xliff:g id="account">%s</xliff:g>\' wird komprimiert</string>
   <string name="clearing_account">Konto \'<xliff:g id="account">%s</xliff:g>\' wird bereinigt</string>
-  <string name="recreating_account">Konto \"<xliff:g id="account">%s</xliff:g>\' wird wieder hergestellt</string>
-  <string name="notification_new_title">Neue Nachricht</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> neue Nachrichten</string>
+  <string name="recreating_account">Konto \"<xliff:g id="account">%s</xliff:g>\' wird wiederhergestellt</string>
+  <string name="notification_new_title">Neue E-Mail</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> neue Nachricht</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> neue Nachrichten</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ungelesen (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">und <xliff:g id="additional_messages">%d</xliff:g> weitere (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_action_reply">Antworten</string>
   <string name="notification_action_mark_as_read">Gelesen</string>
   <string name="notification_action_delete">Löschen</string>
   <string name="notification_certificate_error_title">Zertifikatsproblem (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_certificate_error_text">Servereinstellungen überprüfen</string>
-  <string name="notification_bg_sync_ticker">Neue Nachrichten in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> werden abgerufen</string>
-  <string name="notification_bg_sync_title">Neue Nachrichten werden abgerufen</string>
-  <string name="notification_bg_send_ticker">Nachricht in <xliff:g id="account">%s</xliff:g> wird gesendet</string>
-  <string name="notification_bg_send_title">Nachricht wird gesendet</string>
+  <string name="notification_certificate_error_text">Überprüfen Sie Ihre Servereinstellungen</string>
+  <string name="notification_bg_sync_ticker">Neue E-Mails in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> werden abgerufen</string>
+  <string name="notification_bg_sync_title">E-Mails werden abgerufen</string>
+  <string name="notification_bg_send_ticker">E-Mail in <xliff:g id="account">%s</xliff:g> wird gesendet</string>
+  <string name="notification_bg_send_title">E-Mail wird gesendet</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="special_mailbox_name_inbox">Posteingang</string>
   <string name="special_mailbox_name_outbox">Postausgang</string>
@@ -188,11 +188,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Nachrichten konnten nicht gesendet werden</string>
   <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
-  <string name="debug_enable_debug_logging_title">Debug-Aufzeichnungen</string>
-  <string name="debug_enable_debug_logging_summary">Detaillierte Diagnose-Informationen aufzeichnen</string>
-  <string name="debug_enable_sensitive_logging_title">Vertrauliche Daten aufzeichnen</string>
-  <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau aufzeichnen</string>
-  <string name="message_list_load_more_messages_action">Weitere Nachrichten abrufen</string>
+  <string name="debug_enable_debug_logging_title">Debugprotokollierung aktivieren</string>
+  <string name="debug_enable_debug_logging_summary">Zusätzliche Diagnose-Informationen protokollieren</string>
+  <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen protokollieren</string>
+  <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau protokollieren.</string>
+  <string name="message_list_load_more_messages_action">Weitere Nachrichten laden</string>
   <string name="message_to_fmt">An:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_to_hint">An</string>
   <string name="message_compose_cc_hint">CC</string>
@@ -208,11 +208,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="message_compose_quote_header_cc">CC:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schrieb:</string>
   <string name="message_compose_reply_header_fmt_with_date">Am <xliff:g id="sent_date">%1$s</xliff:g>, schrieb <xliff:g id="sender">%2$s</xliff:g>:</string>
-  <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger wählen.</string>
+  <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger auswählen.</string>
   <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
   <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
   <string name="message_compose_show_quoted_text_action">Ursprüngliche Nachricht zitieren</string>
-  <string name="message_compose_description_add_to">Empfänger hinzufügen</string>
+  <string name="message_compose_description_add_to">Empfänger hinzufügen (An)</string>
   <string name="message_compose_description_add_cc">Empfänger hinzufügen (CC)</string>
   <string name="message_compose_description_add_bcc">Empfänger hinzufügen (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Zitierten Text entfernen</string>
@@ -228,7 +228,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="message_view_show_message_action">Nachricht anzeigen</string>
   <string name="message_view_show_attachments_action">Anhänge anzeigen</string>
   <string name="message_view_show_more_attachments_action">Mehr…</string>
-  <string name="message_view_fetching_attachment_toast">Anhang wird geladen</string>
+  <string name="message_view_fetching_attachment_toast">Anhang wird abgerufen.</string>
   <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
   <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
   <string name="message_view_downloading">Nachricht wird heruntergeladen…</string>
@@ -280,6 +280,12 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="global_settings_notification_quick_delete_when_single_msg">Für einzelne Nachricht</string>
   <string name="global_settings_notification_quick_delete_always">Immer</string>
   <string name="global_settings_notification_quick_delete_description">Der Benachrichtigung eine Schaltfläche zum Löschen der Nachrichten hinzufügen</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Sperrbildschirm-Benachrichtigungen</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Keine Sperrbildschirm-Benachrichtigungen</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Anwendungsname</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Anzahl der ungelesenen Nachrichten</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Nachrichtenanzahl und Absender</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Gleiche wie bei entsperrtem Bildschirm</string>
   <string name="quiet_time">Ruhezeit</string>
   <string name="quiet_time_description">Klingeln, Vibrieren und Leuchten in der Nacht deaktivieren</string>
   <string name="quiet_time_starts">Ruhezeit startet</string>
@@ -410,6 +416,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
   <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Passwort ist falsch.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen das der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen das jemand versucht Sie oder ihren E-Mail Server anzugreifen. Falls Sie sich nicht sicher sind was der Grund ist klicken Sie abbrechen und kontaktieren Sie die Administratoren des E-Mail Servers. \n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Kann nicht mit dem Server verbinden.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
   <string name="account_setup_failed_dlg_continue_action">Weiter</string>
@@ -461,18 +468,13 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_folders">Ordner</string>
   <string name="account_settings_quote_prefix_label">Zitat-Präfix</string>
   <string name="account_settings_crypto">Kryptographie</string>
-  <string name="account_settings_crypto_app">OpenPGP-Provider</string>
-  <string name="account_settings_crypto_app_none">Keiner</string>
-  <string name="account_settings_crypto_auto_signature">Automatisches Signieren</string>
-  <string name="account_settings_crypto_auto_signature_summary">E-Mail-Adresse des Kontos verwenden, um den Signaturschlüssel zu finden</string>
-  <string name="account_settings_crypto_auto_encrypt">Automatische Verschlüsselung</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Automatisch verschlüsseln, falls für den Empfänger ein öffentlicher Schlüssel vorhanden ist</string>
-  <string name="account_settings_crypto_apg_not_installed">APG ist nicht installiert</string>
+  <string name="account_settings_crypto_app">OpenPGP-Anbieter</string>
+  <string name="account_settings_no_openpgp_provider_installed">Kein OpenPGP-Anbieter installiert</string>
   <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
   <string name="account_settings_storage_title">Speicher</string>
   <string name="account_settings_color_label">Kontofarbe</string>
   <string name="account_settings_color_summary">Farbe, in der das Konto in der Konten- und Ordnerliste dargestellt wird</string>
-  <string name="account_settings_led_color_label">LED-Farbe</string>
+  <string name="account_settings_led_color_label">Farbe der Benachrichtigungs-LED</string>
   <string name="account_settings_led_color_summary">Farbe, die für die Benachrichtigungs-LED bei Benachrichtigungen für dieses Konto verwendet wird</string>
   <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
   <string name="account_settings_autodownload_message_size_label">Nachrichten automatisch laden bis</string>
@@ -738,15 +740,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="font_size_large">Groß</string>
   <string name="font_size_larger">Größer</string>
   <string name="miscellaneous_preferences">Verschiedenes</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Keine geeignete Anwendung für diese Aktion gefunden.</string>
-  <string name="error_apg_version_not_supported">Die installierte APG-Version wird nicht unterstützt.</string>
   <string name="btn_crypto_sign">Signieren</string>
   <string name="btn_encrypt">Verschlüsseln</string>
-  <string name="btn_decrypt">Entschlüsseln</string>
-  <string name="btn_verify">Verifizieren</string>
   <string name="unknown_crypto_signature_user_id">&lt;unbekannt&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME-Nachrichten werden noch nicht unterstützt.</string>
   <string name="attachment_encryption_unsupported">Achtung: Anhänge werden zur Zeit weder signiert noch verschlüsselt.</string>
   <string name="send_aborted">Senden abgebrochen.</string>
@@ -756,8 +753,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="confirm_discard_draft_message">Sind Sie sicher, dass Sie die Nachricht verwerfen möchten?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Speichern des Entwurfs verweigern</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Die Speicherung von als verschlüsselt markierten Entwürfen verweigern.</string>
-  <string name="continue_without_public_key_dlg_title">Ohne öffentlichen Schlüssel fortfahren?</string>
-  <string name="continue_without_public_key_instructions_fmt">Einer oder mehrere Empfänger besitzen keinen abgespeicherten öffentlichen Schlüssel. Fortfahren?</string>
   <string name="select_text_now">Text auswählen, um ihn zu kopieren.</string>
   <string name="dialog_confirm_delete_title">Löschen bestätigen</string>
   <string name="dialog_confirm_delete_message">Möchten Sie diese Nachricht löschen?</string>
@@ -898,6 +893,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="fetching_attachment_dialog_title_send">Nachricht senden</string>
   <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
   <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
+  <string name="auth_external_error">Authentifizierung fehlgeschlagen. Der Server bietet nicht Simple Authentication and Security Layer, kurz SASL, an. Dies könnte durch ein Problem des Client Zertifikats (Zertifikat abgelaufen, unbekannte Zertifizierungsstelle) oder ein Konfigurationsproblem ausgelöst werden.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">Entschlüssle/Verifiziere…</string>
   <string name="openpgp_successful_decryption">Erfolgreiche Entschlüsselung</string>
@@ -916,6 +912,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_setup_basics_client_certificate">Client-Zertifikat verwenden</string>
   <string name="client_certificate_spinner_empty">Kein Client-Zertifikat</string>
   <string name="client_certificate_spinner_delete">Client-Zertifikatsauswahl entfernen</string>
+  <string name="client_certificate_retrieval_failure">Das Abrufen des Client-Zertifikats für den Pfad \"<xliff:g id="alias">%s</xliff:g>\" ist fehlgeschlagen</string>
   <string name="client_certificate_advanced_options">Erweiterte Optionen</string>
   <string name="client_certificate_expired">Client-Zertifikat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ist abgelaufen oder noch nicht gültig (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

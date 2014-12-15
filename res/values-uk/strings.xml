@@ -49,7 +49,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Усі дані \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
   <string name="account_clear_dlg_instructions_fmt">Усі повідомлення у \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail, але налаштування облікового запису будуть збережені.</string>
-  <string name="insufficient_apg_permissions">K-9 не має дозволу для повного доступу до APG, перевстановіть K-9 для виправлення.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Немає відповідної програми для завершення операції імпорту. Будь ласка інсталюйте файловий менеджер з Play Google.</string>
   <string name="open_market">Відкрити Play Google</string>
@@ -99,8 +98,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="forward_action">Переслати</string>
   <string name="move_action">Перемістити</string>
   <string name="single_message_options_action">Надіслати</string>
-  <string name="continue_action">Продовжити</string>
-  <string name="back_action">Назад</string>
   <string name="done_action">Готово</string>
   <string name="discard_action">Відкинути зміни</string>
   <string name="save_draft_action">Зберегти як чернетку</string>
@@ -159,7 +156,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="clearing_account">Очищення скриньки \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Відновлення облікового запису\"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Нова пошта</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> нові повідомлення</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Непрочитане (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> більше на <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Відповісти</string>
@@ -262,6 +258,7 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="global_settings_messageview_show_next_summary">За замовчуванням показувати наступне повідомлення після вилучення</string>
   <string name="global_settings_confirm_actions_title">Підтвердження дій</string>
   <string name="global_settings_confirm_actions_summary">Показати діалогове вікно щоразу, коли ви виконуєте вибрані дії</string>
+  <string name="global_settings_confirm_action_delete">Видалити</string>
   <string name="global_settings_confirm_action_delete_starred">Вилучити позначені зірочкою (лише перегляд повідомлень)</string>
   <string name="global_settings_confirm_action_spam">Спам</string>
   <string name="global_settings_confirm_action_delete_notif">Видалити (з сповіщення)</string>
@@ -387,6 +384,9 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_setup_options_mail_display_count_250">250 повідомлень</string>
   <string name="account_setup_options_mail_display_count_500">500 повідомлень</string>
   <string name="account_setup_options_mail_display_count_1000">1000 повідомлень</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 повідомлень</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 повідомлень</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 повідомлень</string>
   <string name="account_setup_options_mail_display_count_all">усі повідомлення</string>
   <string name="move_copy_cannot_copy_unsynced_message">Не можна копіювати чи переміщувати повідомлення, яке не синхронізоване з сервером</string>
   <string name="account_setup_failed_dlg_title">Налаштування не завершено</string>
@@ -435,12 +435,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_settings_quote_prefix_label">Префікс цитованого тексту</string>
   <string name="account_settings_crypto">Шифрування</string>
   <string name="account_settings_crypto_app">OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Ні</string>
-  <string name="account_settings_crypto_auto_signature">Автопідпис</string>
-  <string name="account_settings_crypto_auto_signature_summary">Використовувати електронну адресу для формування ключа підпису.</string>
-  <string name="account_settings_crypto_auto_encrypt">Автошифрування</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Автоматична установка шифрування, якщо співпадає відкритий ключ одержувача.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG не встановлено</string>
   <string name="account_settings_mail_check_frequency_label">Частота опитування папок</string>
   <string name="account_settings_storage_title">Пам’ять</string>
   <string name="account_settings_color_label">Колір облікового запису</string>
@@ -701,15 +695,10 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="font_size_large">Великий</string>
   <string name="font_size_larger">Найбільший</string>
   <string name="miscellaneous_preferences">Різне</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Відсутня програма для цієї дії.</string>
-  <string name="error_apg_version_not_supported">Встановлена версія APG не підтримується.</string>
   <string name="btn_crypto_sign">Підписати</string>
   <string name="btn_encrypt">Зашифрувати</string>
-  <string name="btn_decrypt">Розшифрувати</string>
-  <string name="btn_verify">Перевірити</string>
   <string name="unknown_crypto_signature_user_id">&lt;невідомий&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME повідомлення ще не підтримуються.</string>
   <string name="attachment_encryption_unsupported">Увага: вкладення ще не підписані та не зашифровані.</string>
   <string name="send_aborted">Надсилання скасовано.</string>
@@ -719,8 +708,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="confirm_discard_draft_message">Ви дійсно хочете відмінити це повідомлення?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Скасувати збереження чернетки повідомлення.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Скасувати збереження чернетки повідомлення, позначеного як зашифроване.</string>
-  <string name="continue_without_public_key_dlg_title">Продовжити без публічного ключа?</string>
-  <string name="continue_without_public_key_instructions_fmt">Один чи більше одержувачів не мають публічного ключа. Продовжити?</string>
   <string name="select_text_now">Виберіть текст для копіювання.</string>
   <string name="dialog_confirm_delete_title">Підтвердіть вилучення</string>
   <string name="dialog_confirm_delete_message">Ви хочете вилучити це повідомлення?</string>

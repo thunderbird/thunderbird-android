@@ -49,7 +49,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
   <string name="account_recreate_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" のローカルのデータはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
   <string name="account_clear_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" のローカルにコピーしたメッセージはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
-  <string name="insufficient_apg_permissions">K-9 にAPGを利用するための権限がありません。これを解決するためには、K-9 を再インストールしてください。</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">設定をインポートするにはファイルマネージャをインストールしてください。</string>
   <string name="open_market">マーケット</string>
@@ -100,8 +99,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="move_action">移動</string>
   <string name="single_message_options_action">メッセージ操作…</string>
   <string name="refile_action">整理…</string>
-  <string name="continue_action">継続</string>
-  <string name="back_action">戻る</string>
   <string name="done_action">完了</string>
   <string name="discard_action">破棄</string>
   <string name="save_draft_action">下書きへ保存</string>
@@ -160,7 +157,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="clearing_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" をクリアしています</string>
   <string name="recreating_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" を再作成しています</string>
   <string name="notification_new_title">新着メール</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> 件の新着メッセージ</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 未読 (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">返信</string>
@@ -286,6 +282,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_basics_title">電子メールセットアップ</string>
   <string name="account_setup_basics_email_hint">メールアドレス</string>
   <string name="account_setup_basics_password_hint">パスワード</string>
+  <string name="account_setup_basics_show_password">パスワードを表示</string>
   <string name="account_setup_basics_manual_setup_action">手動設定</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">アカウント情報を取得中\u2026</string>
@@ -305,9 +302,11 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_auth_type_normal_password">パスワード</string>
   <string name="account_setup_auth_type_insecure_password">パスワード (危険な方法で送信される)</string>
   <string name="account_setup_auth_type_encrypted_password">暗号化されたパスワード</string>
+  <string name="account_setup_auth_type_tls_client_certificate">クライアント証明書</string>
   <string name="account_setup_incoming_title">受信メールサーバ設定</string>
   <string name="account_setup_incoming_username_label">アカウント名</string>
   <string name="account_setup_incoming_password_label">パスワード</string>
+  <string name="account_setup_incoming_client_certificate_label">クライアント証明書</string>
   <string name="account_setup_incoming_pop_server_label">POP3 サーバ</string>
   <string name="account_setup_incoming_imap_server_label">IMAP サーバ</string>
   <string name="account_setup_incoming_webdav_server_label">Exchange サーバ</string>
@@ -403,6 +402,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_options_mail_display_count_all">すべて</string>
   <string name="move_copy_cannot_copy_unsynced_message">サーバーと同期されていないメールをコピーまたは移動できません</string>
   <string name="account_setup_failed_dlg_title">設定エラー</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">ユーザ名またはパスワードが不正です\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">サーバに接続できません\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">詳細再編集</string>
   <string name="account_setup_failed_dlg_continue_action">続行</string>
   <string name="account_settings_push_advanced_title">プッシュ接続の拡張設定</string>
@@ -410,6 +411,12 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_default_label">標準アカウント</string>
   <string name="account_settings_default_summary">このアカウントをメール送信に利用する</string>
   <string name="account_settings_notify_label">受信メール通知</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">通知するフォルダ</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">すべて</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">1st クラスフォルダのみ</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1st および 2nd クラスフォルダ</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">2nd クラスフォルダを除くすべて</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">なし</string>
   <string name="account_settings_notify_sync_label">メール同期通知</string>
   <string name="account_settings_email_label">メールアドレス</string>
   <string name="account_settings_notify_summary">ステータスバーにメール受信通知を表示する</string>
@@ -448,12 +455,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_quote_prefix_label">引用記号</string>
   <string name="account_settings_crypto">暗号化</string>
   <string name="account_settings_crypto_app">OpenPGPの利用</string>
-  <string name="account_settings_crypto_app_none">なし</string>
-  <string name="account_settings_crypto_auto_signature">自動署名</string>
-  <string name="account_settings_crypto_auto_signature_summary">このアカウントのE-Mailアドレスから署名の鍵を自動的に決定する</string>
-  <string name="account_settings_crypto_auto_encrypt">自動暗号化</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">公開鍵が宛先と一致するなら自動的に暗号化する</string>
-  <string name="account_settings_crypto_apg_not_installed">APGがインストールされていません</string>
   <string name="account_settings_mail_check_frequency_label">同期フォルダの同期間隔</string>
   <string name="account_settings_storage_title">ストレージ</string>
   <string name="account_settings_color_label">アカウントの色</string>
@@ -531,6 +532,11 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="folder_settings_folder_push_mode_first_class">1st クラス</string>
   <string name="folder_settings_folder_push_mode_second_class">2nd クラス</string>
   <string name="folder_settings_folder_push_mode_inherited">同期クラスと同一設定</string>
+  <string name="folder_settings_folder_notify_mode_label">フォルダ通知クラス</string>
+  <string name="folder_settings_folder_notify_mode_normal">設定しない</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1st クラス</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2nd クラス</string>
+  <string name="folder_settings_folder_notify_mode_inherited">プッシュクラスと同一設定</string>
   <string name="account_settings_incoming_label">受信メールサーバ設定</string>
   <string name="account_settings_incoming_summary">受信メールサーバの設定を行う</string>
   <string name="account_settings_outgoing_label">送信メールサーバ設定</string>
@@ -612,6 +618,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_failed_dlg_invalid_certificate_title">証明書が無効です</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">許可</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒否</string>
+  <string name="folder_list_help_key">1 - 1st クラスフォルダ表示\n2 - 1st と 2nd クラスフォルダ表示\n3 - 2nd クラスフォルダ以外を表示\n4 - 全フォルダ表示\nQ - アカウント設定に戻る\nS - アカウント設定編集</string>
   <string name="folder_list_filter_hint">フォルダ名に含まれる文字</string>
   <string name="folder_list_display_mode_label">フォルダ表示…</string>
   <string name="folder_list_display_mode_all">全フォルダ</string>
@@ -717,15 +724,10 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="font_size_large">大</string>
   <string name="font_size_larger">極大</string>
   <string name="miscellaneous_preferences">その他</string>
-  <!--APG related-->
   <string name="error_activity_not_found">この操作のためのアプリケーションが見つかりません</string>
-  <string name="error_apg_version_not_supported">インストールされているAPGは、サポートされていないバージョンです</string>
   <string name="btn_crypto_sign">署名</string>
   <string name="btn_encrypt">暗号化</string>
-  <string name="btn_decrypt">復号化</string>
-  <string name="btn_verify">検証</string>
   <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIMEで暗号化されたメッセージはまだサポートされていません</string>
   <string name="attachment_encryption_unsupported">警告：添付ファイルは署名も暗号化もされていません</string>
   <string name="send_aborted">送信中断</string>
@@ -735,8 +737,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="confirm_discard_draft_message">このメッセージを破棄しますか？</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">下書き保存の拒否</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">暗号化したメッセージは下書き保存できません</string>
-  <string name="continue_without_public_key_dlg_title">公開鍵なしでの続行</string>
-  <string name="continue_without_public_key_instructions_fmt">宛先の公開鍵を持っていませんが、続けますか？</string>
   <string name="select_text_now">選択したテキストをコピーします</string>
   <string name="dialog_confirm_delete_title">削除の確認</string>
   <string name="dialog_confirm_delete_message">このメッセージを削除しますか？</string>
@@ -873,6 +873,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="fetching_attachment_dialog_title_send">メッセージ送信</string>
   <string name="fetching_attachment_dialog_title_save">下書き保存</string>
   <string name="fetching_attachment_dialog_message">添付ファイル取得中…</string>
+  <string name="auth_external_error">認証できません。サーバはSASL EXTERNALが利用できることを示していません。これはクライアント証明書の問題(期限切れ、未知の認証局)またはなんらかの設定のためです</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">暗号解読/検証中…</string>
   <string name="openpgp_successful_decryption">解読成功</string>
@@ -888,4 +889,10 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="openpgp_error">OpenPGP エラー:</string>
   <string name="openpgp_user_id">ユーザID</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">クライアント証明書を使う</string>
+  <string name="client_certificate_spinner_empty">クライアント証明書なし</string>
+  <string name="client_certificate_spinner_delete">クライアント証明書を削除します</string>
+  <string name="client_certificate_retrieval_failure">別名 \"<xliff:g id="alias">%s</xliff:g>\" のためのクライアント証明書の取得に失敗しました</string>
+  <string name="client_certificate_advanced_options">拡張オプション</string>
+  <string name="client_certificate_expired">クライアント証明書 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" が、期限切れまたは不正です (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

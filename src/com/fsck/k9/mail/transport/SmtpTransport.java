@@ -6,6 +6,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -14,7 +15,7 @@ import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.net.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLException;
@@ -23,7 +24,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.security.GeneralSecurityException;
 import java.util.*;
@@ -33,7 +33,7 @@ public class SmtpTransport extends Transport {
 
     /**
      * Decodes a SmtpTransport URI.
-     * 
+     *
      * NOTE: In contrast to ImapStore and Pop3Store, the authType is appended at the end!
      *
      * <p>Possible forms:</p>
@@ -92,28 +92,23 @@ public class SmtpTransport extends Transport {
         }
 
         if (smtpUri.getUserInfo() != null) {
-            try {
-                String[] userInfoParts = smtpUri.getUserInfo().split(":");
-                if (userInfoParts.length == 1) {
-                    authType = AuthType.PLAIN;
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                } else if (userInfoParts.length == 2) {
-                    authType = AuthType.PLAIN;
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                } else if (userInfoParts.length == 3) {
-                    // NOTE: In SmptTransport URIs, the authType comes last!
-                    authType = AuthType.valueOf(userInfoParts[2]);
-                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                    if (authType == AuthType.EXTERNAL) {
-                        clientCertificateAlias = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                    } else {
-                        password = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                    }
+            String[] userInfoParts = smtpUri.getUserInfo().split(":");
+            if (userInfoParts.length == 1) {
+                authType = AuthType.PLAIN;
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+            } else if (userInfoParts.length == 2) {
+                authType = AuthType.PLAIN;
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+            } else if (userInfoParts.length == 3) {
+                // NOTE: In SmptTransport URIs, the authType comes last!
+                authType = AuthType.valueOf(userInfoParts[2]);
+                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                if (authType == AuthType.EXTERNAL) {
+                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                } else {
+                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
                 }
-            } catch (UnsupportedEncodingException enc) {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                throw new IllegalArgumentException("Couldn't urldecode username or password.", enc);
             }
         }
 
@@ -133,20 +128,12 @@ public class SmtpTransport extends Transport {
      * @see SmtpTransport#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc;
-        String passwordEnc;
-        String clientCertificateAliasEnc;
-        try {
-            userEnc = (server.username != null) ?
-                    URLEncoder.encode(server.username, "UTF-8") : "";
-            passwordEnc = (server.password != null) ?
-                    URLEncoder.encode(server.password, "UTF-8") : "";
-            clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    URLEncoder.encode(server.clientCertificateAlias, "UTF-8") : "";
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Could not encode username or password", e);
-        }
+        String userEnc = (server.username != null) ?
+                UrlEncodingHelper.encodeUtf8(server.username) : "";
+        String passwordEnc = (server.password != null) ?
+                UrlEncodingHelper.encodeUtf8(server.password) : "";
+        String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
+                UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -183,16 +170,16 @@ public class SmtpTransport extends Transport {
     }
 
 
-    String mHost;
-    int mPort;
-    String mUsername;
-    String mPassword;
-    String mClientCertificateAlias;
-    AuthType mAuthType;
-    ConnectionSecurity mConnectionSecurity;
-    Socket mSocket;
-    PeekableInputStream mIn;
-    OutputStream mOut;
+    private String mHost;
+    private int mPort;
+    private String mUsername;
+    private String mPassword;
+    private String mClientCertificateAlias;
+    private AuthType mAuthType;
+    private ConnectionSecurity mConnectionSecurity;
+    private Socket mSocket;
+    private PeekableInputStream mIn;
+    private OutputStream mOut;
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
 
@@ -269,7 +256,7 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            HashMap<String,String> extensions = sendHello(localHost);
+            Map<String,String> extensions = sendHello(localHost);
 
             m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
 
@@ -432,7 +419,7 @@ public class SmtpTransport extends Transport {
      * @param host
      *         The EHLO/HELO parameter as defined by the RFC.
      *
-     * @return A (possibly empty) {@code HashMap<String,String>} of extensions (upper case) and
+     * @return A (possibly empty) {@code Map<String,String>} of extensions (upper case) and
      * their parameters (possibly 0 length) as returned by the EHLO command
      *
      * @throws IOException
@@ -440,8 +427,8 @@ public class SmtpTransport extends Transport {
      * @throws MessagingException
      *          In case of a malformed response.
      */
-    private HashMap<String,String> sendHello(String host) throws IOException, MessagingException {
-        HashMap<String, String> extensions = new HashMap<String, String>();
+    private Map<String,String> sendHello(String host) throws IOException, MessagingException {
+        Map<String, String> extensions = new HashMap<String, String>();
         try {
             List<String> results = executeSimpleCommand("EHLO " + host);
             // Remove the EHLO greeting response
@@ -466,7 +453,7 @@ public class SmtpTransport extends Transport {
 
     @Override
     public void sendMessage(Message message) throws MessagingException {
-        ArrayList<Address> addresses = new ArrayList<Address>();
+        List<Address> addresses = new ArrayList<Address>();
         {
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.TO)));
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.CC)));
@@ -474,12 +461,12 @@ public class SmtpTransport extends Transport {
         }
         message.setRecipients(RecipientType.BCC, null);
 
-        HashMap<String, ArrayList<String>> charsetAddressesMap =
-            new HashMap<String, ArrayList<String>>();
+        Map<String, List<String>> charsetAddressesMap =
+            new HashMap<String, List<String>>();
         for (Address address : addresses) {
             String addressString = address.getAddress();
             String charset = MimeUtility.getCharsetFromAddress(addressString);
-            ArrayList<String> addressesOfCharset = charsetAddressesMap.get(charset);
+            List<String> addressesOfCharset = charsetAddressesMap.get(charset);
             if (addressesOfCharset == null) {
                 addressesOfCharset = new ArrayList<String>();
                 charsetAddressesMap.put(charset, addressesOfCharset);
@@ -487,16 +474,16 @@ public class SmtpTransport extends Transport {
             addressesOfCharset.add(addressString);
         }
 
-        for (Map.Entry<String, ArrayList<String>> charsetAddressesMapEntry :
+        for (Map.Entry<String, List<String>> charsetAddressesMapEntry :
                 charsetAddressesMap.entrySet()) {
             String charset = charsetAddressesMapEntry.getKey();
-            ArrayList<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
+            List<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
             message.setCharset(charset);
             sendMessageTo(addressesOfCharset, message);
         }
     }
 
-    private void sendMessageTo(ArrayList<String> addresses, Message message)
+    private void sendMessageTo(List<String> addresses, Message message)
     throws MessagingException {
         boolean possibleSend = false;
 
@@ -511,6 +498,7 @@ public class SmtpTransport extends Transport {
         if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
             if (message.calculateSize() > mLargestAcceptableMessage) {
                 MessagingException me = new MessagingException("Message too large for server");
+                //TODO this looks rather suspicious... shouldn't it be true?
                 me.setPermanentFailure(possibleSend);
                 throw me;
             }
@@ -545,13 +533,12 @@ public class SmtpTransport extends Transport {
                 possibleSend = false;
             }
 
+            //TODO this looks rather suspicious... why is possibleSend used, and why are 5xx NOT permanent (in contrast to the log text)
             me.setPermanentFailure(possibleSend);
             throw me;
         } finally {
             close();
         }
-
-
 
     }
 

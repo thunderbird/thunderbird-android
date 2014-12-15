@@ -35,7 +35,7 @@ public class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 35;
+    public static final int VERSION = 37;
 
     public static Map<String, Object> validate(int version, Map<String,
             TreeMap<Integer, SettingsDescription>> settings,
@@ -51,7 +51,7 @@ public class Settings {
             SortedMap<Integer, SettingsDescription> headMap = versions.headMap(version + 1);
 
             // Skip this setting if it was introduced after 'version'
-            if (headMap.size() == 0) {
+            if (headMap.isEmpty()) {
                 continue;
             }
 

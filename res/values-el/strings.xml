@@ -48,7 +48,6 @@
   <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
   <string name="account_clear_dlg_instructions_fmt">Όλα τα μηνύματα του λογαριασμού \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
-  <string name="insufficient_apg_permissions">Το K-9 Mail δεν έχει δικαίωμα να προσπελαύνει πλήρως το APG. Επαναλάβετε την εγκατάσταση του K-9 Mail για να το διορθώσετε.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Δεν υπάρχει κατάλληλη εφαρμογή για να χειριστεί την εισαγωγή. Εγκαταστήστε μια εφαρμογή επόπτη αρχείων από το Android Market</string>
   <string name="open_market">Open Market</string>
@@ -99,8 +98,6 @@
   <string name="move_action">Μετακίνηση</string>
   <string name="single_message_options_action">Επιλογές μηνύματος…</string>
   <string name="refile_action">Επαναρχειοθέτηση…</string>
-  <string name="continue_action">Συνέχεια</string>
-  <string name="back_action">Πίσω</string>
   <string name="done_action">Συμπληρώθηκε</string>
   <string name="discard_action">Απόρριψη</string>
   <string name="save_draft_action">Αποθήκευση στα Πρόχειρα</string>
@@ -160,7 +157,6 @@
   <string name="clearing_account">Καθαρισμός λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
   <string name="recreating_account">Ανακατασκευή λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
   <string name="notification_new_title">Νέο μήνυμα</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> νέα μηνύματα</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> μη αναγνωσμένα (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> περισσότερα στον <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Απάντηση</string>
@@ -446,12 +442,6 @@
   <string name="account_settings_quote_prefix_label">Πρόθεμα κειμένου παράθεσης</string>
   <string name="account_settings_crypto">Κρυπτογραφία</string>
   <string name="account_settings_crypto_app">Πάροχος OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Κανένας</string>
-  <string name="account_settings_crypto_auto_signature">Αυτόματη πιστοποίηση</string>
-  <string name="account_settings_crypto_auto_signature_summary">Χρήση της διεύθυνσης του λογαριασμού για να βρεις το κλειδί της υπογραφής.</string>
-  <string name="account_settings_crypto_auto_encrypt">Αυτόματη κρυπτογράφηση</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Αυτόματη κρυπτογράφηση αν ένα δημόσιο κλειδί ταιριάζει σε παραλήπτη.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG μη εγκατεστημένο</string>
   <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
   <string name="account_settings_storage_title">Αποθήκευση</string>
   <string name="account_settings_color_label">Χρώμα λογαριασμού</string>
@@ -715,15 +705,10 @@
   <string name="font_size_large">Μεγάλο</string>
   <string name="font_size_larger">Μεγαλύτερο</string>
   <string name="miscellaneous_preferences">Διάφορα</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Δεν βρέθηκε κατάλληλη εφαρμογή για αυτή την ενέργεια.</string>
-  <string name="error_apg_version_not_supported">Η εγκατεστημένη έκδοση APG δεν υποστηρίζεται.</string>
   <string name="btn_crypto_sign">Υπογραφή</string>
   <string name="btn_encrypt">Κρυπτογράφηση</string>
-  <string name="btn_decrypt">Αποκρυπτογράφηση</string>
-  <string name="btn_verify">Επιβεβαίωση</string>
   <string name="unknown_crypto_signature_user_id">&lt;άγνωστος&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">Μηνύματα PGP/MIME δεν υποστηρίζονται ακόμη.</string>
   <string name="attachment_encryption_unsupported">Προειδοποίηση: τα συνημμένα δεν είναι υπογραμμένα ούτε κρυπτογραφημένα ακόμη.</string>
   <string name="send_aborted">Αποστολή ματαιώθηκε.</string>
@@ -733,8 +718,6 @@
   <string name="confirm_discard_draft_message">Είστε σίγουροι ότι θέλετε να απορρίψετε αυτό το μήνυμα;</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Άρνηση αποθήκευσης πρόχειρου μηνύματος</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Το πρόχειρο μήνυμα που σημάνθηκε ως κρυπτογραφημένο δεν θα αποθηκευτεί.</string>
-  <string name="continue_without_public_key_dlg_title">Συνέχεια χωρίς δημόσιο κλειδί;</string>
-  <string name="continue_without_public_key_instructions_fmt">Ένας ή περισσότεροι παραλήπτες δεν έχουν αποθηκευμένο δημόσιο κλειδί. Συνέχεια;</string>
   <string name="select_text_now">Επιλογή κειμένου για αντιγραφή</string>
   <string name="dialog_confirm_delete_title">Επιβεβαίωση διαγραφής</string>
   <string name="dialog_confirm_delete_message">Θέλετε να διαγράψετε αυτό το μήνυμα;</string>

@@ -9,21 +9,24 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Storage implements SharedPreferences {
-    private static ConcurrentHashMap<Context, Storage> storages =
+    private static ConcurrentMap<Context, Storage> storages =
         new ConcurrentHashMap<Context, Storage>();
 
-    private volatile ConcurrentHashMap<String, String> storage = new ConcurrentHashMap<String, String>();
+    private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<String, String>();
 
     private CopyOnWriteArrayList<OnSharedPreferenceChangeListener> listeners =
         new CopyOnWriteArrayList<OnSharedPreferenceChangeListener>();
@@ -31,11 +34,11 @@ public class Storage implements SharedPreferences {
     private int DB_VERSION = 2;
     private String DB_NAME = "preferences_storage";
 
-    private ThreadLocal<ConcurrentHashMap<String, String>> workingStorage
-    = new ThreadLocal<ConcurrentHashMap<String, String>>();
+    private ThreadLocal<ConcurrentMap<String, String>> workingStorage
+    = new ThreadLocal<ConcurrentMap<String, String>>();
     private ThreadLocal<SQLiteDatabase> workingDB =
         new ThreadLocal<SQLiteDatabase>();
-    private ThreadLocal<ArrayList<String>> workingChangedKeys = new ThreadLocal<ArrayList<String>>();
+    private ThreadLocal<List<String>> workingChangedKeys = new ThreadLocal<List<String>>();
 
 
     private Context context = null;
@@ -59,11 +62,11 @@ public class Storage implements SharedPreferences {
                         if (transportUriStr != null) {
                             String[] userInfoParts = uri.getUserInfo().split(":");
 
-                            String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
+                            String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
                             String passwordEnc = "";
                             String authType = "";
                             if (userInfoParts.length > 1) {
-                                passwordEnc = ":" + URLEncoder.encode(userInfoParts[1], "UTF-8");
+                                passwordEnc = ":" + UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
                             }
                             if (userInfoParts.length > 2) {
                                 authType = ":" + userInfoParts[2];
@@ -83,34 +86,34 @@ public class Storage implements SharedPreferences {
                         if (storeUriStr.startsWith("imap")) {
                             String[] userInfoParts = uri.getUserInfo().split(":");
                             if (userInfoParts.length == 2) {
-                                String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
-                                String passwordEnc = URLEncoder.encode(userInfoParts[1], "UTF-8");
+                                String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
+                                String passwordEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
 
                                 newUserInfo = usernameEnc + ":" + passwordEnc;
                             } else {
                                 String authType = userInfoParts[0];
-                                String usernameEnc = URLEncoder.encode(userInfoParts[1], "UTF-8");
-                                String passwordEnc = URLEncoder.encode(userInfoParts[2], "UTF-8");
+                                String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
+                                String passwordEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[2]);
 
                                 newUserInfo = authType + ":" + usernameEnc + ":" + passwordEnc;
                             }
                         } else if (storeUriStr.startsWith("pop3")) {
                             String[] userInfoParts = uri.getUserInfo().split(":", 2);
-                            String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
+                            String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
 
                             String passwordEnc = "";
                             if (userInfoParts.length > 1) {
-                                passwordEnc = ":" + URLEncoder.encode(userInfoParts[1], "UTF-8");
+                                passwordEnc = ":" + UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
                             }
 
                             newUserInfo = usernameEnc + passwordEnc;
                         } else if (storeUriStr.startsWith("webdav")) {
                             String[] userInfoParts = uri.getUserInfo().split(":", 2);
-                            String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
+                            String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
 
                             String passwordEnc = "";
                             if (userInfoParts.length > 1) {
-                                passwordEnc = ":" + URLEncoder.encode(userInfoParts[1], "UTF-8");
+                                passwordEnc = ":" + UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
                             }
 
                             newUserInfo = usernameEnc + passwordEnc;
@@ -201,7 +204,7 @@ public class Storage implements SharedPreferences {
     }
 
     private void keyChange(String key) {
-        ArrayList<String> changedKeys = workingChangedKeys.get();
+        List<String> changedKeys = workingChangedKeys.get();
         if (!changedKeys.contains(key)) {
             changedKeys.add(key);
         }
@@ -258,14 +261,14 @@ public class Storage implements SharedPreferences {
     }
 
     protected void doInTransaction(Runnable dbWork) {
-        ConcurrentHashMap<String, String> newStorage = new ConcurrentHashMap<String, String>();
+        ConcurrentMap<String, String> newStorage = new ConcurrentHashMap<String, String>();
         newStorage.putAll(storage);
         workingStorage.set(newStorage);
 
         SQLiteDatabase mDb = openDB();
         workingDB.set(mDb);
 
-        ArrayList<String> changedKeys = new ArrayList<String>();
+        List<String> changedKeys = new ArrayList<String>();
         workingChangedKeys.set(changedKeys);
 
         mDb.beginTransaction();
@@ -287,13 +290,17 @@ public class Storage implements SharedPreferences {
         }
     }
 
-    public long size() {
-        return storage.size();
+    public boolean isEmpty() {
+        return storage.isEmpty();
     }
 
     //@Override
     public boolean contains(String key) {
-        return storage.contains(key);
+        // TODO this used to be ConcurrentHashMap#contains which is
+        // actually containsValue. But looking at the usage of this method,
+        // it's clear that containsKey is what's intended. Investigate if this
+        // was a bug previously. Looks like it was only used once, when upgrading
+        return storage.containsKey(key);
     }
 
     //@Override

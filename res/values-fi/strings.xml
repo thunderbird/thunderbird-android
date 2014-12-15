@@ -17,7 +17,7 @@
   <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail on tehokas avoimen lähdekoodin sähköpostiasiakasohjelma Android-käyttöjärjestelmälle.
+K-9 Mail on tehokas avoimen lähdekoodin sähköpostiohjelma Android-käyttöjärjestelmälle.
 </p><p>
 K-9:n parannettuja ominaisuuksia ovat mm.:
 </p>
@@ -48,10 +48,9 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <!--Default signature-->
   <string name="default_signature">-- \nLähetetty Android-laitteestani K-9 Maililla. Pahoittelut vähäsanaisuudestani.</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mail -ohjelmasta.</string>
+  <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mailista.</string>
   <string name="account_recreate_dlg_instructions_fmt">Kaikki tilin \"<xliff:g id="account">%s</xliff:g>\" paikalliset tiedot poistetaan, mutta tilin asetukset säilyvät.</string>
   <string name="account_clear_dlg_instructions_fmt">Kaikki tilin \"<xliff:g id="account">%s</xliff:g>\" paikalliset viestit poistetaan, mutta tilin asetukset säilyvät.</string>
-  <string name="insufficient_apg_permissions">K-9:llä ei ole oikeuksia kaikkien APG:n ominaisuuksien käyttämiseen. Ole hyvä ja asenna K-9 uudelleen.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Tuontitoiminnon käsittelemiseen ei ole sopivaa sovellusta. Asenna Google Play Kaupasta jokin tiedostonhallintasovellus.</string>
   <string name="open_market">Avaa Play-kauppa</string>
@@ -102,8 +101,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="move_action">Siirrä</string>
   <string name="single_message_options_action">Viestin asetukset…</string>
   <string name="refile_action">Arkistoi…</string>
-  <string name="continue_action">Jatka</string>
-  <string name="back_action">Takaisin</string>
   <string name="done_action">Valmis</string>
   <string name="discard_action">Hylkää</string>
   <string name="save_draft_action">Tallenna luonnoksena</string>
@@ -162,7 +159,10 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="clearing_account">Tyhjennetään tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Luodaan uudelleen tiliä \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Uusi sähköpostiviesti</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> uutta viestiä</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> uusi viesti</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> uutta viestiä</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> lukematonta (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> viestiä lisää tilillä <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Vastaa</string>
@@ -281,6 +281,11 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="global_settings_notification_quick_delete_when_single_msg">Yksittäisen viestin ilmoituksessa</string>
   <string name="global_settings_notification_quick_delete_always">Aina</string>
   <string name="global_settings_notification_quick_delete_description">Näytä ilmoituksessa painike, joka mahdollistaa nopean viestin poistamisen</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Lukitusruudun ilmoitukset</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Ei lukitusruudun ilmoituksia</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Sovelluksen nimi</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Lukemattomien viestien määrä</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Viestien määrä ja lähettäjät</string>
   <string name="quiet_time">Hiljainen aika</string>
   <string name="quiet_time_description">Poista käytöstä soittoäänen pirinä, pärinä ja vilkkuminen yöllä</string>
   <string name="quiet_time_starts">Hiljainen aika alkaa</string>
@@ -464,12 +469,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_settings_quote_prefix_label">Lainauksen etuliite</string>
   <string name="account_settings_crypto">Salausmenetelmä</string>
   <string name="account_settings_crypto_app">OpenPGP</string>
-  <string name="account_settings_crypto_app_none">  Ei mitään</string>
-  <string name="account_settings_crypto_auto_signature">Automaattinen allekirjoitus</string>
-  <string name="account_settings_crypto_auto_signature_summary">Käytä tilin sähköpostiosoitetta allekirjoitusavaimen arvaamiseen.</string>
-  <string name="account_settings_crypto_auto_encrypt">Automaattinen salaus</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Salaa automaattisesti, jos julkinen avain täsmää vastaanottajan avaimeen.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG:tä ei ole asennettu</string>
+  <string name="account_settings_no_openpgp_provider_installed">OpenPGP-tarjoajaa ei ole asennettu</string>
   <string name="account_settings_mail_check_frequency_label">Kansioiden tarkistus</string>
   <string name="account_settings_storage_title">Tallennus</string>
   <string name="account_settings_color_label">Tilin väri</string>
@@ -740,15 +740,10 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="font_size_large">Suuri</string>
   <string name="font_size_larger">Suurin</string>
   <string name="miscellaneous_preferences">Muut</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Toiminnolle ei löytynyt sopivaa ohjelmaa.</string>
-  <string name="error_apg_version_not_supported">Asennettua APG-versiota ei tueta.</string>
   <string name="btn_crypto_sign">Allekirjoita</string>
   <string name="btn_encrypt">Salaa</string>
-  <string name="btn_decrypt">Pura salaus</string>
-  <string name="btn_verify">Vahvista</string>
   <string name="unknown_crypto_signature_user_id">&lt;tuntematon&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME-viestejä ei vielä tueta.</string>
   <string name="attachment_encryption_unsupported">Varoitus: Liitteitä ei allekirjoiteta tai salata tässä versiossa.</string>
   <string name="send_aborted">Lähetys keskeytetty.</string>
@@ -758,8 +753,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="confirm_discard_draft_message">Haluatko varmasti hylätä tämän viestin?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Hylkää luonnoksen tallennus.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Hylkää salatuksi merkityn luonnoksen tallennus.</string>
-  <string name="continue_without_public_key_dlg_title">Jatka ilman julkista avainta?</string>
-  <string name="continue_without_public_key_instructions_fmt">Yhdellä tai useammalla vastaanottajalla ei ole tallennettua julkista avainta. Jatketaanko?</string>
   <string name="select_text_now">Valitse kopioitava teksti.</string>
   <string name="dialog_confirm_delete_title">Vahvista poisto</string>
   <string name="dialog_confirm_delete_message">Haluatko poistaa tämän viestin?</string>

@@ -2,18 +2,18 @@ package com.fsck.k9.activity;
 
 import java.util.Locale;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.activity.misc.SwipeGestureDetector;
-import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
-import com.fsck.k9.helper.StringUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+
+import com.fsck.k9.K9;
+import com.fsck.k9.activity.misc.SwipeGestureDetector;
+import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 
 
 /**
@@ -21,7 +21,6 @@ import android.view.MotionEvent;
  *
  * @see K9Activity
  * @see K9ListActivity
- * @see K9FragmentActivity
  */
 public class K9ActivityCommon {
     /**
@@ -39,7 +38,7 @@ public class K9ActivityCommon {
 
     public static void setLanguage(Context context, String language) {
         Locale locale;
-        if (StringUtils.isNullOrEmpty(language)) {
+        if (TextUtils.isEmpty(language)) {
             locale = Locale.getDefault();
         } else if (language.length() == 5 && language.charAt(2) == '_') {
             // language is in the form: en_US

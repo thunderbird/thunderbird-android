@@ -50,7 +50,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" eemaldatakse K-9 Mailist.</string>
   <string name="account_recreate_dlg_instructions_fmt">Kõik andmed \"<xliff:g id="account">%s</xliff:g>\" kustutatakse. Konto sätted sälitatakse.</string>
   <string name="account_clear_dlg_instructions_fmt">Sõnumite lokaalsed koopiad \"<xliff:g id="account">%s</xliff:g>\" eemaldatakse. Konto sätted säilitatakse.</string>
-  <string name="insufficient_apg_permissions">K-9 ei oma piisavalt lubasid Androidi täielikuks kasutamiseks. Palun installi K-9 uuesti.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Selle impordi jätkamiseks installi failihaldur.</string>
   <string name="open_market">Ava Play Store</string>
@@ -101,8 +100,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="move_action">Teisalda</string>
   <string name="single_message_options_action">Saada…</string>
   <string name="refile_action">Paiguta ümber…</string>
-  <string name="continue_action">Jätka</string>
-  <string name="back_action">Tagasi</string>
   <string name="done_action">Tehtud</string>
   <string name="discard_action">Loobu</string>
   <string name="save_draft_action">Salvesta mustandina</string>
@@ -162,7 +159,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="clearing_account">Puhastab kontot \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Taasloob kontot \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Uus meilisõnum</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> uued sõnumid</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Lugemata (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> rohkemat <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Vasta</string>
@@ -445,7 +441,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="account_settings_folders">Kaustad</string>
   <string name="account_settings_crypto">Krüptograafia</string>
   <string name="account_settings_crypto_app">VabaPGP pakkuja</string>
-  <string name="account_settings_crypto_app_none">Puudub</string>
   <string name="account_settings_mail_check_frequency_label">Kausta pollimise sagedus</string>
   <string name="account_settings_storage_title">Mälu</string>
   <string name="account_settings_color_label">Konto värv</string>
@@ -703,14 +698,9 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="font_size_large">Suur</string>
   <string name="font_size_larger">Suurem</string>
   <string name="miscellaneous_preferences">Muu</string>
-  <!--APG related-->
-  <string name="error_apg_version_not_supported">Installitud APG versioon ei ole toetatud.</string>
   <string name="btn_crypto_sign">Allkirjasta</string>
   <string name="btn_encrypt">Krüpteeri</string>
-  <string name="btn_decrypt">Dekrüpteeri</string>
-  <string name="btn_verify">Kinnita</string>
   <string name="unknown_crypto_signature_user_id">&lt;tundmatu&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME ei ole praegu toetatud.</string>
   <string name="attachment_encryption_unsupported">Hoiatus: manused EI ole praegu allkirjastatud või krüpteeritud.</string>
   <string name="send_aborted">Saatmine katkestatud.</string>
@@ -720,8 +710,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="confirm_discard_draft_message">Oled kindel, et soovid sõnumist loobuda?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Keeldu mustandina salvestamisest.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Keeldu krüpteerituna märgitud sõnumite mustandina salvestamisest.</string>
-  <string name="continue_without_public_key_dlg_title">Jätka ilma avaliku võtmeta?</string>
-  <string name="continue_without_public_key_instructions_fmt">Ühel või mitmel adressaadil ei ole avalikku võtit. Jätka?</string>
   <string name="select_text_now">Vali kopeerimiseks teks.</string>
   <string name="dialog_confirm_delete_title">Kinnita kustutamine</string>
   <string name="dialog_confirm_delete_message">Kas soovid sõnumit kustutada?</string>

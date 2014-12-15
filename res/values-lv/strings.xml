@@ -51,7 +51,6 @@ Lūdzu sūtiet kļūdu ziņojumus, iesakiet uzlabojumus un uzdodiet jautājumus
   <string name="account_delete_dlg_instructions_fmt">Konts \"<xliff:g id="account">%s</xliff:g>\" tiks noņemts no K-9 Pasta.</string>
   <string name="account_recreate_dlg_instructions_fmt">Visi ierīcē saglabātie konta \"<xliff:g id="account">%s</xliff:g>\" dati tiks noņemti. Visi konta iestatījumi tiks saglabāti.</string>
   <string name="account_clear_dlg_instructions_fmt">Ierīcē saglabātās konta \"<xliff:g id="account">%s</xliff:g>\" vēstules tiks izdzēstas. Konta iestatījumi tiks saglabāti.</string>
-  <string name="insufficient_apg_permissions">K-9 nav pilnas pieejas APG. Lūdzu pārinstalējiet K-9, lai to atrisinātu.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Lūdzu, uzinstalējiet failu pārvaldnieku, lai turpinātu importēt datus.</string>
   <string name="open_market">Atvērt Play veikalu</string>
@@ -102,8 +101,6 @@ Lūdzu sūtiet kļūdu ziņojumus, iesakiet uzlabojumus un uzdodiet jautājumus
   <string name="move_action">Pārvietot</string>
   <string name="single_message_options_action">Sūtīt…</string>
   <string name="refile_action">Atkārtoti iearhivēt…</string>
-  <string name="continue_action">Turpināt</string>
-  <string name="back_action">Atpakaļ</string>
   <string name="done_action">Gatavs</string>
   <string name="discard_action">Izmest</string>
   <string name="save_draft_action">Saglabāt kā melnrakstu</string>
@@ -163,7 +160,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="clearing_account">Iztukšot kontu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Atjaunot kontu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Jauna vēstule</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> jaunas vēstules</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nelasītas (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> vairāk <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Atbildēt</string>
@@ -421,6 +417,12 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_default_label">Konts pēc noklusējuma</string>
   <string name="account_settings_default_summary">Sūtīt pastu no šī konta pēc noklusējuma</string>
   <string name="account_settings_notify_label">Jauna pasta paziņojumi</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Paziņojumu mapes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Visu</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Tikai 1. kategorijas mapes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. un 2. kategorijas mapes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Visu, izņemt 2. kategorijas mapes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Nevienu</string>
   <string name="account_settings_notify_sync_label">Sinhronizācijas paziņojumi</string>
   <string name="account_settings_email_label">Jūsu e-pasta adrese</string>
   <string name="account_settings_notify_summary">Paziņot statusa joslā, kad saņemts jauns pasts</string>
@@ -459,12 +461,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_quote_prefix_label">Citētā teksta galvene</string>
   <string name="account_settings_crypto">Šifrēšana</string>
   <string name="account_settings_crypto_app">OpenPGP nodrošinātājs</string>
-  <string name="account_settings_crypto_app_none">Neviens</string>
-  <string name="account_settings_crypto_auto_signature">Automātiska pierakstīšanās</string>
-  <string name="account_settings_crypto_auto_signature_summary">Izmantot šī konta pasta adresi, lai izvēlētos paraksta atslēgu</string>
-  <string name="account_settings_crypto_auto_encrypt">Automātiska šifrēšana</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Automātiski ieslēgt šifrēšanu, ja publiskā atslēga sakrīt ar saņēmēju</string>
-  <string name="account_settings_crypto_apg_not_installed">APG nav instalēts</string>
   <string name="account_settings_mail_check_frequency_label">Mapes pārbaudes biežums</string>
   <string name="account_settings_storage_title">Krātuve</string>
   <string name="account_settings_color_label">Konta krāsa</string>
@@ -542,6 +538,11 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="folder_settings_folder_push_mode_first_class">1. kategorija</string>
   <string name="folder_settings_folder_push_mode_second_class">2. kategorija</string>
   <string name="folder_settings_folder_push_mode_inherited">Tāda pati kā sinhronizēšanas kategorija</string>
+  <string name="folder_settings_folder_notify_mode_label">Mapes paziņojumu kategorija</string>
+  <string name="folder_settings_folder_notify_mode_normal">Nevienu</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1. kategorija</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2. kategorija</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Tāda pati, kā lejupielādēšanas kategorija</string>
   <string name="account_settings_incoming_label">Ienākošais serveris</string>
   <string name="account_settings_incoming_summary">Iestatīt ienākošā pasta serveri</string>
   <string name="account_settings_outgoing_label">Izejošais serveris</string>
@@ -730,15 +731,10 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="font_size_large">Liels</string>
   <string name="font_size_larger">Lielāks</string>
   <string name="miscellaneous_preferences">Dažādi</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Šai darbībai nav atrasta atbilstoša aplikācija.</string>
-  <string name="error_apg_version_not_supported">Instalētā APG versija netiek atbalstīta.</string>
   <string name="btn_crypto_sign">Pierakstīties</string>
   <string name="btn_encrypt">Iešifrēt</string>
-  <string name="btn_decrypt">Atšifrēt</string>
-  <string name="btn_verify">Pārbaudīt</string>
   <string name="unknown_crypto_signature_user_id">&lt;nezināms&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME ziņas pagaidām netiek atbalstītas.</string>
   <string name="attachment_encryption_unsupported">Brīdinājums: pielikumi vēl NAV iezīmēti un iešifrēti.</string>
   <string name="send_aborted">Sūtīšana atcelta.</string>
@@ -748,8 +744,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="confirm_discard_draft_message">Vai tiešām izmest šo vēstuli?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Atteikties saglabāt vēstuli melnrakstos.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Atteikties saglabāt vēstuli, kura atzīmēta kā šifrēta, melnrakstos.</string>
-  <string name="continue_without_public_key_dlg_title">Turpināt bez publiskās atslēgas?</string>
-  <string name="continue_without_public_key_instructions_fmt">Vienam vai vairākiem saņēmējiem nav saglabāta publiskā atslēga. Vai turpināt?</string>
   <string name="select_text_now">Iezīmēt tekstu, lai kopētu.</string>
   <string name="dialog_confirm_delete_title">Apstiprināt dzēšanu</string>
   <string name="dialog_confirm_delete_message">Vai gribat izdzēst šo vēstuli?</string>

@@ -261,7 +261,7 @@ public class ChooseFolder extends K9ListActivity {
             mHandler.progress(false);
         }
         @Override
-        public void listFolders(Account account, Folder[] folders) {
+        public void listFolders(Account account, List<? extends Folder> folders) {
             if (!account.equals(mAccount)) {
                 return;
             }

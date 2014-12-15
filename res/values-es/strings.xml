@@ -45,11 +45,11 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
 </p>
     ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \nEnviado desde mi dispositivo Android con K-9 Mail. Por favor disculpa mi brevedad.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Los datos de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero se mantendrá su configuración.</string>
   <string name="account_clear_dlg_instructions_fmt">Todos los mensajes en \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero la configuración de la cuenta se mantendrá.</string>
-  <string name="insufficient_apg_permissions">K-9 no tiene permiso para acceder totalmente a APG, por favor, instale K-9 otra vez para arreglarlo.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Por favor instale un gestor de archivos para continuar con esta importación.</string>
   <string name="open_market">Abrir Google Play</string>
@@ -100,8 +100,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Archivar…</string>
-  <string name="continue_action">Continuar</string>
-  <string name="back_action">Atrás</string>
   <string name="done_action">Terminado</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Guardar como borrador</string>
@@ -160,7 +158,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="clearing_account">Limpiando cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Recreando cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Correo nuevo</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> mensajes nuevos</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Sin Leer (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> más en <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
@@ -264,9 +261,12 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="global_settings_messageview_show_next_summary">Mostrar de manera predeterminada el siguiente mensaje después de borrar</string>
   <string name="global_settings_confirm_actions_title">Confirmar acciones</string>
   <string name="global_settings_confirm_actions_summary">Mostrar un diálogo cuando se realice una de estas acciones</string>
+  <string name="global_settings_confirm_action_delete">Borrar</string>
   <string name="global_settings_confirm_action_delete_starred">Borrar destacados (sólo en vista de mensajes)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Borrar (de notificaciones)</string>
+  <string name="global_settings_privacy_hide_useragent">Eliminar el agente de usuario K-9 de las cabeceras de correo</string>
+  <string name="global_settings_privacy_hide_timezone">Usar UTC como zona horaria en las cabeceras de correo</string>
   <string name="global_settings_notification_hide_subject_title">Ocultar asunto en notificaciones</string>
   <string name="global_settings_notification_hide_subject_never">Nunca</string>
   <string name="global_settings_notification_hide_subject_when_locked">Cuando el dispositivo está bloqueado</string>
@@ -283,6 +283,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_setup_basics_title">Configurar nueva cuenta</string>
   <string name="account_setup_basics_email_hint">Dirección de correo</string>
   <string name="account_setup_basics_password_hint">Contraseña</string>
+  <string name="account_setup_basics_show_password">Mostrar la contraseña</string>
   <string name="account_setup_basics_manual_setup_action">Configuración manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Recuperando información de cuenta\u2026</string>
@@ -302,9 +303,11 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_setup_auth_type_normal_password">Contraseña normal</string>
   <string name="account_setup_auth_type_insecure_password">Contraseña, transmitida de manera no segura</string>
   <string name="account_setup_auth_type_encrypted_password">Contraseña cifrada</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Certificado de cliente</string>
   <string name="account_setup_incoming_title">Configuración del servidor de entrada</string>
   <string name="account_setup_incoming_username_label">Usuario</string>
   <string name="account_setup_incoming_password_label">Contraseña</string>
+  <string name="account_setup_incoming_client_certificate_label">Certificado de cliente</string>
   <string name="account_setup_incoming_pop_server_label">Servidor POP3</string>
   <string name="account_setup_incoming_imap_server_label">Servidor IMAP</string>
   <string name="account_setup_incoming_webdav_server_label">Servidor WebDAV (Exchange)</string>
@@ -314,6 +317,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_setup_incoming_security_none_label">Ninguna</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" no es válido con \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_incoming_delete_policy_label">Cuando borre un mensaje</string>
   <string name="account_setup_incoming_delete_policy_never_label">No borrar del servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Borrar del servidor</string>
@@ -353,6 +357,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_setup_outgoing_username_label">Usuario</string>
   <string name="account_setup_outgoing_password_label">Contraseña</string>
   <string name="account_setup_outgoing_authentication_label">Tipo de autentificación</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" no es válido con \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Configuración inválida: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Opciones de cuenta</string>
   <string name="compact_action">Compactar</string>
@@ -400,6 +405,9 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_setup_options_mail_display_count_all">Todos los mensajes</string>
   <string name="move_copy_cannot_copy_unsynced_message">No se puede copiar/mover un mensaje no sincronizado con el servidor</string>
   <string name="account_setup_failed_dlg_title">No se ha podido finalizar la Configuración</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Usuario o contraseña incorrectos.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">El servidor presentó un certificado SSL no válido. Algunas veces, esto es debido a un problema de configuración en el servidor. Otras veces es porque alguien está intentando atacarte o atacar tu servidor de correo. Si no estás seguro de qué ocurre, pulsa en Rechazar y contacta con quien gestiona tu servidor de correo.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">No se pudo conectar con el servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalles</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avanzado</string>
@@ -407,6 +415,12 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_settings_default_label">Cuenta predeterminada</string>
   <string name="account_settings_default_summary">Enviar mensajes desde esta cuenta de manera predeterminada</string>
   <string name="account_settings_notify_label">Notificar mensajes nuevos</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Carpetas de notificaciones</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Sólo carpetas de 1ª clase</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Carpetas de 1ª y 2ª clase</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Todas excepto las carpetas de 2ª clase</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Ninguna</string>
   <string name="account_settings_notify_sync_label">Notificar sincronización</string>
   <string name="account_settings_email_label">Su Dirección de correo</string>
   <string name="account_settings_notify_summary">Avisar cuando llegue correo nuevo</string>
@@ -445,12 +459,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_settings_quote_prefix_label">Prefijo de texto citado</string>
   <string name="account_settings_crypto">Cifrado</string>
   <string name="account_settings_crypto_app">Proveedor OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Ninguno</string>
-  <string name="account_settings_crypto_auto_signature">Firmar automáticamente</string>
-  <string name="account_settings_crypto_auto_signature_summary">Utilizar el correo para adivinar la clave de firma.</string>
-  <string name="account_settings_crypto_auto_encrypt">Auto-cifrado</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Cifra automáticamente si la clave pública concuerda con un destinatario.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG no instalado</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamiento</string>
   <string name="account_settings_color_label">Color de la cuenta</string>
@@ -528,6 +536,11 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="folder_settings_folder_push_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_push_mode_second_class">2a Clase</string>
   <string name="folder_settings_folder_push_mode_inherited">La misma que en sincronización</string>
+  <string name="folder_settings_folder_notify_mode_label">Clase de la carpeta de notificaciones</string>
+  <string name="folder_settings_folder_notify_mode_normal">Ninguna</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1ª clase</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2ª clase</string>
+  <string name="folder_settings_folder_notify_mode_inherited">La misma clase que la carpeta \'push\'</string>
   <string name="account_settings_incoming_label">Servidor de entrada</string>
   <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
   <string name="account_settings_outgoing_label">Servidor de salida</string>
@@ -609,6 +622,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado desconocido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar clave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rechazar clave</string>
+  <string name="message_list_help_key">Del (or D) - Borrar\nR - Responder\nA - Responder a tdos\nC - Redactar\nF - Reenviar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (no) leído\nG - Estrella\nO - Tipo de ordenación\nI - Orden de ordenación\nQ - Volver a las carpetas\nS - Seleccionar/deseleccionar\nJ or P - Mensaje anterior\nK or N - Siguiente mensaje</string>
+  <string name="folder_list_help_key">1 - Mostrar sólo carpetas de 1ª clase\n2 - Mostrar carpetas de 1ª y 2ª clase\n3 - Mostrar todo excepto las carpetas de 2ª clase\n4 - Mostrar todas las carpetas\nQ - Volver a las cuentas\nS - Editar ajustes de cuenta</string>
   <string name="folder_list_filter_hint">nombre carpeta contiene</string>
   <string name="folder_list_display_mode_label">Mostrar carpetas…</string>
   <string name="folder_list_display_mode_all">Ver todas las carpetas</string>
@@ -714,15 +729,10 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Muy Grande</string>
   <string name="miscellaneous_preferences">Varios</string>
-  <!--APG related-->
   <string name="error_activity_not_found">No existe aplicación para realizar esta acción.</string>
-  <string name="error_apg_version_not_supported">No se admite esta versión de APG.</string>
   <string name="btn_crypto_sign">Firmar</string>
   <string name="btn_encrypt">Cifrar</string>
-  <string name="btn_decrypt">Descifrar</string>
-  <string name="btn_verify">Verificar</string>
   <string name="unknown_crypto_signature_user_id">&lt;desconocido&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">El formato PGP/MIME no está admitido aún.</string>
   <string name="attachment_encryption_unsupported">Advertencia: los adjuntos no están firmados o cifrados.</string>
   <string name="send_aborted">Envío cancelado.</string>
@@ -732,8 +742,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="confirm_discard_draft_message">¿Está seguro de descartar este mensaje?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Rehusar guardar mensaje borrador.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Rehusar guardar mensaje borrador marcado como cifrado.</string>
-  <string name="continue_without_public_key_dlg_title">¿Continuar sin clave pública?</string>
-  <string name="continue_without_public_key_instructions_fmt">Uno o más destinatarios no tienen clave pública. ¿Continuar?</string>
   <string name="select_text_now">Seleccionar texto a copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar borrado</string>
   <string name="dialog_confirm_delete_message">¿Quiere borrar este mensaje?</string>
@@ -874,6 +882,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="fetching_attachment_dialog_title_send">Enviando mensaje</string>
   <string name="fetching_attachment_dialog_title_save">Guardando borrador</string>
   <string name="fetching_attachment_dialog_message">Recuperando adjunto…</string>
+  <string name="auth_external_error">No ha sido posible autenticarse. El servidor no anuncia la capacidad SASL EXTERNAL. Esto puede ser debido a un problema con el certificado de cliente (expirado, autoridad certificadora desconocida) o algún otro problema de configuración.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">Descifrando/Verificando…</string>
   <string name="openpgp_successful_decryption">Descifrado correctamente</string>
@@ -889,4 +898,10 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="openpgp_error">Error OpenPGP:</string>
   <string name="openpgp_user_id">Id de usuario</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Usar certificado de cliente</string>
+  <string name="client_certificate_spinner_empty">Sin certificado de cliente</string>
+  <string name="client_certificate_spinner_delete">Borrar la selección de certificado de cliente</string>
+  <string name="client_certificate_retrieval_failure">Fallo al recuperar certificado de cliente para el alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_advanced_options">Opciones avanzadas</string>
+  <string name="client_certificate_expired">El certificado de cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ha expirado o aún no es válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

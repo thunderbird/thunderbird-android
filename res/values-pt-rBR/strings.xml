@@ -48,7 +48,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Todos os dados relativos à \"<xliff:g id="account">%s</xliff:g>\" serão removidos do K-9 Mail, mas as configurações da conta serão mantidas.</string>
   <string name="account_clear_dlg_instructions_fmt">Todas as mensagens de \"<xliff:g id="account">%s</xliff:g>\" serão removidas do K-9 Mail, mas as configurações da conta serão mantidas.</string>
-  <string name="insufficient_apg_permissions">K-9 não tem permissão total de acesso ao APG , favor reinstalar o K-9 para resolver.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Não existe um aplicativo adequado para a operação de importação. Instale um gerenciador de arquivos pela Google Play Store.</string>
   <string name="open_market">Abrir a Play Store</string>
@@ -99,8 +98,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Opções de Mensagens…</string>
   <string name="refile_action">Rearquivar…</string>
-  <string name="continue_action">Continuar</string>
-  <string name="back_action">Voltar</string>
   <string name="done_action">Concluído</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Salvar como rascunho</string>
@@ -159,7 +156,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="clearing_account">Limpando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Recriando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Novo e-mail</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> novas mensagens</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> não lidos (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> mais em <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
@@ -285,6 +281,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_setup_basics_title">Configurar uma nova conta</string>
   <string name="account_setup_basics_email_hint">Endereço de e-mail</string>
   <string name="account_setup_basics_password_hint">Senha</string>
+  <string name="account_setup_basics_show_password">Exibir senha</string>
   <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Recuperando informações de conta\u2026</string>
@@ -402,6 +399,8 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_setup_options_mail_display_count_all">Todas as Mensagens</string>
   <string name="move_copy_cannot_copy_unsynced_message">Não é possível copiar ou mover uma mensagem que não foi sincronizada com o servidor</string>
   <string name="account_setup_failed_dlg_title">A configuração não pode ser concluída</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Usuário ou senha incorretos.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Não é possível conectar-se ao servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalhes</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avançado</string>
@@ -409,6 +408,9 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_settings_default_label">Conta padrão</string>
   <string name="account_settings_default_summary">Usar esta conta como padrão para envio de e-mail</string>
   <string name="account_settings_notify_label">Novas notificações de e-mail</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Pastas de Notificações</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Tudo</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Nenhum</string>
   <string name="account_settings_notify_sync_label">Notificações de sincronização</string>
   <string name="account_settings_email_label">Seu endereço de e-mail</string>
   <string name="account_settings_notify_summary">Mostrar na barra de status quando um e-mail chegar</string>
@@ -447,12 +449,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="account_settings_quote_prefix_label">Prefixo para textos</string>
   <string name="account_settings_crypto">Criptografia</string>
   <string name="account_settings_crypto_app">Provedor OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Nenhum</string>
-  <string name="account_settings_crypto_auto_signature">Auto-login</string>
-  <string name="account_settings_crypto_auto_signature_summary">Use o endereço de e-mail da conta para escolher assinatura.</string>
-  <string name="account_settings_crypto_auto_encrypt">Auto-encriptar</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Definir encriptação automaticamente se uma chave pública corresponder à um destinatário.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG não instalado</string>
   <string name="account_settings_mail_check_frequency_label">Frequência de verificação de e-mail</string>
   <string name="account_settings_storage_title">Armazenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -713,15 +709,10 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="font_size_large">Maior</string>
   <string name="font_size_larger">Grande</string>
   <string name="miscellaneous_preferences">Diversos</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Nenhum aplicativo adequado para esta ação foi encontrado.</string>
-  <string name="error_apg_version_not_supported"> A versão da APG instalada não é suportada.</string>
   <string name="btn_crypto_sign">Entrar</string>
   <string name="btn_encrypt">Encriptar</string>
-  <string name="btn_decrypt">Decriptar</string>
-  <string name="btn_verify">Verificar</string>
   <string name="unknown_crypto_signature_user_id">&lt;desconhecido&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">mensagns PGP/MIME não são suportadas ainda.</string>
   <string name="attachment_encryption_unsupported">Aviso: os anexos não estão assinados ou encriptados ainda.</string>
   <string name="send_aborted">Envio abortado.</string>
@@ -731,8 +722,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="confirm_discard_draft_message">Tem certeza que deseja descartar esta mensagem?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Recusar salvamento de rascunho.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Recusar salvamento de rascunho de mensagem encriptada.</string>
-  <string name="continue_without_public_key_dlg_title">Continuar sem chave pública?</string>
-  <string name="continue_without_public_key_instructions_fmt">Um ou mais destinatários não tem chave pública. Continuar?</string>
   <string name="select_text_now">Selecione o texto para copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar exclusão</string>
   <string name="dialog_confirm_delete_message">Deseja mesmo excluir esta mensagem?</string>

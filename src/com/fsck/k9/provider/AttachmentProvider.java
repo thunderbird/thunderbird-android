@@ -15,8 +15,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.AttachmentInfo;
+import com.fsck.k9.mail.store.local.LocalStore;
+import com.fsck.k9.mail.store.local.LocalStore.AttachmentInfo;
 import com.fsck.k9.mail.store.StorageManager;
 
 import java.io.*;
@@ -51,11 +51,21 @@ public class AttachmentProvider extends ContentProvider {
 
 
     public static Uri getAttachmentUri(Account account, long id) {
-        return getAttachmentUri(account.getUuid(), id, true);
+        return CONTENT_URI.buildUpon()
+                .appendPath(account.getUuid())
+                .appendPath(Long.toString(id))
+                .appendPath(FORMAT_RAW)
+                .build();
     }
 
-    public static Uri getAttachmentUriForViewing(Account account, long id) {
-        return getAttachmentUri(account.getUuid(), id, false);
+    public static Uri getAttachmentUriForViewing(Account account, long id, String mimeType, String filename) {
+        return CONTENT_URI.buildUpon()
+                .appendPath(account.getUuid())
+                .appendPath(Long.toString(id))
+                .appendPath(FORMAT_VIEW)
+                .appendPath(mimeType)
+                .appendPath(filename)
+                .build();
     }
 
     public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height) {
@@ -65,14 +75,6 @@ public class AttachmentProvider extends ContentProvider {
                .appendPath(FORMAT_THUMBNAIL)
                .appendPath(Integer.toString(width))
                .appendPath(Integer.toString(height))
-               .build();
-    }
-
-    private static Uri getAttachmentUri(String db, long id, boolean raw) {
-        return CONTENT_URI.buildUpon()
-               .appendPath(db)
-               .appendPath(Long.toString(id))
-               .appendPath(raw ? FORMAT_RAW : FORMAT_VIEW)
                .build();
     }
 
@@ -146,8 +148,9 @@ public class AttachmentProvider extends ContentProvider {
         String dbName = segments.get(0);
         String id = segments.get(1);
         String format = segments.get(2);
+        String mimeType = (segments.size() < 4) ? null : segments.get(3);
 
-        return getType(dbName, id, format);
+        return getType(dbName, id, format, mimeType);
     }
 
     @Override
@@ -165,7 +168,7 @@ public class AttachmentProvider extends ContentProvider {
 
             file = getThumbnailFile(getContext(), accountUuid, attachmentId);
             if (!file.exists()) {
-                String type = getType(accountUuid, attachmentId, FORMAT_VIEW);
+                String type = getType(accountUuid, attachmentId, FORMAT_VIEW, null);
                 try {
                     FileInputStream in = new FileInputStream(getFile(accountUuid, attachmentId));
                     try {
@@ -258,7 +261,7 @@ public class AttachmentProvider extends ContentProvider {
         return null;
     }
 
-    private String getType(String dbName, String id, String format) {
+    private String getType(String dbName, String id, String format, String mimeType) {
         String type;
         if (FORMAT_THUMBNAIL.equals(format)) {
             type = "image/png";
@@ -269,10 +272,9 @@ public class AttachmentProvider extends ContentProvider {
                 final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
 
                 AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
-                if (FORMAT_VIEW.equals(format)) {
-                    type = MimeUtility.getMimeTypeForViewing(attachmentInfo.type, attachmentInfo.name);
+                if (FORMAT_VIEW.equals(format) && mimeType != null) {
+                    type = mimeType;
                 } else {
-                    // When accessing the "raw" message we deliver the original MIME type.
                     type = attachmentInfo.type;
                 }
             } catch (MessagingException e) {

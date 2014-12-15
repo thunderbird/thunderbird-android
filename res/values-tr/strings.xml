@@ -4,7 +4,7 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Posta</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
+  <string name="beta_app_name">K-9 Posta BETA</string>
   <string name="shortcuts_title">K-9 Hesaplar</string>
   <string name="unread_widget_label">K-9 Okunmamış</string>
   <string name="remote_control_label">K-9 Posta\'ya uzaktan erişim</string>
@@ -45,11 +45,11 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
 </p>
     ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
   <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi \"<xliff:g id="account">%s</xliff:g>\" için K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
   <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar \"<xliff:g id="account">%s</xliff:g>\" içinden ve K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
-  <string name="insufficient_apg_permissions">K-9 tamamiyle APG erişimine izin vermez, lütfen bunu düzeltmek için K-9\'i yeniden kurun.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">İçeri aktarma işlemini gerçekleştirebilecek uygun bir uygulama bulunamadı. Lütfen Google Play Store\'dan bir dosya yönetici uygulaması edinin.</string>
   <string name="open_market">Play Store\'u Aç</string>
@@ -100,8 +100,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="move_action">Taşı</string>
   <string name="single_message_options_action">Gönder…</string>
   <string name="refile_action">Refile…</string>
-  <string name="continue_action">Devam</string>
-  <string name="back_action">Geri</string>
   <string name="done_action">Tamam</string>
   <string name="discard_action">Çıkart</string>
   <string name="save_draft_action">Taslak olarak Kaydet</string>
@@ -160,7 +158,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="clearing_account">Hesap temizleme \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Hesap yenileme \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Yeni posta</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> yeni mesaj</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Okunmadı (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages"><xliff:g id="additional_messages">%d</xliff:g> daha fazla <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Yanıtla</string>
@@ -286,6 +283,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_setup_basics_title">Bir yeni hesap kurun</string>
   <string name="account_setup_basics_email_hint">E-posta adresi</string>
   <string name="account_setup_basics_password_hint">Şifre</string>
+  <string name="account_setup_basics_show_password">Şifreyi göster</string>
   <string name="account_setup_basics_manual_setup_action">El ile ayar</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Hesap bilgisi alınıyor\u2026</string>
@@ -305,9 +303,11 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_setup_auth_type_normal_password">Normal şifre</string>
   <string name="account_setup_auth_type_insecure_password">Güvenlik olmadan gönderilen şifre</string>
   <string name="account_setup_auth_type_encrypted_password">Şifreli parola</string>
+  <string name="account_setup_auth_type_tls_client_certificate">İstemci sertifikası</string>
   <string name="account_setup_incoming_title">Gelen sunucu ayarları</string>
   <string name="account_setup_incoming_username_label">Kullanıcı adı</string>
   <string name="account_setup_incoming_password_label">Şifre</string>
+  <string name="account_setup_incoming_client_certificate_label">İstemci sertifikası</string>
   <string name="account_setup_incoming_pop_server_label">POP3 sunucu</string>
   <string name="account_setup_incoming_imap_server_label">IMAP sunucu</string>
   <string name="account_setup_incoming_webdav_server_label">Exchange sunucu</string>
@@ -317,6 +317,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_setup_incoming_security_none_label">Hiçbiri</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" bununla uyuşmuyor \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_incoming_delete_policy_label">Bir mesaj sildiğim zaman</string>
   <string name="account_setup_incoming_delete_policy_never_label">Sunucudan silme</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Sunucudan sil</string>
@@ -356,6 +357,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_setup_outgoing_username_label">Kullanıcı Adı</string>
   <string name="account_setup_outgoing_password_label">Şifre</string>
   <string name="account_setup_outgoing_authentication_label">Kimlik Doğrulama Tipi</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" bununla uyuşmuyor \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Geçersiz kurulum: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Hesap seçenekleri</string>
   <string name="compact_action">Hesabı sıkıştır</string>
@@ -403,6 +405,9 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_setup_options_mail_display_count_all">Bütün mesajlar</string>
   <string name="move_copy_cannot_copy_unsynced_message">Sunucu ile eşleştirilmemiş bir mesaj kopyalanamaz veya taşınamaz.</string>
   <string name="account_setup_failed_dlg_title">Kurulum bitirilmedi</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Kullanıcı adı veya şifre doğru değil.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Sunucu geçersiz bir SSL sertifikası sundu. Bu bazen sunucunun düzgün yapılandırılmamasından kaynaklanır. Bazen de birisi size saldırıyor olabilir. Eğer ne olduğunu bilmiyorsanız, Reddet\'e tıklayın ve posta sunucunuzu yöneten kişilerle iletişime geçin.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Sunucuya bağlanılamadı.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Ayrıntıları düzenle</string>
   <string name="account_setup_failed_dlg_continue_action">Devam</string>
   <string name="account_settings_push_advanced_title">Gelişmiş</string>
@@ -410,6 +415,12 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_settings_default_label">Varsayılan hesap</string>
   <string name="account_settings_default_summary">Postayı varsayılan olarak bu hesaptan gönder</string>
   <string name="account_settings_notify_label">Yeni posta bildirimleri</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Bildirimler klasörü</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Hepsi</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Sadece 1. Sınıf klasörler</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. ve 2. Sınıfı klasörler</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">2. Sınıf klasörler dışında hepsi</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Hiçbiri</string>
   <string name="account_settings_notify_sync_label">Eşleştirme bildirimleri</string>
   <string name="account_settings_email_label">E-posta adresiniz</string>
   <string name="account_settings_notify_summary">Posta geldiğinde durum çubuğunda bildir</string>
@@ -448,12 +459,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_settings_quote_prefix_label">Alınan metinden önek</string>
   <string name="account_settings_crypto">Şifreleme</string>
   <string name="account_settings_crypto_app">OpenPGP Sağlayıcı</string>
-  <string name="account_settings_crypto_app_none">Hiçbiri</string>
-  <string name="account_settings_crypto_auto_signature">Otomatik oturum açma</string>
-  <string name="account_settings_crypto_auto_signature_summary">İmza anahtarını tahmin etmek için hesapların e-posta adreslerini kullan.</string>
-  <string name="account_settings_crypto_auto_encrypt">Otomatik şifrele</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Eğer paylaşılan anahtar alıcınınkine eşleşiyorsa otomatik şifrele.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG yüklü değil</string>
+  <string name="account_settings_no_openpgp_provider_installed">Hiç OpenPGP Sağlayıcı yüklenmemiş</string>
   <string name="account_settings_mail_check_frequency_label">Klasör veri toplama sıklığı</string>
   <string name="account_settings_storage_title">Depolama</string>
   <string name="account_settings_color_label">Hesap rengi</string>
@@ -531,6 +537,11 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="folder_settings_folder_push_mode_first_class">1. Sınıf</string>
   <string name="folder_settings_folder_push_mode_second_class">2. Sınıf</string>
   <string name="folder_settings_folder_push_mode_inherited">Aynı senkranizayon sınıfı</string>
+  <string name="folder_settings_folder_notify_mode_label">Klasör bildirim sınıfı</string>
+  <string name="folder_settings_folder_notify_mode_normal">Hiçbiri</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1. Sınıf</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2. Sınıf</string>
+  <string name="folder_settings_folder_notify_mode_inherited">İtme sınıfıyla aynı</string>
   <string name="account_settings_incoming_label">Gelen Sunucu</string>
   <string name="account_settings_incoming_summary">Gelen posta sunucusunu yapılandır</string>
   <string name="account_settings_outgoing_label">Giden sunucu</string>
@@ -612,6 +623,8 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tanınmayan Sertifika</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kabul Tuşu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
+  <string name="message_list_help_key">Del (veya D) - Sil\nR - Cevapla\nA - Hepsini Cevapla\nC - Yeni\nF - İlet\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)mış olarak İşaretle\nG - Yıldız\nO - Sıralama tipi\nI - Sıralama sırası\nQ - Klasörlere Dön\nS - Seç/Seçimi iptal et\nK veya P - Önceji Mesaj\nK veya N - Sonraki Mesaj</string>
+  <string name="folder_list_help_key">1 - Yalnız 1. sınıf klasörleri göster\n2 - Yalnız 1. ve 2. sınıf klasörleri göster\n3 - 2. Sınıf klasörler hariç hepsini göster\n4 - Bütün klasörleri göster\nQ - Hesaplara dön\nS - Hesap ayarlarını düzenle</string>
   <string name="folder_list_filter_hint">klasör adı şunu içeriyor</string>
   <string name="folder_list_display_mode_label">Klasörler</string>
   <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>
@@ -717,15 +730,10 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="font_size_large">Büyük</string>
   <string name="font_size_larger">Daha büyük</string>
   <string name="miscellaneous_preferences">Çeşitli</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Bu eylem için uygun program bulunamadı.</string>
-  <string name="error_apg_version_not_supported">Kurulu APG versiyon desteklenmiyor.</string>
   <string name="btn_crypto_sign">İşaret</string>
   <string name="btn_encrypt">Şifrele</string>
-  <string name="btn_decrypt">Çöz</string>
-  <string name="btn_verify">Doğrula</string>
   <string name="unknown_crypto_signature_user_id">&lt;bilinmiyor&gt;</string>
-  <string name="key_id">no: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME mesajları henüz desteklenmiyor.</string>
   <string name="attachment_encryption_unsupported">Uyarı: Ekler henüz işaretli veya şifreli değil.</string>
   <string name="send_aborted">Gönderme iptal edildi.</string>
@@ -735,8 +743,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="confirm_discard_draft_message">Bu mesajı silmek istediğinizden emin misiniz?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Taslak mesajını kaydetmeyi önle.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Şifreli mesajın taslağını kaydetmeyi önle.</string>
-  <string name="continue_without_public_key_dlg_title">Paylaşılmış anahtarsız devam et?</string>
-  <string name="continue_without_public_key_instructions_fmt">Bir veya daha fazla alıcının paylaşılmış bir anahtarı bulunmuyor. Devam et?</string>
   <string name="select_text_now">Kopyalamak için metni seç.</string>
   <string name="dialog_confirm_delete_title">Silmeyi onayla</string>
   <string name="dialog_confirm_delete_message">Bu mesajı silmek istiyor musunuz?</string>
@@ -877,6 +883,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="fetching_attachment_dialog_title_send">Mesaj gönderiliyor</string>
   <string name="fetching_attachment_dialog_title_save">Taslak kaydediliyor</string>
   <string name="fetching_attachment_dialog_message">Ekler alınıyor…</string>
+  <string name="auth_external_error">Yetkilendirme yapılamıyor. Sunucu SASL EXTERNAL kabiliyeti olduğunu bildirmedi. Bu istemci sertifikasıyla ilgili bir sorun (tarihi geçmiş, bilinmeyen sertifika otoritesi) veya yapılandırma sorunu olabilir.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">Şifre çözme/Doğrulama…</string>
   <string name="openpgp_successful_decryption">Şifre çözme başarılı</string>
@@ -892,4 +899,10 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="openpgp_error">OpenPGP Hatası:</string>
   <string name="openpgp_user_id">Kullanıcı Kimliği</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">İstemci sertifikası kullan</string>
+  <string name="client_certificate_spinner_empty">İstemci sertifikası yok</string>
+  <string name="client_certificate_spinner_delete">İstemci sertifikası seçimini kaldır</string>
+  <string name="client_certificate_retrieval_failure"> \"<xliff:g id="alias">%s</xliff:g>\" için istemci sertifikası alımı başarısız oldu</string>
+  <string name="client_certificate_advanced_options">Gelişmiş seçenekler</string>
+  <string name="client_certificate_expired">İstemci sertifikası \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" tarihi geçmiş veya artık geçerli değil (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

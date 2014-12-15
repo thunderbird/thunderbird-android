@@ -2,12 +2,8 @@
 <manifest
     package="com.fsck.k9"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="23010"
-    android:versionName="5.101">
-
-    <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="17"/>
+    android:versionCode="23030"
+    android:versionName="5.103">
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -31,8 +27,6 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-    <uses-permission android:name="org.thialfihar.android.apg.permission.READ_KEY_DETAILS"/>
 
     <permission
         android:name="com.fsck.k9.permission.READ_ATTACHMENT"

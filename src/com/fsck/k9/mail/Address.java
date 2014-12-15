@@ -13,15 +13,14 @@ import org.apache.james.mime4j.field.address.AddressBuilder;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 
 
@@ -44,9 +43,9 @@ public class Address {
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
 
-    String mAddress;
+    private String mAddress;
 
-    String mPersonal;
+    private String mPersonal;
 
 
     public Address(Address address) {
@@ -69,7 +68,7 @@ public class Address {
                 Rfc822Token token = tokens[0];
                 mAddress = token.getAddress();
                 String name = token.getName();
-                if (!StringUtils.isNullOrEmpty(name)) {
+                if (!TextUtils.isEmpty(name)) {
                     /*
                      * Don't use the "personal" argument if "address" is of the form:
                      * James Bond <james.bond@mi6.uk>
@@ -130,11 +129,11 @@ public class Address {
      */
     public static Address[] parseUnencoded(String addressList) {
         List<Address> addresses = new ArrayList<Address>();
-        if (!StringUtils.isNullOrEmpty(addressList)) {
+        if (!TextUtils.isEmpty(addressList)) {
             Rfc822Token[] tokens = Rfc822Tokenizer.tokenize(addressList);
             for (Rfc822Token token : tokens) {
                 String address = token.getAddress();
-                if (!StringUtils.isNullOrEmpty(address)) {
+                if (!TextUtils.isEmpty(address)) {
                     addresses.add(new Address(token.getAddress(), token.getName(), false));
                 }
             }
@@ -150,7 +149,7 @@ public class Address {
      * @return An array of 0 or more Addresses.
      */
     public static Address[] parse(String addressList) {
-        if (StringUtils.isNullOrEmpty(addressList)) {
+        if (TextUtils.isEmpty(addressList)) {
             return EMPTY_ADDRESS_ARRAY;
         }
         List<Address> addresses = new ArrayList<Address>();
@@ -198,7 +197,7 @@ public class Address {
 
     @Override
     public String toString() {
-        if (!StringUtils.isNullOrEmpty(mPersonal)) {
+        if (!TextUtils.isEmpty(mPersonal)) {
             return Utility.quoteAtoms(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
@@ -213,7 +212,7 @@ public class Address {
     }
 
     public String toEncodedString() {
-        if (!StringUtils.isNullOrEmpty(mPersonal)) {
+        if (!TextUtils.isEmpty(mPersonal)) {
             return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
@@ -279,7 +278,7 @@ public class Address {
             }
         }
 
-        return (!StringUtils.isNullOrEmpty(mPersonal)) ? mPersonal : mAddress;
+        return (!TextUtils.isEmpty(mPersonal)) ? mPersonal : mAddress;
     }
 
     public static CharSequence toFriendly(Address[] addresses) {
@@ -315,7 +314,7 @@ public class Address {
         if (addressList == null) {
             return new Address[] { };
         }
-        ArrayList<Address> addresses = new ArrayList<Address>();
+        List<Address> addresses = new ArrayList<Address>();
         int length = addressList.length();
         int pairStartIndex = 0;
         int pairEndIndex = 0;

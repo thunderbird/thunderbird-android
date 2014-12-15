@@ -49,7 +49,6 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas från K-9 E-post.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alla lokala data för \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas. Kontoinställningar behålls.</string>
   <string name="account_clear_dlg_instructions_fmt">Alla lokalt lagrade meddelanden i \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas. Kontoinställningar behålls.</string>
-  <string name="insufficient_apg_permissions">K-9 har inte behörighet att komma åt APG. Ominstallera K-9 för att åtgärda detta.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Installera en filhanterare för att fortsätta med denna import.</string>
   <string name="open_market">Öppna Play-butiken</string>
@@ -100,8 +99,6 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="move_action">Flytta</string>
   <string name="single_message_options_action">Skicka…</string>
   <string name="refile_action">Omarkivera…</string>
-  <string name="continue_action">Fortsätt</string>
-  <string name="back_action">Tillbaka</string>
   <string name="done_action">Färdig</string>
   <string name="discard_action">Kasta</string>
   <string name="save_draft_action">Spara som utkast</string>
@@ -161,7 +158,6 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="clearing_account">Rensar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Återskapar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny e-post</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> olästa (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> ytterligare på <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Svara</string>
@@ -449,12 +445,6 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_settings_quote_prefix_label">Citatprefix</string>
   <string name="account_settings_crypto">Kryptering</string>
   <string name="account_settings_crypto_app">OpenPGP-leverantör</string>
-  <string name="account_settings_crypto_app_none">Ingen</string>
-  <string name="account_settings_crypto_auto_signature">Auto-signera</string>
-  <string name="account_settings_crypto_auto_signature_summary">Använd kontots e-postadress för att gissa signaturnyckeln.</string>
-  <string name="account_settings_crypto_auto_encrypt">Auto-kryptera</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Kryptera automatiskt om en publik nyckel machar en mottagare.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG är inte installerat</string>
   <string name="account_settings_mail_check_frequency_label">Frekvens för att kontrollera mappar</string>
   <string name="account_settings_storage_title">Lagring</string>
   <string name="account_settings_color_label">Kontofärg</string>
@@ -718,15 +708,10 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="font_size_large">Större</string>
   <string name="font_size_larger">Störst</string>
   <string name="miscellaneous_preferences">Diverse</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Hittade ingen passande applikation för denna åtgärd.</string>
-  <string name="error_apg_version_not_supported">Den installerade versionen av APG stöds inte.</string>
   <string name="btn_crypto_sign">Signera</string>
   <string name="btn_encrypt">Kryptera</string>
-  <string name="btn_decrypt">Dekryptera</string>
-  <string name="btn_verify">Verifiera</string>
   <string name="unknown_crypto_signature_user_id">&lt;okänd&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">Det finns ännu inget stöd för brev med PGP/MIME.</string>
   <string name="attachment_encryption_unsupported">Varning: bilagor är INTE signerade eller krypterade än.</string>
   <string name="send_aborted">Sändningen avbruten.</string>
@@ -736,8 +721,6 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="confirm_discard_draft_message">Är du säker på att du vill kasta detta meddelande?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Förhindra att brev sparas som utkast.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Förhindra att brev som markerats som krypterade sparas i utkast.</string>
-  <string name="continue_without_public_key_dlg_title">Fortsätta utan offentlig nyckel?</string>
-  <string name="continue_without_public_key_instructions_fmt">En eller flera mottagare saknar sparad offentlig nyckel. Fortsätta?</string>
   <string name="select_text_now">Välj text att kopiera.</string>
   <string name="dialog_confirm_delete_title">Bekräfta borttagning</string>
   <string name="dialog_confirm_delete_message">Vill du ta bort detta brev?</string>

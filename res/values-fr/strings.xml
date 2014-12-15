@@ -48,7 +48,6 @@ Veuillez envoyer les rapports de bogues, suggérer de nouvelles fonctions et pos
   <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera enlevé de K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Toutes les données de  «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» seront enlevées. Les paramètres du compte seront conservés.</string>
   <string name="account_clear_dlg_instructions_fmt">Les copies locales des messages de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» seront enlevées. Les paramètres du compte seront conservés.</string>
-  <string name="insufficient_apg_permissions">Courriel K-9 n\'a pas la permission d\'accéder complètement à APG. Veuillez réinstaller Courriel K-9 pour corriger cela.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Veuillez installer un gestionnaire de fichiers pour continuer cette importation.</string>
   <string name="open_market">Ouvrir le Google Play Store</string>
@@ -99,8 +98,6 @@ Veuillez envoyer les rapports de bogues, suggérer de nouvelles fonctions et pos
   <string name="move_action">Déplacer</string>
   <string name="single_message_options_action">Envoyer…</string>
   <string name="refile_action">Reclasser…</string>
-  <string name="continue_action">Continuer</string>
-  <string name="back_action">Retour</string>
   <string name="done_action">Terminé</string>
   <string name="discard_action">Abandonner</string>
   <string name="save_draft_action">Enregistrer comme brouillon</string>
@@ -160,7 +157,10 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="clearing_account">Effacement du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
   <string name="recreating_account">Recréation du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
   <string name="notification_new_title">Nouveau courriel</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> nouveaux messages</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nouveau message</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nouveaux messages</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> de plus sur <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Répondre</string>
@@ -279,6 +279,11 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Pour la notification de message unique</string>
   <string name="global_settings_notification_quick_delete_always">Toujours</string>
   <string name="global_settings_notification_quick_delete_description">Afficher un bouton dans les notification permettant la suppression rapide des messages</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Notifications d\'écran de verrouillage</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Aucune notification d\'écran de verrouillage</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Nom d\'application</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Nombre de messages non lus</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Nombre de messages et d\'expéditeurs</string>
   <string name="quiet_time">Heures silencieuses</string>
   <string name="quiet_time_description">Désactiver la sonnerie, la vibration et le clignotement pendant la nuit</string>
   <string name="quiet_time_starts">Début des heures silencieuses</string>
@@ -462,12 +467,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_settings_quote_prefix_label">Préfixe de citation</string>
   <string name="account_settings_crypto">Cryptographie</string>
   <string name="account_settings_crypto_app">Fournisseur OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Aucune</string>
-  <string name="account_settings_crypto_auto_signature">Signature automatique</string>
-  <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse courriel du compte pour deviner la clé de signature</string>
-  <string name="account_settings_crypto_auto_encrypt">Chiffrement automatique</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Chiffrement défini automatiquement si une clé publique correspond à un destinataire.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG n\'est pas installé</string>
+  <string name="account_settings_no_openpgp_provider_installed">Aucun fournisseur OpnPGP installé</string>
   <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
   <string name="account_settings_storage_title">Stockage</string>
   <string name="account_settings_color_label">Couleur du compte</string>
@@ -738,15 +738,10 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="font_size_large">Grand</string>
   <string name="font_size_larger">Plus grand</string>
   <string name="miscellaneous_preferences">Divers</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Aucune application adéquate n\'a été trouvée pour cette action.</string>
-  <string name="error_apg_version_not_supported">La version installée d\'APG n\'est pas prise en charge.</string>
   <string name="btn_crypto_sign">Signer</string>
   <string name="btn_encrypt">Chiffrer</string>
-  <string name="btn_decrypt">Déchiffrer</string>
-  <string name="btn_verify">Vérifier</string>
   <string name="unknown_crypto_signature_user_id">«\u00A0inconnu\u00A0»</string>
-  <string name="key_id">ID\u00A0: %s</string>
   <string name="pgp_mime_unsupported">Les messages PGP/MIME ne sont pas encore pris en charge</string>
   <string name="attachment_encryption_unsupported">Avertissement\u00A0: La signature et le chiffrement des pièces jointes ne sont PAS encore pris en charge.</string>
   <string name="send_aborted">Envoi interrompu.</string>
@@ -756,8 +751,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="confirm_discard_draft_message">Êtes-vous sûr de vouloir abandonner ce message\u00A0?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuser d\'enregistrer les brouillons.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuser d\'enregistrer un message marqué comme étant chiffré.</string>
-  <string name="continue_without_public_key_dlg_title">Continuer sans clé publique\u00A0?</string>
-  <string name="continue_without_public_key_instructions_fmt">Un ou plusieurs destinataires n\'ont pas de clé publique enregistrée. Continuer\u00A0?</string>
   <string name="select_text_now">Sélectionner le texte à copier</string>
   <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
   <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>

@@ -16,7 +16,7 @@ public class TextBody implements Body {
      */
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
-    private String mBody;
+    private final String mBody;
     private String mEncoding;
     private String mCharset = "UTF-8";
     // Length of the message composed (as opposed to quoted). I don't like the name of this variable and am open to
@@ -29,6 +29,7 @@ public class TextBody implements Body {
         this.mBody = body;
     }
 
+    @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         if (mBody != null) {
             byte[] bytes = mBody.getBytes(mCharset);
@@ -54,6 +55,7 @@ public class TextBody implements Body {
     /**
      * Returns an InputStream that reads this body's text.
      */
+    @Override
     public InputStream getInputStream() throws MessagingException {
         try {
             byte[] b;
@@ -68,6 +70,7 @@ public class TextBody implements Body {
         }
     }
 
+    @Override
     public void setEncoding(String encoding) {
         mEncoding = encoding;
     }

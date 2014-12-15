@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.local;
 
 import java.io.File;
 import java.util.concurrent.locks.Lock;
@@ -14,8 +14,10 @@ import android.os.Build;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.mail.store.UnavailableStorageException;
 
 public class LockableDatabase {
 
@@ -33,7 +35,7 @@ public class LockableDatabase {
          *            <code>null</code>.
          * @return Any relevant data. Can be <code>null</code>.
          * @throws WrappedException
-         * @throws UnavailableStorageException
+         * @throws com.fsck.k9.mail.store.UnavailableStorageException
          */
         T doDbWork(SQLiteDatabase db) throws WrappedException, UnavailableStorageException;
     }
@@ -99,7 +101,7 @@ public class LockableDatabase {
             }
 
             try {
-                openOrCreateDataspace(mApplication);
+                openOrCreateDataspace();
             } catch (UnavailableStorageException e) {
                 Log.e(K9.LOG_TAG, "Unable to open DB on mount", e);
             }
@@ -337,16 +339,17 @@ public class LockableDatabase {
                 prepareStorage(newProviderId);
 
                 // move all database files
-                Utility.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
+                FileHelper.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
                 // move all attachment files
-                Utility.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId), storageManager.getAttachmentDirectory(uUid, newProviderId));
+                FileHelper.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId),
+                        storageManager.getAttachmentDirectory(uUid, newProviderId));
                 // remove any remaining old journal files
                 deleteDatabase(oldDatabase);
 
                 mStorageProviderId = newProviderId;
 
                 // re-initialize this class with the new Uri
-                openOrCreateDataspace(mApplication);
+                openOrCreateDataspace();
             } finally {
                 unlockWrite(newProviderId);
             }
@@ -358,7 +361,7 @@ public class LockableDatabase {
     public void open() throws UnavailableStorageException {
         lockWrite();
         try {
-            openOrCreateDataspace(mApplication);
+            openOrCreateDataspace();
         } finally {
             unlockWrite();
         }
@@ -367,39 +370,37 @@ public class LockableDatabase {
 
     /**
      *
-     * @param application
      * @throws UnavailableStorageException
      */
-    protected void openOrCreateDataspace(final Application application) throws UnavailableStorageException {
+    private void openOrCreateDataspace() throws UnavailableStorageException {
 
         lockWrite();
         try {
             final File databaseFile = prepareStorage(mStorageProviderId);
             try {
-                if (StorageManager.InternalStorageProvider.ID.equals(mStorageProviderId)) {
-                    // internal storage
-                    mDb = application.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE, null);
-                } else {
-                    // external storage
-                    mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
-                }
+                doOpenOrCreateDb(databaseFile);
             } catch (SQLiteException e) {
                 // try to gracefully handle DB corruption - see issue 2537
                 Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
                 databaseFile.delete();
-                if (StorageManager.InternalStorageProvider.ID.equals(mStorageProviderId)) {
-                    // internal storage
-                    mDb = application.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE, null);
-                } else {
-                    // external storage
-                    mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
-                }
+                doOpenOrCreateDb(databaseFile);
             }
             if (mDb.getVersion() != mSchemaDefinition.getVersion()) {
                 mSchemaDefinition.doDbUpgrade(mDb);
             }
         } finally {
             unlockWrite();
+        }
+    }
+
+    private void doOpenOrCreateDb(final File databaseFile) {
+        if (StorageManager.InternalStorageProvider.ID.equals(mStorageProviderId)) {
+            // internal storage
+            mDb = mApplication.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE,
+                    null);
+        } else {
+            // external storage
+            mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
         }
     }
 
@@ -412,10 +413,8 @@ public class LockableDatabase {
     protected File prepareStorage(final String providerId) throws UnavailableStorageException {
         final StorageManager storageManager = getStorageManager();
 
-        final File databaseFile;
-        final File databaseParentDir;
-        databaseFile = storageManager.getDatabase(uUid, providerId);
-        databaseParentDir = databaseFile.getParentFile();
+        final File databaseFile = storageManager.getDatabase(uUid, providerId);
+        final File databaseParentDir = databaseFile.getParentFile();
         if (databaseParentDir.isFile()) {
             // should be safe to unconditionally delete clashing file: user is not supposed to mess with our directory
             databaseParentDir.delete();
@@ -425,17 +424,14 @@ public class LockableDatabase {
                 // Android seems to be unmounting the storage...
                 throw new UnavailableStorageException("Unable to access: " + databaseParentDir);
             }
-            Utility.touchFile(databaseParentDir, ".nomedia");
+            FileHelper.touchFile(databaseParentDir, ".nomedia");
         }
 
-        final File attachmentDir;
-        final File attachmentParentDir;
-        attachmentDir = storageManager
-                        .getAttachmentDirectory(uUid, providerId);
-        attachmentParentDir = attachmentDir.getParentFile();
+        final File attachmentDir = storageManager.getAttachmentDirectory(uUid, providerId);
+        final File attachmentParentDir = attachmentDir.getParentFile();
         if (!attachmentParentDir.exists()) {
             attachmentParentDir.mkdirs();
-            Utility.touchFile(attachmentParentDir, ".nomedia");
+            FileHelper.touchFile(attachmentParentDir, ".nomedia");
         }
         if (!attachmentDir.exists()) {
             attachmentDir.mkdirs();
@@ -467,7 +463,8 @@ public class LockableDatabase {
             try {
                 mDb.close();
             } catch (Exception e) {
-
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "Exception caught in DB close: " + e.getMessage());
             }
             final StorageManager storageManager = getStorageManager();
             try {
@@ -482,6 +479,8 @@ public class LockableDatabase {
                     attachmentDirectory.delete();
                 }
             } catch (Exception e) {
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "Exception caught in clearing attachments: " + e.getMessage());
             }
             try {
                 deleteDatabase(storageManager.getDatabase(uUid, mStorageProviderId));
@@ -490,7 +489,7 @@ public class LockableDatabase {
             }
 
             if (recreate) {
-                openOrCreateDataspace(mApplication);
+                openOrCreateDataspace();
             } else {
                 // stop waiting for mount/unmount events
                 getStorageManager().removeListener(mStorageListener);

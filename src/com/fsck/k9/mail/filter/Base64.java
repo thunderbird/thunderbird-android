@@ -17,8 +17,8 @@
 
 package com.fsck.k9.mail.filter;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 
 /**
  * Provides Base64 encoding and decoding as defined by RFC 2045.
@@ -225,12 +225,8 @@ public class Base64 {
         }
         this.decodeSize = encodeSize - 1;
         if (containsBase64Byte(lineSeparator)) {
-            String sep;
-            try {
-                sep = new String(lineSeparator, "UTF-8");
-            } catch (UnsupportedEncodingException uee) {
-                sep = new String(lineSeparator);
-            }
+            String sep = new String(lineSeparator, Charset.forName("UTF-8"));
+
             throw new IllegalArgumentException("lineSeperator must not contain base64 characters: [" + sep + "]");
         }
     }

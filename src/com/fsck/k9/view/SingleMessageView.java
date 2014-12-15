@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
@@ -41,12 +42,13 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -55,8 +57,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.mail.store.local.LocalAttachmentBodyPart;
+import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
 import org.apache.commons.io.IOUtils;
@@ -87,7 +89,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private static final int DISPLAY_NAME_INDEX = 1;
 
 
-    private MessageCryptoView mCryptoView;
     private MessageOpenPgpView mOpenPgpView;
     private MessageWebView mMessageContentView;
     private MessageHeader mHeaderContainer;
@@ -125,9 +126,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mHiddenAttachments.setVisibility(View.GONE);
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
-        mCryptoView = (MessageCryptoView) findViewById(R.id.layout_decrypt);
-        mCryptoView.setFragment(fragment);
-        mCryptoView.setupChildViews();
         mOpenPgpView = (MessageOpenPgpView) findViewById(R.id.layout_decrypt_openpgp);
         mOpenPgpView.setFragment(fragment);
         mOpenPgpView.setupChildViews();
@@ -571,7 +569,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
         if (text != null) {
             loadBodyFromText(text);
-            updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
             mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
                     pgpData.getSignatureResult(), message);
         } else {
@@ -582,15 +579,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     public void showStatusMessage(String status) {
         String text = "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
         loadBodyFromText(text);
-        mCryptoView.hide();
     }
 
     private void loadBodyFromText(String emailText) {
         mMessageContentView.setText(emailText);
-    }
-
-    public void updateCryptoLayout(CryptoProvider cp, PgpData pgpData, Message message) {
-        mCryptoView.updateLayout(cp, pgpData, message);
     }
 
     public void showAttachments(boolean show) {
@@ -607,8 +599,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     public void setAttachmentsEnabled(boolean enabled) {
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
             AttachmentView attachment = (AttachmentView) mAttachments.getChildAt(i);
-            attachment.viewButton.setEnabled(enabled);
-            attachment.downloadButton.setEnabled(enabled);
+            attachment.setButtonsEnabled(enabled);
         }
     }
 
@@ -626,7 +617,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             for (int i = 0; i < mp.getCount(); i++) {
                 renderAttachments(mp.getBodyPart(i), depth + 1, message, account, controller, listener);
             }
-        } else if (part instanceof LocalStore.LocalAttachmentBodyPart) {
+        } else if (part instanceof LocalAttachmentBodyPart) {
             AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);
 
@@ -790,7 +781,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                         // Try to get the filename from the URL
                         int start = path.lastIndexOf("/");
                         if (start != -1 && start + 1 < path.length()) {
-                            filename = URLDecoder.decode(path.substring(start + 1), "UTF-8");
+                            filename = UrlEncodingHelper.decodeUtf8(path.substring(start + 1));
                         } else {
                             // Use a dummy filename if necessary
                             filename = "saved_image";
@@ -843,10 +834,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                         filename += "." + extension;
                     }
 
-                    String sanitized = Utility.sanitizeFilename(filename);
+                    String sanitized = FileHelper.sanitizeFilename(filename);
 
                     File directory = new File(K9.getAttachmentDefaultPath());
-                    File file = Utility.createUniqueFile(directory, sanitized);
+                    File file = FileHelper.createUniqueFile(directory, sanitized);
                     FileOutputStream out = new FileOutputStream(file);
                     try {
                         IOUtils.copy(in, out);

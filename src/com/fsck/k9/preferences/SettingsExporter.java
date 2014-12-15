@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+
+import com.fsck.k9.helper.FileHelper;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
@@ -23,7 +25,6 @@ import android.util.Xml;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
@@ -87,7 +88,7 @@ public class SettingsExporter {
             File dir = new File(Environment.getExternalStorageDirectory() + File.separator
                                 + context.getPackageName());
             dir.mkdirs();
-            File file = Utility.createUniqueFile(dir, EXPORT_FILENAME);
+            File file = FileHelper.createUniqueFile(dir, EXPORT_FILENAME);
             filename = file.getAbsolutePath();
             os = new FileOutputStream(filename);
 
@@ -132,7 +133,7 @@ public class SettingsExporter {
 
             Set<String> exportAccounts;
             if (accountUuids == null) {
-                Account[] accounts = preferences.getAccounts();
+                List<Account> accounts = preferences.getAccounts();
                 exportAccounts = new HashSet<String>();
                 for (Account account : accounts) {
                     exportAccounts.add(account.getUuid());

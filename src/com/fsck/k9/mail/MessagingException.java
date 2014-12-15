@@ -4,7 +4,7 @@ package com.fsck.k9.mail;
 public class MessagingException extends Exception {
     public static final long serialVersionUID = -1;
 
-    boolean permanentFailure = false;
+    private boolean permanentFailure = false;
 
     public MessagingException(String message) {
         super(message);
@@ -28,9 +28,9 @@ public class MessagingException extends Exception {
         return permanentFailure;
     }
 
+    //TODO setters in Exception are bad style, remove (it's nearly unused anyway)
     public void setPermanentFailure(boolean permanentFailure) {
         this.permanentFailure = permanentFailure;
     }
-
 
 }

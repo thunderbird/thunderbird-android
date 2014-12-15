@@ -47,7 +47,6 @@
   <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
   <string name="account_recreate_dlg_instructions_fmt">על הנתונים עבור \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
   <string name="account_clear_dlg_instructions_fmt">כל ההודעות ב \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
-  <string name="insufficient_apg_permissions">ל-K-9 אין הרשאה לגשת ל APG באופן מלא, התקן מחדש את K-9 כדי לתקן את זה.</string>
   <!--=== App Store-specific strings =======================================================-->
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">מפתחים: <xliff:g id="app_authors">%s</xliff:g></string>
@@ -83,7 +82,6 @@
   <string name="spam_action">דואר זבל</string>
   <string name="forward_action">קדימה</string>
   <string name="move_action">העבר</string>
-  <string name="continue_action">המשך</string>
   <string name="done_action">סיום</string>
   <string name="discard_action">השלך</string>
   <string name="save_draft_action">שמור כטיוטה</string>
@@ -364,7 +362,6 @@
   <string name="account_settings_quote_prefix_label">קידומת טקסט מצוטט</string>
   <string name="account_settings_crypto">הצפנה</string>
   <string name="account_settings_crypto_app">OpenPGP Provider</string>
-  <string name="account_settings_crypto_app_none">כלום</string>
   <string name="account_settings_storage_title">אחסון</string>
   <string name="account_settings_color_label">צבע חשבון</string>
   <string name="account_settings_color_summary">בחר את הצבע של החשבון המשומש בתיקייה וברשימת החשבונות</string>
@@ -579,13 +576,9 @@
   <string name="font_size_large">גדול</string>
   <string name="font_size_larger">ענק</string>
   <string name="miscellaneous_preferences">שונות</string>
-  <!--APG related-->
   <string name="error_activity_not_found">לא נמצא ישום שיכול לבצע פעולה זו.</string>
-  <string name="error_apg_version_not_supported">גרסת APG המותקנת אינה נתמכת.</string>
   <string name="btn_crypto_sign">חתום</string>
   <string name="btn_encrypt">הצפן</string>
-  <string name="btn_decrypt">פענח</string>
-  <string name="btn_verify">אמת</string>
   <string name="pgp_mime_unsupported">הודעות PGP /MIME אינן נתמכות עדיין.</string>
   <string name="attachment_encryption_unsupported">אזהרה: הקבצים המצורפים אינם חתומים או מוצפנים עדיין.</string>
   <string name="send_aborted">שליחה בוטלה.</string>

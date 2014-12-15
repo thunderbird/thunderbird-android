@@ -49,7 +49,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" serà esborrat de K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Totes les dades de \"<xliff:g id="account">%s</xliff:g>\" seran esborrades de K-9 Mail, però la configuració del compte romandrà.</string>
   <string name="account_clear_dlg_instructions_fmt">Tots els missatges a \"<xliff:g id="account">%s</xliff:g>\" seran esborrats de K-9 Mail, però la configuració del compte romandrà.</string>
-  <string name="insufficient_apg_permissions">K-9 no té permís per accedir plenament a l\'APG, si us plau, reinstal la el K-9 per esmenar-ho.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">No s\'a trobat cap aplicació per realitzar la importació. Instal·leu un gestor d\'arxius des de Google Play Store.</string>
   <string name="open_market">Obre la Play Store</string>
@@ -100,8 +99,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="move_action">Mou</string>
   <string name="single_message_options_action">Opcions del missatge…</string>
   <string name="refile_action">Rearxiva…</string>
-  <string name="continue_action">Continua</string>
-  <string name="back_action">Enrere</string>
   <string name="done_action">Fet</string>
   <string name="discard_action">Descarta</string>
   <string name="save_draft_action">Desa com a esborrany</string>
@@ -161,7 +158,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="clearing_account">S\'està netejant el compte \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">S\'està creant un compte \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nou correu</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> missatges nous</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> no llegit(s) (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">i <xliff:g id="additional_messages">%d</xliff:g> més a <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Respon</string>
@@ -437,12 +433,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_settings_quote_prefix_label">Prefix de cita del text</string>
   <string name="account_settings_crypto">Criptografia</string>
   <string name="account_settings_crypto_app">Proveïdor d\'OpenPGP</string>
-  <string name="account_settings_crypto_app_none">Cap</string>
-  <string name="account_settings_crypto_auto_signature">Autoconnexió</string>
-  <string name="account_settings_crypto_auto_signature_summary">Utilitza l\'adreça del compte per endevinar la clau de la signatura.</string>
-  <string name="account_settings_crypto_auto_encrypt">Encriptació automàtica</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">S\'encripta automàticament quan es troba la clau pública del destinatari.</string>
-  <string name="account_settings_crypto_apg_not_installed">No s\'ha instal·lat l\'APG.</string>
   <string name="account_settings_mail_check_frequency_label">Freqüència de comprovació de les carpetes</string>
   <string name="account_settings_storage_title">Emmagatzematge</string>
   <string name="account_settings_color_label">Color del compte</string>
@@ -704,15 +694,10 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="font_size_large">Gran</string>
   <string name="font_size_larger">Més gran</string>
   <string name="miscellaneous_preferences">Miscel·lània</string>
-  <!--APG related-->
   <string name="error_activity_not_found">No s\'ha trobat cap aplicació idònia per a aquesta acció.</string>
-  <string name="error_apg_version_not_supported">Versió APG instal·lada no suportada.</string>
   <string name="btn_crypto_sign">Inicia</string>
   <string name="btn_encrypt">Encripta</string>
-  <string name="btn_decrypt">Desencripta</string>
-  <string name="btn_verify">Verifica</string>
   <string name="unknown_crypto_signature_user_id">&lt;desconegut&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">Encara no hi ha suport per a missatges PGP/MIME.</string>
   <string name="attachment_encryption_unsupported">Alerta: els adjunts encara NO estan signats o encriptats.</string>
   <string name="send_aborted">Tramesa suspesa</string>
@@ -722,8 +707,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="confirm_discard_draft_message">Esteu segurs de voler descartar aquest missatge?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refusa guardar esborradors de missatges</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refusa desar esborradors de missatges marcats com a encriptats.</string>
-  <string name="continue_without_public_key_dlg_title">Voleu continuar sense clau pública?</string>
-  <string name="continue_without_public_key_instructions_fmt">Un o més destinataris no han desat una clau pública. Voleu continuar?</string>
   <string name="select_text_now">Seleccioneu el text a copiar.</string>
   <string name="dialog_confirm_delete_title">Confirma esborrar</string>
   <string name="dialog_confirm_delete_message">Voleu esborrar aquest missatge?</string>

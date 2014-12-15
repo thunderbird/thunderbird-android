@@ -49,7 +49,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „K-9 Mail“.</string>
   <string name="account_recreate_dlg_instructions_fmt">Visi vietiniai \"<xliff:g id="account">%s</xliff:g>\" duomenys bus pašalinti. Paskyros nustatymai išliks.</string>
   <string name="account_clear_dlg_instructions_fmt">Vietinės  \"<xliff:g id="account">%s</xliff:g>\" laiškų kopijos bus pašalintos. Paskyros nustatymai išliks.</string>
-  <string name="insufficient_apg_permissions">K-9 neturi reikiamų leidimų pasiekti AGP, norėdami tai pataisyti iš naujo įdiekite K-9.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Norėdami tęsti importavimą turite įdiegti failų tvarkyklę.</string>
   <string name="open_market">Atverti „Play Store“</string>
@@ -100,8 +99,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="move_action">Perkelti</string>
   <string name="single_message_options_action">Siųsti…</string>
   <string name="refile_action">Refile…</string>
-  <string name="continue_action">Tęsti</string>
-  <string name="back_action">Atgal</string>
   <string name="done_action">Atlikta</string>
   <string name="discard_action">Atmesti</string>
   <string name="save_draft_action">Išsaugoti kaip juodraštį</string>
@@ -160,7 +157,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="clearing_account">Išvaloma paskyra  \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Iš naujo kuriama paskyra  \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Naujas laiškas</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Neskaitytų (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> daugiau <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Atsakyti</string>
@@ -437,12 +433,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_settings_quote_prefix_label">Redaguojamo teksto priedėlis</string>
   <string name="account_settings_crypto">Šifravimas</string>
   <string name="account_settings_crypto_app">OpenPGP tiekėjas</string>
-  <string name="account_settings_crypto_app_none">Jokios</string>
-  <string name="account_settings_crypto_auto_signature">Automatinis pasirašymas</string>
-  <string name="account_settings_crypto_auto_signature_summary">Naudoti paskyros el. pašto adresą parašo rakto nustatymui.</string>
-  <string name="account_settings_crypto_auto_encrypt">Automatinis šifravimas</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Jei viešas raktas atitinka gavėją automatiškai įjungti šifravimą.</string>
-  <string name="account_settings_crypto_apg_not_installed">AGP neįdiegta</string>
   <string name="account_settings_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
   <string name="account_settings_storage_title">Saugykla</string>
   <string name="account_settings_color_label">Paskyros spalva</string>
@@ -704,15 +694,10 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="font_size_large">Didelis</string>
   <string name="font_size_larger">Didesnis</string>
   <string name="miscellaneous_preferences">Kita</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Šiai programai nerasta tinkamo veiksmo.</string>
-  <string name="error_apg_version_not_supported">Įdiegta APG versija nepalaikoma.</string>
   <string name="btn_crypto_sign">Pasirašyti</string>
   <string name="btn_encrypt">Šifruoti</string>
-  <string name="btn_decrypt">Iššifruoti</string>
-  <string name="btn_verify">Patikrinti</string>
   <string name="unknown_crypto_signature_user_id">&lt;nežinoma&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">Kol kas PGP/MIME laiškai nepalaikomi.</string>
   <string name="attachment_encryption_unsupported">Įspėjimas: priedai NEpasirašyti ar nešifruoti.</string>
   <string name="send_aborted">Siuntimas nutrauktas.</string>
@@ -722,8 +707,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="confirm_discard_draft_message">Ar tikrai norite nepaisyti šio pranešimo?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Atsisakyta saugoti kaip juodraštį.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Atsisakyta saugoti juodraštį pažymėtą kaip šifruotą.</string>
-  <string name="continue_without_public_key_dlg_title">Tęsti be viešojo rakto?</string>
-  <string name="continue_without_public_key_instructions_fmt">Vienas ar keli gavėjai neturi išsaugoto viešojo rakto. Tęsti?</string>
   <string name="select_text_now">Pasirinkti tesktą kopijavimui.</string>
   <string name="dialog_confirm_delete_title">Patvirtinti šalinimą</string>
   <string name="dialog_confirm_delete_message">Ar tikrai norite pašalinti laišką?</string>

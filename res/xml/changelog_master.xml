@@ -8,6 +8,16 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.103" versioncode="23030">
+        <change>Added ability to customize lock screen notifications (Android 5.0+ only)</change>
+        <change>Fixed a bug where a certificate error was wrongly reported</change>
+        <change>Updated translation</change>
+    </release>
+    <release version="5.102" versioncode="23020">
+        <change>Improved 'open' functionality for attachments</change>
+        <change>Removed APG legacy interface</change>
+        <change>Fixed bug in Russian translation</change>
+    </release>
     <release version="5.101" versioncode="23010">
         <change>Fixed build problems that caused v5.100 to request the permissions READ_CALL_LOG and WRITE_CALL_LOG</change>
     </release>

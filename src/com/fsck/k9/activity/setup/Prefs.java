@@ -82,6 +82,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
     private static final String PREFERENCE_NOTIF_QUICK_DELETE = "notification_quick_delete";
+    private static final String PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY = "lock_screen_notification_visibility";
     private static final String PREFERENCE_HIDE_USERAGENT = "privacy_hide_useragent";
     private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
 
@@ -144,6 +145,7 @@ public class Prefs extends K9PreferenceActivity {
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeEnds;
     private ListPreference mNotificationQuickDelete;
+    private ListPreference mLockScreenNotificationVisibility;
     private Preference mAttachmentPathPreference;
 
     private CheckBoxPreference mBackgroundAsUnreadIndicator;
@@ -337,6 +339,14 @@ public class Prefs extends K9PreferenceActivity {
             mNotificationQuickDelete = null;
         }
 
+        mLockScreenNotificationVisibility = setupListPreference(PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
+            K9.getLockScreenNotificationVisibility().toString());
+        if (!MessagingController.platformSupportsLockScreenNotifications()) {
+            ((PreferenceScreen) findPreference("notification_preferences"))
+                .removePreference(mLockScreenNotificationVisibility);
+            mLockScreenNotificationVisibility = null;
+        }
+
         mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().name());
 
         mDebugLogging = (CheckBoxPreference)findPreference(PREFERENCE_DEBUG_LOGGING);
@@ -482,6 +492,11 @@ public class Prefs extends K9PreferenceActivity {
         if (mNotificationQuickDelete != null) {
             K9.setNotificationQuickDeleteBehaviour(
                     NotificationQuickDelete.valueOf(mNotificationQuickDelete.getValue()));
+        }
+
+        if(mLockScreenNotificationVisibility != null) {
+            K9.setLockScreenNotificationVisibility(
+                K9.LockScreenNotificationVisibility.valueOf(mLockScreenNotificationVisibility.getValue()));
         }
 
         K9.setSplitViewMode(SplitViewMode.valueOf(mSplitViewMode.getValue()));

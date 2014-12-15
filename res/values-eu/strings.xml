@@ -49,7 +49,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik ezabatuko da.</string>
   <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontuaren datu guztiak ezabatuko dira, Kontuaren ezarpenak mantenduko dira.</string>
   <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"  kontuaren mezuen kopia lokalak ezabatuko dira. Kontuaren ezarpenak mantenduko dira.</string>
-  <string name="insufficient_apg_permissions">K-9k ez du APG erabiltzeko baimen osoa, K-9 berrinstalatu konpontzeko.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Inportazioarekin jarraitzeko instalatu fitxategi kudeatzeaile bat, mesedez.</string>
   <string name="open_market">Play Store-a ireki</string>
@@ -100,8 +99,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="move_action">Mugitu</string>
   <string name="single_message_options_action">Bidali…</string>
   <string name="refile_action">Artxibatu…</string>
-  <string name="continue_action">Jarraitu</string>
-  <string name="back_action">Atzera</string>
   <string name="done_action">Eginda</string>
   <string name="discard_action">Baztertu</string>
   <string name="save_draft_action">Zirriborroetan gorde</string>
@@ -160,7 +157,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="clearing_account">\"<xliff:g id="account">%s</xliff:g>\" kontua garbitzen</string>
   <string name="recreating_account">\"<xliff:g id="account">%s</xliff:g>\" kontua birsortzen</string>
   <string name="notification_new_title">Eposta berria</string>
-  <string name="notification_new_messages_title"><xliff:g id="new_message_count">%d</xliff:g> mezu berri</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> irakurgabe (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> gehiago <xliff:g id="account">%s</xliff:g> kontuan</string>
   <string name="notification_action_reply">Erantzun</string>
@@ -263,6 +259,7 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_messageview_show_next_summary">Mezuak ezabatzerakoan defektuz hurrengo mezua ikusi</string>
   <string name="global_settings_confirm_actions_title">Baieztatzeko ekintzak</string>
   <string name="global_settings_confirm_actions_summary">Hautatutako ekintzak egiterakoan elkarrizketa koadroa ikusi</string>
+  <string name="global_settings_confirm_action_delete">Ezabatu</string>
   <string name="global_settings_confirm_action_delete_starred">Izarduna ezabatu (mezu ikuspegian)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_action_delete_notif">Ezabatu (Jakinarazpenetatik)</string>
@@ -282,6 +279,7 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_basics_title">Kontu berria konfiguratu</string>
   <string name="account_setup_basics_email_hint">Eposta helbidea</string>
   <string name="account_setup_basics_password_hint">Pasahitza</string>
+  <string name="account_setup_basics_show_password">Pasahitza erakutsi</string>
   <string name="account_setup_basics_manual_setup_action">Eskuzko konfigurazioa</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Kontuaren informazioa eskuratzen\u2026</string>
@@ -298,6 +296,8 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+  <string name="account_setup_auth_type_encrypted_password">Pasahitz zifratua</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Bezero ziurtagiria</string>
   <string name="account_setup_incoming_title">Sarrerako zerbitzariaren ezarpenak</string>
   <string name="account_setup_incoming_username_label">Erabiltzaile izena</string>
   <string name="account_setup_incoming_password_label">Pasahitza</string>
@@ -308,6 +308,8 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_incoming_security_label">Segurtasuna</string>
   <string name="account_setup_incoming_auth_type_label">Kautotzea</string>
   <string name="account_setup_incoming_security_none_label">Ezer</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Mezu bat ezabatzen dudanean</string>
   <string name="account_setup_incoming_delete_policy_never_label">Ez ezabatu zerbitzarian</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Zerbitzarian ezabatu</string>
@@ -388,9 +390,14 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_options_mail_display_count_250">250 mezu</string>
   <string name="account_setup_options_mail_display_count_500">500 mezu</string>
   <string name="account_setup_options_mail_display_count_1000">1000 mezu</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 mezu</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 mezu</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 mezu</string>
   <string name="account_setup_options_mail_display_count_all">mezu guztiak</string>
   <string name="move_copy_cannot_copy_unsynced_message">Zerbitzariarekin sinkronizatuta ez dauden mezuak ezin dira kopiatu edo mugitu</string>
   <string name="account_setup_failed_dlg_title">Konfigurazioak ezin izan du bukatu</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Erabiltzaile izen edo pasahitz okerrak.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Ezin zerbitzarira konektatu.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Xehetasunak editatu</string>
   <string name="account_setup_failed_dlg_continue_action">Jarraitu</string>
   <string name="account_settings_push_advanced_title">Aurreratua</string>
@@ -398,6 +405,11 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_default_label">Defektuzko kontua</string>
   <string name="account_settings_default_summary">Eposta defektuz kontu honetatik bidali</string>
   <string name="account_settings_notify_label">Eposta berriko jakinarazpenak</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Guztiak</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">1.en mailakoak bakarrik</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1.ngo eta 2. mailakoak</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Guztiak 2. mailakoak ezik</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Batez</string>
   <string name="account_settings_notify_sync_label">Sinkronizazio jakinarazpenak</string>
   <string name="account_settings_email_label">Zure posta helbidea</string>
   <string name="account_settings_notify_summary">Mezuak heltzean egoera barran jakinarazi</string>
@@ -436,12 +448,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_quote_prefix_label">Aipamen testuaren aurrizkia</string>
   <string name="account_settings_crypto">Kriptografia</string>
   <string name="account_settings_crypto_app">OpenPGP hornitzailea</string>
-  <string name="account_settings_crypto_app_none">Batez</string>
-  <string name="account_settings_crypto_auto_signature">Sinadura automatikoa</string>
-  <string name="account_settings_crypto_auto_signature_summary">Kontuaren eposta helbidea erabili sinatzeko gakoa asmatzeko.</string>
-  <string name="account_settings_crypto_auto_encrypt">Zifraketa automatikoa</string>
-  <string name="account_settings_crypto_auto_encrypt_summary">Jasotzailearen gako publikoa badago automatikoki zifratu.</string>
-  <string name="account_settings_crypto_apg_not_installed">APG ez dago instalatuta</string>
   <string name="account_settings_mail_check_frequency_label">Karpeta aztertzeko maiztasuna</string>
   <string name="account_settings_storage_title">Biltegia</string>
   <string name="account_settings_color_label">Kontuaren kolorea</string>
@@ -519,6 +525,9 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="folder_settings_folder_push_mode_first_class">1.go maila</string>
   <string name="folder_settings_folder_push_mode_second_class">2. maila</string>
   <string name="folder_settings_folder_push_mode_inherited">Sinkronizatzeko klasearen berdina</string>
+  <string name="folder_settings_folder_notify_mode_normal">Batez</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1.ng maila</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2. maila</string>
   <string name="account_settings_incoming_label">Sarrerako zerbitzaria</string>
   <string name="account_settings_incoming_summary">Sarrerako zerbitzaria konfiguratu</string>
   <string name="account_settings_outgoing_label">Irteera zerbitzaria</string>
@@ -703,15 +712,10 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="font_size_large">Handia</string>
   <string name="font_size_larger">Handiagoa</string>
   <string name="miscellaneous_preferences">Bestelakoak</string>
-  <!--APG related-->
   <string name="error_activity_not_found">Ez da honetarako aplikaziorik topatu.</string>
-  <string name="error_apg_version_not_supported">Instalatutako APG bertsioa ezin da erabili.</string>
   <string name="btn_crypto_sign">Sinatu</string>
   <string name="btn_encrypt">Zifratu</string>
-  <string name="btn_decrypt">Dezifratu</string>
-  <string name="btn_verify">Egiaztatu</string>
   <string name="unknown_crypto_signature_user_id">&lt;ezezaguna&gt;</string>
-  <string name="key_id">id: %s</string>
   <string name="pgp_mime_unsupported">PGP/MIME mezurik oraindik ez.</string>
   <string name="attachment_encryption_unsupported">Kontuz: oraindik ez dira eranskinak zinatzen edo zifratzen.</string>
   <string name="send_aborted">Bidalketa ezeztatua.</string>
@@ -721,8 +725,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="confirm_discard_draft_message">Ziur mezu hau baztertu nahi duzula?</string>
   <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Zirriborroa gordetzea ukatu.</string>
   <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Zifratuko diren zirriborroak gordetzea ukatu.</string>
-  <string name="continue_without_public_key_dlg_title">Gako publikorik gabe jarraitu?</string>
-  <string name="continue_without_public_key_instructions_fmt">Jasotzaile bat edo gehiago ez dute gako publikorik. Jarraitu?</string>
   <string name="select_text_now">Kopiatuko den testua hautatu</string>
   <string name="dialog_confirm_delete_title">Ezabatzea baieztatu</string>
   <string name="dialog_confirm_delete_message">Mezu hau ezabatu nahi duzu?</string>
@@ -865,4 +867,5 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="fetching_attachment_dialog_message">Eranskina eskuratzen…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <string name="client_certificate_advanced_options">Aukera aurreratuak</string>
 </resources>

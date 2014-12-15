@@ -30,7 +30,6 @@ import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.CryptoProvider.CryptoDecryptCallback;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.helper.FileBrowserHelper;
@@ -39,7 +38,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.mail.store.local.LocalMessage;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
@@ -49,7 +48,7 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
 public class MessageViewFragment extends Fragment implements OnClickListener,
-        CryptoDecryptCallback, ConfirmationDialogFragmentListener {
+        ConfirmationDialogFragmentListener {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -207,7 +206,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         mMessageView.setAttachmentCallback(new AttachmentFileDownloadCallback() {
 
             @Override
-            public void showFileBrowser(final AttachmentView caller) {
+            public void pickDirectoryToSaveAttachmentTo(final AttachmentView caller) {
                 FileBrowserHelper.getInstance()
                 .showFileBrowserActivity(MessageViewFragment.this,
                                          null,
@@ -369,7 +368,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         if (mMessage != null) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new Message[] { mMessage }, Flag.FLAGGED, newState);
+                    Collections.singletonList(mMessage), Flag.FLAGGED, newState);
             mMessageView.setHeaders(mMessage, mAccount);
         }
     }
@@ -427,10 +426,6 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mAccount.getCryptoProvider().onDecryptActivityResult(this, requestCode, resultCode, data, mPgpData)) {
-            return;
-        }
-
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
@@ -485,7 +480,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     public void onToggleRead() {
         if (mMessage != null) {
             mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    new Message[] { mMessage }, Flag.SEEN, !mMessage.isSet(Flag.SEEN));
+                    Collections.singletonList(mMessage), Flag.SEEN, !mMessage.isSet(Flag.SEEN));
             mMessageView.setHeaders(mMessage, mAccount);
             String subject = mMessage.getSubject();
             displayMessageSubject(subject);
@@ -503,15 +498,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.download: {
-                ((AttachmentView)view).saveFile();
-                break;
-            }
-            case R.id.download_remainder: {
-                onDownloadRemainder();
-                break;
-            }
+        if (view.getId() == R.id.download_remainder) {
+            onDownloadRemainder();
         }
     }
 
@@ -727,20 +715,6 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
             data.setDecryptedData(decryptedData);
             data.setSignatureResult(signatureResult);
             mMessageView.setMessage(mAccount, (LocalMessage) mMessage, data, mController, mListener);
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
-        }
-    }
-
-    // This REALLY should be in MessageCryptoView
-    @Override
-    public void onDecryptDone(PgpData pgpData) {
-        Account account = mAccount;
-        LocalMessage message = (LocalMessage) mMessage;
-        MessagingController controller = mController;
-        Listener listener = mListener;
-        try {
-            mMessageView.setMessage(account, message, pgpData, controller, listener);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }

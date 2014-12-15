@@ -23,9 +23,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.util.LruCache;
+import android.text.TextUtils;
 import android.widget.QuickContactBadge;
+
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Address;
 
 public class ContactPictureLoader {
@@ -169,7 +170,7 @@ public class ContactPictureLoader {
             letter = m.group(0).toUpperCase(Locale.US);
         }
 
-        return (StringUtils.isNullOrEmpty(letter)) ?
+        return (TextUtils.isEmpty(letter)) ?
                 FALLBACK_CONTACT_LETTER : letter.substring(0, 1);
     }
 

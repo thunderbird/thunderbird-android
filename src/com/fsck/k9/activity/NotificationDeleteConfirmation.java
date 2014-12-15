@@ -1,6 +1,8 @@
 package com.fsck.k9.activity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,6 +16,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.service.NotificationActionService;
 
 public class NotificationDeleteConfirmation extends Activity {
@@ -25,7 +28,7 @@ public class NotificationDeleteConfirmation extends Activity {
     private Account mAccount;
     private ArrayList<MessageReference> mMessageRefs;
 
-    public static PendingIntent getIntent(Context context, final Account account, final ArrayList<MessageReference> refs) {
+    public static PendingIntent getIntent(Context context, final Account account, final Serializable refs) {
         Intent i = new Intent(context, NotificationDeleteConfirmation.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);

@@ -1,11 +1,11 @@
 package com.fsck.k9.mail.internet;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.InsertableHtmlContent;
 import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.mail.Body;
 
 public class TextBodyBuilder {
@@ -177,7 +177,7 @@ public class TextBodyBuilder {
 
     private String getSignature() {
         String signature = "";
-        if (!StringUtils.isNullOrEmpty(mSignature)) {
+        if (!TextUtils.isEmpty(mSignature)) {
             signature = "\r\n" + mSignature;
         }
 
@@ -186,7 +186,7 @@ public class TextBodyBuilder {
 
     private String getSignatureHtml() {
         String signature = "";
-        if (!StringUtils.isNullOrEmpty(mSignature)) {
+        if (!TextUtils.isEmpty(mSignature)) {
             signature = textToHtmlFragment("\r\n" + mSignature);
         }
         return signature;
@@ -194,7 +194,7 @@ public class TextBodyBuilder {
 
     private String getQuotedText() {
         String quotedText = "";
-        if (!StringUtils.isNullOrEmpty(mQuotedText)) {
+        if (!TextUtils.isEmpty(mQuotedText)) {
             quotedText = mQuotedText;
         }
         return quotedText;
@@ -204,7 +204,10 @@ public class TextBodyBuilder {
         return mQuotedTextHtml;
     }
 
-    public String textToHtmlFragment(String text) {
+    /**
+     * protected for unit-test purposes
+     */
+    protected String textToHtmlFragment(String text) {
         return HtmlConverter.textToHtmlFragment(text);
     }
 

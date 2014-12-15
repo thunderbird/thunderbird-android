@@ -15,11 +15,16 @@ import java.util.Set;
 import java.util.concurrent.Future;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Loader;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -30,15 +35,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.app.DialogFragment;
-import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
-import android.widget.CursorAdapter;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
@@ -59,6 +59,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
@@ -81,15 +82,14 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.MessageHelper;
-import com.fsck.k9.helper.StringUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalFolder;
+import com.fsck.k9.mail.store.local.LocalStore;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.provider.EmailProvider.SpecialColumns;
@@ -100,6 +100,7 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
+
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -960,16 +961,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     accountUuids[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
                 mAllAccounts = true;
 
-                Account[] accounts = mPreferences.getAccounts();
+                List<Account> accounts = mPreferences.getAccounts();
 
-                mAccountUuids = new String[accounts.length];
-                for (int i = 0, len = accounts.length; i < len; i++) {
-                    mAccountUuids[i] = accounts[i].getUuid();
+                mAccountUuids = new String[accounts.size()];
+                for (int i = 0, len = accounts.size(); i < len; i++) {
+                    mAccountUuids[i] = accounts.get(i).getUuid();
                 }
 
                 if (mAccountUuids.length == 1) {
                     mSingleAccountMode = true;
-                    mAccount = accounts[0];
+                    mAccount = accounts.get(0);
                 }
             } else {
                 mAccountUuids = accountUuids;
@@ -1084,11 +1085,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         mController.addListener(mListener);
 
         //Cancel pending new mail notifications when we open an account
-        Account[] accountsWithNotification;
+        List<Account> accountsWithNotification;
 
         Account account = mAccount;
         if (account != null) {
-            accountsWithNotification = new Account[] { account };
+            accountsWithNotification = Collections.singletonList(account);
         } else {
             accountsWithNotification = mPreferences.getAccounts();
         }
@@ -1814,7 +1815,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
 
             List<String> folderNames = mSearch.getFolderNames();
-            return (folderNames.size() == 0 || folderNames.contains(folder));
+            return (folderNames.isEmpty() || folderNames.contains(folder));
         }
     }
 
@@ -1943,7 +1944,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             int threadCount = (mThreadedList) ? cursor.getInt(THREAD_COUNT_COLUMN) : 0;
 
             String subject = cursor.getString(SUBJECT_COLUMN);
-            if (StringUtils.isNullOrEmpty(subject)) {
+            if (TextUtils.isEmpty(subject)) {
                 subject = getString(R.string.general_no_subject);
             } else if (threadCount > 1) {
                 // If this is a thread, strip the RE/FW from the subject.  "Be like Outlook."
@@ -2362,7 +2363,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void setFlagForSelected(final Flag flag, final boolean newState) {
-        if (mSelected.size() == 0) {
+        if (mSelected.isEmpty()) {
             return;
         }
 
@@ -2586,7 +2587,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private boolean checkCopyOrMovePossible(final List<Message> messages,
             final FolderOperation operation) {
 
-        if (messages.size() == 0) {
+        if (messages.isEmpty()) {
             return false;
         }
 
@@ -2995,8 +2996,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         super.onStop();
     }
 
-    public ArrayList<MessageReference> getMessageReferences() {
-        ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
+    public List<MessageReference> getMessageReferences() {
+        List<MessageReference> messageRefs = new ArrayList<MessageReference>();
 
         for (int i = 0, len = mAdapter.getCount(); i < len; i++) {
             Cursor cursor = (Cursor) mAdapter.getItem(i);
@@ -3449,11 +3450,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (mIsThreadDisplay) {
             if (cursor.moveToFirst()) {
                 mTitle = cursor.getString(SUBJECT_COLUMN);
-                if (!StringUtils.isNullOrEmpty(mTitle)) {
+                if (!TextUtils.isEmpty(mTitle)) {
                     mTitle = Utility.stripSubject(mTitle);
                 }
-                if (StringUtils.isNullOrEmpty(mTitle)) {
-                   mTitle = getString(R.string.general_no_subject);
+                if (TextUtils.isEmpty(mTitle)) {
+                    mTitle = getString(R.string.general_no_subject);
                 }
                 updateTitle();
             } else {
@@ -3515,7 +3516,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void cleanupSelected(Cursor cursor) {
-        if (mSelected.size() == 0) {
+        if (mSelected.isEmpty()) {
             return;
         }
 
@@ -3534,7 +3535,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * Starts or finishes the action mode when necessary.
      */
     private void resetActionMode() {
-        if (mSelected.size() == 0) {
+        if (mSelected.isEmpty()) {
             if (mActionMode != null) {
                 mActionMode.finish();
             }

@@ -13,7 +13,6 @@ import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.preferences.Settings.*;
 
@@ -50,13 +49,8 @@ public class AccountSettings {
                 new V(1, new ColorSetting(0xFF0000FF))
             ));
         s.put("cryptoApp", Settings.versions(
-                new V(1, new StringSetting(Apg.NAME))
-            ));
-        s.put("cryptoAutoEncrypt", Settings.versions(
-                new V(3, new BooleanSetting(false))
-            ));
-        s.put("cryptoAutoSignature", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(1, new StringSetting("apg")),
+                new V(36, new StringSetting(Account.NO_OPENPGP_PROVIDER))
             ));
         s.put("defaultQuotedTextShown", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
