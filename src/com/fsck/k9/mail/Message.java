@@ -282,14 +282,8 @@ public abstract class Message implements Part, CompositeBody {
 
     /**
      * Collect attachment parts of a message.
-     *
-     * @param message
-     *         The message to collect the attachment parts from.
-     *
      * @return A list of parts regarded as attachments.
-     *
-     * @throws MessagingException
-     *          In case of an error.
+     * @throws MessagingException In case of an error.
      */
     public List<Part> collectAttachments() throws MessagingException {
         try {
@@ -303,14 +297,8 @@ public abstract class Message implements Part, CompositeBody {
 
     /**
      * Collect the viewable textual parts of a message.
-     *
-     * @param message
-     *         The message to extract the viewable parts from.
-     *
      * @return A set of viewable parts of the message.
-     *
-     * @throws MessagingException
-     *          In case of an error.
+     * @throws MessagingException In case of an error.
      */
     public Set<Part> collectTextParts() throws MessagingException {
         try {
