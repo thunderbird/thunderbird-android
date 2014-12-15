@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.internet;
+package com.fsck.k9.mailstore;
 
 import java.util.Date;
 import java.util.Locale;
@@ -9,9 +9,14 @@ import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.internet.MimeUtility.ViewableContainer;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.TextBody;
 
-public class ViewablesTest extends AndroidTestCase {
+import static com.fsck.k9.mailstore.LocalMessageExtractor.extractTextAndAttachments;
+
+public class LocalMessageExtractorTest extends AndroidTestCase {
 
     public void testSimplePlainTextMessage() throws MessagingException {
         String bodyText = "K-9 Mail rocks :>";
@@ -24,7 +29,7 @@ public class ViewablesTest extends AndroidTestCase {
         message.setBody(body);
 
         // Extract text
-        ViewableContainer container = MimeUtility.extractTextAndAttachments(getContext(), message);
+        ViewableContainer container = extractTextAndAttachments(getContext(), message);
 
         String expectedText = bodyText;
         String expectedHtml =
@@ -48,7 +53,7 @@ public class ViewablesTest extends AndroidTestCase {
         message.setBody(body);
 
         // Extract text
-        ViewableContainer container = MimeUtility.extractTextAndAttachments(getContext(), message);
+        ViewableContainer container = extractTextAndAttachments(getContext(), message);
 
         String expectedText = "K-9 Mail rocks :>";
         String expectedHtml =
@@ -78,7 +83,7 @@ public class ViewablesTest extends AndroidTestCase {
         message.setBody(multipart);
 
         // Extract text
-        ViewableContainer container = MimeUtility.extractTextAndAttachments(getContext(), message);
+        ViewableContainer container = extractTextAndAttachments(getContext(), message);
 
         String expectedText =
                 bodyText1 + "\r\n\r\n" +
@@ -134,7 +139,7 @@ public class ViewablesTest extends AndroidTestCase {
         message.setBody(multipart);
 
         // Extract text
-        ViewableContainer container = MimeUtility.extractTextAndAttachments(getContext(), message);
+        ViewableContainer container = extractTextAndAttachments(getContext(), message);
 
         String expectedText =
                 bodyText +

@@ -473,7 +473,7 @@ public class MimeMessage extends Message {
         if (mBody instanceof Multipart) {
             ((Multipart)mBody).setCharset(charset);
         } else if (mBody instanceof TextBody) {
-            MimeUtility.setCharset(charset, this);
+            CharsetSupport.setCharset(charset, this);
             ((TextBody)mBody).setCharset(charset);
         }
     }

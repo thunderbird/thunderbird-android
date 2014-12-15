@@ -46,7 +46,7 @@ import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.FileHelper;
-import com.fsck.k9.mail.internet.HtmlConverter;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;

@@ -4,7 +4,11 @@ package com.fsck.k9.mail.internet;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;

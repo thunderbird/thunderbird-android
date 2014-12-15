@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.internet;
+package com.fsck.k9.activity;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.activity.TextBodyBuilder;
+import com.fsck.k9.mail.internet.TextBody;
 
 class TestingTextBodyBuilder extends TextBodyBuilder {
 

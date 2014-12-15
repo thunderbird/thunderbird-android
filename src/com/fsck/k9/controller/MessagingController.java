@@ -1744,7 +1744,7 @@ public class MessagingController implements Runnable {
                  * right now, attachments will be left for later.
                  */
 
-                Set<Part> viewables = MimeUtility.collectTextParts(message);
+                Set<Part> viewables = message.collectTextParts();
 
                 /*
                  * Now download the parts we're interested in storing.
@@ -3197,7 +3197,7 @@ public class MessagingController implements Runnable {
                 try {
                     LocalStore localStore = account.getLocalStore();
 
-                    List<Part> attachments = MimeUtility.collectAttachments(message);
+                    List<Part> attachments = message.collectAttachments();
                     for (Part attachment : attachments) {
                         attachment.setBody(null);
                     }
@@ -4244,13 +4244,12 @@ public class MessagingController implements Runnable {
                 try {
                     Intent msg = new Intent(Intent.ACTION_SEND);
                     String quotedText = null;
-                    Part part = MimeUtility.findFirstPartByMimeType(message,
-                                "text/plain");
+                    Part part = message.findFirstPartByMimeType("text/plain");
                     if (part == null) {
-                        part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+                        part = message.findFirstPartByMimeType("text/html");
                     }
                     if (part != null) {
-                        quotedText = MimeUtility.getTextFromPart(part);
+                        quotedText = part.getText();
                     }
                     if (quotedText != null) {
                         msg.putExtra(Intent.EXTRA_TEXT, quotedText);

@@ -1,12 +1,14 @@
-package com.fsck.k9.mail.internet;
+package com.fsck.k9.activity;
 
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.mail.internet.TextBody;
 
-public class TextBodyBuilder {
+class TextBodyBuilder {
     private boolean mIncludeQuotedText = true;
     private boolean mReplyAfterQuote = false;
     private boolean mSignatureBeforeQuotedText = false;

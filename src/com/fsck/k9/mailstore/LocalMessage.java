@@ -120,16 +120,16 @@ public class LocalMessage extends MimeMessage {
      */
     public String getTextForDisplay() throws MessagingException {
         String text = null;    // First try and fetch an HTML part.
-        Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
+        Part part = findFirstPartByMimeType("text/html");
         if (part == null) {
             // If that fails, try and get a text part.
-            part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
+            part = findFirstPartByMimeType("text/plain");
             if (part != null && part.getBody() instanceof LocalTextBody) {
                 text = ((LocalTextBody) part.getBody()).getBodyForDisplay();
             }
         } else {
             // We successfully found an HTML part; do the necessary character set decoding.
-            text = MimeUtility.getTextFromPart(part);
+            text = part.getText();
         }
         return text;
     }

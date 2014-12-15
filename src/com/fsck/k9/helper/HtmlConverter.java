@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.internet;
+package com.fsck.k9.helper;
 
 import android.text.*;
 import android.text.Html.TagHandler;

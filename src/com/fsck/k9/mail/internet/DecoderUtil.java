@@ -35,7 +35,7 @@ class DecoderUtil {
 
         Base64InputStream is = new Base64InputStream(new ByteArrayInputStream(bytes));
         try {
-            return MimeUtility.readToString(is, charset);
+            return CharsetSupport.readToString(is, charset);
         } catch (IOException e) {
             return null;
         }
@@ -68,7 +68,7 @@ class DecoderUtil {
 
         QuotedPrintableInputStream is = new QuotedPrintableInputStream(new ByteArrayInputStream(bytes));
         try {
-            return MimeUtility.readToString(is, charset);
+            return CharsetSupport.readToString(is, charset);
         } catch (IOException e) {
             return null;
         }
@@ -162,7 +162,7 @@ class DecoderUtil {
 
         String charset;
         try {
-            charset = MimeUtility.fixupCharset(mimeCharset, message);
+            charset = CharsetSupport.fixupCharset(mimeCharset, message);
         } catch (MessagingException e) {
             return null;
         }

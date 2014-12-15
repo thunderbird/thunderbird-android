@@ -12,7 +12,7 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
-import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
@@ -463,7 +463,7 @@ public class SmtpTransport extends Transport {
             new HashMap<String, List<String>>();
         for (Address address : addresses) {
             String addressString = address.getAddress();
-            String charset = MimeUtility.getCharsetFromAddress(addressString);
+            String charset = CharsetSupport.getCharsetFromAddress(addressString);
             List<String> addressesOfCharset = charsetAddressesMap.get(charset);
             if (addressesOfCharset == null) {
                 addressesOfCharset = new ArrayList<String>();

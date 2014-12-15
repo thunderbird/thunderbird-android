@@ -2,9 +2,11 @@
 package com.fsck.k9.mail;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 import android.util.Log;
@@ -12,6 +14,8 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.internet.MimeUtility;
 
 
 public abstract class Message implements Part, CompositeBody {
@@ -265,4 +269,69 @@ public abstract class Message implements Part, CompositeBody {
      */
     @Override
     public abstract Message clone();
+
+    /**
+     * Get the value of the {@code Content-Disposition} header.
+     * @return The value of the {@code Content-Disposition} header if available. {@code null}, otherwise.
+     */
+    public String getContentDisposition() {
+        try {
+            String disposition = getDisposition();
+            if (disposition != null) {
+                return MimeUtility.getHeaderParameter(disposition, null);
+            }
+        }
+        catch (MessagingException e) { /* ignore */ }
+        return null;
+    }
+
+    @Override
+    public String getText() {
+        return MessageExtractor.getTextFromPart(this);
+    }
+
+    @Override
+    public Part findFirstPartByMimeType(String mimeType) throws MessagingException {
+        return MimeUtility.findFirstPartByMimeType(this, mimeType);
+    }
+
+    /**
+     * Collect attachment parts of a message.
+     *
+     * @param message
+     *         The message to collect the attachment parts from.
+     *
+     * @return A list of parts regarded as attachments.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    public List<Part> collectAttachments() throws MessagingException {
+        try {
+            List<Part> attachments = new ArrayList<Part>();
+            MessageExtractor.getViewables(this, attachments);
+            return attachments;
+        } catch (Exception e) {
+            throw new MessagingException("Couldn't collect attachment parts", e);
+        }
+    }
+
+    /**
+     * Collect the viewable textual parts of a message.
+     *
+     * @param message
+     *         The message to extract the viewable parts from.
+     *
+     * @return A set of viewable parts of the message.
+     *
+     * @throws MessagingException
+     *          In case of an error.
+     */
+    public Set<Part> collectTextParts() throws MessagingException {
+        try {
+            return MessageExtractor.getTextParts(this);
+        } catch (Exception e) {
+            throw new MessagingException("Couldn't extract viewable parts", e);
+        }
+    }
 }

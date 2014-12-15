@@ -215,8 +215,7 @@ public class MessageOpenPgpView extends LinearLayout {
         } else {
             try {
                 // check for PGP/MIME encryption
-                Part pgp = MimeUtility
-                        .findFirstPartByMimeType(message, "application/pgp-encrypted");
+                Part pgp = message.findFirstPartByMimeType("application/pgp-encrypted");
                 if (pgp != null) {
                     Toast.makeText(mContext, R.string.pgp_mime_unsupported, Toast.LENGTH_LONG)
                             .show();
@@ -241,12 +240,12 @@ public class MessageOpenPgpView extends LinearLayout {
             public void run() {
                 try {
                     // get data String
-                    Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+                    Part part = message.findFirstPartByMimeType("text/plain");
                     if (part == null) {
-                        part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+                        part = message.findFirstPartByMimeType("text/html");
                     }
                     if (part != null) {
-                        mData = MimeUtility.getTextFromPart(part);
+                        mData = part.getText();
                     }
 
                     // wait for service to be bound

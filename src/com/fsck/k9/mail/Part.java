@@ -5,29 +5,41 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public interface Part {
-    public void addHeader(String name, String value) throws MessagingException;
+    void addHeader(String name, String value) throws MessagingException;
 
-    public void removeHeader(String name) throws MessagingException;
+    void removeHeader(String name) throws MessagingException;
 
-    public void setHeader(String name, String value) throws MessagingException;
+    void setHeader(String name, String value) throws MessagingException;
 
-    public Body getBody();
+    Body getBody();
 
-    public String getContentType() throws MessagingException;
+    String getContentType() throws MessagingException;
 
-    public String getDisposition() throws MessagingException;
+    String getDisposition() throws MessagingException;
 
-    public String getContentId() throws MessagingException;
+    String getContentDisposition();
 
-    public String[] getHeader(String name) throws MessagingException;
+    String getContentId() throws MessagingException;
 
-    public boolean isMimeType(String mimeType) throws MessagingException;
+    String[] getHeader(String name) throws MessagingException;
 
-    public String getMimeType() throws MessagingException;
+    boolean isMimeType(String mimeType) throws MessagingException;
 
-    public void setBody(Body body) throws MessagingException;
+    String getMimeType() throws MessagingException;
 
-    public void writeTo(OutputStream out) throws IOException, MessagingException;
+    void setBody(Body body) throws MessagingException;
+
+    void writeTo(OutputStream out) throws IOException, MessagingException;
+
+    /**
+     * Reads the Part's body and returns a String based on any charset conversion that needed
+     * to be done.  Note, this <b>does not</b> return a text representation of HTML.
+     * @return a String containing the converted text in the body, or null if there was no text
+     * or an error during conversion.
+     */
+    String getText();
+
+    Part findFirstPartByMimeType(String mimeType) throws MessagingException;
 
     /**
      * Called just prior to transmission, once the type of transport is known to
@@ -41,5 +53,5 @@ public interface Part {
      *
      */
     //TODO perhaps it would be clearer to use a flag "force7bit" in writeTo
-    public abstract void setUsing7bitTransport() throws MessagingException;
+    void setUsing7bitTransport() throws MessagingException;
 }

@@ -14,11 +14,11 @@ import android.test.AndroidTestCase;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.BinaryTempFileMessageBody;
+import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 
 public class MessageTest extends AndroidTestCase {
@@ -356,7 +356,7 @@ public class MessageTest extends AndroidTestCase {
                 + "End of test.\r\n");
         textBody.setCharset("utf-8");
         MimeBodyPart bodyPart = new MimeBodyPart(textBody, "text/plain");
-        MimeUtility.setCharset("utf-8", bodyPart);
+        CharsetSupport.setCharset("utf-8", bodyPart);
         bodyPart.setEncoding(encoding);
         return bodyPart;
     }

@@ -1,4 +1,6 @@
-package com.fsck.k9.mail.internet;
+package com.fsck.k9.helper;
+
+import com.fsck.k9.helper.HtmlConverter;
 
 import junit.framework.TestCase;
 

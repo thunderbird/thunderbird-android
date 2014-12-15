@@ -33,7 +33,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.activity.Search;
 import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.internet.HtmlConverter;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -51,10 +51,10 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
-import com.fsck.k9.mail.internet.MimeUtility.ViewableContainer;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.AttachmentProvider;
+
 
 public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
@@ -1299,14 +1299,14 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                 // draft messages because this will cause the values stored in
                                 // the identity header to be wrong.
                                 ViewableContainer container =
-                                        MimeUtility.extractPartsFromDraft(message);
+                                        LocalMessageExtractor.extractPartsFromDraft(message);
 
                                 text = container.text;
                                 html = container.html;
                                 attachments = container.attachments;
                             } else {
                                 ViewableContainer container =
-                                        MimeUtility.extractTextAndAttachments(LocalFolder.this.localStore.mApplication, message);
+                                        LocalMessageExtractor.extractTextAndAttachments(LocalFolder.this.localStore.mApplication, message);
 
                                 attachments = container.attachments;
                                 text = container.text;
@@ -1412,7 +1412,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         message.buildMimeRepresentation();
 
                         ViewableContainer container =
-                                MimeUtility.extractTextAndAttachments(LocalFolder.this.localStore.mApplication, message);
+                                LocalMessageExtractor.extractTextAndAttachments(LocalFolder.this.localStore.mApplication, message);
 
                         List<Part> attachments = container.attachments;
                         String text = container.text;
