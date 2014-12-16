@@ -170,7 +170,7 @@ class LocalMessageExtractor {
             Part part = ((Textual)viewable).getPart();
             addHtmlDivider(html, part, prependDivider);
 
-            String t = part.getText();
+            String t = MessageExtractor.getTextFromPart(part);
             if (t == null) {
                 t = "";
             } else if (viewable instanceof Text) {
@@ -202,7 +202,7 @@ class LocalMessageExtractor {
             Part part = ((Textual)viewable).getPart();
             addTextDivider(text, part, prependDivider);
 
-            String t = part.getText();
+            String t = MessageExtractor.getTextFromPart(part);
             if (t == null) {
                 t = "";
             } else if (viewable instanceof Html) {
@@ -446,7 +446,7 @@ class LocalMessageExtractor {
 
         Body firstBody = part.getBody();
         if (part.isMimeType("text/plain")) {
-            String bodyText = part.getText();
+            String bodyText = MessageExtractor.getTextFromPart(part);
             if (bodyText != null) {
                 text = bodyText;
                 html = HtmlConverter.textToHtml(text);
@@ -455,7 +455,7 @@ class LocalMessageExtractor {
                 firstBody instanceof MimeMultipart) {
             MimeMultipart multipart = (MimeMultipart) firstBody;
             for (BodyPart bodyPart : multipart.getBodyParts()) {
-                String bodyText = bodyPart.getText();
+                String bodyText = MessageExtractor.getTextFromPart(bodyPart);
                 if (bodyText != null) {
                     if (text.isEmpty() && bodyPart.isMimeType("text/plain")) {
                         text = bodyText;

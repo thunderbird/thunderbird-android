@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.internet.MimeUtility;
+
 
 public class CryptoHelper {
 
@@ -31,12 +34,12 @@ public class CryptoHelper {
     public boolean isEncrypted(Message message) {
         String data = null;
         try {
-            Part part = message.findFirstPartByMimeType("text/plain");
+            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
             if (part == null) {
-                part = message.findFirstPartByMimeType("text/html");
+                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             }
             if (part != null) {
-                data = part.getText();
+                data = MessageExtractor.getTextFromPart(part);
             }
         } catch (MessagingException e) {
             // guess not...
@@ -54,12 +57,12 @@ public class CryptoHelper {
     public boolean isSigned(Message message) {
         String data = null;
         try {
-            Part part = message.findFirstPartByMimeType("text/plain");
+            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
             if (part == null) {
-                part = message.findFirstPartByMimeType("text/html");
+                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             }
             if (part != null) {
-                data = part.getText();
+                data = MessageExtractor.getTextFromPart(part);
             }
         } catch (MessagingException e) {
             // guess not...

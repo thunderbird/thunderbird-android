@@ -20,7 +20,9 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 
@@ -119,16 +121,16 @@ public class LocalMessage extends MimeMessage {
      */
     public String getTextForDisplay() throws MessagingException {
         String text = null;    // First try and fetch an HTML part.
-        Part part = findFirstPartByMimeType("text/html");
+        Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
         if (part == null) {
             // If that fails, try and get a text part.
-            part = findFirstPartByMimeType("text/plain");
+            part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
             if (part != null && part.getBody() instanceof LocalTextBody) {
                 text = ((LocalTextBody) part.getBody()).getBodyForDisplay();
             }
         } else {
             // We successfully found an HTML part; do the necessary character set decoding.
-            text = part.getText();
+            text = MessageExtractor.getTextFromPart(this);
         }
         return text;
     }

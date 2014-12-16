@@ -30,16 +30,6 @@ public interface Part {
     void writeTo(OutputStream out) throws IOException, MessagingException;
 
     /**
-     * Reads the Part's body and returns a String based on any charset conversion that needed
-     * to be done.  Note, this <b>does not</b> return a text representation of HTML.
-     * @return a String containing the converted text in the body, or null if there was no text
-     * or an error during conversion.
-     */
-    String getText();
-
-    Part findFirstPartByMimeType(String mimeType) throws MessagingException;
-
-    /**
      * Called just prior to transmission, once the type of transport is known to
      * be 7bit.
      * <p>

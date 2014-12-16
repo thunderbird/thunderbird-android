@@ -78,6 +78,7 @@ import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
@@ -1744,7 +1745,7 @@ public class MessagingController implements Runnable {
                  * right now, attachments will be left for later.
                  */
 
-                Set<Part> viewables = message.collectTextParts();
+                Set<Part> viewables = MessageExtractor.collectTextParts(message);
 
                 /*
                  * Now download the parts we're interested in storing.
@@ -3197,7 +3198,7 @@ public class MessagingController implements Runnable {
                 try {
                     LocalStore localStore = account.getLocalStore();
 
-                    List<Part> attachments = message.collectAttachments();
+                    List<Part> attachments = MessageExtractor.collectAttachments(message);
                     for (Part attachment : attachments) {
                         attachment.setBody(null);
                     }
@@ -4244,12 +4245,12 @@ public class MessagingController implements Runnable {
                 try {
                     Intent msg = new Intent(Intent.ACTION_SEND);
                     String quotedText = null;
-                    Part part = message.findFirstPartByMimeType("text/plain");
+                    Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
                     if (part == null) {
-                        part = message.findFirstPartByMimeType("text/html");
+                        part = MimeUtility.findFirstPartByMimeType(message, "text/html");
                     }
                     if (part != null) {
-                        quotedText = part.getText();
+                        quotedText = MessageExtractor.getTextFromPart(part);
                     }
                     if (quotedText != null) {
                         msg.putExtra(Intent.EXTRA_TEXT, quotedText);

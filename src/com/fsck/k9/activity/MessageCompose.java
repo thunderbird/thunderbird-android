@@ -101,6 +101,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -2955,10 +2956,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
 
         if (messageFormat == MessageFormat.HTML) {
-            Part part = message.findFirstPartByMimeType("text/html");
+            Part part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             if (part != null) { // Shouldn't happen if we were the one who saved it.
                 mQuotedTextFormat = SimpleMessageFormat.HTML;
-                String text = part.getText();
+                String text = MessageExtractor.getTextFromPart(part);
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
                 }
@@ -3021,9 +3022,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private void processSourceMessageText(Message message, Integer bodyOffset, Integer bodyLength,
             boolean viewMessageContent) throws MessagingException {
-        Part textPart = message.findFirstPartByMimeType("text/plain");
+        Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
         if (textPart != null) {
-            String text = textPart.getText();
+            String text = MessageExtractor.getTextFromPart(textPart);
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
             }
@@ -3091,7 +3092,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // Figure out which message format to use for the quoted text by looking if the source
             // message contains a text/html part. If it does, we use that.
             mQuotedTextFormat =
-                    (mSourceMessage.findFirstPartByMimeType("text/html") == null) ?
+                    (MimeUtility.findFirstPartByMimeType(mSourceMessage, "text/html") == null) ?
                             SimpleMessageFormat.TEXT : SimpleMessageFormat.HTML;
         } else {
             mQuotedTextFormat = SimpleMessageFormat.HTML;
@@ -3221,37 +3222,39 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         Part part;
         if (format == SimpleMessageFormat.HTML) {
             // HTML takes precedence, then text.
-            part = message.findFirstPartByMimeType("text/html");
+            part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             if (part != null) {
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, HTML found.");
                 }
-                return part.getText();
+                return MessageExtractor.getTextFromPart(part);
             }
 
-            part = message.findFirstPartByMimeType("text/plain");
+            part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
             if (part != null) {
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, text found.");
                 }
-                return HtmlConverter.textToHtml(part.getText());
+                String text = MessageExtractor.getTextFromPart(part);
+                return HtmlConverter.textToHtml(text);
             }
         } else if (format == SimpleMessageFormat.TEXT) {
             // Text takes precedence, then html.
-            part = message.findFirstPartByMimeType("text/plain");
+            part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
             if (part != null) {
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, text found.");
                 }
-                return part.getText();
+                return MessageExtractor.getTextFromPart(part);
             }
 
-            part = message.findFirstPartByMimeType("text/html");
+            part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             if (part != null) {
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, HTML found.");
                 }
-                return HtmlConverter.htmlToText(part.getText());
+                String text = MessageExtractor.getTextFromPart(part);
+                return HtmlConverter.htmlToText(text);
             }
         }
 

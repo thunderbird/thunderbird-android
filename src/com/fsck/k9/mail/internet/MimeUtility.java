@@ -16,7 +16,10 @@ import org.apache.james.mime4j.util.MimeUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 
@@ -952,7 +955,7 @@ public class MimeUtility {
         if (part.getBody() instanceof Multipart) {
             Multipart multipart = (Multipart)part.getBody();
             for (BodyPart bodyPart : multipart.getBodyParts()) {
-                Part ret = bodyPart.findFirstPartByMimeType(mimeType);
+                Part ret = MimeUtility.findFirstPartByMimeType(bodyPart, mimeType);
                 if (ret != null) {
                     return ret;
                 }
