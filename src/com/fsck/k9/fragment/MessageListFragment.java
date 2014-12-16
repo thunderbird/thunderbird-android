@@ -2483,11 +2483,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * @see #startActivityForResult(Intent, int)
      */
     private void displayFolderChoice(int requestCode, Folder folder,
-            String accountId, String lastSelectedFolderName,
+            String accountUuid, String lastSelectedFolderName,
             List<LocalMessage> messages) {
 
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, accountId);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, accountUuid);
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, lastSelectedFolderName);
 
         if (folder == null) {
