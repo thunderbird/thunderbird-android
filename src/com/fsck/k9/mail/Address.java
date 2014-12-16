@@ -24,24 +24,7 @@ import com.fsck.k9.K9;
 
 
 public class Address {
-    public static interface Lookup {
-        String getNameForAddress(String address);
-    }
-
     private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
-
-    /**
-     * If the number of addresses exceeds this value the addresses aren't
-     * resolved to the names of Android contacts.
-     *
-     * <p>
-     * TODO: This number was chosen arbitrarily and should be determined by
-     * performance tests.
-     * </p>
-     *
-     * @see Address#toFriendly(Address[], com.fsck.k9.mail.Address.Lookup)
-     */
-    private static final int TOO_MANY_ADDRESSES = 50;
 
     /**
      * Immutable empty {@link Address} array
@@ -238,73 +221,6 @@ public class Address {
         return sb.toString();
     }
 
-    /**
-     * Returns either the personal portion of the Address or the address portion if the personal
-     * is not available.
-     * @return
-     */
-    public CharSequence toFriendly() {
-        return toFriendly((Lookup)null);
-    }
-
-    /**
-     * Returns the name of the contact this email address belongs to if
-     * the {@link Contacts contacts} parameter is not {@code null} and a
-     * contact is found. Otherwise the personal portion of the {@link Address}
-     * is returned. If that isn't available either, the email address is
-     * returned.
-     *
-     * @param contacts
-     *         A {@link Contacts} instance or {@code null}.
-     * @return
-     *         A "friendly" name for this {@link Address}.
-     */
-    public CharSequence toFriendly(final Lookup contacts) {
-        if (!K9.showCorrespondentNames()) {
-            return mAddress;
-
-        } else if (contacts != null) {
-            final String name = contacts.getNameForAddress(mAddress);
-
-            // TODO: The results should probably be cached for performance reasons.
-
-            if (name != null) {
-                if (K9.changeContactNameColor()) {
-                    final SpannableString coloredName = new SpannableString(name);
-                    coloredName.setSpan(new ForegroundColorSpan(K9.getContactNameColor()),
-                                        0,
-                                        coloredName.length(),
-                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                       );
-                    return coloredName;
-                } else {
-                    return name;
-                }
-            }
-        }
-
-        return (!TextUtils.isEmpty(mPersonal)) ? mPersonal : mAddress;
-    }
-
-    public static CharSequence toFriendly(Address[] addresses, Lookup contacts) {
-        if (addresses == null) {
-            return null;
-        }
-
-        if (addresses.length >= TOO_MANY_ADDRESSES) {
-            // Don't look up contacts if the number of addresses is very high.
-            contacts = null;
-        }
-
-        SpannableStringBuilder sb = new SpannableStringBuilder();
-        for (int i = 0; i < addresses.length; i++) {
-            sb.append(addresses[i].toFriendly(contacts));
-            if (i < addresses.length - 1) {
-                sb.append(',');
-            }
-        }
-        return sb;
-    }
 
     /**
      * Unpacks an address list previously packed with packAddressList()

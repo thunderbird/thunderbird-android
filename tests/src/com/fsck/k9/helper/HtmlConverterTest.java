@@ -1,7 +1,5 @@
 package com.fsck.k9.helper;
 
-import com.fsck.k9.helper.HtmlConverter;
-
 import junit.framework.TestCase;
 
 import java.io.BufferedWriter;

@@ -61,6 +61,7 @@ import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.AccountSetupOutgoing;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
@@ -4695,7 +4696,7 @@ public class MessagingController implements Runnable {
             if (fromAddrs != null) {
                 isSelf = account.isAnIdentity(fromAddrs);
                 if (!isSelf && fromAddrs.length > 0) {
-                    return fromAddrs[0].toFriendly(contacts).toString();
+                    return MessageHelper.toFriendly(fromAddrs[0], contacts).toString();
                 }
             }
 
@@ -4705,7 +4706,7 @@ public class MessagingController implements Runnable {
 
                 if (rcpts != null && rcpts.length > 0) {
                     return context.getString(R.string.message_to_fmt,
-                            rcpts[0].toFriendly(contacts).toString());
+                            MessageHelper.toFriendly(rcpts[0], contacts).toString());
                 }
 
                 return context.getString(R.string.general_no_sender);
