@@ -33,7 +33,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.K9;
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and
@@ -137,12 +136,12 @@ public class MimeMessage extends Message {
      * @param sentDate
      * @throws com.fsck.k9.mail.MessagingException
      */
-    public void addSentDate(Date sentDate) throws MessagingException {
+    public void addSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException {
         if (mDateFormat == null) {
             mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         }
 
-        if (K9.hideTimeZone()) {
+        if (hideTimeZone) {
             mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         }
 
@@ -151,9 +150,9 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setSentDate(Date sentDate) throws MessagingException {
+    public void setSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException {
         removeHeader("Date");
-        addSentDate(sentDate);
+        addSentDate(sentDate, hideTimeZone);
     }
 
     public void setInternalSentDate(Date sentDate) {

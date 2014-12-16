@@ -87,7 +87,7 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract Date getSentDate();
 
-    public abstract void setSentDate(Date sentDate) throws MessagingException;
+    public abstract void setSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException;
 
     public abstract Address[] getRecipients(RecipientType type) throws MessagingException;
 

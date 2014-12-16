@@ -120,7 +120,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
 
         // Create message/rfc822 body
         MimeMessage innerMessage = new MimeMessage();
-        innerMessage.addSentDate(new Date(112, 02, 17));
+        innerMessage.addSentDate(new Date(112, 02, 17), false);
         innerMessage.setRecipients(RecipientType.TO, new Address[] { new Address("to@example.com") });
         innerMessage.setSubject("Subject");
         innerMessage.setFrom(new Address("from@example.com"));

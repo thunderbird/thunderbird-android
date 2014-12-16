@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -22,6 +25,11 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
 
 public class MessageTest extends AndroidTestCase {
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"));
+    }
 
     private static final String EIGHT_BIT_RESULT =
               "From: from@example.com\r\n"
@@ -263,6 +271,28 @@ public class MessageTest extends AndroidTestCase {
         super();
     }
 
+    public void testSetSendDateSetsSentDate() throws Exception {
+        Message message = sampleMessage();
+        final int milliseconds = 0;
+        Date date = new Date(milliseconds);
+        message.setSentDate(date, false);
+        Date sentDate = message.getSentDate();
+        assertNotNull(sentDate);
+        assertEquals(milliseconds, sentDate.getTime());
+    }
+
+    public void testSetSendDateFormatsHeaderCorrectlyWithCurrentTimeZone() throws Exception {
+        Message message = sampleMessage();
+        message.setSentDate(new Date(0), false);
+        assertEquals("Thu, 01 Jan 1970 09:00:00 +0900", message.getHeader("Date")[0]);
+    }
+
+    public void testSetSendDateFormatsHeaderCorrectlyWithoutTimeZone() throws Exception {
+        Message message = sampleMessage();
+        message.setSentDate(new Date(0), true);
+        assertEquals("Thu, 01 Jan 1970 00:00:00 +0000", message.getHeader("Date")[0]);
+    }
+
     public void testMessage() throws MessagingException, IOException {
         MimeMessage message;
         ByteArrayOutputStream out;
@@ -374,7 +404,5 @@ public class MessageTest extends AndroidTestCase {
             sb.append(Integer.toString(mMimeBoundary++));
             return sb.toString();
         }
-
     }
-
 }

@@ -157,7 +157,7 @@ public class LocalMessage extends MimeMessage {
         }
 
         super.setReplyTo(mReplyTo);
-        super.setSentDate(this.getSentDate());
+        super.setSentDate(this.getSentDate(), K9.hideTimeZone());
         super.setRecipients(RecipientType.TO, mTo);
         super.setRecipients(RecipientType.CC, mCc);
         super.setRecipients(RecipientType.BCC, mBcc);

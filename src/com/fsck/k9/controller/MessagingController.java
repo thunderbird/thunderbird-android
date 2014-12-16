@@ -2723,7 +2723,7 @@ public class MessagingController implements Runnable {
             long nowTime = System.currentTimeMillis();
             Date nowDate = new Date(nowTime);
             message.setInternalDate(nowDate);
-            message.addSentDate(nowDate);
+            message.addSentDate(nowDate, K9.hideTimeZone());
             message.setFrom(new Address(account.getEmail(), "K9mail internal"));
 
             localFolder.appendMessages(Collections.singletonList(message));
