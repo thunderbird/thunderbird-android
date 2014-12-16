@@ -279,8 +279,10 @@ public class HtmlConverter {
                    HTML_BLOCKQUOTE_END + "$1"
                );
 
-        // Replace lines of -,= or _ with horizontal rules
-        text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
+        // Replace lines of -,=,_ or scissors (%<,>%,8<,>8) with horizontal rules
+        text = text.replaceAll("(^|" + HTML_NEWLINE +
+                               ")\\s*(([-=_]|%&lt;|<gt>%|8&lt;|<gt>8)+\\s*)+(" +
+                               HTML_NEWLINE + "|$)", "<hr />");
 
         StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
 
