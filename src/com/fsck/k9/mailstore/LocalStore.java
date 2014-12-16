@@ -213,13 +213,7 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    /**
-     * Release reference to a local mail store instance.
-     *
-     * @param account
-     *         {@link Account} instance that is used to get the local mail store instance.
-     */
-    private static void removeInstance(StoreConfig account) {
+    private static void removeInstance(Account account) {
         String accountUuid = account.getUuid();
         sLocalStores.remove(accountUuid);
     }
