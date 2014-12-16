@@ -68,6 +68,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
@@ -93,6 +94,10 @@ import com.beetstra.jutf7.CharsetProvider;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import org.apache.commons.io.IOUtils;
+
+import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import static com.fsck.k9.mail.K9MailLib.PUSH_WAKE_LOCK_TIMEOUT;
 
 /**
  * <pre>
@@ -539,7 +544,7 @@ public class ImapStore extends RemoteStore {
                 boolean includeFolder = true;
 
                 if (response.size() > 4 || !(response.getObject(3) instanceof String)) {
-                    Log.w(K9.LOG_TAG, "Skipping incorrectly parsed " + commandResponse +
+                    Log.w(LOG_TAG, "Skipping incorrectly parsed " + commandResponse +
                             " reply: " + response);
                     continue;
                 }
@@ -548,7 +553,7 @@ public class ImapStore extends RemoteStore {
                 try {
                     decodedFolderName = decodeFolderName(response.getString(3));
                 } catch (CharacterCodingException e) {
-                    Log.w(K9.LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                    Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
                           "as defined by RFC 3501: " + response.getString(3), e);
 
                     //TODO: Use the raw name returned by the server for all commands that require
@@ -619,14 +624,14 @@ public class ImapStore extends RemoteStore {
         String commandOptions = "";
 
         if (connection.capabilities.contains("XLIST")) {
-            if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration: Using XLIST.");
+            if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration: Using XLIST.");
             commandResponse = "XLIST";
         } else if(connection.capabilities.contains("SPECIAL-USE")) {
-            if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
+            if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
             commandResponse = "LIST";
             commandOptions = " (SPECIAL-USE)";
         } else {
-            if (K9.DEBUG) Log.d(K9.LOG_TAG, "No detected folder auto-configuration methods.");
+            if (K9MailLib.isDebug()) Log.d(LOG_TAG, "No detected folder auto-configuration methods.");
             return;
         }
 
@@ -641,7 +646,7 @@ public class ImapStore extends RemoteStore {
                 try {
                     decodedFolderName = decodeFolderName(response.getString(3));
                 } catch (CharacterCodingException e) {
-                    Log.w(K9.LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                    Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
                         "as defined by RFC 3501: " + response.getString(3), e);
                     // We currently just skip folders with malformed names.
                     continue;
@@ -657,17 +662,17 @@ public class ImapStore extends RemoteStore {
                     String attribute = attributes.getString(i);
                     if (attribute.equals("\\Drafts")) {
                         mStoreConfig.setDraftsFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected draft folder: " + decodedFolderName);
+                        if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration detected draft folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Sent")) {
                         mStoreConfig.setSentFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected sent folder: " + decodedFolderName);
+                        if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration detected sent folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Spam") || attribute.equals("\\Junk")) {
                         //rfc6154 just mentions \Junk
                         mStoreConfig.setSpamFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected spam folder: " + decodedFolderName);
+                        if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration detected spam folder: " + decodedFolderName);
                     } else if (attribute.equals("\\Trash")) {
                         mStoreConfig.setTrashFolderName(decodedFolderName);
-                        if (K9.DEBUG) Log.d(K9.LOG_TAG, "Folder auto-configuration detected trash folder: " + decodedFolderName);
+                        if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration detected trash folder: " + decodedFolderName);
                     }
                 }
             }
@@ -909,7 +914,7 @@ public class ImapStore extends RemoteStore {
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             } catch (MessagingException me) {
-                Log.e(K9.LOG_TAG, "Unable to open connection for " + getLogId(), me);
+                Log.e(LOG_TAG, "Unable to open connection for " + getLogId(), me);
                 throw me;
             }
         }
@@ -963,7 +968,7 @@ public class ImapStore extends RemoteStore {
             synchronized (this) {
                 // If we are mid-search and we get a close request, we gotta trash the connection.
                 if (mInSearch && mConnection != null) {
-                    Log.i(K9.LOG_TAG, "IMAP search was aborted, shutting down connection.");
+                    Log.i(LOG_TAG, "IMAP search was aborted, shutting down connection.");
                     mConnection.close();
                 } else {
                     releaseConnection(mConnection);
@@ -1112,8 +1117,8 @@ public class ImapStore extends RemoteStore {
                     /*
                      * If the remote folder doesn't exist we try to create it.
                      */
-                    if (K9.DEBUG) {
-                        Log.i(K9.LOG_TAG, "ImapFolder.copyMessages: attempting to create remote " +
+                    if (K9MailLib.isDebug()) {
+                        Log.i(LOG_TAG, "ImapFolder.copyMessages: attempting to create remote " +
                                 "folder '" + remoteDestName + "' for " + getLogId());
                     }
 
@@ -1164,15 +1169,15 @@ public class ImapStore extends RemoteStore {
                                         uidMap.put(srcUid, destUid);
                                     }
                                 } else {
-                                    if (K9.DEBUG) {
-                                        Log.v(K9.LOG_TAG, "Parse error: size of source UIDs " +
+                                    if (K9MailLib.isDebug()) {
+                                        Log.v(LOG_TAG, "Parse error: size of source UIDs " +
                                                 "list is not the same as size of destination " +
                                                 "UIDs list.");
                                     }
                                 }
                             } else {
-                                if (K9.DEBUG) {
-                                    Log.v(K9.LOG_TAG, "Parsing of the sequence set failed.");
+                                if (K9MailLib.isDebug()) {
+                                    Log.v(LOG_TAG, "Parsing of the sequence set failed.");
                                 }
                             }
                         }
@@ -1209,14 +1214,14 @@ public class ImapStore extends RemoteStore {
                     /*
                      * If the remote trash folder doesn't exist we try to create it.
                      */
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "IMAPMessage.delete: attempting to create remote '" + trashFolderName + "' folder for " + getLogId());
+                    if (K9MailLib.isDebug())
+                        Log.i(LOG_TAG, "IMAPMessage.delete: attempting to create remote '" + trashFolderName + "' folder for " + getLogId());
                     remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
                 }
 
                 if (exists(remoteTrashName)) {
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "IMAPMessage.delete: copying remote " + messages.size() + " messages to '" + trashFolderName + "' for " + getLogId());
+                    if (K9MailLib.isDebug())
+                        Log.d(LOG_TAG, "IMAPMessage.delete: copying remote " + messages.size() + " messages to '" + trashFolderName + "' for " + getLogId());
 
                     moveMessages(messages, remoteTrashFolder);
                 } else {
@@ -1276,7 +1281,7 @@ public class ImapStore extends RemoteStore {
                     return Long.parseLong(messages.get(0).getUid());
                 }
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Unable to find highest UID in folder " + getName(), e);
+                Log.e(LOG_TAG, "Unable to find highest UID in folder " + getName(), e);
             }
             return -1L;
 
@@ -1456,7 +1461,7 @@ public class ImapStore extends RemoteStore {
                 fetchFields.add("INTERNALDATE");
                 fetchFields.add("RFC822.SIZE");
                 fetchFields.add("BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc " +
-                        "reply-to message-id references in-reply-to " + K9.IDENTITY_HEADER + ")]");
+                        "reply-to message-id references in-reply-to " + K9MailLib.IDENTITY_HEADER + ")]");
             }
             if (fp.contains(FetchProfile.Item.STRUCTURE)) {
                 fetchFields.add("BODYSTRUCTURE");
@@ -1501,18 +1506,18 @@ public class ImapStore extends RemoteStore {
                             if (uid != null) {
                                 try {
                                     msgSeqUidMap.put(msgSeq, uid);
-                                    if (K9.DEBUG) {
-                                        Log.v(K9.LOG_TAG, "Stored uid '" + uid + "' for msgSeq " + msgSeq + " into map " /*+ msgSeqUidMap.toString() */);
+                                    if (K9MailLib.isDebug()) {
+                                        Log.v(LOG_TAG, "Stored uid '" + uid + "' for msgSeq " + msgSeq + " into map " /*+ msgSeqUidMap.toString() */);
                                     }
                                 } catch (Exception e) {
-                                    Log.e(K9.LOG_TAG, "Unable to store uid '" + uid + "' for msgSeq " + msgSeq);
+                                    Log.e(LOG_TAG, "Unable to store uid '" + uid + "' for msgSeq " + msgSeq);
                                 }
                             }
 
                             Message message = messageMap.get(uid);
                             if (message == null) {
-                                if (K9.DEBUG)
-                                    Log.d(K9.LOG_TAG, "Do not have message in messageMap for UID " + uid + " for " + getLogId());
+                                if (K9MailLib.isDebug())
+                                    Log.d(LOG_TAG, "Do not have message in messageMap for UID " + uid + " for " + getLogId());
 
                                 handleUntaggedResponse(response);
                                 continue;
@@ -1591,8 +1596,8 @@ public class ImapStore extends RemoteStore {
                         String uid = fetchList.getKeyedString("UID");
 
                         if (!message.getUid().equals(uid)) {
-                            if (K9.DEBUG)
-                                Log.d(K9.LOG_TAG, "Did not ask for UID " + uid + " for " + getLogId());
+                            if (K9MailLib.isDebug())
+                                Log.d(LOG_TAG, "Did not ask for UID " + uid + " for " + getLogId());
 
                             handleUntaggedResponse(response);
                             continue;
@@ -1679,8 +1684,8 @@ public class ImapStore extends RemoteStore {
                     try {
                         parseBodyStructure(bs, message, "TEXT");
                     } catch (MessagingException e) {
-                        if (K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "Error handling message for " + getLogId(), e);
+                        if (K9MailLib.isDebug())
+                            Log.d(LOG_TAG, "Error handling message for " + getLogId(), e);
                         message.setBody(null);
                     }
                 }
@@ -1728,8 +1733,8 @@ public class ImapStore extends RemoteStore {
                             String key = (String)keyObj;
                             if ("UIDNEXT".equalsIgnoreCase(key)) {
                                 uidNext = bracketed.getLong(1);
-                                if (K9.DEBUG)
-                                    Log.d(K9.LOG_TAG, "Got UidNext = " + uidNext + " for " + getLogId());
+                                if (K9MailLib.isDebug())
+                                    Log.d(LOG_TAG, "Got UidNext = " + uidNext + " for " + getLogId());
                             }
                         }
                     }
@@ -1747,15 +1752,15 @@ public class ImapStore extends RemoteStore {
             if (response.mTag == null && response.size() > 1) {
                 if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXISTS")) {
                     mMessageCount = response.getNumber(0);
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount + " for " + getLogId());
+                    if (K9MailLib.isDebug())
+                        Log.d(LOG_TAG, "Got untagged EXISTS with value " + mMessageCount + " for " + getLogId());
                 }
                 handlePossibleUidNext(response);
 
                 if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXPUNGE") && mMessageCount > 0) {
                     mMessageCount--;
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Got untagged EXPUNGE with mMessageCount " + mMessageCount + " for " + getLogId());
+                    if (K9MailLib.isDebug())
+                        Log.d(LOG_TAG, "Got untagged EXPUNGE with mMessageCount " + mMessageCount + " for " + getLogId());
                 }
 //            if (response.size() > 1) {
 //                Object bracketedObj = response.get(1);
@@ -1777,7 +1782,7 @@ public class ImapStore extends RemoteStore {
 //                                    sb.append(' ');
 //                                }
 //
-//                                Log.w(K9.LOG_TAG, "ALERT: " + sb.toString() + " for " + getLogId());
+//                                Log.w(LOG_TAG, "ALERT: " + sb.toString() + " for " + getLogId());
 //                            }
 //                        }
 //                    }
@@ -1786,7 +1791,7 @@ public class ImapStore extends RemoteStore {
 //                }
 //            }
             }
-            //Log.i(K9.LOG_TAG, "mMessageCount = " + mMessageCount + " for " + getLogId());
+            //Log.i(LOG_TAG, "mMessageCount = " + mMessageCount + " for " + getLogId());
         }
 
         private void parseBodyStructure(ImapList bs, Part part, String id)
@@ -2015,8 +2020,8 @@ public class ImapStore extends RemoteStore {
                      * not implement the APPENDUID response code.
                      */
                     String newUid = getUidFromMessageId(message);
-                    if (K9.DEBUG) {
-                        Log.d(K9.LOG_TAG, "Got UID " + newUid + " for message for " + getLogId());
+                    if (K9MailLib.isDebug()) {
+                        Log.d(LOG_TAG, "Got UID " + newUid + " for message for " + getLogId());
                     }
 
                     if (!TextUtils.isEmpty(newUid)) {
@@ -2046,13 +2051,13 @@ public class ImapStore extends RemoteStore {
                 String[] messageIdHeader = message.getHeader("Message-ID");
 
                 if (messageIdHeader == null || messageIdHeader.length == 0) {
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Did not get a message-id in order to search for UID  for " + getLogId());
+                    if (K9MailLib.isDebug())
+                        Log.d(LOG_TAG, "Did not get a message-id in order to search for UID  for " + getLogId());
                     return null;
                 }
                 String messageId = messageIdHeader[0];
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Looking for UID for message with message-id " + messageId + " for " + getLogId());
+                if (K9MailLib.isDebug())
+                    Log.d(LOG_TAG, "Looking for UID for message with message-id " + messageId + " for " + getLogId());
 
                 List<ImapResponse> responses =
                     executeSimpleCommand(
@@ -2131,7 +2136,7 @@ public class ImapStore extends RemoteStore {
                     return null;
                 }
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Exception while updated push state for " + getLogId(), e);
+                Log.e(LOG_TAG, "Exception while updated push state for " + getLogId(), e);
                 return null;
             }
         }
@@ -2163,7 +2168,7 @@ public class ImapStore extends RemoteStore {
         }
 
         private MessagingException ioExceptionHandler(ImapConnection connection, IOException ioe) {
-            Log.e(K9.LOG_TAG, "IOException for " + getLogId(), ioe);
+            Log.e(LOG_TAG, "IOException for " + getLogId(), ioe);
             if (connection != null) {
                 connection.close();
             }
@@ -2346,14 +2351,14 @@ public class ImapStore extends RemoteStore {
 
                 if (capabilityList != null && !capabilityList.isEmpty() &&
                         ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), CAPABILITY_CAPABILITY)) {
-                    if (K9.DEBUG) {
-                        Log.d(K9.LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
+                    if (K9MailLib.isDebug()) {
+                        Log.d(LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
                     }
                     for (Object capability : capabilityList) {
                         if (capability instanceof String) {
-//                            if (K9.DEBUG)
+//                            if (K9MailLib.isDebug())
 //                            {
-//                                Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
+//                                Log.v(LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
 //                            }
                             capabilities.add(((String)capability).toUpperCase(Locale.US));
                         }
@@ -2374,14 +2379,14 @@ public class ImapStore extends RemoteStore {
             try {
                 Security.setProperty("networkaddress.cache.ttl", "0");
             } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Could not set DNS ttl to 0 for " + getLogId(), e);
+                Log.w(LOG_TAG, "Could not set DNS ttl to 0 for " + getLogId(), e);
             }
 
 
             try {
                 Security.setProperty("networkaddress.cache.negative.ttl", "0");
             } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Could not set DNS negative ttl to 0 for " + getLogId(), e);
+                Log.w(LOG_TAG, "Could not set DNS negative ttl to 0 for " + getLogId(), e);
             }
 
             try {
@@ -2391,8 +2396,8 @@ public class ImapStore extends RemoteStore {
                 InetAddress[] addresses = InetAddress.getAllByName(mSettings.getHost());
                 for (int i = 0; i < addresses.length; i++) {
                     try {
-                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP) {
-                            Log.d(K9.LOG_TAG, "Connecting to " + mSettings.getHost() + " as " +
+                        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+                            Log.d(LOG_TAG, "Connecting to " + mSettings.getHost() + " as " +
                                     addresses[i]);
                         }
 
@@ -2428,16 +2433,16 @@ public class ImapStore extends RemoteStore {
 
                 capabilities.clear();
                 ImapResponse nullResponse = mParser.readResponse();
-                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
-                    Log.v(K9.LOG_TAG, getLogId() + "<<<" + nullResponse);
+                if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP)
+                    Log.v(LOG_TAG, getLogId() + "<<<" + nullResponse);
 
                 List<ImapResponse> nullResponses = new LinkedList<ImapResponse>();
                 nullResponses.add(nullResponse);
                 receiveCapabilities(nullResponses);
 
                 if (!hasCapability(CAPABILITY_CAPABILITY)) {
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "Did not get capabilities in banner, requesting CAPABILITY for " + getLogId());
+                    if (K9MailLib.isDebug())
+                        Log.i(LOG_TAG, "Did not get capabilities in banner, requesting CAPABILITY for " + getLogId());
                     List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
                     if (responses.size() != 2) {
                         throw new MessagingException("Invalid CAPABILITY response received");
@@ -2459,8 +2464,8 @@ public class ImapStore extends RemoteStore {
                         mParser = new ImapResponseParser(mIn);
                         mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
                         // Per RFC 2595 (3.1):  Once TLS has been started, reissue CAPABILITY command
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "Updating capabilities after STARTTLS for " + getLogId());
+                        if (K9MailLib.isDebug())
+                            Log.i(LOG_TAG, "Updating capabilities after STARTTLS for " + getLogId());
                         capabilities.clear();
                         List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
                         if (responses.size() != 2) {
@@ -2514,8 +2519,8 @@ public class ImapStore extends RemoteStore {
                             "Unhandled authentication method found in the server settings (bug).");
                 }
                 authSuccess = true;
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, CAPABILITY_COMPRESS_DEFLATE + " = " + hasCapability(CAPABILITY_COMPRESS_DEFLATE));
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, CAPABILITY_COMPRESS_DEFLATE + " = " + hasCapability(CAPABILITY_COMPRESS_DEFLATE));
                 }
                 if (hasCapability(CAPABILITY_COMPRESS_DEFLATE)) {
                     ConnectivityManager connectivityManager = (ConnectivityManager)K9.app.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -2524,13 +2529,13 @@ public class ImapStore extends RemoteStore {
                     NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
                     if (netInfo != null) {
                         int type = netInfo.getType();
-                        if (K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "On network type " + type);
+                        if (K9MailLib.isDebug())
+                            Log.d(LOG_TAG, "On network type " + type);
                         useCompression = mSettings.useCompression(type);
 
                     }
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "useCompression " + useCompression);
+                    if (K9MailLib.isDebug())
+                        Log.d(LOG_TAG, "useCompression " + useCompression);
                     if (useCompression) {
                         try {
                             executeSimpleCommand(COMMAND_COMPRESS_DEFLATE);
@@ -2541,53 +2546,53 @@ public class ImapStore extends RemoteStore {
                             ZOutputStream zOutputStream = new ZOutputStream(mSocket.getOutputStream(), JZlib.Z_BEST_SPEED, true);
                             mOut = new BufferedOutputStream(zOutputStream, 1024);
                             zOutputStream.setFlushMode(JZlib.Z_PARTIAL_FLUSH);
-                            if (K9.DEBUG) {
-                                Log.i(K9.LOG_TAG, "Compression enabled for " + getLogId());
+                            if (K9MailLib.isDebug()) {
+                                Log.i(LOG_TAG, "Compression enabled for " + getLogId());
                             }
                         } catch (Exception e) {
-                            Log.e(K9.LOG_TAG, "Unable to negotiate compression", e);
+                            Log.e(LOG_TAG, "Unable to negotiate compression", e);
                         }
                     }
                 }
 
 
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "NAMESPACE = " + hasCapability(CAPABILITY_NAMESPACE)
+                if (K9MailLib.isDebug())
+                    Log.d(LOG_TAG, "NAMESPACE = " + hasCapability(CAPABILITY_NAMESPACE)
                           + ", mPathPrefix = " + mSettings.getPathPrefix());
 
                 if (mSettings.getPathPrefix() == null) {
                     if (hasCapability(CAPABILITY_NAMESPACE)) {
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "mPathPrefix is unset and server has NAMESPACE capability");
+                        if (K9MailLib.isDebug())
+                            Log.i(LOG_TAG, "mPathPrefix is unset and server has NAMESPACE capability");
                         List<ImapResponse> namespaceResponses =
                             executeSimpleCommand(COMMAND_NAMESPACE);
                         for (ImapResponse response : namespaceResponses) {
                             if (ImapResponseParser.equalsIgnoreCase(response.get(0), COMMAND_NAMESPACE)) {
-                                if (K9.DEBUG)
-                                    Log.d(K9.LOG_TAG, "Got NAMESPACE response " + response + " on " + getLogId());
+                                if (K9MailLib.isDebug())
+                                    Log.d(LOG_TAG, "Got NAMESPACE response " + response + " on " + getLogId());
 
                                 Object personalNamespaces = response.get(1);
                                 if (personalNamespaces != null && personalNamespaces instanceof ImapList) {
-                                    if (K9.DEBUG)
-                                        Log.d(K9.LOG_TAG, "Got personal namespaces: " + personalNamespaces);
+                                    if (K9MailLib.isDebug())
+                                        Log.d(LOG_TAG, "Got personal namespaces: " + personalNamespaces);
                                     ImapList bracketed = (ImapList)personalNamespaces;
                                     Object firstNamespace = bracketed.get(0);
                                     if (firstNamespace != null && firstNamespace instanceof ImapList) {
-                                        if (K9.DEBUG)
-                                            Log.d(K9.LOG_TAG, "Got first personal namespaces: " + firstNamespace);
+                                        if (K9MailLib.isDebug())
+                                            Log.d(LOG_TAG, "Got first personal namespaces: " + firstNamespace);
                                         bracketed = (ImapList)firstNamespace;
                                         mSettings.setPathPrefix(bracketed.getString(0));
                                         mSettings.setPathDelimeter(bracketed.getString(1));
                                         mSettings.setCombinedPrefix(null);
-                                        if (K9.DEBUG)
-                                            Log.d(K9.LOG_TAG, "Got path '" + mSettings.getPathPrefix() + "' and separator '" + mSettings.getPathDelimeter() + "'");
+                                        if (K9MailLib.isDebug())
+                                            Log.d(LOG_TAG, "Got path '" + mSettings.getPathPrefix() + "' and separator '" + mSettings.getPathDelimeter() + "'");
                                     }
                                 }
                             }
                         }
                     } else {
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "mPathPrefix is unset but server does not have NAMESPACE capability");
+                        if (K9MailLib.isDebug())
+                            Log.i(LOG_TAG, "mPathPrefix is unset but server does not have NAMESPACE capability");
                         mSettings.setPathPrefix("");
                     }
                 }
@@ -2599,12 +2604,12 @@ public class ImapStore extends RemoteStore {
                             if (ImapResponseParser.equalsIgnoreCase(response.get(0), "LIST")) {
                                 mSettings.setPathDelimeter(response.getString(2));
                                 mSettings.setCombinedPrefix(null);
-                                if (K9.DEBUG)
-                                    Log.d(K9.LOG_TAG, "Got path delimeter '" + mSettings.getPathDelimeter() + "' for " + getLogId());
+                                if (K9MailLib.isDebug())
+                                    Log.d(LOG_TAG, "Got path delimeter '" + mSettings.getPathDelimeter() + "' for " + getLogId());
                             }
                         }
                     } catch (Exception e) {
-                        Log.e(K9.LOG_TAG, "Unable to get path delimeter using LIST", e);
+                        Log.e(LOG_TAG, "Unable to get path delimeter using LIST", e);
                     }
                 }
 
@@ -2621,14 +2626,14 @@ public class ImapStore extends RemoteStore {
                 String ceMess = ce.getMessage();
                 String[] tokens = ceMess.split("-");
                 if (tokens != null && tokens.length > 1 && tokens[1] != null) {
-                    Log.e(K9.LOG_TAG, "Stripping host/port from ConnectionException for " + getLogId(), ce);
+                    Log.e(LOG_TAG, "Stripping host/port from ConnectionException for " + getLogId(), ce);
                     throw new ConnectException(tokens[1].trim());
                 } else {
                     throw ce;
                 }
             } finally {
                 if (!authSuccess) {
-                    Log.e(K9.LOG_TAG, "Failed to login, closing connection for " + getLogId());
+                    Log.e(LOG_TAG, "Failed to login, closing connection for " + getLogId());
                     close();
                 }
             }
@@ -2721,7 +2726,7 @@ public class ImapStore extends RemoteStore {
                         throw new MessagingException(
                                 "Command continuation aborted: " + response);
                     } else {
-                        Log.w(K9.LOG_TAG, "After sending tag " + tag
+                        Log.w(LOG_TAG, "After sending tag " + tag
                                 + ", got tag response from previous command "
                                 + response + " for " + getLogId());
                     }
@@ -2737,11 +2742,11 @@ public class ImapStore extends RemoteStore {
             ImapResponse response;
             do {
                 response = mParser.readResponse();
-                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
-                    Log.v(K9.LOG_TAG, getLogId() + "<<<" + response);
+                if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP)
+                    Log.v(LOG_TAG, getLogId() + "<<<" + response);
 
                 if (response.mTag != null && !response.mTag.equalsIgnoreCase(tag)) {
-                    Log.w(K9.LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + getLogId());
+                    Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + getLogId());
                     Iterator<ImapResponse> iter = responses.iterator();
                     while (iter.hasNext()) {
                         ImapResponse delResponse = iter.next();
@@ -2772,8 +2777,8 @@ public class ImapStore extends RemoteStore {
         }
 
         protected boolean isIdleCapable() {
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "Connection " + getLogId() + " has " + capabilities.size() + " capabilities");
+            if (K9MailLib.isDebug())
+                Log.v(LOG_TAG, "Connection " + getLogId() + " has " + capabilities.size() + " capabilities");
 
             return capabilities.contains(CAPABILITY_IDLE);
         }
@@ -2809,8 +2814,8 @@ public class ImapStore extends RemoteStore {
         public ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException {
             try {
                 ImapResponse response = mParser.readResponse(callback);
-                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
-                    Log.v(K9.LOG_TAG, getLogId() + "<<<" + response);
+                if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP)
+                    Log.v(LOG_TAG, getLogId() + "<<<" + response);
 
                 return response;
             } catch (IOException ioe) {
@@ -2825,8 +2830,8 @@ public class ImapStore extends RemoteStore {
             mOut.write('\n');
             mOut.flush();
 
-            if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
-                Log.v(K9.LOG_TAG, getLogId() + ">>> " + continuation);
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP)
+                Log.v(LOG_TAG, getLogId() + ">>> " + continuation);
 
         }
 
@@ -2839,12 +2844,12 @@ public class ImapStore extends RemoteStore {
                 mOut.write(commandToSend.getBytes());
                 mOut.flush();
 
-                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP) {
-                    if (sensitive && !K9.DEBUG_SENSITIVE) {
-                        Log.v(K9.LOG_TAG, getLogId() + ">>> "
+                if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+                    if (sensitive && !K9MailLib.isDebugSensitive()) {
+                        Log.v(LOG_TAG, getLogId() + ">>> "
                               + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
                     } else {
-                        Log.v(K9.LOG_TAG, getLogId() + ">>> " + commandToSend);
+                        Log.v(LOG_TAG, getLogId() + ">>> " + commandToSend);
                     }
                 }
 
@@ -2874,17 +2879,17 @@ public class ImapStore extends RemoteStore {
         public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
         throws IOException, ImapException, MessagingException {
             String commandToLog = command;
-            if (sensitive && !K9.DEBUG_SENSITIVE) {
+            if (sensitive && !K9MailLib.isDebugSensitive()) {
                 commandToLog = "*sensitive*";
             }
 
 
-            //if (K9.DEBUG)
-            //    Log.v(K9.LOG_TAG, "Sending IMAP command " + commandToLog + " on connection " + getLogId());
+            //if (K9MailLib.isDebug())
+            //    Log.v(LOG_TAG, "Sending IMAP command " + commandToLog + " on connection " + getLogId());
 
             String tag = sendCommand(command, sensitive);
-            //if (K9.DEBUG)
-            //    Log.v(K9.LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
+            //if (K9MailLib.isDebug())
+            //    Log.v(LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
 
             return readStatusResponse(tag, commandToLog, untaggedHandler);
         }
@@ -2954,7 +2959,7 @@ public class ImapStore extends RemoteStore {
         }
         public void refresh() throws IOException, MessagingException {
             if (idling.get()) {
-                wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
+                wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
                 sendDone();
             }
         }
@@ -2982,9 +2987,9 @@ public class ImapStore extends RemoteStore {
             Runnable runner = new Runnable() {
                 @Override
                 public void run() {
-                    wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "Pusher starting for " + getLogId());
+                    wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
+                    if (K9MailLib.isDebug())
+                        Log.i(LOG_TAG, "Pusher starting for " + getLogId());
 
                     long lastUidNext = -1L;
                     while (!stop.get()) {
@@ -2994,10 +2999,10 @@ public class ImapStore extends RemoteStore {
                                 String pushStateS = receiver.getPushState(getName());
                                 ImapPushState pushState = ImapPushState.parse(pushStateS);
                                 oldUidNext = pushState.uidNext;
-                                if (K9.DEBUG)
-                                    Log.i(K9.LOG_TAG, "Got oldUidNext " + oldUidNext + " for " + getLogId());
+                                if (K9MailLib.isDebug())
+                                    Log.i(LOG_TAG, "Got oldUidNext " + oldUidNext + " for " + getLogId());
                             } catch (Exception e) {
-                                Log.e(K9.LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
+                                Log.e(LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
                             }
 
                             /*
@@ -3042,16 +3047,16 @@ public class ImapStore extends RemoteStore {
                             long newUidNext = uidNext;
 
                             if (newUidNext == -1) {
-                                if (K9.DEBUG) {
-                                    Log.d(K9.LOG_TAG, "uidNext is -1, using search to find highest UID");
+                                if (K9MailLib.isDebug()) {
+                                    Log.d(LOG_TAG, "uidNext is -1, using search to find highest UID");
                                 }
                                 long highestUid = getHighestUid();
                                 if (highestUid != -1L) {
-                                    if (K9.DEBUG)
-                                        Log.d(K9.LOG_TAG, "highest UID = " + highestUid);
+                                    if (K9MailLib.isDebug())
+                                        Log.d(LOG_TAG, "highest UID = " + highestUid);
                                     newUidNext = highestUid + 1;
-                                    if (K9.DEBUG)
-                                        Log.d(K9.LOG_TAG, "highest UID = " + highestUid
+                                    if (K9MailLib.isDebug())
+                                        Log.d(LOG_TAG, "highest UID = " + highestUid
                                               + ", set newUidNext to " + newUidNext);
                                 }
                             }
@@ -3066,8 +3071,8 @@ public class ImapStore extends RemoteStore {
                             lastUidNext = newUidNext;
                             if (newUidNext > startUid) {
 
-                                if (K9.DEBUG)
-                                    Log.i(K9.LOG_TAG, "Needs sync from uid " + startUid  + " to " + newUidNext + " for " + getLogId());
+                                if (K9MailLib.isDebug())
+                                    Log.i(LOG_TAG, "Needs sync from uid " + startUid  + " to " + newUidNext + " for " + getLogId());
                                 List<Message> messages = new ArrayList<Message>();
                                 for (long uid = startUid; uid < newUidNext; uid++) {
                                     ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
@@ -3080,15 +3085,15 @@ public class ImapStore extends RemoteStore {
                             } else {
                                 List<ImapResponse> untaggedResponses = null;
                                 while (!storedUntaggedResponses.isEmpty()) {
-                                    if (K9.DEBUG)
-                                        Log.i(K9.LOG_TAG, "Processing " + storedUntaggedResponses.size() + " untagged responses from previous commands for " + getLogId());
+                                    if (K9MailLib.isDebug())
+                                        Log.i(LOG_TAG, "Processing " + storedUntaggedResponses.size() + " untagged responses from previous commands for " + getLogId());
                                     untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
                                     storedUntaggedResponses.clear();
                                     processUntaggedResponses(untaggedResponses);
                                 }
 
-                                if (K9.DEBUG)
-                                    Log.i(K9.LOG_TAG, "About to IDLE for " + getLogId());
+                                if (K9MailLib.isDebug())
+                                    Log.i(LOG_TAG, "About to IDLE for " + getLogId());
 
                                 receiver.setPushActive(getName(), true);
                                 idling.set(true);
@@ -3101,20 +3106,20 @@ public class ImapStore extends RemoteStore {
                                 idleFailureCount.set(0);
                             }
                         } catch (Exception e) {
-                            wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
+                            wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
                             storedUntaggedResponses.clear();
                             idling.set(false);
                             receiver.setPushActive(getName(), false);
                             try {
                                 close();
                             } catch (Exception me) {
-                                Log.e(K9.LOG_TAG, "Got exception while closing for exception for " + getLogId(), me);
+                                Log.e(LOG_TAG, "Got exception while closing for exception for " + getLogId(), me);
                             }
                             if (stop.get()) {
-                                Log.i(K9.LOG_TAG, "Got exception while idling, but stop is set for " + getLogId());
+                                Log.i(LOG_TAG, "Got exception while idling, but stop is set for " + getLogId());
                             } else {
                                 receiver.pushError("Push error for " + getName(), e);
-                                Log.e(K9.LOG_TAG, "Got exception while idling for " + getLogId(), e);
+                                Log.e(LOG_TAG, "Got exception while idling for " + getLogId(), e);
                                 int delayTimeInt = delayTime.get();
                                 receiver.sleep(wakeLock, delayTimeInt);
                                 delayTimeInt *= 2;
@@ -3123,7 +3128,7 @@ public class ImapStore extends RemoteStore {
                                 }
                                 delayTime.set(delayTimeInt);
                                 if (idleFailureCount.incrementAndGet() > IDLE_FAILURE_COUNT_LIMIT) {
-                                    Log.e(K9.LOG_TAG, "Disabling pusher for " + getLogId() + " after " + idleFailureCount.get() + " consecutive errors");
+                                    Log.e(LOG_TAG, "Disabling pusher for " + getLogId() + " after " + idleFailureCount.get() + " consecutive errors");
                                     receiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount.get() + " consecutive errors", e);
                                     stop.set(true);
                                 }
@@ -3133,11 +3138,11 @@ public class ImapStore extends RemoteStore {
                     }
                     receiver.setPushActive(getName(), false);
                     try {
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "Pusher for " + getLogId() + " is exiting");
+                        if (K9MailLib.isDebug())
+                            Log.i(LOG_TAG, "Pusher for " + getLogId() + " is exiting");
                         close();
                     } catch (Exception me) {
-                        Log.e(K9.LOG_TAG, "Got exception while closing for " + getLogId(), me);
+                        Log.e(LOG_TAG, "Got exception while closing for " + getLogId(), me);
                     } finally {
                         wakeLock.release();
                     }
@@ -3154,8 +3159,8 @@ public class ImapStore extends RemoteStore {
                 if (ImapResponseParser.equalsIgnoreCase(responseType, "FETCH")
                         || ImapResponseParser.equalsIgnoreCase(responseType, "EXPUNGE")
                         || ImapResponseParser.equalsIgnoreCase(responseType, "EXISTS")) {
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Storing response " + response + " for later processing");
+                    if (K9MailLib.isDebug())
+                        Log.d(LOG_TAG, "Storing response " + response + " for later processing");
 
                     storedUntaggedResponses.add(response);
                 }
@@ -3183,8 +3188,8 @@ public class ImapStore extends RemoteStore {
                     syncMessages(mMessageCount, true);
                 }
             }
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "UIDs for messages needing flag sync are " + flagSyncMsgSeqs + "  for " + getLogId());
+            if (K9MailLib.isDebug())
+                Log.d(LOG_TAG, "UIDs for messages needing flag sync are " + flagSyncMsgSeqs + "  for " + getLogId());
 
             if (!flagSyncMsgSeqs.isEmpty()) {
                 syncMessages(flagSyncMsgSeqs);
@@ -3200,17 +3205,17 @@ public class ImapStore extends RemoteStore {
                 String pushStateS = receiver.getPushState(getName());
                 ImapPushState pushState = ImapPushState.parse(pushStateS);
                 oldUidNext = pushState.uidNext;
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "Got oldUidNext " + oldUidNext + " for " + getLogId());
+                if (K9MailLib.isDebug())
+                    Log.i(LOG_TAG, "Got oldUidNext " + oldUidNext + " for " + getLogId());
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
+                Log.e(LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
             }
 
             List<? extends Message> messageList = getMessages(end, end, null, true, null);
             if (messageList != null && messageList.size() > 0) {
                 long newUid = Long.parseLong(messageList.get(0).getUid());
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "Got newUid " + newUid + " for message " + end + " on " + getLogId());
+                if (K9MailLib.isDebug())
+                    Log.i(LOG_TAG, "Got newUid " + newUid + " for message " + end + " on " + getLogId());
                 long startUid = oldUidNext;
                 if (startUid < newUid - 10) {
                     startUid = newUid - 10;
@@ -3220,8 +3225,8 @@ public class ImapStore extends RemoteStore {
                 }
                 if (newUid >= startUid) {
 
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "Needs sync from uid " + startUid  + " to " + newUid + " for " + getLogId());
+                    if (K9MailLib.isDebug())
+                        Log.i(LOG_TAG, "Needs sync from uid " + startUid  + " to " + newUid + " for " + getLogId());
                     List<Message> messages = new ArrayList<Message>();
                     for (long uid = startUid; uid <= newUid; uid++) {
                         ImapMessage message = new ImapMessage(Long.toString(uid), ImapFolderPusher.this);
@@ -3256,7 +3261,7 @@ public class ImapStore extends RemoteStore {
                     needsPoll.set(true);
                     msgSeqUidMap.clear();
                     String existingUid = existingMessage.getUid();
-                    Log.w(K9.LOG_TAG, "Message with UID " + existingUid + " still exists on server, not expunging");
+                    Log.w(LOG_TAG, "Message with UID " + existingUid + " still exists on server, not expunging");
                     removeUids.remove(existingUid);
                 }
                 for (String uid : removeUids) {
@@ -3264,13 +3269,13 @@ public class ImapStore extends RemoteStore {
                     try {
                         message.setFlagInternal(Flag.DELETED, true);
                     } catch (MessagingException me) {
-                        Log.e(K9.LOG_TAG, "Unable to set DELETED flag on message " + message.getUid());
+                        Log.e(LOG_TAG, "Unable to set DELETED flag on message " + message.getUid());
                     }
                     messages.add(message);
                 }
                 receiver.messagesRemoved(this, messages);
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Cannot remove EXPUNGEd messages", e);
+                Log.e(LOG_TAG, "Cannot remove EXPUNGEd messages", e);
             }
 
         }
@@ -3282,11 +3287,11 @@ public class ImapStore extends RemoteStore {
                 try {
                     Object responseType = response.get(1);
                     if (ImapResponseParser.equalsIgnoreCase(responseType, "FETCH")) {
-                        Log.i(K9.LOG_TAG, "Got FETCH " + response);
+                        Log.i(LOG_TAG, "Got FETCH " + response);
                         long msgSeq = response.getLong(0);
 
-                        if (K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq + " for " + getLogId());
+                        if (K9MailLib.isDebug())
+                            Log.d(LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq + " for " + getLogId());
 
                         if (!flagSyncMsgSeqs.contains(msgSeq)) {
                             flagSyncMsgSeqs.add(msgSeq);
@@ -3297,8 +3302,8 @@ public class ImapStore extends RemoteStore {
                         if (msgSeq <= oldMessageCount) {
                             messageCountDelta = -1;
                         }
-                        if (K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "Got untagged EXPUNGE for msgseq " + msgSeq + " for " + getLogId());
+                        if (K9MailLib.isDebug())
+                            Log.d(LOG_TAG, "Got untagged EXPUNGE for msgseq " + msgSeq + " for " + getLogId());
 
                         List<Long> newSeqs = new ArrayList<Long>();
                         Iterator<Long> flagIter = flagSyncMsgSeqs.iterator();
@@ -3318,20 +3323,20 @@ public class ImapStore extends RemoteStore {
                         Collections.sort(msgSeqs);  // Have to do comparisons in order because of msgSeq reductions
 
                         for (long msgSeqNum : msgSeqs) {
-                            if (K9.DEBUG) {
-                                Log.v(K9.LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNum);
+                            if (K9MailLib.isDebug()) {
+                                Log.v(LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNum);
                             }
                             if (msgSeqNum == msgSeq) {
                                 String uid = msgSeqUidMap.get(msgSeqNum);
-                                if (K9.DEBUG) {
-                                    Log.d(K9.LOG_TAG, "Scheduling removal of UID " + uid + " because msgSeq " + msgSeqNum + " was expunged");
+                                if (K9MailLib.isDebug()) {
+                                    Log.d(LOG_TAG, "Scheduling removal of UID " + uid + " because msgSeq " + msgSeqNum + " was expunged");
                                 }
                                 removeMsgUids.add(uid);
                                 msgSeqUidMap.remove(msgSeqNum);
                             } else if (msgSeqNum > msgSeq) {
                                 String uid = msgSeqUidMap.get(msgSeqNum);
-                                if (K9.DEBUG) {
-                                    Log.d(K9.LOG_TAG, "Reducing msgSeq for UID " + uid + " from " + msgSeqNum + " to " + (msgSeqNum - 1));
+                                if (K9MailLib.isDebug()) {
+                                    Log.d(LOG_TAG, "Reducing msgSeq for UID " + uid + " from " + msgSeqNum + " to " + (msgSeqNum - 1));
                                 }
                                 msgSeqUidMap.remove(msgSeqNum);
                                 msgSeqUidMap.put(msgSeqNum - 1, uid);
@@ -3339,7 +3344,7 @@ public class ImapStore extends RemoteStore {
                         }
                     }
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Could not handle untagged FETCH for " + getLogId(), e);
+                    Log.e(LOG_TAG, "Could not handle untagged FETCH for " + getLogId(), e);
                 }
             }
             return messageCountDelta;
@@ -3370,27 +3375,27 @@ public class ImapStore extends RemoteStore {
             }
             ImapConnection conn = mConnection;
             if (conn != null) {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "Closing mConnection to stop pushing for " + getLogId());
+                if (K9MailLib.isDebug())
+                    Log.v(LOG_TAG, "Closing mConnection to stop pushing for " + getLogId());
                 conn.close();
             } else {
-                Log.w(K9.LOG_TAG, "Attempt to interrupt null mConnection to stop pushing on folderPusher for " + getLogId());
+                Log.w(LOG_TAG, "Attempt to interrupt null mConnection to stop pushing on folderPusher for " + getLogId());
             }
         }
 
         @Override
         public void handleAsyncUntaggedResponse(ImapResponse response) {
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "Got async response: " + response);
+            if (K9MailLib.isDebug())
+                Log.v(LOG_TAG, "Got async response: " + response);
 
             if (stop.get()) {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Got async untagged response: " + response + ", but stop is set for " + getLogId());
+                if (K9MailLib.isDebug())
+                    Log.d(LOG_TAG, "Got async untagged response: " + response + ", but stop is set for " + getLogId());
 
                 try {
                     sendDone();
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
+                    Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
                 }
             } else {
                 if (response.mTag == null) {
@@ -3400,22 +3405,22 @@ public class ImapStore extends RemoteStore {
                         if (ImapResponseParser.equalsIgnoreCase(responseType, "EXISTS") || ImapResponseParser.equalsIgnoreCase(responseType, "EXPUNGE") ||
                                 ImapResponseParser.equalsIgnoreCase(responseType, "FETCH")) {
                             if (!started) {
-                                wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
+                                wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
                                 started = true;
                             }
 
-                            if (K9.DEBUG)
-                                Log.d(K9.LOG_TAG, "Got useful async untagged response: " + response + " for " + getLogId());
+                            if (K9MailLib.isDebug())
+                                Log.d(LOG_TAG, "Got useful async untagged response: " + response + " for " + getLogId());
 
                             try {
                                 sendDone();
                             } catch (Exception e) {
-                                Log.e(K9.LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
+                                Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
                             }
                         }
                     } else if (response.mCommandContinuationRequested) {
-                        if (K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "Idling " + getLogId());
+                        if (K9MailLib.isDebug())
+                            Log.d(LOG_TAG, "Idling " + getLogId());
 
                         wakeLock.release();
                     }
@@ -3463,7 +3468,7 @@ public class ImapStore extends RemoteStore {
                     try {
                         folderPusher.refresh();
                     } catch (Exception e) {
-                        Log.e(K9.LOG_TAG, "Got exception while refreshing for " + folderPusher.getName(), e);
+                        Log.e(LOG_TAG, "Got exception while refreshing for " + folderPusher.getName(), e);
                     }
                 }
             }
@@ -3471,17 +3476,17 @@ public class ImapStore extends RemoteStore {
 
         @Override
         public void stop() {
-            if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "Requested stop of IMAP pusher");
+            if (K9MailLib.isDebug())
+                Log.i(LOG_TAG, "Requested stop of IMAP pusher");
 
             synchronized (folderPushers) {
                 for (ImapFolderPusher folderPusher : folderPushers.values()) {
                     try {
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "Requesting stop of IMAP folderPusher " + folderPusher.getName());
+                        if (K9MailLib.isDebug())
+                            Log.i(LOG_TAG, "Requesting stop of IMAP folderPusher " + folderPusher.getName());
                         folderPusher.stop();
                     } catch (Exception e) {
-                        Log.e(K9.LOG_TAG, "Got exception while stopping " + folderPusher.getName(), e);
+                        Log.e(LOG_TAG, "Got exception while stopping " + folderPusher.getName(), e);
                     }
                 }
                 folderPushers.clear();
@@ -3527,7 +3532,7 @@ public class ImapStore extends RemoteStore {
                             try {
                                 newUidNext = Long.parseLong(value);
                             } catch (NumberFormatException e) {
-                                Log.e(K9.LOG_TAG, "Unable to part uidNext value " + value, e);
+                                Log.e(LOG_TAG, "Unable to part uidNext value " + value, e);
                             }
 
                         }

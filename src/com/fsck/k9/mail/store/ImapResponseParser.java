@@ -293,7 +293,7 @@ class ImapResponseParser {
             } catch (Exception e) {
                 // Catch everything else and save it for later.
                 mException = e;
-                //Log.e(K9.LOG_TAG, "parseLiteral(): Exception in callback method", e);
+                //Log.e(LOG_TAG, "parseLiteral(): Exception in callback method", e);
             }
 
             // Check if only some of the literal data was read

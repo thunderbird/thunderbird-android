@@ -3,7 +3,7 @@ package com.fsck.k9.mail.transport;
 
 import android.util.Log;
 
-import com.fsck.k9.K9;
+import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
@@ -12,6 +12,8 @@ import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.WebDavStore;
 
 import java.util.Collections;
+
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public class WebDavTransport extends Transport {
     public static final String TRANSPORT_TYPE = WebDavStore.STORE_TYPE;
@@ -46,14 +48,14 @@ public class WebDavTransport extends Transport {
     public WebDavTransport(StoreConfig storeConfig) throws MessagingException {
         store = new WebDavStore(storeConfig);
 
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, ">>> New WebDavTransport creation complete");
+        if (K9MailLib.isDebug())
+            Log.d(LOG_TAG, ">>> New WebDavTransport creation complete");
     }
 
     @Override
     public void open() throws MessagingException {
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, ">>> open called on WebDavTransport ");
+        if (K9MailLib.isDebug())
+            Log.d(LOG_TAG, ">>> open called on WebDavTransport ");
 
         store.getHttpClient();
     }

@@ -9,9 +9,10 @@ import java.util.Set;
 
 import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
 public abstract class Message implements Part, CompositeBody {
@@ -231,9 +232,9 @@ public abstract class Message implements Part, CompositeBody {
             eolOut.flush();
             return out.getCount();
         } catch (IOException e) {
-            Log.e(K9.LOG_TAG, "Failed to calculate a message size", e);
+            Log.e(LOG_TAG, "Failed to calculate a message size", e);
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Failed to calculate a message size", e);
+            Log.e(LOG_TAG, "Failed to calculate a message size", e);
         }
         return 0;
     }

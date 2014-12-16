@@ -2,7 +2,6 @@ package com.fsck.k9.mail.internet;
 
 import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -19,6 +18,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
@@ -110,13 +110,13 @@ public class MessageExtractor {
              * If we are not able to process the body there's nothing we can do about it. Return
              * null and let the upper layers handle the missing content.
              */
-            Log.e(K9.LOG_TAG, "Unable to getTextFromPart " + oom.toString());
+            Log.e(LOG_TAG, "Unable to getTextFromPart " + oom.toString());
         } catch (Exception e) {
             /*
              * If we are not able to process the body there's nothing we can do about it. Return
              * null and let the upper layers handle the missing content.
              */
-            Log.e(K9.LOG_TAG, "Unable to getTextFromPart", e);
+            Log.e(LOG_TAG, "Unable to getTextFromPart", e);
         }
         return null;
     }

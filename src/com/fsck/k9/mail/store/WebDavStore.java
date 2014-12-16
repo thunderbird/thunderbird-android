@@ -2,8 +2,6 @@ package com.fsck.k9.mail.store;
 
 import android.util.Log;
 
-import com.fsck.k9.K9;
-
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -46,6 +44,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
+
+import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_WEBDAV;
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 /**
  * <pre>
@@ -719,7 +720,7 @@ public class WebDavStore extends RemoteStore {
                 doFBA(null);
             }
         } catch (IOException ioe) {
-            Log.e(K9.LOG_TAG, "Error during authentication: " + ioe + "\nStack: " + processException(ioe));
+            Log.e(LOG_TAG, "Error during authentication: " + ioe + "\nStack: " + processException(ioe));
             throw new MessagingException("Error during authentication", ioe);
         }
 
@@ -789,7 +790,7 @@ public class WebDavStore extends RemoteStore {
         } catch (SSLException e) {
             throw new CertificateValidationException(e.getMessage(), e);
         } catch (IOException ioe) {
-            Log.e(K9.LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
+            Log.e(LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
             throw new MessagingException("IOException", ioe);
         }
 
@@ -891,7 +892,7 @@ public class WebDavStore extends RemoteStore {
                     response = httpClient.executeOverride(request, mContext);
                     authenticated = testAuthenticationResponse(response);
                 } catch (URISyntaxException e) {
-                    Log.e(K9.LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + processException(e));
+                    Log.e(LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + processException(e));
                     throw new MessagingException("URISyntaxException caught", e);
                 }
             } else {
@@ -985,7 +986,7 @@ public class WebDavStore extends RemoteStore {
                         }
                     }
                 } catch (URISyntaxException e) {
-                    Log.e(K9.LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + processException(e));
+                    Log.e(LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + processException(e));
                     throw new MessagingException("URISyntaxException caught", e);
                 }
             }
@@ -1022,10 +1023,10 @@ public class WebDavStore extends RemoteStore {
                 Scheme s = new Scheme("https", new WebDavSocketFactory(mHost, 443), 443);
                 reg.register(s);
             } catch (NoSuchAlgorithmException nsa) {
-                Log.e(K9.LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
+                Log.e(LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
                 throw new MessagingException("NoSuchAlgorithmException in getHttpClient: " + nsa);
             } catch (KeyManagementException kme) {
-                Log.e(K9.LOG_TAG, "KeyManagementException in getHttpClient: " + kme);
+                Log.e(LOG_TAG, "KeyManagementException in getHttpClient: " + kme);
                 throw new MessagingException("KeyManagementException in getHttpClient: " + kme);
             }
         }
@@ -1092,10 +1093,10 @@ public class WebDavStore extends RemoteStore {
                 istream = WebDavHttpClient.getUngzippedContent(entity);
             }
         } catch (UnsupportedEncodingException uee) {
-            Log.e(K9.LOG_TAG, "UnsupportedEncodingException: " + uee + "\nTrace: " + processException(uee));
+            Log.e(LOG_TAG, "UnsupportedEncodingException: " + uee + "\nTrace: " + processException(uee));
             throw new MessagingException("UnsupportedEncodingException", uee);
         } catch (IOException ioe) {
-            Log.e(K9.LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
+            Log.e(LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
             throw new MessagingException("IOException", ioe);
         }
 
@@ -1120,8 +1121,8 @@ public class WebDavStore extends RemoteStore {
                                    boolean needsParsing)
     throws MessagingException {
         DataSet dataset = new DataSet();
-        if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV) {
-            Log.v(K9.LOG_TAG, "processRequest url = '" + url + "', method = '" + method + "', messageBody = '"
+        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
+            Log.v(LOG_TAG, "processRequest url = '" + url + "', method = '" + method + "', messageBody = '"
                   + messageBody + "'");
         }
 
@@ -1153,10 +1154,10 @@ public class WebDavStore extends RemoteStore {
 
                     dataset = myHandler.getDataSet();
                 } catch (SAXException se) {
-                    Log.e(K9.LOG_TAG, "SAXException in processRequest() " + se + "\nTrace: " + processException(se));
+                    Log.e(LOG_TAG, "SAXException in processRequest() " + se + "\nTrace: " + processException(se));
                     throw new MessagingException("SAXException in processRequest() ", se);
                 } catch (ParserConfigurationException pce) {
-                    Log.e(K9.LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: "
+                    Log.e(LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: "
                           + processException(pce));
                     throw new MessagingException("ParserConfigurationException in processRequest() ", pce);
                 }
@@ -1164,10 +1165,10 @@ public class WebDavStore extends RemoteStore {
                 istream.close();
             }
         } catch (UnsupportedEncodingException uee) {
-            Log.e(K9.LOG_TAG, "UnsupportedEncodingException: " + uee + "\nTrace: " + processException(uee));
+            Log.e(LOG_TAG, "UnsupportedEncodingException: " + uee + "\nTrace: " + processException(uee));
             throw new MessagingException("UnsupportedEncodingException in processRequest() ", uee);
         } catch (IOException ioe) {
-            Log.e(K9.LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
+            Log.e(LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
             throw new MessagingException("IOException in processRequest() ", ioe);
         }
 
@@ -1308,7 +1309,7 @@ public class WebDavStore extends RemoteStore {
             headers.put("Brief", "t");
             headers.put("If-Match", "*");
             String action = (isMove ? "BMOVE" : "BCOPY");
-            Log.i(K9.LOG_TAG, "Moving " + messages.size() + " messages to " + destFolder.mFolderUrl);
+            Log.i(LOG_TAG, "Moving " + messages.size() + " messages to " + destFolder.mFolderUrl);
 
             processRequest(mFolderUrl, action, messageBody, headers, false);
         }
@@ -1331,8 +1332,8 @@ public class WebDavStore extends RemoteStore {
             if (dataset != null) {
                 messageCount = dataset.getMessageCount();
             }
-            if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV) {
-                Log.v(K9.LOG_TAG, "Counted messages and webdav returned: "+messageCount);
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
+                Log.v(LOG_TAG, "Counted messages and webdav returned: "+messageCount);
             }
 
             return messageCount;
@@ -1559,7 +1560,7 @@ public class WebDavStore extends RemoteStore {
                  */
                 if (wdMessage.getUrl().equals("")) {
                     wdMessage.setUrl(getMessageUrls(new String[] { wdMessage.getUid() }).get(wdMessage.getUid()));
-                    Log.i(K9.LOG_TAG, "Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '"
+                    Log.i(LOG_TAG, "Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '"
                           + wdMessage.getUrl() + "'");
                     if (wdMessage.getUrl().equals("")) {
                         throw new MessagingException("Unable to get URL for message");
@@ -1567,7 +1568,7 @@ public class WebDavStore extends RemoteStore {
                 }
 
                 try {
-                    Log.i(K9.LOG_TAG, "Fetching message with UID = '" + wdMessage.getUid() + "', URL = '"
+                    Log.i(LOG_TAG, "Fetching message with UID = '" + wdMessage.getUid() + "', URL = '"
                           + wdMessage.getUrl() + "'");
                     HttpGet httpget = new HttpGet(new URI(wdMessage.getUrl()));
                     HttpResponse response;
@@ -1623,13 +1624,13 @@ public class WebDavStore extends RemoteStore {
                     }
 
                 } catch (IllegalArgumentException iae) {
-                    Log.e(K9.LOG_TAG, "IllegalArgumentException caught " + iae + "\nTrace: " + processException(iae));
+                    Log.e(LOG_TAG, "IllegalArgumentException caught " + iae + "\nTrace: " + processException(iae));
                     throw new MessagingException("IllegalArgumentException caught", iae);
                 } catch (URISyntaxException use) {
-                    Log.e(K9.LOG_TAG, "URISyntaxException caught " + use + "\nTrace: " + processException(use));
+                    Log.e(LOG_TAG, "URISyntaxException caught " + use + "\nTrace: " + processException(use));
                     throw new MessagingException("URISyntaxException caught", use);
                 } catch (IOException ioe) {
-                    Log.e(K9.LOG_TAG, "Non-success response code loading message, response code was " + statusCode
+                    Log.e(LOG_TAG, "Non-success response code loading message, response code was " + statusCode
                           + "\nURL: " + wdMessage.getUrl() + "\nError: " + ioe.getMessage() + "\nTrace: "
                           + processException(ioe));
                     throw new MessagingException("Failure code " + statusCode, ioe);
@@ -1700,7 +1701,7 @@ public class WebDavStore extends RemoteStore {
                 try {
                     wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
                 } catch (NullPointerException e) {
-                    Log.v(K9.LOG_TAG,"Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
+                    Log.v(LOG_TAG,"Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
                 }
 
                 if (listener != null) {
@@ -1769,7 +1770,7 @@ public class WebDavStore extends RemoteStore {
                     wdMessage.setNewHeaders(envelope);
                     wdMessage.setFlagInternal(Flag.SEEN, envelope.getReadStatus());
                 } else {
-                    Log.e(K9.LOG_TAG,"Asked to get metadata for a non-existent message: "+wdMessage.getUid());
+                    Log.e(LOG_TAG,"Asked to get metadata for a non-existent message: "+wdMessage.getUid());
                 }
 
                 if (listener != null) {
@@ -1881,7 +1882,7 @@ public class WebDavStore extends RemoteStore {
                     }
                     messageURL += encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
 
-                    Log.i(K9.LOG_TAG, "Uploading message as " + messageURL);
+                    Log.i(LOG_TAG, "Uploading message as " + messageURL);
 
                     httpmethod = new HttpGeneric(messageURL);
                     httpmethod.setMethod("PUT");
@@ -1920,7 +1921,7 @@ public class WebDavStore extends RemoteStore {
 
         @Override
         public String getUidFromMessageId(Message message) throws MessagingException {
-            Log.e(K9.LOG_TAG,
+            Log.e(LOG_TAG,
                   "Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
                   + " being uploaded to the Sent folder");
             return null;
@@ -1928,7 +1929,7 @@ public class WebDavStore extends RemoteStore {
 
         @Override
         public void setFlags(final Set<Flag> flags, boolean value) throws MessagingException {
-            Log.e(K9.LOG_TAG,
+            Log.e(LOG_TAG,
                   "Unimplemented method setFlags(Set<Flag>, boolean) breaks markAllMessagesAsRead and EmptyTrash");
             // Try to make this efficient by not retrieving all of the messages
         }
@@ -1970,7 +1971,7 @@ public class WebDavStore extends RemoteStore {
                 end = encodeUtf8(end);
                 end = end.replaceAll("\\+", "%20");
             } catch (IllegalArgumentException iae) {
-                Log.e(K9.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
+                Log.e(LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
                       + processException(iae));
             }
 
@@ -2020,7 +2021,7 @@ public class WebDavStore extends RemoteStore {
         @Override
         public void delete(String trashFolderName) throws MessagingException {
             WebDavFolder wdFolder = (WebDavFolder) getFolder();
-            Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
+            Log.i(LOG_TAG, "Deleting message by moving to " + trashFolderName);
             wdFolder.moveMessages(Collections.singletonList(this), wdFolder.getStore().getFolder(trashFolderName));
         }
 
@@ -2318,7 +2319,7 @@ public class WebDavStore extends RemoteStore {
                                 Date parsedDate = dfInput.parse(date);
                                 tempDate = dfOutput.format(parsedDate);
                             } catch (java.text.ParseException pe) {
-                                Log.e(K9.LOG_TAG, "Error parsing date: " + pe + "\nTrace: " + processException(pe));
+                                Log.e(LOG_TAG, "Error parsing date: " + pe + "\nTrace: " + processException(pe));
                             }
                             envelope.addHeader(header, tempDate);
                         } else {
@@ -2357,8 +2358,8 @@ public class WebDavStore extends RemoteStore {
         public HttpGeneric(final String uri) {
             super();
 
-            if (K9.DEBUG) {
-                Log.v(K9.LOG_TAG, "Starting uri = '" + uri + "'");
+            if (K9MailLib.isDebug()) {
+                Log.v(LOG_TAG, "Starting uri = '" + uri + "'");
             }
 
             String[] urlParts = uri.split("/");
@@ -2376,7 +2377,7 @@ public class WebDavStore extends RemoteStore {
                     end = end.replaceAll("\\+", "%20");
                 }
             } catch (IllegalArgumentException iae) {
-                Log.e(K9.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri): " + iae + "\nTrace: "
+                Log.e(LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri): " + iae + "\nTrace: "
                       + processException(iae));
             }
 
@@ -2387,13 +2388,13 @@ public class WebDavStore extends RemoteStore {
                     url = urlParts[i];
                 }
             }
-            if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV) {
-                Log.v(K9.LOG_TAG, "url = '" + url + "' length = " + url.length()
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
+                Log.v(LOG_TAG, "url = '" + url + "' length = " + url.length()
                       + ", end = '" + end + "' length = " + end.length());
             }
             url = url + "/" + end;
 
-            Log.i(K9.LOG_TAG, "url = " + url);
+            Log.i(LOG_TAG, "url = " + url);
             setURI(URI.create(url));
         }
 
@@ -2423,7 +2424,7 @@ public class WebDavStore extends RemoteStore {
          * the License for the specific language governing permissions and limitations under the License.
          */
         public static void modifyRequestToAcceptGzipResponse(HttpRequest request) {
-            Log.i(K9.LOG_TAG, "Requesting gzipped data");
+            Log.i(LOG_TAG, "Requesting gzipped data");
             request.addHeader("Accept-Encoding", "gzip");
         }
 
@@ -2439,7 +2440,7 @@ public class WebDavStore extends RemoteStore {
             if (contentEncoding == null)
                 return responseStream;
             if (contentEncoding.contains("gzip")) {
-                Log.i(K9.LOG_TAG, "Response is gzipped");
+                Log.i(LOG_TAG, "Response is gzipped");
                 responseStream = new GZIPInputStream(responseStream);
             }
             return responseStream;

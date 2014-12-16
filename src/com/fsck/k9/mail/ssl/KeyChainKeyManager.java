@@ -20,10 +20,11 @@ import android.security.KeyChain;
 import android.security.KeyChainException;
 import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessagingException;
+
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 /**
  * For client certificate authentication! Provide private keys and certificates
@@ -207,10 +208,10 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
                     return mAlias;
                 }
             }
-            Log.w(K9.LOG_TAG, "Client certificate " + mAlias + " not issued by any of the requested issuers");
+            Log.w(LOG_TAG, "Client certificate " + mAlias + " not issued by any of the requested issuers");
             return null;
         }
-        Log.w(K9.LOG_TAG, "Client certificate " + mAlias + " does not match any of the requested key types");
+        Log.w(LOG_TAG, "Client certificate " + mAlias + " does not match any of the requested key types");
         return null;
     }
 }

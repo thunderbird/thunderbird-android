@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+
 
 /**
  * Filter and reorder list of cipher suites and TLS versions.
@@ -90,7 +92,7 @@ public class TrustedSocketFactory {
              */
             supportedProtocols = sock.getSupportedProtocols();
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Error getting information about available SSL/TLS ciphers and " +
+            Log.e(LOG_TAG, "Error getting information about available SSL/TLS ciphers and " +
                     "protocols", e);
         }
 
