@@ -105,7 +105,7 @@ task checkstyle(type: Checkstyle) {
     classpath = files()
 }
 
-task testsOnJVM(type: GradleBuild, dependsOn: assemble) {
+task testsOnJVM(type: GradleBuild, dependsOn: assembleDebug) {
     buildFile = 'tests-on-jvm/build.gradle'
     tasks = ['test']
 }
