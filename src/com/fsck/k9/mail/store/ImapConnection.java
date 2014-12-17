@@ -1,11 +1,9 @@
 package com.fsck.k9.mail.store;
 
-import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -54,19 +52,23 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
  * A cacheable class that stores the details for a single IMAP connection.
  */
 class ImapConnection {
-    private final TrustedSocketFactory socketFactory;
+
     private Socket mSocket;
     private PeekableInputStream mIn;
     private OutputStream mOut;
     private ImapResponseParser mParser;
     private int mNextCommandTag;
     private Set<String> capabilities = new HashSet<String>();
-
     private ImapSettings mSettings;
+    private ConnectivityManager mConnectivityManager;
+    private final TrustedSocketFactory mSocketFactory;
 
-    public ImapConnection(final ImapSettings settings, TrustedSocketFactory socketFactory) {
+    public ImapConnection(ImapSettings settings,
+                          TrustedSocketFactory socketFactory,
+                          ConnectivityManager connectivityManager) {
         this.mSettings = settings;
-        this.socketFactory = socketFactory;
+        this.mSocketFactory = socketFactory;
+        this.mConnectivityManager = connectivityManager;
     }
 
     public Set<String> getCapabilities() {
@@ -154,7 +156,7 @@ class ImapConnection {
                             mSettings.getPort());
 
                     if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        mSocket = socketFactory.createSocket(
+                        mSocket = mSocketFactory.createSocket(
                                 null,
                                 mSettings.getHost(),
                                 mSettings.getPort(),
@@ -207,7 +209,7 @@ class ImapConnection {
                     // STARTTLS
                     executeSimpleCommand("STARTTLS");
 
-                    mSocket = socketFactory.createSocket(
+                    mSocket = mSocketFactory.createSocket(
                             mSocket,
                             mSettings.getHost(),
                             mSettings.getPort(),
@@ -277,10 +279,9 @@ class ImapConnection {
                 Log.d(LOG_TAG, ImapCommands.CAPABILITY_COMPRESS_DEFLATE + " = " + hasCapability(ImapCommands.CAPABILITY_COMPRESS_DEFLATE));
             }
             if (hasCapability(ImapCommands.CAPABILITY_COMPRESS_DEFLATE)) {
-                ConnectivityManager connectivityManager = (ConnectivityManager) K9.app.getSystemService(Context.CONNECTIVITY_SERVICE);
                 boolean useCompression = true;
 
-                NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+                NetworkInfo netInfo = mConnectivityManager.getActiveNetworkInfo();
                 if (netInfo != null) {
                     int type = netInfo.getType();
                     if (K9MailLib.isDebug())

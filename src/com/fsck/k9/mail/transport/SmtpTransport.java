@@ -186,7 +186,8 @@ public class SmtpTransport extends Transport {
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
 
-    public SmtpTransport(StoreConfig storeConfig) throws MessagingException {
+    public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory)
+            throws MessagingException {
         ServerSettings settings;
         try {
             settings = decodeUri(storeConfig.getTransportUri());
@@ -203,7 +204,7 @@ public class SmtpTransport extends Transport {
         mUsername = settings.username;
         mPassword = settings.password;
         mClientCertificateAlias = settings.clientCertificateAlias;
-        mTrustedSocketFactory = storeConfig.trustedSocketFactory();
+        mTrustedSocketFactory = trustedSocketFactory;
     }
 
     @Override

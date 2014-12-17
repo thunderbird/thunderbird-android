@@ -9,6 +9,7 @@ import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLException;
 
@@ -207,8 +208,8 @@ public class Pop3Store extends RemoteStore {
     private boolean mTopNotSupported;
 
 
-    public Pop3Store(StoreConfig storeConfig) throws MessagingException {
-        super(storeConfig);
+    public Pop3Store(StoreConfig storeConfig, TrustedSocketFactory socketFactory) throws MessagingException {
+        super(storeConfig, socketFactory);
 
         ServerSettings settings;
         try {
@@ -302,7 +303,7 @@ public class Pop3Store extends RemoteStore {
             try {
                 SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
                 if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                    mSocket = mStoreConfig.trustedSocketFactory().createSocket(null, mHost, mPort, mClientCertificateAlias);
+                    mSocket = mTrustedSocketFactory.createSocket(null, mHost, mPort, mClientCertificateAlias);
                 } else {
                     mSocket = new Socket();
                 }
@@ -324,7 +325,7 @@ public class Pop3Store extends RemoteStore {
                     if (mCapabilities.stls) {
                         executeSimpleCommand(STLS_COMMAND);
 
-                        mSocket = mStoreConfig.trustedSocketFactory().createSocket(
+                        mSocket = mTrustedSocketFactory.createSocket(
                                 mSocket,
                                 mHost,
                                 mPort,

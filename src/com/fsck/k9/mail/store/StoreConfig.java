@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.store;
 
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
 public interface StoreConfig {
     String getStoreUri();
@@ -30,6 +29,4 @@ public interface StoreConfig {
     int getDisplayCount();
 
     int getIdleRefreshMinutes();
-
-    TrustedSocketFactory trustedSocketFactory();
 }

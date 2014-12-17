@@ -141,7 +141,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         if (!(mAccount.getRemoteStore() instanceof WebDavStore)) {
                             setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
                         }
-                        Transport transport = Transport.getInstance(mAccount);
+                        Transport transport = Transport.getInstance(K9.app, mAccount);
                         transport.close();
                         transport.open();
                         transport.close();

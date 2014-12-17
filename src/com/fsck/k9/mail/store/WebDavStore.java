@@ -295,7 +295,7 @@ public class WebDavStore extends RemoteStore {
 
 
     public WebDavStore(StoreConfig storeConfig) throws MessagingException {
-        super(storeConfig);
+        super(storeConfig, null);
 
         WebDavStoreSettings settings;
         try {

@@ -1,6 +1,9 @@
 
 package com.fsck.k9.mail;
 
+import android.content.Context;
+
+import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.transport.SmtpTransport;
 import com.fsck.k9.mail.transport.WebDavTransport;
@@ -15,10 +18,10 @@ public abstract class Transport {
     // RFC 1047
     protected static final int SOCKET_READ_TIMEOUT = 300000;
 
-    public synchronized static Transport getInstance(StoreConfig storeConfig) throws MessagingException {
+    public synchronized static Transport getInstance(Context context, StoreConfig storeConfig) throws MessagingException {
         String uri = storeConfig.getTransportUri();
         if (uri.startsWith("smtp")) {
-            return new SmtpTransport(storeConfig);
+            return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context));
         } else if (uri.startsWith("webdav")) {
             return new WebDavTransport(storeConfig);
         } else {

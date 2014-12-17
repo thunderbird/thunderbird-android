@@ -32,6 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import android.net.ConnectivityManager;
 import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -59,6 +60,7 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
@@ -86,6 +88,7 @@ public class ImapStore extends RemoteStore {
 
     private Set<Flag> mPermanentFlagsIndex = EnumSet.noneOf(Flag.class);
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private ConnectivityManager mConnectivityManager;
 
     /**
      * Decodes an ImapStore URI.
@@ -234,7 +237,7 @@ public class ImapStore extends RemoteStore {
         }
         try {
             Map<String, String> extra = server.getExtra();
-            String path = null;
+            String path;
             if (extra != null) {
                 boolean autoDetectNamespace = Boolean.TRUE.toString().equals(
                         extra.get(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY));
@@ -392,8 +395,11 @@ public class ImapStore extends RemoteStore {
      */
     private final Map<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
 
-    public ImapStore(StoreConfig storeConfig) throws MessagingException {
-        super(storeConfig);
+    public ImapStore(StoreConfig storeConfig,
+                     TrustedSocketFactory trustedSocketFactory,
+                     ConnectivityManager connectivityManager)
+            throws MessagingException {
+        super(storeConfig, trustedSocketFactory);
 
         ImapStoreSettings settings;
         try {
@@ -406,6 +412,7 @@ public class ImapStore extends RemoteStore {
         mPort = settings.port;
 
         mConnectionSecurity = settings.connectionSecurity;
+        mConnectivityManager = connectivityManager;
 
         mAuthType = settings.authenticationType;
         mUsername = settings.username;
@@ -635,7 +642,11 @@ public class ImapStore extends RemoteStore {
     @Override
     public void checkSettings() throws MessagingException {
         try {
-            ImapConnection connection = new ImapConnection(new StoreImapSettings(), mStoreConfig.trustedSocketFactory());
+            ImapConnection connection = new ImapConnection(
+                    new StoreImapSettings(),
+                    mTrustedSocketFactory,
+                    mConnectivityManager);
+
             connection.open();
             autoconfigureFolders(connection);
             connection.close();
@@ -660,7 +671,9 @@ public class ImapStore extends RemoteStore {
                 }
             }
             if (connection == null) {
-                connection = new ImapConnection(new StoreImapSettings(), mStoreConfig.trustedSocketFactory());
+                connection = new ImapConnection(new StoreImapSettings(),
+                        mTrustedSocketFactory,
+                        mConnectivityManager);
             }
             return connection;
         }
