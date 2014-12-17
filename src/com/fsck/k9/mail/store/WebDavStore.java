@@ -7,6 +7,7 @@ import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.CertificateValidationException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.*;

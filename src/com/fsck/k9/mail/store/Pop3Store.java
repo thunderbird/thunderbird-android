@@ -3,12 +3,11 @@ package com.fsck.k9.mail.store;
 
 import android.util.Log;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.MessageRetrievalListener;
 
@@ -33,6 +32,7 @@ import java.util.Set;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 
 public class Pop3Store extends RemoteStore {
     public static final String STORE_TYPE = "POP3";
@@ -369,7 +369,7 @@ public class Pop3Store extends RemoteStore {
                         authExternal();
                     } else {
                         // Provide notification to user of a problem authenticating using client certificates
-                        throw new CertificateValidationException(K9.app.getString(R.string.auth_external_error));
+                        throw new CertificateValidationException(MissingCapability);
                     }
                     break;
 

@@ -3,8 +3,6 @@ package com.fsck.k9.mail.transport;
 
 import android.util.Log;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.filter.Base64;
@@ -13,6 +11,7 @@ import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.CharsetSupport;
+import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
@@ -28,6 +27,7 @@ import java.util.*;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_SMTP;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 
 public class SmtpTransport extends Transport {
     public static final String TRANSPORT_TYPE = "SMTP";
@@ -357,7 +357,7 @@ public class SmtpTransport extends Transport {
                          * EXTERNAL when using client certificates. That way, the
                          * user can be notified of a problem during account setup.
                          */
-                        throw new MessagingException(K9.app.getString(R.string.auth_external_error));
+                        throw new CertificateValidationException(MissingCapability);
                     }
                     break;
 

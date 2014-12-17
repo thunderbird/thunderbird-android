@@ -186,9 +186,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         } else {
             showErrorDialog(
                     R.string.account_setup_failed_dlg_server_message_fmt,
-                    (cve.getMessage() == null ? "" : cve.getMessage()));
+                    errorMessageForCertificateException(cve));
         }
     }
+
 
     @Override
     public void onDestroy() {
@@ -460,5 +461,16 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     @Override
     public void dialogCancelled(int dialogId) {
         // nothing to do here...
+    }
+
+    private String errorMessageForCertificateException(CertificateValidationException e) {
+        switch (e.getReason()) {
+            case Expired: return getString(R.string.client_certificate_expired, e.getAlias(), e.getMessage());
+            case MissingCapability: return getString(R.string.auth_external_error);
+            case RetrievalFailure: return getString(R.string.client_certificate_retrieval_failure, e.getAlias());
+            case UseMessage: return e.getMessage();
+            case Unknown:
+            default: return "";
+        }
     }
 }

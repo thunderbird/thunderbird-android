@@ -11,21 +11,46 @@ import android.security.KeyChainException;
 
 public class CertificateValidationException extends MessagingException {
     public static final long serialVersionUID = -1;
+    private final Reason mReason;
     private X509Certificate[] mCertChain;
     private boolean mNeedsUserAttention = false;
+    private String mAlias;
+
+    public enum Reason {
+        Unknown, UseMessage, Expired, MissingCapability, RetrievalFailure
+    }
 
     public CertificateValidationException(String message) {
+        this(message, Reason.UseMessage, null);
+    }
+
+    public CertificateValidationException(Reason reason) {
+        this(null, reason, null);
+    }
+
+    public CertificateValidationException(String message, Reason reason, String alias) {
         super(message);
         /*
          * Instances created without a Throwable parameter as a cause are
          * presumed to need user attention.
          */
         mNeedsUserAttention = true;
+        mReason = reason;
+        mAlias = alias;
     }
 
     public CertificateValidationException(final String message, Throwable throwable) {
         super(message, throwable);
+        mReason = Reason.Unknown;
         scanForCause();
+    }
+
+    public String getAlias() {
+        return mAlias;
+    }
+
+    public Reason getReason() {
+        return mReason;
     }
 
     private void scanForCause() {

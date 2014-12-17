@@ -24,5 +24,4 @@ public class CertificateChainException extends CertificateException {
     public X509Certificate[] getCertChain() {
         return mCertChain;
     }
-
 }

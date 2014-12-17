@@ -56,7 +56,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.AuthType;
@@ -98,6 +97,7 @@ import org.apache.commons.io.IOUtils;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.K9MailLib.PUSH_WAKE_LOCK_TIMEOUT;
+import static com.fsck.k9.mail.CertificateValidationException.Reason;
 
 /**
  * <pre>
@@ -687,7 +687,7 @@ public class ImapStore extends RemoteStore {
             autoconfigureFolders(connection);
             connection.close();
         } catch (IOException ioe) {
-            throw new MessagingException(K9.app.getString(R.string.error_unable_to_connect), ioe);
+            throw new MessagingException("Unable to connect", ioe);
         }
     }
 
@@ -2510,7 +2510,7 @@ public class ImapStore extends RemoteStore {
                         saslAuthExternal();
                     } else {
                         // Provide notification to user of a problem authenticating using client certificates
-                        throw new CertificateValidationException(K9.app.getString(R.string.auth_external_error));
+                        throw new CertificateValidationException(Reason.MissingCapability);
                     }
                     break;
 

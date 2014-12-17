@@ -20,11 +20,12 @@ import android.security.KeyChain;
 import android.security.KeyChainException;
 import android.util.Log;
 
-import com.fsck.k9.R;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessagingException;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import static com.fsck.k9.mail.CertificateValidationException.Reason;
+import static com.fsck.k9.mail.CertificateValidationException.Reason.RetrievalFailure;
 
 /**
  * For client certificate authentication! Provide private keys and certificates
@@ -61,13 +62,9 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
             mPrivateKey = fetchPrivateKey(context, alias);
         } catch (KeyChainException e) {
             // The certificate was possibly deleted.  Notify user of error.
-            final String message = context.getString(
-                    R.string.client_certificate_retrieval_failure, alias);
-            throw new CertificateValidationException(message, e);
+            throw new CertificateValidationException(e.getMessage(), RetrievalFailure, alias);
         } catch (InterruptedException e) {
-            final String message = context.getString(
-                    R.string.client_certificate_retrieval_failure, alias);
-            throw new MessagingException(message, e);
+            throw new CertificateValidationException(e.getMessage(), RetrievalFailure, alias);
         }
     }
 
@@ -83,8 +80,7 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
                 certificate.checkValidity();
             }
         } catch (CertificateException e) {
-            // Client certificate has expired or is not yet valid
-            throw new CertificateValidationException(context.getString(R.string.client_certificate_expired, alias, e.toString()));
+            throw new CertificateValidationException(e.getMessage(), Reason.Expired, alias);
         }
 
         return chain;
