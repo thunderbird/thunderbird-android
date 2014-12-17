@@ -1,54 +1,16 @@
 package com.fsck.k9.activity;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
-import org.junit.experimental.theories.*;
-import org.junit.runner.RunWith;
-
 import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.activity.TextBodyBuilder;
 import com.fsck.k9.mail.internet.TextBody;
 
-class TestingTextBodyBuilder extends TextBodyBuilder {
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
-    public TestingTextBodyBuilder(boolean includeQuotedText,
-            boolean isDraft,
-            QuoteStyle quoteStyle,
-            boolean replyAfterQuote,
-            boolean signatureBeforeQuotedText,
-            boolean useSignature,
-            String messageText,
-            String signatureText) {
-        super(messageText);
-
-        includeQuotedText = (isDraft || includeQuotedText);
-        if (includeQuotedText) {
-            this.setIncludeQuotedText(true);
-            this.setReplyAfterQuote(quoteStyle == QuoteStyle.PREFIX && replyAfterQuote);
-        } else {
-            this.setIncludeQuotedText(false);
-        }
-
-        this.setInsertSeparator(!isDraft);
-
-        useSignature = (!isDraft && useSignature);
-        if (useSignature) {
-            this.setAppendSignature(true);
-            this.setSignature(signatureText);
-            this.setSignatureBeforeQuotedText(signatureBeforeQuotedText);
-        } else {
-            this.setAppendSignature(false);
-        }
-    }
-
-    // HtmlConverter depends on Android.
-    // So we use dummy method for tests.
-    @Override
-    protected String textToHtmlFragment(String text) {
-        return "<html>" + text + "</html>";
-    }
-}
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(Theories.class)
 public class TextBodyBuilderTest {
@@ -326,4 +288,44 @@ public class TextBodyBuilderTest {
         assertThat(insertableHtmlContent.toDebugString(), is(expectedHtmlContent));
     }
 
+
+    static class TestingTextBodyBuilder extends TextBodyBuilder {
+
+        public TestingTextBodyBuilder(boolean includeQuotedText,
+                                      boolean isDraft,
+                                      QuoteStyle quoteStyle,
+                                      boolean replyAfterQuote,
+                                      boolean signatureBeforeQuotedText,
+                                      boolean useSignature,
+                                      String messageText,
+                                      String signatureText) {
+            super(messageText);
+
+            includeQuotedText = (isDraft || includeQuotedText);
+            if (includeQuotedText) {
+                this.setIncludeQuotedText(true);
+                this.setReplyAfterQuote(quoteStyle == QuoteStyle.PREFIX && replyAfterQuote);
+            } else {
+                this.setIncludeQuotedText(false);
+            }
+
+            this.setInsertSeparator(!isDraft);
+
+            useSignature = (!isDraft && useSignature);
+            if (useSignature) {
+                this.setAppendSignature(true);
+                this.setSignature(signatureText);
+                this.setSignatureBeforeQuotedText(signatureBeforeQuotedText);
+            } else {
+                this.setAppendSignature(false);
+            }
+        }
+
+        // HtmlConverter depends on Android.
+        // So we use dummy method for tests.
+        @Override
+        protected String textToHtmlFragment(String text) {
+            return "<html>" + text + "</html>";
+        }
+    }
 }

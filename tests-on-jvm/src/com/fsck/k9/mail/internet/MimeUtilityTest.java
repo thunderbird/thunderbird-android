@@ -1,10 +1,5 @@
 package com.fsck.k9.mail.internet;
 
-import java.util.Locale;
-
-import com.fsck.k9.K9;
-import com.fsck.k9.mail.MessagingException;
-
 import junit.framework.TestCase;
 
 public class MimeUtilityTest extends TestCase {
