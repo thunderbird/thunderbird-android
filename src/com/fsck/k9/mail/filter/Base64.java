@@ -34,6 +34,22 @@ import java.nio.charset.Charset;
  * @version $Id$
  */
 public class Base64 {
+    public static String decode(String encoded) {
+        if (encoded == null) {
+            return null;
+        }
+        byte[] decoded = new Base64().decode(encoded.getBytes());
+        return new String(decoded);
+    }
+
+    public static String encode(String s) {
+        if (s == null) {
+            return null;
+        }
+        byte[] encoded = new Base64().encode(s.getBytes());
+        return new String(encoded);
+    }
+
     /**
      * Chunk size per RFC 2045 section 6.8.
      *

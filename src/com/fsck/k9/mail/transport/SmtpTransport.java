@@ -3,20 +3,18 @@ package com.fsck.k9.mail.transport;
 
 import android.util.Log;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
-import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.local.LocalMessage;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.internet.CharsetSupport;
+import com.fsck.k9.mail.store.StoreConfig;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
 import javax.net.ssl.SSLException;
 
@@ -27,6 +25,9 @@ import java.io.OutputStream;
 import java.net.*;
 import java.security.GeneralSecurityException;
 import java.util.*;
+
+import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_SMTP;
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public class SmtpTransport extends Transport {
     public static final String TRANSPORT_TYPE = "SMTP";
@@ -95,19 +96,19 @@ public class SmtpTransport extends Transport {
             String[] userInfoParts = smtpUri.getUserInfo().split(":");
             if (userInfoParts.length == 1) {
                 authType = AuthType.PLAIN;
-                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                username = decodeUtf8(userInfoParts[0]);
             } else if (userInfoParts.length == 2) {
                 authType = AuthType.PLAIN;
-                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
-                password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                username = decodeUtf8(userInfoParts[0]);
+                password = decodeUtf8(userInfoParts[1]);
             } else if (userInfoParts.length == 3) {
                 // NOTE: In SmptTransport URIs, the authType comes last!
                 authType = AuthType.valueOf(userInfoParts[2]);
-                username = UrlEncodingHelper.decodeUtf8(userInfoParts[0]);
+                username = decodeUtf8(userInfoParts[0]);
                 if (authType == AuthType.EXTERNAL) {
-                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                    clientCertificateAlias = decodeUtf8(userInfoParts[1]);
                 } else {
-                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[1]);
+                    password = decodeUtf8(userInfoParts[1]);
                 }
             }
         }
@@ -124,16 +125,16 @@ public class SmtpTransport extends Transport {
      *
      * @return A SmtpTransport URI that holds the same information as the {@code server} parameter.
      *
-     * @see Account#getTransportUri()
+     * @see com.fsck.k9.mail.store.StoreConfig#getTransportUri()
      * @see SmtpTransport#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
         String userEnc = (server.username != null) ?
-                UrlEncodingHelper.encodeUtf8(server.username) : "";
+                encodeUtf8(server.username) : "";
         String passwordEnc = (server.password != null) ?
-                UrlEncodingHelper.encodeUtf8(server.password) : "";
+                encodeUtf8(server.password) : "";
         String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
+                encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -149,7 +150,7 @@ public class SmtpTransport extends Transport {
                 break;
         }
 
-        String userInfo = null;
+        String userInfo;
         AuthType authType = server.authenticationType;
         // NOTE: authType is append at last item, in contrast to ImapStore and Pop3Store!
         if (authType != null) {
@@ -183,10 +184,10 @@ public class SmtpTransport extends Transport {
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
 
-    public SmtpTransport(Account account) throws MessagingException {
+    public SmtpTransport(StoreConfig storeConfig) throws MessagingException {
         ServerSettings settings;
         try {
-            settings = decodeUri(account.getTransportUri());
+            settings = decodeUri(storeConfig.getTransportUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding transport URI", e);
         }
@@ -305,8 +306,8 @@ public class SmtpTransport extends Transport {
                 try {
                     mLargestAcceptableMessage = Integer.parseInt(extensions.get("SIZE"));
                 } catch (Exception e) {
-                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
-                        Log.d(K9.LOG_TAG, "Tried to parse " + extensions.get("SIZE") + " and get an int", e);
+                    if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
+                        Log.d(LOG_TAG, "Tried to parse " + extensions.get("SIZE") + " and get an int", e);
                     }
                 }
             }
@@ -438,14 +439,14 @@ public class SmtpTransport extends Transport {
                 extensions.put(pair[0].toUpperCase(Locale.US), pair.length == 1 ? "" : pair[1]);
             }
         } catch (NegativeSmtpReplyException e) {
-            if (K9.DEBUG) {
-                Log.v(K9.LOG_TAG, "Server doesn't support the EHLO command. Trying HELO...");
+            if (K9MailLib.isDebug()) {
+                Log.v(LOG_TAG, "Server doesn't support the EHLO command. Trying HELO...");
             }
 
             try {
                 executeSimpleCommand("HELO " + host);
             } catch (NegativeSmtpReplyException e2) {
-                Log.w(K9.LOG_TAG, "Server doesn't support the HELO command. Continuing anyway.");
+                Log.w(LOG_TAG, "Server doesn't support the HELO command. Continuing anyway.");
             }
         }
         return extensions;
@@ -465,7 +466,7 @@ public class SmtpTransport extends Transport {
             new HashMap<String, List<String>>();
         for (Address address : addresses) {
             String addressString = address.getAddress();
-            String charset = MimeUtility.getCharsetFromAddress(addressString);
+            String charset = CharsetSupport.getCharsetFromAddress(addressString);
             List<String> addressesOfCharset = charsetAddressesMap.get(charset);
             if (addressesOfCharset == null) {
                 addressesOfCharset = new ArrayList<String>();
@@ -495,7 +496,7 @@ public class SmtpTransport extends Transport {
         }
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
-        if (mLargestAcceptableMessage > 0 && ((LocalMessage)message).hasAttachments()) {
+        if (mLargestAcceptableMessage > 0 && message.hasAttachments()) {
             if (message.calculateSize() > mLargestAcceptableMessage) {
                 MessagingException me = new MessagingException("Message too large for server");
                 //TODO this looks rather suspicious... shouldn't it be true?
@@ -529,7 +530,7 @@ public class SmtpTransport extends Transport {
             // "5xx text" -responses are permanent failures
             String msg = e.getMessage();
             if (msg != null && msg.startsWith("5")) {
-                Log.w(K9.LOG_TAG, "handling 5xx SMTP error code as a permanent failure");
+                Log.w(LOG_TAG, "handling 5xx SMTP error code as a permanent failure");
                 possibleSend = false;
             }
 
@@ -582,21 +583,21 @@ public class SmtpTransport extends Transport {
             }
         }
         String ret = sb.toString();
-        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP)
-            Log.d(K9.LOG_TAG, "SMTP <<< " + ret);
+        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP)
+            Log.d(LOG_TAG, "SMTP <<< " + ret);
 
         return ret;
     }
 
     private void writeLine(String s, boolean sensitive) throws IOException {
-        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP) {
+        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
             final String commandToLog;
-            if (sensitive && !K9.DEBUG_SENSITIVE) {
+            if (sensitive && !K9MailLib.isDebugSensitive()) {
                 commandToLog = "SMTP >>> *sensitive*";
             } else {
                 commandToLog = "SMTP >>> " + s;
             }
-            Log.d(K9.LOG_TAG, commandToLog);
+            Log.d(LOG_TAG, commandToLog);
         }
 
         byte[] data = s.concat("\r\n").getBytes();
@@ -701,8 +702,8 @@ public class SmtpTransport extends Transport {
         AuthenticationFailedException, IOException {
         try {
             executeSimpleCommand("AUTH LOGIN");
-            executeSimpleCommand(Utility.base64Encode(username), true);
-            executeSimpleCommand(Utility.base64Encode(password), true);
+            executeSimpleCommand(Base64.encode(username), true);
+            executeSimpleCommand(Base64.encode(password), true);
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == 535) {
                 // Authentication credentials invalid
@@ -716,7 +717,7 @@ public class SmtpTransport extends Transport {
 
     private void saslAuthPlain(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
-        String data = Utility.base64Encode("\000" + username + "\000" + password);
+        String data = Base64.encode("\000" + username + "\000" + password);
         try {
             executeSimpleCommand("AUTH PLAIN " + data, true);
         } catch (NegativeSmtpReplyException exception) {
@@ -756,7 +757,7 @@ public class SmtpTransport extends Transport {
     private void saslAuthExternal(String username) throws MessagingException, IOException {
         executeSimpleCommand(
                 String.format("AUTH EXTERNAL %s",
-                        Utility.base64Encode(username)), false);
+                        Base64.encode(username)), false);
     }
 
     /**

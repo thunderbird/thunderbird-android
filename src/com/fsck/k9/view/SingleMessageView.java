@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLDecoder;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -57,8 +56,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.local.LocalAttachmentBodyPart;
-import com.fsck.k9.mail.store.local.LocalMessage;
+import com.fsck.k9.mailstore.LocalAttachmentBodyPart;
+import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
 import org.apache.commons.io.IOUtils;

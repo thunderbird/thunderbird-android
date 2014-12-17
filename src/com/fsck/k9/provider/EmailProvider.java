@@ -10,11 +10,11 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.cache.EmailProviderCacheCursor;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.local.LockableDatabase;
-import com.fsck.k9.mail.store.local.LockableDatabase.DbCallback;
-import com.fsck.k9.mail.store.local.LockableDatabase.WrappedException;
-import com.fsck.k9.mail.store.UnavailableStorageException;
-import com.fsck.k9.mail.store.local.LocalStore;
+import com.fsck.k9.mailstore.LockableDatabase;
+import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
+import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import com.fsck.k9.mailstore.UnavailableStorageException;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.search.SqlQueryBuilder;
 
 import android.content.ContentProvider;
@@ -357,6 +357,8 @@ public class EmailProvider extends ContentProvider {
             });
         } catch (UnavailableStorageException e) {
             throw new RuntimeException("Storage not available", e);
+        } catch (MessagingException e) {
+            throw new RuntimeException("messaging exception", e);
         }
     }
 
@@ -427,6 +429,8 @@ public class EmailProvider extends ContentProvider {
             });
         } catch (UnavailableStorageException e) {
             throw new RuntimeException("Storage not available", e);
+        } catch (MessagingException e) {
+            throw new RuntimeException("messaging exception", e);
         }
     }
 
@@ -532,7 +536,10 @@ public class EmailProvider extends ContentProvider {
             });
         } catch (UnavailableStorageException e) {
             throw new RuntimeException("Storage not available", e);
+        } catch (MessagingException e) {
+            throw new RuntimeException("messaging exception", e);
         }
+
     }
 
     private Cursor getAccountStats(String accountUuid, String[] columns,
@@ -594,7 +601,10 @@ public class EmailProvider extends ContentProvider {
             });
         }  catch (UnavailableStorageException e) {
             throw new RuntimeException("Storage not available", e);
+        } catch (MessagingException e) {
+            throw new RuntimeException("messaging exception", e);
         }
+
     }
 
     private Account getAccount(String accountUuid) {

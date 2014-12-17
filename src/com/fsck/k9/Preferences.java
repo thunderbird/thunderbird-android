@@ -13,7 +13,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Editor;
 import com.fsck.k9.preferences.Storage;
 
@@ -121,7 +122,12 @@ public class Preferences {
             accountsInOrder.remove(account);
         }
 
-        Store.removeAccount(account);
+        try {
+            RemoteStore.removeInstance(account);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Failed to reset remote store for account " + account.getUuid(), e);
+        }
+        LocalStore.removeAccount(account);
 
         account.deleteCertificates();
         account.delete(this);

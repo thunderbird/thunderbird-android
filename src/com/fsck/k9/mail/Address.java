@@ -3,6 +3,7 @@ package com.fsck.k9.mail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.codec.EncoderUtil;
@@ -10,33 +11,15 @@ import org.apache.james.mime4j.dom.address.Mailbox;
 import org.apache.james.mime4j.dom.address.MailboxList;
 import org.apache.james.mime4j.field.address.AddressBuilder;
 
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.Utility;
-
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public class Address {
-    /**
-     * If the number of addresses exceeds this value the addresses aren't
-     * resolved to the names of Android contacts.
-     *
-     * <p>
-     * TODO: This number was chosen arbitrarily and should be determined by
-     * performance tests.
-     * </p>
-     *
-     * @see Address#toFriendly(Address[], Contacts)
-     */
-    private static final int TOO_MANY_ADDRESSES = 50;
+    private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
 
     /**
      * Immutable empty {@link Address} array
@@ -162,12 +145,12 @@ public class Address {
                     Mailbox mailbox = (Mailbox)address;
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
                 } else {
-                    Log.e(K9.LOG_TAG, "Unknown address type from Mime4J: "
+                    Log.e(LOG_TAG, "Unknown address type from Mime4J: "
                             + address.getClass().toString());
                 }
             }
         } catch (MimeException pe) {
-            Log.e(K9.LOG_TAG, "MimeException in Address.parse()", pe);
+            Log.e(LOG_TAG, "MimeException in Address.parse()", pe);
             //but we do an silent failover : we just use the given string as name with empty address
             addresses.add(new Address(null, addressList, false));
         }
@@ -198,7 +181,7 @@ public class Address {
     @Override
     public String toString() {
         if (!TextUtils.isEmpty(mPersonal)) {
-            return Utility.quoteAtoms(mPersonal) + " <" + mAddress + ">";
+            return quoteAtoms(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
         }
@@ -233,77 +216,6 @@ public class Address {
         return sb.toString();
     }
 
-    /**
-     * Returns either the personal portion of the Address or the address portion if the personal
-     * is not available.
-     * @return
-     */
-    public CharSequence toFriendly() {
-        return toFriendly((Contacts)null);
-    }
-
-    /**
-     * Returns the name of the contact this email address belongs to if
-     * the {@link Contacts contacts} parameter is not {@code null} and a
-     * contact is found. Otherwise the personal portion of the {@link Address}
-     * is returned. If that isn't available either, the email address is
-     * returned.
-     *
-     * @param contacts
-     *         A {@link Contacts} instance or {@code null}.
-     * @return
-     *         A "friendly" name for this {@link Address}.
-     */
-    public CharSequence toFriendly(final Contacts contacts) {
-        if (!K9.showCorrespondentNames()) {
-            return mAddress;
-
-        } else if (contacts != null) {
-            final String name = contacts.getNameForAddress(mAddress);
-
-            // TODO: The results should probably be cached for performance reasons.
-
-            if (name != null) {
-                if (K9.changeContactNameColor()) {
-                    final SpannableString coloredName = new SpannableString(name);
-                    coloredName.setSpan(new ForegroundColorSpan(K9.getContactNameColor()),
-                                        0,
-                                        coloredName.length(),
-                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                       );
-                    return coloredName;
-                } else {
-                    return name;
-                }
-            }
-        }
-
-        return (!TextUtils.isEmpty(mPersonal)) ? mPersonal : mAddress;
-    }
-
-    public static CharSequence toFriendly(Address[] addresses) {
-        return toFriendly(addresses, null);
-    }
-
-    public static CharSequence toFriendly(Address[] addresses, Contacts contacts) {
-        if (addresses == null) {
-            return null;
-        }
-
-        if (addresses.length >= TOO_MANY_ADDRESSES) {
-            // Don't look up contacts if the number of addresses is very high.
-            contacts = null;
-        }
-
-        SpannableStringBuilder sb = new SpannableStringBuilder();
-        for (int i = 0; i < addresses.length; i++) {
-            sb.append(addresses[i].toFriendly(contacts));
-            if (i < addresses.length - 1) {
-                sb.append(',');
-            }
-        }
-        return sb;
-    }
 
     /**
      * Unpacks an address list previously packed with packAddressList()
@@ -367,5 +279,45 @@ public class Address {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * Quote a string, if necessary, based upon the definition of an "atom," as defined by RFC2822
+     * (http://tools.ietf.org/html/rfc2822#section-3.2.4). Strings that consist purely of atoms are
+     * left unquoted; anything else is returned as a quoted string.
+     * @param text String to quote.
+     * @return Possibly quoted string.
+     */
+    public static String quoteAtoms(final String text) {
+        if (ATOM.matcher(text).matches()) {
+            return text;
+        } else {
+            return quoteString(text);
+        }
+    }
+
+    /**
+     * Ensures that the given string starts and ends with the double quote character. The string is not modified in any way except to add the
+     * double quote character to start and end if it's not already there.
+     * sample -> "sample"
+     * "sample" -> "sample"
+     * ""sample"" -> "sample"
+     * "sample"" -> "sample"
+     * sa"mp"le -> "sa"mp"le"
+     * "sa"mp"le" -> "sa"mp"le"
+     * (empty string) -> ""
+     * " -> ""
+     * @param s
+     * @return
+     */
+    private static String quoteString(String s) {
+        if (s == null) {
+            return null;
+        }
+        if (!s.matches("^\".*\"$")) {
+            return "\"" + s + "\"";
+        } else {
+            return s;
+        }
     }
 }

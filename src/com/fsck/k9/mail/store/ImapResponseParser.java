@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class ImapResponseParser {
+class ImapResponseParser {
     private static final SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z", Locale.US);
     private static final SimpleDateFormat badDateTimeFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US);
     private static final SimpleDateFormat badDateTimeFormat2 = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.US);
@@ -293,7 +293,7 @@ public class ImapResponseParser {
             } catch (Exception e) {
                 // Catch everything else and save it for later.
                 mException = e;
-                //Log.e(K9.LOG_TAG, "parseLiteral(): Exception in callback method", e);
+                //Log.e(LOG_TAG, "parseLiteral(): Exception in callback method", e);
             }
 
             // Check if only some of the literal data was read

@@ -22,12 +22,12 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.WebDavStore;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 
@@ -376,8 +376,8 @@ public class SettingsImporter {
 
         // Write incoming server settings (storeUri)
         ServerSettings incoming = new ImportedServerSettings(account.incoming);
-        String storeUri = Store.createStoreUri(incoming);
-        putString(editor, accountKeyPrefix + Account.STORE_URI_KEY, Utility.base64Encode(storeUri));
+        String storeUri = RemoteStore.createStoreUri(incoming);
+        putString(editor, accountKeyPrefix + Account.STORE_URI_KEY, Base64.encode(storeUri));
 
         // Mark account as disabled if the AuthType isn't EXTERNAL and the
         // settings file didn't contain a password
@@ -393,7 +393,7 @@ public class SettingsImporter {
             // Write outgoing server settings (transportUri)
             ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
             String transportUri = Transport.createTransportUri(outgoing);
-            putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Utility.base64Encode(transportUri));
+            putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Base64.encode(transportUri));
 
             /*
              * Mark account as disabled if the settings file contained a

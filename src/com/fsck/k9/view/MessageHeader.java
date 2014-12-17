@@ -217,9 +217,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
 
     public void populate(final Message message, final Account account) throws MessagingException {
         final Contacts contacts = K9.showContactName() ? mContacts : null;
-        final CharSequence from = Address.toFriendly(message.getFrom(), contacts);
-        final CharSequence to = Address.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
-        final CharSequence cc = Address.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
+        final CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
+        final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
+        final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
 
         Address[] fromAddrs = message.getFrom();
         Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);

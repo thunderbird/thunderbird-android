@@ -6,14 +6,13 @@ import java.util.Map;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.store.ImapStore;
+
 import junit.framework.TestCase;
 
 public class ImapStoreUriTest extends TestCase {
     public void testDecodeStoreUriImapAllExtras() {
         String uri = "imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix";
-        ServerSettings settings = Store.decodeStoreUri(uri);
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -26,7 +25,7 @@ public class ImapStoreUriTest extends TestCase {
 
     public void testDecodeStoreUriImapNoExtras() {
         String uri = "imap://PLAIN:user:pass@server:143/";
-        ServerSettings settings = Store.decodeStoreUri(uri);
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -38,7 +37,7 @@ public class ImapStoreUriTest extends TestCase {
 
     public void testDecodeStoreUriImapPrefixOnly() {
         String uri = "imap://PLAIN:user:pass@server:143/customPathPrefix";
-        ServerSettings settings = Store.decodeStoreUri(uri);
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -51,7 +50,7 @@ public class ImapStoreUriTest extends TestCase {
 
     public void testDecodeStoreUriImapEmptyPrefix() {
         String uri = "imap://PLAIN:user:pass@server:143/0%7C";
-        ServerSettings settings = Store.decodeStoreUri(uri);
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -64,7 +63,7 @@ public class ImapStoreUriTest extends TestCase {
 
     public void testDecodeStoreUriImapAutodetectAndPrefix() {
         String uri = "imap://PLAIN:user:pass@server:143/1%7CcustomPathPrefix";
-        ServerSettings settings = Store.decodeStoreUri(uri);
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -84,7 +83,7 @@ public class ImapStoreUriTest extends TestCase {
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
-        String uri = Store.createStoreUri(settings);
+        String uri = RemoteStore.createStoreUri(settings);
 
         assertEquals("imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix", uri);
     }
@@ -97,7 +96,7 @@ public class ImapStoreUriTest extends TestCase {
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
-        String uri = Store.createStoreUri(settings);
+        String uri = RemoteStore.createStoreUri(settings);
 
         assertEquals("imap://PLAIN:user:pass@server:143/0%7C", uri);
     }
@@ -106,7 +105,7 @@ public class ImapStoreUriTest extends TestCase {
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null);
 
-        String uri = Store.createStoreUri(settings);
+        String uri = RemoteStore.createStoreUri(settings);
 
         assertEquals("imap://PLAIN:user:pass@server:143/1%7C", uri);
     }
@@ -118,7 +117,7 @@ public class ImapStoreUriTest extends TestCase {
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
-        String uri = Store.createStoreUri(settings);
+        String uri = RemoteStore.createStoreUri(settings);
 
         assertEquals("imap://PLAIN:user:pass@server:143/1%7C", uri);
     }

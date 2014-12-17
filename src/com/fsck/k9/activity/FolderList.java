@@ -55,8 +55,7 @@ import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.local.LocalFolder;
+import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
@@ -749,20 +748,14 @@ public class FolderList extends K9ListActivity {
                     Account.FolderMode aMode = account.getFolderDisplayMode();
                     Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
                     for (Folder folder : folders) {
-                        try {
-                            folder.refresh(prefs);
+                        Folder.FolderClass fMode = folder.getDisplayClass();
 
-                            Folder.FolderClass fMode = folder.getDisplayClass();
-
-                            if ((aMode == Account.FolderMode.FIRST_CLASS && fMode != Folder.FolderClass.FIRST_CLASS)
-                                    || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-                                        fMode != Folder.FolderClass.FIRST_CLASS &&
-                                        fMode != Folder.FolderClass.SECOND_CLASS)
-                            || (aMode == Account.FolderMode.NOT_SECOND_CLASS && fMode == Folder.FolderClass.SECOND_CLASS)) {
-                                continue;
-                            }
-                        } catch (MessagingException me) {
-                            Log.e(K9.LOG_TAG, "Couldn't get prefs to check for displayability of folder " + folder.getName(), me);
+                        if ((aMode == FolderMode.FIRST_CLASS && fMode != Folder.FolderClass.FIRST_CLASS)
+                                || (aMode == FolderMode.FIRST_AND_SECOND_CLASS &&
+                                    fMode != Folder.FolderClass.FIRST_CLASS &&
+                                    fMode != Folder.FolderClass.SECOND_CLASS)
+                        || (aMode == FolderMode.NOT_SECOND_CLASS && fMode == Folder.FolderClass.SECOND_CLASS)) {
+                            continue;
                         }
 
                         FolderInfoHolder holder = null;

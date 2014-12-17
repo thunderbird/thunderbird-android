@@ -8,11 +8,11 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mailstore.LocalFolder;
+import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mail.filter.Base64;
 
 import java.util.StringTokenizer;
 
@@ -49,9 +49,9 @@ public class MessageReference implements Parcelable {
             // Split the identity, stripping away the first two characters representing the version and delimiter.
             StringTokenizer tokens = new StringTokenizer(identity.substring(2), IDENTITY_SEPARATOR, false);
             if (tokens.countTokens() >= 3) {
-                accountUuid = Utility.base64Decode(tokens.nextToken());
-                folderName = Utility.base64Decode(tokens.nextToken());
-                uid = Utility.base64Decode(tokens.nextToken());
+                accountUuid = Base64.decode(tokens.nextToken());
+                folderName = Base64.decode(tokens.nextToken());
+                uid = Base64.decode(tokens.nextToken());
 
                 if (tokens.hasMoreTokens()) {
                     final String flagString = tokens.nextToken();
@@ -80,11 +80,11 @@ public class MessageReference implements Parcelable {
 
         refString.append(IDENTITY_VERSION_1);
         refString.append(IDENTITY_SEPARATOR);
-        refString.append(Utility.base64Encode(accountUuid));
+        refString.append(Base64.encode(accountUuid));
         refString.append(IDENTITY_SEPARATOR);
-        refString.append(Utility.base64Encode(folderName));
+        refString.append(Base64.encode(folderName));
         refString.append(IDENTITY_SEPARATOR);
-        refString.append(Utility.base64Encode(uid));
+        refString.append(Base64.encode(uid));
         if (flag != null) {
             refString.append(IDENTITY_SEPARATOR);
             refString.append(flag.name());
@@ -128,13 +128,13 @@ public class MessageReference implements Parcelable {
                '}';
     }
 
-    public Message restoreToLocalMessage(Context context) {
+    public LocalMessage restoreToLocalMessage(Context context) {
         try {
             Account account = Preferences.getPreferences(context).getAccount(accountUuid);
             if (account != null) {
-                Folder folder = account.getLocalStore().getFolder(folderName);
+                LocalFolder folder = account.getLocalStore().getFolder(folderName);
                 if (folder != null) {
-                    Message message = folder.getMessage(uid);
+                    LocalMessage message = folder.getMessage(uid);
                     if (message != null) {
                         return message;
                     } else {

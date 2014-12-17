@@ -1,8 +1,6 @@
 
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.helper.Utility;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -97,7 +95,7 @@ public class MimeHeader {
     public void writeTo(OutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         for (Field field : mFields) {
-            if (!Utility.arrayContains(writeOmitFields, field.name)) {
+            if (!Arrays.asList(writeOmitFields).contains(field.name)) {
                 String v = field.value;
 
                 if (hasToBeEncoded(v)) {

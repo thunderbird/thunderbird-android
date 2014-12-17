@@ -280,22 +280,16 @@ public class ChooseFolder extends K9ListActivity {
                         mAccount.getInboxFolderName().equalsIgnoreCase(name)))) {
                     continue;
                 }
-                try {
-                    folder.refresh(prefs);
-                    Folder.FolderClass fMode = folder.getDisplayClass();
+                Folder.FolderClass fMode = folder.getDisplayClass();
 
-                    if ((aMode == Account.FolderMode.FIRST_CLASS &&
-                            fMode != Folder.FolderClass.FIRST_CLASS) || (
-                                aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-                                fMode != Folder.FolderClass.FIRST_CLASS &&
-                                fMode != Folder.FolderClass.SECOND_CLASS) || (
-                                aMode == Account.FolderMode.NOT_SECOND_CLASS &&
-                                fMode == Folder.FolderClass.SECOND_CLASS)) {
-                        continue;
-                    }
-                } catch (MessagingException me) {
-                    Log.e(K9.LOG_TAG, "Couldn't get prefs to check for displayability of folder " +
-                            folder.getName(), me);
+                if ((aMode == FolderMode.FIRST_CLASS &&
+                        fMode != Folder.FolderClass.FIRST_CLASS) || (
+                            aMode == FolderMode.FIRST_AND_SECOND_CLASS &&
+                            fMode != Folder.FolderClass.FIRST_CLASS &&
+                            fMode != Folder.FolderClass.SECOND_CLASS) || (
+                            aMode == FolderMode.NOT_SECOND_CLASS &&
+                            fMode == Folder.FolderClass.SECOND_CLASS)) {
+                    continue;
                 }
 
                 if (folder.isInTopGroup()) {

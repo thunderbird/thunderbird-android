@@ -7,7 +7,9 @@ import java.util.regex.Pattern;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
+
 
 public class CryptoHelper {
 
@@ -37,7 +39,7 @@ public class CryptoHelper {
                 part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             }
             if (part != null) {
-                data = MimeUtility.getTextFromPart(part);
+                data = MessageExtractor.getTextFromPart(part);
             }
         } catch (MessagingException e) {
             // guess not...
@@ -60,7 +62,7 @@ public class CryptoHelper {
                 part = MimeUtility.findFirstPartByMimeType(message, "text/html");
             }
             if (part != null) {
-                data = MimeUtility.getTextFromPart(part);
+                data = MessageExtractor.getTextFromPart(part);
             }
         } catch (MessagingException e) {
             // guess not...

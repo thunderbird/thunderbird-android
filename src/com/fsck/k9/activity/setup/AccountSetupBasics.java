@@ -38,9 +38,9 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.ImapStore;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.transport.SmtpTransport;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
@@ -421,7 +421,7 @@ public class AccountSetupBasics extends K9Activity
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, user, password, clientCertificateAlias);
         ServerSettings transportServer = new ServerSettings(SmtpTransport.TRANSPORT_TYPE, "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, user, password, clientCertificateAlias);
-        String storeUri = Store.createStoreUri(storeServer);
+        String storeUri = RemoteStore.createStoreUri(storeServer);
         String transportUri = Transport.createTransportUri(transportServer);
         mAccount.setStoreUri(storeUri);
         mAccount.setTransportUri(transportUri);

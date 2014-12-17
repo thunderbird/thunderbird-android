@@ -15,9 +15,9 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.local.LocalStore;
-import com.fsck.k9.mail.store.local.LocalStore.AttachmentInfo;
-import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
+import com.fsck.k9.mailstore.StorageManager;
 
 import java.io.*;
 import java.util.List;
@@ -215,7 +215,7 @@ public class AttachmentProvider extends ContentProvider {
         final AttachmentInfo attachmentInfo;
         try {
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
-            attachmentInfo = LocalStore.getLocalInstance(account, K9.app).getAttachmentInfo(id);
+            attachmentInfo = LocalStore.getInstance(account, K9.app).getAttachmentInfo(id);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to retrieve attachment info from local store for ID: " + id, e);
             return null;
@@ -269,7 +269,7 @@ public class AttachmentProvider extends ContentProvider {
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
 
             try {
-                final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
+                final LocalStore localStore = LocalStore.getInstance(account, K9.app);
 
                 AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
                 if (FORMAT_VIEW.equals(format) && mimeType != null) {

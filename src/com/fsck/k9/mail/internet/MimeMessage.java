@@ -33,8 +33,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.store.UnavailableStorageException;
-import com.fsck.k9.K9;
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and
@@ -138,12 +136,12 @@ public class MimeMessage extends Message {
      * @param sentDate
      * @throws com.fsck.k9.mail.MessagingException
      */
-    public void addSentDate(Date sentDate) throws MessagingException {
+    public void addSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException {
         if (mDateFormat == null) {
             mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         }
 
-        if (K9.hideTimeZone()) {
+        if (hideTimeZone) {
             mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         }
 
@@ -152,9 +150,9 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setSentDate(Date sentDate) throws MessagingException {
+    public void setSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException {
         removeHeader("Date");
-        addSentDate(sentDate);
+        addSentDate(sentDate, hideTimeZone);
     }
 
     public void setInternalSentDate(Date sentDate) {
@@ -333,7 +331,7 @@ public class MimeMessage extends Message {
         return "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
     }
 
-    public void setMessageId(String messageId) throws UnavailableStorageException {
+    public void setMessageId(String messageId) throws MessagingException {
         setHeader("Message-ID", messageId);
         mMessageId = messageId;
     }
@@ -419,27 +417,27 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void addHeader(String name, String value) throws UnavailableStorageException {
+    public void addHeader(String name, String value) throws MessagingException {
         mHeader.addHeader(name, value);
     }
 
     @Override
-    public void setHeader(String name, String value) throws UnavailableStorageException {
+    public void setHeader(String name, String value) throws MessagingException {
         mHeader.setHeader(name, value);
     }
 
     @Override
-    public String[] getHeader(String name) throws UnavailableStorageException {
+    public String[] getHeader(String name) throws MessagingException {
         return mHeader.getHeader(name);
     }
 
     @Override
-    public void removeHeader(String name) throws UnavailableStorageException {
+    public void removeHeader(String name) throws MessagingException {
         mHeader.removeHeader(name);
     }
 
     @Override
-    public Set<String> getHeaderNames() throws UnavailableStorageException {
+    public Set<String> getHeaderNames() throws MessagingException {
         return mHeader.getHeaderNames();
     }
 
@@ -474,7 +472,7 @@ public class MimeMessage extends Message {
         if (mBody instanceof Multipart) {
             ((Multipart)mBody).setCharset(charset);
         } else if (mBody instanceof TextBody) {
-            MimeUtility.setCharset(charset, this);
+            CharsetSupport.setCharset(charset, this);
             ((TextBody)mBody).setCharset(charset);
         }
     }
@@ -608,28 +606,27 @@ public class MimeMessage extends Message {
     /**
      * Copy the contents of this object into another {@code MimeMessage} object.
      *
-     * @param message
-     *         The {@code MimeMessage} object to receive the contents of this instance.
+     * @param destination The {@code MimeMessage} object to receive the contents of this instance.
      */
-    protected void copy(MimeMessage message) {
-        super.copy(message);
+    protected void copy(MimeMessage destination) {
+        super.copy(destination);
 
-        message.mHeader = mHeader.clone();
+        destination.mHeader = mHeader.clone();
 
-        message.mBody = mBody;
-        message.mMessageId = mMessageId;
-        message.mSentDate = mSentDate;
-        message.mDateFormat = mDateFormat;
-        message.mSize = mSize;
+        destination.mBody = mBody;
+        destination.mMessageId = mMessageId;
+        destination.mSentDate = mSentDate;
+        destination.mDateFormat = mDateFormat;
+        destination.mSize = mSize;
 
         // These arrays are not supposed to be modified, so it's okay to reuse the references
-        message.mFrom = mFrom;
-        message.mTo = mTo;
-        message.mCc = mCc;
-        message.mBcc = mBcc;
-        message.mReplyTo = mReplyTo;
-        message.mReferences = mReferences;
-        message.mInReplyTo = mInReplyTo;
+        destination.mFrom = mFrom;
+        destination.mTo = mTo;
+        destination.mCc = mCc;
+        destination.mBcc = mBcc;
+        destination.mReplyTo = mReplyTo;
+        destination.mReferences = mReferences;
+        destination.mInReplyTo = mInReplyTo;
     }
 
     @Override

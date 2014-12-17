@@ -35,8 +35,9 @@ import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeUtility;
 
+import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.internet.MimeUtility;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -215,8 +216,7 @@ public class MessageOpenPgpView extends LinearLayout {
         } else {
             try {
                 // check for PGP/MIME encryption
-                Part pgp = MimeUtility
-                        .findFirstPartByMimeType(message, "application/pgp-encrypted");
+                Part pgp = MimeUtility.findFirstPartByMimeType(message, "application/pgp-encrypted");
                 if (pgp != null) {
                     Toast.makeText(mContext, R.string.pgp_mime_unsupported, Toast.LENGTH_LONG)
                             .show();
@@ -246,7 +246,7 @@ public class MessageOpenPgpView extends LinearLayout {
                         part = MimeUtility.findFirstPartByMimeType(message, "text/html");
                     }
                     if (part != null) {
-                        mData = MimeUtility.getTextFromPart(part);
+                        mData = MessageExtractor.getTextFromPart(part);
                     }
 
                     // wait for service to be bound

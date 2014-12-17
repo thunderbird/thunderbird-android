@@ -3,17 +3,14 @@ package com.fsck.k9.mail.store;
 
 import android.util.Log;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.controller.MessageRetrievalListener;
-import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.net.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.MessageRetrievalListener;
 
 import javax.net.ssl.SSLException;
 
@@ -24,7 +21,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -35,7 +31,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-public class Pop3Store extends Store {
+import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+
+public class Pop3Store extends RemoteStore {
     public static final String STORE_TYPE = "POP3";
 
     private static final String STLS_COMMAND = "STLS";
@@ -128,12 +127,12 @@ public class Pop3Store extends Store {
                 passwordIndex++;
                 authType = AuthType.valueOf(userInfoParts[0]);
             }
-            username = UrlEncodingHelper.decodeUtf8(userInfoParts[userIndex]);
+            username = decodeUtf8(userInfoParts[userIndex]);
             if (userInfoParts.length > passwordIndex) {
                 if (authType == AuthType.EXTERNAL) {
-                    clientCertificateAlias = UrlEncodingHelper.decodeUtf8(userInfoParts[passwordIndex]);
+                    clientCertificateAlias = decodeUtf8(userInfoParts[passwordIndex]);
                 } else {
-                    password = UrlEncodingHelper.decodeUtf8(userInfoParts[passwordIndex]);
+                    password = decodeUtf8(userInfoParts[passwordIndex]);
                 }
             }
         }
@@ -154,11 +153,11 @@ public class Pop3Store extends Store {
      * @see Pop3Store#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
-        String userEnc = UrlEncodingHelper.encodeUtf8(server.username);
+        String userEnc = encodeUtf8(server.username);
         String passwordEnc = (server.password != null) ?
-                    UrlEncodingHelper.encodeUtf8(server.password) : "";
+                    encodeUtf8(server.password) : "";
         String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
-                    UrlEncodingHelper.encodeUtf8(server.clientCertificateAlias) : "";
+                    encodeUtf8(server.clientCertificateAlias) : "";
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -209,12 +208,12 @@ public class Pop3Store extends Store {
     private boolean mTopNotSupported;
 
 
-    public Pop3Store(Account account) throws MessagingException {
-        super(account);
+    public Pop3Store(StoreConfig storeConfig) throws MessagingException {
+        super(storeConfig);
 
         ServerSettings settings;
         try {
-            settings = decodeUri(mAccount.getStoreUri());
+            settings = decodeUri(storeConfig.getStoreUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding store URI", e);
         }
@@ -243,13 +242,13 @@ public class Pop3Store extends Store {
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folders = new LinkedList<Folder>();
-        folders.add(getFolder(mAccount.getInboxFolderName()));
+        folders.add(getFolder(mStoreConfig.getInboxFolderName()));
         return folders;
     }
 
     @Override
     public void checkSettings() throws MessagingException {
-        Pop3Folder folder = new Pop3Folder(mAccount.getInboxFolderName());
+        Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
         folder.open(Folder.OPEN_MODE_RW);
         if (!mCapabilities.uidl) {
             /*
@@ -272,7 +271,7 @@ public class Pop3Store extends Store {
         return false;
     }
 
-    class Pop3Folder extends Folder {
+    class Pop3Folder extends Folder<Pop3Message> {
         private Socket mSocket;
         private InputStream mIn;
         private OutputStream mOut;
@@ -283,11 +282,11 @@ public class Pop3Store extends Store {
         private int mMessageCount;
 
         public Pop3Folder(String name) {
-            super(Pop3Store.this.mAccount);
+            super();
             this.mName = name;
 
-            if (mName.equalsIgnoreCase(mAccount.getInboxFolderName())) {
-                mName = mAccount.getInboxFolderName();
+            if (mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
+                mName = mStoreConfig.getInboxFolderName();
             }
         }
 
@@ -297,7 +296,7 @@ public class Pop3Store extends Store {
                 return;
             }
 
-            if (!mName.equalsIgnoreCase(mAccount.getInboxFolderName())) {
+            if (!mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
                 throw new MessagingException("Folder does not exist");
             }
 
@@ -313,7 +312,7 @@ public class Pop3Store extends Store {
                 mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
                 mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
 
-                mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
+                mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
                 if (!isOpen()) {
                     throw new MessagingException("Unable to connect socket");
                 }
@@ -328,7 +327,7 @@ public class Pop3Store extends Store {
 
                         mSocket = TrustedSocketFactory.createSocket(mSocket, mHost, mPort,
                                 mClientCertificateAlias);
-                        mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
+                        mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
                         mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
                         mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
                         if (!isOpen()) {
@@ -461,7 +460,7 @@ public class Pop3Store extends Store {
             try {
                 executeSimpleCommand(
                         String.format("AUTH EXTERNAL %s",
-                                Utility.base64Encode(mUsername)), false);
+                                Base64.encode(mUsername)), false);
             } catch (Pop3ErrorResponse e) {
                 /*
                  * Provide notification to the user of a problem authenticating
@@ -541,7 +540,7 @@ public class Pop3Store extends Store {
 
         @Override
         public boolean exists() throws MessagingException {
-            return mName.equalsIgnoreCase(mAccount.getInboxFolderName());
+            return mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName());
         }
 
         @Override
@@ -559,7 +558,7 @@ public class Pop3Store extends Store {
         }
 
         @Override
-        public Message getMessage(String uid) throws MessagingException {
+        public Pop3Message getMessage(String uid) throws MessagingException {
             Pop3Message message = mUidToMsgMap.get(uid);
             if (message == null) {
                 message = new Pop3Message(uid, this);
@@ -635,7 +634,7 @@ public class Pop3Store extends Store {
                         // response = "+OK msgNum msgUid"
                         String[] uidParts = response.split(" +");
                         if (uidParts.length < 3 || !"+OK".equals(uidParts[0])) {
-                            Log.e(K9.LOG_TAG, "ERR response: " + response);
+                            Log.e(LOG_TAG, "ERR response: " + response);
                             return;
                         }
                         String msgUid = uidParts[2];
@@ -693,8 +692,8 @@ public class Pop3Store extends Store {
             Set<String> unindexedUids = new HashSet<String>();
             for (String uid : uids) {
                 if (mUidToMsgMap.get(uid) == null) {
-                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
-                        Log.d(K9.LOG_TAG, "Need to index UID " + uid);
+                    if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
+                        Log.d(LOG_TAG, "Need to index UID " + uid);
                     }
                     unindexedUids.add(uid);
                 }
@@ -719,8 +718,8 @@ public class Pop3Store extends Store {
                     Integer msgNum = Integer.valueOf(uidParts[0]);
                     String msgUid = uidParts[1];
                     if (unindexedUids.contains(msgUid)) {
-                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
-                            Log.d(K9.LOG_TAG, "Got msgNum " + msgNum + " for UID " + msgUid);
+                        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
+                            Log.d(LOG_TAG, "Got msgNum " + msgNum + " for UID " + msgUid);
                         }
 
                         Pop3Message message = mUidToMsgMap.get(msgUid);
@@ -734,8 +733,8 @@ public class Pop3Store extends Store {
         }
 
         private void indexMessage(int msgNum, Pop3Message message) {
-            if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
-                Log.d(K9.LOG_TAG, "Adding index for UID " + message.getUid() + " to msgNum " + msgNum);
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
+                Log.d(LOG_TAG, "Adding index for UID " + message.getUid() + " to msgNum " + msgNum);
             }
             mMsgNumToMsgMap.put(msgNum, message);
             mUidToMsgMap.put(message.getUid(), message);
@@ -761,7 +760,7 @@ public class Pop3Store extends Store {
          * @throws MessagingException
          */
         @Override
-        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener listener)
+        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener<Pop3Message> listener)
         throws MessagingException {
             if (messages == null || messages.isEmpty()) {
                 return;
@@ -805,9 +804,9 @@ public class Pop3Store extends Store {
                          * To convert the suggested download size we take the size
                          * divided by the maximum line size (76).
                          */
-                        if (mAccount.getMaximumAutoDownloadMessageSize() > 0) {
+                        if (mStoreConfig.getMaximumAutoDownloadMessageSize() > 0) {
                             fetchBody(pop3Message,
-                                      (mAccount.getMaximumAutoDownloadMessageSize() / 76));
+                                      (mStoreConfig.getMaximumAutoDownloadMessageSize() / 76));
                         } else {
                             fetchBody(pop3Message, -1);
                         }
@@ -819,7 +818,7 @@ public class Pop3Store extends Store {
                         pop3Message.setBody(null);
                     }
                     if (listener != null && !(fp.contains(FetchProfile.Item.ENVELOPE) && fp.size() == 1)) {
-                        listener.messageFinished(message, i, count);
+                        listener.messageFinished(pop3Message, i, count);
                     }
                 } catch (IOException ioe) {
                     throw new MessagingException("Unable to fetch message", ioe);
@@ -906,8 +905,8 @@ public class Pop3Store extends Store {
             // Try hard to use the TOP command if we're not asked to download the whole message.
             if (lines != -1 && (!mTopNotSupported || mCapabilities.top)) {
                 try {
-                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3 && !mCapabilities.top) {
-                        Log.d(K9.LOG_TAG, "This server doesn't support the CAPA command. " +
+                    if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3 && !mCapabilities.top) {
+                        Log.d(LOG_TAG, "This server doesn't support the CAPA command. " +
                               "Checking to see if the TOP command is supported nevertheless.");
                     }
 
@@ -921,8 +920,8 @@ public class Pop3Store extends Store {
                         // The TOP command should be supported but something went wrong.
                         throw e;
                     } else {
-                        if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
-                            Log.d(K9.LOG_TAG, "The server really doesn't support the TOP " +
+                        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
+                            Log.d(LOG_TAG, "The server really doesn't support the TOP " +
                                   "command. Using RETR instead.");
                         }
 
@@ -1029,8 +1028,8 @@ public class Pop3Store extends Store {
                 }
             } while ((d = mIn.read()) != -1);
             String ret = sb.toString();
-            if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
-                Log.d(K9.LOG_TAG, "<<< " + ret);
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
+                Log.d(LOG_TAG, "<<< " + ret);
             }
             return ret;
         }
@@ -1122,12 +1121,12 @@ public class Pop3Store extends Store {
                 open(Folder.OPEN_MODE_RW);
 
                 if (command != null) {
-                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3) {
-                        if (sensitive && !K9.DEBUG_SENSITIVE) {
-                            Log.d(K9.LOG_TAG, ">>> "
+                    if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
+                        if (sensitive && !K9MailLib.isDebugSensitive()) {
+                            Log.d(LOG_TAG, ">>> "
                                   + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
                         } else {
-                            Log.d(K9.LOG_TAG, ">>> " + command);
+                            Log.d(LOG_TAG, ">>> " + command);
                         }
                     }
 
@@ -1199,7 +1198,7 @@ public class Pop3Store extends Store {
             //   }
 //         catch (MessagingException me)
 //         {
-//          Log.w(K9.LOG_TAG, "Could not delete non-existent message", me);
+//          Log.w(LOG_TAG, "Could not delete non-existent message", me);
 //         }
         }
     }

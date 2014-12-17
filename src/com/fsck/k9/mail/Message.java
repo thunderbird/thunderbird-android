@@ -2,26 +2,20 @@
 package com.fsck.k9.mail;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 
 import android.util.Log;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
-import com.fsck.k9.mail.store.UnavailableStorageException;
+
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
 public abstract class Message implements Part, CompositeBody {
-
-    private MessageReference mReference = null;
-
     public enum RecipientType {
         TO, CC, BCC,
     }
@@ -54,9 +48,8 @@ public abstract class Message implements Part, CompositeBody {
             return false;
         }
         Message other = (Message)o;
-        return (mUid.equals(other.getUid())
-                && mFolder.getName().equals(other.getFolder().getName())
-                && mFolder.getAccount().getUuid().equals(other.getFolder().getAccount().getUuid()));
+        return (getUid().equals(other.getUid())
+                && getFolder().getName().equals(other.getFolder().getName()));
     }
 
     @Override
@@ -65,7 +58,6 @@ public abstract class Message implements Part, CompositeBody {
 
         int result = 1;
         result = MULTIPLIER * result + mFolder.getName().hashCode();
-        result = MULTIPLIER * result + mFolder.getAccount().getUuid().hashCode();
         result = MULTIPLIER * result + mUid.hashCode();
         return result;
     }
@@ -75,7 +67,6 @@ public abstract class Message implements Part, CompositeBody {
     }
 
     public void setUid(String uid) {
-        mReference = null;
         this.mUid = uid;
     }
 
@@ -97,7 +88,7 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract Date getSentDate();
 
-    public abstract void setSentDate(Date sentDate) throws MessagingException;
+    public abstract void setSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException;
 
     public abstract Address[] getRecipients(RecipientType type) throws MessagingException;
 
@@ -126,28 +117,7 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract void setReferences(String references) throws MessagingException;
 
-    @Override
-    public abstract Body getBody();
-
-    @Override
-    public abstract String getContentType() throws MessagingException;
-
-    @Override
-    public abstract void addHeader(String name, String value) throws MessagingException;
-
-    @Override
-    public abstract void setHeader(String name, String value) throws MessagingException;
-
-    @Override
-    public abstract String[] getHeader(String name) throws MessagingException;
-
-    public abstract Set<String> getHeaderNames() throws UnavailableStorageException;
-
-    @Override
-    public abstract void removeHeader(String name) throws MessagingException;
-
-    @Override
-    public abstract void setBody(Body body) throws MessagingException;
+    public abstract Set<String> getHeaderNames() throws MessagingException;
 
     public abstract long getId();
 
@@ -249,19 +219,9 @@ public abstract class Message implements Part, CompositeBody {
     public void destroy() throws MessagingException {}
 
     @Override
-    public abstract void setEncoding(String encoding) throws UnavailableStorageException, MessagingException;
+    public abstract void setEncoding(String encoding) throws MessagingException;
 
     public abstract void setCharset(String charset) throws MessagingException;
-
-    public MessageReference makeMessageReference() {
-        if (mReference == null) {
-            mReference = new MessageReference();
-            mReference.accountUuid = getFolder().getAccount().getUuid();
-            mReference.folderName = getFolder().getName();
-            mReference.uid = mUid;
-        }
-        return mReference;
-    }
 
     public long calculateSize() {
         try {
@@ -272,9 +232,9 @@ public abstract class Message implements Part, CompositeBody {
             eolOut.flush();
             return out.getCount();
         } catch (IOException e) {
-            Log.e(K9.LOG_TAG, "Failed to calculate a message size", e);
+            Log.e(LOG_TAG, "Failed to calculate a message size", e);
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Failed to calculate a message size", e);
+            Log.e(LOG_TAG, "Failed to calculate a message size", e);
         }
         return 0;
     }
@@ -282,14 +242,12 @@ public abstract class Message implements Part, CompositeBody {
     /**
      * Copy the contents of this object into another {@code Message} object.
      *
-     * @param destination
-     *         The {@code Message} object to receive the contents of this instance.
+     * @param destination The {@code Message} object to receive the contents of this instance.
      */
     protected void copy(Message destination) {
         destination.mUid = mUid;
         destination.mInternalDate = mInternalDate;
         destination.mFolder = mFolder;
-        destination.mReference = mReference;
 
         // mFlags contents can change during the object lifetime, so copy the Set
         destination.mFlags = EnumSet.copyOf(mFlags);
@@ -308,6 +266,5 @@ public abstract class Message implements Part, CompositeBody {
      */
     @Override
     public abstract Message clone();
-    @Override
-    public abstract void setUsing7bitTransport() throws MessagingException;
+
 }

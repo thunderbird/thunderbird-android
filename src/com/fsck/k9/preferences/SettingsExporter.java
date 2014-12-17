@@ -25,9 +25,9 @@ import android.util.Xml;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
 
@@ -223,7 +223,7 @@ public class SettingsExporter {
 
 
         // Write incoming server settings
-        ServerSettings incoming = Store.decodeStoreUri(account.getStoreUri());
+        ServerSettings incoming = RemoteStore.decodeStoreUri(account.getStoreUri());
         serializer.startTag(null, INCOMING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, incoming.type);
 

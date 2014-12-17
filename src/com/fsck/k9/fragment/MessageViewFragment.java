@@ -38,7 +38,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.store.local.LocalMessage;
+import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
@@ -75,7 +75,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     private PgpData mPgpData;
     private Account mAccount;
     private MessageReference mMessageReference;
-    private Message mMessage;
+    private LocalMessage mMessage;
     private MessagingController mController;
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
@@ -311,7 +311,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
             // Disable the delete button after it's tapped (to try to prevent
             // accidental clicks)
             mFragmentListener.disableDeleteAction();
-            Message messageToDelete = mMessage;
+            LocalMessage messageToDelete = mMessage;
             mFragmentListener.showNextMessageOrReturn();
             mController.deleteMessages(Collections.singletonList(messageToDelete), null);
         }
@@ -341,7 +341,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
     private void refileMessage(String dstFolder) {
         String srcFolder = mMessageReference.folderName;
-        Message messageToMove = mMessage;
+        LocalMessage messageToMove = mMessage;
         mFragmentListener.showNextMessageOrReturn();
         mController.moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
@@ -576,7 +576,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         @Override
         public void loadMessageForViewBodyAvailable(final Account account, String folder,
                 String uid, final Message message) {
-            if (!mMessageReference.uid.equals(uid) ||
+            if (!(message instanceof LocalMessage) ||
+                    !mMessageReference.uid.equals(uid) ||
                     !mMessageReference.folderName.equals(folder) ||
                     !mMessageReference.accountUuid.equals(account.getUuid())) {
                 return;
@@ -586,7 +587,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
                 @Override
                 public void run() {
                     try {
-                        mMessage = message;
+                        mMessage = (LocalMessage) message;
                         mMessageView.setMessage(account, (LocalMessage) message, mPgpData,
                                 mController, mListener);
                         mFragmentListener.updateMenu();
@@ -845,10 +846,10 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     }
 
     public interface MessageViewFragmentListener {
-        public void onForward(Message mMessage, PgpData mPgpData);
+        public void onForward(LocalMessage mMessage, PgpData mPgpData);
         public void disableDeleteAction();
-        public void onReplyAll(Message mMessage, PgpData mPgpData);
-        public void onReply(Message mMessage, PgpData mPgpData);
+        public void onReplyAll(LocalMessage mMessage, PgpData mPgpData);
+        public void onReply(LocalMessage mMessage, PgpData mPgpData);
         public void displayMessageSubject(String title);
         public void setProgress(boolean b);
         public void showNextMessageOrReturn();

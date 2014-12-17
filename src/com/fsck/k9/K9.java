@@ -36,9 +36,9 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.store.local.LocalStore;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.provider.UnreadWidgetProvider;
-import com.fsck.k9.security.LocalKeyStore;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -135,37 +135,6 @@ public class K9 extends Application {
      * Controlled by Preferences at run-time
      */
     public static boolean DEBUG = false;
-
-    /**
-     * Should K-9 log the conversation it has over the wire with
-     * SMTP servers?
-     */
-
-    public static boolean DEBUG_PROTOCOL_SMTP = true;
-
-    /**
-     * Should K-9 log the conversation it has over the wire with
-     * IMAP servers?
-     */
-
-    public static boolean DEBUG_PROTOCOL_IMAP = true;
-
-
-    /**
-     * Should K-9 log the conversation it has over the wire with
-     * POP3 servers?
-     */
-
-    public static boolean DEBUG_PROTOCOL_POP3 = true;
-
-    /**
-     * Should K-9 log the conversation it has over the wire with
-     * WebDAV servers?
-     */
-
-    public static boolean DEBUG_PROTOCOL_WEBDAV = true;
-
-
 
     /**
      * If this is enabled than logging that normally hides sensitive information

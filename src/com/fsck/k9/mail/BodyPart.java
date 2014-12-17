@@ -1,5 +1,5 @@
-
 package com.fsck.k9.mail;
+
 
 public abstract class BodyPart implements Part {
     private Multipart mParent;
@@ -13,7 +13,4 @@ public abstract class BodyPart implements Part {
     }
 
     public abstract void setEncoding(String encoding) throws MessagingException;
-
-    @Override
-    public abstract void setUsing7bitTransport() throws MessagingException;
 }

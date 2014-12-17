@@ -29,9 +29,12 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
-import com.fsck.k9.mail.store.StorageManager;
-import com.fsck.k9.mail.store.StorageManager.StorageProvider;
-import com.fsck.k9.mail.store.local.LocalStore;
+import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.StoreConfig;
+import com.fsck.k9.mailstore.StorageManager;
+import com.fsck.k9.mailstore.StorageManager.StorageProvider;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.StatsColumns;
 import com.fsck.k9.search.ConditionsTreeNode;
@@ -40,7 +43,7 @@ import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
-import com.fsck.k9.security.LocalKeyStore;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
 
@@ -48,7 +51,7 @@ import com.larswerkman.colorpicker.ColorPicker;
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
-public class Account implements BaseAccount {
+public class Account implements BaseAccount, StoreConfig {
     /**
      * Default value for the inbox folder (never changes for POP3 and IMAP)
      */
@@ -361,9 +364,9 @@ public class Account implements BaseAccount {
 
         SharedPreferences prefs = preferences.getPreferences();
 
-        mStoreUri = Utility.base64Decode(prefs.getString(mUuid + ".storeUri", null));
+        mStoreUri = Base64.decode(prefs.getString(mUuid + ".storeUri", null));
         mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
-        mTransportUri = Utility.base64Decode(prefs.getString(mUuid + ".transportUri", null));
+        mTransportUri = Base64.decode(prefs.getString(mUuid + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
@@ -689,9 +692,9 @@ public class Account implements BaseAccount {
             editor.putString("accountUuids", accountUuids);
         }
 
-        editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
+        editor.putString(mUuid + ".storeUri", Base64.encode(mStoreUri));
         editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
-        editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
+        editor.putString(mUuid + ".transportUri", Base64.encode(mTransportUri));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
@@ -1076,8 +1079,8 @@ public class Account implements BaseAccount {
         return mDraftsFolderName;
     }
 
-    public synchronized void setDraftsFolderName(String draftsFolderName) {
-        mDraftsFolderName = draftsFolderName;
+    public synchronized void setDraftsFolderName(String name) {
+        mDraftsFolderName = name;
     }
 
     /**
@@ -1096,8 +1099,8 @@ public class Account implements BaseAccount {
         return K9.ERROR_FOLDER_NAME;
     }
 
-    public synchronized void setSentFolderName(String sentFolderName) {
-        mSentFolderName = sentFolderName;
+    public synchronized void setSentFolderName(String name) {
+        mSentFolderName = name;
     }
 
     /**
@@ -1113,8 +1116,8 @@ public class Account implements BaseAccount {
         return mTrashFolderName;
     }
 
-    public synchronized void setTrashFolderName(String trashFolderName) {
-        mTrashFolderName = trashFolderName;
+    public synchronized void setTrashFolderName(String name) {
+        mTrashFolderName = name;
     }
 
     /**
@@ -1145,8 +1148,8 @@ public class Account implements BaseAccount {
         return mSpamFolderName;
     }
 
-    public synchronized void setSpamFolderName(String spamFolderName) {
-        mSpamFolderName = spamFolderName;
+    public synchronized void setSpamFolderName(String name) {
+        mSpamFolderName = name;
     }
 
     /**
@@ -1165,8 +1168,8 @@ public class Account implements BaseAccount {
         return mAutoExpandFolderName;
     }
 
-    public synchronized void setAutoExpandFolderName(String autoExpandFolderName) {
-        mAutoExpandFolderName = autoExpandFolderName;
+    public synchronized void setAutoExpandFolderName(String name) {
+        mAutoExpandFolderName = name;
     }
 
     public synchronized int getAccountNumber() {
@@ -1289,11 +1292,11 @@ public class Account implements BaseAccount {
     }
 
     public LocalStore getLocalStore() throws MessagingException {
-        return Store.getLocalInstance(this, K9.app);
+        return LocalStore.getInstance(this, K9.app);
     }
 
     public Store getRemoteStore() throws MessagingException {
-        return Store.getRemoteInstance(this);
+        return RemoteStore.getInstance(this);
     }
 
     // It'd be great if this actually went into the store implementation
@@ -1657,8 +1660,8 @@ public class Account implements BaseAccount {
         return mInboxFolderName;
     }
 
-    public void setInboxFolderName(String mInboxFolderName) {
-        this.mInboxFolderName = mInboxFolderName;
+    public void setInboxFolderName(String name) {
+        this.mInboxFolderName = name;
     }
 
     public synchronized boolean syncRemoteDeletions() {

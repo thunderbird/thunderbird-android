@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
-import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.internet.TextBody;
 
 public abstract class Multipart implements CompositeBody {
@@ -64,7 +64,7 @@ public abstract class Multipart implements CompositeBody {
         BodyPart part = mParts.get(0);
         Body body = part.getBody();
         if (body instanceof TextBody) {
-            MimeUtility.setCharset(charset, part);
+            CharsetSupport.setCharset(charset, part);
             ((TextBody)body).setCharset(charset);
         }
     }

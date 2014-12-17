@@ -68,7 +68,7 @@ class EncoderUtil {
         if (charset == null)
             charset = determineCharset(text);
 
-        String mimeCharset = MimeUtility.getExternalCharset(charset.name());
+        String mimeCharset = CharsetSupport.getExternalCharset(charset.name());
 
         byte[] bytes = encode(text, charset);
 

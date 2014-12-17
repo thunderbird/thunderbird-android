@@ -1,9 +1,13 @@
 
 package com.fsck.k9.mail;
 
-import com.fsck.k9.Account;
+import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.transport.SmtpTransport;
 import com.fsck.k9.mail.transport.WebDavTransport;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 public abstract class Transport {
     protected static final int SOCKET_CONNECT_TIMEOUT = 10000;
@@ -11,12 +15,12 @@ public abstract class Transport {
     // RFC 1047
     protected static final int SOCKET_READ_TIMEOUT = 300000;
 
-    public synchronized static Transport getInstance(Account account) throws MessagingException {
-        String uri = account.getTransportUri();
+    public synchronized static Transport getInstance(StoreConfig storeConfig) throws MessagingException {
+        String uri = storeConfig.getTransportUri();
         if (uri.startsWith("smtp")) {
-            return new SmtpTransport(account);
+            return new SmtpTransport(storeConfig);
         } else if (uri.startsWith("webdav")) {
-            return new WebDavTransport(account);
+            return new WebDavTransport(storeConfig);
         } else {
             throw new MessagingException("Unable to locate an applicable Transport for " + uri);
         }
@@ -71,4 +75,19 @@ public abstract class Transport {
     public abstract void sendMessage(Message message) throws MessagingException;
 
     public abstract void close();
+
+    protected static String encodeUtf8(String s) {
+        try {
+            return URLEncoder.encode(s, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("UTF-8 not found");
+        }
+    }
+    protected static String decodeUtf8(String s) {
+        try {
+            return URLDecoder.decode(s, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("UTF-8 not found");
+        }
+    }
 }

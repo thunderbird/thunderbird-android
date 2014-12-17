@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.mail.filter.Base64;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -91,22 +90,6 @@ public class Utility {
         return TextUtils.join(String.valueOf(separator), parts);
     }
 
-    public static String base64Decode(String encoded) {
-        if (encoded == null) {
-            return null;
-        }
-        byte[] decoded = new Base64().decode(encoded.getBytes());
-        return new String(decoded);
-    }
-
-    public static String base64Encode(String s) {
-        if (s == null) {
-            return s;
-        }
-        byte[] encoded = new Base64().encode(s.getBytes());
-        return new String(encoded);
-    }
-
     public static boolean requiredFieldValid(TextView view) {
         return view.getText() != null && view.getText().length() > 0;
     }
@@ -128,48 +111,6 @@ public class Utility {
             }
         }
         return false;
-    }
-
-    private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
-
-    /**
-     * Quote a string, if necessary, based upon the definition of an "atom," as defined by RFC2822
-     * (http://tools.ietf.org/html/rfc2822#section-3.2.4). Strings that consist purely of atoms are
-     * left unquoted; anything else is returned as a quoted string.
-     * @param text String to quote.
-     * @return Possibly quoted string.
-     */
-    public static String quoteAtoms(final String text) {
-        if (ATOM.matcher(text).matches()) {
-            return text;
-        } else {
-            return quoteString(text);
-        }
-    }
-
-    /**
-     * Ensures that the given string starts and ends with the double quote character. The string is not modified in any way except to add the
-     * double quote character to start and end if it's not already there.
-     * sample -> "sample"
-     * "sample" -> "sample"
-     * ""sample"" -> "sample"
-     * "sample"" -> "sample"
-     * sa"mp"le -> "sa"mp"le"
-     * "sa"mp"le" -> "sa"mp"le"
-     * (empty string) -> ""
-     * " -> ""
-     * @param s
-     * @return
-     */
-    public static String quoteString(String s) {
-        if (s == null) {
-            return null;
-        }
-        if (!s.matches("^\".*\"$")) {
-            return "\"" + s + "\"";
-        } else {
-            return s;
-        }
     }
 
     /**

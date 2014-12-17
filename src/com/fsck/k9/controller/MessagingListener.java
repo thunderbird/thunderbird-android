@@ -11,6 +11,7 @@ import com.fsck.k9.BaseAccount;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mailstore.LocalMessage;
 
 /**
  * Defines the interface that {@link MessagingController} will use to callback to requesters.
@@ -42,10 +43,8 @@ public class MessagingListener {
 
     public void listLocalMessagesStarted(Account account, String folder) {}
 
-    public void listLocalMessages(Account account, String folder, Message[] messages) {}
-
     public void listLocalMessagesAddMessages(Account account, String folder,
-            List<Message> messages) {}
+            List<LocalMessage> messages) {}
 
     public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {}
 
@@ -156,10 +155,9 @@ public class MessagingListener {
     /**
      * Called when a remote search is started
      *
-     * @param acct
      * @param folder
      */
-    public void remoteSearchStarted(Account acct, String folder) {}
+    public void remoteSearchStarted(String folder) {}
 
 
     /**
@@ -167,35 +165,30 @@ public class MessagingListener {
      *
      * @param numResults
      */
-    public void remoteSearchServerQueryComplete(Account account, String folderName, int numResults) { }
+    public void remoteSearchServerQueryComplete(String folderName, int numResults, int maxResults) { }
 
 
     /**
      * Called when a new result message is available for a remote search
      * Can assume headers have been downloaded, but potentially not body.
-     * @param account
      * @param folder
      * @param message
      */
-    public void remoteSearchAddMessage(Account account, String folder, Message message, int numDone, int numTotal) { }
+    public void remoteSearchAddMessage(String folder, Message message, int numDone, int numTotal) { }
 
     /**
      * Called when Remote Search is fully complete
-     *
-     * @param acct
-     * @param folder
+     *  @param folder
      * @param numResults
      */
-    public void remoteSearchFinished(Account acct, String folder, int numResults, List<Message> extraResults) {}
+    public void remoteSearchFinished(String folder, int numResults, int maxResults, List<Message> extraResults) {}
 
     /**
      * Called when there was a problem with a remote search operation.
-     *
-     * @param acct
-     * @param folder
+     *  @param folder
      * @param err
      */
-    public void remoteSearchFailed(Account acct, String folder, String err) { }
+    public void remoteSearchFailed(String folder, String err) { }
 
     /**
      * General notification messages subclasses can override to be notified that the controller

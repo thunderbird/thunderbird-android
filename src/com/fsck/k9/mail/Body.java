@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.fsck.k9.mail.store.UnavailableStorageException;
-
 public interface Body {
     /**
      * Returns the raw data of the body, without transfer encoding etc applied.
@@ -18,7 +16,7 @@ public interface Body {
     /**
      * Sets the content transfer encoding (7bit, 8bit, quoted-printable or base64).
      */
-    public void setEncoding(String encoding) throws UnavailableStorageException, MessagingException;
+    public void setEncoding(String encoding) throws MessagingException;
 
     /**
      * Writes the body's data to the given {@link OutputStream}.

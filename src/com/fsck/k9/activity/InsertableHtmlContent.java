@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * TODO: This container should also have a text part, along with its insertion point.  Or maybe a generic InsertableContent and maintain one each for Html and Text?
  */
-public class InsertableHtmlContent implements Serializable {
+class InsertableHtmlContent implements Serializable {
     private static final long serialVersionUID = 2397327034L;
     // Default to a headerInsertionPoint at the beginning of the message.
     private int headerInsertionPoint = 0;

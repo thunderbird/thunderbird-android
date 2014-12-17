@@ -10,9 +10,8 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message;
+import com.fsck.k9.mailstore.LocalMessage;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -89,10 +88,10 @@ public class NotificationActionService extends CoreService {
 
                 List<MessageReference> refs =
                         intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
-                List<Message> messages = new ArrayList<Message>();
+                List<LocalMessage> messages = new ArrayList<LocalMessage>();
 
                 for (MessageReference ref : refs) {
-                    Message m = ref.restoreToLocalMessage(this);
+                    LocalMessage m = ref.restoreToLocalMessage(this);
                     if (m != null) {
                         messages.add(m);
                     }
@@ -103,10 +102,10 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService initiating reply");
 
-                MessageReference ref = (MessageReference) intent.getParcelableExtra(EXTRA_MESSAGE);
-                Message message = ref.restoreToLocalMessage(this);
+                MessageReference ref = intent.getParcelableExtra(EXTRA_MESSAGE);
+                LocalMessage message = ref.restoreToLocalMessage(this);
                 if (message != null) {
-                    Intent i = MessageCompose.getActionReplyIntent(this, account, message, false, null);
+                    Intent i = MessageCompose.getActionReplyIntent(this, message, false, null);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);
                 } else {
