@@ -79,7 +79,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private CheckBox mCompressionWifi;
     private CheckBox mCompressionOther;
     private CheckBox mSubscribedFoldersOnly;
-    private ArrayAdapter<AuthType> mAuthTypeAdapter;
+    private AuthTypeAdapter mAuthTypeAdapter;
     private String mDefaultPort = "";
     private String mDefaultSslPort = "";
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
@@ -142,7 +142,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
         });
 
-        mAuthTypeAdapter = AuthType.getArrayAdapter(this);
+        mAuthTypeAdapter = AuthTypeAdapter.get(this);
         mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
         /*
@@ -168,7 +168,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             if (savedInstanceState == null) {
                 // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
-                mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getPosition(settings.authenticationType);
+                mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getAuthPosition(settings.authenticationType);
             } else {
                 mCurrentAuthTypeViewPosition = savedInstanceState.getInt(STATE_AUTH_TYPE_POSITION);
             }
@@ -257,13 +257,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             // Note that mConnectionSecurityChoices is configured above based on server type
-            ArrayAdapter<ConnectionSecurity> securityTypesAdapter =
-                    ConnectionSecurity.getArrayAdapter(this, mConnectionSecurityChoices);
+            ConnectionSecurityAdapter securityTypesAdapter =
+                    ConnectionSecurityAdapter.get(this, mConnectionSecurityChoices);
             mSecurityTypeView.setAdapter(securityTypesAdapter);
 
             // Select currently configured security type
             if (savedInstanceState == null) {
-                mCurrentSecurityTypeViewPosition = securityTypesAdapter.getPosition(settings.connectionSecurity);
+                mCurrentSecurityTypeViewPosition = securityTypesAdapter.getConnectionSecurityPosition(settings.connectionSecurity);
             } else {
 
                 /*
@@ -347,7 +347,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
                 updateViewFromAuthType();
                 validateFields();
-                AuthType selection = (AuthType) mAuthTypeView.getSelectedItem();
+                AuthType selection = getSelectedAuthType();
 
                 // Have the user select (or confirm) the client certificate
                 if (AuthType.EXTERNAL == selection) {
@@ -395,7 +395,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
      * Shows/hides password field and client certificate spinner
      */
     private void updateViewFromAuthType() {
-        AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
+        AuthType authType = getSelectedAuthType();
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
         if (isAuthTypeExternal) {
@@ -421,10 +421,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
      * that this is the last thing called after an input change.)
      */
     private void validateFields() {
-        AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
+        AuthType authType = getSelectedAuthType();
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
-        ConnectionSecurity connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+        ConnectionSecurity connectionSecurity = getSelectedSecurity();
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
 
         if (isAuthTypeExternal && !hasConnectionSecurity) {
@@ -448,16 +448,16 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mSecurityTypeView.setOnItemSelectedListener(null);
             mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
             mSecurityTypeView.setOnItemSelectedListener(onItemSelectedListener);
-            updateAuthPlainTextFromSecurityType((ConnectionSecurity) mSecurityTypeView.getSelectedItem());
+            updateAuthPlainTextFromSecurityType(getSelectedSecurity());
 
             mPortView.removeTextChangedListener(validationTextWatcher);
             mPortView.setText(mCurrentPortViewSetting);
             mPortView.addTextChangedListener(validationTextWatcher);
 
-            authType = (AuthType) mAuthTypeView.getSelectedItem();
+            authType = getSelectedAuthType();
             isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
-            connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+            connectionSecurity = getSelectedSecurity();
             hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
         } else {
             mCurrentAuthTypeViewPosition = mAuthTypeView.getSelectedItemPosition();
@@ -484,7 +484,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void updatePortFromSecurityType() {
-        ConnectionSecurity securityType = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+        ConnectionSecurity securityType = getSelectedSecurity();
         updateAuthPlainTextFromSecurityType(securityType);
 
         // Remove listener so as not to trigger validateFields() which is called
@@ -512,13 +512,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
-        switch (securityType) {
-        case NONE:
-            AuthType.PLAIN.useInsecureText(true, mAuthTypeAdapter);
-            break;
-        default:
-            AuthType.PLAIN.useInsecureText(false, mAuthTypeAdapter);
-        }
+        mAuthTypeAdapter.useInsecureText(securityType == ConnectionSecurity.NONE);
     }
 
     @Override
@@ -547,7 +541,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
                     String password = null;
                     String clientCertificateAlias = null;
-                    AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
+                    AuthType authType = getSelectedAuthType();
                     if (AuthType.EXTERNAL == authType) {
                         clientCertificateAlias = mClientCertificateSpinner.getAlias();
                     } else {
@@ -575,13 +569,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
     protected void onNext() {
         try {
-            ConnectionSecurity connectionSecurity = (ConnectionSecurity) mSecurityTypeView.getSelectedItem();
+            ConnectionSecurity connectionSecurity = getSelectedSecurity();
 
             String username = mUsernameView.getText().toString();
             String password = null;
             String clientCertificateAlias = null;
 
-            AuthType authType = (AuthType) mAuthTypeView.getSelectedItem();
+            AuthType authType = getSelectedAuthType();
             if (authType == AuthType.EXTERNAL) {
                 clientCertificateAlias = mClientCertificateSpinner.getAlias();
             } else {
@@ -645,6 +639,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         toast.show();
     }
 
+
     /*
      * Calls validateFields() which enables or disables the Next button
      * based on the fields' validity.
@@ -669,4 +664,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             validateFields();
         }
     };
+
+    private AuthType getSelectedAuthType() {
+        AuthTypeHolder holder = (AuthTypeHolder) mAuthTypeView.getSelectedItem();
+        return holder.authType;
+    }
+
+    private ConnectionSecurity getSelectedSecurity() {
+        ConnectionSecurityHolder holder = (ConnectionSecurityHolder) mSecurityTypeView.getSelectedItem();
+        return holder.connectionSecurity;
+    }
 }
