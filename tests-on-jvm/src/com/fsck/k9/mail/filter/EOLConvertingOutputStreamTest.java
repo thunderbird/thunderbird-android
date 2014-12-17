@@ -46,6 +46,13 @@ public class EOLConvertingOutputStreamTest extends TestCase {
         assertEquals("Flush\r\n", out.toString());
     }
 
+    public void testFlushWithCRNotFollowedByLF() throws Exception {
+        subject.write("Flush\r".getBytes());
+        subject.flush();
+        subject.write("Next line".getBytes());
+        assertEquals("Flush\r\nNext line", out.toString());
+    }
+
     public void testFlushWithLF() throws Exception {
         subject.write("Flush\n".getBytes());
         subject.flush();
